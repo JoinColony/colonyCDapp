@@ -4,7 +4,7 @@ import { NavigationSidebarMainMenuProps } from './partials/NavigationSidebarMain
 import { NavigationSidebarSecondLevelProps } from './partials/NavigationSidebarSecondLevel/types';
 
 export interface NavigationSidebarColonySwitcherProps {
-  avatarProps: ColonyAvatarProps;
+  avatarProps?: ColonyAvatarProps;
   content: Omit<
     NavigationSidebarSecondLevelProps,
     'isExpanded' | 'onArrowClick'

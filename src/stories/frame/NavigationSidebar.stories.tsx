@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
+import { ADDRESS_ZERO } from '~constants';
 
 const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
   title: 'Frame/Navigation Sidebar',
@@ -16,6 +17,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
     colonySwitcherProps: {
       avatarProps: {
         chainIconName: 'gnosis',
+        colonyAddress: ADDRESS_ZERO,
       },
       content: {
         title: 'Select a Colony',

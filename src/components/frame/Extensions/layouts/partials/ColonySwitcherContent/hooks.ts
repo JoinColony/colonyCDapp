@@ -52,7 +52,7 @@ export const useColonySwitcherContent = (
                     itemColony.metadata?.avatar,
                 }
               : undefined,
-            colonyAddress,
+            colonyAddress: itemColony.colonyAddress,
           },
         },
       ];

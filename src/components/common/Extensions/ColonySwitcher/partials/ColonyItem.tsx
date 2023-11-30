@@ -19,7 +19,7 @@ const ColonyItem: FC<ColonyItemProps> = ({ colony, chainName }) => (
           <div className="flex mr-2 shrink-0">
             <ColonyAvatar
               colony={colony}
-              colonyAddress={colony?.colonyAddress}
+              colonyAddress={colony.colonyAddress}
               size="xxs"
             />
           </div>

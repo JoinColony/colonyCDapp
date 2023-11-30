@@ -6,12 +6,24 @@
   @apply inline-block relative w-[1rem] h-[1rem];
 }
 
+.xss {
+  @apply inline-block relative w-[1.125rem] h-[1.125rem];
+}
+
 .xs {
   @apply inline-block relative w-[1.25rem] h-[1.25rem];
 }
 
+.xxsm {
+  @apply inline-block relative w-[1.5rem] h-[1.5rem];
+}
+
 .xsm {
   @apply inline-block relative w-[1.625rem] h-[1.625rem];
+}
+
+.smx {
+  @apply flex items-center relative w-[1.75rem] h-[1.75rem];
 }
 
 .sm {

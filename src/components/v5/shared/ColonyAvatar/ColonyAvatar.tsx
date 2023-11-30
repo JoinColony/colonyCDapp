@@ -7,6 +7,7 @@ import { formatText } from '~utils/intl';
 import Avatar from '../Avatar';
 
 import { ColonyAvatarProps } from './types';
+import { getBlockieSize } from './util';
 
 const displayName = 'v5.ColonyAvatar';
 
@@ -47,7 +48,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           />
         ) : (
           <Avatar
-            size={size === 'default' ? 's' : 'xxs'}
+            size={getBlockieSize(size)}
             seed={colonyAddress.toLowerCase()}
           />
         )}

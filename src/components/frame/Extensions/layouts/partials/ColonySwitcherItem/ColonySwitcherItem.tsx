@@ -1,8 +1,11 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+
 import Icon from '~shared/Icon';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import { ADDRESS_ZERO } from '~constants';
+
 import { ColonySwitcherItemProps } from './types';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherItem';
@@ -12,7 +15,9 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
   avatarProps,
   ...rest
 }) => {
-  const { chainIconName, ...restAvatarProps } = avatarProps || {};
+  const { chainIconName, ...restAvatarProps } = avatarProps || {
+    colonyAddress: ADDRESS_ZERO,
+  };
 
   return (
     <NavLink

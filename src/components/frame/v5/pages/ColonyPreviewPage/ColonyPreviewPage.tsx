@@ -21,6 +21,7 @@ import { CREATE_PROFILE_ROUTE } from '~routes';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import SocialLinks from '~v5/shared/SocialLinks';
 import CardConnectWallet from '~v5/shared/CardConnectWallet';
+import { ADDRESS_ZERO } from '~constants';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -210,13 +211,13 @@ const ColonyPreviewPage = () => {
         title={
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:flex-nowrap">
             <ColonyAvatar
-              colonyImageProps={
-                colonyMetadata?.avatar
-                  ? {
-                      src: colonyMetadata?.thumbnail || colonyMetadata?.avatar,
-                    }
-                  : undefined
-              }
+              colonyImageProps={{
+                src:
+                  colonyMetadata?.thumbnail ||
+                  colonyMetadata?.avatar ||
+                  undefined,
+              }}
+              colonyAddress={colonyAddress || ADDRESS_ZERO}
               size="mediumSmallMediumLargeSmallTinyBigMediumLargeSmall"
             />
             <h1 className="text-md font-medium inline">{colonyDisplayName}</h1>

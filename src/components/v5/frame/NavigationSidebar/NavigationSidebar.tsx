@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { isEmpty } from 'lodash';
 
 import { useTablet } from '~hooks';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
@@ -61,11 +60,6 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   const hasThirdLevel = activeMainMenuItem?.relatedActionsProps?.items.length;
 
   const relatedActions = activeMainMenuItem?.relatedActionsProps;
-
-  const {
-    avatarProps: colonySwitcherAvatarProps,
-    content: colonySwitcherContent,
-  } = colonySwitcherProps;
 
   const mainMenu = withMainMenu ? (
     <NavigationSidebarMainMenu mainMenuItems={mainMenuItems} />
@@ -140,8 +134,8 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   },
                 )}
               >
-                {!isEmpty(colonySwitcherAvatarProps) ? (
-                  <ColonyAvatar {...colonySwitcherAvatarProps} />
+                {colonySwitcherProps?.avatarProps ? (
+                  <ColonyAvatar {...colonySwitcherProps.avatarProps} />
                 ) : (
                   <div className="w-9 h-9">
                     <Icon
@@ -176,7 +170,11 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   mobileBottomContent={mobileBottomContent}
                   isOpen={openItemIndex === 0}
                 >
-                  <NavigationSidebarSecondLevel {...colonySwitcherContent} />
+                  {colonySwitcherProps?.content.title && (
+                    <NavigationSidebarSecondLevel
+                      {...colonySwitcherProps?.content}
+                    />
+                  )}
                 </NavigationSidebarMobileContentWrapper>
               </>
             ) : (
@@ -229,8 +227,10 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                     isExpanded={hasThirdLevel ? isThirdLevelMenuOpen : false}
                   />
                 ) : null}
-                {openItemIndex === 0 && (
-                  <NavigationSidebarSecondLevel {...colonySwitcherContent} />
+                {openItemIndex === 0 && colonySwitcherProps?.content.title && (
+                  <NavigationSidebarSecondLevel
+                    {...colonySwitcherProps?.content}
+                  />
                 )}
               </motion.div>
             </motion.div>
