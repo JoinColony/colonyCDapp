@@ -136,6 +136,10 @@
     background-position: left -2.5rem top 0;
     animation: shine 1.125s ease infinite;
   }
+
+  .break-word {
+    word-break: break-word;
+  }
 }
 
 @layer components {
