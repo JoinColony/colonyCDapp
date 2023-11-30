@@ -8,6 +8,8 @@ import {
   COLONY_DETAILS_ROUTE,
   COLONY_TEAMS_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
+  COLONY_ACTIVITY_ROUTE,
+  COLONY_BALANCES_ROUTE,
 } from '~routes';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { useActionSidebarContext } from '~context';
@@ -83,7 +85,7 @@ const ColonyHome = () => {
               [teamColor]: selectedTeam,
               'bg-gray-900 border-gray-900': !selectedTeam,
             }),
-            href: '/',
+            href: COLONY_ACTIVITY_ROUTE,
           },
           {
             key: '2',
@@ -115,7 +117,7 @@ const ColonyHome = () => {
                 <span className="text-1">{nativeToken?.symbol}</span>
               </div>
             ),
-            href: '/',
+            href: COLONY_BALANCES_ROUTE,
           },
         ]}
       />

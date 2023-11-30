@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Logo from '~images/logo-new.svg';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
 
 const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
@@ -11,7 +10,6 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
     layout: 'fullscreen',
   },
   args: {
-    logo: <Logo />,
     additionalMobileContent: <p>mobile content</p>,
     mobileBottomContent: <p>mobile bottom content</p>,
     hamburgerLabel: 'Menu',

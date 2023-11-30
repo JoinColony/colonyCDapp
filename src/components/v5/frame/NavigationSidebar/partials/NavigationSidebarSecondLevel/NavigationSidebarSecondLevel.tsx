@@ -9,6 +9,7 @@ import { NavigationSidebarSecondLevelProps } from './types';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
 import ButtonLink from '~v5/shared/Button/ButtonLink';
 import NavigationSidebarLinksList from '../NavigationSidebarLinksList';
+import NavigationFeedbackWidget from '../NavigationFeedbackWidget';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarSecondLevel';
@@ -69,18 +70,27 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         )}
         {additionalContent}
       </div>
-      {bottomActionProps && !isTablet && !('to' in bottomActionProps) && (
-        <Button
-          {...bottomActionProps}
-          onClick={(e) => {
-            setOpenItemIndex(undefined);
-            bottomActionProps.onClick?.(e);
-          }}
-          className="w-full"
-        />
-      )}
-      {bottomActionProps && !isTablet && 'to' in bottomActionProps && (
-        <ButtonLink {...bottomActionProps} className="w-full" />
+      {!isTablet && (
+        <div className="flex flex-col gap-5">
+          <NavigationFeedbackWidget />
+          {bottomActionProps && (
+            <>
+              {!('to' in bottomActionProps) && (
+                <Button
+                  {...bottomActionProps}
+                  onClick={(e) => {
+                    setOpenItemIndex(undefined);
+                    bottomActionProps.onClick?.(e);
+                  }}
+                  className="w-full"
+                />
+              )}
+              {'to' in bottomActionProps && (
+                <ButtonLink {...bottomActionProps} className="w-full" />
+              )}
+            </>
+          )}
+        </div>
       )}
     </div>
   );

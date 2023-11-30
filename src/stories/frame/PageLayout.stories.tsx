@@ -2,14 +2,11 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Logo from '~images/logo-new.svg';
-
 import PageLayout from '~v5/frame/PageLayout';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
 
 const SideBar = () => (
   <NavigationSidebar
-    logo={<Logo />}
     additionalMobileContent={<p>mobile content</p>}
     mobileBottomContent={<p>mobile bottom content</p>}
     hamburgerLabel="Menu"

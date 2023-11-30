@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import { CREATE_COLONY_ROUTE } from '~routes';
-import Logo from '~images/logo-new.svg';
 import { formatText } from '~utils/intl';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
 
@@ -36,7 +35,6 @@ const ColonySidebar = ({ txButtons, userHub }: Props) => {
 
   return (
     <NavigationSidebar
-      logo={<Logo />}
       additionalMobileContent={
         <UserNavigationWrapper txButtons={txButtons} userHub={userHub} />
       }

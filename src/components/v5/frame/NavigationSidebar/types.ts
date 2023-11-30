@@ -14,7 +14,6 @@ export interface NavigationSidebarColonySwitcherProps {
 export interface NavigationSidebarProps {
   colonySwitcherProps: NavigationSidebarColonySwitcherProps;
   mainMenuItems?: NavigationSidebarMainMenuProps['mainMenuItems'];
-  logo?: React.ReactNode;
   additionalMobileContent?: React.ReactNode;
   mobileBottomContent?: React.ReactNode;
   hamburgerLabel?: string;
