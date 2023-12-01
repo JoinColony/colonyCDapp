@@ -110,7 +110,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
-                label: formatText({ id: 'motion.staking.label' }) || '',
+                label: formatText({ id: 'motion.staking.label' }),
                 decor:
                   activeStepKey === NetworkMotionState.Staking &&
                   motionStakes &&
@@ -135,7 +135,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
-                label: formatText({ id: 'motion.voting.label' }) || '',
+                label: formatText({ id: 'motion.voting.label' }),
                 decor:
                   motionStateEnum === MotionState.Voting && motionStakes ? (
                     <MotionCountDownTimer
@@ -159,7 +159,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
-                label: formatText({ id: 'motion.reveal.label' }) || '',
+                label: formatText({ id: 'motion.reveal.label' }),
                 decor:
                   motionStateEnum === MotionState.Reveal && motionStakes ? (
                     <MotionCountDownTimer
@@ -203,8 +203,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                   (winningSide === MotionVote.Nay &&
                     votesHaveBeenRevealed &&
                     formatText({ id: 'motion.oppose.wins.label' })) ||
-                  formatText({ id: 'motion.outcome.label' }) ||
-                  '',
+                  formatText({ id: 'motion.outcome.label' }),
                 className: clsx({
                   '!bg-base-white !text-purple-400 border-purple-400':
                     hasMotionPassed ||
@@ -230,7 +229,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 />
               ),
               heading: {
-                label: formatText({ id: 'motion.finalize.label' }) || '',
+                label: formatText({ id: 'motion.finalize.label' }),
               },
             },
           ],

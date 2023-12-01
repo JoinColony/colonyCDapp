@@ -75,7 +75,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
               >
                 <Checkbox
                   id={id}
-                  name={formatText(title) ?? ''}
+                  name={formatText(title)}
                   label={title}
                   onChange={(event) =>
                     onChange(hasNestedOptions, id, isChecked, event)

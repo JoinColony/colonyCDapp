@@ -65,7 +65,7 @@ const ColonySidebar = ({ txButtons, userHub }: Props) => {
           chainIconName: chainIcon,
         },
         content: {
-          title: formatText({ id: 'navigation.colonySwitcher.title' }) || '',
+          title: formatText({ id: 'navigation.colonySwitcher.title' }),
           content: <ColonySwitcherContent colony={colony} />,
           bottomActionProps: {
             text: formatText({ id: 'button.createNewColony' }),

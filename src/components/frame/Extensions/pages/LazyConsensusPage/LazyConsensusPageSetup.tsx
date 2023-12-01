@@ -73,7 +73,7 @@ const LazyConsensusPageSetup: FC<LazyConsensusPageSetupProps> = ({
 
       <div className="mt-6">
         <RadioList
-          title={formatText({ id: 'choose.governanceStyle' }) as string}
+          title={formatText({ id: 'choose.governanceStyle' })}
           items={governanceRadioList}
           onChange={onChangeGovernance}
           name="governance"

@@ -79,7 +79,7 @@ const addKeyToFormattedMessage = (
 export function formatText(
   message: Message,
   messageValues?: SimpleMessageValues,
-): string | undefined;
+): string;
 export function formatText(
   message: Message,
   messageValues?: ComplexMessageValues,

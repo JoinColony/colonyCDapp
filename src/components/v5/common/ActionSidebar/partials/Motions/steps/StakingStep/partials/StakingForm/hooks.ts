@@ -32,7 +32,7 @@ export const useStakingForm = () => {
       amount: string()
         .test(
           'amount-more-than-zero',
-          formatText({ id: 'motion.staking.input.error.amountRequired' }) || '',
+          formatText({ id: 'motion.staking.input.error.amountRequired' }),
           (value) => {
             if (!value) {
               return false;
@@ -51,8 +51,7 @@ export const useStakingForm = () => {
         )
         .test(
           'amount-less-than-remaining',
-          formatText({ id: 'motion.staking.input.error.moreThanRemaining' }) ||
-            '',
+          formatText({ id: 'motion.staking.input.error.moreThanRemaining' }),
           (value, context) => {
             if (!value) {
               return false;

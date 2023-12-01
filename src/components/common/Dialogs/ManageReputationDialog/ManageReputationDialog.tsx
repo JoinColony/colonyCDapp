@@ -91,7 +91,7 @@ const ManageReputation = ({
       permissionInfoTextValues: {
         permission: formatText({
           id: `role.${ColonyRole.Root}`,
-        })?.toLowerCase(),
+        }).toLowerCase(),
       },
       onClick: () => callStep(nextStepAwardReputation),
       dataTest: 'awardReputationDialogIndexItem',
@@ -105,7 +105,7 @@ const ManageReputation = ({
       permissionInfoTextValues: {
         permission: formatText({
           id: `role.${ColonyRole.Arbitration}`,
-        })?.toLowerCase(),
+        }).toLowerCase(),
       },
       onClick: () => callStep(nextStepSmiteReputation),
       dataTest: 'smiteReputationDialogIndexItem',

@@ -150,7 +150,7 @@ const StakingForm: FC<StakingFormProps> = ({
                       tailPrefix: true,
                     }}
                     buttonProps={{
-                      label: formatText({ id: 'button.max' }) || '',
+                      label: formatText({ id: 'button.max' }),
                       onClick: () => {
                         setValue(
                           'amount',

@@ -37,18 +37,14 @@ const StakingChart: FC<StakingChartProps> = ({
       )}
       <VoteChart
         {...chartProps}
-        againstLabel={
-          formatText({ id: 'motion.staking.chart.againstLabel' }) || ''
-        }
-        forLabel={formatText({ id: 'motion.staking.chart.forLabel' }) || ''}
-        thresholdLabel={
-          formatText(
-            { id: 'motion.staking.chart.thresholdLabel' },
-            {
-              value: `${threshold}%`,
-            },
-          ) || ''
-        }
+        againstLabel={formatText({ id: 'motion.staking.chart.againstLabel' })}
+        forLabel={formatText({ id: 'motion.staking.chart.forLabel' })}
+        thresholdLabel={formatText(
+          { id: 'motion.staking.chart.thresholdLabel' },
+          {
+            value: `${threshold}%`,
+          },
+        )}
       />
     </>
   );

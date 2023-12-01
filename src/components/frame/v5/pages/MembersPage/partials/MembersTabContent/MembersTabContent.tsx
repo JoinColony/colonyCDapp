@@ -54,10 +54,9 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
           placeholderCardProps={
             showPlaceholderCard
               ? {
-                  description:
-                    formatText({
-                      id: 'membersPage.inviteMembers.description',
-                    }) || '',
+                  description: formatText({
+                    id: 'membersPage.inviteMembers.description',
+                  }),
                   buttonProps: {
                     text: formatText({ id: 'members.subnav.invite' }),
                     iconName: 'user-plus',

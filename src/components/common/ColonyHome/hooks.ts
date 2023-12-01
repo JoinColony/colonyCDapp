@@ -139,7 +139,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
 
   const otherTeams = {
     id: '4',
-    label: formatText({ id: 'label.allOther' }) ?? '',
+    label: formatText({ id: 'label.allOther' }),
     value: otherTeamsReputation ?? 0,
     color: '--color-teams-grey-100',
     stroke: '--color-teams-grey-100',
@@ -217,7 +217,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
 
   const { metadata } = colony || {};
   const description =
-    metadata?.description || formatText({ id: 'colony.description' }) || '';
+    metadata?.description || formatText({ id: 'colony.description' });
 
   const truncatedText =
     description.length > MAX_TEXT_LENGTH
@@ -232,9 +232,9 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
           items: [
             {
               key: '1.1',
-              label:
-                formatText({ id: 'dashboard.burgerMenu.item.aboutColony' }) ||
-                '',
+              label: formatText({
+                id: 'dashboard.burgerMenu.item.aboutColony',
+              }),
               icon: Rocket,
               to: `/${colony?.name}/${COLONY_DETAILS_ROUTE}`,
             },
@@ -247,10 +247,9 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
               ? [
                   {
                     key: '2.1',
-                    label:
-                      formatText({
-                        id: 'dashboard.burgerMenu.item.externalLinks',
-                      }) || '',
+                    label: formatText({
+                      id: 'dashboard.burgerMenu.item.externalLinks',
+                    }),
                     icon: Smiley,
                     items: items.map<DropdownMenuItem>(({ key, ...item }) => ({
                       ...item,
@@ -262,15 +261,13 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
               : []),
             {
               key: '2.2',
-              label:
-                formatText({ id: 'dashboard.burgerMenu.item.share' }) || '',
+              label: formatText({ id: 'dashboard.burgerMenu.item.share' }),
               icon: ShareNetwork,
               onClick: () => itemHandleClipboardCopy(colonyUrl),
               tooltipProps: {
-                tooltipContent:
-                  formatText({
-                    id: 'colony.tooltip.url.copied',
-                  }) || '',
+                tooltipContent: formatText({
+                  id: 'colony.tooltip.url.copied',
+                }),
                 isOpen: itemIsCopied,
                 isSuccess: true,
               },
@@ -282,10 +279,9 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
           items: [
             {
               key: '3.1',
-              label:
-                formatText({
-                  id: 'dashboard.burgerMenu.item.notifications',
-                }) || '',
+              label: formatText({
+                id: 'dashboard.burgerMenu.item.notifications',
+              }),
               icon: BellRinging,
               // @TODO: open Notification tab when will be ready
               onClick: () => {},
@@ -298,10 +294,9 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
             ? [
                 {
                   key: '4.1',
-                  label:
-                    formatText({
-                      id: 'dashboard.burgerMenu.item.leaveColony',
-                    }) || '',
+                  label: formatText({
+                    id: 'dashboard.burgerMenu.item.leaveColony',
+                  }),
                   icon: Door,
                   onClick: () => handleUnwatch(),
                 },

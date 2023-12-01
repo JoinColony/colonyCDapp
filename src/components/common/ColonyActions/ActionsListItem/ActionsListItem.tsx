@@ -58,14 +58,14 @@ const getDomainName = (
   if (!motionDomain) {
     const actionFallback = formatText(MSG.domain, {
       domainId: fromDomain?.id ?? Id.RootDomain,
-    }) as string; // safe casting as we're using simple values
+    });
 
     return fromDomain?.metadata?.name ?? actionFallback;
   }
 
   const motionFallback = formatText(MSG.domain, {
     domainId: motionDomain.nativeId,
-  }) as string; // safe casting as we're using simple values
+  });
 
   return motionDomain.metadata?.name ?? motionFallback;
 };

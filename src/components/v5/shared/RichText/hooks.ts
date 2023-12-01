@@ -38,9 +38,9 @@ export const useRichText = (
         Placeholder.configure({
           placeholder: () => {
             setNotFormattedContent(
-              formatText({ id: 'placeholder.enterDescription' }) || '',
+              formatText({ id: 'placeholder.enterDescription' }),
             );
-            return formatText({ id: 'placeholder.enterDescription' }) || '';
+            return formatText({ id: 'placeholder.enterDescription' });
           },
           showOnlyWhenEditable: false,
           emptyEditorClass: `text-gray-500 before:content-[attr(data-placeholder)] before:float-left before:h-0 before:pointer-events-none`,
@@ -103,10 +103,8 @@ export const useRichText = (
     if (field.value && editorContent && !isDecriptionFieldExpanded) {
       editorContent?.setEditable(false);
       setNotFormattedContent(
-        (editorContent?.getText() && editorContent?.getText()) ||
-          (!editorContent?.getText() &&
-            formatText({ id: 'placeholder.enterDescription' })) ||
-          '',
+        editorContent?.getText() ||
+          formatText({ id: 'placeholder.enterDescription' }),
       );
     }
   }, [editorContent, isDecriptionFieldExpanded, field.value]);

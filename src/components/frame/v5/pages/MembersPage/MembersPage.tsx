@@ -91,14 +91,14 @@ const MembersPage: FC = () => {
       items={[
         {
           id: 0,
-          title: formatText({ id: 'membersPage.contributing' }) || '',
+          title: formatText({ id: 'membersPage.contributing' }),
           notificationNumber: totalContributorCount,
           content: (
             <MembersTabContentWrapper
-              title={formatText({ id: 'membersPage.contributing.title' }) || ''}
-              description={
-                formatText({ id: 'membersPage.contributing.description' }) || ''
-              }
+              title={formatText({ id: 'membersPage.contributing.title' })}
+              description={formatText({
+                id: 'membersPage.contributing.description',
+              })}
               additionalActions={
                 <Filter excludeFilterType={FilterTypes.Team} />
               }
@@ -110,14 +110,14 @@ const MembersPage: FC = () => {
         },
         {
           id: 1,
-          title: formatText({ id: 'membersPage.allMembers' }) || '',
+          title: formatText({ id: 'membersPage.allMembers' }),
           notificationNumber: totalMemberCount,
           content: (
             <MembersTabContentWrapper
-              title={formatText({ id: 'membersPage.allMembers.title' }) || ''}
-              description={
-                formatText({ id: 'membersPage.allMembers.description' }) || ''
-              }
+              title={formatText({ id: 'membersPage.allMembers.title' })}
+              description={formatText({
+                id: 'membersPage.allMembers.description',
+              })}
               additionalActions={
                 <Filter excludeFilterType={FilterTypes.Team} />
               }

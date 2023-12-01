@@ -1,5 +1,6 @@
 import isEqual from 'lodash/isEqual';
 import { ColonyRole } from '@colony/colony-js';
+
 import { formatText } from '~utils/intl';
 
 export const USER_ROLE = {
@@ -21,12 +22,12 @@ export interface UserRoleMeta {
 export const USER_ROLES: UserRoleMeta[] = [
   {
     role: USER_ROLE.Mod,
-    name: formatText({ id: 'role.mod' }) || '',
+    name: formatText({ id: 'role.mod' }),
     permissions: [ColonyRole.Administration],
   },
   {
     role: USER_ROLE.Payer,
-    name: formatText({ id: 'role.payer' }) || '',
+    name: formatText({ id: 'role.payer' }),
     permissions: [
       ColonyRole.Administration,
       ColonyRole.Funding,
@@ -35,7 +36,7 @@ export const USER_ROLES: UserRoleMeta[] = [
   },
   {
     role: USER_ROLE.Admin,
-    name: formatText({ id: 'role.admin' }) || '',
+    name: formatText({ id: 'role.admin' }),
     permissions: [
       ColonyRole.Administration,
       ColonyRole.Funding,
@@ -45,7 +46,7 @@ export const USER_ROLES: UserRoleMeta[] = [
   },
   {
     role: USER_ROLE.Owner,
-    name: formatText({ id: 'role.owner' }) || '',
+    name: formatText({ id: 'role.owner' }),
     permissions: [
       ColonyRole.Administration,
       ColonyRole.Funding,
@@ -59,7 +60,7 @@ export const USER_ROLES: UserRoleMeta[] = [
 
 export const CUSTOM_USER_ROLE: UserRoleMeta = {
   role: USER_ROLE.Custom,
-  name: formatText({ id: 'role.custom' }) || '',
+  name: formatText({ id: 'role.custom' }),
   permissions: [],
 };
 

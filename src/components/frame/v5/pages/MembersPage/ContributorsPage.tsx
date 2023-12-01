@@ -36,11 +36,10 @@ const ContributorsPage: FC = () => {
       emptyContentProps={{
         buttonText: { id: 'members.subnav.invite' },
         onClick: () => handleClipboardCopy(colonyURL),
-        title: formatText({ id: 'membersPage.contributors.emptyTitle' }) || '',
-        description:
-          formatText({
-            id: 'membersPage.contributors.emptyDescription',
-          }) || '',
+        title: formatText({ id: 'membersPage.contributors.emptyTitle' }),
+        description: formatText({
+          id: 'membersPage.contributors.emptyDescription',
+        }),
         icon: 'smiley-meh',
       }}
     >

@@ -15,7 +15,7 @@ const MainSidebar = () => (
     colonySwitcherProps={{
       avatarProps: {},
       content: {
-        title: formatText({ id: 'navigation.colonySwitcher.title' }) || '',
+        title: formatText({ id: 'navigation.colonySwitcher.title' }),
         content: <ColonySwitcherContent />,
         bottomActionProps: {
           text: formatText({ id: 'button.createNewColony' }),

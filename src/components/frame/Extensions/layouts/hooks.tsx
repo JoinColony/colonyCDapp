@@ -61,15 +61,15 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
         key: '1',
         linkProps: {
           to: 'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
-          text: formatText({ id: 'learn.more' }) || '',
+          text: formatText({ id: 'learn.more' }),
         },
         buttonProps: {
           onClick: handleUpgradeColony,
-          text: formatText({ id: 'button.upgrade' }) || '',
+          text: formatText({ id: 'button.upgrade' }),
           disabled: !canUpgradeColony,
         },
         mode: 'info',
-        title: formatText({ id: 'calamityBanner.available' }) || '',
+        title: formatText({ id: 'calamityBanner.available' }),
       },
     ],
     [canUpgradeColony, handleUpgradeColony],
@@ -93,7 +93,7 @@ export const useMainMenuItems = () => {
     {
       key: '1',
       iconName: 'file-plus',
-      label: formatText({ id: 'navigation.newAction' }) || '',
+      label: formatText({ id: 'navigation.newAction' }),
       onClick: () => toggleActionSidebarOn(),
       hideMobile: true,
       className: 'bg-base-bg',
@@ -101,13 +101,13 @@ export const useMainMenuItems = () => {
     {
       key: '2',
       iconName: 'layout',
-      label: formatText({ id: 'navigation.dashboard' }) || '',
+      label: formatText({ id: 'navigation.dashboard' }),
       isActive: checkIfIsActive(nestedColonyPathname, [
         ...dashboardMainMenu,
         ...dashboardMenu,
       ]),
       secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.dashboard.title' }) || '',
+        title: formatText({ id: 'navigation.dashboard.title' }),
         content: <DashboardContent />,
         description: formatText({ id: 'navigation.dashboard.description' }),
         bottomActionProps: {
@@ -120,12 +120,12 @@ export const useMainMenuItems = () => {
     {
       key: '3',
       iconName: 'user',
-      label: formatText({ id: 'navigation.members' }) || '',
+      label: formatText({ id: 'navigation.members' }),
       isActive:
         checkIfIsActive(nestedColonyPathname, membersMenu) ||
         nestedColonyPathname === COLONY_MEMBERS_ROUTE,
       secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.members.title' }) || '',
+        title: formatText({ id: 'navigation.members.title' }),
         content: membersMenu,
         description: formatText({ id: 'navigation.members.description' }),
       },
@@ -134,7 +134,7 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: formatText({ id: 'actions.managePermissions' }) || '',
+            label: formatText({ id: 'actions.managePermissions' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
@@ -142,13 +142,13 @@ export const useMainMenuItems = () => {
           },
           {
             key: '2',
-            label: formatText({ id: 'actions.manageReputation' }) || '',
+            label: formatText({ id: 'actions.manageReputation' }),
             // @todo: update action type when manage reputation is implemented
             onClick: () => {},
           },
           {
             key: '3',
-            label: formatText({ id: 'actions.editExistingTeam' }) || '',
+            label: formatText({ id: 'actions.editExistingTeam' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
@@ -156,7 +156,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '4',
-            label: formatText({ id: 'actions.createNewTeam' }) || '',
+            label: formatText({ id: 'actions.createNewTeam' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
@@ -168,10 +168,10 @@ export const useMainMenuItems = () => {
     {
       key: '4',
       iconName: 'bank',
-      label: formatText({ id: 'navigation.finances' }) || '',
+      label: formatText({ id: 'navigation.finances' }),
       isActive: checkIfIsActive(nestedColonyPathname, financesMenu),
       secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.finances.title' }) || '',
+        title: formatText({ id: 'navigation.finances.title' }),
         content: financesMenu,
         description: formatText({ id: 'navigation.finances.description' }),
       },
@@ -180,7 +180,7 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: formatText({ id: 'actions.simplePayment' }) || '',
+            label: formatText({ id: 'actions.simplePayment' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
@@ -188,7 +188,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '2',
-            label: formatText({ id: 'actions.advancedPayment' }) || '',
+            label: formatText({ id: 'actions.advancedPayment' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
@@ -196,7 +196,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '3',
-            label: formatText({ id: 'actions.streamingPayment' }) || '',
+            label: formatText({ id: 'actions.streamingPayment' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.STREAMING_PAYMENT,
@@ -205,7 +205,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '4',
-            label: formatText({ id: 'actions.splitPayment' }) || '',
+            label: formatText({ id: 'actions.splitPayment' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SPLIT_PAYMENT,
@@ -213,7 +213,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '5',
-            label: formatText({ id: 'actions.batchPayment' }) || '',
+            label: formatText({ id: 'actions.batchPayment' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.BATCH_PAYMENT,
@@ -222,7 +222,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '6',
-            label: formatText({ id: 'actions.stagedPayment' }) || '',
+            label: formatText({ id: 'actions.stagedPayment' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.STAGED_PAYMENT,
@@ -231,7 +231,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '7',
-            label: formatText({ id: 'actions.transferFunds' }) || '',
+            label: formatText({ id: 'actions.transferFunds' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
@@ -239,7 +239,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '8',
-            label: formatText({ id: 'actions.manageTokens' }) || '',
+            label: formatText({ id: 'actions.manageTokens' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
@@ -247,7 +247,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '9',
-            label: formatText({ id: 'actions.mintTokens' }) || '',
+            label: formatText({ id: 'actions.mintTokens' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
@@ -259,10 +259,10 @@ export const useMainMenuItems = () => {
     {
       key: '5',
       iconName: 'handshake',
-      label: formatText({ id: 'navigation.agreements' }) || '',
+      label: formatText({ id: 'navigation.agreements' }),
       isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
       secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.agreements.title' }) || '',
+        title: formatText({ id: 'navigation.agreements.title' }),
         content: agreementsMenu,
         description: formatText({ id: 'navigation.agreements.description' }),
       },
@@ -271,7 +271,7 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: formatText({ id: 'actions.createAgreement' }) || '',
+            label: formatText({ id: 'actions.createAgreement' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
@@ -279,7 +279,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '2',
-            label: formatText({ id: 'actions.simpleDiscussion' }) || '',
+            label: formatText({ id: 'actions.simpleDiscussion' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
@@ -291,10 +291,10 @@ export const useMainMenuItems = () => {
     {
       key: '6',
       iconName: 'gear-six',
-      label: formatText({ id: 'navigation.admin' }) || '',
+      label: formatText({ id: 'navigation.admin' }),
       isActive: checkIfIsActive(nestedColonyPathname, adminMenu),
       secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.admin.title' }) || '',
+        title: formatText({ id: 'navigation.admin.title' }),
         content: adminMenu,
         description: formatText({ id: 'navigation.admin.description' }),
       },
@@ -303,7 +303,7 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: formatText({ id: 'actions.editColonyDetails' }) || '',
+            label: formatText({ id: 'actions.editColonyDetails' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
@@ -311,7 +311,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '2',
-            label: formatText({ id: 'actions.upgradeColonyVersion' }) || '',
+            label: formatText({ id: 'actions.upgradeColonyVersion' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
@@ -319,7 +319,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '3',
-            label: formatText({ id: 'actions.enterRecoveryMode' }) || '',
+            label: formatText({ id: 'actions.enterRecoveryMode' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.ENTER_RECOVERY_MODE,
@@ -327,7 +327,7 @@ export const useMainMenuItems = () => {
           },
           {
             key: '4',
-            label: formatText({ id: 'actions.unlockToken' }) || '',
+            label: formatText({ id: 'actions.unlockToken' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.UNLOCK_TOKEN,
