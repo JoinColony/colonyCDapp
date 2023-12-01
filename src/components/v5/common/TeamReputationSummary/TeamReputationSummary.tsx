@@ -12,27 +12,46 @@ import Numeral from '~shared/Numeral';
 import MenuContainer from '~v5/shared/MenuContainer';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
+import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts';
+import { ACTION } from '~constants/actions';
+import Tooltip from '~shared/Extensions/Tooltip';
+import { formatPercentage } from './utils';
 
 import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
 import { TeamReputationSummaryProps } from './types';
+import { useActionSidebarContext } from '~context';
 
 const displayName = 'v5.common.TeamReputationSummary';
 
 const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
-  teams: teamsProp,
   className,
 }) => {
   const { colony } = useColonyContext();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
   const { nativeToken, domains, reputation } = colony || {};
 
   const colonyReputation = reputation ?? '0';
-  const teams =
-    teamsProp ||
-    domains?.items
-      .filter(notNull)
-      .filter(({ nativeId }) => nativeId !== Id.RootDomain);
+  const teams = domains?.items
+    .filter(notNull)
+    .filter(({ nativeId }) => nativeId !== Id.RootDomain)
+    .sort((teamA, teamB) => {
+      if (!teamA || !teamB) return 0;
+
+      const { reputationPercentage: reputationA } = teamA;
+      const { reputationPercentage: reputationB } = teamB;
+      return new Decimal(reputationB ?? '0').sub(reputationA ?? '0').toNumber();
+    });
 
   const showOthers = teams && teams?.length > 5;
+  const otherTeamsReputation = teams
+    ?.slice(5)
+    .reduce(
+      (acc, { reputationPercentage }) => acc.add(reputationPercentage ?? '0'),
+      new Decimal(0),
+    )
+    .toString();
 
   return (
     <MenuContainer className={clsx(className, 'w-full')}>
@@ -52,24 +71,28 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
       <TitleLabel
         className="mb-2"
         text={formatText({
-          id: 'label.pointsPerTeam',
+          id: 'label.influenceByTeam',
         })}
       />
       {teams?.length ? (
-        <ul>
-          {teams?.slice(0, 5).map((team) => {
-            const { nativeId } = team;
-            return (
-              <li
-                key={nativeId}
-                className="flex items-center text-sm mb-3 last:mb-0"
-              >
-                <TeamReputationSummaryRow team={team} suffix="%" />
-              </li>
-            );
-          })}
+        <>
+          <ul>
+            {teams?.map((team, index) => {
+              const { nativeId } = team;
+              return (
+                index < 5 && (
+                  <li
+                    key={nativeId}
+                    className="flex items-center text-sm mb-3 last:mb-0"
+                  >
+                    <TeamReputationSummaryRow team={team} />
+                  </li>
+                )
+              );
+            })}
+          </ul>
           {showOthers && (
-            <li className="flex items-center text-sm">
+            <div className="flex items-center text-sm mt-3">
               <span className="flex items-center flex-grow">
                 <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
                 <span>
@@ -78,18 +101,34 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
                   })}
                 </span>
               </span>
-              {/* @TODO: Add login for this */}
-              <span className="font-medium">230.32</span>
-            </li>
+              <Tooltip
+                tooltipContent={`${
+                  otherTeamsReputation && parseFloat(otherTeamsReputation) > 0
+                    ? otherTeamsReputation
+                    : '0.00'
+                }%`}
+                placement="top"
+              >
+                <span className="font-medium">
+                  {formatPercentage(otherTeamsReputation)}
+                </span>
+              </Tooltip>
+            </div>
           )}
-        </ul>
+        </>
       ) : (
         <>
           <span className="block text-gray-600 text-sm mb-2">
             {formatText({ id: 'teamReputation.noTeams' })}
           </span>
-          {/* @TODO handle action on click - creating a team */}
-          <TextButton mode="underlined">
+          <TextButton
+            mode="underlined"
+            onClick={() =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+              })
+            }
+          >
             {formatText({
               id: 'button.createATeam',
             })}

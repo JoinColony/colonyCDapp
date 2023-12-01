@@ -209,10 +209,7 @@ const ColonyHome = () => {
                                       },
                                     )}
                                   >
-                                    <TeamReputationSummaryRow
-                                      team={team}
-                                      suffix="%"
-                                    />
+                                    <TeamReputationSummaryRow team={team} />
                                   </li>
                                 )
                               );
