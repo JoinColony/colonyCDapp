@@ -23,18 +23,19 @@ const UserAdvancedSettings: FC = () => {
         {formatMessage({ id: 'userAdvancedPage.title' })}
       </h4>
       <FeesForm />
+      <span className="divider" />
       <RpcForm />
-      <div className="border-b border-gray-200">
-        <SettingsRow
-          title={{ id: 'advancedSettings.account.title' }}
-          description={{ id: 'advancedSettings.account.description' }}
-          // @TODO: Add functionality to download user data
-          onClick={() => {}}
-          buttonLabel={{ id: 'button.download' }}
-          buttonIcon="file-arrow-down"
-          buttonMode="primaryOutline"
-        />
-      </div>
+      <span className="divider" />
+      <SettingsRow
+        title={{ id: 'advancedSettings.account.title' }}
+        description={{ id: 'advancedSettings.account.description' }}
+        // @TODO: Add functionality to download user data
+        onClick={() => {}}
+        buttonLabel={{ id: 'button.download' }}
+        buttonIcon="file-arrow-down"
+        buttonMode="primaryOutline"
+      />
+      <span className="divider" />
       <SettingsRow
         title={{ id: 'advancedSettings.delete.title' }}
         description={{ id: 'advancedSettings.delete.description' }}

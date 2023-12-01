@@ -25,7 +25,7 @@ const RpcForm = () => {
       onSubmit={() => {}}
     >
       {() => (
-        <div className="border-b border-gray-200">
+        <>
           <SettingsRow
             title={{ id: 'advancedSettings.rpc.title' }}
             description={{ id: 'advancedSettings.rpc.description' }}
@@ -37,7 +37,7 @@ const RpcForm = () => {
             isOpen={isInputVisible}
             handleSubmit={handleSubmit}
           />
-        </div>
+        </>
       )}
     </Form>
   );
