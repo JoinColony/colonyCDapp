@@ -227,10 +227,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               formatText({ id: 'motion.failed.label' })) ||
             formatText({ id: 'motion.outcome.label' }) ||
             '',
-          className: clsx('text-gray-900 border-gray-900 shadow-gray-900', {
-            '!bg-base-white !text-purple-400 border-purple-400 shadow-purple-400':
+          className: clsx('text-gray-900 border-gray-900', {
+            '!bg-base-white !text-purple-400 border-purple-400':
               motionStateHistory?.hasPassed,
-            '!bg-base-white !text-negative-400 border-negative-400 shadow-negative-400':
+            '!bg-base-white !text-negative-400 border-negative-400':
               motionStateHistory?.hasFailed ||
               motionStateHistory?.hasFailedNotFinalizable,
           }),
@@ -258,11 +258,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               formatText({ id: 'motion.oppose.wins.label' })) ||
             formatText({ id: 'motion.outcome.label' }) ||
             '',
-          className: clsx('text-gray-900 border-gray-900 shadow-gray-900', {
-            '!bg-base-white text-purple-400 border-purple-400 shadow-purple-400':
+          className: clsx('text-gray-900 border-gray-900', {
+            '!bg-base-white text-purple-400 border-purple-400':
               hasMotionPassed ||
               (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
-            '!bg-base-white text-negative-400 border-negative-400 shadow-negative-400':
+            '!bg-base-white text-negative-400 border-negative-400':
               (hasMotionFaild && !votesHaveBeenRevealed) ||
               winningSide === MotionVote.Nay,
           }),

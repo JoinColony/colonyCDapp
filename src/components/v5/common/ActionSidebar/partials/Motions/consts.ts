@@ -6,7 +6,7 @@ export const supportOption = {
   label: formatText({ id: 'motion.support' }),
   id: 'support',
   value: MotionVote.Yay,
-  colorClassName: 'text-purple-200 shadow-purple-400',
+  colorClassName: 'text-purple-200',
   checkedColorClassName: 'bg-purple-400 border-purple-400',
   iconClassName: 'text-purple-400',
   hoverColorClassName: 'md:hover:text-purple-400 md:hover:border-purple-400',
@@ -17,7 +17,7 @@ export const opposeOption = {
   label: formatText({ id: 'motion.oppose' }),
   id: 'oppose',
   value: MotionVote.Nay,
-  colorClassName: 'text-negative-300 shadow-negative-400',
+  colorClassName: 'text-negative-300',
   checkedColorClassName: 'bg-negative-400 border-negative-400',
   iconClassName: 'text-negative-400',
   hoverColorClassName:
