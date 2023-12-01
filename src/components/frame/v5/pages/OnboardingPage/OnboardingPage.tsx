@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
 import NotificationBanner from '~common/Extensions/NotificationBanner';
@@ -11,6 +11,7 @@ import Spinner from '~v5/shared/Spinner';
 import { formatText } from '~utils/intl';
 import CardConnectWallet from '~v5/shared/CardConnectWallet';
 import { MainLayout } from '~frame/Extensions/layouts';
+import { LANDING_PAGE_ROUTE } from '~routes';
 
 const displayName = 'frame.v5.OnboardingPage';
 
@@ -60,7 +61,7 @@ const SplashLayout = ({ children }: PropsWithChildren) => (
 );
 
 const OnboardingPage = ({ flow }: Props) => {
-  const { connectWallet, userLoading, wallet, walletConnecting } =
+  const { connectWallet, user, userLoading, wallet, walletConnecting } =
     useAppContext();
   const { inviteCode } = useParams<{ inviteCode: string }>();
   const { data, loading } = useGetPrivateBetaCodeInviteValidityQuery({
@@ -75,6 +76,10 @@ const OnboardingPage = ({ flow }: Props) => {
         <Spinner loading loadingText={MSG.loadingMessage} />;
       </SplashLayout>
     );
+  }
+
+  if (flow === Flow.User && user) {
+    return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
   if (!wallet || !valid) {
