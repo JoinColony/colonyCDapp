@@ -38,14 +38,12 @@ const MemberContext = createContext<
       totalMemberCount: number;
       contributors: ColonyContributor[];
       totalContributorCount: number;
-      memberCountLoading: boolean;
-      loading: boolean;
-      loadingMembers: boolean;
-      loadMoreContributors: () => void;
-      loadMoreMembers: () => void;
+      membersLimit: number;
       moreContributors: boolean;
       moreMembers: boolean;
-      membersLimit: number;
+      loadMoreContributors: () => void;
+      loadMoreMembers: () => void;
+      loading: boolean;
     }
   | undefined
 >(undefined);
@@ -53,7 +51,7 @@ const MemberContext = createContext<
 const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { domainId, colonyName } = useParams();
   const { colony } = useColonyContext();
-  const { domains, colonyAddress } = colony ?? {};
+  const { domains, colonyAddress = '' } = colony ?? {};
   const isMobile = useMobile();
   const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
 
@@ -152,11 +150,11 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     skip: !colonyAddress,
     onCompleted: (receivedData) => {
-      if (receivedData?.getColonyContributors?.nextToken) {
+      if (receivedData?.getContributorsByColony?.nextToken) {
         // If there's more data to fetch, call fetchMore
         fetchMore({
           variables: {
-            nextToken: receivedData.getColonyContributors.nextToken,
+            nextToken: receivedData.getContributorsByColony.nextToken,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
             if (!fetchMoreResult) return prev;
@@ -165,12 +163,12 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
             return {
               ...prev,
               getColonyContributors: {
-                ...prev.getColonyContributors,
+                ...prev.getContributorsByColony,
                 items: [
-                  ...prev.getColonyContributors.items,
-                  ...fetchMoreResult.getColonyContributors.items,
+                  ...[prev?.getContributorsByColony?.items || []],
+                  ...[fetchMoreResult?.getContributorsByColony?.items || []],
                 ],
-                nextToken: fetchMoreResult.getColonyContributors.nextToken,
+                nextToken: fetchMoreResult?.getContributorsByColony?.nextToken,
               },
             };
           },
@@ -230,11 +228,13 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       totalMemberCount,
       contributors,
       totalContributorCount,
+      membersLimit: pageSize,
       moreContributors,
       moreMembers,
       loadMoreContributors,
       loadMoreMembers,
       membersLimit: getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT),
+      loading,
     }),
     [
       allMembers,
@@ -242,11 +242,10 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       verifiedMembers,
       totalMemberCount,
       contributors,
+      moreContributors,
+      loadMoreContributors,
       totalContributorCount,
       pageSize,
-      moreContributors,
-      moreMembers,
-      loadMoreContributors,
       moreMembers,
       loadMoreMembers,
       getAllMembersPageSize,
