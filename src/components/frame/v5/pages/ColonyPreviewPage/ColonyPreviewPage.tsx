@@ -222,7 +222,7 @@ const ColonyPreviewPage = () => {
           ) : null
         }
         title={
-          <div className="flex items-center gap-4 w-full">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:flex-nowrap">
             <ColonyAvatar
               colonyImageProps={
                 colonyMetadata?.avatar
@@ -234,7 +234,10 @@ const ColonyPreviewPage = () => {
               size="mediumSmallMediumLargeSmallTinyBigMediumLargeSmall"
             />
             <h1 className="text-md font-medium inline">{colonyDisplayName}</h1>
-            <SocialLinks className="ml-auto" externalLinks={socialLinks} />
+            <SocialLinks
+              className="w-full sm:w-auto sm:ml-auto"
+              externalLinks={socialLinks}
+            />
           </div>
         }
       >
