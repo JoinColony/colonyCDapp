@@ -140,12 +140,13 @@ export const useMainMenuItems = () => {
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
               }),
           },
-          {
-            key: '2',
-            label: formatText({ id: 'actions.manageReputation' }),
-            // @todo: update action type when manage reputation is implemented
-            onClick: () => {},
-          },
+          // @BETA: Disabled for now
+          // {
+          //   key: '2',
+          //   label: formatText({ id: 'actions.manageReputation' }),
+          //   // @todo: update action type when manage reputation is implemented
+          //   onClick: () => {},
+          // },
           {
             key: '3',
             label: formatText({ id: 'actions.editExistingTeam' }),

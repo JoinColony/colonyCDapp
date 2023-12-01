@@ -146,11 +146,12 @@ export const MANAGE_DROPDOWN_ITEMS = [
     title: MSG.manageTeams,
     description: MSG.manageTeamsDescription,
   },
-  {
-    action: ACTION.MANAGE_REPUTATION,
-    title: MSG.manageReputation,
-    description: MSG.manageReputationDescription,
-  },
+  // @BETA: DISABLED
+  // {
+  //   action: ACTION.MANAGE_REPUTATION,
+  //   title: MSG.manageReputation,
+  //   description: MSG.manageReputationDescription,
+  // },
   {
     action: ACTION.MANAGE_PERMISSIONS,
     title: MSG.managePermissions,

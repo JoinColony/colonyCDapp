@@ -184,14 +184,15 @@ export const useActionsList = () => {
         isAccordion: true,
         title: { id: 'actions.admin' },
         options: [
-          {
-            label: { id: 'actions.manageReputation' },
-            value: ACTION.MANAGE_REPUTATION,
-            missingPermissions:
-              !canAwardReputation || !canSmiteReputation
-                ? 'actionSidebar.missingPermissions.manageReputation'
-                : undefined,
-          },
+          // @BETA: Disabled for now
+          // {
+          //   label: { id: 'actions.manageReputation' },
+          //   value: ACTION.MANAGE_REPUTATION,
+          //   missingPermissions:
+          //     !canAwardReputation || !canSmiteReputation
+          //       ? 'actionSidebar.missingPermissions.manageReputation'
+          //       : undefined,
+          // },
           {
             label: { id: 'actions.managePermissions' },
             value: ACTION.MANAGE_PERMISSIONS,
