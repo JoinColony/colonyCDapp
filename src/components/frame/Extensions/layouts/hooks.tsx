@@ -21,7 +21,8 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import type { UseCalamityBannerInfoReturnType } from './types';
 import {
   adminMenu,
-  agreementsMenu,
+  // @BETA: Disabled for now
+  // agreementsMenu,
   dashboardMainMenu,
   dashboardMenu,
   financesMenu,
@@ -258,38 +259,39 @@ export const useMainMenuItems = () => {
         ],
       },
     },
-    {
-      key: '5',
-      iconName: 'handshake',
-      label: formatText({ id: 'navigation.agreements' }),
-      isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
-      secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.agreements.title' }),
-        content: agreementsMenu,
-        description: formatText({ id: 'navigation.agreements.description' }),
-      },
-      relatedActionsProps: {
-        title: formatText({ id: 'navigation.relatedActions' }),
-        items: [
-          {
-            key: '1',
-            label: formatText({ id: 'actions.createAgreement' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
-              }),
-          },
-          {
-            key: '2',
-            label: formatText({ id: 'actions.simpleDiscussion' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
-              }),
-          },
-        ],
-      },
-    },
+    // @BETA: Disabled for now
+    // {
+    //   key: '5',
+    //   iconName: 'handshake',
+    //   label: formatText({ id: 'navigation.agreements' }),
+    //   isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
+    //   secondLevelMenuProps: {
+    //     title: formatText({ id: 'navigation.agreements.title' }),
+    //     content: agreementsMenu,
+    //     description: formatText({ id: 'navigation.agreements.description' }),
+    //   },
+    //   relatedActionsProps: {
+    //     title: formatText({ id: 'navigation.relatedActions' }),
+    //     items: [
+    //       {
+    //         key: '1',
+    //         label: formatText({ id: 'actions.createAgreement' }),
+    //         onClick: () =>
+    //           toggleActionSidebarOn({
+    //             [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+    //           }),
+    //       },
+    //       {
+    //         key: '2',
+    //         label: formatText({ id: 'actions.simpleDiscussion' }),
+    //         onClick: () =>
+    //           toggleActionSidebarOn({
+    //             [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
+    //           }),
+    //       },
+    //     ],
+    //   },
+    // },
     {
       key: '6',
       iconName: 'gear-six',
