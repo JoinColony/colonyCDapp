@@ -1,0 +1,20 @@
+@keyframes spin-around {
+  0% {
+    transform-origin: 50% 50%;
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pageLoader {
+  height: 120px;
+  width: 120px;
+  position: relative;
+
+  svg {
+    display: block;
+    animation: spin-around 1.4s ease-in-out infinite;
+  }
+}
