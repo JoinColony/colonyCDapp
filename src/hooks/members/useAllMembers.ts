@@ -52,12 +52,10 @@ const useAllMembers = ({
 
   const members = useMemo(
     () =>
-      allMembers
-        ?.filter(notNull)
-        .filter(
-          ({ isVerified, hasPermissions, hasReputation, isWatching }) =>
-            isWatching || hasPermissions || hasReputation || isVerified,
-        ) ?? [],
+      allMembers.filter(
+        ({ isVerified, hasPermissions, hasReputation, isWatching }) =>
+          isWatching || hasPermissions || hasReputation || isVerified,
+      ) ?? [],
     [allMembers],
   );
 

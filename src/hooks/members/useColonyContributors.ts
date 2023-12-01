@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 
 import { ColonyContributor, SortDirection } from '~types';
-import { notNull } from '~utils/arrays';
 import {
   ContributorTypeFilter,
   StatusType,
@@ -39,16 +38,13 @@ const useColonyContributors = ({
    * have at least some reputation in the selected domains
    */
 
-  const allContributors = useMemo(() => {
-    return (
-      allMembers
-        ?.filter(notNull)
-        .filter(
-          ({ hasReputation, hasPermissions }) =>
-            hasReputation || hasPermissions,
-        ) ?? []
-    );
-  }, [allMembers]);
+  const allContributors = useMemo(
+    () =>
+      allMembers.filter(
+        ({ hasReputation, hasPermissions }) => hasReputation || hasPermissions,
+      ) ?? [],
+    [allMembers],
+  );
 
   const filteredContributors = useMemberFilters({
     members: allContributors,

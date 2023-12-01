@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { useMatch, useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
+
 import { useGetColonyContributorsQuery } from '~gql';
 import {
   useColonyContext,
@@ -177,8 +178,10 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   });
 
-  const allMembers =
-    memberData?.getContributorsByColony?.items.filter(notNull) || [];
+  const allMembers = useMemo(
+    () => memberData?.getContributorsByColony?.items.filter(notNull) || [],
+    [memberData],
+  );
 
   const {
     contributors,
