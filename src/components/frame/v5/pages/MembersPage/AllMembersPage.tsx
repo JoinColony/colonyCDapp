@@ -31,11 +31,10 @@ const AllMembersPage: FC = () => {
       emptyContentProps={{
         buttonText: { id: 'members.subnav.invite' },
         onClick: () => handleClipboardCopy(colonyURL),
-        title: formatText({ id: 'membersPage.followers.emptyTitle' }) || '',
-        description:
-          formatText({
-            id: 'membersPage.followers.emptyDescription',
-          }) || '',
+        title: formatText({ id: 'membersPage.followers.emptyTitle' }),
+        description: formatText({
+          id: 'membersPage.followers.emptyDescription',
+        }),
         icon: 'smiley-meh',
       }}
     />

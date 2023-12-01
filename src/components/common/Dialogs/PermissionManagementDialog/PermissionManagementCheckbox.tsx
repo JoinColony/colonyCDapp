@@ -85,7 +85,7 @@ const PermissionManagementCheckbox = ({
       : MSG.tooltipNoPermissionsText;
 
   const formattedTooltipText = formatText(tooltipText, {
-    roleName: formattedRole?.toLowerCase(),
+    roleName: formattedRole.toLowerCase(),
   });
 
   return (
