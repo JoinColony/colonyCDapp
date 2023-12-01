@@ -753,7 +753,7 @@
     "advancedPage.description": "Advanced settings of the Colony",
     "advancedPage.colony.title": "Colony version",
     "advancedPage.recovery.title": "Recovery Mode",
-    "advancedPage.recovery.description": "If you believe that something dangerous is happening in your colony (e.g. the Colony is under attack), recovery mode will disable the colony and prevent further activity until the issue has been overcome.",
+    "advancedPage.recovery.description": "If you believe that something dangerous is happening in your Colony (e.g. the Colony is under attack), recovery mode will disable the Colony and prevent further activity until the issue has been overcome.",
     "advancedPage.recovery.notification": "Note: Leaving recovery requires the approval of a majority of members holding the Recovery permission.",
     "advancedPage.version.success": "Your Colony version is up to date",
     "advancedPage.version.warning": "An upgrade for your Colony is available",

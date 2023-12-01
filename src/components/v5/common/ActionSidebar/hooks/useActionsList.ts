@@ -14,7 +14,8 @@ import { getAllUserRoles } from '~transformers';
 import {
   canAdminister,
   canArchitect,
-  canEnterRecoveryMode,
+  // @BETA: Disabled for now
+  // canEnterRecoveryMode,
   canFund,
   hasRoot,
   // @BETA: Disabled for now
@@ -34,8 +35,9 @@ export const useActionsList = () => {
 
   const hasRootPermission = userHasAccountRegistered && hasRoot(allUserRoles);
 
-  const canEnterRecovery =
-    userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
+  // @BETA: Disabled for now
+  // const canEnterRecovery =
+  //   userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
   const canEnterPermissionManagement =
     (userHasAccountRegistered && canArchitect(allUserRoles)) ||
     hasRootPermission;
@@ -224,13 +226,14 @@ export const useActionsList = () => {
               ? 'actionSidebar.missingPermissions.root'
               : undefined,
           },
-          {
-            label: { id: 'actions.enterRecoveryMode' },
-            value: ACTION.ENTER_RECOVERY_MODE,
-            missingPermissions: !canEnterRecovery
-              ? 'actionSidebar.missingPermissions.recovery'
-              : undefined,
-          },
+          // @BETA: Disabled for now
+          // {
+          //   label: { id: 'actions.enterRecoveryMode' },
+          //   value: ACTION.ENTER_RECOVERY_MODE,
+          //   missingPermissions: !canEnterRecovery
+          //     ? 'actionSidebar.missingPermissions.recovery'
+          //     : undefined,
+          // },
           {
             label: { id: 'actions.manageColonyObjectives' },
             value: ACTION.MANAGE_COLONY_OBJECTIVES,
@@ -249,7 +252,8 @@ export const useActionsList = () => {
       canCreateEditDomain,
       canCreatePayment,
       canEnterPermissionManagement,
-      canEnterRecovery,
+      // @BETA: Disabled for now
+      // canEnterRecovery,
       canManageTokens,
       canMoveFunds,
       // @BETA: Disabled for now

@@ -321,14 +321,15 @@ export const useMainMenuItems = () => {
                 [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
               }),
           },
-          {
-            key: '3',
-            label: formatText({ id: 'actions.enterRecoveryMode' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.ENTER_RECOVERY_MODE,
-              }),
-          },
+          // @BETA: Disabled for now
+          // {
+          //   key: '3',
+          //   label: formatText({ id: 'actions.enterRecoveryMode' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.ENTER_RECOVERY_MODE,
+          //     }),
+          // },
           {
             key: '4',
             label: formatText({ id: 'actions.unlockToken' }),
