@@ -11,7 +11,12 @@ import { formatText } from '~utils/intl';
 const displayName = 'v5.pages.ColonyUsersPage';
 
 const ColonyUsersPage: FC<ColonyUsersPageProps> = ({ pageName }) => {
-  const { contributors, members: followers, loading } = useMemberContext();
+  const {
+    pagedContributors: contributors,
+    pagedMembers: followers,
+    loading,
+  } = useMemberContext();
+
   const isContributorsPage = pageName === 'contributors';
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));

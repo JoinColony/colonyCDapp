@@ -23,6 +23,7 @@ const getSubTitle = (title: MessageDescriptor, count: number) => {
   const formatted = formatText(title);
   return `${count} ${formatted}`;
 };
+
 const MembersList: FC<MembersListProps> = ({
   title,
   description,
