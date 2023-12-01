@@ -195,15 +195,16 @@ export const useMainMenuItems = () => {
                 [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
               }),
           },
-          {
-            key: '3',
-            label: formatText({ id: 'actions.streamingPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.STREAMING_PAYMENT,
-              }),
-            disabled: true,
-          },
+          // @BETA: Disabled for now
+          // {
+          //   key: '3',
+          //   label: formatText({ id: 'actions.streamingPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.STREAMING_PAYMENT,
+          //     }),
+          //   disabled: true,
+          // },
           {
             key: '4',
             label: formatText({ id: 'actions.splitPayment' }),

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
-import { ColonyRole } from '@colony/colony-js';
+// @BETA: Disabled for now
+// import { ColonyRole } from '@colony/colony-js';
 import { ACTION } from '~constants/actions';
 import {
   useAppContext,
@@ -16,7 +17,8 @@ import {
   canEnterRecoveryMode,
   canFund,
   hasRoot,
-  userHasRole,
+  // @BETA: Disabled for now
+  // userHasRole,
 } from '~utils/checks';
 
 export const useActionsList = () => {
@@ -51,13 +53,14 @@ export const useActionsList = () => {
     ? colony?.status?.nativeToken?.unlockable
     : hasRoot(allUserRoles) && colony?.status?.nativeToken?.unlockable;
   const canManageTokens = hasRoot(allUserRoles);
-  const canSmiteReputation =
-    userHasAccountRegistered &&
-    (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
-      isVotingReputationEnabled);
-  const canAwardReputation =
-    userHasAccountRegistered &&
-    (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
+  // @BETA: Disabled for now
+  // const canSmiteReputation =
+  //   userHasAccountRegistered &&
+  //   (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
+  //     isVotingReputationEnabled);
+  // const canAwardReputation =
+  //   userHasAccountRegistered &&
+  //   (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
 
   return useMemo(
     (): SearchSelectOptionProps[] => [
@@ -74,31 +77,32 @@ export const useActionsList = () => {
                 ? 'actionSidebar.missingPermissions.payment'
                 : undefined,
           },
-          {
-            label: { id: 'actions.advancedPayment' },
-            value: ACTION.ADVANCED_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.batchPayment' },
-            value: ACTION.BATCH_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.splitPayment' },
-            value: ACTION.SPLIT_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.stagedPayment' },
-            value: ACTION.STAGED_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.streamingPayment' },
-            value: ACTION.STREAMING_PAYMENT,
-            isDisabled: true,
-          },
+          // @BETA: Disabled for now
+          // {
+          //   label: { id: 'actions.advancedPayment' },
+          //   value: ACTION.ADVANCED_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.batchPayment' },
+          //   value: ACTION.BATCH_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.splitPayment' },
+          //   value: ACTION.SPLIT_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.stagedPayment' },
+          //   value: ACTION.STAGED_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.streamingPayment' },
+          //   value: ACTION.STREAMING_PAYMENT,
+          //   isDisabled: true,
+          // },
         ],
       },
       {
@@ -240,14 +244,16 @@ export const useActionsList = () => {
       },
     ],
     [
-      canAwardReputation,
+      // @BETA: Disabled for now
+      // canAwardReputation,
       canCreateEditDomain,
       canCreatePayment,
       canEnterPermissionManagement,
       canEnterRecovery,
       canManageTokens,
       canMoveFunds,
-      canSmiteReputation,
+      // @BETA: Disabled for now
+      // canSmiteReputation,
       canUserMintNativeToken,
       canUserUnlockNativeToken,
       hasRootPermission,
