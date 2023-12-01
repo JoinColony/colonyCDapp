@@ -1,6 +1,11 @@
 import React, { ReactNode } from 'react';
 
+import Icon from '~shared/Icon';
+
 import styles from './PageLoader.css';
+
+const STROKE_WIDTH = 4;
+const RADIUS = 60 - STROKE_WIDTH / 2; // stroke goes on both sides so we need to reduce the radius just by half
 
 interface PageLoaderProps {
   loadingText: ReactNode;
@@ -9,29 +14,44 @@ interface PageLoaderProps {
 
 const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
   return (
-    <div className={styles.pageLoader}>
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <circle
-          cx="60"
-          cy="60"
-          r="50"
-          fill="none"
-          stroke="var(--color-gray-100)"
-          strokeWidth={4}
-        />
-        <circle
-          cx="60"
-          cy="60"
-          r="50"
-          fill="none"
-          stroke="var(--color-gray-900)"
-          strokeWidth={4}
-          strokeLinecap="round"
-          strokeDasharray="120 200"
-        />
-      </svg>
-      {loadingText && <div>{loadingText}</div>}
-      {loadingDescription && <div>{loadingDescription}</div>}
+    <div className="flex flex-col items-center">
+      <div className="relative w-[7.5rem] h-[7.5rem]">
+        <svg
+          viewBox="0 0 120 120"
+          xmlns="http://www.w3.org/2000/svg"
+          className={styles.pageLoaderCircle}
+        >
+          <circle
+            cx="60"
+            cy="60"
+            fill="none"
+            stroke="var(--color-gray-100)"
+            r={RADIUS}
+            strokeWidth={STROKE_WIDTH}
+          />
+          <circle
+            cx="60"
+            cy="60"
+            fill="none"
+            stroke="var(--color-gray-900)"
+            strokeLinecap="round"
+            strokeDasharray="120 200"
+            r={RADIUS}
+            strokeWidth={STROKE_WIDTH}
+          />
+        </svg>
+        <Icon className={styles.colonyIcon} name="colony-icon" />
+      </div>
+      {loadingText && (
+        <div className="text-gray-900 text-sm font-medium mt-6 uppercase">
+          {loadingText}
+        </div>
+      )}
+      {loadingDescription && (
+        <div className="text-gray-900 text-sm font-medium mt-6">
+          {loadingDescription}
+        </div>
+      )}
     </div>
   );
 };

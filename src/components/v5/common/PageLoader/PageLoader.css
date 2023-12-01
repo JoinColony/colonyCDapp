@@ -8,13 +8,16 @@
   }
 }
 
-.pageLoader {
-  height: 120px;
-  width: 120px;
-  position: relative;
+.pageLoaderCircle {
+  display: block;
+  animation: spin-around 1.4s ease-in-out infinite;
+}
 
-  svg {
-    display: block;
-    animation: spin-around 1.4s ease-in-out infinite;
-  }
+.colonyIcon {
+  height: 3rem;
+  width: 3rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
