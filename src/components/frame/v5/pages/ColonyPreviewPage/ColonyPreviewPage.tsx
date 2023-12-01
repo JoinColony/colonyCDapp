@@ -20,6 +20,7 @@ import {
 import { CREATE_PROFILE_ROUTE } from '~routes';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import SocialLinks from '~v5/shared/SocialLinks';
+import CardConnectWallet from '~v5/shared/CardConnectWallet';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -37,14 +38,6 @@ const MSG = defineMessages({
     defaultMessage:
       'The Colony app is in private beta, allowing invited members and Colony’s to test out the new features before launch.',
   },
-  connectWalletTitle: {
-    id: `${displayName}.connectWalletTitle`,
-    defaultMessage: 'Connect your wallet to check your access',
-  },
-  connectWalletSubtitle: {
-    id: `${displayName}.connectWalletSubtitle`,
-    defaultMessage: 'You might have private beta access already available.',
-  },
   notificationBannerTitle: {
     id: `${displayName}.notificationBannerTitle`,
     defaultMessage:
@@ -53,10 +46,6 @@ const MSG = defineMessages({
   invalidBannerTitle: {
     id: `${displayName}.invalidBannerTitle`,
     defaultMessage: 'Sorry, your invite code is not valid. Please check again.',
-  },
-  connectWalletButton: {
-    id: `${displayName}.connectWalletButton`,
-    defaultMessage: 'Connect wallet',
   },
   privateAccessHeading: {
     id: `${displayName}.privateAccessHeading`,
@@ -76,6 +65,14 @@ const MSG = defineMessages({
   joinColonyButton: {
     id: `${displayName}.joinColonyButton`,
     defaultMessage: 'Join the Colony',
+  },
+  connectWalletTitle: {
+    id: `${displayName}.connectWalletTitle`,
+    defaultMessage: 'Connect your wallet to check your access',
+  },
+  connectWalletText: {
+    id: `${displayName}.connectWalletText`,
+    defaultMessage: 'You might have private beta access already available.',
   },
 });
 
@@ -188,22 +185,11 @@ const ColonyPreviewPage = () => {
         </NotificationBanner>
       )}
       {wallet ? null : (
-        <CardWithCallout
-          button={
-            <Button
-              className="w-full md:w-auto"
-              mode="quinary"
-              iconName="cardholder"
-              text={MSG.connectWalletButton}
-              onClick={connectWallet}
-              size="small"
-            />
-          }
-          iconName="plugs"
-          subtitle={<FormattedMessage {...MSG.connectWalletTitle} />}
-        >
-          <FormattedMessage {...MSG.connectWalletSubtitle} />
-        </CardWithCallout>
+        <CardConnectWallet
+          connectWallet={connectWallet}
+          title={formatMessage(MSG.connectWalletTitle)}
+          text={formatMessage(MSG.connectWalletText)}
+        />
       )}
       <h2 className="text-md font-semibold mt-8 mb-3">
         <FormattedMessage {...MSG.privateAccessHeading} />
