@@ -125,14 +125,6 @@ module.exports = {
         content: '0px 1px 2px rgba(16, 24, 40, 0.05)',
         overlay: 'blur(2px)',
         'light-blue': '0px 0px 3px 3px rgba(239, 248, 255, 1)',
-        'gray-400':
-          '0 0 1px 0px var(--color-gray-400) inset, 0 0 1px 0px var(--color-gray-400)',
-        'gray-900':
-          '0 0 1px 0px var(--color-gray-900) inset, 0 0 1px 0px var(--color-gray-900)',
-        'negative-400':
-          '0 0 1px 0px var(--color-negative-400) inset, 0 0 1px 0px var(--color-negative-400)',
-        'purple-400':
-          '0 0 1px 0px var(--color-purple-400) inset, 0 0 1px 0px var(--color-purple-400)',
       },
       transitionDuration: {
         slow: '450ms',
