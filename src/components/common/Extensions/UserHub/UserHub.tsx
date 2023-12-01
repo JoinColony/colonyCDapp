@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
@@ -17,6 +18,17 @@ import { UserHubTabs } from './types';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
+const MSG = defineMessages({
+  buttonYourDashboard: {
+    id: `${displayName}.buttonYourDashboard`,
+    defaultMessage: 'Your dashboard',
+  },
+  titleColonyOverview: {
+    id: `${displayName}.titleColonyOverview`,
+    defaultMessage: 'Your Colony overview',
+  },
+});
+
 const UserHub: FC = () => {
   const isMobile = useMobile();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -31,7 +43,7 @@ const UserHub: FC = () => {
 
   const dashboardButton = (
     <ButtonLink to={COLONY_HOME_ROUTE} mode="primarySolid" className="w-full">
-      {formatText({ id: 'your.dashboard' })}
+      {formatText(MSG.buttonYourDashboard)}
     </ButtonLink>
   );
 
@@ -57,7 +69,7 @@ const UserHub: FC = () => {
             <div>
               <TitleLabel
                 className="pb-5"
-                text={formatText({ id: 'your.colony.overview' })}
+                text={formatText(MSG.titleColonyOverview)}
               />
               <ul className="-ml-4 w-[calc(100%+2rem)] flex flex-col">
                 {tabList.map(({ value, id, icon, label }) => (
