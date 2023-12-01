@@ -2,16 +2,16 @@ import React, { PropsWithChildren } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 
-import NotificationBanner from '~common/Extensions/NotificationBanner';
 import Onboarding, { Flow } from '~common/Onboarding';
 import { HeaderRow } from '~common/Onboarding/wizardSteps/shared';
+import { MainLayout } from '~frame/Extensions/layouts';
 import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql';
 import { useAppContext } from '~hooks';
-import Spinner from '~v5/shared/Spinner';
+import { LANDING_PAGE_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import CardConnectWallet from '~v5/shared/CardConnectWallet';
-import { MainLayout } from '~frame/Extensions/layouts';
-import { LANDING_PAGE_ROUTE } from '~routes';
+import NotificationBanner from '~v5/shared/NotificationBanner';
+import Spinner from '~v5/shared/Spinner';
 
 const displayName = 'frame.v5.OnboardingPage';
 
@@ -82,15 +82,15 @@ const OnboardingPage = ({ flow }: Props) => {
     return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
-  if (!wallet || !valid) {
+  if (!wallet || (flow === Flow.Colony && !valid)) {
     return (
       <SplashLayout>
-        {flow === Flow.Colony ? (
+        {flow === Flow.Colony && !valid ? (
           <NotificationBanner
-            iconName={valid ? 'hands-clapping' : 'hand-waving'}
+            icon={valid ? 'hands-clapping' : 'hand-waving'}
             status={valid ? 'success' : 'error'}
             className="my-8"
-            title={
+            description={
               valid ? formatText(MSG.invite) : formatText(MSG.invalidInvite)
             }
           />
