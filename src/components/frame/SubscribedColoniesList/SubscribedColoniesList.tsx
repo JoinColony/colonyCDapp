@@ -70,7 +70,7 @@ const SubscribedColoniesList = () => {
         {!userLoading &&
           !isMobile &&
           [...watchlist].sort(sortByDate).map((item) => {
-            const { colonyAddress = '', name } = item?.colony || {};
+            const { colonyAddress = '', name = '' } = item;
             return (
               <div className={styles.item} key={colonyAddress}>
                 <NavLink
@@ -81,7 +81,7 @@ const SubscribedColoniesList = () => {
                 >
                   <div className={styles.itemImage}>
                     <ColonyAvatar
-                      colony={item?.colony}
+                      colony={undefined}
                       colonyAddress={colonyAddress}
                       size="s"
                       preferThumbnail={false}
