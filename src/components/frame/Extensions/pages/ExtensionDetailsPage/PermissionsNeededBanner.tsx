@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
 import { getFormAction } from '~utils/actions';
-import { useAsyncFunction, useColonyContext } from '~hooks';
+import { useAppContext, useAsyncFunction, useColonyContext } from '~hooks';
 import { AnyExtensionData } from '~types';
 import NotificationBanner from '~v5/shared/NotificationBanner';
+import { addressHasRoles } from '~utils/checks';
 
 const displayName =
   'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';
@@ -32,9 +34,17 @@ interface Props {
 
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
+
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
   const errorAction = getFormAction(ActionTypes.EXTENSION_ENABLE, 'ERROR');
   const successAction = getFormAction(ActionTypes.EXTENSION_ENABLE, 'SUCCESS');
+  const userHasRoles = addressHasRoles({
+    requiredRolesDomains: [Id.RootDomain],
+    colony,
+    requiredRoles: [ColonyRole.Root],
+    address: user?.walletAddress || '',
+  });
 
   const asyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_ENABLE,
@@ -68,9 +78,11 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
         icon="warning-circle"
         status="warning"
         callToAction={
-          <button type="button" onClick={handleEnableClick}>
-            <FormattedMessage {...MSG.enablePermission} />
-          </button>
+          userHasRoles && (
+            <button type="button" onClick={handleEnableClick}>
+              <FormattedMessage {...MSG.enablePermission} />
+            </button>
+          )
         }
       >
         <FormattedMessage {...MSG.missingPermission} />
