@@ -3,8 +3,6 @@ import debounce from 'lodash/debounce';
 
 import { Colony } from '~types';
 import { useAppContext } from '~hooks';
-import { notNull } from '~utils/arrays';
-import { useGetContributorsByAddressQuery } from '~gql';
 
 import { getChainIconName } from '../../utils';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
@@ -16,10 +14,10 @@ export const useColonySwitcherContent = (
 ): UseColonySwitcherContentReturnType => {
   const { userLoading, userColonies } = useAppContext();
 
-    const { chainMetadata, colonyAddress, name } = colony || {};
-    const { chainId } = chainMetadata || {};
+  const { chainMetadata, colonyAddress, name } = colony || {};
+  const { chainId } = chainMetadata || {};
 
-    const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
     const chainIcon = getChainIconName(chainId);
 
