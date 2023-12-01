@@ -7,9 +7,7 @@ import { getVerifiedUsers, isUserVerified } from '~utils/verifiedUsers';
 import { Address } from '~types';
 import { useMemberContext } from '~context/MemberContext';
 
-import { UserSelectHookProps } from './types';
-
-export const useUserSelect = (): UserSelectHookProps => {
+export const useUserSelect = () => {
   const { colony } = useColonyContext();
   const { metadata } = colony ?? {};
   const { allMembers, verifiedMembers, loading } = useMemberContext();
