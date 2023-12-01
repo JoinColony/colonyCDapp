@@ -139,8 +139,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [getFilterContributorType],
   );
 
-  // Make sure we fetch all members which is needed to select a member
-  // to pay etc.
+  // Make sure we fetch all members which is needed to select members
   const {
     data: memberData,
     loading,

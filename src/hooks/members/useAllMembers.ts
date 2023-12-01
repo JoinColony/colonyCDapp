@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 
-import { useGetContributorCountQuery } from '~gql';
 import { ColonyContributor, SortDirection } from '~types';
 import { notNull } from '~utils/arrays';
 import { range } from '~utils/lodash';
@@ -10,8 +9,6 @@ import {
 } from '~v5/common/TableFiltering/types';
 import { SortDirection } from '~types';
 import { UserRole } from '~constants/permissions';
-
-import useColonyContext from '../useColonyContext';
 
 import { sortByReputationAscending, sortByReputationDescending } from './utils';
 import useMemberFilters from './useMemberFilters';
@@ -33,9 +30,6 @@ const useAllMembers = ({
   sortDirection: SortDirection;
   pageSize: number | ((pageNumber: number) => number);
 }) => {
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony ?? {};
-
   const [page, setPage] = useState<number>(1);
 
   const getPageSizeNumber = (pageNumber: number) =>
@@ -85,22 +79,7 @@ const useAllMembers = ({
     [sortedMembers],
   );
 
-  const { data: totalData } = useGetContributorCountQuery({
-    variables: {
-      filter: {
-        colonyAddress: { eq: colonyAddress },
-        or: [
-          { isVerified: { eq: true } },
-          { isWatching: { eq: true } },
-          { hasPermissions: { eq: false } },
-          { hasReputation: { eq: false } },
-        ],
-      },
-    },
-    skip: !colonyAddress,
-  });
-
-  const totalMemberCount = totalData?.searchColonyContributors?.total || 0;
+  const totalMemberCount = sortedMembers.length;
 
   return {
     members: sortedMembers,

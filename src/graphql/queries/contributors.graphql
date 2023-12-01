@@ -23,12 +23,6 @@ query GetColonyContributors(
   }
 }
 
-query GetContributorCount($filter: SearchableColonyContributorFilterInput) {
-  searchColonyContributors(filter: $filter) {
-    total
-  }
-}
-
 query GetVerifiedMembers($colonyAddress: ID!) {
   getContributorsByColony(
     colonyAddress: $colonyAddress

@@ -1,7 +1,5 @@
 import { useMemo, useState } from 'react';
 
-import { useGetContributorCountQuery } from '~gql';
-import { useColonyContext } from '~hooks';
 import { ColonyContributor, SortDirection } from '~types';
 import { notNull } from '~utils/arrays';
 import {
@@ -31,9 +29,6 @@ const useColonyContributors = ({
   sortDirection: SortDirection;
   pageSize: number;
 }) => {
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony ?? {};
-
   const [page, setPage] = useState<number>(1);
 
   const visibleItems = page * pageSize;
@@ -69,17 +64,7 @@ const useColonyContributors = ({
       ? sortByReputationAscending(filteredContributors)
       : sortByReputationDescending(filteredContributors);
 
-  const { data: totalData } = useGetContributorCountQuery({
-    variables: {
-      filter: {
-        colonyAddress: { eq: colonyAddress },
-        or: [{ hasPermissions: { eq: true } }, { hasReputation: { eq: true } }],
-      },
-    },
-    skip: !colonyAddress,
-  });
-
-  const totalContributorCount = totalData?.searchColonyContributors?.total || 0;
+  const totalContributorCount = sortedContributors.length;
 
   return {
     contributors: sortedContributors,
