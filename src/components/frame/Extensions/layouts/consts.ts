@@ -6,8 +6,9 @@ import {
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
-  // COLONY_HOME_ROUTE,
   COLONY_INCOMING_ROUTE,
+  COLONY_MEMBERS_ROUTE,
+  // @BETA: Disabled for now
   // COLONY_INCORPORATION_ROUTE,
   // COLONY_INTEGRATIONS_ROUTE,
   // COLONY_PERMISSIONS_ROUTE,
@@ -22,23 +23,30 @@ export const membersMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '1',
     label: formatText({ id: 'navigation.members.members' }),
-    to: COLONY_CONTRIBUTORS_ROUTE,
+    to: COLONY_MEMBERS_ROUTE,
     iconName: 'users-three',
   },
+  {
+    key: '2',
+    label: formatText({ id: 'navigation.members.contributors' }) || '',
+    to: COLONY_CONTRIBUTORS_ROUTE,
+    iconName: 'hand-heart',
+  },
+  // @BETA: Disabled for now
   // {
-  //   key: '2',
+  //   key: '3',
   //   label: formatText({ id: 'navigation.members.verifiedMembers' }),
   //   to: COLONY_VERIFIED_ROUTE,
   //   iconName: 'seal-check',
   // },
   // {
-  //   key: '3',
+  //   key: '4',
   //   label: formatText({ id: 'navigation.members.permissions' }),
   //   to: COLONY_PERMISSIONS_ROUTE,
   //   iconName: 'signature',
   // },
   // {
-  //   key: '4',
+  //   key: '5',
   //   label: formatText({ id: 'navigation.members.teams' }),
   //   to: COLONY_TEAMS_ROUTE,
   //   iconName: 'users-four',
@@ -47,6 +55,7 @@ export const membersMenu: NavigationSidebarLinksListProps['items'] = [
 
 // @todo: update routes when pages will be ready
 export const financesMenu: NavigationSidebarLinksListProps['items'] = [
+  // @BETA: Disabled for now
   // {
   //   key: '1',
   //   label: formatText({ id: 'navigation.finances.overview' }),
@@ -69,6 +78,7 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
     to: COLONY_INCOMING_ROUTE,
     iconName: 'arrow-down-right',
   },
+  // @BETA: Disabled for now
   // {
   //   key: '4',
   //   label: formatText({ id: 'navigation.finances.transactions' }),
@@ -108,6 +118,7 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
     to: COLONY_DETAILS_ROUTE,
     iconName: 'buildings',
   },
+  // @BETA: Disabled for now
   // {
   //   key: '2',
   //   label: formatText({ id: 'navigation.admin.reputation' }),
@@ -120,6 +131,7 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
     to: COLONY_EXTENSIONS_ROUTE,
     iconName: 'puzzle-piece',
   },
+  // @BETA: Disabled for now
   // {
   //   key: '4',
   //   label: formatText({ id: 'navigation.admin.integrations' }),
