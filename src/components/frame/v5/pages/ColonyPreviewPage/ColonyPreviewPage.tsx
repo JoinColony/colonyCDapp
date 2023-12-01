@@ -218,7 +218,7 @@ const ColonyPreviewPage = () => {
                   undefined,
               }}
               colonyAddress={colonyAddress || ADDRESS_ZERO}
-              size="mediumSmallMediumLargeSmallTinyBigMediumLargeSmall"
+              size="xxsm"
             />
             <h1 className="text-md font-medium inline">{colonyDisplayName}</h1>
             <SocialLinks

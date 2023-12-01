@@ -7,7 +7,6 @@ import { formatText } from '~utils/intl';
 import Avatar from '../Avatar';
 
 import { ColonyAvatarProps } from './types';
-import { getBlockieSize } from './util';
 
 const displayName = 'v5.ColonyAvatar';
 
@@ -15,7 +14,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
   colonyAddress,
   chainIconName,
   colonyImageProps,
-  size = 'extraBig',
+  size = 'xms',
   className,
 }) => {
   return (
@@ -24,11 +23,11 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         className,
         'flex justify-center items-center flex-shrink-0 relative h-[1em] w-[1em]',
         {
-          'text-4xl': size === 'extraBig',
-          'text-3xl': size === 'medium',
-          'text-2xl':
-            size === 'mediumSmallMediumLargeSmallTinyBigMediumLargeSmall',
-          'text-lg': size === 'small',
+          'h-[3.75em] w-[3.75em] text-6xl': size === 'm',
+          'text-4xl': size === 'xms',
+          'text-3xl': size === 'smx',
+          'text-2xl': size === 'xxsm',
+          'text-lg': size === 'xxs',
         },
       )}
     >
@@ -37,7 +36,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           'h-full w-full rounded-full overflow-hidden flex justify-center items-center',
         )}
       >
-        {colonyImageProps ? (
+        {colonyImageProps?.src ? (
           <img
             {...colonyImageProps}
             alt={
@@ -47,10 +46,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
             className="h-full w-full object-cover object-center"
           />
         ) : (
-          <Avatar
-            size={getBlockieSize(size)}
-            seed={colonyAddress.toLowerCase()}
-          />
+          <Avatar size={size} seed={colonyAddress.toLowerCase()} />
         )}
       </div>
       {chainIconName && (
