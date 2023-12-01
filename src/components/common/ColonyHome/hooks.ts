@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Id } from '@colony/colony-js';
 import {
-  BellRinging,
+  // @BETA: Disabled for now
+  // BellRinging,
   Door,
   Rocket,
   ShareNetwork,
@@ -274,20 +275,21 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
             },
           ],
         },
-        {
-          key: '3',
-          items: [
-            {
-              key: '3.1',
-              label: formatText({
-                id: 'dashboard.burgerMenu.item.notifications',
-              }),
-              icon: BellRinging,
-              // @TODO: open Notification tab when will be ready
-              onClick: () => {},
-            },
-          ],
-        },
+        // @BETA: Notifcations not implemented yet
+        // {
+        //   key: '3',
+        //   items: [
+        //     {
+        //       key: '3.1',
+        //       label: formatText({
+        //         id: 'dashboard.burgerMenu.item.notifications',
+        //       }),
+        //       icon: BellRinging,
+        //       // @TODO: open Notification tab when will be ready
+        //       onClick: () => {},
+        //     },
+        //   ],
+        // },
         {
           key: '4',
           items: isUserInColony
