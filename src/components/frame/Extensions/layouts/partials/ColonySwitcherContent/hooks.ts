@@ -1,6 +1,7 @@
 import { useMemo, useCallback, useState } from 'react';
 import debounce from 'lodash/debounce';
 
+import { Colony } from '~types';
 import { useAppContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { useGetContributorsByAddressQuery } from '~gql';
@@ -8,15 +9,19 @@ import { useGetContributorsByAddressQuery } from '~gql';
 import { getChainIconName } from '../../utils';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
 
+import { UseColonySwitcherContentReturnType } from './types';
+
 export const useColonySwitcherContent = (
-  colony,
+  colony: Colony | undefined,
 ): UseColonySwitcherContentReturnType => {
-  const { userLoading, user } = useAppContext();
+  const { userLoading, userColonies } = useAppContext();
 
-  const { chainMetadata, colonyAddress, name } = colony || {};
-  const { chainId } = chainMetadata || {};
+    const { chainMetadata, colonyAddress, name } = colony || {};
+    const { chainId } = chainMetadata || {};
 
-  const chainIcon = getChainIconName(chainId);
+    const [searchValue, setSearchValue] = useState('');
+
+    const chainIcon = getChainIconName(chainId);
 
   const joinedColonies: ColonySwitcherListItem[] = userColonies.reduce(
     (result, item) => {
@@ -24,26 +29,19 @@ export const useColonySwitcherContent = (
         return result;
       }
 
-      const { colony: itemColony, id } = item;
-
-      if (colonyAddress === itemColony.colonyAddress) {
-        return result;
-      }
-
       return [
-          ...result,
-          {
-            key: item.colonyAddress,
-            name: item.metadata?.displayName || name || '',
-            to: `/${item.name}`,
-            avatarProps: {
-              chainIconName: getChainIconName(item.chainMetadata.chainId),
-              colonyImageProps: item.metadata?.avatar
-                ? {
-                    src: item.metadata?.thumbnail || item.metadata?.avatar,
-                  }
-                : undefined,
-            },
+        ...result,
+        {
+          key: item.colonyAddress,
+          name: item.metadata?.displayName || name || '',
+          to: `/${item.name}`,
+          avatarProps: {
+            chainIconName: getChainIconName(item.chainMetadata.chainId),
+            colonyImageProps: item.metadata?.avatar
+              ? {
+                  src: item.metadata?.thumbnail || item.metadata?.avatar,
+                }
+              : undefined,
           },
         },
       ];
