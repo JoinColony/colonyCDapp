@@ -32,11 +32,12 @@ import { FilterContextProvider, useFilterContext } from './FilterContext';
 
 const MemberContext = createContext<
   | {
-      allMembers: ColonyContributor[];
       members: ColonyContributor[];
       verifiedMembers: ColonyContributor[];
+      pagedMembers: ColonyContributor[];
       totalMemberCount: number;
       contributors: ColonyContributor[];
+      pagedContributors: ColonyContributor[];
       totalContributorCount: number;
       membersLimit: number;
       moreContributors: boolean;
@@ -182,6 +183,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const {
     contributors,
+    pagedContributors,
     canLoadMore: moreContributors,
     loadMore: loadMoreContributors,
     totalContributorCount,
@@ -197,6 +199,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const {
     members,
+    pagedMembers,
     verifiedMembers,
     canLoadMore: moreMembers,
     loadMore: loadMoreMembers,
@@ -222,11 +225,12 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      allMembers,
       members,
       verifiedMembers,
+      pagedMembers,
       totalMemberCount,
       contributors,
+      pagedContributors,
       totalContributorCount,
       membersLimit: pageSize,
       moreContributors,
@@ -237,11 +241,12 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       loading,
     }),
     [
-      allMembers,
       members,
       verifiedMembers,
+      pagedMembers,
       totalMemberCount,
       contributors,
+      pagedContributors,
       moreContributors,
       loadMoreContributors,
       totalContributorCount,

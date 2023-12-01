@@ -103,7 +103,8 @@ const useAllMembers = ({
   const totalMemberCount = totalData?.searchColonyContributors?.total || 0;
 
   return {
-    members: sortedMembers.slice(0, visibleItems),
+    members: sortedMembers,
+    pagedMembers: sortedMembers.slice(0, visibleItems),
     verifiedMembers,
     canLoadMore: sortedMembers.length > visibleItems,
     loadMore() {

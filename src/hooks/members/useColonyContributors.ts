@@ -82,7 +82,8 @@ const useColonyContributors = ({
   const totalContributorCount = totalData?.searchColonyContributors?.total || 0;
 
   return {
-    contributors: sortedContributors.slice(0, visibleItems),
+    contributors: sortedContributors,
+    pagedContributors: sortedContributors.slice(0, visibleItems),
     canLoadMore: sortedContributors.length > visibleItems,
     loadMore() {
       setPage((prevPage) => prevPage + 1);
