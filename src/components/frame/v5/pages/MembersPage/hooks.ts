@@ -13,8 +13,7 @@ export const useMembersPage = () => {
   const {
     contributors,
     members,
-    loadingContributors,
-    loadingMembers,
+    loading,
     loadMoreContributors,
     moreContributors,
     loadMoreMembers,
@@ -96,11 +95,10 @@ export const useMembersPage = () => {
 
   return {
     contributorsList,
-    loadingContributors,
+    loading,
     hasMoreContributors: moreContributors,
     loadMoreContributors,
     membersList,
-    loadingMembers,
     hasMoreMembers: moreMembers,
     loadMoreMembers,
     totalContributorCount,

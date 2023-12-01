@@ -9,7 +9,7 @@ import MembersTabContent from './partials/MembersTabContent';
 import { useMembersPage } from './hooks';
 
 const AllMembersPage: FC = () => {
-  const { membersList, loadingMembers, hasMoreMembers, loadMoreMembers } =
+  const { membersList, loading, hasMoreMembers, loadMoreMembers } =
     useMembersPage();
   const { handleClipboardCopy } = useCopyToClipboard();
   const { colony } = useColonyContext();
@@ -22,7 +22,7 @@ const AllMembersPage: FC = () => {
   return (
     <MembersTabContent
       items={membersList}
-      isLoading={loadingMembers}
+      isLoading={loading}
       loadMoreButtonProps={
         hasMoreMembers
           ? {
