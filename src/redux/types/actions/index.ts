@@ -125,7 +125,7 @@ export type MetaWithSetter<M> = {
   setTxHash?: (txHash: string) => void;
   updateUser?:
     | ((
-        address?: string | undefined,
+        address: string | undefined,
         shouldBackgroundUpdate?: boolean | undefined,
       ) => Promise<void>)
     | undefined;

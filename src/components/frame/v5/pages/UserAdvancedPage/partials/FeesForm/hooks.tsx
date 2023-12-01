@@ -14,7 +14,7 @@ export const useFeesForm = () => {
 
   const metatransactionsAvailable = canUseMetatransactions();
 
-  const { user } = useAppContext();
+  const { user, updateUser } = useAppContext();
   const { metatransactionsEnabled, customRpc, decentralizedModeEnabled } =
     user?.profile?.meta ?? {};
 
@@ -37,6 +37,7 @@ export const useFeesForm = () => {
         },
       },
     });
+    await updateUser(user?.walletAddress, true);
   };
 
   const handleFeesOnChange = (value: boolean) => {
