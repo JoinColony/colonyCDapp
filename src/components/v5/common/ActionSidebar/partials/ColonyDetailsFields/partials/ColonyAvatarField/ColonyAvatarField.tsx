@@ -1,16 +1,20 @@
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
+
 import Modal from '~v5/shared/Modal';
 import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
 import Avatar from '~v5/shared/Avatar';
-import { useChangeColonyAvatar } from './hooks';
 import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks';
 import { getPlaceholder } from '~v5/common/AvatarUploader/utils';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import useToggle from '~hooks/useToggle';
-import { ColonyAvatarFieldProps } from './types';
 import { formatText } from '~utils/intl';
 import { useColonyContext } from '~hooks';
+import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import { ADDRESS_ZERO } from '~constants';
+
+import { useChangeColonyAvatar } from './hooks';
+import { ColonyAvatarFieldProps } from './types';
 
 const displayName =
   'v5.common.ActionsContent.partials.ColonyDetailsFields.partials.ColonyAvatarField';
@@ -85,7 +89,13 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
             <div className="flex-shrink-0">
               {getPlaceholder(
                 isLoading,
-                <Avatar size="xm" avatar={modalValue?.image} />,
+                <ColonyAvatar
+                  size="xm"
+                  colonyImageProps={{
+                    src: modalValue?.image,
+                  }}
+                  colonyAddress={colony?.colonyAddress || ADDRESS_ZERO}
+                />,
               )}
             </div>
             <p className="sm:hidden text-gray-600 text-sm">{uploaderText}</p>

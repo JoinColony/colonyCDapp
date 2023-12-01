@@ -23,6 +23,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         className,
         'flex justify-center items-center flex-shrink-0 relative h-[1em] w-[1em]',
         {
+          'h-16 w-16 text-6xl': size === 'xm',
           'h-[3.75em] w-[3.75em] text-6xl': size === 'm',
           'text-4xl': size === 'xms',
           'text-3xl': size === 'smx',
