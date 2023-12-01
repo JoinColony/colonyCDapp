@@ -5,7 +5,8 @@ import { useAppContext, useTablet } from '~hooks';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Icon from '~shared/Icon';
-import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
+// @BETA: Disabled for now
+// import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
 import Link from '~v5/shared/Link';
@@ -124,7 +125,7 @@ const UserMenu: FC<UserMenuProps> = ({
         </div>
         <div className="px-6">
           {wallet && (
-            <div className="w-full mb-4 sm:mb-3">
+            <div>
               <TitleLabel text={formatText({ id: 'userMenu.other' })} />
               <div className="navigation-link">
                 <Icon name="plugs" appearance={{ size: iconSize }} />
@@ -138,7 +139,10 @@ const UserMenu: FC<UserMenuProps> = ({
               </div>
             </div>
           )}
-          <ThemeSwitcher />
+          {/* @BETA: Disabled for now */}
+          {/* <div className="mt-4 sm:mt-3"> */}
+          {/*   <ThemeSwitcher /> */}
+          {/* </div> */}
         </div>
       </div>
       <div
