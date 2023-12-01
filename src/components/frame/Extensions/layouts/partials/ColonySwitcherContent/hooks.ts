@@ -12,20 +12,6 @@ export const useColonySwitcherContent = (
   colony,
 ): UseColonySwitcherContentReturnType => {
   const { userLoading, user } = useAppContext();
-  const [searchValue, setSearchValue] = useState('');
-
-  const { data } = useGetContributorsByAddressQuery({
-    variables: { contributorAddress: user?.walletAddress || '' },
-    skip: !user?.walletAddress,
-  });
-
-  const userColonies = (
-    data?.getContributorsByAddress?.items.filter(
-      (contributor) => notNull(contributor) && contributor?.colony,
-    ) || []
-  )
-    .filter(notNull)
-    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
   const { chainMetadata, colonyAddress, name } = colony || {};
   const { chainId } = chainMetadata || {};
@@ -34,7 +20,7 @@ export const useColonySwitcherContent = (
 
   const joinedColonies: ColonySwitcherListItem[] = userColonies.reduce(
     (result, item) => {
-      if (!item) {
+      if (colonyAddress === item.colonyAddress) {
         return result;
       }
 
@@ -45,21 +31,19 @@ export const useColonySwitcherContent = (
       }
 
       return [
-        ...result,
-        {
-          key: id,
-          name: itemColony.metadata?.displayName || name || '',
-          to: `/${itemColony.name}`,
-          avatarProps: {
-            chainIconName: getChainIconName(itemColony.chainMetadata.chainId),
-            colonyImageProps: itemColony.metadata?.avatar
-              ? {
-                  src:
-                    itemColony.metadata?.thumbnail ||
-                    itemColony.metadata?.avatar,
-                }
-              : undefined,
-            colonyAddress: itemColony.colonyAddress,
+          ...result,
+          {
+            key: item.colonyAddress,
+            name: item.metadata?.displayName || name || '',
+            to: `/${item.name}`,
+            avatarProps: {
+              chainIconName: getChainIconName(item.chainMetadata.chainId),
+              colonyImageProps: item.metadata?.avatar
+                ? {
+                    src: item.metadata?.thumbnail || item.metadata?.avatar,
+                  }
+                : undefined,
+            },
           },
         },
       ];

@@ -3,20 +3,22 @@ import clsx from 'clsx';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
+import EmptyContent from '~v5/common/EmptyContent';
+import { useColonyContext } from '~hooks';
 
 import ColonySwitcherItem from '../ColonySwitcherItem';
 import ColonySwitcherList from '../ColonySwitcherList';
 
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
-import EmptyContent from '~v5/common/EmptyContent';
 import { useColonySwitcherContent } from './hooks';
-import { ColonySwitcherContentProps } from './types';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
 
 // There's just a base logic added here, so that we can see other colonies and navigate between them.
 // The rest of the functionality will be added in the next PRs.
-const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
+const ColonySwitcherContent: FC = () => {
+  const { colony } = useColonyContext();
+
   const {
     userLoading,
     filteredColony,
@@ -24,7 +26,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
     onChange,
     joinedColonies,
     searchValue,
-  } = useColonySwitcherContent(colony);
+  } = useColonySwitcherContent();
 
   const titleClassName = 'uppercase text-4 text-gray-400 mb-1';
 

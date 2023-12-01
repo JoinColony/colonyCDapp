@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 
-import { Colony } from '~types';
-import ColonyItem from './ColonyItem';
 import ColonyAvatar from '~shared/ColonyAvatar';
-import { ColoniesDropdownProps } from '../types';
 import TitleLabel from '~v5/shared/TitleLabel';
+
+import { ColoniesDropdownProps } from '../types';
+
+import ColonyItem from './ColonyItem';
 
 const displayName =
   'common.Extensions.ColonySwitcher.partials.ColoniesDropdown';
@@ -35,9 +36,9 @@ const ColoniesDropdown: FC<ColoniesDropdownProps> = ({
     {Object.keys(coloniesByCategory).map((key) => (
       <div className="px-6 sm:px-0 sm:mt-5 mb-4 last:mb-0" key={key}>
         {key && <TitleLabel text={key} />}
-        {coloniesByCategory[key].map(({ colony }) => (
+        {coloniesByCategory[key].map((colony) => (
           <ColonyItem
-            colony={colony as Colony}
+            colony={colony}
             key={colony?.colonyAddress}
             chainName={colony?.chainMetadata?.network || ''}
           />

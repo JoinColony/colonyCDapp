@@ -30,4 +30,4 @@ export interface ColonySwitcherProps {
   isColonyDropdownOpen?: boolean;
 }
 
-export type ColoniesByCategory = Record<string, any[]>;
+export type ColoniesByCategory = Record<string, Colony[]>;
