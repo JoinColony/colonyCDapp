@@ -170,6 +170,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@popperjs/core": "^2.3.3",
     "@storybook/addon-styling": "^1.0.0",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/react-table": "^8.10.0",
     "@tiptap/extension-blockquote": "^2.0.4",

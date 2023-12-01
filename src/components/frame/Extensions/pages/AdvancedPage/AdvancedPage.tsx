@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useColonyContractVersion, useMobile } from '~hooks';
 import { canColonyBeUpgraded } from '~utils/checks';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
 import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
+import Link from '~v5/shared/Link';
 
 const displayName = 'frame.Extensions.pages.AdvancedPage';
 
@@ -27,18 +28,15 @@ const AdvancedPage: FC = () => {
         <FormattedMessage id="advancedPage.colony.title" />
       </h3>
       <div className="mb-4">
-        <NotificationBanner
-          status={canUpgrade ? 'warning' : 'success'}
-          title={
-            <FormattedMessage
-              id={
-                canUpgrade
-                  ? 'advancedPage.version.warning'
-                  : 'advancedPage.version.success'
-              }
-            />
-          }
-        />
+        {canUpgrade ? (
+          <NotificationBanner icon="warning-circle" status="warning">
+            <FormattedMessage id="advancedPage.version.warning" />
+          </NotificationBanner>
+        ) : (
+          <NotificationBanner icon="check-circle" status="success">
+            <FormattedMessage id="advancedPage.version.success" />
+          </NotificationBanner>
+        )}
       </div>
       <ColonyVersionWidget
         currentVersion={colonyContractVersion}
@@ -55,14 +53,17 @@ const AdvancedPage: FC = () => {
       <div className="mb-6">
         <NotificationBanner
           status="info"
-          title={<FormattedMessage id="advancedPage.recovery.notification" />}
-          action={{
-            type: 'redirect',
-            href: 'https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode',
-            actionText: <FormattedMessage id="text.learnMore" />,
-          }}
-          isAlt
-        />
+          callToAction={
+            <Link
+              to="https://colony.io/colonyjs/docs/colonyjs-core/#recovery-mode"
+              className="underline md:hover:no-underline"
+            >
+              <FormattedMessage id="text.learnMore" />
+            </Link>
+          }
+        >
+          <FormattedMessage id="advancedPage.recovery.notification" />
+        </NotificationBanner>
       </div>
       <div className="flex justify-end">
         {/* @TODO: Add recovery mode logic */}

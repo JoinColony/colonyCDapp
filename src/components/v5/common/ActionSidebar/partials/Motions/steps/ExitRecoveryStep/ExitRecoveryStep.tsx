@@ -8,7 +8,7 @@ import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux';
 import MemberSignatureList from '~v5/common/MemberSignatureList';
 import { membersList } from './consts';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 
 const displayName =
@@ -76,13 +76,11 @@ const ExitRecoveryStep: FC = () => {
             key: '1',
             className: 'px-0 py-0',
             content: (
-              <NotificationBanner
-                status="error"
-                title={formatText({
+              <NotificationBanner status="error">
+                {formatText({
                   id: 'motion.exitRecovery.storageSlots.warning',
                 })}
-                isAlt
-              />
+              </NotificationBanner>
             ),
           },
           {

@@ -6,7 +6,7 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import CardWithCallout from '~v5/shared/CardWithCallout';
 import Spinner from '~v5/shared/Spinner';
 import Button from '~v5/shared/Button';
@@ -173,21 +173,19 @@ const ColonyPreviewPage = () => {
       <hr className="mb-8" />
       {inviteIsValid && (
         <NotificationBanner
-          iconName="hands-clapping"
+          icon="hands-clapping"
           status="success"
           className="my-8"
-          title={formatMessage(MSG.notificationBannerTitle, {
+        >
+          {formatMessage(MSG.notificationBannerTitle, {
             colonyName: colonyDisplayName,
           })}
-        />
+        </NotificationBanner>
       )}
       {inviteIsInvalid && (
-        <NotificationBanner
-          iconName="hand-waving"
-          status="error"
-          className="my-8"
-          title={formatMessage(MSG.invalidBannerTitle)}
-        />
+        <NotificationBanner icon="hand-waving" status="error" className="my-8">
+          {formatMessage(MSG.invalidBannerTitle)}
+        </NotificationBanner>
       )}
       {wallet ? null : (
         <CardWithCallout

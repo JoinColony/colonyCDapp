@@ -40,6 +40,10 @@
     @apply min-h-screen;
   }
 
+  button {
+    text-decoration: inherit;
+  }
+
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     @apply m-0;
@@ -131,6 +135,10 @@
     background-size: 2.5rem 100%;
     background-position: left -2.5rem top 0;
     animation: shine 1.125s ease infinite;
+  }
+
+  .break-word {
+    word-break: break-word;
   }
 }
 

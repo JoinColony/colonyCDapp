@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 import { utils } from 'ethers';
 
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
@@ -136,22 +136,22 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               additionalContent={
                 <NotificationBanner
                   status="warning"
-                  title={formatText({ id: 'user.not.verified.warning' })}
-                  isAlt
-                  action={{
-                    type: 'call-to-action',
-                    actionText: formatText({ id: 'add.verified.member' }),
-                    onClick: () => {}, // @TODO: add action
-                  }}
-                  className="mt-4"
-                  textAlign="left"
-                >
-                  {userByAddress?.walletAddress ||
+                  description={
+                    userByAddress?.walletAddress ||
                     (field.value && (
                       <div className="mt-2 font-semibold break-words">
                         {userByAddress?.walletAddress || field.value}
                       </div>
-                    ))}
+                    ))
+                  }
+                  callToAction={
+                    <button type="button">
+                      {formatText({ id: 'add.verified.member' })}
+                    </button>
+                  }
+                  className="mt-4 text-left"
+                >
+                  {formatText({ id: 'user.not.verified.warning' })}
                 </NotificationBanner>
               }
             >

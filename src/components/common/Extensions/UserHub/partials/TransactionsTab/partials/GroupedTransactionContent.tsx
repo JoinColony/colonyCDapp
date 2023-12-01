@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 
 import styles from './TransactionsItem/TransactionsItem.module.css';
-import NotificationBanner from '~common/Extensions/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 import { GroupedTransactionContentProps } from '../types';
 import { useGroupedTransactionContent } from './hooks';
 import CancelTransaction from './CancelTransaction';
@@ -98,12 +98,11 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
         <div className="mt-2 md:max-w-[24rem]">
           <NotificationBanner
             status="error"
-            action={{
-              type: 'call-to-action',
-              actionText: <FormattedMessage id="retry" />,
-              onClick: handleRetryAction,
-            }}
-            isAlt
+            callToAction={
+              <button type="button" onClick={handleRetryAction}>
+                <FormattedMessage id="retry" />
+              </button>
+            }
           >
             <FormattedMessage
               {...MSG.failedTx}
