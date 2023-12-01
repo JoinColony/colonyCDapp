@@ -73,7 +73,7 @@ const OnboardingPage = ({ flow }: Props) => {
   if (userLoading || walletConnecting || loading) {
     return (
       <SplashLayout>
-        <Spinner loading loadingText={MSG.loadingMessage} />;
+        <Spinner loading loadingText={MSG.loadingMessage} />
       </SplashLayout>
     );
   }
