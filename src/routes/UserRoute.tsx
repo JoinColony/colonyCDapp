@@ -30,18 +30,18 @@ const accountNavMsgs = defineMessages({
 
 const navigationItems: SelectOption[] = [
   {
-    linkTo: USER_EDIT_PROFILE_ROUTE,
-    label: formatText(accountNavMsgs.profile),
+    to: USER_EDIT_PROFILE_ROUTE,
+    label: formatText(accountNavMsgs.profile) || '',
     value: 0,
   },
   {
-    linkTo: USER_PREFERENCES_ROUTE,
-    label: formatText(accountNavMsgs.prefences),
+    to: USER_PREFERENCES_ROUTE,
+    label: formatText(accountNavMsgs.prefences) || '',
     value: 1,
   },
   {
-    linkTo: USER_ADVANCED_ROUTE,
-    label: formatText(accountNavMsgs.advanced),
+    to: USER_ADVANCED_ROUTE,
+    label: formatText(accountNavMsgs.advanced) || '',
     value: 2,
   },
 ];

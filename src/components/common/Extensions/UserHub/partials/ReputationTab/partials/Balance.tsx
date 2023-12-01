@@ -60,7 +60,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
 
   return (
     <div>
-      <TitleLabel text={formatMessage({ id: 'balance.in.colony' })} />
+      <TitleLabel text={formatMessage({ id: 'userHub.nativeToken' })} />
       <div className="flex flex-col gap-4 pt-2 pb-6 border-b border-gray-200">
         <div className={styles.row}>
           <span className={styles.rowName}>

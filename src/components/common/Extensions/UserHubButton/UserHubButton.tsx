@@ -25,7 +25,6 @@ import {
 
 import { UserHubButtonProps } from './types';
 
-
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';
 
@@ -91,7 +90,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
 
   useDisableBodyScroll(visible && isMobile);
   const handleButtonClick = () => {
-    trackUserHubClick()
+    trackUserHubClick();
     setOpenItemIndex(undefined);
     toggleOff();
   };

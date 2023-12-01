@@ -1,11 +1,12 @@
 import { defineMessages } from 'react-intl';
+import { formatText } from '~utils/intl';
 
 import { UserHubTabList, UserHubTabs } from './types';
 
 export const menuMessages = defineMessages({
-  overview: {
-    id: 'UserSubmenu.overview',
-    defaultMessage: 'Your overview',
+  balance: {
+    id: 'UserSubmenu.balance',
+    defaultMessage: 'Your balance',
   },
   stakes: {
     id: 'UserSubmenu.stakes',
@@ -19,20 +20,20 @@ export const menuMessages = defineMessages({
 
 export const tabList: UserHubTabList = [
   {
-    id: UserHubTabs.Overview,
-    label: menuMessages.overview,
-    value: UserHubTabs.Overview,
+    id: UserHubTabs.Balance,
+    label: formatText(menuMessages.balance) || '',
+    value: UserHubTabs.Balance,
     icon: 'user',
   },
   {
     id: UserHubTabs.Stakes,
-    label: menuMessages.stakes,
+    label: formatText(menuMessages.stakes) || '',
     value: UserHubTabs.Stakes,
     icon: 'coin-vertical',
   },
   {
     id: UserHubTabs.Transactions,
-    label: menuMessages.transactions,
+    label: formatText(menuMessages.transactions) || '',
     value: UserHubTabs.Transactions,
     icon: 'receipt',
   },
