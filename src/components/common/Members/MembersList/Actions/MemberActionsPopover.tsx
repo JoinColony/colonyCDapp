@@ -10,7 +10,6 @@ import Button from '~shared/Button';
 import ExternalLink from '~shared/ExternalLink';
 
 import styles from './MemberActionsPopover.css';
-import { isUserVerified } from '~utils/verifiedUsers';
 import { useDialog } from '~shared/Dialog';
 import { ManageWhitelistDialog } from '~common/Dialogs';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
@@ -36,10 +35,7 @@ interface Props {
 const MemberActionsPopover = ({ closePopover, userAddress }: Props) => {
   const { colony } = useColonyContext();
 
-  const isWhitelisted = isUserVerified(
-    userAddress,
-    colony?.metadata?.whitelistedAddresses ?? [],
-  );
+  const isWhitelisted = false;
   const enabledExtensionData = useEnabledExtensions();
 
   const openManageWhitelistDialog = useDialog(ManageWhitelistDialog);

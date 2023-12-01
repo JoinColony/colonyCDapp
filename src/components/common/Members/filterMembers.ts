@@ -2,7 +2,6 @@ import { FormValues } from '~common/ColonyMembers/MembersFilter';
 import { VerificationType } from '~common/ColonyMembers/MembersFilter/filtersConfig';
 
 import { Address } from '~types';
-import { isUserVerified } from '~utils/verifiedUsers';
 
 const filterMemberBySearchTerm = (member: any, searchTerm: string) => {
   return (
@@ -18,7 +17,7 @@ const filterMemberByVerificationStatus = (
   whitelistedAddresses: Address[],
   verificationType?: VerificationType,
 ) => {
-  const isVerified = isUserVerified(member.address, whitelistedAddresses);
+  const isVerified = member === whitelistedAddresses[0];
 
   if (verificationType === VerificationType.Verified) {
     return isVerified;

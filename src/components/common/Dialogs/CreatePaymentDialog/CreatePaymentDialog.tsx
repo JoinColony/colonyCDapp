@@ -7,7 +7,6 @@ import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { getVerifiedUsers } from '~utils/verifiedUsers';
 import { WizardDialogType, useNetworkInverseFee } from '~hooks';
 import { useMemberContext } from '~context/MemberContext';
 
@@ -51,10 +50,7 @@ const CreatePaymentDialog = ({
 
   const isWhitelistActivated = colony.metadata?.isWhitelistActivated;
 
-  const verifiedUsers = getVerifiedUsers(
-    colony.metadata?.whitelistedAddresses ?? [],
-    allColonyMembers,
-  );
+  const verifiedUsers = [];
 
   const transform = pipe(
     mapPayload((payload) => {
