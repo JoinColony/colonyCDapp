@@ -8,8 +8,8 @@ const STROKE_WIDTH = 4;
 const RADIUS = 60 - STROKE_WIDTH / 2; // stroke goes on both sides so we need to reduce the radius just by half
 
 interface PageLoaderProps {
-  loadingText: ReactNode;
-  loadingDescription: ReactNode;
+  loadingText?: ReactNode;
+  loadingDescription?: ReactNode;
 }
 
 const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
