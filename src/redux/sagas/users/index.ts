@@ -29,6 +29,7 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import { deauthenticateWallet } from '~auth';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 
@@ -171,6 +172,7 @@ function* userLogout() {
     removeContext(ContextModule.ColonyManager);
     const wallet = getContext(ContextModule.Wallet);
     disconnectWallet(wallet.label);
+    yield deauthenticateWallet();
     yield put<AllActions>({
       type: ActionTypes.USER_LOGOUT_SUCCESS,
     });
