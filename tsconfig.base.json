@@ -32,7 +32,9 @@
       "~cache": ["src/cache"],
       "~cache/*": ["src/cache/*"],
       "~transformers": ["src/transformers"],
-      "~transformers/*": ["src/transformers/*"]
+      "~transformers/*": ["src/transformers/*"],
+      "~auth": ["src/auth"],
+      "~auth/*": ["src/auth/*"]
 
     },
     "allowSyntheticDefaultImports": true,

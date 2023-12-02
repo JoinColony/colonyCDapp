@@ -26,7 +26,8 @@
         "^\\~types(.*)$": "<rootDir>/types$1",
         "^\\~immutable(.*)$": "<rootDir>/immutable$1",
         "\\~([a-zA-Z0-9-_]+)\\/(.*)": "<rootDir>/modules/$1/components/$2",
-        "^\\~testutils$": "<rootDir>/__tests__/utils.ts"
+        "^\\~testutils$": "<rootDir>/__tests__/utils.ts",
+        "^\\~auth(.*)$": "<rootDir>/auth$1"
     },
     "setupFiles": [
         "<rootDir>/__tests__/setup.ts",

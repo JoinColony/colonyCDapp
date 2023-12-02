@@ -40,6 +40,7 @@ const config = {
         '~cache': path.resolve(__dirname, 'src/cache'),
         '~transformers': path.resolve(__dirname, 'src/transformers'),
         '~v5': path.resolve(__dirname, 'src/components/v5'),
+        '~auth': path.resolve(__dirname, 'src/auth'),
         assert: 'assert',
         buffer: 'buffer',
         crypto: 'crypto-browserify',
