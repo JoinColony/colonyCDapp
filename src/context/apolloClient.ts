@@ -2,14 +2,9 @@ import { ApolloClient, HttpLink } from '@apollo/client';
 
 import cache from '~cache';
 
-/*
- * @TODO This needs to be fetched from a proper location
- */
 const httpLink = new HttpLink({
-  uri: process.env.AWS_APPSYNC_GRAPHQL_URL || 'http://localhost:20002/graphql',
-  headers: {
-    'x-api-key': process.env.AWS_APPSYNC_KEY || 'da2-fakeApiId123456',
-  },
+  uri: `${process.env.AUTH_PROXY_ENDPOINT || 'http://localhost:3005'}/graphql`,
+  credentials: 'include',
 });
 
 export default new ApolloClient({
