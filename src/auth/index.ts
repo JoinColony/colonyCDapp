@@ -50,7 +50,7 @@ const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
   }
 };
 
-const clearAuthCookie = async () => {
+const clearAuthCookie = async (): Promise<void> => {
   if (window.cookieStore) {
     const cookie = await window.cookieStore.get(AUTH_COOKIE_NAME);
     if (cookie) {
@@ -69,7 +69,7 @@ export const getAuthExpirationTimeout = async (): Promise<number> => {
   return 0;
 };
 
-export const deauthenticateWallet = async () => {
+export const deauthenticateWallet = async (): Promise<void> => {
   try {
     await authProxyRequest('deauth', { method: 'POST' });
     await clearAuthCookie();
@@ -78,7 +78,7 @@ export const deauthenticateWallet = async () => {
   }
 };
 
-export const authenticateWallet = async () => {
+export const authenticateWallet = async (): Promise<void> => {
   const wallet = getContext(ContextModule.Wallet);
 
   if (!isFullWallet(wallet)) {
@@ -138,7 +138,5 @@ export const authenticateWallet = async () => {
       await deauthenticateWallet();
       await authenticateWallet();
     }
-    return null;
   }
-  return null;
 };
