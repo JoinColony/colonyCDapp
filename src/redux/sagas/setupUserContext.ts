@@ -21,6 +21,7 @@ import { getGasPrices, putError } from './utils';
 import { getBasicWallet, getWallet } from './wallet';
 // import vestingSagas from './vesting';
 import getOnboard from './wallet/onboard';
+import { authenticateWallet } from '~auth';
 
 const ONBOARD_METAMASK_WALLET_LABEL = 'MetaMask';
 
@@ -70,6 +71,7 @@ function* initializeFullWallet(lastWallet: LastWallet | null) {
   const wallet = yield call(getWallet, lastWallet);
   setContext(ContextModule.Wallet, wallet);
   yield call(getGasPrices);
+  yield call(authenticateWallet);
 }
 
 /*
