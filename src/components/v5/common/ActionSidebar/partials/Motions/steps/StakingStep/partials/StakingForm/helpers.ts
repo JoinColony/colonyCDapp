@@ -82,3 +82,24 @@ export const getPredictedPercentage = (
 
   return predictedPercentage;
 };
+
+/**
+ * Function returning the max amount user can stake which is the smaller of
+ * the available tokens balance and the remaining oppose or support stake amounts
+ */
+export const getMaxStakeAmount = (
+  voteType: MotionVote,
+  availableBalance: BigNumber,
+  remainingStakes: string[],
+) => {
+  const opposeRemaining = BigNumber.from(remainingStakes[0] ?? '0');
+  const supportRemaining = BigNumber.from(remainingStakes[1] ?? '0');
+  const remaining =
+    voteType === MotionVote.Yay ? supportRemaining : opposeRemaining;
+
+  if (availableBalance.gt(remaining)) {
+    return remaining;
+  }
+
+  return availableBalance;
+};
