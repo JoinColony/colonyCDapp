@@ -144,7 +144,7 @@ const StakingForm: FC<StakingFormProps> = ({
                     </span>
                     <span className="text-sm text-gray-600">
                       {formatText(
-                        { id: 'motion.staking.input.label.balance' },
+                        { id: 'motion.staking.input.balance' },
                         {
                           balance: (
                             <Numeral
