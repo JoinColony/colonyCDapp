@@ -188,15 +188,14 @@ export const useMainMenuItems = () => {
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
               }),
           },
-          {
-            key: '2',
-            label: formatText({ id: 'actions.advancedPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
-              }),
-          },
-          // @BETA: Disabled for now
+          // {
+          //   key: '2',
+          //   label: formatText({ id: 'actions.advancedPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
+          //     }),
+          // },
           // {
           //   key: '3',
           //   label: formatText({ id: 'actions.streamingPayment' }),
@@ -206,32 +205,32 @@ export const useMainMenuItems = () => {
           //     }),
           //   disabled: true,
           // },
-          {
-            key: '4',
-            label: formatText({ id: 'actions.splitPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.SPLIT_PAYMENT,
-              }),
-          },
-          {
-            key: '5',
-            label: formatText({ id: 'actions.batchPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.BATCH_PAYMENT,
-              }),
-            disabled: true,
-          },
-          {
-            key: '6',
-            label: formatText({ id: 'actions.stagedPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.STAGED_PAYMENT,
-              }),
-            disabled: true,
-          },
+          // {
+          //   key: '4',
+          //   label: formatText({ id: 'actions.splitPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.SPLIT_PAYMENT,
+          //     }),
+          // },
+          // {
+          //   key: '5',
+          //   label: formatText({ id: 'actions.batchPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.BATCH_PAYMENT,
+          //     }),
+          //   disabled: true,
+          // },
+          // {
+          //   key: '6',
+          //   label: formatText({ id: 'actions.stagedPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.STAGED_PAYMENT,
+          //     }),
+          //   disabled: true,
+          // },
           {
             key: '7',
             label: formatText({ id: 'actions.transferFunds' }),

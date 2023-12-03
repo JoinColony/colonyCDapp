@@ -1,8 +1,11 @@
-import React from 'react';
+// @BETA: DISABLED
+// import React from 'react';
 import { defineMessages } from 'react-intl';
+
 import { ACTION } from '~constants/actions';
-import { formatText } from '~utils/intl';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+// @BETA: DISABLED
+// import { formatText } from '~utils/intl';
+// import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 
 export const MSG = defineMessages({
   singlePayments: {
@@ -122,22 +125,23 @@ export const PAY_DROPDOWN_ITEMS = [
     description: MSG.singlePaymentsDescription,
     action: ACTION.SIMPLE_PAYMENT,
   },
-  {
-    title: MSG.advancedPayments,
-    description: MSG.advancedPaymentsDescription,
-    action: ACTION.ADVANCED_PAYMENT,
-    statusBadge: <ExtensionStatusBadge text={formatText(MSG.comingSoon)} />,
-  },
-  {
-    title: MSG.streamingPayments,
-    description: MSG.streamingPaymentsDescription,
-    action: ACTION.STREAMING_PAYMENT,
-  },
-  {
-    title: MSG.moveFunds,
-    description: MSG.moveFundsDescription,
-    action: ACTION.TRANSFER_FUNDS,
-  },
+  // @BETA: DISABLED
+  // {
+  //   title: MSG.advancedPayments,
+  //   description: MSG.advancedPaymentsDescription,
+  //   action: ACTION.ADVANCED_PAYMENT,
+  //   statusBadge: <ExtensionStatusBadge text={formatText(MSG.comingSoon)} />,
+  // },
+  // {
+  //   title: MSG.streamingPayments,
+  //   description: MSG.streamingPaymentsDescription,
+  //   action: ACTION.STREAMING_PAYMENT,
+  // },
+  // {
+  //   title: MSG.moveFunds,
+  //   description: MSG.moveFundsDescription,
+  //   action: ACTION.TRANSFER_FUNDS,
+  // },
 ];
 
 export const MANAGE_DROPDOWN_ITEMS = [
