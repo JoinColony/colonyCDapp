@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { ActionTypes } from '~redux';
 
 import { formatText } from '~utils/intl';
-import Button, { PendingButton } from '~v5/shared/Button';
+import Button, { TxButton } from '~v5/shared/Button';
 import { ActionForm } from '~shared/Fields';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import DescriptionList from '../VotingStep/partials/DescriptionList';
@@ -106,7 +106,20 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
               </div>
               {items && <DescriptionList items={items} className="mb-6" />}
               {isPolling ? (
-                <PendingButton className="w-full" rounded="s" />
+                <TxButton
+                  className="w-full"
+                  rounded="s"
+                  text={{ id: 'button.pending' }}
+                  icon={
+                    <span className="flex shrink-0 ml-1.5">
+                      <Icon
+                        name="spinner-gap"
+                        className="animate-spin"
+                        appearance={{ size: 'tiny' }}
+                      />
+                    </span>
+                  }
+                />
               ) : (
                 <Button
                   mode="primarySolid"

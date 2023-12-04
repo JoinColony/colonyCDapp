@@ -7,23 +7,22 @@ import UserHubButton from '~common/Extensions/UserHubButton';
 import {
   useMemberModalContext,
   usePageHeadingContext,
-  useUserTransactionContext,
-  TransactionGroupStates,
   useColonyCreatedModalContext,
   useActionSidebarContext,
+  useTokensModalContext,
 } from '~context';
-import { useMobile, useColonyContext } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
 import { InviteMembersModal } from '~v5/common/Modals';
 import PageLayout from '~v5/frame/PageLayout';
-import Button, { CompletedButton, PendingButton } from '~v5/shared/Button';
+import Button from '~v5/shared/Button';
 import CalamityBanner from '~v5/shared/CalamityBanner';
 import JoinButton from '~v5/shared/Button/JoinButton';
 
 import ColonySidebar from './ColonySidebar';
-import { useCalamityBannerInfo } from './hooks';
+import { useCalamityBannerInfo, useGetTxButtons } from './hooks';
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
@@ -45,7 +44,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
   const { actionSidebarToggle } = useActionSidebarContext();
   const [isActionSidebarOpen] = actionSidebarToggle;
-  const isMobile = useMobile();
+  const txButtons = useGetTxButtons();
 
   const {
     isMemberModalOpen,
@@ -57,10 +56,9 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     useColonyCreatedModalContext();
   const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
     useState(false);
+  const { isTokensModalOpen } = useTokensModalContext();
 
   const { calamityBannerItems, canUpgrade } = useCalamityBannerInfo();
-
-  const { groupState } = useUserTransactionContext();
 
   const { state: locationState } = useLocation();
   const hasRecentlyCreatedColony = locationState?.hasRecentlyCreatedColony;
@@ -79,15 +77,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   if (!colony) {
     return <Navigate to={NOT_FOUND_ROUTE} />;
   }
-
-  const txButtons = isMobile
-    ? [
-        groupState === TransactionGroupStates.SomePending && <PendingButton />,
-        groupState === TransactionGroupStates.AllCompleted && (
-          <CompletedButton />
-        ),
-      ]
-    : null;
 
   const userHub = <UserHubButton hideUserNameOnMobile />;
 
@@ -115,7 +104,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               ...breadcrumbs,
             ],
           },
-          userNavigation: (
+          userNavigation: !isTokensModalOpen ? (
             <UserNavigationWrapper
               txButtons={txButtons}
               userHub={userHub}
@@ -135,7 +124,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                 </>
               }
             />
-          ),
+          ) : null,
         }}
         sidebar={<ColonySidebar userHub={userHub} txButtons={txButtons} />}
       >

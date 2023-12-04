@@ -30,7 +30,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Modal {...props} onClose={onClose}>
+    <Modal {...props} onClose={onClose} shouldShowHeader>
       <ActionForm
         actionType={actionType}
         // defaultValues={{ amount: '0' }} // Disable default value
