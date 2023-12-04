@@ -1,13 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
 import Icon from '~shared/Icon';
-import { COLONY_HOME_ROUTE } from '~routes';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { formatText } from '~utils/intl';
+// @BETA: Disabled for now
+// import { COLONY_HOME_ROUTE } from '~routes';
 import Select from '~v5/common/Fields/Select';
-import ButtonLink from '~v5/shared/Button/ButtonLink';
+// @BETA: Disabled for now
+// import ButtonLink from '~v5/shared/Button/ButtonLink';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';
@@ -16,6 +19,17 @@ import { tabList } from './consts';
 import { UserHubTabs } from './types';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
+
+const MSG = defineMessages({
+  buttonYourDashboard: {
+    id: `${displayName}.buttonYourDashboard`,
+    defaultMessage: 'Your dashboard',
+  },
+  titleColonyOverview: {
+    id: `${displayName}.titleColonyOverview`,
+    defaultMessage: 'Your Colony overview',
+  },
+});
 
 const UserHub: FC = () => {
   const isMobile = useMobile();
@@ -29,11 +43,12 @@ const UserHub: FC = () => {
     setSelectedTab(UserHubTabs.Transactions);
   }, []);
 
-  const dashboardButton = (
-    <ButtonLink to={COLONY_HOME_ROUTE} mode="primarySolid" className="w-full">
-      {formatText({ id: 'your.dashboard' })}
-    </ButtonLink>
-  );
+  // @BETA: Disabled for now
+  // const dashboardButton = (
+  //   <ButtonLink to={COLONY_HOME_ROUTE} mode="primarySolid" className="w-full">
+  //     {formatText(MSG.buttonYourDashboard)}
+  //   </ButtonLink>
+  // );
 
   return (
     <div
@@ -57,7 +72,7 @@ const UserHub: FC = () => {
             <div>
               <TitleLabel
                 className="pb-5"
-                text={formatText({ id: 'your.colony.overview' })}
+                text={formatText(MSG.titleColonyOverview)}
               />
               <ul className="-ml-4 w-[calc(100%+2rem)] flex flex-col">
                 {tabList.map(({ value, id, icon, label }) => (
@@ -99,7 +114,8 @@ const UserHub: FC = () => {
                 ))}
               </ul>
             </div>
-            <div className="mt-2">{dashboardButton}</div>
+            {/* @BETA: Disabled for now */}
+            {/* <div className="mt-2">{dashboardButton}</div> */}
           </>
         )}
       </div>
@@ -116,13 +132,14 @@ const UserHub: FC = () => {
           <TransactionsTab appearance={{ interactive: true }} />
         )}
       </div>
-      {isMobile && (
-        <div className="sticky bottom-0 right-0 left-0 w-full bg-base-white px-6 pb-6">
-          <div className="w-full border-t border-t-gray-200 pt-6">
-            {dashboardButton}
-          </div>
-        </div>
-      )}
+      {/* @BETA: Disabled for now */}
+      {/* {isMobile && ( */}
+      {/*   <div className="sticky bottom-0 right-0 left-0 w-full bg-base-white px-6 pb-6"> */}
+      {/*     <div className="w-full border-t border-t-gray-200 pt-6"> */}
+      {/*       {dashboardButton} */}
+      {/*     </div> */}
+      {/*   </div> */}
+      {/* )} */}
     </div>
   );
 };

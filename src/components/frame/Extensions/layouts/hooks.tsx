@@ -23,7 +23,8 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import type { UseCalamityBannerInfoReturnType } from './types';
 import {
   adminMenu,
-  agreementsMenu,
+  // @BETA: Disabled for now
+  // agreementsMenu,
   dashboardMainMenu,
   dashboardMenu,
   financesMenu,
@@ -145,12 +146,13 @@ export const useMainMenuItems = () => {
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
               }),
           },
-          {
-            key: '2',
-            label: formatText({ id: 'actions.manageReputation' }),
-            // @todo: update action type when manage reputation is implemented
-            onClick: () => {},
-          },
+          // @BETA: Disabled for now
+          // {
+          //   key: '2',
+          //   label: formatText({ id: 'actions.manageReputation' }),
+          //   // @todo: update action type when manage reputation is implemented
+          //   onClick: () => {},
+          // },
           {
             key: '3',
             label: formatText({ id: 'actions.editExistingTeam' }),
@@ -191,49 +193,49 @@ export const useMainMenuItems = () => {
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
               }),
           },
-          {
-            key: '2',
-            label: formatText({ id: 'actions.advancedPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
-              }),
-          },
-          {
-            key: '3',
-            label: formatText({ id: 'actions.streamingPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.STREAMING_PAYMENT,
-              }),
-            disabled: true,
-          },
-          {
-            key: '4',
-            label: formatText({ id: 'actions.splitPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.SPLIT_PAYMENT,
-              }),
-          },
-          {
-            key: '5',
-            label: formatText({ id: 'actions.batchPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.BATCH_PAYMENT,
-              }),
-            disabled: true,
-          },
-          {
-            key: '6',
-            label: formatText({ id: 'actions.stagedPayment' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.STAGED_PAYMENT,
-              }),
-            disabled: true,
-          },
+          // {
+          //   key: '2',
+          //   label: formatText({ id: 'actions.advancedPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
+          //     }),
+          // },
+          // {
+          //   key: '3',
+          //   label: formatText({ id: 'actions.streamingPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.STREAMING_PAYMENT,
+          //     }),
+          //   disabled: true,
+          // },
+          // {
+          //   key: '4',
+          //   label: formatText({ id: 'actions.splitPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.SPLIT_PAYMENT,
+          //     }),
+          // },
+          // {
+          //   key: '5',
+          //   label: formatText({ id: 'actions.batchPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.BATCH_PAYMENT,
+          //     }),
+          //   disabled: true,
+          // },
+          // {
+          //   key: '6',
+          //   label: formatText({ id: 'actions.stagedPayment' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.STAGED_PAYMENT,
+          //     }),
+          //   disabled: true,
+          // },
           {
             key: '7',
             label: formatText({ id: 'actions.transferFunds' }),
@@ -261,38 +263,39 @@ export const useMainMenuItems = () => {
         ],
       },
     },
-    {
-      key: '5',
-      iconName: 'handshake',
-      label: formatText({ id: 'navigation.agreements' }),
-      isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
-      secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.agreements.title' }),
-        content: agreementsMenu,
-        description: formatText({ id: 'navigation.agreements.description' }),
-      },
-      relatedActionsProps: {
-        title: formatText({ id: 'navigation.relatedActions' }),
-        items: [
-          {
-            key: '1',
-            label: formatText({ id: 'actions.createAgreement' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
-              }),
-          },
-          {
-            key: '2',
-            label: formatText({ id: 'actions.simpleDiscussion' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
-              }),
-          },
-        ],
-      },
-    },
+    // @BETA: Disabled for now
+    // {
+    //   key: '5',
+    //   iconName: 'handshake',
+    //   label: formatText({ id: 'navigation.agreements' }),
+    //   isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
+    //   secondLevelMenuProps: {
+    //     title: formatText({ id: 'navigation.agreements.title' }),
+    //     content: agreementsMenu,
+    //     description: formatText({ id: 'navigation.agreements.description' }),
+    //   },
+    //   relatedActionsProps: {
+    //     title: formatText({ id: 'navigation.relatedActions' }),
+    //     items: [
+    //       {
+    //         key: '1',
+    //         label: formatText({ id: 'actions.createAgreement' }),
+    //         onClick: () =>
+    //           toggleActionSidebarOn({
+    //             [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+    //           }),
+    //       },
+    //       {
+    //         key: '2',
+    //         label: formatText({ id: 'actions.simpleDiscussion' }),
+    //         onClick: () =>
+    //           toggleActionSidebarOn({
+    //             [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
+    //           }),
+    //       },
+    //     ],
+    //   },
+    // },
     {
       key: '6',
       iconName: 'gear-six',
@@ -322,14 +325,15 @@ export const useMainMenuItems = () => {
                 [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
               }),
           },
-          {
-            key: '3',
-            label: formatText({ id: 'actions.enterRecoveryMode' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.ENTER_RECOVERY_MODE,
-              }),
-          },
+          // @BETA: Disabled for now
+          // {
+          //   key: '3',
+          //   label: formatText({ id: 'actions.enterRecoveryMode' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.ENTER_RECOVERY_MODE,
+          //     }),
+          // },
           {
             key: '4',
             label: formatText({ id: 'actions.unlockToken' }),

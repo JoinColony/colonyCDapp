@@ -6,7 +6,8 @@ import { formatText } from '~utils/intl';
 import {
   COLONY_MEMBERS_ROUTE,
   COLONY_DETAILS_ROUTE,
-  COLONY_TEAMS_ROUTE,
+  // @BETA: Disabled for now
+  // COLONY_TEAMS_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
   COLONY_ACTIVITY_ROUTE,
   COLONY_BALANCES_ROUTE,
@@ -165,8 +166,7 @@ const ColonyHome = () => {
                   />
                 ),
                 contentClassName: 'w-full',
-                className:
-                  'flex-col p-6 bg-base-white min-h-[11.25rem] sm:cursor-pointer',
+                className: 'flex-col p-6 bg-base-white min-h-[11.25rem]',
                 href: objective ? COLONY_DETAILS_ROUTE : undefined,
                 onClick: openSidebar,
               },
@@ -261,8 +261,9 @@ const ColonyHome = () => {
                   </div>
                 ),
                 className:
-                  'flex-col items-start p-6 bg-base-white min-h-[12.5rem] sm:cursor-pointer sm:hover:text-gray-900',
-                href: allTeams?.length ? COLONY_TEAMS_ROUTE : undefined,
+                  'flex-col items-start p-6 bg-base-white min-h-[12.5rem] sm:hover:text-gray-900',
+                // @BETA: Disabled for now
+                // href: allTeams?.length ? COLONY_TEAMS_ROUTE : undefined,
               },
               {
                 key: '3',
@@ -305,8 +306,7 @@ const ColonyHome = () => {
                   />
                 ),
                 contentClassName: 'w-full',
-                className:
-                  'flex-col p-6 bg-base-white min-h-[11.25rem] sm:cursor-pointer',
+                className: 'flex-col p-6 bg-base-white min-h-[11.25rem]',
                 href: agreements ? COLONY_AGREEMENTS_ROUTE : undefined,
               },
             ]}

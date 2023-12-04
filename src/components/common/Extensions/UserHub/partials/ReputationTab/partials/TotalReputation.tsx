@@ -39,14 +39,14 @@ const TotalReputation: FC<TotalReputationProps> = ({
     <div className="border-b border-gray-200 pt-6">
       <div className="flex items-center justify-between">
         <TitleLabel text={formatMessage({ id: 'reputation.in.colony' })} />
-        {/* @TODO: add action */}
-        <button
-          type="button"
-          aria-label={formatMessage({ id: 'ariaLabel.viewAll' })}
-          className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal"
-        >
-          {formatMessage({ id: 'view.all' })}
-        </button>
+        {/* @BETA: add action */}
+        {/* <button */}
+        {/*   type="button" */}
+        {/*   aria-label={formatMessage({ id: 'ariaLabel.viewAll' })} */}
+        {/*   className="text-blue-400 text-4 hover:text-gray-900 transition-all duration-normal" */}
+        {/* > */}
+        {/*   {formatMessage({ id: 'view.all' })} */}
+        {/* </button> */}
       </div>
       <div className="flex flex-col gap-4 pt-2 pb-6">
         <div className={styles.row}>

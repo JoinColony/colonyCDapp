@@ -63,9 +63,7 @@ const WidgetBox: FC<WidgetBoxProps> = ({
       {content}
     </Link>
   ) : (
-    <div className={clsx(className, wrapperClassName, hoverStyles)}>
-      {content}
-    </div>
+    <div className={clsx(className, wrapperClassName)}>{content}</div>
   );
 };
 

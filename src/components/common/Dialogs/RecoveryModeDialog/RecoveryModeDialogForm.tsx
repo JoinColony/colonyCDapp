@@ -10,14 +10,10 @@ import {
   DialogHeading,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-import PermissionsLabel from '~shared/PermissionsLabel';
-import ExternalLink from '~shared/ExternalLink';
 
 import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode } from '~utils/checks';
-
-import { RECOVERY_HELP } from '~constants/externalUrls';
 
 import { NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
 
@@ -30,28 +26,12 @@ const MSG = defineMessages({
     id: `${displayName}.title`,
     defaultMessage: 'Enter Recovery mode',
   },
-  recoveryModeDescription: {
-    id: `${displayName}.recoveryModeDescription`,
-    defaultMessage: `If you believe that something dangerous is happening in
-    your colony (e.g. it is under attack), recovery mode will disable the colony
-    and prevent further activity until the issue has been overcome.`,
-  },
-  leavingRecoveryModeDescription: {
-    id: `${displayName}.leavingRecoveryModeDescription`,
-    defaultMessage: `
-    Leaving recovery requires the approval of a majority of members
-    holding the {roleRequired} permission. <a>Learn more</a>`,
-  },
   annotation: {
     id: `${displayName}.annotation`,
     defaultMessage:
       'Explain why you’re putting this colony into recovery mode (optional)',
   },
 });
-
-const HelpLink = (chunks: React.ReactNode[]) => (
-  <ExternalLink href={RECOVERY_HELP}>{chunks}</ExternalLink>
-);
 
 const RecoveryModeDialogForm = ({
   back,
@@ -91,24 +71,11 @@ const RecoveryModeDialogForm = ({
         </DialogSection>
       )}
       <DialogSection>
-        <FormattedMessage {...MSG.recoveryModeDescription} />
+        <FormattedMessage id="advancedPage.recovery.description" />
       </DialogSection>
       <DialogSection appearance={{ theme: 'sidePadding' }}>
         <div className={styles.leavingRecoveryMessage}>
-          <FormattedMessage
-            {...MSG.leavingRecoveryModeDescription}
-            values={{
-              roleRequired: (
-                <PermissionsLabel
-                  permission={ColonyRole.Recovery}
-                  name={{
-                    id: `role.${ColonyRole.Recovery}`,
-                  }}
-                />
-              ),
-              a: HelpLink,
-            }}
-          />
+          <FormattedMessage id="advancedPage.recovery.notification" />
         </div>
       </DialogSection>
       <DialogSection>

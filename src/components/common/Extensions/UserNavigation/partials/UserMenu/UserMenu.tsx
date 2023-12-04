@@ -1,11 +1,12 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 
+// @BETA: Disabled for now
+// import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import { useAppContext, useTablet } from '~hooks';
+import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
-import Icon from '~shared/Icon';
-import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
 import Link from '~v5/shared/Link';
@@ -13,10 +14,10 @@ import TitleLabel from '~v5/shared/TitleLabel';
 
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
 import UserSubmenu from '../UserSubmenu';
-
-import styles from './UserMenu.module.css';
 import { userMenuItems } from './consts';
 import { UserMenuProps } from './types';
+
+import styles from './UserMenu.module.css';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -39,7 +40,7 @@ const UserMenu: FC<UserMenuProps> = ({
       tooltipProps={tooltipProps}
       withTooltipStyles={!isTablet}
       classNames={clsx(
-        'w-full px-0 py-6 bg-base-white md:rounded-lg md:border md:border-gray-100 md:max-w-[20.125rem] md:shadow-default',
+        'w-full p-6 bg-base-white md:rounded-lg md:border md:border-gray-100 md:max-w-[20.125rem] md:shadow-default',
         {
           '!translate-y-0 !top-full h-[calc(100dvh-var(--top-content-height))] overflow-auto':
             isTablet,
@@ -53,19 +54,17 @@ const UserMenu: FC<UserMenuProps> = ({
         })}
       >
         {wallet ? (
-          <div className="px-6">
-            <WalletConnectedTopMenu
-              userName={
-                profile?.displayName ??
-                splitWalletAddress(user?.walletAddress ?? '')
-              }
-              isVerified={isVerified}
-              walletAddress={wallet.address}
-              avatar={profile?.thumbnail || profile?.avatar || ''}
-            />
-          </div>
+          <WalletConnectedTopMenu
+            userName={
+              profile?.displayName ??
+              splitWalletAddress(user?.walletAddress ?? '')
+            }
+            isVerified={isVerified}
+            walletAddress={wallet.address}
+            avatar={profile?.thumbnail || profile?.avatar || ''}
+          />
         ) : (
-          <div className="px-6">
+          <>
             <div className={styles.mobileButtons}>
               <Button
                 mode="tertiary"
@@ -91,9 +90,9 @@ const UserMenu: FC<UserMenuProps> = ({
                 {formatText({ id: 'connectWallet' })}
               </Button>
             </div>
-          </div>
+          </>
         )}
-        <div className="w-full px-6 pb-4 mb-6 border-b border-b-gray-200 sm:pb-3">
+        <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3">
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
             {userMenuItems.map(({ id, link, icon, name: itemName }) => (
@@ -122,9 +121,9 @@ const UserMenu: FC<UserMenuProps> = ({
             ))}
           </ul>
         </div>
-        <div className="px-6">
+        <div className="">
           {wallet && (
-            <div className="w-full mb-4 sm:mb-3">
+            <div>
               <TitleLabel text={formatText({ id: 'userMenu.other' })} />
               <div className="navigation-link">
                 <Icon name="plugs" appearance={{ size: iconSize }} />
@@ -138,7 +137,10 @@ const UserMenu: FC<UserMenuProps> = ({
               </div>
             </div>
           )}
-          <ThemeSwitcher />
+          {/* @BETA: Disabled for now */}
+          {/* <div className="mt-4 sm:mt-3"> */}
+          {/*   <ThemeSwitcher /> */}
+          {/* </div> */}
         </div>
       </div>
       <div

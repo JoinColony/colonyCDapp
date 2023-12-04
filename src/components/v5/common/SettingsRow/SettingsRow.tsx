@@ -27,7 +27,7 @@ const SettingsRow = <
   const { formatMessage } = useIntl();
 
   return (
-    <div className="py-6 flex items-start justify-between">
+    <div className="flex items-start justify-between">
       <div>
         <div className="flex items-center mb-1">
           <h5 className="text-1 mr-1.5">{formatMessage(title)}</h5>

@@ -7,7 +7,8 @@ import Input from '~v5/common/Fields/Input';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import Switch from '~v5/common/Fields/Switch';
+// @BETA: Disabled for now
+// import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { LANDING_PAGE_ROUTE } from '~routes';
@@ -119,84 +120,85 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
             />
           </div>
         </div>
-        <span className="divider" />
-        <h5 className="heading-5">
-          {formatText({
-            id: 'userPreferencesPage.notificationPreferences',
-          })}
-        </h5>
-        <div className={styles.row}>
-          <LeftColumn
-            fieldTitle={{ id: 'field.discord' }}
-            fieldDescription={{ id: 'description.discord' }}
-          />
-          <Button
-            mode="tertiary"
-            iconName="discord-logo"
-            iconSize="small"
-            text={{ id: 'button.connectDiscord' }}
-          />
-        </div>
-        <div className={styles.switchRow}>
-          <LeftColumn
-            fieldTitle={{ id: 'field.browserNotification' }}
-            fieldDescription={{ id: 'description.browserNotification' }}
-          />
-          <Switch id="browser-notification" />
-        </div>
-        <div className={styles.switchRow}>
-          <LeftColumn
-            fieldTitle={{ id: 'field.emailNotification' }}
-            fieldDescription={{ id: 'description.emailNotification' }}
-          />
-          <Switch id="email-notification" />
-        </div>
-        <span className="divider" />
-        <h5 className="heading-5">
-          {formatText({
-            id: 'userPreferencesPage.notificationFor',
-          })}
-        </h5>
-        <div className={styles.switchRow}>
-          <LeftColumn
-            fieldTitle={{ id: 'field.mentionsNotification' }}
-            fieldDescription={{ id: 'description.mentionsNotification' }}
-          />
-          <Switch id="mentions" />
-        </div>
-        <div className={styles.switchRow}>
-          <LeftColumn
-            fieldTitle={{ id: 'field.disableNotification' }}
-            fieldDescription={{ id: 'description.disableNotification' }}
-          />
-          <Switch id="disable-notifications" />
-        </div>
-        <span className="divider" />
-        <h5 className="heading-5">
-          {formatText({
-            id: 'userPreferencesPage.displayPreferences',
-          })}
-        </h5>
-        <div className={styles.switchRow}>
-          <LeftColumn
-            fieldTitle={{ id: 'field.display' }}
-            fieldDescription={{ id: 'description.display' }}
-          />
-          <Switch id="display" />
-        </div>
-        <span className="divider" />
-        <div className={styles.row}>
-          <LeftColumn
-            fieldTitle={{ id: 'field.switchAccount' }}
-            fieldDescription={{ id: 'description.switchAccount' }}
-          />
-          <Button
-            mode="tertiary"
-            iconName="user-switch"
-            iconSize="small"
-            text={{ id: 'button.switchAccount' }}
-          />
-        </div>
+        {/* @BETA: Disabled for now */}
+        {/* <span className="divider" /> */}
+        {/* <h5 className="heading-5"> */}
+        {/*   {formatText({ */}
+        {/*     id: 'userPreferencesPage.notificationPreferences', */}
+        {/*   })} */}
+        {/* </h5> */}
+        {/* <div className={styles.row}> */}
+        {/*   <LeftColumn */}
+        {/*     fieldTitle={{ id: 'field.discord' }} */}
+        {/*     fieldDescription={{ id: 'description.discord' }} */}
+        {/*   /> */}
+        {/*   <Button */}
+        {/*     mode="tertiary" */}
+        {/*     iconName="discord-logo" */}
+        {/*     iconSize="small" */}
+        {/*     text={{ id: 'button.connectDiscord' }} */}
+        {/*   /> */}
+        {/* </div> */}
+        {/* <div className={styles.switchRow}> */}
+        {/*   <LeftColumn */}
+        {/*     fieldTitle={{ id: 'field.browserNotification' }} */}
+        {/*     fieldDescription={{ id: 'description.browserNotification' }} */}
+        {/*   /> */}
+        {/*   <Switch id="browser-notification" /> */}
+        {/* </div> */}
+        {/* <div className={styles.switchRow}> */}
+        {/*   <LeftColumn */}
+        {/*     fieldTitle={{ id: 'field.emailNotification' }} */}
+        {/*     fieldDescription={{ id: 'description.emailNotification' }} */}
+        {/*   /> */}
+        {/*   <Switch id="email-notification" /> */}
+        {/* </div> */}
+        {/* <span className="divider" /> */}
+        {/* <h5 className="heading-5"> */}
+        {/*   {formatText({ */}
+        {/*     id: 'userPreferencesPage.notificationFor', */}
+        {/*   })} */}
+        {/* </h5> */}
+        {/* <div className={styles.switchRow}> */}
+        {/*   <LeftColumn */}
+        {/*     fieldTitle={{ id: 'field.mentionsNotification' }} */}
+        {/*     fieldDescription={{ id: 'description.mentionsNotification' }} */}
+        {/*   /> */}
+        {/*   <Switch id="mentions" /> */}
+        {/* </div> */}
+        {/* <div className={styles.switchRow}> */}
+        {/*   <LeftColumn */}
+        {/*     fieldTitle={{ id: 'field.disableNotification' }} */}
+        {/*     fieldDescription={{ id: 'description.disableNotification' }} */}
+        {/*   /> */}
+        {/*   <Switch id="disable-notifications" /> */}
+        {/* </div> */}
+        {/* <span className="divider" /> */}
+        {/* <h5 className="heading-5"> */}
+        {/*   {formatText({ */}
+        {/*     id: 'userPreferencesPage.displayPreferences', */}
+        {/*   })} */}
+        {/* </h5> */}
+        {/* <div className={styles.switchRow}> */}
+        {/*   <LeftColumn */}
+        {/*     fieldTitle={{ id: 'field.display' }} */}
+        {/*     fieldDescription={{ id: 'description.display' }} */}
+        {/*   /> */}
+        {/*   <Switch id="display" /> */}
+        {/* </div> */}
+        {/* <span className="divider" /> */}
+        {/* <div className={styles.row}> */}
+        {/*   <LeftColumn */}
+        {/*     fieldTitle={{ id: 'field.switchAccount' }} */}
+        {/*     fieldDescription={{ id: 'description.switchAccount' }} */}
+        {/*   /> */}
+        {/*   <Button */}
+        {/*     mode="tertiary" */}
+        {/*     iconName="user-switch" */}
+        {/*     iconSize="small" */}
+        {/*     text={{ id: 'button.switchAccount' }} */}
+        {/*   /> */}
+        {/* </div> */}
       </div>
     </form>
   );

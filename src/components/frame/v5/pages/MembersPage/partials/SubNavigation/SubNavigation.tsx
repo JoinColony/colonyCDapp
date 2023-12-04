@@ -11,44 +11,48 @@ import { SubNavigationProps } from './types';
 
 const displayName = 'v5.pages.MembersPage.partials.SubNavigation';
 
-const SubNavigation: FC<SubNavigationProps> = ({ onManageMembersClick }) => {
-  const { handleClick, isCopyTriggered } = useMembersSubNavigation();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+const SubNavigation: FC<SubNavigationProps> = () =>
+  // @BETA: Hide for now
+  // { onManageMembersClick }
+  {
+    const { handleClick, isCopyTriggered } = useMembersSubNavigation();
+    const {
+      actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+    } = useActionSidebarContext();
 
-  return (
-    <ul>
-      <SubNavigationItem
-        iconName="share-network"
-        title="members.subnav.invite"
-        shouldBeTooltipVisible
-        tooltipText={formatText({ id: 'linkCopied' })}
-        onClick={handleClick}
-        isCopyTriggered={isCopyTriggered}
-      />
-      <SubNavigationItem
-        iconName="lock-key"
-        title="members.subnav.permissions"
-        onClick={() =>
-          toggleActionSidebarOn({
-            [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
-          })
-        }
-      />
-      <SubNavigationItem
-        iconName="pencil"
-        title="members.subnav.manage"
-        onClick={onManageMembersClick}
-      />
-      {/* Action not ready yet */}
-      {/* <SubNavigationItem
+    return (
+      <ul>
+        <SubNavigationItem
+          iconName="share-network"
+          title="members.subnav.invite"
+          shouldBeTooltipVisible
+          tooltipText={formatText({ id: 'linkCopied' })}
+          onClick={handleClick}
+          isCopyTriggered={isCopyTriggered}
+        />
+        <SubNavigationItem
+          iconName="lock-key"
+          title="members.subnav.permissions"
+          onClick={() =>
+            toggleActionSidebarOn({
+              [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+            })
+          }
+        />
+        {/* @BETA: Hide for now */}
+        {/* <SubNavigationItem */}
+        {/*   iconName="pencil" */}
+        {/*   title="members.subnav.manage" */}
+        {/*   onClick={onManageMembersClick} */}
+        {/* /> */}
+        {/* @BETA: Action not ready yet */}
+        {/* <SubNavigationItem
         iconName="address-book"
         title="members.subnav.verified"
       /> */}
-    </ul>
-  );
-};
+      </ul>
+    );
+  };
 
 SubNavigation.displayName = displayName;
 

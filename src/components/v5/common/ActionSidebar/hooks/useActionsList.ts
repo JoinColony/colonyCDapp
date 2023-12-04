@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
-import { ColonyRole } from '@colony/colony-js';
+// @BETA: Disabled for now
+// import { ColonyRole } from '@colony/colony-js';
 import { ACTION } from '~constants/actions';
 import {
   useAppContext,
@@ -13,10 +14,12 @@ import { getAllUserRoles } from '~transformers';
 import {
   canAdminister,
   canArchitect,
-  canEnterRecoveryMode,
+  // @BETA: Disabled for now
+  // canEnterRecoveryMode,
   canFund,
   hasRoot,
-  userHasRole,
+  // @BETA: Disabled for now
+  // userHasRole,
 } from '~utils/checks';
 
 export const useActionsList = () => {
@@ -32,8 +35,9 @@ export const useActionsList = () => {
 
   const hasRootPermission = userHasAccountRegistered && hasRoot(allUserRoles);
 
-  const canEnterRecovery =
-    userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
+  // @BETA: Disabled for now
+  // const canEnterRecovery =
+  //   userHasAccountRegistered && canEnterRecoveryMode(allUserRoles);
   const canEnterPermissionManagement =
     (userHasAccountRegistered && canArchitect(allUserRoles)) ||
     hasRootPermission;
@@ -51,13 +55,14 @@ export const useActionsList = () => {
     ? colony?.status?.nativeToken?.unlockable
     : hasRoot(allUserRoles) && colony?.status?.nativeToken?.unlockable;
   const canManageTokens = hasRoot(allUserRoles);
-  const canSmiteReputation =
-    userHasAccountRegistered &&
-    (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
-      isVotingReputationEnabled);
-  const canAwardReputation =
-    userHasAccountRegistered &&
-    (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
+  // @BETA: Disabled for now
+  // const canSmiteReputation =
+  //   userHasAccountRegistered &&
+  //   (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
+  //     isVotingReputationEnabled);
+  // const canAwardReputation =
+  //   userHasAccountRegistered &&
+  //   (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
 
   return useMemo(
     (): SearchSelectOptionProps[] => [
@@ -74,31 +79,32 @@ export const useActionsList = () => {
                 ? 'actionSidebar.missingPermissions.payment'
                 : undefined,
           },
-          {
-            label: { id: 'actions.advancedPayment' },
-            value: ACTION.ADVANCED_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.batchPayment' },
-            value: ACTION.BATCH_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.splitPayment' },
-            value: ACTION.SPLIT_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.stagedPayment' },
-            value: ACTION.STAGED_PAYMENT,
-            isDisabled: true,
-          },
-          {
-            label: { id: 'actions.streamingPayment' },
-            value: ACTION.STREAMING_PAYMENT,
-            isDisabled: true,
-          },
+          // @BETA: Disabled for now
+          // {
+          //   label: { id: 'actions.advancedPayment' },
+          //   value: ACTION.ADVANCED_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.batchPayment' },
+          //   value: ACTION.BATCH_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.splitPayment' },
+          //   value: ACTION.SPLIT_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.stagedPayment' },
+          //   value: ACTION.STAGED_PAYMENT,
+          //   isDisabled: true,
+          // },
+          // {
+          //   label: { id: 'actions.streamingPayment' },
+          //   value: ACTION.STREAMING_PAYMENT,
+          //   isDisabled: true,
+          // },
         ],
       },
       {
@@ -184,14 +190,15 @@ export const useActionsList = () => {
         isAccordion: true,
         title: { id: 'actions.admin' },
         options: [
-          {
-            label: { id: 'actions.manageReputation' },
-            value: ACTION.MANAGE_REPUTATION,
-            missingPermissions:
-              !canAwardReputation || !canSmiteReputation
-                ? 'actionSidebar.missingPermissions.manageReputation'
-                : undefined,
-          },
+          // @BETA: Disabled for now
+          // {
+          //   label: { id: 'actions.manageReputation' },
+          //   value: ACTION.MANAGE_REPUTATION,
+          //   missingPermissions:
+          //     !canAwardReputation || !canSmiteReputation
+          //       ? 'actionSidebar.missingPermissions.manageReputation'
+          //       : undefined,
+          // },
           {
             label: { id: 'actions.managePermissions' },
             value: ACTION.MANAGE_PERMISSIONS,
@@ -219,13 +226,14 @@ export const useActionsList = () => {
               ? 'actionSidebar.missingPermissions.root'
               : undefined,
           },
-          {
-            label: { id: 'actions.enterRecoveryMode' },
-            value: ACTION.ENTER_RECOVERY_MODE,
-            missingPermissions: !canEnterRecovery
-              ? 'actionSidebar.missingPermissions.recovery'
-              : undefined,
-          },
+          // @BETA: Disabled for now
+          // {
+          //   label: { id: 'actions.enterRecoveryMode' },
+          //   value: ACTION.ENTER_RECOVERY_MODE,
+          //   missingPermissions: !canEnterRecovery
+          //     ? 'actionSidebar.missingPermissions.recovery'
+          //     : undefined,
+          // },
           {
             label: { id: 'actions.manageColonyObjectives' },
             value: ACTION.MANAGE_COLONY_OBJECTIVES,
@@ -239,14 +247,17 @@ export const useActionsList = () => {
       },
     ],
     [
-      canAwardReputation,
+      // @BETA: Disabled for now
+      // canAwardReputation,
       canCreateEditDomain,
       canCreatePayment,
       canEnterPermissionManagement,
-      canEnterRecovery,
+      // @BETA: Disabled for now
+      // canEnterRecovery,
       canManageTokens,
       canMoveFunds,
-      canSmiteReputation,
+      // @BETA: Disabled for now
+      // canSmiteReputation,
       canUserMintNativeToken,
       canUserUnlockNativeToken,
       hasRootPermission,

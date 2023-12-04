@@ -21,16 +21,14 @@ const FeesForm = () => {
       onSubmit={handleSubmit}
     >
       {({ register }) => (
-        <div className="border-b border-gray-200">
-          <SettingsRow
-            title={{ id: 'advancedSettings.fees.title' }}
-            description={{ id: 'advancedSettings.fees.description' }}
-            tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
-            id="metatransactionsEnabled"
-            onChange={handleFeesOnChange}
-            register={register}
-          />
-        </div>
+        <SettingsRow
+          title={{ id: 'advancedSettings.fees.title' }}
+          description={{ id: 'advancedSettings.fees.description' }}
+          tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
+          id="metatransactionsEnabled"
+          onChange={handleFeesOnChange}
+          register={register}
+        />
       )}
     </Form>
   );
