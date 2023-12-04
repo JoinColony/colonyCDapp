@@ -114,7 +114,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <div className="mt-6">
             <NotificationBanner
               status="warning"
-              icon="check-circle"
+              icon="warning-circle"
               description={formatMessage(MSG.noReputationError)}
               callToAction={
                 <Link to="https://docs.colony.io/use/reputation">

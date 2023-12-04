@@ -14,7 +14,7 @@ import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
 import { findDomainByNativeId } from '~utils/domains';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { TransferFundsFormValues } from '~v5/common/ActionSidebar/partials/forms/TransferFundsForm/consts';
+import { TransferFundsFormValues } from '~v5/common/ActionSidebar/partials/forms/TransferFundsForm/hooks';
 
 export const getTransferFundsDialogPayload = (
   colony: Colony,
