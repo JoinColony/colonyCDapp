@@ -109,9 +109,9 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
    * Handle wallet connection
    */
   const connectWallet = useCallback(async () => {
-    setWalletConnecting(true);
     try {
       await setupUserContext(undefined);
+      setWalletConnecting(true);
       updateWallet();
     } catch (error) {
       console.error('Could not connect wallet', error);
