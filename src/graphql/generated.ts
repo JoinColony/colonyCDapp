@@ -8842,7 +8842,7 @@ export type GetTotalColonyDomainActionsQueryVariables = Exact<{
 }>;
 
 
-export type GetTotalColonyDomainActionsQuery = { __typename?: 'Query', searchColonyActions?: { __typename?: 'SearchableColonyActionConnection', aggregateItems: Array<{ __typename?: 'SearchableAggregateResult', result?: { __typename: 'SearchableAggregateBucketResult', buckets?: Array<{ __typename?: 'SearchableAggregateBucketResultItem', key: string, doc_count: number } | null> | null } | { __typename?: 'SearchableAggregateScalarResult' } | null } | null> } | null };
+export type GetTotalColonyDomainActionsQuery = { __typename?: 'Query', searchColonyActions?: { __typename?: 'SearchableColonyActionConnection', aggregateItems: Array<{ __typename?: 'SearchableAggregateResult', result?: { __typename: 'SearchableAggregateBucketResult', buckets?: Array<{ __typename?: 'SearchableAggregateBucketResultItem', key: string, docCount: number } | null> | null } | { __typename?: 'SearchableAggregateScalarResult' } | null } | null> } | null };
 
 export type SearchActionsQueryVariables = Exact<{
   nextToken?: InputMaybe<Scalars['String']>;
@@ -11168,7 +11168,7 @@ export const GetTotalColonyDomainActionsDocument = gql`
           __typename
           buckets {
             key
-            doc_count
+            docCount: doc_count
           }
         }
       }

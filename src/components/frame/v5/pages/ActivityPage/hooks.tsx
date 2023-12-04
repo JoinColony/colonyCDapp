@@ -56,7 +56,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
     domainData?.searchColonyActions?.aggregateItems[0]?.result?.buckets ?? [];
 
   const domainWithMaxActions = domainsActionCount.reduce(
-    (max, item) => (item.doc_count > (max?.doc_count ?? 0) ? item : max),
+    (max, item) => (item.docCount > (max?.docCount ?? 0) ? item : max),
     null,
   );
 

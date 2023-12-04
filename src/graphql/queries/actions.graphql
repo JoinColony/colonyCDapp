@@ -60,7 +60,7 @@ query GetTotalColonyDomainActions($colonyId: ID!) {
           __typename
           buckets {
             key
-            doc_count
+            docCount: doc_count
           }
         }
       }
