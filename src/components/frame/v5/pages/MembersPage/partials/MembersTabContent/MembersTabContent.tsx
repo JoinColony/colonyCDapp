@@ -11,7 +11,6 @@ import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
 import { useMembersTabContentItems } from './hooks';
 import { MembersTabContentProps } from './types';
-import { notNull } from '~utils/arrays';
 
 const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
   items: itemsProp,
@@ -23,20 +22,12 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
   emptyContentProps,
 }) => {
   const items = useMembersTabContentItems(itemsProp);
-  const { colony } = useColonyContext();
-  const { colonyAddress } = colony || {};
+  const { colony, canInteractWithColony } = useColonyContext();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
   const { user } = useAppContext();
-  const { watchlist } = user || {};
-  const isInColony = !!watchlist?.items
-    ?.filter(notNull)
-    .find(
-      ({ colony: watchlistColony }) =>
-        watchlistColony.colonyAddress === colonyAddress,
-    );
 
   const showPlaceholderCard =
-    user && !withSimpleCards && isInColony && items.length < 12;
+    user && !withSimpleCards && canInteractWithColony && items.length < 12;
 
   const { name } = colony || {};
   const colonyURL = `${window.location.origin}/${name}`;
