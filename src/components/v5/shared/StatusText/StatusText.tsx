@@ -39,10 +39,8 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
       {withIcon && (
         <Icon
           name={iconNameProp || iconName[status]}
-          className={clsx(
-            iconClassName,
-            'h-[.875rem] w-[.875rem] flex-shrink-0',
-          )}
+          appearance={{ size: 'tiny' }}
+          className={clsx(iconClassName, 'flex-shrink-0')}
         />
       )}
       <p className={textClassName}>{children}</p>

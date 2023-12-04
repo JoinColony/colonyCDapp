@@ -4,7 +4,7 @@ import { DeepPartial } from 'utility-types';
 import { useWatch } from 'react-hook-form';
 
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
+import { mapPayload, pipe, withKey } from '~utils/actions';
 import { useColonyContext } from '~hooks';
 import { getUnlockTokenDialogPayload } from '~common/Dialogs/UnlockTokenDialog/helpers';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
@@ -40,11 +40,12 @@ export const useUnlockToken = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
+        withKey(colony?.colonyAddress || ''),
         mapPayload((payload: UnlockTokenFormValues) => {
           const values = {
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
-            annotationMessage: payload.annotation,
+            annotationMessage: payload.description,
           };
 
           if (colony) {
