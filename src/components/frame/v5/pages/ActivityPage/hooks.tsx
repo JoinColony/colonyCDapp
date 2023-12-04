@@ -49,14 +49,16 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
     },
   });
 
+  const domainCountsResult =
+    domainData?.searchColonyActions?.aggregateItems[0]?.result || {};
   const domainsActionCount =
-    // Buckets exists on this type but for some reason typescript is not
-    // recognising this
-    // @ts-ignore
-    domainData?.searchColonyActions?.aggregateItems[0]?.result?.buckets ?? [];
+    // eslint-disable-next-line no-underscore-dangle
+    domainCountsResult?.__typename === 'SearchableAggregateBucketResult'
+      ? domainCountsResult?.buckets?.filter(notNull) ?? []
+      : [];
 
   const domainWithMaxActions = domainsActionCount.reduce(
-    (max, item) => (item.docCount > (max?.docCount ?? 0) ? item : max),
+    (max, item) => (item.docCount > (max || 0) ? item : max),
     null,
   );
 

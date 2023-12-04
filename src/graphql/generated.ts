@@ -8842,7 +8842,7 @@ export type GetTotalColonyDomainActionsQueryVariables = Exact<{
 }>;
 
 
-export type GetTotalColonyDomainActionsQuery = { __typename?: 'Query', searchColonyActions?: { __typename?: 'SearchableColonyActionConnection', aggregateItems: Array<{ __typename?: 'SearchableAggregateResult', result?: { __typename: 'SearchableAggregateBucketResult', buckets?: Array<{ __typename?: 'SearchableAggregateBucketResultItem', key: string, docCount: number } | null> | null } | { __typename?: 'SearchableAggregateScalarResult' } | null } | null> } | null };
+export type GetTotalColonyDomainActionsQuery = { __typename?: 'Query', searchColonyActions?: { __typename?: 'SearchableColonyActionConnection', aggregateItems: Array<{ __typename?: 'SearchableAggregateResult', result?: { __typename?: 'SearchableAggregateBucketResult', typename: 'SearchableAggregateBucketResult', buckets?: Array<{ __typename?: 'SearchableAggregateBucketResultItem', key: string, docCount: number } | null> | null } | { __typename?: 'SearchableAggregateScalarResult' } | null } | null> } | null };
 
 export type SearchActionsQueryVariables = Exact<{
   nextToken?: InputMaybe<Scalars['String']>;
@@ -11165,7 +11165,7 @@ export const GetTotalColonyDomainActionsDocument = gql`
     aggregateItems {
       result {
         ... on SearchableAggregateBucketResult {
-          __typename
+          typename: __typename
           buckets {
             key
             docCount: doc_count
