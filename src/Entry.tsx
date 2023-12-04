@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
 import { getContext, ContextModule } from '~context';
-import {
-  getAuthExpirationTimeout,
-  deauthenticateWallet,
-  authenticateWallet,
-} from '~auth';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
@@ -31,33 +26,6 @@ interface Props {
 
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
-
-  /*
-   * @NOTE Attempt to trigger a auth refresh once the cookie expires
-   */
-  useEffect(() => {
-    let timeoutId;
-    const handleAuthExpiration = async () => {
-      const expirationTimeout = await getAuthExpirationTimeout();
-      if (expirationTimeout) {
-        timeoutId = setTimeout(async () => {
-          try {
-            /*
-             * @TODO This might throw a HTTP error
-             * Since by this point we might already be logged out
-             */
-            await deauthenticateWallet();
-          } catch (error) {
-            // silent
-          }
-          await authenticateWallet();
-          clearTimeout(timeoutId);
-        }, expirationTimeout);
-      }
-    };
-    handleAuthExpiration();
-    return () => clearTimeout(timeoutId);
-  }, []);
 
   return (
     <IntlProvider
