@@ -1,5 +1,7 @@
 const { utils } = require('ethers');
 
+const isDev = process.env.ENV === 'dev';
+
 // const basicTokenAbi = require('./basicTokenAbi.json');
 const { graphqlRequest } = require('./utils');
 
@@ -78,7 +80,7 @@ exports.handler = async (event) => {
         id: checksummedWalletAddress,
         displayNameChanged: new Date().toISOString(),
         meta: {
-          metatransactionsEnabled: true,
+          metatransactionsEnabled: !isDev,
         },
       },
     },
