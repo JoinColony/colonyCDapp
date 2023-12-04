@@ -229,7 +229,7 @@ function* colonyCreate({
      */
     yield all(
       transactionCreatedActions.map(({ meta: { id } }) =>
-        updateTransaction({ id, colonyAddress }),
+        updateTransaction({ id, colonyAddress, from: walletAddress }),
       ),
     );
 

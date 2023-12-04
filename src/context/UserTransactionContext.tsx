@@ -161,6 +161,7 @@ const useFailPendingTransactions = ({
                   input: {
                     id: transaction.id,
                     status: TransactionStatus.Failed,
+                    from: userAddress,
                   },
                 },
               });
@@ -174,7 +175,11 @@ const useFailPendingTransactions = ({
         // updates its status to failed.
         await updateTransaction({
           variables: {
-            input: { id: group[0].id, status: TransactionStatus.Failed },
+            input: {
+              id: group[0].id,
+              status: TransactionStatus.Failed,
+              from: userAddress,
+            },
           },
         });
       }
