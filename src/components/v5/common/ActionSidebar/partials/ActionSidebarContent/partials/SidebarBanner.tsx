@@ -2,17 +2,16 @@ import React, { FC } from 'react';
 
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Action } from '~constants/actions';
-import { useColonyContext, useFlatFormErrors } from '~hooks';
+import { useFlatFormErrors } from '~hooks';
 import {
   ACTION_TYPE_FIELD_NAME,
   useCreateActionTypeNotification,
+  useCreateActionTypeNotificationHref,
 } from '../../../consts';
 import { formatText } from '~utils/intl';
 import NotificationBanner from '~v5/shared/NotificationBanner';
 
 export const SidebarBanner: FC = () => {
-  const { colony } = useColonyContext();
-  const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
   const { formState } = useFormContext();
   const hasErrors = !formState.isValid && formState.isSubmitted;
   const selectedAction: Action | undefined = useWatch({
@@ -24,17 +23,23 @@ export const SidebarBanner: FC = () => {
 
   const actionTypeNotificationTitle =
     useCreateActionTypeNotification(selectedAction);
+  const actionTypeNofiticationHref =
+    useCreateActionTypeNotificationHref(selectedAction);
 
   if (actionTypeNotificationTitle) {
     return (
-      <div className="mt-6">
+      <div className="mt-7">
         <NotificationBanner
           status="error"
           icon="warning-circle"
           callToAction={
-            isNativeTokenUnlocked ? undefined : (
-              <button type="button">{formatText({ id: 'learn.more' })}</button>
-            )
+            <a
+              href={actionTypeNofiticationHref}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {formatText({ id: 'learn.more' })}
+            </a>
           }
         >
           {actionTypeNotificationTitle}
@@ -48,7 +53,7 @@ export const SidebarBanner: FC = () => {
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-7">
       <NotificationBanner
         status="error"
         icon="warning-circle"

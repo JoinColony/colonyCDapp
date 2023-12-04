@@ -1027,7 +1027,7 @@
     "actionSidebar.placeholder.teamName": "Enter team name",
     "actionSidebar.placeholder.purpose": "Enter short description",
     "actionSidebar.unlock.token.error": "This action is irreversible. Use with caution.",
-    "actionSidebar.unlocked.token": "This Colony's native token has already been unlocked",
+    "actionSidebar.unlocked.token": "This Colony's native token has already been unlocked and can be traded.",
     "actionSidebar.enterRecoveryMode.error": "This will disable the Colony and prevent any further activity until resolved.",
     "actionSidebar.fields.error": "Oops! Something went wrong. Please check highlighted fields and try again.",
     "actionSidebar.tooltip.actionType": "Identifies the type of action.",

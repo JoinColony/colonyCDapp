@@ -35,6 +35,21 @@ export const useCreateActionTypeNotification = (action: Action | undefined) => {
   }
 };
 
+export const useCreateActionTypeNotificationHref = (
+  action: Action | undefined,
+) => {
+  if (!action) {
+    return undefined;
+  }
+
+  switch (action) {
+    case ACTION.UNLOCK_TOKEN:
+      return 'https://docs.colony.io/use/managing-funds/unlock-token/';
+    default:
+      return undefined;
+  }
+};
+
 export const actionSidebarAnimation: Variants = {
   hidden: {
     x: '100%',
