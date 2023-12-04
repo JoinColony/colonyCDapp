@@ -3,7 +3,6 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import { ActionTypes } from '~redux';
-import { getFormAction } from '~utils/actions';
 import { useAppContext, useAsyncFunction, useColonyContext } from '~hooks';
 import { AnyExtensionData } from '~types';
 import NotificationBanner from '~v5/shared/NotificationBanner';
@@ -37,8 +36,6 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
   const { user } = useAppContext();
 
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
-  const errorAction = getFormAction(ActionTypes.EXTENSION_ENABLE, 'ERROR');
-  const successAction = getFormAction(ActionTypes.EXTENSION_ENABLE, 'SUCCESS');
   const userHasRoles = addressHasRoles({
     requiredRolesDomains: [Id.RootDomain],
     colony,
@@ -48,8 +45,8 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
 
   const asyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_ENABLE,
-    error: errorAction,
-    success: successAction,
+    error: ActionTypes.EXTENSION_ENABLE_ERROR,
+    success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
   });
 
   const handleEnableClick = async () => {
