@@ -2,7 +2,11 @@ import React, { useMemo } from 'react';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ACTION } from '~constants/actions';
-import { useActionSidebarContext, useMemberModalContext } from '~context';
+import {
+  useActionSidebarContext,
+  // @BETA: Disabled for now
+  // useMemberModalContext,
+} from '~context';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { getBlockExplorerLink } from '~utils/external';
@@ -15,7 +19,8 @@ import { MembersTabContentListItem } from './types';
 export const useMembersTabContentItems = (
   items: MembersTabContentListItem[],
 ) => {
-  const { setIsMemberModalOpen, setUser } = useMemberModalContext();
+  // @BETA: Disabled for now
+  // const { setIsMemberModalOpen, setUser } = useMemberModalContext();
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
   const {
@@ -34,15 +39,16 @@ export const useMembersTabContentItems = (
           meatBallMenuProps: {
             contentWrapperClassName: 'sm:min-w-[17.375rem]',
             items: [
-              {
-                key: '1',
-                icon: 'pencil',
-                label: formatText({ id: 'membersPage.memberNav.manageMember' }),
-                onClick: () => {
-                  setUser(userAvatarProps.user);
-                  setIsMemberModalOpen(true);
-                },
-              },
+              // @BETA: Disabled for now
+              // {
+              //   key: '1',
+              //   icon: 'pencil',
+              //   label: formatText({ id: 'membersPage.memberNav.manageMember' }),
+              //   onClick: () => {
+              //     setUser(userAvatarProps.user);
+              //     setIsMemberModalOpen(true);
+              //   },
+              // },
               {
                 key: '2',
                 icon: 'hand-coins',
@@ -114,8 +120,9 @@ export const useMembersTabContentItems = (
       handleClipboardCopy,
       isCopied,
       items,
-      setIsMemberModalOpen,
-      setUser,
+      // @BETA: Disabled for now
+      // setIsMemberModalOpen,
+      // setUser,
       toggleActionSidebarOn,
     ],
   );
