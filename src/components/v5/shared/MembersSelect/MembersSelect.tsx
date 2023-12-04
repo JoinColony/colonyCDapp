@@ -18,7 +18,7 @@ const MembersSelect: FC<MemberSelectProps> = ({
   defaultValue,
   ...rest
 }) => {
-  const { members, loadingContributors: loading } = useMemberContext();
+  const { members, loading } = useMemberContext();
   const [selectedMember, setSelectedMember] = useState<
     MembersSelectOption['value'] | undefined
   >(defaultValue || undefined);
@@ -29,18 +29,17 @@ const MembersSelect: FC<MemberSelectProps> = ({
         return result;
       }
 
-      if (!member.walletAddress || !member.profile) {
-        return result;
-      }
-
-      const { walletAddress, profile } = member;
+      const { contributorAddress } = member;
+      const { profile } = member.user || {};
 
       return [
         ...result,
         {
-          value: walletAddress || '',
-          label: profile?.displayName || walletAddress || '',
-          user: member,
+          value: contributorAddress,
+          label: profile?.displayName || contributorAddress,
+          avatar: profile?.thumbnail || profile?.avatar || '',
+          id: result.length,
+          showAvatar: true,
         },
       ];
     },
