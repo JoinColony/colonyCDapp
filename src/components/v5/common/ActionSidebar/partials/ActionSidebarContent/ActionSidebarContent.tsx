@@ -83,7 +83,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           `}
           message={false}
         />
-        <div className="text-gray-900 text-md flex gap-1">
+        <div className="text-gray-900 text-md flex gap-1 break-all">
           {descriptionMetadata}
         </div>
         <SidebarBanner />
@@ -158,7 +158,12 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
         'overflow-hidden': !transactionId,
       })}
     >
-      <div className="flex-grow pb-6 pt-8">
+      <div
+        className={clsx('flex-grow pb-6 pt-8', {
+          'w-full': !isMotion,
+          'w-full sm:w-[65%]': isMotion,
+        })}
+      >
         <ActionForm
           {...actionFormProps}
           className="flex flex-col h-full"
@@ -178,19 +183,20 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
       {transactionId && (
         <div
           className={`
-              w-full
-              md:w-[35%]
-              md:h-full
-              md:overflow-y-auto
-              px-6
-              py-8
-              border-b
-              border-b-gray-200
-              md:border-b-0
-              md:border-l
-              md:border-l-gray-200
-              bg-gray-25
-            `}
+            w-full
+            md:w-[35%]
+            md:h-full
+            md:overflow-y-auto
+            md:flex-shrink-0
+            px-6
+            p-8
+            border-b
+            border-b-gray-200
+            md:border-b-0
+            md:border-l
+            md:border-l-gray-200
+            bg-gray-25
+          `}
         >
           {isMotion ? (
             <Motions transactionId={transactionId} />

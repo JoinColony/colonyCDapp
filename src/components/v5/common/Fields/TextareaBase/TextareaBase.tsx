@@ -1,9 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { TextareaBaseProps } from './types';
 import { useStateClassNames } from '~v5/common/Fields/hooks';
 import { FIELD_STATE } from '~v5/common/Fields/consts';
+import { notMaybe } from '~utils/arrays';
+
+import { TextareaBaseProps } from './types';
 import useAutosizeTextArea from './hooks';
 
 const displayName = 'v5.common.Fields.TextareaBase';
@@ -17,8 +19,8 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
       value,
       stateClassNames: stateClassNamesProp,
       wrapperClassName,
-      maxCharNumber,
       message,
+      maxLength,
       ...rest
     },
     ref,
@@ -34,7 +36,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
     const textAreaRef = useAutosizeTextArea(value, ref);
 
     return (
-      <div className={wrapperClassName}>
+      <div className={clsx(wrapperClassName, 'w-full')}>
         <textarea
           rows={1}
           ref={textAreaRef}
@@ -49,14 +51,14 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
           value={value}
           {...rest}
         />
-        {state === FIELD_STATE.Error && maxCharNumber && (
+        {state === FIELD_STATE.Error && notMaybe(maxLength) && (
           <div
-            className={clsx('text-4 flex justify-end', {
+            className={clsx('text-4 flex justify-end absolute right-0', {
               'text-negative-400': state === FIELD_STATE.Error,
               'text-gray-500': state !== FIELD_STATE.Error,
             })}
           >
-            {typeof value === 'string' && value.length}/{maxCharNumber}
+            {typeof value === 'string' && value.length}/{maxLength}
           </div>
         )}
         {message}

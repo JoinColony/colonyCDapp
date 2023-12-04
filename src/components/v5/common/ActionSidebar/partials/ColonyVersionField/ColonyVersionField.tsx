@@ -19,7 +19,7 @@ const ColonyVersionField: FC = () => {
   return (
     <>
       <ActionFormRow
-        iconName="browser"
+        icon="browser"
         title={formatText({ id: 'actionSidebar.currentVersion' })}
         tooltips={{
           label: {
@@ -32,7 +32,7 @@ const ColonyVersionField: FC = () => {
         <span className="text-md">{currentVersion}</span>
       </ActionFormRow>
       <ActionFormRow
-        iconName="browsers"
+        icon="browsers"
         title={formatText({ id: 'actionSidebar.newVersion' })}
         tooltips={{
           label: {

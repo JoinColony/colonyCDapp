@@ -18,7 +18,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
   return (
     <>
       <ActionFormRow
-        iconName="users-three"
+        icon="users-three"
         fieldName="from"
         tooltips={{
           label: {
@@ -32,7 +32,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -53,7 +53,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {
@@ -67,7 +67,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="pencil"
+        icon="pencil"
         fieldName="description"
         // Tooltip disabled to experiment with improving user experience
         // tooltips={{

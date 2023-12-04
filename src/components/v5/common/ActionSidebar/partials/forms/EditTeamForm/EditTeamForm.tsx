@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
+import { PaintBucket } from 'phosphor-react';
 
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
@@ -31,7 +32,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="team"
         title={formatText({ id: 'actionSidebar.team' })}
         tooltips={{
@@ -51,7 +52,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <ActionFormRow
         fieldName="teamName"
-        iconName="user-list"
+        icon="user-list"
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -71,7 +72,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="rocket"
+        icon="rocket"
         fieldName="domainPurpose"
         title={formatText({ id: 'actionSidebar.teamPurpose' })}
         isMultiLine
@@ -89,11 +90,11 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           placeholder={formatText({
             id: 'actionSidebar.placeholder.purpose',
           })}
-          maxCharNumber={MAX_DOMAIN_PURPOSE_LENGTH}
+          maxLength={MAX_DOMAIN_PURPOSE_LENGTH}
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="paint"
+        icon={<PaintBucket size={12} />}
         fieldName="domainColor"
         title={formatText({ id: 'actionSidebar.teamColour' })}
         tooltips={{
@@ -107,7 +108,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamColourField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -130,7 +131,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       {selectedDecisionMethod &&
         selectedDecisionMethod === DecisionMethod.Reputation && (
           <ActionFormRow
-            iconName="house-line"
+            icon="house-line"
             fieldName="createdIn"
             tooltips={{
               label: {

@@ -23,7 +23,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        iconName="coins"
+        icon="coins"
         fieldName="amount"
         title={formatText({ id: 'actionSidebar.value' })}
         tooltips={{
@@ -41,7 +41,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -62,7 +62,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         title={formatText({ id: 'actionSidebar.createdIn' })}
         tooltips={{

@@ -1,6 +1,8 @@
 import React, { useId } from 'react';
 import clsx from 'clsx';
 
+import { notMaybe } from '~utils/arrays';
+
 import { InputBaseProps } from './types';
 import { FIELD_STATE } from '../consts';
 import { useStateClassNames } from '../hooks';
@@ -16,6 +18,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       state,
       message,
       prefix,
+      value,
       suffix,
       mode = 'primary',
       disabled,
@@ -23,6 +26,8 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       autoWidth = false,
       label,
       id: idProp,
+      maxLength,
+      onBlur,
       ...rest
     },
     ref,
@@ -40,7 +45,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
     const id = idProp || defaultId;
 
     return (
-      <div className={wrapperClassName}>
+      <div className={clsx(wrapperClassName, 'w-full')}>
         <label
           className="text-gray-700 text-md font-medium mb-1.5"
           htmlFor={id}
@@ -62,9 +67,21 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
             },
           )}
           id={id}
+          value={value}
+          onBlur={onBlur}
           {...rest}
         />
         {suffix}
+        {state === FIELD_STATE.Error && notMaybe(maxLength) && (
+          <div
+            className={clsx('text-4 flex justify-end absolute right-0', {
+              'text-negative-400': state === FIELD_STATE.Error,
+              'text-gray-500': state !== FIELD_STATE.Error,
+            })}
+          >
+            {typeof value === 'string' && value.length}/{maxLength}
+          </div>
+        )}
         <span
           className={clsx(
             'border-0 text-md',

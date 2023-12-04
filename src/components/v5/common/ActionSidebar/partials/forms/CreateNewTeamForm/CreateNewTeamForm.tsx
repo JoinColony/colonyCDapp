@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { PaintBucket } from 'phosphor-react';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import ActionFormRow from '~v5/common/ActionFormRow';
@@ -8,7 +9,7 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import { formatText } from '~utils/intl';
-import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
+import { MAX_COLONY_DISPLAY_NAME, MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 
 import { useCreateNewTeam } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
@@ -27,7 +28,8 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ActionFormRow
         fieldName="teamName"
-        iconName="user-list"
+        icon="user-list"
+        isMultiLine
         title={formatText({ id: 'actionSidebar.teamName' })}
         tooltips={{
           label: {
@@ -38,16 +40,18 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
       >
         <FormInputBase
+          message={false}
           name="teamName"
           placeholder={formatText({
             id: 'actionSidebar.placeholder.teamName',
           })}
           mode="secondary"
           readOnly={readonly}
+          maxLength={MAX_COLONY_DISPLAY_NAME}
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="rocket"
+        icon="rocket"
         fieldName="domainPurpose"
         title={formatText({ id: 'actionSidebar.teamPurpose' })}
         isMultiLine
@@ -65,11 +69,11 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           placeholder={formatText({
             id: 'actionSidebar.placeholder.purpose',
           })}
-          maxCharNumber={MAX_DOMAIN_PURPOSE_LENGTH}
+          maxLength={MAX_DOMAIN_PURPOSE_LENGTH}
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="paint"
+        icon={<PaintBucket size={12} />}
         fieldName="domainColor"
         title={formatText({ id: 'actionSidebar.teamColour' })}
         tooltips={{
@@ -83,7 +87,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamColourField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -104,7 +108,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {

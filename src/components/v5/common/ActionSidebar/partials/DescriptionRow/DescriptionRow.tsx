@@ -14,7 +14,7 @@ const DescriptionRow = () => {
 
   return !(readonly && !descriptionValue) ? (
     <ActionFormRow
-      iconName="pencil"
+      icon="pencil"
       fieldName="description"
       // Tooltip disabled to experiment with improving user experience
       // tooltips={{

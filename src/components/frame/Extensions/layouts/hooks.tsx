@@ -357,48 +357,52 @@ export const useGetTxButtons = () => {
   const { groupState } = useUserTransactionContext();
   const isMobile = useMobile();
 
-  const txButtons = [
-    groupState === TransactionGroupStates.SomePending && (
-      <TxButton
-        text={isMobile ? undefined : { id: 'button.pending' }}
-        className={clsx({
-          '!min-w-0': isMobile,
-        })}
-        icon={
-          <span
-            className={clsx('flex shrink-0', {
-              'ml-1.5': !isMobile,
-            })}
-          >
-            <Icon
-              name="spinner-gap"
-              className="animate-spin"
-              appearance={{ size: 'tiny' }}
-            />
-          </span>
-        }
-        data-openhubifclicked // see UserReputation for usage
-      />
-    ),
-    groupState === TransactionGroupStates.AllCompleted && (
-      <TxButton
-        text={isMobile ? undefined : { id: 'button.completed' }}
-        className={clsx({
-          '!min-w-0': isMobile,
-        })}
-        icon={
-          <span
-            className={clsx('flex shrink-0', {
-              'ml-1.5': !isMobile,
-            })}
-          >
-            <Icon name="white-tick" appearance={{ size: 'tiny' }} />
-          </span>
-        }
-        data-openhubifclicked // see UserReputation for usage
-      />
-    ),
-  ];
+  const txButtons = (
+    <>
+      {groupState === TransactionGroupStates.SomePending && (
+        <TxButton
+          key="1"
+          text={isMobile ? undefined : { id: 'button.pending' }}
+          className={clsx({
+            '!min-w-0': isMobile,
+          })}
+          icon={
+            <span
+              className={clsx('flex shrink-0', {
+                'ml-1.5': !isMobile,
+              })}
+            >
+              <Icon
+                name="spinner-gap"
+                className="animate-spin"
+                appearance={{ size: 'tiny' }}
+              />
+            </span>
+          }
+          data-openhubifclicked // see UserReputation for usage
+        />
+      )}
+      {groupState === TransactionGroupStates.AllCompleted && (
+        <TxButton
+          key="2"
+          text={isMobile ? undefined : { id: 'button.completed' }}
+          className={clsx({
+            '!min-w-0': isMobile,
+          })}
+          icon={
+            <span
+              className={clsx('flex shrink-0', {
+                'ml-1.5': !isMobile,
+              })}
+            >
+              <Icon name="white-tick" appearance={{ size: 'tiny' }} />
+            </span>
+          }
+          data-openhubifclicked // see UserReputation for usage
+        />
+      )}
+    </>
+  );
 
   return txButtons;
 };
