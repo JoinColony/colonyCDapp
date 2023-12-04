@@ -1,0 +1,41 @@
+FROM colony-cdapp-dev-env/base:latest
+
+ENV AUTH_PROXY_HASH=edf76487ea7793e8c5186622cc43f71ea98a0c7a
+
+# Add dependencies from the host
+# Note: these are listed individually so that if they change, they won't affect
+# the build of the other images
+ADD docker/files/auth/run.sh.base /colonyCDappBackend/run-auth.sh
+
+WORKDIR /colonyCDappBackend
+
+
+# Authentication Proxy
+#
+
+# Clone authentication proxy repo
+RUN git clone https://github.com/JoinColony/colonyCDappAuthProxy.git
+WORKDIR /colonyCDappBackend/colonyCDappAuthProxy
+
+RUN echo $AUTH_PROXY_HASH
+# Fetch the correct network repo commit/branch/tag
+RUN git fetch origin $AUTH_PROXY_HASH
+RUN git checkout $AUTH_PROXY_HASH
+
+# Add env file here (as opposed to at the start of the script), since we
+# need to add it after the repo has been cloned, otherwise cloning will fail
+ADD docker/files/auth/env.base /colonyCDappBackend/colonyCDappAuthProxy/.env
+
+# Install authentication proxydependencies
+RUN npm install
+
+WORKDIR /colonyCDappBackend
+
+# Open up ports to the docker image
+EXPOSE 3005
+
+# Make the run script executable
+RUN chmod +x ./run-auth.sh
+
+# Approaching Mass Relay!
+CMD [ "./run-auth.sh" ]

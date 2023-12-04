@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Authentication Proxy
+
+cd colonyCDappAuthProxy
+
+npm run prod

@@ -60,3 +60,12 @@ services:
       test: ['CMD', 'curl', '-f', 'http://localhost:9200']
       interval: 5s
       retries: 1000
+
+  auth-proxy:
+    container_name: 'auth'
+    image: colony-cdapp-dev-env/auth-proxy:latest
+    ports:
+      - '3005:3005'
+    depends_on:
+      amplify:
+        condition: service_healthy
