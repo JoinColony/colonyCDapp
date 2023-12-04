@@ -2731,7 +2731,14 @@ type CurrentNetworkInverseFee @model {
 }
 
 type Payment {
+  """
+  Payment amount, excluding network fee
+  """
   amount: String!
+  """
+  Network fee amount
+  """
+  networkFee: String
   tokenAddress: String!
   recipientAddress: String!
 }
@@ -2834,8 +2841,13 @@ type ColonyAction @model @searchable {
   recipientToken: Token @hasOne(fields: ["recipientAddress"])
   """
   The amount involved in the action, if applicable
+  In any case where network fee is involved, this amount excludes it
   """
   amount: String
+  """
+  The network fee amount, if applicable
+  """
+  networkFee: String
   """
   The Ethereum address of the token involved in the action, if applicable
   """

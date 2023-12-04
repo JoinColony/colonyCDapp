@@ -4,8 +4,6 @@ import moveDecimal from 'move-decimal-point';
 import { ACTION } from '~constants/actions';
 import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useNetworkInverseFee } from '~hooks';
-import { getAmountLessFee } from '~utils/networkFee';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { useGetColonyAction } from './useGetColonyAction';
@@ -13,7 +11,6 @@ import { DECISION_METHOD } from './useDecisionMethods';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
-  const { networkInverseFee } = useNetworkInverseFee();
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -57,15 +54,11 @@ export const useGetActionData = (transactionId: string | undefined) => {
         };
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion: {
-        const amountLessFee = networkInverseFee
-          ? getAmountLessFee(amount ?? 0, networkInverseFee)
-          : amount;
-
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
           amount: {
             amount: moveDecimal(
-              amountLessFee,
+              amount,
               -getTokenDecimalsWithFallback(token?.decimals),
             ),
             tokenAddress: token?.tokenAddress,
@@ -180,7 +173,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action, networkInverseFee]);
+  }, [action]);
 
   return {
     defaultValues,

@@ -5,7 +5,6 @@ import { Heading3 } from '~shared/Heading';
 import { Colony, ColonyAction } from '~types';
 import { DecisionContent } from '~common/ColonyDecisions/DecisionPreview/DecisionData';
 import TimeRelative from '~shared/TimeRelative/TimeRelative';
-import { useNetworkInverseFee } from '~hooks';
 
 import {
   ActionDetailsPageFeed,
@@ -27,7 +26,6 @@ const DefaultActionContent = ({
   actionData,
   colony,
 }: DefaultActionContentProps) => {
-  const { networkInverseFee } = useNetworkInverseFee();
   const { objectionAnnotation } = motionData ?? {};
 
   if (decisionData) {
@@ -64,7 +62,7 @@ const DefaultActionContent = ({
         className={styles.heading}
         data-test="actionHeading"
         text={{ id: 'action.title' }}
-        textValues={getActionTitleValues(actionData, colony, networkInverseFee)}
+        textValues={getActionTitleValues(actionData, colony)}
       />
       <div className={styles.annotations}>
         {annotation && <ActionAnnotation annotation={annotation} />}
