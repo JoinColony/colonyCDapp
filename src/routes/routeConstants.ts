@@ -26,7 +26,6 @@ export const COLONY_BALANCES_ROUTE = `balances`;
 export const COLONY_MEMBERS_ROUTE = `members`;
 export const COLONY_MEMBERS_WITH_DOMAIN_ROUTE = `members/:domainId`;
 export const COLONY_CONTRIBUTORS_ROUTE = `members/contributors`;
-export const COLONY_FOLLOWERS_ROUTE = `followers`;
 export const COLONY_VERIFIED_ROUTE = `verified`;
 export const COLONY_TEAMS_ROUTE = `teams`;
 export const COLONY_AGREEMENTS_ROUTE = `agreements`;

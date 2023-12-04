@@ -25,7 +25,6 @@ import MembersPage, {
   AllMembersPage,
   ContributorsPage,
 } from '~frame/v5/pages/MembersPage';
-import ColonyUsersPage from '~frame/v5/pages/ColonyUsersPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import BalancePage from '~frame/v5/pages/BalancePage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
@@ -65,7 +64,6 @@ import {
   COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_CONTRIBUTORS_ROUTE,
-  COLONY_FOLLOWERS_ROUTE,
   COLONY_VERIFIED_ROUTE,
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
@@ -159,10 +157,6 @@ const Routes = () => {
                 element={<ContributorsPage />}
               />
             </Route>
-            <Route
-              path={COLONY_FOLLOWERS_ROUTE}
-              element={<ColonyUsersPage pageName="followers" />}
-            />
             <Route path={COLONY_VERIFIED_ROUTE} element={<VerifiedPage />} />
             <Route path={COLONY_BALANCES_ROUTE} element={<BalancePage />} />
             <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
