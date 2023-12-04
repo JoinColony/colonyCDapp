@@ -14,15 +14,15 @@ on:
       - 'amplify/**'
       - '**.md'
     
-
 concurrency:
   group: cdapp-frontend
   cancel-in-progress: true
 
 # Set global env variables
 env:
-  AWS_REGION: eu-west-2
-  ECR_REPOSITORY: ${{ secrets.AWS_ACCOUNT_ID_QA }}.dkr.ecr.eu-west-2.amazonaws.com/cdapp/frontend
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  AWS_ROLE_CICD_QA: ${{ secrets.AWS_IAM_ROLE_CICD_QA }}
+  ECR_REPOSITORY: ${{ secrets.AWS_ACCOUNT_ID_QA }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/cdapp/frontend
   COMMIT_HASH: ${{ github.event.client_payload.COMMIT_HASH != null && github.event.client_payload.COMMIT_HASH || github.sha }}
 
 jobs:
@@ -38,8 +38,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+          role-to-assume: ${{ env.AWS_ROLE_CICD_QA }}
+          role-session-name: github-cicd
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -89,8 +89,8 @@ jobs:
       - name: Configure AWS credentials for ECR
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+          role-to-assume: ${{ env.AWS_ROLE_CICD_QA }}
+          role-session-name: github-cicd
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -116,8 +116,6 @@ jobs:
       - name: Configure AWS credentials for EKS
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID_QA }}:role/eks-admin
           role-session-name: github-cicd
           role-duration-seconds: 1200
