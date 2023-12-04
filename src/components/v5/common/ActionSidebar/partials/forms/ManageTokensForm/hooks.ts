@@ -69,7 +69,7 @@ export const useManageTokens = (
           const values = {
             motionDomainId: payload.createdIn,
             decisionMethod: payload.decisionMethod,
-            annotation: payload.annotation,
+            annotation: payload.description,
             selectedTokenAddresses: payload.selectedTokenAddresses.map(
               ({ token }) => token,
             ),

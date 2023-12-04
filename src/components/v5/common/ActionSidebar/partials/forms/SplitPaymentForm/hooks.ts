@@ -15,7 +15,6 @@ import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts';
-import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 
 import { ActionFormBaseProps } from '../../../types';
 import {
@@ -23,6 +22,7 @@ import {
   DECISION_METHOD,
   useActionFormBaseHook,
 } from '../../../hooks';
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -48,7 +48,7 @@ export const useValidationSchema = () => {
           tokenAddress: string().address().required(),
         }).required(),
         createdIn: string().defined(),
-        description: string().max(MAX_ANNOTATION_NUM).notRequired(),
+        description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
         team: string().required(),
         decisionMethod: string().defined(),
         distributionMethod: string().defined(),

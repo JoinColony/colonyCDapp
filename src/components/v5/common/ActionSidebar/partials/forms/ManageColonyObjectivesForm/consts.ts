@@ -18,7 +18,7 @@ export const validationSchema = object()
       .required(() => formatText({ id: 'errors.colonyObjective.progress' })),
     createdIn: string().defined(),
     decisionMethod: string().defined(),
-    description: string().max(MAX_ANNOTATION_LENGTH).defined(),
+    description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })
   .defined();
 
