@@ -5,7 +5,6 @@ import { getColonyContributorId } from '~utils/members';
 import { useGetColonyContributorQuery } from '~gql';
 
 import useAppContext from './useAppContext';
-import useColonyContext from './useColonyContext';
 
 export const useUserAccountRegistered = (): boolean => {
   const { user } = useAppContext();
@@ -90,8 +89,7 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
   return sameChain && canInteractWithNetwork && isWatching;
 };
 
-export const useCanJoinColony = (isWatching: boolean) => {
-  const { colony } = useColonyContext();
+export const useCanJoinColony = (isWatching: boolean, colony?: Colony) => {
   const { wallet } = useAppContext();
   const sameChain = isUserAndColonyOnSameChain(wallet, colony);
   const canInteractWithNetwork = useCanInteractWithNetwork();

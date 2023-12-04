@@ -171,7 +171,7 @@ export const useExternalLinks = (): ColonyLinksItem[] => {
 };
 
 export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
-  const { colony } = useColonyContext();
+  const { colony, colonySubscription } = useColonyContext();
   const items = useExternalLinks();
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
@@ -181,13 +181,12 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
     isCopied: itemIsCopied,
   } = useCopyToClipboard(5000);
   const isMobile = useMobile();
-  const { handleUnwatch } = useColonySubscription();
+  const { handleUnwatch, isWatching } = colonySubscription;
 
   const { tokens, nativeToken } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
   const currentToken = getCurrentToken(tokens, nativeTokenAddress ?? '');
   const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
-  const isUserInColony = false;
 
   const { metadata } = colony || {};
   const description =
@@ -265,7 +264,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
         // },
         {
           key: '4',
-          items: isUserInColony
+          items: isWatching
             ? [
                 {
                   key: '4.1',
@@ -283,7 +282,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
       colony?.name,
       colonyUrl,
       handleUnwatch,
-      isUserInColony,
+      isWatching,
       itemHandleClipboardCopy,
       itemIsCopied,
       items,

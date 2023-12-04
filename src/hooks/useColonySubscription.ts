@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -6,15 +7,17 @@ import {
   useUpdateColonyContributorMutation,
 } from '~gql';
 import { CREATE_PROFILE_ROUTE } from '~routes';
-import { useAppContext, useCanJoinColony, useColonyContext } from '~hooks';
+import { useAppContext, useCanJoinColony } from '~hooks';
 import { handleNewUser } from '~utils/newUser';
 import { getColonyContributorId } from '~utils/members';
+import { Colony } from '~types';
 
-const useColonySubscription = () => {
-  const { colony } = useColonyContext();
+const useColonySubscription = (colony?: Colony) => {
   const { colonyAddress = '' } = colony ?? {};
   const { user, wallet, connectWallet } = useAppContext();
   const { walletAddress = '' } = user || {};
+
+  const [isWatching, setIsWatching] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,31 +26,33 @@ const useColonySubscription = () => {
     walletAddress,
   );
 
-  const { data, loading } = useGetColonyContributorQuery({
+  const { data: initialData, loading } = useGetColonyContributorQuery({
     variables: { id: colonyContributorId, colonyAddress },
     skip: !colonyAddress || !walletAddress,
+    onCompleted(data) {
+      setIsWatching(Boolean(data?.getColonyContributor?.isWatching));
+    },
   });
 
-  const isAlreadyContributor = !!data?.getColonyContributor;
+  const isAlreadyContributor = !!initialData?.getColonyContributor;
 
   /* Watch a Colony */
-  const [createContributor, { data: creationData }] =
-    useCreateColonyContributorMutation({
-      variables: {
-        input: {
-          colonyAddress,
-          colonyReputationPercentage: 0,
-          contributorAddress: walletAddress,
-          isVerified: false,
-          id: getColonyContributorId(colonyAddress, walletAddress),
-          isWatching: true,
-        },
+  const [createContributor] = useCreateColonyContributorMutation({
+    variables: {
+      input: {
+        colonyAddress,
+        colonyReputationPercentage: 0,
+        contributorAddress: walletAddress,
+        isVerified: false,
+        id: getColonyContributorId(colonyAddress, walletAddress),
+        isWatching: true,
       },
-    });
+    },
+    onCompleted: () => setIsWatching(true),
+  });
 
   /* Update a Colony Contributor */
-  const [updateContributor, { data: updateData }] =
-    useUpdateColonyContributorMutation();
+  const [updateContributor] = useUpdateColonyContributorMutation();
 
   const handleWatch = () => {
     if (user) {
@@ -56,6 +61,9 @@ const useColonySubscription = () => {
       } else {
         updateContributor({
           variables: { input: { id: colonyContributorId, isWatching: true } },
+          onCompleted(data) {
+            setIsWatching(Boolean(data?.updateColonyContributor?.isWatching));
+          },
         });
       }
     } else if (wallet && !user) {
@@ -70,19 +78,17 @@ const useColonySubscription = () => {
   const handleUnwatch = () => {
     updateContributor({
       variables: { input: { id: colonyContributorId, isWatching: false } },
+      onCompleted(data) {
+        setIsWatching(Boolean(data?.updateColonyContributor?.isWatching));
+      },
     });
   };
 
-  const isWatchingColony = Boolean(
-    data?.getColonyContributor?.isWatching ||
-      creationData?.createColonyContributor?.isWatching ||
-      updateData?.updateColonyContributor?.isWatching,
-  );
-
-  const canWatch = useCanJoinColony(isWatchingColony) && !loading;
+  const canWatch = useCanJoinColony(isWatching, colony) && !loading;
 
   return {
     canWatch,
+    isWatching,
     handleWatch,
     handleUnwatch,
   };

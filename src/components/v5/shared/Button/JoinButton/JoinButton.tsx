@@ -1,10 +1,9 @@
 import React, { FC, useState } from 'react';
 import Lottie from 'lottie-react';
 
-import useColonySubscription from '~hooks/useColonySubscription';
 import { formatText } from '~utils/intl';
 import joinButtonAnimation from '~utils/animations/joinButtonAnimation.json';
-import { useAppContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 
 import Button from '../Button';
 
@@ -12,7 +11,8 @@ const displayName = 'v5.JoinButton';
 
 const JoinButton: FC = () => {
   const { wallet, user, walletConnecting, userLoading } = useAppContext();
-  const { handleWatch, canWatch } = useColonySubscription();
+  const { colonySubscription } = useColonyContext();
+  const { handleWatch, canWatch } = colonySubscription;
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const registeredUser = user && !userLoading;
