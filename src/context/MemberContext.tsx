@@ -35,16 +35,16 @@ const MemberContext = createContext<
   | {
       members: ColonyContributor[];
       verifiedMembers: ColonyContributor[];
-      pagedMembers: ColonyContributor[];
       totalMemberCount: number;
-      contributors: ColonyContributor[];
-      pagedContributors: ColonyContributor[];
-      totalContributorCount: number;
-      membersLimit: number;
-      moreContributors: boolean;
+      pagedMembers: ColonyContributor[];
       moreMembers: boolean;
-      loadMoreContributors: () => void;
       loadMoreMembers: () => void;
+      membersLimit: number;
+      contributors: ColonyContributor[];
+      totalContributorCount: number;
+      pagedContributors: ColonyContributor[];
+      moreContributors: boolean;
+      loadMoreContributors: () => void;
       loading: boolean;
     }
   | undefined
@@ -225,35 +225,37 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   });
 
+  const membersLimit = getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT);
+
   const value = useMemo(
     () => ({
       members,
       verifiedMembers,
-      pagedMembers,
       totalMemberCount,
-      contributors,
-      pagedContributors,
-      totalContributorCount,
-      moreContributors,
+      pagedMembers,
       moreMembers,
-      loadMoreContributors,
       loadMoreMembers,
-      membersLimit: getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT),
+      membersLimit,
+      contributors,
+      totalContributorCount,
+      pagedContributors,
+      moreContributors,
+      loadMoreContributors,
       loading,
     }),
     [
       members,
       verifiedMembers,
+      totalMemberCount,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
-      totalMemberCount,
+      membersLimit,
       contributors,
+      totalContributorCount,
       pagedContributors,
       moreContributors,
       loadMoreContributors,
-      totalContributorCount,
-      getAllMembersPageSize,
       loading,
     ],
   );
