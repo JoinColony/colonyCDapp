@@ -1,54 +1,39 @@
 import React, { FC } from 'react';
-import { Extension, Id } from '@colony/colony-js';
+import { Extension } from '@colony/colony-js';
+import { FormattedMessage, defineMessages } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 
-import { useFormContext, useWatch } from 'react-hook-form';
-import { ACTION, Action } from '~constants/actions';
-import { useColonyContext, useExtensionData, useFlatFormErrors } from '~hooks';
+import { ACTION } from '~constants/actions';
+import { useExtensionsData, useFlatFormErrors } from '~hooks';
 import { formatText } from '~utils/intl';
 import NotificationBanner from '~v5/shared/NotificationBanner';
-import { AnyExtensionData, Colony } from '~types';
-import { addressHasRoles } from '~utils/checks';
+import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
 
 import {
   ACTION_TYPE_FIELD_NAME,
   useCreateActionTypeNotification,
   useCreateActionTypeNotificationHref,
+  DECISION_METHOD_FIELD_NAME,
 } from '../../../consts';
 
-const checkOneTxPaymentPermissions = (
-  extensionData: AnyExtensionData,
-  colony: Colony | undefined,
-) => {
-  const {
-    neededColonyPermissions,
-    // address will be undefined if the extension hasn't been installed / initialized yet
-    // @ts-expect-error
-    address,
-    isInitialized,
-    isDeprecated,
-  } = extensionData;
+const displayName =
+  'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';
 
-  // If the extension itself doesn't have the correct permissions, show the banner
-  const noPermissions =
-    isInitialized &&
-    !isDeprecated &&
-    !addressHasRoles({
-      requiredRolesDomains: [Id.RootDomain],
-      colony,
-      requiredRoles: neededColonyPermissions,
-      address,
-    });
-
-  return noPermissions;
-};
+const MSG = defineMessages({
+  extensionPermissionNeeded: {
+    id: `${displayName}.oneTxPaymentPermissionNeeded`,
+    defaultMessage:
+      'The {extensionName} extension is missing some or all of the permissions it needs to work.',
+  },
+});
 
 export const SidebarBanner: FC = () => {
-  const { colony } = useColonyContext();
-  const { formState } = useFormContext();
+  const { formState, watch } = useFormContext();
   const hasErrors = !formState.isValid && formState.isSubmitted;
-  const selectedAction: Action | undefined = useWatch({
-    name: ACTION_TYPE_FIELD_NAME,
-  });
+  const [selectedAction, decisionMethod] = watch([
+    ACTION_TYPE_FIELD_NAME,
+    DECISION_METHOD_FIELD_NAME,
+  ]);
   const flatFormErrors = useFlatFormErrors(formState.errors).filter(
     ({ key }) => key !== 'title',
   );
@@ -58,63 +43,74 @@ export const SidebarBanner: FC = () => {
   const actionTypeNofiticationHref =
     useCreateActionTypeNotificationHref(selectedAction);
 
-  const oneTxPaymentExtensionId =
-    selectedAction === ACTION.SIMPLE_PAYMENT ? Extension.OneTxPayment : '';
-  const { extensionData } = useExtensionData(oneTxPaymentExtensionId);
-  const oneTxPaymentPermissionNeeded = extensionData
-    ? checkOneTxPaymentPermissions(extensionData, colony)
-    : false;
+  const { installedExtensionsData } = useExtensionsData();
 
-  if (actionTypeNotificationTitle) {
-    if (
-      selectedAction === ACTION.SIMPLE_PAYMENT &&
-      !oneTxPaymentPermissionNeeded
-    ) {
-      return null;
-    }
+  const requiredExtensionsWithoutPermission = installedExtensionsData.filter(
+    (extension) => {
+      const isOneTxPaymentExtensionAction =
+        selectedAction === ACTION.SIMPLE_PAYMENT &&
+        extension.extensionId === Extension.OneTxPayment;
+      const isVotingReputationExtensionAction =
+        decisionMethod === DECISION_METHOD.Reputation &&
+        extension.extensionId === Extension.VotingReputation;
 
-    return (
-      <div className="mt-7">
-        <NotificationBanner
-          status={oneTxPaymentPermissionNeeded ? 'warning' : 'error'}
-          icon="warning-circle"
-          callToAction={
-            <a
-              href={actionTypeNofiticationHref}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {formatText({ id: 'learn.more' })}
-            </a>
-          }
-        >
-          {actionTypeNotificationTitle}
-        </NotificationBanner>
-      </div>
-    );
-  }
-
-  if (!hasErrors || !flatFormErrors.length) {
-    return null;
-  }
+      if (isOneTxPaymentExtensionAction || isVotingReputationExtensionAction) {
+        return !!extension.missingColonyPermissions;
+      }
+      return false;
+    },
+  );
 
   return (
-    <div className="mt-7">
-      <NotificationBanner
-        status="error"
-        icon="warning-circle"
-        description={
-          flatFormErrors.length ? (
-            <ul className="list-disc list-inside text-negative-400">
-              {flatFormErrors.map(({ key, message }) => (
-                <li key={key}>{message}</li>
-              ))}
-            </ul>
-          ) : null
-        }
-      >
-        {formatText({ id: 'actionSidebar.fields.error' })}
-      </NotificationBanner>
-    </div>
+    <>
+      {actionTypeNotificationTitle && (
+        <div className="mt-6">
+          <NotificationBanner
+            status="error"
+            icon="warning-circle"
+            callToAction={
+              <a
+                href={actionTypeNofiticationHref}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {formatText({ id: 'learn.more' })}
+              </a>
+            }
+          >
+            {actionTypeNotificationTitle}
+          </NotificationBanner>
+        </div>
+      )}
+      {requiredExtensionsWithoutPermission.map((extension) => (
+        <div className="mt-6">
+          <NotificationBanner status="warning" icon="warning-circle">
+            <FormattedMessage
+              {...MSG.extensionPermissionNeeded}
+              values={{ extensionName: formatText(extension.name) }}
+            />
+          </NotificationBanner>
+        </div>
+      ))}
+      {(hasErrors || !!flatFormErrors.length) && (
+        <div className="mt-6">
+          <NotificationBanner
+            status="error"
+            icon="warning-circle"
+            description={
+              flatFormErrors.length ? (
+                <ul className="list-disc list-inside text-negative-400">
+                  {flatFormErrors.map(({ key, message }) => (
+                    <li key={key}>{message}</li>
+                  ))}
+                </ul>
+              ) : null
+            }
+          >
+            {formatText({ id: 'actionSidebar.fields.error' })}
+          </NotificationBanner>
+        </div>
+      )}
+    </>
   );
 };
