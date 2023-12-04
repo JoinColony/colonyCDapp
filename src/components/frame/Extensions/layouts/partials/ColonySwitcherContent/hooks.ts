@@ -19,7 +19,7 @@ export const useColonySwitcherContent = (
 
   const [searchValue, setSearchValue] = useState('');
 
-    const chainIcon = getChainIconName(chainId);
+  const chainIcon = getChainIconName(chainId);
 
   const joinedColonies: ColonySwitcherListItem[] = userColonies.reduce(
     (result, item) => {
