@@ -6,10 +6,10 @@ import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-
-import { SplitPaymentFormValues } from './consts';
-import { tryGetToken } from '../utils';
 import { formatText } from '~utils/intl';
+
+import { tryGetToken } from '../utils';
+import { SplitPaymentFormValues } from './hooks';
 
 export const splitPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<SplitPaymentFormValues>

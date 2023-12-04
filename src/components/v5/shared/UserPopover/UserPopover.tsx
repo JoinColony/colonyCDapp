@@ -28,6 +28,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   popperOptions,
   withVerifiedBadge = true,
   className,
+  wrapperClassName,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -68,7 +69,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   );
 
   const button = withVerifiedBadge ? (
-    <div className="items-center flex flex-shrink-0">
+    <div className={clsx(wrapperClassName, 'items-center flex flex-shrink-0')}>
       {buttonComponent}
       {isVerified && (
         <Icon

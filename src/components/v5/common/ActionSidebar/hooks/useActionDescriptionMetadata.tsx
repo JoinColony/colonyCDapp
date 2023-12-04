@@ -121,6 +121,7 @@ export const useActionDescriptionMetadata = () => {
                   walletAddress={user.walletAddress}
                   aboutDescription={user.profile?.bio || ''}
                   user={user}
+                  wrapperClassName="!inline-flex"
                 >
                   <span className="text-gray-900">
                     {React.isValidElement(initiator) ? initiator : null}

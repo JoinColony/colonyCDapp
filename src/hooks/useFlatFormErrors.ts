@@ -45,7 +45,9 @@ const useFlatFormErrors = <TFieldValues extends FieldValues = FieldValues>(
     getErrors(errors);
 
     return result;
-  }, [errors]);
+    // reference to the errors object is not changed when errors are updated
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(errors)]);
 };
 
 export default useFlatFormErrors;

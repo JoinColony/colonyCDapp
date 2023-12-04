@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import Cleave from 'cleave.js/react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
+import { Id } from '@colony/colony-js';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useColonyContext, useRelativePortalElement, useToggle } from '~hooks';
@@ -26,9 +26,8 @@ const AmountField: FC<AmountFieldProps> = ({
   name,
   tokenAddress,
   maxWidth,
+  teamId,
 }) => {
-  const { formatMessage } = useIntl();
-  const { watch } = useFormContext();
   const {
     field,
     fieldState: { error },
@@ -48,8 +47,6 @@ const AmountField: FC<AmountFieldProps> = ({
     { toggle: toggleTokenSelect, registerContainerRef },
   ] = useToggle();
   const { readonly } = useAdditionalFormOptionsContext();
-
-  const selectedTeam = watch('team');
 
   const {
     colonyTokens,
@@ -101,7 +98,7 @@ const AmountField: FC<AmountFieldProps> = ({
         options={formattingOptions}
         className={clsx('flex-shrink text-gray-900 outline-0 outline-none', {
           'placeholder:text-gray-400': !isError,
-          'placeholder:text-negative-400': isError,
+          'text-negative-400 placeholder:text-negative-400': isError,
         })}
         placeholder={formatText({
           id: 'actionSidebar.enterAmount',
@@ -126,7 +123,7 @@ const AmountField: FC<AmountFieldProps> = ({
               },
             )}
             onClick={readonly ? undefined : toggleTokenSelect}
-            aria-label={formatMessage({ id: 'ariaLabel.selectToken' })}
+            aria-label={formatText({ id: 'ariaLabel.selectToken' })}
           >
             {selectedTokenContent}
           </button>
@@ -142,14 +139,14 @@ const AmountField: FC<AmountFieldProps> = ({
                 }}
               >
                 <h5 className="text-4 text-gray-400 mb-4 uppercase ml-4">
-                  {formatMessage({ id: 'actionSidebar.availableTokens' })}
+                  {formatText({ id: 'actionSidebar.availableTokens' })}
                 </h5>
                 <ul>
                   {colonyTokens.map((colonyToken) => {
                     const tokenBalance = getBalanceForTokenAndDomain(
                       colony?.balances,
                       colonyToken.tokenAddress,
-                      selectedTeam,
+                      Number(teamId) || Id.RootDomain,
                     );
 
                     return (
@@ -182,7 +179,7 @@ const AmountField: FC<AmountFieldProps> = ({
                             </div>
                             {tokenBalance && (
                               <span className="text-sm text-gray-400 whitespace-nowrap ml-2">
-                                {formatMessage({
+                                {formatText({
                                   id: 'actionSidebar.availableFunds',
                                 })}
                                 {': '}

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
@@ -17,6 +18,9 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
 
   useTransferFunds(getFormOptions);
+
+  const { watch } = useFormContext();
+  const selectedTeam = watch('from');
 
   return (
     <>
@@ -60,7 +64,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
       >
-        <AmountField name="amount" maxWidth={270} />
+        <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"

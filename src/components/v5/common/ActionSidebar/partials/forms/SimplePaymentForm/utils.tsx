@@ -2,6 +2,7 @@ import { ApolloClient } from '@apollo/client';
 import first from 'lodash/first';
 import { DeepPartial } from 'utility-types';
 import moveDecimal from 'move-decimal-point';
+
 import {
   ColonyActionType,
   GetUserByAddressDocument,
@@ -9,13 +10,14 @@ import {
   GetUserByAddressQueryVariables,
 } from '~gql';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import { SimplePaymentFormValues } from './consts';
 import { Address, User } from '~types';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
-import { tryGetToken } from '../utils';
 import { formatText } from '~utils/intl';
+
+import { tryGetToken } from '../utils';
+import { SimplePaymentFormValues } from './hooks';
 
 const tryGetRecipient = async (
   recipientAddress: Address,
