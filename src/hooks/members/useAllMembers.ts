@@ -1,13 +1,11 @@
 import { useMemo, useState } from 'react';
 
 import { ColonyContributor, SortDirection } from '~types';
-import { notNull } from '~utils/arrays';
 import { range } from '~utils/lodash';
 import {
   ContributorTypeFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
-import { SortDirection } from '~types';
 import { UserRole } from '~constants/permissions';
 
 import { sortByReputationAscending, sortByReputationDescending } from './utils';
@@ -34,8 +32,6 @@ const useAllMembers = ({
 
   const getPageSizeNumber = (pageNumber: number) =>
     typeof pageSize === 'function' ? pageSize(pageNumber) : pageSize;
-
-  const pageSizeNumber = getPageSizeNumber(page);
 
   const visibleItems = range(1, page + 1).reduce(
     (acc, pageNumber) => getPageSizeNumber(pageNumber) + acc,
