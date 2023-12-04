@@ -10,12 +10,11 @@ import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { canColonyBeUpgraded } from '~utils/checks/canColonyBeUpgraded.ts';
 import { formatText } from '~utils/intl.ts';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
+import ActionTypeNotification from '~v5/shared/ActionTypeNotification/ActionTypeNotification.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import {
   ACTION_TYPE_FIELD_NAME,
-  useCreateActionTypeNotification,
-  useCreateActionTypeNotificationHref,
   DECISION_METHOD_FIELD_NAME,
 } from '../../../consts.tsx';
 
@@ -36,11 +35,6 @@ export const SidebarBanner: FC = () => {
     ACTION_TYPE_FIELD_NAME,
     DECISION_METHOD_FIELD_NAME,
   ]);
-
-  const actionTypeNotificationTitle =
-    useCreateActionTypeNotification(selectedAction);
-  const actionTypeNofiticationHref =
-    useCreateActionTypeNotificationHref(selectedAction);
 
   const { installedExtensionsData } = useExtensionsData();
 
@@ -69,25 +63,10 @@ export const SidebarBanner: FC = () => {
 
   return (
     <>
-      {actionTypeNotificationTitle && (
-        <div className="mt-6">
-          <NotificationBanner
-            status="error"
-            icon="warning-circle"
-            callToAction={
-              <a
-                href={actionTypeNofiticationHref}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {formatText({ id: 'learn.more' })}
-              </a>
-            }
-          >
-            {actionTypeNotificationTitle}
-          </NotificationBanner>
-        </div>
-      )}
+      <ActionTypeNotification
+        selectedAction={selectedAction}
+        className="mt-7"
+      />
       {requiredExtensionsWithoutPermission.map((extension) => (
         <div className="mt-6" key={extension.extensionId}>
           <NotificationBanner status="warning" icon="warning-circle">

@@ -84,7 +84,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <ActionSidebarDescription />
         </div>
         <SidebarBanner />
-        <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
+        <ActionTypeSelect className="my-3 min-h-[1.875rem] flex flex-col justify-center" />
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 

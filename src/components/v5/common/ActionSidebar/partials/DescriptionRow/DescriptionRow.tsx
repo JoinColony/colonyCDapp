@@ -11,7 +11,10 @@ import { type DescriptionRowProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';
 
-const DescriptionRow: FC<DescriptionRowProps> = ({ maxDescriptionLength }) => {
+const DescriptionRow: FC<DescriptionRowProps> = ({
+  disabled,
+  maxDescriptionLength,
+}) => {
   const { readonly } = useAdditionalFormOptionsContext();
   const { watch } = useFormContext();
   const descriptionValue = watch('description');
@@ -29,7 +32,8 @@ const DescriptionRow: FC<DescriptionRowProps> = ({ maxDescriptionLength }) => {
       //   },
       // }}
       title={formatText({ id: 'actionSidebar.description' })}
-      isExpandable
+      isExpandable={!disabled}
+      isDisabled={disabled}
     >
       {([
         isDecriptionFieldExpanded,
@@ -44,6 +48,7 @@ const DescriptionRow: FC<DescriptionRowProps> = ({ maxDescriptionLength }) => {
           toggleOnDecriptionSelect={toggleOnDecriptionSelect}
           maxDescriptionLength={maxDescriptionLength}
           fieldName="description"
+          disabled={disabled}
         />
       )}
     </ActionFormRow>

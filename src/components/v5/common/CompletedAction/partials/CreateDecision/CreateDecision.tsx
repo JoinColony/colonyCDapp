@@ -66,8 +66,8 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
           />
         )}
       </ActionDataGrid>
-      {action.annotation?.message && (
-        <DescriptionRow description={action.annotation.message} />
+      {action.decisionData?.description && (
+        <DescriptionRow description={action.decisionData.description} />
       )}
     </>
   );

@@ -20,6 +20,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
       fieldName,
       tooltips = {},
       className,
+      isDisabled,
     },
     ref,
   ) => {
@@ -33,6 +34,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
     const textColorClassNames = {
       'text-negative-400': isError,
       'text-gray-900': !isError,
+      'text-gray-400': isDisabled && !isError,
     };
 
     const rowContent =
@@ -60,9 +62,11 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
           {isExpandable && (
             <span
               className={clsx(
-                'flex text-gray-900 transition-all duration-normal group-hover:text-blue-400',
+                'flex transition-all duration-normal group-hover:text-blue-400',
                 {
                   'rotate-90': isExpanded,
+                  'text-gray-900': !isError && !isDisabled,
+                  'text-gray-400': isDisabled && !isError,
                 },
               )}
             >

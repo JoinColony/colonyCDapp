@@ -10,7 +10,11 @@ import Button, { TxButton } from '~v5/shared/Button/index.ts';
 import { useCloseSidebarClick } from '../hooks/index.ts';
 import { type ActionButtonsProps } from '../types.ts';
 
-import { useSubmitButtonDisabled, useSubmitButtonText } from './hooks.ts';
+import {
+  useIsFieldDisabled,
+  useSubmitButtonDisabled,
+  useSubmitButtonText,
+} from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
@@ -26,6 +30,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
     cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
   } = useActionSidebarContext();
   const { closeSidebarClick } = useCloseSidebarClick();
+  const isFieldDisabled = useIsFieldDisabled();
 
   useRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
@@ -72,7 +77,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
       ) : (
         <Button
           mode="primarySolid"
-          disabled={isActionDisabled || isButtonDisabled}
+          disabled={isActionDisabled || isButtonDisabled || isFieldDisabled}
           text={submitText}
           isFullSize={isMobile}
           type="submit"

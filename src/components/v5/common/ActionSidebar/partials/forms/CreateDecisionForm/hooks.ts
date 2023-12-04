@@ -68,7 +68,7 @@ export const useCreateDecision = (
             decisionMethod: payload.decisionMethod,
             motionParams: [],
             draftDecision: {
-              motionDomainId: payload.createdIn,
+              motionDomainId: Number(payload.createdIn),
               title: payload.title,
               description: payload.description,
               walletAddress,

@@ -208,6 +208,9 @@ export const useGetActionData = (transactionId: string | undefined) => {
           createdIn: decisionData?.motionDomainId,
           title: decisionData?.title,
           description: decisionData?.description,
+          decisionMethod: action.isMotion
+            ? DecisionMethod.Reputation
+            : DecisionMethod.Permissions,
         };
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:

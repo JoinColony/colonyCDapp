@@ -836,7 +836,7 @@
     "actions.userPermissions": "User permissions",
     "actions.recipient": "Colony members",
     "actions.manageReputation": "Manage reputation",
-    "actions.createAgreement": "Create agreement",
+    "actions.createAgreement": "Create an Agreement",
     "actions.simpleDiscussion": "Simple Discussion",
     "connectWallet": "Connect wallet",
     "copyWalletAddress": "Copy wallet address",
@@ -1030,9 +1030,6 @@
     "actionSidebar.mint.token.permission.error": "You don't have the right permissions to create this action type. Please choose another action type.",
     "actionSidebar.placeholder.teamName": "Enter team name",
     "actionSidebar.placeholder.purpose": "Enter short description",
-    "actionSidebar.unlock.token.error": "This action is irreversible. Use with caution.",
-    "actionSidebar.unlocked.token": "This Colony's native token has already been unlocked and can be traded.",
-    "actionSidebar.enterRecoveryMode.error": "This will disable the Colony and prevent any further activity until resolved.",
     "actionSidebar.fields.error": "Oops! Something went wrong. Please check highlighted fields and try again.",
     "actionSidebar.tooltip.actionType": "Identifies the type of action.",
     "actionSidebar.tooltip.decisionMethod": "Mechanism behind the decision-making process.",
@@ -1548,5 +1545,6 @@
     "teamsPage.menu.viewTeamDecisions": "View team decisions",
     "teamsPage.menu.viewTeamDashboard": "View team dashboard",
     "teamsPage.links.agreements": "Agreements",
-    "teamsPage.links.activity": "Activity"
+    "teamsPage.links.activity": "Activity",
+    "view.extension": "View extension"
 }
