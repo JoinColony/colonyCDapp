@@ -119,7 +119,7 @@ exports.handler = async (event) => {
     apiKey,
   );
 
-  if (contributorExistenceCheckQuery?.data) {
+  if (contributorExistenceCheckQuery?.data?.getColonyContributor) {
     // contributor already exists no need to create one
     return true;
   }
