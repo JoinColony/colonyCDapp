@@ -13,7 +13,6 @@ import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useAppContext, useCanInteractWithColony } from '~hooks';
 import { NotFoundRoute } from '~routes';
-import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
 
@@ -126,7 +125,7 @@ export const ColonyContextProvider = ({
 
   return (
     <ColonyContext.Provider value={colonyContext}>
-      <MemberContextProvider>{children}</MemberContextProvider>
+      {children}
     </ColonyContext.Provider>
   );
 };
