@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~hooks';
 import { ActionTypes } from '~redux';
@@ -19,6 +20,17 @@ import { renderVoteRadioButtons } from './utils';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
+
+const MSG = defineMessages({
+  changeVote: {
+    id: `${displayName}.changeVote`,
+    defaultMessage: 'Change Vote',
+  },
+  submitVote: {
+    id: `${displayName}.submitVote`,
+    defaultMessage: 'Submit vote',
+  },
+});
 
 const VotingStep: FC<VotingStepProps> = ({
   actionData,
@@ -136,7 +148,9 @@ const VotingStep: FC<VotingStepProps> = ({
                   isFullSize
                   type="submit"
                   className="mt-8"
-                  text={formatText({ id: 'motion.votingStep.submit' })}
+                  text={formatText(
+                    hasUserVoted ? MSG.changeVote : MSG.submitVote,
+                  )}
                 />
               )}
             </ActionForm>

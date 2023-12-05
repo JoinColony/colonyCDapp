@@ -1265,7 +1265,6 @@
     "motion.votingStep.votingMethod": "Voting method",
     "motion.votingStep.teamReputation": "Team reputation",
     "motion.votingStep.rewardRange": "Reward range",
-    "motion.votingStep.submit": "Submit vote",
     "motion.votingStep.method": "Reputation-weighted",
     "motion.votingStep.voted": "You voted:",
     "motion.votingStep.changeVote": "Change your vote:",
