@@ -114,7 +114,7 @@ export const agreementsMenu: NavigationSidebarLinksListProps['items'] = [
 export const adminMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '1',
-    label: formatText({ id: 'navigation.admin.colonyDetails' }),
+    label: formatText({ id: 'colonyDetails' }),
     to: COLONY_DETAILS_ROUTE,
     iconName: 'buildings',
   },

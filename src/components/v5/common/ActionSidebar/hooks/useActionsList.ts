@@ -209,7 +209,7 @@ export const useActionsList = () => {
               : undefined,
           },
           {
-            label: { id: 'actions.editColonyDetails' },
+            label: { id: 'colonyDetails.edit' },
             value: ACTION.EDIT_COLONY_DETAILS,
             missingPermissions: !(
               hasRootPermission || isVotingReputationEnabled

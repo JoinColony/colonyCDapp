@@ -25,10 +25,6 @@ const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 const MAX_DESCRIPTION_LENGTH = 250;
 
 const MSG = defineMessages({
-  title: {
-    id: `${displayName}.title`,
-    defaultMessage: 'Colony Details',
-  },
   lockedToken: {
     id: `${displayName}.lockedToken`,
     defaultMessage:
@@ -59,7 +55,7 @@ const ColonyDetailsPage: FC = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
 
-  useSetPageHeadingTitle(formatMessage(MSG.title));
+  useSetPageHeadingTitle(formatMessage({ id: 'colonyDetails' }));
 
   const { name, metadata, colonyAddress, nativeToken, status } = colony || {};
   const { avatar, thumbnail, description, externalLinks, objective } =
@@ -126,7 +122,7 @@ const ColonyDetailsPage: FC = () => {
         ) : null}
         <Button
           mode="primarySolid"
-          text={{ id: 'button.editColonyDetails' }}
+          text={{ id: 'colonyDetails.edit' }}
           isFullSize={isMobile}
           onClick={() => {
             toggleActionSidebarOn({

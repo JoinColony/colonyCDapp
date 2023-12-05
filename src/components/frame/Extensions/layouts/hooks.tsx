@@ -314,7 +314,7 @@ export const useMainMenuItems = () => {
         items: [
           {
             key: '1',
-            label: formatText({ id: 'actions.editColonyDetails' }),
+            label: formatText({ id: 'colonyDetails.edit' }),
             onClick: () =>
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
