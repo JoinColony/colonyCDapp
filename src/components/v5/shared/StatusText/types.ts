@@ -1,4 +1,5 @@
 import { IconSize } from '~shared/Icon/Icon';
+
 import { STATUS_TYPES } from './consts';
 
 export interface StatusTextProps {

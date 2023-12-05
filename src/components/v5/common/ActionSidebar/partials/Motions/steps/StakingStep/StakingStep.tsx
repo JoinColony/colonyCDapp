@@ -1,9 +1,11 @@
 import clsx from 'clsx';
+import { formatRelative } from 'date-fns';
 import React, { FC, useState } from 'react';
 
 import { useAppContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { SpinnerLoader } from '~shared/Preloaders';
+import { SystemMessages } from '~types';
 import { formatText } from '~utils/intl';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
@@ -65,6 +67,10 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     objectingStakesPercentageValue !== 100 &&
     supportingStakesPercentageValue === 100;
 
+  const votingPhaseStartedMessage = motionData.messages?.items.find(
+    (message) => message?.name === SystemMessages.MotionVotingPhase,
+  );
+
   const cardTitleText = (() => {
     if (isFullyStaked) {
       return 'motion.staking.status.text.locked';
@@ -90,8 +96,12 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
             {
               id: cardTitleText,
             },
-            // @todo: update time when it will be available in the API
-            { time: 'today at 3:14pm' },
+            {
+              time: formatRelative(
+                new Date(votingPhaseStartedMessage?.createdAt || new Date()),
+                new Date(),
+              ),
+            },
           ),
           iconAlignment: 'top',
           iconSize: 'extraSmall',

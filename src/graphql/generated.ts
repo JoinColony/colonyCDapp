@@ -9176,6 +9176,7 @@ export const MotionMessageFragmentDoc = gql`
   }
   vote
   amount
+  createdAt
 }
     ${UserFragmentDoc}`;
 export const AnnotationFragmentDoc = gql`
