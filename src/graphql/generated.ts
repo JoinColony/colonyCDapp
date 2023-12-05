@@ -8831,11 +8831,18 @@ export type GetSafeTransactionStatusQueryVariables = Exact<{
 export type GetSafeTransactionStatusQuery = { __typename?: 'Query', getSafeTransactionStatus?: Array<string> | null };
 
 export type GetTotalColonyActionsQueryVariables = Exact<{
-  colonyId: Scalars['ID'];
+  filter?: InputMaybe<SearchableColonyActionFilterInput>;
 }>;
 
 
 export type GetTotalColonyActionsQuery = { __typename?: 'Query', searchColonyActions?: { __typename?: 'SearchableColonyActionConnection', total?: number | null } | null };
+
+export type GetTotalColonyDomainActionsQueryVariables = Exact<{
+  colonyId: Scalars['ID'];
+}>;
+
+
+export type GetTotalColonyDomainActionsQuery = { __typename?: 'Query', searchColonyActions?: { __typename?: 'SearchableColonyActionConnection', aggregateItems: Array<{ __typename?: 'SearchableAggregateResult', result?: { __typename?: 'SearchableAggregateBucketResult', typename: 'SearchableAggregateBucketResult', buckets?: Array<{ __typename?: 'SearchableAggregateBucketResultItem', key: string, docCount: number } | null> | null } | { __typename?: 'SearchableAggregateScalarResult' } | null } | null> } | null };
 
 export type SearchActionsQueryVariables = Exact<{
   nextToken?: InputMaybe<Scalars['String']>;
@@ -11115,8 +11122,8 @@ export type GetSafeTransactionStatusQueryHookResult = ReturnType<typeof useGetSa
 export type GetSafeTransactionStatusLazyQueryHookResult = ReturnType<typeof useGetSafeTransactionStatusLazyQuery>;
 export type GetSafeTransactionStatusQueryResult = Apollo.QueryResult<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>;
 export const GetTotalColonyActionsDocument = gql`
-    query GetTotalColonyActions($colonyId: ID!) {
-  searchColonyActions(filter: {colonyId: {eq: $colonyId}}) {
+    query GetTotalColonyActions($filter: SearchableColonyActionFilterInput) {
+  searchColonyActions(filter: $filter) {
     total
   }
 }
@@ -11134,11 +11141,11 @@ export const GetTotalColonyActionsDocument = gql`
  * @example
  * const { data, loading, error } = useGetTotalColonyActionsQuery({
  *   variables: {
- *      colonyId: // value for 'colonyId'
+ *      filter: // value for 'filter'
  *   },
  * });
  */
-export function useGetTotalColonyActionsQuery(baseOptions: Apollo.QueryHookOptions<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>) {
+export function useGetTotalColonyActionsQuery(baseOptions?: Apollo.QueryHookOptions<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>(GetTotalColonyActionsDocument, options);
       }
@@ -11149,6 +11156,54 @@ export function useGetTotalColonyActionsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetTotalColonyActionsQueryHookResult = ReturnType<typeof useGetTotalColonyActionsQuery>;
 export type GetTotalColonyActionsLazyQueryHookResult = ReturnType<typeof useGetTotalColonyActionsLazyQuery>;
 export type GetTotalColonyActionsQueryResult = Apollo.QueryResult<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>;
+export const GetTotalColonyDomainActionsDocument = gql`
+    query GetTotalColonyDomainActions($colonyId: ID!) {
+  searchColonyActions(
+    filter: {colonyId: {eq: $colonyId}}
+    aggregates: {name: "FromDomainIdCount", type: terms, field: fromDomainId}
+  ) {
+    aggregateItems {
+      result {
+        ... on SearchableAggregateBucketResult {
+          typename: __typename
+          buckets {
+            key
+            docCount: doc_count
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTotalColonyDomainActionsQuery__
+ *
+ * To run a query within a React component, call `useGetTotalColonyDomainActionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTotalColonyDomainActionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTotalColonyDomainActionsQuery({
+ *   variables: {
+ *      colonyId: // value for 'colonyId'
+ *   },
+ * });
+ */
+export function useGetTotalColonyDomainActionsQuery(baseOptions: Apollo.QueryHookOptions<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>(GetTotalColonyDomainActionsDocument, options);
+      }
+export function useGetTotalColonyDomainActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>(GetTotalColonyDomainActionsDocument, options);
+        }
+export type GetTotalColonyDomainActionsQueryHookResult = ReturnType<typeof useGetTotalColonyDomainActionsQuery>;
+export type GetTotalColonyDomainActionsLazyQueryHookResult = ReturnType<typeof useGetTotalColonyDomainActionsLazyQuery>;
+export type GetTotalColonyDomainActionsQueryResult = Apollo.QueryResult<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>;
 export const SearchActionsDocument = gql`
     query SearchActions($nextToken: String, $limit: Int, $filter: SearchableColonyActionFilterInput, $sort: [SearchableColonyActionSortInput]) {
   searchColonyActions(

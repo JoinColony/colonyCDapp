@@ -10,12 +10,11 @@ import {
 } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
-import { useGetColonyContributorsQuery } from '~gql';
+import { useGetTotalColonyActionsQuery, useGetColonyContributorsQuery } from '~gql';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import { useActionsList } from '~v5/common/ActionSidebar/hooks';
 import {
   setHexTeamColor,
   setTeamColor,
@@ -31,6 +30,7 @@ import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
 import useColonySubscription from '~hooks/useColonySubscription';
+import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
 
 import { iconMappings, MAX_TEXT_LENGTH } from './consts';
 import { ChartData, UseGetHomeWidgetReturnType } from './types';
@@ -79,8 +79,7 @@ export const useGetAllColonyMembers = (
 
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
-  const { domains, colonyAddress, nativeToken } = colony || {};
-  const { balances } = colony || {};
+  const { domains, colonyAddress = '', nativeToken, balances } = colony || {};
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null
   >();
@@ -93,15 +92,19 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     ) || 0;
 
   const { colonyMembers, loading: membersLoading } = useGetAllColonyMembers(
-    colonyAddress || '',
+    colonyAddress,
     team,
   );
 
-  const actionsList = useActionsList();
-  const activeActions = actionsList
-    .map((action) => action.options)
-    .flat()
-    .filter((option) => !option.isDisabled).length;
+  const { data: totalActionData } = useGetTotalColonyActionsQuery({
+    variables: {
+      filter: {
+        ...createBaseActionFilter(colonyAddress),
+      },
+    },
+  });
+
+  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
 
   const selectedTeamColor = domains?.items.find(
     (domain) => domain?.nativeId === team,
@@ -163,7 +166,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const chartData = allTeams?.length ? [...firstThreeTeams, otherTeams] : [];
 
   return {
-    activeActions,
+    totalActions,
     allMembers: mappedMembers,
     teamColor,
     currentTokenBalance,

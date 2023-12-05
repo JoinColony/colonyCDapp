@@ -43,9 +43,28 @@ query GetSafeTransactionStatus($input: GetSafeTransactionStatusInput!) {
   getSafeTransactionStatus(input: $input)
 }
 
-query GetTotalColonyActions($colonyId: ID!) {
-  searchColonyActions(filter: { colonyId: { eq: $colonyId } }) {
+query GetTotalColonyActions($filter: SearchableColonyActionFilterInput) {
+  searchColonyActions(filter: $filter) {
     total
+  }
+}
+
+query GetTotalColonyDomainActions($colonyId: ID!) {
+  searchColonyActions(
+    filter: { colonyId: { eq: $colonyId } }
+    aggregates: { name: "FromDomainIdCount", type: terms, field: fromDomainId }
+  ) {
+    aggregateItems {
+      result {
+        ... on SearchableAggregateBucketResult {
+          __typename
+          buckets {
+            key
+            docCount: doc_count
+          }
+        }
+      }
+    }
   }
 }
 

@@ -1,25 +1,84 @@
 import clsx from 'clsx';
 import React from 'react';
+import { subDays, startOfDay } from 'date-fns';
 
+import { notNull } from '~utils/arrays';
+import {
+  useGetTotalColonyActionsQuery,
+  useGetTotalColonyDomainActionsQuery,
+} from '~gql';
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
+import { useColonyContext } from '~hooks';
+import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
+
+const getThirtyDaysAgoIso = () => {
+  const thirtyDaysAgo = subDays(new Date(), 30);
+  const midnightThirtyDaysAgo = startOfDay(thirtyDaysAgo);
+  return midnightThirtyDaysAgo.toISOString();
+};
 
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
+  const { colony } = useColonyContext();
+  const { domains, colonyAddress = '' } = colony ?? {};
+
+  const { data: totalActionData } = useGetTotalColonyActionsQuery({
+    variables: {
+      filter: {
+        ...createBaseActionFilter(colonyAddress),
+      },
+    },
+  });
+
+  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
+
+  const { data: recentActionData } = useGetTotalColonyActionsQuery({
+    variables: {
+      filter: {
+        ...createBaseActionFilter(colonyAddress),
+        createdAt: { gte: getThirtyDaysAgoIso() },
+      },
+    },
+  });
+
+  const recentActions = recentActionData?.searchColonyActions?.total ?? 0;
+
+  const { data: domainData } = useGetTotalColonyDomainActionsQuery({
+    variables: {
+      colonyId: colonyAddress,
+    },
+  });
+
+  const domainCountsResult =
+    domainData?.searchColonyActions?.aggregateItems[0]?.result || {};
+  const domainsActionCount =
+    // eslint-disable-next-line no-underscore-dangle
+    domainCountsResult?.__typename === 'SearchableAggregateBucketResult'
+      ? domainCountsResult?.buckets?.filter(notNull) ?? []
+      : [];
+
+  const domainWithMaxActions = domainsActionCount.reduce(
+    (max, item) => (item.docCount > (max || 0) ? item : max),
+    null,
+  );
+
+  const mostActiveDomain = domains?.items
+    .filter(notNull)
+    .find((domain) => domain.id === domainWithMaxActions?.key || '');
+
+  const mostActiveDomainName = mostActiveDomain?.metadata?.name || '~';
+
   const tileClassName = 'text-gray-400';
   const contentClassName =
     'flex flex-row-reverse items-center gap-1.5 text-right sm:text-left sm:gap-0 sm:flex-col sm:items-start';
-  // @todo: replace with correct data
-  const activeActionsNumber = 44;
-  const recentActionsCount = 120;
-  const mostActiveTeam = 'Product';
 
   return [
     {
       key: '1',
-      title: formatText({ id: 'activityPage.activeActions' }),
+      title: formatText({ id: 'widget.totalActions' }),
       value: (
         <span className="heading-4 text-gray-900">
-          {activeActionsNumber > 1000 ? '999+' : activeActionsNumber}
+          {totalActions > 1000 ? '999+' : totalActions}
         </span>
       ),
       className: tileClassName,
@@ -34,7 +93,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
           {formatText(
             { id: 'activityPage.recentActions.pastMonth' },
             {
-              value: recentActionsCount > 1000 ? '999+' : recentActionsCount,
+              value: recentActions > 1000 ? '999+' : recentActions,
               span: (chunks) => (
                 <span className="text-1 hidden sm:inline">{chunks}</span>
               ),
@@ -56,7 +115,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
       ),
       value: (
         <span className="heading-4 text-gray-900 truncate whitespace-nowrap overflow-hidden inline-block">
-          {mostActiveTeam}
+          {mostActiveDomainName}
         </span>
       ),
       className: clsx(tileClassName, '[&_h3]:flex-shrink-0'),
