@@ -55,6 +55,8 @@ const useAllMembers = ({
     [allMembers],
   );
 
+  const totalMemberCount = members.length;
+
   const filteredMembers = useMemberFilters({
     members,
     contributorTypes,
@@ -72,8 +74,6 @@ const useAllMembers = ({
     () => sortedMembers.filter(({ isVerified }) => isVerified),
     [sortedMembers],
   );
-
-  const totalMemberCount = sortedMembers.length;
 
   return {
     members: sortedMembers,

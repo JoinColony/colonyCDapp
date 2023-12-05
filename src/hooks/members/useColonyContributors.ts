@@ -46,6 +46,8 @@ const useColonyContributors = ({
     [allMembers],
   );
 
+  const totalContributorCount = allContributors.length;
+
   const filteredContributors = useMemberFilters({
     members: allContributors,
     contributorTypes,
@@ -59,8 +61,6 @@ const useColonyContributors = ({
     sortDirection === SortDirection.Asc
       ? sortByReputationAscending(filteredContributors)
       : sortByReputationDescending(filteredContributors);
-
-  const totalContributorCount = sortedContributors.length;
 
   return {
     contributors: sortedContributors,

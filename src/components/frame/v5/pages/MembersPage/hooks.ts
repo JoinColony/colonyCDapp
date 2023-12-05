@@ -11,6 +11,8 @@ import { MembersTabContentListItem } from './partials/MembersTabContent/types';
 
 export const useMembersPage = () => {
   const {
+    members,
+    contributors,
     pagedContributors,
     pagedMembers,
     loading,
@@ -18,8 +20,6 @@ export const useMembersPage = () => {
     moreContributors,
     loadMoreMembers,
     moreMembers,
-    totalContributorCount,
-    totalMemberCount,
   } = useMemberContext();
   const { colony } = useColonyContext();
 
@@ -93,6 +93,9 @@ export const useMembersPage = () => {
     [colony, pagedMembers],
   );
 
+  const sortedContributorCount = contributors.length;
+  const sortedMemberCount = members.length;
+
   return {
     contributorsList,
     loading,
@@ -101,7 +104,7 @@ export const useMembersPage = () => {
     membersList,
     hasMoreMembers: moreMembers,
     loadMoreMembers,
-    totalContributorCount,
-    totalMemberCount,
+    sortedContributorCount,
+    sortedMemberCount,
   };
 };
