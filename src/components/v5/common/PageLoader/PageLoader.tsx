@@ -43,7 +43,7 @@ const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
         <Icon className={styles.colonyIcon} name="colony-icon" />
       </div>
       {loadingText && (
-        <div className="text-gray-900 text-sm font-medium mt-6 uppercase">
+        <div className="text-gray-900 text-sm font-medium mt-6 uppercase tracking-[0.075rem]">
           {loadingText}
         </div>
       )}
