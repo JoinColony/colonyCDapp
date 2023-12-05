@@ -2,6 +2,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { FC, useEffect, useMemo, useState } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
@@ -23,6 +24,28 @@ import VotingStep from './steps/VotingStep';
 import { MotionsProps, Steps, CustomStep } from './types';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
+
+const MSG = defineMessages({
+  votingPhaseButtonTooltip: {
+    id: `${displayName}.votingPhaseButtonTooltip`,
+    defaultMessage:
+      'Voting will start if action is fully supported and fully opposed.',
+  },
+  revealPhaseButtonTooltip: {
+    id: `${displayName}.revealPhaseButtonTooltip`,
+    defaultMessage:
+      'Votes are hidden, so you need to reveal your vote during the Reveal stage for it to be counted and to be eligible for rewards.',
+  },
+  finalizePhaseButtonTooltip: {
+    id: `${displayName}.finalizePhaseButtonTooltip`,
+    defaultMessage:
+      'Execute and return all stakes of the supported action or only return stakes of a opposed/failed action.',
+  },
+  outcomePhaseButtonTooltip: {
+    id: `${displayName}.outcomePhaseButtonTooltip`,
+    defaultMessage: 'The outcome of this proposed action.',
+  },
+});
 
 const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const { canInteract } = useAppContext();
@@ -164,6 +187,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 refetchMotionState={refetchMotionState}
               />
             ) : null,
+          tooltipProps: {
+            tooltipContent: (
+              <FormattedMessage {...MSG.votingPhaseButtonTooltip} />
+            ),
+          },
         },
         isOptional: !isFullyStaked,
         isHidden: motionStakedAndFinalizable,
@@ -190,6 +218,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 refetchMotionState={refetchMotionState}
               />
             ) : null,
+          tooltipProps: {
+            tooltipContent: (
+              <FormattedMessage {...MSG.revealPhaseButtonTooltip} />
+            ),
+          },
         },
         isHidden: motionStakedAndFinalizable,
       },
@@ -242,6 +275,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             'bg-base-white text-negative-400 border-negative-400':
               !hasVotedMotionPassed,
           }),
+          tooltipProps: {
+            tooltipContent: (
+              <FormattedMessage {...MSG.outcomePhaseButtonTooltip} />
+            ),
+          },
         },
         isOptional: true,
         isHidden: motionStakedAndFinalizable,
@@ -259,6 +297,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         ),
         heading: {
           label: formatText({ id: 'motion.finalize.label' }) || '',
+          tooltipProps: {
+            tooltipContent: (
+              <FormattedMessage {...MSG.finalizePhaseButtonTooltip} />
+            ),
+          },
         },
         isSkipped: !canInteract,
       },
