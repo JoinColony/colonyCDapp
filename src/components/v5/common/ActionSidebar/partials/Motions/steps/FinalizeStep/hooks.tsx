@@ -18,6 +18,7 @@ import { MotionAction } from '~types/motions';
 import { InstalledExtensionData } from '~types';
 
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
+import { WinningsItms } from './types';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
@@ -81,6 +82,7 @@ export const useClaimConfig = (
       usersStakes,
       databaseMotionId,
       remainingStakes,
+      isFinalized,
     },
     transactionHash,
   } = actionData;
@@ -174,7 +176,7 @@ export const useClaimConfig = (
 
   const items: DescriptionListItem[] = [
     {
-      key: '1',
+      key: WinningsItms.Staked,
       label: formatText({ id: 'motion.finalizeStep.staked' }),
       value: (
         <div>
@@ -186,33 +188,37 @@ export const useClaimConfig = (
         </div>
       ),
     },
-    {
-      key: '2',
-      label: formatText({ id: 'motion.finalizeStep.winnings' }),
-      value: (
-        <div>
-          <Numeral
-            value={userWinnings || 0}
-            decimals={nativeTokenDecimals}
-            suffix={nativeTokenSymbol}
-          />
-        </div>
-      ),
-    },
-    {
-      key: '3',
-      label: formatText({ id: 'motion.finalizeStep.total' }),
-      value: (
-        <div>
-          <Numeral
-            value={totals || 0}
-            decimals={nativeTokenDecimals}
-            suffix={nativeTokenSymbol}
-          />
-        </div>
-      ),
-    },
   ];
+  if (isFinalized) {
+    items.push(
+      {
+        key: WinningsItms.Winnings,
+        label: formatText({ id: 'motion.finalizeStep.winnings' }),
+        value: (
+          <div>
+            <Numeral
+              value={userWinnings || 0}
+              decimals={nativeTokenDecimals}
+              suffix={nativeTokenSymbol}
+            />
+          </div>
+        ),
+      },
+      {
+        key: WinningsItms.Total,
+        label: formatText({ id: 'motion.finalizeStep.total' }),
+        value: (
+          <div>
+            <Numeral
+              value={totals || 0}
+              decimals={nativeTokenDecimals}
+              suffix={nativeTokenSymbol}
+            />
+          </div>
+        ),
+      },
+    );
+  }
 
   return {
     items,

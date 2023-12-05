@@ -10,3 +10,9 @@ export interface FinalizeStepProps extends PollingControls {
 export enum FinalizeStepSections {
   Finalize = 'finalizeStep',
 }
+
+export enum WinningsItms {
+  Staked = 'staked',
+  Winnings = 'winnings',
+  Total = 'total',
+}
