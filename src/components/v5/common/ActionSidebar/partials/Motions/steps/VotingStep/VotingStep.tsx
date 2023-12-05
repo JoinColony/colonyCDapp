@@ -68,6 +68,7 @@ const VotingStep: FC<VotingStepProps> = ({
             additionalText={formatText({
               id: 'motion.votingStep.additionalText',
             })}
+            isTall
           />
         ),
       }}
