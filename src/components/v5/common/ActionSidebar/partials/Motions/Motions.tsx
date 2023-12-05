@@ -119,8 +119,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   const votesHaveBeenRevealed: boolean =
     revealedVotes?.yay !== '0' || revealedVotes?.nay !== '0';
-  const hasMotionPassed = motionStateEnum === MotionState.Passed;
-  const hasMotionFaild = motionStateEnum === MotionState.Failed;
+  const hasVotedMotionPassed = motionStateHistory?.hasPassed;
+  const hasVotedMotionFaild = motionStateHistory?.hasFailed;
 
   const motionStakedAndFinalizable =
     motionFinished &&
@@ -241,24 +241,22 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           iconName:
             (winningSide === MotionVote.Yay && 'thumbs-up') ||
-            (hasMotionPassed && 'thumbs-up') ||
-            (hasMotionFaild && 'thumbs-down') ||
+            (hasVotedMotionPassed && 'thumbs-up') ||
+            (hasVotedMotionFaild && 'thumbs-down') ||
             '',
           label:
-            (winningSide === MotionVote.Yay &&
-              votesHaveBeenRevealed &&
+            (hasVotedMotionPassed &&
               formatText({ id: 'motion.support.wins.label' })) ||
-            (winningSide === MotionVote.Nay &&
-              votesHaveBeenRevealed &&
+            (hasVotedMotionFaild &&
               formatText({ id: 'motion.oppose.wins.label' })) ||
             formatText({ id: 'motion.outcome.label' }) ||
             '',
           className: clsx({
             '!bg-base-white !text-purple-400 border-purple-400':
-              hasMotionPassed ||
+              hasVotedMotionPassed ||
               (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
             '!bg-base-white !text-red-400 border-red-400':
-              (hasMotionFaild && !votesHaveBeenRevealed) ||
+              (hasVotedMotionFaild && !votesHaveBeenRevealed) ||
               winningSide === MotionVote.Nay,
           }),
         },
@@ -298,8 +296,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     motionData,
     motionStateHistory,
     winningSide,
-    hasMotionPassed,
-    hasMotionFaild,
+    hasVotedMotionPassed,
+    hasVotedMotionFaild,
     votesHaveBeenRevealed,
     refetchAction,
     canInteract,
