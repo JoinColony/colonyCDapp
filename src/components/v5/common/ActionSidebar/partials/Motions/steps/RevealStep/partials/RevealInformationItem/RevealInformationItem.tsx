@@ -18,7 +18,7 @@ const RevealInformationItem: FC<RevealInformationListItem> = ({
   return (
     <div className="flex items-center justify-between gap-2">
       <AvatarUser avatar={avatar} userName={userName || ''} size="xs" />
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 text-gray-900">
         <Icon
           name={hasRevealed ? 'eye' : 'eye-closed'}
           appearance={{ size: 'tiny' }}

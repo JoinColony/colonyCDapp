@@ -62,7 +62,7 @@ const VotingStep: FC<VotingStepProps> = ({
         iconAlignment: 'top',
         content: (
           <ProgressBar
-            progress={currentReputationPercent || 0}
+            progress={currentReputationPercent}
             threshold={thresholdPercent}
             additionalText={formatText({
               id: 'motion.votingStep.additionalText',
@@ -81,10 +81,10 @@ const VotingStep: FC<VotingStepProps> = ({
               validationSchema={validationSchema}
               defaultValues={{ vote: undefined }}
             >
-              <div className="mb-6 pb-6 border-b border-gray-200">
+              <div className="mb-7">
                 {hasUserVoted && (isSupportVote || isOpposeVote) && (
                   <div className="mb-3">
-                    <div className="flex items-center justify-between gap-2 mb-4">
+                    <div className="flex items-center justify-between gap-2 mb-6">
                       <h4 className="text-2">
                         {formatText({ id: 'motion.votingStep.voted' })}
                       </h4>
@@ -109,9 +109,11 @@ const VotingStep: FC<VotingStepProps> = ({
                 )}
                 {canVote && (
                   <>
-                    <h4 className="text-1 mb-3 text-center">
-                      {formatText({ id: 'motion.votingStep.title' })}
-                    </h4>
+                    {!hasUserVoted && (
+                      <h4 className="text-1 mb-3 text-center">
+                        {formatText({ id: 'motion.votingStep.title' })}
+                      </h4>
+                    )}
                     <FormButtonRadioButtons
                       items={renderVoteRadioButtons(
                         hasUserVoted,
@@ -122,12 +124,16 @@ const VotingStep: FC<VotingStepProps> = ({
                   </>
                 )}
               </div>
-              <DescriptionList items={items} className="mb-6" />
+              <DescriptionList
+                items={items}
+                className="mb-1 pt-6 border-t border-gray-200"
+              />
               {canVote && (
                 <Button
                   mode="primarySolid"
                   isFullSize
                   type="submit"
+                  className="mt-8"
                   text={formatText({ id: 'motion.votingStep.submit' })}
                 />
               )}
