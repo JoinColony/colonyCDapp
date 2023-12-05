@@ -647,7 +647,6 @@ const createColony = async (
   }
 
   // subscribe main users to colony
-  await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[0]), colonyAddress);
   await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[1]), colonyAddress);
   await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[2]), colonyAddress);
 
