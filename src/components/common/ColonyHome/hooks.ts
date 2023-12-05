@@ -10,11 +10,8 @@ import {
 } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
-import {
-  useGetTotalColonyActionsQuery,
-  useGetColonyContributorsQuery,
-} from '~gql';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useGetTotalColonyActionsQuery } from '~gql';
+import { useColonyContext, useMobile } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
@@ -32,7 +29,6 @@ import {
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
-import useColonySubscription from '~hooks/useColonySubscription';
 import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
 import { useMemberContext } from '~context/MemberContext';
 
@@ -41,7 +37,7 @@ import { ChartData, UseGetHomeWidgetReturnType } from './types';
 
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
-  const { domains, nativeToken } = colony || {};
+  const { domains, nativeToken, colonyAddress = '' } = colony || {};
   const { balances } = colony || {};
 
   const { members, loading: membersLoading } = useMemberContext();
