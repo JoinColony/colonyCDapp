@@ -3,10 +3,9 @@ import React, {
   FC,
   PropsWithChildren,
   useContext,
-  useEffect,
   useMemo,
-  useState,
 } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useBeamer } from '~hooks/useBeamer';
 import { AnalyticsEvent } from './types';
 
@@ -29,30 +28,11 @@ export const AnalyticsContext = createContext<AnalyticsContextValue>(
 export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [isAnalyticsActive, setIsAnalyticsActive] = useState(false);
   const gtmId = process.env.GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
   useBeamer();
 
-  useEffect(() => {
-    setIsAnalyticsActive(!!gtmId);
-    if (gtmId) {
-      // Inject GTM script only if gtmId is available
-      if (!window.dataLayer || window.dataLayer.length === 0) {
-        const script = document.createElement('script');
-        script.innerHTML = `
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer', '${gtmId}');
-        `;
-        document.head.appendChild(script);
-      }
-    }
-  }, [gtmId]);
-
   const contextValue = useMemo(() => {
-    return isAnalyticsActive
+    return gtmId
       ? {
           trackEvent: (event: AnalyticsEvent) => {
             if (window.dataLayer) {
@@ -66,10 +46,23 @@ export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
           },
         }
       : defaultAnalyticsContext;
-  }, [isAnalyticsActive]);
+  }, [gtmId]);
 
   return (
     <AnalyticsContext.Provider value={contextValue}>
+      {!!gtmId && (
+        <Helmet>
+          <script type="text/javascript">
+            {`
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer', '${gtmId}');
+            `}
+          </script>
+        </Helmet>
+      )}
       {children}
     </AnalyticsContext.Provider>
   );

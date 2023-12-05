@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
+import { HelmetProvider } from 'react-helmet-async';
 import { getContext, ContextModule } from '~context';
 import { AnalyticsContextProvider } from '~context/AnalyticsContext';
 
@@ -44,12 +45,14 @@ const Entry = ({ store }: Props) => {
     >
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
-          <AnalyticsContextProvider>
-            <Router>
-              <RouteTracker />
-              <Routes />
-            </Router>
-          </AnalyticsContextProvider>
+          <HelmetProvider>
+            <AnalyticsContextProvider>
+              <Router>
+                <RouteTracker />
+                <Routes />
+              </Router>
+            </AnalyticsContextProvider>
+          </HelmetProvider>
         </ReduxProvider>
       </ApolloProvider>
     </IntlProvider>
