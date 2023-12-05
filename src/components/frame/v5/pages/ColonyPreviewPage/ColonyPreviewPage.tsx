@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom';
 import NotificationBanner from '~v5/shared/NotificationBanner';
 import CardWithCallout from '~v5/shared/CardWithCallout';
-import Spinner from '~v5/shared/Spinner';
 import Button from '~v5/shared/Button';
 import { useAppContext } from '~hooks';
 import {
@@ -22,6 +21,7 @@ import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import SocialLinks from '~v5/shared/SocialLinks';
 import CardConnectWallet from '~v5/shared/CardConnectWallet';
 import { ADDRESS_ZERO } from '~constants';
+import PageLoader from '~v5/common/PageLoader';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -133,7 +133,7 @@ const ColonyPreviewPage = () => {
     whitelistLoading ||
     colonyLoading
   ) {
-    return <Spinner loading loadingText={MSG.loadingMessage} />;
+    return <PageLoader loadingText={formatMessage(MSG.loadingMessage)} />;
   }
 
   if (wallet && !user) {

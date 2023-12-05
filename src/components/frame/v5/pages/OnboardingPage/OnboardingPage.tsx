@@ -11,7 +11,7 @@ import { LANDING_PAGE_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import CardConnectWallet from '~v5/shared/CardConnectWallet';
 import NotificationBanner from '~v5/shared/NotificationBanner';
-import Spinner from '~v5/shared/Spinner';
+import PageLoader from '~v5/common/PageLoader';
 
 const displayName = 'frame.v5.OnboardingPage';
 
@@ -73,7 +73,7 @@ const OnboardingPage = ({ flow }: Props) => {
   if (userLoading || walletConnecting || loading) {
     return (
       <SplashLayout>
-        <Spinner loading loadingText={MSG.loadingMessage} />
+        <PageLoader loadingText={formatText(MSG.loadingMessage)} />
       </SplashLayout>
     );
   }
