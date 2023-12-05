@@ -32,7 +32,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
     <>
       {items.map(({ key, iconName, label, progress, status }) => (
         <div key={key} className="flex items-center w-full gap-8">
-          <div className="flex grow flex-col gap-1">
+          <div className="flex grow flex-col gap-1 max-w-[182px]">
             <span className="flex items-start gap-[0.375rem]">
               <Icon
                 className={clsx('h-[1em] w-[1em] text-[1.125rem]', {
@@ -70,6 +70,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
                   : remainingNayVoters
               }
               maxAvatarsToShow={3}
+              size="smx"
             />
           )}
         </div>

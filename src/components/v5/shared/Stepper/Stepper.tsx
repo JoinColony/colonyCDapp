@@ -77,7 +77,7 @@ function Stepper<TKey extends React.Key>({
                   sm:after:h-[calc(100%+1rem)]
                   after:w-full
                   sm:after:w-0
-                  sm:after:border-l
+                  sm:after:border-l-[.084rem]
                   sm:after:border-t-0
                   after:border-gray-900
                   after:top-[.875rem]

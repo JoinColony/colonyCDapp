@@ -51,7 +51,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
           content: (
             <div className="flex flex-col gap-4">
               {canInteract && currentUserVoted && (
-                <h3 className="text-center text-1 mb-2">
+                <h3 className="text-center text-1">
                   {formatText({
                     id: outcome
                       ? 'motion.outcomeStep.win.title'
