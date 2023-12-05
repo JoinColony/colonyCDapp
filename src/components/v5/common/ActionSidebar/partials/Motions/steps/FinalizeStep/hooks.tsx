@@ -20,7 +20,7 @@ import { InstalledExtensionData } from '~types';
 import { ADDRESS_ZERO } from '~constants';
 
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
-import { WinningsItms } from './types';
+import { WinningsItems } from './types';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
@@ -180,7 +180,7 @@ export const useClaimConfig = (
 
   const items: DescriptionListItem[] = [
     {
-      key: WinningsItms.Staked,
+      key: WinningsItems.Staked,
       label: formatText({ id: 'motion.finalizeStep.staked' }),
       value: (
         <div>
@@ -196,7 +196,7 @@ export const useClaimConfig = (
   if (isFinalized) {
     items.push(
       {
-        key: WinningsItms.Winnings,
+        key: WinningsItems.Winnings,
         label: formatText({ id: 'motion.finalizeStep.winnings' }),
         value: (
           <div>
@@ -209,7 +209,7 @@ export const useClaimConfig = (
         ),
       },
       {
-        key: WinningsItms.Total,
+        key: WinningsItems.Total,
         label: formatText({ id: 'motion.finalizeStep.total' }),
         value: (
           <div>

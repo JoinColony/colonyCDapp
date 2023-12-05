@@ -11,7 +11,7 @@ export enum FinalizeStepSections {
   Finalize = 'finalizeStep',
 }
 
-export enum WinningsItms {
+export enum WinningsItems {
   Staked = 'staked',
   Winnings = 'winnings',
   Total = 'total',
