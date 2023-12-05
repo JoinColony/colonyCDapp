@@ -15,10 +15,8 @@ const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
 
 const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
-  const { wallet, user } = useAppContext();
+  const { wallet, canInteract } = useAppContext();
   const { voteStatuses } = useOutcomeStep(motionData);
-
-  const canInteract = !!wallet && !!user;
 
   const voters: UserAvatarsItem[] =
     motionData?.voterRecord.map((voter) => ({

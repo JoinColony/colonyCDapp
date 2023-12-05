@@ -28,9 +28,8 @@ const StakingForm: FC<StakingFormProps> = ({
   userActivatedTokens,
   disableForm,
 }) => {
-  const { wallet, user } = useAppContext();
+  const { canInteract } = useAppContext();
   const { motionAction } = useMotionContext();
-  const canInteract = !!wallet && !!user;
 
   const thresholdPercentValue = 10;
 

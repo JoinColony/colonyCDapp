@@ -26,8 +26,7 @@ import { MotionsProps, Steps, CustomStep } from './types';
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
 const Motions: FC<MotionsProps> = ({ transactionId }) => {
-  const { wallet, user } = useAppContext();
-  const canInteract = !!wallet && !!user;
+  const { canInteract } = useAppContext();
   const {
     action,
     motionState,

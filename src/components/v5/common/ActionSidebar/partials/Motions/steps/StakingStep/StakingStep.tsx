@@ -22,7 +22,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep';
 
 const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
-  const { wallet, user } = useAppContext();
+  const { canInteract } = useAppContext();
   const { motionAction } = useMotionContext();
   const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
   const [showMoreUsers, setShowMoreUsers] = useState(false);
@@ -35,7 +35,6 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const { motionData, colony, token } = motionAction;
   const { usersStakes, motionStakes, requiredStake } = motionData;
 
-  const canInteract = !!wallet && !!user;
   const { nativeToken } = colony;
   const { nativeTokenDecimals, nativeTokenSymbol } = nativeToken;
   const { decimals, symbol } = token || {};

@@ -26,7 +26,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   refetchAction,
   motionState,
 }) => {
-  const { wallet, user } = useAppContext();
+  const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const { refetchColony } = useColonyContext();
   const { isFinalizable, transform: finalizePayload } =
@@ -79,7 +79,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     };
   }
 
-  const canInteract = !!wallet && !!user;
   /*
    * @NOTE This is just needed until we properly save motion data in the db
    * For now, we just fetch it live from chain, so when we uninstall the extension

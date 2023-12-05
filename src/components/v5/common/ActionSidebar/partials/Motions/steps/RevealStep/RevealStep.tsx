@@ -30,7 +30,7 @@ const RevealStep: FC<RevealStepProps> = ({
   stopPollingAction,
   transactionId,
 }) => {
-  const { wallet, user } = useAppContext();
+  const { canInteract } = useAppContext();
   const [isInformationAccordionOpen, { toggle: toggleInformationAccordion }] =
     useToggle();
   const {
@@ -52,8 +52,6 @@ const RevealStep: FC<RevealStepProps> = ({
   );
 
   const { decimals, symbol } = nativeToken || {};
-
-  const canInteract = !!wallet && !!user;
 
   const motionFinished =
     motionState === NetworkMotionState.Finalizable ||
