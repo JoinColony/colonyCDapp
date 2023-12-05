@@ -59,6 +59,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   useEffect(() => {
     if (actionData.motionData.isFinalized) {
       refetchColony();
+      setIsPolling(false);
     }
   }, [actionData.motionData.isFinalized, refetchColony]);
 
