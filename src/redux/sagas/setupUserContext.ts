@@ -5,6 +5,7 @@ import { getContext, setContext, ContextModule } from '~context';
 import { ColonyWallet } from '~types';
 import { getLastWallet, LastWallet, setLastWallet } from '~utils/autoLogin';
 import { createAddress } from '~utils/web3';
+import { authenticateWallet } from '~auth';
 
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
@@ -21,7 +22,6 @@ import { getGasPrices, putError } from './utils';
 import { getBasicWallet, getWallet } from './wallet';
 // import vestingSagas from './vesting';
 import getOnboard from './wallet/onboard';
-import { authenticateWallet } from '~auth';
 
 const ONBOARD_METAMASK_WALLET_LABEL = 'MetaMask';
 

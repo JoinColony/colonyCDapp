@@ -14,6 +14,7 @@ import {
   GetUserByNameDocument,
 } from '~gql';
 import { LANDING_PAGE_ROUTE } from '~routes';
+import { deauthenticateWallet } from '~auth';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
@@ -29,7 +30,6 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { deauthenticateWallet } from '~auth';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 
