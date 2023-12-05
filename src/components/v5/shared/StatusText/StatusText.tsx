@@ -17,6 +17,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   withIcon = true,
   textClassName = 'text-md',
   iconAlignment = 'center',
+  iconSize = 'tiny',
 }) => {
   const iconName = {
     [STATUS_TYPES.SUCCESS]: 'check-circle',
@@ -40,7 +41,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
       {withIcon && (
         <Icon
           name={iconNameProp || iconName[status]}
-          appearance={{ size: 'tiny' }}
+          appearance={{ size: iconSize }}
           className={clsx(iconClassName, 'flex-shrink-0')}
         />
       )}
