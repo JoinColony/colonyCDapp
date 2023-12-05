@@ -8,27 +8,27 @@ import { useColonyContext, useMobile } from '~hooks';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import { useRecipientsFieldTableColumns, useGetTableMenuProps } from './hooks';
 import {
-  AdvancedPaymentRecipentsTableModel,
-  AdvancedPaymentRecipentsFieldProps,
-  AdvancedPaymentRecipentsFieldModel,
+  AdvancedPaymentRecipientsTableModel,
+  AdvancedPaymentRecipientsFieldProps,
+  AdvancedPaymentRecipientsFieldModel,
 } from './types';
 import { formatText } from '~utils/intl';
 
 const displayName =
-  'v5.common.ActionsContent.partials.AdvancedPaymentRecipentsField';
+  'v5.common.ActionsContent.partials.AdvancedPaymentRecipientsField';
 
-const AdvancedPaymentRecipentsField: FC<AdvancedPaymentRecipentsFieldProps> = ({
-  name,
-}) => {
+const AdvancedPaymentRecipientsField: FC<
+  AdvancedPaymentRecipientsFieldProps
+> = ({ name }) => {
   const { nativeToken } = useColonyContext().colony || {};
   const fieldArrayMethods = useFieldArray({
     name,
   });
-  const data: AdvancedPaymentRecipentsTableModel[] =
+  const data: AdvancedPaymentRecipientsTableModel[] =
     fieldArrayMethods.fields.map(({ id }) => ({
       key: id,
     }));
-  const value: AdvancedPaymentRecipentsFieldModel[] = useWatch({ name }) || [];
+  const value: AdvancedPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
   const columns = useRecipientsFieldTableColumns(name, value);
   const isMobile = useMobile();
   const getMenuProps = useGetTableMenuProps(fieldArrayMethods, value);
@@ -41,7 +41,7 @@ const AdvancedPaymentRecipentsField: FC<AdvancedPaymentRecipentsFieldProps> = ({
         {formatText({ id: 'actionSidebar.additionalPayments' })}
       </h5>
       {!!data.length && (
-        <TableWithMeatballMenu<AdvancedPaymentRecipentsTableModel>
+        <TableWithMeatballMenu<AdvancedPaymentRecipientsTableModel>
           className={clsx({
             '!border-negative-400': !!fieldState.error,
           })}
@@ -73,6 +73,6 @@ const AdvancedPaymentRecipentsField: FC<AdvancedPaymentRecipentsFieldProps> = ({
   );
 };
 
-AdvancedPaymentRecipentsField.displayName = displayName;
+AdvancedPaymentRecipientsField.displayName = displayName;
 
-export default AdvancedPaymentRecipentsField;
+export default AdvancedPaymentRecipientsField;

@@ -38,7 +38,7 @@ export const useUserSelect = () => {
       isLoading: loading,
       options,
       key: 'users',
-      title: { id: 'actions.recipent' },
+      title: { id: 'actions.recipient' },
     },
     showVerifiedUsers: false,
   };

@@ -21,7 +21,7 @@ const useTeamsOptions = (
     domains?.items
       .filter(notNull)
       .sort(sortByDomainId)
-      .map(({ metadata, nativeId }) => {
+      .map(({ metadata, nativeId, isRoot }) => {
         const { color, name: teamName } = metadata || {};
         const teamColor = setTeamColor(color);
 
@@ -30,6 +30,7 @@ const useTeamsOptions = (
           value: (nativeId || '').toString(),
           isDisabled: false,
           color: teamColor,
+          isRoot,
         };
       }) || [];
 

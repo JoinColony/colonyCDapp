@@ -32,4 +32,5 @@ export interface SearchSelectOption {
   nativeId?: number;
   missingPermissions?: string;
   token?: TokenFragment;
+  isRoot?: boolean;
 }

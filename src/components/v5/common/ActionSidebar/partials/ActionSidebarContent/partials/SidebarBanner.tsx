@@ -92,7 +92,7 @@ export const SidebarBanner: FC = () => {
         </div>
       )}
       {requiredExtensionsWithoutPermission.map((extension) => (
-        <div className="mt-6">
+        <div className="mt-6" key={extension.extensionId}>
           <NotificationBanner status="warning" icon="warning-circle">
             <FormattedMessage
               {...MSG.extensionPermissionNeeded}

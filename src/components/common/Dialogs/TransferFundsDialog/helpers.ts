@@ -40,10 +40,11 @@ export const getTransferFundsDialogPayload = (
   return {
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
-    tokenAddress,
+    colonyVersion: colony.version,
     fromDomain,
     toDomain,
     amount,
+    tokenAddress,
     annotationMessage,
     customActionTitle: '',
   };
