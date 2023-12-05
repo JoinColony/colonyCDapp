@@ -1,12 +1,5 @@
-@value query700 from "~styles/queries.css";
-
 .stakesListContainer {
-  padding-right: 5px;
-  height: 60vh;
-  max-height: 356px;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  /* @TODO remove when we use tailwind-scrollbar */
 }
 
 /* The scrollbar itself */
@@ -29,10 +22,4 @@
 /* When the scrollbar is being hovered or clicked */
 .stakesListContainer::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-gray-300);
-}
-
-@media screen and query700 {
-  .stakesListContainer {
-    max-height: 60vh;
-  }
 }

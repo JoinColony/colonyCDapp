@@ -1,5 +1,3 @@
-import { MessageDescriptor } from 'react-intl';
-
 export interface UserSubmenuProps {
   submenuId: string;
 }
@@ -10,7 +8,7 @@ export interface UserSubmenuItems {
 
 export interface UserSubmenuItem {
   id: string;
-  label: MessageDescriptor;
+  label: string;
   url: string;
   external?: boolean;
   icon: string;

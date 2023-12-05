@@ -31,17 +31,17 @@ const accountNavMsgs = defineMessages({
 const navigationItems: SelectOption[] = [
   {
     to: USER_EDIT_PROFILE_ROUTE,
-    label: formatText(accountNavMsgs.profile) || '',
+    label: formatText(accountNavMsgs.profile),
     value: 0,
   },
   {
     to: USER_PREFERENCES_ROUTE,
-    label: formatText(accountNavMsgs.prefences) || '',
+    label: formatText(accountNavMsgs.prefences),
     value: 1,
   },
   {
     to: USER_ADVANCED_ROUTE,
-    label: formatText(accountNavMsgs.advanced) || '',
+    label: formatText(accountNavMsgs.advanced),
     value: 2,
   },
 ];

@@ -35,31 +35,31 @@ const actionMessages = defineMessages({
 
 export const manageMemberActions: SelectOption[] = [
   {
-    label: formatText(actionMessages.banMember) || '',
+    label: formatText(actionMessages.banMember),
     value: 'ban',
   },
   {
-    label: formatText(actionMessages.unbanMember) || '',
+    label: formatText(actionMessages.unbanMember),
     value: 'unban',
   },
   {
-    label: formatText(actionMessages.reduceReputation) || '',
+    label: formatText(actionMessages.reduceReputation),
     value: 'reduceReputation',
   },
   {
-    label: formatText(actionMessages.awardReputation) || '',
+    label: formatText(actionMessages.awardReputation),
     value: 'awardReputation',
   },
   {
-    label: formatText(actionMessages.addVerifiedMember) || '',
+    label: formatText(actionMessages.addVerifiedMember),
     value: 'addVerifiedMember',
   },
   {
-    label: formatText(actionMessages.removeVerifiedMember) || '',
+    label: formatText(actionMessages.removeVerifiedMember),
     value: 'removeVerifiedMember',
   },
   {
-    label: formatText(actionMessages.editPermissions) || '',
+    label: formatText(actionMessages.editPermissions),
     value: 'editPermissions',
   },
 ];

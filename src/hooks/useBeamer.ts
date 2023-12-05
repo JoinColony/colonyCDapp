@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 
-declare const Beamer: any;
-
 export const useBeamer = (): void => {
   useEffect(() => {
     const initializeBeamer = () => {
-      if (typeof Beamer !== 'undefined') {
-        Beamer.init();
+      if (typeof window.Beamer !== 'undefined') {
+        window.Beamer.init();
       }
     };
 
@@ -14,20 +12,14 @@ export const useBeamer = (): void => {
   }, []);
 };
 
-export const openWhatsNew = (
-  event: React.MouseEvent<HTMLAnchorElement>,
-): void => {
-  if (typeof Beamer !== 'undefined') {
-    event.preventDefault();
-    Beamer.show();
+export const openWhatsNew = (): void => {
+  if (typeof window.Beamer !== 'undefined') {
+    window.Beamer.show();
   }
 };
 
-export const openFeaturesBugs = (
-  event: React.MouseEvent<HTMLAnchorElement>,
-): void => {
-  if (typeof Beamer !== 'undefined') {
-    event.preventDefault();
-    Beamer.showIdeas(true);
+export const openFeaturesBugs = (): void => {
+  if (typeof window.Beamer !== 'undefined') {
+    window.Beamer.showIdeas(true);
   }
 };

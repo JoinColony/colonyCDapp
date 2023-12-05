@@ -13,6 +13,7 @@ import {
 } from '~constants';
 import { UserSubmenuItems } from './types';
 import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
+import { formatText } from '~utils/intl';
 
 export const menuMessages = defineMessages({
   getHelp: {
@@ -57,14 +58,14 @@ export const userSubmenuItems: UserSubmenuItems = {
   'userMenu.contactAndSupportTitle': [
     {
       id: 'getHelp',
-      label: menuMessages.getHelp,
+      label: formatText(menuMessages.getHelp),
       url: COLONY_DOCS,
       icon: 'lifebuoy',
       external: true,
     },
     {
       id: 'featureRequest',
-      label: menuMessages.whatsNew,
+      label: formatText(menuMessages.whatsNew),
       url: WHATS_NEW,
       icon: 'star',
       onClick: openWhatsNew,
@@ -73,7 +74,7 @@ export const userSubmenuItems: UserSubmenuItems = {
     },
     {
       id: 'reportBugs',
-      label: menuMessages.featureBugs,
+      label: formatText(menuMessages.featureBugs),
       url: FEATURES_BUGS,
       icon: 'bug',
       onClick: openFeaturesBugs,
@@ -81,14 +82,14 @@ export const userSubmenuItems: UserSubmenuItems = {
     },
     {
       id: 'discord',
-      label: menuMessages.discord,
+      label: formatText(menuMessages.discord),
       url: COLONY_DISCORD,
       icon: 'discord-logo',
       external: true,
     },
     {
       id: 'twitter',
-      label: menuMessages.twitter,
+      label: formatText(menuMessages.twitter),
       url: COLONY_TWITTER,
       icon: 'twitter-logo',
       external: true,
@@ -97,14 +98,14 @@ export const userSubmenuItems: UserSubmenuItems = {
   'userMenu.developersTitle': [
     {
       id: 'developerDocs',
-      label: menuMessages.developerDocs,
+      label: formatText(menuMessages.developerDocs),
       url: COLONY_DEV_DOCS,
       icon: 'code',
       external: true,
     },
     {
       id: 'github',
-      label: menuMessages.github,
+      label: formatText(menuMessages.github),
       url: COLONY_GITHUB,
       icon: 'github-logo',
       external: true,
@@ -113,14 +114,14 @@ export const userSubmenuItems: UserSubmenuItems = {
   'userMenu.legalAndPrivacyTitle': [
     {
       id: 'privacyPolicy',
-      label: menuMessages.privacyPolicy,
+      label: formatText(menuMessages.privacyPolicy),
       url: PRIVACY_POLICY,
       icon: 'file-text',
       external: true,
     },
     {
       id: 'termsOfUse',
-      label: menuMessages.termsOfUse,
+      label: formatText(menuMessages.termsOfUse),
       url: TERMS_AND_CONDITIONS,
       icon: 'files',
       external: true,

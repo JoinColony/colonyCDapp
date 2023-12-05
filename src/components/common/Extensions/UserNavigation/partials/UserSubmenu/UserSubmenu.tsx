@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 
 import { UserSubmenuProps } from './types';
@@ -43,9 +42,7 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => {
             >
               <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
                 <Icon name={item.icon} appearance={{ size: iconSize }} />
-                <p className="ml-2 ">
-                  <FormattedMessage {...item.label} />
-                </p>
+                <p className="ml-2 ">{item.label}</p>
               </span>
             </a>
           ) : (
@@ -59,9 +56,7 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => {
             >
               <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
                 <Icon name={item.icon} appearance={{ size: iconSize }} />
-                <p className="ml-2 ">
-                  <FormattedMessage {...item.label} />
-                </p>
+                <p className="ml-2 ">{item.label}</p>
               </span>
             </NavLink>
           )}

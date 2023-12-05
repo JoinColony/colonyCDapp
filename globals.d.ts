@@ -16,10 +16,6 @@ declare module '*.png' {
   export default content;
 }
 
-interface Window {
-  dataLayer: any[];
-}
-
 // Alternatively, if you want a more specific type for dataLayer entries
 interface DataLayerObject {
   event: string;
