@@ -68,7 +68,7 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
   // },
   {
     key: '2',
-    label: formatText({ id: 'navigation.finances.balance' }),
+    label: formatText({ id: 'balance' }),
     to: COLONY_BALANCES_ROUTE,
     iconName: 'chart-bar',
   },

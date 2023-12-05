@@ -2,16 +2,11 @@ import React, { useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
-import {
-  useSetPageBreadcrumbs,
-  useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/hooks';
-import { formatText } from '~utils/intl';
+import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 
 import { COLONY_MEMBERS_ROUTE } from './routeConstants';
 
 const ColonyMembersRoute = () => {
-  useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
   useSetPageBreadcrumbs(
     useMemo(
       () => [
