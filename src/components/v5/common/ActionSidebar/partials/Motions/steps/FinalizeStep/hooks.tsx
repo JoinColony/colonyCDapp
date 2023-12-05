@@ -14,8 +14,10 @@ import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { getSafePollingInterval } from '~utils/queries';
+import { isInstalledExtensionData } from '~utils/extensions';
 import { MotionAction } from '~types/motions';
 import { InstalledExtensionData } from '~types';
+import { ADDRESS_ZERO } from '~constants';
 
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
 import { WinningsItms } from './types';
@@ -170,7 +172,9 @@ export const useClaimConfig = (
       userAddress: userAddress || '',
       colonyAddress: colonyAddress || '',
       transactionHash: transactionHash || '',
-      extensionAddress: extensionData.address,
+      extensionAddress: isInstalledExtensionData(extensionData)
+        ? extensionData.address
+        : ADDRESS_ZERO,
     }),
   );
 
