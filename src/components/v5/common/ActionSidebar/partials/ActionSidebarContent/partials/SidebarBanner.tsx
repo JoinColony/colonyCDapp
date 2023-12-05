@@ -5,7 +5,8 @@ import { Action } from '~constants/actions';
 import { useFlatFormErrors } from '~hooks';
 import {
   ACTION_TYPE_FIELD_NAME,
-  ACTION_TYPE_NOTIFICATION,
+  useCreateActionTypeNotification,
+  useCreateActionTypeNotificationHref,
 } from '../../../consts';
 import { formatText } from '~utils/intl';
 import NotificationBanner from '~v5/shared/NotificationBanner';
@@ -20,18 +21,25 @@ export const SidebarBanner: FC = () => {
     ({ key }) => key !== 'title',
   );
 
-  const actionTypeNotificationTitle = selectedAction
-    ? ACTION_TYPE_NOTIFICATION[selectedAction]
-    : undefined;
+  const actionTypeNotificationTitle =
+    useCreateActionTypeNotification(selectedAction);
+  const actionTypeNofiticationHref =
+    useCreateActionTypeNotificationHref(selectedAction);
 
   if (actionTypeNotificationTitle) {
     return (
-      <div className="mt-6">
+      <div className="mt-7">
         <NotificationBanner
           status="error"
           icon="warning-circle"
           callToAction={
-            <button type="button">{formatText({ id: 'learn.more' })}</button>
+            <a
+              href={actionTypeNofiticationHref}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {formatText({ id: 'learn.more' })}
+            </a>
           }
         >
           {actionTypeNotificationTitle}
@@ -45,7 +53,7 @@ export const SidebarBanner: FC = () => {
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-7">
       <NotificationBanner
         status="error"
         icon="warning-circle"

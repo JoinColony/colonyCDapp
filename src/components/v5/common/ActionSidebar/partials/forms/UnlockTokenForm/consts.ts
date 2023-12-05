@@ -6,7 +6,7 @@ export const validationSchema = object()
   .shape({
     createdIn: string().defined(),
     decisionMethod: string().defined(),
-    annotation: string().max(MAX_ANNOTATION_LENGTH).defined(),
+    description: string().max(MAX_ANNOTATION_LENGTH).defined(),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);

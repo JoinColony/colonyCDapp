@@ -5,7 +5,7 @@ import { useMobile } from '~hooks';
 import Button, { TxButton } from '~v5/shared/Button';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ActionButtonsProps } from '../types';
-import { useSubmitButtonText } from './hooks';
+import { useSubmitButtonDisabled, useSubmitButtonText } from './hooks';
 import { useCloseSidebarClick } from '../hooks';
 import Icon from '~shared/Icon';
 
@@ -14,6 +14,7 @@ const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const isMobile = useMobile();
   const submitText = useSubmitButtonText();
+  const isButtonDisabled = useSubmitButtonDisabled();
   const {
     formState: { isSubmitting, dirtyFields },
   } = useFormContext();
@@ -62,7 +63,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
       ) : (
         <Button
           mode="primarySolid"
-          disabled={isActionDisabled}
+          disabled={isActionDisabled || isButtonDisabled}
           text={submitText}
           isFullSize={isMobile}
           type="submit"

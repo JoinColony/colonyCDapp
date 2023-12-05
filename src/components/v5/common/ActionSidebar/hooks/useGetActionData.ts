@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import moveDecimal from 'move-decimal-point';
 
+import { Id } from '@colony/colony-js';
 import { ACTION } from '~constants/actions';
 import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
@@ -33,7 +34,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
     } = action;
 
     const repeatableFields = {
-      createdIn: motionData?.motionDomain.nativeId.toString(),
+      createdIn: Id.RootDomain.toString(),
       description: annotation?.message,
       title: action.metadata?.customTitle,
       decisionMethod: action.isMotion
@@ -169,6 +170,12 @@ export const useGetActionData = (transactionId: string | undefined) => {
           createdIn: decisionData?.motionDomainId.toString(),
           title: decisionData?.title,
           description: decisionData?.description,
+        };
+      case ColonyActionType.UnlockToken:
+      case ColonyActionType.UnlockTokenMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.UNLOCK_TOKEN,
+          ...repeatableFields,
         };
       default:
         return undefined;

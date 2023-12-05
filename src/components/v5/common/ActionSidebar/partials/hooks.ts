@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { ACTION, Action } from '~constants/actions';
+import { useColonyContext } from '~hooks';
 import { formatText } from '~utils/intl';
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 
@@ -40,4 +41,18 @@ export const useSubmitButtonText = () => {
       }),
     [selectedActionText],
   );
+};
+
+export const useSubmitButtonDisabled = () => {
+  const { colony } = useColonyContext();
+  const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
+  const selectedAction: Action | undefined = useWatch({
+    name: ACTION_TYPE_FIELD_NAME,
+  });
+
+  if (selectedAction === ACTION.UNLOCK_TOKEN && isNativeTokenUnlocked) {
+    return true;
+  }
+
+  return false;
 };

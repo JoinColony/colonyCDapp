@@ -55,7 +55,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="text-gray-900 text-md flex gap-1">
           {descriptionMetadata}
         </div>
-
+        <SidebarBanner />
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
@@ -66,7 +66,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             </NotificationBanner>
           </div>
         )}
-        <SidebarBanner />
       </div>
       {!isMotion && (
         <div className="mt-auto">
