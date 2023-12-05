@@ -30,11 +30,9 @@ export const mapExtensionActionPayload = (
   initializationParams?: ExtensionInitParam[],
 ) => {
   return initializationParams?.reduce(
-    (formattedPayload, { paramName, transformValue }) => {
-      const paramValue = transformValue
-        ? transformValue(payload[paramName])
-        : payload[paramName];
-
+    (formattedPayload, { paramName, transformValue, defaultValue }) => {
+      const value = paramName in payload ? payload[paramName] : defaultValue;
+      const paramValue = transformValue ? transformValue(value) : value;
       return {
         ...formattedPayload,
         [paramName]: paramValue,
