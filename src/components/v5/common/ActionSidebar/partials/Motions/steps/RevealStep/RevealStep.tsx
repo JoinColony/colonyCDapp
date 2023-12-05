@@ -78,6 +78,7 @@ const RevealStep: FC<RevealStepProps> = ({
                     : 'motion.revealStep.votesRevealed',
               })}
               className="ml-1"
+              isTall
             />
             {!revealPhaseEnded && canInteract && (
               <StatusText
@@ -147,7 +148,7 @@ const RevealStep: FC<RevealStepProps> = ({
       ]}
       footer={
         <AccordionItem
-          className="text-sm text-gray-600"
+          className="text-sm text-gray-500"
           isOpen={isInformationAccordionOpen}
           onToggle={toggleInformationAccordion}
           title={formatText({
@@ -155,6 +156,8 @@ const RevealStep: FC<RevealStepProps> = ({
               ? 'motion.revealStep.buttonHide'
               : 'motion.revealStep.buttonShow',
           })}
+          iconName="caret-down"
+          iconSize="extraSmall"
         >
           <RevealInformationList items={voters} />
         </AccordionItem>
