@@ -1,31 +1,71 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
+import { ColonyRole, Id } from '@colony/colony-js';
+
+import { ActionTypes } from '~redux';
+import { useAppContext, useAsyncFunction, useColonyContext } from '~hooks';
+import { AnyExtensionData } from '~types';
 import NotificationBanner from '~v5/shared/NotificationBanner';
+import { addressHasRoles } from '~utils/checks';
 
-const displayName = 'frame.Extensions.PermissionsNeededBanner';
+const displayName =
+  'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';
 
-const PermissionsNeededBanner = () => {
-  // @TODO: Change extension missing permissions functionality
+const MSG = defineMessages({
+  updatedPermission: {
+    id: `${displayName}.updatedPermission`,
+    defaultMessage: 'The required permissions have been updated.',
+  },
+  missingPermission: {
+    id: `${displayName}.missingPermission`,
+    defaultMessage:
+      'This extension is missing some or all of the permissions it needs to work.',
+  },
+  enablePermission: {
+    id: `${displayName}.enablePermission`,
+    defaultMessage: 'Enable permissions',
+  },
+});
+
+interface Props {
+  extensionData: AnyExtensionData;
+}
+
+const PermissionsNeededBanner = ({ extensionData }: Props) => {
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
+
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
+  const userHasRoles = addressHasRoles({
+    requiredRolesDomains: [Id.RootDomain],
+    colony,
+    requiredRoles: [ColonyRole.Root],
+    address: user?.walletAddress || '',
+  });
+
+  const asyncFunction = useAsyncFunction({
+    submit: ActionTypes.EXTENSION_ENABLE,
+    error: ActionTypes.EXTENSION_ENABLE_ERROR,
+    success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
+  });
+
+  const handleEnableClick = async () => {
+    try {
+      await asyncFunction({
+        colonyAddress: colony?.colonyAddress,
+        extensionData,
+      });
+      setIsPermissionEnabled(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getBanner = () => {
     if (isPermissionEnabled) {
       return (
-        <NotificationBanner
-          icon="check-circle"
-          status="success"
-          callToAction={
-            <button
-              type="button"
-              onClick={() => {
-                setIsPermissionEnabled(true);
-              }}
-            >
-              <FormattedMessage id="extension.notification.permissions.enabled" />
-            </button>
-          }
-        >
-          <FormattedMessage id="extension.notification.permissions.updated" />
+        <NotificationBanner icon="check-circle" status="success">
+          <FormattedMessage {...MSG.updatedPermission} />
         </NotificationBanner>
       );
     }
@@ -35,17 +75,14 @@ const PermissionsNeededBanner = () => {
         icon="warning-circle"
         status="warning"
         callToAction={
-          <button
-            type="button"
-            onClick={() => {
-              setIsPermissionEnabled(true);
-            }}
-          >
-            <FormattedMessage id="extension.notification.permissions.enable" />
-          </button>
+          userHasRoles && (
+            <button type="button" onClick={handleEnableClick}>
+              <FormattedMessage {...MSG.enablePermission} />
+            </button>
+          )
         }
       >
-        <FormattedMessage id="extension.notification.permissions.missing" />
+        <FormattedMessage {...MSG.missingPermission} />
       </NotificationBanner>
     );
   };
