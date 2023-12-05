@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ActionTypes } from '~redux';
 
-import Button, { PendingButton } from '~v5/shared/Button';
+import Button, { TxButton } from '~v5/shared/Button';
 import PillsBase from '~v5/common/Pills';
 import { ActionForm } from '~shared/Fields';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-// import Icon from '~shared/Icon';
+import Icon from '~shared/Icon';
 
 import { useAppContext, useColonyContext } from '~hooks';
 import { formatText } from '~utils/intl';
@@ -130,19 +130,19 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                 <>
                   {isPolling && (
                     <TxButton
-                          className="w-full"
-                          rounded="s"
-                          text={{ id: 'button.pending' }}
-                          icon={
-                            <span className="flex shrink-0 ml-1.5">
-                              <Icon
-                                name="spinner-gap"
-                                className="animate-spin"
-                                appearance={{ size: 'tiny' }}
-                              />
-                            </span>
-                          }
-                        />
+                      className="w-full"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="flex shrink-0 ml-1.5">
+                          <Icon
+                            name="spinner-gap"
+                            className="animate-spin"
+                            appearance={{ size: 'tiny' }}
+                          />
+                        </span>
+                      }
+                    />
                   )}
                   {!isPolling &&
                     !actionData.motionData.isFinalized &&
