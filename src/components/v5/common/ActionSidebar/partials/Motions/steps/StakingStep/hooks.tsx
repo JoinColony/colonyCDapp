@@ -1,13 +1,15 @@
 import React from 'react';
-
 import { BigNumber } from 'ethers';
+
+import { UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types';
+import Numeral from '~shared/Numeral';
 import { ColonyMotionFragment, useGetUserReputationQuery } from '~gql';
 import { useAppContext, useEnoughTokensForStaking } from '~hooks';
-import { formatText } from '~utils/intl';
-import { UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types';
-import { useMotionContext } from '../../partials/MotionProvider/hooks';
-import Numeral from '~shared/Numeral';
 import useUsersByAddresses from '~hooks/useUsersByAddresses';
+import { formatText } from '~utils/intl';
+import { MotionVote } from '~utils/colonyMotions';
+
+import { useMotionContext } from '../../partials/MotionProvider/hooks';
 
 export const useStakingStep = () => {
   const { motionAction } = useMotionContext();
@@ -73,9 +75,9 @@ export const useStakingInformation = (
     usersStakes.map((user) => user.address),
   );
 
-  const sortedUsersStakes = usersStakes?.sort((a, b) => {
-    const aStakeNumber = BigNumber.from(a.stakes?.raw?.yay);
-    const bStakeNumber = BigNumber.from(b.stakes?.raw?.yay);
+  const sortedUsersStakes = [...usersStakes].sort((a, b) => {
+    const aStakeNumber = BigNumber.from(a.stakes.raw.yay);
+    const bStakeNumber = BigNumber.from(b.stakes.raw.yay);
 
     if (aStakeNumber.eq(bStakeNumber)) {
       return 0;
@@ -84,15 +86,17 @@ export const useStakingInformation = (
     return aStakeNumber.gt(bStakeNumber) ? -1 : 1;
   });
 
-  const getVotesArray = (voteFieldName: 'yay' | 'nay') =>
+  const getVotesArray = (vote: MotionVote = MotionVote.Yay) =>
     sortedUsersStakes?.reduce((result, item) => {
-      const voteValue = item.stakes?.raw?.[voteFieldName];
+      const voteValue =
+        item.stakes?.raw?.[vote === MotionVote.Yay ? 'yay' : 'nay'];
       if (!item || voteValue === '0') {
         return result;
       }
 
-      const user = users?.find((u) => u?.walletAddress === item.address)
-        ?.profile?.displayName;
+      const user = users?.find(
+        (potentialUser) => potentialUser?.walletAddress === item.address,
+      );
 
       if (!user) {
         return result;
@@ -121,8 +125,8 @@ export const useStakingInformation = (
       ];
     }, []) || [];
 
-  const votesFor = getVotesArray('yay');
-  const votesAgainst = getVotesArray('nay');
+  const votesFor = getVotesArray(MotionVote.Yay);
+  const votesAgainst = getVotesArray(MotionVote.Nay);
 
   return {
     votesFor,

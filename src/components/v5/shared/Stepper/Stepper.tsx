@@ -40,6 +40,7 @@ function Stepper<TKey extends React.Key>({
           const { decor, ...restHeading } = heading;
           const isNextStepOptional = items[index + 1]?.isOptional;
           const isNextStepSkipped = items[index + 1]?.isSkipped;
+          const itemDisabled = index > activeItemIndex || isSkipped;
 
           return (
             <motion.li
@@ -112,13 +113,13 @@ function Stepper<TKey extends React.Key>({
                     }
                   }}
                   className="relative z-[1]"
-                  disabled={index > activeItemIndex || isSkipped}
+                  disabled={itemDisabled}
                   isHighlighted={index === openItemIndex && !isSkipped}
                   {...restHeading}
                 />
                 {decor || null}
               </div>
-              {!isMobile && (
+              {!isMobile && !itemDisabled && (
                 <div
                   className={clsx(
                     'grid transition-[grid-template-rows_0.5s_ease-in-out] w-full',

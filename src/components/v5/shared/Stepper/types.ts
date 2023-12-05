@@ -3,7 +3,7 @@ import { StepperButtonProps } from './partials/StepperButton/types';
 export interface StepperItem<TKey> {
   key: TKey;
   heading: Omit<StepperButtonProps, 'onClick' | 'stage'> & {
-    decor?: JSX.Element;
+    decor?: JSX.Element | null;
   };
   content: React.ReactNode;
   isOptional?: boolean;

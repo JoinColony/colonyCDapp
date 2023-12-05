@@ -1,9 +1,9 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
+import { TimerValueProps } from '~shared/TimerValue/TimerValue';
 import { MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { MotionState } from '~utils/colonyMotions';
-import { CountDownTimerProps } from '~v5/common/CountDownTimer/types';
 import { getCurrentStatePeriodInMs, splitTimeLeft } from './helpers';
 
 const useMotionTimeoutPeriods = (colonyAddress = '', motionId: string) => {
@@ -31,7 +31,11 @@ export const useMotionCountdown = (
   motionId: string,
   refetchMotionState: VoidFunction,
   motionStakes: MotionStakes,
-): CountDownTimerProps => {
+): {
+  timeLeft: number;
+  countdown: Exclude<TimerValueProps['splitTime'], undefined>;
+  isLoading: boolean;
+} => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { percentage: percentageStaked } = motionStakes;
@@ -150,6 +154,7 @@ export const useMotionCountdown = (
   const splitTime = splitTimeLeft(timeLeft);
 
   return {
+    timeLeft,
     countdown: splitTime,
     isLoading: loadingMotionTimeoutPeriods,
   };

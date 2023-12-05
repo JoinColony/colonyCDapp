@@ -2,20 +2,24 @@ import { Extension } from '@colony/colony-js';
 import { number, object } from 'yup';
 import { BigNumber } from 'ethers';
 import React from 'react';
-import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
+
+import Numeral from '~shared/Numeral';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+
 import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
-import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
-import { InstalledExtensionData } from '~types';
+import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import { mapPayload } from '~utils/actions';
-import { DescriptionListItem } from './partials/DescriptionList/types';
 import { formatText } from '~utils/intl';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import Numeral from '~shared/Numeral';
-import { VotingFormValues } from './types';
+import { getSafePollingInterval } from '~utils/queries';
 import { OnSuccess } from '~shared/Fields';
-import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
+import { InstalledExtensionData } from '~types';
 import { MotionAction } from '~types/motions';
+import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
+
+import { VotingFormValues, VotingRewardsSections } from './types';
+import { DescriptionListItem } from './partials/DescriptionList/types';
+import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
 
 export const useVotingStep = (
   actionData: MotionAction,
@@ -25,7 +29,7 @@ export const useVotingStep = (
 ) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony || {};
-  const { user } = useAppContext();
+  const { wallet, user } = useAppContext();
   const { motionData } = actionData;
   const {
     motionId,
@@ -84,7 +88,7 @@ export const useVotingStep = (
     setLocalStorageVoteValue(transactionId, vote.vote);
     setHasUserVoted(true);
     reset();
-    startPollingAction(1000);
+    startPollingAction(getSafePollingInterval());
   };
 
   const validationSchema = object()
@@ -93,41 +97,50 @@ export const useVotingStep = (
     })
     .defined();
 
-  const items: DescriptionListItem[] = [
+  let items: DescriptionListItem[] = [
     {
-      key: '1',
+      key: VotingRewardsSections.VotingMethod,
       label: formatText({ id: 'motion.votingStep.votingMethod' }),
       value: formatText({ id: 'motion.votingStep.method' }),
     },
-    {
-      key: '2',
-      label: formatText({ id: 'motion.votingStep.teamReputation' }),
-      value: (
-        <MemberReputation
-          colonyAddress={colony?.colonyAddress ?? ''}
-          domainId={Number(nativeMotionDomainId)}
-          rootHash={rootHash}
-          textClassName="text-sm"
-          walletAddress={user?.walletAddress ?? ''}
-        />
-      ),
-    },
-    {
-      key: '3',
-      label: formatText({ id: 'motion.votingStep.rewardRange' }),
-      value: (
-        <div>
-          <Numeral value={minReward || '0'} decimals={nativeToken?.decimals} />
-          {' - '}
-          <Numeral
-            value={maxReward || '0'}
-            decimals={nativeToken?.decimals}
-            suffix={nativeToken?.symbol}
-          />
-        </div>
-      ),
-    },
   ];
+
+  if (!!wallet && !!user) {
+    items = [
+      ...items,
+      {
+        key: VotingRewardsSections.TeamReputation,
+        label: formatText({ id: 'motion.votingStep.teamReputation' }),
+        value: (
+          <MemberReputation
+            colonyAddress={colony?.colonyAddress ?? ''}
+            domainId={Number(nativeMotionDomainId)}
+            rootHash={rootHash}
+            textClassName="text-sm"
+            walletAddress={user?.walletAddress ?? ''}
+          />
+        ),
+      },
+      {
+        key: VotingRewardsSections.RewardRange,
+        label: formatText({ id: 'motion.votingStep.rewardRange' }),
+        value: (
+          <div>
+            <Numeral
+              value={minReward || '0'}
+              decimals={nativeToken?.decimals}
+            />
+            {' - '}
+            <Numeral
+              value={maxReward || '0'}
+              decimals={nativeToken?.decimals}
+              suffix={nativeToken?.symbol}
+            />
+          </div>
+        ),
+      },
+    ];
+  }
 
   return {
     hasUserVoted,

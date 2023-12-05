@@ -1,23 +1,35 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BigNumber } from 'ethers';
-import { useLocation } from 'react-router-dom';
+import { Extension } from '@colony/colony-js';
+
+import Numeral from '~shared/Numeral';
+
 import { ColonyActionType } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
+import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
+import { MotionFinalizePayload } from '~redux/types/actions/motion';
+import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
+import { useUserTokenBalanceContext } from '~context';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
-import Numeral from '~shared/Numeral';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
-import { MotionFinalizePayload } from '~redux/types/actions/motion';
-import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
+import { getSafePollingInterval } from '~utils/queries';
+import { isInstalledExtensionData } from '~utils/extensions';
 import { MotionAction } from '~types/motions';
-import { useUserTokenBalanceContext } from '~context';
-import { getTransactionHashFromPathName } from '~utils/urls';
-import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
-import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
+import { InstalledExtensionData } from '~types';
+import { ADDRESS_ZERO } from '~constants';
+
+import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
+import { WinningsItems } from './types';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
-    motionData: { nativeMotionDomainId, motionId, gasEstimate },
+    motionData: {
+      nativeMotionDomainId,
+      motionId,
+      gasEstimate,
+      motionStateHistory,
+    },
     type,
     amount,
     fromDomain,
@@ -41,9 +53,10 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     type !== ColonyActionType.EmitDomainReputationRewardMotion;
 
   const isFinalizable =
-    !requiresDomainFunds ||
-    // Safe casting since if requiresDomainFunds is true, we know amount is a string
-    BigNumber.from(domainBalance ?? '0').gte(amount as string);
+    (!requiresDomainFunds ||
+      // Safe casting since if requiresDomainFunds is true, we know amount is a string
+      BigNumber.from(domainBalance ?? '0').gte(amount as string)) &&
+    !motionStateHistory.hasFailedNotFinalizable;
 
   const transform = mapPayload(
     (): MotionFinalizePayload => ({
@@ -71,14 +84,18 @@ export const useClaimConfig = (
       usersStakes,
       databaseMotionId,
       remainingStakes,
+      isFinalized,
     },
+    transactionHash,
   } = actionData;
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const extension = useExtensionData(Extension.VotingReputation);
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
-  const location = useLocation();
   const [isClaimed, setIsClaimed] = useState(false);
+
+  const extensionData = extension?.extensionData as InstalledExtensionData;
 
   const userAddress = user?.walletAddress;
   const colonyAddress = colony?.colonyAddress;
@@ -143,22 +160,27 @@ export const useClaimConfig = (
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const remainingStakesNumber = remainingStakes.length;
-  const canClaimStakes = !totals?.isZero() && !isClaimed;
+  const canClaimStakes = totals ? !totals.isZero() : false;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    startPollingAction(1000);
+    startPollingAction(getSafePollingInterval());
     pollLockedTokenBalance();
   };
 
-  const claimPayload = {
-    userAddress,
-    colonyAddress,
-    transactionHash: getTransactionHashFromPathName(location.pathname),
-  } as ClaimMotionRewardsPayload;
+  const claimPayload = mapPayload(
+    (): ClaimMotionRewardsPayload => ({
+      userAddress: userAddress || '',
+      colonyAddress: colonyAddress || '',
+      transactionHash: transactionHash || '',
+      extensionAddress: isInstalledExtensionData(extensionData)
+        ? extensionData.address
+        : ADDRESS_ZERO,
+    }),
+  );
 
   const items: DescriptionListItem[] = [
     {
-      key: '1',
+      key: WinningsItems.Staked,
       label: formatText({ id: 'motion.finalizeStep.staked' }),
       value: (
         <div>
@@ -170,33 +192,37 @@ export const useClaimConfig = (
         </div>
       ),
     },
-    {
-      key: '2',
-      label: formatText({ id: 'motion.finalizeStep.winnings' }),
-      value: (
-        <div>
-          <Numeral
-            value={userWinnings || 0}
-            decimals={nativeTokenDecimals}
-            suffix={nativeTokenSymbol}
-          />
-        </div>
-      ),
-    },
-    {
-      key: '3',
-      label: formatText({ id: 'motion.finalizeStep.total' }),
-      value: (
-        <div>
-          <Numeral
-            value={totals || 0}
-            decimals={nativeTokenDecimals}
-            suffix={nativeTokenSymbol}
-          />
-        </div>
-      ),
-    },
   ];
+  if (isFinalized) {
+    items.push(
+      {
+        key: WinningsItems.Winnings,
+        label: formatText({ id: 'motion.finalizeStep.winnings' }),
+        value: (
+          <div>
+            <Numeral
+              value={userWinnings || 0}
+              decimals={nativeTokenDecimals}
+              suffix={nativeTokenSymbol}
+            />
+          </div>
+        ),
+      },
+      {
+        key: WinningsItems.Total,
+        label: formatText({ id: 'motion.finalizeStep.total' }),
+        value: (
+          <div>
+            <Numeral
+              value={totals || 0}
+              decimals={nativeTokenDecimals}
+              suffix={nativeTokenSymbol}
+            />
+          </div>
+        ),
+      },
+    );
+  }
 
   return {
     items,

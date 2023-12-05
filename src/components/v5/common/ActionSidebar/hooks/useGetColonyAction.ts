@@ -10,6 +10,7 @@ import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
 import noop from '~utils/noop';
+import { getSafePollingInterval } from '~utils/queries';
 
 export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery
@@ -27,6 +28,8 @@ export const useGetColonyAction = (transactionHash?: string) => {
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
   const [isPolling, setIsPolling] = useState(!skipQuery);
 
+  const pollInterval = getSafePollingInterval();
+
   const {
     data: actionData,
     loading: loadingAction,
@@ -38,7 +41,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     variables: {
       transactionHash: transactionHash ?? '',
     },
-    pollInterval: 1000,
+    pollInterval,
   });
 
   const action = actionData?.getColonyAction;
@@ -62,7 +65,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
 
     const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
 
-    startPollingForAction(1000);
+    startPollingForAction(pollInterval);
 
     return () => {
       if (cancelPollingTimer) {
@@ -73,6 +76,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     };
   }, [
     action,
+    pollInterval,
     refetchColony,
     refetchTokenBalances,
     skipQuery,

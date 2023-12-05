@@ -34,7 +34,6 @@ export const mapExtensionActionPayload = (
       const paramValue = transformValue
         ? transformValue(payload[paramName])
         : payload[paramName];
-
       return {
         ...formattedPayload,
         [paramName]: paramValue,

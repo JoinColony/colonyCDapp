@@ -1,16 +1,22 @@
 import { useMemo } from 'react';
+
+import { UserFragment } from '~gql';
+import { useAppContext, useUsersByAddresses } from '~hooks';
+import { notNull } from '~utils/arrays';
 import { calculateRemainingItems } from '~utils/avatars';
-import { useGetUsers } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults/helpers';
+
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
-import useAppContext from '../useAppContext';
-import { UseUserAvatarsReturnType } from './types';
 
 export const useUserAvatars = (
   maxAvatars: number,
   items: UserAvatarsItem[],
-): UseUserAvatarsReturnType => {
+): {
+  remainingAvatarsCount: number;
+  registeredUsers: UserFragment[];
+} => {
   const remainingAvatarsCount = calculateRemainingItems(maxAvatars, items);
   const { user } = useAppContext();
+
   const voterAddresses = useMemo(
     () =>
       items.reduce<string[]>((acc, { address }) => {
@@ -24,10 +30,16 @@ export const useUserAvatars = (
     [items, user],
   );
 
-  const registeredUsers = useGetUsers(voterAddresses);
+  const { users: registeredUsers = [] } = useUsersByAddresses(
+    /*
+     * @NOTE Due to how the or filter works
+     * If the array would be empty it would return all users
+     */
+    voterAddresses.length ? voterAddresses : [''],
+  );
 
   return {
     remainingAvatarsCount,
-    registeredUsers,
+    registeredUsers: registeredUsers.filter(notNull),
   };
 };

@@ -465,12 +465,18 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       },
       {
         paramName: 'escalationPeriod',
-        validation: number()
-          .transform((value) => toFinite(value))
-          .positive(() => MSG.positiveError)
-          .required(() => MSG.requiredError)
-          .max(8760, () => MSG.lessThan1YearError),
-        defaultValue: 72, // 3 days in hours
+        /*
+         * @TODO Re-enable once Motion escalation is implemented
+         * Currently we just disable it from showing up in the UI and setting it to 0
+         * But at some point this needs to be user configurable
+         */
+        // validation: number()
+        //   .transform((value) => toFinite(value))
+        //   .positive(() => MSG.positiveError)
+        //   .required(() => MSG.requiredError)
+        //   .max(8760, () => MSG.lessThan1YearError),
+        validation: number(),
+        defaultValue: 0, // 3 days in hours
         title: MSG.votingReputationEscalationPeriodTitle,
         description: MSG.votingReputationEscalationPeriodDescription,
         type: ExtensionParamType.Input,

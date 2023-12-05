@@ -33,6 +33,7 @@ export interface AppContextValues {
     address?: string,
     shouldBackgroundUpdate?: boolean,
   ) => Promise<void>;
+  canInteract: boolean;
 }
 
 export const AppContext = createContext<AppContextValues | undefined>(
@@ -191,6 +192,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       connectWallet,
       disconnectWallet,
       updateUser,
+      canInteract: !!wallet && !!user,
     }),
     [
       wallet,

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
 
+import { useAppContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
@@ -27,6 +28,7 @@ const StakingForm: FC<StakingFormProps> = ({
   userActivatedTokens,
   disableForm,
 }) => {
+  const { canInteract } = useAppContext();
   const { motionAction } = useMotionContext();
 
   const thresholdPercentValue = 10;
@@ -98,11 +100,13 @@ const StakingForm: FC<StakingFormProps> = ({
               }}
             />
             <div>
-              <FormButtonRadioButtons
-                name="voteType"
-                items={STAKING_RADIO_BUTTONS}
-                disabled={disableForm}
-              />
+              {canInteract && (
+                <FormButtonRadioButtons
+                  name="voteType"
+                  items={STAKING_RADIO_BUTTONS}
+                  disabled={disableForm}
+                />
+              )}
             </div>
             <AnimatePresence>
               {voteTypeValue !== undefined && (
@@ -124,7 +128,7 @@ const StakingForm: FC<StakingFormProps> = ({
                     </span>
                     <span className="text-sm text-gray-600">
                       {formatText(
-                        { id: 'motion.staking.input.balance' },
+                        { id: 'motion.staking.input.label.balance' },
                         {
                           balance: (
                             <Numeral
@@ -140,13 +144,13 @@ const StakingForm: FC<StakingFormProps> = ({
                   <FormFormattedInput
                     id="amount-field"
                     name="amount"
+                    placeholder="0"
                     options={{
                       numeral: true,
                       numeralDecimalScale:
                         getTokenDecimalsWithFallback(tokenDecimals),
                       numeralPositiveOnly: true,
                       rawValueTrimPrefix: true,
-                      prefix: tokenSymbol,
                       tailPrefix: true,
                     }}
                     buttonProps={{

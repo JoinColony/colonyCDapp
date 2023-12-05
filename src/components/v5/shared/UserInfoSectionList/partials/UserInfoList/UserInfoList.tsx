@@ -10,14 +10,14 @@ const displayName = 'v5.UserInfoSectionList.partials.UserInfoList';
 const UserInfoList: FC<UserInfoListProps> = ({ items, className }) => {
   const infoClassName = 'flex-shrink-0 text-right text-sm text-gray-900';
 
-  return items.length ? (
+  return items.length > 0 ? (
     <ul className={clsx(className, 'w-full flex flex-col gap-3')}>
-      {items.map(({ key: itemKey, info, userProps }) => (
+      {items.map(({ key: itemKey, info, userProps: { user } }) => (
         <li
           key={itemKey}
           className="w-full flex items-center justify-between gap-4"
         >
-          <UserAvatar avatarSize="xs" {...userProps} />
+          <UserAvatar avatarSize="xs" user={user} showUsername />
           {typeof info === 'string' ? (
             <p className={infoClassName}>{info}</p>
           ) : (

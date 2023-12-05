@@ -1,18 +1,20 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ActionTypes } from '~redux';
 
-import { formatText } from '~utils/intl';
 import Button, { TxButton } from '~v5/shared/Button';
+import PillsBase from '~v5/common/Pills';
 import { ActionForm } from '~shared/Fields';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-import DescriptionList from '../VotingStep/partials/DescriptionList';
-import { useClaimConfig, useFinalizeStep } from './hooks';
-import { FinalizeStepProps } from './types';
-// import TeamBadge from '~v5/common/Pills/TeamBadge';
-import { useAppContext, useColonyContext } from '~hooks';
 import Icon from '~shared/Icon';
 
-import { ActionButton } from '~shared/Button';
+import { useAppContext, useColonyContext } from '~hooks';
+import { formatText } from '~utils/intl';
+import { getSafePollingInterval } from '~utils/queries';
+import { MotionState } from '~utils/colonyMotions';
+
+import { FinalizeStepProps, FinalizeStepSections } from './types';
+import { useClaimConfig, useFinalizeStep } from './hooks';
+import DescriptionList from '../VotingStep/partials/DescriptionList';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -22,23 +24,25 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   startPollingAction,
   stopPollingAction,
   refetchAction,
+  motionState,
 }) => {
-  const { user } = useAppContext();
+  const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const { refetchColony } = useColonyContext();
-  const { isFinalizable, transform } = useFinalizeStep(actionData);
+  const { isFinalizable, transform: finalizePayload } =
+    useFinalizeStep(actionData);
   const {
     items,
     isClaimed,
     buttonTextId,
-    remainingStakesNumber,
+    // remainingStakesNumber,
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
   } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
   const handleSuccess = () => {
-    startPollingAction(1000);
+    startPollingAction(getSafePollingInterval());
     setIsPolling(true);
   };
 
@@ -46,6 +50,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   useEffect(() => {
     if (isClaimed) {
       stopPollingAction();
+      setIsPolling(false);
     }
     return stopPollingAction;
   }, [isClaimed, stopPollingAction]);
@@ -54,8 +59,32 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   useEffect(() => {
     if (actionData.motionData.isFinalized) {
       refetchColony();
+      setIsPolling(false);
     }
   }, [actionData.motionData.isFinalized, refetchColony]);
+
+  let action = {
+    actionType: ActionTypes.MOTION_FINALIZE,
+    transform: finalizePayload,
+    onSuccess: handleSuccess,
+  };
+  if (
+    actionData.motionData.isFinalized ||
+    actionData.motionData.motionStateHistory.hasFailedNotFinalizable
+  ) {
+    action = {
+      actionType: ActionTypes.MOTION_CLAIM,
+      transform: claimPayload,
+      onSuccess: handleClaimSuccess,
+    };
+  }
+
+  /*
+   * @NOTE This is just needed until we properly save motion data in the db
+   * For now, we just fetch it live from chain, so when we uninstall the extension
+   * that state check will fail, and old motions cannot be interacted with anymore
+   */
+  const wrongMotionState = !motionState || motionState === MotionState.Invalid;
 
   return (
     <MenuWithStatusText
@@ -65,69 +94,84 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         textClassName: 'text-4',
         iconAlignment: 'top',
         content: (
-          <div className="flex items-center text-4 gap-2">
-            <span className="flex text-blue-400 mr-2">
-              <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
-            </span>
-            {formatText(
-              { id: 'motion.finalizeStep.transactions.remaining' },
-              { transactions: remainingStakesNumber },
-            )}
-          </div>
+          <div />
+          /*
+           * @TODO This needs to refactored
+           * When the claim single / claim for everyone multicall logic gets wired in
+           */
+          // <div className="flex items-center text-4 gap-2">
+          //   <span className="flex text-blue-400 mr-2">
+          //     <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
+          //   </span>
+          //   {formatText(
+          //     { id: 'motion.finalizeStep.transactions.remaining' },
+          //     { transactions: remainingStakesNumber },
+          //   )}
+          // </div>
         ),
       }}
       sections={[
         {
-          key: '1',
+          key: FinalizeStepSections.Finalize,
           content: (
-            <ActionForm
-              actionType={ActionTypes.MOTION_FINALIZE}
-              transform={transform}
-              onSuccess={handleSuccess}
-            >
+            <ActionForm {...action} onSuccess={handleSuccess}>
               <div className="mb-2">
                 <h4 className="text-1 mb-3 flex justify-between items-center">
                   {formatText({ id: 'motion.finalizeStep.title' })}
-                  {/* @TODO: use MotionBadge component */}
-                  {/* <TeamBadge
-                    mode="claimed"
-                    teamName={formatText({ id: pillTextId })}
-                  /> */}
-                  {/* @TODO: implement new logic according to the updated designs */}
-                  <ActionButton
-                    actionType={ActionTypes.MOTION_CLAIM}
-                    values={claimPayload}
-                    appearance={{ theme: 'primary', size: 'medium' }}
-                    text={{ id: buttonTextId }}
-                    disabled={!canClaimStakes}
-                    onSuccess={handleClaimSuccess}
-                  />
+                  {isClaimed && (
+                    <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
+                      {formatText({ id: 'motion.finalizeStep.claimed' })}
+                    </PillsBase>
+                  )}
                 </h4>
               </div>
               {items && <DescriptionList items={items} className="mb-6" />}
-              {isPolling ? (
-                <TxButton
-                  className="w-full"
-                  rounded="s"
-                  text={{ id: 'button.pending' }}
-                  icon={
-                    <span className="flex shrink-0 ml-1.5">
-                      <Icon
-                        name="spinner-gap"
-                        className="animate-spin"
-                        appearance={{ size: 'tiny' }}
+              {canInteract && (
+                <>
+                  {isPolling && (
+                    <TxButton
+                      className="w-full"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="flex shrink-0 ml-1.5">
+                          <Icon
+                            name="spinner-gap"
+                            className="animate-spin"
+                            appearance={{ size: 'tiny' }}
+                          />
+                        </span>
+                      }
+                    />
+                  )}
+                  {!isPolling &&
+                    !actionData.motionData.isFinalized &&
+                    isFinalizable && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!isFinalizable || wrongMotionState}
+                        isFullSize
+                        text={formatText({ id: 'motion.finalizeStep.submit' })}
+                        type="submit"
                       />
-                    </span>
-                  }
-                />
-              ) : (
-                <Button
-                  mode="primarySolid"
-                  disabled={!user || !isFinalizable}
-                  isFullSize
-                  text={formatText({ id: 'motion.finalizeStep.submit' })}
-                  type="submit"
-                />
+                    )}
+                  {!isPolling &&
+                    (actionData.motionData.isFinalized ||
+                      actionData.motionData.motionStateHistory
+                        .hasFailedNotFinalizable) &&
+                    !isClaimed &&
+                    canClaimStakes && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!canClaimStakes || wrongMotionState}
+                        isFullSize
+                        text={formatText({
+                          id: buttonTextId,
+                        })}
+                        type="submit"
+                      />
+                    )}
+                </>
               )}
             </ActionForm>
           ),
