@@ -63,7 +63,7 @@ const UserAvatarUploader = ({
         },
       });
 
-      await updateUser?.(user.walletAddress, true);
+      await updateUser(user.walletAddress, true);
     } catch (e) {
       if (e.message.includes('exceeded the maximum')) {
         setError(DropzoneErrors.TOO_LARGE);

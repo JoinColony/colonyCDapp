@@ -30,7 +30,7 @@ export interface AppContextValues {
   connectWallet: () => void;
   disconnectWallet: () => void;
   updateUser: (
-    address?: string,
+    address: string | undefined,
     shouldBackgroundUpdate?: boolean,
   ) => Promise<void>;
   canInteract: boolean;
@@ -49,7 +49,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [walletConnecting, setWalletConnecting] = useState(true);
 
   const updateUser = useCallback(
-    async (address?: string, shouldBackgroundUpdate = false) => {
+    async (address: string | undefined, shouldBackgroundUpdate = false) => {
       if (address) {
         try {
           if (!shouldBackgroundUpdate) {

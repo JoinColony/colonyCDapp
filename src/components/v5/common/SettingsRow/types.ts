@@ -10,7 +10,7 @@ export interface SettingsRowProps<
   title: MessageDescriptor;
   description: MessageDescriptor;
   tooltipMessage?: MessageDescriptor;
-  onChange?: (value: boolean) => void;
+  handleOnChange?: (value: boolean) => void;
   onClick?: () => void;
   buttonLabel?: MessageDescriptor;
   buttonIcon?: string;

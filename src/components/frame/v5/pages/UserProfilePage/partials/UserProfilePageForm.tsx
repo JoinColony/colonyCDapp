@@ -111,7 +111,7 @@ const UserProfilePageForm = ({
       },
     });
 
-    await updateUser?.(user?.walletAddress, true);
+    await updateUser(user?.walletAddress, true);
 
     toast.success(
       <Toast

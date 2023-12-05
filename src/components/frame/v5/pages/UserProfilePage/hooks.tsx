@@ -51,7 +51,7 @@ export const useUserProfile = () => {
         },
       });
 
-      updateUser?.(user?.walletAddress, true);
+      updateUser(user?.walletAddress, true);
 
       toast.success(
         <Toast

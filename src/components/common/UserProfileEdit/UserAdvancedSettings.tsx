@@ -96,7 +96,7 @@ const UserAdvancedSettings = ({ user: { walletAddress, profile } }: Props) => {
       },
     });
 
-    updateUser?.(walletAddress, true);
+    updateUser(walletAddress, true);
   };
 
   return (

@@ -91,7 +91,7 @@ const UserMainSettings = ({
       },
     });
 
-    updateUser?.(walletAddress, true);
+    updateUser(walletAddress, true);
   };
 
   return (

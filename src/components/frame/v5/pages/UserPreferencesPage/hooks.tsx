@@ -59,7 +59,7 @@ export const useUserPreferencesPage = () => {
         },
       });
 
-      updateUser?.(user?.walletAddress, true);
+      updateUser(user?.walletAddress, true);
 
       toast.success(
         <Toast

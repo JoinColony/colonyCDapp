@@ -14,13 +14,13 @@ export const useFeesForm = () => {
 
   const metatransactionsAvailable = canUseMetatransactions();
 
-  const { user } = useAppContext();
+  const { user, updateUser } = useAppContext();
   const { metatransactionsEnabled, customRpc, decentralizedModeEnabled } =
     user?.profile?.meta ?? {};
 
   const [editUser] = useUpdateUserProfileMutation();
 
-  const metatransasctionsDefault = metatransactionsAvailable
+  const metatransactionsDefault = metatransactionsAvailable
     ? metatransactionsEnabled
     : false;
 
@@ -37,6 +37,7 @@ export const useFeesForm = () => {
         },
       },
     });
+    await updateUser(user?.walletAddress, true);
   };
 
   const handleFeesOnChange = (value: boolean) => {
@@ -56,7 +57,7 @@ export const useFeesForm = () => {
 
   return {
     metatransactionsValidationSchema,
-    metatransasctionsDefault,
+    metatransactionsDefault,
     handleSubmit,
     handleFeesOnChange,
   };

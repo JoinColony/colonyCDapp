@@ -99,7 +99,7 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     getGroupStatus(newestGroup) === TransactionStatus.Succeeded &&
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
-    updateUser?.(user?.walletAddress, true);
+    updateUser(user?.walletAddress, true);
     return (
       <Navigate
         to={`/${colonyName}`}

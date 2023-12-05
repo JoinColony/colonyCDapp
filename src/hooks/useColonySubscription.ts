@@ -50,7 +50,7 @@ const useColonySubscription = () => {
       },
     ],
     onCompleted() {
-      updateUser?.(user?.walletAddress);
+      updateUser(user?.walletAddress);
     },
   });
 
@@ -81,7 +81,7 @@ const useColonySubscription = () => {
       },
     ],
     onCompleted() {
-      updateUser?.(user?.walletAddress);
+      updateUser(user?.walletAddress);
     },
   });
 
