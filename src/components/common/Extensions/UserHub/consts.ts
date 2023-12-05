@@ -21,19 +21,19 @@ export const menuMessages = defineMessages({
 export const tabList: UserHubTabList = [
   {
     id: UserHubTabs.Balance,
-    label: formatText(menuMessages.balance) || '',
+    label: formatText(menuMessages.balance),
     value: UserHubTabs.Balance,
     icon: 'user',
   },
   {
     id: UserHubTabs.Stakes,
-    label: formatText(menuMessages.stakes) || '',
+    label: formatText(menuMessages.stakes),
     value: UserHubTabs.Stakes,
     icon: 'coin-vertical',
   },
   {
     id: UserHubTabs.Transactions,
-    label: formatText(menuMessages.transactions) || '',
+    label: formatText(menuMessages.transactions),
     value: UserHubTabs.Transactions,
     icon: 'receipt',
   },
