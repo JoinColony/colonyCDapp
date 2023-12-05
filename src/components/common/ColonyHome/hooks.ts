@@ -10,7 +10,10 @@ import {
 } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
-import { useGetTotalColonyActionsQuery, useGetColonyContributorsQuery } from '~gql';
+import {
+  useGetTotalColonyActionsQuery,
+  useGetColonyContributorsQuery,
+} from '~gql';
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';

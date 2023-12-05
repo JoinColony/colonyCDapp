@@ -92,7 +92,12 @@ const UserMenu: FC<UserMenuProps> = ({
             </div>
           </>
         )}
-        <div className="w-full pb-4 mb-5 border-b border-b-gray-200 sm:pb-3">
+        <div
+          className={clsx('w-full pb-4 border-b border-b-gray-200 sm:pb-3', {
+            'mb-0': !wallet,
+            'mb-5': wallet,
+          })}
+        >
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
             {userMenuItems.map(({ id, link, icon, name: itemName }) => (
@@ -125,7 +130,7 @@ const UserMenu: FC<UserMenuProps> = ({
           </ul>
         </div>
         {wallet && (
-          <div className="w-full mb-4 sm:mb-3">
+          <div className="w-full">
             <TitleLabel text={formatText({ id: 'userMenu.other' })} />
             <div className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
               <Icon name="plugs" appearance={{ size: iconSize }} />
