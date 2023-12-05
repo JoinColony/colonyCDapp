@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
@@ -24,6 +25,7 @@ const displayName =
 
 const RevealStep: FC<RevealStepProps> = ({
   motionData,
+  motionState,
   startPollingAction,
   stopPollingAction,
   transactionId,
@@ -53,11 +55,12 @@ const RevealStep: FC<RevealStepProps> = ({
 
   const canInteract = !!wallet && !!user;
 
-  const revealPhaseEnded =
-    hasUserVoted &&
-    userVoteRevealed &&
-    (motionData?.motionStateHistory.hasFailed ||
-      motionData?.motionStateHistory.hasPassed);
+  const motionFinished =
+    motionState === NetworkMotionState.Finalizable ||
+    motionState === NetworkMotionState.Finalized ||
+    motionState === NetworkMotionState.Failed;
+
+  const revealPhaseEnded = hasUserVoted && userVoteRevealed && motionFinished;
 
   return (
     <MenuWithStatusText
@@ -120,7 +123,7 @@ const RevealStep: FC<RevealStepProps> = ({
                       />
                     </div>
                   </div>
-                  {!userVoteRevealed && (
+                  {!motionFinished && !userVoteRevealed && (
                     <Button
                       mode="primarySolid"
                       type="submit"

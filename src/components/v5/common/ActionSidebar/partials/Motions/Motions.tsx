@@ -7,7 +7,7 @@ import { SpinnerLoader } from '~shared/Preloaders';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
 
-import { getMotionState, MotionState, MotionVote } from '~utils/colonyMotions';
+import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { getSafePollingInterval } from '~utils/queries';
@@ -110,17 +110,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       : MotionState.Staking;
   }, [activeStepKey, motionData, networkMotionStateEnum, requiredStake]);
 
-  const revealedVotes = motionData?.revealedVotes?.raw;
-  const winningSide: MotionVote = BigNumber.from(revealedVotes?.yay).gt(
-    revealedVotes?.nay || '',
-  )
-    ? MotionVote.Yay
-    : MotionVote.Nay;
-
-  const votesHaveBeenRevealed: boolean =
-    revealedVotes?.yay !== '0' || revealedVotes?.nay !== '0';
   const hasVotedMotionPassed = motionStateHistory?.hasPassed;
-  const hasVotedMotionFaild = motionStateHistory?.hasFailed;
 
   const motionStakedAndFinalizable =
     motionFinished &&
@@ -185,6 +175,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         content: (
           <RevealStep
             motionData={motionData}
+            motionState={motionState}
             startPollingAction={startPollingForAction}
             stopPollingAction={stopPollingForAction}
             transactionId={transactionId}
@@ -239,25 +230,19 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
           <OutcomeStep motionData={motionData} motionState={motionStateEnum} />
         ),
         heading: {
-          iconName:
-            (winningSide === MotionVote.Yay && 'thumbs-up') ||
-            (hasVotedMotionPassed && 'thumbs-up') ||
-            (hasVotedMotionFaild && 'thumbs-down') ||
-            '',
-          label:
-            (hasVotedMotionPassed &&
-              formatText({ id: 'motion.support.wins.label' })) ||
-            (hasVotedMotionFaild &&
-              formatText({ id: 'motion.oppose.wins.label' })) ||
-            formatText({ id: 'motion.outcome.label' }) ||
-            '',
+          iconName: motionFinished
+            ? (hasVotedMotionPassed && 'thumbs-up') || 'thumbs-down'
+            : '',
+          label: motionFinished
+            ? (hasVotedMotionPassed &&
+                formatText({ id: 'motion.support.wins.label' })) ||
+              formatText({ id: 'motion.oppose.wins.label' })
+            : formatText({ id: 'motion.outcome.label' }) || '',
           className: clsx({
             '!bg-base-white !text-purple-400 border-purple-400':
-              hasVotedMotionPassed ||
-              (winningSide === MotionVote.Yay && votesHaveBeenRevealed),
+              hasVotedMotionPassed,
             '!bg-base-white !text-red-400 border-red-400':
-              (hasVotedMotionFaild && !votesHaveBeenRevealed) ||
-              winningSide === MotionVote.Nay,
+              !hasVotedMotionPassed,
           }),
         },
         isOptional: true,
@@ -294,11 +279,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     isFullyStaked,
     motionStakedAndFinalizable,
     motionData,
+    motionState,
     motionStateHistory,
-    winningSide,
     hasVotedMotionPassed,
-    hasVotedMotionFaild,
-    votesHaveBeenRevealed,
+    motionFinished,
     refetchAction,
     canInteract,
   ]);
