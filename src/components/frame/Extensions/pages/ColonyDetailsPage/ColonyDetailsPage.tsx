@@ -12,10 +12,11 @@ import { formatText } from '~utils/intl';
 import { multiLineTextEllipsis } from '~utils/strings';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
-import Avatar from '~v5/shared/Avatar';
 import Button from '~v5/shared/Button';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import SocialLinks from '~v5/shared/SocialLinks';
+import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import { ADDRESS_ZERO } from '~constants';
 
 import styles from './ColonyDetailsPage.module.css';
 
@@ -73,7 +74,13 @@ const ColonyDetailsPage: FC = () => {
     <div className="pb-6">
       <div className={clsx('p-6 flex flex-col items-start', styles.box)}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <Avatar size="m" avatar={avatar || thumbnail || ''} />
+          <ColonyAvatar
+            size="m"
+            colonyAddress={colonyAddress || ADDRESS_ZERO}
+            colonyImageProps={{
+              src: thumbnail || avatar || undefined,
+            }}
+          />
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-row items-end gap-3">
               <h2 className="heading-2">{name}</h2>

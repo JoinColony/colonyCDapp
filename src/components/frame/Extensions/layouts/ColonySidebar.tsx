@@ -3,16 +3,16 @@ import React, { ReactNode } from 'react';
 import { CREATE_COLONY_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
+import Button from '~v5/shared/Button';
+import LearnMore from '~shared/Extensions/LearnMore';
+import { ADDRESS_ZERO, LEARN_MORE_PAYMENTS } from '~constants';
+import { useColonyContext } from '~hooks';
+import { useActionSidebarContext } from '~context';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import ColonySwitcherContent from './partials/ColonySwitcherContent';
-import Button from '~v5/shared/Button';
-import LearnMore from '~shared/Extensions/LearnMore';
-import { LEARN_MORE_PAYMENTS } from '~constants';
 import { useMainMenuItems } from './hooks';
-import { useActionSidebarContext } from '~context';
 import { getChainIconName } from './utils';
-import { useColonyContext } from '~hooks';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout.ColonySidebar';
 
@@ -63,6 +63,7 @@ const ColonySidebar = ({ txButtons, userHub }: Props) => {
             ? { src: metadata?.thumbnail || metadata?.avatar }
             : undefined,
           chainIconName: chainIcon,
+          colonyAddress: colony?.colonyAddress || ADDRESS_ZERO,
         },
         content: {
           title: formatText({ id: 'navigation.colonySwitcher.title' }),

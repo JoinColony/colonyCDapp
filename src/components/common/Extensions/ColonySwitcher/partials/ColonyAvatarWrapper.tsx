@@ -2,7 +2,10 @@ import React, { FC } from 'react';
 
 import ColonyAvatar from '~shared/ColonyAvatar';
 import Icon from '~shared/Icon';
+import { ADDRESS_ZERO } from '~constants';
+
 import { ColonyAvatarProps } from '../types';
+
 import styles from '../ColonySwitcher.module.css';
 
 const displayName =
@@ -20,7 +23,7 @@ const ColonyAvatarWrapper: FC<ColonyAvatarProps> = ({
         <span className="flex items-center justify-center bg-blue-300 rounded-full">
           <ColonyAvatar
             colony={colony}
-            colonyAddress={colonyAddress || ''}
+            colonyAddress={colonyAddress || ADDRESS_ZERO}
             size="sm"
           />
         </span>

@@ -8,6 +8,7 @@ import HamburgerButton from '~v5/shared/HamburgerButton';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import FeedbackButton from '~shared/FeedbackButton';
 import ColonyLogo from '~images/logo-new.svg';
+import Icon from '~shared/Icon';
 
 import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
 import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
@@ -59,11 +60,6 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   const hasThirdLevel = activeMainMenuItem?.relatedActionsProps?.items.length;
 
   const relatedActions = activeMainMenuItem?.relatedActionsProps;
-
-  const {
-    avatarProps: colonySwitcherAvatarProps,
-    content: colonySwitcherContent,
-  } = colonySwitcherProps;
 
   const mainMenu = withMainMenu ? (
     <NavigationSidebarMainMenu mainMenuItems={mainMenuItems} />
@@ -138,7 +134,16 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   },
                 )}
               >
-                <ColonyAvatar {...colonySwitcherAvatarProps} />
+                {colonySwitcherProps?.avatarProps ? (
+                  <ColonyAvatar {...colonySwitcherProps.avatarProps} />
+                ) : (
+                  <div className="w-9 h-9">
+                    <Icon
+                      name="colony-icon"
+                      appearance={{ size: 'largeSmall' }}
+                    />
+                  </div>
+                )}
               </button>
             </div>
             {isTablet ? (
@@ -165,7 +170,11 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   mobileBottomContent={mobileBottomContent}
                   isOpen={openItemIndex === 0}
                 >
-                  <NavigationSidebarSecondLevel {...colonySwitcherContent} />
+                  {colonySwitcherProps?.content.title && (
+                    <NavigationSidebarSecondLevel
+                      {...colonySwitcherProps?.content}
+                    />
+                  )}
                 </NavigationSidebarMobileContentWrapper>
               </>
             ) : (
@@ -218,8 +227,10 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                     isExpanded={hasThirdLevel ? isThirdLevelMenuOpen : false}
                   />
                 ) : null}
-                {openItemIndex === 0 && (
-                  <NavigationSidebarSecondLevel {...colonySwitcherContent} />
+                {openItemIndex === 0 && colonySwitcherProps?.content.title && (
+                  <NavigationSidebarSecondLevel
+                    {...colonySwitcherProps?.content}
+                  />
                 )}
               </motion.div>
             </motion.div>

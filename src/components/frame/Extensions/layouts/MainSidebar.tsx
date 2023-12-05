@@ -2,10 +2,10 @@ import React from 'react';
 
 import { CREATE_COLONY_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
+import NavigationSidebar from '~v5/frame/NavigationSidebar';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import ColonySwitcherContent from './partials/ColonySwitcherContent';
-import NavigationSidebar from '~v5/frame/NavigationSidebar';
 
 const displayName = 'frame.Extensions.layouts.MainLayout.MainSidebar';
 
@@ -13,7 +13,6 @@ const MainSidebar = () => (
   <NavigationSidebar
     additionalMobileContent={<UserNavigationWrapper />}
     colonySwitcherProps={{
-      avatarProps: {},
       content: {
         title: formatText({ id: 'navigation.colonySwitcher.title' }),
         content: <ColonySwitcherContent />,
