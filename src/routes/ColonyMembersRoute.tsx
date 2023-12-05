@@ -1,30 +1,13 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
-
-import { COLONY_MEMBERS_ROUTE } from './routeConstants';
+import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 
 const ColonyMembersRoute = () => {
-  useSetPageBreadcrumbs(
-    useMemo(
-      () => [
-        {
-          key: 'members',
-          // @todo: replace with actual teams
-          dropdownOptions: [
-            {
-              label: 'All members',
-              href: COLONY_MEMBERS_ROUTE,
-            },
-          ],
-          selectedValue: COLONY_MEMBERS_ROUTE,
-        },
-      ],
-      [],
-    ),
-  );
+  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
+  useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   return (
     <MemberContextProvider>
