@@ -35,6 +35,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 72,
     submitPeriod: 72,
     revealPeriod: 72,
+    escalationPeriod: 0,
     // escalationPeriod: 72, @TODO Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.SPEED_OVER_SECURITY]: {
@@ -45,6 +46,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 72,
     submitPeriod: 72,
     revealPeriod: 42,
+    escalationPeriod: 0,
     // escalationPeriod: 48, @TODO Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.SECURITY_OVER_SPEED]: {
@@ -55,6 +57,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 120,
     submitPeriod: 120,
     revealPeriod: 72,
+    escalationPeriod: 0,
     // escalationPeriod: 72, @TODO Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.TESTING_GOVERNANCE]: {
@@ -65,6 +68,7 @@ export const defaultGovernanceOptions = {
     stakePeriod: 0.083,
     submitPeriod: 0.083,
     revealPeriod: 0.083,
+    escalationPeriod: 0,
     // escalationPeriod: 0.083, @TODO Re-enable once Motion escalation is implemented
   },
 };
