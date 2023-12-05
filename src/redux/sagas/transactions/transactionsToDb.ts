@@ -1,6 +1,7 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { call, cancel, fork, put, take } from 'redux-saga/effects';
 import { Channel, buffers, channel } from 'redux-saga';
+import { utils } from 'ethers';
 
 import { ContextModule, getContext } from '~context';
 import {
@@ -174,12 +175,14 @@ function* updateTransactionInDb({
   payload,
 }: TransactionActionTypes & { payload?: any }) {
   const apollo = getContext(ContextModule.ApolloClient);
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
 
   try {
     switch (type) {
       case ActionTypes.TRANSACTION_ADD_IDENTIFIER: {
         const { identifier } = payload as TransactionAddIdentifierPayload;
-        yield updateTransaction({ id, identifier });
+        yield updateTransaction({ id, identifier, from: walletAddress });
         break;
       }
 
@@ -196,26 +199,39 @@ function* updateTransactionInDb({
         yield updateTransaction({
           id,
           params: JSON.stringify([...oldParams, ...params]),
+          from: walletAddress,
         });
 
         break;
       }
 
       case ActionTypes.TRANSACTION_READY: {
-        yield updateTransaction({ id, status: TransactionStatus.Ready });
+        yield updateTransaction({
+          id,
+          status: TransactionStatus.Ready,
+          from: walletAddress,
+        });
         break;
       }
 
       case ActionTypes.TRANSACTION_PENDING: {
         onTransactionPending(id);
-        yield updateTransaction({ id, status: TransactionStatus.Pending });
+        yield updateTransaction({
+          id,
+          status: TransactionStatus.Pending,
+          from: walletAddress,
+        });
 
         break;
       }
 
       case ActionTypes.TRANSACTION_LOAD_RELATED: {
         const { loading } = payload as TransactionLoadRelatedPayload;
-        yield updateTransaction({ id, loadingRelated: loading });
+        yield updateTransaction({
+          id,
+          loadingRelated: loading,
+          from: walletAddress,
+        });
         break;
       }
 
@@ -225,6 +241,7 @@ function* updateTransactionInDb({
           id,
           gasLimit: gasLimit?.toString(),
           gasPrice: gasPrice?.toString(),
+          from: walletAddress,
         });
         break;
       }
@@ -235,6 +252,7 @@ function* updateTransactionInDb({
           id,
           error: null,
           status: TransactionStatus.Ready,
+          from: walletAddress,
         });
         break;
       }
@@ -242,19 +260,33 @@ function* updateTransactionInDb({
       case ActionTypes.TRANSACTION_HASH_RECEIVED: {
         const { blockHash, blockNumber, hash } =
           payload as TransactionHashReceivedPayload;
-        yield updateTransaction({ id, blockHash, blockNumber, hash });
+        yield updateTransaction({
+          id,
+          blockHash,
+          blockNumber,
+          hash,
+          from: walletAddress,
+        });
         break;
       }
 
       case ActionTypes.TRANSACTION_SENT: {
         onTransactionPending(id);
-        yield updateTransaction({ id, status: TransactionStatus.Pending });
+        yield updateTransaction({
+          id,
+          status: TransactionStatus.Pending,
+          from: walletAddress,
+        });
         break;
       }
 
       case ActionTypes.TRANSACTION_RECEIPT_RECEIVED: {
         const { receipt } = payload as TransactionReceiptReceivedPayload;
-        yield updateTransaction({ id, receipt: JSON.stringify(receipt) });
+        yield updateTransaction({
+          id,
+          receipt: JSON.stringify(receipt),
+          from: walletAddress,
+        });
         break;
       }
 
@@ -267,6 +299,7 @@ function* updateTransactionInDb({
           status: TransactionStatus.Succeeded,
           deployedContractAddress,
           eventData: JSON.stringify(eventData ?? {}),
+          from: walletAddress,
         });
         break;
       }
@@ -278,6 +311,7 @@ function* updateTransactionInDb({
           id,
           status: TransactionStatus.Failed,
           error,
+          from: walletAddress,
         });
         break;
       }
@@ -321,11 +355,12 @@ function* updateTransactionInDb({
                 await updateTransaction({
                   id: txId,
                   deleted: true,
+                  from: walletAddress,
                 });
               }) ?? [],
           );
         } else {
-          yield updateTransaction({ id, deleted: true });
+          yield updateTransaction({ id, deleted: true, from: walletAddress });
         }
         break;
       }
