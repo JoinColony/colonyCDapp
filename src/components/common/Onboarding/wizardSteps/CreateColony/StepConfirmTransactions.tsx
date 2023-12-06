@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { WizardStepProps } from '~shared/Wizard';
@@ -13,7 +13,6 @@ import {
 } from '~frame/GasStation/transactionGroup';
 import { TransactionStatus } from '~gql';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
-import { ActionTypes } from '~redux/index';
 import { useAppContext } from '~hooks';
 
 import { HeaderRow } from '../shared';
@@ -54,7 +53,6 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     existsRecoverableDeploymentError,
     setExistsRecoverableDeploymentError,
   ] = useState<boolean>(false);
-  const dispatch = useDispatch();
   const { user, updateUser } = useAppContext();
 
   const txGroups = useSelector(
@@ -84,14 +82,6 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     existsRecoverableDeploymentError,
     setExistsRecoverableDeploymentError,
   ]);
-
-  // Cancel the saga when the component unmounts
-  useEffect(
-    () => () => {
-      dispatch({ type: ActionTypes.CREATE_CANCEL });
-    },
-    [dispatch],
-  );
 
   // @TODO: Move the following to the colonyCreate saga
   // Redirect to the colony if a successful creteColony tx group is found
