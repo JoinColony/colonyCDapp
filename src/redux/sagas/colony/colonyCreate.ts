@@ -31,9 +31,9 @@ import {
   CreateUserTokensDocument,
   CreateUserTokensMutation,
   CreateUserTokensMutationVariables,
-  CreateColonyContributorDocument,
-  CreateColonyContributorMutation,
-  CreateColonyContributorMutationVariables,
+  // CreateColonyContributorDocument,
+  // CreateColonyContributorMutation,
+  // CreateColonyContributorMutationVariables,
   DomainColor,
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,
@@ -354,22 +354,22 @@ function* colonyCreate({
     /*
      * Subscribe user to colony
      */
-    yield apolloClient.mutate<
-      CreateColonyContributorMutation,
-      CreateColonyContributorMutationVariables
-    >({
-      mutation: CreateColonyContributorDocument,
-      variables: {
-        input: {
-          colonyAddress,
-          colonyReputationPercentage: 0,
-          contributorAddress: walletAddress,
-          isVerified: true, // !!
-          id: `${colonyAddress}_${walletAddress}`,
-          isWatching: true,
-        },
-      },
-    });
+    // yield apolloClient.mutate<
+    //   CreateColonyContributorMutation,
+    //   CreateColonyContributorMutationVariables
+    // >({
+    //   mutation: CreateColonyContributorDocument,
+    //   variables: {
+    //     input: {
+    //       colonyAddress,
+    //       colonyReputationPercentage: 0,
+    //       contributorAddress: walletAddress,
+    //       isVerified: true, // !!
+    //       id: `${colonyAddress}_${walletAddress}`,
+    //       isWatching: true,
+    //     },
+    //   },
+    // });
 
     /*
      * Save root domain metadata to the database
