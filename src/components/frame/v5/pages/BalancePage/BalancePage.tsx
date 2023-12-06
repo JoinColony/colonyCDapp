@@ -11,7 +11,7 @@ const displayName = 'v5.pages.BalancePage';
 const BalancePage: FC = () => {
   const { data } = useBalancePage();
 
-  useSetPageHeadingTitle(formatText({ id: 'balance' }));
+  useSetPageHeadingTitle(formatText({ id: 'navigation.finances.balance' }));
 
   return (
     <div className="w-full">

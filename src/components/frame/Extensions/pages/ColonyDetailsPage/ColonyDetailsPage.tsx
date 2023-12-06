@@ -55,7 +55,9 @@ const ColonyDetailsPage: FC = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
 
-  useSetPageHeadingTitle(formatMessage({ id: 'colonyDetails' }));
+  useSetPageHeadingTitle(
+    formatMessage({ id: 'navigation.admin.colonyDetails' }),
+  );
 
   const { name, metadata, colonyAddress, nativeToken, status } = colony || {};
   const { avatar, thumbnail, description, externalLinks, objective } =
@@ -122,7 +124,7 @@ const ColonyDetailsPage: FC = () => {
         ) : null}
         <Button
           mode="primarySolid"
-          text={{ id: 'colonyDetails.edit' }}
+          text={{ id: 'button.editColonyDetails' }}
           isFullSize={isMobile}
           onClick={() => {
             toggleActionSidebarOn({
