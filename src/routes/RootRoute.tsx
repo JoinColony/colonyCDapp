@@ -15,7 +15,8 @@ const RootRouteInner = () => {
   const { isDarkMode } = usePageThemeContext();
 
   useEffect(() => {
-    applyTheme(isDarkMode ? Theme.dark : Theme.light);
+    // applyTheme(isDarkMode ? Theme.dark : Theme.light);
+    applyTheme(Theme.light);
   }, [isDarkMode]);
 
   return (
