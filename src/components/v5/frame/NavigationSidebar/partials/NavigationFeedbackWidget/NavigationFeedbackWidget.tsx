@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { openFeaturesBugs } from '~hooks/useBeamer';
 
 const displayName =
   'v5.frame.NavigationSidebar.NavigationSidebarSecondLevel.NavigationSidebarButton';
@@ -31,6 +32,9 @@ const NavigationFeedbackWidget = () => (
     <button
       type="button"
       className="text-xs font-medium underline hover:text-gray-900"
+      onClick={(e) => {
+        openFeaturesBugs(e);
+      }}
     >
       <FormattedMessage {...MSG.widgetButtonText} />
     </button>

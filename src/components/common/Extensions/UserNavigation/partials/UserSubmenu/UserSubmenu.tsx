@@ -18,6 +18,7 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => {
     onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void,
   ) => {
     if (onClick) {
+      event.preventDefault();
       onClick(event);
     }
   };
