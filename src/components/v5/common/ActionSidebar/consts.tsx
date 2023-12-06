@@ -1,4 +1,4 @@
-import { boolean, object, string } from 'yup';
+import { object, string } from 'yup';
 import { Variants } from 'framer-motion';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -7,8 +7,10 @@ import { ACTION, Action } from '~constants/actions';
 import { formatText } from '~utils/intl';
 import { useColonyContext } from '~hooks';
 
-// Do not change this import to './hooks' because it will cause a circular dependency
-import { DecisionMethod } from './hooks/useDecisionMethods';
+import {
+  permissionsValidationSchema,
+  reputationValidationSchema,
+} from './hooks';
 
 export const ACTION_TYPE_FIELD_NAME = 'actionType';
 export const DECISION_METHOD_FIELD_NAME = 'decisionMethod';
@@ -76,13 +78,7 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
           },
         ),
       ),
-    domainHasReputation: boolean().when(DECISION_METHOD_FIELD_NAME, {
-      is: DecisionMethod.Reputation,
-      then: boolean().oneOf([true], 'No reputation in team'), // @NOTE: This message will not be shown in the UI
-    }),
-    userHasPermissions: boolean().when(DECISION_METHOD_FIELD_NAME, {
-      is: DecisionMethod.Permissions,
-      then: boolean().oneOf([true], 'Missing permissions'), // @NOTE: This message will not be shown in the UI
-    }),
   })
-  .defined();
+  .defined()
+  .concat(reputationValidationSchema)
+  .concat(permissionsValidationSchema);

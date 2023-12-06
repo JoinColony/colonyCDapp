@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
 import { useFormContext } from 'react-hook-form';
@@ -9,7 +9,6 @@ import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
-import { useColonyContext, useColonyHasReputation } from '~hooks';
 import Link from '~v5/shared/Link';
 
 import ActionTypeSelect from '../../ActionTypeSelect';
@@ -18,7 +17,8 @@ import {
   useActionDescriptionMetadata,
   useActionFormProps,
   useSidebarActionForm,
-  useUserHasPermissions,
+  usePermissionsValidation,
+  useReputationValidation,
 } from '../../hooks';
 import ActionButtons from '../ActionButtons';
 import Motions from '../Motions';
@@ -53,7 +53,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const { colony } = useColonyContext();
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
   const descriptionMetadata = useActionDescriptionMetadata();
@@ -61,52 +60,12 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const {
     setValue,
     formState: {
-      errors: {
-        title: titleError,
-        domainHasReputation: noReputationError,
-        userHasPermissions: noPermissionsError,
-      },
-      isSubmitted,
+      errors: { title: titleError },
     },
-    watch,
-    trigger,
   } = useFormContext();
-  const {
-    actionType,
-    createdIn,
-    userHasPermissions: userHasPermissionsValue,
-    domainHasReputation: domainHasReputationValue,
-    decisionMethod,
-  } = watch();
-  const createdInDomainId = Number(createdIn);
 
-  const userHasPermissions = useUserHasPermissions(
-    actionType,
-    createdInDomainId,
-  );
-  useEffect(() => {
-    if (userHasPermissions !== userHasPermissionsValue) {
-      setValue('userHasPermissions', userHasPermissions, {
-        shouldValidate: true,
-      });
-    }
-  }, [setValue, userHasPermissions, userHasPermissionsValue]);
-
-  const domainHasReputation = useColonyHasReputation(
-    colony?.colonyAddress,
-    createdInDomainId,
-  );
-  useEffect(() => {
-    if (domainHasReputation !== domainHasReputationValue) {
-      setValue('domainHasReputation', domainHasReputation, {
-        shouldValidate: true,
-      });
-    }
-  }, [setValue, domainHasReputation, domainHasReputationValue]);
-
-  useEffect(() => {
-    trigger(['userHasPermissions', 'domainHasReputation']);
-  }, [decisionMethod, trigger]);
+  const { noPermissionsError } = usePermissionsValidation();
+  const { noReputationError } = useReputationValidation();
 
   return (
     <>
@@ -129,14 +88,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
-        {isSubmitted && noPermissionsError && (
+        {noPermissionsError && (
           <div className="mt-6">
             <NotificationBanner status="warning" icon="warning-circle">
               {formatMessage(MSG.noPermissionsErrorTitle)}
             </NotificationBanner>
           </div>
         )}
-        {isSubmitted && noReputationError && (
+        {noReputationError && (
           <div className="mt-6">
             <NotificationBanner
               status="warning"
