@@ -66,10 +66,18 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         domainHasReputation: noReputationError,
         userHasPermissions: noPermissionsError,
       },
+      isSubmitted,
     },
     watch,
+    trigger,
   } = useFormContext();
-  const { actionType, createdIn } = watch();
+  const {
+    actionType,
+    createdIn,
+    userHasPermissions: userHasPermissionsValue,
+    domainHasReputation: domainHasReputationValue,
+    decisionMethod,
+  } = watch();
   const createdInDomainId = Number(createdIn);
 
   const userHasPermissions = useUserHasPermissions(
@@ -77,20 +85,28 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     createdInDomainId,
   );
   useEffect(() => {
-    setValue('userHasPermissions', userHasPermissions, {
-      shouldValidate: true,
-    });
-  }, [setValue, userHasPermissions]);
+    if (userHasPermissions !== userHasPermissionsValue) {
+      setValue('userHasPermissions', userHasPermissions, {
+        shouldValidate: true,
+      });
+    }
+  }, [setValue, userHasPermissions, userHasPermissionsValue]);
 
   const domainHasReputation = useColonyHasReputation(
     colony?.colonyAddress,
     createdInDomainId,
   );
   useEffect(() => {
-    setValue('domainHasReputation', domainHasReputation, {
-      shouldValidate: true,
-    });
-  }, [setValue, domainHasReputation]);
+    if (domainHasReputation !== domainHasReputationValue) {
+      setValue('domainHasReputation', domainHasReputation, {
+        shouldValidate: true,
+      });
+    }
+  }, [setValue, domainHasReputation, domainHasReputationValue]);
+
+  useEffect(() => {
+    trigger(['userHasPermissions', 'domainHasReputation']);
+  }, [decisionMethod, trigger]);
 
   return (
     <>
@@ -113,14 +129,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
-        {noPermissionsError && (
+        {isSubmitted && noPermissionsError && (
           <div className="mt-6">
             <NotificationBanner status="warning" icon="warning-circle">
               {formatMessage(MSG.noPermissionsErrorTitle)}
             </NotificationBanner>
           </div>
         )}
-        {noReputationError && (
+        {isSubmitted && noReputationError && (
           <div className="mt-6">
             <NotificationBanner
               status="warning"
