@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import clsx from 'clsx';
+
 import { ColonyFragment } from '~gql';
 import {
   useAppContext,
@@ -19,6 +19,9 @@ import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants';
 import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types';
 import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { TransactionGroupStates, useUserTransactionContext } from '~context';
+import { TxButton } from '~v5/shared/Button';
+import Icon from '~shared/Icon';
 
 import type { UseCalamityBannerInfoReturnType } from './types';
 import {
@@ -32,9 +35,6 @@ import {
 } from './consts';
 import { checkIfIsActive } from './utils';
 import DashboardContent from './partials/DashboardContent';
-import { TransactionGroupStates, useUserTransactionContext } from '~context';
-import { TxButton } from '~v5/shared/Button';
-import Icon from '~shared/Icon';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();
@@ -88,6 +88,9 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
 };
 
 export const useMainMenuItems = () => {
+  const { colony } = useColonyContext();
+  const { metadata } = colony || {};
+
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
@@ -113,9 +116,9 @@ export const useMainMenuItems = () => {
         ...dashboardMenu,
       ]),
       secondLevelMenuProps: {
-        title: formatText({ id: 'navigation.dashboard.title' }),
+        title: metadata?.displayName || '',
         content: <DashboardContent />,
-        description: formatText({ id: 'navigation.dashboard.description' }),
+        description: metadata?.description || '',
         bottomActionProps: {
           text: formatText({ id: 'button.createNewAction' }),
           iconName: 'plus',

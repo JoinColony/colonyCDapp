@@ -4,15 +4,18 @@ import clsx from 'clsx';
 import { useTablet } from '~hooks';
 import Icon from '~shared/Icon';
 import Button from '~v5/shared/Button';
+import { multiLineTextEllipsis } from '~utils/strings';
+import ButtonLink from '~v5/shared/Button/ButtonLink';
 
 import { NavigationSidebarSecondLevelProps } from './types';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
-import ButtonLink from '~v5/shared/Button/ButtonLink';
 import NavigationSidebarLinksList from '../NavigationSidebarLinksList';
 import NavigationFeedbackWidget from '../NavigationFeedbackWidget';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarSecondLevel';
+
+const MAX_DESCRIPTION_LENGTH = 115;
 
 const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
   title,
@@ -56,9 +59,9 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
           </div>
         )}
         {description && (
-          <p className="md:mt-1 text-md text-gray-600 px-2 md:px-0">
-            {description}
-          </p>
+          <div className="h-15 line-clamp-3 md:mt-1 text-md text-gray-600 px-2 md:px-0">
+            <p>{multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)}</p>
+          </div>
         )}
         {isContentList ? (
           <NavigationSidebarLinksList
