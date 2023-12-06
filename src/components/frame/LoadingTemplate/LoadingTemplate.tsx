@@ -36,27 +36,34 @@ const MSG = defineMessages({
 
 const delayedLoadingDuration = 15 * 1000; // 15 seconds
 export const failedLoadingDuration = 30 * 1000; // 30 seconds
-type LoadingStateType = 'default' | 'delayed' | 'failed';
+
+enum LoadingState {
+  DEFAULT = 'default',
+  DELAYED = 'delayed',
+  FAILED = 'failed',
+}
 
 const LoadingTemplate = ({ loadingText }: Props) => {
-  const [loadingState, setLoadingState] = useState<LoadingStateType>('default');
+  const [loadingState, setLoadingState] = useState<LoadingState>(
+    LoadingState.DEFAULT,
+  );
 
   useEffect(() => {
     const delayTimer = setTimeout(() => {
-      setLoadingState('delayed');
+      setLoadingState(LoadingState.DELAYED);
     }, delayedLoadingDuration);
     return () => clearTimeout(delayTimer);
   }, []);
 
   useEffect(() => {
     const failedTimer = setTimeout(() => {
-      setLoadingState('failed');
+      setLoadingState(LoadingState.FAILED);
     }, failedLoadingDuration);
     return () => clearTimeout(failedTimer);
   }, []);
 
   const getLoadingDescription = () => {
-    if (loadingState === 'delayed') {
+    if (loadingState === LoadingState.DELAYED) {
       return (
         <>
           {formatText(MSG.loadingDelayed)}
@@ -65,7 +72,7 @@ const LoadingTemplate = ({ loadingText }: Props) => {
         </>
       );
     }
-    if (loadingState === 'failed') {
+    if (loadingState === LoadingState.FAILED) {
       return (
         <>
           {formatText(MSG.loadingFailed)}

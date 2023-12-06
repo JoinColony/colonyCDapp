@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { ReactNode } from 'react';
 
 import Icon from '~shared/Icon';
@@ -19,7 +20,7 @@ const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
         <svg
           viewBox="0 0 120 120"
           xmlns="http://www.w3.org/2000/svg"
-          className={styles.pageLoaderCircle}
+          className={clsx('block', styles.pageLoaderCircle)}
         >
           <circle
             cx="60"
@@ -40,7 +41,10 @@ const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
             strokeWidth={STROKE_WIDTH}
           />
         </svg>
-        <Icon className={styles.colonyIcon} name="colony-icon" />
+        <Icon
+          className="!h-12 !w-12 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          name="colony-icon"
+        />
       </div>
       {loadingText && (
         <div className="text-gray-900 text-sm font-medium mt-6 uppercase tracking-[0.075rem]">
