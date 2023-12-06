@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
 
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useColonySubscription, useMobile } from '~hooks';
@@ -88,6 +89,8 @@ const ColonyHome = () => {
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
+  const { search: searchParams } = useLocation();
+
   if (!colony) {
     return null;
   }
@@ -97,8 +100,6 @@ const ColonyHome = () => {
       [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
     });
   };
-
-  const searchParams = selectedTeam && `?team=${selectedTeam.nativeId}`;
 
   return (
     <div className="flex flex-col gap-10">

@@ -11,7 +11,7 @@ const WidgetBox: FC<WidgetBoxProps> = ({
   value,
   additionalContent,
   href,
-  searchParams = '',
+  searchParams,
   className = 'bg-base-white border-gray-200 text-gray-900',
   iconName,
   iconClassName = 'text-blue-400',
@@ -59,7 +59,7 @@ const WidgetBox: FC<WidgetBoxProps> = ({
         hoverStyles,
         'sm:hover:text-gray-900 sm:hover:bg-base-white',
       )}
-      to={href + searchParams}
+      to={{ pathname: href, search: searchParams || '' }}
     >
       {content}
     </Link>
