@@ -1,5 +1,7 @@
 import React, { FC, useEffect } from 'react';
 
+import { useSearchContext } from '~context/SearchContext';
+import { useFilterContext } from '~context/FilterContext';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { formatText } from '~utils/intl';
