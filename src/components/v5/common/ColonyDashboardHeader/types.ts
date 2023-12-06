@@ -1,9 +1,11 @@
 import { ColonyLinksProps } from './partials/ColonyLinks/types';
 
 export interface ColonyDashboardHeaderProps {
+  colonyLinksProps: ColonyLinksProps;
   colonyName: string;
   description: string;
-  colonyLinksProps: ColonyLinksProps;
-  tokenName: string;
   isTokenUnlocked?: boolean;
+  leaveColonyConfirmOpen: boolean;
+  setLeaveColonyConfirm: (isOpen: boolean) => void;
+  tokenName: string;
 }
