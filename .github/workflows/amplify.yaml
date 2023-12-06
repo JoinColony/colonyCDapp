@@ -49,7 +49,7 @@ jobs:
   deployProd:
     needs: deployQA
 
-    # environment: prod # disabled for now
+    environment: prod
 
     runs-on: ubuntu-latest
 
