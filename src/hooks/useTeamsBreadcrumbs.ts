@@ -36,13 +36,15 @@ export const useCreateTeamBreadcrumbs = () => {
   const { colony } = useColonyContext();
   const selectedValue = useGetSelectedTeamFilter();
   const { domains } = colony || {};
+  const navigationPathname = window.location.pathname;
+
   const activeItem = selectedValue
     ? setQueryParamOnUrl(
-        window.location.pathname,
+        navigationPathname,
         TEAM_SEARCH_PARAM,
         `${selectedValue.nativeId}`,
       )
-    : window.location.pathname;
+    : navigationPathname;
 
   const teamOptions = useMemo(
     () =>
@@ -53,13 +55,13 @@ export const useCreateTeamBreadcrumbs = () => {
           label: domain.metadata?.name,
           color,
           href: setQueryParamOnUrl(
-            window.location.pathname,
+            navigationPathname,
             TEAM_SEARCH_PARAM,
             `${domain.nativeId}`,
           ),
         };
       }) || [],
-    [domains?.items],
+    [domains?.items, navigationPathname],
   );
 
   return useMemo(

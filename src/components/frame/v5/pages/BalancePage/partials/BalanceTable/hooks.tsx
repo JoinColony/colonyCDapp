@@ -2,17 +2,18 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useCallback, useMemo } from 'react';
 import { formatText } from '~utils/intl';
 import Numeral from '~shared/Numeral';
-import EthUsd from '~shared/EthUsd';
+import TokenAvatar from '../TokenAvatar';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import { ADDRESS_ZERO } from '~constants';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+// import Link from '~v5/shared/Link';
+// import { DEFAULT_NETWORK_INFO } from '~constants';
+// import { getBlockExplorerLink } from '~utils/external';
 import { BalanceTableFieldModel } from './types';
-import TokenAvatar from '../TokenAvatar';
 
 export const useBalanceTableColumns = (
   nativeToken,
@@ -57,20 +58,13 @@ export const useBalanceTableColumns = (
         cell: ({ row }) => {
           const isTokenNative =
             row.original.token?.tokenAddress === nativeToken.tokenAddress;
-
           return (
             <span className="hidden sm:flex">
-              <TokenTypeBadge
-                tokenType={
-                  isTokenNative ? TOKEN_TYPE.native : TOKEN_TYPE.reputation
-                }
-              >
-                {formatText({
-                  id: isTokenNative
-                    ? 'token.type.native'
-                    : 'token.type.reputation',
-                })}
-              </TokenTypeBadge>
+              {isTokenNative && (
+                <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
+                  {formatText({ id: 'token.type.native' })}
+                </TokenTypeBadge>
+              )}
             </span>
           );
         },
@@ -96,13 +90,13 @@ export const useBalanceTableColumns = (
                 className="text-1 text-gray-900"
                 suffix={row.original.token?.symbol}
               />
-              {row.original.token?.tokenAddress !== ADDRESS_ZERO && (
+              {/* {row.original.token?.tokenAddress === ADDRESS_ZERO && (
                 <EthUsd
                   value={currentTokenBalance}
                   showPrefix
                   className="text-gray-600 !text-sm"
                 />
-              )}
+              )} */}
             </div>
           );
         },
@@ -124,40 +118,56 @@ export const useGetTableMenuProps = () =>
   useCallback<
     TableWithMeatballMenuProps<BalanceTableFieldModel>['getMenuProps']
   >(() => {
-    // @TODO: add actions and translactions to every items
+    // @TODO: add actions and translations to every item
     return {
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
       items: [
         {
           key: 'add_funds',
           onClick: () => {},
-          label: 'Add funds',
-          icon: 'add',
+          label: '',
+          icon: '',
         },
-        {
-          key: 'view_ethscan',
-          onClick: () => {},
-          label: 'View on Ethscan',
-          icon: 'arrow-square-out',
-        },
-        {
-          key: 'mint_tokens',
-          onClick: () => {},
-          label: 'Mint tokens',
-          icon: 'bank',
-        },
-        {
-          key: 'transfer_fundss',
-          onClick: () => {},
-          label: 'Transfer funds',
-          icon: 'transfer',
-        },
-        {
-          key: 'make_payment',
-          onClick: () => {},
-          label: 'Make payment using this token',
-          icon: 'hand-coins',
-        },
+        // {
+        //   key: 'view_ethscan',
+        //   onClick: () => {},
+        //   icon: 'arrow-square-out',
+        //   label: formatText(
+        //     { id: 'membersPage.memberNav.viewOn' },
+        //     {
+        //       networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
+        //     },
+        //   ),
+        //   renderItemWrapper: (props, children) => (
+        //     <Link
+        //       to={getBlockExplorerLink({
+        //         linkType: 'address',
+        //         addressOrHash: walletAddress,
+        //       })}
+        //       {...props}
+        //     >
+        //       {children}
+        //     </Link>
+        //   ),
+        // },
+        // {
+        //   key: 'mint_tokens',
+        //   onClick: () => {},
+        //   label: 'Mint tokens',
+        //   icon: 'bank',
+        // },
+        // {
+        //   key: 'transfer_fundss',
+        //   onClick: () => {},
+        //   label: 'Transfer funds',
+        //   icon: 'transfer',
+        // },
+        // {
+        //   key: 'make_payment',
+        //   onClick: () => {},
+        //   label: 'Make payment with token',
+        //   icon: 'hand-coins',
+        // },
       ],
     };
   }, []);

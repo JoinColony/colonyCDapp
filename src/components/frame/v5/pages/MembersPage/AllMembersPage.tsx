@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { formatText } from '~utils/intl';
+import { useSetPageHeadingTitle } from '~context';
 
 import MembersTabContent from './partials/MembersTabContent';
 import { useMembersPage } from './hooks';
@@ -12,6 +13,8 @@ const AllMembersPage: FC = () => {
     useMembersPage();
   const { handleClipboardCopy } = useCopyToClipboard();
   const { colony } = useColonyContext();
+
+  useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
 
   const { name } = colony || {};
   const colonyURL = `${window.location.origin}/${name}`;

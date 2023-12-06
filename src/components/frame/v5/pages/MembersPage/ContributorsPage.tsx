@@ -4,6 +4,7 @@ import { formatText } from '~utils/intl';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { useColonyContext } from '~hooks';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary';
+import { useSetPageHeadingTitle } from '~context';
 
 import MembersTabContent from './partials/MembersTabContent';
 import { useMembersPage } from './hooks';
@@ -17,6 +18,8 @@ const ContributorsPage: FC = () => {
   } = useMembersPage();
   const { handleClipboardCopy } = useCopyToClipboard();
   const { colony } = useColonyContext();
+
+  useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
 
   const { name } = colony || {};
   const colonyURL = `${window.location.origin}/${name}`;
