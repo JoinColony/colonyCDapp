@@ -69,22 +69,27 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     },
     watch,
   } = useFormContext();
-  const { createdInDomainId, actionType } = watch();
+  const { actionType, createdIn } = watch();
+  const createdInDomainId = Number(createdIn);
 
   const userHasPermissions = useUserHasPermissions(
     actionType,
     createdInDomainId,
   );
   useEffect(() => {
-    setValue('userHasPermissions', userHasPermissions);
+    setValue('userHasPermissions', userHasPermissions, {
+      shouldValidate: true,
+    });
   }, [setValue, userHasPermissions]);
 
   const domainHasReputation = useColonyHasReputation(
     colony?.colonyAddress,
-    Number(createdInDomainId),
+    createdInDomainId,
   );
   useEffect(() => {
-    setValue('domainHasReputation', domainHasReputation);
+    setValue('domainHasReputation', domainHasReputation, {
+      shouldValidate: true,
+    });
   }, [setValue, domainHasReputation]);
 
   return (
@@ -148,9 +153,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
               }
             />
           )}
-          <ActionButtons
-            isActionDisabled={!userHasPermissions || !selectedAction}
-          />
+          <ActionButtons isActionDisabled={!selectedAction} />
         </div>
       )}
     </>
