@@ -5,6 +5,7 @@ import { array, InferType, number, object, string } from 'yup';
 
 import { ActionTypes } from '~redux';
 import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { mapPayload, pipe } from '~utils/actions';
 import { notNull } from '~utils/arrays';
 import { toFinite } from '~utils/lodash';
@@ -22,7 +23,6 @@ import {
   DECISION_METHOD,
   useActionFormBaseHook,
 } from '../../../hooks';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
