@@ -46,7 +46,7 @@ export const trasferFundsDescriptionMetadataGetter: DescriptionMetadataGetter<
   );
 };
 
-export const getTransferFundsDialogPayload = (
+export const getTransferFundsPayload = (
   colony: Colony,
   {
     amount: { amount: transferAmount, tokenAddress },
