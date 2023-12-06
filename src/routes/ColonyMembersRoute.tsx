@@ -9,11 +9,7 @@ const ColonyMembersRoute = () => {
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
-  return (
-    <MemberContextProvider>
-      <Outlet />
-    </MemberContextProvider>
-  );
+  return <Outlet />;
 };
 
 export default ColonyMembersRoute;

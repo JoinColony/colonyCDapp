@@ -1,4 +1,4 @@
-import { Colony, WatchedColony, WatchListItem } from '~types';
+import { Colony } from '~types';
 
 export interface ColoniesDropdownProps {
   activeColony?: Colony;
@@ -13,7 +13,7 @@ export interface ColonyItemProps {
 }
 
 export interface ColonyAvatarProps {
-  colony?: Colony | WatchedColony;
+  colony?: Colony;
   colonyAddress?: string;
   isMobile: boolean;
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
@@ -30,4 +30,4 @@ export interface ColonySwitcherProps {
   isColonyDropdownOpen?: boolean;
 }
 
-export type ColoniesByCategory = Record<string, WatchListItem[]>;
+export type ColoniesByCategory = Record<string, Colony[]>;

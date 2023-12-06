@@ -5,15 +5,10 @@ import { InferType } from 'yup';
 
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { getVerifiedUsers } from '~utils/verifiedUsers';
-import {
-  WizardDialogType,
-  useNetworkInverseFee,
-  useGetColonyMembers,
-} from '~hooks';
+import { WizardDialogType, useNetworkInverseFee } from '~hooks';
+import { useMemberContext } from '~context/MemberContext';
 
 import DialogForm from './CreatePaymentDialogForm';
 import { getCreatePaymentDialogPayload } from './helpers';
@@ -41,9 +36,7 @@ const CreatePaymentDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const { allMembers: allColonyMembers } = useGetColonyMembers(
-    colony.colonyAddress,
-  );
+  const { filteredMembers: allColonyMembers } = useMemberContext();
 
   const { isVotingReputationEnabled } = enabledExtensionData;
   const { networkInverseFee } = useNetworkInverseFee();
@@ -57,10 +50,7 @@ const CreatePaymentDialog = ({
 
   const isWhitelistActivated = colony.metadata?.isWhitelistActivated;
 
-  const verifiedUsers = getVerifiedUsers(
-    colony.metadata?.whitelistedAddresses ?? [],
-    allColonyMembers,
-  );
+  const verifiedUsers = [];
 
   const transform = pipe(
     mapPayload((payload) => {

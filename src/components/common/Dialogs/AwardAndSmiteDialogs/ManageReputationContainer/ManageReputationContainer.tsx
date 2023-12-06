@@ -6,9 +6,7 @@ import Dialog from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
 import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { getVerifiedUsers } from '~utils/verifiedUsers';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useSelectedUser, useGetColonyMembers } from '~hooks';
 
 import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
@@ -37,14 +35,6 @@ const ManageReputationContainer = ({
   const [isForce, setIsForce] = useState(false);
   const [schemaUserReputation, setSchemaUserReputation] = useState(0);
   const navigate = useNavigate();
-  const { allMembers: allColonyMembers } = useGetColonyMembers(
-    colony.colonyAddress,
-  );
-
-  const verifiedUsers = getVerifiedUsers(
-    colony.metadata?.whitelistedAddresses ?? [],
-    allColonyMembers,
-  );
 
   const { isVotingReputationEnabled } = enabledExtensionData;
 
@@ -79,10 +69,7 @@ const ManageReputationContainer = ({
     withMeta({ navigate }),
   );
 
-  const { metadata } = colony;
-  const selectedUser = useSelectedUser(
-    metadata?.isWhitelistActivated ? verifiedUsers : allColonyMembers,
-  );
+  const selectedUser = undefined;
 
   return (
     <Dialog cancel={cancel}>
@@ -104,9 +91,7 @@ const ManageReputationContainer = ({
           colony={colony}
           nativeTokenDecimals={nativeTokenDecimals}
           back={() => callStep(prevStep)}
-          users={
-            metadata?.isWhitelistActivated ? verifiedUsers : allColonyMembers
-          }
+          users={[]}
           updateSchemaUserReputation={
             isSmiteAction ? setSchemaUserReputation : undefined
           }

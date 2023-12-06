@@ -61,11 +61,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getMembersForColony": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "getUserTokenBalance": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -92,11 +87,6 @@
       "service": "Lambda"
     },
     "fetchExpenditureBalances": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "getTotalMemberCount": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

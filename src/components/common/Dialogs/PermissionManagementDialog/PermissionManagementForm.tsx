@@ -15,7 +15,7 @@ import SingleUserPicker, {
 } from '~shared/SingleUserPicker';
 import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
-import { MemberUser, User, SetStateFn } from '~types';
+import { User, SetStateFn } from '~types';
 import { notNull } from '~utils/arrays';
 import { getDomainOptions } from '~utils/domains';
 
@@ -68,7 +68,7 @@ const MSG = defineMessages({
 });
 
 interface Props extends ActionDialogProps {
-  users?: MemberUser[];
+  users?: any[];
   handleIsForceChange: SetStateFn;
   isForce: boolean;
 }

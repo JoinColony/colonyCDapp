@@ -5,7 +5,7 @@ import Popover from '~shared/Popover';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import Link from '~shared/NavLink';
 import UserInfoPopover from '~shared/UserInfoPopover';
-import { MemberUser, User } from '~types';
+import { User } from '~types';
 
 import { getMainClasses } from '~utils/css';
 
@@ -22,7 +22,7 @@ export interface UserAvatarProps
   /** If true the UserAvatar links to the user's profile */
   showLink?: boolean;
   /** The corresponding user object if available */
-  user?: User | MemberUser | null;
+  user?: User | any | null;
   /** The address on the member object */
   address?: string;
   /** Use the user's thumbnail instead of full-size avatar */

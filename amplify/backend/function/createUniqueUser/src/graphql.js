@@ -34,9 +34,6 @@ module.exports = {
           website
           email
         }
-        watchlist {
-          nextToken
-        }
         createdAt
         updatedAt
       }

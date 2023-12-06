@@ -11,7 +11,11 @@ import {
 } from '~gql';
 import { Colony } from '~types';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useAppContext, useCanInteractWithColony } from '~hooks';
+import {
+  useAppContext,
+  useCanInteractWithColony,
+  useColonySubscription,
+} from '~hooks';
 import { NotFoundRoute } from '~routes';
 
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
@@ -33,6 +37,12 @@ interface ColonyContextValue {
   startPolling: (pollInterval: number) => void;
   stopPolling: () => void;
   isSupportedColonyVersion: boolean;
+  colonySubscription: {
+    canWatch: boolean;
+    isWatching: boolean;
+    handleWatch: () => void;
+    handleUnwatch: () => void;
+  };
 }
 
 const ColonyContext = createContext<ColonyContextValue | null>(null);
@@ -78,6 +88,8 @@ export const ColonyContextProvider = ({
   const isSupportedColonyVersion =
     (colony?.version ?? 0) >= MIN_SUPPORTED_COLONY_VERSION;
 
+  const colonySubscription = useColonySubscription(colony);
+
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
       colony,
@@ -87,6 +99,7 @@ export const ColonyContextProvider = ({
       startPolling,
       stopPolling,
       isSupportedColonyVersion,
+      colonySubscription,
     }),
     [
       colony,
@@ -96,6 +109,7 @@ export const ColonyContextProvider = ({
       startPolling,
       stopPolling,
       isSupportedColonyVersion,
+      colonySubscription,
     ],
   );
 

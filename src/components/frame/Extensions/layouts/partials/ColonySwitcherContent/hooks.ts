@@ -1,58 +1,46 @@
 import { useMemo, useCallback, useState } from 'react';
 import debounce from 'lodash/debounce';
+
+import { Colony } from '~types';
 import { useAppContext } from '~hooks';
-import { notNull } from '~utils/arrays';
 
 import { getChainIconName } from '../../utils';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
 
-import { sortByDate } from './utils';
 import { UseColonySwitcherContentReturnType } from './types';
 
 export const useColonySwitcherContent = (
-  colony,
+  colony: Colony | undefined,
 ): UseColonySwitcherContentReturnType => {
-  const { userLoading, user } = useAppContext();
-  const [searchValue, setSearchValue] = useState('');
-
-  const userColonies = useMemo(
-    () => (user?.watchlist?.items.filter(notNull) || []).sort(sortByDate),
-    [user],
-  );
+  const { userLoading, userColonies } = useAppContext();
 
   const { chainMetadata, colonyAddress, name } = colony || {};
   const { chainId } = chainMetadata || {};
+
+  const [searchValue, setSearchValue] = useState('');
 
   const chainIcon = getChainIconName(chainId);
 
   const joinedColonies: ColonySwitcherListItem[] = userColonies.reduce(
     (result, item) => {
-      if (!item) {
-        return result;
-      }
-
-      const { colony: itemColony, id } = item;
-
-      if (colonyAddress === itemColony.colonyAddress) {
+      if (colonyAddress === item.colonyAddress) {
         return result;
       }
 
       return [
         ...result,
         {
-          key: id,
-          name: itemColony.metadata?.displayName || name || '',
-          to: `/${itemColony.name}`,
+          key: item.colonyAddress,
+          name: item.metadata?.displayName || name || '',
+          to: `/${item.name}`,
           avatarProps: {
-            chainIconName: getChainIconName(itemColony.chainMetadata.chainId),
-            colonyImageProps: itemColony.metadata?.avatar
+            chainIconName: getChainIconName(item.chainMetadata.chainId),
+            colonyImageProps: item.metadata?.avatar
               ? {
-                  src:
-                    itemColony.metadata?.thumbnail ||
-                    itemColony.metadata?.avatar,
+                  src: item.metadata?.thumbnail || item.metadata?.avatar,
                 }
               : undefined,
-            colonyAddress: itemColony.colonyAddress,
+            colonyAddress: item.colonyAddress,
           },
         },
       ];

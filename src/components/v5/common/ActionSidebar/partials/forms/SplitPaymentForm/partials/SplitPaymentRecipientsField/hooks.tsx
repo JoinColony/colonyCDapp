@@ -3,19 +3,22 @@ import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { formatText } from '~utils/intl';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
+import { useMemberContext } from '~context/MemberContext';
+import TokenIcon from '~shared/TokenIcon';
+import { ColonyContributor, Token } from '~types';
+import Numeral from '~shared/Numeral';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import useWrapWithRef from '~hooks/useWrapWithRef';
+import {
+  DISTRIBUTION_METHOD,
+  DistributionMethod,
+} from '~v5/common/ActionSidebar/partials/consts';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
+
 import {
   SplitPaymentRecipientsFieldModel,
   SplitPaymentRecipientsTableModel,
 } from './types';
-import UserSelect from '../../../../UserSelect';
-import TokenIcon from '~shared/TokenIcon';
-import { Contributor, Token } from '~types';
-import { DISTRIBUTION_METHOD, DistributionMethod } from '../../../../consts';
-import { useColonyContext } from '~hooks';
-import { useGetMembersForColonyQuery } from '~gql';
-import Numeral from '~shared/Numeral';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import useWrapWithRef from '~hooks/useWrapWithRef';
 
 export const useRecipientsFieldTableColumns = (
   name: string,
@@ -176,15 +179,7 @@ export const useDistributionMethodUpdate = (
   { update },
   amount: number,
 ) => {
-  const { colony } = useColonyContext();
-  const { data: colonyMembers } = useGetMembersForColonyQuery({
-    skip: !colony?.colonyAddress,
-    variables: {
-      input: {
-        colonyAddress: colony?.colonyAddress ?? '',
-      },
-    },
-  });
+  const { filteredContributors } = useMemberContext();
 
   useEffect(() => {
     (async () => {
@@ -203,22 +198,25 @@ export const useDistributionMethodUpdate = (
         }
         case DISTRIBUTION_METHOD.ReputationPercentage: {
           const selectedColonyMembers =
-            data?.reduce<Record<string, Contributor>>((acc, { recipient }) => {
-              const user =
-                colonyMembers?.getMembersForColony?.contributors?.find(
-                  ({ address }) =>
-                    address.toLowerCase() === recipient?.toLowerCase(),
+            data?.reduce<Record<string, ColonyContributor>>(
+              (acc, { recipient }) => {
+                const contributor = filteredContributors?.find(
+                  ({ contributorAddress }) =>
+                    contributorAddress.toLowerCase() ===
+                    recipient?.toLowerCase(),
                 );
 
-              if (!user) {
-                return acc;
-              }
+                if (!contributor) {
+                  return acc;
+                }
 
-              return {
-                ...acc,
-                [user.address.toLowerCase()]: user,
-              };
-            }, {}) || {};
+                return {
+                  ...acc,
+                  [contributor.contributorAddress.toLowerCase()]: contributor,
+                };
+              },
+              {},
+            ) || {};
           const totalReputationPercentage =
             data?.reduce<number>((acc, { recipient }) => {
               if (!recipient) {
@@ -227,20 +225,20 @@ export const useDistributionMethodUpdate = (
 
               const reputationPercentage =
                 selectedColonyMembers[recipient.toLowerCase()]
-                  ?.reputationPercentage || 0;
+                  ?.colonyReputationPercentage || 0;
 
               return acc + Number(reputationPercentage);
             }, 0) || 0;
 
           data?.forEach(({ recipient }, index) => {
-            const user = recipient
+            const contributor = recipient
               ? selectedColonyMembers[recipient.toLowerCase()]
               : undefined;
 
             update(index, {
               ...(data[index] || {}),
-              percent: user?.reputationPercentage
-                ? (Number(user.reputationPercentage) /
+              percent: contributor?.colonyReputationPercentage
+                ? (Number(contributor.colonyReputationPercentage) /
                     totalReputationPercentage) *
                   100
                 : 0,
@@ -260,6 +258,6 @@ export const useDistributionMethodUpdate = (
     update,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(data),
-    colonyMembers?.getMembersForColony?.contributors,
+    filteredContributors,
   ]);
 };

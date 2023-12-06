@@ -6,15 +6,13 @@ import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
 import IconTooltip from '~shared/IconTooltip';
 
-import { Member } from '~types';
-
 import styles from './MemberInfo.css';
 
 const componentDisplayName = 'MembersList.MembersListItem';
 
 interface Props {
   isWhitelisted: boolean;
-  member?: Member | null;
+  member?: any | null;
 }
 
 const MSG = defineMessages({

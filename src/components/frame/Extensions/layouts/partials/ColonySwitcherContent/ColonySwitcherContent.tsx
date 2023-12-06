@@ -3,12 +3,12 @@ import clsx from 'clsx';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
+import EmptyContent from '~v5/common/EmptyContent';
 
 import ColonySwitcherItem from '../ColonySwitcherItem';
 import ColonySwitcherList from '../ColonySwitcherList';
 
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
-import EmptyContent from '~v5/common/EmptyContent';
 import { useColonySwitcherContent } from './hooks';
 import { ColonySwitcherContentProps } from './types';
 

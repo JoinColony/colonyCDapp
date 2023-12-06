@@ -6,8 +6,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { useAppContext, useMobile } from '~hooks';
 import PopoverBase from '~v5/shared/PopoverBase';
 import { NETWORK_DATA } from '~constants';
-import { WatchListItem } from '~types';
-import { Network } from '~gql';
+import { Network, useGetContributorsByAddressQuery } from '~gql';
 import { notNull } from '~utils/arrays';
 
 import ColoniesDropdown from './partials/ColoniesDropdown';
@@ -15,21 +14,9 @@ import ColonyAvatarWrapper from './partials/ColonyAvatarWrapper';
 import ColonyDropdownMobile from './partials/ColonyDropdownMobile';
 import { ColoniesByCategory, ColonySwitcherProps } from './types';
 
-// @TODO: Remove the mock
-import { watchListMock } from './consts';
-
 import styles from './ColonySwitcher.module.css';
 
 const displayName = 'common.Extensions.ColonySwitcher';
-
-const sortByDate = (
-  firstWatchEntry: WatchListItem,
-  secondWatchEntry: WatchListItem,
-) => {
-  const firstWatchTime = new Date(firstWatchEntry?.createdAt || 1).getTime();
-  const secondWatchTime = new Date(secondWatchEntry?.createdAt || 1).getTime();
-  return firstWatchTime - secondWatchTime;
-};
 
 const ColonySwitcher: FC<ColonySwitcherProps> = ({
   isCloseButtonVisible,
@@ -38,26 +25,33 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
   const isMobile = useMobile();
   const { formatMessage } = useIntl();
   const { userLoading, user } = useAppContext();
+  const { walletAddress = '' } = user || {};
 
-  const watchlist = useMemo(
-    // @TODO: Remove the mock
-    () =>
-      (user?.watchlist?.items.filter(notNull) || watchListMock || []).sort(
-        sortByDate,
-      ),
-    [user],
+  const { data } = useGetContributorsByAddressQuery({
+    variables: { contributorAddress: walletAddress },
+    skip: !walletAddress,
+  });
+
+  const userContributors = (
+    data?.getContributorsByAddress?.items.filter(notNull) || []
+  ).sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   );
+
+  const userColonies =
+    userContributors
+      .map((contributor) => contributor.colony || null)
+      .filter(notNull) || [];
 
   const colonyAddress = activeColony?.colonyAddress;
 
   const coloniesByCategory = useMemo(
     () =>
-      watchlist
+      userColonies
         .map((item) => {
           const newNetwork = Object.keys(NETWORK_DATA).find(
             (network) =>
-              NETWORK_DATA[network].chainId ===
-              item?.colony.chainMetadata.chainId,
+              NETWORK_DATA[network].chainId === item?.chainMetadata.chainId,
           );
 
           if (!newNetwork) {
@@ -66,30 +60,27 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
 
           return {
             ...item,
-            colony: {
-              chainMetadata: {
-                chainId: item?.colony.chainMetadata.chainId,
-                network: newNetwork as Network,
-              },
-              colonyAddress: item?.colony.colonyAddress,
-              name: item?.colony.name,
-              metadata: {
-                avatar: item.colony?.metadata?.avatar,
-                displayName:
-                  item.colony?.metadata?.displayName || item.colony?.name,
-                thumbnail: item.colony?.metadata?.thumbnail,
-              },
+            chainMetadata: {
+              chainId: item.chainMetadata.chainId,
+              network: newNetwork as Network,
+            },
+            colonyAddress: item.colonyAddress,
+            name: item.name,
+            metadata: {
+              avatar: item.metadata?.avatar,
+              displayName: item.metadata?.displayName || item.name,
+              thumbnail: item.metadata?.thumbnail,
             },
           };
         })
         .reduce((group, item) => {
-          const network = (item && item.colony.chainMetadata?.network) || '';
+          const network = (item && item.chainMetadata?.network) || '';
           // eslint-disable-next-line no-param-reassign
           group[network] = group[network] ?? [];
           group[network].push(item);
           return group;
         }, {} as ColoniesByCategory),
-    [watchlist],
+    [userColonies],
   );
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
@@ -147,7 +138,7 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
             >
               <ColonyDropdownMobile isOpen={visible} userLoading={userLoading}>
                 <span className="divider mb-6" />
-                {watchlist.length ? (
+                {userColonies.length ? (
                   <ColoniesDropdown
                     isMobile={isMobile}
                     activeColony={activeColony}
@@ -171,7 +162,7 @@ const ColonySwitcher: FC<ColonySwitcherProps> = ({
                 ),
               })}
             >
-              {!!watchlist.length && !userLoading ? (
+              {!!userColonies.length && !userLoading ? (
                 <ColoniesDropdown
                   activeColony={activeColony}
                   activeColonyAddress={colonyAddress}

@@ -4,12 +4,6 @@ mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
   }
 }
 
-mutation CreateWatchedColonies($input: CreateWatchedColoniesInput!) {
-  createWatchedColonies(input: $input) {
-    id
-  }
-}
-
 mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
   createColonyMetadata(input: $input) {
     id
@@ -18,12 +12,6 @@ mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
 
 mutation UpdateColonyMetadata($input: UpdateColonyMetadataInput!) {
   updateColonyMetadata(input: $input) {
-    id
-  }
-}
-
-mutation DeleteWatchedColonies($input: DeleteWatchedColoniesInput!) {
-  deleteWatchedColonies(input: $input) {
     id
   }
 }

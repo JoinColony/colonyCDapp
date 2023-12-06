@@ -31,7 +31,7 @@ const MembersPage: FC = () => {
   const resolvedMembersPath = useResolvedPath(COLONY_MEMBERS_ROUTE);
   const resolvedContributorsPath = useResolvedPath(COLONY_CONTRIBUTORS_ROUTE);
   const [activeTab, setActiveTab] = useState(0);
-  const { totalContributorCount, totalMemberCount } = useMembersPage();
+  const { sortedContributorCount, sortedMemberCount } = useMembersPage();
   const {
     getTooltipProps,
     setTooltipRef,
@@ -92,7 +92,7 @@ const MembersPage: FC = () => {
         {
           id: 0,
           title: formatText({ id: 'membersPage.contributing' }),
-          notificationNumber: totalContributorCount,
+          notificationNumber: sortedContributorCount,
           content: (
             <MembersTabContentWrapper
               title={formatText({ id: 'membersPage.contributing.title' })}
@@ -111,7 +111,7 @@ const MembersPage: FC = () => {
         {
           id: 1,
           title: formatText({ id: 'membersPage.allMembers' }),
-          notificationNumber: totalMemberCount,
+          notificationNumber: sortedMemberCount,
           content: (
             <MembersTabContentWrapper
               title={formatText({ id: 'membersPage.allMembers.title' })}

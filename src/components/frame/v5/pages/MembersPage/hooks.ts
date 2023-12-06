@@ -11,22 +11,21 @@ import { MembersTabContentListItem } from './partials/MembersTabContent/types';
 
 export const useMembersPage = () => {
   const {
-    contributors,
-    members,
-    loadingContributors,
-    loadingMembers,
+    filteredMembers,
+    filteredContributors,
+    pagedContributors,
+    pagedMembers,
+    loading,
     loadMoreContributors,
     moreContributors,
     loadMoreMembers,
     moreMembers,
-    totalContributorCount,
-    totalMemberCount,
   } = useMemberContext();
   const { colony } = useColonyContext();
 
   const contributorsList = useMemo<MembersTabContentListItem[]>(
     () =>
-      contributors.map((contributor) => {
+      pagedContributors.map((contributor) => {
         const {
           contributorAddress,
           colonyReputationPercentage,
@@ -36,7 +35,7 @@ export const useMembersPage = () => {
         } = contributor;
         const allRoles = getAllUserRoles(colony, contributorAddress);
         const permissionRole = allRoles?.length ? getRole(allRoles) : undefined;
-        const { walletAddress, profile } = user || {};
+        const { profile } = user || {};
         const { bio, displayName, avatar, thumbnail } = profile || {};
 
         return {
@@ -45,23 +44,23 @@ export const useMembersPage = () => {
             user,
             isVerified,
             aboutDescription: bio ?? '',
-            userName: displayName ?? walletAddress ?? contributorAddress,
+            userName: displayName ?? contributorAddress,
             avatar: avatar || thumbnail,
-            seed: walletAddress && walletAddress.toLowerCase(),
+            seed: contributorAddress.toLowerCase(),
             mode: type ? (type.toLowerCase() as UserStatusMode) : undefined,
             domains: getContributorBreakdown(contributor),
-            walletAddress: walletAddress || '',
+            walletAddress: contributorAddress,
           },
           reputation: colonyReputationPercentage,
           role: permissionRole,
         };
       }),
-    [colony, contributors],
+    [colony, pagedContributors],
   );
 
   const membersList = useMemo<MembersTabContentListItem[]>(
     () =>
-      members.map((member) => {
+      pagedMembers.map((member) => {
         const {
           contributorAddress,
           colonyReputationPercentage,
@@ -71,7 +70,7 @@ export const useMembersPage = () => {
         } = member;
         const allRoles = getAllUserRoles(colony, contributorAddress);
         const permissionRole = getRole(allRoles);
-        const { walletAddress, profile } = user || {};
+        const { profile } = user || {};
         const { bio, displayName, avatar, thumbnail } = profile || {};
 
         return {
@@ -80,30 +79,32 @@ export const useMembersPage = () => {
             user,
             isVerified,
             aboutDescription: bio ?? '',
-            userName: displayName ?? walletAddress ?? contributorAddress,
+            userName: displayName ?? contributorAddress,
             avatar: avatar || thumbnail,
-            seed: walletAddress && walletAddress.toLowerCase(),
+            seed: contributorAddress.toLowerCase(),
             mode: type ? (type.toLowerCase() as UserStatusMode) : undefined,
             domains: getContributorBreakdown(member),
-            walletAddress: walletAddress || '',
+            walletAddress: contributorAddress,
           },
           reputation: colonyReputationPercentage,
           role: permissionRole,
         };
       }),
-    [colony, members],
+    [colony, pagedMembers],
   );
+
+  const sortedContributorCount = filteredContributors.length;
+  const sortedMemberCount = filteredMembers.length;
 
   return {
     contributorsList,
-    loadingContributors,
+    loading,
     hasMoreContributors: moreContributors,
     loadMoreContributors,
     membersList,
-    loadingMembers,
     hasMoreMembers: moreMembers,
     loadMoreMembers,
-    totalContributorCount,
-    totalMemberCount,
+    sortedContributorCount,
+    sortedMemberCount,
   };
 };

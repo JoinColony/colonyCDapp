@@ -13,13 +13,15 @@ import {
   GetUserByAddressDocument,
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
+  useGetContributorsByAddressQuery,
 } from '~gql';
-import { ColonyWallet, User } from '~types';
+import { ColonyWallet, User, Colony } from '~types';
 import { useAsyncFunction, usePrevious } from '~hooks';
 import { TokenActivationProvider } from '~shared/TokenActivationProvider';
+import { getLastWallet } from '~utils/autoLogin';
+import { notNull, notMaybe } from '~utils/arrays';
 
 import { getContext, ContextModule } from './index';
-import { getLastWallet } from '~utils/autoLogin';
 
 export interface AppContextValues {
   wallet?: ColonyWallet | null;
@@ -34,6 +36,7 @@ export interface AppContextValues {
     shouldBackgroundUpdate?: boolean,
   ) => Promise<void>;
   canInteract: boolean;
+  userColonies: Array<Colony>;
 }
 
 export const AppContext = createContext<AppContextValues | undefined>(
@@ -182,6 +185,22 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { data } = useGetContributorsByAddressQuery({
+    variables: { contributorAddress: user?.walletAddress || '' },
+    skip: !user?.walletAddress,
+  });
+
+  const userContributors = (
+    data?.getContributorsByAddress?.items.filter(notNull) || []
+  ).sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
+
+  const userColonies =
+    userContributors
+      .map((contributor) => contributor.colony)
+      .filter(notMaybe) || [];
+
   const appContext = useMemo<AppContextValues>(
     () => ({
       wallet,
@@ -193,6 +212,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       disconnectWallet,
       updateUser,
       canInteract: !!wallet && !!user,
+      userColonies,
     }),
     [
       wallet,
@@ -203,6 +223,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       connectWallet,
       disconnectWallet,
       updateUser,
+      userColonies,
     ],
   );
 

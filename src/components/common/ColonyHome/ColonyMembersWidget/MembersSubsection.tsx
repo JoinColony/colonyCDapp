@@ -7,7 +7,7 @@ import UserAvatar from '~shared/UserAvatar';
 import ClickableHeading from '~shared/ClickableHeading';
 import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { Colony, Member } from '~types';
+import { Colony } from '~types';
 import { notNull } from '~utils/arrays';
 // import Icon from '~shared/Icon';
 import {
@@ -63,7 +63,7 @@ interface Props {
   colony: Colony;
   currentDomainId?: number;
   maxAvatars?: number;
-  members?: Member[] | null;
+  members?: any[] | null;
   isContributorsSubsection: boolean;
 }
 

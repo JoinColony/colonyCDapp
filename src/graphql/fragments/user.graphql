@@ -3,15 +3,6 @@ fragment User on User {
     ...Profile
   }
   walletAddress: id
-  watchlist {
-    items {
-      id
-      colony {
-        ...WatchedColony
-      }
-      createdAt
-    }
-  }
   privateBetaInviteCode {
     id
     shareableInvites
@@ -41,28 +32,5 @@ fragment Profile on Profile {
     metatransactionsEnabled
     decentralizedModeEnabled
     customRpc
-  }
-}
-
-fragment MemberUser on User {
-  walletAddress: id
-  profile {
-    ...Profile
-  }
-}
-
-fragment Contributor on Contributor {
-  address
-  user {
-    ...MemberUser
-  }
-  reputationPercentage
-  reputationAmount
-}
-
-fragment Watcher on Watcher {
-  address
-  user {
-    ...MemberUser
   }
 }

@@ -6,7 +6,7 @@ import React from 'react';
 import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
-import { MemberUser, User } from '~types';
+import { User } from '~types';
 import {
   useAppContext,
   useColonyContext,
@@ -21,7 +21,7 @@ import UserInfo from './UserInfo';
 import styles from './UserInfoPopover.css';
 
 interface Props {
-  user?: User | MemberUser | null;
+  user?: User | any | null;
   banned?: boolean;
   address?: string;
 }

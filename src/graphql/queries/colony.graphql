@@ -55,17 +55,6 @@ query GetColonyExtension($colonyAddress: ID!, $extensionHash: String!) {
   }
 }
 
-query GetMembersForColony($input: MembersForColonyInput!) {
-  getMembersForColony(input: $input) {
-    contributors {
-      ...Contributor
-    }
-    watchers {
-      ...Watcher
-    }
-  }
-}
-
 query GetPrivateBetaCodeInviteValidity($id: ID!) {
   getPrivateBetaInviteCode(id: $id) {
     shareableInvites

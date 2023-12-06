@@ -4,11 +4,9 @@ import { ListGroupItem } from '~shared/ListGroup';
 import MemberReputation from '~shared/MemberReputation';
 import UserAvatar from '~shared/UserAvatar';
 
-import { Contributor, Member, MemberUser } from '~types';
 import { getMainClasses } from '~utils/css';
 import { useColonyContext, useMobile } from '~hooks';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { isUserVerified } from '~utils/verifiedUsers';
 
 import MemberActions from './Actions';
 import MemberInfo from './MemberInfo';
@@ -16,10 +14,10 @@ import MemberInfo from './MemberInfo';
 import styles from './MembersListItem.css';
 
 interface Props {
-  extraItemContent?: (user: MemberUser | null | undefined) => ReactNode;
+  extraItemContent?: (user: any | null | undefined) => ReactNode;
   showUserInfo: boolean;
   showUserReputation: boolean;
-  member: Member;
+  member: any;
 }
 
 const displayName = 'MembersList.MembersListItem';
@@ -33,7 +31,7 @@ const MembersListItem = ({
 }: Props) => {
   const { address: walletAddress } = member;
   const { colony } = useColonyContext();
-  const { reputationAmount, reputationPercentage } = member as Contributor;
+  const { reputationAmount, reputationPercentage } = member as any;
 
   const renderedExtraItemContent = useMemo(
     () => (extraItemContent ? extraItemContent(user) : null),
@@ -41,10 +39,7 @@ const MembersListItem = ({
   );
 
   const isMobile = useMobile();
-  const isWhitelisted = isUserVerified(
-    walletAddress,
-    colony?.metadata?.whitelistedAddresses ?? [],
-  );
+  const isWhitelisted = false;
 
   return (
     <ListGroupItem>

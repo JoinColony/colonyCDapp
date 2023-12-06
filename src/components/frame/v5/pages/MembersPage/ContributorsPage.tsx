@@ -12,7 +12,7 @@ import { useMembersPage } from './hooks';
 const ContributorsPage: FC = () => {
   const {
     contributorsList,
-    loadingContributors,
+    loading,
     hasMoreContributors,
     loadMoreContributors,
   } = useMembersPage();
@@ -27,7 +27,7 @@ const ContributorsPage: FC = () => {
   return (
     <MembersTabContent
       items={contributorsList}
-      isLoading={loadingContributors}
+      isLoading={loading}
       loadMoreButtonProps={
         hasMoreContributors
           ? {

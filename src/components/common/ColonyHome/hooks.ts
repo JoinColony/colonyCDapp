@@ -10,11 +10,8 @@ import {
 } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
-import {
-  useGetTotalColonyActionsQuery,
-  useGetColonyContributorsQuery,
-} from '~gql';
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useGetTotalColonyActionsQuery } from '~gql';
+import { useColonyContext, useMobile } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
@@ -32,57 +29,19 @@ import {
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
-import useColonySubscription from '~hooks/useColonySubscription';
 import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
+import { useMemberContext } from '~context/MemberContext';
 
 import { iconMappings, MAX_TEXT_LENGTH } from './consts';
 import { ChartData, UseGetHomeWidgetReturnType } from './types';
 
-export const useGetAllColonyMembers = (
-  colonyAddress: string,
-  team?: number,
-) => {
-  const { data, loading } = useGetColonyContributorsQuery({
-    variables: {
-      colonyAddress,
-    },
-    skip: !colonyAddress,
-  });
-
-  const { items } = data?.getContributorsByColony || {};
-
-  const allMembers = useMemo(
-    () =>
-      items
-        ?.filter(notNull)
-        .filter(
-          ({ isVerified, hasPermissions, hasReputation, isWatching }) =>
-            isWatching || hasPermissions || hasReputation || isVerified,
-        ) ?? [],
-    [items],
-  );
-
-  const filteredMembers = useMemo(
-    () =>
-      team
-        ? allMembers.filter(
-            ({ roles, reputation }) =>
-              roles?.items?.find((role) => role?.domain.nativeId === team) ||
-              reputation?.items?.find((rep) => rep?.domain.nativeId === team),
-          )
-        : allMembers,
-    [allMembers, team],
-  );
-
-  return {
-    colonyMembers: filteredMembers,
-    loading,
-  };
-};
-
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
-  const { domains, colonyAddress = '', nativeToken, balances } = colony || {};
+  const { domains, nativeToken, colonyAddress = '' } = colony || {};
+  const { balances } = colony || {};
+
+  const { totalMembers: members, loading: membersLoading } = useMemberContext();
+
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null
   >();
@@ -94,9 +53,16 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
       team,
     ) || 0;
 
-  const { colonyMembers, loading: membersLoading } = useGetAllColonyMembers(
-    colonyAddress,
-    team,
+  const domainMembers = useMemo(
+    () =>
+      team
+        ? members.filter(
+            ({ roles, reputation }) =>
+              roles?.items?.find((role) => role?.domain.nativeId === team) ||
+              reputation?.items?.find((rep) => rep?.domain.nativeId === team),
+          )
+        : members,
+    [members, team],
   );
 
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
@@ -116,7 +82,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const teamColor = setTeamColor(selectedTeamColor);
   const mappedMembers = useMemo(
     () =>
-      colonyMembers
+      domainMembers
         .filter(
           (member, index, self) =>
             index ===
@@ -129,7 +95,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
           ...member.user,
         }))
         .sort(() => Math.random() - 0.5),
-    [colonyMembers],
+    [domainMembers],
   );
 
   const allTeams = domains?.items
@@ -201,8 +167,7 @@ export const useExternalLinks = (): ColonyLinksItem[] => {
 };
 
 export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
-  const { colony } = useColonyContext();
-  const { user } = useAppContext();
+  const { colony, colonySubscription } = useColonyContext();
   const items = useExternalLinks();
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
@@ -212,15 +177,12 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
     isCopied: itemIsCopied,
   } = useCopyToClipboard(5000);
   const isMobile = useMobile();
-  const { handleUnwatch } = useColonySubscription();
+  const { handleUnwatch, isWatching } = colonySubscription;
 
   const { tokens, nativeToken } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
   const currentToken = getCurrentToken(tokens, nativeTokenAddress ?? '');
   const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
-  const isUserInColony = user?.watchlist?.items.some(
-    (item) => item?.colony.name === colony?.name,
-  );
 
   const { metadata } = colony || {};
   const description =
@@ -298,7 +260,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
         // },
         {
           key: '4',
-          items: isUserInColony
+          items: isWatching
             ? [
                 {
                   key: '4.1',
@@ -316,7 +278,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
       colony?.name,
       colonyUrl,
       handleUnwatch,
-      isUserInColony,
+      isWatching,
       itemHandleClipboardCopy,
       itemIsCopied,
       items,

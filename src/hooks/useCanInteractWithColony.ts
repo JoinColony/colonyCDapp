@@ -1,10 +1,10 @@
 import { Colony, ColonyWallet } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
-import { getWatchedColony } from '~utils/watching';
 import { isChainSupported } from '~utils/autoLogin';
+import { getColonyContributorId } from '~utils/members';
+import { useGetColonyContributorQuery } from '~gql';
 
 import useAppContext from './useAppContext';
-import useColonyContext from './useColonyContext';
 
 export const useUserAccountRegistered = (): boolean => {
   const { user } = useAppContext();
@@ -57,8 +57,20 @@ const isUserAndColonyOnSameChain = (
  * - Include roles / permissions into the check
  */
 export const useCanInteractWithColony = (colony?: Colony): boolean => {
-  const { wallet, user } = useAppContext();
+  const { wallet } = useAppContext();
+  const { address: walletAddress = '' } = wallet || {};
+  const { colonyAddress = '' } = colony || {};
   const canInteractWithNetwork = useCanInteractWithNetwork();
+
+  const colonyContributorId = getColonyContributorId(
+    colonyAddress,
+    walletAddress,
+  );
+
+  const { data, loading } = useGetColonyContributorQuery({
+    variables: { id: colonyContributorId, colonyAddress },
+    skip: !colonyAddress || !walletAddress,
+  });
 
   /*
    * Short circuit early
@@ -71,17 +83,16 @@ export const useCanInteractWithColony = (colony?: Colony): boolean => {
   /*
    * Checking if watching (following) or not
    */
-  const isWatching = !!getWatchedColony(colony, user?.watchlist?.items);
+  const isWatching =
+    Boolean(data?.getColonyContributor?.isWatching) && !loading;
 
   return sameChain && canInteractWithNetwork && isWatching;
 };
 
-export const useCanJoinColony = () => {
-  const { colony } = useColonyContext();
-  const { user, wallet } = useAppContext();
+export const useCanJoinColony = (isWatching: boolean, colony?: Colony) => {
+  const { wallet } = useAppContext();
   const sameChain = isUserAndColonyOnSameChain(wallet, colony);
   const canInteractWithNetwork = useCanInteractWithNetwork();
-  const isAlreadyJoined = !!getWatchedColony(colony, user?.watchlist?.items);
 
-  return sameChain && canInteractWithNetwork && !isAlreadyJoined;
+  return sameChain && canInteractWithNetwork && !isWatching;
 };

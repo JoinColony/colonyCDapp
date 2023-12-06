@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import Decimal from 'decimal.js';
 
-import { Contributor } from '~types';
-
 import { SortingMethod } from '~gql';
 
 const sortContributors = (sortingMethod) => (user1, user2) => {
@@ -35,7 +33,7 @@ const sortContributors = (sortingMethod) => (user1, user2) => {
   return 0;
 };
 
-const useSortedContributors = (contributors: Contributor[]) => {
+const useSortedContributors = (contributors: any[]) => {
   const [sortingMethod, setSortingMethod] = useState<SortingMethod>(
     SortingMethod.ByHighestRep,
   );

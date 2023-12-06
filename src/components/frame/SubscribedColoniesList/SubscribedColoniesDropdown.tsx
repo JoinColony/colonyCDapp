@@ -5,7 +5,7 @@ import ColonyAvatar from '~shared/ColonyAvatar';
 import DropdownMenu, { DropdownMenuSection } from '~shared/DropdownMenu';
 import ColonyListItem from './ColonyListItem';
 import Popover from '~shared/Popover';
-import { Colony, WatchListItem } from '~types';
+import { Colony } from '~types';
 import { useColonyContext } from '~hooks';
 
 import styles from './SubscribedColoniesList.css';
@@ -13,7 +13,7 @@ import styles from './SubscribedColoniesList.css';
 const displayName = 'frame.SubscribedColoniesList.SubscribedColoniesDropdown';
 
 interface Props {
-  watchlist: (WatchListItem | null)[];
+  watchlist: (any | null)[];
 }
 
 const SubscribedColoniesDropdown = ({ watchlist }: Props) => {

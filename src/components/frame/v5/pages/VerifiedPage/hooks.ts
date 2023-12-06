@@ -6,7 +6,7 @@ import { searchMembers } from '~utils/members';
 
 export const useVerifiedPage = () => {
   const { searchValue } = useSearchContext();
-  const { verifiedMembers, loadingMembers } = useMemberContext();
+  const { verifiedMembers, loading } = useMemberContext();
 
   const searchedVerified = useMemo(
     () => searchMembers(verifiedMembers, searchValue),
@@ -15,6 +15,6 @@ export const useVerifiedPage = () => {
 
   return {
     verifiedMembers: searchedVerified,
-    loadingMembers,
+    loadingMembers: loading,
   };
 };

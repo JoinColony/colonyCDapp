@@ -5,14 +5,14 @@ import { formatText } from '~utils/intl';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
 import Button from '~v5/shared/Button';
 import LearnMore from '~shared/Extensions/LearnMore';
-import { ADDRESS_ZERO, LEARN_MORE_PAYMENTS } from '~constants';
-import { useColonyContext } from '~hooks';
+import { LEARN_MORE_PAYMENTS } from '~constants';
 import { useActionSidebarContext } from '~context';
+import { useColonyContext } from '~hooks';
 
 import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import ColonySwitcherContent from './partials/ColonySwitcherContent';
-import { useMainMenuItems } from './hooks';
 import { getChainIconName } from './utils';
+import { useMainMenuItems } from './hooks';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout.ColonySidebar';
 
@@ -28,7 +28,7 @@ const ColonySidebar = ({ txButtons, userHub }: Props) => {
   } = useActionSidebarContext();
   const { colony } = useColonyContext();
 
-  const { metadata, chainMetadata } = colony || {};
+  const { metadata, chainMetadata, colonyAddress = '' } = colony || {};
   const { chainId } = chainMetadata || {};
 
   const chainIcon = getChainIconName(chainId);
@@ -63,7 +63,7 @@ const ColonySidebar = ({ txButtons, userHub }: Props) => {
             ? { src: metadata?.thumbnail || metadata?.avatar }
             : undefined,
           chainIconName: chainIcon,
-          colonyAddress: colony?.colonyAddress || ADDRESS_ZERO,
+          colonyAddress,
         },
         content: {
           title: formatText({ id: 'navigation.colonySwitcher.title' }),

@@ -31,9 +31,9 @@ import {
   CreateUserTokensDocument,
   CreateUserTokensMutation,
   CreateUserTokensMutationVariables,
-  CreateWatchedColoniesDocument,
-  CreateWatchedColoniesMutation,
-  CreateWatchedColoniesMutationVariables,
+  CreateColonyContributorDocument,
+  CreateColonyContributorMutation,
+  CreateColonyContributorMutationVariables,
   DomainColor,
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,
@@ -355,14 +355,18 @@ function* colonyCreate({
      * Subscribe user to colony
      */
     yield apolloClient.mutate<
-      CreateWatchedColoniesMutation,
-      CreateWatchedColoniesMutationVariables
+      CreateColonyContributorMutation,
+      CreateColonyContributorMutationVariables
     >({
-      mutation: CreateWatchedColoniesDocument,
+      mutation: CreateColonyContributorDocument,
       variables: {
         input: {
-          colonyID: colonyAddress,
-          userID: walletAddress,
+          colonyAddress,
+          colonyReputationPercentage: 0,
+          contributorAddress: walletAddress,
+          isVerified: true, // !!
+          id: `${colonyAddress}_${walletAddress}`,
+          isWatching: true,
         },
       },
     });

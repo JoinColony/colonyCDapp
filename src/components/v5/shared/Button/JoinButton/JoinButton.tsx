@@ -1,27 +1,29 @@
 import React, { FC, useState } from 'react';
 import Lottie from 'lottie-react';
-import useColonySubscription from '~hooks/useColonySubscription';
+
 import { formatText } from '~utils/intl';
 import joinButtonAnimation from '~utils/animations/joinButtonAnimation.json';
+import { useAppContext, useColonyContext } from '~hooks';
+
 import Button from '../Button';
-import { useShowJoinColonyButton } from './hooks';
 
 const displayName = 'v5.JoinButton';
 
 const JoinButton: FC = () => {
-  const {
-    showJoinButton,
-    setShowJoinButton,
-    noRegisteredUser,
-    noWalletConnected,
-  } = useShowJoinColonyButton();
-  const { handleWatch } = useColonySubscription();
+  const { wallet, user, walletConnecting, userLoading } = useAppContext();
+  const { colonySubscription } = useColonyContext();
+  const { handleWatch, canWatch } = colonySubscription;
   const [isButtonClicked, setIsButtonClicked] = useState(false);
+
+  const registeredUser = user && !userLoading;
+  const walletConnected = wallet && !walletConnecting;
+
+  const showJoinButton = canWatch && walletConnected && registeredUser;
 
   const onClick = () => {
     handleWatch();
 
-    if (noRegisteredUser || noWalletConnected) {
+    if (!showJoinButton) {
       return;
     }
 
@@ -29,11 +31,10 @@ const JoinButton: FC = () => {
 
     setTimeout(() => {
       setIsButtonClicked(false);
-      setShowJoinButton(false);
     }, 3000);
   };
 
-  return showJoinButton ? (
+  return showJoinButton || isButtonClicked ? (
     <Button
       mode="primarySolidFull"
       size="small"

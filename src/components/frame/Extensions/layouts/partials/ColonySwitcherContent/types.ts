@@ -1,8 +1,9 @@
-import { ColonyFragment } from '~gql';
+import { Colony } from '~types';
+
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
 
 export interface ColonySwitcherContentProps {
-  colony?: ColonyFragment;
+  colony?: Colony;
 }
 
 interface CurrentColonyProps {
@@ -16,7 +17,7 @@ export interface UseColonySwitcherContentReturnType {
   filteredColony: ColonySwitcherListItem[];
   onChange: (value: string) => void;
   joinedColonies: ColonySwitcherListItem[];
-  colony?: ColonyFragment;
+  colony?: Colony;
   searchValue: string;
   currentColonyProps: CurrentColonyProps;
 }

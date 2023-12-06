@@ -23,13 +23,6 @@ query GetColonyContributors(
   }
 }
 
-query GetContributorCount($input: GetTotalMemberCountInput!) {
-  getTotalMemberCount(input: $input) {
-    contributorCount
-    memberCount
-  }
-}
-
 query GetVerifiedMembers($colonyAddress: ID!) {
   getContributorsByColony(
     colonyAddress: $colonyAddress
@@ -40,5 +33,28 @@ query GetVerifiedMembers($colonyAddress: ID!) {
         ...User
       }
     }
+  }
+}
+
+query GetContributorsByAddress(
+  $contributorAddress: ID!
+  $sortDirection: ModelSortDirection = ASC
+  $limit: Int
+  $nextToken: String
+) {
+  getContributorsByAddress(
+    contributorAddress: $contributorAddress
+    sortDirection: $sortDirection
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      colony {
+        ...Colony
+      }
+    }
+    nextToken
   }
 }

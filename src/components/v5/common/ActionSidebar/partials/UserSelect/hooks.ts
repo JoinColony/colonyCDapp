@@ -1,62 +1,45 @@
 import { useMemo } from 'react';
-import { useColonyContext } from '~hooks';
-import { useGetColonyMembers } from '~v5/shared/MembersSelect/hooks';
-import { UserSelectHookProps } from './types';
-import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
-import { unionOfArraysToArrayOfUnions } from '~utils/arrays';
-import { getVerifiedUsers, isUserVerified } from '~utils/verifiedUsers';
-import { Address } from '~types';
 
-export const useUserSelect = (): UserSelectHookProps => {
-  const { colony } = useColonyContext();
-  const { colonyAddress = '', metadata } = colony ?? {};
-  const { members, loading } = useGetColonyMembers(colonyAddress);
-  const isWhitelistActivated = metadata?.isWhitelistActivated;
+import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
+import { useMemberContext } from '~context/MemberContext';
+
+export const useUserSelect = () => {
+  const { totalMembers, loading } = useMemberContext();
+
   const options = useMemo(
     () =>
-      unionOfArraysToArrayOfUnions(
-        isWhitelistActivated
-          ? getVerifiedUsers(
-              colony?.metadata?.whitelistedAddresses || [],
-              members,
-            )
-          : members,
-      ).reduce<SearchSelectOption[]>((result, user) => {
-        if (!user) {
+      totalMembers.reduce<SearchSelectOption[]>((result, member) => {
+        if (!member) {
           return result;
         }
 
-        const { walletAddress, profile } = user;
+        const { walletAddress, profile } = member.user || {};
 
         return [
           ...result,
           {
-            value: walletAddress,
-            label: profile?.displayName || walletAddress,
+            value: walletAddress || member.contributorAddress,
+            label:
+              profile?.displayName ||
+              walletAddress ||
+              member.contributorAddress,
             avatar: profile?.thumbnail || profile?.avatar || '',
-            walletAddress,
             id: result.length,
             showAvatar: true,
+            walletAddress,
           },
         ];
       }, []),
-    [colony?.metadata?.whitelistedAddresses, isWhitelistActivated, members],
+    [totalMembers],
   );
 
   return {
-    isLoading: loading,
-    options,
-    key: 'users',
-    title: { id: 'actions.recipent' },
+    usersOptions: {
+      isLoading: loading,
+      options,
+      key: 'users',
+      title: { id: 'actions.recipent' },
+    },
+    showVerifiedUsers: false,
   };
-};
-
-export const useIsUserVerified = (
-  userAddress: Address | undefined,
-): boolean => {
-  const { colony } = useColonyContext();
-
-  return userAddress
-    ? isUserVerified(userAddress, colony?.metadata?.whitelistedAddresses || [])
-    : false;
 };

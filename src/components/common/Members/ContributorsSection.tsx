@@ -7,7 +7,6 @@ import LoadMoreButton from '~shared/LoadMoreButton';
 import SortingRow, {
   Props as SortingProps,
 } from '~common/Members/MembersList/SortingRow';
-import { Contributor, MemberUser } from '~types';
 import { useSortedContributors } from '~hooks';
 
 import styles from './MembersSection.css';
@@ -26,8 +25,8 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  contributors: Contributor[];
-  extraItemContent?: (user: MemberUser) => ReactNode;
+  contributors: any[];
+  extraItemContent?: (user: any) => ReactNode;
   itemsPerSection?: number;
 }
 

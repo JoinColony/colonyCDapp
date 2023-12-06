@@ -10,15 +10,13 @@ import React, {
 import { useMatch, useParams } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
 
-import { FilterContextProvider, useFilterContext } from './FilterContext';
-
+import { useGetColonyContributorsQuery } from '~gql';
 import {
   useColonyContext,
   useMobile,
   useColonyContributors,
   useAllMembers,
 } from '~hooks';
-import { SearchContextProvider } from './SearchContext';
 import { notNull } from '~utils/arrays';
 import {
   ALL_MEMBERS_LIST_LIMIT,
@@ -28,24 +26,28 @@ import {
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants';
 import { ColonyContributor } from '~types';
-import { useGetContributorCountQuery } from '~gql';
 import { COLONY_VERIFIED_ROUTE } from '~routes';
+
+import { SearchContextProvider } from './SearchContext';
+import { FilterContextProvider, useFilterContext } from './FilterContext';
 
 const MemberContext = createContext<
   | {
-      members: ColonyContributor[];
+      filteredMembers: ColonyContributor[];
       verifiedMembers: ColonyContributor[];
       totalMemberCount: number;
-      contributors: ColonyContributor[];
-      totalContributorCount: number;
-      memberCountLoading: boolean;
-      loadingContributors: boolean;
-      loadingMembers: boolean;
-      loadMoreContributors: () => void;
-      loadMoreMembers: () => void;
-      moreContributors: boolean;
+      totalMembers: ColonyContributor[];
+      pagedMembers: ColonyContributor[];
       moreMembers: boolean;
+      loadMoreMembers: () => void;
       membersLimit: number;
+      filteredContributors: ColonyContributor[];
+      totalContributors: ColonyContributor[];
+      totalContributorCount: number;
+      pagedContributors: ColonyContributor[];
+      moreContributors: boolean;
+      loadMoreContributors: () => void;
+      loading: boolean;
     }
   | undefined
 >(undefined);
@@ -140,12 +142,58 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [getFilterContributorType],
   );
 
+  // Make sure we fetch all members which is needed to select members
   const {
-    contributors,
+    data: memberData,
+    loading,
+    fetchMore,
+  } = useGetColonyContributorsQuery({
+    variables: {
+      colonyAddress,
+    },
+    skip: !colonyAddress,
+    onCompleted: (receivedData) => {
+      if (receivedData?.getContributorsByColony?.nextToken) {
+        // If there's more data to fetch, call fetchMore
+        fetchMore({
+          variables: {
+            nextToken: receivedData.getContributorsByColony.nextToken,
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+
+            // Here, combine the previous items with the newly fetched items
+            return {
+              ...prev,
+              getColonyContributors: {
+                ...prev.getContributorsByColony,
+                items: [
+                  ...[prev?.getContributorsByColony?.items || []],
+                  ...[fetchMoreResult?.getContributorsByColony?.items || []],
+                ],
+                nextToken: fetchMoreResult?.getContributorsByColony?.nextToken,
+              },
+            };
+          },
+        });
+      }
+    },
+  });
+
+  const allMembers = useMemo(
+    () => memberData?.getContributorsByColony?.items.filter(notNull) || [],
+    [memberData],
+  );
+
+  const {
+    contributors: filteredContributors,
+    pagedContributors,
     canLoadMore: moreContributors,
     loadMore: loadMoreContributors,
-    loading: loadingContributors,
+    totalContributorCount,
+    totalContributors,
   } = useColonyContributors({
+    allMembers,
     contributorTypes,
     filterPermissions: permissions,
     filterStatus,
@@ -155,12 +203,15 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const {
-    members,
+    members: filteredMembers,
+    pagedMembers,
     verifiedMembers,
     canLoadMore: moreMembers,
     loadMore: loadMoreMembers,
-    loading: loadingMembers,
+    totalMemberCount,
+    totalMembers,
   } = useAllMembers({
+    allMembers,
     contributorTypes,
     filterPermissions: permissions,
     filterStatus,
@@ -178,47 +229,42 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   });
 
-  const { data: { getTotalMemberCount } = {}, loading: memberCountLoading } =
-    useGetContributorCountQuery({
-      variables: { input: { colonyAddress } },
-      skip: !colonyAddress,
-    });
-
-  const {
-    contributorCount: totalContributorCount = 0,
-    memberCount: totalMemberCount = 0,
-  } = getTotalMemberCount ?? {};
+  const membersLimit = getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT);
 
   const value = useMemo(
     () => ({
-      members,
+      filteredMembers,
       verifiedMembers,
       totalMemberCount,
-      contributors,
-      totalContributorCount,
-      memberCountLoading,
-      moreContributors,
+      totalMembers,
+      pagedMembers,
       moreMembers,
-      loadMoreContributors,
       loadMoreMembers,
-      loadingContributors,
-      loadingMembers,
-      membersLimit: getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT),
+      membersLimit,
+      filteredContributors,
+      totalContributorCount,
+      totalContributors,
+      pagedContributors,
+      moreContributors,
+      loadMoreContributors,
+      loading,
     }),
     [
-      members,
+      filteredMembers,
       verifiedMembers,
       totalMemberCount,
-      contributors,
-      totalContributorCount,
-      memberCountLoading,
-      moreContributors,
+      totalMembers,
+      pagedMembers,
       moreMembers,
-      loadMoreContributors,
       loadMoreMembers,
-      loadingContributors,
-      loadingMembers,
-      getAllMembersPageSize,
+      membersLimit,
+      filteredContributors,
+      totalContributorCount,
+      totalContributors,
+      pagedContributors,
+      moreContributors,
+      loadMoreContributors,
+      loading,
     ],
   );
 

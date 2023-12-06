@@ -23,6 +23,7 @@ const getSubTitle = (title: MessageDescriptor, count: number) => {
   const formatted = formatText(title);
   return `${count} ${formatted}`;
 };
+
 const MembersList: FC<MembersListProps> = ({
   title,
   description,
@@ -54,7 +55,6 @@ const MembersList: FC<MembersListProps> = ({
     title,
     isContributorsList ? totalContributorCount : totalMemberCount,
   );
-  // const { searchValue } = useSearchContext();
 
   const showLoadMoreButton = isContributorsList
     ? moreContributors
@@ -78,11 +78,11 @@ const MembersList: FC<MembersListProps> = ({
         <ResponsiveMasonry columnsCountBreakPoints={{ 250: 1, 950: 2 }}>
           <Masonry gutter="1rem">
             {list.map((item) => {
-              const { user } = item;
-              const { profile, walletAddress } = user || {};
+              const { user, contributorAddress } = item;
+              const { profile } = user || {};
               return (
                 <CardWithBios
-                  key={walletAddress}
+                  key={contributorAddress}
                   userData={item}
                   description={profile?.bio || ''}
                   shouldStatusBeVisible

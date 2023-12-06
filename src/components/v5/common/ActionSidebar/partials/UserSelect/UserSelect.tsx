@@ -12,7 +12,7 @@ import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 
-import { useIsUserVerified, useUserSelect } from './hooks';
+import { useUserSelect } from './hooks';
 import { UserSelectProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
@@ -25,8 +25,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     name,
   });
   const isError = !!error;
-  const usersOptions = useUserSelect();
-  const isUserVerified = useIsUserVerified(field.value);
+  const { usersOptions, showVerifiedUsers } = useUserSelect();
   const [
     isUserSelectVisible,
     {
@@ -59,10 +58,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             size="xs"
             showUsername
             className={clsx({
-              'text-warning-400': !isUserVerified,
+              'text-warning-400': !showVerifiedUsers,
             })}
           />
-          {isUserVerified && (
+          {showVerifiedUsers && (
             <span className="flex ml-2 text-blue-400">
               <Icon name="verified" />
             </span>
@@ -91,11 +90,11 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                   size="xs"
                   showUsername
                   className={clsx({
-                    'text-warning-400': !isUserVerified,
-                    'text-gray-900': isUserVerified,
+                    'text-warning-400': !showVerifiedUsers,
+                    'text-gray-900': showVerifiedUsers,
                   })}
                 />
-                {isUserVerified && (
+                {showVerifiedUsers && (
                   <span className="flex ml-2 text-blue-400">
                     <Icon name="verified" />
                   </span>
@@ -125,7 +124,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               showEmptyContent={false}
             />
           )}
-          {!isUserVerified && field.value && (
+          {!showVerifiedUsers && field.value && (
             <UserPopover
               userName={userDisplayName}
               walletAddress={userWalletAddress}

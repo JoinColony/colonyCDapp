@@ -68,7 +68,7 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     () => getInitialFiltersRecord(filterOptions),
   );
 
-  const isFollowersPage = pathname.split('/').at(-1) === 'followers';
+  const isFollowersPage = pathname.split('/').at(-1) === 'contributors';
 
   const getSelectedFilterLabels = useCallback(
     () =>

@@ -5,10 +5,12 @@ mutation UpdateContributorsWithReputation($colonyAddress: String) {
 mutation CreateColonyContributor($input: CreateColonyContributorInput!) {
   createColonyContributor(input: $input) {
     id
+    isWatching
   }
 }
 mutation UpdateColonyContributor($input: UpdateColonyContributorInput!) {
   updateColonyContributor(input: $input) {
     id
+    isWatching
   }
 }

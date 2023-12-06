@@ -1,19 +1,18 @@
 import { useMemo, useState } from 'react';
 
-import { useGetColonyContributorsQuery } from '~gql';
-import { useColonyContext } from '~hooks';
-import { SortDirection } from '~types';
-import { notNull } from '~utils/arrays';
+import { ColonyContributor, SortDirection } from '~types';
 import {
   ContributorTypeFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
 import { UserRole } from '~constants/permissions';
 
-import { updateQuery } from './utils';
+import { sortByReputationAscending, sortByReputationDescending } from './utils';
+
 import useMemberFilters from './useMemberFilters';
 
 const useColonyContributors = ({
+  allMembers,
   filterPermissions,
   nativeDomainIds,
   filterStatus,
@@ -21,6 +20,7 @@ const useColonyContributors = ({
   sortDirection,
   pageSize,
 }: {
+  allMembers: ColonyContributor[];
   filterPermissions: Record<UserRole, number[]>;
   nativeDomainIds: number[];
   filterStatus: StatusType | undefined;
@@ -28,29 +28,9 @@ const useColonyContributors = ({
   sortDirection: SortDirection;
   pageSize: number;
 }) => {
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony ?? {};
-
   const [page, setPage] = useState<number>(1);
 
   const visibleItems = page * pageSize;
-
-  const { data, previousData, fetchMore, loading } =
-    useGetColonyContributorsQuery({
-      variables: {
-        colonyAddress,
-        sortDirection,
-        limit: pageSize * 3,
-      },
-      skip: !colonyAddress,
-      fetchPolicy: 'cache-and-network',
-    });
-
-  const { nextToken } = data?.getContributorsByColony || {};
-  const { items } =
-    data?.getContributorsByColony ||
-    previousData?.getContributorsByColony ||
-    {};
 
   /*
    * To be considered a contributor, you must:
@@ -58,16 +38,13 @@ const useColonyContributors = ({
    * have at least some reputation in the selected domains
    */
 
-  const allContributors = useMemo(() => {
-    return (
-      items
-        ?.filter(notNull)
-        .filter(
-          ({ hasReputation, hasPermissions }) =>
-            hasReputation || hasPermissions,
-        ) ?? []
-    );
-  }, [items]);
+  const allContributors = useMemo(
+    () =>
+      allMembers.filter(
+        ({ hasReputation, hasPermissions }) => hasReputation || hasPermissions,
+      ) ?? [],
+    [allMembers],
+  );
 
   const filteredContributors = useMemberFilters({
     members: allContributors,
@@ -78,25 +55,20 @@ const useColonyContributors = ({
     isContributorList: true,
   });
 
-  // We need to ensure that the user always sees the (pageSize * pageNo) number of items.
-  // Given that it's possible for our filtering to reduce the database results below this number,
-  // we fetch more data in the background whenever this happens, and then only show up to the (pageSize * pageNo)
-  // number of items.
-
-  if (filteredContributors.length < visibleItems && nextToken) {
-    fetchMore({
-      variables: { nextToken },
-      updateQuery,
-    });
-  }
+  const sortedContributors =
+    sortDirection === SortDirection.Asc
+      ? sortByReputationAscending(filteredContributors)
+      : sortByReputationDescending(filteredContributors);
 
   return {
-    contributors: filteredContributors.slice(0, visibleItems),
-    canLoadMore: filteredContributors.length > visibleItems || !!nextToken,
+    contributors: sortedContributors,
+    pagedContributors: sortedContributors.slice(0, visibleItems),
+    canLoadMore: sortedContributors.length > visibleItems,
     loadMore() {
       setPage((prevPage) => prevPage + 1);
     },
-    loading,
+    totalContributorCount: allContributors.length,
+    totalContributors: allContributors,
   };
 };
 
