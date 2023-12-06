@@ -59,9 +59,9 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
           </div>
         )}
         {description && (
-          <p className="md:mt-1 text-md text-gray-600 px-2 md:px-0">
-            {multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)}
-          </p>
+          <div className="h-15 line-clamp-3 md:mt-1 text-md text-gray-600 px-2 md:px-0">
+            <p>{multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)}</p>
+          </div>
         )}
         {isContentList ? (
           <NavigationSidebarLinksList
