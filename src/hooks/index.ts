@@ -80,7 +80,7 @@ export { default as useShouldDisplayMotionCountdownTime } from './useShouldDispl
 export { default as useToggle } from './useToggle';
 export { default as useRelativePortalElement } from './useRelativePortalElement';
 export { default as useColors } from './useColors';
-export { default as useTeams } from './useTeams';
+export { default as useTeamsOptions } from './useTeamsOptions';
 export { default as useUsersByAddresses } from './useUsersByAddresses';
 
 export {
