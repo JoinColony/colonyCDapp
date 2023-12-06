@@ -55,7 +55,6 @@ const MembersList: FC<MembersListProps> = ({
     title,
     isContributorsList ? totalContributorCount : totalMemberCount,
   );
-  // const { searchValue } = useSearchContext();
 
   const showLoadMoreButton = isContributorsList
     ? moreContributors
