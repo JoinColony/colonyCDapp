@@ -1,30 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSetPageBreadcrumbs, useSetPageHeadingTitle } from '~context';
 import FundsTable from '~frame/v5/pages/FundsPage/partials/FundsTable';
+import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 import { formatText } from '~utils/intl';
 
 const displayName = 'common.ColonyFunding';
 
 const ColonyFunding = () => {
   useSetPageHeadingTitle(formatText({ id: 'incomingFundsPage.title' }));
-  useSetPageBreadcrumbs(
-    useMemo(
-      () => [
-        {
-          key: 'teams',
-          // @todo: replace with actual teams
-          dropdownOptions: [
-            {
-              label: 'All teams',
-              href: '/teams',
-            },
-          ],
-          selectedValue: '/teams',
-        },
-      ],
-      [],
-    ),
-  );
+  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
+  useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   return <FundsTable />;
 };

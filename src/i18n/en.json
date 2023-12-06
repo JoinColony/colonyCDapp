@@ -1438,7 +1438,7 @@
     "activityPage.mostActiveTeam": "Most active<span> team</span>",
     "balancePage.title": "Balance",
     "balancePage.description": "Overview of the Colony's balance by token",
-    "balancePage.table.title": "Colony token balance",
+    "balancePage.table.title": "Token balances",
     "balancePage.table.addFunds": "Add funds to the Colony",
     "balancePage.table.emptyTitle": "No results to display",
     "balancePage.table.emptyDescription": "There are no tokens in the Colony that match your search. Try searching again",

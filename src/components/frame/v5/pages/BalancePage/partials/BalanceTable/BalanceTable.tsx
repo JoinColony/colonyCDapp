@@ -9,8 +9,8 @@ import Button from '~v5/shared/Button';
 import { useColonyContext, useMobile } from '~hooks';
 import { BalanceTableFieldModel, BalanceTableProps } from './types';
 import { formatText } from '~utils/intl';
-import { useSearchContext } from '~context/SearchContext';
-import Filter from '~v5/common/Filter';
+// import { useSearchContext } from '~context/SearchContext';
+// import Filter from '~v5/common/Filter';
 import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
 import EmptyContent from '~v5/common/EmptyContent';
 import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
@@ -18,15 +18,17 @@ import useToggle from '~hooks/useToggle';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import CopyWallet from '~v5/shared/CopyWallet';
 import BalanceModal from '../BalanceModal';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
 const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
+  const selectedTeam = useGetSelectedTeamFilter();
   const { colony } = useColonyContext();
   const { balances, nativeToken, status, colonyAddress } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
   const isMobile = useMobile();
-  const { searchValue } = useSearchContext();
+  // const { searchValue } = useSearchContext();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const tokensDataLength = data?.length;
@@ -41,6 +43,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
     nativeToken,
     balances,
     nativeTokenStatus,
+    Number(selectedTeam?.nativeId) || undefined,
   );
   const getMenuProps = useGetTableMenuProps();
 
@@ -85,7 +88,8 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
         getMenuProps={getMenuProps}
       >
         <>
-          {(!!tokensDataLength || !!searchValue) && <Filter />}
+          {/* # TODO Enable correct filtering */}
+          {/* {(!!tokensDataLength || !!searchValue) && <Filter />} */}
           <Button
             mode="primarySolid"
             className="ml-2"
