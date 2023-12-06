@@ -18,12 +18,12 @@ const MembersSelect: FC<MemberSelectProps> = ({
   defaultValue,
   ...rest
 }) => {
-  const { members, loading } = useMemberContext();
+  const { filteredMembers, loading } = useMemberContext();
   const [selectedMember, setSelectedMember] = useState<
     MembersSelectOption['value'] | undefined
   >(defaultValue || undefined);
 
-  const selectOptions = members?.reduce<MembersSelectOption[]>(
+  const selectOptions = filteredMembers?.reduce<MembersSelectOption[]>(
     (result, member) => {
       if (!member) {
         return result;

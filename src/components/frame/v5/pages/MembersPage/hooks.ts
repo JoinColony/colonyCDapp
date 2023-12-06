@@ -11,8 +11,8 @@ import { MembersTabContentListItem } from './partials/MembersTabContent/types';
 
 export const useMembersPage = () => {
   const {
-    members,
-    contributors,
+    filteredMembers,
+    filteredContributors,
     pagedContributors,
     pagedMembers,
     loading,
@@ -93,8 +93,8 @@ export const useMembersPage = () => {
     [colony, pagedMembers],
   );
 
-  const sortedContributorCount = contributors.length;
-  const sortedMemberCount = members.length;
+  const sortedContributorCount = filteredContributors.length;
+  const sortedMemberCount = filteredMembers.length;
 
   return {
     contributorsList,

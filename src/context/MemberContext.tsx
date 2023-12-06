@@ -33,14 +33,16 @@ import { FilterContextProvider, useFilterContext } from './FilterContext';
 
 const MemberContext = createContext<
   | {
-      members: ColonyContributor[];
+      filteredMembers: ColonyContributor[];
       verifiedMembers: ColonyContributor[];
       totalMemberCount: number;
+      totalMembers: ColonyContributor[];
       pagedMembers: ColonyContributor[];
       moreMembers: boolean;
       loadMoreMembers: () => void;
       membersLimit: number;
-      contributors: ColonyContributor[];
+      filteredContributors: ColonyContributor[];
+      totalContributors: ColonyContributor[];
       totalContributorCount: number;
       pagedContributors: ColonyContributor[];
       moreContributors: boolean;
@@ -184,11 +186,12 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const {
-    contributors,
+    contributors: filteredContributors,
     pagedContributors,
     canLoadMore: moreContributors,
     loadMore: loadMoreContributors,
     totalContributorCount,
+    totalContributors,
   } = useColonyContributors({
     allMembers,
     contributorTypes,
@@ -200,12 +203,13 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const {
-    members,
+    members: filteredMembers,
     pagedMembers,
     verifiedMembers,
     canLoadMore: moreMembers,
     loadMore: loadMoreMembers,
     totalMemberCount,
+    totalMembers,
   } = useAllMembers({
     allMembers,
     contributorTypes,
@@ -229,30 +233,34 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      members,
+      filteredMembers,
       verifiedMembers,
       totalMemberCount,
+      totalMembers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
       membersLimit,
-      contributors,
+      filteredContributors,
       totalContributorCount,
+      totalContributors,
       pagedContributors,
       moreContributors,
       loadMoreContributors,
       loading,
     }),
     [
-      members,
+      filteredMembers,
       verifiedMembers,
       totalMemberCount,
+      totalMembers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
       membersLimit,
-      contributors,
+      filteredContributors,
       totalContributorCount,
+      totalContributors,
       pagedContributors,
       moreContributors,
       loadMoreContributors,

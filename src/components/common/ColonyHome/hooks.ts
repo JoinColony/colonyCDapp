@@ -40,7 +40,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { domains, nativeToken, colonyAddress = '' } = colony || {};
   const { balances } = colony || {};
 
-  const { members, loading: membersLoading } = useMemberContext();
+  const { totalMembers: members, loading: membersLoading } = useMemberContext();
 
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null

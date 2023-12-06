@@ -55,8 +55,6 @@ const useAllMembers = ({
     [allMembers],
   );
 
-  const totalMemberCount = members.length;
-
   const filteredMembers = useMemberFilters({
     members,
     contributorTypes,
@@ -83,7 +81,8 @@ const useAllMembers = ({
     loadMore() {
       setPage((prevPage) => prevPage + 1);
     },
-    totalMemberCount,
+    totalMemberCount: members.length,
+    totalMembers: members,
   };
 };
 

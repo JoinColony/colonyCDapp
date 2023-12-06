@@ -46,8 +46,6 @@ const useColonyContributors = ({
     [allMembers],
   );
 
-  const totalContributorCount = allContributors.length;
-
   const filteredContributors = useMemberFilters({
     members: allContributors,
     contributorTypes,
@@ -69,7 +67,8 @@ const useColonyContributors = ({
     loadMore() {
       setPage((prevPage) => prevPage + 1);
     },
-    totalContributorCount,
+    totalContributorCount: allContributors.length,
+    totalContributors: allContributors,
   };
 };
 

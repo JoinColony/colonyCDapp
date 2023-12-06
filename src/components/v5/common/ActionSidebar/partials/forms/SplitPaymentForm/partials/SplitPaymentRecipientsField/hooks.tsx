@@ -179,7 +179,7 @@ export const useDistributionMethodUpdate = (
   { update },
   amount: number,
 ) => {
-  const { contributors } = useMemberContext();
+  const { filteredContributors } = useMemberContext();
 
   useEffect(() => {
     (async () => {
@@ -200,7 +200,7 @@ export const useDistributionMethodUpdate = (
           const selectedColonyMembers =
             data?.reduce<Record<string, ColonyContributor>>(
               (acc, { recipient }) => {
-                const contributor = contributors?.find(
+                const contributor = filteredContributors?.find(
                   ({ contributorAddress }) =>
                     contributorAddress.toLowerCase() ===
                     recipient?.toLowerCase(),
@@ -258,6 +258,6 @@ export const useDistributionMethodUpdate = (
     update,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(data),
-    contributors,
+    filteredContributors,
   ]);
 };

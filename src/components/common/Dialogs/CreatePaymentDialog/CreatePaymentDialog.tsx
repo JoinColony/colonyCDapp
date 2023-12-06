@@ -36,7 +36,7 @@ const CreatePaymentDialog = ({
   const [isForce, setIsForce] = useState(false);
   const navigate = useNavigate();
 
-  const { members: allColonyMembers } = useMemberContext();
+  const { filteredMembers: allColonyMembers } = useMemberContext();
 
   const { isVotingReputationEnabled } = enabledExtensionData;
   const { networkInverseFee } = useNetworkInverseFee();

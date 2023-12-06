@@ -4,14 +4,11 @@ import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
 import { useMemberContext } from '~context/MemberContext';
 
 export const useUserSelect = () => {
-  const { members, verifiedMembers, loading } = useMemberContext();
-
-  const showVerifiedUsers = verifiedMembers.length > 0;
-  const selectableMembers = showVerifiedUsers ? verifiedMembers : members;
+  const { totalMembers, loading } = useMemberContext();
 
   const options = useMemo(
     () =>
-      selectableMembers.reduce<SearchSelectOption[]>((result, member) => {
+      totalMembers.reduce<SearchSelectOption[]>((result, member) => {
         if (!member) {
           return result;
         }
@@ -33,7 +30,7 @@ export const useUserSelect = () => {
           },
         ];
       }, []),
-    [selectableMembers],
+    [totalMembers],
   );
 
   return {
@@ -43,6 +40,6 @@ export const useUserSelect = () => {
       key: 'users',
       title: { id: 'actions.recipent' },
     },
-    showVerifiedUsers,
+    showVerifiedUsers: false,
   };
 };
