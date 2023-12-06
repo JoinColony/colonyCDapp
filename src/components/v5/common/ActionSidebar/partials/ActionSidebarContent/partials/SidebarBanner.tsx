@@ -64,7 +64,7 @@ export const SidebarBanner: FC = () => {
         extension.extensionId === Extension.VotingReputation;
 
       if (isOneTxPaymentExtensionAction || isVotingReputationExtensionAction) {
-        return !!extension.missingColonyPermissions;
+        return !!extension.missingColonyPermissions.length;
       }
       return false;
     },
