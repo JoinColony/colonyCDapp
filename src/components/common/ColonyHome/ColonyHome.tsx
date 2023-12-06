@@ -98,6 +98,8 @@ const ColonyHome = () => {
     });
   };
 
+  const searchParams = selectedTeam && `?team=${selectedTeam.nativeId}`;
+
   return (
     <div className="flex flex-col gap-10">
       <ColonyDashboardHeader {...headerProps} />
@@ -112,6 +114,7 @@ const ColonyHome = () => {
               'bg-gray-900 border-gray-900': !selectedTeam,
             }),
             href: COLONY_ACTIVITY_ROUTE,
+            searchParams,
           },
           {
             key: '2',
@@ -130,6 +133,7 @@ const ColonyHome = () => {
                 showRemainingAvatars={false}
               />
             ),
+            searchParams,
           },
           {
             key: '3',
@@ -144,6 +148,7 @@ const ColonyHome = () => {
               </div>
             ),
             href: COLONY_BALANCES_ROUTE,
+            searchParams,
           },
         ]}
       />
