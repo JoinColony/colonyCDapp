@@ -37,7 +37,13 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_rpc_endpoint"
         },
         "Type": "String",
-        "Value": "https://qa-cdapp.colony.io/rpc/",
+        "Value": {
+          "Fn::If": [
+            "IsQaEnv",
+            "https://qa-app.colony.io/rpc/",
+            "https://app.colony.io/rpc/"
+          ]
+        },
         "Description": "Xdai chain RPC endpoint"
       }
     },
@@ -48,7 +54,13 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_network_contract"
         },
         "Type": "String",
-        "Value": "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f",
+        "Value": {
+          "Fn::If": [
+            "IsQaEnv",
+            "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f",
+            "0x78163f593D1Fa151B4B7cacD146586aD2b686294"
+          ]
+        },
         "Description": "Xdai chain network contract"
       }
     },
