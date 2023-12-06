@@ -29,7 +29,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
   );
 
   return (
-    <>
+    <div className="flex flex-col gap-5">
       {items.map(({ key, iconName, label, progress, status }) => (
         <div key={key} className="flex items-center w-full gap-8">
           <div className="flex grow flex-col gap-1 max-w-[182px]">
@@ -62,7 +62,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
           </div>
           {!!voters.length && (
             <UserAvatars
-              className="flex shrink"
+              className="flex shrink relative top-[3px]"
               items={status === MotionVote.Yay ? yayVoters : nayVoters}
               remainingAvatarsCount={
                 status === MotionVote.Yay
@@ -75,7 +75,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
           )}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

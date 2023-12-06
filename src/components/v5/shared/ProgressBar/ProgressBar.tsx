@@ -42,7 +42,9 @@ const ProgressBar: FC<ProgressBarProps> = ({
           />
         )}
       </div>
-      <span className="text-4 text-gray-600 ml-3">{progress}</span>
+      <span className="text-xs font-medium text-gray-600 ml-3 leading-3">
+        {progress}
+      </span>
       {additionalText && (
         <span className={clsx(className, 'text-3 text-gray-600 flex-shrink-0')}>
           {additionalText}
