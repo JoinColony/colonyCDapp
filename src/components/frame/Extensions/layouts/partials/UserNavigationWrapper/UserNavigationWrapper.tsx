@@ -1,12 +1,8 @@
-import React, { FC, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import React, { FC } from 'react';
+import clsx from 'clsx';
 
-import { TX_SEARCH_PARAM } from '~routes';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import HeaderAvatar from '~common/Extensions/UserNavigation/partials/HeaderAvatar';
 import UserNavigation from '~common/Extensions/UserNavigation';
-import ActionSidebar from '~v5/common/ActionSidebar';
 
 import { UserNavigationWrapperProps } from './types';
 
@@ -16,23 +12,8 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   userHub,
   txButtons,
   extra,
+  isHidden,
 }) => {
-  const {
-    actionSidebarToggle: [
-      isActionSidebarOpen,
-      { toggleOn: toggleActionSidebarOn },
-    ],
-    actionSidebarInitialValues,
-  } = useActionSidebarContext();
-  const [searchParams] = useSearchParams();
-  const transactionId = searchParams?.get(TX_SEARCH_PARAM);
-
-  useEffect(() => {
-    if (transactionId) {
-      toggleActionSidebarOn();
-    }
-  }, [toggleActionSidebarOn, transactionId]);
-
   const userHubComponent = userHub || <HeaderAvatar />;
   const userNavigation = (
     <UserNavigation
@@ -44,18 +25,12 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
 
   return (
     <div className="w-full flex">
-      <div>
-        <AnimatePresence>
-          {isActionSidebarOpen && (
-            <ActionSidebar
-              transactionId={transactionId || undefined}
-              initialValues={actionSidebarInitialValues}
-            >
-              {userNavigation}
-            </ActionSidebar>
-          )}
-        </AnimatePresence>
-        {!isActionSidebarOpen && userNavigation}
+      <div
+        className={clsx('transition-all ml-auto', {
+          'opacity-0': isHidden,
+        })}
+      >
+        {userNavigation}
       </div>
     </div>
   );
