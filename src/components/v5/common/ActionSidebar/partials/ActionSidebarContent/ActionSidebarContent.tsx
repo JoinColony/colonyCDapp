@@ -115,7 +115,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
         {noPermissionsError && (
           <div className="mt-6">
-            <NotificationBanner status="warning" icon="check-circle">
+            <NotificationBanner status="warning" icon="warning-circle">
               {formatMessage(MSG.noPermissionsErrorTitle)}
             </NotificationBanner>
           </div>
