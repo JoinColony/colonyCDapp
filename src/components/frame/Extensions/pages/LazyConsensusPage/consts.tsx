@@ -36,7 +36,7 @@ export const defaultGovernanceOptions = {
     submitPeriod: 72,
     revealPeriod: 72,
     escalationPeriod: 0,
-    // escalationPeriod: 72, @TODO Re-enable once Motion escalation is implemented
+    // escalationPeriod: 72, @BETA Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.SPEED_OVER_SECURITY]: {
     totalStakeFraction: 1,
@@ -47,7 +47,7 @@ export const defaultGovernanceOptions = {
     submitPeriod: 72,
     revealPeriod: 42,
     escalationPeriod: 0,
-    // escalationPeriod: 48, @TODO Re-enable once Motion escalation is implemented
+    // escalationPeriod: 48, @BETA Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.SECURITY_OVER_SPEED]: {
     totalStakeFraction: 1,
@@ -58,7 +58,7 @@ export const defaultGovernanceOptions = {
     submitPeriod: 120,
     revealPeriod: 72,
     escalationPeriod: 0,
-    // escalationPeriod: 72, @TODO Re-enable once Motion escalation is implemented
+    // escalationPeriod: 72, @BETA Re-enable once Motion escalation is implemented
   },
   [GovernanceOptions.TESTING_GOVERNANCE]: {
     totalStakeFraction: 1,
@@ -69,7 +69,7 @@ export const defaultGovernanceOptions = {
     submitPeriod: 0.083,
     revealPeriod: 0.083,
     escalationPeriod: 0,
-    // escalationPeriod: 0.083, @TODO Re-enable once Motion escalation is implemented
+    // escalationPeriod: 0.083, @BETA Re-enable once Motion escalation is implemented
   },
 };
 
@@ -242,7 +242,7 @@ export const initialExtensionContent = [
         ],
       },
       /*
-       * @TODO Re-enable once Motion escalation is implemented
+       * @BETA Re-enable once Motion escalation is implemented
        */
       // {
       //   id: 'escalationPeriod',

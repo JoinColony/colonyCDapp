@@ -28,7 +28,7 @@ enum GovernanceInitializationParams {
   stakePeriod = 'stakePeriod',
   submitPeriod = 'submitPeriod',
   revealPeriod = 'revealPeriod',
-  // escalationPeriod = 'escalationPeriod', @TODO Re-enable once Motion escalation is implemented
+  // escalationPeriod = 'escalationPeriod', @BETA Re-enable once Motion escalation is implemented
 }
 
 export const paramsMap = {
@@ -73,7 +73,7 @@ export const paramsMap = {
       description: 'How long allowed for members to reveal their votes',
     },
     /*
-     * @TODO Re-enable once Motion escalation is implemented
+     * @BETA Re-enable once Motion escalation is implemented
      */
     // [GovernanceInitializationParams.escalationPeriod]: {
     //   complementaryLabel: 'hours',

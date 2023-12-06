@@ -466,7 +466,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       {
         paramName: 'escalationPeriod',
         /*
-         * @TODO Re-enable once Motion escalation is implemented
+         * @BETA Re-enable once Motion escalation is implemented
          * Currently we just disable it from showing up in the UI and setting it to 0
          * But at some point this needs to be user configurable
          */

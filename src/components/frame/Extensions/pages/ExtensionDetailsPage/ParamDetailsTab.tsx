@@ -20,6 +20,8 @@ const ParamDetailsTab: FC<ParamDetailsTabProps> = ({ extension, params }) => {
     <li>
       {Object.keys(params)
         .filter((key) => key !== '__typename')
+        // @BETA Remove once Motion escalation is implemented
+        .filter((key) => key !== 'escalationPeriod')
         .map((param) => {
           const { title, complementaryLabel, description } =
             paramsMap[extension][param];
