@@ -35,7 +35,10 @@ export const SidebarBanner: FC = () => {
     DECISION_METHOD_FIELD_NAME,
   ]);
   const flatFormErrors = useFlatFormErrors(formState.errors).filter(
-    ({ key }) => key !== 'title',
+    ({ key }) =>
+      !['title', 'domainHasReputation', 'userHasPermissions'].includes(
+        String(key),
+      ),
   );
 
   const actionTypeNotificationTitle =

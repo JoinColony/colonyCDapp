@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
 import { useFormContext } from 'react-hook-form';
@@ -10,11 +10,11 @@ import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
 import { useColonyContext, useColonyHasReputation } from '~hooks';
+import Link from '~v5/shared/Link';
 
 import ActionTypeSelect from '../../ActionTypeSelect';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 import {
-  DecisionMethod,
   useActionDescriptionMetadata,
   useActionFormProps,
   useSidebarActionForm,
@@ -28,7 +28,6 @@ import {
   ActionSidebarContentProps,
   ActionSidebarFormContentProps,
 } from './types';
-import Link from '~v5/shared/Link';
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
@@ -62,25 +61,31 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const {
     setValue,
     formState: {
-      errors: { title: titleError },
+      errors: {
+        title: titleError,
+        domainHasReputation: noReputationError,
+        userHasPermissions: noPermissionsError,
+      },
     },
     watch,
   } = useFormContext();
-  const { decisionMethod, createdInDomainId, actionType } = watch();
+  const { createdInDomainId, actionType } = watch();
 
   const userHasPermissions = useUserHasPermissions(
     actionType,
     createdInDomainId,
   );
-  const noPermissionsError =
-    !userHasPermissions && decisionMethod === DecisionMethod.Permissions;
+  useEffect(() => {
+    setValue('userHasPermissions', userHasPermissions);
+  }, [setValue, userHasPermissions]);
 
-  const colonyHasReputation = useColonyHasReputation(
+  const domainHasReputation = useColonyHasReputation(
     colony?.colonyAddress,
     Number(createdInDomainId),
   );
-  const noReputationError =
-    !colonyHasReputation && decisionMethod === DecisionMethod.Reputation;
+  useEffect(() => {
+    setValue('domainHasReputation', domainHasReputation);
+  }, [setValue, domainHasReputation]);
 
   return (
     <>
@@ -144,12 +149,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             />
           )}
           <ActionButtons
-            isActionDisabled={
-              !userHasPermissions ||
-              !selectedAction ||
-              noReputationError ||
-              noPermissionsError
-            }
+            isActionDisabled={!userHasPermissions || !selectedAction}
           />
         </div>
       )}
