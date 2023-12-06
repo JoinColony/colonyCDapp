@@ -8,7 +8,11 @@ const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
   const { host, origin } = window.location;
   try {
     const response = await fetch(
-      `${process.env.AUTH_PROXY_ENDPOINT}/${urlPartial}`,
+      process.env.NODE_ENV === 'production'
+        ? `${
+            process.env.AUTH_PROXY_ENDPOINT || 'http://localhost:3005'
+          }/${urlPartial}`
+        : `/${urlPartial}`,
       {
         method: 'GET',
         headers: {

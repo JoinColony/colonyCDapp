@@ -3,7 +3,10 @@ import { ApolloClient, HttpLink } from '@apollo/client';
 import cache from '~cache';
 
 const httpLink = new HttpLink({
-  uri: `${process.env.AUTH_PROXY_ENDPOINT || 'http://localhost:3005'}/graphql`,
+  uri:
+    process.env.NODE_ENV === 'production'
+      ? `${process.env.AUTH_PROXY_ENDPOINT || 'http://localhost:3005'}/graphql`
+      : '/graphql',
   credentials: 'include',
 });
 

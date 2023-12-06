@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const Dotenv = require('dotenv-webpack');
@@ -18,6 +20,20 @@ module.exports = () => ({
     client: {
       logging: 'error',
     },
+    proxy: [
+      {
+        context: [
+          '/graphql',
+          '/deauth',
+          '/check',
+          '/nonce',
+          '/auth',
+        ],
+        target: process.env.AUTH_PROXY_ENDPOINT,
+        secure: false,
+        changeOrigin: true,
+      }
+    ]
   },
   output: {
     filename: 'dev-[name].js',
