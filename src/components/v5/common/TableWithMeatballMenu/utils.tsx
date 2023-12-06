@@ -28,7 +28,7 @@ export const makeMenuColumn = <T,>(
       return props ? (
         <div
           className={clsx({
-            'absolute top-4 right-4': verticalOnMobile,
+            'absolute top-1/2 right-4 -translate-y-1/2': verticalOnMobile,
           })}
         >
           <MeatBallMenu {...props} />

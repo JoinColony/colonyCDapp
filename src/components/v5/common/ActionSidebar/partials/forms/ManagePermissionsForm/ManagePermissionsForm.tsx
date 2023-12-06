@@ -12,6 +12,7 @@ import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
 import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
@@ -189,20 +190,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
+      <CreatedInRow />
       <DescriptionRow />
       {role !== REMOVE_ROLE_OPTION_VALUE && (
         <PermissionsTable name="permissions" role={role} className="mt-7" />

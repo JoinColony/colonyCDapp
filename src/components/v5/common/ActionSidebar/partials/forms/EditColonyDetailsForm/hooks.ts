@@ -11,10 +11,8 @@ import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx'
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
-import {
-  validationSchema,
-  type EditColonyDetailsFormValues,
-} from './consts.ts';
+import { getEditColonyDetailsValidationSchema } from './consts.ts';
+import { type EditColonyDetailsFormValues } from './types.ts';
 import { getEditColonyDetailsPayload } from './utils.tsx';
 
 export const useEditColonyDetails = (
@@ -26,26 +24,35 @@ export const useEditColonyDetails = (
     name: DECISION_METHOD_FIELD_NAME,
   });
 
+  const defaultValues = useMemo<DeepPartial<EditColonyDetailsFormValues>>(
+    () => ({
+      colonyName: metadata?.displayName,
+      avatar: {
+        image: metadata?.avatar,
+        thumbnail: metadata?.thumbnail,
+      },
+      colonyDescription: metadata?.description || '',
+      createdIn: Id.RootDomain.toString(),
+      externalLinks: metadata?.externalLinks ?? [],
+    }),
+    [
+      metadata?.avatar,
+      metadata?.description,
+      metadata?.displayName,
+      metadata?.externalLinks,
+      metadata?.thumbnail,
+    ],
+  );
+
+  const validationSchema = useMemo(
+    () => getEditColonyDetailsValidationSchema(defaultValues),
+    [defaultValues],
+  );
+
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    defaultValues: useMemo<DeepPartial<EditColonyDetailsFormValues>>(
-      () => ({
-        colonyDisplayName: metadata?.displayName || '',
-        avatar: {
-          image: metadata?.avatar,
-          thumbnail: metadata?.thumbnail,
-        },
-        createdIn: Id.RootDomain,
-        externalLinks: metadata?.externalLinks ?? [],
-      }),
-      [
-        metadata?.avatar,
-        metadata?.displayName,
-        metadata?.externalLinks,
-        metadata?.thumbnail,
-      ],
-    ),
+    defaultValues,
     actionType:
       decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_EDIT_COLONY

@@ -192,7 +192,9 @@ function* editColonyAction({
               haveTokensChanged,
               metadata?.description !== colonyDescription,
               !isEqual(metadata?.externalLinks, colonyExternalLinks),
-              !isEqual(metadata?.objective, colonyObjective),
+              colonyObjective === undefined
+                ? false
+                : !isEqual(metadata?.objective, colonyObjective),
             ),
           },
         },

@@ -5,11 +5,11 @@ import { ACTION, type Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { DecisionMethod, useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 import { useIsFieldDisabled } from '../../hooks.ts';
 
@@ -58,22 +58,8 @@ const CreateDecisionForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           disabled={isFieldDisabled}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-        isDisabled={isFieldDisabled}
-      >
-        <TeamsSelect name="createdIn" disabled={isFieldDisabled} />
-      </ActionFormRow>
-      <DescriptionRow disabled={isFieldDisabled} />
+      <CreatedInRow />
+      <DescriptionRow />
     </>
   );
 };

@@ -8,8 +8,9 @@ import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts'
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { DecisionMethod, useDecisionMethods } from '../../../hooks/index.ts';
+import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useTransferFunds } from './hooks.ts';
@@ -23,7 +24,6 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
-  const selectedDecisionMethod = watch('decisionMethod');
 
   return (
     <>
@@ -90,30 +90,14 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      {selectedDecisionMethod &&
-        selectedDecisionMethod === DecisionMethod.Reputation && (
-          <ActionFormRow
-            icon="house-line"
-            fieldName="createdIn"
-            tooltips={{
-              label: {
-                tooltipContent: formatText({
-                  id: 'actionSidebar.tooltip.createdIn',
-                }),
-              },
-            }}
-            title={formatText({ id: 'actionSidebar.createdIn' })}
-          >
-            <TeamsSelect
-              name="createdIn"
-              filterOptionsFn={(option) =>
-                (option.value === Id.RootDomain.toString() ||
-                  option.value === selectedTeam) &&
-                !!option.isRoot
-              }
-            />
-          </ActionFormRow>
-        )}
+
+      <CreatedInRow
+        filterOptionsFn={(option) =>
+          (option.value === Id.RootDomain.toString() ||
+            option.value === selectedTeam) &&
+          !!option.isRoot
+        }
+      />
       <DescriptionRow />
     </>
   );

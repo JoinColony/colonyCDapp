@@ -16,8 +16,9 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
-import { DecisionMethod, useDecisionMethods } from '../../../hooks/index.ts';
+import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useEditTeam } from './hooks.ts';
@@ -30,7 +31,6 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { watch } = useFormContext();
 
   useEditTeam(getFormOptions);
-  const selectedDecisionMethod = watch('decisionMethod');
   const selectedTeam = watch('team');
 
   return (
@@ -134,29 +134,13 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      {selectedDecisionMethod &&
-        selectedDecisionMethod === DecisionMethod.Reputation && (
-          <ActionFormRow
-            icon="house-line"
-            fieldName="createdIn"
-            tooltips={{
-              label: {
-                tooltipContent: formatText({
-                  id: 'actionSidebar.tooltip.createdIn',
-                }),
-              },
-            }}
-            title={formatText({ id: 'actionSidebar.createdIn' })}
-          >
-            <TeamsSelect
-              name="createdIn"
-              filterOptionsFn={(option) =>
-                option.value === Id.RootDomain.toString() ||
-                option.value === selectedTeam
-              }
-            />
-          </ActionFormRow>
-        )}
+
+      <CreatedInRow
+        filterOptionsFn={(option) =>
+          option.value === Id.RootDomain.toString() ||
+          option.value === selectedTeam
+        }
+      />
       <DescriptionRow />
     </>
   );

@@ -2,12 +2,13 @@ import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import { useGetTableMenuProps, useSocialLinksTableColumns } from './hooks.tsx';
+import { getTableMenuProps, useSocialLinksTableColumns } from './hooks.tsx';
 import SocialLinkModal from './partials/SocialLinkModal/index.ts';
 import {
   type SocialLinksTableModel,
@@ -22,10 +23,10 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
   const isMobile = useMobile();
   const fieldArrayMethods = useFieldArray({ name });
   const value = useWatch({ name });
-  const getMenuProps = useGetTableMenuProps(
-    fieldArrayMethods,
-    setSocialLinkIndex,
-  );
+  const { readonly } = useAdditionalFormOptionsContext();
+  const getMenuProps = readonly
+    ? () => undefined
+    : getTableMenuProps(fieldArrayMethods, setSocialLinkIndex);
   const columns = useSocialLinksTableColumns();
   const data: SocialLinksTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
@@ -54,50 +55,54 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
           />
         </>
       )}
-      <Button
-        mode="primaryOutline"
-        iconName="plus"
-        size="small"
-        className="mt-6"
-        isFullSize={isMobile}
-        onClick={() => setSocialLinkIndex(-1)}
-      >
-        {formatText({ id: 'button.addSocialLinks' })}
-      </Button>
-      <SocialLinkModal
-        key={socialLinkIndex}
-        isOpen={socialLinkIndex !== undefined}
-        onClose={() => setSocialLinkIndex(undefined)}
-        defaultValues={data}
-        initialLinkType={
-          socialLinkIndex !== undefined
-            ? data[socialLinkIndex]?.name
-            : undefined
-        }
-        onSubmit={({ name: linkName, link }) => {
-          if (socialLinkIndex === undefined) {
-            return;
-          }
+      {!readonly && (
+        <>
+          <Button
+            mode="primaryOutline"
+            iconName="plus"
+            size="small"
+            className="mt-6"
+            isFullSize={isMobile}
+            onClick={() => setSocialLinkIndex(-1)}
+          >
+            {formatText({ id: 'button.addSocialLinks' })}
+          </Button>
+          <SocialLinkModal
+            key={socialLinkIndex}
+            isOpen={socialLinkIndex !== undefined}
+            onClose={() => setSocialLinkIndex(undefined)}
+            defaultValues={data}
+            initialLinkType={
+              socialLinkIndex !== undefined
+                ? data[socialLinkIndex]?.name
+                : undefined
+            }
+            onSubmit={({ name: linkName, link }) => {
+              if (socialLinkIndex === undefined) {
+                return;
+              }
 
-          const existingSocialLinkIndex = data.findIndex(
-            (socialLink) => socialLink.name === linkName,
-          );
+              const existingSocialLinkIndex = data.findIndex(
+                (socialLink) => socialLink.name === linkName,
+              );
 
-          if (existingSocialLinkIndex === -1) {
-            fieldArrayMethods.append({
-              name: linkName,
-              link,
-            });
-          } else {
-            fieldArrayMethods.update(existingSocialLinkIndex, {
-              name: linkName,
-              link,
-            });
-          }
+              if (existingSocialLinkIndex === -1) {
+                fieldArrayMethods.append({
+                  name: linkName,
+                  link,
+                });
+              } else {
+                fieldArrayMethods.update(existingSocialLinkIndex, {
+                  name: linkName,
+                  link,
+                });
+              }
 
-          setSocialLinkIndex(undefined);
-        }}
-      />
+              setSocialLinkIndex(undefined);
+            }}
+          />
+        </>
+      )}
     </>
   );
 };
