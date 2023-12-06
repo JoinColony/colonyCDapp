@@ -94,6 +94,7 @@ module.exports = {
         'teams-green': {
           50: 'var(--color-teams-green-50)',
           100: 'var(--color-teams-green-100)',
+          300: 'var(--color-teams-green-300)',
           400: 'var(--color-teams-green-400)',
           500: 'var(--color-teams-green-500)',
         },
@@ -104,6 +105,7 @@ module.exports = {
         'teams-blue': {
           50: 'var(--color-teams-blue-50)',
           400: 'var(--color-teams-blue-400)',
+          500: 'var(--color-teams-blue-500)',
         },
         'teams-indigo': {
           50: 'var(--color-teams-indigo-50)',

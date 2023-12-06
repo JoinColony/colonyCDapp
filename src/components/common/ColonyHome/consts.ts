@@ -18,40 +18,40 @@ export const MAX_TEXT_LENGTH = 250;
 
 export const setTeamColor = (color?: DomainColor) => {
   switch (color) {
-    case DomainColor.Purple:
-      return 'bg-teams-purple-400 border-teams-purple-400';
-    case DomainColor.LightPink:
-      return 'bg-teams-pink-400 border-teams-pink-400';
-    case DomainColor.Yellow:
-      return 'bg-teams-yellow-500 border-teams-yellow-500';
-    case DomainColor.Blue:
-      return 'bg-indigo-400 border-indigo-400';
-    case DomainColor.Green:
-      return 'bg-teams-green-500 border-teams-green-500';
     case DomainColor.Aqua:
-      return 'bg-teams-teal-500 border-teams-teal-500';
+      return 'bg-teams-yellow-500';
     case DomainColor.Black:
-      return 'bg-teams-grey-500 border-teams-grey-500';
+      return 'bg-teams-red-400';
+    case DomainColor.Blue:
+      return 'bg-teams-red-600';
     case DomainColor.BlueGrey:
-      return 'bg-teams-grey-100 border-teams-grey-100';
+      return 'bg-teams-pink-400';
     case DomainColor.EmeraldGreen:
-      return 'bg-teams-green-400 border-teams-green-400';
+      return 'bg-teams-pink-500';
     case DomainColor.Gold:
-      return 'bg-teams-yellow-100 border-teams-yellow-100';
+      return 'bg-teams-pink-600';
+    case DomainColor.Green:
+      return 'bg-teams-purple-400';
+    case DomainColor.LightPink:
+      return 'bg-teams-purple-500';
     case DomainColor.Magenta:
-      return 'bg-teams-pink-600 border-teams-pink-600';
+      return 'bg-teams-green-300';
     case DomainColor.Orange:
-      return 'bg-teams-red-400 border-teams-red-400';
-    case DomainColor.Pink:
-      return 'bg-teams-pink-500 border-teams-pink-500';
+      return 'bg-teams-green-400';
     case DomainColor.Periwinkle:
-      return 'bg-teams-indigo-500 border-teams-indigo-500';
+      return 'bg-teams-green-500';
+    case DomainColor.Pink:
+      return 'bg-teams-teal-500';
+    case DomainColor.Purple:
+      return 'bg-teams-blue-500';
     case DomainColor.PurpleGrey:
-      return 'bg-teams-purple-400 border-teams-purple-400';
+      return 'bg-teams-blue-400';
     case DomainColor.Red:
-      return 'bg-teams-red-600 border-teams-red-600';
+      return 'bg-teams-indigo-500';
+    case DomainColor.Yellow:
+      return 'bg-teams-grey-500';
     default:
-      return 'bg-teams-purple-400 border-teams-purple-400';
+      return 'bg-blue-400';
   }
 };
 
