@@ -1,4 +1,4 @@
-import { Extension } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -26,12 +26,7 @@ import { WinningsItems } from './types.ts';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
-    motionData: {
-      nativeMotionDomainId,
-      motionId,
-      gasEstimate,
-      motionStateHistory,
-    },
+    motionData: { motionId, gasEstimate, motionStateHistory },
     type,
     amount,
     fromDomain,
@@ -45,7 +40,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   const domainBalance = getBalanceForTokenAndDomain(
     balances,
     tokenAddress ?? '',
-    Number(nativeMotionDomainId),
+    fromDomain?.nativeId || Id.RootDomain,
   );
 
   const requiresDomainFunds: boolean =
