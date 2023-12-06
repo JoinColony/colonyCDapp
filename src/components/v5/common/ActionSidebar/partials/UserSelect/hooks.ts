@@ -29,6 +29,7 @@ export const useUserSelect = () => {
             avatar: profile?.thumbnail || profile?.avatar || '',
             id: result.length,
             showAvatar: true,
+            walletAddress,
           },
         ];
       }, []),

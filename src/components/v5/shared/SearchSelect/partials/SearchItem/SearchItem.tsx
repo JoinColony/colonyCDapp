@@ -93,7 +93,7 @@ const SearchItem: FC<SearchItemProps> = ({
                 )}
                 {showAvatar && (
                   <div className="mr-2 items-center justify-center flex">
-                    <Avatar avatar={avatar} />
+                    <Avatar avatar={avatar} seed={walletAddress} />
                   </div>
                 )}
                 {isLabelVisible && labelText}
