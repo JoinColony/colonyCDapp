@@ -257,9 +257,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       },
       {
         key: CustomStep.VotedMotionOutcome,
-        content: (
-          <OutcomeStep motionData={motionData} motionState={motionStateEnum} />
-        ),
+        content: <OutcomeStep motionData={motionData} />,
         heading: {
           iconName: motionFinished
             ? (hasVotedMotionPassed && 'thumbs-up') || 'thumbs-down'

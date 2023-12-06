@@ -1293,8 +1293,6 @@
     "motion.finalizeStep.submit": "Finalize",
     "motion.finalizeStep.transactions.remaining": "{transactions} transactions remaining",
     "motion.finalizeStep.claimed": "Claimed",
-    "motion.outcomeStep.win.title": "Congratulations! Your side won.",
-    "motion.outcomeStep.lost.title": "Sorry, your side lost.",
     "table.row.recipient": "Recipient",
     "table.row.amount": "Amount",
     "table.row.token": "Token",

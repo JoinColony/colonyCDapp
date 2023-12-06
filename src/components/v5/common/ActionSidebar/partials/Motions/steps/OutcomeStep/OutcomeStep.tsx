@@ -1,7 +1,9 @@
+import { BigNumber } from 'ethers';
 import React, { FC } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~hooks';
-import { MotionState, MotionVote } from '~utils/colonyMotions';
+import { MotionVote } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
 import MenuWithSections from '~v5/shared/MenuWithSections';
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
@@ -13,8 +15,46 @@ import { OutcomeStepProps } from './types';
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';
 
-const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
-  const { wallet, canInteract } = useAppContext();
+const MSG = defineMessages({
+  voterWinTitle: {
+    id: `${displayName}.voterWinTitle`,
+    defaultMessage: 'Congratulations! Your side won.',
+  },
+  voterLostTitle: {
+    id: `${displayName}.voterLostTitle`,
+    defaultMessage: 'Sorry, your side lost.',
+  },
+  neutralWinTitle: {
+    id: `${displayName}.neutralWinnerTitle`,
+    defaultMessage: 'Action was fully supported.',
+  },
+  neutralLostTitle: {
+    id: `${displayName}.neutralLoserTitle`,
+    defaultMessage: 'Action was fully opposed.',
+  },
+});
+
+const getOutcomeStepTitle = (
+  currentUserVote: UserAvatarsItem | undefined,
+  winningSide: MotionVote,
+) => {
+  if (currentUserVote) {
+    if (currentUserVote.vote === winningSide) {
+      return MSG.voterWinTitle;
+    }
+
+    return MSG.voterLostTitle;
+  }
+
+  if (winningSide === MotionVote.Yay) {
+    return MSG.neutralWinTitle;
+  }
+
+  return MSG.neutralLostTitle;
+};
+
+const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
+  const { wallet } = useAppContext();
   const { voteStatuses } = useOutcomeStep(motionData);
 
   const voters: UserAvatarsItem[] =
@@ -27,21 +67,11 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
   const currentUserVote = voters.find(
     ({ address }) => address === wallet?.address,
   );
-  const currentUserVoted = !!currentUserVote;
-
-  let outcome = false;
-  if (
-    currentUserVote?.vote === MotionVote.Yay &&
-    motionState === MotionState.Passed
-  ) {
-    outcome = true;
-  }
-  if (
-    currentUserVote?.vote === MotionVote.Nay &&
-    motionState === MotionState.Failed
-  ) {
-    outcome = true;
-  }
+  const winningSide = BigNumber.from(
+    motionData?.revealedVotes.raw.yay || '0',
+  ).gt(motionData?.revealedVotes.raw.nay || '0')
+    ? MotionVote.Yay
+    : MotionVote.Nay;
 
   return (
     <MenuWithSections
@@ -50,15 +80,9 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData, motionState }) => {
           key: '1',
           content: (
             <div className="flex flex-col gap-4">
-              {canInteract && currentUserVoted && (
-                <h3 className="text-center text-1">
-                  {formatText({
-                    id: outcome
-                      ? 'motion.outcomeStep.win.title'
-                      : 'motion.outcomeStep.lost.title',
-                  })}
-                </h3>
-              )}
+              <h3 className="text-center text-1">
+                {formatText(getOutcomeStepTitle(currentUserVote, winningSide))}
+              </h3>
               <VoteStatuses items={voteStatuses} voters={voters} />
             </div>
           ),
