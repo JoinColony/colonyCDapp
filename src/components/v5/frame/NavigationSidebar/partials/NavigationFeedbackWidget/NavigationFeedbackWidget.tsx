@@ -32,9 +32,7 @@ const NavigationFeedbackWidget = () => (
     <button
       type="button"
       className="text-xs font-medium underline hover:text-gray-900"
-      onClick={(e) => {
-        openFeaturesBugs(e);
-      }}
+      onClick={openFeaturesBugs}
     >
       <FormattedMessage {...MSG.widgetButtonText} />
     </button>
