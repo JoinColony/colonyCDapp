@@ -40,6 +40,7 @@ export const useColonySwitcherContent = (
                   src: item.metadata?.thumbnail || item.metadata?.avatar,
                 }
               : undefined,
+            colonyAddress: item.colonyAddress,
           },
         },
       ];
