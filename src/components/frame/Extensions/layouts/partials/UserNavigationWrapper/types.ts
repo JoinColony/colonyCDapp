@@ -4,4 +4,5 @@ export interface UserNavigationWrapperProps {
   txButtons?: ReactNode;
   userHub?: ReactNode;
   extra?: ReactNode;
+  isHidden?: boolean;
 }
