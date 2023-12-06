@@ -172,7 +172,7 @@
   }
 
   .navigation-link {
-    @apply text-gray-700 w-full flex items-center transition-all duration-normal py-2 heading-5 hover:text-blue-400 sm:font-normal sm:text-md sm:text-gray-900;
+    @apply text-gray-700 w-full flex items-center !duration-0 heading-5 hover:!text-gray-900 hover:font-medium px-4 py-2 sm:font-normal sm:text-md sm:text-gray-900;
   }
 
   .subnav-button {
