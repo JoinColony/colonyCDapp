@@ -176,8 +176,10 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
     handleClipboardCopy: itemHandleClipboardCopy,
     isCopied: itemIsCopied,
   } = useCopyToClipboard(5000);
+  const [leaveColonyConfirmOpen, setLeaveColonyConfirm] =
+    useState<boolean>(false);
   const isMobile = useMobile();
-  const { handleUnwatch, isWatching } = colonySubscription;
+  const { isWatching } = colonySubscription;
 
   const { tokens, nativeToken } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
@@ -268,7 +270,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
                     id: 'dashboard.burgerMenu.item.leaveColony',
                   }),
                   icon: Door,
-                  onClick: () => handleUnwatch(),
+                  onClick: () => setLeaveColonyConfirm(true),
                 },
               ]
             : [],
@@ -277,7 +279,6 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
     [
       colony?.name,
       colonyUrl,
-      handleUnwatch,
       isWatching,
       itemHandleClipboardCopy,
       itemIsCopied,
@@ -312,5 +313,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
         showSubMenuInPopover: !isMobile,
       },
     },
+    leaveColonyConfirmOpen,
+    setLeaveColonyConfirm,
   };
 };

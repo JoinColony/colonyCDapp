@@ -9,7 +9,12 @@ import { ColonyDashboardHeaderProps } from './types';
 
 const displayName = 'v5.common.ColonyDashboardHeader';
 
-const ColonyDashboardHeader: FC<ColonyDashboardHeaderProps> = ({
+const ColonyDashboardHeader: FC<
+  Omit<
+    ColonyDashboardHeaderProps,
+    'leaveColonyConfirmOpen' | 'setLeaveColonyConfirm'
+  >
+> = ({
   colonyLinksProps,
   colonyName,
   description,
