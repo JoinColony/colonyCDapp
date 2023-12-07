@@ -1,11 +1,13 @@
 import { WalletState } from '@web3-onboard/core';
 import { Account } from '@web3-onboard/core/dist/types';
-import { providers } from 'ethers';
+
+import RetryRpcProvider from '../redux/sagas/wallet/RetryProvider';
 
 export type ColonyWallet = BasicWallet | FullWallet;
 
 export interface FullWallet extends WalletState, Account {
-  ethersProvider: providers.Provider | null;
+  // @ts-ignore
+  ethersProvider: InstanceType<typeof RetryRpcProvider> | null;
 }
 
 export type BasicWallet = Pick<

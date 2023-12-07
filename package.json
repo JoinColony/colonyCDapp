@@ -211,6 +211,7 @@
     "embla-carousel-react": "^8.0.0-rc11",
     "eth-ens-namehash-ms": "^2.2.0",
     "ethers": "^5.6.8",
+    "exponential-backoff": "^3.1.1",
     "format-number": "^3.0.0",
     "framer-motion": "^10.12.4",
     "graphql": "^16.6.0",

@@ -1,14 +1,7 @@
 // import { eventChannel } from 'redux-saga';
 
-import {
-  JsonRpcProvider,
-  Web3Provider,
-  Network,
-} from '@ethersproject/providers';
-import { providers } from 'ethers';
+import { Network } from '@ethersproject/providers';
 import { WalletState } from '@web3-onboard/core';
-
-import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants';
 
 // import ganacheModule from './ganacheModule';
 
@@ -32,6 +25,7 @@ import { BasicWallet, FullWallet } from '~types';
 import { ContextModule, getContext } from '~context';
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
+import RetryProvider from './RetryProvider';
 
 /**
  * Watch for changes in Metamask account, and log the user out when they happen.
@@ -50,20 +44,20 @@ import { ContextModule, getContext } from '~context';
 // //   return () => null;
 // });
 
-const getProvider = (walletLabel: string) => {
-  let provider: JsonRpcProvider | Web3Provider | null = null;
-  try {
-    if (isDev && walletLabel.includes('Dev')) {
-      provider = new providers.JsonRpcProvider(GANACHE_LOCAL_RPC_URL);
-    } else if (window.ethereum) {
-      provider = new providers.Web3Provider(window.ethereum);
-    }
-  } catch {
-    // if provider cannot be instantiated, return null.
-  }
+// const getProvider = (walletLabel: string) => {
+//   let provider: JsonRpcProvider | Web3Provider | null = null;
+//   try {
+//     if (isDev && walletLabel.includes('Dev')) {
+//       provider = new providers.JsonRpcProvider(GANACHE_LOCAL_RPC_URL);
+//     } else if (window.ethereum) {
+//       provider = new providers.Web3Provider(window.ethereum);
+//     }
+//   } catch {
+//     // if provider cannot be instantiated, return null.
+//   }
 
-  return provider;
-};
+//   return provider;
+// };
 
 const getConnectOptions = (lastWallet: LastWallet | null) => {
   if (lastWallet) {
@@ -78,7 +72,7 @@ const getConnectOptions = (lastWallet: LastWallet | null) => {
 };
 
 export const getBasicWallet = async (lastWallet: LastWallet) => {
-  const provider = getProvider(lastWallet.type);
+  const provider = new RetryProvider();
   const network: Network | undefined = await provider?.getNetwork();
   if (network?.chainId) {
     return {
@@ -119,7 +113,7 @@ export const getWallet = async (lastWallet: LastWallet | null) => {
   const [account] = wallet.accounts;
   setLastWallet({ type: wallet.label, address: account.address });
 
-  const provider = getProvider(wallet.label);
+  const provider = new RetryProvider();
 
   return {
     ...wallet,
