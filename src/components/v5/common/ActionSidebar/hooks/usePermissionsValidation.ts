@@ -73,7 +73,7 @@ const getRelevantPermissionsDomainId = (
   }
 };
 
-const PERMISSIONS_VALIDATION_FIELD_NAME = 'isMissingPermissions';
+export const PERMISSIONS_VALIDATION_FIELD_NAME = 'isMissingPermissions';
 
 export const permissionsValidationSchema = object()
   .shape({

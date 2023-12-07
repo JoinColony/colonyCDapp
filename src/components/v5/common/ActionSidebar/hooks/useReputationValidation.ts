@@ -1,13 +1,16 @@
 import { Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { boolean, object } from 'yup';
 
-import { useColonyContext, useColonyHasReputation } from '~hooks';
+import { ADDRESS_ZERO } from '~constants';
+import { useGetUserReputationQuery } from '~gql';
+import { useColonyContext } from '~hooks';
 
 import { DecisionMethod } from './useDecisionMethods';
 
-const REPUTATION_VALIDATION_FIELD_NAME = 'isMissingReputation';
+export const REPUTATION_VALIDATION_FIELD_NAME = 'isMissingReputation';
 
 export const reputationValidationSchema = object()
   .shape({
@@ -38,12 +41,19 @@ export const useReputationValidation = () => {
   } = formValues;
 
   const createdInDomainId = createdIn ? Number(createdIn) : Id.RootDomain;
-  const domainHasReputation = useColonyHasReputation(
-    colony?.colonyAddress,
-    createdInDomainId,
-  );
+  const { data } = useGetUserReputationQuery({
+    skip: !colony?.colonyAddress,
+    variables: {
+      input: {
+        walletAddress: ADDRESS_ZERO,
+        colonyAddress: colony?.colonyAddress ?? '',
+        domainId: createdInDomainId,
+      },
+    },
+  });
+  const domainReputation = BigNumber.from(data?.getUserReputation ?? 0);
   const isMissingReputation =
-    !domainHasReputation && decisionMethod === DecisionMethod.Reputation;
+    domainReputation.isZero() && decisionMethod === DecisionMethod.Reputation;
 
   useEffect(() => {
     if (fieldValue !== isMissingReputation) {

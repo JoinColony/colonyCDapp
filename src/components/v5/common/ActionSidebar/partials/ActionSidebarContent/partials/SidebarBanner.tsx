@@ -7,7 +7,11 @@ import { ACTION } from '~constants/actions';
 import { useExtensionsData, useFlatFormErrors } from '~hooks';
 import { formatText } from '~utils/intl';
 import NotificationBanner from '~v5/shared/NotificationBanner';
-import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import {
+  DecisionMethod,
+  PERMISSIONS_VALIDATION_FIELD_NAME,
+  REPUTATION_VALIDATION_FIELD_NAME,
+} from '~v5/common/ActionSidebar/hooks';
 
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -36,9 +40,11 @@ export const SidebarBanner: FC = () => {
   ]);
   const flatFormErrors = useFlatFormErrors(formState.errors).filter(
     ({ key }) =>
-      !['title', 'domainHasReputation', 'userHasPermissions'].includes(
-        String(key),
-      ),
+      ![
+        'title',
+        REPUTATION_VALIDATION_FIELD_NAME,
+        PERMISSIONS_VALIDATION_FIELD_NAME,
+      ].includes(String(key)),
   );
 
   const actionTypeNotificationTitle =
@@ -54,7 +60,7 @@ export const SidebarBanner: FC = () => {
         selectedAction === ACTION.SIMPLE_PAYMENT &&
         extension.extensionId === Extension.OneTxPayment;
       const isVotingReputationExtensionAction =
-        decisionMethod === DECISION_METHOD.Reputation &&
+        decisionMethod === DecisionMethod.Reputation &&
         extension.extensionId === Extension.VotingReputation;
 
       if (isOneTxPaymentExtensionAction || isVotingReputationExtensionAction) {
