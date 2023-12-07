@@ -10,16 +10,15 @@ const MSG = defineMessages({
   },
   fileSizeError: {
     id: `${displayName}.fileSizeError`,
-    defaultMessage: 'File is too large. Try again with a smaller image',
+    defaultMessage: 'File size is too large, it should not exceed 1MB',
   },
   fileTypeError: {
     id: `${displayName}.fileTypeError`,
-    defaultMessage:
-      'Unsupported file type. Accepted file types are: svg, jpg, png and webp',
+    defaultMessage: 'Incorrect file format, must be .PNG, .JPG, or .SVG',
   },
   customError: {
     id: `${displayName}.customError`,
-    defaultMessage: '{message}',
+    defaultMessage: 'Upload failed, please try again',
   },
 });
 
@@ -36,6 +35,7 @@ export enum DropzoneErrors {
   CUSTOM = 'custom-error',
   DEFAULT = 'default',
 }
+
 /**
  * For a common set of error messages you can expect from the Avatar Uploader.
  * To pass a custom error message, don't extend this function. Instead, pass it directly to the
