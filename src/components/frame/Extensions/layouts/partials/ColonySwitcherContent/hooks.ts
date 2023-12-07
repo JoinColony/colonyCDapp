@@ -1,83 +1,60 @@
-import { useMemo, useCallback, useState } from 'react';
-import debounce from 'lodash/debounce';
+import { useCallback, useState } from 'react';
 
-import { Colony } from '~types';
-import { useAppContext } from '~hooks';
+import { Colony, JoinedColony } from '~types';
+import { useAppContext, useJoinedColonies } from '~hooks';
 
 import { getChainIconName } from '../../utils';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
-
 import { UseColonySwitcherContentReturnType } from './types';
+
+const getColonySwitcherListItem = (
+  colony: Colony | JoinedColony,
+): ColonySwitcherListItem => ({
+  key: colony.colonyAddress,
+  name: colony.metadata?.displayName || colony.name,
+  to: `/${colony.name}`,
+  avatarProps: {
+    chainIconName: getChainIconName(colony.chainMetadata.chainId),
+    colonyImageProps: colony.metadata?.avatar
+      ? {
+          src: colony.metadata?.thumbnail || colony.metadata?.avatar,
+        }
+      : undefined,
+    colonyAddress: colony.colonyAddress,
+  },
+});
 
 export const useColonySwitcherContent = (
   colony: Colony | undefined,
 ): UseColonySwitcherContentReturnType => {
-  const { userLoading, userColonies } = useAppContext();
-
-  const { chainMetadata, colonyAddress, name } = colony || {};
-  const { chainId } = chainMetadata || {};
+  const { wallet } = useAppContext();
+  const { joinedColonies, loading } = useJoinedColonies(wallet?.address);
 
   const [searchValue, setSearchValue] = useState('');
 
-  const chainIcon = getChainIconName(chainId);
+  const handleSearchValueChange = useCallback((value: string) => {
+    setSearchValue(value);
+  }, []);
 
-  const joinedColonies: ColonySwitcherListItem[] = userColonies.reduce(
-    (result, item) => {
-      if (colonyAddress === item.colonyAddress) {
-        return result;
-      }
+  const currentColonyItem = colony && getColonySwitcherListItem(colony);
 
-      return [
-        ...result,
-        {
-          key: item.colonyAddress,
-          name: item.metadata?.displayName || name || '',
-          to: `/${item.name}`,
-          avatarProps: {
-            chainIconName: getChainIconName(item.chainMetadata.chainId),
-            colonyImageProps: item.metadata?.avatar
-              ? {
-                  src: item.metadata?.thumbnail || item.metadata?.avatar,
-                }
-              : undefined,
-            colonyAddress: item.colonyAddress,
-          },
-        },
-      ];
-    },
-    [],
-  );
+  const listItems: ColonySwitcherListItem[] = joinedColonies
+    .filter(
+      (joinedColony) => joinedColony.colonyAddress !== colony?.colonyAddress,
+    )
+    .map(getColonySwitcherListItem);
 
-  const handleSearch = useMemo(
-    () => debounce(setSearchValue, 500),
-    [setSearchValue],
-  );
-
-  const onChange = useCallback(
-    (value: string) => {
-      handleSearch(value);
-    },
-    [handleSearch],
-  );
-
-  const filteredColony = useMemo(
-    () =>
-      joinedColonies.filter((item) =>
-        item.name.toLowerCase().includes(searchValue.toLowerCase()),
-      ),
-    [joinedColonies, searchValue],
+  const filteredListItems = listItems.filter(
+    (item) =>
+      !searchValue ||
+      item.name.toLowerCase().includes(searchValue.toLowerCase()),
   );
 
   return {
-    userLoading,
-    filteredColony,
-    joinedColonies,
+    loading,
+    filteredListItems,
     searchValue,
-    onChange,
-    currentColonyProps: {
-      colonyDisplayName: colony?.metadata?.displayName,
-      name: colony?.name,
-      chainIconName: chainIcon,
-    },
+    onSearchValueChange: handleSearchValueChange,
+    currentColonyItem,
   };
 };

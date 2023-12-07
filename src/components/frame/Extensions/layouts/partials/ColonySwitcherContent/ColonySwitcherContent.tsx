@@ -9,7 +9,6 @@ import EmptyContent from '~v5/common/EmptyContent';
 
 import ColonySwitcherItem from '../ColonySwitcherItem';
 import ColonySwitcherList from '../ColonySwitcherList';
-
 import { useColonySwitcherContent } from './hooks';
 import { ColonySwitcherContentProps } from './types';
 
@@ -47,39 +46,25 @@ const MSG = defineMessages({
 // The rest of the functionality will be added in the next PRs.
 const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
   const {
-    userLoading,
-    filteredColony,
-    currentColonyProps: { name, colonyDisplayName, chainIconName },
-    onChange,
-    joinedColonies,
+    currentColonyItem,
     searchValue,
+    onSearchValueChange,
+    filteredListItems,
+    loading,
   } = useColonySwitcherContent(colony);
 
   const titleClassName = 'uppercase text-4 text-gray-400 mb-1';
 
-  return userLoading ? (
+  return loading ? (
     <SpinnerLoader />
   ) : (
     <div className="pt-6 w-full flex flex-col gap-4">
-      {colony && (
+      {currentColonyItem && (
         <div>
           <h3 className={titleClassName}>
             {formatText(MSG.currentColonytitle)}
           </h3>
-          <ColonySwitcherItem
-            name={colonyDisplayName || ''}
-            avatarProps={{
-              colonyImageProps: colony?.metadata?.avatar
-                ? {
-                    src:
-                      colony?.metadata?.thumbnail || colony?.metadata?.avatar,
-                  }
-                : undefined,
-              chainIconName,
-              colonyAddress: colony.colonyAddress,
-            }}
-            to={`/${name}`}
-          />
+          <ColonySwitcherItem {...currentColonyItem} />
         </div>
       )}
       <div
@@ -87,24 +72,22 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
           'pt-6 border-t border-t-gray-200': colony,
         })}
       >
-        <SearchInput onChange={onChange} />
+        <SearchInput onChange={onSearchValueChange} />
         <div>
           <h3 className={titleClassName}>
             {formatText(MSG.joinedColonyTitle)}
           </h3>
-          {(!!filteredColony.length || !!joinedColonies.length) && (
-            <ColonySwitcherList
-              items={searchValue ? filteredColony : joinedColonies}
-            />
+          {!!filteredListItems.length && (
+            <ColonySwitcherList items={filteredListItems} />
           )}
-          {joinedColonies.length === 0 && !searchValue && (
+          {filteredListItems.length === 0 && !searchValue && (
             <EmptyContent
               icon="layout"
               title={MSG.emptyJoinedStateTitle}
               description={MSG.emptyJoinedStateSubtitle}
             />
           )}
-          {filteredColony.length === 0 && searchValue && (
+          {filteredListItems.length === 0 && searchValue && (
             <EmptyContent
               icon="binoculars"
               title={MSG.emptyFilteredStateTitle}
