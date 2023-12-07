@@ -2,8 +2,12 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
+import {
+  DropzoneErrors,
+  getErrorMessage,
+} from '~shared/AvatarUploader/helpers';
 import { TextButton } from '~v5/shared/Button';
+
 import { ErrorContentProps } from '../types';
 
 const displayName = 'v5.common.AvatarUploader.partials.ErrorContent';
@@ -17,10 +21,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const errorMessage =
-    (errorCode === DropzoneErrors.TOO_LARGE && 'too.large.file.error') ||
-    (errorCode === DropzoneErrors.CUSTOM && 'upload.failed') ||
-    (errorCode === DropzoneErrors.INVALID && 'invalid.type.error');
+  const errorMessage = getErrorMessage(errorCode || DropzoneErrors.DEFAULT);
 
   return (
     <div className="gap-3 bg-base-white border-negative-400 flex px-6 py-4 rounded border w-full">
@@ -34,7 +35,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
       <div className="flex flex-col w-full gap-1">
         <div className="flex justify-between items-center">
           <span className="text-negative-400 text-1">
-            {errorMessage && formatMessage({ id: errorMessage })}
+            {formatMessage(errorMessage)}
           </span>
           <button
             type="button"
