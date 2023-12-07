@@ -32,22 +32,6 @@ ADD docker/files/amplify/amplify-meta.json.base /colonyCDappBackend/scripts/ampl
 ADD docker/files/amplify/config.base /home/node/.aws/config
 ADD docker/files/amplify/credentials.base /home/node/.aws/credentials
 
-# Opensearch cannot be run by root so we use the built in node user
-# We also add the node user to the users group so that the node user
-# can run commands on the mounted files and folders
-ARG USER_ID
-ARG USER_GROUP
-
-RUN getent group ${USER_GROUP} || groupadd --gid ${USER_GROUP} fuckamplify
-
-RUN usermod -u ${USER_ID} node
-RUN usermod -g ${USER_GROUP} node
-
-RUN chown -R ${USER_ID}:${USER_GROUP} /colonyCDapp
-RUN chown -R ${USER_ID}:${USER_GROUP} /colonyCDappBackend
-
-USER node
-
 #
 # Amplify
 #
@@ -64,6 +48,15 @@ RUN npm run amplify
 
 # Make the run script executable
 RUN chmod +x /colonyCDappBackend/run.sh
+
+RUN userId=$(id -u node) && \
+    chown -R ${userId} /colonyCDapp && \
+    chown -R ${userId} /colonyCDappBackend
+
+# Opensearch cannot be run by root so we use the built in node user
+# We also add the node user to the users group so that the node user
+# can run commands on the mounted files and folders
+USER node
 
 # Battlecruiser Operational!
 CMD [ "/colonyCDappBackend/run.sh" ]
