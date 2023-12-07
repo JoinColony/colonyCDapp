@@ -1,9 +1,10 @@
 import React from 'react';
-
 import { defineMessages } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+
 import { WizardStepProps } from '~shared/Wizard';
 import { ActionForm } from '~shared/Fields';
-import { mergePayload } from '~utils/actions';
+import { mergePayload, pipe, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
 
 import { ButtonRow, HeaderRow } from '../shared';
@@ -46,6 +47,8 @@ const StepConfirmAllInput = ({
   },
   wizardProps: { inviteCode },
 }: Props) => {
+  const navigate = useNavigate();
+
   const updatedWizardValues = {
     ...wizardValues,
     tokenAvatar: tokenChoice === TokenChoice.Create ? tokenAvatar : undefined,
@@ -62,7 +65,10 @@ const StepConfirmAllInput = ({
     inviteCode,
   };
 
-  const transform = mergePayload(updatedWizardValues);
+  const transform = pipe(
+    mergePayload(updatedWizardValues),
+    withMeta({ navigate }),
+  );
 
   return (
     <ActionForm

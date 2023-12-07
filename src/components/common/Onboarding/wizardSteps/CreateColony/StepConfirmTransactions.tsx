@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
 
-import { WizardStepProps } from '~shared/Wizard';
 import {
   getGroupStatus,
   findTransactionGroupByKey,
@@ -17,7 +15,6 @@ import { useAppContext } from '~hooks';
 
 import { HeaderRow } from '../shared';
 
-import { FormValues } from './types';
 import ConfirmTransactions from './ConfirmTransactions';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
@@ -34,8 +31,6 @@ const MSG = defineMessages({
   },
 });
 
-type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'>;
-
 type NewestGroup = Array<{
   methodName: string;
   status: typeof TransactionStatus;
@@ -48,7 +43,7 @@ const getContractDeploymentStatus = (newestGroup: NewestGroup) =>
       status === TransactionStatus.Succeeded,
   );
 
-const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
+const StepConfirmTransactions = () => {
   const [
     existsRecoverableDeploymentError,
     setExistsRecoverableDeploymentError,
@@ -90,12 +85,6 @@ const StepConfirmTransactions = ({ wizardValues: { colonyName } }: Props) => {
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
     updateUser(user?.walletAddress, true);
-    return (
-      <Navigate
-        to={`/${colonyName}`}
-        state={{ isRedirect: true, hasRecentlyCreatedColony: true }}
-      />
-    );
   }
 
   const createColonyTxGroup = findTransactionGroupByKey(

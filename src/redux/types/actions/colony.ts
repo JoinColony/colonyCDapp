@@ -1,4 +1,6 @@
 import { Extension } from '@colony/colony-js';
+import { NavigateFunction } from 'react-router-dom';
+
 import { ActionTypes } from '~redux';
 import {
   Address,
@@ -35,7 +37,7 @@ export type ColonyActionTypes =
         tokenAvatar?: string;
         tokenThumbnail?: string;
       },
-      object
+      { navigate?: NavigateFunction }
     >
   | ActionType<typeof ActionTypes.CREATE_CANCEL>
   | ErrorActionType<ActionTypes.CREATE_ERROR, object>
