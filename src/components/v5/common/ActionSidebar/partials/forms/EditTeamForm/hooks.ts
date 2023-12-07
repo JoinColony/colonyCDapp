@@ -6,49 +6,45 @@ import { DeepPartial } from 'utility-types';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import { getEditDomainDialogPayload } from '~common/Dialogs/EditDomainDialog/helpers';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { findDomainByNativeId } from '~utils/domains';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, EditTeamFormValues } from './consts';
+import { getEditDomainDialogPayload } from './utils';
 
 export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const { domains } = colony || {};
-  const { watch, setValue } = useFormContext();
-  const decisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
-  });
+  const { setValue } = useFormContext();
 
-  const selectedTeamId = watch('team');
-  const selectedTeam = domains?.items.find(
-    (item) => item?.nativeId === parseFloat(selectedTeamId),
-  );
+  const { [DECISION_METHOD_FIELD_NAME]: decisionMethod, team } = useWatch<{
+    decisionMethod: DecisionMethod;
+    team: string;
+  }>();
+
+  const selectedDomainId = Number(team);
+  const selectedDomain = findDomainByNativeId(selectedDomainId, colony);
 
   useEffect(() => {
-    if (!selectedTeam) {
+    if (!selectedDomain) {
       return;
     }
 
-    const { metadata } = selectedTeam;
+    const { metadata } = selectedDomain;
 
     setValue('teamName', metadata?.name);
     setValue('domainPurpose', metadata?.description);
     setValue('domainColor', metadata?.color);
-  }, [selectedTeam, setValue]);
+  }, [selectedDomain, setValue]);
 
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_DOMAIN_EDIT
         : ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
@@ -60,25 +56,15 @@ export const useEditTeam = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: EditTeamFormValues) => {
-          const values = {
-            domainId: payload.team,
-            domainName: payload.teamName,
-            domainPurpose: payload.domainPurpose,
-            domainColor: payload.domainColor,
-            motionDomainId: payload.createdIn,
-            decisionMethod: payload.decisionMethod,
-            annotation: payload.description,
-          };
-
-          if (colony) {
-            return getEditDomainDialogPayload(colony, values);
+        mapPayload((values: EditTeamFormValues) => {
+          if (!colony || !selectedDomain) {
+            return null;
           }
 
-          return null;
+          return getEditDomainDialogPayload(colony, values, selectedDomain);
         }),
       ),
-      [colony],
+      [colony, selectedDomain],
     ),
   });
 };

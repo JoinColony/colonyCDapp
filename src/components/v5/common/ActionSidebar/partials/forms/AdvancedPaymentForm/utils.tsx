@@ -3,7 +3,7 @@ import { DeepPartial } from 'utility-types';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { ColonyActionType } from '~gql';
 import { formatText } from '~utils/intl';
-import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 
 import { AdvancedPaymentFormValues } from './hooks';
@@ -69,7 +69,7 @@ export const advancedPaymentDescriptionMetadataGetter: DescriptionMetadataGetter
   return getActionTitleValues(
     {
       type:
-        decisionMethod === DECISION_METHOD.Permissions
+        decisionMethod === DecisionMethod.Permissions
           ? ColonyActionType.Payment
           : ColonyActionType.PaymentMotion,
     },

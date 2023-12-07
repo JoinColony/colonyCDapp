@@ -5,9 +5,9 @@ import { notNull } from './arrays';
 
 export const findDomainByNativeId = (
   domainNativeId: number | null | undefined,
-  colony: Colony,
+  colony: Colony | undefined,
 ) => {
-  const domains = colony.domains?.items;
+  const domains = colony?.domains?.items;
   if (!domains) {
     return undefined;
   }

@@ -18,11 +18,7 @@ import {
 } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -103,29 +99,19 @@ export const useTransferFunds = (
       [colony?.nativeToken.tokenAddress],
     ),
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_MOVE_FUNDS
         : ActionTypes.MOTION_MOVE_FUNDS,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: TransferFundsFormValues) => {
-          const values = {
-            amount: payload.amount.amount,
-            motionDomainId: payload.createdIn,
-            fromDomainId: payload.from,
-            toDomainId: payload.to,
-            tokenAddress: payload.amount.tokenAddress,
-            decisionMethod: payload.decisionMethod,
-            annotation: payload.description,
-          };
-
-          if (colony) {
-            return getTransferFundsDialogPayload(colony, values);
+        mapPayload((values: TransferFundsFormValues) => {
+          if (!colony) {
+            return null;
           }
 
-          return null;
+          return getTransferFundsDialogPayload(colony, values);
         }),
       ),
       [colony],

@@ -10,11 +10,7 @@ import { getCreateDomainDialogPayload } from '~common/Dialogs/CreateDomainDialog
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, CreateNewTeamFormValues } from './consts';
 
 export const useCrateNewTeam = (
@@ -27,7 +23,7 @@ export const useCrateNewTeam = (
 
   useActionFormBaseHook({
     actionType:
-      decisionMethod === DECISION_METHOD.Reputation
+      decisionMethod === DecisionMethod.Reputation
         ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
         : ActionTypes.ACTION_DOMAIN_CREATE,
     defaultValues: useMemo<DeepPartial<CreateNewTeamFormValues>>(

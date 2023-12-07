@@ -18,11 +18,7 @@ import {
 import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -131,7 +127,7 @@ export const useSplitPayment = (
       [colony?.nativeToken.tokenAddress],
     ),
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
         : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
     getFormOptions,

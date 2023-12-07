@@ -9,11 +9,7 @@ import { useColonyContext } from '~hooks';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, ManageColonyObjectivesFormValues } from './consts';
 
 export const useManageColonyObjectives = (
@@ -40,7 +36,7 @@ export const useManageColonyObjectives = (
       [metadata?.avatar, metadata?.displayName, metadata?.thumbnail],
     ),
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_EDIT_COLONY
         : ActionTypes.MOTION_EDIT_COLONY,
     // eslint-disable-next-line react-hooks/exhaustive-deps

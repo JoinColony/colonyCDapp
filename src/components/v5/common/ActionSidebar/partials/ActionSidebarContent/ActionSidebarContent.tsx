@@ -2,12 +2,14 @@ import React, { FC } from 'react';
 import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, useIntl } from 'react-intl';
 
 import NotificationBanner from '~v5/shared/NotificationBanner';
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
+import Link from '~v5/shared/Link';
 
 import ActionTypeSelect from '../../ActionTypeSelect';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
@@ -15,7 +17,8 @@ import {
   useActionDescriptionMetadata,
   useActionFormProps,
   useSidebarActionForm,
-  useUserHasPermissions,
+  usePermissionsValidation,
+  useReputationValidation,
 } from '../../hooks';
 import ActionButtons from '../ActionButtons';
 import Motions from '../Motions';
@@ -28,16 +31,41 @@ import {
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
+const MSG = defineMessages({
+  noReputationErrorTitle: {
+    id: `${displayName}.noReputationErrorTitle`,
+    defaultMessage: 'There is no reputation in this team yet',
+  },
+  noReputationError: {
+    id: `${displayName}.noReputationError`,
+    defaultMessage:
+      'If you have the necessary permissions you can bypass the governance process.',
+  },
+  noPermissionsErrorTitle: {
+    id: `${displayName}.noPermissionsErrorTitle`,
+    defaultMessage: `You don't have the right permissions to create this action type. Choose another action.`,
+  },
+});
+
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
 }) => {
+  const { formatMessage } = useIntl();
+
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
-  const userHasPermissions = useUserHasPermissions();
-  const form = useFormContext();
-  const { title: titleError } = form.formState.errors;
   const descriptionMetadata = useActionDescriptionMetadata();
+
+  const {
+    setValue,
+    formState: {
+      errors: { title: titleError },
+    },
+  } = useFormContext();
+
+  const { noPermissionsError } = usePermissionsValidation();
+  const { noReputationError } = useReputationValidation();
 
   return (
     <>
@@ -59,6 +87,30 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
+
+        {noPermissionsError && (
+          <div className="mt-6">
+            <NotificationBanner status="warning" icon="warning-circle">
+              {formatMessage(MSG.noPermissionsErrorTitle)}
+            </NotificationBanner>
+          </div>
+        )}
+        {noReputationError && (
+          <div className="mt-6">
+            <NotificationBanner
+              status="warning"
+              icon="warning-circle"
+              description={formatMessage(MSG.noReputationError)}
+              callToAction={
+                <Link to="https://docs.colony.io/use/reputation">
+                  {formatMessage({ id: 'text.learnMore' })}
+                </Link>
+              }
+            >
+              {formatMessage(MSG.noReputationErrorTitle)}
+            </NotificationBanner>
+          </div>
+        )}
         {titleError && (
           <div className="mt-6">
             <NotificationBanner icon="warning-circle" status="error">
@@ -72,13 +124,11 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           {!selectedAction && (
             <PopularActions
               setSelectedAction={(action) =>
-                form.setValue(ACTION_TYPE_FIELD_NAME, action)
+                setValue(ACTION_TYPE_FIELD_NAME, action)
               }
             />
           )}
-          <ActionButtons
-            isActionDisabled={!userHasPermissions || !selectedAction}
-          />
+          <ActionButtons isActionDisabled={!selectedAction} />
         </div>
       )}
     </>

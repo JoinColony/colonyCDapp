@@ -3,7 +3,7 @@ import { DeepPartial } from 'utility-types';
 import { ColonyActionType } from '~gql';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 import { MintTokenFormValues } from './consts';
-import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { formatText } from '~utils/intl';
@@ -15,7 +15,7 @@ export const mintTokenDescriptionMetadataGetter: DescriptionMetadataGetter<
     {
       token: amount?.amount ? colony?.nativeToken : undefined,
       type:
-        decisionMethod === DECISION_METHOD.Permissions
+        decisionMethod === DecisionMethod.Permissions
           ? ColonyActionType.MintTokens
           : ColonyActionType.MintTokensMotion,
       amount: amount?.amount

@@ -1,5 +1,4 @@
 import { ApolloClient } from '@apollo/client';
-import first from 'lodash/first';
 import { DeepPartial } from 'utility-types';
 import moveDecimal from 'move-decimal-point';
 
@@ -13,7 +12,7 @@ import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 import { Address, User } from '~types';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { formatText } from '~utils/intl';
 
 import { tryGetToken } from '../utils';
@@ -32,7 +31,7 @@ const tryGetRecipient = async (
       variables: { address: recipientAddress },
     });
 
-    return first(data?.getUserByAddress?.items) || null;
+    return data?.getUserByAddress?.items?.[0] ?? null;
   } catch {
     return null;
   }
@@ -52,7 +51,7 @@ export const simplePaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   return getActionTitleValues(
     {
       type:
-        decisionMethod === DECISION_METHOD.Permissions
+        decisionMethod === DecisionMethod.Permissions
           ? ColonyActionType.Payment
           : ColonyActionType.PaymentMotion,
       recipientUser,

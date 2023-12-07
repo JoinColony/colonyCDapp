@@ -10,11 +10,7 @@ import { getMintTokenDialogPayload } from '~common/Dialogs/MintTokenDialog/helpe
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { MintTokenFormValues, validationSchema } from './consts';
 
 export const useMintToken = (
@@ -35,7 +31,7 @@ export const useMintToken = (
       [],
     ),
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_MINT_TOKENS
         : ActionTypes.ROOT_MOTION,
     getFormOptions,

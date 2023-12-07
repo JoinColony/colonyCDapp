@@ -11,11 +11,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { notNull } from '~utils/arrays';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, ManageTokensFormValues } from './consts';
 
 export const useManageTokens = (
@@ -50,7 +46,7 @@ export const useManageTokens = (
     getFormOptions,
     validationSchema,
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_EDIT_COLONY
         : ActionTypes.MOTION_EDIT_COLONY,
     defaultValues: useMemo(

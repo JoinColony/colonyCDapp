@@ -10,11 +10,7 @@ import { getUnlockTokenDialogPayload } from '~common/Dialogs/UnlockTokenDialog/h
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { UnlockTokenFormValues, validationSchema } from './consts';
 
 export const useUnlockToken = (
@@ -28,7 +24,7 @@ export const useUnlockToken = (
   useActionFormBaseHook({
     getFormOptions,
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_UNLOCK_TOKEN
         : ActionTypes.ROOT_MOTION,
     defaultValues: useMemo<DeepPartial<UnlockTokenFormValues>>(

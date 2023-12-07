@@ -19,11 +19,7 @@ import {
 } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
-import {
-  DecisionMethod,
-  DECISION_METHOD,
-  useActionFormBaseHook,
-} from '../../../hooks';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -127,7 +123,7 @@ export const useSimplePayment = (
       [colony?.nativeToken.tokenAddress],
     ),
     actionType:
-      decisionMethod === DECISION_METHOD.Permissions
+      decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
         : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
     getFormOptions,

@@ -1,5 +1,4 @@
 import { ApolloClient } from '@apollo/client';
-import first from 'lodash/first';
 import {
   GetTokenByAddressDocument,
   GetTokenByAddressQuery,
@@ -36,7 +35,7 @@ export const tryGetToken = async (
       variables: { address: tokenAddress },
     });
 
-    return first(data?.getTokenByAddress?.items);
+    return data?.getTokenByAddress?.items?.[0];
   } catch {
     return undefined;
   }
@@ -67,7 +66,7 @@ export const tryGetUser = async (
       variables: { address: userAddress },
     });
 
-    return first(data?.getUserByAddress?.items) || null;
+    return data?.getUserByAddress?.items?.[0] ?? null;
   } catch {
     return undefined;
   }

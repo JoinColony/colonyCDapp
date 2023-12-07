@@ -8,6 +8,6 @@ export * from './useGetActionData';
 export * from './useGetColonyAction';
 export * from './useRemoveTxParamOnClose';
 export * from './useSidebarActionForm';
-export * from './useSidebarActionForm';
-export * from './useUserHasPermissions';
+export * from './usePermissionsValidation';
+export * from './useReputationValidation';
 export * from './useDecisionMethods';

@@ -14,16 +14,16 @@ import { Colony } from '~types';
 import { userHasRole } from '~utils/checks';
 import { findDomainByNativeId } from '~utils/domains';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { TransferFundsFormValues } from '~v5/common/ActionSidebar/partials/forms/TransferFundsForm/hooks';
 
 export const getTransferFundsDialogPayload = (
   colony: Colony,
   {
-    tokenAddress,
-    amount: transferAmount,
-    fromDomainId,
-    toDomainId,
-    annotation: annotationMessage,
-  },
+    amount: { amount: transferAmount, tokenAddress },
+    from: fromDomainId,
+    to: toDomainId,
+    description: annotationMessage,
+  }: TransferFundsFormValues,
 ) => {
   const colonyTokens = colony?.tokens?.items || [];
   const selectedToken = colonyTokens.find(
@@ -34,8 +34,8 @@ export const getTransferFundsDialogPayload = (
   // Convert amount string with decimals to BigInt (eth to wei)
   const amount = BigNumber.from(moveDecimal(transferAmount, decimals));
 
-  const fromDomain = findDomainByNativeId(fromDomainId, colony);
-  const toDomain = findDomainByNativeId(toDomainId, colony);
+  const fromDomain = findDomainByNativeId(Number(fromDomainId), colony);
+  const toDomain = findDomainByNativeId(Number(toDomainId), colony);
 
   return {
     colonyAddress: colony.colonyAddress,

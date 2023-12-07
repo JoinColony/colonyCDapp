@@ -9,7 +9,7 @@ import {
 import { ColonyActionType, ColonyActionRoles } from '~gql';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
-import { DECISION_METHOD } from '~v5/common/ActionSidebar/hooks';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 import { getTeam, tryGetUser } from '../utils';
 import {
@@ -91,7 +91,7 @@ export const managePermissionsDescriptionMetadataGetter: DescriptionMetadataGett
   return getActionTitleValues(
     {
       type:
-        decisionMethod === DECISION_METHOD.Permissions
+        decisionMethod === DecisionMethod.Permissions
           ? ColonyActionType.SetUserRoles
           : ColonyActionType.SetUserRolesMotion,
       fromDomain: team,
