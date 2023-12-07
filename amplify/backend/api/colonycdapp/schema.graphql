@@ -128,39 +128,65 @@ input CreateUniqueColonyInput {
   """
   Unique identifier for the Colony. This is the Colony's contract address
   """
-  id: ID!
-  """
-  Display name of the Colony
-  """
-  name: String!
+  colonyAddress: ID!
   """
   Unique identifier for the Colony's native token (this is its address)
   """
-  colonyNativeTokenId: ID!
+  tokenAddress: ID!
   """
   Type of the Colony (regular or MetaColony)
   """
   type: ColonyType
   """
-  Status information for the Colony
+  User id of creator to associate with further invite codes
   """
-  status: ColonyStatusInput
+  initiatorAddress: ID!
   """
-  Metadata related to the Colony's creation on the blockchain
+  The transaction hash of colony creation transaction
   """
-  chainMetadata: ChainMetadataInput!
+  transactionHash: String!
+}
+
+"""
+Input data for creating a temporary colony metadata entry
+"""
+input CreateColonyEtherealMetadataInput {
   """
-  Version of the currently deployed Colony contract
+  User id of creator to associate with further invite codes
   """
-  version: Int!
+  initiatorAddress: ID!
+  """
+  The transaction hash of colony creation transaction
+  """
+  transactionHash: String!
   """
   Invite Code to create Colony
   """
   inviteCode: ID!
   """
-  User id of creator to associate with further invite codes
+  Colony slug
   """
-  userId: ID!
+  colonyName: String!
+  """
+  Colony name
+  """
+  colonyDisplayName: String!
+  """
+  Colony avatar/thumbnail
+  """
+  colonyAvatar: String
+  """
+  Colony avatar/thumbnail
+  """
+  colonyThumbnail: String
+  """
+  Token avatar/thumbnail
+  """
+  tokenAvatar: String
+  """
+  Token avatar/thumbnail
+  """
+  tokenThumbnail: String
 }
 
 """
@@ -888,6 +914,11 @@ type Mutation {
   createUniqueColony(input: CreateUniqueColonyInput): Colony
     @function(name: "createUniqueColony-${env}")
   """
+  Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
+  """
+  createColonyEtherealMetadata(input: CreateColonyEtherealMetadataInput!): ColonyMetadata
+    @function(name: "createColonyEtherealMetadata-${env}")
+  """
   Updates the latest available version of a Colony or an extension
   """
   setCurrentVersion(input: SetCurrentVersionInput): Boolean
@@ -1436,6 +1467,16 @@ type ColonyObjective {
   progress: Int!
 }
 
+type ColonyMetadataEtherealData {
+  colonyName: String!
+  colonyDisplayName: String!
+  colonyAvatar: String
+  colonyThumbnail: String
+  tokenAvatar: String
+  tokenThumbnail: String
+  initiatorAddress: ID!
+}
+
 """
 Represents metadata for a Colony
 """
@@ -1489,6 +1530,10 @@ type ColonyMetadata @model {
   List of safes that are used within the Colony
   """
   safes: [Safe!]
+  """
+  Temporary data to store while the colony is being created (via the block ingestor)
+  """
+  etherealData: ColonyMetadataEtherealData
 }
 
 """
