@@ -91,12 +91,12 @@ const WizardSidebar = ({
           className="mb-1.5 [&>svg]:fill-gray-900"
           appearance={{ size: 'small' }}
         />
-        <div className="text-gray-900">
+        <div className="text-gray-900 text-xs">
           <FormattedMessage {...MSG.guidance} />
         </div>
         <ExternalLink
           href="https://docs.colony.io/"
-          className="text-gray-900 hover:text-blue-400 underline"
+          className="text-gray-900 hover:text-blue-400 underline text-xs font-medium"
         >
           <FormattedMessage {...MSG.footerLink} />
         </ExternalLink>
