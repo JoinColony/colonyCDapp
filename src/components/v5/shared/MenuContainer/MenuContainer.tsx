@@ -10,13 +10,21 @@ const MenuContainer = React.forwardRef<
   PropsWithChildren<MenuContainerProps>
 >(
   (
-    { hasShadow, rounded = 's', children, className, withPadding = true },
+    {
+      hasShadow,
+      rounded = 's',
+      children,
+      className,
+      withPadding = true,
+      checked = false,
+    },
     ref,
   ) => (
     <div
       className={clsx(
         className,
-        'bg-base-white border border-gray-200 flex flex-col',
+        'bg-base-white border flex flex-col',
+        checked ? 'border-blue-400' : 'border-gray-200',
         {
           'rounded-lg': rounded === 's',
           'rounded-xl': rounded === 'm',
