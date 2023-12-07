@@ -6,7 +6,7 @@ export type UserHubTabList = {
 }[];
 
 export enum UserHubTabs {
-  Overview = 0,
+  Balance = 0,
   Stakes = 1,
   Transactions = 2,
 }

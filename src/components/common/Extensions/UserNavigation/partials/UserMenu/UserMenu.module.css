@@ -7,5 +7,5 @@
 }
 
 .buttonBack {
-  @apply flex w-full items-center text-gray-400 transition-all duration-normal hover:text-blue-400;
+  @apply flex w-full items-center text-gray-400 transition-all mb-2 duration-normal hover:text-blue-400;
 }

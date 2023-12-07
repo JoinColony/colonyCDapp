@@ -10,5 +10,8 @@ export interface UserSubmenuItem {
   id: string;
   label: string;
   url: string;
+  external?: boolean;
   icon: string;
+  className?: string;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }

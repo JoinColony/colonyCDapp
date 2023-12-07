@@ -25,7 +25,7 @@ const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
   return (
     <div>
       <p className="heading-5 mb-6 md:mb-4">
-        {formatMessage({ id: 'reputation' })}
+        {formatMessage({ id: 'userHub.reputation' })}
       </p>
       <Balance
         nativeToken={nativeToken}

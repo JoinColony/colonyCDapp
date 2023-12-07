@@ -34,7 +34,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
       >
         <TextHOne
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('heading', { level: 1 }),
@@ -47,7 +46,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
       >
         <TextHTwo
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('heading', { level: 2 }),
@@ -60,7 +58,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
       >
         <TextHThree
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('heading', { level: 3 }),
@@ -73,7 +70,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleBold().run()}
       >
         <TextBolder
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('bold'),
@@ -86,7 +82,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleItalic().run()}
       >
         <TextItalic
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('italic'),
@@ -99,7 +94,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleUnderline().run()}
       >
         <TextUnderline
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('underline'),
@@ -113,7 +107,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <ListNumbers
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('orderedList'),
@@ -126,7 +119,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleBulletList().run()}
       >
         <ListBullets
-          weight="fill"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('bulletList'),
@@ -139,7 +131,6 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
       >
         <Quotes
-          weight="regular"
           size={16}
           className={clsx(styles.icon, {
             'text-blue-400': editor.isActive('blockquote'),

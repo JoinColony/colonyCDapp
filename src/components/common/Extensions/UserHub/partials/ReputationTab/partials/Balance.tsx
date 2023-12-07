@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { useGetUserTokenBalanceQuery } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
@@ -18,6 +18,13 @@ import styles from '../ReputationTab.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
+
+const MSG = defineMessages({
+  nativeToken: {
+    id: `${displayName}.nativeToken`,
+    defaultMessage: 'Native token balance',
+  },
+});
 
 const ViewStakedButton: FC<ViewStakedButtonProps> = ({
   isFullSize,
@@ -60,7 +67,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
 
   return (
     <div>
-      <TitleLabel text={formatMessage({ id: 'balance.in.colony' })} />
+      <TitleLabel text={formatMessage(MSG.nativeToken)} />
       <div className="flex flex-col gap-4 pt-2 pb-6 border-b border-gray-200">
         <div className={styles.row}>
           <span className={styles.rowName}>

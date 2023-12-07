@@ -15,3 +15,18 @@ declare module '*.png' {
   const content: any;
   export default content;
 }
+
+// Alternatively, if you want a more specific type for dataLayer entries
+interface DataLayerObject {
+  event: string;
+  category?: string;
+  action?: string;
+  label?: string;
+  value?: number;
+  [key: string]: any;
+}
+
+interface Window {
+  dataLayer: DataLayerObject[];
+  Beamer: any;
+}

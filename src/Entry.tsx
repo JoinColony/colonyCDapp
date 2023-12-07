@@ -4,7 +4,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { ApolloProvider } from '@apollo/client';
 
+import { HelmetProvider } from 'react-helmet-async';
 import { getContext, ContextModule } from '~context';
+import { AnalyticsContextProvider } from '~context/AnalyticsContext';
 
 import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
@@ -12,6 +14,8 @@ import eventsMessages from './i18n/en-events';
 import systemMessages from './i18n/en-system-messages';
 import motionStatesMessages from './i18n/en-motion-states';
 import Routes from './routes';
+import RouteTracker from '~routes/RouteTracker';
+
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {
   /* eslint-disable global-require */
@@ -41,9 +45,14 @@ const Entry = ({ store }: Props) => {
     >
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
-          <Router>
-            <Routes />
-          </Router>
+          <HelmetProvider>
+            <AnalyticsContextProvider>
+              <Router>
+                <RouteTracker />
+                <Routes />
+              </Router>
+            </AnalyticsContextProvider>
+          </HelmetProvider>
         </ReduxProvider>
       </ApolloProvider>
     </IntlProvider>

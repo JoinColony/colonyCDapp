@@ -90,10 +90,9 @@ const OnboardingPage = ({ flow }: Props) => {
             icon={valid ? 'hands-clapping' : 'hand-waving'}
             status={valid ? 'success' : 'error'}
             className="my-8"
-            description={
-              valid ? formatText(MSG.invite) : formatText(MSG.invalidInvite)
-            }
-          />
+          >
+            {valid ? formatText(MSG.invite) : formatText(MSG.invalidInvite)}
+          </NotificationBanner>
         ) : null}
         {!wallet ? (
           <CardConnectWallet

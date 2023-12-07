@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import { UserSubmenuProps } from './types';
 import { userSubmenuItems } from './consts';
@@ -10,21 +11,59 @@ const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
 
 const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId }) => {
   const isMobile = useMobile();
-  const iconSize = isMobile ? 'small' : 'extraSmall';
+  const iconSize = isMobile ? 'small' : 'tiny';
+
+  const handleMenuItemClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void,
+  ) => {
+    if (onClick) {
+      event.preventDefault();
+      onClick(event);
+    }
+  };
 
   return (
     <ul className="-mb-2">
-      {userSubmenuItems[submenuId].map(({ id, url, icon, label }) => (
+      {userSubmenuItems[submenuId].map((item) => (
         <li
-          key={id}
-          className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+          key={item.id}
+          className={clsx(
+            'mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]',
+            item.className,
+          )}
         >
-          <NavLink to={url} className="flex items-center navigation-link">
-            <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
-              <Icon name={icon} appearance={{ size: iconSize }} />
-              <p className="ml-2 ">{label}</p>
-            </span>
-          </NavLink>
+          {item.external ? (
+            <a
+              href={item.url}
+              className={clsx(
+                'flex items-center navigation-link',
+                item.className,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={item.onClick}
+            >
+              <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                <Icon name={item.icon} appearance={{ size: iconSize }} />
+                <p className="ml-2 ">{item.label}</p>
+              </span>
+            </a>
+          ) : (
+            <NavLink
+              to={item.url}
+              className={clsx(
+                'flex items-center navigation-link',
+                item.className,
+              )}
+              onClick={(event) => handleMenuItemClick(event, item.onClick)}
+            >
+              <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                <Icon name={item.icon} appearance={{ size: iconSize }} />
+                <p className="ml-2 ">{item.label}</p>
+              </span>
+            </NavLink>
+          )}
         </li>
       ))}
     </ul>
