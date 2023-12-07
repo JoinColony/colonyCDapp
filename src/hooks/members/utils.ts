@@ -1,7 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
 import { CUSTOM_USER_ROLE, getRole, UserRole } from '~constants/permissions';
-import { uniqBy } from '~utils/lodash';
 import { ColonyContributor } from '~types';
 
 export const hasSomeRole = (
