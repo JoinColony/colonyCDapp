@@ -52,7 +52,7 @@ query GetContributorsByAddress(
       id
       createdAt
       colony {
-        ...Colony
+        ...JoinedColony
       }
     }
     nextToken

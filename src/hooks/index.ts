@@ -82,6 +82,7 @@ export { default as useRelativePortalElement } from './useRelativePortalElement'
 export { default as useColors } from './useColors';
 export { default as useTeamsOptions } from './useTeamsOptions';
 export { default as useUsersByAddresses } from './useUsersByAddresses';
+export { default as useJoinedColonies } from './useJoinedColonies';
 
 export {
   default as useSafeTransactionStatus,

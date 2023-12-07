@@ -40,6 +40,7 @@ import {
   SafeTransactionFragment,
   UserStakeFragment,
   SearchableSortDirection,
+  JoinedColonyFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -141,3 +142,5 @@ export { SafeTransactionType };
 export type ColonyObjective = ColonyObjectiveFragment;
 
 export type UserStake = UserStakeFragment;
+
+export type JoinedColony = JoinedColonyFragment;
