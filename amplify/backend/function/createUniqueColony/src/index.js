@@ -1,5 +1,6 @@
-const { utils } = require('ethers');
+const { utils, providers } = require('ethers');
 const crypto = require('crypto');
+const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
 
 const { graphqlRequest } = require('./utils');
 
@@ -11,21 +12,38 @@ const { graphqlRequest } = require('./utils');
 const {
   getColony,
   createColony,
-  getTokenByAddress,
-  getInviteCodeValidity,
-  updateInviteCodeValidity,
-  updateUser,
   createColonyMemberInvite,
+  getTokenFromEverywhere,
+  createColonyTokens,
+  createDomain,
+  createDomainMetadata,
+  getColonyMetadata,
+  createColonyMetadata,
+  deleteColonyMetadata,
 } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
+let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
+let network = Network.Custom;
+let networkAddress;
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
   if (ENV === 'qa' || ENV === 'sc' || ENV === 'prod') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
+    [networkAddress, apiKey, graphqlURL, rpcURL, network] = await getParams([
+      'networkContractAddress',
+      'appsyncApiKey',
+      'graphqlUrl',
+      'chainRpcEndpoint',
+      'chainNetwork',
+    ]);
+  } else {
+    const {
+      etherRouterAddress,
+    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    networkAddress = etherRouterAddress;
   }
 };
 
@@ -37,74 +55,12 @@ exports.handler = async (event) => {
   }
 
   const {
-    id: colonyAddress,
-    name,
-    colonyNativeTokenId,
+    colonyAddress,
+    tokenAddress,
+    initiatorAddress,
     type = 'COLONY',
-    version,
-    chainMetadata,
-    status,
-    inviteCode,
-    userId,
+    transactionHash,
   } = event.arguments?.input || {};
-
-  /*
-   * Validate invite code
-   */
-  if (!(inviteCode === 'dev' && process.env.ENV === 'dev')) {
-    const inviteCodeQuery = await graphqlRequest(
-      getInviteCodeValidity,
-      { id: inviteCode },
-      graphqlURL,
-      apiKey,
-    );
-
-    const { shareableInvites, userId: inviteCodeUserId } =
-      inviteCodeQuery?.data?.getPrivateBetaInviteCode || {};
-
-    if (shareableInvites === 0) {
-      throw new Error(`Invite code is not valid`);
-    }
-
-    const inviteCodeMutation = await graphqlRequest(
-      updateInviteCodeValidity,
-      {
-        input: {
-          id: inviteCode,
-          shareableInvites: shareableInvites - 1,
-          userId: inviteCodeUserId || userId,
-        },
-      },
-      graphqlURL,
-      apiKey,
-    );
-
-    if (inviteCodeMutation.errors || !inviteCodeMutation.data) {
-      const [error] = inviteCodeMutation.errors;
-      throw new Error(
-        error?.message || `Could not update ${inviteCode} validity`,
-      );
-    }
-
-    if (!inviteCodeUserId) {
-      const userMutation = await graphqlRequest(
-        updateUser,
-        {
-          input: {
-            id: userId,
-            userPrivateBetaInviteCodeId: inviteCode,
-          },
-        },
-        graphqlURL,
-        apiKey,
-      );
-
-      if (userMutation.errors || !inviteCodeMutation.data) {
-        const [error] = userMutation.errors;
-        throw new Error(error?.message || `Could not update ${user} validity`);
-      }
-    }
-  }
 
   /*
    * Validate Colony and Token addresses
@@ -119,10 +75,10 @@ exports.handler = async (event) => {
     );
   }
   try {
-    checksummedToken = utils.getAddress(colonyNativeTokenId);
+    checksummedToken = utils.getAddress(tokenAddress);
   } catch (error) {
     throw new Error(
-      `Token address "${colonyNativeTokenId}" is not valid (after checksum)`,
+      `Token address "${tokenAddress}" is not valid (after checksum)`,
     );
   }
 
@@ -134,11 +90,11 @@ exports.handler = async (event) => {
 
   /*
    * Determine if the colony was already registered
-   * Either via it's address or via it's name
+   * Via it's address
    */
   const colonyQuery = await graphqlRequest(
     getColony,
-    { id: checksummedAddress, name },
+    { id: checksummedAddress },
     graphqlURL,
     apiKey,
   );
@@ -152,16 +108,10 @@ exports.handler = async (event) => {
 
   const [existingColonyAddress] =
     colonyQuery?.data?.getColonyByAddress?.items || [];
-  const [existingColonyName] = colonyQuery?.data?.getColonyByName?.items || [];
 
   if (existingColonyAddress) {
     throw new Error(
       `Colony with address "${existingColonyAddress.id}" is already registered`,
-    );
-  }
-  if (existingColonyName) {
-    throw new Error(
-      `Colony with name "${existingColonyName.name}" is already registered`,
     );
   }
 
@@ -176,11 +126,59 @@ exports.handler = async (event) => {
   }
 
   /*
-   * Determine if the token exists
+   * Get metadata, determine if it's the correct one, anf if we should proceed
+   */
+  const metadataQuery = await graphqlRequest(
+    getColonyMetadata,
+    { id: `etherealcolonymetadata-${transactionHash}` },
+    graphqlURL,
+    apiKey,
+  );
+
+  if (metadataQuery.errors || !metadataQuery.data) {
+    const [error] = metadataQuery.errors;
+    throw new Error(
+      error?.message || 'Could not fetch colony metadata from DynamoDB',
+    );
+  }
+
+  const {
+    colonyName,
+    colonyDisplayName,
+    tokenAvatar = null,
+    tokenThumbnail = null,
+    initiatorAddress: metadataInitiatorAddress,
+  } = metadataQuery?.data?.getColonyMetadata?.etherealData || {};
+
+  if (
+    utils.getAddress(metadataInitiatorAddress) !== utils.getAddress(initiatorAddress)
+  ) {
+    throw new Error(
+      `Colony metadata does not match the colony we are trying to create`,
+    );
+  }
+
+  /*
+   * Get colony network and the respective clients
+   */
+  const provider = new providers.JsonRpcProvider(rpcURL);
+  const networkClient = await getColonyNetworkClient(network, provider, {
+    networkAddress,
+  });
+  const colonyClient = await networkClient.getColonyClient(checksummedAddress);
+
+  /*
+   * Create token in the database
    */
   const tokenQuery = await graphqlRequest(
-    getTokenByAddress,
-    { id: checksummedToken },
+    getTokenFromEverywhere,
+    {
+      input: {
+        tokenAddress: checksummedToken,
+        avatar: tokenAvatar,
+        thumbnail: tokenThumbnail,
+      }
+    },
     graphqlURL,
     apiKey,
   );
@@ -192,16 +190,36 @@ exports.handler = async (event) => {
     );
   }
 
-  const [existingTokenAddress] =
-    tokenQuery?.data?.getTokenByAddress?.items || [];
+  const [existingToken] =
+    tokenQuery?.data?.getTokenFromEverywhere?.items || [];
 
-  if (!existingTokenAddress) {
+  if (!existingToken || !existingToken?.id) {
     throw new Error(
       `Token with address "${checksummedToken}" does not exist, hence it cannot be used as a native token for this colony`,
     );
   }
 
   const memberInviteCode = crypto.randomUUID();
+
+  const { chainId } = await provider.getNetwork();
+  const version = await colonyClient.version();
+  const isTokenLocked = colonyClient.tokenClient.locked();
+  let isTokenUnlockable = false;
+  let isTokenMintable = false;
+
+  try {
+    await colonyClient.tokenClient.estimateGas.unlock({ from: checksummedAddress});
+    isTokenUnlockable = true;
+  } catch (error) {
+    // silent
+  }
+
+  try {
+    await colonyClient.estimateGas.mintTokens(1, { from: checksummedAddress });
+    isTokenMintable = true;
+  } catch (error) {
+    // silent
+  }
 
   /*
    * Create the colony
@@ -210,15 +228,23 @@ exports.handler = async (event) => {
     createColony,
     {
       input: {
-        id: checksummedAddress,
-        nativeTokenId: checksummedToken,
-        name,
-        type,
-        chainMetadata,
-        version,
-        status,
-        colonyMemberInviteCode: memberInviteCode,
-        whitelist: [userId],
+        id: checksummedAddress, // comes from event
+        nativeTokenId: checksummedToken, // comes from event
+        name: colonyName, // above
+        type, // default
+        chainMetadata: {
+          chainId
+        },
+        version: version.toNumber(),
+        status: {
+          nativeToken: {
+            unlocked: !isTokenLocked,
+            unlockable: isTokenUnlockable,
+            mintable: isTokenMintable,
+          }
+        },
+        colonyMemberInviteCode: memberInviteCode, // above
+        whitelist: [initiatorAddress], // initiator user
       },
     },
     graphqlURL,
@@ -229,9 +255,48 @@ exports.handler = async (event) => {
     const [error] = colonyMutation.errors;
     throw new Error(
       error?.message ||
-        `Could not create user "${name}" with wallet address "${checksummedAddress}"`,
+        `Could not create colony "${name}" with address "${checksummedAddress}"`,
     );
   }
+
+  /*
+   * Set the actual colony metadata object
+   *
+   * @NOTE This, plus the next mutation constitute one two many mutations.
+   *
+   * It would be ideal if we could achieve the same in a single operation
+   * Update would do the trick here, however it cannot change the id
+   */
+  const colonyMetadataMutation = await graphqlRequest(
+    createColonyMetadata,
+    {
+      input: {
+        id: checksummedAddress,
+        displayName: colonyDisplayName,
+        isWhitelistActivated: false,
+      },
+    },
+    graphqlURL,
+    apiKey,
+  );
+
+  if (colonyMetadataMutation.errors || !colonyMetadataMutation.data) {
+    const [error] = colonyMetadataMutation.errors;
+    throw new Error(
+      error?.message ||
+      `Could not create metadata entry for colony "${name}" with address "${checksummedAddress}"`,
+    );
+  }
+
+  /*
+   * Delete the ethereal metadata entry
+   */
+  await graphqlRequest(
+    deleteColonyMetadata,
+    { input: { id: `etherealcolonymetadata-${transactionHash}` } },
+    graphqlURL,
+    apiKey,
+  );
 
   /*
    * Create the member invite
@@ -241,7 +306,7 @@ exports.handler = async (event) => {
     {
       input: {
         id: memberInviteCode,
-        colonyId: colonyMutation?.data?.createColony?.id,
+        colonyId: checksummedAddress,
         invitesRemaining: 100,
         valid: true,
       },
@@ -254,6 +319,59 @@ exports.handler = async (event) => {
     const [error] = inviteMutation.errors;
     throw new Error(error?.message || `Could not create private member invite`);
   }
+
+  /*
+   * Add token to the colony's token list
+   */
+  await graphqlRequest(
+    createColonyTokens,
+    {
+      input: {
+        colonyID: checksummedAddress,
+        tokenID: checksummedToken,
+      },
+    },
+    graphqlURL,
+    apiKey,
+  );
+
+  /*
+   * Create the root domain metadata
+   */
+  await graphqlRequest(
+    createDomainMetadata,
+    {
+      input: {
+        id: `${checksummedAddress}_${Id.RootDomain}`,
+        color: 'LIGHT_PINK',
+        name: 'Root',
+        description: '',
+      }
+    },
+    graphqlURL,
+    apiKey,
+  );
+
+  const [skillId, fundingPotId] = await colonyClient.getDomain(Id.RootDomain);
+
+  /*
+   * Create the root domain
+   */
+  const domains = await graphqlRequest(
+    createDomain,
+    {
+      input: {
+        id: `${checksummedAddress}_${Id.RootDomain}`,
+        colonyId: checksummedAddress,
+        isRoot: true,
+        nativeId: Id.RootDomain,
+        nativeSkillId: skillId.toNumber(),
+        nativeFundingPotId: fundingPotId.toNumber(),
+      },
+    },
+    graphqlURL,
+    apiKey,
+  );
 
   return colonyMutation?.data?.createColony || null;
 };
