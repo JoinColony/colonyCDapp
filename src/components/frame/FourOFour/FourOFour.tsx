@@ -7,8 +7,9 @@ import { COLONY_DOCS } from '~constants';
 import { MainLayout } from '~frame/Extensions/layouts';
 import { openFeaturesBugs } from '~hooks/useBeamer';
 import {
-  CREATE_COLONY_ROUTE_BASE,
+  // CREATE_COLONY_ROUTE_BASE,
   LANDING_PAGE_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
   USER_HOME_ROUTE,
 } from '~routes';
 import { formatText } from '~utils/intl';
@@ -91,17 +92,19 @@ const FourOFour = () => (
         {formatText(MSG.docsLink)}
       </a>
       <Link
-        to={USER_HOME_ROUTE}
+        to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
         className="text-sm mb-2 text-blue-400 underline"
       >
         {formatText(MSG.userAccountLink)}
       </Link>
+      {/* @BETA disabled for now
       <Link
         to={CREATE_COLONY_ROUTE_BASE}
         className="text-sm text-blue-400 underline"
       >
         {formatText(MSG.createColonyLink)}
       </Link>
+      */}
     </div>
   </MainLayout>
 );
