@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-import { createEIP1193Provider } from '@web3-onboard/common';
+import { createEIP1193Provider, EIP1193Provider } from '@web3-onboard/common';
 import { providers, Wallet, utils } from 'ethers';
 
 import { RpcMethods } from '~types';
@@ -9,6 +9,10 @@ import walletIcon from '~images/icons/wallet.svg';
 
 type CustomJsonRpcProvider = providers.JsonRpcProvider & {
   request: (args) => void;
+};
+
+export type CustomEIP1193Provider = EIP1193Provider & {
+  getSigner: (addressOrIndex?: string | number) => providers.JsonRpcSigner;
 };
 
 const ganacheWalletModule = (privateKey: string, optionalAccountIndex = 1) => {
@@ -72,7 +76,7 @@ const ganacheWalletModule = (privateKey: string, optionalAccountIndex = 1) => {
         });
         const eventEmitter = new EventEmitter();
         provider.on = eventEmitter.on.bind(eventEmitter);
-        return { provider };
+        return { provider } as { provider: CustomEIP1193Provider };
       },
     };
   };

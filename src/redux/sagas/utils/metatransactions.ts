@@ -1,4 +1,4 @@
-import { BigNumberish, utils, providers, TypedDataField } from 'ethers';
+import { BigNumberish, utils, TypedDataField } from 'ethers';
 
 import { Address, isFullWallet } from '~types';
 
@@ -29,8 +29,7 @@ export const signTypedData = async ({
     throw new Error('Background login not yet completed.');
   }
 
-  const walletProvider = new providers.Web3Provider(wallet.provider);
-  const signer = walletProvider.getSigner();
+  const signer = wallet.ethersProvider.getSigner();
   // eslint-disable-next-line no-underscore-dangle
   const signature = await signer._signTypedData(domain, types, message);
   const { r, s, v } = utils.splitSignature(signature);

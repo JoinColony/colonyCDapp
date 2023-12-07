@@ -1,6 +1,5 @@
 import { nanoid } from 'nanoid';
 import { call, put } from 'redux-saga/effects';
-import { providers } from 'ethers';
 import { putError, initiateMessageSigning } from '../utils';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions } from '../../types/actions';
@@ -31,9 +30,7 @@ export function* signMessage(purpose, message) {
 
   yield initiateMessageSigning(messageId);
 
-  const walletProvider = new providers.Web3Provider(wallet.provider);
-
-  const signer = walletProvider.getSigner();
+  const signer = wallet.ethersProvider.getSigner();
 
   try {
     const signature = yield call([signer, signer.signMessage], messageString);
