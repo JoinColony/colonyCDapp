@@ -7,10 +7,9 @@ import { ACTION, Action } from '~constants/actions';
 import { formatText } from '~utils/intl';
 import { useColonyContext } from '~hooks';
 
-import {
-  permissionsValidationSchema,
-  reputationValidationSchema,
-} from './hooks';
+// Do not import these from `./hooks` to avoid circular dependencies
+import { permissionsValidationSchema } from './hooks/usePermissionsValidation';
+import { reputationValidationSchema } from './hooks/useReputationValidation';
 
 export const ACTION_TYPE_FIELD_NAME = 'actionType';
 export const DECISION_METHOD_FIELD_NAME = 'decisionMethod';
