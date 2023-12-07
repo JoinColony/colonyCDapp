@@ -1,0 +1,11 @@
+mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
+  createDomainMetadata(input: $input) {
+    id
+  }
+}
+
+mutation UpdateDomainMetadata($input: UpdateDomainMetadataInput!) {
+  updateDomainMetadata(input: $input) {
+    id
+  }
+}

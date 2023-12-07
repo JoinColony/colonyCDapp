@@ -8499,6 +8499,20 @@ export type CreateColonyDecisionMutationVariables = Exact<{
 
 export type CreateColonyDecisionMutation = { __typename?: 'Mutation', createColonyDecision?: { __typename?: 'ColonyDecision', id: string } | null };
 
+export type CreateDomainMetadataMutationVariables = Exact<{
+  input: CreateDomainMetadataInput;
+}>;
+
+
+export type CreateDomainMetadataMutation = { __typename?: 'Mutation', createDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
+
+export type UpdateDomainMetadataMutationVariables = Exact<{
+  input: UpdateDomainMetadataInput;
+}>;
+
+
+export type UpdateDomainMetadataMutation = { __typename?: 'Mutation', updateDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
+
 export type CreateExpenditureMetadataMutationVariables = Exact<{
   input: CreateExpenditureMetadataInput;
 }>;
@@ -10152,6 +10166,72 @@ export function useCreateColonyDecisionMutation(baseOptions?: Apollo.MutationHoo
 export type CreateColonyDecisionMutationHookResult = ReturnType<typeof useCreateColonyDecisionMutation>;
 export type CreateColonyDecisionMutationResult = Apollo.MutationResult<CreateColonyDecisionMutation>;
 export type CreateColonyDecisionMutationOptions = Apollo.BaseMutationOptions<CreateColonyDecisionMutation, CreateColonyDecisionMutationVariables>;
+export const CreateDomainMetadataDocument = gql`
+    mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
+  createDomainMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateDomainMetadataMutationFn = Apollo.MutationFunction<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>;
+
+/**
+ * __useCreateDomainMetadataMutation__
+ *
+ * To run a mutation, you first call `useCreateDomainMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDomainMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDomainMetadataMutation, { data, loading, error }] = useCreateDomainMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateDomainMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>(CreateDomainMetadataDocument, options);
+      }
+export type CreateDomainMetadataMutationHookResult = ReturnType<typeof useCreateDomainMetadataMutation>;
+export type CreateDomainMetadataMutationResult = Apollo.MutationResult<CreateDomainMetadataMutation>;
+export type CreateDomainMetadataMutationOptions = Apollo.BaseMutationOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>;
+export const UpdateDomainMetadataDocument = gql`
+    mutation UpdateDomainMetadata($input: UpdateDomainMetadataInput!) {
+  updateDomainMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateDomainMetadataMutationFn = Apollo.MutationFunction<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>;
+
+/**
+ * __useUpdateDomainMetadataMutation__
+ *
+ * To run a mutation, you first call `useUpdateDomainMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDomainMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDomainMetadataMutation, { data, loading, error }] = useUpdateDomainMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateDomainMetadataMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>(UpdateDomainMetadataDocument, options);
+      }
+export type UpdateDomainMetadataMutationHookResult = ReturnType<typeof useUpdateDomainMetadataMutation>;
+export type UpdateDomainMetadataMutationResult = Apollo.MutationResult<UpdateDomainMetadataMutation>;
+export type UpdateDomainMetadataMutationOptions = Apollo.BaseMutationOptions<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>;
 export const CreateExpenditureMetadataDocument = gql`
     mutation CreateExpenditureMetadata($input: CreateExpenditureMetadataInput!) {
   createExpenditureMetadata(input: $input) {
