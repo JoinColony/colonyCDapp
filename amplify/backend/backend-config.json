@@ -30,6 +30,11 @@
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
     },
+    "createColonyEtherealMetadata": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createPrivateBetaInvite": {
       "build": true,
       "dependsOn": [

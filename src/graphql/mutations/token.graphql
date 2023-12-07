@@ -4,12 +4,6 @@ mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
   }
 }
 
-mutation CreateUserTokens($input: CreateUserTokensInput!) {
-  createUserTokens(input: $input) {
-    id
-  }
-}
-
 mutation DeleteColonyTokens($input: DeleteColonyTokensInput!) {
   deleteColonyTokens(input: $input) {
     id
