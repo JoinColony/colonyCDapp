@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { CREATE_COLONY_ROUTE } from '~routes';
+// import { CREATE_COLONY_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
 import Button from '~v5/shared/Button';
@@ -68,11 +68,11 @@ const ColonySidebar = ({ txButtons, userHub }: Props) => {
         content: {
           title: formatText({ id: 'navigation.colonySwitcher.title' }),
           content: <ColonySwitcherContent colony={colony} />,
-          bottomActionProps: {
-            text: formatText({ id: 'button.createNewColony' }),
-            iconName: 'plus',
-            to: CREATE_COLONY_ROUTE,
-          },
+          // bottomActionProps: {
+          //   text: formatText({ id: 'button.createNewColony' }),
+          //   iconName: 'plus',
+          //   to: CREATE_COLONY_ROUTE,
+          // },
         },
       }}
       mainMenuItems={mainMenuItems}
