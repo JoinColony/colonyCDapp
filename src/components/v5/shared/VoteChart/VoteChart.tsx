@@ -43,13 +43,22 @@ const VoteChart: FC<VoteChartProps> = ({
       predictPercentageVotesAgainst
     : undefined;
 
+  const isStakePublic =
+    threshold &&
+    ((predictedForValue && predictedForValue > threshold) ||
+      forValue > threshold);
+
   return (
     <div className={clsx(className, 'w-full')}>
       {!!threshold && (
         <p className="text-xs font-medium text-center mb-1 text-blue-400">
           {thresholdLabel ||
             formatText(
-              { id: 'motion.staking.threshold.label' },
+              {
+                id: isStakePublic
+                  ? 'motion.staking.threshold.label.public'
+                  : 'motion.staking.threshold.label',
+              },
               { threshold: `${threshold}%` },
             )}
         </p>
@@ -63,7 +72,7 @@ const VoteChart: FC<VoteChartProps> = ({
           <VoteChartBar
             value={againstValue}
             barBackgroundClassName="bg-negative-300"
-            predictionBarClassName="border-negative-300 bg-negative-100"
+            predictionBarClassName="border-negative-300 bg-negative-300"
             predictedValue={predictedAgainstValue}
             direction={VOTE_CHART_BAR_DIRECTION.Left}
           />
@@ -93,15 +102,14 @@ const VoteChart: FC<VoteChartProps> = ({
               value={forValue}
               predictedValue={predictedForValue}
               barBackgroundClassName="bg-purple-200"
-              predictionBarClassName="border-purple-200 bg-purple-100"
+              predictionBarClassName="border-purple-200 bg-purple-200"
               direction={VOTE_CHART_BAR_DIRECTION.Right}
             />
           </div>
           <span
             className={clsx('text-xs text-center transition', {
-              'text-purple-400 font-medium':
-                predictedAgainstValue || forValue > 0,
-              'text-gray-500': forValue === 0 && !predictedAgainstValue,
+              'text-purple-400 font-medium': predictedForValue || forValue > 0,
+              'text-gray-500': forValue === 0 && !predictedForValue,
             })}
           >
             {predictedForValue || forValue}% {forLabel}

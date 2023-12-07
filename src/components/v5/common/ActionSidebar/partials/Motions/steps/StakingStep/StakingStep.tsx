@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import useToggle from '~hooks/useToggle';
 
@@ -65,6 +65,24 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     objectingStakesPercentageValue !== 100 &&
     supportingStakesPercentageValue === 100;
 
+  const cardTitleText = useMemo(() => {
+    if (isFullyStaked) {
+      return 'motion.staking.status.text.locked';
+    }
+    if (objectingStakesPercentageValue === 100) {
+      return 'motion.staking.status.text.opposed';
+    }
+    if (supportingStakesPercentageValue === 100) {
+      return 'motion.staking.status.text.supported';
+    }
+
+    return 'motion.staking.status.text';
+  }, [
+    isFullyStaked,
+    objectingStakesPercentageValue,
+    supportingStakesPercentageValue,
+  ]);
+
   return isLoading ? (
     <SpinnerLoader />
   ) : (
@@ -74,9 +92,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           textClassName: 'text-4 text-gray-900',
           children: formatText(
             {
-              id: isFullyStaked
-                ? 'motion.staking.status.text.locked'
-                : 'motion.staking.status.text',
+              id: cardTitleText,
             },
             // @todo: update time when it will be available in the API
             { time: 'today at 3:14pm' },
@@ -94,7 +110,11 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
               {formatText({ id: 'motion.staking.passIfNotOpposed' })}
             </StatusText>
           ) : undefined,
-          status: 'info',
+          status:
+            objectingStakesPercentageValue === 100 ||
+            supportingStakesPercentageValue === 100
+              ? 'warning'
+              : 'info',
         }}
         sections={[
           ...(!enoughReputationToStakeMinimum && canInteract
