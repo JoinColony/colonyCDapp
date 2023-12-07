@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 
 import { providers } from 'ethers';
+import { Block } from '@ethersproject/providers';
 import { backOff } from 'exponential-backoff';
 
 import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants';
@@ -25,6 +26,9 @@ const classFactory = (
      */
     // @ts-ignore strictPropertyInitialization
     getSigner: (addressOrIndex?: string | number) => providers.JsonRpcSigner;
+
+    // @ts-ignore strictPropertyInitialization
+    getBlock: (blockHashOrBlockTag?: string | number) => Promise<Block>;
 
     constructor(options?: RetryProviderOptions) {
       super(isDev ? GANACHE_LOCAL_RPC_URL : window.ethereum);

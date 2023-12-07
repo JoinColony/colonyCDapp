@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MotionState, VotingReputationFactory } from '@colony/colony-js';
+import { Provider } from '@ethersproject/providers';
 
 import useAppContext from './useAppContext';
 import useEnabledExtensions from './useEnabledExtensions';
@@ -44,7 +45,7 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
 
     const votingRepClient = VotingReputationFactory.connect(
       votingReputationAddress,
-      ethersProvider,
+      ethersProvider as unknown as Provider,
     );
 
     const fetchMotionStates = async () => {
