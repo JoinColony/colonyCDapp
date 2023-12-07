@@ -13,12 +13,15 @@ export const getStakingTransformFn = (
   colonyAddress: string,
   motionId: string,
   nativeTokenDecimals: number | undefined,
+  tokenAddress: string,
+  activeAmount: string,
   actionId?: string,
 ) =>
   mapPayload(({ amount, voteType }) => {
     const amountValue = BigNumber.from(
       moveDecimal(amount, getTokenDecimalsWithFallback(nativeTokenDecimals)),
     );
+    const activateTokens = amountValue.gt(activeAmount);
 
     return {
       amount: amountValue,
@@ -26,6 +29,9 @@ export const getStakingTransformFn = (
       colonyAddress,
       motionId: BigNumber.from(motionId),
       vote: voteType,
+      tokenAddress,
+      activateTokens,
+      activeAmount,
       actionId,
     } as StakeMotionPayload;
   });

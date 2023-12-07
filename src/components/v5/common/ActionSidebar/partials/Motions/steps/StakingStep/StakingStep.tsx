@@ -31,6 +31,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     enoughTokensToStakeMinimum,
     isLoading,
     userActivatedTokens,
+    userInactivatedTokens,
   } = useStakingStep();
   const { motionData, colony, token } = motionAction;
   const { usersStakes, motionStakes, requiredStake } = motionData;
@@ -142,6 +143,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                     !enoughTokensToStakeMinimum
                   }
                   userActivatedTokens={userActivatedTokens}
+                  userInactivatedTokens={userInactivatedTokens}
                 />
               ),
           },

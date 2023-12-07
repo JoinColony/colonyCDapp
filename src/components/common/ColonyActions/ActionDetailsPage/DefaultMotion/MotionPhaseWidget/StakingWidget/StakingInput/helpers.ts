@@ -1,12 +1,9 @@
 import { BigNumber } from 'ethers';
 
-import { Action, ActionTypes } from '~redux';
 import { SetStateFn } from '~types';
 import { mapPayload } from '~utils/actions';
 
 import { getStakeFromSlider } from '../helpers';
-
-type StakeMotionPayload = Action<ActionTypes.MOTION_STAKE>['payload'];
 
 export const getStakingTransformFn = (
   remainingToStake: string,
@@ -32,7 +29,7 @@ export const getStakingTransformFn = (
       vote,
       annotationMessage,
       actionId,
-    } as StakeMotionPayload;
+    };
   });
 
 export const getHandleStakeSuccessFn =

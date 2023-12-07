@@ -21,16 +21,20 @@ const useEnoughTokensForStaking = (
       skip: !tokenAddress || !walletAddress,
     });
 
-  const { activeBalance } = data?.getUserTokenBalance || {};
+  const { activeBalance, inactiveBalance } = data?.getUserTokenBalance || {};
 
   const userActivatedTokens = BigNumber.from(activeBalance ?? 0);
+  const userInactivatedTokens = BigNumber.from(inactiveBalance ?? 0);
 
-  const hasEnoughTokens = userActivatedTokens.gte(requiredStake);
+  const hasEnoughTokens = userActivatedTokens
+    .add(userInactivatedTokens)
+    .gte(requiredStake);
 
   return {
     loadingUserTokenBalance,
     hasEnoughTokens,
     userActivatedTokens,
+    userInactivatedTokens,
   };
 };
 

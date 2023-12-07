@@ -57,50 +57,50 @@ const useGroupState = ({
     TransactionGroupStates.NonePending,
   );
 
-  if (!group) {
-    return groupState;
-  }
+  useEffect(() => {
+    const someFailed = group?.some(
+      (tx) => tx.status === TransactionStatus.Failed,
+    );
+    const allCompleted = group?.every(
+      (tx) => tx.status === TransactionStatus.Succeeded,
+    );
+    const hasLatestGroupPendingTx = group?.some(
+      (tx) => tx.status === TransactionStatus.Pending,
+    );
 
-  const someFailed = group.some((tx) => tx.status === TransactionStatus.Failed);
-  const allCompleted = group.every(
-    (tx) => tx.status === TransactionStatus.Succeeded,
-  );
-  const hasLatestGroupPendingTx = group.some(
-    (tx) => tx.status === TransactionStatus.Pending,
-  );
+    if (isUpdatingGroup) {
+      if (groupState !== TransactionGroupStates.Loading) {
+        setGroupState(TransactionGroupStates.Loading);
+      }
+    } else if (someFailed && groupState !== TransactionGroupStates.SomeFailed) {
+      setGroupState(TransactionGroupStates.SomeFailed);
+    } else if (
+      allCompleted &&
+      previousPending &&
+      groupState !== TransactionGroupStates.AllCompleted
+    ) {
+      setPreviousPending(false);
+      setGroupState(TransactionGroupStates.AllCompleted);
+      setTimeout(() => {
+        setGroupState((prevState) => {
+          // don't reset if the state has changed in the meantime
+          if (prevState === TransactionGroupStates.AllCompleted) {
+            return TransactionGroupStates.NonePending;
+          }
 
-  if (isUpdatingGroup) {
-    if (groupState !== TransactionGroupStates.Loading) {
-      setGroupState(TransactionGroupStates.Loading);
+          return prevState;
+        });
+      }, 3000);
+    } else if (
+      hasLatestGroupPendingTx &&
+      groupState !== TransactionGroupStates.SomePending
+    ) {
+      if (!previousPending) {
+        setPreviousPending(true);
+      }
+      setGroupState(TransactionGroupStates.SomePending);
     }
-  } else if (someFailed && groupState !== TransactionGroupStates.SomeFailed) {
-    setGroupState(TransactionGroupStates.SomeFailed);
-  } else if (
-    allCompleted &&
-    previousPending &&
-    groupState !== TransactionGroupStates.AllCompleted
-  ) {
-    setPreviousPending(false);
-    setGroupState(TransactionGroupStates.AllCompleted);
-    setTimeout(() => {
-      setGroupState((prevState) => {
-        // don't reset if the state has changed in the meantime
-        if (prevState === TransactionGroupStates.AllCompleted) {
-          return TransactionGroupStates.NonePending;
-        }
-
-        return prevState;
-      });
-    }, 3000);
-  } else if (
-    hasLatestGroupPendingTx &&
-    groupState !== TransactionGroupStates.SomePending
-  ) {
-    if (!previousPending) {
-      setPreviousPending(true);
-    }
-    setGroupState(TransactionGroupStates.SomePending);
-  }
+  }, [group, groupState, isUpdatingGroup, previousPending]);
 
   return groupState;
 };
