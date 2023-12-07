@@ -1,103 +1,97 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import { MessageDescriptor, defineMessages, useIntl } from 'react-intl';
+import React, { useEffect, useState } from 'react';
+import { MessageDescriptor, defineMessages } from 'react-intl';
 
-import { SpinnerLoader } from '~shared/Preloaders';
+import PageLoader from '~v5/common/PageLoader';
+import { formatText } from '~utils/intl';
 
-import NakedMole from '~images/naked-mole-without-bg.svg';
 import styles from './LoadingTemplate.css';
 
+const displayName = 'frame.LoadingTemplate';
+
 interface Props {
-  children?: ReactNode;
   loadingText?: string | MessageDescriptor;
 }
 
 const MSG = defineMessages({
   loadingDelayed: {
-    id: 'pages.LoadingTemplate.loadingDelayed',
-    defaultMessage: `As you can see, it's taking a while to connect to the service.`,
+    id: `${displayName}.loadingDelayed`,
+    defaultMessage: `It’s taking a while to connect. `,
   },
 
   loadingDelayedDescription: {
-    id: 'pages.LoadingTemplate.loadingDelayedDescription',
-    defaultMessage: `Please hold tight while we keep trying. Sorry, we know this is boring.`,
+    id: `${displayName}.loadingDelayedDescription`,
+    defaultMessage: 'Please hold tight while we keep trying.',
   },
 
   loadingFailed: {
-    id: 'pages.LoadingTemplate.loadingFailed',
-    defaultMessage: `Oh noes! We tried and tried but
-                      couldn't get any response from the service.`,
+    id: `${displayName}.loadingFailed`,
+    defaultMessage: `Oh no! We tried but couldn’t get any response from the service.`,
   },
 
   loadingFailedDescription: {
     id: 'pages.LoadingTemplate.loadingFailedDescription',
-    defaultMessage: `We're probably already trying to fix this, so please try again later.`,
+    defaultMessage: 'Please try again later.',
   },
 });
 
 const delayedLoadingDuration = 15 * 1000; // 15 seconds
 export const failedLoadingDuration = 30 * 1000; // 30 seconds
 
-const LoadingTemplate = ({ children, loadingText }: Props) => {
-  type LoadingStateType = 'default' | 'delayed' | 'failed';
-  const [loadingState, setLoadingState] = useState<LoadingStateType>('default');
+enum LoadingState {
+  DEFAULT = 'default',
+  DELAYED = 'delayed',
+  FAILED = 'failed',
+}
+
+const LoadingTemplate = ({ loadingText }: Props) => {
+  const [loadingState, setLoadingState] = useState<LoadingState>(
+    LoadingState.DEFAULT,
+  );
 
   useEffect(() => {
     const delayTimer = setTimeout(() => {
-      setLoadingState('delayed');
+      setLoadingState(LoadingState.DELAYED);
     }, delayedLoadingDuration);
     return () => clearTimeout(delayTimer);
   }, []);
 
   useEffect(() => {
     const failedTimer = setTimeout(() => {
-      setLoadingState('failed');
+      setLoadingState(LoadingState.FAILED);
     }, failedLoadingDuration);
     return () => clearTimeout(failedTimer);
   }, []);
 
-  const { formatMessage } = useIntl();
+  const getLoadingDescription = () => {
+    if (loadingState === LoadingState.DELAYED) {
+      return (
+        <>
+          {formatText(MSG.loadingDelayed)}
+          <br />
+          {formatText(MSG.loadingDelayedDescription)}
+        </>
+      );
+    }
+    if (loadingState === LoadingState.FAILED) {
+      return (
+        <>
+          {formatText(MSG.loadingFailed)}
+          <br />
+          {formatText(MSG.loadingFailedDescription)}
+        </>
+      );
+    }
+
+    return undefined;
+  };
 
   return (
     <div className={styles.main}>
       <main className={styles.mainContent}>
-        {loadingState !== 'failed' && (
-          <div>
-            <div className={styles.loaderContainer}>
-              <SpinnerLoader
-                loadingText={loadingText}
-                appearance={{ theme: 'primary', size: 'massive' }}
-              />
-            </div>
-            {children}
-          </div>
-        )}
-
-        {loadingState === 'failed' && (
-          <div className={styles.loaderContainer}>
-            <div className={styles.nakedMole}>
-              <NakedMole />
-            </div>
-          </div>
-        )}
-
-        {loadingState !== 'default' && (
-          <div>
-            <div className={styles.loadingDelayedOrFailed}>
-              <p>
-                {loadingState === 'delayed'
-                  ? formatMessage(MSG.loadingDelayed)
-                  : formatMessage(MSG.loadingFailed)}
-              </p>
-              <div className={styles.loadingDelayedOrFailedDetail}>
-                <p>
-                  {loadingState === 'delayed'
-                    ? formatMessage(MSG.loadingDelayedDescription)
-                    : formatMessage(MSG.loadingFailedDescription)}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+        <PageLoader
+          loadingText={loadingText ? formatText(loadingText) : undefined}
+          loadingDescription={getLoadingDescription()}
+        />
       </main>
     </div>
   );

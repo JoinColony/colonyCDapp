@@ -1,0 +1,13 @@
+@keyframes spin-around {
+  0% {
+    transform-origin: 50% 50%;
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pageLoaderCircle {
+  animation: spin-around 1.4s ease-in-out infinite;
+}

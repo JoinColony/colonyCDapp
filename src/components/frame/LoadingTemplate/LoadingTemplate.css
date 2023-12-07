@@ -3,7 +3,7 @@
   position: absolute;
   top: 0;
   overflow: auto;
-  background: var(--gradient-default);
+  background-color: var(--color-base-white);
 }
 
 .mainContent {
