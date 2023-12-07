@@ -3,4 +3,5 @@ export interface MenuContainerProps {
   hasShadow?: boolean;
   rounded?: 's' | 'm';
   withPadding?: boolean;
+  checked?: boolean;
 }

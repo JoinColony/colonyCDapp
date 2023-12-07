@@ -70,12 +70,9 @@ const TokenSelector = ({
   return (
     <label htmlFor={`id-${name}`}>
       <MenuContainer
+        checked={checked}
         className={clsx(
-          'items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:border-blue-200',
-          {
-            'border-blue-400': checked,
-            'border-gray-200': !checked,
-          },
+          'flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue md:hover:border-blue-200',
         )}
       >
         <input
