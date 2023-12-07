@@ -10,34 +10,17 @@ import {
 } from '@colony/colony-js';
 import { poll } from 'ethers/lib/utils';
 import { utils } from 'ethers';
-import { Network as EthersNetwork } from '@ethersproject/networks';
 
 import {
-  CreateColonyMetadataDocument,
-  CreateColonyMetadataMutation,
-  CreateColonyMetadataMutationVariables,
-  CreateColonyTokensDocument,
-  CreateColonyTokensMutation,
-  CreateColonyTokensMutationVariables,
-  CreateDomainDocument,
-  CreateDomainMetadataDocument,
-  CreateDomainMetadataMutation,
-  CreateDomainMetadataMutationVariables,
-  CreateDomainMutation,
-  CreateDomainMutationVariables,
-  CreateUniqueColonyDocument,
-  CreateUniqueColonyMutation,
-  CreateUniqueColonyMutationVariables,
-  CreateUserTokensDocument,
-  CreateUserTokensMutation,
-  CreateUserTokensMutationVariables,
-  // CreateColonyContributorDocument,
-  // CreateColonyContributorMutation,
-  // CreateColonyContributorMutationVariables,
-  DomainColor,
-  GetTokenFromEverywhereDocument,
-  GetTokenFromEverywhereQuery,
-  GetTokenFromEverywhereQueryVariables,
+  CreateColonyEtherealMetadataDocument,
+  CreateColonyEtherealMetadataMutation,
+  CreateColonyEtherealMetadataMutationVariables,
+  GetCurrentColonyVersionDocument,
+  GetCurrentColonyVersionQuery,
+  GetCurrentColonyVersionQueryVariables,
+  GetDisplayNameByColonyNameDocument,
+  GetDisplayNameByColonyNameQuery,
+  GetDisplayNameByColonyNameQueryVariables,
 } from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
 import {
@@ -47,8 +30,6 @@ import {
 } from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
-import { toNumber } from '~utils/numbers';
-import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   transactionAddParams,
@@ -72,6 +53,7 @@ import { updateTransaction } from '../transactions/transactionsToDb';
 
 function* colonyCreate({
   meta,
+  meta: { navigate },
   payload: {
     colonyName: givenColonyName,
     displayName,
@@ -88,7 +70,6 @@ function* colonyCreate({
   const wallet = getContext(ContextModule.Wallet);
   const walletAddress = utils.getAddress(wallet.address);
   const colonyManager: ColonyManager = yield getColonyManager();
-  const { networkClient } = colonyManager;
   const channelNames: string[] = [];
 
   /*
@@ -198,7 +179,15 @@ function* colonyCreate({
       ? createAddress(givenTokenAddress)
       : ADDRESS_ZERO;
 
-    const currentColonyVersion = yield networkClient.getCurrentColonyVersion();
+    const { data: colonyVersionData } = yield apolloClient.query<
+      GetCurrentColonyVersionQuery,
+      GetCurrentColonyVersionQueryVariables
+    >({
+      query: GetCurrentColonyVersionDocument,
+    });
+
+    const [{ version: currentColonyVersion = 0 }] =
+      colonyVersionData?.getCurrentVersionByKey?.items ?? [];
 
     yield put(
       transactionAddParams(createColony.id, [
@@ -207,11 +196,39 @@ function* colonyCreate({
         tokenSymbol,
         DEFAULT_TOKEN_DECIMALS,
         currentColonyVersion,
-        givenColonyName,
+        '', // store colonies on chain without a name
         '', // we aren't using ipfs to store metadata in the CDapp
       ]),
     );
     yield initiateTransaction({ id: createColony.id });
+
+    const {
+      payload: { hash: colonyCreationTransactionHash },
+    } = yield takeFrom(
+      createColony.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    /**
+     * Save colony metadata to the db
+     */
+    yield apolloClient.mutate<
+      CreateColonyEtherealMetadataMutation,
+      CreateColonyEtherealMetadataMutationVariables
+    >({
+      mutation: CreateColonyEtherealMetadataDocument,
+      variables: {
+        input: {
+          colonyName: givenColonyName,
+          colonyDisplayName: displayName,
+          tokenAvatar,
+          tokenThumbnail,
+          initiatorAddress: walletAddress,
+          transactionHash: colonyCreationTransactionHash,
+          inviteCode, // temporary, while in private beta
+        },
+      },
+    });
 
     const {
       payload: { eventData },
@@ -247,168 +264,10 @@ function* colonyCreate({
         meta,
       );
     }
-    const network: EthersNetwork = yield colonyManager.provider.getNetwork();
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
-    const isTokenLocked = yield colonyClient.tokenClient.locked();
-
-    /*
-     * Add token to db.
-     * The query is resolved by "fetchTokenFromChain", which handles the mutation.
-     */
-    yield apolloClient.query<
-      GetTokenFromEverywhereQuery,
-      GetTokenFromEverywhereQueryVariables
-    >({
-      query: GetTokenFromEverywhereDocument,
-      variables: {
-        input: {
-          tokenAddress,
-          avatar: tokenAvatar || null,
-          thumbnail: tokenThumbnail || null,
-        },
-      },
-    });
-
-    /*
-     * Add token to current user's token list.
-     */
-    yield apolloClient.mutate<
-      CreateUserTokensMutation,
-      CreateUserTokensMutationVariables
-    >({
-      mutation: CreateUserTokensDocument,
-      variables: {
-        input: {
-          userID: walletAddress,
-          tokenID: tokenAddress,
-        },
-      },
-    });
-
-    /*
-     * Create colony in db
-     */
-    yield apolloClient.mutate<
-      CreateUniqueColonyMutation,
-      CreateUniqueColonyMutationVariables
-    >({
-      mutation: CreateUniqueColonyDocument,
-      variables: {
-        input: {
-          id: colonyAddress,
-          name: givenColonyName,
-          colonyNativeTokenId: tokenAddress,
-          version: toNumber(currentColonyVersion),
-          chainMetadata: {
-            chainId: network.chainId,
-          },
-          status: {
-            nativeToken: {
-              unlockable: tokenChoice === 'create',
-              unlocked: !isTokenLocked,
-              mintable: tokenChoice === 'create',
-            },
-          },
-          userId: walletAddress,
-          inviteCode,
-        },
-      },
-    });
-
-    /**
-     * Save colony metadata to the db
-     */
-    yield apolloClient.mutate<
-      CreateColonyMetadataMutation,
-      CreateColonyMetadataMutationVariables
-    >({
-      mutation: CreateColonyMetadataDocument,
-      variables: {
-        input: {
-          id: colonyAddress,
-          displayName,
-          isWhitelistActivated: false,
-        },
-      },
-    });
-
-    /*
-     * Add token to colony's token list
-     */
-    yield apolloClient.mutate<
-      CreateColonyTokensMutation,
-      CreateColonyTokensMutationVariables
-    >({
-      mutation: CreateColonyTokensDocument,
-      variables: {
-        input: {
-          colonyID: colonyAddress,
-          tokenID: tokenAddress,
-        },
-      },
-    });
-
-    /*
-     * Subscribe user to colony
-     */
-    // yield apolloClient.mutate<
-    //   CreateColonyContributorMutation,
-    //   CreateColonyContributorMutationVariables
-    // >({
-    //   mutation: CreateColonyContributorDocument,
-    //   variables: {
-    //     input: {
-    //       colonyAddress,
-    //       colonyReputationPercentage: 0,
-    //       contributorAddress: walletAddress,
-    //       isVerified: true, // !!
-    //       id: `${colonyAddress}_${walletAddress}`,
-    //       isWatching: true,
-    //     },
-    //   },
-    // });
-
-    /*
-     * Save root domain metadata to the database
-     */
-    yield apolloClient.mutate<
-      CreateDomainMetadataMutation,
-      CreateDomainMetadataMutationVariables
-    >({
-      mutation: CreateDomainMetadataDocument,
-      variables: {
-        input: {
-          id: getDomainDatabaseId(colonyAddress, Id.RootDomain),
-          color: DomainColor.LightPink,
-          name: 'Root',
-          description: '',
-        },
-      },
-    });
-    /**
-     * Create root domain in the database
-     * @NOTE: This is a temporary solution and this mutation should be called by block-ingestor on ColonyAdded event
-     */
-    const [skillId, fundingPotId] = yield colonyClient.getDomain(Id.RootDomain);
-    yield apolloClient.mutate<
-      CreateDomainMutation,
-      CreateDomainMutationVariables
-    >({
-      mutation: CreateDomainDocument,
-      variables: {
-        input: {
-          id: getDomainDatabaseId(colonyAddress, Id.RootDomain),
-          colonyId: colonyAddress,
-          isRoot: true,
-          nativeId: Id.RootDomain,
-          nativeSkillId: toNumber(skillId),
-          nativeFundingPotId: toNumber(fundingPotId),
-        },
-      },
-    });
 
     /*
      * Add a colonyAddress identifier to all pending transactions.
@@ -506,6 +365,43 @@ function* colonyCreate({
 
       yield takeFrom(setOneTxRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
     }
+
+    /*
+     * Wait for the colony to exist, then navigate to it.
+     */
+    const colonyExistsSubscrition = yield apolloClient
+      .watchQuery<
+        GetDisplayNameByColonyNameQuery,
+        GetDisplayNameByColonyNameQueryVariables
+      >({
+        query: GetDisplayNameByColonyNameDocument,
+        variables: {
+          name: givenColonyName,
+        },
+        pollInterval: 1000,
+      })
+      .subscribe({
+        next: ({ data: { getColonyByName } }) => {
+          const [colony] = getColonyByName?.items ?? [];
+          const { displayName: existingColonyDisplayName } =
+            colony?.metadata ?? {};
+          if (existingColonyDisplayName && navigate) {
+            /*
+             * Unsub to prevent memory leakeage.
+             */
+            colonyExistsSubscrition.unsubscribe();
+            /*
+             * Navigate to the colony.
+             */
+            navigate(`/${givenColonyName}`, {
+              state: {
+                isRedirect: true,
+                hasRecentlyCreatedColony: true,
+              },
+            });
+          }
+        },
+      });
 
     return null;
   } catch (error) {
