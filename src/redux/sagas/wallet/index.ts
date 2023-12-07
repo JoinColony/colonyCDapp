@@ -1,5 +1,5 @@
 // import { eventChannel } from 'redux-saga';
-
+import { providers } from 'ethers';
 import { Network } from '@ethersproject/providers';
 import { WalletState } from '@web3-onboard/core';
 
@@ -23,6 +23,7 @@ import {
 // import { Action, AllActions } from '../../types/actions';
 import { BasicWallet, FullWallet } from '~types';
 import { ContextModule, getContext } from '~context';
+import { isDev } from '~constants';
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
 import RetryProvider from './RetryProvider';
@@ -43,21 +44,6 @@ import RetryProvider from './RetryProvider';
 // //   });
 // //   return () => null;
 // });
-
-// const getProvider = (walletLabel: string) => {
-//   let provider: JsonRpcProvider | Web3Provider | null = null;
-//   try {
-//     if (isDev && walletLabel.includes('Dev')) {
-//       provider = new providers.JsonRpcProvider(GANACHE_LOCAL_RPC_URL);
-//     } else if (window.ethereum) {
-//       provider = new providers.Web3Provider(window.ethereum);
-//     }
-//   } catch {
-//     // if provider cannot be instantiated, return null.
-//   }
-
-//   return provider;
-// };
 
 const getConnectOptions = (lastWallet: LastWallet | null) => {
   if (lastWallet) {
@@ -115,9 +101,17 @@ export const getWallet = async (lastWallet: LastWallet | null) => {
 
   const provider = new RetryProvider();
 
+  const providerForDev = {
+    ...provider,
+    getSigner: (addressOrIndex?: string | number) => {
+      const web3providerWrapper = new providers.Web3Provider(wallet.provider);
+      return web3providerWrapper.getSigner(addressOrIndex);
+    },
+  };
+
   return {
     ...wallet,
     ...account,
-    ethersProvider: provider,
+    ethersProvider: isDev ? providerForDev : provider,
   } as FullWallet;
 };

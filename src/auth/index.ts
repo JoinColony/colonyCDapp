@@ -1,4 +1,3 @@
-import { providers } from 'ethers';
 import { SiweMessage } from 'siwe';
 
 import { ContextModule, getContext } from '~context';
@@ -42,8 +41,7 @@ export const authenticateWallet = async (): Promise<void> => {
     throw new Error('Background login not yet completed.');
   }
 
-  const walletProvider = new providers.Web3Provider(wallet.provider);
-  const signer = walletProvider.getSigner();
+  const signer = wallet.ethersProvider.getSigner();
 
   const authCheck = await authProxyRequest('check');
 
