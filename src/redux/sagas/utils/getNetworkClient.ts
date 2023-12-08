@@ -5,6 +5,7 @@ import {
   Network as ColonyJSNetwork,
 } from '@colony/colony-js';
 
+import axios from 'axios';
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
 import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
@@ -12,7 +13,7 @@ import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
 /*
  * Return an initialized ColonyNetworkClient instance.
  */
-export default function* getNetworkClient() {
+export default async function* getNetworkClient() {
   const wallet = getContext(ContextModule.Wallet);
 
   if (!isFullWallet(wallet)) {
@@ -30,10 +31,15 @@ export default function* getNetworkClient() {
   // @ts-ignore
   if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
     const localOracle = new URL(`/reputation/local`, 'http://localhost:3001');
-    const {
-      etherRouterAddress: networkAddress,
-      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
-    } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+    // const {
+    //   etherRouterAddress: networkAddress,
+    //   // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
+    // } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+
+    const { etherRouterAddress: networkAddress } = (
+      await axios.get('http://localhost:3006/etherrouter-address.json')
+    ).data;
+
     return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
       networkAddress,
       reputationOracleEndpoint: localOracle.href,
