@@ -1,13 +1,13 @@
 name: colony-cdapp-dev-env
 services:
-  # amplify-setup:
-  #   container_name: 'amplify-setup'
-  #   image: colony-cdapp-dev-env/base:latest
-  #   volumes:
-  #     - 'amplify-backend:/backend'
-  #     - 'amplify-mock-data:/mock-data'
-  #     - '../amplify/backend:/repo-backend'
-  #   command: '/bin/bash -c "touch /backend/.initialized && touch /mock-data/.initialized && cp -r /repo-backend/* /backend/ && ls -lah / && chown -R $(id -u node):$(id -g node) /backend && chown -R $(id -u node):$(id -g node) /mock-data"'
+  amplify-setup:
+    container_name: 'amplify-setup'
+    image: colony-cdapp-dev-env/base:latest
+    volumes:
+      - 'amplify-backend:/backend'
+      - 'amplify-mock-data:/mock-data'
+    command: '/bin/bash -c "touch /backend/.initialized && touch /mock-data/.initialized && chown -R $(id -u node):$(id -g node) /backend && chown -R $(id -u node):$(id -g node) /mock-data"'
+
   network-contracts:
     container_name: 'network'
     image: colony-cdapp-dev-env/network:latest
@@ -21,6 +21,9 @@ services:
       test: ['CMD', 'curl', '-f', 'http://localhost:3002']
       interval: 5s
       retries: 1000
+    depends_on:
+      amplify-setup:
+        condition: service_completed_successfully
 
   reputation-monitor:
     container_name: 'monitor'
@@ -55,8 +58,8 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
-      # amplify-setup:
-      #   condition: service_completed_successfully
+      amplify-setup:
+        condition: service_completed_successfully
     tty: true
     environment:
       DEBUG_COLORS: 'true'
