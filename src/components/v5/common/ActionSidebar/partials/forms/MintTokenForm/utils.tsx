@@ -39,7 +39,7 @@ export const mintTokenDescriptionMetadataGetter: DescriptionMetadataGetter<
   );
 };
 
-export const getMintTokenDialogPayload = (
+export const getMintTokenPayload = (
   colony: Colony,
   values: MintTokenFormValues,
 ) => {

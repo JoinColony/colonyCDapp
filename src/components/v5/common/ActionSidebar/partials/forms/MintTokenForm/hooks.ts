@@ -11,7 +11,7 @@ import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { MintTokenFormValues, validationSchema } from './consts';
-import { getMintTokenDialogPayload } from './utils';
+import { getMintTokenPayload } from './utils';
 
 export const useMintToken = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -43,7 +43,7 @@ export const useMintToken = (
             return null;
           }
 
-          return getMintTokenDialogPayload(colony, values);
+          return getMintTokenPayload(colony, values);
         }),
       ),
       [colony],
