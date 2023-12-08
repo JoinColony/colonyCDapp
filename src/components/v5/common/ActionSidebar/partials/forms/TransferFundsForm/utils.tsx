@@ -53,6 +53,7 @@ export const getTransferFundsPayload = (
     from: fromDomainId,
     to: toDomainId,
     description: annotationMessage,
+    title,
   }: TransferFundsFormValues,
 ) => {
   const colonyTokens = colony?.tokens?.items || [];
@@ -75,6 +76,6 @@ export const getTransferFundsPayload = (
     toDomain,
     amount,
     annotationMessage,
-    customActionTitle: '',
+    customActionTitle: title,
   };
 };
