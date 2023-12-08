@@ -55,7 +55,6 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <ActionFormRow
         iconName="pencil"
-        className="mb-6"
         // Tooltip disabled to experiment with improving user experience
         // tooltips={{
         //   label: {
