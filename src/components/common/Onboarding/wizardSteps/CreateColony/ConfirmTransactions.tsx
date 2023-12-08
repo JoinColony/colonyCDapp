@@ -16,7 +16,7 @@ const displayName = 'common.CreateColonyWizard.ConfirmTransactions';
 const MSG = defineMessages({
   loadingColony: {
     id: `${displayName}.loadingColony`,
-    defaultMessage: `Waiting for Colony to exist ...`,
+    defaultMessage: `Waiting for your colony to exist ...`,
   },
 });
 
