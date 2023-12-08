@@ -18,29 +18,20 @@ const MSG = defineMessages({
   },
   inviteBlockTitle: {
     id: `${displayName}.inviteBlockTitle`,
-    defaultMessage: 'Invite 1 person to create a Colony',
-  },
-  inviteBlockDescription: {
-    id: `${displayName}.inviteBlockDescription`,
-    /* eslint-disable max-len */
-    defaultMessage: `{showDescription, select,
-        true {You can invite only one member to create a colony of their own using the new app during the private beta with this custom invite link: }
-        other {}
-      }{inviteLink}`,
-    /* eslint-enable max-len */
+    defaultMessage: `Invite {count} {count, plural, 
+        =1 {person}
+        other {people}
+      } to create a Colony`,
   },
 });
 
-interface Props {
-  showDescription?: boolean;
-}
-
-const InvitationBlock = ({ showDescription = true }: Props) => {
+const InvitationBlock = () => {
   const { user } = useAppContext();
   const invitationCode = user?.privateBetaInviteCode?.id;
   const inviteLink = useBaseUrl(
     `${CREATE_COLONY_ROUTE_BASE}/${invitationCode}`,
   );
+  const invitesCount = user?.privateBetaInviteCode?.shareableInvites ?? 0;
 
   const { handleClipboardCopy, isCopied } = useClipboardCopy(inviteLink);
 
@@ -48,7 +39,12 @@ const InvitationBlock = ({ showDescription = true }: Props) => {
     <div className="mt-6">
       <CardWithCallout
         iconName="ticket"
-        subtitle={<FormattedMessage {...MSG.inviteBlockTitle} />}
+        subtitle={
+          <FormattedMessage
+            {...MSG.inviteBlockTitle}
+            values={{ count: invitesCount }}
+          />
+        }
         button={
           <Button
             text={MSG.buttonText}
@@ -60,10 +56,7 @@ const InvitationBlock = ({ showDescription = true }: Props) => {
           />
         }
       >
-        <FormattedMessage
-          {...MSG.inviteBlockDescription}
-          values={{ inviteLink, showDescription }}
-        />
+        {inviteLink}
       </CardWithCallout>
     </div>
   );

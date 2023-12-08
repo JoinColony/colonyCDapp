@@ -20,7 +20,7 @@ import {
   useActionSidebarContext,
   useTokensModalContext,
 } from '~context';
-import { useColonyContext } from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
@@ -48,6 +48,7 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 // });
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
+  const { user } = useAppContext();
   const { colony, loading } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
@@ -139,12 +140,12 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           pageHeadingProps: {
             title: pageHeadingTitle,
             breadcrumbs: [
-              ...(colony?.name
+              ...(colony.name
                 ? [
                     {
                       key: '1',
-                      href: `/${colony?.name}`,
-                      label: colony?.metadata?.displayName || '',
+                      href: `/${colony.name}`,
+                      label: colony.metadata?.displayName || '',
                     },
                   ]
                 : []),
@@ -175,6 +176,9 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <ColonyCreatedModal
         isOpen={isColonyCreatedModalOpen}
         onClose={() => setIsColonyCreatedModalOpen(false)}
+        shareableInvitesCount={
+          user?.privateBetaInviteCode?.shareableInvites ?? 0
+        }
       />
       {/* <InviteMembersModal
         isOpen={isInviteMembersModalOpen}
