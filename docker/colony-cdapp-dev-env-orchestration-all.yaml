@@ -55,7 +55,6 @@ services:
     ports:
       - '20002:20002'
       - '9200:9200'
-    userns_mode: 'keep-id'
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:9200']
       interval: 5s
