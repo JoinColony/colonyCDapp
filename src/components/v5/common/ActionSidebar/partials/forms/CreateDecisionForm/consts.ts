@@ -8,7 +8,7 @@ export const validationSchema = object()
       .trim()
       .required(() => 'Please enter a title.'),
     createdIn: string().defined(),
-    description: string().max(MAX_ANNOTATION_LENGTH).required(),
+    description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
     decisionMethod: string().defined(),
     walletAddress: string().address().required(),
   })
