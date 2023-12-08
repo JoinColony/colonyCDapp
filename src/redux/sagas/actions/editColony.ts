@@ -140,8 +140,6 @@ function* editColonyAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const existingTokenAddresses = getExistingTokenAddresses(colony);
@@ -212,6 +210,8 @@ function* editColonyAction({
       type: ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

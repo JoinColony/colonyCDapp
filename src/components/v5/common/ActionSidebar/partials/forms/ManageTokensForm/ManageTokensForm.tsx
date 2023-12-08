@@ -9,7 +9,7 @@ import { formatText } from '~utils/intl';
 import { useManageTokens } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import { useDecisionMethods } from '../../../hooks';
-import TokensTable from '../../TokensTable/TokensTable';
+import TokensTable from '../../TokensTable';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManageTokensForm';
 
@@ -22,7 +22,6 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ActionFormRow
         iconName="scales"
-        fieldName="decisionMethod"
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -43,7 +42,6 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <ActionFormRow
         iconName="house-line"
-        fieldName="createdIn"
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -57,7 +55,6 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <ActionFormRow
         iconName="pencil"
-        fieldName="description"
         className="mb-6"
         // Tooltip disabled to experiment with improving user experience
         // tooltips={{
@@ -81,7 +78,7 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             isDecriptionFieldExpanded={isDecriptionFieldExpanded}
             toggleOffDecriptionSelect={toggleOffDecriptionSelect}
             toggleOnDecriptionSelect={toggleOnDecriptionSelect}
-            fieldName="annotation"
+            fieldName="description"
           />
         )}
       </ActionFormRow>
