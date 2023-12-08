@@ -34,7 +34,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name, readonly: readonlyProp }) => {
   const selectedOption = teamsOptions.options.find(
     (option) => option.value === selectedTeam,
   );
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -43,7 +43,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name, readonly: readonlyProp }) => {
 
   return (
     <div className="sm:relative w-full">
-      {readonly || readonlyProp ? (
+      {readonly || readonlyProp || isActionPending ? (
         <TeamBadge
           teamName={
             typeof selectedOption?.label === 'object'

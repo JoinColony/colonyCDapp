@@ -19,7 +19,7 @@ const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 
 const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   useCrateNewTeam(getFormOptions);
 
@@ -43,7 +43,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             id: 'actionSidebar.placeholder.teamName',
           })}
           mode="secondary"
-          readOnly={readonly}
+          readOnly={readonly || isActionPending}
         />
       </ActionFormRow>
       <ActionFormRow

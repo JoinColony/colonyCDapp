@@ -42,7 +42,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
     HTMLButtonElement,
     HTMLDivElement
   >([isTokenSelectVisible]);
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   useEffect(() => {
     if (!isTokenSelectVisible) {
@@ -52,7 +52,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
 
   return (
     <div className="sm:relative w-full">
-      {readonly ? (
+      {readonly || isActionPending ? (
         <div className="flex text-md">{renderButtonContent()}</div>
       ) : (
         <>

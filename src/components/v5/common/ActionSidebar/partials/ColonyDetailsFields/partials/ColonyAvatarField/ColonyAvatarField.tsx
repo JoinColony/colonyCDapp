@@ -33,7 +33,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
     handleFileReject,
     handleFileRemove,
   } = useChangeColonyAvatar();
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
   const [
     isAvatarModalOpened,
     { toggleOff: toggleAvatarModalOff, toggleOn: toggleAvatarModalOn },
@@ -52,7 +52,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
           size="xs"
         />
       </div>
-      {!readonly && (
+      {(!readonly || !isActionPending) && (
         <button
           type="button"
           className="text-3 underline text-gray-700 hover:text-blue-400"

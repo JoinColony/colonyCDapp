@@ -32,7 +32,7 @@ const TokensTable: FC<TokensTableProps> = ({
     value,
     shouldShowMenu,
   );
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   return (
     <div>
@@ -50,7 +50,7 @@ const TokensTable: FC<TokensTableProps> = ({
           getMenuProps={getMenuProps}
         />
       )}
-      {!readonly && (
+      {(!readonly || !isActionPending) && (
         <Button
           mode="primaryOutline"
           iconName="plus"

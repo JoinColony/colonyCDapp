@@ -15,11 +15,11 @@ const FormTextareaBase: FC<FormTextareaBaseProps> = ({ name, ...rest }) => {
   } = useController({
     name,
   });
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   return (
     <TextareaBase
-      readOnly={readonly}
+      readOnly={readonly || isActionPending}
       message={error?.message}
       state={invalid ? FIELD_STATE.Error : undefined}
       {...{ ...rest, ...field }}

@@ -17,7 +17,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
     fieldState: { error },
   } = useController({ name: fieldName });
   const isError = !!error;
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   return (
     <div className="sm:relative w-full">
@@ -33,7 +33,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
         >
           <RichText
             name={fieldName}
-            isReadonly={readonly}
+            isReadonly={readonly || isActionPending}
             isDecriptionFieldExpanded={isDecriptionFieldExpanded}
             toggleOffDecriptionSelect={toggleOffDecriptionSelect}
             toggleOnDecriptionSelect={toggleOnDecriptionSelect}
@@ -54,7 +54,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
             >
               <RichText
                 name={fieldName}
-                isReadonly={readonly}
+                isReadonly={readonly || isActionPending}
                 isDecriptionFieldExpanded={isDecriptionFieldExpanded}
                 toggleOffDecriptionSelect={toggleOffDecriptionSelect}
                 toggleOnDecriptionSelect={toggleOnDecriptionSelect}

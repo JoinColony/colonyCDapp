@@ -18,7 +18,7 @@ import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
 const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
   const { decisionMethods } = useDecisionMethods();
 
   useEditTeam(getFormOptions);
@@ -57,7 +57,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             id: 'actionSidebar.placeholder.teamName',
           })}
           mode="secondary"
-          readOnly={readonly}
+          readOnly={readonly || isActionPending}
         />
       </ActionFormRow>
       <ActionFormRow

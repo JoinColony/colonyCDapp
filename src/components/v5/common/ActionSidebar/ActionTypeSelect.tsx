@@ -34,7 +34,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
     HTMLDivElement
   >([isSelectVisible]);
   const { formState, setValue } = useFormContext();
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   return (
     <div className={className}>
@@ -51,7 +51,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         //   },
         // }}
       >
-        {readonly ? (
+        {readonly || isActionPending ? (
           <span className="text-md text-gray-900">
             {formatText({
               id: translateAction(actionType),

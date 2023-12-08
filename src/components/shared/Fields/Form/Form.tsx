@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Schema } from 'yup';
 import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types';
+import { TransactionGroupStates, useUserTransactionContext } from '~context';
 
 const displayName = 'Form';
 
@@ -55,6 +56,7 @@ const Form = <FormData extends FieldValues>(
   ref: React.ForwardedRef<UseFormReturn<FormData, any, undefined>>,
 ) => {
   const { readonly, ...formOptions } = options || {};
+  const { groupState } = useUserTransactionContext();
   const formHelpers = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     defaultValues,
@@ -100,7 +102,12 @@ const Form = <FormData extends FieldValues>(
   );
 
   return (
-    <AdditionalFormOptionsContextProvider value={{ readonly }}>
+    <AdditionalFormOptionsContextProvider
+      value={{
+        readonly,
+        isActionPending: groupState === TransactionGroupStates.SomePending,
+      }}
+    >
       <FormProvider {...formHelpers}>
         <form className={className} onSubmit={submitHandler}>
           {typeof children === 'function' ? children(formHelpers) : children}

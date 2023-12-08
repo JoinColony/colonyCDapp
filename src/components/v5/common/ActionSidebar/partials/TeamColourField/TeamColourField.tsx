@@ -32,7 +32,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
     },
   ] = useToggle();
   const teamNameValue = useWatch({ name: 'teamName' });
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -43,7 +43,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
 
   return (
     <div className="sm:relative w-full">
-      {readonly ? (
+      {readonly || isActionPending ? (
         <TeamColourBadge defaultColor={field.value} title={teamNameValue} />
       ) : (
         <>

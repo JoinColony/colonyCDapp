@@ -11,7 +11,7 @@ function FormCardSelect<TValue = string>({
   name,
   ...rest
 }: FormCardSelectProps<TValue>): JSX.Element {
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
   const {
     field: { onChange, value },
     fieldState: { invalid, error },
@@ -22,7 +22,7 @@ function FormCardSelect<TValue = string>({
   return (
     <CardSelect<TValue>
       {...rest}
-      readonly={readonly}
+      readonly={readonly || isActionPending}
       value={value}
       onChange={onChange}
       state={invalid ? FIELD_STATE.Error : undefined}

@@ -19,7 +19,7 @@ export const useManageTokens = (
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
@@ -31,7 +31,7 @@ export const useManageTokens = (
 
   const shouldShowMenu = useCallback(
     (token: string) => {
-      if (readonly) {
+      if (readonly || isActionPending) {
         return false;
       }
 
@@ -39,7 +39,7 @@ export const useManageTokens = (
         .map(({ token: colonyToken }) => colonyToken.tokenAddress)
         .some((colonyTokenAddress) => colonyTokenAddress === token);
     },
-    [colonyTokens, readonly],
+    [colonyTokens, readonly, isActionPending],
   );
 
   useActionFormBaseHook({

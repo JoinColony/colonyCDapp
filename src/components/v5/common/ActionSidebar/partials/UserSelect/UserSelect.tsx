@@ -36,7 +36,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
   ] = useToggle();
   const { user: userByAddress, loading: userByAddressLoading } =
     useUserByAddress(field.value);
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   const userDisplayName = userByAddressLoading
     ? formatText({ id: 'status.loading' }, { optionalText: '' })
@@ -51,7 +51,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
 
   return (
     <div className="sm:relative w-full flex items-center">
-      {readonly ? (
+      {readonly || isActionPending ? (
         <>
           <UserAvatar
             user={userByAddress || field.value}

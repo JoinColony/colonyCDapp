@@ -8,11 +8,11 @@ import DescriptionField from '../DescriptionField';
 const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';
 
 const DescriptionRow = () => {
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
   const { watch } = useFormContext();
   const descriptionValue = watch('description');
 
-  return !(readonly && !descriptionValue) ? (
+  return !((readonly || isActionPending) && !descriptionValue) ? (
     <ActionFormRow
       iconName="pencil"
       fieldName="description"

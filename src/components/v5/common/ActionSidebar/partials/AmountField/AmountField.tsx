@@ -46,7 +46,7 @@ const AmountField: FC<AmountFieldProps> = ({
     isTokenSelectVisible,
     { toggle: toggleTokenSelect, registerContainerRef },
   ] = useToggle();
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   const {
     colonyTokens,
@@ -92,7 +92,7 @@ const AmountField: FC<AmountFieldProps> = ({
           inputRef.current = ref;
           adjustInputWidth();
         }}
-        readOnly={readonly}
+        readOnly={readonly || isActionPending}
         name={name}
         key={dynamicCleaveOptionKey}
         options={formattingOptions}
@@ -119,10 +119,12 @@ const AmountField: FC<AmountFieldProps> = ({
               {
                 'text-gray-900': selectedToken?.symbol,
                 'text-gray-500': !selectedToken?.symbol,
-                'md:hover:text-blue-400': !readonly,
+                'md:hover:text-blue-400': !readonly || !isActionPending,
               },
             )}
-            onClick={readonly ? undefined : toggleTokenSelect}
+            onClick={
+              readonly || isActionPending ? undefined : toggleTokenSelect
+            }
             aria-label={formatText({ id: 'ariaLabel.selectToken' })}
           >
             {selectedTokenContent}

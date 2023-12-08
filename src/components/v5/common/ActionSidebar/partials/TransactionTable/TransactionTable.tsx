@@ -25,14 +25,14 @@ const TransactionTable: FC<TransactionTableProps> = ({
       key: id,
     }),
   );
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
   const columns = useTransactionTableColumns(name, tokenAddress);
   const isMobile = useMobile();
   const value = useWatch({ name });
   const getMenuProps = useGetTableMenuProps(
     fieldArrayMethods,
     value,
-    !readonly,
+    !readonly || !isActionPending,
   );
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
@@ -55,7 +55,7 @@ const TransactionTable: FC<TransactionTableProps> = ({
           />
         </>
       )}
-      {!readonly && (
+      {(!readonly || !isActionPending) && (
         <Button
           mode="primaryOutline"
           iconName="plus"

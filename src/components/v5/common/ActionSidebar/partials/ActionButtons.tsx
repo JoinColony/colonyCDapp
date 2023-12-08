@@ -8,6 +8,7 @@ import { ActionButtonsProps } from '../types';
 import { useSubmitButtonDisabled, useSubmitButtonText } from './hooks';
 import { useCloseSidebarClick } from '../hooks';
 import Icon from '~shared/Icon';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
@@ -18,6 +19,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   const {
     formState: { isSubmitting, dirtyFields },
   } = useFormContext();
+  const { isActionPending } = useAdditionalFormOptionsContext();
   const {
     actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback }],
     cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
@@ -44,6 +46,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
         text={{ id: 'button.cancel' }}
         onClick={closeSidebarClick}
         isFullSize={isMobile}
+        disabled={isActionPending}
       />
       {isSubmitting ? (
         <TxButton
@@ -63,7 +66,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
       ) : (
         <Button
           mode="primarySolid"
-          disabled={isActionDisabled || isButtonDisabled}
+          disabled={isActionDisabled || isButtonDisabled || isActionPending}
           text={submitText}
           isFullSize={isMobile}
           type="submit"

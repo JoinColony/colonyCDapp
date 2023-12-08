@@ -22,13 +22,13 @@ const FormInputBase: FC<FormInputBaseProps> = ({
     defaultValue,
     name,
   });
-  const { readonly } = useAdditionalFormOptionsContext();
+  const { readonly, isActionPending } = useAdditionalFormOptionsContext();
 
   return (
     <InputBase
       message={error?.message}
       {...rest}
-      readOnly={readonly}
+      readOnly={readonly || isActionPending}
       type={type}
       value={value?.toString() || ''}
       onChange={(event) => {
