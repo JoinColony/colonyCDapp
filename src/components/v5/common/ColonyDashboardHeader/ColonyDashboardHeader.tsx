@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
-import { LockKey } from 'phosphor-react';
 
-import { formatText } from '~utils/intl';
-import Tooltip from '~shared/Extensions/Tooltip';
-
+import NativeTokenPill from '../NativeTokenPill/NativeTokenPill';
 import ColonyLinks from './partials/ColonyLinks';
 import { ColonyDashboardHeaderProps } from './types';
 
@@ -26,16 +23,7 @@ const ColonyDashboardHeader: FC<
       <h1 className="heading-2 text-gray-900 capitalize truncate">
         {colonyName}
       </h1>
-      <div className="flex items-center gap-[0.225rem] text-gray-900 bg-base-bg rounded-lg p-1.5">
-        <span className="text-3">{tokenName}</span>
-        {!isTokenUnlocked && (
-          <Tooltip
-            tooltipContent={formatText({ id: 'colony.tooltip.lockedToken' })}
-          >
-            <LockKey size={11} />
-          </Tooltip>
-        )}
-      </div>
+      <NativeTokenPill tokenName={tokenName} isLocked={!isTokenUnlocked} />
     </div>
     <div className="flex flex-col md:flex-row gap-[1.7rem] sm:gap-4 items-start justify-between">
       <p className="text-gray-700 max-w-[52.75rem] text-md line-clamp-2">
