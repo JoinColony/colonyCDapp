@@ -31,7 +31,7 @@ export const editTeamDescriptionMetadataGetter: DescriptionMetadataGetter<
   );
 };
 
-export const getEditDomainDialogPayload = (
+export const getEditDomainPayload = (
   colony: Colony,
   values: EditTeamFormValues,
   selectedDomain: Domain,
