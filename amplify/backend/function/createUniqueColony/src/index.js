@@ -235,7 +235,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    await colonyClient.estimateGas.mintTokens(1, { from: checksummedAddress });
+    await colonyClient.tokenClient.estimateGas['mint(uint256)'](1, { from: checksummedAddress });
     isTokenMintable = true;
   } catch (error) {
     // silent
