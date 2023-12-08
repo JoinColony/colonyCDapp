@@ -2,9 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useMemo } from 'react';
 import { DeepPartial } from 'utility-types';
 import { useFormContext, useWatch } from 'react-hook-form';
+
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
+import { UserRole, USER_ROLE } from '~constants/permissions';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import {
@@ -13,9 +17,7 @@ import {
   REMOVE_ROLE_OPTION_VALUE,
   validationSchema,
 } from './consts';
-import { UserRole, USER_ROLE } from '~constants/permissions';
-import { getPermissionsMap } from './utils';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { getManagePermissionsPayload } from './utils';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -54,19 +56,12 @@ export const useManagePermissions = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: ManagePermissionsFormValues) => {
+        mapPayload((values: ManagePermissionsFormValues) => {
           if (!colony) {
             return null;
           }
 
-          return {
-            annotationMessage: payload.description,
-            domainId: Number(payload.team),
-            userAddress: payload.member,
-            colonyName: colony.name,
-            colonyAddress: colony.colonyAddress,
-            roles: getPermissionsMap(payload.permissions, payload.role),
-          };
+          return getManagePermissionsPayload(colony, values);
         }),
       ),
       [colony, user, navigate],
