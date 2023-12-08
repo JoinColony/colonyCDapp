@@ -10,6 +10,20 @@ export type AmplifyDependentResourcesAttributes = {
     "colonycdappSSMAccess": {
       "Arn": "string"
     },
+    "createColonyEtherealMetadata": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "createPrivateBetaInvite": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "createUniqueColony": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -32,6 +46,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "fetchColonyNativeFundsClaim": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "fetchExpenditureBalances": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
@@ -66,14 +87,14 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
-    "getMembersForColony": {
+    "getReputationForTopDomains": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "getReputationForTopDomains": {
+    "getSafeTransactionStatus": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
@@ -102,6 +123,20 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "setCurrentVersion": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "updateContributorsWithReputation": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "validateUserInvite": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
