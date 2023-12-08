@@ -86,30 +86,9 @@ const createUniqueUser = /* GraphQL */ `
     }
   }
 `;
-const createUniqueColony = /* GraphQL */ `
-  mutation CreateUniqueColony($input: CreateUniqueColonyInput) {
-    createUniqueColony(input: $input) {
-      id
-    }
-  }
-`;
 const createColonyTokens = /* GraphQL */ `
   mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
     createColonyTokens(input: $input) {
-      id
-    }
-  }
-`;
-const createUserTokens = /* GraphQL */ `
-  mutation CreateUserTokens($input: CreateUserTokensInput!) {
-    createUserTokens(input: $input) {
-      id
-    }
-  }
-`;
-const createDomain = /* GraphQL */ `
-  mutation CreateDomain($input: CreateDomainInput!) {
-    createDomain(input: $input) {
       id
     }
   }
@@ -121,14 +100,6 @@ const createDomainMetadata = /* GraphQL */ `
     }
   }
 `;
-const createColonyMetadata = /* GraphQL */ `
-  mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
-    createColonyMetadata(input: $input) {
-      id
-    }
-  }
-`;
-
 const createContributor = /* GraphQL */ `
   mutation CreateColonyContributor($input: CreateColonyContributorInput!) {
     createColonyContributor(input: $input) {
@@ -140,6 +111,16 @@ const createContributor = /* GraphQL */ `
 const updateColonyMetadata = /* GraphQL */ `
   mutation UpdateColonyMetadata($input: UpdateColonyMetadataInput!) {
     updateColonyMetadata(input: $input) {
+      id
+    }
+  }
+`;
+
+const createColonyEtherealMetadata = /* GraphQL */ `
+  mutation CreateColonyEtherealMetadata(
+    $input: CreateColonyEtherealMetadataInput!
+  ) {
+    createColonyEtherealMetadata(input: $input) {
       id
     }
   }
@@ -194,6 +175,14 @@ const getColonyContributors = /* GraphQL */ `
           id
         }
       }
+    }
+  }
+`;
+
+const getColonyMetadata = /* GraphQL */ `
+  query GetColonyMetadata($id: ID!) {
+    getColonyMetadata(id: $id) {
+      id
     }
   }
 `;
@@ -392,120 +381,6 @@ const mintTokens = async (colonyAddress, colonyName, tokenAddress, signerOrWalle
 /*
  * Colony
  */
-const createMetacolony = async (signerOrWallet) => {
-  const colonyNetwork = ColonyNetworkFactory.connect(etherRouterAddress, signerOrWallet);
-
-  const metacolonyAddress = await colonyNetwork['getMetaColony()']();
-  const metaColony = ColonyFactory.connect(metacolonyAddress, signerOrWallet);
-  const metacolonyTokenAddress = await metaColony.getToken();
-  const metacolonyVersion = await metaColony.version();
-
-  await addTokenToDB(utils.getAddress(metacolonyTokenAddress));
-
-  // create the metacolony
-  const metacolonyQuery = await graphqlRequest(
-    createUniqueColony,
-    {
-      input: {
-        id: utils.getAddress(metacolonyAddress),
-        colonyNativeTokenId: utils.getAddress(metacolonyTokenAddress),
-        name: 'meta',
-        type: 'METACOLONY',
-        version: BigNumber.from(metacolonyVersion).toNumber(),
-        chainMetadata: {
-          chainId: (await signerOrWallet.provider.getNetwork()).chainId,
-        },
-      },
-    },
-    GRAPHQL_URI,
-    API_KEY,
-  );
-  await delay();
-
-  if (!metacolonyQuery?.errors) {
-    // add token to colony's token list
-    await addTokenToColonyTokens(
-      utils.getAddress(metacolonyAddress),
-      utils.getAddress(metacolonyTokenAddress),
-    );
-    await delay();
-
-    if (metacolonyQuery?.errors) {
-      console.log(
-        'METACOLONY COULD NOT BE CREATED.',
-        metacolonyQuery.errors[0].message,
-      );
-    } else {
-      console.log(
-        `Creating metacolony { name: "meta", colonyAddress: "${utils.getAddress(
-          metacolonyAddress,
-        )}", nativeToken: "${utils.getAddress(
-          metacolonyTokenAddress,
-        )}", version: "${metacolonyVersion.toString()}" }`,
-      );
-    }
-
-    // create metacolony metadata
-    const metadataMutation = await graphqlRequest(
-      createColonyMetadata,
-      {
-        input: {
-          id: utils.getAddress(metacolonyAddress),
-          displayName: 'Metacolony',
-        },
-      },
-      GRAPHQL_URI,
-      API_KEY,
-    );
-    await delay();
-
-    if (!metadataMutation.errors) {
-      console.log(`Creating metacolony metadata { displayName: "Metacolony" }`);
-    }
-
-    const rootDomainMetadataMutation = await graphqlRequest(
-      createDomainMetadata,
-      {
-        input: {
-          id: `${utils.getAddress(metacolonyAddress)}_1`,
-          name: 'Root',
-          color: 'LIGHT_PINK',
-          description: '',
-        },
-      },
-      GRAPHQL_URI,
-      API_KEY,
-    );
-    // @NOTE: Temporary, until handled by block-ingestor (unlike subdomains)
-    const rootDomainMutation = await graphqlRequest(
-      createDomain,
-      {
-        input: {
-          id: `${utils.getAddress(metacolonyAddress)}_1`,
-          colonyId: utils.getAddress(metacolonyAddress),
-          nativeId: 1,
-          isRoot: true,
-          nativeFundingPotId: 1,
-          nativeSkillId: 1,
-        },
-      },
-      GRAPHQL_URI,
-      API_KEY,
-    );
-
-    await delay();
-
-    if (!rootDomainMetadataMutation?.errors && !rootDomainMutation?.errors) {
-      console.log(
-        `Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(
-          metacolonyAddress,
-        )}_1", color: "LIGHT_PINK", description: "" }`,
-      );
-    }
-  }
-
-  return utils.getAddress(metacolonyAddress);
-};
 
 const createColony = async (
   {
@@ -521,7 +396,6 @@ const createColony = async (
       decimals: tokenDecimals = 18,
       avatar: tokenAvatar,
     } = {},
-    whitelist = [],
     domains = [],
   } = {},
   signerOrWallet,
@@ -555,48 +429,29 @@ const createColony = async (
   const createTokenAuthorityEvent = colonyDeploymentTransaction.events.find(
     (event) => !!event?.args?.tokenAuthorityAddress,
   );
+  const { transactionHash } = colonyDeploymentTransaction;
 
   const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
   const tokenAddress = utils.getAddress(createColonyEvent.args.token);
   const tokenAuthorityAddress = utils.getAddress(createTokenAuthorityEvent.args.tokenAuthorityAddress);
 
-  const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
-  const tokenClient = ColonyTokenFactory.connect(tokenAddress, signerOrWallet);
-
-  // save native token to database
-  await addTokenToDB(tokenAddress, tokenAvatar);
-
   // create the colony
   const colonyQuery = await graphqlRequest(
-    createUniqueColony,
+    createColonyEtherealMetadata,
     {
       input: {
-        id: colonyAddress,
-        name: colonyName,
-        colonyNativeTokenId: tokenAddress,
-        version: BigNumber.from(currentNetworkVersion).toNumber(),
-        chainMetadata: {
-          chainId: (await signerOrWallet.provider.getNetwork()).chainId,
-        },
-        status: {
-          nativeToken: {
-            unlockable: true,
-            unlocked: false,
-            mintable: true,
-          },
-        },
-        userId: signerOrWallet.address,
+        colonyName,
+        colonyDisplayName: colonyDisplayName || `Colony ${colonyName.toUpperCase()}`,
+        tokenAvatar,
+        tokenThumbnail: tokenAvatar,
+        initiatorAddress: utils.getAddress(signerOrWallet.address),
+        transactionHash,
         inviteCode: 'dev',
       },
     },
     GRAPHQL_URI,
     API_KEY,
   );
-
-  if (!colonyQuery?.errors) {
-    // add token to colony's token list
-    await addTokenToColonyTokens(colonyAddress, tokenAddress);
-  }
 
   await delay();
 
@@ -608,8 +463,10 @@ const createColony = async (
     );
   }
 
+  const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
+  const tokenClient = ColonyTokenFactory.connect(tokenAddress, signerOrWallet);
+
   const metadata = {
-    displayName: colonyDisplayName || `Colony ${colonyName.toUpperCase()}`,
     isWhitelistActivated: false,
   };
   if (colonyDescription) {
@@ -626,9 +483,19 @@ const createColony = async (
     metadata.objective = colonyObjective;
   }
 
+  const colonyExists = await tryFetchGraphqlQuery(
+    getColonyMetadata,
+    { id: utils.getAddress(colonyAddress) }
+  );
+
+  if (!colonyExists?.id) {
+    console.log(`There was an error creating colony ${colonyDisplayName} with address ${colonyAddress}`);
+    return;
+  }
+
   // Colony metadata
   const metadataMutation = await graphqlRequest(
-    createColonyMetadata,
+    updateColonyMetadata,
     {
       input: {
         id: utils.getAddress(colonyAddress),
@@ -653,52 +520,6 @@ const createColony = async (
   /*
    * Domains
    */
-  if (!colonyQuery?.errors) {
-    /*
-     * Root
-     */
-    const rootDomainMetadataMutation = await graphqlRequest(
-      createDomainMetadata,
-      {
-        input: {
-          id: `${utils.getAddress(colonyAddress)}_1`,
-          name: 'Root',
-          color: 'LIGHT_PINK',
-          description: '',
-        },
-      },
-      GRAPHQL_URI,
-      API_KEY,
-    );
-    // @NOTE: Temporary, until handled by block-ingestor (unlike subdomains)
-    const rootDomainMutation = await graphqlRequest(
-      createDomain,
-      {
-        input: {
-          id: `${utils.getAddress(colonyAddress)}_1`,
-          colonyId: utils.getAddress(colonyAddress),
-          nativeId: 1,
-          isRoot: true,
-          nativeFundingPotId: 1,
-          nativeSkillId: 1,
-        },
-      },
-      GRAPHQL_URI,
-      API_KEY,
-    );
-
-    await delay();
-
-    if (!rootDomainMetadataMutation?.errors && !rootDomainMutation?.errors) {
-      console.log(
-        `Creating root domain and its metadata { name: "Root", id: "${utils.getAddress(
-          colonyAddress,
-        )}_1", color: "LIGHT_PINK", description: "" }`,
-      );
-    }
-  }
-
-  // creating the other domains
 
   for (let index = 0; index < domains.length; index += 1) {
     try {
@@ -718,7 +539,6 @@ const createColony = async (
         1,
         {
           gasLimit: estimateGas.div(BigNumber.from(10)).add(estimateGas),
-          // gasPrice: BigNumber.from('10000000000'),
         },
       );
       await delay();
@@ -1129,6 +949,38 @@ const toggleRepMining = async () => {
   }
 };
 
+const tryFetchGraphqlQuery = async (
+  queryOrMutation,
+  variables,
+  maxRetries = 3,
+  blockTime = 5000
+) => {
+  let currentTry = 0;
+  while (true) {
+    const { data } = await graphqlRequest(
+      queryOrMutation,
+      variables,
+      GRAPHQL_URI,
+      API_KEY,
+    );
+
+    /*
+     * @NOTE That this limits to only fetching one operation at a time
+     */
+    if (data[Object.keys(data)[0]]) {
+      return data[Object.keys(data)[0]];
+    }
+
+    if (currentTry < maxRetries) {
+      await delay(blockTime);
+      currentTry += 1;
+    } else {
+      throw new Error('Could not fetch graphql data in time');
+    }
+  }
+}
+
+
 /*
  * Orchestration
  */
@@ -1289,6 +1141,7 @@ const createUserAndColonyData = async () => {
       return tokenAddress;
     }
   }).filter(value => !!value);
+
   const planetExpressColony = colonies.find(({ colonyName }) => colonyName === "Planet Express");
 
   //addTokenToColonyTokens
