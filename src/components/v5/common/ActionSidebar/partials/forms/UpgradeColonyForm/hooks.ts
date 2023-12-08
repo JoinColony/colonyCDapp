@@ -37,7 +37,7 @@ export const useUpgradeColony = (
               colonyName: colony.name,
               version: colony.version,
               motionParams: [colony.version + 1],
-              annotationMessage: payload.annotation,
+              annotationMessage: payload.description,
             };
           }
 

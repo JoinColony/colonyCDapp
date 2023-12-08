@@ -14,7 +14,7 @@ export const validationSchema = object()
       })
       .required(),
     decisionMethod: string().defined(),
-    description: string().max(MAX_ANNOTATION_LENGTH).defined(),
+    description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);

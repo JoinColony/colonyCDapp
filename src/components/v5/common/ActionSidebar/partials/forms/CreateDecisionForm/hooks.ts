@@ -54,7 +54,7 @@ export const useCreateDecision = (
           handleSaveDecisionInlocalStoage({
             title: payload.title,
             motionDomainId: Number(payload.createdIn),
-            description: payload.description,
+            description: payload.description || '',
             walletAddress,
           });
 

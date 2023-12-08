@@ -12,7 +12,7 @@ export const validationSchema = object()
     colonyName: string().trim().max(MAX_COLONY_DISPLAY_NAME),
     createdIn: string().defined(),
     decisionMethod: string().defined(),
-    description: string().max(MAX_ANNOTATION_LENGTH),
+    description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
     colonyDescription: string(),
     externalLinks: array()
       .of(

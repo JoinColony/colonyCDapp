@@ -5,6 +5,7 @@ import { array, InferType, number, object, string } from 'yup';
 
 import { ActionTypes } from '~redux';
 import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { mapPayload, pipe } from '~utils/actions';
 import { notNull } from '~utils/arrays';
 import { toFinite } from '~utils/lodash';
@@ -15,7 +16,6 @@ import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts';
-import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
@@ -44,7 +44,7 @@ export const useValidationSchema = () => {
           tokenAddress: string().address().required(),
         }).required(),
         createdIn: string().defined(),
-        description: string().max(MAX_ANNOTATION_NUM).notRequired(),
+        description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
         team: string().required(),
         decisionMethod: string().defined(),
         distributionMethod: string().defined(),
