@@ -20,6 +20,7 @@ const {
   getColonyMetadata,
   createColonyMetadata,
   deleteColonyMetadata,
+  getColonyByName,
 } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
@@ -155,6 +156,25 @@ exports.handler = async (event) => {
   ) {
     throw new Error(
       `Colony metadata does not match the colony we are trying to create`,
+    );
+  }
+
+  /*
+   * Ensure the colony name doesn't already exist in the database
+   */
+  const colonyNameQuery = await graphqlRequest(
+    getColonyByName,
+    { name: colonyName },
+    graphqlURL,
+    apiKey,
+  );
+
+  const [{ name: existingColonyName = '' } = {}] =
+    colonyNameQuery?.data?.getColonyByName?.items || [];
+
+  if (existingColonyName === colonyName) {
+    throw new Error(
+      `Colony with name "${colonyName}" already exists. Cannot create another one.`,
     );
   }
 
@@ -357,7 +377,7 @@ exports.handler = async (event) => {
   /*
    * Create the root domain
    */
-  const domains = await graphqlRequest(
+  await graphqlRequest(
     createDomain,
     {
       input: {

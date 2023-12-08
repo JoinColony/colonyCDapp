@@ -15,6 +15,16 @@ module.exports = {
       }
     }
   `,
+  getColonyByName: /* GraphQL */ `
+    query GetColonyByName($name: String!) {
+      getColonyByName(name: $name) {
+        items {
+          id
+          name
+        }
+      }
+    }
+  `,
   createColony: /* GraphQL */ `
     mutation CreateColony(
       $input: CreateColonyInput!
