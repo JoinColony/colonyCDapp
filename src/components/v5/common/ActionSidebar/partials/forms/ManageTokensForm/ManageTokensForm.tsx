@@ -3,13 +3,13 @@ import React, { FC } from 'react';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
 import { formatText } from '~utils/intl';
 
 import { useManageTokens } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import { useDecisionMethods } from '../../../hooks';
 import TokensTable from '../../TokensTable';
+import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManageTokensForm';
 
@@ -55,35 +55,7 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
-      <ActionFormRow
-        iconName="pencil"
-        fieldName="description"
-        // Tooltip disabled to experiment with improving user experience
-        // tooltips={{
-        //   label: {
-        //     tooltipContent: formatText({
-        //       id: 'actionSidebar.tooltip.description',
-        //     }),
-        //   },
-        // }}
-        title={formatText({ id: 'actionSidebar.description' })}
-        isExpandable
-      >
-        {([
-          isDecriptionFieldExpanded,
-          {
-            toggleOff: toggleOffDecriptionSelect,
-            toggleOn: toggleOnDecriptionSelect,
-          },
-        ]) => (
-          <DescriptionField
-            isDecriptionFieldExpanded={isDecriptionFieldExpanded}
-            toggleOffDecriptionSelect={toggleOffDecriptionSelect}
-            toggleOnDecriptionSelect={toggleOnDecriptionSelect}
-            fieldName="description"
-          />
-        )}
-      </ActionFormRow>
+      <DescriptionRow />
       <TokensTable
         name="selectedTokenAddresses"
         shouldShowMenu={shouldShowMenu}
