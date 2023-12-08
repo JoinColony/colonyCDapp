@@ -6,12 +6,12 @@ import { useWatch } from 'react-hook-form';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext } from '~hooks';
-import { getEditColonyDetailsDialogPayload } from '~common/Dialogs/EditColonyDetailsDialog/helpers';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, EditColonyDetailsFormValues } from './consts';
+import { getEditColonyDetailsPayload } from './utils';
 
 export const useEditColonyDetails = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -53,28 +53,12 @@ export const useEditColonyDetails = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: EditColonyDetailsFormValues) => {
-          const values = {
-            colonyDisplayName: payload.colonyName,
-            colonyAvatarImage: payload.avatar?.image,
-            colonyThumbnail: payload.avatar?.thumbnail,
-            motionDomainId: payload.createdIn,
-            decisionMethod: payload.decisionMethod,
-            annotationMessage: payload.description,
-            externalLinks: payload.externalLinks.map(
-              ({ linkType, ...link }) => ({
-                ...link,
-                name: linkType,
-              }),
-            ),
-            colonyDescription: payload.colonyDescription,
-          };
-
-          if (colony) {
-            return getEditColonyDetailsDialogPayload(colony, values);
+        mapPayload((values: EditColonyDetailsFormValues) => {
+          if (!colony) {
+            return null;
           }
 
-          return null;
+          return getEditColonyDetailsPayload(colony, values);
         }),
       ),
       [colony],
