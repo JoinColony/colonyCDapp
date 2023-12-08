@@ -187,7 +187,25 @@ server {
     ssl_certificate_key /etc/nginx/ssl/nginx.key;
 
     location / {
-        proxy_pass http://localhost:8545; 
+        proxy_pass http://localhost:8545;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+
+server {
+    listen 3006 ssl; # SSL for port 3006
+    server_name _;
+
+    # Specify the key and certificate file
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    location / {
+        proxy_pass http://localhost:3005;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -221,6 +239,8 @@ GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
 NETWORK=ganache
 AWS_APPSYNC_KEY=da2-fakeApiId123456
 AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
+AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:3006
+WEBPACK_LIVE_RELOAD=false
 EOL
 
 # Install appropriate npm version and dependencies
