@@ -224,8 +224,8 @@ exports.handler = async (event) => {
   const { chainId } = await provider.getNetwork();
   const version = await colonyClient.version();
   const isTokenLocked = colonyClient.tokenClient.locked();
-  let isTokenUnlockable = false;
-  let isTokenMintable = false;
+  let isTokenUnlockable = true;
+  let isTokenMintable = true;
 
   try {
     await colonyClient.tokenClient.estimateGas.unlock({ from: checksummedAddress});
