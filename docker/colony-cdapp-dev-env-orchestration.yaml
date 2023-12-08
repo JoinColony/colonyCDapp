@@ -79,13 +79,13 @@ services:
     depends_on:
       amplify:
         condition: service_healthy
-  
+
   network-files:
     container_name: 'network-files'
-    image: busybox:1.35
+    image: colony-cdapp-dev-env/base:latest
     volumes:
       - 'amplify-mock-data:/mock-data'
-    command: "busybox httpd -f -v -p 3006 -h /mock-data/colonyNetworkArtifacts/"
+    command: "npx --yes http-server --cors --port 3006 /mock-data/colonyNetworkArtifacts"
     ports:
       - '3006:3006'
     depends_on:
