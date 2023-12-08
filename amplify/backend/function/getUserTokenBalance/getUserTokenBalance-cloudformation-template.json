@@ -213,21 +213,21 @@
             {
               "Effect": "Allow",
               "Action": [
-                  "ssm:GetParameter",
-                  "kms:Decrypt"
+                "ssm:GetParameter",
+                "kms:Decrypt"
               ],
               "Resource": {
-                  "Fn::Sub": [
+                "Fn::Sub": [
                   "arn:aws:ssm:${region}:${account}:parameter/*",
                   {
-                      "region": {
+                    "region": {
                       "Ref": "AWS::Region"
-                      },
-                      "account": {
+                    },
+                    "account": {
                       "Ref": "AWS::AccountId"
-                      }
+                    }
                   }
-                  ]
+                ]
               }
             }
           ]
