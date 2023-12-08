@@ -6,7 +6,7 @@ services:
     volumes:
       - 'amplify-backend:/backend'
       - 'amplify-mock-data:/mock-data'
-    command: '/bin/bash -c "touch /backend/.initialized && touch /mock-data/.initialized && chown -R $(id -u node):$(id -g node) /backend && chown -R $(id -u node):$(id -g node) /mock-data"'
+    command: '/bin/bash -c "rm -rf /backend/* && rm -rf /mock-data/* && touch /backend/.initialized && touch /mock-data/.initialized && chown -R $(id -u node):$(id -g node) /backend && chown -R $(id -u node):$(id -g node) /mock-data"'
 
   network-contracts:
     container_name: 'network'
