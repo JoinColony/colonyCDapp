@@ -4,11 +4,12 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useState,
+  // useState,
 } from 'react';
 import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
-import { PaperPlaneTilt } from 'phosphor-react';
+//* Hide Initially */
+// import { defineMessages } from 'react-intl';
+// import { PaperPlaneTilt } from 'phosphor-react';
 import { AnimatePresence } from 'framer-motion';
 
 import UserHubButton from '~common/Extensions/UserHubButton';
@@ -23,9 +24,11 @@ import { useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
-import { InviteMembersModal } from '~v5/common/Modals';
+//* Hide Initially */
+// import { InviteMembersModal } from '~v5/common/Modals';
 import PageLayout from '~v5/frame/PageLayout';
-import Button from '~v5/shared/Button';
+//* Hide Initially */
+// import Button from '~v5/shared/Button';
 import CalamityBanner from '~v5/shared/CalamityBanner';
 import JoinButton from '~v5/shared/Button/JoinButton';
 import ActionSidebar from '~v5/common/ActionSidebar';
@@ -36,16 +39,13 @@ import UserNavigationWrapper from './partials/UserNavigationWrapper';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
-const MSG = defineMessages({
-  joinButtonText: {
-    id: `${displayName}.joinButtonText`,
-    defaultMessage: 'Join',
-  },
-  inviteMembers: {
-    id: `${displayName}.inviteMembers`,
-    defaultMessage: 'Invite members',
-  },
-});
+//* Hide Initially */
+// const MSG = defineMessages({
+//   inviteMembers: {
+//     id: `${displayName}.inviteMembers`,
+//     defaultMessage: 'Invite members',
+//   },
+// });
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony, loading } = useColonyContext();
@@ -65,8 +65,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const { isColonyCreatedModalOpen, setIsColonyCreatedModalOpen } =
     useColonyCreatedModalContext();
-  const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
-    useState(false);
+  // const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
+  //   useState(false);
   const { isTokensModalOpen } = useTokensModalContext();
 
   const { calamityBannerItems, canUpgrade } = useCalamityBannerInfo();
@@ -100,7 +100,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           extra={
             <>
               <JoinButton />
-              {!isActionSidebarOpen ? (
+              {/* Hide Initially */}
+              {/* {!isActionSidebarOpen ? (
                 <Button
                   className="ml-1"
                   text={MSG.inviteMembers}
@@ -109,12 +110,12 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                   size="small"
                   onClick={() => setIsInviteMembersModalOpen(true)}
                 />
-              ) : null}
+              ) : null} */}
             </>
           }
         />
       ) : null,
-    [isActionSidebarOpen, isTokensModalOpen, txButtons, userHub],
+    [isTokensModalOpen, txButtons, userHub],
   );
 
   if (loading) {
@@ -175,10 +176,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         isOpen={isColonyCreatedModalOpen}
         onClose={() => setIsColonyCreatedModalOpen(false)}
       />
-      <InviteMembersModal
+      {/* <InviteMembersModal
         isOpen={isInviteMembersModalOpen}
         onClose={() => setIsInviteMembersModalOpen(false)}
-      />
+      /> */}
     </>
   );
 };
