@@ -5,6 +5,7 @@ const { poll } = require('ethers/lib/utils');
 const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
+const axios = require('axios');
 const { compareVersions } = require('compare-versions');
 const {
   ColonyTokenFactory,
@@ -31,13 +32,16 @@ const {
  * as well as the network contracts being deployed on said chain
  * So make sure to only run this script after the dev environment (via docker compose) was started
  */
-const {
-  addresses: ganacheAddresses,
-  private_keys,
-} = require('../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json');
-const {
-  etherRouterAddress,
-} = require('../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+// const {
+//   addresses: ganacheAddresses,
+//   private_keys,
+// } = require('../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json');
+// const {
+//   etherRouterAddress,
+// } = require('../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+let etherRouterAddress;
+let private_keys;
+let ganacheAddresses;
 
 const {
   colonies: coloniesTempData,
@@ -987,6 +991,16 @@ const tryFetchGraphqlQuery = async (
  * Orchestration
  */
 const createUserAndColonyData = async () => {
+  ({ etherRouterAddress } = (
+    await axios.get('http://localhost:3006/etherrouter-address.json')
+ ).data);
+
+  ({ addresses: ganacheAddresses,
+    private_keys } = (
+    await axios.get('http://localhost:3006/ganache-accounts.json')
+  ).data);
+
+  // TODO: assert the above worked
 
   const availableUsers = {
     randomUsers: {},
@@ -1222,6 +1236,7 @@ checkArguments();
 
 checkNodeVersion();
 
-pressKeyToContinue().then(() => {
+pressKeyToContinue().then(async () => {
+
   createUserAndColonyData();
 });
