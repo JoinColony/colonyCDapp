@@ -1,4 +1,3 @@
-import { call } from 'redux-saga/effects';
 import {
   getColonyNetworkClient,
   ColonyNetworkAddress,
@@ -14,7 +13,7 @@ import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
 /*
  * Return an initialized ColonyNetworkClient instance.
  */
-export default async function* getNetworkClient() {
+const getNetworkClient = async () => {
   const wallet = getContext(ContextModule.Wallet);
 
   if (!isFullWallet(wallet)) {
@@ -43,14 +42,13 @@ export default async function* getNetworkClient() {
       await axios.get('http://localhost:3006/etherrouter-address.json')
     ).data;
 
-    return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
+    return getColonyNetworkClient(ColonyJSNetwork.Custom, signer, {
       networkAddress,
       reputationOracleEndpoint: localOracle.href,
     });
   }
 
-  return yield call(
-    getColonyNetworkClient,
+  return getColonyNetworkClient(
     ColonyJSNetworkMapping[network] as ColonyJSNetwork,
     signer,
     {
@@ -64,4 +62,6 @@ export default async function* getNetworkClient() {
       reputationOracleEndpoint: reputationOracleUrl.href,
     },
   );
-}
+};
+
+export default getNetworkClient;
