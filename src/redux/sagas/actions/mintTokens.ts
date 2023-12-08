@@ -107,8 +107,6 @@ function* createMintTokensAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield initiateTransaction({ id: claimColonyFunds.id });
@@ -129,6 +127,8 @@ function* createMintTokensAction({
       type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     // Redirect to actions page
     if (colonyName && navigate) {
