@@ -22,13 +22,17 @@ const { formatMessage } = intl({
   'info.text': 'Connect your wallet to log in',
 });
 
+const ganacheAccountsUrl = new URL(
+  process.env.GANACHE_ACCOUNTS_ENDPOINT || 'http://localhost:3006',
+);
+
 const getDevelopmentWallets = async () => {
   // variable injected by webpack
   // @ts-ignore
   // if we're using the webpack.dev config, include dev wallets
   if (!WEBPACK_IS_PRODUCTION) {
     const { private_keys: ganachePrivateKeys } = (
-      await axios.get('http://localhost:3006/ganache-accounts.json')
+      await axios.get(`${ganacheAccountsUrl.href}/ganache-accounts.json`)
     ).data;
 
     return (

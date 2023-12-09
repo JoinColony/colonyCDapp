@@ -27,17 +27,19 @@ const getNetworkClient = async () => {
     ? new URL(process.env.REPUTATION_ORACLE_ENDPOINT)
     : new URL(`/reputation`, window.location.origin);
 
+  const ganacheAccountsUrl = new URL(
+    process.env.GANACHE_ACCOUNTS_ENDPOINT || 'http://localhost:3006',
+  );
+
   // @ts-ignore
   if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
-    const localOracle = new URL(`/reputation/local`, 'http://localhost:3001');
-
     const { etherRouterAddress: networkAddress } = (
-      await axios.get('http://localhost:3006/etherrouter-address.json')
+      await axios.get(`${ganacheAccountsUrl.href}/etherrouter-address.json`)
     ).data;
 
     return getColonyNetworkClient(ColonyJSNetwork.Custom, signer, {
       networkAddress,
-      reputationOracleEndpoint: localOracle.href,
+      reputationOracleEndpoint: reputationOracleUrl.href,
     });
   }
 
