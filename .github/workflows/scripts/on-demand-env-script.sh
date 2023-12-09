@@ -274,8 +274,8 @@ while ! nc -z localhost 20002; do
   sleep 10
 done
 
-# Seed database
-node ./scripts/temp-create-data.js
+# Seed database (pass --yes to skip confirmation)
+node ./scripts/create-data.js --yes
 
 # Start frontend
 npm run webpack &

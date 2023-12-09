@@ -1,4 +1,11 @@
-const { utils, Wallet, providers, BigNumber, constants, Contract } = require('ethers');
+const {
+  utils,
+  Wallet,
+  providers,
+  BigNumber,
+  constants,
+  Contract,
+} = require('ethers');
 const { poll } = require('ethers/lib/utils');
 const fs = require('fs');
 const path = require('path');
@@ -15,9 +22,7 @@ const {
   colonyRoles2Hex,
   getChildIndex,
 } = require('@colony/colony-js');
-const {
-  abi: OneTxAbi,
-} = require('@colony/abis/versions/glwss4/OneTxPayment');
+const { abi: OneTxAbi } = require('@colony/abis/versions/glwss4/OneTxPayment');
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
  * So if that lambda function gets removed, this script will stop working
@@ -39,10 +44,11 @@ const {
   users: usersTempData,
 } = require('./tempColonyData');
 
-
 // fetch command line arguments
 const timeoutArg = process.argv.indexOf('--timeout');
 const timeoutArgValue = process.argv[timeoutArg + 1];
+
+const yesArg = process.argv.indexOf('--yes');
 
 const coloniesArg = process.argv.indexOf('--coloniesCount');
 const coloniesArgValue = process.argv[coloniesArg + 1];
@@ -183,9 +189,7 @@ const getColonyDomains = /* GraphQL */ `
 
 const getColonyContributors = /* GraphQL */ `
   query GetColonyContributors($address: ID!) {
-    listColonyContributors(
-      filter: {colonyAddress: { eq: $address }}
-    ) {
+    listColonyContributors(filter: { colonyAddress: { eq: $address } }) {
       items {
         user {
           id
@@ -215,7 +219,7 @@ const readFile = (path) => {
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 /*
  * User
@@ -244,15 +248,8 @@ const subscribeUserToColony = async (userAddress, colonyAddress) => {
   );
 };
 
-
 const createUser = async (
-  {
-    username,
-    avatar,
-    description,
-    website,
-    location,
-  },
+  { username, avatar, description, website, location },
   accountIndex,
 ) => {
   /*
@@ -359,17 +356,24 @@ const addTokenToDB = async (tokenAddress, avatar) => {
         tokenAddress,
         avatar: avatar || null,
         thumbnail: avatar || null,
-      }
+      },
     },
     GRAPHQL_URI,
     API_KEY,
   );
 };
 
-const mintTokens = async (colonyAddress, colonyName, tokenAddress, signerOrWallet) => {
+const mintTokens = async (
+  colonyAddress,
+  colonyName,
+  tokenAddress,
+  signerOrWallet,
+) => {
   const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
 
-  const amount = BigNumber.from(`${randomBetweenNumbers(1, 100)}000000000000000000000000`);
+  const amount = BigNumber.from(
+    `${randomBetweenNumbers(1, 100)}000000000000000000000000`,
+  );
 
   // mint
   const mintTokens = await colonyClient.mintTokens(amount);
@@ -383,14 +387,19 @@ const mintTokens = async (colonyAddress, colonyName, tokenAddress, signerOrWalle
   await claimColonyFunds.wait();
   delay();
 
-  console.log(`Minted and claimed ${amount.toString()} tokens in colony "${colonyName}"`);
+  console.log(
+    `Minted and claimed ${amount.toString()} tokens in colony "${colonyName}"`,
+  );
 };
 
 /*
  * Colony
  */
 const createMetacolony = async (signerOrWallet) => {
-  const colonyNetwork = ColonyNetworkFactory.connect(etherRouterAddress, signerOrWallet);
+  const colonyNetwork = ColonyNetworkFactory.connect(
+    etherRouterAddress,
+    signerOrWallet,
+  );
 
   const metacolonyAddress = await colonyNetwork['getMetaColony()']();
   const metaColony = ColonyFactory.connect(metacolonyAddress, signerOrWallet);
@@ -522,7 +531,7 @@ const createColony = async (
     domains = [],
   } = {},
   signerOrWallet,
-  ) => {
+) => {
   const colonyNetwork = ColonyNetworkFactory.connect(
     etherRouterAddress,
     signerOrWallet,
@@ -530,9 +539,7 @@ const createColony = async (
 
   const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
 
-  const colonyDeployment = await colonyNetwork[
-    'createColonyForFrontend'
-  ](
+  const colonyDeployment = await colonyNetwork['createColonyForFrontend'](
     constants.AddressZero,
     tokenName,
     tokenSymbol,
@@ -555,7 +562,9 @@ const createColony = async (
 
   const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
   const tokenAddress = utils.getAddress(createColonyEvent.args.token);
-  const tokenAuthorityAddress = utils.getAddress(createTokenAuthorityEvent.args.tokenAuthorityAddress);
+  const tokenAuthorityAddress = utils.getAddress(
+    createTokenAuthorityEvent.args.tokenAuthorityAddress,
+  );
 
   const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
   const tokenClient = ColonyTokenFactory.connect(tokenAddress, signerOrWallet);
@@ -629,7 +638,7 @@ const createColony = async (
     {
       input: {
         id: utils.getAddress(colonyAddress),
-        ...metadata
+        ...metadata,
       },
     },
     GRAPHQL_URI,
@@ -639,13 +648,21 @@ const createColony = async (
 
   if (!metadataMutation.errors) {
     console.log(
-      `Creating colony metadata { displayName: "${colonyDisplayName || 'Colony ' + colonyName.toUpperCase()}" }`,
+      `Creating colony metadata { displayName: "${
+        colonyDisplayName || 'Colony ' + colonyName.toUpperCase()
+      }" }`,
     );
   }
 
   // subscribe main users to colony
-  await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[1]), colonyAddress);
-  await subscribeUserToColony(utils.getAddress(Object.keys(ganacheAddresses)[2]), colonyAddress);
+  await subscribeUserToColony(
+    utils.getAddress(Object.keys(ganacheAddresses)[1]),
+    colonyAddress,
+  );
+  await subscribeUserToColony(
+    utils.getAddress(Object.keys(ganacheAddresses)[2]),
+    colonyAddress,
+  );
 
   /*
    * Domains
@@ -700,37 +717,37 @@ const createColony = async (
   for (let index = 0; index < domains.length; index += 1) {
     try {
       // permission proofs
-      const [permissionDomainId, childSkillIndex] =
-        await getPermissionProofs(colonyNetwork, colonyClient, 1, ColonyRole.Architecture);
+      const [permissionDomainId, childSkillIndex] = await getPermissionProofs(
+        colonyNetwork,
+        colonyClient,
+        1,
+        ColonyRole.Architecture,
+      );
       // estimate
-      const estimateGas = await colonyClient.estimateGas['addDomain(uint256,uint256,uint256)'](
-        permissionDomainId,
-        childSkillIndex,
-        1,
-      );
+      const estimateGas = await colonyClient.estimateGas[
+        'addDomain(uint256,uint256,uint256)'
+      ](permissionDomainId, childSkillIndex, 1);
       // transactions
-      const subdomainDeployment = await colonyClient['addDomain(uint256,uint256,uint256)'](
-        permissionDomainId,
-        childSkillIndex,
-        1,
-        {
-          gasLimit: estimateGas.div(BigNumber.from(10)).add(estimateGas),
-          // gasPrice: BigNumber.from('10000000000'),
-        },
-      );
+      const subdomainDeployment = await colonyClient[
+        'addDomain(uint256,uint256,uint256)'
+      ](permissionDomainId, childSkillIndex, 1, {
+        gasLimit: estimateGas.div(BigNumber.from(10)).add(estimateGas),
+        // gasPrice: BigNumber.from('10000000000'),
+      });
       await delay();
       // receipt events
       const subdomainTransactions = await subdomainDeployment.wait();
       await delay();
       const {
         args: { domainId: subdomainId },
-      } = subdomainTransactions.events.find(
-        (event) => !!event?.args?.domainId,
-      );
+      } = subdomainTransactions.events.find((event) => !!event?.args?.domainId);
 
       console.log('new domain', subdomainId.toString());
 
-      const domainColor = domains[index].color || DOMAIN_COLORS[randomBetweenNumbers(0, DOMAIN_COLORS.length - 1)] || 'LIGHT_PINK';
+      const domainColor =
+        domains[index].color ||
+        DOMAIN_COLORS[randomBetweenNumbers(0, DOMAIN_COLORS.length - 1)] ||
+        'LIGHT_PINK';
 
       const domainMetadataMutation = await graphqlRequest(
         createDomainMetadata,
@@ -750,7 +767,9 @@ const createColony = async (
 
       if (!domainMetadataMutation?.errors) {
         console.log(
-          `Creating subdomain metadata { name: "${domains[index].name || `Team #${subdomainId.toString()}`}", id: "${colonyAddress}_${subdomainId.toString()}", color: "${domainColor}" }`,
+          `Creating subdomain metadata { name: "${
+            domains[index].name || `Team #${subdomainId.toString()}`
+          }", id: "${colonyAddress}_${subdomainId.toString()}", color: "${domainColor}" }`,
         );
       }
     } catch (error) {
@@ -780,9 +799,13 @@ const createColony = async (
     GRAPHQL_URI,
     API_KEY,
   );
-  const latestOneTxVersion = currentVersionData?.getCurrentVersionByKey?.items[0]?.version || 1;
+  const latestOneTxVersion =
+    currentVersionData?.getCurrentVersionByKey?.items[0]?.version || 1;
 
-  const deployOneTx = await colonyClient.installExtension(oneTxHash, latestOneTxVersion);
+  const deployOneTx = await colonyClient.installExtension(
+    oneTxHash,
+    latestOneTxVersion,
+  );
   await delay();
   await deployOneTx.wait();
   await delay(1000);
@@ -791,7 +814,10 @@ const createColony = async (
   const oneTxExtensionAddress = await poll(
     async () => {
       try {
-        const address = await colonyNetwork.getExtensionInstallation(oneTxHash, colonyAddress);
+        const address = await colonyNetwork.getExtensionInstallation(
+          oneTxHash,
+          colonyAddress,
+        );
         return address;
       } catch (err) {
         return undefined;
@@ -802,7 +828,11 @@ const createColony = async (
     },
   );
 
-  console.log(`Installed OneTxPayment extension in colony ${colonyDisplayName || colonyName} at address ${oneTxExtensionAddress}`);
+  console.log(
+    `Installed OneTxPayment extension in colony ${
+      colonyDisplayName || colonyName
+    } at address ${oneTxExtensionAddress}`,
+  );
 
   const [permissionDomainId, childSkillIndex] = await getPermissionProofs(
     colonyNetwork,
@@ -821,7 +851,7 @@ const createColony = async (
       ColonyRole.Funding,
       ColonyRole.Arbitration,
     ]),
-  )
+  );
   await delay();
   await oneTxPermissions.wait();
   await delay();
@@ -872,9 +902,14 @@ const getMultiPermissionProofs = async (
   }
   // It does not need to be an array because if we get here, all the proofs are the same
   return proofs[0];
-}
+};
 
-const getMoveFundsPermissionsProofs = async (colonyClient, fromDomainNativeId, toDomainNativeId, signerOrWallet) => {
+const getMoveFundsPermissionsProofs = async (
+  colonyClient,
+  fromDomainNativeId,
+  toDomainNativeId,
+  signerOrWallet,
+) => {
   const colonyNetwork = ColonyNetworkFactory.connect(
     etherRouterAddress,
     signerOrWallet,
@@ -945,7 +980,13 @@ const getMoveFundsPermissionsProofs = async (colonyClient, fromDomainNativeId, t
   return [fromPermissionDomainId, fromChildSkillIndex, toChildSkillIndex];
 };
 
-const transferFundsBetweenPots = async (colonyAddress, colonyName, tokenAddress, domains, signerOrWallet) => {
+const transferFundsBetweenPots = async (
+  colonyAddress,
+  colonyName,
+  tokenAddress,
+  domains,
+  signerOrWallet,
+) => {
   const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
 
   const rootDomain = domains.find(({ nativeId }) => nativeId === 1);
@@ -957,17 +998,21 @@ const transferFundsBetweenPots = async (colonyAddress, colonyName, tokenAddress,
 
   for (let index = 0; index < domainsWithoutRoot.length; index += 1) {
     try {
-      const amount = BigNumber.from(`${randomBetweenNumbers(100, 500)}000000000000000000`);
-
-      const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] = await getMoveFundsPermissionsProofs(
-        colonyClient,
-        rootDomain.nativeId,
-        domainsWithoutRoot[index].nativeId,
-        signerOrWallet,
+      const amount = BigNumber.from(
+        `${randomBetweenNumbers(100, 500)}000000000000000000`,
       );
 
+      const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
+        await getMoveFundsPermissionsProofs(
+          colonyClient,
+          rootDomain.nativeId,
+          domainsWithoutRoot[index].nativeId,
+          signerOrWallet,
+        );
 
-      const estimatedGas = await colonyClient.estimateGas['moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'](
+      const estimatedGas = await colonyClient.estimateGas[
+        'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
+      ](
         permissionDomainId,
         fromChildSkillIndex,
         toChildSkillIndex,
@@ -975,9 +1020,11 @@ const transferFundsBetweenPots = async (colonyAddress, colonyName, tokenAddress,
         domainsWithoutRoot[index].nativeFundingPotId,
         amount,
         tokenAddress,
-      )
+      );
 
-      const transferFunds = await colonyClient['moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'](
+      const transferFunds = await colonyClient[
+        'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
+      ](
         permissionDomainId,
         fromChildSkillIndex,
         toChildSkillIndex,
@@ -991,9 +1038,15 @@ const transferFundsBetweenPots = async (colonyAddress, colonyName, tokenAddress,
       await transferFunds.wait();
       delay();
 
-      console.log(`Sending ${amount.div(BigNumber.from(10).pow(18)).toString()} tokens to domain ${domainsWithoutRoot[index].nativeId} in colony "${colonyName}"`);
+      console.log(
+        `Sending ${amount
+          .div(BigNumber.from(10).pow(18))
+          .toString()} tokens to domain ${
+          domainsWithoutRoot[index].nativeId
+        } in colony "${colonyName}"`,
+      );
     } catch (error) {
-      console.log('Transfer Funds Between Pots')
+      console.log('Transfer Funds Between Pots');
       console.error(error);
     }
   }
@@ -1009,11 +1062,14 @@ const userPayments = async (
   signerOrWallet,
 ) => {
   const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
-  const oneTxClient = new Contract(oneTxExtensionAddress, OneTxAbi, signerOrWallet);
+  const oneTxClient = new Contract(
+    oneTxExtensionAddress,
+    OneTxAbi,
+    signerOrWallet,
+  );
   try {
     // domains
     for (let domainIndex = 0; domainIndex < domains.length; domainIndex += 1) {
-
       const [extensionPDID, extensionCSI] = await getMultiPermissionProofs(
         colonyClient,
         signerOrWallet,
@@ -1031,30 +1087,35 @@ const userPayments = async (
 
       // users
       for (let userIndex = 0; userIndex < users.length; userIndex += 1) {
-
         if (users[userIndex]) {
-          let amount = BigNumber.from(`${randomBetweenNumbers(1, 3)}000000000000000000`);
-          if (users[userIndex] === utils.getAddress(Object.keys(ganacheAddresses)[0])) {
+          let amount = BigNumber.from(
+            `${randomBetweenNumbers(1, 3)}000000000000000000`,
+          );
+          if (
+            users[userIndex] ===
+            utils.getAddress(Object.keys(ganacheAddresses)[0])
+          ) {
             amount = BigNumber.from(`50000000000000000000`);
           }
 
           // estimate
-          const estimatedGas = await oneTxClient.estimateGas.makePaymentFundedFromDomain(
-            extensionPDID,
-            extensionCSI,
-            userPDID,
-            userCSI,
-            [users[userIndex]],
-            [tokenAddress],
-            [amount],
-            domains[domainIndex].nativeId,
-            /*
-            * NOTE Always make the payment in the global skill 0
-            * This will make it so that the user only receives reputation in the
-            * above domain, but none in the skill itself.
-            */
-            0,
-          );
+          const estimatedGas =
+            await oneTxClient.estimateGas.makePaymentFundedFromDomain(
+              extensionPDID,
+              extensionCSI,
+              userPDID,
+              userCSI,
+              [users[userIndex]],
+              [tokenAddress],
+              [amount],
+              domains[domainIndex].nativeId,
+              /*
+               * NOTE Always make the payment in the global skill 0
+               * This will make it so that the user only receives reputation in the
+               * above domain, but none in the skill itself.
+               */
+              0,
+            );
           // if we'd like to be fancy, all payments in one domain could
           const oneTxPayment = await oneTxClient.makePaymentFundedFromDomain(
             extensionPDID,
@@ -1066,18 +1127,26 @@ const userPayments = async (
             [amount],
             domains[domainIndex].nativeId,
             /*
-            * NOTE Always make the payment in the global skill 0
-            * This will make it so that the user only receives reputation in the
-            * above domain, but none in the skill itself.
-            */
+             * NOTE Always make the payment in the global skill 0
+             * This will make it so that the user only receives reputation in the
+             * above domain, but none in the skill itself.
+             */
             0,
-            { gasLimit: estimatedGas.div(BigNumber.from(10)).add(estimatedGas) },
+            {
+              gasLimit: estimatedGas.div(BigNumber.from(10)).add(estimatedGas),
+            },
           );
           delay();
           await oneTxPayment.wait();
           delay();
 
-          console.log(`Paying ${amount.div(BigNumber.from(10).pow(18)).toString()} tokens from domain "${domains[domainIndex].nativeId}" to user "${users[userIndex]}" in colony "${colonyName}"`);
+          console.log(
+            `Paying ${amount
+              .div(BigNumber.from(10).pow(18))
+              .toString()} tokens from domain "${
+              domains[domainIndex].nativeId
+            }" to user "${users[userIndex]}" in colony "${colonyName}"`,
+          );
         }
       }
     }
@@ -1087,11 +1156,11 @@ const userPayments = async (
   }
 };
 
-const randomBetweenNumbers = (min = 1, max = 10) => Math.floor(Math.random() * (max - min + 1) + min);
+const randomBetweenNumbers = (min = 1, max = 10) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
 
 async function imageUrlToBase64(url) {
   try {
-
     const response = await fetch(url, { signal: AbortSignal.timeout(1000) });
 
     if (!response.ok) {
@@ -1114,7 +1183,10 @@ async function imageUrlToBase64(url) {
 }
 
 const toggleRepMining = async () => {
-  const response = await fetch('http://localhost:3001/reputation/monitor/toggle', { signal: AbortSignal.timeout(3000) });
+  const response = await fetch(
+    'http://localhost:3001/reputation/monitor/toggle',
+    { signal: AbortSignal.timeout(3000) },
+  );
 
   if (response.ok) {
     const text = await response.text();
@@ -1132,10 +1204,9 @@ const toggleRepMining = async () => {
 const createUserAndColonyData = async () => {
   ({ etherRouterAddress } = (
     await axios.get('http://localhost:3006/etherrouter-address.json')
- ).data);
+  ).data);
 
-  ({ addresses: ganacheAddresses,
-    private_keys } = (
+  ({ addresses: ganacheAddresses, private_keys } = (
     await axios.get('http://localhost:3006/ganache-accounts.json')
   ).data);
 
@@ -1157,29 +1228,41 @@ const createUserAndColonyData = async () => {
     }),
   );
 
-  await Promise.all(usersTempData.randomUsernames.map(async (username, index) => {
-    const avatarURL = `http://xsgames.co/randomusers/assets/avatars/${(index + 1) % 2 === 0 ? "female" : "male"}/${index + 1}.jpg`;
-    const avatar = await imageUrlToBase64(avatarURL);
-    const user = await createUser({
-      username,
-      avatar: (index + 1) % 5 === 0 ? null : avatar,
-    });
-    availableUsers.randomUsers[user.address] = user;
-    delay(100);
-  }));
+  await Promise.all(
+    usersTempData.randomUsernames.map(async (username, index) => {
+      const avatarURL = `http://xsgames.co/randomusers/assets/avatars/${
+        (index + 1) % 2 === 0 ? 'female' : 'male'
+      }/${index + 1}.jpg`;
+      const avatar = await imageUrlToBase64(avatarURL);
+      const user = await createUser({
+        username,
+        avatar: (index + 1) % 5 === 0 ? null : avatar,
+      });
+      availableUsers.randomUsers[user.address] = user;
+      delay(100);
+    }),
+  );
 
-  const colonyNamesToCreate = Object.keys(coloniesTempData).slice(0, DEFAULT_COLONIES);
+  const colonyNamesToCreate = Object.keys(coloniesTempData).slice(
+    0,
+    DEFAULT_COLONIES,
+  );
   for (let index = 0; index < colonyNamesToCreate.length; index++) {
-
     const colonyData = coloniesTempData[colonyNamesToCreate[index]];
 
-    const leela = availableUsers.walletUsers[utils.getAddress(Object.keys(ganacheAddresses)[0])];
+    const leela =
+      availableUsers.walletUsers[
+        utils.getAddress(Object.keys(ganacheAddresses)[0])
+      ];
     const {
       colonyAddress: newColonyAddress,
       tokenAddress,
       colonyName,
       oneTxExtensionAddress,
-    } = await createColony(colonyData, availableUsers.walletUsers[leela.address]);
+    } = await createColony(
+      colonyData,
+      availableUsers.walletUsers[leela.address],
+    );
     delay();
 
     availableColonies[newColonyAddress] = {
@@ -1189,19 +1272,29 @@ const createUserAndColonyData = async () => {
       oneTxExtensionAddress,
     };
 
-    let noOfMembers = randomBetweenNumbers(1, Object.keys(availableUsers.randomUsers).length - 1 || 1);
-    if (colonyName === 'Planet Express') { // this is so stupid
+    let noOfMembers = randomBetweenNumbers(
+      1,
+      Object.keys(availableUsers.randomUsers).length - 1 || 1,
+    );
+    if (colonyName === 'Planet Express') {
+      // this is so stupid
       noOfMembers = Object.keys(availableUsers.randomUsers).length - 1 || 1;
     }
     //subscribe random users to this colony
     await Promise.all(
-      Object.keys(availableUsers.randomUsers).slice(0, noOfMembers).map(async (userAddress) => {
-        await subscribeUserToColony(userAddress, newColonyAddress);
-        delay(100);
-      })
+      Object.keys(availableUsers.randomUsers)
+        .slice(0, noOfMembers)
+        .map(async (userAddress) => {
+          await subscribeUserToColony(userAddress, newColonyAddress);
+          delay(100);
+        }),
     );
 
-    console.log(`Subscribed ${noOfMembers} members to colony ${colonyData.colonyDisplayName || colonyData.colonyName}`);
+    console.log(
+      `Subscribed ${noOfMembers} members to colony ${
+        colonyData.colonyDisplayName || colonyData.colonyName
+      }`,
+    );
 
     // verify users
     await graphqlRequest(
@@ -1210,7 +1303,10 @@ const createUserAndColonyData = async () => {
         input: {
           id: newColonyAddress,
           isWhitelistActivated: true,
-          whitelistedAddresses: Object.keys(availableUsers.randomUsers).slice(0, noOfMembers),
+          whitelistedAddresses: Object.keys(availableUsers.randomUsers).slice(
+            0,
+            noOfMembers,
+          ),
         },
       },
       GRAPHQL_URI,
@@ -1218,7 +1314,12 @@ const createUserAndColonyData = async () => {
     );
 
     // mint colony tokens
-    await mintTokens(newColonyAddress, colonyName, tokenAddress, availableUsers.walletUsers[leela.address]);
+    await mintTokens(
+      newColonyAddress,
+      colonyName,
+      tokenAddress,
+      availableUsers.walletUsers[leela.address],
+    );
 
     const { data: colonyDomainsdata } = await graphqlRequest(
       getColonyDomains,
@@ -1227,7 +1328,8 @@ const createUserAndColonyData = async () => {
       API_KEY,
     );
 
-    const domains = colonyDomainsdata?.getColonyByAddress?.items[0]?.domains?.items || [];
+    const domains =
+      colonyDomainsdata?.getColonyByAddress?.items[0]?.domains?.items || [];
 
     if (domains.length > 1) {
       // transfer funds to domains
@@ -1237,20 +1339,21 @@ const createUserAndColonyData = async () => {
         tokenAddress,
         domains,
         availableUsers.walletUsers[leela.address],
-      )
+      );
     }
 
     if (domains.length > 0) {
-
       const { data: colonyContributorsData } = await graphqlRequest(
         getColonyContributors,
         { address: newColonyAddress },
         GRAPHQL_URI,
         API_KEY,
       );
-      const contributors = (colonyContributorsData?.listColonyContributors?.items || [])
+      const contributors = (
+        colonyContributorsData?.listColonyContributors?.items || []
+      )
         .map(({ user }) => user?.id)
-        .filter(userAddress => !!userAddress);
+        .filter((userAddress) => !!userAddress);
 
       // enable rep mining
       if (!reputationMining) {
@@ -1265,7 +1368,9 @@ const createUserAndColonyData = async () => {
         tokenAddress,
         domains,
         [
-          ...Object.keys(availableUsers.walletUsers).map(userAddress => userAddress),
+          ...Object.keys(availableUsers.walletUsers).map(
+            (userAddress) => userAddress,
+          ),
           contributors[randomBetweenNumbers(0, contributors.length - 1)],
         ],
         availableUsers.walletUsers[leela.address],
@@ -1273,8 +1378,12 @@ const createUserAndColonyData = async () => {
 
       // All other colonies that are not planex
       if (colonyName !== 'Planet Express') {
-        const colonies = Object.keys(availableColonies).map(colonyAddress => availableColonies[colonyAddress]);
-        const planetExpressColony = colonies.find(({ colonyName }) => colonyName === "Planet Express");
+        const colonies = Object.keys(availableColonies).map(
+          (colonyAddress) => availableColonies[colonyAddress],
+        );
+        const planetExpressColony = colonies.find(
+          ({ colonyName }) => colonyName === 'Planet Express',
+        );
 
         // payout to planex
         await userPayments(
@@ -1290,13 +1399,19 @@ const createUserAndColonyData = async () => {
     }
   }
 
-  const colonies = Object.keys(availableColonies).map(colonyAddress => availableColonies[colonyAddress]);
-  const coloniesTokens = colonies.map(({ colonyName, tokenAddress }) => {
-    if (colonyName !== 'Planet Express') {
-      return tokenAddress;
-    }
-  }).filter(value => !!value);
-  const planetExpressColony = colonies.find(({ colonyName }) => colonyName === "Planet Express");
+  const colonies = Object.keys(availableColonies).map(
+    (colonyAddress) => availableColonies[colonyAddress],
+  );
+  const coloniesTokens = colonies
+    .map(({ colonyName, tokenAddress }) => {
+      if (colonyName !== 'Planet Express') {
+        return tokenAddress;
+      }
+    })
+    .filter((value) => !!value);
+  const planetExpressColony = colonies.find(
+    ({ colonyName }) => colonyName === 'Planet Express',
+  );
 
   //addTokenToColonyTokens
   await Promise.all(
@@ -1306,16 +1421,16 @@ const createUserAndColonyData = async () => {
     }),
   );
 
-
   if (reputationMining) {
-    console.log('Reputation mining should now be disabled. Make sure you check this manually, otherwise you\'ll get chain time skips');
+    console.log(
+      "Reputation mining should now be disabled. Make sure you check this manually, otherwise you'll get chain time skips",
+    );
     console.log();
     console.log('Performing cleanup...');
     await delay(20000);
     // disable rep mining
     toggleRepMining().then(() => process.exit(0));
   }
-
 };
 
 const checkArguments = () => {
@@ -1324,27 +1439,43 @@ const checkArguments = () => {
   console.log();
   if (DEFAULT_COLONIES > maxColoniesCount) {
     console.log(`Number of colonies to create is higher than available data.`);
-    console.log(`Please use --coloniesCount <number> to select a more reasonable number. (Max available colonies: ${maxColoniesCount})`);
+    console.log(
+      `Please use --coloniesCount <number> to select a more reasonable number. (Max available colonies: ${maxColoniesCount})`,
+    );
     process.exit(0);
   }
 
   if (DEFAULT_TIMEOUT < 1) {
-    console.log(`You've chosen to not create any colonies. You must have at least one colony for this script to work properly.`);
-    console.log(`Please use --coloniesCount <number> to select a more reasonable number. (Max available colonies: ${maxColoniesCount})`);
+    console.log(
+      `You've chosen to not create any colonies. You must have at least one colony for this script to work properly.`,
+    );
+    console.log(
+      `Please use --coloniesCount <number> to select a more reasonable number. (Max available colonies: ${maxColoniesCount})`,
+    );
     process.exit(0);
   }
 
-  console.log(`Starting data creation script with ${DEFAULT_COLONIES} colonies and a timeout of ${DEFAULT_TIMEOUT} ms.`);
-  console.log(`If you wish to change these values, please pass --coloniesCount <number> and --timeout <number> respectively to this script.`);
+  console.log(
+    `Starting data creation script with ${DEFAULT_COLONIES} colonies and a timeout of ${DEFAULT_TIMEOUT} ms.`,
+  );
+  console.log(
+    `If you wish to change these values, please pass --coloniesCount <number> and --timeout <number> respectively to this script.`,
+  );
 };
 
 const checkNodeVersion = () => {
-  const requiredVersion = readFile(path.resolve(__dirname, '..', '.nvmrc')).trim();
+  const requiredVersion = readFile(
+    path.resolve(__dirname, '..', '.nvmrc'),
+  ).trim();
   const currentVersion = process.version;
   if (compareVersions(currentVersion, requiredVersion) < 0) {
     console.log();
-    console.log(`Please use the correct node version when running the CDapp. Anything less than "v${requiredVersion}" and this script won't work properly.`);
-    console.log(`Current version: ${currentVersion} Required version: v${requiredVersion}`);
+    console.log(
+      `Please use the correct node version when running the CDapp. Anything less than "v${requiredVersion}" and this script won't work properly.`,
+    );
+    console.log(
+      `Current version: ${currentVersion} Required version: v${requiredVersion}`,
+    );
     console.log();
     process.exit(0);
   } else {
@@ -1354,10 +1485,19 @@ const checkNodeVersion = () => {
 };
 
 const pressKeyToContinue = async () => {
+  if (yesArg > -1) {
+    console.log('YES mode activated. Agreeing to everything...');
+    return Promise.resolve();
+  }
+
   console.log();
   console.log(`Only run this script on blank databases and chain state`);
-  console.log('If you believe your dev environment state is not clean, restart your environment and try again')
-  console.log(`Not doing so, will most likely break your currently running CDapp`);
+  console.log(
+    'If you believe your dev environment state is not clean, restart your environment and try again',
+  );
+  console.log(
+    `Not doing so, will most likely break your currently running CDapp`,
+  );
   console.log(`Press "return" to confirm you understood this!`);
   console.log();
 
@@ -1368,13 +1508,12 @@ const pressKeyToContinue = async () => {
       resolve();
     }),
   );
-}
+};
 
 checkArguments();
 
 checkNodeVersion();
 
 pressKeyToContinue().then(async () => {
-
   createUserAndColonyData();
 });
