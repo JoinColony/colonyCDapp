@@ -32,7 +32,7 @@ const getDevelopmentWallets = async () => {
   // if we're using the webpack.dev config, include dev wallets
   if (!WEBPACK_IS_PRODUCTION) {
     const { private_keys: ganachePrivateKeys } = (
-      await axios.get(`${ganacheAccountsUrl.href}/ganache-accounts.json`)
+      await axios.get(`${ganacheAccountsUrl.href}ganache-accounts.json`)
     ).data;
 
     return (

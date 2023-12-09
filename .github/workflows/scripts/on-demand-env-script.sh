@@ -213,6 +213,24 @@ server {
         proxy_cache_bypass \$http_upgrade;
     }
 }
+
+server {
+    listen 3007 ssl; # SSL for port 3007
+    server_name _;
+
+    # Specify the key and certificate file
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    location / {
+        proxy_pass http://localhost:3006;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
 EOL
 
 # Enable the site and restart Nginx
@@ -241,6 +259,7 @@ AWS_APPSYNC_KEY=da2-fakeApiId123456
 AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
 AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:3006
 WEBPACK_LIVE_RELOAD=false
+GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:3007"
 EOL
 
 # Install appropriate npm version and dependencies
