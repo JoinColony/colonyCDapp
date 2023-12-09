@@ -37,7 +37,7 @@ const getNetworkClient = async () => {
   // @ts-ignore
   if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
     const { etherRouterAddress: networkAddress } = (
-      await axios.get(`${ganacheAccountsUrl.href}/etherrouter-address.json`)
+      await axios.get(`${ganacheAccountsUrl.href}etherrouter-address.json`)
     ).data;
 
     return getColonyNetworkClient(ColonyJSNetwork.Custom, signer, {
