@@ -5,7 +5,6 @@ const { poll } = require('ethers/lib/utils');
 const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
-const axios = require('axios');
 const { compareVersions } = require('compare-versions');
 const {
   ColonyTokenFactory,
@@ -974,6 +973,7 @@ const tryFetchGraphqlQuery = async (
       await delay(blockTime);
       currentTry += 1;
     } else {
+      console.log(data)
       throw new Error('Could not fetch graphql data in time');
     }
   }
@@ -984,14 +984,19 @@ const tryFetchGraphqlQuery = async (
  * Orchestration
  */
 const createUserAndColonyData = async () => {
-  ({ etherRouterAddress } = (
-    await axios.get('http://localhost:3006/etherrouter-address.json')
- ).data);
 
-  ({ addresses: ganacheAddresses,
-    private_keys } = (
-    await axios.get('http://localhost:3006/ganache-accounts.json')
-  ).data);
+  let fetchRes = await fetch(
+    `http://localhost:3006/etherrouter-address.json`,
+  );
+  let fetchResJSON = await fetchRes.json();
+  etherRouterAddress = fetchResJSON.etherRouterAddress;
+
+  fetchRes = await fetch(
+    `http://localhost:3006/ganache-accounts.json`
+  )
+  fetchResJSON = await fetchRes.json();
+  private_keys = fetchResJSON.private_keys;
+  ganacheAddresses = fetchResJSON.addresses;
 
   // TODO: assert the above worked
 
@@ -1230,6 +1235,5 @@ checkArguments();
 checkNodeVersion();
 
 pressKeyToContinue().then(async () => {
-
   createUserAndColonyData();
 });
