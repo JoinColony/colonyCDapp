@@ -46,16 +46,16 @@ const SocialLinkFormModal: FC<SocialLinkFormModalProps> = ({
               {formatText({ id: 'editColony.socialLinks.modal.subtitle' })}
             </p>
             <FormTileRadioButtons
-              name="linkType"
+              name="name"
               className="grid md:grid-cols-3 gap-y-3 gap-x-4"
               items={LINK_TYPE_RADIO_BUTTONS}
             />
-            {getValues('linkType') && (
+            {getValues('name') && (
               <>
                 <FormInputBase
                   wrapperClassName="mt-6"
-                  name="url"
-                  label={LINK_TYPE_TO_LABEL_MAP[getValues('linkType')]}
+                  name="link"
+                  label={LINK_TYPE_TO_LABEL_MAP[getValues('name')]}
                 />
                 <div className="flex flex-col-reverse gap-3 mt-[5.625rem] md:mt-8 sm:flex-row">
                   <Button
@@ -69,7 +69,7 @@ const SocialLinkFormModal: FC<SocialLinkFormModalProps> = ({
                   <Button mode="primarySolid" isFullSize type="submit">
                     {formatText({
                       id: defaultValuesProp.some(
-                        ({ linkType }) => linkType === getValues('linkType'),
+                        ({ name }) => name === getValues('name'),
                       )
                         ? 'button.editLink'
                         : 'button.addLink',

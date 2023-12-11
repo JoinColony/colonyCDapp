@@ -68,27 +68,27 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
         defaultValues={data}
         initialLinkType={
           socialLinkIndex !== undefined
-            ? data[socialLinkIndex]?.linkType
+            ? data[socialLinkIndex]?.name
             : undefined
         }
-        onSubmit={({ linkType, url }) => {
+        onSubmit={({ name: linkName, link }) => {
           if (socialLinkIndex === undefined) {
             return;
           }
 
           const existingSocialLinkIndex = data.findIndex(
-            (socialLink) => socialLink.linkType === linkType,
+            (socialLink) => socialLink.name === linkName,
           );
 
           if (existingSocialLinkIndex === -1) {
             fieldArrayMethods.append({
-              linkType,
-              url,
+              name: linkName,
+              link,
             });
           } else {
             fieldArrayMethods.update(existingSocialLinkIndex, {
-              linkType,
-              url,
+              name: linkName,
+              link,
             });
           }
 

@@ -35,8 +35,8 @@ export const useEditColonyDetails = (
         createdIn: Id.RootDomain.toString(),
         externalLinks:
           metadata?.externalLinks?.map(({ name, link }) => ({
-            url: link,
-            linkType: name,
+            link,
+            name,
           })) || [],
       }),
       [

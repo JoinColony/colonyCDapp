@@ -17,7 +17,7 @@ export const useSocialLinksTableColumns = (): ColumnDef<
 
   const columns: ColumnDef<SocialLinksTableModel, string>[] = useMemo(
     () => [
-      columnHelper.accessor('linkType', {
+      columnHelper.accessor('name', {
         enableSorting: false,
         header: () => (
           <span className="text-sm text-gray-600">
@@ -29,7 +29,7 @@ export const useSocialLinksTableColumns = (): ColumnDef<
         ),
         size: 23,
       }),
-      columnHelper.accessor('url', {
+      columnHelper.accessor('link', {
         enableSorting: false,
         header: () => (
           <span className="text-sm text-gray-600">
