@@ -128,7 +128,6 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             <UserPopover
               userName={userDisplayName}
               walletAddress={userWalletAddress}
-              aboutDescription={userByAddress?.profile?.bio || ''}
               user={userByAddress}
               className="text-warning-400"
               size="xs"

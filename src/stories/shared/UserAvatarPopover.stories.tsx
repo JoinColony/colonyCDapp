@@ -18,20 +18,16 @@ const meta: Meta<typeof UserAvatarPopover> = {
         type: 'text',
       },
     },
-    aboutDescription: {
-      name: 'About description',
-      control: {
-        type: 'text',
-      },
-    },
   },
   args: {
     user: {
-      profile: { displayName: 'Panda' },
+      profile: {
+        displayName: 'Panda',
+        bio: `Passionate about sustainability and living a zero-waste lifestyle. Lover of all things vintage and retro. High-tops are my everything.`,
+      },
       walletAddress: '0x0',
     },
     walletAddress: '0x155....1051',
-    aboutDescription: `Passionate about sustainability and living a zero-waste lifestyle. Lover of all things vintage and retro. High-tops are my everything.`,
   },
 };
 

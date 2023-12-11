@@ -17,7 +17,6 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   userName,
   walletAddress,
   isVerified,
-  aboutDescription,
   user,
   userStatus,
   size,
@@ -85,12 +84,12 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
 
   const content = (
     <UserInfo
+      user={user}
       size={size}
       userName={userName}
       title={userName}
       walletAddress={walletAddress}
       isVerified={isVerified}
-      aboutDescription={aboutDescription}
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}

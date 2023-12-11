@@ -10,7 +10,7 @@ const displayName = 'v5.pages.VerifiedPage.partials.MemberAvatar';
 const MemberAvatar: FC<MemberAvatarProps> = ({ member }) => {
   const { user, isVerified } = member || {};
   const { walletAddress = '', profile } = user || {};
-  const { bio, displayName: userDisplayName } = profile || {};
+  const { displayName: userDisplayName } = profile || {};
   const domains = useContributorBreakdown(member);
 
   return (
@@ -18,7 +18,6 @@ const MemberAvatar: FC<MemberAvatarProps> = ({ member }) => {
       <UserAvatarPopover
         userName={userDisplayName}
         walletAddress={splitWalletAddress(walletAddress)}
-        aboutDescription={bio || ''}
         domains={domains}
         user={user}
         avatarSize="xs"

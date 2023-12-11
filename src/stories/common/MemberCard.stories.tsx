@@ -7,10 +7,15 @@ const memberCardMeta: Meta<typeof MemberCard> = {
   component: MemberCard,
   args: {
     userAvatarProps: {
-      aboutDescription: 'test',
       userName: 'test',
       isVerified: true,
       walletAddress: '',
+      user: {
+        profile: {
+          bio: 'test',
+        },
+        walletAddress: '',
+      },
     },
     meatBallMenuProps: {
       items: [
@@ -31,10 +36,15 @@ export const Base: StoryObj<typeof MemberCard> = {};
 export const WithBadge: StoryObj<typeof MemberCard> = {
   args: {
     userAvatarProps: {
-      aboutDescription: 'test',
       userName: 'test',
       mode: 'active',
       walletAddress: '',
+      user: {
+        profile: {
+          bio: 'test',
+        },
+        walletAddress: '',
+      },
     },
     role: {
       name: 'admin',

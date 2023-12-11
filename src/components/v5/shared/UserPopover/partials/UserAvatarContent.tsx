@@ -10,7 +10,6 @@ const UserAvatarContent: FC<UserAvatarContentProps> = ({
   user,
   isVerified,
   walletAddress,
-  aboutDescription,
   userStatus,
   domains,
   isContributorsList,
@@ -24,7 +23,6 @@ const UserAvatarContent: FC<UserAvatarContentProps> = ({
       title={userName}
       walletAddress={isHexString(walletAddress) ? walletAddress : ''}
       isVerified={isVerified}
-      aboutDescription={aboutDescription}
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}

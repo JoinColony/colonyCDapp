@@ -25,7 +25,7 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
 
   const contributor = data?.getColonyContributor;
   const { user, isVerified } = contributor ?? {};
-  const { bio, displayName: userDisplayName } = user?.profile || {};
+  const { displayName: userDisplayName } = user?.profile || {};
 
   const domains = useContributorBreakdown(contributor);
   const splitAddress = splitWalletAddress(user?.walletAddress || '');
@@ -38,7 +38,6 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
           userName={userDisplayName ?? splitAddress}
           walletAddress={splitAddress}
           domains={domains}
-          aboutDescription={bio || ''}
           user={user}
           isVerified={isVerified}
         />

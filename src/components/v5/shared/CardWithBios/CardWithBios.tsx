@@ -30,7 +30,6 @@ const CardWithBios: FC<CardWithBiosProps> = ({
     null) as ContributorTypeFilter | null;
 
   const { walletAddress = contributorAddress, profile } = user || {};
-  const { bio } = profile || {};
   const {
     getTooltipProps,
     setTooltipRef,
@@ -55,7 +54,6 @@ const CardWithBios: FC<CardWithBiosProps> = ({
               userName={profile?.displayName}
               walletAddress={walletAddress}
               isVerified={isVerified}
-              aboutDescription={bio || ''}
               domains={domains}
               user={user}
               userStatus={userStatus}

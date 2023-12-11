@@ -10,11 +10,16 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
       {
         key: '1',
         userAvatarProps: {
-          aboutDescription: 'CaptainPlanet',
           userName: 'CaptainPlanet',
           isVerified: true,
           mode: 'top-filled',
           walletAddress: '',
+          user: {
+            profile: {
+              bio: 'CaptainPlanet',
+            },
+            walletAddress: '',
+          },
         },
         reputation: 42,
         role: {
@@ -35,11 +40,16 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
       {
         key: '2',
         userAvatarProps: {
-          aboutDescription: 'panda',
           userName: 'panda',
           mode: 'dedicated-filled',
           isVerified: true,
           walletAddress: '',
+          user: {
+            profile: {
+              bio: 'panda',
+            },
+            walletAddress: '',
+          },
         },
         reputation: 37,
         role: {
@@ -60,10 +70,15 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
       {
         key: '3',
         userAvatarProps: {
-          aboutDescription: 'shredder',
           userName: 'shredder',
           mode: 'active-filled',
           walletAddress: '',
+          user: {
+            profile: {
+              bio: 'shredder',
+            },
+            walletAddress: '',
+          },
         },
         reputation: 22,
         role: {
@@ -84,10 +99,15 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
       {
         key: '4',
         userAvatarProps: {
-          aboutDescription: 'RodgerRamjet',
           userName: 'RodgerRamjet',
           isVerified: true,
           walletAddress: '',
+          user: {
+            profile: {
+              bio: 'RodgerRamjet',
+            },
+            walletAddress: '',
+          },
         },
         reputation: 13,
         role: {
@@ -108,10 +128,15 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
       {
         key: '5',
         userAvatarProps: {
-          aboutDescription: 'rocko',
           userName: 'rocko',
           isVerified: true,
           walletAddress: '',
+          user: {
+            profile: {
+              bio: 'rocko',
+            },
+            walletAddress: '',
+          },
         },
         reputation: 9,
         role: {
@@ -132,10 +157,15 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
       {
         key: '6',
         userAvatarProps: {
-          aboutDescription: 'ChuckieFinster',
           userName: 'ChuckieFinster',
           isVerified: true,
           walletAddress: '',
+          user: {
+            profile: {
+              bio: 'ChuckieFinster',
+            },
+            walletAddress: '',
+          },
         },
         reputation: 6,
         role: {
@@ -156,10 +186,15 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
       {
         key: '7',
         userAvatarProps: {
-          aboutDescription: 'heyarnold',
           userName: 'heyarnold',
           isVerified: true,
           walletAddress: '',
+          user: {
+            profile: {
+              bio: 'heyarnold',
+            },
+            walletAddress: '',
+          },
         },
         reputation: 5,
         meatBallMenuProps: {

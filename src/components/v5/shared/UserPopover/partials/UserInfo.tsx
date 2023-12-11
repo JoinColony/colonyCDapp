@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import { UserInfoProps } from '../types';
+import { UserPopoverProps } from '../types';
 import Icon from '~shared/Icon';
 import TitleLabel from '~v5/shared/TitleLabel';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
@@ -15,18 +15,17 @@ import { multiLineTextEllipsis } from '~utils/strings';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
-const UserInfo: FC<UserInfoProps> = ({
+const UserInfo: FC<UserPopoverProps> = ({
+  user,
   userName,
   isVerified,
   walletAddress,
-  aboutDescription,
   avatar,
   userStatus,
   domains,
   isContributorsList,
   size,
 }) => {
-  const aboutDescriptionText = formatText(aboutDescription);
   const isTopContributorType = userStatus === 'top' && isContributorsList;
 
   return (
@@ -80,7 +79,7 @@ const UserInfo: FC<UserInfoProps> = ({
           </>
         )}
       </div>
-      {aboutDescriptionText && (
+      {user?.profile?.bio && (
         <div
           className={clsx({
             'pt-6 px-6': isTopContributorType,
@@ -91,7 +90,7 @@ const UserInfo: FC<UserInfoProps> = ({
             text={formatText({ id: 'userInfo.about.section' })}
           />
           <p className={clsx('text-md text-gray-600', {})}>
-            {aboutDescriptionText}
+            {user.profile.bio}
           </p>
           <div className={clsx('my-6 border-t border-gray-200', {})} />
         </div>
@@ -100,7 +99,7 @@ const UserInfo: FC<UserInfoProps> = ({
         <div
           className={clsx({
             'px-6 pb-6': isTopContributorType,
-            'pt-6': !aboutDescriptionText && isTopContributorType,
+            'pt-6': !user?.profile?.bio && isTopContributorType,
           })}
         >
           <TitleLabel

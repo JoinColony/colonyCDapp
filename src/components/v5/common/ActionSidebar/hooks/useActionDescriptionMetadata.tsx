@@ -118,7 +118,6 @@ export const useActionDescriptionMetadata = () => {
                 <UserPopover
                   userName={user.profile?.displayName}
                   walletAddress={user.walletAddress}
-                  aboutDescription={user.profile?.bio || ''}
                   user={user}
                   wrapperClassName="!inline-flex"
                 >
