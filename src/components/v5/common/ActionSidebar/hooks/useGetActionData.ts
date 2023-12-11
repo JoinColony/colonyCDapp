@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import moveDecimal from 'move-decimal-point';
-
 import { Id } from '@colony/colony-js';
+
 import { ACTION } from '~constants/actions';
 import { ColonyActionType } from '~gql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
@@ -31,10 +31,13 @@ export const useGetActionData = (transactionId: string | undefined) => {
       decisionData,
       recipientAddress,
       annotation,
+      isMotion,
     } = action;
 
     const repeatableFields = {
-      createdIn: Id.RootDomain.toString(),
+      createdIn: isMotion
+        ? motionData?.motionDomain.nativeId.toString()
+        : Id.RootDomain.toString(),
       description: annotation?.message,
       title: action.metadata?.customTitle,
       decisionMethod: action.isMotion
@@ -155,15 +158,24 @@ export const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       case ColonyActionType.EditDomain:
-      case ColonyActionType.EditDomainMotion:
+      case ColonyActionType.EditDomainMotion: {
+        const changelog = fromDomain?.metadata?.changelog?.find(
+          ({ transactionHash }) => transactionHash === action.transactionHash,
+        );
+
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
-          team: motionData?.motionDomain?.nativeId?.toString(),
-          teamName: pendingDomainMetadata?.name,
-          domainColor: pendingDomainMetadata?.color,
-          domainPurpose: pendingDomainMetadata?.description,
+          team: fromDomain?.nativeId?.toString(),
+          teamName: isMotion ? pendingDomainMetadata?.name : changelog?.newName,
+          domainColor: isMotion
+            ? pendingDomainMetadata?.color
+            : changelog?.newColor,
+          domainPurpose: isMotion
+            ? pendingDomainMetadata?.description
+            : changelog?.newDescription,
           ...repeatableFields,
         };
+      }
       case ColonyActionType.CreateDecisionMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,

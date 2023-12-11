@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { Id } from '@colony/colony-js';
+import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
@@ -8,20 +10,23 @@ import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 
 import { useEditTeam } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
-import { useDecisionMethods } from '../../../hooks';
+import { DecisionMethod, useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
-import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
 const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
   const { decisionMethods } = useDecisionMethods();
+  const { watch } = useFormContext();
 
   useEditTeam(getFormOptions);
+  const selectedDecisionMethod = watch('decisionMethod');
+  const selectedTeam = watch('team');
 
   return (
     <>
@@ -37,7 +42,12 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
       >
-        <TeamsSelect name="team" />
+        <TeamsSelect
+          name="team"
+          filterOptionsFn={(option) =>
+            option.value !== Id.RootDomain.toString()
+          }
+        />
       </ActionFormRow>
       <ActionFormRow
         fieldName="teamName"
@@ -117,20 +127,29 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           title={formatText({ id: 'actionSidebar.decisionMethod' })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        iconName="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
+      {selectedDecisionMethod &&
+        selectedDecisionMethod === DecisionMethod.Reputation && (
+          <ActionFormRow
+            iconName="house-line"
+            fieldName="createdIn"
+            tooltips={{
+              label: {
+                tooltipContent: formatText({
+                  id: 'actionSidebar.tooltip.createdIn',
+                }),
+              },
+            }}
+            title={formatText({ id: 'actionSidebar.createdIn' })}
+          >
+            <TeamsSelect
+              name="createdIn"
+              filterOptionsFn={(option) =>
+                option.value === Id.RootDomain.toString() ||
+                option.value === selectedTeam
+              }
+            />
+          </ActionFormRow>
+        )}
       <DescriptionRow />
     </>
   );

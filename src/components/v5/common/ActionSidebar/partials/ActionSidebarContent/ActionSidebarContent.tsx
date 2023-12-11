@@ -28,6 +28,7 @@ import {
   ActionSidebarContentProps,
   ActionSidebarFormContentProps,
 } from './types';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
@@ -56,6 +57,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
   const descriptionMetadata = useActionDescriptionMetadata();
+  const { readonly } = useAdditionalFormOptionsContext();
 
   const {
     setValue,
@@ -119,7 +121,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           </div>
         )}
       </div>
-      {!isMotion && (
+      {!isMotion && !readonly && (
         <div className="mt-auto">
           {!selectedAction && (
             <PopularActions

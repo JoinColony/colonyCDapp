@@ -33,11 +33,12 @@ export const useEditTeam = (
       return;
     }
 
-    const { metadata } = selectedDomain;
+    const { metadata, nativeId } = selectedDomain;
 
     setValue('teamName', metadata?.name);
     setValue('domainPurpose', metadata?.description);
     setValue('domainColor', metadata?.color);
+    setValue('createdIn', nativeId.toString());
   }, [selectedDomain, setValue]);
 
   useActionFormBaseHook({
@@ -49,9 +50,9 @@ export const useEditTeam = (
         : ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: selectedDomainId.toString() || Id.RootDomain.toString(),
       }),
-      [],
+      [selectedDomainId],
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

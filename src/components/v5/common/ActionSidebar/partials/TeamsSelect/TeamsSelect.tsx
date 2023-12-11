@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 
-import { useRelativePortalElement, useTeams, useToggle } from '~hooks';
+import { useRelativePortalElement, useTeamsOptions, useToggle } from '~hooks';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import SearchSelect from '~v5/shared/SearchSelect';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
@@ -12,7 +12,11 @@ import { TeamSelectProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
-const TeamsSelect: FC<TeamSelectProps> = ({ name, readonly: readonlyProp }) => {
+const TeamsSelect: FC<TeamSelectProps> = ({
+  name,
+  readonly: readonlyProp,
+  filterOptionsFn,
+}) => {
   const {
     field,
     fieldState: { error },
@@ -21,7 +25,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name, readonly: readonlyProp }) => {
   });
   const selectedTeam = field.value;
   const isError = !!error;
-  const teamsOptions = useTeams();
+  const teamsOptions = useTeamsOptions(filterOptionsFn);
   const { formatMessage } = useIntl();
   const [
     isTeamSelectVisible,
@@ -31,7 +35,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name, readonly: readonlyProp }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const selectedOption = teamsOptions.options.find(
+  const selectedOption = teamsOptions.find(
     (option) => option.value === selectedTeam,
   );
   const { readonly } = useAdditionalFormOptionsContext();
@@ -84,7 +88,14 @@ const TeamsSelect: FC<TeamSelectProps> = ({ name, readonly: readonlyProp }) => {
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
               }}
-              items={[teamsOptions]}
+              items={[
+                {
+                  key: 'teams',
+                  title: { id: 'actions.teams' },
+                  isAccordion: false,
+                  options: teamsOptions,
+                },
+              ]}
               onSelect={(value) => {
                 field.onChange(value);
 
