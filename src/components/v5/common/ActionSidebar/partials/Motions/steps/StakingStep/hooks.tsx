@@ -3,11 +3,12 @@ import { BigNumber } from 'ethers';
 
 import { UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types';
 import Numeral from '~shared/Numeral';
-import { ColonyMotionFragment, useGetUserReputationQuery } from '~gql';
+import { useGetUserReputationQuery } from '~gql';
 import { useAppContext, useEnoughTokensForStaking } from '~hooks';
 import useUsersByAddresses from '~hooks/useUsersByAddresses';
 import { formatText } from '~utils/intl';
 import { MotionVote } from '~utils/colonyMotions';
+import { ColonyMotion } from '~types';
 
 import { useMotionContext } from '../../partials/MotionProvider/hooks';
 
@@ -65,7 +66,7 @@ export const useStakingStep = () => {
 };
 
 export const useStakingInformation = (
-  usersStakes: ColonyMotionFragment['usersStakes'],
+  usersStakes: ColonyMotion['usersStakes'],
   tokenDecimals: number,
   tokenSymbol: string,
 ): {

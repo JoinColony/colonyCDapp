@@ -27,7 +27,6 @@ const UserInfo: FC<UserPopoverProps> = ({
   size,
 }) => {
   const isTopContributorType = userStatus === 'top' && isContributorsList;
-
   return (
     <div
       className={clsx({
@@ -93,14 +92,12 @@ const UserInfo: FC<UserPopoverProps> = ({
           <p className={clsx('text-md text-gray-600', {})}>
             {user.profile.bio}
           </p>
-          <div className={clsx('my-6 border-t border-gray-200', {})} />
         </div>
       )}
       {domains?.length ? (
         <div
-          className={clsx({
+          className={clsx('mt-6 border-t border-gray-200 pt-6', {
             'px-6 pb-6': isTopContributorType,
-            'pt-6': !user?.profile?.bio && isTopContributorType,
           })}
         >
           <TitleLabel

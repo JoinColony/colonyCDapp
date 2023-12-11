@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import UserAvatar from '~v5/shared/UserAvatar';
+import UserPopover from '~v5/shared/UserPopover';
 
 import { UserInfoListProps } from './types';
 
@@ -17,7 +18,9 @@ const UserInfoList: FC<UserInfoListProps> = ({ items, className }) => {
           key={itemKey}
           className="w-full flex items-center justify-between gap-4"
         >
-          <UserAvatar avatarSize="xs" user={user} showUsername />
+          <UserPopover user={user} userName={user?.profile?.displayName}>
+            <UserAvatar avatarSize="xs" user={user} showUsername />
+          </UserPopover>
           {typeof info === 'string' ? (
             <p className={infoClassName}>{info}</p>
           ) : (
