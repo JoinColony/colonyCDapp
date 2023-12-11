@@ -20,9 +20,8 @@ const SettingsRow = <
   buttonIcon,
   buttonLabel,
   buttonMode,
-  handleOnChange,
   onClick,
-  id,
+  name,
   className,
   titleClassName,
   additionalContent,
@@ -55,9 +54,7 @@ const SettingsRow = <
           </div>
         )}
       </div>
-      {handleOnChange && (
-        <FormSwitch name={id || ''} handleOnChange={handleOnChange} />
-      )}
+      <FormSwitch name={name} />
       {onClick && buttonLabel && (
         <Button
           mode={buttonMode}

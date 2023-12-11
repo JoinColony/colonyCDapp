@@ -2,20 +2,17 @@ import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 import { FormSwitchProps } from './types';
 import Switch from './Switch';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.Fields.FormSwitch';
 
-const FormSwitch: FC<FormSwitchProps> = ({ name, handleOnChange, ...rest }) => {
+const FormSwitch: FC<FormSwitchProps> = ({ name, ...rest }) => {
   const {
-    field: { value, onChange: formOnChange, ...field },
+    field: { value, ...field },
   } = useController({ name });
+  const { readonly } = useAdditionalFormOptionsContext();
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    formOnChange(event);
-    handleOnChange?.(event.target.checked);
-  };
-
-  return <Switch {...rest} {...field} checked={value} onChange={onChange} />;
+  return <Switch {...rest} {...field} checked={value} readOnly={readonly} />;
 };
 
 FormSwitch.displayName = displayName;

@@ -9,6 +9,12 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { useGetColonyAction } from './useGetColonyAction';
 import { DecisionMethod } from './useDecisionMethods';
+import { getRole, USER_ROLE } from '~constants/permissions';
+import { convertRolesToArray } from '~transformers';
+import {
+  AUTHORITY,
+  AVAILABLE_ROLES,
+} from '../partials/forms/ManagePermissionsForm/consts';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
@@ -32,6 +38,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       recipientAddress,
       annotation,
       isMotion,
+      roles,
     } = action;
 
     const repeatableFields = {
@@ -189,6 +196,30 @@ export const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: ACTION.UNLOCK_TOKEN,
           ...repeatableFields,
         };
+      case ColonyActionType.SetUserRoles:
+      case ColonyActionType.SetUserRolesMotion: {
+        const rolesList = convertRolesToArray(roles);
+        const { role } = getRole(rolesList);
+
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+          member: recipientAddress,
+          authority: AUTHORITY.Own,
+          role,
+          team: fromDomain?.nativeId.toString(),
+          permissions:
+            role === USER_ROLE.Custom
+              ? AVAILABLE_ROLES.reduce(
+                  (result, currentRole) => ({
+                    ...result,
+                    [`role_${currentRole}`]: rolesList.includes(currentRole),
+                  }),
+                  {},
+                )
+              : undefined,
+          ...repeatableFields,
+        };
+      }
       default:
         return undefined;
     }

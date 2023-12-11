@@ -6,13 +6,16 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
-import { UserRole, USER_ROLE } from '~constants/permissions';
+import { UserRole, USER_ROLE, getRole } from '~constants/permissions';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { notMaybe } from '~utils/arrays';
+import { getUserRolesForDomain } from '~transformers';
 
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import {
   AUTHORITY,
+  AVAILABLE_ROLES,
   ManagePermissionsFormValues,
   REMOVE_ROLE_OPTION_VALUE,
   validationSchema,
@@ -25,7 +28,8 @@ export const useManagePermissions = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const { setValue } = useFormContext<ManagePermissionsFormValues>();
+  const { setValue, watch } =
+    useFormContext<Partial<ManagePermissionsFormValues>>();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
@@ -41,6 +45,41 @@ export const useManagePermissions = (
       setValue('authority', AUTHORITY.Own);
     }
   }, [isModeRoleSelected, setValue]);
+
+  useEffect(() => {
+    const { unsubscribe } = watch(({ member, team }, { name }) => {
+      if (
+        !name ||
+        !['team', 'member'].includes(name) ||
+        !notMaybe(team) ||
+        !notMaybe(member)
+      ) {
+        return;
+      }
+
+      const userPermissions = getUserRolesForDomain(
+        colony,
+        member,
+        Number(team),
+      );
+      const userRole = getRole(userPermissions);
+
+      setValue('role', userRole.permissions.length ? userRole.role : undefined);
+
+      if (userRole.role !== USER_ROLE.Custom) {
+        return;
+      }
+
+      AVAILABLE_ROLES.forEach((colonyRole) => {
+        setValue(
+          `permissions.role_${colonyRole}`,
+          userRole.permissions.includes(colonyRole),
+        );
+      });
+    });
+
+    return () => unsubscribe();
+  }, [colony, role, setValue, watch]);
 
   useActionFormBaseHook({
     getFormOptions,

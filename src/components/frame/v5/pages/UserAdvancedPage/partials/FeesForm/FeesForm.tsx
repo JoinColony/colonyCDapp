@@ -1,36 +1,33 @@
 import React from 'react';
 
 import { Form } from '~shared/Fields';
+import noop from '~utils/noop';
 import SettingsRow from '~v5/common/SettingsRow';
+import { METATRANSACTIONS_VALIDATION_SCHEMA } from './consts';
 import { useFeesForm } from './hooks';
 
 const FeesForm = () => {
-  const {
-    handleFeesOnChange,
-    handleSubmit,
-    metatransactionsValidationSchema,
-    metatransactionsDefault,
-  } = useFeesForm();
+  const { metatransactionsDefault, setFormRef, loading } = useFeesForm();
 
   return (
     <Form
-      validationSchema={metatransactionsValidationSchema}
+      ref={setFormRef}
+      options={{
+        readonly: loading,
+      }}
+      validationSchema={METATRANSACTIONS_VALIDATION_SCHEMA}
       defaultValues={{
         metatransactionsEnabled: !!metatransactionsDefault,
       }}
-      onSubmit={handleSubmit}
+      onSubmit={noop}
     >
-      {({ register }) => (
-        <SettingsRow
-          title={{ id: 'advancedSettings.fees.title' }}
-          description={{ id: 'advancedSettings.fees.description' }}
-          tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
-          id="metatransactionsEnabled"
-          handleOnChange={handleFeesOnChange}
-          register={register}
-          className="pt-0"
-        />
-      )}
+      <SettingsRow
+        title={{ id: 'advancedSettings.fees.title' }}
+        description={{ id: 'advancedSettings.fees.description' }}
+        tooltipMessage={{ id: 'advancedSettings.fees.tooltip' }}
+        name="metatransactionsEnabled"
+        className="pt-0"
+      />
     </Form>
   );
 };
