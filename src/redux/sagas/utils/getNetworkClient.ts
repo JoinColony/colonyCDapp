@@ -30,10 +30,6 @@ const getNetworkClient = async () => {
   // @ts-ignore
   if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
     const localOracle = new URL(`/reputation/local`, 'http://localhost:3001');
-    // const {
-    //   etherRouterAddress: networkAddress,
-    //   // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
-    // } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
 
     const { etherRouterAddress: networkAddress } = (
       await axios.get('http://localhost:3006/etherrouter-address.json')
