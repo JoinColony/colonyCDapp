@@ -33,16 +33,6 @@ ADD docker/files/amplify/config.base /home/node/.aws/config
 ADD docker/files/amplify/credentials.base /home/node/.aws/credentials
 
 # Opensearch cannot be run by root so we use the built in node user
-# We also add the node user to the users group so that the node user
-# can run commands on the mounted files and folders
-# ARG USER_ID
-# ARG USER_GROUP
-
-# RUN getent group ${USER_GROUP} || groupadd --gid ${USER_GROUP} fuckamplify
-
-# RUN usermod -u ${USER_ID} node
-# RUN usermod -g ${USER_GROUP} node
-
 RUN chown -R $(id -u node):$(id -g node) /colonyCDapp
 RUN chown -R $(id -u node):$(id -g node) /colonyCDappBackend
 

@@ -30,13 +30,6 @@ const {
  * as well as the network contracts being deployed on said chain
  * So make sure to only run this script after the dev environment (via docker compose) was started
  */
-// const {
-//   addresses: ganacheAddresses,
-//   private_keys,
-// } = require('../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json');
-// const {
-//   etherRouterAddress,
-// } = require('../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
 let etherRouterAddress;
 let private_keys;
 let ganacheAddresses;
