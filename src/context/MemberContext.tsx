@@ -4,7 +4,6 @@ import React, {
   PropsWithChildren,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
 } from 'react';
 import { useMatch, useParams } from 'react-router-dom';
@@ -53,7 +52,7 @@ const MemberContext = createContext<
 >(undefined);
 
 const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { domainId, colonyName } = useParams();
+  const { colonyName } = useParams();
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
   const isMobile = useMobile();
@@ -91,37 +90,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     getFilterStatus,
     getFilterPermissions,
     getFilterContributorType,
-    handleFilterSelect,
   } = useFilterContext();
-
-  // Preselect domain if present in the url
-  useEffect(() => {
-    const totalDomains = domains?.items.length ?? 1;
-    const preSelectedDomainId = Number(domainId);
-    const isInvalidDomainId =
-      !preSelectedDomainId ||
-      Number.isNaN(preSelectedDomainId) ||
-      preSelectedDomainId > totalDomains ||
-      preSelectedDomainId < 1;
-
-    if (isInvalidDomainId) {
-      return;
-    }
-
-    const preSelectedDomain = domains?.items
-      ?.filter(notNull)
-      .find(({ nativeId }) => nativeId === Number(preSelectedDomainId));
-
-    if (preSelectedDomainId) {
-      handleFilterSelect({
-        target: {
-          id: `${preSelectedDomainId}_domain`,
-          name: preSelectedDomain?.metadata?.name ?? preSelectedDomainId,
-          checked: true,
-        },
-      } as React.ChangeEvent<HTMLInputElement>);
-    }
-  }, [domainId, domains, handleFilterSelect]);
 
   const nativeDomainIds = useMemo(() => {
     return (

@@ -13,24 +13,25 @@ import { useSearchContext } from '~context/SearchContext';
 import { ColonyContributor } from '~types';
 import { notNull } from '~utils/arrays';
 import { UserRole } from '~constants/permissions';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 
 const useMemberFilters = ({
   nativeDomainIds,
   filterPermissions,
   filterStatus,
   members,
-  isContributorList = false,
   contributorTypes,
 }: {
   members: ColonyContributor[];
   nativeDomainIds: number[];
   filterPermissions: Record<UserRole, number[]>;
-  isContributorList?: boolean;
   contributorTypes: Set<ContributorTypeFilter>;
   filterStatus?: StatusType;
 }) => {
   const { colony } = useColonyContext();
   const { searchValue } = useSearchContext();
+  const selectedTeam = useGetSelectedTeamFilter();
+
   const { colonyAddress = '' } = colony ?? {};
 
   const filteredByStatus = useMemo(() => {
@@ -58,7 +59,9 @@ const useMemberFilters = ({
 
   const filteredByPermissions = useMemo(() => {
     const databaseDomainIds = new Set(
-      nativeDomainIds.map((id) => `${colonyAddress}_${id}`),
+      selectedTeam
+        ? [selectedTeam.id]
+        : nativeDomainIds.map((id) => `${colonyAddress}_${id}`),
     );
 
     // Always include the root domain, since if the user has a permission in root, they have it in all domains
@@ -68,15 +71,11 @@ const useMemberFilters = ({
     ]);
 
     if (!Object.keys(filterPermissions).length) {
-      if (!isContributorList) {
-        // Don't filter allMembers list by domain selected.
-        return filteredByType;
-      }
-
       return (
         filteredByType?.filter(notNull).filter(({ roles, reputation }) => {
           const filteredRoles = roles?.items.filter(notNull) ?? [];
           const filteredReputation = reputation?.items.filter(notNull) ?? [];
+
           // Filter contributors list by whether there's some rep in the selected domains
           // or some permissions in the selected domains
           return (
@@ -105,13 +104,11 @@ const useMemberFilters = ({
       );
     });
   }, [
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(filterPermissions),
-    filterPermissions,
+    nativeDomainIds,
     colonyAddress,
     filteredByType,
-    nativeDomainIds,
-    isContributorList,
+    selectedTeam,
+    filterPermissions,
   ]);
 
   const searchedMembers = useMemo(

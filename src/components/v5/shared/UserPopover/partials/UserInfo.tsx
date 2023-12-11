@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import { UserInfoProps } from '../types';
+import { ColonyRole, Id } from '@colony/colony-js';
 import Icon from '~shared/Icon';
 import TitleLabel from '~v5/shared/TitleLabel';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
@@ -12,6 +12,8 @@ import { getRole } from '~constants/permissions';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
 import Numeral from '~shared/Numeral';
 import { multiLineTextEllipsis } from '~utils/strings';
+
+import { UserInfoProps } from '../types';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
@@ -117,7 +119,18 @@ const UserInfo: FC<UserInfoProps> = ({
                 reputationPercentage,
                 reputationRaw,
               }) => {
-                const permissionRole = getRole(permissions);
+                const finalPermissions = permissions?.length
+                  ? permissions
+                  : domains
+                      .find(({ nativeId }) => nativeId === Id.RootDomain)
+                      ?.permissions.filter(
+                        (permission) =>
+                          permission !== ColonyRole.Root &&
+                          permission !== ColonyRole.Recovery,
+                      );
+                const permissionRole = finalPermissions?.length
+                  ? getRole(finalPermissions)
+                  : undefined;
 
                 return (
                   <li
@@ -128,10 +141,12 @@ const UserInfo: FC<UserInfoProps> = ({
                       {domainName}
                     </span>
                     <div className="flex justify-end">
-                      <PermissionsBadge
-                        text={permissionRole.name}
-                        iconName="user" // @TODO: add user-tree icon for multiSig
-                      />
+                      {permissionRole && (
+                        <PermissionsBadge
+                          text={permissionRole.name}
+                          iconName="user" // @TODO: add user-tree icon for multiSig
+                        />
+                      )}
 
                       <Tooltip
                         className="flex justify-end text-sm text-blue-400 min-w-[4.5rem] items-center"
