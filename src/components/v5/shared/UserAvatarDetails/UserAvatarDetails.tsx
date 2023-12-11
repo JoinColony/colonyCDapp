@@ -4,16 +4,19 @@ import clsx from 'clsx';
 import Avatar from '~v5/shared/Avatar';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import Icon from '~shared/Icon';
-import { UserAvatarDetailsProps } from './types';
 import UserStatus from '~v5/common/Pills/UserStatus';
 import { UserStatusMode } from '~v5/common/Pills/types';
 import { formatText } from '~utils/intl';
+import { ADDRESS_ZERO } from '~constants';
+
+import { UserAvatarDetailsProps } from './types';
 
 const displayName = 'v5.UserAvatarDetails';
 
 const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
+  user,
   userName,
-  walletAddress,
+  walletAddress: walletAddressProp,
   userStatus,
   isVerified,
   avatar,
@@ -21,6 +24,8 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
   isBordered = false,
   size = 'm',
 }) => {
+  const walletAddress =
+    user?.walletAddress ?? walletAddressProp ?? ADDRESS_ZERO;
   const mode: UserStatusMode =
     (userStatus === 'new' && 'active-new') ||
     (userStatus === 'active' && 'active-filled') ||

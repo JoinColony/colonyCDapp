@@ -47,6 +47,7 @@ const UserInfo: FC<UserPopoverProps> = ({
           })}
         >
           <UserAvatarDetails
+            user={user}
             userName={userName}
             walletAddress={walletAddress}
             avatar={avatar}

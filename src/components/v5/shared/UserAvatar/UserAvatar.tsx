@@ -1,11 +1,14 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import styles from './UserAvatar.module.css';
-import { UserAvatarProps } from './types';
 import Avatar from '~v5/shared/Avatar';
 import Link from '~v5/shared/Link';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
+import { ADDRESS_ZERO } from '~constants';
+
+import { UserAvatarProps } from './types';
+
+import styles from './UserAvatar.module.css';
 
 const displayName = 'v5.UserAvatar';
 
@@ -19,14 +22,12 @@ const UserAvatar: FC<UserAvatarProps> = ({
   size = 'xxs',
   user,
   userStatus,
+  walletAddress,
   ...rest
 }) => {
-  const address = typeof user == 'string' ? user : user.walletAddress;
-  const profile = typeof user == 'string' ? null : user.profile;
-  const username =
-    typeof user != 'string'
-      ? user.profile?.displayName
-      : splitWalletAddress(address);
+  const address = user?.walletAddress ?? walletAddress ?? ADDRESS_ZERO;
+  const { profile } = user ?? {};
+  const username = profile?.displayName ?? splitWalletAddress(address);
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
   const avatar = (
@@ -48,7 +49,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
           avatar={imageString}
           placeholderIcon="circle-person"
           seed={address && address.toLowerCase()}
-          title={profile?.displayName || address || ''}
+          title={profile?.displayName || address}
           className={className}
           {...rest}
         />

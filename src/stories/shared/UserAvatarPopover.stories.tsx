@@ -25,9 +25,8 @@ const meta: Meta<typeof UserAvatarPopover> = {
         displayName: 'Panda',
         bio: `Passionate about sustainability and living a zero-waste lifestyle. Lover of all things vintage and retro. High-tops are my everything.`,
       },
-      walletAddress: '0x0',
+      walletAddress: '0x155....1051',
     },
-    walletAddress: '0x155....1051',
   },
 };
 

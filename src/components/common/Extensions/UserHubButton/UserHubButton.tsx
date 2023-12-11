@@ -100,7 +100,8 @@ const UserHubButton: FC<UserHubButtonProps> = ({
           {walletAddress ? (
             <>
               <UserAvatar
-                user={user || walletAddress}
+                user={user}
+                walletAddress={walletAddress}
                 showUsername={!(hideUserNameOnMobile && isMobile)}
                 size="xxs"
               />
