@@ -267,7 +267,8 @@
     "transfer",
     "add",
     "piggy-bank",
-    "rocket"
+    "rocket",
+    "folder-simple-lock"
   ],
   "multiColorIcons": [
     "circle-check-primary",

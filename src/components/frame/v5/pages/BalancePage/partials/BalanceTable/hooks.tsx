@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { DeepPartial } from 'utility-types';
 import { formatText } from '~utils/intl';
-import Numeral from '~shared/Numeral';
+import Numeral, { getFormattedNumeralValue } from '~shared/Numeral';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
@@ -13,13 +14,24 @@ import { DEFAULT_NETWORK_INFO } from '~constants';
 import { NativeTokenStatus } from '~gql';
 import { Token } from '~types';
 import { useActionSidebarContext } from '~context';
+import { useColonyContext } from '~hooks';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { convertToDecimal } from '~utils/convertToDecimal';
+import TokenIcon from '~shared/TokenIcon';
+import { FiltersProps } from '~v5/shared/Filters/types';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import Link from '~v5/shared/Link';
 import TokenAvatar from '../TokenAvatar';
-import { BalanceTableFieldModel } from './types';
+import {
+  BalanceTableFieldModel,
+  BalanceTableFilters,
+  TokensDataProps,
+  TokensProps,
+  UseFundsTableReturnType,
+} from './types';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable.hooks';
 
@@ -40,8 +52,51 @@ const MSG = defineMessages({
     id: `${displayName}.makePayment`,
     defaultMessage: 'Make payment using this token',
   },
+  filterTokenType: {
+    id: `${displayName}.filterTokenType`,
+    defaultMessage: 'Token type',
+  },
+  filterApprovedTokens: {
+    id: `${displayName}.filterApprovedTokens`,
+    defaultMessage: 'Approved token types',
+  },
+  filterAttributes: {
+    id: `${displayName}.filterAttributes`,
+    defaultMessage: 'Attributes',
+  },
+  filterAttributeTypes: {
+    id: `${displayName}.filterAttributeTypes`,
+    defaultMessage: 'Attribute types',
+  },
+  typeNative: {
+    id: `${displayName}.typeNative`,
+    defaultMessage: 'Native',
+  },
+  typeReputation: {
+    id: `${displayName}.typeReputation`,
+    defaultMessage: 'Reputation',
+  },
+  tableRowType: {
+    id: `${displayName}.tableRowType`,
+    defaultMessage: 'Type',
+  },
+  tableRowSymbol: {
+    id: `${displayName}.tableRowSymbol`,
+    defaultMessage: 'Symbol',
+  },
+  tableRowAttribute: {
+    id: `${displayName}.tableRowAttribute`,
+    defaultMessage: 'Attribute',
+  },
+  tableRowBalance: {
+    id: `${displayName}.tableRowBalance`,
+    defaultMessage: 'Balance',
+  },
+  customLabel: {
+    id: `${displayName}.customLabel`,
+    defaultMessage: 'All filters',
+  },
 });
-
 export const useBalanceTableColumns = (
   nativeToken,
   balances,
@@ -56,8 +111,8 @@ export const useBalanceTableColumns = (
   const columns: ColumnDef<BalanceTableFieldModel, string>[] = useMemo(
     () => [
       columnHelper.display({
-        id: 'asset',
-        header: () => formatText({ id: 'table.row.asset' }),
+        id: 'type',
+        header: () => formatText(MSG.tableRowType),
         cell: ({ row }) => {
           if (!row.original.token) return [];
 
@@ -73,15 +128,15 @@ export const useBalanceTableColumns = (
       columnHelper.display({
         id: 'symbol',
         size: 100,
-        header: () => formatText({ id: 'table.row.symbol' }),
+        header: () => formatText(MSG.tableRowSymbol),
         cell: ({ row }) => (
           <span className="text-gray-600">{row.original.token?.symbol}</span>
         ),
       }),
       columnHelper.display({
-        id: 'type',
+        id: 'attribute',
         size: 130,
-        header: () => formatText({ id: 'table.row.type' }),
+        header: () => formatText(MSG.tableRowAttribute),
         cell: ({ row }) => {
           const isTokenNative =
             row.original.token?.tokenAddress === nativeToken.tokenAddress;
@@ -89,7 +144,7 @@ export const useBalanceTableColumns = (
             <span className="hidden sm:flex">
               {isTokenNative && (
                 <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
-                  {formatText({ id: 'token.type.native' })}
+                  {formatText(MSG.typeNative)}
                 </TokenTypeBadge>
               )}
             </span>
@@ -97,7 +152,7 @@ export const useBalanceTableColumns = (
         },
       }),
       columnHelper.accessor('balance', {
-        header: () => formatText({ id: 'table.row.balance' }),
+        header: () => formatText(MSG.tableRowBalance),
         size: 165,
         cell: ({ row }) => {
           const currentTokenBalance =
@@ -142,8 +197,8 @@ export const useBalanceTableColumns = (
 };
 
 export const useGetTableMenuProps = (
-  data: BalanceTableFieldModel[],
   toggleAddFundsModalOn: () => void,
+  searchedTokens?: TokensProps[],
   nativeTokenStatus?: NativeTokenStatus | null,
   nativeToken?: Token,
 ) => {
@@ -156,7 +211,7 @@ export const useGetTableMenuProps = (
     TableWithMeatballMenuProps<BalanceTableFieldModel>['getMenuProps']
   >(
     ({ index }) => {
-      const selectedTokenData = data[index]?.token;
+      const selectedTokenData = searchedTokens?.[index]?.token;
       const isTokenNative =
         selectedTokenData?.tokenAddress === nativeToken?.tokenAddress;
 
@@ -240,7 +295,7 @@ export const useGetTableMenuProps = (
       };
     },
     [
-      data,
+      searchedTokens,
       toggleActionSidebarOn,
       toggleAddFundsModalOn,
       nativeToken?.tokenAddress,
@@ -252,4 +307,140 @@ export const useGetTableMenuProps = (
   return {
     getMenuProps,
   };
+};
+
+export const useBalanceTable = (): UseFundsTableReturnType => {
+  const { colony } = useColonyContext();
+  const selectedTeam = useGetSelectedTeamFilter();
+  const { balances, nativeToken } = colony || {};
+  const [searchValue, setSearchValue] = useState('');
+  const [filterValue, setFilterValue] = useState<
+    DeepPartial<BalanceTableFilters>
+  >({
+    type: {},
+    attribute: {
+      native: false,
+      reputation: false,
+    },
+  });
+
+  const tokensData: TokensDataProps[] | undefined = useMemo(
+    () =>
+      colony?.tokens?.items.map((item) => {
+        const currentTokenBalance =
+          getBalanceForTokenAndDomain(
+            balances,
+            item?.token?.tokenAddress || '',
+            selectedTeam ? Number(selectedTeam.nativeId) : undefined,
+          ) || 0;
+        const decimals = getTokenDecimalsWithFallback(item?.token.decimals);
+        const convertedValue = convertToDecimal(
+          currentTokenBalance,
+          decimals || 0,
+        );
+
+        const formattedValue = getFormattedNumeralValue(
+          convertedValue,
+          currentTokenBalance,
+        );
+
+        return {
+          ...item,
+          balance: typeof formattedValue === 'string' ? formattedValue : '',
+        };
+      }),
+    [colony, balances, selectedTeam],
+  );
+
+  const sortedTokens = useMemo(
+    () =>
+      tokensData?.sort((a, b) => {
+        if (!a.balance || !b.balance) return 0;
+        return parseInt(b.balance, 10) - parseInt(a.balance, 10);
+      }),
+    [tokensData],
+  );
+
+  const filteredTokens: FiltersProps<BalanceTableFilters> = {
+    onChange: setFilterValue,
+    onSearch: setSearchValue,
+    searchValue,
+    value: filterValue,
+    customLabel: formatText(MSG.customLabel),
+    items: [
+      {
+        name: 'type',
+        label: formatText(MSG.filterTokenType),
+        title: formatText(MSG.filterApprovedTokens),
+        icon: 'coin-vertical',
+        items: sortedTokens
+          ? sortedTokens.map(({ token }) => ({
+              name: token?.tokenAddress || '',
+              label: token && (
+                <div className="flex items-center gap-2">
+                  <TokenIcon token={token} size="xxxs" />
+                  {token.symbol}
+                </div>
+              ),
+            }))
+          : [],
+      },
+      {
+        name: 'attribute',
+        label: formatText(MSG.filterAttributes),
+        title: formatText(MSG.filterAttributeTypes),
+        icon: 'folder-simple-lock',
+        items: [
+          {
+            name: 'native',
+            label: formatText(MSG.typeNative),
+          },
+          {
+            name: 'reputation',
+            label: formatText(MSG.typeReputation),
+          },
+        ],
+      },
+    ],
+  };
+
+  const tokens: TokensProps[] | undefined = sortedTokens?.map((token) => ({
+    ...token,
+    isApproved: sortedTokens?.some(
+      ({ token: colonyTokens }) =>
+        colonyTokens?.tokenAddress === token?.token?.tokenAddress,
+    ),
+    isNative: token.token?.tokenAddress === nativeToken?.tokenAddress,
+  }));
+
+  const visibleTokens: TokensProps[] | undefined = tokens?.filter(
+    (visibleToken): TokensProps | boolean | undefined => {
+      const { type = {}, attribute } = filterValue;
+
+      if (Object.values(type).some((tokenTypeFilter) => tokenTypeFilter)) {
+        return type[visibleToken?.token?.tokenAddress || 0];
+      }
+
+      if (
+        Object.values(attribute || {}).some(
+          (attributeTypeFilter) => attributeTypeFilter,
+        )
+      ) {
+        return (
+          (attribute?.native && visibleToken.isNative) ||
+          (attribute?.reputation && !visibleToken.isNative)
+        );
+      }
+
+      return visibleToken;
+    },
+  );
+
+  const searchedTokens = visibleTokens?.filter(
+    ({ token }) =>
+      token?.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      token?.symbol.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
+  return { filteredTokens, searchedTokens };
 };

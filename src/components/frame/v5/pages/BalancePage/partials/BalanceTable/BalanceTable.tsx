@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import {
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -11,29 +12,29 @@ import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import useToggle from '~hooks/useToggle';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { formatText } from '~utils/intl';
-// import { useSearchContext } from '~context/SearchContext';
-// import Filter from '~v5/common/Filter';
 import EmptyContent from '~v5/common/EmptyContent';
 import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
 import CopyWallet from '~v5/shared/CopyWallet';
 import Button from '~v5/shared/Button';
+import Filters from '~v5/shared/Filters';
 import BalanceModal from '../BalanceModal';
-import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
-import { BalanceTableFieldModel, BalanceTableProps } from './types';
+import {
+  useBalanceTable,
+  useBalanceTableColumns,
+  useGetTableMenuProps,
+} from './hooks';
+import { BalanceTableFieldModel } from './types';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
-const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
+const BalanceTable: FC = () => {
   const selectedTeam = useGetSelectedTeamFilter();
   const { colony } = useColonyContext();
   const { balances, nativeToken, status, colonyAddress } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
   const isMobile = useMobile();
-  // const { searchValue } = useSearchContext();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const tokensDataLength = data?.length;
-
   const [
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
@@ -46,22 +47,25 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
     nativeTokenStatus,
     Number(selectedTeam?.nativeId) || undefined,
   );
+
+  const { filteredTokens, searchedTokens } = useBalanceTable();
   const { getMenuProps } = useGetTableMenuProps(
-    data,
     toggleAddFundsModalOn,
+    searchedTokens,
     nativeTokenStatus,
     nativeToken,
   );
+  const tokensDataLength = searchedTokens?.length || 0;
 
   return (
     <>
       <TableWithHeaderAndMeatballMenu<BalanceTableFieldModel>
         title={formatText({ id: 'balancePage.table.title' })}
         verticalOnMobile={false}
-        hasPagination
+        hasPagination={tokensDataLength >= 10}
         getRowId={({ token }) => (token ? token.tokenAddress : uniqueId())}
         columns={columns}
-        data={data || []}
+        data={searchedTokens || []}
         state={{
           sorting,
           rowSelection,
@@ -75,21 +79,20 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
             pageSize: 10,
           },
         }}
-        showPageNumber={data.length >= 10}
         onSortingChange={setSorting}
         onRowSelectionChange={setRowSelection}
         getSortedRowModel={getSortedRowModel()}
+        getFilteredRowModel={getFilteredRowModel()}
         getPaginationRowModel={getPaginationRowModel()}
         emptyContent={
           !tokensDataLength && (
-            <div className="border border-1 w-full rounded-b-lg border-gray-200">
-              <EmptyContent
-                icon="binoculars"
-                title={{ id: 'balancePage.table.emptyTitle' }}
-                description={{ id: 'balancePage.table.emptyDescription' }}
-                withoutButtonIcon
-              />
-            </div>
+            <EmptyContent
+              icon="binoculars"
+              title={{ id: 'balancePage.table.emptyTitle' }}
+              description={{ id: 'balancePage.table.emptyDescription' }}
+              withoutButtonIcon
+              className="!py-[2.75rem] !p-0 text-gray-900"
+            />
           )
         }
         getMenuProps={getMenuProps}
@@ -100,8 +103,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
         )}
       >
         <>
-          {/* # TODO Enable correct filtering */}
-          {/* {(!!tokensDataLength || !!searchValue) && <Filter />} */}
+          <Filters {...filteredTokens} />
           <Button
             mode="primarySolid"
             className="ml-2"

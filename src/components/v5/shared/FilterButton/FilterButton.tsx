@@ -13,6 +13,7 @@ const FilterButton: FC<FilterButtonProps> = ({
   setTriggerRef,
   onClick,
   customLabel,
+  className,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -22,7 +23,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       aria-label={formatMessage({ id: 'ariaLabel.filter' })}
       ref={setTriggerRef}
       onClick={onClick}
-      className={clsx({
+      className={clsx(className, 'shrink-0', {
         'border border-gray-900 text-gray-900': isOpen,
       })}
       mode="tertiary"
@@ -32,7 +33,7 @@ const FilterButton: FC<FilterButtonProps> = ({
     >
       {customLabel || formatMessage({ id: 'filter' })}
       {!!numberSelectedFilters && (
-        <span className="bg-blue-100 p-1 rounded-sm text-gray-900 text-6 h-3 flex items-center">
+        <span className="ml-1 bg-blue-100 font-bold rounded-sm text-blue-400 text-[.5rem] leading-[1em] py-0.5 h-3 px-1 min-w-[.75rem] inline-flex items-center">
           {numberSelectedFilters}
         </span>
       )}

@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl';
 import EmptyContent from '~v5/common/EmptyContent';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
 import AcceptButton from '../AcceptButton';
-import Filter from '../Filter';
+import Filters from '~v5/shared/Filters';
 import { useFundsTable, useFundsTableColumns } from './hooks';
 import { FundsTableModel } from './types';
 
@@ -54,7 +54,7 @@ const FundsTable: FC = () => {
       }
     >
       <div className="flex items-center gap-2">
-        <Filter {...filters} />
+        <Filters {...filters} />
         {claims.length > 0 && (
           <AcceptButton
             tokenAddresses={allClaims}

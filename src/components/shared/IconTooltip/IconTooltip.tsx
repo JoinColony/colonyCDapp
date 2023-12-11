@@ -43,7 +43,7 @@ const IconTooltip = ({
   tooltipTextValues,
   /** Options to pass to the underlying PopperJS element. See here for more: https://popper.js.org/docs/v2/constructors/#options. */
   tooltipPopperOptions = {
-    placement: 'top',
+    placement: 'right',
     modifiers: [
       {
         name: 'offset',

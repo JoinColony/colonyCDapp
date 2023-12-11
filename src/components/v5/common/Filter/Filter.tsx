@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useMobile } from '~hooks';
-import FilterButton from '~v5/shared/Filter/FilterButton';
+import FilterButton from '~v5/shared/FilterButton/FilterButton';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 import Button from '~v5/shared/Button';

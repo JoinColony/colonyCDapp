@@ -25,6 +25,7 @@ export interface FilterProps<TValue extends FilterValue> {
   onChange: (value: Partial<TValue>) => void;
   searchValue: string;
   onSearch: (value: string) => void;
+  customLabel?: React.ReactNode;
 }
 
 export interface NestedFilterProps<

@@ -1,19 +1,14 @@
-import React, { useCallback } from 'react';
-import get from 'lodash/get';
-import set from 'lodash/set';
-import cloneDeep from 'lodash/cloneDeep';
+import { DeepPartial } from 'utility-types';
+import React, { Fragment, useCallback, useMemo } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { X } from 'phosphor-react';
+import { cloneDeep, get, omit, set, toPath } from '~utils/lodash';
 import Icon from '~shared/Icon';
 import Checkbox from '~v5/common/Checkbox';
 import FilterButton from '~v5/shared/FilterButton/FilterButton';
 import PopoverBase from '~v5/shared/PopoverBase';
-import {
-  RootFilterProps,
-  FilterProps,
-  FilterValue,
-  NestedFilterProps,
-} from './types';
 import { useMobile } from '~hooks';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import useToggle from '~hooks/useToggle';
@@ -22,9 +17,19 @@ import Modal from '~v5/shared/Modal';
 import Header from '~v5/shared/SubNavigationItem/partials/Header';
 import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
 
-const displayName = 'v5.pages.FundsPage.partials.Filter';
+import {
+  RootFilterProps,
+  FiltersProps,
+  FiltersValue,
+  NestedFilterProps,
+  RootPickedFilterProps,
+  NestedPickedFilterProps,
+} from './types';
+import { countCheckedFilters, isAnyFilterChecked } from './utils';
 
-function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
+const displayName = 'v5.Filters';
+
+function NestedFilterItem<TValue extends FiltersValue, TLevel extends number>({
   label,
   path,
   value,
@@ -35,11 +40,13 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
     getTooltipProps: getNestedTooltipProps,
     setTooltipRef: setNestedTooltipRef,
     setTriggerRef: setNestedTriggerRef,
+    visible: isNestedFilterOpen,
   } = usePopperTooltip({
     delayShow: 200,
     delayHide: 200,
     placement: 'left-start',
     interactive: true,
+    trigger: 'hover',
   });
   const isChecked = !!get(value, path);
   const isMobile = useMobile();
@@ -52,20 +59,42 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
       {...nestedItem}
     />
   ));
+  const checkbox = (
+    <Checkbox
+      isChecked={isChecked}
+      onChange={(event) => {
+        const { checked } = event.target;
+        const parsedPath = toPath(path);
+        const clonedValue = cloneDeep(value);
+
+        set(clonedValue, path, checked);
+
+        if (checked || parsedPath.length < 3) {
+          onChange(clonedValue);
+
+          return;
+        }
+
+        const parentPath = parsedPath.slice(0, -1);
+        const parentValue = get(clonedValue, parentPath);
+
+        if (!isAnyFilterChecked(parentValue)) {
+          set(clonedValue, parentPath, true);
+        }
+
+        onChange(clonedValue);
+      }}
+      classNames="subnav-button px-0 sm:px-3.5"
+    >
+      {label}
+    </Checkbox>
+  );
 
   return (
     <>
       {isMobile ? (
         <>
-          <Checkbox
-            isChecked={isChecked}
-            onChange={(e) => {
-              onChange(set(cloneDeep(value), path, e.target.checked));
-            }}
-            classNames="subnav-button px-0 sm:px-3.5"
-          >
-            {label}
-          </Checkbox>
+          {checkbox}
           {!!nestedItems?.length && (
             <AnimatePresence>
               {isChecked && (
@@ -86,18 +115,8 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
         </>
       ) : (
         <>
-          <div ref={setNestedTriggerRef}>
-            <Checkbox
-              isChecked={isChecked}
-              onChange={(e) => {
-                onChange(set(cloneDeep(value), path, e.target.checked));
-              }}
-              classNames="subnav-button px-0 sm:px-3.5"
-            >
-              {label}
-            </Checkbox>
-          </div>
-          {!!nestedItems?.length && isChecked && (
+          <div ref={setNestedTriggerRef}>{checkbox}</div>
+          {!!nestedItems?.length && isNestedFilterOpen && isChecked && (
             <PopoverBase
               setTooltipRef={setNestedTooltipRef}
               tooltipProps={getNestedTooltipProps}
@@ -118,10 +137,10 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
   );
 }
 
-function RootFilter<TValue extends FilterValue>({
+function RootFilter<TValue extends FiltersValue>({
   items,
   label,
-  iconName,
+  icon,
   onChange,
   path,
   value,
@@ -169,7 +188,11 @@ function RootFilter<TValue extends FilterValue>({
             className="subnav-button gap-3 px-0 sm:px-3.5"
             ref={setTriggerRef}
           >
-            <Icon name={iconName} appearance={{ size: 'tiny' }} />
+            {typeof icon === 'string' ? (
+              <Icon name={icon} appearance={{ size: 'tiny' }} />
+            ) : (
+              icon
+            )}
             {label}
           </button>
           {visible && (
@@ -198,14 +221,64 @@ function RootFilter<TValue extends FilterValue>({
   );
 }
 
-function Filter<TValue extends FilterValue>({
+function PickedFilter<TValue extends FiltersValue, TLevel extends number>({
+  value,
+  items,
+  label,
+}: NestedPickedFilterProps<TValue, TLevel>) {
+  const isNestedFilter = typeof value !== 'boolean';
+
+  if (!isAnyFilterChecked(value)) {
+    return null;
+  }
+
+  if (!isNestedFilter || !items) {
+    return <span>{label}</span>;
+  }
+
+  return (
+    <>
+      <b className="font-semibold">{label}: </b>
+      {items.map((nested) => (
+        <Fragment key={nested.name}>
+          <PickedFilter
+            value={value[nested.name] as unknown as DeepPartial<TValue>}
+            label={nested.label}
+            items={nested.items}
+          />
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+function RootPickedFilter<TValue extends FiltersValue>({
+  items,
+  value,
+  label,
+  onRemove,
+}: RootPickedFilterProps<TValue>) {
+  return (
+    <div className="bg-blue-100 rounded-lg text-blue-400 px-3 py-2 flex gap-2 items-center text-sm max-w-full text-left">
+      <div className="[&_span:not(:last-child)]:after:content-[',_'] font-medium line-clamp-1">
+        <PickedFilter items={items} value={value} label={label} />
+      </div>
+      <button type="button" onClick={onRemove}>
+        <X size={12} />
+      </button>
+    </div>
+  );
+}
+
+function Filters<TValue extends FiltersValue>({
   items: rootItems,
   onChange,
   value,
   onSearch,
   searchValue,
+  searchPlaceholder,
   customLabel,
-}: FilterProps<TValue>) {
+}: FiltersProps<TValue>) {
   const {
     getTooltipProps,
     setTooltipRef,
@@ -218,6 +291,19 @@ function Filter<TValue extends FilterValue>({
     trigger: 'click',
     interactive: true,
   });
+  const activeRootFiltersCount = useMemo(
+    () =>
+      rootItems.reduce((acc, { name }) => {
+        const rootFilterValue = get(value, name);
+
+        if (isAnyFilterChecked(rootFilterValue)) {
+          return acc + 1;
+        }
+
+        return acc;
+      }, 0),
+    [rootItems, value],
+  );
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -229,11 +315,11 @@ function Filter<TValue extends FilterValue>({
     [onSearch],
   );
 
-  const RootItems = rootItems.map(({ iconName, items, label, name, title }) => (
+  const RootItems = rootItems.map(({ icon, items, label, name, title }) => (
     <RootFilter
       key={name.toString()}
       label={label}
-      iconName={iconName}
+      icon={icon}
       title={title}
       name={name}
       items={items}
@@ -245,11 +331,36 @@ function Filter<TValue extends FilterValue>({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
+      <div className="flex w-full justify-end">
+        <ul className="hidden sm:block text-right mr-2">
+          {rootItems.map(
+            ({ items, name, label }) =>
+              isAnyFilterChecked(get(value, name)) && (
+                <li
+                  className="inline-flex overflow-hidden pr-2"
+                  key={name.toString()}
+                  style={{
+                    maxWidth: `${100 / activeRootFiltersCount}%`,
+                  }}
+                >
+                  <RootPickedFilter<TValue>
+                    items={items}
+                    label={label}
+                    value={get(value, name)}
+                    onRemove={() => {
+                      onChange(omit(value, name) as DeepPartial<TValue>);
+                    }}
+                  />
+                </li>
+              ),
+          )}
+        </ul>
         <FilterButton
           isOpen={isFiltersOpen}
           setTriggerRef={setTriggerRef}
           onClick={toggleModalOn}
+          className="justify-self-end"
+          numberSelectedFilters={countCheckedFilters(value)}
           customLabel={customLabel}
         />
       </div>
@@ -279,7 +390,11 @@ function Filter<TValue extends FilterValue>({
               classNames="w-full sm:max-w-[20.375rem]"
             >
               <div className="px-3.5 mb-6">
-                <SearchInput onChange={onInputChange} value={searchValue} />
+                <SearchInput
+                  onChange={onInputChange}
+                  value={searchValue}
+                  placeholder={searchPlaceholder}
+                />
               </div>
               <Header title={{ id: 'filters' }} />
               {RootItems}
@@ -291,6 +406,6 @@ function Filter<TValue extends FilterValue>({
   );
 }
 
-Filter.displayName = displayName;
+Filters.displayName = displayName;
 
-export default Filter;
+export default Filters;

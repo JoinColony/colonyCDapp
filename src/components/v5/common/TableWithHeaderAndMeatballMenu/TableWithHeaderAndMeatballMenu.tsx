@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import TableWithMeatballMenu from '../TableWithMeatballMenu';
 import TableHeader from '~v5/common/TableHeader';
-import EmptyContent from '~v5/common/EmptyContent';
 import { TableWithHeaderAndMeatballMenuProps } from './types';
 
 const displayName = 'v5.common.TableWithHeaderAndMeatballMenu';
@@ -21,17 +20,7 @@ const TableWithHeaderAndMeatballMenu = <T,>({
     >
       {children}
     </TableHeader>
-    {rest.data?.length ? (
-      <TableWithMeatballMenu {...rest} />
-    ) : (
-      <div className="border w-full rounded-b-lg border-gray-200">
-        <EmptyContent
-          icon="binoculars"
-          title={{ id: 'balancePage.table.emptyTitle' }}
-          description={{ id: 'balancePage.table.emptyDescription' }}
-        />
-      </div>
-    )}
+    <TableWithMeatballMenu {...rest} />
   </>
 );
 
