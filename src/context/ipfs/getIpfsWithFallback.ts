@@ -1,13 +1,11 @@
-import IPFSNode from 'lib/ipfs';
-import Pinata from 'lib/pinata';
+import IPFSNode from './ipfsnode';
+import Pinata from './pinata';
 
 import { raceAgainstTimeout } from './utils';
 
-const DEFAULT_TIMEOUT_GET = 10000;
 const DEFAULT_TIMEOUT_POST = 30000;
 
 export interface IPFSWithTimeout {
-  getString: (hash: string) => Promise<string | null>;
   addString: (data: string) => Promise<string>;
 }
 
@@ -18,12 +16,6 @@ const getIPFSWithFallback = (
   let ipfsWithTimeout: IPFSWithTimeout | undefined;
   if (ipfsNode) {
     ipfsWithTimeout = {
-      getString: async (hash) =>
-        raceAgainstTimeout(
-          ipfsNode.getString(hash),
-          DEFAULT_TIMEOUT_GET,
-          new Error('Timeout reached trying to get data from IPFS'),
-        ),
       addString: async (data) =>
         raceAgainstTimeout(
           ipfsNode.addString(data),
@@ -36,12 +28,6 @@ const getIPFSWithFallback = (
 
   if (pinataClient) {
     pinataWithTimeout = {
-      getString: async (hash) =>
-        raceAgainstTimeout(
-          pinataClient.getJSON(hash),
-          DEFAULT_TIMEOUT_GET,
-          new Error('Timeout reached trying to get data from IPFS via Pinata'),
-        ),
       addString: async (data) =>
         raceAgainstTimeout(
           pinataClient.addJSON(data),

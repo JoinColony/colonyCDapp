@@ -1,4 +1,4 @@
-import IPFSNode from '../../../lib/ipfs';
+import IPFSNode from './ipfsnode';
 
 import pinataClient from './pinataClient';
 import getIPFSWithFallback from './getIpfsWithFallback';
