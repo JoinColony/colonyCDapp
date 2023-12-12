@@ -14,10 +14,12 @@ module.exports = () => ({
   devtool: 'inline-source-map',
   devServer: {
     historyApiFallback: true,
-    hot: true,
-    client: {
-      logging: 'error',
-    },
+    hot: !process.env.WEBPACK_DISABLE_HOT_RELOAD,
+    client: process.env.WEBPACK_DISABLE_HOT_RELOAD
+      ? false
+      : {
+          logging: 'error',
+        },
   },
   output: {
     filename: 'dev-[name].js',
