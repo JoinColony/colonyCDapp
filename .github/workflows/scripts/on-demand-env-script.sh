@@ -13,7 +13,7 @@ echo \
 
 # Update and install required dependencies
 sudo apt-get update -y
-sudo apt-get install -y ca-certificates curl gnupg awscli nodejs npm git nginx apache2-utils netcat unzip wget
+sudo apt-get install -y ca-certificates curl gnupg awscli nodejs npm git nginx apache2-utils netcat unzip wget jq
 
 # Install docker dependencies
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -283,9 +283,21 @@ npm i
 # Build and run Docker images
 npm run dev &
 
-# Wait for graphql service to come up
+# Wait for graphql port to come up
 while ! nc -z localhost 20002; do
   sleep 10
+done
+# Believe it or not but this checks whether amplify is actually ready
+while true; do
+    AMPLIFY_READY=$(curl -X POST -H "x-api-key: da2-fakeApiId123456" -H "Content-Type: application/json" -d '{"query":"query { __schema { types { name } } }"}' -s http://localhost:20002/graphql | jq 'has("data")')
+
+    if [[ "$AMPLIFY_READY" == "true" ]]; then
+        echo "Amplify seems to be up. Going our merry way."
+        break
+    else
+        echo "Amplify is not up yet, waiting..."
+        sleep 10
+    fi
 done
 
 # Seed database (pass --yes to skip confirmation)
