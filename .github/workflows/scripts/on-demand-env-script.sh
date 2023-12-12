@@ -159,6 +159,18 @@ server {
         proxy_set_header Host \$host;
         proxy_cache_bypass \$http_upgrade;
     }
+
+    location /ws {
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        proxy_pass http://localhost:9091/ws;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
 }
 
 server {
@@ -197,7 +209,7 @@ server {
 }
 
 server {
-    listen 3006 ssl; # SSL for port 3006
+    listen 13005 ssl;
     server_name _;
 
     # Specify the key and certificate file
@@ -215,7 +227,7 @@ server {
 }
 
 server {
-    listen 3007 ssl; # SSL for port 3007
+    listen 13006 ssl;
     server_name _;
 
     # Specify the key and certificate file
@@ -257,9 +269,8 @@ GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
 NETWORK=ganache
 AWS_APPSYNC_KEY=da2-fakeApiId123456
 AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
-AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:3006
-WEBPACK_LIVE_RELOAD=false
-GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:3007"
+AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
+GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:13006"
 EOL
 
 # Install appropriate npm version and dependencies
