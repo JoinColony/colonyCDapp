@@ -72,6 +72,8 @@ RUN if [ -z "$DEV" ]; then export PROCESS_VAR='[a-z]'; else export PROCESS_VAR='
         "&& sed -i \"s/${PROCESS_VAR}.env.METATRANSACTIONS/\\\"\$METATRANSACTIONS\\\"/g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.REPUTATION_ORACLE_ENDPOINT|\\\"\$REPUTATION_ORACLE_ENDPOINT\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.GOOGLE_TAG_MANAGER_ID|\\\"\$GOOGLE_TAG_MANAGER_ID\\\"|g\" *.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_KEY|\\\"\$PINATA_API_KEY\\\"|g\" *.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_SECRET|\\\"\$PINATA_API_SECRET\\\"|g\" *.js" \
         " && nginx -g 'daemon off;'" > ./run.sh
 RUN chmod +x ./run.sh
 
