@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@colony/colony-js": "^7.0.1",
+    "cross-fetch": "^4.0.0",
     "decimal.js": "^10.2.1",
-    "ethers": "^5.7.2",
-    "node-fetch": "^2.6.7"
+    "ethers": "^5.7.2"
   }
 }

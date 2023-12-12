@@ -1,3 +1,4 @@
+require('cross-fetch/polyfill');
 const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
 const {
   providers,
@@ -69,6 +70,8 @@ const setEnvVariables = async () => {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  console.log('\n\nUPDATE CONTRIBUTORS\n\n');
+
   try {
     await setEnvVariables();
   } catch (e) {
