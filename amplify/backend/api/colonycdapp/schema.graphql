@@ -332,24 +332,6 @@ type TokenFromEverywhereReturn {
 }
 
 """
-Input data for retrieving a user's reputation within the top domains of a Colony
-"""
-input GetReputationForTopDomainsInput {
-  """
-  The wallet address of the user
-  """
-  walletAddress: String!
-  """
-  The address of the Colony
-  """
-  colonyAddress: String!
-  """
-  The root hash of the reputation tree at a specific point in time
-  """
-  rootHash: String
-}
-
-"""
 Input data for retrieving a user's token balance for a specific token
 """
 input GetUserTokenBalanceInput {
@@ -419,30 +401,6 @@ input GetMotionTimeoutPeriodsInput {
   The Ethereum address of the user who voted
   """
   colonyAddress: String!
-}
-
-"""
-A type representing a user's reputation within a domain
-"""
-type UserDomainReputation {
-  """
-  The integer ID of the Domain within the Colony
-  """
-  domainId: Int!
-  """
-  The user's reputation within the domain, represented as a percentage
-  """
-  reputationPercentage: String!
-}
-
-"""
-A return type that contains an array of UserDomainReputation items
-"""
-type GetReputationForTopDomainsReturn {
-  """
-  An array of UserDomainReputation items
-  """
-  items: [UserDomainReputation!]
 }
 
 """
@@ -860,13 +818,6 @@ type Query {
     input: TokenFromEverywhereArguments
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-${env}")
   """
-  Retrieve a user's reputation within the top domains of a Colony
-  """
-  getReputationForTopDomains(
-    input: GetReputationForTopDomainsInput
-  ): GetReputationForTopDomainsReturn
-    @function(name: "getReputationForTopDomains-${env}")
-  """
   Retrieve a user's reputation within a specific domain in a Colony
   """
   getUserReputation(input: GetUserReputationInput): String
@@ -916,8 +867,9 @@ type Mutation {
   """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
   """
-  createColonyEtherealMetadata(input: CreateColonyEtherealMetadataInput!): ColonyMetadata
-    @function(name: "createColonyEtherealMetadata-${env}")
+  createColonyEtherealMetadata(
+    input: CreateColonyEtherealMetadataInput!
+  ): ColonyMetadata @function(name: "createColonyEtherealMetadata-${env}")
   """
   Updates the latest available version of a Colony or an extension
   """

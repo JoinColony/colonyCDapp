@@ -64,10 +64,6 @@
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
           "s3Key": "amplify-builds/fetchVoterRewards-4f686849797932642f6f-build.zip"
         },
-        "getReputationForTopDomains": {
-          "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
-          "s3Key": "amplify-builds/getReputationForTopDomains-5a4b4b57694151585632-build.zip"
-        },
         "getSafeTransactionStatus": {
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
           "s3Key": "amplify-builds/getSafeTransactionStatus-455a6431496a4c746932-build.zip"

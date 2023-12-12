@@ -2083,23 +2083,6 @@ export type GetMotionTimeoutPeriodsReturn = {
   timeLeftToVote: Scalars['String'];
 };
 
-/** Input data for retrieving a user's reputation within the top domains of a Colony */
-export type GetReputationForTopDomainsInput = {
-  /** The address of the Colony */
-  colonyAddress: Scalars['String'];
-  /** The root hash of the reputation tree at a specific point in time */
-  rootHash?: InputMaybe<Scalars['String']>;
-  /** The wallet address of the user */
-  walletAddress: Scalars['String'];
-};
-
-/** A return type that contains an array of UserDomainReputation items */
-export type GetReputationForTopDomainsReturn = {
-  __typename?: 'GetReputationForTopDomainsReturn';
-  /** An array of UserDomainReputation items */
-  items?: Maybe<Array<UserDomainReputation>>;
-};
-
 export type GetSafeTransactionStatusInput = {
   chainId: Scalars['Int'];
   transactionHash: Scalars['String'];
@@ -5431,8 +5414,6 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getProfileByUsername?: Maybe<ModelProfileConnection>;
-  /** Retrieve a user's reputation within the top domains of a Colony */
-  getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
   getReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   getRoleByDomainAndColony?: Maybe<ModelColonyRoleConnection>;
   getRoleByTargetAddressAndColony?: Maybe<ModelColonyRoleConnection>;
@@ -5910,12 +5891,6 @@ export type QueryGetProfileByUsernameArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-
-/** Root query type */
-export type QueryGetReputationForTopDomainsArgs = {
-  input?: InputMaybe<GetReputationForTopDomainsInput>;
 };
 
 
@@ -8195,15 +8170,6 @@ export type UserTransactionHistoryArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-/** A type representing a user's reputation within a domain */
-export type UserDomainReputation = {
-  __typename?: 'UserDomainReputation';
-  /** The integer ID of the Domain within the Colony */
-  domainId: Scalars['Int'];
-  /** The user's reputation within the domain, represented as a percentage */
-  reputationPercentage: Scalars['String'];
-};
-
 /** Stakes that a user has made for a motion */
 export type UserMotionStakes = {
   __typename?: 'UserMotionStakes';
@@ -8908,13 +8874,6 @@ export type GetUserReputationQueryVariables = Exact<{
 
 
 export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
-
-export type GetReputationForTopDomainsQueryVariables = Exact<{
-  input: GetReputationForTopDomainsInput;
-}>;
-
-
-export type GetReputationForTopDomainsQuery = { __typename?: 'Query', getReputationForTopDomains?: { __typename?: 'GetReputationForTopDomainsReturn', items?: Array<{ __typename?: 'UserDomainReputation', domainId: number, reputationPercentage: string }> | null } | null };
 
 export type GetUserByNameQueryVariables = Exact<{
   name: Scalars['String'];
@@ -12270,44 +12229,6 @@ export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
 export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
-export const GetReputationForTopDomainsDocument = gql`
-    query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
-  getReputationForTopDomains(input: $input) {
-    items {
-      domainId
-      reputationPercentage
-    }
-  }
-}
-    `;
-
-/**
- * __useGetReputationForTopDomainsQuery__
- *
- * To run a query within a React component, call `useGetReputationForTopDomainsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetReputationForTopDomainsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetReputationForTopDomainsQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetReputationForTopDomainsQuery(baseOptions: Apollo.QueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
-      }
-export function useGetReputationForTopDomainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
-        }
-export type GetReputationForTopDomainsQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsQuery>;
-export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsLazyQuery>;
-export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>;
 export const GetUserByNameDocument = gql`
     query GetUserByName($name: String!) {
   getProfileByUsername(displayName: $name) {

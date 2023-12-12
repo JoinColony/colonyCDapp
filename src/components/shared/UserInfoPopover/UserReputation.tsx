@@ -3,7 +3,6 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { UserDomainReputation } from '~hooks';
 import { Colony } from '~types';
 import { isEmpty } from '~utils/lodash';
 import { findDomainByNativeId } from '~utils/domains';
@@ -16,7 +15,7 @@ const displayName = `UserInfoPopover.UserReputation`;
 
 interface Props {
   colony: Colony;
-  userReputationForTopDomains: UserDomainReputation[];
+  userReputationForTopDomains: any[];
   isCurrentUserReputation: boolean;
   isUserReputationLoading?: boolean;
 }

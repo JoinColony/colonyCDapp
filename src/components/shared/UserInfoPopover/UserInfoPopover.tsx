@@ -7,11 +7,7 @@ import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
 import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 import { User } from '~types';
-import {
-  useAppContext,
-  useColonyContext,
-  useUserReputationForTopDomains,
-} from '~hooks';
+import { useAppContext, useColonyContext } from '~hooks';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
@@ -38,8 +34,11 @@ const UserInfoPopover = ({ user, banned = false, address }: Props) => {
   //     variables: { address: colonyAddress },
   //   });
 
-  const { userReputation, loadingUserReputation } =
-    useUserReputationForTopDomains(colony?.colonyAddress, walletAddress);
+  // As part of cleaning old code, the underlying query has been removed
+  const { userReputation, loadingUserReputation } = {
+    userReputation: [],
+    loadingUserReputation: false,
+  };
 
   // const { data: userReputationData, loading: loadingUserReputation } =
   //   useUserReputationForTopDomainsQuery({
