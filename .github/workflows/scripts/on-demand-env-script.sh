@@ -273,6 +273,9 @@ AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
 GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:13006"
 EOL
 
+# For the authentication proxy
+echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
+
 # Install appropriate npm version and dependencies
 npm install -g npm@8
 npm i
