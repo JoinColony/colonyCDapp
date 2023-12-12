@@ -8,7 +8,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
-import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import Link from '~v5/shared/Link';
 import NotificationBanner from '~v5/shared/NotificationBanner';
 
@@ -18,13 +18,13 @@ import {
   useActionDescriptionMetadata,
   useActionFormProps,
   useSidebarActionForm,
-  usePermissionsValidation,
   useReputationValidation,
 } from '../../hooks';
 import ActionButtons from '../ActionButtons';
 import Motions from '../Motions';
 import PopularActions from '../PopularActions';
 
+import { useGetActionErrors } from './hooks';
 import PermissionSidebar from './partials/PermissionSidebar';
 import { SidebarBanner } from './partials/SidebarBanner';
 import {
@@ -60,21 +60,16 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     useSidebarActionForm();
   const descriptionMetadata = useActionDescriptionMetadata();
   const { readonly } = useAdditionalFormOptionsContext();
+  const { flatFormErrors, hasErrors } = useGetActionErrors();
 
-  const {
-    setValue,
-    formState: {
-      errors: { title: titleError },
-    },
-  } = useFormContext();
+  const { setValue } = useFormContext();
 
-  const { noPermissionsError } = usePermissionsValidation();
   const { noReputationError } = useReputationValidation();
 
   return (
     <>
       <div className="flex-grow overflow-y-auto px-6">
-        <FormTextareaBase
+        <FormInputBase
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
           className={`
@@ -84,6 +79,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           `}
           message={false}
           shouldFocus
+          mode="secondary"
         />
         <div className="text-gray-900 text-md flex gap-1 break-all">
           {descriptionMetadata}
@@ -93,13 +89,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
-        {noPermissionsError && (
-          <div className="mt-6">
-            <NotificationBanner status="warning" icon="warning-circle">
-              {formatMessage(MSG.noPermissionsErrorTitle)}
-            </NotificationBanner>
-          </div>
-        )}
         {noReputationError && (
           <div className="mt-6">
             <NotificationBanner
@@ -116,13 +105,25 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             </NotificationBanner>
           </div>
         )}
-        {titleError && (
-          <div className="mt-6">
-            <NotificationBanner icon="warning-circle" status="error">
-              {titleError.message?.toString()}
+        {hasErrors || flatFormErrors.length ? (
+          <div className="mt-7">
+            <NotificationBanner
+              status="error"
+              icon="warning-circle"
+              description={
+                flatFormErrors.length ? (
+                  <ul className="list-disc list-inside text-negative-400 capitalize">
+                    {flatFormErrors.map(({ key, message }) => (
+                      <li key={key}>{message}</li>
+                    ))}
+                  </ul>
+                ) : null
+              }
+            >
+              {formatText({ id: 'actionSidebar.fields.error' })}
             </NotificationBanner>
           </div>
-        )}
+        ) : null}
       </div>
       {!isMotion && !readonly && (
         <div className="mt-auto">

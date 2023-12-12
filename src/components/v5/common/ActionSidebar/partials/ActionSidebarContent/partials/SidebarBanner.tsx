@@ -4,13 +4,9 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ACTION } from '~constants/actions';
-import { useExtensionsData, useFlatFormErrors } from '~hooks';
+import { useExtensionsData } from '~hooks';
 import { formatText } from '~utils/intl';
-import {
-  DecisionMethod,
-  PERMISSIONS_VALIDATION_FIELD_NAME,
-  REPUTATION_VALIDATION_FIELD_NAME,
-} from '~v5/common/ActionSidebar/hooks';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import NotificationBanner from '~v5/shared/NotificationBanner';
 
 import {
@@ -32,20 +28,11 @@ const MSG = defineMessages({
 });
 
 export const SidebarBanner: FC = () => {
-  const { formState, watch } = useFormContext();
-  const hasErrors = !formState.isValid && formState.isSubmitted;
+  const { watch } = useFormContext();
   const [selectedAction, decisionMethod] = watch([
     ACTION_TYPE_FIELD_NAME,
     DECISION_METHOD_FIELD_NAME,
   ]);
-  const flatFormErrors = useFlatFormErrors(formState.errors).filter(
-    ({ key }) =>
-      ![
-        'title',
-        REPUTATION_VALIDATION_FIELD_NAME,
-        PERMISSIONS_VALIDATION_FIELD_NAME,
-      ].includes(String(key)),
-  );
 
   const actionTypeNotificationTitle =
     useCreateActionTypeNotification(selectedAction);
@@ -101,25 +88,6 @@ export const SidebarBanner: FC = () => {
           </NotificationBanner>
         </div>
       ))}
-      {(hasErrors || !!flatFormErrors.length) && (
-        <div className="mt-6">
-          <NotificationBanner
-            status="error"
-            icon="warning-circle"
-            description={
-              flatFormErrors.length ? (
-                <ul className="list-disc list-inside text-negative-400">
-                  {flatFormErrors.map(({ key, message }) => (
-                    <li key={key}>{message}</li>
-                  ))}
-                </ul>
-              ) : null
-            }
-          >
-            {formatText({ id: 'actionSidebar.fields.error' })}
-          </NotificationBanner>
-        </div>
-      )}
     </>
   );
 };

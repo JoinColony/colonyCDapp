@@ -22,6 +22,7 @@ const RichText: FC<RichTextProps> = ({
   name,
   isReadonly,
   isDecriptionFieldExpanded,
+  maxDescriptionLength = MAX_ANNOTATION_NUM,
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
   shouldFocus,
@@ -30,6 +31,7 @@ const RichText: FC<RichTextProps> = ({
     name,
     isDecriptionFieldExpanded,
     isReadonly,
+    maxDescriptionLength,
   );
 
   useLayoutEffect(() => {
@@ -96,11 +98,12 @@ const RichText: FC<RichTextProps> = ({
                       {formatText({ id: 'button.show.less' })}
                     </TextButton>
                   )}
-                  {characterCount >= 1000 && isDecriptionFieldExpanded && (
-                    <div className="text-xs text-gray-500 flex justify-end">
-                      {characterCount} / {MAX_ANNOTATION_NUM}
-                    </div>
-                  )}
+                  {characterCount >= maxDescriptionLength / 4 &&
+                    isDecriptionFieldExpanded && (
+                      <div className="text-xs text-gray-500 flex justify-end">
+                        {characterCount} / {maxDescriptionLength}
+                      </div>
+                    )}
                 </div>
               )}
             </>

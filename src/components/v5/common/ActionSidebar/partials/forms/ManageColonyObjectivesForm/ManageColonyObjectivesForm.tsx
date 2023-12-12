@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks';
@@ -60,7 +61,7 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      <DescriptionRow />
+      <DescriptionRow maxDescriptionLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH} />
     </>
   );
 };
