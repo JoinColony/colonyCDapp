@@ -1,17 +1,14 @@
 import IPFS from 'ipfs';
 
-import devConfig from './ipfsConfig.development';
-import prodConfig from './ipfsConfig.production';
-
-const NETWORK = process.env.NETWORK || 'ganache';
-
-const configMap = {
-  gnosis: prodConfig,
-  ganache: devConfig,
-};
-
 class IPFSNode {
-  static getIpfsConfig = configMap[NETWORK] || configMap.gnosis;
+  static getIpfsConfig = () => ({
+    repo: 'colonyCDappLocalDevelopmentIPFS',
+    // config gets merged with the IPFS default config
+    config: {
+      Bootstrap: [],
+    },
+    preload: { enabled: false, addresses: [] },
+  });
 
   _ipfs: IPFS;
 
@@ -27,22 +24,6 @@ class IPFSNode {
   /** Get the IPFS instance */
   getIPFS() {
     return this._ipfs;
-  }
-
-  /** Return a file from IPFS as text */
-  async getString(hash: string): Promise<string | null> {
-    try {
-      if (!hash) return '';
-      await this.ready;
-      const resultIterator = await this._ipfs.cat(hash);
-      const { value } = await resultIterator.next();
-      if (!value) throw new Error('No such file');
-      return value.toString();
-    } catch (error) {
-      console.error('Could not get IPFS hash:', hash);
-      console.error(error);
-      return null;
-    }
   }
 
   /** Upload a string */
