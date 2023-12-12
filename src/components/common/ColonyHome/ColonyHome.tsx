@@ -162,7 +162,7 @@ const ColonyHome = () => {
                     <span className="text-2 mb-1 transition-all line-clamp-1 w-full sm:hover:text-blue-400">
                       {objective.title}
                     </span>
-                    <p className="text-sm text-gray-600 mb-[1.6875rem] line-clamp-2 break-all w-full">
+                    <p className="text-sm text-gray-600 mb-[1.6875rem] line-clamp-2 break-word w-full">
                       {objective.description}
                     </p>
                     <ProgressBar
