@@ -224,22 +224,6 @@ exports.handler = async (event) => {
   const { chainId } = await provider.getNetwork();
   const version = await colonyClient.version();
   const isTokenLocked = colonyClient.tokenClient.locked();
-  let isTokenUnlockable = true;
-  let isTokenMintable = true;
-
-  try {
-    await colonyClient.tokenClient.estimateGas.unlock({ from: checksummedAddress});
-    isTokenUnlockable = true;
-  } catch (error) {
-    // silent
-  }
-
-  try {
-    await colonyClient.tokenClient.estimateGas['mint(uint256)'](1, { from: checksummedAddress });
-    isTokenMintable = true;
-  } catch (error) {
-    // silent
-  }
 
   /*
    * Create the colony
@@ -259,8 +243,11 @@ exports.handler = async (event) => {
         status: {
           nativeToken: {
             unlocked: !isTokenLocked,
-            unlockable: isTokenUnlockable,
-            mintable: isTokenMintable,
+            // set to false until we know the proper state
+            // if it's a colony token, this will get updated when
+            // log set authority will be set
+            mintable: false,
+            unlockable: false,
           }
         },
         colonyMemberInviteCode: memberInviteCode, // above
