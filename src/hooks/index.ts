@@ -41,10 +41,6 @@ export { default as useUserReputation } from './useUserReputation';
 export { default as useMobile } from './useMobile';
 export { default as useTablet } from './useTablet';
 export { default as useSortedContributors } from './useSortedContributors';
-export {
-  default as useUserReputationForTopDomains,
-  UserDomainReputation,
-} from './useUserReputationForTopDomains';
 // @TODO: Put this into ~context
 export { default as useColonyContext } from './useColonyContext';
 export { default as useRichTextEditor } from './useRichTextEditor';
