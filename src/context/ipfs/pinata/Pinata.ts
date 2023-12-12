@@ -1,5 +1,3 @@
-import PinataCache from './PinataCache';
-
 import {
   PINATA_API_KEY,
   PINATA_API_SECRET,
@@ -10,33 +8,8 @@ import {
 class Pinata {
   hasApiAccess: boolean;
 
-  cache: PinataCache = new PinataCache();
-
   constructor() {
     this.hasApiAccess = !!(PINATA_API_KEY && PINATA_API_SECRET);
-  }
-
-  /**
-   * Return a JSON string from IPFS using the Pinata.cloud gateway
-   */
-  async getJSON(hash: string): Promise<string | null> {
-    let responseData: string | undefined;
-    try {
-      if (!hash) {
-        // Silent error
-        return null;
-      }
-      const response = await this.cache.getCacheObject(hash);
-      responseData = await response?.text();
-      if (!responseData || typeof responseData !== 'string') {
-        throw new Error(`Malformed IPFS data fetched: ${responseData}`);
-      }
-      return responseData;
-    } catch (error) {
-      console.error('Could not get IPFS hash from Pinata Gateway:', hash);
-      console.error(error);
-      return null;
-    }
   }
 
   /**
@@ -90,7 +63,6 @@ class Pinata {
           )}`,
         );
       }
-      await this.cache.setCacheObject(responseData, response);
       return responseData;
     } catch (error) {
       console.error('Could not save data to IPFS using Pinata API:', data);
