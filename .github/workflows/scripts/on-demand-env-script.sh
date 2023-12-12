@@ -273,6 +273,9 @@ AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
 GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:13006"
 EOL
 
+# Disable webpack's hot reload
+export WEBPACK_DISABLE_HOT_RELOAD=true
+
 # For the authentication proxy
 echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
 
