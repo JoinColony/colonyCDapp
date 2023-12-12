@@ -70,8 +70,6 @@ const setEnvVariables = async () => {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  console.log('\n\nUPDATE CONTRIBUTORS\n\n');
-
   try {
     await setEnvVariables();
   } catch (e) {
