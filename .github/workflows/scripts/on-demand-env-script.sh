@@ -273,15 +273,12 @@ AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
 GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:13006"
 EOL
 
-# Disable webpack's hot reload
-export WEBPACK_DISABLE_HOT_RELOAD=true
+# Install appropriate npm version and dependencies
+npm install -g npm@8
+npm ci
 
 # For the authentication proxy
 echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
-
-# Install appropriate npm version and dependencies
-npm install -g npm@8
-npm i
 
 # Build and run Docker images
 npm run dev &
@@ -305,6 +302,9 @@ done
 
 # Seed database (pass --yes to skip confirmation)
 node ./scripts/create-data.js --yes
+
+# Disable webpack's hot reload
+export WEBPACK_DISABLE_HOT_RELOAD=true
 
 # Start frontend
 npm run webpack &
