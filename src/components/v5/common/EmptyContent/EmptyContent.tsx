@@ -40,10 +40,14 @@ const EmptyContent: FC<EmptyContentProps> = ({
     >
       <div className="flex flex-col items-center justify-center">
         <div className={styles.emptyContent}>
-          <Icon name={icon} appearance={{ size: 'normal' }} />
+          <Icon
+            name={icon}
+            appearance={{ size: 'normal' }}
+            className="[&>svg]:fill-gray-600"
+          />
         </div>
         <h5 className="text-1 mt-3">{titleText}</h5>
-        <p className="mt-2 text-sm text-gray-600">{descriptionText}</p>
+        <p className="mt-3 text-sm text-gray-600">{descriptionText}</p>
         {onClick && (
           <Button
             mode="primaryOutline"

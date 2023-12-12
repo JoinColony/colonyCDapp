@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CREATE_COLONY_ROUTE } from '~routes';
+// import { CREATE_COLONY_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
 
@@ -16,11 +16,12 @@ const MainSidebar = () => (
       content: {
         title: formatText({ id: 'navigation.colonySwitcher.title' }),
         content: <ColonySwitcherContent />,
-        bottomActionProps: {
-          text: formatText({ id: 'button.createNewColony' }),
-          iconName: 'plus',
-          to: CREATE_COLONY_ROUTE,
-        },
+        // @NOTE: Disabling for beta
+        // bottomActionProps: {
+        //   text: formatText({ id: 'button.createNewColony' }),
+        //   iconName: 'plus',
+        //   to: CREATE_COLONY_ROUTE,
+        // },
       },
     }}
   />
