@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 
 import Heading from '~shared/Heading';
-import CreateAColonyBanner from '~images/create-colony-banner.png';
-import CreateAProfileBanner from '~images/create-profile-banner.png';
+import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
+import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import { useAppContext } from '~hooks';
 import InvitationBlock from '~common/InvitationBlock';
 import { usePageHeadingContext } from '~context';
@@ -161,7 +161,7 @@ const LandingPage = () => {
         </p>
       </div>
       <div className="w-full flex justify-center gap-4">
-        <div className="w-1/2 flex flex-col gap-5">
+        <div className="w-1/2 flex flex-col justify-between">
           {landingPageItems.map((item, index) => (
             <LandingPageItem
               key={nanoid()}
