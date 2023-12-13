@@ -39,11 +39,10 @@ export const getManageTokensPayload = (
     title,
   } = values;
 
-  let addresses = selectedTokenAddresses.map(({ token }) => token) ?? [];
-  addresses = [
+  const tokenAddresses = [
     ...new Set(
-      addresses
-        .map((address) => createAddress(address))
+      selectedTokenAddresses
+        .map(({ token }) => createAddress(token))
         .filter((address) => {
           return (
             address !== ADDRESS_ZERO &&
@@ -55,7 +54,7 @@ export const getManageTokensPayload = (
 
   return {
     colony,
-    tokenAddresses: addresses,
+    tokenAddresses,
     annotationMessage,
     customActionTitle: title,
   };
