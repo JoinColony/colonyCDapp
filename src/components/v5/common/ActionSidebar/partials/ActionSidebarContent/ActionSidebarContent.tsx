@@ -29,6 +29,7 @@ import {
   ActionSidebarFormContentProps,
 } from './types';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import PermissionSidebar from './partials/PermissionSidebar';
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
@@ -153,8 +154,8 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
     <div
       className={clsx('flex w-full flex-grow', {
         'flex-col-reverse overflow-auto sm:overflow-hidden md:flex-row':
-          isMotion,
-        'overflow-hidden': !isMotion,
+          !!transactionId,
+        'overflow-hidden': !transactionId,
       })}
     >
       <div className="flex-grow pb-6 pt-8">
@@ -174,24 +175,28 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           />
         </ActionForm>
       </div>
-      {isMotion && (
+      {transactionId && (
         <div
           className={`
-            w-full
-            md:w-[35%]
-            md:h-full
-            md:overflow-y-auto
-            px-6
-            py-8
-            border-b
-            border-b-gray-200
-            md:border-b-0
-            md:border-l
-            md:border-l-gray-200
-            bg-gray-25
-          `}
+              w-full
+              md:w-[35%]
+              md:h-full
+              md:overflow-y-auto
+              px-6
+              py-8
+              border-b
+              border-b-gray-200
+              md:border-b-0
+              md:border-l
+              md:border-l-gray-200
+              bg-gray-25
+            `}
         >
-          <Motions transactionId={transactionId || ''} />
+          {isMotion ? (
+            <Motions transactionId={transactionId} />
+          ) : (
+            <PermissionSidebar transactionId={transactionId} />
+          )}
         </div>
       )}
     </div>

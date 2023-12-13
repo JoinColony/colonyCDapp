@@ -81,7 +81,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         {
           'sm:max-w-full': isSidebarFullscreen,
           'sm:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
-          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && isMotion,
+          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
         },
       )}
       ref={registerContainerRef}
