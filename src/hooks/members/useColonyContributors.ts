@@ -52,7 +52,6 @@ const useColonyContributors = ({
     filterPermissions,
     nativeDomainIds,
     filterStatus,
-    isContributorList: true,
   });
 
   const sortedContributors =
