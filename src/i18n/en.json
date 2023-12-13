@@ -1537,5 +1537,9 @@
     "useProfile.advancedTab.title": "Advanced",
     "profilePage.customRpc": "Gnosis Chain Custom RPC",
     "wallet.information": "Wallet information",
-    "advancedSettings.title": "Advanced settings"
+    "advancedSettings.title": "Advanced settings",
+    "button.apply": "Apply",
+    "calendar.from": "From",
+    "calendar.to": "To",
+    "calendar.selectDate": "Select date"
 }

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { DeepPartial } from 'utility-types';
 
 import TokenTable from '../TokenTable';
 import {
@@ -90,7 +91,7 @@ export const useFundsTable = (): UseFundsTableProps => {
 
   const [searchValue, setSearchValue] = useState('');
 
-  const [value, setValue] = useState<Partial<FundsTableFilters>>({
+  const [value, setValue] = useState<DeepPartial<FundsTableFilters>>({
     status: {
       approved: true,
       unapproved: false,
