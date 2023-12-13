@@ -44,10 +44,7 @@ export const getEditColonyDetailsPayload = (
       typeof colonyThumbnail === 'string' || colonyThumbnail === null
         ? colonyThumbnail
         : colony.metadata?.thumbnail,
-    colonyExternalLinks: externalLinks.map(({ url, linkType }) => ({
-      link: url,
-      name: linkType,
-    })),
+    colonyExternalLinks: externalLinks || [],
     annotationMessage,
     customActionTitle: title,
   };
