@@ -10,7 +10,7 @@ export const FEATURES_BUGS = `https://news.colony.io/ideas/en`;
 export const WHATS_NEW = `https://news.colony.io/en`;
 export const HELP = `https://docs.colony.io/colonynetwork/tldr/colony/`;
 export const BETA_DISCLAIMER = `https://docs.colony.io/use/beta/`;
-export const PRIVACY_POLICY = `https://colony.io/terms-of-service#pivacy-policy`;
+export const PRIVACY_POLICY = `https://colony.io/terms-of-service#privacy-policy`;
 export const TERMS_AND_CONDITIONS = `https://colony.io/terms-of-service`;
 export const ADVANCED_SETTINGS = `https://docs.colony.io/use/advanced-features/`;
 
