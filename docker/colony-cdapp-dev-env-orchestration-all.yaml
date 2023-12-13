@@ -1,72 +1,36 @@
 name: colony-cdapp-dev-env
 services:
+  amplify-setup:
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: amplify-setup
   network-contracts:
-    container_name: 'network'
-    image: colony-cdapp-dev-env/network:latest
-    volumes:
-      - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-    ports:
-      - '8545:8545'
-      - '3002:3002'
-      - '3004:3004'
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3002']
-      interval: 5s
-      retries: 1000
-
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: network-contracts
   reputation-monitor:
-    container_name: 'monitor'
-    image: colony-cdapp-dev-env/reputation-monitor:latest
-    volumes:
-      - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-    ports:
-      - '3001:3001'
-    depends_on:
-      network-contracts:
-        condition: service_healthy
-
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: reputation-monitor
   block-ingestor:
-    container_name: 'ingestor'
-    image: colony-cdapp-dev-env/block-ingestor:latest
-    volumes:
-      - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-    ports:
-      - '10001:10001'
-    depends_on:
-      network-contracts:
-        condition: service_healthy
-      amplify:
-        condition: service_healthy
-
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: block-ingestor
   amplify:
-    container_name: 'amplify'
-    image: colony-cdapp-dev-env/amplify:latest
-    volumes:
-      - '../amplify/backend:/colonyCDapp/amplify/backend'
-      - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
-    depends_on:
-      safe-contracts:
-        condition: service_healthy
-    tty: true
-    environment:
-      DEBUG_COLORS: 'true'
-      TERM: xterm-256color
-      COLORTERM: truecolor
-    ports:
-      - '20002:20002'
-      - '9200:9200'
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:9200']
-      interval: 5s
-      retries: 1000
-
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: amplify
+  auth-proxy:
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: auth-proxy
   safe-contracts:
     container_name: 'safe'
     image: colony-cdapp-dev-env/safe:latest
     deploy:
       replicas: ${SAFE_REPLICAS:-1}
     volumes:
-      - '../amplify/mock-data:/colonyCDapp/amplify/mock-data'
+      - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
     ports:
       - '8546:8546'
     healthcheck:
@@ -85,12 +49,6 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
-
-  auth-proxy:
-    container_name: 'auth'
-    image: colony-cdapp-dev-env/auth-proxy:latest
-    ports:
-      - '3005:3005'
-    depends_on:
-      amplify:
-        condition: service_healthy
+volumes:
+  amplify-backend:
+  amplify-mock-data:
