@@ -16,7 +16,7 @@ const NativeTokenPill = ({
   isLocked = false,
 }: NativeTokenPillProps) => {
   return (
-    <div className="h-[1.875rem] flex flex-row items-center px-[.375rem] border border-gray-200 rounded-lg bg-base-white text-gray-900">
+    <div className="h-[1.875rem] flex flex-row items-center px-1.5 border border-gray-200 rounded-lg bg-base-white text-gray-900">
       <span className="text-sm font-medium">{tokenName}</span>
       {isLocked && (
         <Tooltip
@@ -24,7 +24,7 @@ const NativeTokenPill = ({
             <span>{formatText({ id: 'tooltip.lockedToken' })}</span>
           }
         >
-          <LockKey size={12} className="ml-[.125rem] -translate-x-px" />
+          <LockKey size={12} className="ml-0.5 -translate-x-px" />
         </Tooltip>
       )}
     </div>
