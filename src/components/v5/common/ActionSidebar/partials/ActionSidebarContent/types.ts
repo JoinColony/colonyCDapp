@@ -12,3 +12,7 @@ export interface ActionSidebarContentProps {
   defaultValues: ActionFormProps<any>['defaultValues'];
   isMotion?: boolean;
 }
+
+export interface PermissionSidebarProps {
+  transactionId: string;
+}
