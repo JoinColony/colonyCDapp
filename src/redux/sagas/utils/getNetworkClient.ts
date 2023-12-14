@@ -4,7 +4,6 @@ import {
   Network as ColonyJSNetwork,
 } from '@colony/colony-js';
 
-import axios from 'axios';
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
 import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
@@ -33,9 +32,10 @@ const getNetworkClient = async () => {
 
   // @ts-ignore
   if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
-    const { etherRouterAddress: networkAddress } = (
-      await axios.get(`${ganacheAccountsUrl.href}etherrouter-address.json`)
-    ).data;
+    const fetchRes = await fetch(
+      `${ganacheAccountsUrl.href}etherrouter-address.json`,
+    );
+    const { etherRouterAddress: networkAddress } = await fetchRes.json();
 
     return getColonyNetworkClient(ColonyJSNetwork.Custom, signer, {
       networkAddress,

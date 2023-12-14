@@ -1,7 +1,6 @@
 import Onboard, { InitOptions } from '@web3-onboard/core';
 import injectedWallets from '@web3-onboard/injected-wallets';
 
-import axios from 'axios';
 import colonyIcon from '~images/icons/colony-logo-wallet.svg';
 import {
   TERMS_AND_CONDITIONS,
@@ -31,9 +30,10 @@ const getDevelopmentWallets = async () => {
   // @ts-ignore
   // if we're using the webpack.dev config, include dev wallets
   if (!WEBPACK_IS_PRODUCTION) {
-    const { private_keys: ganachePrivateKeys } = (
-      await axios.get(`${ganacheAccountsUrl.href}ganache-accounts.json`)
-    ).data;
+    const fetchRes = await fetch(
+      `${ganacheAccountsUrl.href}ganache-accounts.json`,
+    );
+    const { private_keys: ganachePrivateKeys } = await fetchRes.json();
 
     return (
       Object.values(ganachePrivateKeys)
