@@ -12,6 +12,6 @@ export interface TabsProps {
   initialActiveTab?: number;
   items: TabItem[];
   activeTab: number;
-  onTabClick: (_: any, id: number) => void;
+  onTabClick: (_: React.BaseSyntheticEvent, id: number) => void;
   className?: string;
 }

@@ -28,7 +28,7 @@ const UserAdvancedSettings: FC = () => {
   return (
     <div className="flex flex-col gap-6">
       <h4 className="heading-4">
-        {formatMessage({ id: 'userAdvancedPage.title' })}
+        {formatMessage({ id: 'advancedSettings.title' })}
       </h4>
       <FeesForm />
       {/* @BETA: Disabled for noew */}

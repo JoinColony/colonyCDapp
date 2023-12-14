@@ -29,11 +29,11 @@ import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import BalancePage from '~frame/v5/pages/BalancePage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
+import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
 import ActivityPage from '~frame/v5/pages/ActivityPage';
 import OnboardingPage from '~frame/v5/pages/OnboardingPage';
-
 import ColonyActions from '~common/ColonyActions';
 import ColonyDecisions from '~common/ColonyDecisions';
 import Expenditures from '~common/Expenditures';
@@ -86,7 +86,6 @@ import NotFoundRoute from './NotFoundRoute';
 import MainRoute from './MainRoute';
 import ColonyRoute from './ColonyRoute';
 import ColonyMembersRoute from './ColonyMembersRoute';
-import UserRoute from './UserRoute';
 
 const displayName = 'routes.Routes';
 
@@ -116,10 +115,10 @@ const Routes = () => {
           />
 
           {/* User routes */}
-          <Route path={USER_HOME_ROUTE} element={<UserRoute />}>
+          <Route path={USER_HOME_ROUTE} element={<UserProfilePage />}>
             <Route
               path={USER_EDIT_PROFILE_ROUTE}
-              element={<UserProfilePage />}
+              element={<UserAccountPage />}
             />
             <Route
               path={USER_PREFERENCES_ROUTE}

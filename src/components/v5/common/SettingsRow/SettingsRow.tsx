@@ -1,12 +1,12 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-
+import clsx from 'clsx';
+import { Info } from 'phosphor-react';
 import { FieldPath, FieldValues } from 'react-hook-form';
-import { SettingsRowProps } from './types';
+import { formatText } from '~utils/intl';
 import { FormSwitch } from '~v5/common/Fields/Switch';
 import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
 import Tooltip from '~shared/Extensions/Tooltip';
+import { SettingsRowProps } from './types';
 
 const displayName = 'v5.common.SettingsRow';
 
@@ -23,27 +23,37 @@ const SettingsRow = <
   handleOnChange,
   onClick,
   id,
+  className,
+  titleClassName,
+  additionalContent,
 }: SettingsRowProps<TFieldValues, TFieldName>) => {
-  const { formatMessage } = useIntl();
-
   return (
-    <div className="flex items-start justify-between">
+    <div className={clsx(className, 'py-6 flex items-start justify-between')}>
       <div>
-        <div className="flex items-center mb-1">
-          <h5 className="text-1 mr-1.5">{formatMessage(title)}</h5>
-          {tooltipMessage && (
-            <Tooltip
-              tooltipContent={<span>{formatMessage(tooltipMessage)}</span>}
-            >
-              <span className="text-gray-400 flex">
-                <Icon name="info" appearance={{ size: 'small' }} />
-              </span>
-            </Tooltip>
-          )}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center">
+            <h5 className={clsx(titleClassName, 'text-1 mr-1.5')}>
+              {formatText(title)}
+            </h5>
+            {tooltipMessage && (
+              <Tooltip
+                tooltipContent={<span>{formatText(tooltipMessage)}</span>}
+              >
+                <span className="text-gray-400 flex">
+                  <Info size={18} />
+                </span>
+              </Tooltip>
+            )}
+          </div>
+          <p className="text-sm text-gray-600 max-w-[35rem]">
+            {formatText(description)}
+          </p>
         </div>
-        <p className="text-sm text-gray-600 max-w-[35rem]">
-          {formatMessage(description)}
-        </p>
+        {additionalContent && (
+          <div className="flex w-full items-center justify-between mt-6">
+            <p className="text-md font-medium">{additionalContent}</p>
+          </div>
+        )}
       </div>
       {handleOnChange && (
         <FormSwitch name={id || ''} handleOnChange={handleOnChange} />

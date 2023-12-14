@@ -1,59 +1,93 @@
-import React, { FC } from 'react';
-import { defineMessages } from 'react-intl';
-import { Navigate } from 'react-router-dom';
-
-import LoadingTemplate from '~frame/LoadingTemplate';
-import { useAppContext } from '~hooks';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import { Form } from '~shared/Fields';
-
-import { useUserProfile } from './hooks';
-import UserProfilePageForm from './partials/UserProfilePageForm';
-import { FormValues, validationSchema } from './validation';
+import React, { FC, useEffect, useState } from 'react';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useResolvedPath,
+} from 'react-router-dom';
+import { formatText } from '~utils/intl';
+import { usePageHeadingContext, useSetPageHeadingTitle } from '~context';
+import {
+  USER_ADVANCED_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+  USER_PREFERENCES_ROUTE,
+} from '~routes';
+import Tabs from '~shared/Extensions/Tabs';
+import { TabId } from './types';
 
 const displayName = 'v5.pages.UserProfilePage';
 
-const MSG = defineMessages({
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Loading user profile...',
-  },
-});
-
 const UserProfilePage: FC = () => {
-  const { user, userLoading, walletConnecting } = useAppContext();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const resolvedEditProfilePath = useResolvedPath(USER_EDIT_PROFILE_ROUTE);
+  const resolvedPreferencesPath = useResolvedPath(USER_PREFERENCES_ROUTE);
+  const resolvedAdvancedPath = useResolvedPath(USER_ADVANCED_ROUTE);
+  const [activeTab, setActiveTab] = useState<TabId>(TabId.Profile);
 
-  const { handleSubmit, avatarUrl, canChangeUsername, daysTillUsernameChange } =
-    useUserProfile();
+  const { setBreadcrumbs } = usePageHeadingContext();
 
-  if (userLoading || walletConnecting) {
-    return <LoadingTemplate loadingText={MSG.loadingText} />;
-  }
+  useEffect(() => {
+    setBreadcrumbs([
+      {
+        key: 'landing-page',
+        label: 'Colony App',
+        href: '/',
+      },
+    ]);
+  }, [setBreadcrumbs]);
 
-  if (!user) {
-    return <Navigate to={LANDING_PAGE_ROUTE} />;
-  }
+  useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
+
+  useEffect(() => {
+    switch (pathname) {
+      case resolvedEditProfilePath.pathname:
+        setActiveTab(TabId.Profile);
+        break;
+      case resolvedPreferencesPath.pathname:
+        setActiveTab(TabId.Preferences);
+        break;
+      case resolvedAdvancedPath.pathname:
+        setActiveTab(TabId.Advanced);
+        break;
+      default:
+        break;
+    }
+  }, [
+    pathname,
+    resolvedPreferencesPath.pathname,
+    resolvedEditProfilePath.pathname,
+    resolvedAdvancedPath.pathname,
+  ]);
+
+  const tabRoutes: Record<TabId, string> = {
+    [TabId.Profile]: USER_EDIT_PROFILE_ROUTE,
+    [TabId.Preferences]: USER_PREFERENCES_ROUTE,
+    [TabId.Advanced]: USER_ADVANCED_ROUTE,
+  };
 
   return (
-    <Form<FormValues>
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
-      defaultValues={{
-        hasDisplayNameChanged: false,
-        bio: user?.profile?.bio || '',
-        displayName: user?.profile?.displayName || '',
-        location: user?.profile?.location || '',
-        website: user?.profile?.website || '',
-      }}
-      resetOnSubmit
-    >
-      <UserProfilePageForm
-        user={user}
-        avatarUrl={avatarUrl}
-        canChangeUsername={canChangeUsername}
-        daysTillUsernameChange={daysTillUsernameChange}
-      />
-    </Form>
+    <Tabs
+      activeTab={activeTab}
+      onTabClick={(_, id) => navigate(tabRoutes[id])}
+      items={[
+        {
+          id: TabId.Profile,
+          title: formatText({ id: 'userProfilePage.title' }) || '',
+          content: <Outlet />,
+        },
+        {
+          id: TabId.Preferences,
+          title: formatText({ id: 'userPreferencesPage.title' }) || '',
+          content: <Outlet />,
+        },
+        {
+          id: TabId.Advanced,
+          title: formatText({ id: 'userAdvancedPage.title' }) || '',
+          content: <Outlet />,
+        },
+      ]}
+    />
   );
 };
 

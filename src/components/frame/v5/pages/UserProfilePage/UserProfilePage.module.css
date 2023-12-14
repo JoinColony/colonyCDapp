@@ -1,3 +1,0 @@
-.row {
-  @apply flex md:items-start flex-col md:flex-row gap-6 md:gap-[6.5rem];
-}
