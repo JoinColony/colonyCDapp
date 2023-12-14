@@ -194,3 +194,16 @@ fragment ColonyObjective on ColonyObjective {
   description
   progress
 }
+
+# Lightweight fragment used for fetching colonies user is a member of
+fragment JoinedColony on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    ...ColonyMetadata
+  }
+  chainMetadata {
+    chainId
+    network
+  }
+}

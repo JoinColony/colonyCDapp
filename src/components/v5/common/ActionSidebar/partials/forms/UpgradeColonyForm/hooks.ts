@@ -3,7 +3,7 @@ import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { useWatch } from 'react-hook-form';
 
-import { ActionTypes, RootMotionMethodNames } from '~redux';
+import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext } from '~hooks';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
@@ -11,6 +11,7 @@ import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, UpgradeColonyFormValues } from './consts';
+import { getUpgradeColonyPayload } from './utils';
 
 export const useUpgradeColony = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -29,19 +30,12 @@ export const useUpgradeColony = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: UpgradeColonyFormValues) => {
-          if (colony) {
-            return {
-              operationName: RootMotionMethodNames.Upgrade,
-              colonyAddress: colony.colonyAddress,
-              colonyName: colony.name,
-              version: colony.version,
-              motionParams: [colony.version + 1],
-              annotationMessage: payload.description,
-            };
+        mapPayload((values: UpgradeColonyFormValues) => {
+          if (!colony) {
+            return null;
           }
 
-          return null;
+          return getUpgradeColonyPayload(colony, values);
         }),
       ),
       [colony],

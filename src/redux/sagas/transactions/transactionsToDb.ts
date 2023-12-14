@@ -459,8 +459,8 @@ export function* syncTransactionWithDb(
       // Wait for the tx to exist in the db
       yield take(
         (action) =>
-          action.meta.id === createAction.meta.id &&
-          action.type === ActionTypes.TRANSACTION_SAVED_TO_DB,
+          action.type === ActionTypes.TRANSACTION_SAVED_TO_DB &&
+          action.meta.id === createAction.meta.id,
       );
 
       // Once the tx exists, process updates to it.

@@ -9,7 +9,6 @@ import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { mapPayload, pipe } from '~utils/actions';
 import { toFinite } from '~utils/lodash';
 import { useColonyContext } from '~hooks';
-import { getTransferFundsDialogPayload } from '~common/Dialogs/TransferFundsDialog/helpers';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
 import { formatText } from '~utils/intl';
 import {
@@ -19,6 +18,7 @@ import {
 
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { getTransferFundsPayload } from './utils';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -111,7 +111,7 @@ export const useTransferFunds = (
             return null;
           }
 
-          return getTransferFundsDialogPayload(colony, values);
+          return getTransferFundsPayload(colony, values);
         }),
       ),
       [colony],

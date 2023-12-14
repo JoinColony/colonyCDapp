@@ -7,7 +7,6 @@ import { array, InferType, number, object, string } from 'yup';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useColonyContext, useNetworkInverseFee } from '~hooks';
-import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
 import { formatText } from '~utils/intl';
 import { toFinite } from '~utils/lodash';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
@@ -20,6 +19,7 @@ import {
 
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { getSimplePaymentPayload } from './utils';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -130,32 +130,12 @@ export const useSimplePayment = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: SimplePaymentFormValues) => {
+        mapPayload((values: SimplePaymentFormValues) => {
           if (!colony) {
             return null;
           }
 
-          return getCreatePaymentDialogPayload(
-            colony,
-            {
-              fromDomainId: payload.from,
-              payments: [
-                {
-                  amount: payload.amount.amount,
-                  tokenAddress: payload.amount.tokenAddress,
-                  recipient: { walletAddress: payload.recipient },
-                },
-                ...payload.payments.map(({ amount, recipient }) => ({
-                  amount: amount.amount,
-                  tokenAddress: payload.amount.tokenAddress,
-                  recipient: { walletAddress: recipient },
-                })),
-              ],
-              annotation: payload.description,
-              motionDomainId: payload.createdIn,
-            },
-            networkInverseFee,
-          );
+          return getSimplePaymentPayload(colony, values, networkInverseFee);
         }),
       ),
       [colony, networkInverseFee],

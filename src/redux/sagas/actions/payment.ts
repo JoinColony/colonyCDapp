@@ -173,8 +173,6 @@ function* createPaymentAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
@@ -191,6 +189,8 @@ function* createPaymentAction({
       type: ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     // @TODO: In new UI, confirm that the navigate function isn't being passed into the saga
     // and if not, remove these conditional (and do so for all actions/motions sagas)

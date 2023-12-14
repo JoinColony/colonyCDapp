@@ -6,12 +6,12 @@ import { useWatch } from 'react-hook-form';
 import { ActionTypes } from '~redux';
 import { useColonyContext } from '~hooks';
 import { mapPayload, pipe } from '~utils/actions';
-import { getMintTokenDialogPayload } from '~common/Dialogs/MintTokenDialog/helpers';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { MintTokenFormValues, validationSchema } from './consts';
+import { getMintTokenPayload } from './utils';
 
 export const useMintToken = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -38,19 +38,12 @@ export const useMintToken = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: MintTokenFormValues) => {
-          const values = {
-            mintAmount: payload.amount.amount,
-            motionDomainId: Id.RootDomain.toString(),
-            decisionMethod: payload.decisionMethod,
-            annotation: payload.description,
-          };
-
-          if (colony) {
-            return getMintTokenDialogPayload(colony, values);
+        mapPayload((values: MintTokenFormValues) => {
+          if (!colony) {
+            return null;
           }
 
-          return null;
+          return getMintTokenPayload(colony, values);
         }),
       ),
       [colony],

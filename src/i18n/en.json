@@ -1440,6 +1440,8 @@
     "editColony.socialLinks.facebook": "Facebook URL",
     "editColony.socialLinks.modal.invalidUrl": "Social link must be a valid URL.",
     "editColony.socialLinks.modal.requiredUrl": "Social link is required.",
+    "colony.emptyState.title": "No results to display",
+    "colony.emptyState.subtitle": "There are no Colonies that match your search. Try searching again",
     "activityPage.title": "Latest activity",
     "activityPage.recentActions": "Recent actions",
     "activityPage.recentActions.pastMonth": "{value}<span> past month</span>",

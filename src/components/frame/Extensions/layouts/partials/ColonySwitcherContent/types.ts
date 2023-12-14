@@ -6,18 +6,10 @@ export interface ColonySwitcherContentProps {
   colony?: Colony;
 }
 
-interface CurrentColonyProps {
-  name?: string;
-  colonyDisplayName?: string;
-  chainIconName?: string;
-}
-
 export interface UseColonySwitcherContentReturnType {
-  userLoading?: boolean;
-  filteredColony: ColonySwitcherListItem[];
-  onChange: (value: string) => void;
-  joinedColonies: ColonySwitcherListItem[];
-  colony?: Colony;
+  loading: boolean;
+  filteredListItems: ColonySwitcherListItem[];
   searchValue: string;
-  currentColonyProps: CurrentColonyProps;
+  onSearchValueChange: (value: string) => void;
+  currentColonyItem?: ColonySwitcherListItem;
 }

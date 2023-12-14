@@ -6,13 +6,13 @@ import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import { getTokenManagementDialogPayload } from '~common/Dialogs/TokenManagementDialog/helpers';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { notNull } from '~utils/arrays';
 
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, ManageTokensFormValues } from './consts';
+import { getManageTokensPayload } from './utils';
 
 export const useManageTokens = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -61,22 +61,12 @@ export const useManageTokens = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: ManageTokensFormValues) => {
-          const values = {
-            motionDomainId: payload.createdIn,
-            decisionMethod: payload.decisionMethod,
-            annotation: payload.description,
-            selectedTokenAddresses: payload.selectedTokenAddresses.map(
-              ({ token }) => token,
-            ),
-            forceAction: false,
-          };
-
-          if (colony) {
-            return getTokenManagementDialogPayload(colony, values);
+        mapPayload((values: ManageTokensFormValues) => {
+          if (!colony) {
+            return null;
           }
 
-          return null;
+          return getManageTokensPayload(colony, values);
         }),
       ),
       [colony, user],

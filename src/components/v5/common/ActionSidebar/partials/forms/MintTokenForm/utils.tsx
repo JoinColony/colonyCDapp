@@ -1,12 +1,17 @@
 import moveDecimal from 'move-decimal-point';
 import { DeepPartial } from 'utility-types';
+import { BigNumber } from 'ethers';
+
 import { ColonyActionType } from '~gql';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import { MintTokenFormValues } from './consts';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { formatText } from '~utils/intl';
+import { Colony } from '~types';
+import { RootMotionMethodNames } from '~redux';
+
+import { MintTokenFormValues } from './consts';
 
 export const mintTokenDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<MintTokenFormValues>
@@ -32,4 +37,33 @@ export const mintTokenDescriptionMetadataGetter: DescriptionMetadataGetter<
       }),
     },
   );
+};
+
+export const getMintTokenPayload = (
+  colony: Colony,
+  values: MintTokenFormValues,
+) => {
+  const {
+    amount: { amount: inputAmount },
+    description: annotationMessage,
+    title,
+  } = values;
+
+  const amount = BigNumber.from(
+    moveDecimal(
+      inputAmount,
+      getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
+    ),
+  );
+
+  return {
+    operationName: RootMotionMethodNames.MintTokens,
+    colonyAddress: colony.colonyAddress,
+    colonyName: colony.name,
+    nativeTokenAddress: colony.nativeToken.tokenAddress,
+    motionParams: [amount],
+    amount,
+    annotationMessage,
+    customActionTitle: title,
+  };
 };

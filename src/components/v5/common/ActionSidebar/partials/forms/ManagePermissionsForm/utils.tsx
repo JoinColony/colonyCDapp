@@ -1,5 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
+
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import {
   CUSTOM_USER_ROLE,
@@ -7,10 +8,12 @@ import {
   USER_ROLES,
 } from '~constants/permissions';
 import { ColonyActionType, ColonyActionRoles } from '~gql';
+import { Colony } from '~types';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
+
 import { getTeam, tryGetUser } from '../utils';
 import {
   AVAILABLE_ROLES,
@@ -119,3 +122,15 @@ export const managePermissionsDescriptionMetadataGetter: DescriptionMetadataGett
     },
   );
 };
+
+export const getManagePermissionsPayload = (
+  colony: Colony,
+  values: ManagePermissionsFormValues,
+) => ({
+  annotationMessage: values.description,
+  domainId: Number(values.team),
+  userAddress: values.member,
+  colonyName: colony.name,
+  colonyAddress: colony.colonyAddress,
+  roles: getPermissionsMap(values.permissions, values.role),
+});

@@ -1208,7 +1208,7 @@ type ColonyContributor @model {
   """
   Associated colony
   """
-  colony: Colony @hasOne(fields: ["colonyAddress"])
+  colony: Colony! @hasOne(fields: ["colonyAddress"])
 
   """
   A list of roles associated with the contributor

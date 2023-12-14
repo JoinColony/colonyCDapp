@@ -12,7 +12,7 @@ import { findDomainByNativeId } from '~utils/domains';
 import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { validationSchema, EditTeamFormValues } from './consts';
-import { getEditDomainDialogPayload } from './utils';
+import { getEditDomainPayload } from './utils';
 
 export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -62,7 +62,7 @@ export const useEditTeam = (
             return null;
           }
 
-          return getEditDomainDialogPayload(colony, values, selectedDomain);
+          return getEditDomainPayload(colony, values, selectedDomain);
         }),
       ),
       [colony, selectedDomain],

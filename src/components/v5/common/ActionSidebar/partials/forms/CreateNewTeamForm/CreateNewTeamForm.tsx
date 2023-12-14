@@ -8,11 +8,11 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import { formatText } from '~utils/intl';
+import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 
-import { useCrateNewTeam } from './hooks';
+import { useCreateNewTeam } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
 import DescriptionRow from '../../DescriptionRow';
-import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import { useDecisionMethods } from '../../../hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
@@ -21,7 +21,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
   const { readonly } = useAdditionalFormOptionsContext();
 
-  useCrateNewTeam(getFormOptions);
+  useCreateNewTeam(getFormOptions);
 
   return (
     <>

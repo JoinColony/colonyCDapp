@@ -81,8 +81,6 @@ function* tokenUnlockAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
@@ -99,6 +97,8 @@ function* tokenUnlockAction({
       type: ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
