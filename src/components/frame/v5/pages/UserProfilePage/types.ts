@@ -15,7 +15,7 @@ export type UserProfileFormProps = {
   website?: string | null;
 };
 export enum TabId {
-  Tab0 = 0,
-  Tab1 = 1,
-  Tab2 = 2,
+  Profile = 0,
+  Preferences = 1,
+  Advanced = 2,
 }

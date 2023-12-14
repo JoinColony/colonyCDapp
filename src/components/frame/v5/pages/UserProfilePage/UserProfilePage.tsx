@@ -24,7 +24,7 @@ const UserProfilePage: FC = () => {
   const resolvedEditProfilePath = useResolvedPath(USER_EDIT_PROFILE_ROUTE);
   const resolvedPreferencesPath = useResolvedPath(USER_PREFERENCES_ROUTE);
   const resolvedAdvancedPath = useResolvedPath(USER_ADVANCED_ROUTE);
-  const [activeTab, setActiveTab] = useState<TabId>(TabId.Tab0);
+  const [activeTab, setActiveTab] = useState<TabId>(TabId.Profile);
 
   const { setBreadcrumbs } = usePageHeadingContext();
 
@@ -43,13 +43,13 @@ const UserProfilePage: FC = () => {
   useEffect(() => {
     switch (pathname) {
       case resolvedEditProfilePath.pathname:
-        setActiveTab(TabId.Tab0);
+        setActiveTab(TabId.Profile);
         break;
       case resolvedPreferencesPath.pathname:
-        setActiveTab(TabId.Tab1);
+        setActiveTab(TabId.Preferences);
         break;
       case resolvedAdvancedPath.pathname:
-        setActiveTab(TabId.Tab2);
+        setActiveTab(TabId.Advanced);
         break;
       default:
         break;
@@ -67,17 +67,17 @@ const UserProfilePage: FC = () => {
       onTabClick={(_, id) => navigate(tabRoutes[id])}
       items={[
         {
-          id: TabId.Tab0,
+          id: TabId.Profile,
           title: formatText({ id: 'userProfilePage.title' }) || '',
           content: <Outlet />,
         },
         {
-          id: TabId.Tab1,
+          id: TabId.Preferences,
           title: formatText({ id: 'userPreferencesPage.title' }) || '',
           content: <Outlet />,
         },
         {
-          id: TabId.Tab2,
+          id: TabId.Advanced,
           title: formatText({ id: 'userAdvancedPage.title' }) || '',
           content: <Outlet />,
         },
