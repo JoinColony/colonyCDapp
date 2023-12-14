@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
 import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
@@ -10,6 +10,7 @@ import Modal from '~v5/shared/Modal';
 import { formatText } from '~utils/intl';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import { SpinnerLoader } from '~shared/Preloaders';
+import { isFullScreen } from '~constants';
 
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
 import {
@@ -37,8 +38,15 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
   } = useActionSidebarContext();
-  const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen }] =
+  const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
     useToggle();
+
+  useLayoutEffect(() => {
+    if (localStorage.getItem(isFullScreen) === 'true') {
+      toggleOn();
+    }
+  }, [toggleOn]);
+
   const { formRef, closeSidebarClick } = useCloseSidebarClick();
   const isMobile = useMobile();
 

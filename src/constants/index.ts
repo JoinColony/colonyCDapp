@@ -285,3 +285,5 @@ export const GNOSIS_AMB_BRIDGES: { [x: number]: AmbBridge } = {
 };
 
 export const FETCH_ABORTED = 'fetchAborted';
+
+export const isFullScreen = 'isFullScreen';

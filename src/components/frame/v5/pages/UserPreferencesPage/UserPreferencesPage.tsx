@@ -7,15 +7,14 @@ import Input from '~v5/common/Fields/Input';
 import Button from '~v5/shared/Button';
 import Icon from '~shared/Icon';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-// @BETA: Disabled for now
-// import Switch from '~v5/common/Fields/Switch';
+import Switch from '~v5/common/Fields/Switch';
 import { multiLineTextEllipsis } from '~utils/strings';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { LANDING_PAGE_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 
 import LeftColumn from '../UserProfilePage/partials/LeftColumn';
-import { useUserPreferencesPage } from './hooks';
+import { useFullScreenMode, useUserPreferencesPage } from './hooks';
 import { UserPreferencesPageProps } from './types';
 import styles from './UserPreferencesPage.module.css';
 
@@ -35,6 +34,7 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
   const { user, userLoading, walletConnecting } = useAppContext();
   const isMobile = useMobile();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard(5000);
+  const { isFullScreenMode, toggleFullScreenMode } = useFullScreenMode();
 
   const {
     errors,
@@ -173,20 +173,25 @@ const UserPreferencesPage: FC<UserPreferencesPageProps> = ({
         {/*   /> */}
         {/*   <Switch id="disable-notifications" /> */}
         {/* </div> */}
-        {/* <span className="divider" /> */}
-        {/* <h5 className="heading-5"> */}
-        {/*   {formatText({ */}
-        {/*     id: 'userPreferencesPage.displayPreferences', */}
-        {/*   })} */}
-        {/* </h5> */}
-        {/* <div className={styles.switchRow}> */}
-        {/*   <LeftColumn */}
-        {/*     fieldTitle={{ id: 'field.display' }} */}
-        {/*     fieldDescription={{ id: 'description.display' }} */}
-        {/*   /> */}
-        {/*   <Switch id="display" /> */}
-        {/* </div> */}
-        {/* <span className="divider" /> */}
+        <span className="divider" />
+        <h5 className="heading-5">
+          {formatText({
+            id: 'userPreferencesPage.displayPreferences',
+          })}
+        </h5>
+        <div className={styles.switchRow}>
+          <LeftColumn
+            fieldTitle={{ id: 'field.display' }}
+            fieldDescription={{ id: 'description.display' }}
+            className=""
+          />
+          <Switch
+            id="display"
+            checked={isFullScreenMode}
+            onChange={toggleFullScreenMode}
+          />
+        </div>
+        <span className="divider" />
         {/* <div className={styles.row}> */}
         {/*   <LeftColumn */}
         {/*     fieldTitle={{ id: 'field.switchAccount' }} */}

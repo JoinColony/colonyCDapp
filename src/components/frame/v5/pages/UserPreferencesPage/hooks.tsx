@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
@@ -9,6 +9,7 @@ import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCre
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
 import Toast from '~shared/Extensions/Toast';
+import { isFullScreen } from '~constants';
 
 import { UserPreferencesFormProps } from './types';
 
@@ -92,4 +93,25 @@ export const useUserPreferencesPage = () => {
     setIsEmailInputVisible,
     errors,
   };
+};
+
+export const useFullScreenMode = () => {
+  const [isFullScreenMode, setIsFullScreenMode] = useState(false);
+
+  useLayoutEffect(() => {
+    setIsFullScreenMode(localStorage.getItem(isFullScreen) === 'true');
+  }, []);
+
+  const toggleFullScreenMode = () => {
+    // Keep localStorage in sync with toggle state
+    if (isFullScreenMode) {
+      localStorage.setItem(isFullScreen, 'false');
+      setIsFullScreenMode(false);
+    } else {
+      localStorage.setItem(isFullScreen, 'true');
+      setIsFullScreenMode(true);
+    }
+  };
+
+  return { isFullScreenMode, toggleFullScreenMode };
 };
