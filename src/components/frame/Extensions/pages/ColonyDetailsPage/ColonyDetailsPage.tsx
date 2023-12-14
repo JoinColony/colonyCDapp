@@ -12,10 +12,10 @@ import Button from '~v5/shared/Button';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import SocialLinks from '~v5/shared/SocialLinks';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import NativeTokenPill from '~v5/common/NativeTokenPill';
 import { ADDRESS_ZERO } from '~constants';
 
 import styles from './ColonyDetailsPage.module.css';
-import NativeTokenPill from '~v5/common/NativeTokenPill/NativeTokenPill';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
@@ -80,6 +80,7 @@ const ColonyDetailsPage: FC = () => {
               <h2 className="heading-2">{colonyDisplayName}</h2>
               {nativeToken && (
                 <NativeTokenPill
+                  variant="secondary"
                   tokenName={nativeToken.symbol}
                   isLocked={isNativeTokenLocked}
                 />

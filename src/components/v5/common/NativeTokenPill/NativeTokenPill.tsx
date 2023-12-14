@@ -1,10 +1,12 @@
 import React from 'react';
 import { LockKey } from 'phosphor-react';
+import clsx from 'clsx';
 
 import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 
 interface NativeTokenPillProps {
+  variant?: 'primary' | 'secondary';
   tokenName: string;
   isLocked?: boolean;
 }
@@ -12,11 +14,20 @@ interface NativeTokenPillProps {
 const displayName = 'v5.shared.NativeTokenPill';
 
 const NativeTokenPill = ({
+  variant = 'primary',
   tokenName,
   isLocked = false,
 }: NativeTokenPillProps) => {
   return (
-    <div className="h-[1.875rem] flex flex-row items-center px-1.5 border border-gray-200 rounded-lg bg-base-white text-gray-900">
+    <div
+      className={clsx(
+        'h-[1.875rem] flex flex-row items-center px-1.5 rounded-lg text-gray-900',
+        {
+          'bg-base-bg': variant === 'primary',
+          'border border-gray-200 bg-base-white': variant === 'secondary',
+        },
+      )}
+    >
       <span className="text-sm font-medium">{tokenName}</span>
       {isLocked && (
         <Tooltip
@@ -24,7 +35,7 @@ const NativeTokenPill = ({
             <span>{formatText({ id: 'tooltip.lockedToken' })}</span>
           }
         >
-          <LockKey size={12} className="ml-0.5 -translate-x-px" />
+          <LockKey size={11} className="ml-0.5" />
         </Tooltip>
       )}
     </div>
