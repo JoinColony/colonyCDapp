@@ -71,11 +71,13 @@
           "Fn::Sub": "/amplify/cdapp/${env}/reputation_endpoint"
         },
         "Type": "String",
-        "Value": [
+        "Value": {
+          "Fn::If": [
             "IsQaEnv",
             "https://qa-app.colony.io/reputation/xdai",
             "https://app.colony.io/reputation/xdai"
-        ],
+          ]
+        },
         "Description": "Reputation endpoint"
       }
     },
