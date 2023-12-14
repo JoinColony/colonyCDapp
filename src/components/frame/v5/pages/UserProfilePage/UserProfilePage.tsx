@@ -13,7 +13,6 @@ import {
   USER_PREFERENCES_ROUTE,
 } from '~routes';
 import Tabs from '~shared/Extensions/Tabs';
-import { tabRoutes } from './consts';
 import { TabId } from './types';
 
 const displayName = 'v5.pages.UserProfilePage';
@@ -60,6 +59,12 @@ const UserProfilePage: FC = () => {
     resolvedEditProfilePath.pathname,
     resolvedAdvancedPath.pathname,
   ]);
+
+  const tabRoutes: Record<TabId, string> = {
+    [TabId.Profile]: USER_EDIT_PROFILE_ROUTE,
+    [TabId.Preferences]: USER_PREFERENCES_ROUTE,
+    [TabId.Advanced]: USER_ADVANCED_ROUTE,
+  };
 
   return (
     <Tabs
