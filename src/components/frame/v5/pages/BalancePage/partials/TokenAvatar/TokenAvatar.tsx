@@ -61,7 +61,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
               </span>
             }
           >
-            <LockKey size={14} className="mt-[1px]" />
+            <LockKey size={14} className="mt-px" />
           </Tooltip>
         )}
       </div>
