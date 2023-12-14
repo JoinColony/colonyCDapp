@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { formatText } from '~utils/intl';
 import Numeral from '~shared/Numeral';
@@ -19,6 +20,31 @@ import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/typ
 import Link from '~v5/shared/Link';
 import TokenAvatar from '../TokenAvatar';
 import { BalanceTableFieldModel } from './types';
+
+const displayName = 'v5.pages.BalancePage.partials.BalaceTable.hooks';
+
+const MSG = defineMessages({
+  labelAddFunds: {
+    id: `${displayName}.labelAddFunds`,
+    defaultMessage: 'Add funds',
+  },
+  labelEthscan: {
+    id: `${displayName}.labelEthscan`,
+    defaultMessage: 'View on Ethscan',
+  },
+  labelMintToken: {
+    id: `${displayName}.labelMintToken`,
+    defaultMessage: 'Mint tokens',
+  },
+  labelTransferFunds: {
+    id: `${displayName}.transferFunds`,
+    defaultMessage: 'Transfer funds',
+  },
+  labelMakePayment: {
+    id: `${displayName}.makePayment`,
+    defaultMessage: 'Make payment using this token',
+  },
+});
 
 export const useBalanceTableColumns = (
   nativeToken,
@@ -125,6 +151,7 @@ export const useGetTableMenuProps = (
   nativeTokenStatus?: NativeTokenStatus | null,
   nativeToken?: Token,
 ) => {
+  const { formatMessage } = useIntl();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
@@ -147,9 +174,7 @@ export const useGetTableMenuProps = (
                   onClick: () => {
                     toggleAddFundsModalOn();
                   },
-                  label: formatText({
-                    id: 'balancePage.burger.label.addFunds',
-                  }),
+                  label: formatMessage(MSG.labelAddFunds),
                   icon: 'add',
                 },
               ]
@@ -167,7 +192,7 @@ export const useGetTableMenuProps = (
                 {children}
               </Link>
             ),
-            label: formatText({ id: 'balancePage.burger.label.viewEthscan' }),
+            label: formatMessage(MSG.labelEthscan),
             icon: 'arrow-square-out',
           },
           ...(isTokenNative
@@ -182,9 +207,7 @@ export const useGetTableMenuProps = (
                     });
                     toggleActionSidebarOn();
                   },
-                  label: formatText({
-                    id: 'balancePage.burger.label.mintTokens',
-                  }),
+                  label: formatMessage(MSG.labelMintToken),
                   icon: 'bank',
                 },
               ]
@@ -199,7 +222,7 @@ export const useGetTableMenuProps = (
                 },
               });
             },
-            label: formatText({ id: 'balancePage.burger.label.transferFunds' }),
+            label: formatMessage(MSG.labelTransferFunds),
             icon: 'transfer',
           },
           {
@@ -217,7 +240,7 @@ export const useGetTableMenuProps = (
                 },
               });
             },
-            label: formatText({ id: 'balancePage.burger.label.makePayment' }),
+            label: formatMessage(MSG.labelMakePayment),
             icon: 'hand-coins',
           },
         ],
@@ -229,6 +252,7 @@ export const useGetTableMenuProps = (
       toggleAddFundsModalOn,
       nativeToken?.tokenAddress,
       nativeTokenStatus,
+      formatMessage,
     ],
   );
 
