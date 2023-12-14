@@ -1,3 +1,5 @@
+require('cross-fetch/polyfill');
+
 const { utils, Wallet, providers, BigNumber, constants, Contract } = require('ethers');
 const { poll } = require('ethers/lib/utils');
 const fs = require('fs');
