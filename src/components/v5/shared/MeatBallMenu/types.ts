@@ -25,5 +25,4 @@ export interface MeatBallMenuProps {
   className?: string;
   renderItemWrapper?: RenderMeatBallItemWrapper;
   withVerticalIcon?: boolean;
-  onSelect?: () => void;
 }
