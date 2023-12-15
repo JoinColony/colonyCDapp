@@ -67,6 +67,7 @@ export { default as useJoinedColonies } from './useJoinedColonies';
 export { default as useCurrency } from './useCurrency';
 export { default as useGetSelectedDomainFilter } from './useGetSelectedDomainFilter';
 export { default as useActionsCount } from './useActionsCount';
+export { default as useDebouncedValue } from './useDebouncedValue';
 
 export {
   default as useSafeTransactionStatus,

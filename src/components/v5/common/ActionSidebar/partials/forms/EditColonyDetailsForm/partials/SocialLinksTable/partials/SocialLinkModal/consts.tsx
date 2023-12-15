@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import {
   GlobeHemisphereEast,
   Scroll,
@@ -9,7 +8,8 @@ import {
   GithubLogo,
   InstagramLogo,
   FacebookLogo,
-} from 'phosphor-react';
+} from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React from 'react';
 import { object, string } from 'yup';
 

@@ -1,5 +1,5 @@
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { CaretLeft, CaretRight } from 'phosphor-react';
 import React, { FC, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 

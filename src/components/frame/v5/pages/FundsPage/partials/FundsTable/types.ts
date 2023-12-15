@@ -1,4 +1,4 @@
-import { FilterProps } from '../Filter/types';
+import { FiltersProps } from '~v5/shared/Filters/types';
 
 export interface FundsTableModel {
   token?: {
@@ -20,7 +20,7 @@ export type FundsTableFilters = {
 };
 
 export interface UseFundsTableProps {
-  filters: FilterProps<FundsTableFilters>;
+  filters: FiltersProps<FundsTableFilters>;
   searchedTokens: {
     isApproved: boolean;
     token?: {

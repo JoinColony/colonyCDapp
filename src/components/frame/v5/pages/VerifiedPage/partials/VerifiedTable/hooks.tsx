@@ -1,5 +1,5 @@
+import { Star, Trash } from '@phosphor-icons/react';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { Star, Trash } from 'phosphor-react';
 import React, { useMemo } from 'react';
 
 import { ColonyContributorFragment } from '~gql';

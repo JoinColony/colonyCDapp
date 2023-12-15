@@ -1,0 +1,115 @@
+.wrapper:global(.react-datepicker) {
+  @apply bg-transparent border-none rounded-none text-gray-700 text-[.875rem] font-inter;
+}
+
+.wrapper :global(.react-datepicker__header) {
+  @apply bg-transparent border-none rounded-none p-0;
+}
+
+.wrapper :global(.react-datepicker__day-names) {
+  @apply m-0 mb-1;
+}
+
+.wrapper :global(.react-datepicker__day-name),
+.wrapper :global(.react-datepicker__day) {
+  @apply h-10 w-10 inline-flex justify-center items-center m-0 flex-shrink-0;
+}
+
+.wrapper :global(.react-datepicker__day-name) {
+  @apply text-2 text-gray-900;
+}
+
+.wrapper :global(.react-datepicker__day) {
+  @apply text-md text-gray-700 rounded-none;
+}
+
+.wrapper :global(.react-datepicker__day--disabled),
+.wrapper
+  :global(
+    .react-datepicker__day--outside-month.react-datepicker__day--disabled
+  ) {
+  @apply pointer-events-none text-gray-300;
+}
+
+.wrapper
+  :global(.react-datepicker__day--today:not(.react-datepicker__day--in-range)) {
+  @apply rounded-[.25rem];
+}
+
+.wrapper
+  :global(.react-datepicker__day:not(.react-datepicker__day--in-range):hover) {
+  @apply bg-transparent;
+}
+
+.wrapper :global(.react-datepicker__day-content) {
+  @apply h-full w-full flex justify-center items-center rounded-full transition;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__day:not(
+        .react-datepicker__day--in-range,
+        .react-datepicker__day--in-selecting-range
+      ):hover
+      .react-datepicker__day-content
+  ) {
+  @apply bg-blue-400 text-base-white;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__day--in-selecting-range:not(
+        .react-datepicker__day--in-range
+      )
+  ),
+.wrapper :global(.react-datepicker__day--keyboard-selected),
+.wrapper :global(.react-datepicker__day--selected),
+.wrapper :global(.react-datepicker__day--in-selecting-range),
+.wrapper :global(.react-datepicker__day--in-range) {
+  @apply bg-gray-50 text-gray-700;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__day--selecting-range-start .react-datepicker__day-content
+  ),
+.wrapper
+  :global(
+    .react-datepicker__day--selecting-range-end .react-datepicker__day-content
+  ),
+.wrapper
+  :global(.react-datepicker__day--range-start .react-datepicker__day-content),
+.wrapper
+  :global(.react-datepicker__day--range-end .react-datepicker__day-content) {
+  @apply bg-blue-400 text-base-white;
+}
+
+.wrapper :global(.react-datepicker__day--selecting-range-start),
+.wrapper :global(.react-datepicker__day--range-start) {
+  @apply rounded-l-full;
+}
+
+.wrapper :global(.react-datepicker__day--selecting-range-end),
+.wrapper :global(.react-datepicker__day--range-end) {
+  @apply rounded-r-full;
+}
+
+.wrapper :global(.react-datepicker__day--in-range) {
+  @apply font-medium;
+}
+
+.wrapper :global(.react-datepicker__month) {
+  @apply m-0 px-6 pb-5;
+}
+
+.wrapper :global(.react-datepicker__week) {
+  @apply mb-1 last:mb-0;
+}
+
+.wrapper :global(.react-datepicker__day--outside-month) {
+  @apply text-gray-500;
+}
+
+.wrapper :global(.react-datepicker__children-container) {
+  @apply w-auto m-0 p-0;
+}

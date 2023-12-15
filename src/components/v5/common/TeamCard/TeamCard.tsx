@@ -1,5 +1,5 @@
+import { Cardholder } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { Cardholder } from 'phosphor-react';
 import React, { FC } from 'react';
 
 import { useMobile } from '~hooks';

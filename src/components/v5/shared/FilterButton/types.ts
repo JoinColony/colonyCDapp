@@ -4,4 +4,5 @@ export type FilterButtonProps = {
   setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   onClick?: () => void;
   customLabel?: string;
+  className?: string;
 };

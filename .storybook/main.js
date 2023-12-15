@@ -171,6 +171,7 @@ module.exports = {
       include: [
         path.resolve('node_modules', 'draft-js'),
         path.resolve('node_modules', 'rc-slider'),
+        path.resolve('node_modules', 'react-datepicker'),
       ],
       use: ['style-loader', 'css-loader'],
     });

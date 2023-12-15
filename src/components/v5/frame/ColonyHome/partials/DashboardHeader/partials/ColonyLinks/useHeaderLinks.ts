@@ -1,4 +1,10 @@
-import { CopySimple, Door, Rocket, ShareNetwork, Smiley } from 'phosphor-react';
+import {
+  CopySimple,
+  Door,
+  Rocket,
+  ShareNetwork,
+  Smiley,
+} from '@phosphor-icons/react';
 import { useLocation } from 'react-router-dom';
 
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext';

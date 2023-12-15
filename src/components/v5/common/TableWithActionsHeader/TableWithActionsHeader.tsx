@@ -23,13 +23,15 @@ function TableWithActionsHeader<
   return (
     <>
       <div className={clsx(headerClassName, 'pb-3.5')}>
-        <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col">
-          <div className="flex items-center">
-            <h4 className="heading-5 mr-3">{title}</h4>
+        <div className="flex gap-3 sm:justify-between sm:items-center sm:flex-row flex-col w-full">
+          <div className="flex items-center flex-shrink-0 gap-3">
+            <h4 className="heading-5">{title}</h4>
             {additionalHeaderContent}
           </div>
           {children && (
-            <div className="flex items-center mt-2.5 sm:mt-0">{children}</div>
+            <div className="flex items-center mt-2.5 sm:mt-0 flex-grow">
+              {children}
+            </div>
           )}
         </div>
       </div>

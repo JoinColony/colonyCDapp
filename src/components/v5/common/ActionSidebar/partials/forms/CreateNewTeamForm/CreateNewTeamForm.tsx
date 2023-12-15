@@ -1,4 +1,4 @@
-import { PaintBucket } from 'phosphor-react';
+import { PaintBucket } from '@phosphor-icons/react';
 import React, { FC } from 'react';
 
 import { MAX_COLONY_DISPLAY_NAME, MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';

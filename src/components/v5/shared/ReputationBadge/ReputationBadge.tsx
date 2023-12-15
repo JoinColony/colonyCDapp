@@ -1,5 +1,5 @@
+import { Star } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { Star } from 'phosphor-react';
 import React, { FC } from 'react';
 
 import { ReputationBadgeProps } from './types';

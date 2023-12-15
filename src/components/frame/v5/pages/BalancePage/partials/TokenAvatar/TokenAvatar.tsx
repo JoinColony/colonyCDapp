@@ -1,5 +1,5 @@
+import { LockKey } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { LockKey } from 'phosphor-react';
 import React, { FC } from 'react';
 
 import { useMobile, useRelativePortalElement, useToggle } from '~hooks';

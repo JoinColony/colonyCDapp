@@ -6,7 +6,7 @@ import { useFilterContext } from '~context/FilterContext';
 import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import Button from '~v5/shared/Button';
-import FilterButton from '~v5/shared/Filter/FilterButton';
+import FilterButton from '~v5/shared/FilterButton/FilterButton';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 

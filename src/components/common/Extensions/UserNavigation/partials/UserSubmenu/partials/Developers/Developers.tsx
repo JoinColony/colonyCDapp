@@ -1,4 +1,4 @@
-import { Code, GithubLogo } from 'phosphor-react';
+import { Code, GithubLogo } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

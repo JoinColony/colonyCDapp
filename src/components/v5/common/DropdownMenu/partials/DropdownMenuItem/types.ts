@@ -1,4 +1,4 @@
-import { IconProps } from 'phosphor-react';
+import { IconProps } from '@phosphor-icons/react';
 import { ButtonHTMLAttributes, ComponentType } from 'react';
 
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';

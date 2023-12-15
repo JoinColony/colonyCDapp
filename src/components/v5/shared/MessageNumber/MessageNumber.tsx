@@ -1,4 +1,4 @@
-import { Chat } from 'phosphor-react';
+import { Chat } from '@phosphor-icons/react';
 import React, { FC } from 'react';
 
 import { MessageNumberProps } from './types';

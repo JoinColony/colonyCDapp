@@ -1,24 +1,19 @@
-export type Length<T extends any[]> = T extends { length: infer L } ? L : never;
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I,
+) => void
+  ? I
+  : never;
 
-export type BuildTuple<L extends number, T extends any[] = []> = T extends {
-  length: L;
-}
-  ? T
-  : BuildTuple<L, [...T, any]>;
+type LastOf<T> = UnionToIntersection<
+  T extends any ? () => T : never
+> extends () => infer R
+  ? R
+  : never;
 
-export type Add<A extends number, B extends number> = Length<
-  [...BuildTuple<A>, ...BuildTuple<B>]
->;
+type Push<T extends any[], V> = [...T, V];
 
-export type Subtract<
-  A extends number,
-  B extends number,
-> = BuildTuple<A> extends [...infer U, ...BuildTuple<B>] ? Length<U> : never;
-
-export type KeysAtLevel<T, L extends number> = L extends 1
-  ? keyof T
-  : {
-      [K in keyof T]: T[K] extends Record<string, any>
-        ? KeysAtLevel<T[K], Subtract<L, 1>>
-        : never;
-    }[keyof T];
+export type TuplifyUnion<
+  T,
+  L = LastOf<T>,
+  N = [T] extends [never] ? true : false,
+> = true extends N ? [] : Push<TuplifyUnion<Exclude<T, L>>, L>;

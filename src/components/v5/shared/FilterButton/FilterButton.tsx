@@ -14,6 +14,7 @@ const FilterButton: FC<FilterButtonProps> = ({
   setTriggerRef,
   onClick,
   customLabel,
+  className,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -23,7 +24,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       aria-label={formatMessage({ id: 'ariaLabel.filter' })}
       ref={setTriggerRef}
       onClick={onClick}
-      className={clsx({
+      className={clsx(className, 'shrink-0', {
         'border border-gray-900 text-gray-900': isOpen,
       })}
       mode="tertiary"

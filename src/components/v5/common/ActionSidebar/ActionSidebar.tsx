@@ -1,6 +1,6 @@
+import { ArrowLineRight, ArrowsOutSimple, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import { ArrowLineRight, ArrowsOutSimple, X } from 'phosphor-react';
 import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants';

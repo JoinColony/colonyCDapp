@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { isAddress } from 'ethers/lib/utils';
+import { isHexString } from 'ethers/lib/utils';
 import React, { FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
@@ -98,7 +98,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
                   return;
                 }
 
-                field.onChange(isAddress(query) ? query : undefined);
+                field.onChange(isHexString(query) ? query : undefined);
               }}
               onSelect={(value) => {
                 field.onChange(value);

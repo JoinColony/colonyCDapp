@@ -1,4 +1,4 @@
-import { Files, FileText } from 'phosphor-react';
+import { Files, FileText } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

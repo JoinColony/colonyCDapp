@@ -1,5 +1,10 @@
+import { isHexString } from 'ethers/lib/utils';
+
+import { ColonyFragment } from '~gql';
 import { MotionStatesMap } from '~hooks';
-import { ColonyAction } from '~types';
+import { AnyActionType, ColonyAction } from '~types';
+import { notMaybe } from '~utils/arrays';
+import { getExtendedActionType } from '~utils/colonyActions';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
 
 import {
@@ -37,6 +42,75 @@ export const filterActionByMotionState = (
     : motionStatesFilter.includes(action.motionState);
 };
 
+export const filterBySearch = (
+  action: ActivityFeedColonyAction,
+  colony: ColonyFragment | undefined,
+  search?: string,
+) => {
+  if (!search || !colony) {
+    return true;
+  }
+
+  const {
+    isMotion,
+    pendingColonyMetadata,
+    metadata,
+    amount,
+    token,
+    initiatorUser,
+    recipientUser,
+    transactionHash,
+    initiatorAddress,
+    recipientAddress,
+  } = action;
+
+  const extendedActionType = getExtendedActionType(
+    action,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
+
+  const searchValue = search.toLowerCase();
+  const searchIsAddress = isHexString(searchValue);
+  const terms = searchIsAddress
+    ? [transactionHash, initiatorAddress, recipientAddress, token?.tokenAddress]
+    : [
+        metadata?.customTitle,
+        extendedActionType,
+        amount,
+        token?.name,
+        token?.symbol,
+        initiatorUser?.profile?.displayName,
+        recipientUser?.profile?.displayName,
+      ];
+
+  return terms.filter(notMaybe).some((term) => {
+    const lowercaseTerm = term.toLowerCase();
+
+    return searchIsAddress
+      ? lowercaseTerm === search
+      : lowercaseTerm.includes(searchValue);
+  });
+};
+
+export const filterByActionTypes = (
+  action: ActivityFeedColonyAction,
+  colony: ColonyFragment | undefined,
+  actionTypes?: AnyActionType[],
+) => {
+  if (!actionTypes || !colony || !actionTypes.length) {
+    return true;
+  }
+
+  const { isMotion, pendingColonyMetadata } = action;
+
+  const extendedActionType = getExtendedActionType(
+    action,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
+
+  return actionTypes.includes(extendedActionType);
+};
+
 /**
  * Common filtering for all action queries to ensure both listing and counting queries
  * return the same results
@@ -57,36 +131,56 @@ export const getBaseSearchActionsFilterVariable = (
 
 export const getSearchActionsFilterVariable = (
   colonyAddress: string,
-  filters?: ActivityFeedFilters,
+  { dateFrom, dateTo, decisionMethod, teamId }: ActivityFeedFilters = {},
 ): SearchActionsFilterVariable => {
+  const dateFilter =
+    dateFrom && dateTo
+      ? {
+          createdAt: {
+            range: [dateFrom?.toISOString(), dateTo?.toISOString()],
+          },
+        }
+      : {
+          ...(dateFrom
+            ? {
+                createdAt: {
+                  gte: dateFrom?.toISOString(),
+                },
+              }
+            : {}),
+          ...(dateTo
+            ? {
+                createdAt: {
+                  lte: dateTo?.toISOString(),
+                },
+              }
+            : {}),
+        };
+  const decisionMethodFilter =
+    decisionMethod !== undefined
+      ? {
+          ...(decisionMethod === ActivityDecisionMethod.Reputation
+            ? {
+                isMotion: {
+                  eq: true,
+                },
+              }
+            : {}),
+          ...(decisionMethod === ActivityDecisionMethod.Permissions
+            ? {
+                isMotion: {
+                  ne: true,
+                },
+              }
+            : {}),
+        }
+      : undefined;
+
   return {
     ...getBaseSearchActionsFilterVariable(colonyAddress),
-    fromDomainId: filters?.teamId
-      ? {
-          eq: filters.teamId,
-        }
-      : undefined,
-    or: filters?.actionTypes?.length
-      ? filters.actionTypes.map((actionType) => ({
-          type: { eq: actionType },
-        }))
-      : undefined,
-    createdAt: {
-      range: [
-        filters?.dateFrom?.toISOString() ?? null,
-        filters?.dateTo?.toISOString() ?? null,
-      ],
-    },
-    isMotion: {
-      eq:
-        filters?.decisionMethod === ActivityDecisionMethod.Reputation
-          ? true
-          : undefined,
-      ne:
-        filters?.decisionMethod === ActivityDecisionMethod.Permissions
-          ? true
-          : undefined,
-    },
+    ...(teamId !== undefined ? { fromDomainId: { eq: teamId } } : {}),
+    ...dateFilter,
+    ...(decisionMethodFilter || {}),
   };
 };
 

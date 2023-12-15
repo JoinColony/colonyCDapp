@@ -12,6 +12,8 @@ import useColonyContext from '../useColonyContext';
 
 import {
   filterActionByMotionState,
+  filterByActionTypes,
+  filterBySearch,
   getActionsByPageNumber,
   getSearchActionsFilterVariable,
   makeWithMotionStateMapper,
@@ -30,9 +32,9 @@ const useActivityFeed = (
   sort?: ActivityFeedSort,
   { pageSize = ITEMS_PER_PAGE }: ActivityFeedOptions = {},
 ): UseActivityFeedReturn => {
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
+  const { colony } = useColonyContext();
+
+  const { colonyAddress } = colony;
 
   const [pageNumber, setPageNumber] = useState(1);
   /**
@@ -83,8 +85,11 @@ const useActivityFeed = (
   const loadingMotionStateFilter =
     motionStatesLoading && !!filters?.motionStates?.length;
 
-  const filteredActions = actions.filter((action) =>
-    filterActionByMotionState(action, filters?.motionStates),
+  const filteredActions = actions.filter(
+    (action) =>
+      filterActionByMotionState(action, filters?.motionStates) &&
+      filterBySearch(action, colony, filters?.search) &&
+      filterByActionTypes(action, colony, filters?.actionTypes),
   );
 
   const fetchMoreActions =
