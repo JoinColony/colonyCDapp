@@ -26,7 +26,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        iconName="users-three"
+        icon="users-three"
         fieldName="from"
         tooltips={{
           label: {
@@ -40,7 +40,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="user-focus"
+        icon="user-focus"
         fieldName="recipient"
         tooltips={{
           label: {
@@ -54,7 +54,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <UserSelect name="recipient" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="coins"
+        icon="coins"
         fieldName="amount"
         tooltips={{
           label: {
@@ -68,7 +68,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -89,7 +89,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {

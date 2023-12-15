@@ -38,7 +38,7 @@ const ColonyObjectiveFields: FC = () => {
   return (
     <>
       <ActionFormRow
-        iconName="article"
+        icon="article"
         title={formatText(MSG.title)}
         fieldName="colonyObjectiveTitle"
       >
@@ -51,7 +51,7 @@ const ColonyObjectiveFields: FC = () => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="file-text"
+        icon="file-text"
         title={formatText(MSG.description)}
         fieldName="colonyObjectiveDescription"
       >
@@ -64,7 +64,7 @@ const ColonyObjectiveFields: FC = () => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="percent"
+        icon="percent"
         title={formatText(MSG.progress)}
         fieldName="colonyObjectiveProgress"
       >

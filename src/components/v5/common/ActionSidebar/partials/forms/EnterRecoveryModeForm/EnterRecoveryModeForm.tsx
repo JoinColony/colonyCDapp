@@ -13,7 +13,7 @@ const EnterRecoveryModeForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   return (
     <ActionFormRow
-      iconName="pencil"
+      icon="pencil"
       fieldName="description"
       // Tooltip disabled to experiment with improving user experience
       // tooltips={{

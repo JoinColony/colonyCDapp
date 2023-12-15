@@ -16,7 +16,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({
   ...rest
 }) => {
   const {
-    field: { onChange, value },
+    field: { onChange, value, onBlur },
     fieldState: { invalid, error },
   } = useController({
     defaultValue,
@@ -30,6 +30,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({
       {...rest}
       readOnly={readonly}
       type={type}
+      onBlur={onBlur}
       value={value?.toString() || ''}
       onChange={(event) => {
         const { value: inputValue, valueAsNumber } = event.target;

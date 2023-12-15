@@ -25,7 +25,7 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
     <>
       <ColonyObjectiveFields />
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {
@@ -39,7 +39,7 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {

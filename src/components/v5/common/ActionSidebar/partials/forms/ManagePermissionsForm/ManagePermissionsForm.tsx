@@ -64,7 +64,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         isOpen={isPermissionsModalOpen}
       />
       <ActionFormRow
-        iconName="user-focus"
+        icon="user-focus"
         fieldName="member"
         tooltips={{
           label: {
@@ -78,7 +78,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <UserSelect name="member" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="users-three"
+        icon="users-three"
         fieldName="team"
         tooltips={{
           label: {
@@ -92,7 +92,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="shield"
+        icon="shield"
         fieldName="role"
         tooltips={{
           label: {
@@ -118,7 +118,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="signature"
+        icon="signature"
         fieldName="authority"
         tooltips={{
           label: {
@@ -154,7 +154,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -175,7 +175,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {

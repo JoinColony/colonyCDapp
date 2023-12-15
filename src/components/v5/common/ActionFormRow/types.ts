@@ -3,7 +3,7 @@ import { UseToggleReturnType } from '~hooks/useToggle/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
 
 export interface ActionFormRowProps {
-  iconName: string;
+  icon: React.ReactNode;
   title: React.ReactNode;
   isExpandable?: boolean;
   isMultiLine?: boolean;

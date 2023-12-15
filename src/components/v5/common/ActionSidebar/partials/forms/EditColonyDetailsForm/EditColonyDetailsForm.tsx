@@ -23,7 +23,7 @@ const EditColonyDetailsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ColonyDetailsFields />
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -44,7 +44,7 @@ const EditColonyDetailsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {

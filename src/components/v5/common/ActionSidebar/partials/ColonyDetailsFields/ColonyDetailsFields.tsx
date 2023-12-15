@@ -11,7 +11,7 @@ const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 const ColonyDetailsFields: FC = () => (
   <>
     <ActionFormRow
-      iconName="pencil-circle"
+      icon="pencil-circle"
       fieldName="colonyName"
       title={formatText({ id: 'actionSidebar.colonyName' })}
       tooltips={{
@@ -32,7 +32,7 @@ const ColonyDetailsFields: FC = () => (
       />
     </ActionFormRow>
     <ActionFormRow
-      iconName="image"
+      icon="image"
       fieldName="avatar"
       title={formatText({ id: 'actionSidebar.colonyLogo' })}
       tooltips={{
@@ -55,7 +55,7 @@ const ColonyDetailsFields: FC = () => (
       </div>
     </ActionFormRow>
     <ActionFormRow
-      iconName="file-text"
+      icon="file-text"
       fieldName="colonyDescription"
       title={formatText({ id: 'actionSidebar.colonyDescription' })}
       isMultiLine

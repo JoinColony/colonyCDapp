@@ -27,7 +27,7 @@ const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return isNativeTokenUnlocked && !transactionId ? null : (
     <>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -48,7 +48,7 @@ const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {

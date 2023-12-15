@@ -159,9 +159,15 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.CreateDomainMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
-          teamName: pendingDomainMetadata?.name,
-          domainColor: pendingDomainMetadata?.color,
-          domainPurpose: pendingDomainMetadata?.description,
+          teamName: action.isMotion
+            ? pendingDomainMetadata?.name
+            : fromDomain?.metadata?.name,
+          domainColor: action.isMotion
+            ? pendingDomainMetadata?.color
+            : fromDomain?.metadata?.color,
+          domainPurpose: action?.isMotion
+            ? pendingDomainMetadata?.description
+            : fromDomain?.metadata?.description,
           ...repeatableFields,
         };
       case ColonyActionType.EditDomain:

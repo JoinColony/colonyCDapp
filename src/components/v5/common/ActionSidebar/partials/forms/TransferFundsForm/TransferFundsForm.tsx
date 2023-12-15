@@ -25,7 +25,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        iconName="users-three"
+        icon="users-three"
         fieldName="from"
         tooltips={{
           label: {
@@ -39,7 +39,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="arrow-down-right"
+        icon="arrow-down-right"
         fieldName="to"
         title={formatText({ id: 'actionSidebar.recipent' })}
         tooltips={{
@@ -53,7 +53,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="to" />
       </ActionFormRow>
       <ActionFormRow
-        iconName="coins"
+        icon="coins"
         fieldName="amount"
         title={formatText({ id: 'actionSidebar.amount' })}
         tooltips={{
@@ -67,7 +67,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
-        iconName="scales"
+        icon="scales"
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -88,7 +88,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        iconName="house-line"
+        icon="house-line"
         fieldName="createdIn"
         tooltips={{
           label: {

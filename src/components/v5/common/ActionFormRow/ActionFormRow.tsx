@@ -11,7 +11,7 @@ import { LABEL_CLASSNAME } from './consts';
 const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (
     {
-      iconName,
+      icon,
       title,
       children,
       isExpandable = false,
@@ -29,20 +29,25 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
     const [isExpanded, { toggle }] = rowToggle;
     const isError = !!error;
     const { label, content: contentTooltip } = tooltips;
+    const iconClassNames = {
+      'text-negative-400': isError,
+      'text-gray-900': !isError,
+    };
 
     const rowContent =
       typeof children === 'function' ? children(rowToggle) : children;
 
     const content = (
       <>
-        <Icon
-          name={iconName}
-          appearance={{ size: 'extraTiny' }}
-          className={clsx('h-3 w-3', {
-            'text-negative-400': isError,
-            'text-gray-900': !isError,
-          })}
-        />
+        {typeof icon === 'string' ? (
+          <Icon
+            name={icon}
+            appearance={{ size: 'extraTiny' }}
+            className={clsx('h-3 w-3', iconClassNames)}
+          />
+        ) : (
+          <i className={clsx(iconClassNames)}>{icon}</i>
+        )}
         <span
           className={clsx(
             LABEL_CLASSNAME,
@@ -130,7 +135,13 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
             tooltipContent
           )}
         </div>
-        <div className="flex flex-grow items-center">
+        <div
+          className={clsx('flex items-center', {
+            'w-full': isExpanded,
+            'w-[calc(100%-10rem-0.5rem)] sm:w-[calc(100%-12.5rem-0.5rem)]':
+              !isExpanded,
+          })}
+        >
           {contentTooltip ? (
             <Tooltip
               placement="top"
