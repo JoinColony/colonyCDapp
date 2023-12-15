@@ -39,7 +39,7 @@ export const useStakesByFilterType = () => {
     () =>
       userStakes
         .filter((stake) => !!stake.action?.motionData)
-        .map((stake) => stake.action?.motionData?.nativeMotionId ?? ''),
+        .map((stake) => stake.action?.motionData?.motionId ?? ''),
     [userStakes],
   );
   const { motionStatesMap, loading: motionStatesLoading } =

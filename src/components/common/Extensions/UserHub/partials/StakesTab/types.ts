@@ -10,7 +10,7 @@ export interface StakesListProps {
 export interface StakeItemProps {
   stake: UserStakeWithStatus;
   nativeToken: Token;
-  colonyAddress: string;
+  colony: Colony;
 }
 
 export type StakesFilterType = 'all' | 'finalizable' | 'claimable';
