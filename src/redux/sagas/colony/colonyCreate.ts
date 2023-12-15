@@ -18,9 +18,9 @@ import {
   GetCurrentColonyVersionDocument,
   GetCurrentColonyVersionQuery,
   GetCurrentColonyVersionQueryVariables,
-  GetDisplayNameByColonyNameDocument,
-  GetDisplayNameByColonyNameQuery,
-  GetDisplayNameByColonyNameQueryVariables,
+  GetFullColonyByNameDocument,
+  GetFullColonyByNameQuery,
+  GetFullColonyByNameQueryVariables,
 } from '~gql';
 import { ColonyManager, ContextModule, getContext } from '~context';
 import {
@@ -370,11 +370,8 @@ function* colonyCreate({
      * Wait for the colony to exist, then navigate to it.
      */
     const colonyExistsSubscription = yield apolloClient
-      .watchQuery<
-        GetDisplayNameByColonyNameQuery,
-        GetDisplayNameByColonyNameQueryVariables
-      >({
-        query: GetDisplayNameByColonyNameDocument,
+      .watchQuery<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>({
+        query: GetFullColonyByNameDocument,
         variables: {
           name: givenColonyName,
         },
@@ -383,9 +380,18 @@ function* colonyCreate({
       .subscribe({
         next: ({ data: { getColonyByName } }) => {
           const [colony] = getColonyByName?.items ?? [];
-          const { displayName: existingColonyDisplayName } =
-            colony?.metadata ?? {};
-          if (existingColonyDisplayName && navigate) {
+          const { roles, metadata } = colony ?? {};
+          const { displayName: existingColonyDisplayName } = metadata || {};
+          /*
+           * @NOTE Check for role existance.
+           *
+           * There's a race condition here because roles are the last events to get picked up
+           * by the ingestor and set, meaning there's a certain point in time where the colony
+           * entry/object will exist and will be returned by the query, whoever the roles relatioship
+           * won't exist yet, and since that is required, the colony context will error and redirect
+           * to 404
+           */
+          if (existingColonyDisplayName && roles?.items.length && navigate) {
             /*
              * Unsub to prevent memory leakeage.
              */
