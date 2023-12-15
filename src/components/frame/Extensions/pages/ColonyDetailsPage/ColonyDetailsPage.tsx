@@ -6,30 +6,20 @@ import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
-import { multiLineTextEllipsis } from '~utils/strings';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
 import Button from '~v5/shared/Button';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import SocialLinks from '~v5/shared/SocialLinks';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import NativeTokenPill from '~v5/common/NativeTokenPill';
 import { ADDRESS_ZERO } from '~constants';
 
 import styles from './ColonyDetailsPage.module.css';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
-const MAX_DESCRIPTION_LENGTH = 250;
-
 const MSG = defineMessages({
-  lockedToken: {
-    id: `${displayName}.lockedToken`,
-    defaultMessage:
-      'This token is locked. Colony native tokens are locked and non-transferrable by default to avoid unwanted project token transfer outside of the colony.',
-  },
   descriptionPlaceholder: {
     id: `${displayName}.desciptionPlaceholder`,
     defaultMessage:
@@ -59,9 +49,15 @@ const ColonyDetailsPage: FC = () => {
     formatMessage({ id: 'navigation.admin.colonyDetails' }),
   );
 
-  const { name, metadata, colonyAddress, nativeToken, status } = colony || {};
-  const { avatar, thumbnail, description, externalLinks, objective } =
-    metadata || {};
+  const { metadata, colonyAddress, nativeToken, status } = colony || {};
+  const {
+    avatar,
+    thumbnail,
+    displayName: colonyDisplayName,
+    description,
+    externalLinks,
+    objective,
+  } = metadata || {};
   const isNativeTokenLocked = !status?.nativeToken?.unlocked;
 
   const {
@@ -81,26 +77,13 @@ const ColonyDetailsPage: FC = () => {
           />
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-row items-end gap-3">
-              <h2 className="heading-2">{name}</h2>
+              <h2 className="heading-2">{colonyDisplayName}</h2>
               {nativeToken && (
-                <div className="flex flex-row items-center p-2 border border-gray-200 rounded-lg bg-base-white">
-                  <span className="text-sm font-medium">
-                    {nativeToken.symbol}
-                  </span>
-                  {isNativeTokenLocked && (
-                    <Tooltip
-                      tooltipContent={
-                        <span>{formatText(MSG.lockedToken)}</span>
-                      }
-                    >
-                      <Icon
-                        name="lock-key"
-                        appearance={{ size: 'extraExtraTiny' }}
-                        className="ml-1"
-                      />
-                    </Tooltip>
-                  )}
-                </div>
+                <NativeTokenPill
+                  variant="secondary"
+                  tokenName={nativeToken.symbol}
+                  isLocked={isNativeTokenLocked}
+                />
               )}
             </div>
             {colonyAddress && <CopyableAddress address={colonyAddress} />}
@@ -111,8 +94,8 @@ const ColonyDetailsPage: FC = () => {
             'text-gray-700': !!description,
           })}
         >
-          {description
-            ? multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)
+          {description && description.length > 0
+            ? description
             : formatMessage(MSG.descriptionPlaceholder)}
         </p>
         {externalLinks && externalLinks.length ? (
