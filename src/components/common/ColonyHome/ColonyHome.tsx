@@ -77,7 +77,7 @@ const ColonyHome = () => {
     chartData,
     otherTeamsReputation,
     hoveredSegment,
-    setHoveredSegment,
+    updateHoveredSegment,
   } = useGetHomeWidget(selectedTeam?.nativeId);
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   const {
@@ -205,7 +205,7 @@ const ColonyHome = () => {
                         <DonutChart
                           data={chartData || []}
                           hoveredSegment={hoveredSegment}
-                          setHoveredSegment={setHoveredSegment}
+                          updateHoveredSegment={updateHoveredSegment}
                         />
                       </div>
                     </div>
@@ -235,7 +235,13 @@ const ColonyHome = () => {
                                       },
                                     )}
                                   >
-                                    <TeamReputationSummaryRow team={team} />
+                                    <TeamReputationSummaryRow
+                                      color={team.metadata?.color}
+                                      name={team.metadata?.name}
+                                      totalReputation={
+                                        team.reputationPercentage
+                                      }
+                                    />
                                   </li>
                                 )
                               );

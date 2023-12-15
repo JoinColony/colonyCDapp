@@ -1,18 +1,24 @@
 import React, { FC } from 'react';
 
+import { DomainColor } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip';
 
-import { TeamPointsRowProps } from '../types';
 import { formatPercentage, setTeamColor } from '../utils';
 
 const displayName =
   'v5.common.TeamReputationSummary.partials.TeamReputationSummaryRow';
 
-const TeamReputationSummaryRow: FC<TeamPointsRowProps> = ({
-  team: { reputationPercentage: totalReputation, metadata },
-}) => {
-  const { color, name } = metadata ?? {};
+interface TeamReputationSummaryRowProps {
+  color?: DomainColor;
+  name?: string;
+  totalReputation?: string | null;
+}
 
+const TeamReputationSummaryRow: FC<TeamReputationSummaryRowProps> = ({
+  color,
+  name,
+  totalReputation,
+}) => {
   return (
     <>
       <div className="flex items-center flex-grow">

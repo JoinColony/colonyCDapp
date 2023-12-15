@@ -86,7 +86,11 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
                     key={nativeId}
                     className="flex items-center text-sm mb-3 last:mb-0"
                   >
-                    <TeamReputationSummaryRow team={team} />
+                    <TeamReputationSummaryRow
+                      color={team.metadata?.color}
+                      name={team.metadata?.name}
+                      totalReputation={team.reputationPercentage}
+                    />
                   </li>
                 )
               );

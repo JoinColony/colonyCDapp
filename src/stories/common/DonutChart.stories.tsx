@@ -48,12 +48,16 @@ const DonutChartWithHooks = () => {
     ChartData | undefined | null
   >();
 
+  const updateHoveredSegment = (segment) => {
+    setHoveredSegment(segment);
+  };
+
   return (
     <div className="relative w-[12.5rem]">
       <DonutChart
         data={data}
         hoveredSegment={hoveredSegment}
-        setHoveredSegment={setHoveredSegment}
+        updateHoveredSegment={updateHoveredSegment}
       />
     </div>
   );
