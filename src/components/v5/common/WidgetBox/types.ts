@@ -4,6 +4,7 @@ export interface WidgetBoxProps {
   additionalContent?: React.ReactNode;
   className?: string;
   href?: string;
+  searchParams?: string;
   iconName?: string;
   iconClassName?: string;
   contentClassName?: string;

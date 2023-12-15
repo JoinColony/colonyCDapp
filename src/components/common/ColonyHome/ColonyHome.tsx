@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
 
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useColonySubscription, useMobile } from '~hooks';
@@ -88,6 +89,8 @@ const ColonyHome = () => {
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
+  const { search: searchParams } = useLocation();
+
   if (!colony) {
     return null;
   }
@@ -112,6 +115,7 @@ const ColonyHome = () => {
               'bg-gray-900 border-gray-900': !selectedTeam,
             }),
             href: COLONY_ACTIVITY_ROUTE,
+            searchParams,
           },
           {
             key: '2',
@@ -130,6 +134,7 @@ const ColonyHome = () => {
                 showRemainingAvatars={false}
               />
             ),
+            searchParams,
           },
           {
             key: '3',
@@ -144,6 +149,7 @@ const ColonyHome = () => {
               </div>
             ),
             href: COLONY_BALANCES_ROUTE,
+            searchParams,
           },
         ]}
       />
