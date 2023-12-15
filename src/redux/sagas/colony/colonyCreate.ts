@@ -369,7 +369,7 @@ function* colonyCreate({
     /*
      * Wait for the colony to exist, then navigate to it.
      */
-    const colonyExistsSubscrition = yield apolloClient
+    const colonyExistsSubscription = yield apolloClient
       .watchQuery<
         GetDisplayNameByColonyNameQuery,
         GetDisplayNameByColonyNameQueryVariables
@@ -389,7 +389,7 @@ function* colonyCreate({
             /*
              * Unsub to prevent memory leakeage.
              */
-            colonyExistsSubscrition.unsubscribe();
+            colonyExistsSubscription.unsubscribe();
             /*
              * Navigate to the colony.
              */
