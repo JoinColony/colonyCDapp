@@ -6,8 +6,9 @@ import { SwitchProps } from './types';
 const displayName = 'v5.common.Fields.Switch';
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ id, disabled, className, ...rest }, ref) => {
+  ({ id, disabled: disabledProp, readOnly, className, ...rest }, ref) => {
     const generatedId = useId();
+    const disabled = disabledProp || readOnly;
 
     return (
       <label

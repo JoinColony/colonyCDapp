@@ -1,64 +1,79 @@
-import { bool, object } from 'yup';
 import { toast } from 'react-toastify';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 import Toast from '~shared/Extensions/Toast';
 import { canUseMetatransactions } from '~utils/checks';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
+import { notMaybe } from '~utils/arrays';
+import { omit } from '~utils/lodash';
+
+import { MetatransactionsFormValues } from './consts';
 
 export const useFeesForm = () => {
-  const metatransactionsValidationSchema = object({
-    metatransactionsEnabled: bool<boolean>(),
-  }).defined();
+  const [formRef, setFormRef] =
+    useState<UseFormReturn<MetatransactionsFormValues> | null>(null);
 
   const metatransactionsAvailable = canUseMetatransactions();
 
-  const { user, updateUser } = useAppContext();
-  const { metatransactionsEnabled, customRpc, decentralizedModeEnabled } =
-    user?.profile?.meta ?? {};
+  const { user, updateUser, userLoading } = useAppContext();
+  const userProfileMeta = user?.profile?.meta;
 
-  const [editUser] = useUpdateUserProfileMutation();
+  const [editUser, { loading: editUserLoading }] =
+    useUpdateUserProfileMutation();
 
   const metatransactionsDefault = metatransactionsAvailable
-    ? metatransactionsEnabled
+    ? userProfileMeta?.metatransactionsEnabled
     : false;
 
-  const handleSubmit = async (values: { metatransactionsEnabled: boolean }) => {
-    await editUser({
-      variables: {
-        input: {
-          id: user?.walletAddress ?? '',
-          meta: {
-            customRpc,
-            decentralizedModeEnabled,
-            ...values,
-          },
-        },
-      },
-    });
-    await updateUser(user?.walletAddress, true);
-  };
+  useEffect(() => {
+    if (!formRef) {
+      return undefined;
+    }
 
-  const handleFeesOnChange = (value: boolean) => {
-    handleSubmit({ metatransactionsEnabled: value });
-    toast.success(
-      <Toast
-        type="success"
-        title={{ id: 'advancedSettings.fees.toast.title' }}
-        description={{
-          id: value
-            ? 'advancedSettings.fees.toast.description.true'
-            : 'advancedSettings.fees.toast.description.false',
-        }}
-      />,
+    const { unsubscribe } = formRef.watch(
+      async ({ metatransactionsEnabled }, { name }) => {
+        if (
+          name !== 'metatransactionsEnabled' ||
+          !notMaybe(metatransactionsEnabled)
+        ) {
+          return;
+        }
+
+        await editUser({
+          variables: {
+            input: {
+              id: user?.walletAddress ?? '',
+              meta: {
+                ...omit(userProfileMeta || {}, '__typename'),
+                metatransactionsEnabled,
+              },
+            },
+          },
+        });
+        await updateUser(user?.walletAddress, true);
+
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'advancedSettings.fees.toast.title' }}
+            description={{
+              id: metatransactionsEnabled
+                ? 'advancedSettings.fees.toast.description.true'
+                : 'advancedSettings.fees.toast.description.false',
+            }}
+          />,
+        );
+      },
     );
-  };
+
+    return unsubscribe;
+  }, [editUser, formRef, updateUser, user?.walletAddress, userProfileMeta]);
 
   return {
-    metatransactionsValidationSchema,
+    loading: userLoading || editUserLoading,
     metatransactionsDefault,
-    handleSubmit,
-    handleFeesOnChange,
+    setFormRef,
   };
 };

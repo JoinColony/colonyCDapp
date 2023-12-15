@@ -40,7 +40,12 @@ import { notUndefined } from '~utils/arrays';
 //   return Array.from(roleSet);
 // };
 
-const convertRolesToArray = (rolesInDomain?: ColonyRoleFragment | null) =>
+export const convertRolesToArray = (
+  rolesInDomain?: Pick<
+    ColonyRoleFragment,
+    'role_0' | 'role_1' | 'role_2' | 'role_3' | 'role_5' | 'role_6'
+  > | null,
+) =>
   Object.keys(rolesInDomain || {})
     .filter((keyName) => keyName.startsWith('role_'))
     .map((keyName) =>
