@@ -98,6 +98,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                             text-md
                             transition-colors
                             duration-normal
+                            md:hover:text-gray-900
                             md:hover:bg-gray-50
                             md:hover:font-medium
                             rounded
