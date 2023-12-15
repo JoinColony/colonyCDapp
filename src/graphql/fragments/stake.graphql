@@ -15,6 +15,9 @@ fragment UserStake on UserStake {
         ...MotionStakes
       }
     }
+    metadata {
+      customTitle
+    }
   }
   isClaimed
   createdAt
