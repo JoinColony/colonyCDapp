@@ -1,6 +1,7 @@
 import { BigNumber } from 'ethers';
 import { DocumentNode, OperationDefinitionNode } from 'graphql';
 import { TestContext, ValidationError, TestFunction } from 'yup';
+import { OperationVariables } from '@apollo/client';
 import moveDecimal from 'move-decimal-point';
 
 import { ContextModule, getContext } from '~context';
@@ -25,13 +26,13 @@ const apolloClient = getContext(ContextModule.ApolloClient);
  * @param createError createError function that returns a Validation Error. Taken from yup's TestContext.
  * @returns Query Data or network error message
  */
-export async function runQuery<Q, V>(
+export async function runQuery<Q>(
   queryDocument: DocumentNode,
-  variables: V,
+  variables: OperationVariables,
   createError: TestContext['createError'],
 ): Promise<Q | ValidationError> {
   try {
-    const { data } = await apolloClient.query<Q, V>({
+    const { data } = await apolloClient.query<Q>({
       query: queryDocument,
       variables,
       fetchPolicy: 'no-cache',

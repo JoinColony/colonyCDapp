@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { DEFAULT_NETWORK_TOKEN, ADDRESS_ZERO } from '~constants';
 import { TokenType } from '~gql';
 import { UnaliasedColonyTokensItem } from '~types';
@@ -7,8 +8,9 @@ const tokensFieldCache = {
    * @NOTE Add the local chain's native token to the colony's tokens list
    */
   tokens: {
-    read: (baseTokens) => {
+    read: (baseTokens, { cache }) => {
       if (baseTokens === undefined) return null;
+      const cacheRepresentation = cache.extract();
 
       const updatedTokens: UnaliasedColonyTokensItem[] = [
         {
@@ -25,9 +27,25 @@ const tokensFieldCache = {
         },
       ];
 
+      const colonyTokensResolved = baseTokens.items.map((colonyToken) => {
+        // If it's a reference object, we need to look it up in the cache, same for the token nested object
+        if (colonyToken.__ref) {
+          const colonyTokenInCache = cacheRepresentation[colonyToken.__ref];
+
+          return {
+            ...colonyTokenInCache,
+            token: colonyTokenInCache.token?.__ref
+              ? cacheRepresentation[colonyTokenInCache.token.__ref]
+              : colonyToken.token,
+          };
+        }
+
+        return colonyToken;
+      });
+
       return {
         ...baseTokens,
-        items: [...baseTokens.items, ...updatedTokens],
+        items: [...colonyTokensResolved, ...updatedTokens],
       };
     },
   },

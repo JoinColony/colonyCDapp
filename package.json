@@ -160,7 +160,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.9",
+    "@apollo/client": "^3.8.8",
     "@colony/abis": "^1.2.0-next.3",
     "@colony/colony-event-metadata-parser": "^2.0.2",
     "@colony/colony-js": "^7.0.1",
