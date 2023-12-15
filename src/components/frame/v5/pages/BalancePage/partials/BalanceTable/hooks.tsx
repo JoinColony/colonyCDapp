@@ -216,6 +216,11 @@ export const useGetTableMenuProps = (
             key: 'transfer_funds',
             onClick: () => {
               toggleActionSidebarOn();
+              dispatchGlobalEvent(GLOBAL_EVENTS.SET_TOKEN_ADDRESS, {
+                detail: {
+                  tokenAddress: selectedTokenData?.tokenAddress,
+                },
+              });
               dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
                 detail: {
                   actionType: ACTION.TRANSFER_FUNDS,
