@@ -1,15 +1,17 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
+import { LockKey } from 'phosphor-react';
 import { useMobile, useRelativePortalElement, useToggle } from '~hooks';
 import CopyableAddress from '~shared/CopyableAddress';
-import IconTooltip from '~shared/IconTooltip';
 import TokenIcon from '~shared/TokenIcon';
 import Modal from '~v5/shared/Modal';
 import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';
 
 import { TokenAvatarProps } from './types';
+import Tooltip from '~shared/Extensions/Tooltip';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.pages.BalancePage.partials.TokenAvatar';
 // @TODO: implement token popover according to the design
@@ -52,13 +54,15 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
           <CopyableAddress>{token.tokenAddress}</CopyableAddress>
         )}
         {isTokenNative && !nativeTokenStatus?.unlocked && (
-          <span>
-            <IconTooltip
-              icon="lock"
-              tooltipText={{ id: 'tooltip.lockedToken' }}
-              appearance={{ size: 'tiny' }}
-            />
-          </span>
+          <Tooltip
+            tooltipContent={
+              <span className="sm:w-64 text-left">
+                {formatText({ id: 'tooltip.lockedToken' })}
+              </span>
+            }
+          >
+            <LockKey size={14} className="mt-px" />
+          </Tooltip>
         )}
       </div>
     </div>

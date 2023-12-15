@@ -60,17 +60,11 @@ const Table = <T,>({
   const shouldShowEmptyContent = emptyContent && data.length === 0;
 
   return (
-    <div
-      className={clsx(
-        className,
-        'border border-gray-200 rounded-lg overflow-hidden',
-      )}
-    >
+    <div className={clsx(className, 'border border-gray-200 rounded-lg')}>
       <table
         className={`
           border-separate
           border-spacing-0
-          overflow-hidden
           table-fixed
           w-full
         `}

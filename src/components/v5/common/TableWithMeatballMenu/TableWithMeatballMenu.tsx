@@ -40,8 +40,7 @@ const TableWithMeatballMenu = <T,>({
     <Table<T>
       verticalOnMobile={verticalOnMobile}
       getRowClassName={() =>
-        // scale-[1] is added here to fix the issue with table on safari because it's not working with position: relative. It's related to stacking context.
-        'relative scale-[1] [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9'
+        'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9'
       }
       columns={columnsWithMenu}
       {...rest}
