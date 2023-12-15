@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useMobile } from '~hooks';
 import StepperButton from './partials/StepperButton/StepperButton';
 import { StepperProps } from './types';
-import { STEP_STAGE } from './partials/StepperButton/consts';
+import { StepStage } from './partials/StepperButton/consts';
 import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts';
 import { accordionAnimation } from '~constants/accordionAnimation';
 
@@ -100,10 +100,10 @@ function Stepper<TKey extends React.Key>({
                   stage={
                     (index < activeItemIndex &&
                       !isSkipped &&
-                      STEP_STAGE.Completed) ||
-                    (index === activeItemIndex && STEP_STAGE.Current) ||
-                    (isSkipped && STEP_STAGE.Skipped) ||
-                    STEP_STAGE.Upcoming
+                      StepStage.Completed) ||
+                    (index === activeItemIndex && StepStage.Current) ||
+                    (isSkipped && StepStage.Skipped) ||
+                    StepStage.Upcoming
                   }
                   onClick={() => {
                     setOpenItemIndex(index);

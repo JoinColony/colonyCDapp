@@ -2,8 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
-import { MotionState } from '~utils/colonyMotions';
-import { ICON_NAME_MAP, STEP_STAGE } from './consts';
+import { ICON_NAME_MAP, StepStage } from './consts';
 import { StepperButtonProps } from './types';
 
 const displayName = 'v5.Stepper.partials.StepperButton';
@@ -34,15 +33,16 @@ const StepperButton: React.FC<StepperButtonProps> = ({
           rounded-3xl
           transition
           text-4
+          lg:enabled:hover:bg-gray-900
+          lg:enabled:hover:border-gray-900
+          lg:enabled:hover:text-base-white
         `,
         {
           'border-gray-900 text-gray-900 bg-base-white':
-            !isHighlighted && stage !== STEP_STAGE.Skipped,
-          'lg:enabled:hover:bg-blue-400 lg:enabled:hover:border-blue-400 lg:enabled:hover:text-base-white':
-            stage !== STEP_STAGE.Current && label !== MotionState.Staking,
-          'bg-gray-900 border-gray-900 text-base-white': isHighlighted,
+            !isHighlighted && stage !== StepStage.Skipped,
+          '!bg-gray-900 !border-gray-900 !text-base-white': isHighlighted,
           'border-gray-400 text-gray-400 bg-base-white':
-            stage === STEP_STAGE.Skipped,
+            stage === StepStage.Skipped,
         },
       )}
       {...rest}

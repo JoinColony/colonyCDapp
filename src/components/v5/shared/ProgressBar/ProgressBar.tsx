@@ -7,15 +7,11 @@ const ProgressBar: FC<ProgressBarProps> = ({
   progress,
   isTall,
   additionalText,
-  threshold,
+  threshold = null,
   max = 100,
   barClassName,
   className,
 }) => {
-  if (threshold == null || threshold === 0) {
-    return null;
-  }
-
   if (progress > max || progress < 0) {
     throw new Error(`Progress bar value must be between between 0 and ${max}`);
   }
@@ -39,7 +35,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
           )}
           style={{ width: `${(progress / max) * 100}%` }}
         />
-        {threshold && progress < threshold && (
+        {threshold !== null && threshold !== 0 && progress < threshold && (
           <span
             className="w-[.125rem] h-full bg-gray-400 absolute top-0"
             style={{ left: `${threshold}%` }}
@@ -48,9 +44,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
       </div>
       <span className="text-3 text-gray-600 ml-3">{progress}</span>
       {additionalText && (
-        <span
-          className={clsx(className, 'text-3 text-gray-600 flex-shrink-0 ml-1')}
-        >
+        <span className={clsx(className, 'text-3 text-gray-600 flex-shrink-0')}>
           {additionalText}
         </span>
       )}

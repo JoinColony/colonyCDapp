@@ -81,7 +81,7 @@ const VotingStep: FC<VotingStepProps> = ({
               validationSchema={validationSchema}
               defaultValues={{ vote: undefined }}
             >
-              <div className="mb-7">
+              <div>
                 {hasUserVoted && (isSupportVote || isOpposeVote) && (
                   <div className="mb-3">
                     <div className="flex items-center justify-between gap-2 mb-6">
@@ -124,10 +124,10 @@ const VotingStep: FC<VotingStepProps> = ({
                   </>
                 )}
               </div>
-              <DescriptionList
-                items={items}
-                className="mb-1 pt-6 border-t border-gray-200"
-              />
+              {(hasUserVoted || canVote) && (
+                <div className="mt-7 pt-6 border-t border-gray-200" />
+              )}
+              <DescriptionList items={items} className="mt-1 mb-1" />
               {canVote && (
                 <Button
                   mode="primarySolid"

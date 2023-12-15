@@ -173,7 +173,6 @@ const ColonyHome = () => {
                     </p>
                     <ProgressBar
                       progress={objective.progress || 0}
-                      className="ml-0"
                       additionalText="%"
                       isTall
                       barClassName={selectedTeam ? teamColor : 'bg-blue-400'}

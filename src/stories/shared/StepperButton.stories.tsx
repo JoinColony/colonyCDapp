@@ -2,7 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import StepperButton from '~v5/shared/Stepper/partials/StepperButton';
-import { STEP_STAGE } from '~v5/shared/Stepper/partials/StepperButton/consts';
+import { StepStage } from '~v5/shared/Stepper/partials/StepperButton/consts';
 
 const meta: Meta<typeof StepperButton> = {
   title: 'Shared/Stepper/Button',
@@ -17,10 +17,10 @@ const meta: Meta<typeof StepperButton> = {
     stage: {
       name: 'Stage',
       options: [
-        STEP_STAGE.Completed,
-        STEP_STAGE.Current,
-        STEP_STAGE.Upcoming,
-        STEP_STAGE.Skipped,
+        StepStage.Completed,
+        StepStage.Current,
+        StepStage.Upcoming,
+        StepStage.Skipped,
       ],
       control: {
         type: 'radio',
@@ -40,7 +40,7 @@ const meta: Meta<typeof StepperButton> = {
     },
   },
   args: {
-    stage: STEP_STAGE.Upcoming,
+    stage: StepStage.Upcoming,
     disabled: false,
     isHighlighted: false,
     label: 'Label',
@@ -55,19 +55,19 @@ export const Upcoming: StoryObj<typeof StepperButton> = {
 
 export const Current: StoryObj<typeof StepperButton> = {
   args: {
-    stage: STEP_STAGE.Current,
+    stage: StepStage.Current,
   },
 };
 
 export const Completed: StoryObj<typeof StepperButton> = {
   args: {
-    stage: STEP_STAGE.Completed,
+    stage: StepStage.Completed,
   },
 };
 
 export const Skipped: StoryObj<typeof StepperButton> = {
   args: {
-    stage: STEP_STAGE.Skipped,
+    stage: StepStage.Skipped,
   },
 };
 
