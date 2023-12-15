@@ -10,7 +10,7 @@ import {
   TelegramLogo,
   TwitterLogo,
   YoutubeLogo,
-} from 'phosphor-react';
+} from '@phosphor-icons/react';
 
 import { DomainColor, ExternalLinks } from '~gql';
 

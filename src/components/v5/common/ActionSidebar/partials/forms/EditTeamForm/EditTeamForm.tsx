@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
-import { PaintBucket } from 'phosphor-react';
+import { PaintBucket } from '@phosphor-icons/react';
 
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';

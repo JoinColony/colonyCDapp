@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { PaintBucket } from 'phosphor-react';
+import { PaintBucket } from '@phosphor-icons/react';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import ActionFormRow from '~v5/common/ActionFormRow';

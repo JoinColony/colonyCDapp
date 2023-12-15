@@ -9,7 +9,7 @@ import React, {
 import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 //* Hide Initially */
 // import { defineMessages } from 'react-intl';
-// import { PaperPlaneTilt } from 'phosphor-react';
+// import { PaperPlaneTilt } from '@phosphor-icons/react';
 import { AnimatePresence } from 'framer-motion';
 
 import UserHubButton from '~common/Extensions/UserHubButton';

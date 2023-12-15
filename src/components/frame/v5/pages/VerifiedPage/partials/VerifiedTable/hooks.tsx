@@ -1,6 +1,6 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
-import { Star, Trash } from 'phosphor-react';
+import { Star, Trash } from '@phosphor-icons/react';
 import { formatText } from '~utils/intl';
 import { ColonyContributorFragment } from '~gql';
 import MemberAvatar from '../MemberAvatar';

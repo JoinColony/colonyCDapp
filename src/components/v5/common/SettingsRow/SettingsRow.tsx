@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Info } from 'phosphor-react';
+import { Info } from '@phosphor-icons/react';
 import { FieldPath, FieldValues } from 'react-hook-form';
 import { formatText } from '~utils/intl';
 import { FormSwitch } from '~v5/common/Fields/Switch';

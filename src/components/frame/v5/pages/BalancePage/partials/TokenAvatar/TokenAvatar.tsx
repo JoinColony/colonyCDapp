@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
 
-import { LockKey } from 'phosphor-react';
+import { LockKey } from '@phosphor-icons/react';
 import { useMobile, useRelativePortalElement, useToggle } from '~hooks';
 import CopyableAddress from '~shared/CopyableAddress';
 import TokenIcon from '~shared/TokenIcon';

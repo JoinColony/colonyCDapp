@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { CaretLeft, CaretRight } from 'phosphor-react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import BurgerMenu from '~v5/shared/BurgerMenu';
 import PopoverBase from '~v5/shared/PopoverBase';
 import DropdownMenuItem from './partials/DropdownMenuItem';

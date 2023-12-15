@@ -9,7 +9,7 @@ import {
 } from './types';
 import { useColonyContext, useColonyFundsClaims } from '~hooks';
 import { notNull } from '~utils/arrays';
-import { FilterProps } from '../Filter/types';
+import { FiltersProps } from '~v5/shared/Filters/types';
 import TokenIcon from '~shared/TokenIcon';
 import { formatText } from '~utils/intl';
 
@@ -127,7 +127,7 @@ export const useFundsTable = (): UseFundsTableProps => {
     ),
   }));
 
-  const filters: FilterProps<FundsTableFilters> = {
+  const filters: FiltersProps<FundsTableFilters> = {
     onChange: setValue,
     onSearch: setSearchValue,
     searchValue,
@@ -136,7 +136,7 @@ export const useFundsTable = (): UseFundsTableProps => {
       {
         name: 'status',
         label: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
-        iconName: 'shield-check',
+        icon: 'shield-check',
         title: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
         items: [
           {
@@ -153,7 +153,7 @@ export const useFundsTable = (): UseFundsTableProps => {
         name: 'type',
         label: formatText({ id: 'incomingFundsPage.filter.tokenType' }),
         title: formatText({ id: 'incomingFundsPage.filter.approvedTokens' }),
-        iconName: 'coin-vertical',
+        icon: 'coin-vertical',
         items: tokenTypeFilters,
       },
     ],

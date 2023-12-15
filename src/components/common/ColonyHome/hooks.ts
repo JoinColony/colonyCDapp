@@ -7,7 +7,7 @@ import {
   Rocket,
   ShareNetwork,
   Smiley,
-} from 'phosphor-react';
+} from '@phosphor-icons/react';
 import { useLocation } from 'react-router-dom';
 
 import { useGetTotalColonyActionsQuery } from '~gql';

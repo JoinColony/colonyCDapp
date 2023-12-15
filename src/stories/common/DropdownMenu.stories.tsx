@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { User } from 'phosphor-react';
+import { User } from '@phosphor-icons/react';
 
 import { useMobile } from '~hooks';
 import DropdownMenu from '~v5/common/DropdownMenu';

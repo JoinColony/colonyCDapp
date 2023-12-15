@@ -1,5 +1,5 @@
 import React from 'react';
-import { LockKey } from 'phosphor-react';
+import { LockKey } from '@phosphor-icons/react';
 import clsx from 'clsx';
 
 import Tooltip from '~shared/Extensions/Tooltip';

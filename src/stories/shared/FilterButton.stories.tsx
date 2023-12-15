@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import FilterButton from '~v5/shared/Filter/FilterButton';
+import FilterButton from '~v5/shared/FilterButton/FilterButton';
 
 const meta: Meta<typeof FilterButton> = {
   title: 'Shared/Buttons/FilterButton',

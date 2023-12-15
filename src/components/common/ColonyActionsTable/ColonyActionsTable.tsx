@@ -8,16 +8,18 @@ import { formatText } from '~utils/intl';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import EmptyContent from '~v5/common/EmptyContent';
+import { useActionSidebarContext } from '~context';
+import Filters from '~v5/shared/Filters';
 
 import {
   useActionsTableData,
   useColonyActionsTableColumns,
+  useColonyActionsTableFilters,
   useGetColonyActionsTableMenuProps,
   useRenderRowLink,
 } from './hooks';
 import { ColonyActionsTableProps } from './types';
-import EmptyContent from '~v5/common/EmptyContent';
-import { useActionSidebarContext } from '~context';
 
 const displayName = 'common.ColonyActionsTable';
 
@@ -28,6 +30,14 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
   additionalPaginationButtonsContent,
   ...rest
 }) => {
+  const {
+    filters,
+    setFilters,
+    searchFilter,
+    setSearchFilter,
+    activityFeedFilters,
+    filterItems,
+  } = useColonyActionsTableFilters();
   const {
     data,
     loading,
@@ -40,7 +50,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
     sorting,
     refetchMotionStates,
     pageNumber,
-  } = useActionsTableData(pageSize);
+  } = useActionsTableData(pageSize, activityFeedFilters);
   const columns = useColonyActionsTableColumns(
     loading,
     loadingMotionStates,
@@ -115,7 +125,16 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
       title={formatText({ id: 'activityFeedTable.table.title' })}
       tableComponent={TableWithMeatballMenu}
       tableProps={tableProps}
-    />
+      headerClassName="w-full"
+    >
+      <Filters
+        items={filterItems}
+        onChange={setFilters}
+        onSearch={setSearchFilter}
+        searchValue={searchFilter}
+        value={filters}
+      />
+    </TableWithActionsHeader>
   ) : (
     <TableWithMeatballMenu {...tableProps} />
   );

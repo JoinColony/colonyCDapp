@@ -2,7 +2,14 @@ import { createColumnHelper, SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useCallback, useMemo, useState } from 'react';
-import { FilePlus, ArrowSquareOut, ShareNetwork } from 'phosphor-react';
+import {
+  FilePlus,
+  ArrowSquareOut,
+  ShareNetwork,
+  FlagPennant,
+  Scales,
+  Calendar,
+} from '@phosphor-icons/react';
 
 import { generatePath, Link, useNavigate } from 'react-router-dom';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
@@ -12,8 +19,17 @@ import {
   SearchableColonyActionSortInput,
   SearchableSortDirection,
 } from '~gql';
-import { useActivityFeed, useColonyContext, useMobile } from '~hooks';
-import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
+import {
+  useActivityFeed,
+  useColonyContext,
+  useDebouncedValue,
+  useMobile,
+} from '~hooks';
+import {
+  ActivityDecisionMethod,
+  ActivityFeedColonyAction,
+  ActivityFeedFilters,
+} from '~hooks/useActivityFeed/types';
 import { MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
@@ -28,12 +44,24 @@ import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts
 import TransactionLink from '~shared/TransactionLink';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
-
-import { makeLoadingRows } from './utils';
-import ActionDescription from './partials/ActionDescription';
-import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem';
+import { FiltersProps } from '~v5/shared/Filters/types';
+import { objectEntries } from '~utils/object';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { setQueryParamOnUrl } from '~utils/urls';
+import { cloneDeep } from '~utils/lodash';
+
+import { getDateFilter, makeLoadingRows } from './utils';
+import ActionDescription from './partials/ActionDescription';
+import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem';
+import { ColonyActionsTableFilters } from './types';
+import {
+  ACTION_TYPE_TO_API_ACTION_TYPES_MAP,
+  FILTER_MOTION_STATES,
+} from './consts';
+import { useActionsList } from '~v5/common/ActionSidebar/hooks';
+import { Action } from '~constants/actions';
+import { AnyActionType } from '~types';
+import { pickOneOfFilters } from '~v5/shared/Filters/utils';
 
 export const useColonyActionsTableColumns = (
   loading: boolean,
@@ -191,7 +219,10 @@ export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
   );
 };
 
-export const useActionsTableData = (pageSize: number) => {
+export const useActionsTableData = (
+  pageSize: number,
+  activityFeedFilters: ActivityFeedFilters,
+) => {
   const selectedTeam = useGetSelectedTeamFilter();
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -213,9 +244,10 @@ export const useActionsTableData = (pageSize: number) => {
   } = useActivityFeed(
     useMemo(
       () => ({
+        ...activityFeedFilters,
         teamId: selectedTeam?.id || undefined,
       }),
-      [selectedTeam?.id],
+      [selectedTeam?.id, activityFeedFilters],
     ),
     useMemo(() => {
       const validSortValues = sorting?.reduce<
@@ -286,4 +318,174 @@ export const useRenderRowLink = (
         {content}
       </Link>
     );
+};
+
+export const useColonyActionsTableFilters = () => {
+  const actionOptions = useActionsList().flatMap(({ options }) => options);
+  const filterItems: FiltersProps<ColonyActionsTableFilters>['items'] = useMemo(
+    () => [
+      {
+        icon: <FilePlus size={14} />,
+        label: formatText({ id: 'activityFeedTable.filters.actionType' }),
+        name: 'actionType',
+        title: formatText({ id: 'activityFeedTable.filters.actionType' }),
+        items: actionOptions.map(({ label, value }) => ({
+          label: formatText(label),
+          name: value as Action,
+        })),
+      },
+      {
+        icon: <FlagPennant size={14} />,
+        label: formatText({ id: 'activityFeedTable.filters.status' }),
+        name: 'status',
+        title: formatText({ id: 'activityFeedTable.filters.status' }),
+        items: FILTER_MOTION_STATES.map((state) => ({
+          label: formatText({ id: 'motion.state' }, { state }),
+          name: state,
+        })),
+      },
+      {
+        icon: <Calendar size={14} />,
+        label: formatText({ id: 'activityFeedTable.filters.date' }),
+        name: 'date',
+        title: formatText({ id: 'activityFeedTable.filters.date' }),
+        items: [
+          {
+            label: formatText({
+              id: 'activityFeedTable.filters.date.pastHour',
+            }),
+            name: 'pastHour',
+          },
+          {
+            label: formatText({ id: 'activityFeedTable.filters.date.pastDay' }),
+            name: 'pastDay',
+          },
+          {
+            label: formatText({
+              id: 'activityFeedTable.filters.date.pastWeek',
+            }),
+            name: 'pastWeek',
+          },
+          {
+            label: formatText({
+              id: 'activityFeedTable.filters.date.pastMonth',
+            }),
+            name: 'pastMonth',
+          },
+          {
+            label: formatText({
+              id: 'activityFeedTable.filters.date.pastYear',
+            }),
+            name: 'pastYear',
+          },
+        ],
+      },
+      {
+        icon: <Scales size={14} />,
+        label: 'Decision Method',
+        name: 'decisionMethod',
+        title: 'Decision Method',
+        items: [
+          {
+            label: 'Permissions',
+            name: ActivityDecisionMethod.Permissions,
+          },
+          {
+            label: 'Reputation',
+            name: ActivityDecisionMethod.Reputation,
+          },
+        ],
+      },
+    ],
+    [actionOptions],
+  );
+
+  const [searchFilter, setSearchFilter] = useState('');
+  const debouncedSearchFilter = useDebouncedValue(searchFilter, 500);
+  const [filters, setFilters] = useState<
+    FiltersProps<ColonyActionsTableFilters>['value']
+  >({});
+  const activityFeedFilters = useMemo<ActivityFeedFilters>(() => {
+    const motionStates = filters?.status
+      ? objectEntries(filters?.status).reduce<MotionState[]>(
+          (result, [key, value]) => {
+            if (value) {
+              return [...result, getEnumValueFromKey(MotionState, key)];
+            }
+
+            return result;
+          },
+          [],
+        )
+      : [];
+    const [decisionMethod] = filters?.decisionMethod
+      ? objectEntries(filters?.decisionMethod).find(([, value]) => !!value) ||
+        []
+      : [];
+    const actionTypes = filters?.actionType
+      ? objectEntries(filters?.actionType).reduce<AnyActionType[]>(
+          (result, [actionType, value]) => {
+            const apiActionTypes =
+              ACTION_TYPE_TO_API_ACTION_TYPES_MAP[actionType];
+
+            if (!value || !apiActionTypes) {
+              return result;
+            }
+
+            return [...result, ...apiActionTypes];
+          },
+          [],
+        )
+      : [];
+    const date = getDateFilter(filters?.date);
+
+    return {
+      ...(motionStates.length ? { motionStates } : {}),
+      ...(debouncedSearchFilter ? { search: debouncedSearchFilter } : {}),
+      ...(decisionMethod
+        ? {
+            decisionMethod,
+          }
+        : {}),
+      ...(actionTypes.length ? { actionTypes } : {}),
+      ...(date || {}),
+    };
+  }, [
+    filters?.status,
+    filters?.decisionMethod,
+    filters?.actionType,
+    filters?.date,
+    debouncedSearchFilter,
+  ]);
+
+  return {
+    filters,
+    setFilters: useCallback<
+      FiltersProps<ColonyActionsTableFilters>['onChange']
+    >((newFilters) => {
+      setFilters((prevFilters) => {
+        const newFiltersClone = cloneDeep(newFilters);
+
+        if (newFilters.decisionMethod && prevFilters.decisionMethod) {
+          newFiltersClone.decisionMethod = pickOneOfFilters(
+            newFilters.decisionMethod,
+            prevFilters.decisionMethod,
+          );
+        }
+
+        if (newFilters.date && prevFilters.date) {
+          newFiltersClone.date = pickOneOfFilters(
+            newFilters.date,
+            prevFilters.date,
+          );
+        }
+
+        return newFiltersClone;
+      });
+    }, []),
+    searchFilter,
+    setSearchFilter,
+    activityFeedFilters,
+    filterItems,
+  };
 };

@@ -21,7 +21,7 @@ const ActivityPage: FC = () => {
   return (
     <div className="flex flex-col gap-4 sm:gap-[1.125rem] w-full">
       <WidgetBoxList items={widgets} />
-      <div>
+      <div className="w-full">
         <ColonyActionsTable />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { IconProps } from 'phosphor-react';
+import { IconProps } from '@phosphor-icons/react';
 
 import { DropdownMenuProps } from '~v5/common/DropdownMenu/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
