@@ -1,4 +1,13 @@
-export const userMenuItems = [
+import { SupportedCurrencies } from '~gql';
+import { currencyIconTitles } from '../UserSubmenu/consts';
+
+export const CURRENCY_MENU_ID = 'userMenu.supportedCurrenciesTitle';
+
+export const userMenuItems = ({
+  currency,
+}: {
+  currency: SupportedCurrencies;
+}) => [
   {
     id: '1',
     link: '/',
@@ -19,5 +28,11 @@ export const userMenuItems = [
     id: '4',
     icon: 'briefcase',
     name: 'userMenu.legalAndPrivacyTitle',
+  },
+  {
+    id: '5',
+    icon: currencyIconTitles[currency],
+    name: CURRENCY_MENU_ID,
+    message: currency.toUpperCase(),
   },
 ];

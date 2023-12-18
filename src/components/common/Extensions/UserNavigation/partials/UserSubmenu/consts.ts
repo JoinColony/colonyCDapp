@@ -13,6 +13,10 @@ import {
 } from '~constants';
 import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
 import { formatText } from '~utils/intl';
+import { SetStateFn } from '~types';
+import { SupportedCurrencies } from '~gql';
+
+import { UserSubmenuItems } from './types';
 
 import { UserSubmenuItems } from './types';
 
@@ -55,7 +59,24 @@ export const menuMessages = defineMessages({
   },
 });
 
-export const userSubmenuItems: UserSubmenuItems = {
+export const currencyIconTitles = {
+  [SupportedCurrencies.Usd]: 'us',
+  [SupportedCurrencies.Jpy]: 'japan',
+  [SupportedCurrencies.Gbp]: 'uk',
+  [SupportedCurrencies.Eur]: 'eu',
+  [SupportedCurrencies.Cad]: 'canada',
+  [SupportedCurrencies.Krw]: 'southkorea',
+  [SupportedCurrencies.Inr]: 'india',
+  [SupportedCurrencies.Brl]: 'brazil',
+  [SupportedCurrencies.Eth]: 'ether',
+  [SupportedCurrencies.Clny]: 'clny-token',
+};
+
+export const userSubmenuItems = ({
+  handleCurrencyClick,
+}: {
+  handleCurrencyClick: SetStateFn<SupportedCurrencies>;
+}): UserSubmenuItems => ({
   'userMenu.contactAndSupportTitle': [
     {
       id: 'getHelp',
@@ -128,4 +149,13 @@ export const userSubmenuItems: UserSubmenuItems = {
       external: true,
     },
   ],
-};
+  'userMenu.supportedCurrenciesTitle': Object.values(SupportedCurrencies)
+    .reverse()
+    .map((currency) => ({
+      id: currency,
+      label: currency.toUpperCase(),
+      icon: currencyIconTitles[currency],
+      external: false,
+      onClick: () => handleCurrencyClick(currency),
+    })),
+});

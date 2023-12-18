@@ -648,6 +648,7 @@
     "userMenu.developersTitle": "Developers",
     "userMenu.legalAndPrivacyTitle": "Legal & Privacy",
     "userMenu.menageTitle": "Manage account",
+    "userMenu.supportedCurrenciesTitle": "Base Currency",   
     "userMenu.disconnectWalletTitle": "Disconnect Wallet",
     "userMenu.other": "Other",
     "membersPage.title": "Members",
