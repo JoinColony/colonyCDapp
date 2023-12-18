@@ -10,3 +10,7 @@ export enum UserHubTabs {
   Stakes = 1,
   Transactions = 2,
 }
+
+export interface UserHubProps {
+  defaultOpenedTab?: UserHubTabs;
+}

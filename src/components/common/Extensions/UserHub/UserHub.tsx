@@ -16,7 +16,7 @@ import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';
 import TransactionsTab from './partials/TransactionsTab';
 import { tabList } from './consts';
-import { UserHubTabs } from './types';
+import { UserHubProps, UserHubTabs } from './types';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
@@ -31,9 +31,11 @@ const MSG = defineMessages({
   },
 });
 
-const UserHub: FC = () => {
+const UserHub: FC<UserHubProps> = ({
+  defaultOpenedTab = UserHubTabs.Balance,
+}) => {
   const isMobile = useMobile();
-  const [selectedTab, setSelectedTab] = useState(UserHubTabs.Balance);
+  const [selectedTab, setSelectedTab] = useState(defaultOpenedTab);
 
   const handleTabChange = (newTab: UserHubTabs) => {
     setSelectedTab(newTab);

@@ -19,6 +19,7 @@ import { useAnalyticsContext } from '~context/AnalyticsContext';
 
 import { UserHubButtonProps } from './types';
 import { OPEN_USER_HUB_EVENT } from './consts';
+import { UserHubTabs } from '../UserHub/types';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';
@@ -125,7 +126,11 @@ const UserHubButton: FC<UserHubButtonProps> = ({
             },
           )}
         >
-          <UserHub />
+          <UserHub
+            defaultOpenedTab={
+              isUserHubOpen ? UserHubTabs.Transactions : undefined
+            }
+          />
         </PopoverBase>
       )}
     </div>
