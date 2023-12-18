@@ -20,6 +20,7 @@ import { userMenuItems } from './consts';
 import { UserMenuProps } from './types';
 
 import styles from './UserMenu.module.css';
+import { useCurrencyContext } from '~context/CurrencyContext';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -35,7 +36,7 @@ const UserMenu: FC<UserMenuProps> = ({
 
   const iconName = isTablet ? 'caret-down' : 'caret-right';
   const iconSize = isTablet ? 'small' : 'extraSmall';
-
+  const { currency } = useCurrencyContext();
   return (
     <PopoverBase
       setTooltipRef={setTooltipRef}
@@ -102,33 +103,42 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
-            {userMenuItems.map(({ id, link, icon, name: itemName }) => (
-              <li
-                key={id}
-                className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
-              >
-                {link ? (
-                  <Link to={link} className="navigation-link">
-                    <Icon name={icon} appearance={{ size: iconSize }} />
-                    <p className="ml-2">{formatText({ id: itemName })}</p>
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    className="navigation-link"
-                    onClick={() => setActiveSubmenu(itemName)}
-                    aria-expanded={activeSubmenu === itemName}
-                    aria-controls="actionsWithVisibility"
-                  >
-                    <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+            {userMenuItems({ currency }).map(
+              ({ id, link, icon, name: itemName, message }) => (
+                <li
+                  key={id}
+                  className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+                >
+                  {link ? (
+                    <Link to={link} className="navigation-link">
                       <Icon name={icon} appearance={{ size: iconSize }} />
-                      <p className="ml-2">{formatText({ id: itemName })}</p>
-                    </span>
-                    <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
-                  </button>
-                )}
-              </li>
-            ))}
+                      <p className="ml-2">
+                        {formatText(message ?? { id: itemName })}
+                      </p>
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      className="navigation-link"
+                      onClick={() => setActiveSubmenu(itemName)}
+                      aria-expanded={activeSubmenu === itemName}
+                      aria-controls="actionsWithVisibility"
+                    >
+                      <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                        <Icon name={icon} appearance={{ size: iconSize }} />
+                        <p className="ml-2">
+                          {formatText(message ?? { id: itemName })}
+                        </p>
+                      </span>
+                      <Icon
+                        name={iconName}
+                        appearance={{ size: 'extraTiny' }}
+                      />
+                    </button>
+                  )}
+                </li>
+              ),
+            )}
           </ul>
         </div>
         {wallet && (
@@ -166,7 +176,10 @@ const UserMenu: FC<UserMenuProps> = ({
                 text={formatText({ id: activeSubmenu })}
               />
             </button>
-            <UserSubmenu submenuId={activeSubmenu} />
+            <UserSubmenu
+              submenuId={activeSubmenu}
+              setActiveSubmenu={setActiveSubmenu}
+            />
           </>
         )}
       </div>

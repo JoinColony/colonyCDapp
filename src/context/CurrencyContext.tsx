@@ -5,8 +5,8 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { SupportedCurrencies } from '~gql';
 import { SetStateFn } from '~types';
-import { SupportedCurrencies } from '~utils/currency/types';
 
 interface CurrencyContextValues {
   currency: SupportedCurrencies;
@@ -21,7 +21,7 @@ export const CurrencyContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [currency, setCurrency] = useState(SupportedCurrencies.USD);
+  const [currency, setCurrency] = useState(SupportedCurrencies.Usd);
 
   const value = useMemo(
     () => ({
