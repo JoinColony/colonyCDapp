@@ -2,9 +2,13 @@ import { DeepPartial } from 'utility-types';
 
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { ColonyActionType } from '~gql';
+import { ActionTypes } from '~redux';
 import { Colony, Domain } from '~types';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
-import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
+import {
+  ActionPayloadWithoutCustomTitle,
+  DescriptionMetadataGetter,
+} from '~v5/common/ActionSidebar/types';
 
 import { getTeam } from '../utils';
 
@@ -34,17 +38,34 @@ export const editTeamDescriptionMetadataGetter: DescriptionMetadataGetter<
 
 export const getEditDomainPayload = (
   colony: Colony,
-  values: EditTeamFormValues,
-  selectedDomain: Domain,
-) => ({
-  colonyAddress: colony.colonyAddress,
-  colonyName: colony.name,
-  domainName: values.teamName,
-  domainColor: values.domainColor,
-  domainPurpose: values.domainPurpose,
-  domain: selectedDomain,
-  annotationMessage: values.description,
-  customActionTitle: values.title,
-  motionDomainId: values.createdIn,
-  isCreateDomain: false,
-});
+  {
+    description,
+    domainColor,
+    domainPurpose,
+    teamName,
+    decisionMethod: decisionMethodValue,
+  }: EditTeamFormValues,
+  domain: Domain,
+) => {
+  const payload: ActionPayloadWithoutCustomTitle<ActionTypes.ACTION_DOMAIN_EDIT> =
+    {
+      colonyAddress: colony?.colonyAddress,
+      annotationMessage: description,
+      colonyName: colony.name,
+      domain,
+      domainColor,
+      domainName: teamName,
+      domainPurpose,
+    };
+  const motionPayload: ActionPayloadWithoutCustomTitle<ActionTypes.MOTION_DOMAIN_CREATE_EDIT> =
+    {
+      isCreateDomain: false,
+      motionDomainId: domain.nativeId,
+      domainName: teamName,
+      ...payload,
+    };
+
+  return decisionMethodValue === DecisionMethod.Permissions
+    ? payload
+    : motionPayload;
+};

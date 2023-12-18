@@ -2,9 +2,11 @@ import clsx from 'clsx';
 import React from 'react';
 import { useController } from 'react-hook-form';
 
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import useToggle from '~hooks/useToggle';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
+import { notMaybe } from '~utils/arrays';
 
 import { LABEL_CLASSNAME } from './consts';
 import { ActionFormRowProps } from './types';
@@ -20,11 +22,14 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
       fieldName,
       tooltips = {},
       className,
+      hideWhenValueIsEmpty,
     },
     ref,
   ) => {
+    const { readonly } = useAdditionalFormOptionsContext();
     const {
       fieldState: { error },
+      field: { value },
     } = useController({ name: fieldName || '' });
     const rowToggle = useToggle();
     const [isExpanded, { toggle }] = rowToggle;
@@ -98,6 +103,10 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
         {content}
       </div>
     );
+
+    if (readonly && hideWhenValueIsEmpty && !notMaybe(value)) {
+      return null;
+    }
 
     return (
       <div

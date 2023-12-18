@@ -19,7 +19,7 @@ const getActivityFeedMotionState = (
 
   const networkMotionState = motionStatesMap.get(action.motionData.motionId);
 
-  return networkMotionState
+  return networkMotionState !== undefined && networkMotionState !== null
     ? getMotionState(networkMotionState, action.motionData)
     : undefined;
 };

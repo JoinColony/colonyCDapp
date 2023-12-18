@@ -124,8 +124,6 @@ function* editDomainAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     /**
@@ -170,6 +168,8 @@ function* editDomainAction({
       type: ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

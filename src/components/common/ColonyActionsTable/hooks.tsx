@@ -273,18 +273,24 @@ export const useRenderRowLink = (
   loading: boolean,
 ): RenderCellWrapper<ActivityFeedColonyAction> => {
   return (className, content, { cell, row, renderDefault }) =>
-    cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID || loading ? (
+    cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID ? (
       renderDefault()
     ) : (
-      <Link
-        className={clsx(className, '!py-[.5625rem]')}
-        to={setQueryParamOnUrl(
-          window.location.search,
-          TX_SEARCH_PARAM,
-          row.original.transactionHash,
+      <>
+        {loading ? (
+          <div className={clsx(className, '!py-[.5625rem]')}>{content}</div>
+        ) : (
+          <Link
+            className={clsx(className, '!py-[.5625rem]')}
+            to={setQueryParamOnUrl(
+              window.location.search,
+              TX_SEARCH_PARAM,
+              row.original.transactionHash,
+            )}
+          >
+            {content}
+          </Link>
         )}
-      >
-        {content}
-      </Link>
+      </>
     );
 };

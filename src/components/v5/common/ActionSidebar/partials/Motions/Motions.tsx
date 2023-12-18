@@ -11,7 +11,6 @@ import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { getSafePollingInterval } from '~utils/queries';
-import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
 import Stepper from '~v5/shared/Stepper';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer';
@@ -47,18 +46,17 @@ const MSG = defineMessages({
   },
 });
 
-const Motions: FC<MotionsProps> = ({ transactionId }) => {
+const Motions: FC<MotionsProps> = ({
+  action,
+  motionState,
+  refetchMotionState,
+  loadingAction,
+  startPollingForAction,
+  stopPollingForAction,
+  refetchAction,
+}) => {
+  const transactionId = action.transactionHash;
   const { canInteract } = useAppContext();
-  const {
-    action,
-    motionState,
-    refetchMotionState,
-    loadingAction,
-    startPollingForAction,
-    stopPollingForAction,
-    refetchAction,
-  } = useGetColonyAction(transactionId);
-
   const { motionData } = action || {};
   const {
     motionId = '',

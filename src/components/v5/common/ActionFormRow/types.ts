@@ -17,4 +17,5 @@ export interface ActionFormRowProps {
     label?: TooltipProps;
     content?: TooltipProps;
   };
+  hideWhenValueIsEmpty?: boolean;
 }

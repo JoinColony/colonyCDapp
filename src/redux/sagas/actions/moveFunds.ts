@@ -135,8 +135,6 @@ function* createMoveFundsAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(moveFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
@@ -153,6 +151,8 @@ function* createMoveFundsAction({
       type: ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

@@ -183,8 +183,6 @@ function* manageReputationMotion({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
@@ -206,6 +204,8 @@ function* manageReputationMotion({
       type: ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

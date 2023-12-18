@@ -1,7 +1,5 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 
@@ -10,11 +8,7 @@ import DescriptionField from '../DescriptionField';
 const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';
 
 const DescriptionRow = () => {
-  const { readonly } = useAdditionalFormOptionsContext();
-  const { watch } = useFormContext();
-  const descriptionValue = watch('description');
-
-  return !(readonly && !descriptionValue) ? (
+  return (
     <ActionFormRow
       icon="pencil"
       fieldName="description"
@@ -28,6 +22,7 @@ const DescriptionRow = () => {
       // }}
       title={formatText({ id: 'actionSidebar.description' })}
       isExpandable
+      hideWhenValueIsEmpty
     >
       {([
         isDecriptionFieldExpanded,
@@ -44,7 +39,7 @@ const DescriptionRow = () => {
         />
       )}
     </ActionFormRow>
-  ) : null;
+  );
 };
 
 DescriptionRow.displayName = displayName;

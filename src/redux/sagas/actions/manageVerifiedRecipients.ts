@@ -137,8 +137,6 @@ function* manageVerifiedRecipients({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
@@ -249,6 +247,8 @@ function* manageVerifiedRecipients({
       payload: {},
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

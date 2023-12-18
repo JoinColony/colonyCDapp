@@ -182,8 +182,6 @@ function* editColonyMotion({
       createMotion.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
-
-    setTxHash?.(txHash);
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
@@ -264,6 +262,8 @@ function* editColonyMotion({
       type: ActionTypes.MOTION_EDIT_COLONY_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

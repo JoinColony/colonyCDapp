@@ -20,6 +20,10 @@ export type RefetchAction = ReturnType<
   typeof useGetColonyActionQuery
 >['refetch'];
 
+export type UseGetColonyActionReturnType = ReturnType<
+  typeof useGetColonyAction
+>;
+
 export const useGetColonyAction = (transactionHash?: string) => {
   const { colony, refetchColony } = useColonyContext();
   const { refetchTokenBalances } = useUserTokenBalanceContext();
@@ -114,7 +118,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     isUnknownTransaction:
       isValidTx && action?.colony?.colonyAddress !== colony?.colonyAddress,
     loadingAction: loadingAction || isPolling || loadingMotionState,
-    action,
+    action: action || undefined,
     startPollingForAction,
     stopPollingForAction,
     motionState: motionStateData?.getMotionState,

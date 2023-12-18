@@ -44,6 +44,7 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
+        hideWhenValueIsEmpty
         icon="house-line"
         fieldName="createdIn"
         tooltips={{

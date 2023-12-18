@@ -16,6 +16,7 @@ import { actionSidebarAnimation } from './consts';
 import {
   useCloseSidebarClick,
   useGetActionData,
+  useGetColonyAction,
   useRemoveTxParamOnClose,
 } from './hooks';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
@@ -28,8 +29,20 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   initialValues,
   transactionId,
 }) => {
-  const { defaultValues, loadingAction, isMotion } =
-    useGetActionData(transactionId);
+  const getColonyActionResult = useGetColonyAction(transactionId);
+  const {
+    action,
+    loadingAction,
+    isInvalidTransactionHash,
+    isUnknownTransaction,
+    motionState,
+    refetchAction,
+    refetchMotionState,
+    startPollingForAction,
+    stopPollingForAction,
+  } = getColonyActionResult;
+  const isMotion = !!action?.isMotion;
+  const defaultValues = useGetActionData(action);
 
   const {
     actionSidebarToggle: [
@@ -133,7 +146,17 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           transactionId={transactionId}
           formRef={formRef}
           defaultValues={defaultValues || initialValues}
-          isMotion={!!isMotion}
+          getColonyActionData={{
+            action,
+            loadingAction,
+            isInvalidTransactionHash,
+            isUnknownTransaction,
+            motionState,
+            refetchAction,
+            refetchMotionState,
+            startPollingForAction,
+            stopPollingForAction,
+          }}
         />
       )}
 

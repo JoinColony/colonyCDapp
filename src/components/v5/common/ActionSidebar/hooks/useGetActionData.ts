@@ -6,7 +6,7 @@ import { ACTION } from '~constants/actions';
 import { getRole, USER_ROLE } from '~constants/permissions';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers';
-import { ExtendedColonyActionType } from '~types';
+import { ExtendedColonyActionType, ColonyAction } from '~types';
 import { getExtendedActionType } from '~utils/colonyActions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
@@ -17,18 +17,15 @@ import {
 } from '../partials/forms/ManagePermissionsForm/consts';
 
 import { DecisionMethod } from './useDecisionMethods';
-import { useGetColonyAction } from './useGetColonyAction';
 
-export const useGetActionData = (transactionId: string | undefined) => {
-  const { action, loadingAction } = useGetColonyAction(transactionId);
-
-  const defaultValues = useMemo(() => {
+export const useGetActionData = (action?: ColonyAction | null) =>
+  useMemo(() => {
     if (!action) {
       return undefined;
     }
 
     const {
-      amount,
+      amount: actionAmount,
       token,
       payments,
       pendingColonyMetadata,
@@ -46,6 +43,10 @@ export const useGetActionData = (transactionId: string | undefined) => {
 
     const extendedType = getExtendedActionType(action, colony.metadata);
 
+    const amount = moveDecimal(
+      actionAmount,
+      -getTokenDecimalsWithFallback(token?.decimals),
+    );
     const repeatableFields = {
       createdIn: isMotion
         ? motionData?.motionDomain.nativeId.toString()
@@ -73,10 +74,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
           amount: {
-            amount: moveDecimal(
-              amount,
-              -getTokenDecimalsWithFallback(token?.decimals),
-            ),
+            amount,
             tokenAddress: token?.tokenAddress,
           },
           from: fromDomain?.nativeId.toString(),
@@ -92,20 +90,14 @@ export const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
           from: fromDomain?.nativeId.toString(),
           amount: {
-            amount: moveDecimal(
-              firstPayment.amount,
-              -getTokenDecimalsWithFallback(token?.decimals),
-            ),
+            amount,
             tokenAddress: firstPayment.tokenAddress,
           },
           recipient: firstPayment.recipientAddress,
           payments: additionalPayments.map((additionalPayment) => {
             return {
               amount: {
-                amount: moveDecimal(
-                  additionalPayment.amount,
-                  -getTokenDecimalsWithFallback(token?.decimals),
-                ),
+                amount,
                 tokenAddress: additionalPayment.tokenAddress,
               },
               recipient: additionalPayment.recipientAddress,
@@ -171,20 +163,19 @@ export const useGetActionData = (transactionId: string | undefined) => {
         };
       }
       case ColonyActionType.CreateDomain:
-      case ColonyActionType.CreateDomainMotion:
+      case ColonyActionType.CreateDomainMotion: {
+        const metadata = isMotion
+          ? pendingDomainMetadata
+          : fromDomain?.metadata;
+
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
-          teamName: action.isMotion
-            ? pendingDomainMetadata?.name
-            : fromDomain?.metadata?.name,
-          domainColor: action.isMotion
-            ? pendingDomainMetadata?.color
-            : fromDomain?.metadata?.color,
-          domainPurpose: action?.isMotion
-            ? pendingDomainMetadata?.description
-            : fromDomain?.metadata?.description,
+          teamName: metadata?.name,
+          domainColor: metadata?.color,
+          domainPurpose: metadata?.description,
           ...repeatableFields,
         };
+      }
       case ColonyActionType.EditDomain:
       case ColonyActionType.EditDomainMotion: {
         const changelog = fromDomain?.metadata?.changelog?.find(
@@ -245,10 +236,3 @@ export const useGetActionData = (transactionId: string | undefined) => {
         return undefined;
     }
   }, [action]);
-
-  return {
-    defaultValues,
-    loadingAction,
-    isMotion: action?.isMotion,
-  };
-};

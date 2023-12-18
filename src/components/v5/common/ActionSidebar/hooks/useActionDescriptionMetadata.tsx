@@ -50,7 +50,7 @@ const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
     manageColonyObjectivesDescriptionMetadataGetter,
 };
 
-export const useActionDescriptionMetadata = () => {
+export const useActionDescriptionMetadata = (actionData?: ColonyAction) => {
   const formValues = useFormContext().getValues();
   const selectedAction: Action | undefined = useWatch({
     name: ACTION_TYPE_FIELD_NAME,
@@ -86,25 +86,24 @@ export const useActionDescriptionMetadata = () => {
     return (
       <AsyncText
         text={async () => {
-          const actionTitleValues = await DESC_METADATA[selectedAction]?.(
-            formValues,
-            {
-              client: apolloClient,
-              colony,
-              getActionTitleValues: (
-                action,
-                keyFallbackValues,
-                actionTypeOverride,
-              ) =>
-                getActionTitleValues(
-                  merge({}, commonActionData, action),
-                  colony,
+          const actionTitleValues = actionData
+            ? getActionTitleValues(actionData, colony)
+            : await DESC_METADATA[selectedAction]?.(formValues, {
+                client: apolloClient,
+                colony,
+                getActionTitleValues: (
+                  action,
                   keyFallbackValues,
-                  // @TODO a temporary hack until we fix this properly via https://github.com/JoinColony/colonyCDapp/issues/1669
                   actionTypeOverride,
-                ),
-            },
-          );
+                ) =>
+                  getActionTitleValues(
+                    merge({}, commonActionData, action),
+                    colony,
+                    keyFallbackValues,
+                    // @TODO a temporary hack until we fix this properly via https://github.com/JoinColony/colonyCDapp/issues/1669
+                    actionTypeOverride,
+                  ),
+              });
 
           if (!actionTitleValues) {
             return undefined;

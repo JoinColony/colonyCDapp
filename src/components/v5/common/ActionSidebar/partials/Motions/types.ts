@@ -1,8 +1,6 @@
 import { MotionState } from '@colony/colony-js';
 
-export interface MotionsProps {
-  transactionId: string;
-}
+import { UseGetColonyActionReturnType } from '../../hooks';
 
 export enum CustomStep {
   StakedMotionOutcome = 'stakedmotionoutcome',
@@ -11,3 +9,7 @@ export enum CustomStep {
 }
 
 export type Steps = MotionState | CustomStep;
+
+export type MotionsProps = Omit<UseGetColonyActionReturnType, 'action'> & {
+  action: Exclude<UseGetColonyActionReturnType['action'], undefined>;
+};

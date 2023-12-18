@@ -2,17 +2,17 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { ActionFormProps } from '~shared/Fields/Form';
 
+import { UseGetColonyActionReturnType } from '../../hooks';
 import { ActionFormBaseProps } from '../../types';
 
-export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
-  isMotion?: boolean;
-}
+export type ActionSidebarFormContentProps = ActionFormBaseProps &
+  Pick<UseGetColonyActionReturnType, 'action'>;
 
 export interface ActionSidebarContentProps {
   transactionId?: string;
   formRef: React.RefObject<UseFormReturn<object, any, undefined>>;
   defaultValues: ActionFormProps<any>['defaultValues'];
-  isMotion?: boolean;
+  getColonyActionData: UseGetColonyActionReturnType;
 }
 
 export interface PermissionSidebarProps {

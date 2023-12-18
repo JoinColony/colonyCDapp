@@ -132,6 +132,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       {selectedDecisionMethod &&
         selectedDecisionMethod === DecisionMethod.Reputation && (
           <ActionFormRow
+            hideWhenValueIsEmpty
             icon="house-line"
             fieldName="createdIn"
             tooltips={{

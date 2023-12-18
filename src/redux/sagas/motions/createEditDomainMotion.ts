@@ -193,8 +193,6 @@ function* createEditDomainMotion({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     if (isCreateDomain) {
@@ -253,6 +251,8 @@ function* createEditDomainMotion({
       type: ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

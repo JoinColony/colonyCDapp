@@ -53,6 +53,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
         />
       </ActionFormRow>
       <ActionFormRow
+        hideWhenValueIsEmpty
         icon="house-line"
         fieldName="createdIn"
         tooltips={{

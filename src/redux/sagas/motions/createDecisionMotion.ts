@@ -128,8 +128,6 @@ function* createDecisionMotion({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield apolloClient.mutate<
       CreateColonyDecisionMutation,
       CreateColonyDecisionMutationVariables
@@ -161,6 +159,8 @@ function* createDecisionMotion({
     // yield put(transactionReady(annotateMotion.id));
 
     // yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_CREATE_DECISION_SUCCESS,

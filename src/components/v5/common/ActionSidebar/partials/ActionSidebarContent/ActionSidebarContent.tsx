@@ -2,7 +2,7 @@ import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { SearchActionsDocument } from '~gql';
@@ -52,22 +52,20 @@ const MSG = defineMessages({
 
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
-  isMotion,
+  action: actionData,
 }) => {
-  const { formatMessage } = useIntl();
-
+  const { readonly } = useAdditionalFormOptionsContext();
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
-  const descriptionMetadata = useActionDescriptionMetadata();
-  const { readonly } = useAdditionalFormOptionsContext();
 
+  const descriptionMetadata = useActionDescriptionMetadata(actionData);
   const {
     setValue,
     formState: {
+      isSubmitting,
       errors: { title: titleError },
     },
   } = useFormContext();
-
   const { noPermissionsError } = usePermissionsValidation();
   const { noReputationError } = useReputationValidation();
 
@@ -96,7 +94,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {noPermissionsError && (
           <div className="mt-6">
             <NotificationBanner status="warning" icon="warning-circle">
-              {formatMessage(MSG.noPermissionsErrorTitle)}
+              {formatText(MSG.noPermissionsErrorTitle)}
             </NotificationBanner>
           </div>
         )}
@@ -105,14 +103,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             <NotificationBanner
               status="warning"
               icon="warning-circle"
-              description={formatMessage(MSG.noReputationError)}
+              description={formatText(MSG.noReputationError)}
               callToAction={
                 <Link to="https://docs.colony.io/use/reputation">
-                  {formatMessage({ id: 'text.learnMore' })}
+                  {formatText({ id: 'text.learnMore' })}
                 </Link>
               }
             >
-              {formatMessage(MSG.noReputationErrorTitle)}
+              {formatText(MSG.noReputationErrorTitle)}
             </NotificationBanner>
           </div>
         )}
@@ -124,7 +122,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           </div>
         )}
       </div>
-      {!isMotion && !readonly && (
+      {(!readonly || isSubmitting) && (
         <div className="mt-auto">
           {!selectedAction && (
             <PopularActions
@@ -141,14 +139,26 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 };
 
 const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
-  transactionId,
   formRef,
   defaultValues,
-  isMotion,
+  transactionId,
+  getColonyActionData,
 }) => {
+  const {
+    action,
+    isInvalidTransactionHash,
+    isUnknownTransaction,
+    loadingAction,
+    motionState,
+    refetchAction,
+    refetchMotionState,
+    startPollingForAction,
+    stopPollingForAction,
+  } = getColonyActionData;
+  const isMotion = !!action?.isMotion;
   const { getFormOptions, actionFormProps } = useActionFormProps(
     defaultValues,
-    !!transactionId,
+    !!action,
   );
   const client = useApolloClient();
 
@@ -156,8 +166,8 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
     <div
       className={clsx('flex w-full flex-grow', {
         'flex-col-reverse overflow-auto sm:overflow-hidden md:flex-row':
-          !!transactionId,
-        'overflow-hidden': !transactionId,
+          !!action,
+        'overflow-hidden': !action,
       })}
     >
       <div
@@ -177,12 +187,12 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           }}
         >
           <ActionSidebarFormContent
+            action={action}
             getFormOptions={getFormOptions}
-            isMotion={isMotion}
           />
         </ActionForm>
       </div>
-      {transactionId && (
+      {action && transactionId && (
         <div
           className={`
             w-full
@@ -201,7 +211,17 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           `}
         >
           {isMotion ? (
-            <Motions transactionId={transactionId} />
+            <Motions
+              action={action}
+              isInvalidTransactionHash={isInvalidTransactionHash}
+              isUnknownTransaction={isUnknownTransaction}
+              motionState={motionState}
+              refetchAction={refetchAction}
+              refetchMotionState={refetchMotionState}
+              startPollingForAction={startPollingForAction}
+              stopPollingForAction={stopPollingForAction}
+              loadingAction={loadingAction}
+            />
           ) : (
             <PermissionSidebar transactionId={transactionId} />
           )}

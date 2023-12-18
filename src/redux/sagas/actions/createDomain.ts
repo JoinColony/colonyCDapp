@@ -127,8 +127,6 @@ function* createDomainAction({
       },
     } = yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
-    setTxHash?.(txHash);
-
     const { domainId } = eventData?.DomainAdded || {};
     const nativeDomainId = toNumber(domainId);
 
@@ -164,6 +162,8 @@ function* createDomainAction({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

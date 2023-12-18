@@ -220,8 +220,6 @@ function* createPaymentMotion({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
@@ -237,6 +235,8 @@ function* createPaymentMotion({
       type: ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (navigate && colonyName) {
       navigate(`/${colonyName}?tx=${txHash}`, {

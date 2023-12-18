@@ -4,6 +4,7 @@ import { DeepPartial } from 'utility-types';
 
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { Action } from '~constants/actions';
+import { ActionPayload, AllActions } from '~redux';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 import { AnyActionType, AnyMessageValues, Colony, ColonyAction } from '~types';
 
@@ -55,3 +56,6 @@ export type DescriptionMetadataGetter<TValues = FieldValues> = (
 export interface ActionTypeSelectProps {
   className?: string;
 }
+
+export type ActionPayloadWithoutCustomTitle<T extends AllActions['type']> =
+  Omit<ActionPayload<T>, 'customActionTitle'>;

@@ -113,6 +113,13 @@ export type Action<T extends AllActions['type']> = Extract<
   { type: T }
 >;
 
+export type ActionPayload<T extends AllActions['type']> = Extract<
+  AllActions,
+  { type: T }
+> extends { payload: infer P }
+  ? P
+  : never;
+
 export type ActionTypeString = AllActions['type'];
 
 export type TakeFilter = (action: AllActions) => boolean;

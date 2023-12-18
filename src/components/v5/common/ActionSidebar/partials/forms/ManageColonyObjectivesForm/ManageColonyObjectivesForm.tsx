@@ -26,6 +26,7 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
     <>
       <ColonyObjectiveFields />
       <ActionFormRow
+        hideWhenValueIsEmpty
         icon="house-line"
         fieldName="createdIn"
         tooltips={{

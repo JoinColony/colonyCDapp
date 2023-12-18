@@ -1,5 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useCallback, useEffect, useImperativeHandle } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import {
   useForm,
   UseFormProps,
@@ -11,7 +16,8 @@ import {
 import { Schema } from 'yup';
 
 import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types';
+import { AdditionalFormState } from '~context/AdditionalFormOptionsContext/types';
+import { merge, omit } from '~utils/lodash';
 
 const displayName = 'Form';
 
@@ -35,7 +41,7 @@ export interface FormProps<FormData extends FieldValues> {
   validationSchema?: Schema<FormData>;
   defaultValues?: UseFormProps<FormData>['defaultValues'];
   mode?: UseFormProps<FormData>['mode'];
-  options?: UseFormProps<FormData> & AdditionalFormOptionsContextValue;
+  options?: UseFormProps<FormData> & AdditionalFormState;
   /** Pass true to reset the default values to latest values on form submission. This will reset the isDirty prop. */
   resetOnSubmit?: boolean;
   className?: string;
@@ -55,7 +61,8 @@ const Form = <FormData extends FieldValues>(
   }: FormProps<FormData>,
   ref: React.ForwardedRef<UseFormReturn<FormData, any, undefined>>,
 ) => {
-  const { readonly, ...formOptions } = options || {};
+  const [formState, setFormState] = useState<AdditionalFormState>({});
+  const { readonly, ...formOptions } = merge({}, options || {}, formState);
   const formHelpers = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     defaultValues,
@@ -73,6 +80,14 @@ const Form = <FormData extends FieldValues>(
   } = formHelpers;
   const values = watch();
 
+  useEffect(() => {
+    if (isSubmitting) {
+      setFormState((prevOptions) => ({ ...prevOptions, readonly: true }));
+    } else {
+      setFormState((prevOptions) => omit(prevOptions, 'readonly'));
+    }
+  }, [isSubmitting]);
+
   /*
    * Effect resets default values to latest values, which resets the isDirty prop.
    * Useful in user settings.
@@ -86,7 +101,7 @@ const Form = <FormData extends FieldValues>(
   const submitHandler = useCallback<React.FormEventHandler<HTMLFormElement>>(
     (event) => {
       // We need stopPropagation to prevent the form from submitting parent
-      // forms because events propagate trough ReactDOM so event if
+      // forms because events propagate trough ReactDOM so even if
       // html form elements are not nested this would submit parent form
       event.stopPropagation();
 
@@ -101,7 +116,7 @@ const Form = <FormData extends FieldValues>(
   );
 
   return (
-    <AdditionalFormOptionsContextProvider value={{ readonly }}>
+    <AdditionalFormOptionsContextProvider value={{ readonly, setFormState }}>
       <FormProvider {...formHelpers}>
         <form className={className} onSubmit={submitHandler}>
           {typeof children === 'function' ? children(formHelpers) : children}

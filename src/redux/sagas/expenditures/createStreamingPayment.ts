@@ -110,8 +110,6 @@ function* createStreamingPayment({
       payload: { hash: txHash },
     } = yield takeFrom(txChannel, ActionTypes.TRANSACTION_HASH_RECEIVED);
 
-    setTxHash?.(txHash);
-
     yield waitForTxResult(txChannel);
 
     const streamingPaymentId = yield call(
@@ -134,6 +132,8 @@ function* createStreamingPayment({
         },
       },
     });
+
+    setTxHash?.(txHash);
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,

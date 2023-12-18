@@ -92,8 +92,6 @@ function* createVersionUpgradeAction({
       payload: { hash: txHash },
     } = yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
 
-    setTxHash?.(txHash);
-
     yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
@@ -112,6 +110,8 @@ function* createVersionUpgradeAction({
       type: ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS,
       meta,
     });
+
+    setTxHash?.(txHash);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
