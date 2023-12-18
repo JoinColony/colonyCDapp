@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import clsx from 'clsx';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ACTION } from '~constants/actions';
@@ -77,6 +78,10 @@ export const useMembersTabContentItems = (
                             addressOrHash: walletAddress,
                           })}
                           {...props}
+                          className={clsx(
+                            props.className,
+                            'md:hover:!text-inherit',
+                          )}
                         >
                           {children}
                         </Link>

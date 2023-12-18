@@ -139,7 +139,7 @@ function CardSelect<TValue = string>({
                 }}
                 className={clsx(
                   cardClassName,
-                  'py-6 px-2 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none absolute z-[60] overflow-auto',
+                  'py-4 px-2 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none absolute z-[60] overflow-auto',
                 )}
                 hasShadow
                 rounded="s"
@@ -148,7 +148,7 @@ function CardSelect<TValue = string>({
                   {groupedOptions.map((group) => (
                     <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
                       {group.title && (
-                        <h5 className="text-4 text-gray-400 mb-2 uppercase px-4">
+                        <h5 className="text-4 text-gray-400 uppercase px-4 pt-2">
                           {group.title}
                         </h5>
                       )}

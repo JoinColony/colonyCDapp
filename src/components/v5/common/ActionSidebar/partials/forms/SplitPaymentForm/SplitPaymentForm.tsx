@@ -93,7 +93,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           placeholder={formatText({
             id: 'actionSidebar.decisionMethod.placeholder',
           })}
-          title={formatText({ id: 'actionSidebar.decisionMethod' })}
+          title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
       <ActionFormRow

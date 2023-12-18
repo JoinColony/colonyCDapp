@@ -49,7 +49,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
             id: 'actionSidebar.decisionMethod.placeholder',
           })}
           options={decisionMethods}
-          title={formatText({ id: 'actionSidebar.decisionMethod' })}
+          title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
       <ActionFormRow

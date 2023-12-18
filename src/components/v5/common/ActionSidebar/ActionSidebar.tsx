@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
 import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
+import { motion } from 'framer-motion';
 import clsx from 'clsx';
+import { ArrowLineRight, ArrowsOutSimple, X } from 'phosphor-react';
 
-import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import useToggle from '~hooks/useToggle';
@@ -102,21 +102,20 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             onClick={closeSidebarClick}
             aria-label={formatText({ id: 'ariaLabel.closeModal' })}
           >
-            <Icon name="close" appearance={{ size: 'tiny' }} />
+            <X size={18} />
           </button>
         ) : (
           <button
             type="button"
-            className="py-2.5 flex items-center justify-center text-gray-400"
+            className="py-2.5 flex items-center justify-center text-gray-400 transition sm:hover:text-blue-400"
             onClick={toggleIsSidebarFullscreen}
             aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
           >
-            <Icon
-              name={
-                isSidebarFullscreen ? 'arrow-right-line' : 'arrows-out-simple'
-              }
-              appearance={{ size: 'tiny' }}
-            />
+            {isSidebarFullscreen ? (
+              <ArrowLineRight size={18} />
+            ) : (
+              <ArrowsOutSimple size={18} />
+            )}
           </button>
         )}
         {children}
