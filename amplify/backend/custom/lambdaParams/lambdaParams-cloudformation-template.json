@@ -25,7 +25,7 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_network"
         },
         "Type": "String",
-        
+
         "Value": "gnosis",
         "Description": "The name of the network"
       }
@@ -71,7 +71,13 @@
           "Fn::Sub": "/amplify/cdapp/${env}/reputation_endpoint"
         },
         "Type": "String",
-        "Value": "https://qa-xdai.colony.io/reputation/xdai",
+        "Value": {
+          "Fn::If": [
+            "IsQaEnv",
+            "https://qa-app.colony.io/reputation/xdai",
+            "https://app.colony.io/reputation/xdai"
+          ]
+        },
         "Description": "Reputation endpoint"
       }
     },

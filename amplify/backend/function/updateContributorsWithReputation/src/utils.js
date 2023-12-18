@@ -1,4 +1,3 @@
-const { default: fetch, Request } = require('node-fetch');
 const {
   createContributorReputation,
   updateContributorReputation,

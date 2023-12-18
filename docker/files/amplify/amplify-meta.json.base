@@ -41,11 +41,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "getReputationForTopDomains": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "fetchColonyNativeFundsClaim": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -102,6 +97,11 @@
       "service": "Lambda"
     },
     "validateUserInvite": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "createColonyEtherealMetadata": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

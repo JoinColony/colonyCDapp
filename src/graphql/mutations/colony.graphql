@@ -4,6 +4,14 @@ mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
   }
 }
 
+mutation CreateColonyEtherealMetadata(
+  $input: CreateColonyEtherealMetadataInput!
+) {
+  createColonyEtherealMetadata(input: $input) {
+    id
+  }
+}
+
 mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
   createColonyMetadata(input: $input) {
     id

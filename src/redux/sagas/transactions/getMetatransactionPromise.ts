@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@ethersproject/providers';
-import { Contract, BigNumberish, utils, providers } from 'ethers';
+import { Contract, BigNumberish, utils } from 'ethers';
 import { ContractClient, ClientType } from '@colony/colony-js';
 
 import {
@@ -35,8 +35,7 @@ async function getMetatransactionPromise(
     throw new Error('Background login not yet completed.');
   }
 
-  const walletProvider = new providers.Web3Provider(wallet.provider);
-  const signer = walletProvider.getSigner();
+  const signer = wallet.ethersProvider.getSigner();
 
   let colonyManager;
   try {

@@ -685,6 +685,8 @@ export type ColonyMetadata = {
   description?: Maybe<Scalars['String']>;
   /** Display name of the Colony */
   displayName: Scalars['String'];
+  /** Temporary data to store while the colony is being created (via the block ingestor) */
+  etherealData?: Maybe<ColonyMetadataEtherealData>;
   /** An array of external links to related pages */
   externalLinks?: Maybe<Array<ExternalLink>>;
   /** Unique identifier for the Colony (contract address) */
@@ -748,6 +750,27 @@ export type ColonyMetadataChangelogInput = {
   oldDisplayName: Scalars['String'];
   oldSafes?: InputMaybe<Array<SafeInput>>;
   transactionHash: Scalars['String'];
+};
+
+export type ColonyMetadataEtherealData = {
+  __typename?: 'ColonyMetadataEtherealData';
+  colonyAvatar?: Maybe<Scalars['String']>;
+  colonyDisplayName: Scalars['String'];
+  colonyName: Scalars['String'];
+  colonyThumbnail?: Maybe<Scalars['String']>;
+  initiatorAddress: Scalars['ID'];
+  tokenAvatar?: Maybe<Scalars['String']>;
+  tokenThumbnail?: Maybe<Scalars['String']>;
+};
+
+export type ColonyMetadataEtherealDataInput = {
+  colonyAvatar?: InputMaybe<Scalars['String']>;
+  colonyDisplayName: Scalars['String'];
+  colonyName: Scalars['String'];
+  colonyThumbnail?: InputMaybe<Scalars['String']>;
+  initiatorAddress: Scalars['ID'];
+  tokenAvatar?: InputMaybe<Scalars['String']>;
+  tokenThumbnail?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents a Motion within a Colony */
@@ -1104,6 +1127,28 @@ export type CreateColonyDecisionInput = {
   walletAddress: Scalars['String'];
 };
 
+/** Input data for creating a temporary colony metadata entry */
+export type CreateColonyEtherealMetadataInput = {
+  /** Colony avatar/thumbnail */
+  colonyAvatar?: InputMaybe<Scalars['String']>;
+  /** Colony name */
+  colonyDisplayName: Scalars['String'];
+  /** Colony slug */
+  colonyName: Scalars['String'];
+  /** Colony avatar/thumbnail */
+  colonyThumbnail?: InputMaybe<Scalars['String']>;
+  /** User id of creator to associate with further invite codes */
+  initiatorAddress: Scalars['ID'];
+  /** Invite Code to create Colony */
+  inviteCode: Scalars['ID'];
+  /** Token avatar/thumbnail */
+  tokenAvatar?: InputMaybe<Scalars['String']>;
+  /** Token avatar/thumbnail */
+  tokenThumbnail?: InputMaybe<Scalars['String']>;
+  /** The transaction hash of colony creation transaction */
+  transactionHash: Scalars['String'];
+};
+
 export type CreateColonyExtensionInput = {
   colonyId: Scalars['ID'];
   hash: Scalars['String'];
@@ -1173,6 +1218,7 @@ export type CreateColonyMetadataInput = {
   changelog?: InputMaybe<Array<ColonyMetadataChangelogInput>>;
   description?: InputMaybe<Scalars['String']>;
   displayName: Scalars['String'];
+  etherealData?: InputMaybe<ColonyMetadataEtherealDataInput>;
   externalLinks?: InputMaybe<Array<ExternalLinkInput>>;
   id?: InputMaybe<Scalars['ID']>;
   isWhitelistActivated?: InputMaybe<Scalars['Boolean']>;
@@ -1449,24 +1495,16 @@ export type CreateTransactionInput = {
 
 /** Input data for creating a unique Colony within the Colony Network. Use this instead of the automatically generated `CreateColonyInput` input type */
 export type CreateUniqueColonyInput = {
-  /** Metadata related to the Colony's creation on the blockchain */
-  chainMetadata: ChainMetadataInput;
-  /** Unique identifier for the Colony's native token (this is its address) */
-  colonyNativeTokenId: Scalars['ID'];
   /** Unique identifier for the Colony. This is the Colony's contract address */
-  id: Scalars['ID'];
-  /** Invite Code to create Colony */
-  inviteCode: Scalars['ID'];
-  /** Display name of the Colony */
-  name: Scalars['String'];
-  /** Status information for the Colony */
-  status?: InputMaybe<ColonyStatusInput>;
+  colonyAddress: Scalars['ID'];
+  /** User id of creator to associate with further invite codes */
+  initiatorAddress: Scalars['ID'];
+  /** Unique identifier for the Colony's native token (this is its address) */
+  tokenAddress: Scalars['ID'];
+  /** The transaction hash of colony creation transaction */
+  transactionHash: Scalars['String'];
   /** Type of the Colony (regular or MetaColony) */
   type?: InputMaybe<ColonyType>;
-  /** User id of creator to associate with further invite codes */
-  userId: Scalars['ID'];
-  /** Version of the currently deployed Colony contract */
-  version: Scalars['Int'];
 };
 
 /** Input data for creating a unique user within the Colony Network Use this instead of the automatically generated `CreateUserInput` input type */
@@ -2043,23 +2081,6 @@ export type GetMotionTimeoutPeriodsReturn = {
   timeLeftToStake: Scalars['String'];
   /** Time left in voting period */
   timeLeftToVote: Scalars['String'];
-};
-
-/** Input data for retrieving a user's reputation within the top domains of a Colony */
-export type GetReputationForTopDomainsInput = {
-  /** The address of the Colony */
-  colonyAddress: Scalars['String'];
-  /** The root hash of the reputation tree at a specific point in time */
-  rootHash?: InputMaybe<Scalars['String']>;
-  /** The wallet address of the user */
-  walletAddress: Scalars['String'];
-};
-
-/** A return type that contains an array of UserDomainReputation items */
-export type GetReputationForTopDomainsReturn = {
-  __typename?: 'GetReputationForTopDomainsReturn';
-  /** An array of UserDomainReputation items */
-  items?: Maybe<Array<UserDomainReputation>>;
 };
 
 export type GetSafeTransactionStatusInput = {
@@ -4170,6 +4191,8 @@ export type Mutation = {
   createColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   createColonyContributor?: Maybe<ColonyContributor>;
   createColonyDecision?: Maybe<ColonyDecision>;
+  /** Create temporary metadata entry for an upcoming colony (that will be created by the ingestor) */
+  createColonyEtherealMetadata?: Maybe<ColonyMetadata>;
   createColonyExtension?: Maybe<ColonyExtension>;
   createColonyFundsClaim?: Maybe<ColonyFundsClaim>;
   createColonyHistoricRole?: Maybe<ColonyHistoricRole>;
@@ -4333,6 +4356,12 @@ export type MutationCreateColonyContributorArgs = {
 export type MutationCreateColonyDecisionArgs = {
   condition?: InputMaybe<ModelColonyDecisionConditionInput>;
   input: CreateColonyDecisionInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateColonyEtherealMetadataArgs = {
+  input: CreateColonyEtherealMetadataInput;
 };
 
 
@@ -5385,8 +5414,6 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getProfileByUsername?: Maybe<ModelProfileConnection>;
-  /** Retrieve a user's reputation within the top domains of a Colony */
-  getReputationForTopDomains?: Maybe<GetReputationForTopDomainsReturn>;
   getReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   getRoleByDomainAndColony?: Maybe<ModelColonyRoleConnection>;
   getRoleByTargetAddressAndColony?: Maybe<ModelColonyRoleConnection>;
@@ -5864,12 +5891,6 @@ export type QueryGetProfileByUsernameArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-
-/** Root query type */
-export type QueryGetReputationForTopDomainsArgs = {
-  input?: InputMaybe<GetReputationForTopDomainsInput>;
 };
 
 
@@ -7765,6 +7786,7 @@ export type UpdateColonyMetadataInput = {
   changelog?: InputMaybe<Array<ColonyMetadataChangelogInput>>;
   description?: InputMaybe<Scalars['String']>;
   displayName?: InputMaybe<Scalars['String']>;
+  etherealData?: InputMaybe<ColonyMetadataEtherealDataInput>;
   externalLinks?: InputMaybe<Array<ExternalLinkInput>>;
   id: Scalars['ID'];
   isWhitelistActivated?: InputMaybe<Scalars['Boolean']>;
@@ -8148,15 +8170,6 @@ export type UserTransactionHistoryArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-/** A type representing a user's reputation within a domain */
-export type UserDomainReputation = {
-  __typename?: 'UserDomainReputation';
-  /** The integer ID of the Domain within the Colony */
-  domainId: Scalars['Int'];
-  /** The user's reputation within the domain, represented as a percentage */
-  reputationPercentage: Scalars['String'];
-};
-
 /** Stakes that a user has made for a motion */
 export type UserMotionStakes = {
   __typename?: 'UserMotionStakes';
@@ -8398,6 +8411,13 @@ export type CreateUniqueColonyMutationVariables = Exact<{
 
 export type CreateUniqueColonyMutation = { __typename?: 'Mutation', createUniqueColony?: { __typename?: 'Colony', id: string } | null };
 
+export type CreateColonyEtherealMetadataMutationVariables = Exact<{
+  input: CreateColonyEtherealMetadataInput;
+}>;
+
+
+export type CreateColonyEtherealMetadataMutation = { __typename?: 'Mutation', createColonyEtherealMetadata?: { __typename?: 'ColonyMetadata', id: string } | null };
+
 export type CreateColonyMetadataMutationVariables = Exact<{
   input: CreateColonyMetadataInput;
 }>;
@@ -8461,13 +8481,6 @@ export type UpdateDomainMetadataMutationVariables = Exact<{
 
 export type UpdateDomainMetadataMutation = { __typename?: 'Mutation', updateDomainMetadata?: { __typename?: 'DomainMetadata', id: string } | null };
 
-export type CreateDomainMutationVariables = Exact<{
-  input: CreateDomainInput;
-}>;
-
-
-export type CreateDomainMutation = { __typename?: 'Mutation', createDomain?: { __typename?: 'Domain', id: string } | null };
-
 export type CreateExpenditureMetadataMutationVariables = Exact<{
   input: CreateExpenditureMetadataInput;
 }>;
@@ -8502,13 +8515,6 @@ export type CreateColonyTokensMutationVariables = Exact<{
 
 
 export type CreateColonyTokensMutation = { __typename?: 'Mutation', createColonyTokens?: { __typename?: 'ColonyTokens', id: string } | null };
-
-export type CreateUserTokensMutationVariables = Exact<{
-  input: CreateUserTokensInput;
-}>;
-
-
-export type CreateUserTokensMutation = { __typename?: 'Mutation', createUserTokens?: { __typename?: 'UserTokens', id: string } | null };
 
 export type DeleteColonyTokensMutationVariables = Exact<{
   input: DeleteColonyTokensInput;
@@ -8870,13 +8876,6 @@ export type GetUserReputationQueryVariables = Exact<{
 
 
 export type GetUserReputationQuery = { __typename?: 'Query', getUserReputation?: string | null };
-
-export type GetReputationForTopDomainsQueryVariables = Exact<{
-  input: GetReputationForTopDomainsInput;
-}>;
-
-
-export type GetReputationForTopDomainsQuery = { __typename?: 'Query', getReputationForTopDomains?: { __typename?: 'GetReputationForTopDomainsReturn', items?: Array<{ __typename?: 'UserDomainReputation', domainId: number, reputationPercentage: string }> | null } | null };
 
 export type GetUserByNameQueryVariables = Exact<{
   name: Scalars['String'];
@@ -9879,6 +9878,39 @@ export function useCreateUniqueColonyMutation(baseOptions?: Apollo.MutationHookO
 export type CreateUniqueColonyMutationHookResult = ReturnType<typeof useCreateUniqueColonyMutation>;
 export type CreateUniqueColonyMutationResult = Apollo.MutationResult<CreateUniqueColonyMutation>;
 export type CreateUniqueColonyMutationOptions = Apollo.BaseMutationOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
+export const CreateColonyEtherealMetadataDocument = gql`
+    mutation CreateColonyEtherealMetadata($input: CreateColonyEtherealMetadataInput!) {
+  createColonyEtherealMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateColonyEtherealMetadataMutationFn = Apollo.MutationFunction<CreateColonyEtherealMetadataMutation, CreateColonyEtherealMetadataMutationVariables>;
+
+/**
+ * __useCreateColonyEtherealMetadataMutation__
+ *
+ * To run a mutation, you first call `useCreateColonyEtherealMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateColonyEtherealMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createColonyEtherealMetadataMutation, { data, loading, error }] = useCreateColonyEtherealMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateColonyEtherealMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyEtherealMetadataMutation, CreateColonyEtherealMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateColonyEtherealMetadataMutation, CreateColonyEtherealMetadataMutationVariables>(CreateColonyEtherealMetadataDocument, options);
+      }
+export type CreateColonyEtherealMetadataMutationHookResult = ReturnType<typeof useCreateColonyEtherealMetadataMutation>;
+export type CreateColonyEtherealMetadataMutationResult = Apollo.MutationResult<CreateColonyEtherealMetadataMutation>;
+export type CreateColonyEtherealMetadataMutationOptions = Apollo.BaseMutationOptions<CreateColonyEtherealMetadataMutation, CreateColonyEtherealMetadataMutationVariables>;
 export const CreateColonyMetadataDocument = gql`
     mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
   createColonyMetadata(input: $input) {
@@ -10174,39 +10206,6 @@ export function useUpdateDomainMetadataMutation(baseOptions?: Apollo.MutationHoo
 export type UpdateDomainMetadataMutationHookResult = ReturnType<typeof useUpdateDomainMetadataMutation>;
 export type UpdateDomainMetadataMutationResult = Apollo.MutationResult<UpdateDomainMetadataMutation>;
 export type UpdateDomainMetadataMutationOptions = Apollo.BaseMutationOptions<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>;
-export const CreateDomainDocument = gql`
-    mutation CreateDomain($input: CreateDomainInput!) {
-  createDomain(input: $input) {
-    id
-  }
-}
-    `;
-export type CreateDomainMutationFn = Apollo.MutationFunction<CreateDomainMutation, CreateDomainMutationVariables>;
-
-/**
- * __useCreateDomainMutation__
- *
- * To run a mutation, you first call `useCreateDomainMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateDomainMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createDomainMutation, { data, loading, error }] = useCreateDomainMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateDomainMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMutation, CreateDomainMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateDomainMutation, CreateDomainMutationVariables>(CreateDomainDocument, options);
-      }
-export type CreateDomainMutationHookResult = ReturnType<typeof useCreateDomainMutation>;
-export type CreateDomainMutationResult = Apollo.MutationResult<CreateDomainMutation>;
-export type CreateDomainMutationOptions = Apollo.BaseMutationOptions<CreateDomainMutation, CreateDomainMutationVariables>;
 export const CreateExpenditureMetadataDocument = gql`
     mutation CreateExpenditureMetadata($input: CreateExpenditureMetadataInput!) {
   createExpenditureMetadata(input: $input) {
@@ -10372,39 +10371,6 @@ export function useCreateColonyTokensMutation(baseOptions?: Apollo.MutationHookO
 export type CreateColonyTokensMutationHookResult = ReturnType<typeof useCreateColonyTokensMutation>;
 export type CreateColonyTokensMutationResult = Apollo.MutationResult<CreateColonyTokensMutation>;
 export type CreateColonyTokensMutationOptions = Apollo.BaseMutationOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>;
-export const CreateUserTokensDocument = gql`
-    mutation CreateUserTokens($input: CreateUserTokensInput!) {
-  createUserTokens(input: $input) {
-    id
-  }
-}
-    `;
-export type CreateUserTokensMutationFn = Apollo.MutationFunction<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
-
-/**
- * __useCreateUserTokensMutation__
- *
- * To run a mutation, you first call `useCreateUserTokensMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUserTokensMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUserTokensMutation, { data, loading, error }] = useCreateUserTokensMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateUserTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserTokensMutation, CreateUserTokensMutationVariables>(CreateUserTokensDocument, options);
-      }
-export type CreateUserTokensMutationHookResult = ReturnType<typeof useCreateUserTokensMutation>;
-export type CreateUserTokensMutationResult = Apollo.MutationResult<CreateUserTokensMutation>;
-export type CreateUserTokensMutationOptions = Apollo.BaseMutationOptions<CreateUserTokensMutation, CreateUserTokensMutationVariables>;
 export const DeleteColonyTokensDocument = gql`
     mutation DeleteColonyTokens($input: DeleteColonyTokensInput!) {
   deleteColonyTokens(input: $input) {
@@ -12278,44 +12244,6 @@ export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
 export type GetUserReputationLazyQueryHookResult = ReturnType<typeof useGetUserReputationLazyQuery>;
 export type GetUserReputationQueryResult = Apollo.QueryResult<GetUserReputationQuery, GetUserReputationQueryVariables>;
-export const GetReputationForTopDomainsDocument = gql`
-    query GetReputationForTopDomains($input: GetReputationForTopDomainsInput!) {
-  getReputationForTopDomains(input: $input) {
-    items {
-      domainId
-      reputationPercentage
-    }
-  }
-}
-    `;
-
-/**
- * __useGetReputationForTopDomainsQuery__
- *
- * To run a query within a React component, call `useGetReputationForTopDomainsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetReputationForTopDomainsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetReputationForTopDomainsQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetReputationForTopDomainsQuery(baseOptions: Apollo.QueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
-      }
-export function useGetReputationForTopDomainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>(GetReputationForTopDomainsDocument, options);
-        }
-export type GetReputationForTopDomainsQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsQuery>;
-export type GetReputationForTopDomainsLazyQueryHookResult = ReturnType<typeof useGetReputationForTopDomainsLazyQuery>;
-export type GetReputationForTopDomainsQueryResult = Apollo.QueryResult<GetReputationForTopDomainsQuery, GetReputationForTopDomainsQueryVariables>;
 export const GetUserByNameDocument = gql`
     query GetUserByName($name: String!) {
   getProfileByUsername(displayName: $name) {

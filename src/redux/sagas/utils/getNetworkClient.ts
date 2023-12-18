@@ -4,7 +4,6 @@ import {
   ColonyNetworkAddress,
   Network as ColonyJSNetwork,
 } from '@colony/colony-js';
-import { providers } from 'ethers';
 
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
@@ -22,9 +21,7 @@ export default function* getNetworkClient() {
 
   const network = DEFAULT_NETWORK;
 
-  const walletProvider = new providers.Web3Provider(wallet.provider);
-
-  const signer = walletProvider.getSigner();
+  const signer = wallet.ethersProvider.getSigner();
 
   const reputationOracleUrl = process.env.REPUTATION_ORACLE_ENDPOINT
     ? new URL(process.env.REPUTATION_ORACLE_ENDPOINT)

@@ -1,4 +1,4 @@
-import Pinata from '../../../lib/pinata';
+import Pinata from './pinata';
 
 const pinataClient = new Pinata();
 

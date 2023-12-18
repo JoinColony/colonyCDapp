@@ -1,19 +1,23 @@
 module.exports = {
   getColony: /* GraphQL */ `
-    query GetColony($id: ID!, $name: String!) {
+    query GetColony($id: ID!) {
       getColonyByAddress(id: $id) {
         items {
           id
           name
         }
       }
-      getColonyByName(name: $name) {
+      getColonyByType(type: METACOLONY) {
         items {
           id
           name
         }
       }
-      getColonyByType(type: METACOLONY) {
+    }
+  `,
+  getColonyByName: /* GraphQL */ `
+    query GetColonyByName($name: String!) {
+      getColonyByName(name: $name) {
         items {
           id
           name
@@ -31,53 +35,63 @@ module.exports = {
       }
     }
   `,
-  getTokenByAddress: /* GraphQL */ `
-    query GetTokenByAddress(
-      $id: ID!
-      $sortDirection: ModelSortDirection
-      $filter: ModelTokenFilterInput
-      $limit: Int
-    ) {
-      getTokenByAddress(
-        id: $id
-        sortDirection: $sortDirection
-        filter: $filter
-        limit: $limit
-      ) {
-        items {
-          id
-          name
-          symbol
-          decimals
-          type
-          createdAt
-          updatedAt
+  createColonyTokens: /* GraphQL */ `
+    mutation CreateColonyTokens($input: CreateColonyTokensInput!) {
+      createColonyTokens(input: $input) {
+        id
+      }
+    }
+  `,
+  createDomain: /* GraphQL */ `
+    mutation CreateDomain($input: CreateDomainInput!) {
+      createDomain(input: $input) {
+        id
+      }
+    }
+  `,
+  createDomainMetadata: /* GraphQL */ `
+    mutation CreateDomainMetadata($input: CreateDomainMetadataInput!) {
+      createDomainMetadata(input: $input) {
+        id
+      }
+    }
+  `,
+  getColonyMetadata: /* GraphQL */ `
+    query GetColonyMetadata($id: ID!) {
+      getColonyMetadata(id: $id) {
+        id
+        etherealData {
+          colonyAvatar
+          colonyDisplayName
+          colonyName
+          colonyThumbnail
+          initiatorAddress
+          tokenAvatar
+          tokenThumbnail
         }
       }
     }
   `,
-  getInviteCodeValidity: /* GraphQL */ `
-    query GetInviteCodeValidity($id: ID!) {
-      getPrivateBetaInviteCode(id: $id) {
-        shareableInvites
-        userId
-      }
-    }
-  `,
-  updateInviteCodeValidity: /* GraphQL */ `
-    mutation UpdateInviteCodeValidity(
-      $input: UpdatePrivateBetaInviteCodeInput!
-      $condition: ModelPrivateBetaInviteCodeConditionInput
-    ) {
-      updatePrivateBetaInviteCode(input: $input, condition: $condition) {
+  createColonyMetadata: /* GraphQL */ `
+    mutation CreateColonyMetadata($input: CreateColonyMetadataInput!) {
+      createColonyMetadata(input: $input) {
         id
       }
     }
   `,
-  updateUser: /* GraphQL */ `
-    mutation UpdateUser($input: UpdateUserInput!) {
-      updateUser(input: $input) {
+  deleteColonyMetadata: /* GraphQL */ `
+    mutation DeleteColonyMetadata($input: DeleteColonyMetadataInput!) {
+      deleteColonyMetadata(input: $input) {
         id
+      }
+    }
+  `,
+  getTokenFromEverywhere: /* GraphQL */ `
+    query GetTokenFromEverywhere($input: TokenFromEverywhereArguments!) {
+      getTokenFromEverywhere(input: $input) {
+        items {
+          id
+        }
       }
     }
   `,

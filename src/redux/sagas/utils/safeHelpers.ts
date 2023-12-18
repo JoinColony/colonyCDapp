@@ -1,4 +1,3 @@
-import Web3 from 'web3';
 import { getTokenClient } from '@colony/colony-js';
 import { Contract, ethers } from 'ethers';
 import moveDecimal from 'move-decimal-point';
@@ -20,6 +19,7 @@ import {
 } from '~constants';
 import { getArrayFromString } from '~utils/safes';
 import { fetchTokenFromDatabase } from '~utils/queries';
+import RetryProvider from '../wallet/RetryProvider';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
 
@@ -81,15 +81,10 @@ export const ZODIAC_BRIDGE_MODULE_ADDRESS =
     : null;
 /* eslint-enable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
 
-const LOCAL_HOME_CHAIN = 'http://127.0.0.1:8545';
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 const LOCAL_TOKEN_ID = 1; // set in start-bridging-environment.js
 
-export const getHomeProvider = () => {
-  return isDev
-    ? new ethers.providers.JsonRpcProvider(LOCAL_HOME_CHAIN)
-    : new ethers.providers.Web3Provider(Web3.givenProvider); // Metamask
-};
+export const getHomeProvider = () => new RetryProvider();
 
 export const getForeignProvider = (safeChainId: number) => {
   const network = SUPPORTED_SAFE_NETWORKS.find(

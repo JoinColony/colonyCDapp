@@ -126,6 +126,9 @@ export const ColonyContextProvider = ({
   }
 
   if (!colony || error) {
+    if (error) {
+      console.error(error);
+    }
     return <NotFoundRoute />;
   }
 
