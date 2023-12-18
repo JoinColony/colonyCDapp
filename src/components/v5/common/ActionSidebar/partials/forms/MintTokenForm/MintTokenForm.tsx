@@ -55,7 +55,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <FormCardSelect
           name="decisionMethod"
           options={decisionMethods}
-          title={formatText({ id: 'actionSidebar.decisionMethod' })}
+          title={formatText({ id: 'actionSidebar.availableDecisions' })}
           placeholder={formatText({
             id: 'actionSidebar.decisionMethod.placeholder',
           })}
