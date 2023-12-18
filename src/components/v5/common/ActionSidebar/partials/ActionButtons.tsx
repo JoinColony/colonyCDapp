@@ -8,6 +8,7 @@ import { ActionButtonsProps } from '../types';
 import { useSubmitButtonDisabled, useSubmitButtonText } from './hooks';
 import { useCloseSidebarClick } from '../hooks';
 import Icon from '~shared/Icon';
+import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
@@ -24,7 +25,13 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
   } = useActionSidebarContext();
   const { closeSidebarClick } = useCloseSidebarClick();
 
-  useRegisterOnBeforeCloseCallback(() => {
+  useRegisterOnBeforeCloseCallback((element) => {
+    const isClickedInside = isElementInsideModalOrPortal(element);
+
+    if (!isClickedInside) {
+      return false;
+    }
+
     if (Object.keys(dirtyFields).length > 0 && !isCancelModalOpen) {
       toggleCancelModalOn();
 
