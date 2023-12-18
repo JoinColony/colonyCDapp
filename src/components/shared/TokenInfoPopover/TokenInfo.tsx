@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import clsx from 'clsx';
 
 import { Token } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
@@ -15,6 +16,7 @@ const displayName = 'TokenInfoPopover.TokenInfo';
 interface Props {
   token: Token;
   isTokenNative: boolean;
+  className?: string;
 }
 
 const MSG = defineMessages({
@@ -28,12 +30,17 @@ const MSG = defineMessages({
   },
 });
 
-const TokenInfo = ({ token, isTokenNative }: Props) => {
+const TokenInfo = ({ token, isTokenNative, className }: Props) => {
   const { avatar, name, symbol, tokenAddress, thumbnail } = token;
   const { formatMessage } = useIntl();
 
   return (
-    <div className="flex flex-col items-center p-6 gap-6 w-80 text-gray-900">
+    <div
+      className={clsx(
+        className,
+        'flex flex-col items-center p-6 gap-6 w-80 text-gray-900',
+      )}
+    >
       <div className="flex flex-row items-center w-full gap-4">
         <Avatar
           size="m"

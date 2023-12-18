@@ -5,16 +5,17 @@ import { LockKey } from 'phosphor-react';
 import { useMobile, useRelativePortalElement, useToggle } from '~hooks';
 import CopyableAddress from '~shared/CopyableAddress';
 import TokenIcon from '~shared/TokenIcon';
+import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';
 import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';
 
 import { TokenAvatarProps } from './types';
 import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
+import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';
 
 const displayName = 'v5.pages.BalancePage.partials.TokenAvatar';
-// @TODO: implement token popover according to the design
+
 const TokenAvatar: FC<TokenAvatarProps> = ({
   token,
   tokenAddress,
@@ -84,13 +85,17 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
           onClose={toggleTokenModalOff}
           isOpen={isTokenModalOpened}
         >
-          {content}
+          <TokenInfo
+            className="!p-0 w-full"
+            token={token}
+            isTokenNative={isTokenNative}
+          />
         </Modal>
       ) : (
         isTokenVisible && (
           <Portal>
             <MenuContainer
-              className="absolute p-1 z-[60]"
+              className="absolute !p-0 z-[60] min-w-80"
               hasShadow
               rounded="s"
               ref={(ref) => {
@@ -98,7 +103,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
                 portalElementRef.current = ref;
               }}
             >
-              {content}
+              <TokenInfo token={token} isTokenNative={isTokenNative} />
             </MenuContainer>
           </Portal>
         )
