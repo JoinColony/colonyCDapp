@@ -17,6 +17,7 @@ import { useActionSidebarContext } from '~context';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import Link from '~v5/shared/Link';
 import TokenAvatar from '../TokenAvatar';
 import { BalanceTableFieldModel } from './types';
@@ -200,12 +201,9 @@ export const useGetTableMenuProps = (
                 {
                   key: 'mint_tokens',
                   onClick: () => {
-                    dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
-                      detail: {
-                        actionType: ACTION.MINT_TOKENS,
-                      },
+                    toggleActionSidebarOn({
+                      [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
                     });
-                    toggleActionSidebarOn();
                   },
                   label: formatMessage(MSG.labelMintToken),
                   icon: 'bank',
@@ -215,16 +213,13 @@ export const useGetTableMenuProps = (
           {
             key: 'transfer_funds',
             onClick: () => {
-              toggleActionSidebarOn();
               dispatchGlobalEvent(GLOBAL_EVENTS.SET_TOKEN_ADDRESS, {
                 detail: {
                   tokenAddress: selectedTokenData?.tokenAddress,
                 },
               });
-              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
-                detail: {
-                  actionType: ACTION.TRANSFER_FUNDS,
-                },
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
               });
             },
             label: formatMessage(MSG.labelTransferFunds),
@@ -233,16 +228,13 @@ export const useGetTableMenuProps = (
           {
             key: 'make_payment',
             onClick: () => {
-              toggleActionSidebarOn();
               dispatchGlobalEvent(GLOBAL_EVENTS.SET_TOKEN_ADDRESS, {
                 detail: {
                   tokenAddress: selectedTokenData?.tokenAddress,
                 },
               });
-              dispatchGlobalEvent(GLOBAL_EVENTS.SET_ACTION_TYPE, {
-                detail: {
-                  actionType: ACTION.SIMPLE_PAYMENT,
-                },
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
               });
             },
             label: formatMessage(MSG.labelMakePayment),
