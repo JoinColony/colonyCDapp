@@ -20,6 +20,7 @@ const ParamDetailsTab: FC<ParamDetailsTabProps> = ({ extension, params }) => {
     <li>
       {Object.keys(params)
         .filter((key) => key !== '__typename')
+        .filter((param) => paramsMap[extension][param])
         .map((param) => {
           const { title, complementaryLabel, description } =
             paramsMap[extension][param];
