@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import clsx from 'clsx';
@@ -40,6 +40,14 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     const isMobile = useMobile();
     const filteredList = useSearchSelect(items, debouncedSearchValue);
 
+    useEffect(() => {
+      const debounceTimeout = setTimeout(() => {
+        setDebouncedSearchValue(searchValue);
+      }, 500);
+
+      return () => clearTimeout(debounceTimeout);
+    }, [searchValue]);
+
     const defaultOpenedAccordions = useMemo(
       () =>
         items.filter(({ isAccordion }) => isAccordion).map(({ key }) => key),
@@ -59,7 +67,6 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       (value: string) => {
         onSearch?.(value);
         setSearchValue(value);
-
         if (value) {
           handleSearch(value);
         } else {
