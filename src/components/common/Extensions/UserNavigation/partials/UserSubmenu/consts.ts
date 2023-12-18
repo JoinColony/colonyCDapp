@@ -11,12 +11,10 @@ import {
   PRIVACY_POLICY,
   TERMS_AND_CONDITIONS,
 } from '~constants';
-import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
-import { formatText } from '~utils/intl';
-import { SetStateFn } from '~types';
 import { SupportedCurrencies } from '~gql';
-
-import { UserSubmenuItems } from './types';
+import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
+import { SetStateFn } from '~types';
+import { formatText } from '~utils/intl';
 
 import { UserSubmenuItems } from './types';
 
@@ -60,14 +58,14 @@ export const menuMessages = defineMessages({
 });
 
 export const currencyIconTitles = {
-  [SupportedCurrencies.Usd]: 'us',
-  [SupportedCurrencies.Jpy]: 'japan',
-  [SupportedCurrencies.Gbp]: 'uk',
-  [SupportedCurrencies.Eur]: 'eu',
-  [SupportedCurrencies.Cad]: 'canada',
-  [SupportedCurrencies.Krw]: 'southkorea',
-  [SupportedCurrencies.Inr]: 'india',
-  [SupportedCurrencies.Brl]: 'brazil',
+  [SupportedCurrencies.Usd]: 'flag-us',
+  [SupportedCurrencies.Jpy]: 'flag-japan',
+  [SupportedCurrencies.Gbp]: 'flag-uk',
+  [SupportedCurrencies.Eur]: 'flag-eu',
+  [SupportedCurrencies.Cad]: 'flag-canada',
+  [SupportedCurrencies.Krw]: 'flag-southkorea',
+  [SupportedCurrencies.Inr]: 'flag-india',
+  [SupportedCurrencies.Brl]: 'flag-brazil',
   [SupportedCurrencies.Eth]: 'ether',
   [SupportedCurrencies.Clny]: 'clny-token',
 };
