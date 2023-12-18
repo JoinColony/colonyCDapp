@@ -267,7 +267,15 @@
     "transfer",
     "add",
     "piggy-bank",
-    "rocket"
+    "rocket",
+    "flag-us",
+    "flag-uk",
+    "flag-eu",
+    "flag-japan",
+    "flag-brazil",
+    "flag-canada",
+    "flag-southkorea",
+    "flag-india"
   ],
   "multiColorIcons": [
     "circle-check-primary",

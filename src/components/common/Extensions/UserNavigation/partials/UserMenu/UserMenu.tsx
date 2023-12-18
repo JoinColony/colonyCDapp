@@ -4,6 +4,7 @@ import React, { FC, useState } from 'react';
 // @BETA: Disabled for now
 // import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 
+import { useCurrencyContext } from '~context/CurrencyContext';
 import { useAppContext, useTablet } from '~hooks';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
@@ -20,7 +21,6 @@ import { userMenuItems } from './consts';
 import { UserMenuProps } from './types';
 
 import styles from './UserMenu.module.css';
-import { useCurrencyContext } from '~context/CurrencyContext';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
