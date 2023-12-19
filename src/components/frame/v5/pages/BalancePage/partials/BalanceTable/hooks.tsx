@@ -7,8 +7,6 @@ import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import dispatchGlobalEvent from '~utils/browser/dispatchGlobalEvent';
-import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
 import { getBlockExplorerLink } from '~utils/external';
 import { ACTION } from '~constants/actions';
 import { NativeTokenStatus } from '~gql';
@@ -213,13 +211,11 @@ export const useGetTableMenuProps = (
           {
             key: 'transfer_funds',
             onClick: () => {
-              dispatchGlobalEvent(GLOBAL_EVENTS.SET_TOKEN_ADDRESS, {
-                detail: {
-                  tokenAddress: selectedTokenData?.tokenAddress,
-                },
-              });
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
+                amount: {
+                  tokenAddress: selectedTokenData?.tokenAddress,
+                },
               });
             },
             label: formatMessage(MSG.labelTransferFunds),
@@ -228,13 +224,11 @@ export const useGetTableMenuProps = (
           {
             key: 'make_payment',
             onClick: () => {
-              dispatchGlobalEvent(GLOBAL_EVENTS.SET_TOKEN_ADDRESS, {
-                detail: {
-                  tokenAddress: selectedTokenData?.tokenAddress,
-                },
-              });
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+                amount: {
+                  tokenAddress: selectedTokenData?.tokenAddress,
+                },
               });
             },
             label: formatMessage(MSG.labelMakePayment),
