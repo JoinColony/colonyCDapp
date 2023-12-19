@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ColonyActionsTable from '~common/ColonyActionsTable';
 import { ACTION } from '~constants/actions';
@@ -13,35 +13,32 @@ import {
   useGetSelectedTeamFilter,
 } from '~hooks/useTeamsBreadcrumbs';
 import {
-  COLONY_MEMBERS_ROUTE,
   COLONY_DETAILS_ROUTE,
   // @BETA: Disabled for now
   // COLONY_TEAMS_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
   COLONY_ACTIVITY_ROUTE,
-  COLONY_BALANCES_ROUTE,
   TEAM_SEARCH_PARAM,
 } from '~routes';
-import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { setQueryParamOnUrl } from '~utils/urls';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import ColonyDashboardHeader from '~v5/common/ColonyDashboardHeader';
 import DonutChart from '~v5/common/DonutChart';
 import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow';
-import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
+import EmptyWidgetState from '~v5/common/WidgetBox/partials';
 import WidgetBoxList from '~v5/common/WidgetBoxList';
-import Link from '~v5/shared/Link';
 import MessageNumber from '~v5/shared/MessageNumber';
 import Modal from '~v5/shared/Modal';
 import ProgressBar from '~v5/shared/ProgressBar';
 import TitleWithNumber from '~v5/shared/TitleWithNumber';
-import UserAvatars from '~v5/shared/UserAvatars';
 
 import { summaryLegendColor } from './consts';
 import { useDashboardHeader } from './hooks/useDashboardHeader';
 import { useGetHomeWidget } from './hooks/useGetHomeWidget';
+import Members from './partials/Members';
+import TokenBalance from './partials/TokenBalance';
+import TotalActions from './partials/TotalActions';
 
 // @TODO: add page components
 const displayName = 'common.ColonyHome';
@@ -68,17 +65,8 @@ const ColonyHome = () => {
   const { objective } = metadata || {};
   const selectedTeam = useGetSelectedTeamFilter();
   const agreements = undefined;
-  const {
-    totalActions,
-    allMembers,
-    teamColor,
-    currentTokenBalance,
-    membersLoading,
-    nativeToken,
-    chartData,
-    hoveredSegment,
-    updateHoveredSegment,
-  } = useGetHomeWidget();
+  const { teamColor, chartData, hoveredSegment, updateHoveredSegment } =
+    useGetHomeWidget();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -89,8 +77,6 @@ const ColonyHome = () => {
   const { handleUnwatch } = useColonySubscription();
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
-
-  const { search: searchParams } = useLocation();
 
   if (!colony) {
     return null;
@@ -105,55 +91,12 @@ const ColonyHome = () => {
   return (
     <div className="flex flex-col gap-10">
       <ColonyDashboardHeader {...headerProps} />
-      <WidgetBoxList
-        items={[
-          {
-            key: '1',
-            title: formatText({ id: 'widget.totalActions' }),
-            value: <h4 className="heading-4">{totalActions}</h4>,
-            className: clsx('text-base-white', {
-              [teamColor]: selectedTeam,
-              'bg-gray-900 border-gray-900': !selectedTeam,
-            }),
-            href: COLONY_ACTIVITY_ROUTE,
-            searchParams,
-          },
-          {
-            key: '2',
-            title: formatText({ id: 'colonyHome.members' }),
-            value: (
-              <h4 className="heading-4">
-                {membersLoading ? '-' : allMembers.length}
-              </h4>
-            ),
-            href: COLONY_MEMBERS_ROUTE,
-            additionalContent: (
-              <UserAvatars
-                maxAvatarsToShow={4}
-                size="xms"
-                items={allMembers}
-                showRemainingAvatars={false}
-              />
-            ),
-            searchParams,
-          },
-          {
-            key: '3',
-            title: formatText({ id: 'colonyHome.funds' }),
-            value: (
-              <div className="flex items-center gap-2 heading-4">
-                <Numeral
-                  value={currentTokenBalance}
-                  decimals={getTokenDecimalsWithFallback(nativeToken?.decimals)}
-                />
-                <span className="text-1">{nativeToken?.symbol}</span>
-              </div>
-            ),
-            href: COLONY_BALANCES_ROUTE,
-            searchParams,
-          },
-        ]}
-      />
+
+      <div className="flex flex-col sm:flex-row items-center gap-[1.125rem] w-full">
+        <TotalActions />
+        <Members />
+        <TokenBalance />
+      </div>
       <div className="flex flex-col md:grid md:grid-cols-[39%_1fr] gap-6 w-full">
         <div className="w-full">
           <WidgetBoxList

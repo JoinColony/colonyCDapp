@@ -1,27 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Id } from '@colony/colony-js';
 
-import { BigNumber } from 'ethers';
-import { useGetTotalColonyActionsQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
-import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
-import { useMemberContext } from '~context/MemberContext';
-import { Token, User, Domain } from '~types';
+import { Domain } from '~types';
 
 import { ChartData } from '../types';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { setHexTeamColor, setTeamColor } from '~utils/teams';
 
 interface UseGetHomeWidgetResult {
-  totalActions: number;
-  allMembers: User[];
   teamColor: string;
-  currentTokenBalance: BigNumber;
-  nativeToken: Token | undefined;
-  membersLoading: boolean;
   chartColors?: string[];
   chartData: ChartData[];
   hoveredSegment?: ChartData | null;
@@ -82,10 +72,7 @@ export const useGetHomeWidget = (): UseGetHomeWidgetResult => {
   const nativeTeamId = selectedTeam?.nativeId ?? undefined;
 
   const { colony } = useColonyContext();
-  const { domains, nativeToken, colonyAddress = '' } = colony || {};
-  const { balances } = colony || {};
-
-  const { totalMembers: members, loading: membersLoading } = useMemberContext();
+  const { domains } = colony || {};
 
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null
@@ -95,61 +82,11 @@ export const useGetHomeWidget = (): UseGetHomeWidgetResult => {
     setHoveredSegment(segmentData);
   };
 
-  const currentTokenBalance =
-    getBalanceForTokenAndDomain(
-      balances,
-      nativeToken?.tokenAddress || '',
-      nativeTeamId,
-    ) || 0;
-
-  const domainMembers = useMemo(
-    () =>
-      nativeTeamId
-        ? members.filter(
-            ({ roles, reputation }) =>
-              roles?.items?.find(
-                (role) => role?.domain.nativeId === nativeTeamId,
-              ) ||
-              reputation?.items?.find(
-                (rep) => rep?.domain.nativeId === nativeTeamId,
-              ),
-          )
-        : members,
-    [members, nativeTeamId],
-  );
-
-  const { data: totalActionData } = useGetTotalColonyActionsQuery({
-    variables: {
-      filter: {
-        ...createBaseActionFilter(colonyAddress),
-      },
-    },
-  });
-
-  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
-
   const selectedTeamColor = domains?.items.find(
     (domain) => domain?.nativeId === nativeTeamId,
   )?.metadata?.color;
 
   const teamColor = setTeamColor(selectedTeamColor);
-  const mappedMembers = useMemo(
-    () =>
-      domainMembers
-        .filter(
-          (member, index, self) =>
-            index ===
-            self.findIndex(
-              (m) => m.contributorAddress === member.contributorAddress,
-            ),
-        )
-        .map((member) => ({
-          walletAddress: member.contributorAddress,
-          ...member.user,
-        }))
-        .sort(() => Math.random() - 0.5),
-    [domainMembers],
-  );
 
   const allTeams = (domains?.items || [])
     .filter(notNull)
@@ -161,12 +98,7 @@ export const useGetHomeWidget = (): UseGetHomeWidgetResult => {
   const chartData = getTeamReputationChartData(allTeams);
 
   return {
-    totalActions,
-    allMembers: mappedMembers,
     teamColor,
-    currentTokenBalance,
-    nativeToken,
-    membersLoading,
     chartData,
     hoveredSegment,
     updateHoveredSegment,
