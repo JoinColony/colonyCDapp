@@ -164,8 +164,4 @@ export const useSimplePayment = (
       [colony, networkInverseFee],
     ),
   });
-
-  return {
-    selectedTokenAddress,
-  };
 };

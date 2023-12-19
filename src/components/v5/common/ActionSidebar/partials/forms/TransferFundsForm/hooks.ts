@@ -121,8 +121,4 @@ export const useTransferFunds = (
       [colony],
     ),
   });
-
-  return {
-    selectedTokenAddress,
-  };
 };

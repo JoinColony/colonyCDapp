@@ -17,7 +17,7 @@ const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
 const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
 
-  const { selectedTokenAddress } = useTransferFunds(getFormOptions);
+  useTransferFunds(getFormOptions);
 
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
@@ -64,12 +64,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
       >
-        <AmountField
-          name="amount"
-          maxWidth={270}
-          teamId={selectedTeam}
-          tokenAddress={selectedTokenAddress}
-        />
+        <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"

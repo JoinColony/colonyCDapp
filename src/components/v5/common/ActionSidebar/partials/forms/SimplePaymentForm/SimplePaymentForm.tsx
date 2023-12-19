@@ -18,7 +18,7 @@ const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
 
-  const { selectedTokenAddress } = useSimplePayment(getFormOptions);
+  useSimplePayment(getFormOptions);
 
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
@@ -65,12 +65,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
         title={formatText({ id: 'actionSidebar.amount' })}
       >
-        <AmountField
-          name="amount"
-          maxWidth={270}
-          teamId={selectedTeam}
-          tokenAddress={selectedTokenAddress}
-        />
+        <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
         iconName="scales"
