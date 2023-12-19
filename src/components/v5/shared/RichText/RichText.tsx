@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
 import { EditorContent } from '@tiptap/react';
-
 import clsx from 'clsx';
+
+import { formatText } from '~utils/intl';
+import { omit } from '~utils/lodash';
+
 import MenuBar from './partials/Menu';
 import {
   MAX_ANNOTATION_NUM,
@@ -11,7 +14,6 @@ import {
 import { TextButton } from '../Button';
 import { RichTextProps } from './types';
 import { useRichText } from './hooks';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.RichText';
 
@@ -68,7 +70,7 @@ const RichText: FC<RichTextProps> = ({
           {editorContent && isDecriptionFieldExpanded ? (
             <>
               <MenuBar editor={editorContent} />
-              <EditorContent editor={editorContent} {...field} />
+              <EditorContent editor={editorContent} {...omit(field, 'ref')} />
 
               {(characterCount || isDecriptionFieldExpanded) && (
                 <div className="flex items-center justify-between mt-4">
