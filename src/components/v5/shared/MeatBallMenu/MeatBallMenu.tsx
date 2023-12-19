@@ -48,7 +48,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           {
             'md:hover:text-blue-400 cursor-pointer': !disabled,
             'cursor-default': disabled,
-            'text-gray-600': !isMenuOpen,
+            'text-gray-400': !isMenuOpen,
             'text-blue-400': isMenuOpen,
           },
         )}
