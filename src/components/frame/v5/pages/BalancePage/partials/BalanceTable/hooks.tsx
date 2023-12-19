@@ -9,6 +9,7 @@ import {
 } from '~utils/tokens';
 import { getBlockExplorerLink } from '~utils/external';
 import { ACTION } from '~constants/actions';
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { NativeTokenStatus } from '~gql';
 import { Token } from '~types';
 import { useActionSidebarContext } from '~context';
@@ -26,10 +27,6 @@ const MSG = defineMessages({
   labelAddFunds: {
     id: `${displayName}.labelAddFunds`,
     defaultMessage: 'Add funds',
-  },
-  labelEthscan: {
-    id: `${displayName}.labelEthscan`,
-    defaultMessage: 'View on Ethscan',
   },
   labelMintToken: {
     id: `${displayName}.labelMintToken`,
@@ -183,7 +180,7 @@ export const useGetTableMenuProps = (
             renderItemWrapper: (props, children) => (
               <Link
                 to={getBlockExplorerLink({
-                  linkType: 'token',
+                  linkType: 'address',
                   addressOrHash: selectedTokenData?.tokenAddress || '',
                 })}
                 {...props}
@@ -191,7 +188,12 @@ export const useGetTableMenuProps = (
                 {children}
               </Link>
             ),
-            label: formatMessage(MSG.labelEthscan),
+            label: formatText(
+              { id: 'balancePage.labelEthscan.viewOn' },
+              {
+                networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
+              },
+            ),
             icon: 'arrow-square-out',
           },
           ...(isTokenNative

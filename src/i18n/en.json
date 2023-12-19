@@ -1445,6 +1445,7 @@
     "activityPage.recentActions.pastMonth": "{value}<span> past month</span>",
     "activityPage.mostActiveTeam": "Most active<span> team</span>",
     "balancePage.title": "Balance",
+    "balancePage.labelEthscan.viewOn": "View on {networkName}",
     "balancePage.description": "Overview of the Colony's balance by token",
     "balancePage.table.title": "Colony token balance",
     "balancePage.table.addFunds": "Add funds to the Colony",
