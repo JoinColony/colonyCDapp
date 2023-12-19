@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 
-import { DomainColor } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip';
 
-import { formatPercentage, setTeamColor } from '../utils';
+import { formatPercentage } from '../utils';
 
 const displayName =
   'v5.common.TeamReputationSummary.partials.TeamReputationSummaryRow';
 
 interface TeamReputationSummaryRowProps {
-  color?: DomainColor;
+  color: string;
   name?: string;
   totalReputation?: string | null;
 }
@@ -23,9 +22,7 @@ const TeamReputationSummaryRow: FC<TeamReputationSummaryRowProps> = ({
     <>
       <div className="flex items-center flex-grow">
         <div
-          className={`flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 ${setTeamColor(
-            color,
-          )}`}
+          className={`flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 ${color}`}
         />
         <span className="truncate max-w-[8.5rem] sm:max-w-[7.25rem]">
           {name}

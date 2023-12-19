@@ -1,6 +1,6 @@
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
-import { setTeamColor } from '~v5/common/TeamReputationSummary/utils';
+import { setTeamColor } from '~utils/teams';
 import {
   SearchSelectOption,
   SearchSelectOptionProps,

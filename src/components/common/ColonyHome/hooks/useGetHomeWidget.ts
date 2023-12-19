@@ -7,15 +7,13 @@ import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import {
-  setHexTeamColor,
-  setTeamColor,
-} from '~v5/common/TeamReputationSummary/utils';
 import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
 import { useMemberContext } from '~context/MemberContext';
 import { Token, User, Domain } from '~types';
 
 import { ChartData } from '../types';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { setHexTeamColor, setTeamColor } from '~utils/teams';
 
 interface UseGetHomeWidgetResult {
   totalActions: number;
@@ -25,15 +23,64 @@ interface UseGetHomeWidgetResult {
   nativeToken: Token | undefined;
   membersLoading: boolean;
   chartColors?: string[];
-  chartData?: ChartData[];
-  allTeams?: Domain[];
-  otherTeamsReputation?: number;
+  chartData: ChartData[];
   hoveredSegment?: ChartData | null;
   updateHoveredSegment: (segmentData: ChartData | null | undefined) => void;
 }
-const WIDGET_TEAM_LIMIT = 3;
 
-export const useGetHomeWidget = (team?: number): UseGetHomeWidgetResult => {
+const WIDGET_TEAM_LIMIT = 4;
+const TOP_TEAMS_WIDGET_LIMIT = WIDGET_TEAM_LIMIT - 1;
+
+const getTeamReputationChartData = (allTeams: Domain[]): ChartData[] => {
+  if (allTeams.length <= WIDGET_TEAM_LIMIT) {
+    return allTeams.map(({ id, metadata, reputationPercentage }) => {
+      return {
+        id,
+        label: metadata?.name || '',
+        value: Number(reputationPercentage),
+        color: setHexTeamColor(metadata?.color),
+        stroke: setHexTeamColor(metadata?.color),
+      };
+    });
+  }
+
+  const otherTeamsReputation = allTeams
+    .slice(TOP_TEAMS_WIDGET_LIMIT)
+    .reduce(
+      (acc, item) =>
+        item.reputationPercentage !== null
+          ? acc + Number(item.reputationPercentage)
+          : acc,
+      0,
+    );
+
+  const otherTeams = {
+    id: 'otherTeams',
+    label: formatText({ id: 'label.allOther' }),
+    value: otherTeamsReputation ?? 0,
+    color: '--color-teams-grey-100',
+    stroke: '--color-teams-grey-100',
+  };
+
+  const topTeams = allTeams
+    .slice(0, TOP_TEAMS_WIDGET_LIMIT)
+    .map(({ id, metadata, reputationPercentage }) => {
+      return {
+        id,
+        label: metadata?.name || '',
+        value: Number(reputationPercentage),
+        color: setHexTeamColor(metadata?.color),
+        stroke: setHexTeamColor(metadata?.color),
+      };
+    });
+
+  return [...topTeams, otherTeams];
+};
+
+export const useGetHomeWidget = (): UseGetHomeWidgetResult => {
+  const selectedTeam = useGetSelectedTeamFilter();
+  const nativeTeamId = selectedTeam?.nativeId ?? undefined;
+
   const { colony } = useColonyContext();
   const { domains, nativeToken, colonyAddress = '' } = colony || {};
   const { balances } = colony || {};
@@ -52,19 +99,23 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetResult => {
     getBalanceForTokenAndDomain(
       balances,
       nativeToken?.tokenAddress || '',
-      team,
+      nativeTeamId,
     ) || 0;
 
   const domainMembers = useMemo(
     () =>
-      team
+      nativeTeamId
         ? members.filter(
             ({ roles, reputation }) =>
-              roles?.items?.find((role) => role?.domain.nativeId === team) ||
-              reputation?.items?.find((rep) => rep?.domain.nativeId === team),
+              roles?.items?.find(
+                (role) => role?.domain.nativeId === nativeTeamId,
+              ) ||
+              reputation?.items?.find(
+                (rep) => rep?.domain.nativeId === nativeTeamId,
+              ),
           )
         : members,
-    [members, team],
+    [members, nativeTeamId],
   );
 
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
@@ -78,7 +129,7 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetResult => {
   const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
 
   const selectedTeamColor = domains?.items.find(
-    (domain) => domain?.nativeId === team,
+    (domain) => domain?.nativeId === nativeTeamId,
   )?.metadata?.color;
 
   const teamColor = setTeamColor(selectedTeamColor);
@@ -100,40 +151,14 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetResult => {
     [domainMembers],
   );
 
-  const allTeams = domains?.items
+  const allTeams = (domains?.items || [])
     .filter(notNull)
     .filter(({ nativeId }) => nativeId !== Id.RootDomain)
     .sort(
       (a, b) => Number(b.reputationPercentage) - Number(a.reputationPercentage),
     );
-  const otherTeamsReputation = allTeams
-    ?.slice(WIDGET_TEAM_LIMIT, allTeams.length)
-    .filter((item) => item.reputationPercentage !== null)
-    .reduce((acc, item) => acc + Number(item.reputationPercentage), 0);
 
-  const otherTeams = {
-    id: '4',
-    label: formatText({ id: 'label.allOther' }),
-    value: otherTeamsReputation ?? 0,
-    color: '--color-teams-grey-100',
-    stroke: '--color-teams-grey-100',
-  };
-
-  const firstThreeTeams = allTeams?.length
-    ? allTeams
-        .map(({ id, metadata, reputationPercentage }) => {
-          return {
-            id,
-            label: metadata?.name || '',
-            value: Number(reputationPercentage),
-            color: setHexTeamColor(metadata?.color),
-            stroke: setHexTeamColor(metadata?.color),
-          };
-        })
-        .slice(0, 3)
-    : [];
-
-  const chartData = allTeams?.length ? [...firstThreeTeams, otherTeams] : [];
+  const chartData = getTeamReputationChartData(allTeams);
 
   return {
     totalActions,
@@ -143,8 +168,6 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetResult => {
     nativeToken,
     membersLoading,
     chartData,
-    allTeams,
-    otherTeamsReputation,
     hoveredSegment,
     updateHoveredSegment,
   };

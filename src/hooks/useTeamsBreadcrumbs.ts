@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { TEAM_SEARCH_PARAM } from '~routes';
 import { notMaybe } from '~utils/arrays';
 import { formatText } from '~utils/intl';
+import { setTeamColor } from '~utils/teams';
 import { setQueryParamOnUrl } from '~utils/urls';
-import { setTeamColor } from '~v5/common/TeamReputationSummary/utils';
 
 import useColonyContext from './useColonyContext';
 

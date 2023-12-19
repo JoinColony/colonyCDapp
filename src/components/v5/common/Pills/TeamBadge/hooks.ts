@@ -1,5 +1,5 @@
 import { useColonyContext } from '~hooks';
-import { setTeamBadge } from '~v5/common/TeamReputationSummary/utils';
+import { setTeamBadge } from '~utils/teams';
 
 export const useTeamBadge = (teamName: string) => {
   const { colony } = useColonyContext();

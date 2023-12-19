@@ -12,6 +12,7 @@ import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
+import { setTeamColor } from '~utils/teams';
 import { TextButton } from '~v5/shared/Button';
 import MenuContainer from '~v5/shared/MenuContainer';
 import TitleLabel from '~v5/shared/TitleLabel';
@@ -87,7 +88,7 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
                     className="flex items-center text-sm mb-3 last:mb-0"
                   >
                     <TeamReputationSummaryRow
-                      color={team.metadata?.color}
+                      color={setTeamColor(team.metadata?.color)}
                       name={team.metadata?.name}
                       totalReputation={team.reputationPercentage}
                     />

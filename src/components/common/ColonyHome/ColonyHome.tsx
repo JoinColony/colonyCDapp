@@ -39,7 +39,9 @@ import ProgressBar from '~v5/shared/ProgressBar';
 import TitleWithNumber from '~v5/shared/TitleWithNumber';
 import UserAvatars from '~v5/shared/UserAvatars';
 
-import { useDashboardHeader, useGetHomeWidget } from './hooks';
+import { summaryLegendColor } from './consts';
+import { useDashboardHeader } from './hooks/useDashboardHeader';
+import { useGetHomeWidget } from './hooks/useGetHomeWidget';
 
 // @TODO: add page components
 const displayName = 'common.ColonyHome';
@@ -73,12 +75,10 @@ const ColonyHome = () => {
     currentTokenBalance,
     membersLoading,
     nativeToken,
-    allTeams,
     chartData,
-    otherTeamsReputation,
     hoveredSegment,
     updateHoveredSegment,
-  } = useGetHomeWidget(selectedTeam?.nativeId);
+  } = useGetHomeWidget();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -218,59 +218,27 @@ const ColonyHome = () => {
                           {formatText({ id: 'dashboard.team.widget.subtitle' })}
                         </h3>
                       </div>
-                      {allTeams?.length ? (
+                      {chartData.length > 0 ? (
                         <div className="w-full">
                           <ul className="flex flex-col justify-center gap-[.6875rem]">
-                            {allTeams.map((team, index) => {
-                              const { nativeId } = team;
-                              return (
-                                index < 3 && (
-                                  <li
-                                    key={nativeId}
-                                    className={clsx(
-                                      'flex items-center text-sm',
-                                      {
-                                        'transition-all font-semibold':
-                                          hoveredSegment?.id === team.id,
-                                      },
-                                    )}
-                                  >
-                                    <TeamReputationSummaryRow
-                                      color={team.metadata?.color}
-                                      name={team.metadata?.name}
-                                      totalReputation={
-                                        team.reputationPercentage
-                                      }
-                                    />
-                                  </li>
-                                )
-                              );
-                            })}
-                            {!!otherTeamsReputation && (
-                              <li className="flex items-center text-sm">
-                                <div className="flex items-center flex-grow">
-                                  <div className="flex rounded-full w-[.625rem] h-[.625rem] mr-2 bg-gray-100" />
-                                  <p
-                                    className={clsx({
-                                      'transition-all font-semibold':
-                                        hoveredSegment?.id === '4',
-                                    })}
-                                  >
-                                    {formatText({
-                                      id: 'label.allOther',
-                                    })}
-                                  </p>
-                                </div>
-                                <div className="font-medium">
-                                  <Numeral
-                                    value={Number(otherTeamsReputation).toFixed(
-                                      1,
-                                    )}
-                                    suffix="%"
-                                  />
-                                </div>
+                            {chartData.map(({ id, label, color, value }) => (
+                              <li
+                                key={id}
+                                className={clsx('flex items-center text-sm', {
+                                  'transition-all font-semibold':
+                                    hoveredSegment?.id === id,
+                                })}
+                              >
+                                <TeamReputationSummaryRow
+                                  color={
+                                    summaryLegendColor[color] ||
+                                    summaryLegendColor.default
+                                  }
+                                  name={label}
+                                  totalReputation={value.toString()}
+                                />
                               </li>
-                            )}
+                            ))}
                           </ul>
                         </div>
                       ) : (

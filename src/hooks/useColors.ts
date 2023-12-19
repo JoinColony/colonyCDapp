@@ -1,5 +1,5 @@
 import { DomainColor } from '~gql';
-import { setTeamColor } from '~v5/common/TeamReputationSummary/utils';
+import { setTeamColor } from '~utils/teams';
 
 const useColors = () => {
   const colors = Object.values(DomainColor).map((color) => {

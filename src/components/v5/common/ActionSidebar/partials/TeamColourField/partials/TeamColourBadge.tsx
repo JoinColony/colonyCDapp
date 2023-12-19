@@ -2,11 +2,8 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 
 import { useColonyContext } from '~hooks';
+import { setTeamBadge, setTeamColor } from '~utils/teams';
 import PillsBase from '~v5/common/Pills/PillsBase';
-import {
-  setTeamBadge,
-  setTeamColor,
-} from '~v5/common/TeamReputationSummary/utils';
 
 import { TeamColourBadgeProps } from '../types';
 
