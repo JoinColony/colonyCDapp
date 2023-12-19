@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { EditorContent } from '@tiptap/react';
 import clsx from 'clsx';
 
@@ -23,16 +23,28 @@ const RichText: FC<RichTextProps> = ({
   isDecriptionFieldExpanded,
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
+  shouldFocus,
 }) => {
-  const { editorContent, notFormattedContent, field, characterCount } =
-    useRichText(name, isDecriptionFieldExpanded, isReadonly);
+  const { editor, notFormattedContent, field, characterCount } = useRichText(
+    name,
+    isDecriptionFieldExpanded,
+    isReadonly,
+  );
+
+  useEffect(() => {
+    if (shouldFocus) {
+      editor?.commands.focus();
+    }
+    // @NOTE: Calling focus() with editor included in the dependencies causes an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldFocus]);
 
   return (
     <>
       {isReadonly ? (
         <>
-          {editorContent && isDecriptionFieldExpanded ? (
-            <EditorContent editor={editorContent} />
+          {editor && isDecriptionFieldExpanded ? (
+            <EditorContent editor={editor} />
           ) : (
             <>
               <button
@@ -67,10 +79,10 @@ const RichText: FC<RichTextProps> = ({
         </>
       ) : (
         <>
-          {editorContent && isDecriptionFieldExpanded ? (
+          {editor && isDecriptionFieldExpanded ? (
             <>
-              <MenuBar editor={editorContent} />
-              <EditorContent editor={editorContent} {...omit(field, 'ref')} />
+              <MenuBar editor={editor} />
+              <EditorContent editor={editor} {...omit(field, 'ref')} />
 
               {(characterCount || isDecriptionFieldExpanded) && (
                 <div className="flex items-center justify-between mt-4">

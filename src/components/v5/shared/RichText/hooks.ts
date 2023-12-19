@@ -24,7 +24,7 @@ export const useRichText = (
     name,
   });
 
-  const editorContent = useEditor(
+  const editor = useEditor(
     {
       editable: !isReadonly,
       extensions: [
@@ -88,41 +88,39 @@ export const useRichText = (
         },
       },
       content: field.value,
-      onUpdate: ({ editor }) => {
-        const json = editor.getHTML();
+      onUpdate: (props) => {
+        const json = props.editor.getHTML();
         field.onChange(json);
       },
     },
     [],
   );
 
-  const characterCount: number =
-    editorContent?.storage.characterCount.characters();
+  const characterCount: number = editor?.storage.characterCount.characters();
 
   useEffect(() => {
-    if (field.value && editorContent && !isDecriptionFieldExpanded) {
-      editorContent?.setEditable(false);
+    if (field.value && editor && !isDecriptionFieldExpanded) {
+      editor?.setEditable(false);
       setNotFormattedContent(
-        editorContent?.getText() ||
-          formatText({ id: 'placeholder.enterDescription' }),
+        editor?.getText() || formatText({ id: 'placeholder.enterDescription' }),
       );
     }
-  }, [editorContent, isDecriptionFieldExpanded, field.value]);
+  }, [editor, isDecriptionFieldExpanded, field.value]);
 
   useEffect(() => {
     const handleUpdate = ({ editor: textEditor }: { editor }) => {
       field.onChange(textEditor.getHTML());
     };
 
-    editorContent?.on('selectionUpdate', handleUpdate);
-    editorContent?.on('blur', handleUpdate);
+    editor?.on('selectionUpdate', handleUpdate);
+    editor?.on('blur', handleUpdate);
 
     return () => {
-      editorContent?.off('selectionUpdate', handleUpdate);
-      editorContent?.off('blur', handleUpdate);
+      editor?.off('selectionUpdate', handleUpdate);
+      editor?.off('blur', handleUpdate);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editorContent, field.value, name]);
+  }, [editor, field.value, name]);
 
-  return { editorContent, notFormattedContent, field, characterCount };
+  return { editor, notFormattedContent, field, characterCount };
 };
