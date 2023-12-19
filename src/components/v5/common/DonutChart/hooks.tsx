@@ -8,9 +8,7 @@ import React, {
   useMemo,
 } from 'react';
 
-import { ChartData } from '~common/ColonyHome/types';
-
-import { DonutChartProps, UseDonutChartReturnType } from './types';
+import { ChartData, DonutChartProps, UseDonutChartReturnType } from './types';
 
 export const useDonutChart = ({
   data,
