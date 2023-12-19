@@ -34,10 +34,9 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
   const ref = useRef<HTMLInputElement | null>(null);
 
   useLayoutEffect(() => {
-    if (!ref.current) {
-      return;
+    if (ref.current) {
+      ref.current.focus();
     }
-    ref.current.focus();
   }, []);
 
   const onInput: ChangeEventHandler<HTMLInputElement> = useCallback(

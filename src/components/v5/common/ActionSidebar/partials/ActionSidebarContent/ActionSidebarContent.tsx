@@ -73,10 +73,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
 
   useLayoutEffect(() => {
-    if (!titleRef.current) {
-      return;
+    if (titleRef.current) {
+      titleRef.current.focus();
     }
-    titleRef.current.focus();
   }, []);
 
   return (

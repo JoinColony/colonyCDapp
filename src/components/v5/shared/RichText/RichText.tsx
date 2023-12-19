@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useLayoutEffect } from 'react';
 import { EditorContent } from '@tiptap/react';
 import clsx from 'clsx';
 
@@ -31,7 +31,7 @@ const RichText: FC<RichTextProps> = ({
     isReadonly,
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (shouldFocus) {
       editor?.commands.focus();
     }
