@@ -71,7 +71,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     (message) => message?.name === SystemMessages.MotionVotingPhase,
   );
 
-  const cardTitleText = (() => {
+  const cardTitleMessageId = (() => {
     if (isFullyStaked) {
       return 'motion.staking.status.text.locked';
     }
@@ -94,7 +94,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           textClassName: 'text-4 text-gray-900',
           children: formatText(
             {
-              id: cardTitleText,
+              id: cardTitleMessageId,
             },
             {
               time: formatRelative(
