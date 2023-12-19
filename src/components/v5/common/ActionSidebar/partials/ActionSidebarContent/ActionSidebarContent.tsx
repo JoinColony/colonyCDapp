@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useRef } from 'react';
+import React, { FC } from 'react';
 import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
 import { useFormContext } from 'react-hook-form';
@@ -70,19 +70,10 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const { noPermissionsError } = usePermissionsValidation();
   const { noReputationError } = useReputationValidation();
 
-  const titleRef = useRef<HTMLTextAreaElement | null>(null);
-
-  useLayoutEffect(() => {
-    if (titleRef.current) {
-      titleRef.current.focus();
-    }
-  }, []);
-
   return (
     <>
       <div className="flex-grow overflow-y-auto px-6">
         <FormTextareaBase
-          ref={titleRef}
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
           className={`
@@ -91,6 +82,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             transition-colors
           `}
           message={false}
+          shouldFocus
         />
         <div className="text-gray-900 text-md flex gap-1 break-all">
           {descriptionMetadata}
