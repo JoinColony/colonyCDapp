@@ -39,8 +39,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const { refetchColony } = useColonyContext();
-  const { isFinalizable, transform: finalizePayload } =
-    useFinalizeStep(actionData);
+  const {
+    isFinalizable,
+    transform: finalizePayload,
+    hasEnoughFundsToFinalize,
+  } = useFinalizeStep(actionData);
   const {
     items,
     isClaimed,
@@ -122,7 +125,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         iconSize: 'extraSmall',
       }}
       sections={[
-        ...(!isFinalizable
+        ...(!hasEnoughFundsToFinalize
           ? [
               {
                 key: `${actionData.motionData.transactionHash}-not-enough-balance`,

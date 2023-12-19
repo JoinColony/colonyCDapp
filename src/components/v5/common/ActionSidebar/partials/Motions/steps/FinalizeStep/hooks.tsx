@@ -50,11 +50,13 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     type !== ColonyActionType.EmitDomainReputationPenaltyMotion &&
     type !== ColonyActionType.EmitDomainReputationRewardMotion;
 
+  const hasEnoughFundsToFinalize =
+    !requiresDomainFunds ||
+    // Safe casting since if requiresDomainFunds is true, we know amount is a string
+    BigNumber.from(domainBalance ?? '0').gte(amount as string);
+
   const isFinalizable =
-    (!requiresDomainFunds ||
-      // Safe casting since if requiresDomainFunds is true, we know amount is a string
-      BigNumber.from(domainBalance ?? '0').gte(amount as string)) &&
-    !motionStateHistory.hasFailedNotFinalizable;
+    hasEnoughFundsToFinalize && !motionStateHistory.hasFailedNotFinalizable;
 
   const transform = mapPayload(
     (): MotionFinalizePayload => ({
@@ -68,6 +70,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   return {
     transform,
     isFinalizable,
+    hasEnoughFundsToFinalize,
   };
 };
 
