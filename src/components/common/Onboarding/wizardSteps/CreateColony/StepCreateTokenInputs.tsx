@@ -20,23 +20,6 @@ interface StepCreateTokenInputsProps {
 }
 
 const MSG = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Your Colony’s native token',
-  },
-  description: {
-    id: `${displayName}.description`,
-    defaultMessage:
-      'Your native token is your organization’s unit of ownership, and powers key features within your Colony.{br}{br}Tokens are initially locked and not transferable by recipients. You must unlock your token if you wish it to become tradable.',
-  },
-  create: {
-    id: `${displayName}.create`,
-    defaultMessage: 'Create a new token',
-  },
-  select: {
-    id: `${displayName}.select`,
-    defaultMessage: 'Use an existing token',
-  },
   tokenName: {
     id: `${displayName}.tokenName`,
     defaultMessage: 'Token name',
@@ -107,6 +90,7 @@ const StepCreateTokenInputs = ({
             defaultValue={wizardTokenName}
             labelMessage={MSG.tokenName}
             errorMaxChar
+            shouldFocus
           />
         </div>
         <div className="flex-1">

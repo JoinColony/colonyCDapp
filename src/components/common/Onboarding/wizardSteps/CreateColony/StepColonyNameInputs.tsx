@@ -64,6 +64,7 @@ const StepColonyNameInputs = ({
         isDisabled={isSubmitting}
         defaultValue={wizardDisplayName}
         labelMessage={{ id: 'colonyName' }}
+        shouldFocus
       />
       <div className="flex flex-col gap-2 pt-6">
         <label className="flex flex-col text-1" htmlFor="id-colonyName">
