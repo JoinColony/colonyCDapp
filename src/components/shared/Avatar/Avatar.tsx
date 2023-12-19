@@ -1,9 +1,9 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
-import getIcon from './identicon';
 import Icon from '~shared/Icon';
-import styles from './Avatar.module.css';
 import { AvatarSize } from '~v5/shared/Avatar/types';
+import getIcon from './identicon';
+import styles from './Avatar.module.css';
 
 export interface Props {
   /** Seed phrase for blockies fallback (usually an address) */

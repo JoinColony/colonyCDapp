@@ -18,5 +18,4 @@ export interface UserPopoverProps extends UserInfoProps {
   additionalContent?: JSX.Element;
   withVerifiedBadge?: boolean;
   wrapperClassName?: string;
-  colonyAddress?: string;
 }

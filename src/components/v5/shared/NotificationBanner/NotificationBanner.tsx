@@ -13,6 +13,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
   children,
   description,
   callToAction,
+  descriptionClassName,
 }) => {
   return (
     <div
@@ -45,7 +46,11 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
         <div className="flex flex-1 flex-col gap-1 items-start text-md break-word">
           {children}
           {description ? (
-            <div className="text-sm text-gray-900">{description}</div>
+            <div
+              className={clsx(descriptionClassName, 'text-sm text-gray-900')}
+            >
+              {description}
+            </div>
           ) : null}
         </div>
         {callToAction ? (

@@ -138,7 +138,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                   description={
                     userByAddress?.walletAddress ||
                     (field.value && (
-                      <div className="mt-2 font-semibold break-words">
+                      <div className="mt-2 font-semibold break-words text-sm text-warning-400 border-b border-warning-200 pb-2">
                         {userByAddress?.walletAddress || field.value}
                       </div>
                     ))
@@ -148,9 +148,12 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                       {formatText({ id: 'add.verified.member' })}
                     </button>
                   }
-                  className="mt-4 text-left"
+                  className="text-left text-warning-400 !border-warning-400"
+                  descriptionClassName="text-warning-400 font-semibold"
                 >
-                  {formatText({ id: 'user.not.verified.warning' })}
+                  <span className="text-sm">
+                    {formatText({ id: 'user.not.verified.warning' })}
+                  </span>
                 </NotificationBanner>
               }
             >

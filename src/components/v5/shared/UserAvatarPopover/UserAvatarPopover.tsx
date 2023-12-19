@@ -36,7 +36,6 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({ size, ...props }) => {
       userName={userDisplayName ?? splitAddress}
       aboutDescription={bio || ''}
       user={user}
-      colonyAddress={colonyAddress}
       className={clsx({
         skeleton: !user,
       })}

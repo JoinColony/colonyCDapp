@@ -8,4 +8,5 @@ export interface UserAvatarDetailsProps extends AvatarProps {
   userStatus?: UserStatusMode | null;
   isContributorsList?: boolean;
   isBordered?: boolean;
+  additionalContent?: React.ReactNode;
 }

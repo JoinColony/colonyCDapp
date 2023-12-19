@@ -26,6 +26,7 @@ const UserInfo: FC<UserInfoProps> = ({
   userStatus,
   domains,
   size,
+  additionalContent,
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
   const isTopContributorType = userStatus === 'top';
@@ -93,7 +94,15 @@ const UserInfo: FC<UserInfoProps> = ({
           <p className={clsx('text-md text-gray-600', {})}>
             {aboutDescriptionText}
           </p>
-          <div className={clsx('my-6 border-t border-gray-200', {})} />
+        </div>
+      )}
+      {additionalContent && (
+        <div
+          className={clsx({
+            'pt-6 px-6': isTopContributorType,
+          })}
+        >
+          {additionalContent}
         </div>
       )}
       {domains?.length ? (
@@ -103,6 +112,7 @@ const UserInfo: FC<UserInfoProps> = ({
             'pt-6': !aboutDescriptionText && isTopContributorType,
           })}
         >
+          <div className={clsx('my-6 border-t border-gray-200', {})} />
           <TitleLabel
             text={formatText({
               id: 'userInfo.teamBreakdown.section',

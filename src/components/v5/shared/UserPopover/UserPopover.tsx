@@ -18,7 +18,7 @@ const displayName = 'v5.UserPopover';
 
 const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   userName,
-  walletAddress,
+  walletAddress = '',
   aboutDescription,
   user,
   size,
@@ -39,8 +39,8 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
 
   const { data: colonyContributorData } = useGetColonyContributorQuery({
     variables: {
-      id: getColonyContributorId(colonyAddress || '', walletAddress || ''),
-      colonyAddress: colonyAddress || '',
+      id: getColonyContributorId(colonyAddress, walletAddress),
+      colonyAddress,
     },
   });
 
@@ -110,6 +110,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}
+      additionalContent={additionalContent}
     />
   );
 
@@ -126,7 +127,6 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
           isTopSectionWithBackground={isTopSectionWithBackground}
         >
           {content}
-          {additionalContent}
         </Modal>
       ) : (
         <>
@@ -150,7 +150,6 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
               }
             >
               {content}
-              {additionalContent}
             </PopoverBase>
           )}
         </>
