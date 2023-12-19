@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
 import clsx from 'clsx';
 
+import { defineMessages } from 'react-intl';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
@@ -18,6 +19,17 @@ import { getTeamReputationChartData } from './utils';
 import { summaryLegendColor } from './consts';
 
 const displayName = 'common.ColonyHome.ReputationChart';
+
+const MSG = defineMessages({
+  legendNoTeams: {
+    id: `${displayName}.legendNoTeams`,
+    defaultMessage: 'There are no teams with reputation in the Colony',
+  },
+  legendNoTeamsAction: {
+    id: `${displayName}.legendNoTeamsAction`,
+    defaultMessage: 'Create an action',
+  },
+});
 
 const ReputationChart = () => {
   const { colony } = useColonyContext();
@@ -50,6 +62,59 @@ const ReputationChart = () => {
 
   const chartData = getTeamReputationChartData(allTeams);
 
+  const getChartLegend = () => {
+    const doesReputationExist = chartData[0] ? chartData[0].value > 0 : false;
+
+    if (chartData.length === 0) {
+      return (
+        <EmptyWidgetState
+          title={formatText({
+            id: 'dashboard.team.widget.noData',
+          })}
+          actionTitle={formatText({
+            id: 'dashboard.team.widget.createTeam',
+          })}
+          className="px-[1.8rem] py-[2.3rem]"
+          onClick={openCreateNewTeam}
+        />
+      );
+    }
+
+    if (!doesReputationExist) {
+      return (
+        <EmptyWidgetState
+          title={<p className="text-center">{formatText(MSG.legendNoTeams)}</p>}
+          actionTitle={formatText(MSG.legendNoTeamsAction)}
+          className="px-[1.8rem] py-[2.3rem]"
+          onClick={() => {
+            toggleActionSidebarOn();
+          }}
+        />
+      );
+    }
+
+    return (
+      <div className="w-full">
+        <ul className="flex flex-col justify-center gap-[.6875rem]">
+          {chartData.map(({ id, label, color, value }) => (
+            <li
+              key={id}
+              className={clsx('flex items-center text-sm', {
+                'transition-all font-semibold': hoveredSegment?.id === id,
+              })}
+            >
+              <TeamReputationSummaryRow
+                color={summaryLegendColor[color] || summaryLegendColor.default}
+                name={label}
+                totalReputation={value.toString()}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <WidgetBox
       value={
@@ -72,41 +137,7 @@ const ReputationChart = () => {
                 {formatText({ id: 'dashboard.team.widget.subtitle' })}
               </h3>
             </div>
-            {chartData.length > 0 ? (
-              <div className="w-full">
-                <ul className="flex flex-col justify-center gap-[.6875rem]">
-                  {chartData.map(({ id, label, color, value }) => (
-                    <li
-                      key={id}
-                      className={clsx('flex items-center text-sm', {
-                        'transition-all font-semibold':
-                          hoveredSegment?.id === id,
-                      })}
-                    >
-                      <TeamReputationSummaryRow
-                        color={
-                          summaryLegendColor[color] ||
-                          summaryLegendColor.default
-                        }
-                        name={label}
-                        totalReputation={value.toString()}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <EmptyWidgetState
-                title={formatText({
-                  id: 'dashboard.team.widget.noData',
-                })}
-                actionTitle={formatText({
-                  id: 'dashboard.team.widget.createTeam',
-                })}
-                className="px-[1.8rem] py-[2.3rem]"
-                onClick={openCreateNewTeam}
-              />
-            )}
+            {getChartLegend()}
           </div>
         </div>
       }
