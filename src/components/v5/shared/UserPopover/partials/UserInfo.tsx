@@ -21,14 +21,14 @@ const UserInfo: FC<UserInfoProps> = ({
   userName,
   isVerified,
   walletAddress,
-  aboutDescription,
+  aboutDescription = '',
   avatar,
   userStatus,
   domains,
   size,
   additionalContent,
 }) => {
-  const aboutDescriptionText = formatText(aboutDescription || '');
+  const aboutDescriptionText = formatText(aboutDescription);
   const isTopContributorType = userStatus === 'top';
 
   return (
