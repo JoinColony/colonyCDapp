@@ -4,15 +4,15 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
 import { useColonyContext, useContributorBreakdown, useMobile } from '~hooks';
+import { useGetColonyContributorQuery } from '~gql';
+import { getColonyContributorId } from '~utils/members';
+import Icon from '~shared/Icon';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
-import Icon from '~shared/Icon';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 import UserInfo from './partials/UserInfo';
 import { UserPopoverProps } from './types';
-import { useGetColonyContributorQuery } from '~gql';
-import { getColonyContributorId } from '~utils/members';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 const displayName = 'v5.UserPopover';
 

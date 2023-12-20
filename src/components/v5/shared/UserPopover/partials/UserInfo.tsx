@@ -91,9 +91,7 @@ const UserInfo: FC<UserInfoProps> = ({
             className={clsx('mb-2')}
             text={formatText({ id: 'userInfo.about.section' })}
           />
-          <p className={clsx('text-md text-gray-600', {})}>
-            {aboutDescriptionText}
-          </p>
+          <p className="text-md text-gray-600">{aboutDescriptionText}</p>
         </div>
       )}
       {additionalContent && (
