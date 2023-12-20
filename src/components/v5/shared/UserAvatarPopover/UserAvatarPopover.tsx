@@ -25,7 +25,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({ size, ...props }) => {
 
   const contributor = data?.getColonyContributor;
   const { user } = contributor ?? {};
-  const { bio, displayName: userDisplayName } = user?.profile || {};
+  const { displayName: userDisplayName } = user?.profile || {};
 
   const splitAddress = splitWalletAddress(user?.walletAddress || '');
   const userStatus = (contributor?.type?.toLowerCase() ??
@@ -34,7 +34,6 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({ size, ...props }) => {
   return (
     <UserPopover
       userName={userDisplayName ?? splitAddress}
-      aboutDescription={bio || ''}
       user={user}
       className={clsx({
         skeleton: !user,

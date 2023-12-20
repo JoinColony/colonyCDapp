@@ -19,7 +19,6 @@ const displayName = 'v5.UserPopover';
 const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   userName,
   walletAddress = '',
-  aboutDescription,
   user,
   size,
   children,
@@ -45,6 +44,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   });
 
   const contributor = colonyContributorData?.getColonyContributor;
+  const { bio } = contributor?.user?.profile || {};
   const { isVerified } = contributor || {};
   const domains = useContributorBreakdown(contributor);
 
@@ -106,7 +106,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       title={userName}
       walletAddress={walletAddress}
       isVerified={isVerified}
-      aboutDescription={aboutDescription}
+      aboutDescription={bio || ''}
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}
