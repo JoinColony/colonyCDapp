@@ -19,7 +19,7 @@ const ActivityPage: FC = () => {
   const widgets = useActivityFeedWidgets();
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-[1.125rem] w-full">
+    <div className="flex flex-col gap-4 sm:gap-6 w-full">
       <WidgetBoxList items={widgets} />
       <div>
         <ColonyActionsTable />

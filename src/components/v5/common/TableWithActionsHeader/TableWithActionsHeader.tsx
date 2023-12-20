@@ -20,7 +20,7 @@ function TableWithActionsHeader<
 }: PropsWithChildren<TableWithActionsHeaderProps<TData, TProps>>) {
   return (
     <>
-      <div className={clsx(headerClassName, 'py-3.5')}>
+      <div className={clsx(headerClassName, 'pb-3.5')}>
         <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col">
           <div className="flex items-center">
             <h4 className="heading-5 mr-3">{title}</h4>
