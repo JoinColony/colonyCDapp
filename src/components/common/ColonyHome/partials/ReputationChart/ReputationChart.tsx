@@ -27,7 +27,7 @@ const MSG = defineMessages({
   },
   legendNoTeamsAction: {
     id: `${displayName}.legendNoTeamsAction`,
-    defaultMessage: 'Create an action',
+    defaultMessage: 'Create a new action',
   },
 });
 

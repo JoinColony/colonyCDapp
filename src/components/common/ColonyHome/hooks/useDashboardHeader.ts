@@ -28,7 +28,8 @@ const getExternalLinks = (externalLinks: ExternalLink[]): ColonyLinksItem[] => {
   const linksPriority = Object.keys(iconMappings);
 
   const sortedLinks = [...(externalLinks || [])]?.sort(
-    (x, y) => linksPriority.indexOf(x.name) - linksPriority.indexOf(y.name),
+    (link1, link2) =>
+      linksPriority.indexOf(link1.name) - linksPriority.indexOf(link2.name),
   );
 
   return sortedLinks.map(({ name, link }) => ({
