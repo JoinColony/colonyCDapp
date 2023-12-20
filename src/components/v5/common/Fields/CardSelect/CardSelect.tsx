@@ -113,7 +113,7 @@ function CardSelect<TValue = string>({
             type="button"
             className={clsx(
               togglerClassName,
-              'flex text-md md:transition-colors md:hover:text-blue-400',
+              'flex text-md md:transition-colors md:hover:text-blue-400 text-left',
               {
                 'text-gray-400': !state && !isSelectVisible,
                 'text-gray-900': value && !isSelectVisible,
@@ -149,7 +149,7 @@ function CardSelect<TValue = string>({
                   {groupedOptions.map((group) => (
                     <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
                       {group.title && (
-                        <h5 className="text-4 text-gray-400 uppercase px-4 pt-2">
+                        <h5 className="section-title text-4 text-gray-400 uppercase px-4 pt-2">
                           {group.title}
                         </h5>
                       )}

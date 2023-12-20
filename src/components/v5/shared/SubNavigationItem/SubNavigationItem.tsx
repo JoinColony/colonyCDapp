@@ -77,7 +77,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
           cardProps={{
             rounded: 's',
             hasShadow: true,
-            className: 'py-4 px-2',
+            className: 'py-4 sm:pt-6 sm:pb-4 px-2',
           }}
           classNames="w-full sm:max-w-[17.375rem]"
         >

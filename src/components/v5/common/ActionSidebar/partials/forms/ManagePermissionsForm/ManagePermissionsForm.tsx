@@ -41,7 +41,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     ([, { toggleOff }]) => (
       <button
         type="button"
-        className="w-full flex justify-center items-center"
+        className="w-full flex justify-center items-center py-2"
         onClick={() => {
           togglePermissionsModalOn();
           toggleOff();
@@ -106,7 +106,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="role"
-          cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm"
+          cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm md:px-4 md:[&_.section-title]:px-2"
           renderSelectedValue={(option, placeholder) =>
             getRoleLabel(option?.value) || placeholder
           }
@@ -115,6 +115,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           placeholder={formatText({
             id: 'actionSidebar.managePermissions.roleSelect.placeholder',
           })}
+          itemClassName="group flex text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded p-2 w-full cursor-pointer"
           footer={permissionSelectFooter}
         />
       </ActionFormRow>
