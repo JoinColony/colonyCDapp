@@ -94,7 +94,10 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                     return;
                   }
 
-                  if (Object.keys(formState.dirtyFields).length > 0) {
+                  if (
+                    Object.keys(formState.dirtyFields).length > 0 &&
+                    !!actionType
+                  ) {
                     setNextActionType(action);
 
                     return;
