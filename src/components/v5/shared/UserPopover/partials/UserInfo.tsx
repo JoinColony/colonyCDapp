@@ -111,7 +111,7 @@ const UserInfo: FC<UserInfoProps> = ({
             'pt-6': !aboutDescriptionText && isTopContributorType,
           })}
         >
-          <div className={clsx('my-6 border-t border-gray-200', {})} />
+          <div className="my-6 border-t border-gray-200" />
           <TitleLabel
             text={formatText({
               id: 'userInfo.teamBreakdown.section',
