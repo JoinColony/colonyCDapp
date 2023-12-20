@@ -127,7 +127,7 @@ const VotingStep: FC<VotingStepProps> = ({
               {(hasUserVoted || canVote) && (
                 <div className="mt-7 pt-6 border-t border-gray-200" />
               )}
-              <DescriptionList items={items} className="mt-1 mb-1" />
+              <DescriptionList items={items} className="my-1" />
               {canVote && (
                 <Button
                   mode="primarySolid"
