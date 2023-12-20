@@ -1,4 +1,5 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { CleaveOptions } from 'cleave.js/options';
 import Decimal from 'decimal.js';
 import React, { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -100,26 +101,27 @@ export const useManageReputationTableColumns = (
     nativeTokenDecimals,
   );
 
-  const changePercentage = isSmite
-    ? new Decimal(userPercentageReputation || 0)
-        .sub(newPercentageReputation || 0)
-        .toString()
-    : new Decimal(newPercentageReputation || 0)
-        .sub(userPercentageReputation || 0)
-        .toString();
+  // @todo: add percentage value to input prefix
+  // const changePercentage = isSmite
+  //   ? new Decimal(userPercentageReputation || 0)
+  //       .sub(newPercentageReputation || 0)
+  //       .toString()
+  //   : new Decimal(newPercentageReputation || 0)
+  //       .sub(userPercentageReputation || 0)
+  //       .toString();
 
-  const formattingOptions = useMemo(
+  const formattingOptions: CleaveOptions = useMemo(
     () => ({
       numeral: true,
       tailPrefix: true,
-      numeralDecimalScale: 10,
+      numeralDecimalScale: 4,
       numeralPositiveOnly: true,
       rawValueTrimPrefix: true,
-      prefix: ` Points (${
-        changePercentage !== '0' ? changePercentage : '0.0'
-      }%)`,
+      // prefix: ` Points (${
+      //   changePercentage !== '0' ? changePercentage : '0.0'
+      // }%)`,
     }),
-    [changePercentage],
+    [],
   );
 
   const columns: ColumnDef<ManageReputationTableModel, string>[] = useMemo(
