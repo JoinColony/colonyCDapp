@@ -88,7 +88,7 @@ const UserInfo: FC<UserInfoProps> = ({
           })}
         >
           <TitleLabel
-            className={clsx('mb-2')}
+            className="mb-2"
             text={formatText({ id: 'userInfo.about.section' })}
           />
           <p className="text-md text-gray-600">{aboutDescriptionText}</p>
