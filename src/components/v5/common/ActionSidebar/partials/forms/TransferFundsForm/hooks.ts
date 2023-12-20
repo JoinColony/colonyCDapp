@@ -83,6 +83,9 @@ export const useTransferFunds = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
+  const selectedTokenAddress: string = useWatch({
+    name: 'amount.tokenAddress',
+  });
   const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
@@ -93,10 +96,11 @@ export const useTransferFunds = (
         to: Id.RootDomain.toString(),
         from: Id.RootDomain.toString(),
         amount: {
-          tokenAddress: colony?.nativeToken.tokenAddress,
+          tokenAddress:
+            selectedTokenAddress ?? colony?.nativeToken.tokenAddress,
         },
       }),
-      [colony?.nativeToken.tokenAddress],
+      [selectedTokenAddress, colony?.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions

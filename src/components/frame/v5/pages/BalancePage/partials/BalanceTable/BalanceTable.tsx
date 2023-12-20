@@ -1,24 +1,25 @@
 import React, { FC, useState } from 'react';
+import clsx from 'clsx';
 import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
 } from '@tanstack/react-table';
 import { uniqueId } from 'lodash';
-import Button from '~v5/shared/Button';
 import { useColonyContext, useMobile } from '~hooks';
-import { BalanceTableFieldModel, BalanceTableProps } from './types';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import useToggle from '~hooks/useToggle';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { formatText } from '~utils/intl';
 // import { useSearchContext } from '~context/SearchContext';
 // import Filter from '~v5/common/Filter';
-import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
 import EmptyContent from '~v5/common/EmptyContent';
 import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
-import useToggle from '~hooks/useToggle';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import CopyWallet from '~v5/shared/CopyWallet';
+import Button from '~v5/shared/Button';
 import BalanceModal from '../BalanceModal';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
+import { BalanceTableFieldModel, BalanceTableProps } from './types';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
@@ -45,7 +46,12 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
     nativeTokenStatus,
     Number(selectedTeam?.nativeId) || undefined,
   );
-  const getMenuProps = useGetTableMenuProps();
+  const { getMenuProps } = useGetTableMenuProps(
+    data,
+    toggleAddFundsModalOn,
+    nativeTokenStatus,
+    nativeToken,
+  );
 
   return (
     <>
@@ -69,6 +75,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
             pageSize: 10,
           },
         }}
+        showPageNumber={data.length >= 10}
         onSortingChange={setSorting}
         onRowSelectionChange={setRowSelection}
         getSortedRowModel={getSortedRowModel()}
@@ -86,6 +93,11 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           )
         }
         getMenuProps={getMenuProps}
+        renderCellWrapper={(className, content) => (
+          <div className={clsx(className, 'min-h-[3.625rem] !py-[0.1rem]')}>
+            {content}
+          </div>
+        )}
       >
         <>
           {/* # TODO Enable correct filtering */}

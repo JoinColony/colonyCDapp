@@ -107,7 +107,9 @@ export const useSimplePayment = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const tokenAddress: string = useWatch({ name: 'amount.tokenAddress' });
+  const selectedTokenAddress: string = useWatch({
+    name: 'amount.tokenAddress',
+  });
   const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
@@ -117,10 +119,11 @@ export const useSimplePayment = (
         createdIn: Id.RootDomain.toString(),
         payments: [],
         amount: {
-          tokenAddress: colony?.nativeToken.tokenAddress,
+          tokenAddress:
+            selectedTokenAddress ?? colony?.nativeToken.tokenAddress,
         },
       }),
-      [colony?.nativeToken.tokenAddress],
+      [selectedTokenAddress, colony?.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
@@ -141,8 +144,4 @@ export const useSimplePayment = (
       [colony, networkInverseFee],
     ),
   });
-
-  return {
-    tokenAddress,
-  };
 };

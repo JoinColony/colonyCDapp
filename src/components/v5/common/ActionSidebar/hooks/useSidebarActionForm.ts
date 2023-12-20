@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 import { ACTION, Action } from '~constants/actions';
-import { useGlobalEventHandler } from '~hooks';
 import SinglePaymentForm from '../partials/forms/SimplePaymentForm';
 import MintTokenForm from '../partials/forms/MintTokenForm';
 import TransferFundsForm from '../partials/forms/TransferFundsForm';
@@ -16,8 +15,6 @@ import EditColonyDetailsForm from '../partials/forms/EditColonyDetailsForm';
 import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectivesForm';
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { ActionFormBaseProps } from '../types';
-import { GLOBAL_EVENTS } from '~utils/browser/dispatchGlobalEvent/consts';
-import { SetActionTypeCutomEventDetail } from '~utils/browser/dispatchGlobalEvent/types';
 import SplitPaymentForm from '../partials/forms/SplitPaymentForm';
 import ManageTokensForm from '../partials/forms/ManageTokensForm';
 import AdvancedPaymentForm from '../partials/forms/AdvancedPaymentForm';
@@ -54,13 +51,6 @@ export const useSidebarActionForm = () => {
   const formComponent = selectedAction
     ? actionFormComponents[selectedAction]
     : undefined;
-
-  useGlobalEventHandler<SetActionTypeCutomEventDetail>(
-    GLOBAL_EVENTS.SET_ACTION_TYPE,
-    (event) => {
-      form.setValue(ACTION_TYPE_FIELD_NAME, event.detail.actionType);
-    },
-  );
 
   return {
     selectedAction,

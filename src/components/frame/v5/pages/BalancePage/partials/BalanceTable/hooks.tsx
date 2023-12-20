@@ -1,19 +1,46 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useCallback, useMemo } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { formatText } from '~utils/intl';
 import Numeral from '~shared/Numeral';
-import TokenAvatar from '../TokenAvatar';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
+import { getBlockExplorerLink } from '~utils/external';
+import { ACTION } from '~constants/actions';
+import { DEFAULT_NETWORK_INFO } from '~constants';
+import { NativeTokenStatus } from '~gql';
+import { Token } from '~types';
+import { useActionSidebarContext } from '~context';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
-// import Link from '~v5/shared/Link';
-// import { DEFAULT_NETWORK_INFO } from '~constants';
-// import { getBlockExplorerLink } from '~utils/external';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import Link from '~v5/shared/Link';
+import TokenAvatar from '../TokenAvatar';
 import { BalanceTableFieldModel } from './types';
+
+const displayName = 'v5.pages.BalancePage.partials.BalaceTable.hooks';
+
+const MSG = defineMessages({
+  labelAddFunds: {
+    id: `${displayName}.labelAddFunds`,
+    defaultMessage: 'Add funds',
+  },
+  labelMintToken: {
+    id: `${displayName}.labelMintToken`,
+    defaultMessage: 'Mint tokens',
+  },
+  labelTransferFunds: {
+    id: `${displayName}.transferFunds`,
+    defaultMessage: 'Transfer funds',
+  },
+  labelMakePayment: {
+    id: `${displayName}.makePayment`,
+    defaultMessage: 'Make payment using this token',
+  },
+});
 
 export const useBalanceTableColumns = (
   nativeToken,
@@ -114,60 +141,115 @@ export const useBalanceTableColumns = (
   return columns;
 };
 
-export const useGetTableMenuProps = () =>
-  useCallback<
+export const useGetTableMenuProps = (
+  data: BalanceTableFieldModel[],
+  toggleAddFundsModalOn: () => void,
+  nativeTokenStatus?: NativeTokenStatus | null,
+  nativeToken?: Token,
+) => {
+  const { formatMessage } = useIntl();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
+
+  const getMenuProps = useCallback<
     TableWithMeatballMenuProps<BalanceTableFieldModel>['getMenuProps']
-  >(() => {
-    // @TODO: add actions and translations to every item
-    return {
-      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-      items: [
-        {
-          key: 'add_funds',
-          onClick: () => {},
-          label: '',
-          icon: '',
-        },
-        // {
-        //   key: 'view_ethscan',
-        //   onClick: () => {},
-        //   icon: 'arrow-square-out',
-        //   label: formatText(
-        //     { id: 'membersPage.memberNav.viewOn' },
-        //     {
-        //       networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
-        //     },
-        //   ),
-        //   renderItemWrapper: (props, children) => (
-        //     <Link
-        //       to={getBlockExplorerLink({
-        //         linkType: 'address',
-        //         addressOrHash: walletAddress,
-        //       })}
-        //       {...props}
-        //     >
-        //       {children}
-        //     </Link>
-        //   ),
-        // },
-        // {
-        //   key: 'mint_tokens',
-        //   onClick: () => {},
-        //   label: 'Mint tokens',
-        //   icon: 'bank',
-        // },
-        // {
-        //   key: 'transfer_fundss',
-        //   onClick: () => {},
-        //   label: 'Transfer funds',
-        //   icon: 'transfer',
-        // },
-        // {
-        //   key: 'make_payment',
-        //   onClick: () => {},
-        //   label: 'Make payment with token',
-        //   icon: 'hand-coins',
-        // },
-      ],
-    };
-  }, []);
+  >(
+    ({ index }) => {
+      const selectedTokenData = data[index]?.token;
+      const isTokenNative =
+        selectedTokenData?.tokenAddress === nativeToken?.tokenAddress;
+
+      return {
+        cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+        items: [
+          ...(!isTokenNative && !nativeTokenStatus?.unlocked
+            ? [
+                {
+                  key: 'add_funds',
+                  onClick: () => {
+                    toggleAddFundsModalOn();
+                  },
+                  label: formatMessage(MSG.labelAddFunds),
+                  icon: 'add',
+                },
+              ]
+            : []),
+          {
+            key: 'view_ethscan',
+            renderItemWrapper: (props, children) => (
+              <Link
+                to={getBlockExplorerLink({
+                  linkType: 'address',
+                  addressOrHash: selectedTokenData?.tokenAddress || '',
+                })}
+                {...props}
+              >
+                {children}
+              </Link>
+            ),
+            label: formatText(
+              { id: 'balancePage.labelEthscan.viewOn' },
+              {
+                networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
+              },
+            ),
+            icon: 'arrow-square-out',
+          },
+          ...(isTokenNative
+            ? [
+                {
+                  key: 'mint_tokens',
+                  onClick: () => {
+                    toggleActionSidebarOn({
+                      [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
+                    });
+                  },
+                  label: formatMessage(MSG.labelMintToken),
+                  icon: 'bank',
+                },
+              ]
+            : []),
+          {
+            key: 'transfer_funds',
+            onClick: () => {
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
+                amount: {
+                  tokenAddress: selectedTokenData?.tokenAddress,
+                },
+              });
+            },
+            label: formatMessage(MSG.labelTransferFunds),
+            icon: 'transfer',
+          },
+          {
+            key: 'make_payment',
+            onClick: () => {
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+                amount: {
+                  tokenAddress: selectedTokenData?.tokenAddress,
+                },
+              });
+            },
+            label: formatMessage(MSG.labelMakePayment),
+            icon: 'hand-coins',
+          },
+        ],
+      };
+    },
+    [
+      data,
+      toggleActionSidebarOn,
+      toggleAddFundsModalOn,
+      nativeToken?.tokenAddress,
+      nativeTokenStatus,
+      formatMessage,
+    ],
+  );
+
+  return {
+    getMenuProps,
+  };
+};
