@@ -28,7 +28,7 @@ const UserInfo: FC<UserInfoProps> = ({
   size,
   additionalContent,
 }) => {
-  const aboutDescriptionText = formatText(aboutDescription);
+  const aboutDescriptionText = formatText(aboutDescription || '');
   const isTopContributorType = userStatus === 'top';
 
   return (
