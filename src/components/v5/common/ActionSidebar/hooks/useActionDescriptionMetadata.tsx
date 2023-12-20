@@ -22,6 +22,7 @@ import { editTeamDescriptionMetadataGetter } from '../partials/forms/EditTeamFor
 import { enterRecoveryModeDescriptionMetadataGetter } from '../partials/forms/EnterRecoveryModeForm/utils';
 import { manageColonyObjectivesDescriptionMetadataGetter } from '../partials/forms/ManageColonyObjectivesForm/utils';
 import { managePermissionsDescriptionMetadataGetter } from '../partials/forms/ManagePermissionsForm/utils';
+import { manageReputationDescriptionMetadataGetter } from '../partials/forms/ManageReputationForm/utils';
 import { manageTokensDescriptionMetadataGetter } from '../partials/forms/ManageTokensForm/utils';
 import { mintTokenDescriptionMetadataGetter } from '../partials/forms/MintTokenForm/utils';
 import { simplePaymentDescriptionMetadataGetter } from '../partials/forms/SimplePaymentForm/utils';
@@ -48,6 +49,7 @@ const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
   [ACTION.MANAGE_PERMISSIONS]: managePermissionsDescriptionMetadataGetter,
   [ACTION.MANAGE_COLONY_OBJECTIVES]:
     manageColonyObjectivesDescriptionMetadataGetter,
+  [ACTION.MANAGE_REPUTATION]: manageReputationDescriptionMetadataGetter,
 };
 
 export const useActionDescriptionMetadata = () => {

@@ -112,9 +112,13 @@ const FormattedInput: FC<FormattedInputProps> = ({
           )}
         />
       </div>
-      <div className={clsx(messageClassName, 'text-negative-400 text-sm mt-2')}>
-        {message}
-      </div>
+      {!!message && (
+        <div
+          className={clsx(messageClassName, 'text-negative-400 text-sm mt-2')}
+        >
+          {message}
+        </div>
+      )}
     </div>
   );
 };

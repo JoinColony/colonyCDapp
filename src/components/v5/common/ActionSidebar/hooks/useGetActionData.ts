@@ -13,6 +13,7 @@ import {
   AUTHORITY,
   AVAILABLE_ROLES,
 } from '../partials/forms/ManagePermissionsForm/consts';
+import { ModificationOption } from '../partials/forms/ManageReputationForm/consts';
 
 import { DecisionMethod } from './useDecisionMethods';
 import { useGetColonyAction } from './useGetColonyAction';
@@ -227,6 +228,25 @@ export const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
+      case ColonyActionType.EmitDomainReputationPenalty:
+      case ColonyActionType.EmitDomainReputationPenaltyMotion:
+      case ColonyActionType.EmitDomainReputationReward:
+      case ColonyActionType.EmitDomainReputationRewardMotion:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_REPUTATION,
+          member: recipientAddress,
+          amount: moveDecimal(
+            amount,
+            -getTokenDecimalsWithFallback(token?.decimals),
+          ),
+          modification:
+            type === ColonyActionType.EmitDomainReputationPenalty ||
+            type === ColonyActionType.EmitDomainReputationPenaltyMotion
+              ? ModificationOption.RemoveReputation
+              : ModificationOption.AwardReputation,
+          team: fromDomain?.nativeId.toString(),
+          ...repeatableFields,
+        };
       default:
         return undefined;
     }

@@ -1,7 +1,5 @@
+import { ColonyRole } from '@colony/colony-js';
 import { useMemo } from 'react';
-
-// @BETA: Disabled for now
-// import { ColonyRole } from '@colony/colony-js';
 
 import { ACTION } from '~constants/actions';
 import {
@@ -18,8 +16,7 @@ import {
   // canEnterRecoveryMode,
   canFund,
   hasRoot,
-  // @BETA: Disabled for now
-  // userHasRole,
+  userHasRole,
 } from '~utils/checks';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 
@@ -56,14 +53,13 @@ export const useActionsList = () => {
     ? colony?.status?.nativeToken?.unlockable
     : hasRoot(allUserRoles) && colony?.status?.nativeToken?.unlockable;
   const canManageTokens = hasRoot(allUserRoles);
-  // @BETA: Disabled for now
-  // const canSmiteReputation =
-  //   userHasAccountRegistered &&
-  //   (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
-  //     isVotingReputationEnabled);
-  // const canAwardReputation =
-  //   userHasAccountRegistered &&
-  //   (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
+  const canSmiteReputation =
+    userHasAccountRegistered &&
+    (userHasRole(allUserRoles, ColonyRole.Arbitration) ||
+      isVotingReputationEnabled);
+  const canAwardReputation =
+    userHasAccountRegistered &&
+    (userHasRole(allUserRoles, ColonyRole.Root) || isVotingReputationEnabled);
 
   return useMemo(
     (): SearchSelectOptionProps[] => [
@@ -191,15 +187,14 @@ export const useActionsList = () => {
         isAccordion: true,
         title: { id: 'actions.admin' },
         options: [
-          // @BETA: Disabled for now
-          // {
-          //   label: { id: 'actions.manageReputation' },
-          //   value: ACTION.MANAGE_REPUTATION,
-          //   missingPermissions:
-          //     !canAwardReputation || !canSmiteReputation
-          //       ? 'actionSidebar.missingPermissions.manageReputation'
-          //       : undefined,
-          // },
+          {
+            label: { id: 'actions.manageReputation' },
+            value: ACTION.MANAGE_REPUTATION,
+            missingPermissions:
+              !canAwardReputation || !canSmiteReputation
+                ? 'actionSidebar.missingPermissions.manageReputation'
+                : undefined,
+          },
           {
             label: { id: 'actions.managePermissions' },
             value: ACTION.MANAGE_PERMISSIONS,
@@ -248,8 +243,7 @@ export const useActionsList = () => {
       },
     ],
     [
-      // @BETA: Disabled for now
-      // canAwardReputation,
+      canAwardReputation,
       canCreateEditDomain,
       canCreatePayment,
       canEnterPermissionManagement,
@@ -257,8 +251,7 @@ export const useActionsList = () => {
       // canEnterRecovery,
       canManageTokens,
       canMoveFunds,
-      // @BETA: Disabled for now
-      // canSmiteReputation,
+      canSmiteReputation,
       canUserMintNativeToken,
       canUserUnlockNativeToken,
       hasRootPermission,

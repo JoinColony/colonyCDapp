@@ -13,6 +13,7 @@ import EditTeamForm from '../partials/forms/EditTeamForm';
 import EnterRecoveryModeForm from '../partials/forms/EnterRecoveryModeForm';
 import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectivesForm';
 import ManagePermissionsForm from '../partials/forms/ManagePermissionsForm';
+import ManageReputationForm from '../partials/forms/ManageReputationForm';
 import ManageTokensForm from '../partials/forms/ManageTokensForm';
 import MintTokenForm from '../partials/forms/MintTokenForm';
 import SinglePaymentForm from '../partials/forms/SimplePaymentForm';
@@ -43,6 +44,7 @@ export const useSidebarActionForm = () => {
       [ACTION.ADVANCED_PAYMENT]: AdvancedPaymentForm,
       [ACTION.BATCH_PAYMENT]: BatchPaymentForm,
       [ACTION.MANAGE_PERMISSIONS]: ManagePermissionsForm,
+      [ACTION.MANAGE_REPUTATION]: ManageReputationForm,
     }),
     [],
   );

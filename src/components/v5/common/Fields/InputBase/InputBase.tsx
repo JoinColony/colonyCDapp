@@ -47,12 +47,14 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
 
     return (
       <div className={clsx(wrapperClassName, 'w-full')}>
-        <label
-          className="text-gray-700 text-md font-medium mb-1.5"
-          htmlFor={id}
-        >
-          {label}
-        </label>
+        {label && (
+          <label
+            className="text-gray-700 text-md font-medium mb-1.5"
+            htmlFor={id}
+          >
+            {label}
+          </label>
+        )}
         {prefix}
         <input
           ref={inputRef}
@@ -83,14 +85,16 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
             {typeof value === 'string' && value.length}/{maxLength}
           </div>
         )}
-        <span
-          className={clsx(
-            'border-0 text-md',
-            state ? stateClassNames[state] : undefined,
-          )}
-        >
-          {message}
-        </span>
+        {!!message && (
+          <span
+            className={clsx(
+              'border-0 text-md',
+              state ? stateClassNames[state] : undefined,
+            )}
+          >
+            {message}
+          </span>
+        )}
       </div>
     );
   },

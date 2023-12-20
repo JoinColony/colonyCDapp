@@ -1307,6 +1307,9 @@
     "table.row.edit.link": "Edit link",
     "table.row.asset": "Asset",
     "table.row.balance": "Balance",
+    "table.row.change": "Change",
+    "table.row.newReputation": "New reputation",
+    "table.row.currentReputation": "Current reputation",
     "user.not.verified.warning": "This member has not yet been verified. Ensure you know who this member and the address is correct.",
     "actionSidebar.distribution": "Distribution",
     "actionSidebar.distributionPlaceholder": "Select split type",
@@ -1536,5 +1539,10 @@
     "useProfile.advancedTab.title": "Advanced",
     "profilePage.customRpc": "Gnosis Chain Custom RPC",
     "wallet.information": "Wallet information",
-    "advancedSettings.title": "Advanced settings"
+    "advancedSettings.title": "Advanced settings",
+    "actionSidebar.modification": "Modification",
+    "actionSidebar.modification.placeholder": "Select modification",
+    "actionSidebar.modification.awardReputation": "Award reputation",
+    "actionSidebar.modification.removeReputation": "Remove reputation",
+    "actionSidebar.modification.title": "Change type"
 }
