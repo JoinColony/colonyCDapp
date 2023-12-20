@@ -37,6 +37,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
   >([isTokenVisible], {
     top: 8,
   });
+  const isTokenInfoShown = isTokenModalOpened || isTokenVisible;
 
   const content = (
     <div className="flex gap-4 items-center">
@@ -44,9 +45,11 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
       <div className="flex items-center gap-1">
         {token.name ? (
           <span
-            className={clsx('text-gray-900 font-medium', {
+            className={clsx('font-medium', {
               'truncate max-w-[6.25rem] md:max-w-full': !isTokenModalOpened,
               'md:whitespace-normal': isTokenModalOpened,
+              'text-gray-900': !isTokenInfoShown,
+              'text-blue-400': isTokenInfoShown,
             })}
           >
             {token.name}
