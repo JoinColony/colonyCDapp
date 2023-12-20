@@ -39,7 +39,7 @@ const ClaimAllButton = ({
         colonyAddress,
         extensionAddress: votingReputationAddress ?? '',
         motionIds: claimableStakes.map(
-          (stake) => stake.action?.motionData?.id ?? '',
+          (stake) => stake.action?.motionData?.databaseMotionId ?? '',
         ),
       });
       updateClaimedStakesCache(claimableStakes.map((stake) => stake.id));

@@ -42,7 +42,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
           key={stake.id}
           stake={stake}
           nativeToken={colony.nativeToken}
-          colonyAddress={colony.colonyAddress}
+          colony={colony}
         />
       ))}
     </div>

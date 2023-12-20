@@ -33,9 +33,7 @@ export const getStakeStatus = (
     return UserStakeStatus.Claimed;
   }
 
-  const motionState = statesMap.get(
-    stake.action?.motionData?.nativeMotionId ?? '',
-  );
+  const motionState = statesMap.get(stake.action?.motionData?.motionId ?? '');
   if (!motionState) {
     return UserStakeStatus.Unknown;
   }
