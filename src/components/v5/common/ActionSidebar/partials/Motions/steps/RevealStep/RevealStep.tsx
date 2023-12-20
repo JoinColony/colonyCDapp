@@ -77,6 +77,7 @@ const RevealStep: FC<RevealStepProps> = ({
                     ? 'motion.revealStep.voteRevealed'
                     : 'motion.revealStep.votesRevealed',
               })}
+              className="ml-1"
             />
             {!revealPhaseEnded && canInteract && (
               <StatusText
