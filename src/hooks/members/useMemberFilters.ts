@@ -59,7 +59,7 @@ const useMemberFilters = ({
   }, [filteredByStatus, contributorTypes]);
 
   const filteredByPermissions = useMemo(() => {
-    if (!Object.keys(filterPermissions).length) {
+    if (!Object.keys(filterPermissions).length && !selectedTeam) {
       return filteredByType;
     }
 
@@ -83,7 +83,12 @@ const useMemberFilters = ({
       return filteredRoles.some(
         ({ domainId, ...rest }) =>
           permissionsDomainIds.has(domainId) &&
-          hasSomeRole(rest, filterPermissions),
+          hasSomeRole(
+            rest,
+            Object.keys(filterPermissions).length
+              ? filterPermissions
+              : undefined,
+          ),
       );
     });
   }, [
