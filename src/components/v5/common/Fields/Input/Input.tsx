@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useLayoutEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 
@@ -32,6 +32,7 @@ const Input: FC<InputProps> = ({
   labelClassName,
   subLabelMessage,
   setIsTyping,
+  shouldFocus,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -47,6 +48,21 @@ const Input: FC<InputProps> = ({
       setIsTyping(isTyping);
     }
   }, [isTyping, setIsTyping]);
+
+  const ref = useRef<HTMLInputElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (ref.current) {
+      if (shouldFocus) {
+        ref.current.focus();
+      }
+
+      // Forward the ref to hook-form
+      registerField?.ref(ref.current);
+    }
+    // @NOTE: Including registerField would cause an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldFocus]);
 
   const input = (
     <div className="w-full relative">
@@ -73,6 +89,7 @@ const Input: FC<InputProps> = ({
         }}
         disabled={isDisabled}
         id={`id-${name}`}
+        ref={ref}
       />
     </div>
   );

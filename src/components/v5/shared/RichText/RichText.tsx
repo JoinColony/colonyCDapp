@@ -1,7 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useLayoutEffect } from 'react';
 import { EditorContent } from '@tiptap/react';
-
 import clsx from 'clsx';
+
+import { formatText } from '~utils/intl';
+import { omit } from '~utils/lodash';
+
 import MenuBar from './partials/Menu';
 import {
   MAX_ANNOTATION_NUM,
@@ -11,7 +14,6 @@ import {
 import { TextButton } from '../Button';
 import { RichTextProps } from './types';
 import { useRichText } from './hooks';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.RichText';
 
@@ -21,16 +23,28 @@ const RichText: FC<RichTextProps> = ({
   isDecriptionFieldExpanded,
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
+  shouldFocus,
 }) => {
-  const { editorContent, notFormattedContent, field, characterCount } =
-    useRichText(name, isDecriptionFieldExpanded, isReadonly);
+  const { editor, notFormattedContent, field, characterCount } = useRichText(
+    name,
+    isDecriptionFieldExpanded,
+    isReadonly,
+  );
+
+  useLayoutEffect(() => {
+    if (shouldFocus) {
+      editor?.commands.focus();
+    }
+    // @NOTE: Calling focus() with editor included in the dependencies causes an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldFocus]);
 
   return (
     <>
       {isReadonly ? (
         <>
-          {editorContent && isDecriptionFieldExpanded ? (
-            <EditorContent editor={editorContent} />
+          {editor && isDecriptionFieldExpanded ? (
+            <EditorContent editor={editor} />
           ) : (
             <>
               <button
@@ -65,10 +79,10 @@ const RichText: FC<RichTextProps> = ({
         </>
       ) : (
         <>
-          {editorContent && isDecriptionFieldExpanded ? (
+          {editor && isDecriptionFieldExpanded ? (
             <>
-              <MenuBar editor={editorContent} />
-              <EditorContent editor={editorContent} {...field} />
+              <MenuBar editor={editor} />
+              <EditorContent editor={editor} {...omit(field, 'ref')} />
 
               {(characterCount || isDecriptionFieldExpanded) && (
                 <div className="flex items-center justify-between mt-4">

@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useLayoutEffect, useRef } from 'react';
 
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
@@ -11,9 +11,16 @@ const SearchInput: FC<SearchInputProps> = ({
   onChange,
   value,
   placeholder = formatText({ id: 'placeholder.search' }),
+  shouldFocus = false,
   ...props
 }) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useLayoutEffect(() => {
+    if (searchInputRef.current && shouldFocus) {
+      searchInputRef?.current?.focus();
+    }
+  }, [shouldFocus]);
 
   return (
     <div className="relative w-full">

@@ -22,6 +22,7 @@ export type InputProps = {
   labelClassName?: string;
   subLabelMessage?: Message;
   setIsTyping?: React.Dispatch<React.SetStateAction<boolean>>;
+  shouldFocus?: boolean;
 };
 
 export type PillProps = {

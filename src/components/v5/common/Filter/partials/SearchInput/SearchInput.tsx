@@ -3,7 +3,9 @@ import React, {
   ChangeEventHandler,
   FC,
   useCallback,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useIntl } from 'react-intl';
@@ -28,6 +30,14 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
     () => debounce(setSearchValue, 500),
     [setSearchValue],
   );
+
+  const ref = useRef<HTMLInputElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+  }, []);
 
   const onInput: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +64,7 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
         <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
       </span>
       <input
+        ref={ref}
         className={clsx(
           styles.searchInput,
           'border-gray-300 focus:outline-none group-hover:border-blue-200 group-focus-within:border-blue-200',

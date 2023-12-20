@@ -82,6 +82,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             transition-colors
           `}
           message={false}
+          shouldFocus
         />
         <div className="text-gray-900 text-md flex gap-1 break-all">
           {descriptionMetadata}

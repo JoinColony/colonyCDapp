@@ -6,6 +6,7 @@ export interface TextareaBaseProps
     BaseFieldProps {
   className?: string;
   wrapperClassName?: string;
+  shouldFocus?: boolean;
 }
 
 export interface FormTextareaBaseProps extends TextareaBaseProps {

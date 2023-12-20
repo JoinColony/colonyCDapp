@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useController } from 'react-hook-form';
@@ -18,6 +18,8 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   } = useController({ name: fieldName });
   const isError = !!error;
   const { readonly } = useAdditionalFormOptionsContext();
+
+  const [shouldFocus, setShouldFocus] = useState(false);
 
   return (
     <div className="sm:relative w-full">
@@ -51,6 +53,12 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
               variants={accordionAnimation}
               transition={{ duration: 0.3, ease: 'easeOut' }}
               className="overflow-hidden"
+              onAnimationStart={() => {
+                setShouldFocus(false);
+              }}
+              onAnimationComplete={() => {
+                setShouldFocus(true);
+              }}
             >
               <RichText
                 name={fieldName}
@@ -58,6 +66,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
                 isDecriptionFieldExpanded={isDecriptionFieldExpanded}
                 toggleOffDecriptionSelect={toggleOffDecriptionSelect}
                 toggleOnDecriptionSelect={toggleOnDecriptionSelect}
+                shouldFocus={shouldFocus}
               />
             </motion.div>
           )}

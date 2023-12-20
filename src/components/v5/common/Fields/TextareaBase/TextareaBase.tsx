@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import clsx from 'clsx';
 
 import { useStateClassNames } from '~v5/common/Fields/hooks';
@@ -21,6 +21,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
       wrapperClassName,
       message,
       maxLength,
+      shouldFocus,
       ...rest
     },
     ref,
@@ -34,6 +35,12 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
     );
 
     const textAreaRef = useAutosizeTextArea(value, ref);
+
+    useLayoutEffect(() => {
+      if (textAreaRef.current && shouldFocus) {
+        textAreaRef.current.focus();
+      }
+    }, [shouldFocus, textAreaRef]);
 
     return (
       <div className={clsx(wrapperClassName, 'w-full')}>

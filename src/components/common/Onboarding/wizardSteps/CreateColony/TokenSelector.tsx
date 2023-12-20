@@ -72,7 +72,12 @@ const TokenSelector = ({
   ]);
 
   return (
-    <Input name={addressFieldName} {...inputProps} setIsTyping={setIsLoading} />
+    <Input
+      name={addressFieldName}
+      {...inputProps}
+      setIsTyping={setIsLoading}
+      shouldFocus
+    />
   );
 };
 
