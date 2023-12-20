@@ -52,7 +52,7 @@ export const useColonyActionsTableColumns = (
           ? 'calc(100% - 6.25rem - 3.75rem)'
           : 'calc(100% - 7.8125rem - 10.3125rem - 3.75rem - 6.25rem)',
         header: formatText({
-          id: 'activityFeedTable.table.header.description',
+          id: 'activityFeedTable.table.header.latestaActivity',
         }),
         enableSorting: false,
         cell: ({ row: { original } }) => (

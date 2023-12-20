@@ -1478,7 +1478,7 @@
     "activityFeedTable.menu.view": "View action",
     "activityFeedTable.menu.share": "Share",
     "activityFeedTable.menu.viewOnNetwork": "View on {blockExplorerName}",
-    "activityFeedTable.table.header.description": "Latest activity",
+    "activityFeedTable.table.header.latestaActivity": "Latest activity",
     "activityFeedTable.table.header.team": "Team",
     "activityFeedTable.table.header.status": "Status",
     "activityFeedTable.table.header.date": "Date",
