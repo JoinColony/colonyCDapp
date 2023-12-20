@@ -40,7 +40,7 @@ export const useColonySwitcherContent = (
 
   const listItems: ColonySwitcherListItem[] = joinedColonies
     .filter(
-      (joinedColony) => joinedColony.colonyAddress !== colony?.colonyAddress,
+      (joinedColony) => joinedColony?.colonyAddress !== colony?.colonyAddress,
     )
     .map(getColonySwitcherListItem);
 
