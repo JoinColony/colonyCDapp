@@ -102,7 +102,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
       <div
         className={clsx(
           className,
-          'flex gap-2 min-h-[1.875rem] justify-center relative mb-3 last:mb-0 ',
+          'flex gap-2 min-h-[1.875rem] justify-center relative mb-3 last:mb-0 w-full',
           {
             'flex-col items-start': isExpandable && isExpanded,
             'items-start pt-[0.35rem]': isMultiLine || isExpandable,

@@ -10,6 +10,7 @@ import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
 import Link from '~v5/shared/Link';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 import ActionTypeSelect from '../../ActionTypeSelect';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
@@ -28,7 +29,6 @@ import {
   ActionSidebarContentProps,
   ActionSidebarFormContentProps,
 } from './types';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import PermissionSidebar from './partials/PermissionSidebar';
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
@@ -189,7 +189,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             md:overflow-y-auto
             md:flex-shrink-0
             px-6
-            p-8
+            py-8
             border-b
             border-b-gray-200
             md:border-b-0

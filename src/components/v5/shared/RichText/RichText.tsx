@@ -36,14 +36,14 @@ const RichText: FC<RichTextProps> = ({
               <button
                 type="button"
                 onClick={toggleOnDecriptionSelect}
-                className={clsx('sm:hover:text-blue-400', {
+                className={clsx('sm:hover:text-blue-400 w-full', {
                   'text-gray-900': characterCount,
                   'text-gray-400': !characterCount,
                 })}
               >
                 <span
                   className={clsx({
-                    'line-clamp-2 text-left':
+                    'line-clamp-2 text-left break-words':
                       characterCount >= MIN_ANNOTATION_NUM,
                   })}
                 >

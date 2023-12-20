@@ -361,7 +361,6 @@ export const useGetTxButtons = () => {
     <>
       {groupState === TransactionGroupStates.SomePending && (
         <TxButton
-          key="1"
           text={isMobile ? undefined : { id: 'button.pending' }}
           className={clsx({
             '!min-w-0': isMobile,
@@ -384,7 +383,6 @@ export const useGetTxButtons = () => {
       )}
       {groupState === TransactionGroupStates.AllCompleted && (
         <TxButton
-          key="2"
           text={isMobile ? undefined : { id: 'button.completed' }}
           className={clsx({
             '!min-w-0': isMobile,

@@ -24,7 +24,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
       {!isDecriptionFieldExpanded && (
         <div
           className={clsx(
-            'flex text-md transition-colors md:hover:text-blue-400 items-end',
+            'flex text-md transition-colors md:hover:text-blue-400 items-end w-full',
             {
               'text-gray-400': !isError,
               'text-negative-400': isError,
