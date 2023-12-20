@@ -404,6 +404,39 @@ export const useBalanceTable = (): UseFundsTableReturnType => {
     ],
   };
 
+  const filterTokensByType = (
+    visibleToken: TokensProps,
+    type:
+      | DeepPartial<{
+          [key: string]: boolean;
+        }>
+      | undefined,
+  ) => {
+    if (type) {
+      return Object.values(type).some((tokenTypeFilter) => tokenTypeFilter)
+        ? type[visibleToken?.token?.tokenAddress || 0]
+        : true;
+    }
+    return visibleToken;
+  };
+
+  const filterTokensByAttribute = (
+    visibleToken: TokensProps,
+    attribute:
+      | DeepPartial<{
+          native: boolean;
+          reputation: boolean;
+        }>
+      | undefined,
+  ) => {
+    return Object.values(attribute || {}).some(
+      (attributeTypeFilter) => attributeTypeFilter,
+    )
+      ? (attribute?.native && visibleToken.isNative) ||
+          (attribute?.reputation && !visibleToken.isNative)
+      : visibleToken;
+  };
+
   const tokens: TokensProps[] | undefined = sortedTokens?.map((token) => ({
     ...token,
     isApproved: sortedTokens?.some(
@@ -413,28 +446,13 @@ export const useBalanceTable = (): UseFundsTableReturnType => {
     isNative: token.token?.tokenAddress === nativeToken?.tokenAddress,
   }));
 
-  const visibleTokens: TokensProps[] | undefined = tokens?.filter(
-    (visibleToken): TokensProps | boolean | undefined => {
-      const { type = {}, attribute } = filterValue;
-
-      if (Object.values(type).some((tokenTypeFilter) => tokenTypeFilter)) {
-        return type[visibleToken?.token?.tokenAddress || 0];
-      }
-
-      if (
-        Object.values(attribute || {}).some(
-          (attributeTypeFilter) => attributeTypeFilter,
-        )
-      ) {
-        return (
-          (attribute?.native && visibleToken.isNative) ||
-          (attribute?.reputation && !visibleToken.isNative)
-        );
-      }
-
-      return visibleToken;
-    },
-  );
+  const visibleTokens: TokensProps[] | undefined = tokens
+    ?.filter((visibleToken) =>
+      filterTokensByType(visibleToken, filterValue.type),
+    )
+    .filter((visibleToken) =>
+      filterTokensByAttribute(visibleToken, filterValue.attribute),
+    );
 
   const searchedTokens = visibleTokens?.filter(
     ({ token }) =>
