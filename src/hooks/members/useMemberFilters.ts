@@ -59,6 +59,10 @@ const useMemberFilters = ({
   }, [filteredByStatus, contributorTypes]);
 
   const filteredByPermissions = useMemo(() => {
+    if (!Object.keys(filterPermissions).length) {
+      return filteredByType;
+    }
+
     const databaseDomainIds = new Set(
       selectedTeam
         ? [selectedTeam.id]
@@ -70,28 +74,6 @@ const useMemberFilters = ({
       `${colonyAddress}_${Id.RootDomain}`,
       ...databaseDomainIds,
     ]);
-
-    if (!Object.keys(filterPermissions).length) {
-      return (
-        filteredByType?.filter(notNull).filter(({ roles, reputation }) => {
-          const filteredRoles = roles?.items.filter(notNull) ?? [];
-          const filteredReputation = reputation?.items.filter(notNull) ?? [];
-
-          // Filter contributors list by whether there's some rep in the selected domains
-          // or some permissions in the selected domains
-          return (
-            filteredReputation.some(({ domainId }) =>
-              databaseDomainIds.has(domainId),
-            ) ||
-            filteredRoles.some(
-              ({ domainId, ...rest }) =>
-                permissionsDomainIds.has(domainId) &&
-                hasSomeRole(rest, undefined),
-            )
-          );
-        }) ?? []
-      );
-    }
 
     return filteredByType.filter(({ roles }) => {
       const filteredRoles = roles?.items.filter(notNull) ?? [];
