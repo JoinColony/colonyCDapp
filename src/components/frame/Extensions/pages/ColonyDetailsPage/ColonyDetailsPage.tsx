@@ -81,7 +81,7 @@ const ColonyDetailsPage: FC = () => {
               {nativeToken && (
                 <NativeTokenPill
                   variant="secondary"
-                  tokenName={nativeToken.symbol}
+                  token={nativeToken}
                   isLocked={isNativeTokenLocked}
                 />
               )}

@@ -289,7 +289,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   return {
     colonyName: metadata?.displayName || '',
     description: truncatedText,
-    tokenName: currentToken?.token.symbol || '',
+    token: currentToken?.token,
     isTokenUnlocked: isNativeTokenUnlocked,
     colonyLinksProps: {
       items: [

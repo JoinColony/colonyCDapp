@@ -11,19 +11,13 @@ const ColonyDashboardHeader: FC<
     ColonyDashboardHeaderProps,
     'leaveColonyConfirmOpen' | 'setLeaveColonyConfirm'
   >
-> = ({
-  colonyLinksProps,
-  colonyName,
-  description,
-  tokenName,
-  isTokenUnlocked,
-}) => (
+> = ({ colonyLinksProps, colonyName, description, token, isTokenUnlocked }) => (
   <div className="flex flex-col gap-4">
     <div className="flex items-end gap-3">
       <h1 className="heading-2 text-gray-900 capitalize truncate">
         {colonyName}
       </h1>
-      <NativeTokenPill tokenName={tokenName} isLocked={!isTokenUnlocked} />
+      {token && <NativeTokenPill token={token} isLocked={!isTokenUnlocked} />}
     </div>
     <div className="flex flex-col md:flex-row gap-[1.7rem] sm:gap-4 items-start justify-between">
       <p className="text-gray-700 max-w-[52.75rem] text-md line-clamp-2">
