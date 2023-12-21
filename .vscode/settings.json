@@ -1,9 +1,0 @@
-{
-    "tailwindCSS.emmetCompletions": true,
-    "editor.inlineSuggest.enabled": true,
-    "editor.quickSuggestions": {
-    "strings": true
-    },
-    "css.validate": false,
-    "typescript.tsdk": "node_modules/typescript/lib",
-}
