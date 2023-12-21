@@ -15,7 +15,6 @@ import {
   OnBeforeCloseCallback,
   UseToggleReturnType,
 } from '~hooks/useToggle/types';
-import { getPortalContainer } from '~v5/shared/Portal/utils';
 import {
   useAnalyticsContext,
   AnalyticsEventType,
@@ -23,7 +22,8 @@ import {
   AnalyticsEventAction,
   AnalyticsEventLabel,
   AnalyticsEvent,
-} from './AnalyticsContext';
+} from '../AnalyticsContext';
+import { isElementInsideModalOrPortal } from './utils';
 
 type ActionSidebarToggle = [
   boolean,
@@ -74,15 +74,9 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   const { trackEvent } = useAnalyticsContext();
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
-    const reactModalPortals = Array.from(
-      document.querySelectorAll('.ReactModalPortal'),
-    );
+    const isClickedInside = isElementInsideModalOrPortal(element);
 
-    // Element inside the modal or in the portal container
-    if (
-      getPortalContainer().contains(element) ||
-      reactModalPortals.some((portal) => portal.contains(element))
-    ) {
+    if (!isClickedInside) {
       return false;
     }
 
