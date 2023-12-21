@@ -80,7 +80,6 @@ function* colonyCreate({
    * If the user opted to create a token, define txs to manage the token.
    */
   if (tokenChoice === 'create') {
-    channelNames.push('setTokenAuthority');
     channelNames.push('setOwner');
   }
 
@@ -97,13 +96,7 @@ function* colonyCreate({
     channelNames,
   );
 
-  const {
-    createColony,
-    deployOneTx,
-    setOneTxRoles,
-    setTokenAuthority,
-    setOwner,
-  } = channels;
+  const { createColony, deployOneTx, setOneTxRoles, setOwner } = channels;
 
   const batchKey = 'createColony';
 
@@ -122,14 +115,6 @@ function* colonyCreate({
       methodName: 'createColonyForFrontend',
       ready: false,
     });
-
-    if (setTokenAuthority) {
-      yield createGroupTransaction(setTokenAuthority, batchKey, meta, {
-        context: ClientType.TokenClient,
-        methodName: 'setAuthority',
-        ready: false,
-      });
-    }
 
     if (setOwner) {
       yield createGroupTransaction(setOwner, batchKey, meta, {
@@ -237,8 +222,6 @@ function* colonyCreate({
     const colonyAddress = eventData.ColonyAdded?.colonyAddress;
     const tokenAddress =
       eventData.TokenDeployed?.tokenAddress || usedTokenAddress;
-    const tokenAuthorityAddress =
-      eventData.TokenAuthorityDeployed?.tokenAuthorityAddress;
 
     /*
      * Update transactions saved in the db with the new colony address
@@ -278,25 +261,10 @@ function* colonyCreate({
         .map(({ id }) => put(transactionAddIdentifier(id, colonyAddress))),
     );
     yield all(
-      [setTokenAuthority, setOwner]
+      [setOwner]
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, tokenAddress))),
     );
-
-    if (tokenAuthorityAddress) {
-      /*
-       * Set Token authority (to deployed TokenAuthority)
-       */
-      yield put(
-        transactionAddParams(setTokenAuthority.id, [tokenAuthorityAddress]),
-      );
-      yield initiateTransaction({ id: setTokenAuthority.id });
-
-      yield takeFrom(
-        setTokenAuthority.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
-    }
 
     if (setOwner) {
       yield put(transactionAddParams(setOwner.id, [colonyAddress]));
