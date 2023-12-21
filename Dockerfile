@@ -27,13 +27,18 @@ RUN locale-gen
 # Install new version of NPM
 RUN npm i -g npm@8.2 --registry=https://registry.npmjs.org
 
-# Copy colonyCDapp
-COPY . ./colonyCDapp
-
+# Create the app directory
 WORKDIR /colonyCDapp
+
+# Copy package.json, package-lock.json and required scripts
+COPY package*.json .
+COPY scripts/ ./scripts/
 
 # Install node_modules
 RUN npm i
+
+# Copy colonyCDapp
+COPY . .
 
 # If the DEV build arg was set, then build the bundle in development mode
 # Otherwise, build the normal production bundle
