@@ -293,9 +293,8 @@ function* colonyCreate({
       const oneTxPaymentExtension = yield poll(
         async () => {
           try {
-            const client = await colonyManager.getClient(
-              ClientType.OneTxPaymentClient,
-              colonyAddress,
+            const client = await colonyClient.getExtensionClient(
+              Extension.OneTxPayment,
             );
             return client;
           } catch (err) {
