@@ -1,6 +1,6 @@
 import { DomainColor } from '~gql';
 
-export const setTeamColor = (color?: DomainColor) => {
+export const getTeamColor = (color?: DomainColor) => {
   switch (color) {
     case DomainColor.Aqua:
       return 'bg-teams-yellow-500';
@@ -39,7 +39,7 @@ export const setTeamColor = (color?: DomainColor) => {
   }
 };
 
-export const setHexTeamColor = (color?: DomainColor) => {
+export const getTeamHexColor = (color?: DomainColor) => {
   switch (color) {
     case DomainColor.Aqua:
       return '--color-teams-yellow-500';
@@ -78,7 +78,7 @@ export const setHexTeamColor = (color?: DomainColor) => {
   }
 };
 
-export const setTeamBadge = (color?: DomainColor) => {
+export const getTeamBadgeStyles = (color?: DomainColor) => {
   switch (color) {
     case DomainColor.Aqua:
       return 'text-teams-yellow-500 border-teams-yellow-100';

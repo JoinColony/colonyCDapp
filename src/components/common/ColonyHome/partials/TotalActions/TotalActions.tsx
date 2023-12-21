@@ -8,7 +8,7 @@ import useColonyContext from '~hooks/useColonyContext';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { COLONY_ACTIVITY_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
-import { setTeamColor } from '~utils/teams';
+import { getTeamColor } from '~utils/teams';
 import WidgetBox from '~v5/common/WidgetBox';
 
 const displayName = 'common.ColonyHome.TotalActions';
@@ -18,7 +18,7 @@ const TotalActions = () => {
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony || {};
   const selectedTeam = useGetSelectedTeamFilter();
-  const nativeTeamId = selectedTeam?.nativeId ?? undefined;
+  const nativeTeamId = selectedTeam?.nativeId;
 
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
@@ -33,7 +33,7 @@ const TotalActions = () => {
     (domain) => domain?.nativeId === nativeTeamId,
   )?.metadata?.color;
 
-  const teamColor = setTeamColor(selectedTeamColor);
+  const teamColor = getTeamColor(selectedTeamColor);
 
   return (
     <WidgetBox

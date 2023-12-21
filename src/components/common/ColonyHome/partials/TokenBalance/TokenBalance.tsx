@@ -20,7 +20,7 @@ const TokenBalance = () => {
   const { balances, nativeToken } = colony || {};
 
   const selectedTeam = useGetSelectedTeamFilter();
-  const nativeTeamId = selectedTeam?.nativeId ?? undefined;
+  const nativeTeamId = selectedTeam?.nativeId;
 
   const currentTokenBalance =
     getBalanceForTokenAndDomain(

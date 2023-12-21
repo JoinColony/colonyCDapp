@@ -13,7 +13,7 @@ const Members = () => {
   const { search } = useLocation();
 
   const selectedTeam = useGetSelectedTeamFilter();
-  const nativeTeamId = selectedTeam?.nativeId ?? undefined;
+  const nativeTeamId = selectedTeam?.nativeId;
   const { totalMembers: members, loading: membersLoading } = useMemberContext();
 
   const domainMembers = nativeTeamId

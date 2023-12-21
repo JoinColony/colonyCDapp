@@ -5,7 +5,7 @@ import useColonyContext from '~hooks/useColonyContext';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { COLONY_DETAILS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
-import { setTeamColor } from '~utils/teams';
+import { getTeamColor } from '~utils/teams';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import WidgetBox from '~v5/common/WidgetBox';
 import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
@@ -28,7 +28,7 @@ const Objective = () => {
   const selectedTeamColor = domains?.items.find(
     (domain) => domain?.nativeId === nativeTeamId,
   )?.metadata?.color;
-  const teamColor = setTeamColor(selectedTeamColor);
+  const teamColor = getTeamColor(selectedTeamColor);
 
   const openManageObjectives = () => {
     toggleActionSidebarOn({

@@ -1,6 +1,6 @@
 import { Domain } from '~types';
 import { formatText } from '~utils/intl';
-import { setHexTeamColor } from '~utils/teams';
+import { getTeamHexColor } from '~utils/teams';
 import { ChartData } from '~v5/common/DonutChart/types';
 
 const WIDGET_TEAM_LIMIT = 4;
@@ -13,8 +13,8 @@ export const getTeamReputationChartData = (allTeams: Domain[]): ChartData[] => {
         id,
         label: metadata?.name || '',
         value: Number(reputationPercentage),
-        color: setHexTeamColor(metadata?.color),
-        stroke: setHexTeamColor(metadata?.color),
+        color: getTeamHexColor(metadata?.color),
+        stroke: getTeamHexColor(metadata?.color),
       };
     });
   }
@@ -44,8 +44,8 @@ export const getTeamReputationChartData = (allTeams: Domain[]): ChartData[] => {
         id,
         label: metadata?.name || '',
         value: Number(reputationPercentage),
-        color: setHexTeamColor(metadata?.color),
-        stroke: setHexTeamColor(metadata?.color),
+        color: getTeamHexColor(metadata?.color),
+        stroke: getTeamHexColor(metadata?.color),
       };
     });
 

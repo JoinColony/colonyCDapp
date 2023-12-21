@@ -1,6 +1,6 @@
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
-import { setTeamColor } from '~utils/teams';
+import { getTeamColor } from '~utils/teams';
 import {
   SearchSelectOption,
   SearchSelectOptionProps,
@@ -23,7 +23,7 @@ const useTeamsOptions = (
       .sort(sortByDomainId)
       .map(({ metadata, nativeId, isRoot }) => {
         const { color, name: teamName } = metadata || {};
-        const teamColor = setTeamColor(color);
+        const teamColor = getTeamColor(color);
 
         return {
           label: teamName || '',
