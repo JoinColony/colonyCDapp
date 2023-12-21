@@ -191,7 +191,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <DescriptionRow />
       {role !== REMOVE_ROLE_OPTION_VALUE && (
-        <PermissionsTable name="permissions" role={role} />
+        <PermissionsTable name="permissions" role={role} className="mt-7" />
       )}
     </>
   );

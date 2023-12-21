@@ -18,6 +18,7 @@ export const useCustomPermissionsTableColumns = (name: string) =>
   useMemo(
     () => [
       customPermissionsColumnHelper.accessor('type', {
+        staticSize: '8.25rem',
         enableSorting: false,
         header: formatText({ id: 'table.column.type' }),
         cell: ({ getValue }) => (
@@ -34,6 +35,7 @@ export const useCustomPermissionsTableColumns = (name: string) =>
         ),
       }),
       customPermissionsColumnHelper.display({
+        staticSize: '4.375rem',
         id: 'enabled',
         header: formatText({ id: 'table.column.enable' }),
         cell: ({ row }) => (
@@ -79,7 +81,7 @@ export const usePermissionsTableProps = (
                           id: 'actionSidebar.managePermissions.tableDescriptionHeading',
                         })}
                       </span>
-                      <div className="flex gap-4">
+                      <div className="flex gap-4 w-full">
                         {permissionsColumns.map((column) => (
                           <ul
                             key={JSON.stringify(column)}

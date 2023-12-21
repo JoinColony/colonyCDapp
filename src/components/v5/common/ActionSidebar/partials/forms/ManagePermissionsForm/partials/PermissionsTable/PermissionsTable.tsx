@@ -18,7 +18,11 @@ import {
 
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 
-const PermissionsTable: FC<PermissionsTableProps> = ({ name, role }) => {
+const PermissionsTable: FC<PermissionsTableProps> = ({
+  name,
+  role,
+  className,
+}) => {
   const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
   const permissionsTableProps = usePermissionsTableProps(role);
   const { fieldState } = useController({ name });
@@ -28,7 +32,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({ name, role }) => {
   }
 
   return (
-    <div className="mt-7">
+    <div className={className}>
       {role !== USER_ROLE.Custom ? (
         <Table<PermissionsTableModel>
           verticalOnMobile={false}
@@ -36,9 +40,12 @@ const PermissionsTable: FC<PermissionsTableProps> = ({ name, role }) => {
         />
       ) : (
         <Table<CustomPermissionTableModel>
-          className={clsx({
-            '!border-negative-400': !!fieldState.error,
-          })}
+          className={clsx(
+            'sm:[&_td>div]:py-2 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td:nth-child(2)>div]:px-0 sm:[&_th:nth-child(2)]:px-0 sm:[&_tr>td]:border-none',
+            {
+              '!border-negative-400': !!fieldState.error,
+            },
+          )}
           data={CUTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
         />
