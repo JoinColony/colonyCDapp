@@ -247,9 +247,29 @@ function* colonyCreate({
         meta,
       );
     }
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
+
+    /*
+     * Avoid a race condition where the contract might actually not be found on chain
+     * even though we have it from inside the transaction receipt
+     *
+     * This might happen if using different RPC endpoints which are at different block
+     * heights from one another
+     */
+    const colonyClient = yield poll(
+      async () => {
+        try {
+          const client = await colonyManager.getClient(
+            ClientType.ColonyClient,
+            colonyAddress,
+          );
+          return client;
+        } catch (err) {
+          return undefined;
+        }
+      },
+      {
+        timeout: 30000,
+      },
     );
 
     /*
@@ -290,6 +310,13 @@ function* colonyCreate({
        */
       yield put(transactionPending(setOneTxRoles.id));
 
+      /*
+       * Avoid a race condition where the contract might actually not be found on chain
+       * even though we have it from inside the transaction receipt
+       *
+       * This might happen if using different RPC endpoints which are at different block
+       * heights from one another
+       */
       const oneTxPaymentExtension = yield poll(
         async () => {
           try {
@@ -343,6 +370,7 @@ function* colonyCreate({
           name: givenColonyName,
         },
         pollInterval: 1000,
+        errorPolicy: 'ignore',
       })
       .subscribe({
         next: ({ data: { getColonyByName } }) => {
