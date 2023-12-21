@@ -1,12 +1,11 @@
+import React, { useCallback, useMemo, useState } from 'react';
+import { defineMessages } from 'react-intl';
 import { createColumnHelper, SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import React, { useCallback, useMemo, useState } from 'react';
 import { FilePlus, ArrowSquareOut, ShareNetwork } from 'phosphor-react';
 
 import { generatePath, Link, useNavigate } from 'react-router-dom';
-import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
-import TeamBadge from '~v5/common/Pills/TeamBadge';
 import {
   SearchableColonyActionSortableFields,
   SearchableColonyActionSortInput,
@@ -16,24 +15,33 @@ import { useActivityFeed, useColonyContext, useMobile } from '~hooks';
 import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
 import { MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
 } from '~routes';
 import { formatText } from '~utils/intl';
-import { RenderCellWrapper } from '~v5/common/Table/types';
-import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts';
 import TransactionLink from '~shared/TransactionLink';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
+import { setQueryParamOnUrl } from '~utils/urls';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
+import TeamBadge from '~v5/common/Pills/TeamBadge';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import { RenderCellWrapper } from '~v5/common/Table/types';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts';
 
 import { makeLoadingRows } from './utils';
 import ActionDescription from './partials/ActionDescription';
 import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
-import { setQueryParamOnUrl } from '~utils/urls';
+
+const MSG = defineMessages({
+  tableHeaderLatestActivity: {
+    id: 'common.ColonyActionsTable',
+    defaultMessage: 'Latest activity',
+  },
+});
 
 export const useColonyActionsTableColumns = (
   loading: boolean,
@@ -51,9 +59,7 @@ export const useColonyActionsTableColumns = (
         staticSize: isMobile
           ? 'calc(100% - 6.25rem - 3.75rem)'
           : 'calc(100% - 7.8125rem - 10.3125rem - 3.75rem - 6.25rem)',
-        header: formatText({
-          id: 'activityFeedTable.table.header.description',
-        }),
+        header: formatText(MSG.tableHeaderLatestActivity),
         enableSorting: false,
         cell: ({ row: { original } }) => (
           <ActionDescription
