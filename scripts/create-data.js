@@ -31,13 +31,9 @@ const {
  * as well as the network contracts being deployed on said chain
  * So make sure to only run this script after the dev environment (via docker compose) was started
  */
-const {
-  addresses: ganacheAddresses,
-  private_keys,
-} = require('../amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json');
-const {
-  etherRouterAddress,
-} = require('../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
+let etherRouterAddress;
+let private_keys;
+let ganacheAddresses;
 
 const {
   colonies: coloniesTempData,
@@ -977,6 +973,7 @@ const tryFetchGraphqlQuery = async (
       await delay(blockTime);
       currentTry += 1;
     } else {
+      console.log(data)
       throw new Error('Could not fetch graphql data in time');
     }
   }
@@ -987,6 +984,21 @@ const tryFetchGraphqlQuery = async (
  * Orchestration
  */
 const createUserAndColonyData = async () => {
+
+  let fetchRes = await fetch(
+    `http://localhost:3006/etherrouter-address.json`,
+  );
+  let fetchResJSON = await fetchRes.json();
+  etherRouterAddress = fetchResJSON.etherRouterAddress;
+
+  fetchRes = await fetch(
+    `http://localhost:3006/ganache-accounts.json`
+  )
+  fetchResJSON = await fetchRes.json();
+  private_keys = fetchResJSON.private_keys;
+  ganacheAddresses = fetchResJSON.addresses;
+
+  // TODO: assert the above worked
 
   const availableUsers = {
     randomUsers: {},
@@ -1222,6 +1234,6 @@ checkArguments();
 
 checkNodeVersion();
 
-pressKeyToContinue().then(() => {
+pressKeyToContinue().then(async () => {
   createUserAndColonyData();
 });

@@ -13,7 +13,7 @@ echo \
 
 # Update and install required dependencies
 sudo apt-get update -y
-sudo apt-get install -y ca-certificates curl gnupg awscli nodejs npm git nginx apache2-utils netcat unzip wget
+sudo apt-get install -y ca-certificates curl gnupg awscli nodejs npm git nginx apache2-utils netcat unzip wget jq
 
 # Install docker dependencies
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -159,6 +159,18 @@ server {
         proxy_set_header Host \$host;
         proxy_cache_bypass \$http_upgrade;
     }
+
+    location /ws {
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        proxy_pass http://localhost:9091/ws;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
 }
 
 server {
@@ -187,7 +199,43 @@ server {
     ssl_certificate_key /etc/nginx/ssl/nginx.key;
 
     location / {
-        proxy_pass http://localhost:8545; 
+        proxy_pass http://localhost:8545;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+
+server {
+    listen 13005 ssl;
+    server_name _;
+
+    # Specify the key and certificate file
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    location / {
+        proxy_pass http://localhost:3005;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+
+server {
+    listen 13006 ssl;
+    server_name _;
+
+    # Specify the key and certificate file
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    location / {
+        proxy_pass http://localhost:3006;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -221,22 +269,42 @@ GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
 NETWORK=ganache
 AWS_APPSYNC_KEY=da2-fakeApiId123456
 AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
+AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
+GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:13006"
 EOL
 
 # Install appropriate npm version and dependencies
 npm install -g npm@8
-npm i
+npm ci
+
+# For the authentication proxy
+echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
 
 # Build and run Docker images
 npm run dev &
 
-# Wait for graphql service to come up
+# Wait for graphql port to come up
 while ! nc -z localhost 20002; do
   sleep 10
 done
+# Believe it or not but this checks whether amplify is actually ready
+while true; do
+    AMPLIFY_READY=$(curl -X POST -H "x-api-key: da2-fakeApiId123456" -H "Content-Type: application/json" -d '{"query":"query { __schema { types { name } } }"}' -s http://localhost:20002/graphql | jq 'has("data")')
 
-# Seed database
-node ./scripts/temp-create-data.js
+    if [[ "$AMPLIFY_READY" == "true" ]]; then
+        echo "Amplify seems to be up. Going our merry way."
+        break
+    else
+        echo "Amplify is not up yet, waiting..."
+        sleep 10
+    fi
+done
+
+# Seed database (pass --yes to skip confirmation)
+node ./scripts/create-data.js --yes
+
+# Disable webpack's hot reload
+export WEBPACK_DISABLE_HOT_RELOAD=true
 
 # Start frontend
 npm run webpack &

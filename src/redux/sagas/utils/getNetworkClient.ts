@@ -1,4 +1,3 @@
-import { call } from 'redux-saga/effects';
 import {
   getColonyNetworkClient,
   ColonyNetworkAddress,
@@ -12,7 +11,7 @@ import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
 /*
  * Return an initialized ColonyNetworkClient instance.
  */
-export default function* getNetworkClient() {
+const getNetworkClient = async () => {
   const wallet = getContext(ContextModule.Wallet);
 
   if (!isFullWallet(wallet)) {
@@ -27,21 +26,24 @@ export default function* getNetworkClient() {
     ? new URL(process.env.REPUTATION_ORACLE_ENDPOINT)
     : new URL(`/reputation`, window.location.origin);
 
+  const ganacheAccountsUrl = new URL(
+    process.env.GANACHE_ACCOUNTS_ENDPOINT || 'http://localhost:3006',
+  );
+
   // @ts-ignore
   if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
-    const localOracle = new URL(`/reputation/local`, 'http://localhost:3001');
-    const {
-      etherRouterAddress: networkAddress,
-      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require
-    } = require('../../../../amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-    return yield call(getColonyNetworkClient, ColonyJSNetwork.Custom, signer, {
+    const fetchRes = await fetch(
+      `${ganacheAccountsUrl.href}etherrouter-address.json`,
+    );
+    const { etherRouterAddress: networkAddress } = await fetchRes.json();
+
+    return getColonyNetworkClient(ColonyJSNetwork.Custom, signer, {
       networkAddress,
-      reputationOracleEndpoint: localOracle.href,
+      reputationOracleEndpoint: reputationOracleUrl.href,
     });
   }
 
-  return yield call(
-    getColonyNetworkClient,
+  return getColonyNetworkClient(
     ColonyJSNetworkMapping[network] as ColonyJSNetwork,
     signer,
     {
@@ -55,4 +57,6 @@ export default function* getNetworkClient() {
       reputationOracleEndpoint: reputationOracleUrl.href,
     },
   );
-}
+};
+
+export default getNetworkClient;
