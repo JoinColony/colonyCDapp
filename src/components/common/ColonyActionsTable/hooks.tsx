@@ -37,7 +37,7 @@ import ActionDescription from './partials/ActionDescription';
 import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem';
 
 const MSG = defineMessages({
-  tableHeaderLatestaActivity: {
+  tableHeaderLatestActivity: {
     id: 'common.ColonyActionsTable',
     defaultMessage: 'Latest activity',
   },
@@ -59,7 +59,7 @@ export const useColonyActionsTableColumns = (
         staticSize: isMobile
           ? 'calc(100% - 6.25rem - 3.75rem)'
           : 'calc(100% - 7.8125rem - 10.3125rem - 3.75rem - 6.25rem)',
-        header: formatText(MSG.tableHeaderLatestaActivity),
+        header: formatText(MSG.tableHeaderLatestActivity),
         enableSorting: false,
         cell: ({ row: { original } }) => (
           <ActionDescription
