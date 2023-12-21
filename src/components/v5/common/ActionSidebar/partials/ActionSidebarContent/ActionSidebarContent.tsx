@@ -15,12 +15,12 @@ import NotificationBanner from '~v5/shared/NotificationBanner';
 import ActionTypeSelect from '../../ActionTypeSelect';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 import {
-  useActionDescriptionMetadata,
   useActionFormProps,
   useSidebarActionForm,
   useReputationValidation,
 } from '../../hooks';
 import ActionButtons from '../ActionButtons';
+import ActionDescriptionMetadata from '../ActionDescriptionMetadata';
 import Motions from '../Motions';
 import PopularActions from '../PopularActions';
 
@@ -58,7 +58,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
-  const descriptionMetadata = useActionDescriptionMetadata();
   const { readonly } = useAdditionalFormOptionsContext();
   const { flatFormErrors, hasErrors } = useGetActionErrors();
 
@@ -82,7 +81,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           mode="secondary"
         />
         <div className="text-gray-900 text-md flex gap-1 break-all">
-          {descriptionMetadata}
+          <ActionDescriptionMetadata />
         </div>
         <SidebarBanner />
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />

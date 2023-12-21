@@ -1,4 +1,3 @@
-export * from './useActionDescriptionMetadata';
 export * from './useActionFormBaseHook';
 export * from './useActionFormProps';
 export * from './useCloseSidebarClick';
