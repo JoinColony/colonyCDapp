@@ -2,10 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import React, { FC, useState } from 'react';
 import { useGetColonyAction } from '~common/ColonyActions';
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow';
-import { useGetColonyContributorQuery } from '~gql';
-import { useColonyContext, useContributorBreakdown } from '~hooks';
 import { formatText } from '~utils/intl';
-import { getColonyContributorId } from '~utils/members';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import Stepper from '~v5/shared/Stepper';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
@@ -13,26 +10,12 @@ import { CustomStep, Steps } from '../../Motions/types';
 import { PermissionSidebarProps } from '../types';
 
 const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
-  const { colony } = useColonyContext();
-  const { colonyAddress } = colony || {};
   const { action } = useGetColonyAction(transactionId);
   const [activeStepKey, setActiveStepKey] = useState<Steps>(
     CustomStep.Finalize,
   );
 
   const { createdAt, initiatorUser, initiatorAddress } = action || {};
-
-  const { data } = useGetColonyContributorQuery({
-    variables: {
-      id: getColonyContributorId(colonyAddress || '', initiatorAddress || ''),
-      colonyAddress: colonyAddress || '',
-    },
-  });
-  const contributor = data?.getColonyContributor;
-  const { user, isVerified } = contributor ?? {};
-  const { bio, displayName: userDisplayName } = user?.profile || {};
-
-  const domains = useContributorBreakdown(contributor);
 
   return (
     <Stepper<Steps>
@@ -71,10 +54,6 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                           <UserAvatarPopover
                             walletAddress={initiatorAddress || ''}
                             user={initiatorUser}
-                            aboutDescription={bio || ''}
-                            userName={userDisplayName}
-                            isVerified={isVerified}
-                            domains={domains}
                           />
                         </div>
                       )}

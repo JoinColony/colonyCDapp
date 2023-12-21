@@ -1,6 +1,7 @@
 import { UserStatusMode } from '~v5/common/Pills/types';
 
 export type AvatarSize =
+  | 'xxxs'
   | 'xxs'
   | 'xss'
   | 'xs'

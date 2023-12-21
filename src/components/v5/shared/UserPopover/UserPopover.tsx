@@ -3,10 +3,13 @@ import { noop } from 'lodash';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
 
-import { useMobile } from '~hooks';
+import { useColonyContext, useContributorBreakdown, useMobile } from '~hooks';
+import { useGetColonyContributorQuery } from '~gql';
+import { getColonyContributorId } from '~utils/members';
+import Icon from '~shared/Icon';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
-import Icon from '~shared/Icon';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 import UserInfo from './partials/UserInfo';
 import { UserPopoverProps } from './types';
@@ -15,14 +18,9 @@ const displayName = 'v5.UserPopover';
 
 const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   userName,
-  walletAddress,
-  isVerified,
-  aboutDescription,
+  walletAddress = '',
   user,
-  userStatus,
   size,
-  domains,
-  isContributorsList,
   children,
   additionalContent,
   popperOptions,
@@ -34,6 +32,24 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   const [isOpen, setIsOpen] = useState(false);
   const { profile } = user || {};
   const { avatar, thumbnail } = profile || {};
+
+  const { colony } = useColonyContext();
+  const colonyAddress = colony?.colonyAddress ?? '';
+
+  const { data: colonyContributorData } = useGetColonyContributorQuery({
+    variables: {
+      id: getColonyContributorId(colonyAddress, walletAddress),
+      colonyAddress,
+    },
+  });
+
+  const contributor = colonyContributorData?.getColonyContributor;
+  const { bio } = contributor?.user?.profile || {};
+  const { isVerified } = contributor || {};
+  const domains = useContributorBreakdown(contributor);
+
+  const userStatus = (contributor?.type?.toLowerCase() ??
+    null) as ContributorTypeFilter | null;
 
   const onOpenModal = useCallback(() => {
     setIsOpen(true);
@@ -90,15 +106,16 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       title={userName}
       walletAddress={walletAddress}
       isVerified={isVerified}
-      aboutDescription={aboutDescription}
+      aboutDescription={bio || ''}
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}
-      isContributorsList={isContributorsList}
+      additionalContent={additionalContent}
     />
   );
 
-  const isTopSectionWithBackground = userStatus === 'top' && isContributorsList;
+  const isTopSectionWithBackground = userStatus === 'top';
+
   return (
     <>
       {button}
@@ -110,7 +127,6 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
           isTopSectionWithBackground={isTopSectionWithBackground}
         >
           {content}
-          {additionalContent}
         </Modal>
       ) : (
         <>
@@ -134,7 +150,6 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
               }
             >
               {content}
-              {additionalContent}
             </PopoverBase>
           )}
         </>

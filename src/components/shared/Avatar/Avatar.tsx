@@ -1,7 +1,8 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
-import getIcon from './identicon';
 import Icon from '~shared/Icon';
+import { AvatarSize } from '~v5/shared/Avatar/types';
+import getIcon from './identicon';
 import styles from './Avatar.module.css';
 
 export interface Props {
@@ -24,7 +25,7 @@ export interface Props {
   placeholderIcon?: string;
 
   /** Avatar size (default is between `s` and `m`) */
-  size?: 'xxxs' | 'xxs' | 'xs' | 's' | 'sm' | 'm' | 'l' | 'xl';
+  size?: AvatarSize;
 
   /** Title for a11y */
   title: string;

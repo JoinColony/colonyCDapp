@@ -7,7 +7,7 @@ import { DomainWithPermissionsAndReputation } from '~hooks/members/types';
 import { User } from '~types';
 
 export interface UserInfoProps extends AvatarProps, UserAvatarDetailsProps {
-  aboutDescription: MessageDescriptor | string;
+  aboutDescription?: MessageDescriptor | string;
   domains?: DomainWithPermissionsAndReputation[];
 }
 

@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { useController } from 'react-hook-form';
 import { utils } from 'ethers';
 
-import NotificationBanner from '~v5/shared/NotificationBanner';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
@@ -11,6 +10,7 @@ import Icon from '~shared/Icon';
 import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
+import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
 
 import { useUserSelect } from './hooks';
 import { UserSelectProps } from './types';
@@ -131,27 +131,18 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               aboutDescription={userByAddress?.profile?.bio || ''}
               user={userByAddress}
               className="text-warning-400"
-              size="xs"
+              size="m"
               additionalContent={
-                <NotificationBanner
-                  status="warning"
+                <UserPopoverAdditionalContent
                   description={
                     userByAddress?.walletAddress ||
                     (field.value && (
-                      <div className="mt-2 font-semibold break-words">
+                      <div className="mt-2 font-semibold break-words text-sm pb-2">
                         {userByAddress?.walletAddress || field.value}
                       </div>
                     ))
                   }
-                  callToAction={
-                    <button type="button">
-                      {formatText({ id: 'add.verified.member' })}
-                    </button>
-                  }
-                  className="mt-4 text-left"
-                >
-                  {formatText({ id: 'user.not.verified.warning' })}
-                </NotificationBanner>
+                />
               }
             >
               <button type="button">

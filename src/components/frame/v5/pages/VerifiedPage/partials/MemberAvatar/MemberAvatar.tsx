@@ -1,29 +1,33 @@
 import React, { FC } from 'react';
-import { useContributorBreakdown } from '~hooks';
 
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
+import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
 import { MemberAvatarProps } from './types';
 
 const displayName = 'v5.pages.VerifiedPage.partials.MemberAvatar';
 
 const MemberAvatar: FC<MemberAvatarProps> = ({ member }) => {
   const { user, isVerified } = member || {};
-  const { walletAddress = '', profile } = user || {};
-  const { bio, displayName: userDisplayName } = profile || {};
-  const domains = useContributorBreakdown(member);
+  const { walletAddress = '' } = user || {};
 
   return (
     <div className="ml-1 flex text-gray-900">
       <UserAvatarPopover
-        userName={userDisplayName}
-        walletAddress={splitWalletAddress(walletAddress)}
-        aboutDescription={bio || ''}
-        domains={domains}
-        user={user}
-        avatarSize="xs"
-        isVerified={isVerified}
+        walletAddress={walletAddress}
         popperOptions={{ placement: 'bottom-start' }}
+        additionalContent={
+          !isVerified ? (
+            <UserPopoverAdditionalContent
+              description={
+                walletAddress && (
+                  <div className="mt-2 font-semibold break-words text-sm pb-2">
+                    {walletAddress}
+                  </div>
+                )
+              }
+            />
+          ) : undefined
+        }
       />
     </div>
   );

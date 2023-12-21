@@ -8,7 +8,6 @@ import { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
 import PopoverBase from '../PopoverBase';
-import { useContributorBreakdown } from '~hooks';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 const displayName = 'v5.CardWithBios';
@@ -19,18 +18,13 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   shouldBeMenuVisible = true,
   isContributorsList,
 }) => {
-  const {
-    user,
-    colonyReputationPercentage,
-    type,
-    isVerified,
-    contributorAddress,
-  } = userData || {};
+  const { user, colonyReputationPercentage, type, contributorAddress } =
+    userData || {};
   const userStatus = (type?.toLowerCase() ??
     null) as ContributorTypeFilter | null;
 
-  const { walletAddress = contributorAddress, profile } = user || {};
-  const { bio } = profile || {};
+  const { walletAddress = contributorAddress } = user || {};
+
   const {
     getTooltipProps,
     setTooltipRef,
@@ -44,22 +38,14 @@ const CardWithBios: FC<CardWithBiosProps> = ({
     interactive: true,
   });
 
-  const domains = useContributorBreakdown(userData);
-
   return (
     <div className="max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <UserAvatarPopover
-              userName={profile?.displayName}
-              walletAddress={walletAddress}
-              isVerified={isVerified}
-              aboutDescription={bio || ''}
-              domains={domains}
               user={user}
-              userStatus={userStatus}
-              avatarSize="sm"
+              walletAddress={walletAddress}
               isContributorsList={isContributorsList}
             />
           </div>
