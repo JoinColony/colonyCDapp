@@ -51,7 +51,7 @@ const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
 };
 
 const displayName =
-  'v5.common.ActionsContent.partials.ActionSidebarContent.ActionDescriptionMetadata';
+  'v5.common.ActionsContent.partials.ActionDescriptionMetadata';
 
 const ActionDescriptionMetadata = () => {
   const formValues = useFormContext().getValues();
