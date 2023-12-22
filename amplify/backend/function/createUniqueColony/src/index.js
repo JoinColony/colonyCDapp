@@ -351,7 +351,7 @@ exports.handler = async (event) => {
       input: {
         id: `${checksummedAddress}_${Id.RootDomain}`,
         color: 'LIGHT_PINK',
-        name: 'Root',
+        name: 'General',
         description: '',
       }
     },
