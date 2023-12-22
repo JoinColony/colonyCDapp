@@ -7,6 +7,7 @@ import { getExtendedActionType } from '~utils/colonyActions';
 import MintTokens from './partials/MintTokens';
 import SimplePayment from './partials/SimplePayment';
 import TransferFunds from './partials/TransferFunds';
+import UnlockToken from './partials/UnlockToken/UnlockToken';
 
 interface CompletedActionProps {
   transactionId: string;
@@ -33,6 +34,8 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
         return <MintTokens action={action} />;
       case ColonyActionType.MoveFunds:
         return <TransferFunds action={action} />;
+      case ColonyActionType.UnlockToken:
+        return <UnlockToken action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
