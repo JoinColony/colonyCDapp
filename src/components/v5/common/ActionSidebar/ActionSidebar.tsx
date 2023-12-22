@@ -23,6 +23,7 @@ import { ActionSidebarProps } from './types';
 
 const displayName = 'v5.common.ActionSidebar';
 
+// @TODO rework this to render either a form or an existing view with CompletedAction
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   initialValues,

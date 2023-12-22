@@ -1,34 +1,28 @@
 import moveDecimal from 'move-decimal-point';
-import {
-  Coins,
-  FilePlus,
-  HouseLine,
-  Scales,
-  UserFocus,
-  UsersThree,
-} from 'phosphor-react';
+import { FilePlus, UserFocus, UsersThree } from 'phosphor-react';
 import React from 'react';
 import Tooltip from '~shared/Extensions/Tooltip';
-import TokenIcon from '~shared/TokenIcon';
 import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import UserAvatar from '~v5/shared/UserAvatar';
 import { ICON_SIZE } from '../../consts';
+import AmountRow from '../rows/Amount';
+import CreatedInRow from '../rows/CreatedInRow';
+import DecisionMethodRow from '../rows/DecisionMethod';
 
-const displayName = 'v5.common.CompletedAction.partials.SimplePaymentAction';
+const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
 
-interface SimplePaymentActionProps {
+interface SimplePaymentProps {
   action: ColonyAction;
 }
 
-const SimplePaymentAction = ({ action }: SimplePaymentActionProps) => {
+const SimplePayment = ({ action }: SimplePaymentProps) => {
   const { customTitle = 'Payment' } = action?.metadata || {};
 
   const transformedAmount = moveDecimal(
-    (action.amount || 0).toString(),
+    action.amount || '0',
     -getTokenDecimalsWithFallback(action.token?.decimals),
   );
 
@@ -93,67 +87,22 @@ const SimplePaymentAction = ({ action }: SimplePaymentActionProps) => {
           />
         </div>
 
-        <div>
-          <Tooltip
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.simplePayment.amount',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <Coins size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.amount' })}</span>
-            </div>
-          </Tooltip>
-        </div>
+        <AmountRow
+          amount={action.amount || '0'}
+          token={action.token || undefined}
+        />
 
-        <div className="flex items-center gap-1">
-          {transformedAmount}
-          {action.token && (
-            <>
-              <TokenIcon token={action.token} size="xxs" />
-              <span className="text-md">{action.token.symbol}</span>
-            </>
-          )}
-        </div>
+        <DecisionMethodRow isMotion={action.isMotion || false} />
 
-        <div>
-          <Tooltip
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <Scales size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.decisionMethod' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          {action.isMotion
-            ? DecisionMethod.Reputation
-            : DecisionMethod.Permissions}
-        </div>
-
-        <div>
-          <Tooltip
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <HouseLine size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.createdIn' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          {/* @TODO hook this up */}
-          <TeamBadge teamName={action.fromDomain?.metadata?.name} />
-        </div>
+        {action.motionData?.motionDomain.metadata && (
+          <CreatedInRow
+            motionDomainMetadata={action.motionData.motionDomain.metadata}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-SimplePaymentAction.displayName = displayName;
-export default SimplePaymentAction;
+SimplePayment.displayName = displayName;
+export default SimplePayment;

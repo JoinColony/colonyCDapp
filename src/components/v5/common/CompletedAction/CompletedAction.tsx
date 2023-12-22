@@ -3,8 +3,9 @@ import { useGetColonyAction } from '~common/ColonyActions';
 import { ColonyActionType } from '~gql';
 import { useColonyContext } from '~hooks';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import SimplePaymentAction from './partials/SimplePaymentAction';
 import { getExtendedActionType } from '~utils/colonyActions';
+import MintTokens from './partials/MintTokens';
+import SimplePayment from './partials/SimplePayment';
 
 interface CompletedActionProps {
   transactionId: string;
@@ -26,7 +27,9 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
   const getActionContent = () => {
     switch (actionType) {
       case ColonyActionType.Payment:
-        return <SimplePaymentAction action={action} />;
+        return <SimplePayment action={action} />;
+      case ColonyActionType.MintTokens:
+        return <MintTokens action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
