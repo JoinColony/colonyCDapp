@@ -4,6 +4,7 @@ import { ColonyActionType } from '~gql';
 import { useColonyContext } from '~hooks';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import { getExtendedActionType } from '~utils/colonyActions';
+import CreateDecision from './partials/CreateDecision';
 import MintTokens from './partials/MintTokens';
 import SimplePayment from './partials/SimplePayment';
 import TransferFunds from './partials/TransferFunds';
@@ -39,6 +40,8 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
         return <UpgradeColonyVersion action={action} />;
+      case ColonyActionType.CreateDecisionMotion:
+        return <CreateDecision action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
