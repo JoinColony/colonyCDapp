@@ -40,7 +40,7 @@ const ModalBase: FC<ModalBaseProps> = ({
             !isFullOnMobile,
           base: 'z-[4] outline-0',
           'pt-6 pl-6': !isTopSectionWithBackground,
-          'pt-0 pl-0': isTopSectionWithBackground,
+          'pt-0 pl-0 border-2 border-purple-200': isTopSectionWithBackground,
         },
       )}
       shouldFocusAfterRender

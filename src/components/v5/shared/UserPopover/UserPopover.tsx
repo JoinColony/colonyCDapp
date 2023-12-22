@@ -11,6 +11,8 @@ import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
 
+import UserPopoverAdditionalContent from '../UserPopoverAdditionalContent';
+
 import UserInfo from './partials/UserInfo';
 import { UserPopoverProps } from './types';
 
@@ -111,7 +113,20 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}
-      additionalContent={additionalContent}
+      additionalContent={
+        <>
+          {additionalContent}
+          {!isVerified && (
+            <UserPopoverAdditionalContent
+              description={
+                <div className="mt-2 font-semibold break-words text-sm pb-2">
+                  {user?.walletAddress}
+                </div>
+              }
+            />
+          )}
+        </>
+      }
     />
   );
 

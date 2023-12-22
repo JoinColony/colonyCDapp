@@ -10,7 +10,6 @@ import { formatText } from '~utils/intl';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';
-import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
 
 import { useUserSelect } from './hooks';
 import { UserSelectProps } from './types';
@@ -146,18 +145,6 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               user={userByAddress}
               className="text-warning-400"
               size="m"
-              additionalContent={
-                <UserPopoverAdditionalContent
-                  description={
-                    userByAddress?.walletAddress ||
-                    (field.value && (
-                      <div className="mt-2 font-semibold break-words text-sm pb-2">
-                        {userByAddress?.walletAddress || field.value}
-                      </div>
-                    ))
-                  }
-                />
-              }
             >
               <span className="flex ml-2 text-warning-400">
                 <Icon name="warning-circle" />
