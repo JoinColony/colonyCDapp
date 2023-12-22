@@ -1,29 +1,28 @@
-import moveDecimal from 'move-decimal-point';
-import { UserFocus } from 'phosphor-react';
 import React from 'react';
+import moveDecimal from 'move-decimal-point';
 
-import Tooltip from '~shared/Extensions/Tooltip';
+import { ArrowDownRight } from 'phosphor-react';
 import { ColonyAction } from '~types';
-import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import UserAvatar from '~v5/shared/UserAvatar';
 
-import { ICON_SIZE } from '../../consts';
-import ActionTypeRow from '../rows/ActionType';
 import AmountRow from '../rows/Amount';
 import CreatedInRow from '../rows/CreatedInRow';
 import DecisionMethodRow from '../rows/DecisionMethod';
+import ActionTypeRow from '../rows/ActionType';
 import TeamFromRow from '../rows/TeamFrom';
+import Tooltip from '~shared/Extensions/Tooltip';
+import { formatText } from '~utils/intl';
+import TeamBadge from '~v5/common/Pills/TeamBadge';
+import { ICON_SIZE } from '../../consts';
 
-const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
+const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 
-interface SimplePaymentProps {
+interface TransferFundsProps {
   action: ColonyAction;
 }
 
-const SimplePayment = ({ action }: SimplePaymentProps) => {
-  const { customTitle = 'Payment' } = action?.metadata || {};
-
+const TransferFunds = ({ action }: TransferFundsProps) => {
+  const { customTitle = 'Transfer funds' } = action?.metadata || {};
   const transformedAmount = moveDecimal(
     action.amount || '0',
     -getTokenDecimalsWithFallback(action.token?.decimals),
@@ -33,8 +32,9 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
     <div className="flex-grow overflow-y-auto px-6">
       <h3 className="heading-3 mb-2 text-gray-900">{customTitle}</h3>
       <div className="mb-7 text-md">
-        Pay {action.recipientUser?.profile?.displayName} {transformedAmount}{' '}
-        {action.token?.symbol} by {action.initiatorUser?.profile?.displayName}
+        Move {transformedAmount} {action.token?.symbol} from{' '}
+        {action.fromDomain?.metadata?.name} to {action.toDomain?.metadata?.name}{' '}
+        by {action.initiatorUser?.profile?.displayName}
       </div>
       <div className="grid grid-cols-[10rem_auto] sm:grid-cols-[12.5rem_auto] gap-y-3 text-md text-gray-900 items-center">
         <ActionTypeRow actionType={action.type} />
@@ -46,24 +46,17 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         <div>
           <Tooltip
             tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.simplePayment.recipient',
+              id: 'actionSidebar.tooltip.transferFunds.to',
             })}
           >
             <div className="flex items-center gap-2">
-              <UserFocus size={ICON_SIZE} />
+              <ArrowDownRight size={ICON_SIZE} />
               <span>{formatText({ id: 'actionSidebar.recipent' })}</span>
             </div>
           </Tooltip>
         </div>
         <div>
-          <UserAvatar
-            user={{
-              profile: action.recipientUser?.profile,
-              walletAddress: action.recipientAddress || '',
-            }}
-            size="xs"
-            showUsername
-          />
+          <TeamBadge teamName={action.toDomain?.metadata?.name} />
         </div>
 
         <AmountRow
@@ -83,5 +76,5 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
   );
 };
 
-SimplePayment.displayName = displayName;
-export default SimplePayment;
+TransferFunds.displayName = displayName;
+export default TransferFunds;

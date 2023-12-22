@@ -7,6 +7,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import AmountRow from '../rows/Amount';
 import CreatedInRow from '../rows/CreatedInRow';
 import DecisionMethodRow from '../rows/DecisionMethod';
+import ActionTypeRow from '../rows/ActionType';
 
 const displayName = 'v5.common.CompletedAction.partials.MintTokens';
 
@@ -29,6 +30,8 @@ const MintTokens = ({ action }: MintTokensProps) => {
         {action.initiatorUser?.profile?.displayName}
       </div>
       <div className="grid grid-cols-[10rem_auto] sm:grid-cols-[12.5rem_auto] gap-y-3 text-md text-gray-900 items-center">
+        <ActionTypeRow actionType={action.type} />
+
         <AmountRow
           amount={action.amount || '0'}
           token={action.token || undefined}
