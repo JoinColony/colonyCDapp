@@ -106,7 +106,7 @@ curl -H "Content-Type: application/json" \
 # done
 
 # Login to ECR
-aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 204031746016.dkr.ecr.your-region.amazonaws.com
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 204031746016.dkr.ecr.eu-west-2.amazonaws.com
 
 # Pull docker images
 echo "Pulling docker images..."
