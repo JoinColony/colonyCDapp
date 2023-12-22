@@ -113,12 +113,7 @@ const useMemberFilters = ({
       return filteredRoles.some(
         ({ domainId, ...rest }) =>
           permissionsDomainIds.has(domainId) &&
-          hasSomeRole(
-            rest,
-            Object.keys(filterPermissions).length
-              ? filterPermissions
-              : undefined,
-          ),
+          hasSomeRole(rest, filterPermissions),
       );
     });
   }, [filteredByType, filterPermissions, permissionsDomainIds]);
