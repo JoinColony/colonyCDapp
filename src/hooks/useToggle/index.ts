@@ -7,7 +7,7 @@ import {
   UseToggleReturnType,
 } from './types';
 
-let documentClickHandlerRegistered = false;
+let documentMousedownHandlerRegistered = false;
 let htmlElementInstance: HTMLElement | null = null;
 const refsRegistry: RefRegistryEntry[] = [];
 
@@ -21,7 +21,7 @@ const getHtmlElement = (): HTMLElement | null => {
   return htmlElementInstance;
 };
 
-const documentClickHandler = (event: MouseEvent): void => {
+const documentMousedownHandler = (event: MouseEvent): void => {
   refsRegistry.forEach(
     ({ element, toggleOff, toggleState, onBeforeCloseCallbacksRef }) => {
       if (!(event.target instanceof Element)) {
@@ -84,9 +84,9 @@ const useToggle = ({
   }, []);
 
   useEffect(() => {
-    if (!documentClickHandlerRegistered) {
-      documentClickHandlerRegistered = true;
-      document.addEventListener('click', documentClickHandler);
+    if (!documentMousedownHandlerRegistered) {
+      documentMousedownHandlerRegistered = true;
+      document.addEventListener('mousedown', documentMousedownHandler);
     }
   }, []);
 
