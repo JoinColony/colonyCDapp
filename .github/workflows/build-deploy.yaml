@@ -68,8 +68,10 @@ jobs:
           tags: |
             ${{ env.ECR_REPOSITORY }}:run-${{ github.run_number }}
             ${{ env.ECR_REPOSITORY }}:${{ env.COMMIT_HASH }}
-          cache-from: type=registry,ref= ${{ env.ECR_REPOSITORY }}:dockercache
-          cache-to: type=registry,ref= ${{ env.ECR_REPOSITORY }}:dockercache,mode=max,image-manifest=true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # cache-from: type=registry,ref= ${{ env.ECR_REPOSITORY }}:dockercache
+          # cache-to: type=registry,ref= ${{ env.ECR_REPOSITORY }}:dockercache,mode=max,image-manifest=true
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
