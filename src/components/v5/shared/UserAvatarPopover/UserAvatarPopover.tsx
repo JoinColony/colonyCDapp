@@ -14,7 +14,11 @@ import { UserAvatarPopoverProps } from './types';
 
 const displayName = 'v5.UserAvatarPopover';
 
-const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({ size, ...props }) => {
+const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
+  size,
+  additionalContent,
+  ...props
+}) => {
   const { walletAddress, isContributorsList } = props;
   const {
     colony: { colonyAddress },
@@ -41,6 +45,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({ size, ...props }) => {
       className={clsx({
         skeleton: !user,
       })}
+      additionalContent={additionalContent}
       {...props}
     >
       <UserAvatar

@@ -11,7 +11,6 @@ import Link from '~v5/shared/Link';
 import MeatBallMenu from '~v5/shared/MeatBallMenu';
 import ReputationBadge from '~v5/shared/ReputationBadge';
 import UserPopover from '~v5/shared/UserPopover';
-import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
 
 import PermissionsBadge from '../Pills/PermissionsBadge';
 
@@ -26,7 +25,7 @@ const MemberCard: FC<MemberCardProps> = ({
   role,
   isSimple,
 }) => {
-  const { userName, isVerified, mode, walletAddress, ...restUserAvatarProps } =
+  const { userName, isVerified, mode, ...restUserAvatarProps } =
     userAvatarProps;
 
   return (
@@ -46,19 +45,6 @@ const MemberCard: FC<MemberCardProps> = ({
             'flex-col items-center justify-between flex-grow gap-2 w-full':
               !isSimple,
           })}
-          additionalContent={
-            !isVerified ? (
-              <UserPopoverAdditionalContent
-                description={
-                  walletAddress && (
-                    <div className="mt-2 font-semibold break-words text-sm pb-2">
-                      {walletAddress}
-                    </div>
-                  )
-                }
-              />
-            ) : undefined
-          }
         >
           <AvatarWithStatusBadge
             size={isSimple ? 'sm' : 'm'}
