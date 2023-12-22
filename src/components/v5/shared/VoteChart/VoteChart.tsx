@@ -48,11 +48,11 @@ const VoteChart: FC<VoteChartProps> = ({
     ((predictedForValue && predictedForValue > threshold) ||
       forValue > threshold);
 
-  const shouldHideIndicator = !(threshold && forValue > threshold);
+  const shouldHideIndicator = !!threshold && forValue < threshold;
 
   return (
     <div className={clsx(className, 'w-full')}>
-      {!!threshold && shouldHideIndicator && (
+      {shouldHideIndicator && (
         <p className="text-xs font-medium text-center mb-1 text-blue-400">
           {thresholdLabel ||
             formatText(
@@ -90,7 +90,7 @@ const VoteChart: FC<VoteChartProps> = ({
         </div>
         <div className="flex flex-1 flex-col items-center gap-1">
           <div className="relative w-full">
-            {shouldHideIndicator && !!threshold && (
+            {shouldHideIndicator && (
               <div
                 className="absolute top-0 bottom-0 h-full z-[3]"
                 style={{
