@@ -9,6 +9,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import UserAvatar from '~v5/shared/UserAvatar';
 
 import { ICON_SIZE } from '../../consts';
+import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
 import ActionTypeRow from '../rows/ActionType';
 import AmountRow from '../rows/Amount';
 import CreatedInRow from '../rows/CreatedInRow';
@@ -31,13 +32,13 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
   );
 
   return (
-    <div className="flex-grow overflow-y-auto px-6">
-      <h3 className="heading-3 mb-2 text-gray-900">{customTitle}</h3>
-      <div className="mb-7 text-md">
+    <>
+      <ActionTitle>{customTitle}</ActionTitle>
+      <ActionSubtitle>
         Pay {action.recipientUser?.profile?.displayName} {transformedAmount}{' '}
         {action.token?.symbol} by {action.initiatorUser?.profile?.displayName}
-      </div>
-      <div className="grid grid-cols-[10rem_auto] sm:grid-cols-[12.5rem_auto] gap-y-3 text-md text-gray-900 items-center">
+      </ActionSubtitle>
+      <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
 
         {action.fromDomain?.metadata && (
@@ -83,8 +84,8 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         {action.annotation?.message && (
           <DescriptionRow description={action.annotation.message} />
         )}
-      </div>
-    </div>
+      </ActionDataGrid>
+    </>
   );
 };
 

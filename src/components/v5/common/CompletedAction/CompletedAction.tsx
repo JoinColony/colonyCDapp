@@ -48,7 +48,9 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
     }
   };
 
-  return getActionContent();
+  return (
+    <div className="flex-grow overflow-y-auto px-6">{getActionContent()}</div>
+  );
 };
 
 CompletedAction.displayName = displayName;

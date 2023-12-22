@@ -15,6 +15,7 @@ import { formatText } from '~utils/intl';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import { ICON_SIZE } from '../../consts';
 import DescriptionRow from '../rows/Description';
+import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
 
 const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 
@@ -30,14 +31,14 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
   );
 
   return (
-    <div className="flex-grow overflow-y-auto px-6">
-      <h3 className="heading-3 mb-2 text-gray-900">{customTitle}</h3>
-      <div className="mb-7 text-md">
+    <>
+      <ActionTitle>{customTitle}</ActionTitle>
+      <ActionSubtitle>
         Move {transformedAmount} {action.token?.symbol} from{' '}
         {action.fromDomain?.metadata?.name} to {action.toDomain?.metadata?.name}{' '}
         by {action.initiatorUser?.profile?.displayName}
-      </div>
-      <div className="grid grid-cols-[10rem_auto] sm:grid-cols-[12.5rem_auto] gap-y-3 text-md text-gray-900 items-center">
+      </ActionSubtitle>
+      <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
 
         {action.fromDomain?.metadata && (
@@ -76,8 +77,8 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
         {action.annotation?.message && (
           <DescriptionRow description={action.annotation.message} />
         )}
-      </div>
-    </div>
+      </ActionDataGrid>
+    </>
   );
 };
 
