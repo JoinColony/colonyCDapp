@@ -1,29 +1,29 @@
 #!/bin/bash
 
-# Add official Docker GPG key
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
+# # Add official Docker GPG key
+# sudo install -m 0755 -d /etc/apt/keyrings
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+# sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-# Setup docker repo
-echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# # Setup docker repo
+# echo \
+#   "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+#   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+#   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# Update and install required dependencies
-sudo apt-get update -y
-sudo apt-get install -y ca-certificates curl gnupg awscli nodejs npm git nginx apache2-utils netcat unzip wget
+# # Update and install required dependencies
+# sudo apt-get update -y
+# sudo apt-get install -y ca-certificates curl gnupg awscli nodejs npm git nginx apache2-utils netcat unzip wget
 
-# Install docker dependencies
-sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# # Install docker dependencies
+# sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Install docker compose plugin
-sudo apt-get -y install docker-compose-plugin
+# # Install docker compose plugin
+# sudo apt-get -y install docker-compose-plugin
 
-# Start Docker service
-sudo usermod -aG docker ubuntu
-sudo systemctl start docker
+# # Start Docker service
+# sudo usermod -aG docker ubuntu
+# sudo systemctl start docker
 
 # Download the CloudWatch agent
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
@@ -69,13 +69,23 @@ ENCODED_LOG_STREAM_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.qu
 REGION="eu-west-2"
 CLOUDWATCH_URL="https://console.aws.amazon.com/cloudwatch/home?region=$REGION#logsV2:log-groups/log-group/$ENCODED_LOG_GROUP_NAME/log-events/$ENCODED_LOG_STREAM_NAME"
 
-# Create JSON payload for the Discord notification with embed, because of how long the CW URL would be
+# Check if Discord user ID is provided
+if [ -z "$DISCORD_USER_ID" ]; then
+    echo "No Discord user ID provided."
+    DISCORD_GREETING="Hey there person with no Discord ID"
+    exit 1
+else
+    echo "Discord user ID provided."
+    DISCORD_GREETING="Hey <@$DISCORD_USER_ID>"
+fi
+
+# Need to create JSON payload for the Discord notification with the URL embedded, otherwise the CW URL would be too long in the message
 read -r -d '' PAYLOAD << EOM
 {
   "embeds": [
     {
       "title": "Dev Environment Setup",
-      "description": "Hey <@$DISCORD_USER_ID>, your dev environment is getting ready, you can keep an eye on it [here]($CLOUDWATCH_URL).",
+      "description": "$DISCORD_GREETING, your dev environment is getting ready, you can keep an eye on it [here]($CLOUDWATCH_URL).",
       "color": 5814783
     }
   ]
@@ -87,6 +97,31 @@ curl -H "Content-Type: application/json" \
      -X POST \
      -d "$PAYLOAD" \
      $DISCORD_WEBHOOK
+
+# # Loop through array of image names, pull them and tag them with local name
+# for i in "${IMAGE_NAMES[@]}"
+# do
+#     docker pull 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:$i
+#     docker tag 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:$i colony-cdapp-dev-env/$i
+# done
+
+# Pull docker images
+echo "Pulling docker images..."
+docker pull 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:base
+docker pull 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:network
+docker pull 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:block-ingestor
+docker pull 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:amplify
+docker pull 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:auth-proxy
+docker pull 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:reputation-monitor
+
+# Tag docker images with local name
+echo "Tagging docker images..."
+docker tag 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:base colony-cdapp-dev-env/base
+docker tag 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:network colony-cdapp-dev-env/network
+docker tag 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:block-ingestor colony-cdapp-dev-env/block-ingestor
+docker tag 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:amplify colony-cdapp-dev-env/amplify
+docker tag 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:auth-proxy colony-cdapp-dev-env/auth-proxy
+docker tag 204031746016.dkr.ecr.eu-west-2.amazonaws.com/on-demand-env:reputation-monitor colony-cdapp-dev-env/reputation-monitor
 
 # Clone the repo
 git clone https://github.com/JoinColony/colonyCDapp.git ~/app
@@ -251,6 +286,6 @@ echo "Port 9091 is now open!"
 # Send completion notification on Discord
 curl -H "Content-Type: application/json" \
      -X POST \
-     -d '{"content":"Hey <@'"$DISCORD_USER_ID"'>, your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
+     -d '{"content":"'"$DISCORD_GREETING"', your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
      $DISCORD_WEBHOOK
 echo "Completion message posted!"

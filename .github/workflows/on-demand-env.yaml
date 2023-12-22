@@ -60,16 +60,20 @@ jobs:
           SECURITY_GROUP=${{ vars.ON_DEMAND_ENV_EC2_SG_ID }}
           GITHUB_RUN_NUMBER=${{ github.run_number }}
           ENV_DURATION=${{ github.event.inputs.envExpiryTimeMinutes }}
+          AMI_ID=${{ vars.ON_DEMAND_ENV_EC2_AMI_ID }}
           
           LAUNCH_SPECIFICATION=$(cat <<EOF
             {
-              "ImageId": "ami-0eb260c4d5475b901",
+              "ImageId": "${AMI_ID}",
               "InstanceType": "t3.2xlarge",
               "IamInstanceProfile": {
                   "Name": "${INSTANCE_PROFILE}"
                 },
               "SecurityGroupIds": ["${SECURITY_GROUP}"],
               "UserData": "$(base64 --wrap=0 ./temp-on-demand-env-script.sh)",
+              "Placement": {
+                "AvailabilityZone": "eu-west-2a"
+              },
               "BlockDeviceMappings": [
                   {
                       "DeviceName": "/dev/sda1",
