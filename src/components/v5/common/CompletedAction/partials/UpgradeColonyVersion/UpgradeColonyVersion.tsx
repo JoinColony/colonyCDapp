@@ -5,6 +5,7 @@ import { ColonyAction } from '~types';
 import CreatedInRow from '../rows/CreatedInRow';
 import DecisionMethodRow from '../rows/DecisionMethod';
 import ActionTypeRow from '../rows/ActionType';
+import DescriptionRow from '../rows/Description';
 
 const displayName = 'v5.common.CompletedAction.partials.UpgradeColonyVersion';
 
@@ -32,6 +33,10 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}
           />
+        )}
+
+        {action.annotation?.message && (
+          <DescriptionRow description={action.annotation.message} />
         )}
       </div>
     </div>

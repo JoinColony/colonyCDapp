@@ -14,6 +14,7 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import { ICON_SIZE } from '../../consts';
+import DescriptionRow from '../rows/Description';
 
 const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 
@@ -70,6 +71,10 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}
           />
+        )}
+
+        {action.annotation?.message && (
+          <DescriptionRow description={action.annotation.message} />
         )}
       </div>
     </div>

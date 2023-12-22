@@ -13,6 +13,7 @@ import ActionTypeRow from '../rows/ActionType';
 import AmountRow from '../rows/Amount';
 import CreatedInRow from '../rows/CreatedInRow';
 import DecisionMethodRow from '../rows/DecisionMethod';
+import DescriptionRow from '../rows/Description';
 import TeamFromRow from '../rows/TeamFrom';
 
 const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
@@ -77,6 +78,10 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}
           />
+        )}
+
+        {action.annotation?.message && (
+          <DescriptionRow description={action.annotation.message} />
         )}
       </div>
     </div>
