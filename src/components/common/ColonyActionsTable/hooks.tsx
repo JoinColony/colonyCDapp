@@ -12,10 +12,13 @@ import {
   SearchableColonyActionSortInput,
   SearchableSortDirection,
 } from '~gql';
-import { useActivityFeed, useColonyContext } from '~hooks';
+import {
+  useActivityFeed,
+  useColonyContext,
+  useGetSelectedDomainFilter,
+} from '~hooks';
 import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
 import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
@@ -193,7 +196,7 @@ export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
 };
 
 export const useActionsTableData = (pageSize: number) => {
-  const selectedTeam = useGetSelectedTeamFilter();
+  const selectedDomain = useGetSelectedDomainFilter();
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'createdAt',
@@ -214,9 +217,9 @@ export const useActionsTableData = (pageSize: number) => {
   } = useActivityFeed(
     useMemo(
       () => ({
-        teamId: selectedTeam?.id || undefined,
+        teamId: selectedDomain?.id || undefined,
       }),
-      [selectedTeam?.id],
+      [selectedDomain?.id],
     ),
     useMemo(() => {
       const validSortValues = sorting?.reduce<

@@ -1,5 +1,4 @@
-import { useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useMemo } from 'react';
 
 import { TEAM_SEARCH_PARAM } from '~routes';
 import { notMaybe } from '~utils/arrays';
@@ -8,43 +7,19 @@ import { getTeamColor } from '~utils/teams';
 import { setQueryParamOnUrl } from '~utils/urls';
 
 import useColonyContext from './useColonyContext';
-
-export const useGetSelectedTeamFilter = () => {
-  const { colony } = useColonyContext();
-  const { domains } = colony || {};
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const team = searchParams.get(TEAM_SEARCH_PARAM);
-
-  const teamId = useMemo(
-    () =>
-      domains?.items.find(
-        (domain) => domain?.nativeId === parseFloat(team || '0'),
-      ),
-    [domains?.items, team],
-  );
-
-  useEffect(() => {
-    if (team && !teamId) {
-      searchParams.delete(TEAM_SEARCH_PARAM);
-      setSearchParams(searchParams);
-    }
-  }, [searchParams, team, setSearchParams, teamId]);
-
-  return teamId;
-};
+import useGetSelectedDomainFilter from './useGetSelectedDomainFilter';
 
 export const useCreateTeamBreadcrumbs = () => {
   const { colony } = useColonyContext();
-  const selectedValue = useGetSelectedTeamFilter();
+  const selectedDomain = useGetSelectedDomainFilter();
   const { domains } = colony || {};
   const navigationPathname = window.location.pathname;
 
-  const activeItem = selectedValue
+  const activeItem = selectedDomain
     ? setQueryParamOnUrl(
         navigationPathname,
         TEAM_SEARCH_PARAM,
-        `${selectedValue.nativeId}`,
+        `${selectedDomain.nativeId}`,
       )
     : navigationPathname;
 

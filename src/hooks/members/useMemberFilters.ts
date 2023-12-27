@@ -3,8 +3,7 @@ import { useMemo } from 'react';
 
 import { UserRole } from '~constants/permissions';
 import { useSearchContext } from '~context/SearchContext';
-import { useColonyContext } from '~hooks';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
 import { ColonyContributor } from '~types';
 import { notNull } from '~utils/arrays';
 import { getDomainDatabaseId } from '~utils/databaseId';
@@ -32,18 +31,18 @@ const useMemberFilters = ({
 }) => {
   const { colony } = useColonyContext();
   const { searchValue } = useSearchContext();
-  const selectedTeam = useGetSelectedTeamFilter();
+  const selectedDomain = useGetSelectedDomainFilter();
 
   const { colonyAddress = '' } = colony ?? {};
 
   const databaseDomainIds = useMemo(
     () =>
       new Set(
-        selectedTeam
-          ? [selectedTeam.id]
+        selectedDomain
+          ? [selectedDomain.id]
           : nativeDomainIds.map((id) => getDomainDatabaseId(colonyAddress, id)),
       ),
-    [nativeDomainIds, colonyAddress, selectedTeam],
+    [nativeDomainIds, colonyAddress, selectedDomain],
   );
 
   // Always include the root domain, since if the user has a permission in root, they have it in all domains
@@ -57,7 +56,7 @@ const useMemberFilters = ({
   );
 
   const filteredByTeam = useMemo(() => {
-    if (!selectedTeam) {
+    if (!selectedDomain) {
       return members;
     }
 
@@ -80,7 +79,7 @@ const useMemberFilters = ({
         );
       }) ?? []
     );
-  }, [members, databaseDomainIds, permissionsDomainIds, selectedTeam]);
+  }, [members, databaseDomainIds, permissionsDomainIds, selectedDomain]);
 
   const filteredByStatus = useMemo(() => {
     if (!filterStatus) {
