@@ -23,6 +23,8 @@ export interface ActivityFeedFilters {
 
 export type ActivityFeedSort = SearchActionsQueryVariables['sort'];
 
+export type SearchActionsFilterVariable = SearchActionsQueryVariables['filter'];
+
 export interface ActivityFeedOptions {
   pageSize?: number;
 }

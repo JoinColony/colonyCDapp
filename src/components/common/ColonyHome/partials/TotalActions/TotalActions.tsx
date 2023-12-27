@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { useGetTotalColonyActionsQuery } from '~gql';
 import { useGetSelectedDomainFilter } from '~hooks';
-import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
+import { getBaseSearchActionsFilterVariable } from '~hooks/useActivityFeed/helpers';
 import useColonyContext from '~hooks/useColonyContext';
 import { COLONY_ACTIVITY_ROUTE } from '~routes';
 import { findDomainByNativeId } from '~utils/domains';
@@ -24,7 +24,7 @@ const TotalActions = () => {
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
       filter: {
-        ...createBaseActionFilter(colonyAddress),
+        ...getBaseSearchActionsFilterVariable(colonyAddress),
       },
     },
   });

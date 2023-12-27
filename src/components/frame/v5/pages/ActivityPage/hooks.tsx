@@ -6,8 +6,8 @@ import {
   useGetTotalColonyActionsQuery,
   useGetTotalColonyDomainActionsQuery,
 } from '~gql';
-import { useColonyContext } from '~hooks';
-import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
+import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
+import { getBaseSearchActionsFilterVariable } from '~hooks/useActivityFeed/helpers';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
@@ -21,11 +21,15 @@ const getThirtyDaysAgoIso = () => {
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
+  const selectedDomain = useGetSelectedDomainFilter();
 
   const { data: totalActionData } = useGetTotalColonyActionsQuery({
     variables: {
       filter: {
-        ...createBaseActionFilter(colonyAddress),
+        ...getBaseSearchActionsFilterVariable(
+          colonyAddress,
+          selectedDomain?.nativeId,
+        ),
       },
     },
   });
@@ -35,7 +39,10 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { data: recentActionData } = useGetTotalColonyActionsQuery({
     variables: {
       filter: {
-        ...createBaseActionFilter(colonyAddress),
+        ...getBaseSearchActionsFilterVariable(
+          colonyAddress,
+          selectedDomain?.nativeId,
+        ),
         createdAt: { gte: getThirtyDaysAgoIso() },
       },
     },

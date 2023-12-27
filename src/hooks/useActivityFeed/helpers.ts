@@ -1,12 +1,13 @@
-import { QuerySearchColonyActionsArgs } from '~gql';
 import { MotionStatesMap } from '~hooks';
 import { ColonyAction } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
+import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   ActivityDecisionMethod,
   ActivityFeedFilters,
   ActivityFeedColonyAction,
+  SearchActionsFilterVariable,
 } from './types';
 
 const getActivityFeedMotionState = (
@@ -37,7 +38,10 @@ export const filterActionByMotionState = (
     : motionStatesFilter.includes(action.motionState);
 };
 
-export const createBaseActionFilter = (colonyAddress: string) => ({
+export const getBaseSearchActionsFilterVariable = (
+  colonyAddress: string,
+  nativeDomainId?: number,
+): SearchActionsFilterVariable => ({
   colonyId: {
     eq: colonyAddress,
   },
@@ -47,20 +51,24 @@ export const createBaseActionFilter = (colonyAddress: string) => ({
   colonyDecisionId: {
     exists: false,
   },
+  fromDomainId: nativeDomainId
+    ? {
+        eq: getDomainDatabaseId(colonyAddress, nativeDomainId),
+      }
+    : undefined,
 });
 
 export const getSearchActionsFilterVariable = (
   colonyAddress: string,
   filters?: ActivityFeedFilters,
-): QuerySearchColonyActionsArgs['filter'] => {
+): SearchActionsFilterVariable => {
   return {
-    ...createBaseActionFilter(colonyAddress),
-    fromDomainId:
-      filters?.teamId !== undefined
-        ? {
-            eq: filters.teamId,
-          }
-        : undefined,
+    ...getBaseSearchActionsFilterVariable(colonyAddress),
+    fromDomainId: filters?.teamId
+      ? {
+          eq: filters.teamId,
+        }
+      : undefined,
     or: filters?.actionTypes?.length
       ? filters.actionTypes.map((actionType) => ({
           type: { eq: actionType },

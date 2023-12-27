@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 
 import { useMemberContext } from '~context/MemberContext';
-import { useColonyContext } from '~hooks';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
 
 import { MembersTabContentListItem } from './partials/MembersTabContent/types';
 import { getMembersList } from './utils';
@@ -20,16 +19,16 @@ export const useMembersPage = () => {
     moreMembers,
   } = useMemberContext();
   const { colony } = useColonyContext();
-  const selectedTeam = useGetSelectedTeamFilter();
+  const selectedDomain = useGetSelectedDomainFilter();
 
   const contributorsList = useMemo<MembersTabContentListItem[]>(
-    () => getMembersList(pagedContributors, selectedTeam?.nativeId, colony),
-    [colony, pagedContributors, selectedTeam],
+    () => getMembersList(pagedContributors, selectedDomain?.nativeId, colony),
+    [colony, pagedContributors, selectedDomain],
   );
 
   const membersList = useMemo<MembersTabContentListItem[]>(
-    () => getMembersList(pagedMembers, selectedTeam?.nativeId, colony),
-    [colony, pagedMembers, selectedTeam],
+    () => getMembersList(pagedMembers, selectedDomain?.nativeId, colony),
+    [colony, pagedMembers, selectedDomain],
   );
 
   const sortedContributorCount = filteredContributors.length;
