@@ -20,7 +20,7 @@ import { useMotionContext } from '../../../../partials/MotionProvider/hooks';
 import { useStakingForm } from './hooks';
 import { StakingFormProps, StakingFormValues } from './types';
 import StakingChart from '../StakingChart/StakingChart';
-import { getPredictedPercentage } from './helpers';
+import { getMaxStakeAmount, getPredictedPercentage } from './helpers';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.StakingForm';
@@ -35,12 +35,11 @@ const StakingForm: FC<StakingFormProps> = ({
 
   const thresholdPercentValue = 10;
 
-  const { token, colony, motionData } = motionAction || {};
-  const { decimals, symbol } = token || {};
+  const { colony, motionData } = motionAction || {};
   const { nativeToken } = colony || {};
-  const { nativeTokenDecimals, nativeTokenSymbol } = nativeToken || {};
-  const tokenSymbol = symbol || nativeTokenSymbol || '';
-  const tokenDecimals = decimals || nativeTokenDecimals || 0;
+  const { nativeTokenDecimals, nativeTokenSymbol: tokenSymbol = '' } =
+    nativeToken || {};
+  const tokenDecimals = getTokenDecimalsWithFallback(nativeTokenDecimals);
 
   const { requiredStake, motionStakes, remainingStakes } = motionData;
 
@@ -49,16 +48,6 @@ const StakingForm: FC<StakingFormProps> = ({
   const userAvailableBalance = BigNumber.from(userActivatedTokens).add(
     userInactivatedTokens,
   );
-  const userOpposeRemaining = BigNumber.from(opposeRemaining).gt(
-    userAvailableBalance,
-  )
-    ? userAvailableBalance.toString()
-    : opposeRemaining;
-  const userSupportRemaining = BigNumber.from(supportRemaining).gt(
-    userAvailableBalance,
-  )
-    ? userAvailableBalance.toString()
-    : supportRemaining;
 
   const { handleSuccess, transform, validationSchema } = useStakingForm();
 
@@ -144,7 +133,7 @@ const StakingForm: FC<StakingFormProps> = ({
                     </span>
                     <span className="text-sm text-gray-600">
                       {formatText(
-                        { id: 'motion.staking.input.label.balance' },
+                        { id: 'motion.staking.input.balance' },
                         {
                           balance: (
                             <Numeral
@@ -174,15 +163,14 @@ const StakingForm: FC<StakingFormProps> = ({
                       onClick: () => {
                         setValue(
                           'amount',
-                          voteTypeValue === MotionVote.Yay
-                            ? moveDecimal(
-                                userSupportRemaining,
-                                -getTokenDecimalsWithFallback(tokenDecimals),
-                              )
-                            : moveDecimal(
-                                userOpposeRemaining,
-                                -getTokenDecimalsWithFallback(tokenDecimals),
-                              ),
+                          moveDecimal(
+                            getMaxStakeAmount(
+                              voteTypeValue,
+                              userAvailableBalance,
+                              remainingStakes,
+                            ),
+                            -tokenDecimals,
+                          ),
                           {
                             shouldTouch: true,
                             shouldValidate: true,
