@@ -1,7 +1,6 @@
 import { MotionStatesMap } from '~hooks';
 import { ColonyAction } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
-import { getDomainDatabaseId } from '~utils/databaseId';
 
 import {
   ActivityDecisionMethod,
@@ -38,9 +37,12 @@ export const filterActionByMotionState = (
     : motionStatesFilter.includes(action.motionState);
 };
 
+/**
+ * Common filtering for all action queries to ensure both listing and counting queries
+ * return the same results
+ */
 export const getBaseSearchActionsFilterVariable = (
   colonyAddress: string,
-  nativeDomainId?: number,
 ): SearchActionsFilterVariable => ({
   colonyId: {
     eq: colonyAddress,
@@ -51,11 +53,6 @@ export const getBaseSearchActionsFilterVariable = (
   colonyDecisionId: {
     exists: false,
   },
-  fromDomainId: nativeDomainId
-    ? {
-        eq: getDomainDatabaseId(colonyAddress, nativeDomainId),
-      }
-    : undefined,
 });
 
 export const getSearchActionsFilterVariable = (

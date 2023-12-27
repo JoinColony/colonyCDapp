@@ -1,54 +1,29 @@
 import clsx from 'clsx';
-import { subDays, startOfDay } from 'date-fns';
 import React from 'react';
 
+import { useGetTotalColonyDomainActionsQuery } from '~gql';
 import {
-  useGetTotalColonyActionsQuery,
-  useGetTotalColonyDomainActionsQuery,
-} from '~gql';
-import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
-import { getBaseSearchActionsFilterVariable } from '~hooks/useActivityFeed/helpers';
+  useActionsCount,
+  useColonyContext,
+  useGetSelectedDomainFilter,
+} from '~hooks';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
-
-const getThirtyDaysAgoIso = () => {
-  const thirtyDaysAgo = subDays(new Date(), 30);
-  const midnightThirtyDaysAgo = startOfDay(thirtyDaysAgo);
-  return midnightThirtyDaysAgo.toISOString();
-};
 
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
   const selectedDomain = useGetSelectedDomainFilter();
 
-  const { data: totalActionData } = useGetTotalColonyActionsQuery({
-    variables: {
-      filter: {
-        ...getBaseSearchActionsFilterVariable(
-          colonyAddress,
-          selectedDomain?.nativeId,
-        ),
-      },
-    },
+  const { actionsCount: totalActions } = useActionsCount({
+    domainId: selectedDomain?.nativeId,
   });
 
-  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
-
-  const { data: recentActionData } = useGetTotalColonyActionsQuery({
-    variables: {
-      filter: {
-        ...getBaseSearchActionsFilterVariable(
-          colonyAddress,
-          selectedDomain?.nativeId,
-        ),
-        createdAt: { gte: getThirtyDaysAgoIso() },
-      },
-    },
+  const { actionsCount: recentActions } = useActionsCount({
+    domainId: selectedDomain?.nativeId,
+    onlyRecent: true,
   });
-
-  const recentActions = recentActionData?.searchColonyActions?.total ?? 0;
 
   const { data: domainData } = useGetTotalColonyDomainActionsQuery({
     variables: {

@@ -66,6 +66,7 @@ export { default as useUsersByAddresses } from './useUsersByAddresses';
 export { default as useJoinedColonies } from './useJoinedColonies';
 export { default as useCurrency } from './useCurrency';
 export { default as useGetSelectedDomainFilter } from './useGetSelectedDomainFilter';
+export { default as useActionsCount } from './useActionsCount';
 
 export {
   default as useSafeTransactionStatus,
