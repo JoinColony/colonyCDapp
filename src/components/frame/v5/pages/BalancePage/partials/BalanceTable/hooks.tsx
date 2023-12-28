@@ -6,6 +6,7 @@ import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context';
 import { NativeTokenStatus } from '~gql';
+import CurrencyConversion from '~shared/CurrencyConversion';
 import Numeral from '~shared/Numeral';
 import { Token } from '~types';
 import { getBlockExplorerLink } from '~utils/external';
@@ -120,13 +121,12 @@ export const useBalanceTableColumns = (
                 className="text-1 text-gray-900"
                 suffix={row.original.token?.symbol}
               />
-              {/* {row.original.token?.tokenAddress === ADDRESS_ZERO && (
-                <EthUsd
-                  value={currentTokenBalance}
-                  showPrefix
-                  className="text-gray-600 !text-sm"
-                />
-              )} */}
+              <CurrencyConversion
+                tokenBalance={currentTokenBalance}
+                contractAddress={row.original.token?.tokenAddress ?? ''}
+                showPrefix
+                className="text-gray-600 !text-sm"
+              />
             </div>
           );
         },
