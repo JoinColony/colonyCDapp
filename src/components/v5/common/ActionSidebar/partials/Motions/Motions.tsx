@@ -22,15 +22,11 @@ import RevealStep from './steps/RevealStep/index.ts';
 import StakingStep from './steps/StakingStep/index.ts';
 import VotingStep from './steps/VotingStep/index.ts';
 import { type MotionsProps, type Steps, CustomStep } from './types.ts';
+import { getStakingStepTooltipText, getVotingStepTooltipText } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
 const MSG = defineMessages({
-  votingPhaseButtonTooltip: {
-    id: `${displayName}.votingPhaseButtonTooltip`,
-    defaultMessage:
-      'Voting will start if action is fully supported and fully opposed.',
-  },
   revealPhaseButtonTooltip: {
     id: `${displayName}.revealPhaseButtonTooltip`,
     defaultMessage:
@@ -125,6 +121,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 refetchMotionState={refetchMotionState}
               />
             ) : null,
+          tooltipProps: {
+            tooltipContent: getStakingStepTooltipText(networkMotionState, motionData),
+          },
         },
       },
       {
@@ -149,9 +148,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               />
             ) : null,
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.votingPhaseButtonTooltip} />
-            ),
+            tooltipContent: getVotingStepTooltipText(networkMotionState, motionData),
           },
         },
         isOptional: !isFullyStaked,

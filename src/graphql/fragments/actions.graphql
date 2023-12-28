@@ -183,6 +183,11 @@ fragment ColonyMotion on ColonyMotion {
     hasFailed
     hasFailedNotFinalizable
     inRevealPhase
+    yaySideFullyStakedAt
+    naySideFullyStakedAt
+    allVotesSubmittedAt
+    allVotesRevealedAt
+    finalizedAt
   }
   messages {
     items {
@@ -198,6 +203,7 @@ fragment ColonyMotion on ColonyMotion {
   action {
     type
   }
+  createdAt
 }
 
 fragment MotionMessage on MotionMessage {

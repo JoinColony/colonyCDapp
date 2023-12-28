@@ -2312,6 +2312,26 @@ input MotionStateHistoryInput {
   Motion is in reveal phase (votes are being revealed)
   """
   inRevealPhase: Boolean!
+  """
+  The timestamp when the YAY side was fully staked
+  """
+  yaySideFullyStakedAt: AWSDateTime
+  """
+  The timestamp when the NAY side was fully staked
+  """
+  naySideFullyStakedAt: AWSDateTime
+  """
+  The timestamp when all votes were submitted
+  """
+  allVotesSubmittedAt: AWSDateTime
+  """
+  The timestamp when all votes were revealed
+  """
+  allVotesRevealedAt: AWSDateTime
+  """
+  The timestamp when the motion was finalized
+  """
+  finalizedAt: AWSDateTime
 }
 
 """
@@ -2338,6 +2358,26 @@ type MotionStateHistory {
   Motion is in reveal phase (votes are being revealed)
   """
   inRevealPhase: Boolean!
+  """
+  The timestamp when the YAY side was fully staked
+  """
+  yaySideFullyStakedAt: AWSDateTime
+  """
+  The timestamp when the NAY side was fully staked
+  """
+  naySideFullyStakedAt: AWSDateTime
+  """
+  The timestamp when all votes were submitted
+  """
+  allVotesSubmittedAt: AWSDateTime
+  """
+  The timestamp when all votes were revealed
+  """
+  allVotesRevealedAt: AWSDateTime
+  """
+  The timestamp when the motion was finalized
+  """
+  finalizedAt: AWSDateTime
 }
 
 """
