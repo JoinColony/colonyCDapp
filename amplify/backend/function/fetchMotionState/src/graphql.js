@@ -81,6 +81,11 @@ module.exports = {
           hasFailed
           hasFailedNotFinalizable
           inRevealPhase
+          yaySideFullyStakedAt
+          naySideFullyStakedAt
+          allVotesSubmittedAt
+          allVotesRevealedAt
+          finalizedAt
         }
         messages {
           items {
