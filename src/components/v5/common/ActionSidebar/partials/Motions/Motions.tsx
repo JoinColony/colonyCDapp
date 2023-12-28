@@ -22,16 +22,15 @@ import RevealStep from './steps/RevealStep/index.ts';
 import StakingStep from './steps/StakingStep/index.ts';
 import VotingStep from './steps/VotingStep/index.ts';
 import { type MotionsProps, type Steps, CustomStep } from './types.ts';
-import { getStakingStepTooltipText, getVotingStepTooltipText } from './utils.ts';
+import {
+  getRevealStepTooltipText,
+  getStakingStepTooltipText,
+  getVotingStepTooltipText,
+} from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
 const MSG = defineMessages({
-  revealPhaseButtonTooltip: {
-    id: `${displayName}.revealPhaseButtonTooltip`,
-    defaultMessage:
-      'Votes are hidden, so you need to reveal your vote during the Reveal stage for it to be counted and to be eligible for rewards.',
-  },
   finalizePhaseButtonTooltip: {
     id: `${displayName}.finalizePhaseButtonTooltip`,
     defaultMessage:
@@ -122,7 +121,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               />
             ) : null,
           tooltipProps: {
-            tooltipContent: getStakingStepTooltipText(networkMotionState, motionData),
+            tooltipContent: getStakingStepTooltipText(
+              networkMotionState,
+              motionData,
+            ),
           },
         },
       },
@@ -148,7 +150,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               />
             ) : null,
           tooltipProps: {
-            tooltipContent: getVotingStepTooltipText(networkMotionState, motionData),
+            tooltipContent: getVotingStepTooltipText(
+              networkMotionState,
+              motionData,
+            ),
           },
         },
         isOptional: !isFullyStaked,
@@ -178,8 +183,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               />
             ) : null,
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.revealPhaseButtonTooltip} />
+            tooltipContent: getRevealStepTooltipText(
+              networkMotionState,
+              motionData,
             ),
           },
         },

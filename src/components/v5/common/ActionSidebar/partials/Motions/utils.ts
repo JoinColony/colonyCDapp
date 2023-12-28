@@ -2,8 +2,8 @@ import { MotionState } from '@colony/colony-js';
 import { formatRelative } from 'date-fns';
 import { defineMessages } from 'react-intl';
 
-import { ColonyMotion } from '~types';
-import { formatText } from '~utils/intl';
+import { type ColonyMotion } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
@@ -52,6 +52,20 @@ const MSG = defineMessages({
   votingStarted: {
     id: `${displayName}.votingStarted`,
     defaultMessage: 'Voting period started. {timestamp}',
+  },
+  revealNotStarted: {
+    id: `${displayName}.revealNotStarted`,
+    defaultMessage:
+      'Votes are hidden, so you need to reveal your vote during the Reveal stage for it to be counted and to be eligible for rewards.',
+  },
+  revealStarted: {
+    id: `${displayName}.revealStarted`,
+    defaultMessage: 'Reveal period started. {timestamp}',
+  },
+  revealEnded: {
+    id: `${displayName}.revealEnded`,
+    defaultMessage:
+      'Reveal period ended with {revealedVoteCount} vote reveals. {timestamp}',
   },
 });
 
@@ -165,5 +179,37 @@ export const getVotingStepTooltipText = (
   return formatText(MSG.votingEnded, {
     timestamp: formattedAllVotesSubmittedAt,
     votersCount: voterRecord?.length || 0,
+  });
+};
+
+export const getRevealStepTooltipText = (
+  motionState: MotionState | undefined = MotionState.Null,
+  motionData: ColonyMotion | undefined | null,
+) => {
+  const { motionStateHistory, revealedVotes } = motionData || {};
+  const { allVotesSubmittedAt, allVotesRevealedAt } = motionStateHistory || {};
+  const yayRevealedVotes = Number(revealedVotes?.raw.yay) || 0;
+  const nayRevealedVotes = Number(revealedVotes?.raw.nay) || 0;
+
+  const formattedAllVotesSubmittedAt = allVotesSubmittedAt
+    ? formatRelative(new Date(allVotesSubmittedAt), new Date())
+    : '';
+  const formattedAllVotesRevealedAt = allVotesRevealedAt
+    ? formatRelative(new Date(allVotesRevealedAt), new Date())
+    : '';
+
+  if (motionState < MotionState.Reveal) {
+    return formatText(MSG.revealNotStarted);
+  }
+
+  if (motionState === MotionState.Reveal) {
+    return formatText(MSG.revealStarted, {
+      timestamp: formattedAllVotesSubmittedAt,
+    });
+  }
+
+  return formatText(MSG.revealEnded, {
+    timestamp: formattedAllVotesRevealedAt,
+    revealedVoteCount: yayRevealedVotes + nayRevealedVotes || 0,
   });
 };
