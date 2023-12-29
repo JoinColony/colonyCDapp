@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import Decimal from 'decimal.js';
 import {
   // @BETA: Disabled for now
   // BellRinging,
@@ -7,19 +8,21 @@ import {
   ShareNetwork,
   Smiley,
 } from 'phosphor-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { getCurrentToken } from '~common/ColonyTotalFunds/SelectedToken/helpers';
+import { useCurrencyContext } from '~context/CurrencyContext';
 import { useMemberContext } from '~context/MemberContext';
-import { useGetTotalColonyActionsQuery } from '~gql';
+import { SupportedCurrencies, useGetTotalColonyActionsQuery } from '~gql';
 import { useColonyContext, useMobile } from '~hooks';
 import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
+import { ColonyBalances } from '~types';
 import { notNull } from '~utils/arrays';
+import { fetchCurrentPrice } from '~utils/currency';
 import { formatText } from '~utils/intl';
-import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { ColonyLinksItem } from '~v5/common/ColonyDashboardHeader/partials/ColonyLinks/types';
 import { ColonyDashboardHeaderProps } from '~v5/common/ColonyDashboardHeader/types';
 import {
@@ -38,20 +41,12 @@ import { ChartData, UseGetHomeWidgetReturnType } from './types';
 export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
   const { colony } = useColonyContext();
   const { domains, nativeToken, colonyAddress = '' } = colony || {};
-  const { balances } = colony || {};
 
   const { totalMembers: members, loading: membersLoading } = useMemberContext();
 
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null
   >();
-
-  const currentTokenBalance =
-    getBalanceForTokenAndDomain(
-      balances,
-      nativeToken?.tokenAddress || '',
-      team,
-    ) || 0;
 
   const domainMembers = useMemo(
     () =>
@@ -138,7 +133,6 @@ export const useGetHomeWidget = (team?: number): UseGetHomeWidgetReturnType => {
     totalActions,
     allMembers: mappedMembers,
     teamColor,
-    currentTokenBalance,
     nativeToken,
     membersLoading,
     chartData,
@@ -316,4 +310,43 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
     leaveColonyConfirmOpen,
     setLeaveColonyConfirm,
   };
+};
+
+const calculateTotalFunds = async (
+  balances: ColonyBalances,
+  currency: SupportedCurrencies,
+) => {
+  const funds = balances.items
+    ?.filter(notNull)
+    .filter(({ domain }) => !!domain?.isRoot)
+    .reduce(async (total, { balance, token: { tokenAddress } }) => {
+      const currentPrice = await fetchCurrentPrice({
+        contractAddress: tokenAddress,
+        conversionDenomination: currency,
+      });
+
+      return (await total).add(new Decimal(balance).mul(currentPrice));
+    }, Promise.resolve(new Decimal(0)));
+
+  return (await funds) ?? new Decimal(0);
+};
+
+export const useTotalFunds = () => {
+  const { colony } = useColonyContext();
+  const { currency } = useCurrencyContext();
+  const { balances: colonyBalances } = colony || {};
+  const [totalFunds, setTotalFunds] = useState<Decimal>(new Decimal(0));
+
+  useEffect(() => {
+    const getTotalFunds = async (balances: ColonyBalances) => {
+      const funds = await calculateTotalFunds(balances, currency);
+      setTotalFunds(funds);
+    };
+
+    if (colonyBalances) {
+      getTotalFunds(colonyBalances);
+    }
+  }, [colonyBalances, currency]);
+
+  return totalFunds;
 };

@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import ColonyActionsTable from '~common/ColonyActionsTable';
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context';
+import { useCurrencyContext } from '~context/CurrencyContext';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useColonySubscription, useMobile } from '~hooks';
 import {
@@ -23,8 +24,8 @@ import {
   TEAM_SEARCH_PARAM,
 } from '~routes';
 import Numeral from '~shared/Numeral';
+import { currencySymbolMap } from '~utils/currency/config';
 import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { setQueryParamOnUrl } from '~utils/urls';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import ColonyDashboardHeader from '~v5/common/ColonyDashboardHeader';
@@ -39,7 +40,7 @@ import ProgressBar from '~v5/shared/ProgressBar';
 import TitleWithNumber from '~v5/shared/TitleWithNumber';
 import UserAvatars from '~v5/shared/UserAvatars';
 
-import { useDashboardHeader, useGetHomeWidget } from './hooks';
+import { useDashboardHeader, useGetHomeWidget, useTotalFunds } from './hooks';
 
 // @TODO: add page components
 const displayName = 'common.ColonyHome';
@@ -70,9 +71,7 @@ const ColonyHome = () => {
     totalActions,
     allMembers,
     teamColor,
-    currentTokenBalance,
     membersLoading,
-    nativeToken,
     allTeams,
     chartData,
     otherTeamsReputation,
@@ -83,6 +82,8 @@ const ColonyHome = () => {
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
+  const { currency } = useCurrencyContext();
+  const totalFunds = useTotalFunds();
 
   const { leaveColonyConfirmOpen, setLeaveColonyConfirm, ...headerProps } =
     useDashboardHeader();
@@ -143,10 +144,10 @@ const ColonyHome = () => {
             value: (
               <div className="flex items-center gap-2 heading-4">
                 <Numeral
-                  value={currentTokenBalance}
-                  decimals={getTokenDecimalsWithFallback(nativeToken?.decimals)}
+                  value={totalFunds}
+                  prefix={currencySymbolMap[currency]}
                 />
-                <span className="text-1">{nativeToken?.symbol}</span>
+                <span className="text-1">{currency}</span>
               </div>
             ),
             href: COLONY_BALANCES_ROUTE,

@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { Dispatch, SetStateAction } from 'react';
 
 import { Token, User, Domain } from '~types';
@@ -15,7 +14,6 @@ export interface UseGetHomeWidgetReturnType {
   totalActions: number;
   allMembers: User[];
   teamColor: string;
-  currentTokenBalance: BigNumber;
   nativeToken: Token | undefined;
   membersLoading: boolean;
   chartColors?: string[];

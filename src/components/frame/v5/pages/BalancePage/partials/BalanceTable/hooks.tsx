@@ -124,7 +124,6 @@ export const useBalanceTableColumns = (
               <CurrencyConversion
                 tokenBalance={currentTokenBalance}
                 contractAddress={row.original.token?.tokenAddress ?? ''}
-                showPrefix
                 className="text-gray-600 !text-sm"
               />
             </div>
