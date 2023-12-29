@@ -67,3 +67,15 @@ export const countryCodeToCurrencyMap = {
   ES: SupportedCurrencies.Eur, // Spain
   VA: SupportedCurrencies.Eur, // Vatican City
 };
+
+export const currencySymbolMap = {
+  [SupportedCurrencies.Usd]: '$',
+  [SupportedCurrencies.Jpy]: '¥',
+  [SupportedCurrencies.Gbp]: '£',
+  [SupportedCurrencies.Eur]: '€',
+  [SupportedCurrencies.Cad]: 'C$',
+  [SupportedCurrencies.Krw]: '₩',
+  [SupportedCurrencies.Inr]: '₹',
+  [SupportedCurrencies.Brl]: 'R$',
+  [SupportedCurrencies.Eth]: 'Ξ',
+};

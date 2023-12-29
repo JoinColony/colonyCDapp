@@ -20,7 +20,7 @@ import ColonyDashboardHeader from '~v5/common/ColonyDashboardHeader';
 import Link from '~v5/shared/Link';
 import Modal from '~v5/shared/Modal';
 
-import { useDashboardHeader } from './hooks/useDashboardHeader';
+import { useDashboardHeader } from './hooks';
 import Agreements from './partials/Agreements';
 import Members from './partials/Members';
 import Objective from './partials/Objective';
