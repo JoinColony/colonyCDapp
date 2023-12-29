@@ -23,6 +23,7 @@ import StakingStep from './steps/StakingStep/index.ts';
 import VotingStep from './steps/VotingStep/index.ts';
 import { type MotionsProps, type Steps, CustomStep } from './types.ts';
 import {
+  getOutcomeStepTooltipText,
   getRevealStepTooltipText,
   getStakingStepTooltipText,
   getVotingStepTooltipText,
@@ -35,10 +36,6 @@ const MSG = defineMessages({
     id: `${displayName}.finalizePhaseButtonTooltip`,
     defaultMessage:
       'Execute and return all stakes of the supported action or only return stakes of a opposed/failed action.',
-  },
-  outcomePhaseButtonTooltip: {
-    id: `${displayName}.outcomePhaseButtonTooltip`,
-    defaultMessage: 'The outcome of this proposed action.',
   },
 });
 
@@ -245,9 +242,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               motionFinished && !hasVotedMotionPassed,
           }),
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.outcomePhaseButtonTooltip} />
-            ),
+            tooltipContent: getOutcomeStepTooltipText(motionState, motionData),
           },
         },
         isOptional: true,

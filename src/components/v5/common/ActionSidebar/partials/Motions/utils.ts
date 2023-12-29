@@ -67,6 +67,28 @@ const MSG = defineMessages({
     defaultMessage:
       'Reveal period ended with {revealedVoteCount} vote reveals. {timestamp}',
   },
+  outcomeNotStarted: {
+    id: `${displayName}.outcomeNotStarted`,
+    defaultMessage: 'The outcome of this proposed action.',
+  },
+  outcomeYaySideWon: {
+    id: `${displayName}.outcomeYaySideWon`,
+    defaultMessage: 'Action was fully supported. {timestamp}',
+  },
+  outcomeNaySideWon: {
+    id: `${displayName}.outcomeNaySideWon`,
+    defaultMessage: 'Action failed to get enough support. {timestamp}',
+  },
+  outcomeYaySideWonWithVotes: {
+    id: `${displayName}.outcomeYaySideWonWithVotes`,
+    defaultMessage:
+      'Action went to a vote and the outcome was in support. {timestamp}',
+  },
+  outcomeNaySideWonWithVotes: {
+    id: `${displayName}.outcomeNaySideWonWithVotes`,
+    defaultMessage:
+      'Action went to a vote and the outcome was in opposition. {timestamp}',
+  },
 });
 
 export const getStakingStepTooltipText = (
@@ -211,5 +233,62 @@ export const getRevealStepTooltipText = (
   return formatText(MSG.revealEnded, {
     timestamp: formattedAllVotesRevealedAt,
     revealedVoteCount: yayRevealedVotes + nayRevealedVotes || 0,
+  });
+};
+
+export const getOutcomeStepTooltipText = (
+  motionState: MotionState | undefined = MotionState.Null,
+  motionData: ColonyMotion | undefined | null,
+) => {
+  const { motionStateHistory, revealedVotes, motionStakes } = motionData || {};
+  const { allVotesSubmittedAt, allVotesRevealedAt, yaySideFullyStakedAt } =
+    motionStateHistory || {};
+  const { percentage } = motionStakes || {};
+  const { yay } = percentage || {};
+  const yayRevealedRep = Number(revealedVotes?.raw.yay) || 0;
+  const nayRevealedRep = Number(revealedVotes?.raw.nay) || 0;
+
+  const supportingStakesPercentageValue = Number(yay) || 0;
+
+  const isFullySupported = supportingStakesPercentageValue === 100;
+
+  const formattedAllVotesSubmittedAt = allVotesSubmittedAt
+    ? formatRelative(new Date(allVotesSubmittedAt), new Date())
+    : '';
+  const formattedAllVotesRevealedAt = allVotesRevealedAt
+    ? formatRelative(new Date(allVotesRevealedAt), new Date())
+    : '';
+
+  if (motionState < MotionState.Closed) {
+    return formatText(MSG.outcomeNotStarted);
+  }
+
+  if (
+    motionState === MotionState.Finalizable ||
+    motionState === MotionState.Finalized
+  ) {
+    if (isFullySupported && !yayRevealedRep && !nayRevealedRep) {
+      const formattedYaySideFullyStakedAt = yaySideFullyStakedAt
+        ? formatRelative(new Date(yaySideFullyStakedAt), new Date())
+        : '';
+
+      return formatText(MSG.outcomeYaySideWon, {
+        timestamp: formattedYaySideFullyStakedAt,
+      });
+    }
+
+    if (yayRevealedRep > nayRevealedRep) {
+      return formatText(MSG.outcomeYaySideWonWithVotes, {
+        timestamp: formattedAllVotesRevealedAt,
+      });
+    }
+
+    return formatText(MSG.outcomeNaySideWonWithVotes, {
+      timestamp: formattedAllVotesRevealedAt,
+    });
+  }
+
+  return formatText(MSG.outcomeNaySideWon, {
+    timestamp: formattedAllVotesSubmittedAt,
   });
 };
