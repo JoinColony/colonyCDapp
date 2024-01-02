@@ -4,7 +4,6 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 import { array, InferType, number, object, string } from 'yup';
 
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
@@ -55,7 +54,6 @@ export const useValidationSchema = () => {
             .required()
             .defined(),
           createdIn: number().defined(),
-          description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
           recipient: string().address().required(),
           from: number().required(),
           decisionMethod: string().defined(),

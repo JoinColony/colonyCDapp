@@ -5,8 +5,10 @@ import { object, string } from 'yup';
 
 // Do not import these from `./hooks` to avoid circular dependencies
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { ACTION, Action } from '~constants/actions';
 import { useColonyContext } from '~hooks';
+import { stripHTMLFromText } from '~utils/elements';
 import { formatText } from '~utils/intl';
 
 import { permissionsValidationSchema } from './hooks/usePermissionsValidation';
@@ -78,6 +80,14 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
           },
         ),
       ),
+    description: string()
+      .transform((description: string | undefined) =>
+        typeof description === 'string'
+          ? stripHTMLFromText(description)
+          : description,
+      )
+      .max(MAX_ANNOTATION_LENGTH)
+      .notRequired(),
   })
   .defined()
   .concat(reputationValidationSchema)

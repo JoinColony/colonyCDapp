@@ -1,10 +1,10 @@
-interface Options {
+interface GetInputTextWidthOptions {
   usePlaceholderAsFallback?: boolean;
 }
 
 export const getInputTextWidth = (
   input: HTMLInputElement,
-  { usePlaceholderAsFallback }: Options = {},
+  { usePlaceholderAsFallback }: GetInputTextWidthOptions = {},
 ): number => {
   const textMeasureContainer = document.createElement('span');
 
@@ -30,4 +30,12 @@ export const getInputTextWidth = (
   textMeasureContainer.remove();
 
   return textWidth;
+};
+
+export const stripHTMLFromText = (text: string): string => {
+  const tempDiv = document.createElement('div');
+
+  tempDiv.innerHTML = text;
+
+  return tempDiv.textContent || tempDiv.innerText || '';
 };

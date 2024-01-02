@@ -15,7 +15,6 @@ import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts';
-import { MAX_ANNOTATION_NUM } from '~v5/shared/RichText/consts';
 
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
 import { ActionFormBaseProps } from '../../../types';
@@ -32,7 +31,6 @@ export const useValidationSchema = () => {
           from: number().required(),
           decisionMethod: string().defined(),
           createdIn: number().defined(),
-          description: string().max(MAX_ANNOTATION_NUM).notRequired(),
           payments: array()
             .of(
               object()

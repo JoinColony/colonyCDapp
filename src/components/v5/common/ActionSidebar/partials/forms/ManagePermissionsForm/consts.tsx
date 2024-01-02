@@ -2,7 +2,6 @@ import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 import { InferType, mixed, object, string, number } from 'yup';
 
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 import {
   CUSTOM_USER_ROLE,
   UserRole,
@@ -38,7 +37,6 @@ export const validationSchema = object()
       },
     ),
     decisionMethod: string().defined(),
-    description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);

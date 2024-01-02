@@ -85,7 +85,7 @@ export const useRichText = (
       ],
       editorProps: {
         attributes: {
-          class: `prose max-w-none overflow-auto focus:outline-none text-gray-900 text-md`,
+          class: `max-w-none overflow-auto focus:outline-none text-gray-900 text-md`,
         },
       },
       content: field.value,
