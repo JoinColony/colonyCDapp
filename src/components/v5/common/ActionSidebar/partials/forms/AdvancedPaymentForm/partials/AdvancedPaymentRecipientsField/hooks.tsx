@@ -12,17 +12,17 @@ import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 
 import {
-  AdvancedPaymentRecipentsFieldModel,
-  AdvancedPaymentRecipentsTableModel,
+  AdvancedPaymentRecipientsFieldModel,
+  AdvancedPaymentRecipientsTableModel,
 } from './types';
 
 export const useRecipientsFieldTableColumns = (
   name: string,
-  data: AdvancedPaymentRecipentsFieldModel[],
-): ColumnDef<AdvancedPaymentRecipentsTableModel, string>[] => {
+  data: AdvancedPaymentRecipientsFieldModel[],
+): ColumnDef<AdvancedPaymentRecipientsTableModel, string>[] => {
   const { colony } = useColonyContext();
   const columnHelper = useMemo(
-    () => createColumnHelper<AdvancedPaymentRecipentsTableModel>(),
+    () => createColumnHelper<AdvancedPaymentRecipientsTableModel>(),
     [],
   );
   const dataRef = useWrapWithRef(data);
@@ -38,7 +38,7 @@ export const useRecipientsFieldTableColumns = (
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
 
-  const columns: ColumnDef<AdvancedPaymentRecipentsTableModel, string>[] =
+  const columns: ColumnDef<AdvancedPaymentRecipientsTableModel, string>[] =
     useMemo(
       () => [
         columnHelper.display({
@@ -121,7 +121,7 @@ export const useRecipientsFieldTableColumns = (
 
 export const useGetTableMenuProps = ({ insert, remove }, data) =>
   useCallback<
-    TableWithMeatballMenuProps<AdvancedPaymentRecipentsTableModel>['getMenuProps']
+    TableWithMeatballMenuProps<AdvancedPaymentRecipientsTableModel>['getMenuProps']
   >(
     ({ index }) => ({
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',

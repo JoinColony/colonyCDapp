@@ -49,7 +49,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
-        title={formatText({ id: 'actionSidebar.recipent' })}
+        title={formatText({ id: 'actionSidebar.recipient' })}
       >
         <UserSelect name="recipient" />
       </ActionFormRow>

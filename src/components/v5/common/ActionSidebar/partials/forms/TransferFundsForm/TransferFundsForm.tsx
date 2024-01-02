@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Id } from '@colony/colony-js';
 
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
@@ -9,7 +10,7 @@ import { formatText } from '~utils/intl';
 
 import { useTransferFunds } from './hooks';
 import { ActionFormBaseProps } from '../../../types';
-import { useDecisionMethods } from '../../../hooks';
+import { DecisionMethod, useDecisionMethods } from '../../../hooks';
 import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
@@ -21,6 +22,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
+  const selectedDecisionMethod = watch('decisionMethod');
 
   return (
     <>
@@ -41,7 +43,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         icon="arrow-down-right"
         fieldName="to"
-        title={formatText({ id: 'actionSidebar.recipent' })}
+        title={formatText({ id: 'actionSidebar.recipient' })}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -87,20 +89,30 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
+      {selectedDecisionMethod &&
+        selectedDecisionMethod === DecisionMethod.Reputation && (
+          <ActionFormRow
+            icon="house-line"
+            fieldName="createdIn"
+            tooltips={{
+              label: {
+                tooltipContent: formatText({
+                  id: 'actionSidebar.tooltip.createdIn',
+                }),
+              },
+            }}
+            title={formatText({ id: 'actionSidebar.createdIn' })}
+          >
+            <TeamsSelect
+              name="createdIn"
+              filterOptionsFn={(option) =>
+                (option.value === Id.RootDomain.toString() ||
+                  option.value === selectedTeam) &&
+                !!option.isRoot
+              }
+            />
+          </ActionFormRow>
+        )}
       <DescriptionRow />
     </>
   );

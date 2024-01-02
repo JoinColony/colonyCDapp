@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl';
 import { ActionFormBaseProps } from '../../../types';
 import DescriptionRow from '../../DescriptionRow';
 import { useDecisionMethods } from '../../../hooks';
-import AdvancedPaymentRecipentsField from './partials/AdvancedPaymentRecipentsField';
+import AdvancedPaymentRecipientsField from './partials/AdvancedPaymentRecipientsField';
 import { useAdvancedPayment } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.AdvancedPaymentForm';
@@ -70,7 +70,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="createdIn" />
       </ActionFormRow>
       <DescriptionRow />
-      <AdvancedPaymentRecipentsField name="payments" />
+      <AdvancedPaymentRecipientsField name="payments" />
     </>
   );
 };

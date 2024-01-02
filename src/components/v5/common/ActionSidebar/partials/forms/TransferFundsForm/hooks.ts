@@ -80,27 +80,37 @@ export const useTransferFunds = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const decisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
-  });
-  const selectedTokenAddress: string = useWatch({
-    name: 'amount.tokenAddress',
-  });
+  const {
+    [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+    from,
+    amount,
+  } = useWatch<{
+    decisionMethod: DecisionMethod;
+    from: TransferFundsFormValues['from'];
+    amount: TransferFundsFormValues['amount'];
+  }>();
+
+  const selectedTokenAddress = amount?.tokenAddress;
   const validationSchema = useValidationSchema();
+
+  const selectedDomainId = Number(from);
 
   useActionFormBaseHook({
     validationSchema,
     defaultValues: useMemo<DeepPartial<TransferFundsFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
-        to: Id.RootDomain.toString(),
+        createdIn: selectedDomainId.toString() || Id.RootDomain.toString(),
         from: Id.RootDomain.toString(),
         amount: {
           tokenAddress:
             selectedTokenAddress ?? colony?.nativeToken.tokenAddress,
         },
       }),
-      [selectedTokenAddress, colony?.nativeToken.tokenAddress],
+      [
+        selectedDomainId,
+        selectedTokenAddress,
+        colony?.nativeToken.tokenAddress,
+      ],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
