@@ -1,9 +1,11 @@
+import clsx from 'clsx';
 import React from 'react';
-import { useGetColonyAction } from '~common/ColonyActions';
 import { ColonyActionType } from '~gql';
 import { useColonyContext } from '~hooks';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
+import { ColonyAction } from '~types';
 import { getExtendedActionType } from '~utils/colonyActions';
+import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar';
+import Motions from '../ActionSidebar/partials/Motions';
 import CreateDecision from './partials/CreateDecision';
 import CreateNewTeam from './partials/CreateNewTeam';
 import EditColonyDetails from './partials/EditColonyDetails';
@@ -14,18 +16,16 @@ import UnlockToken from './partials/UnlockToken';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion';
 
 interface CompletedActionProps {
-  transactionId: string;
+  action: ColonyAction;
 }
 
 const displayName = 'v5.common.CompletedAction';
 
-const CompletedAction = ({ transactionId }: CompletedActionProps) => {
+const CompletedAction = ({ action }: CompletedActionProps) => {
   const { colony } = useColonyContext();
-  const { action, loadingAction } = useGetColonyAction(transactionId);
-  // console.log('lights camera', action);
 
-  if (loadingAction || !action || !colony) {
-    return <SpinnerLoader appearance={{ size: 'medium' }} />;
+  if (!colony) {
+    return null;
   }
 
   const actionType = getExtendedActionType(action, colony.metadata);
@@ -38,6 +38,8 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
         return <MintTokens action={action} />;
       case ColonyActionType.MoveFunds:
         return <TransferFunds action={action} />;
+      case ColonyActionType.CreateDomain:
+        return <CreateNewTeam action={action} />;
       case ColonyActionType.UnlockToken:
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
@@ -46,8 +48,6 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
         return <CreateDecision action={action} />;
       case ColonyActionType.ColonyEdit:
         return <EditColonyDetails action={action} />;
-      case ColonyActionType.CreateDomain:
-        return <CreateNewTeam action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -55,7 +55,40 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
   };
 
   return (
-    <div className="flex-grow overflow-y-auto px-6">{getActionContent()}</div>
+    <div className="flex flex-grow flex-col sm:flex-row overflow-auto">
+      <div
+        className={clsx('overflow-y-auto pb-6 pt-8 px-6', {
+          'w-full': !action.isMotion,
+          'w-full sm:w-[65%]': action.isMotion,
+        })}
+      >
+        {getActionContent()}
+      </div>
+
+      <div
+        className={`
+            w-full
+            md:w-[35%]
+            md:h-full
+            md:overflow-y-auto
+            md:flex-shrink-0
+            px-6
+            py-8
+            border-b
+            border-b-gray-200
+            md:border-b-0
+            md:border-l
+            md:border-l-gray-200
+            bg-gray-25
+          `}
+      >
+        {action.isMotion ? (
+          <Motions transactionId={action.transactionHash} />
+        ) : (
+          <PermissionSidebar transactionId={action.transactionHash} />
+        )}
+      </div>
+    </div>
   );
 };
 

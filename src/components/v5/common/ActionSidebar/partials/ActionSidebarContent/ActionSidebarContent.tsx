@@ -8,7 +8,6 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
-import CompletedAction from '~v5/common/CompletedAction';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
 import Link from '~v5/shared/Link';
 import NotificationBanner from '~v5/shared/NotificationBanner';
@@ -167,25 +166,21 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           'w-full sm:w-[65%]': isMotion,
         })}
       >
-        {transactionId !== undefined ? (
-          <CompletedAction transactionId={transactionId} />
-        ) : (
-          <ActionForm
-            {...actionFormProps}
-            className="flex flex-col h-full"
-            ref={formRef}
-            onSuccess={() => {
-              client.refetchQueries({
-                include: [SearchActionsDocument],
-              });
-            }}
-          >
-            <ActionSidebarFormContent
-              getFormOptions={getFormOptions}
-              isMotion={isMotion}
-            />
-          </ActionForm>
-        )}
+        <ActionForm
+          {...actionFormProps}
+          className="flex flex-col h-full"
+          ref={formRef}
+          onSuccess={() => {
+            client.refetchQueries({
+              include: [SearchActionsDocument],
+            });
+          }}
+        >
+          <ActionSidebarFormContent
+            getFormOptions={getFormOptions}
+            isMotion={isMotion}
+          />
+        </ActionForm>
       </div>
       {transactionId && (
         <div
