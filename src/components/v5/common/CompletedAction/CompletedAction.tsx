@@ -5,6 +5,8 @@ import { useColonyContext } from '~hooks';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import { getExtendedActionType } from '~utils/colonyActions';
 import CreateDecision from './partials/CreateDecision';
+import CreateNewTeam from './partials/CreateNewTeam';
+import EditColonyDetails from './partials/EditColonyDetails';
 import MintTokens from './partials/MintTokens';
 import SimplePayment from './partials/SimplePayment';
 import TransferFunds from './partials/TransferFunds';
@@ -42,6 +44,10 @@ const CompletedAction = ({ transactionId }: CompletedActionProps) => {
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;
+      case ColonyActionType.ColonyEdit:
+        return <EditColonyDetails action={action} />;
+      case ColonyActionType.CreateDomain:
+        return <CreateNewTeam action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
