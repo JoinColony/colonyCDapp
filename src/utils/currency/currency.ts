@@ -3,6 +3,7 @@ import { Tokens } from '@colony/colony-js';
 import { Network, SupportedCurrencies } from '~gql';
 
 import { currencyApiConfig, coinGeckoMappings } from './config';
+import { getSavedPrice, savePrice } from './memo';
 import {
   CoinGeckoPriceRequestSuccessResponse,
   FetchCurrentPriceArgs,
@@ -122,6 +123,18 @@ export const fetchCurrentPrice = async ({
   chainId = Network.Gnosis,
   conversionDenomination = SupportedCurrencies.Usd,
 }: FetchCurrentPriceArgs): Promise<number> => {
+  const savedPrice = getSavedPrice({
+    contractAddress,
+    chainId,
+    currency: conversionDenomination,
+  });
+
+  if (typeof savedPrice !== 'undefined') {
+    return savedPrice;
+  }
+
+  let result = 0;
+
   if (conversionDenomination === SupportedCurrencies.Clny) {
     const tokenPriceinUSD = await fetchPriceFromCoinGecko({
       contractAddress,
@@ -129,12 +142,21 @@ export const fetchCurrentPrice = async ({
     });
 
     const clnyInUSD = await getCLNYPriceInUSD();
-    return convertTokenToCLNY(tokenPriceinUSD, clnyInUSD);
+    result = convertTokenToCLNY(tokenPriceinUSD, clnyInUSD);
+  } else {
+    result = await fetchPriceFromCoinGecko({
+      contractAddress,
+      chainId,
+      conversionDenomination,
+    });
   }
 
-  return fetchPriceFromCoinGecko({
-    contractAddress,
+  savePrice({
     chainId,
-    conversionDenomination,
+    contractAddress,
+    currency: conversionDenomination,
+    price: result,
   });
+
+  return result;
 };
