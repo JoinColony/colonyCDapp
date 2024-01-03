@@ -33,6 +33,7 @@ const buildCoinGeckoURL = (
   return buildAPIEndpoint(new URL(`${currencyApiConfig.endpoint}${chain}`), {
     [currencyApiConfig.searchParams.from]: contractAddress,
     [currencyApiConfig.searchParams.to]: denomination,
+    [currencyApiConfig.searchParams.api]: process.env.COINGECKO_API_KEY ?? '',
   });
 };
 
