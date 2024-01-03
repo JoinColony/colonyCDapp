@@ -71,14 +71,19 @@ export const useActionFormProps = (
 
       prevActionTypeRef.current = actionType;
 
-      form.reset({
-        ...(typeof formDefaultValues === 'function'
-          ? await formDefaultValues()
-          : formDefaultValues || {}),
-        ...(defaultValues || {}),
-        title,
-        [ACTION_TYPE_FIELD_NAME]: actionType,
-      });
+      form.reset(
+        {
+          ...(typeof formDefaultValues === 'function'
+            ? await formDefaultValues()
+            : formDefaultValues || {}),
+          ...(defaultValues || {}),
+          title,
+          [ACTION_TYPE_FIELD_NAME]: actionType,
+        },
+        {
+          keepDirtyValues: true,
+        },
+      );
     },
     [isReadonly, defaultValues, navigate],
   );
