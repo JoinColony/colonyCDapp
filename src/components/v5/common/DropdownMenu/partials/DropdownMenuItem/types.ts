@@ -1,7 +1,7 @@
 import { IconProps } from 'phosphor-react';
 import { ButtonHTMLAttributes, ComponentType } from 'react';
-import { TooltipProps } from '~shared/Extensions/Tooltip/types';
 
+import { TooltipProps } from '~shared/Extensions/Tooltip/types';
 import { LinkProps } from '~v5/shared/Link/types';
 
 export type DropdownMenuItemProps = (

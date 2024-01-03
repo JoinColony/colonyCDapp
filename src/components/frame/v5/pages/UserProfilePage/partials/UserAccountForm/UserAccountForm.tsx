@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
-import { useMobile } from '~hooks';
+
 import { useSetPageHeadingTitle } from '~context';
+import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
+
 import Row from '../Row';
+
 import { useUserProfilePageForm } from './hooks';
 
 const displayName = 'v5.pages.UserProfilePage.partials.UserAccountForm';

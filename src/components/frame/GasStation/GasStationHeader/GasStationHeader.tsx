@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { useAppContext } from '~hooks';
 import CopyableAddress from '~shared/CopyableAddress';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
-
-import { useAppContext } from '~hooks';
 
 import styles from './GasStationHeader.css';
 

@@ -1,16 +1,17 @@
 import React from 'react';
 
-import { Heading3 } from '~shared/Heading';
 import { useGetColonyExpendituresQuery } from '~gql';
 import { useColonyContext } from '~hooks';
-import { notNull } from '~utils/arrays';
-import Link from '~shared/Link';
 import { COLONY_EXPENDITURES_ROUTE } from '~routes';
+import { Heading3 } from '~shared/Heading';
+import Link from '~shared/Link';
+import { notNull } from '~utils/arrays';
 
-// import { CreateExpenditureForm } from '../ExpenditureForm';
 import CreateExpenditure from '../ExpenditureForm/CreateExpenditure';
 
 import styles from './ExpendituresPage.module.css';
+
+// import { CreateExpenditureForm } from '../ExpenditureForm';
 
 const ExpendituresPage = () => {
   const { colony } = useColonyContext();

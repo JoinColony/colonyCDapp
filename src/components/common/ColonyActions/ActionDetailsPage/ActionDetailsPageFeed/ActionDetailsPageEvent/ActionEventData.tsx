@@ -6,10 +6,11 @@ import {
   TransactionMeta,
 } from '~common/ColonyActions';
 import { useColonyContext } from '~hooks';
+
 import EventData from '../EventData';
 
-import ActionRoles from './ActionRoles';
 import { ActionDetailsPageEventProps } from './ActionDetailsPageEvent';
+import ActionRoles from './ActionRoles';
 
 const displayName = 'common.ColonyActions.ActionDetailsPage.ActionEventData';
 

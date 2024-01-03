@@ -1,4 +1,5 @@
 import { Extension, getExtensionHash } from '@colony/colony-js';
+
 import { FriendlyNameProps } from './FriendlyName';
 
 export const getAddressFromAgent = (

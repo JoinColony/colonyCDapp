@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
 
 import { DialogProps } from '../Dialog';
-import Modal from '../Modal';
 import Icon from '../Icon';
-import styles from './ActivityBar.css';
+import Modal from '../Modal';
+
 import modalStyles from '../Modal/Modal.css';
+import styles from './ActivityBar.css';
 
 interface Props extends DialogProps {
   /** Children that get rendered into ActivityBar content */

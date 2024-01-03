@@ -1,4 +1,3 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   getChildIndex,
@@ -6,9 +5,16 @@ import {
   ColonyRole,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
+import { sortAndCombinePayments } from '../actions/payment';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import {
   putError,
   takeFrom,
@@ -17,13 +23,6 @@ import {
   initiateTransaction,
   createActionMetadataInDB,
 } from '../utils';
-
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import { sortAndCombinePayments } from '../actions/payment';
 
 function* createPaymentMotion({
   payload: {

@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Select, Form } from '~shared/Fields';
-
 import { SelectOption } from '~shared/Fields/Select';
 
 import styles from './MembersDomainSelector.css';

@@ -1,5 +1,5 @@
-import { AvatarProps } from '~v5/shared/Avatar/types';
 import { UserStatusMode } from '~v5/common/Pills/types';
+import { AvatarProps } from '~v5/shared/Avatar/types';
 
 export interface UserAvatarDetailsProps extends AvatarProps {
   userName?: string | null;

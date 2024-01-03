@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ColonyRole } from '@colony/colony-js';
+import React, { useEffect, useState } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { DialogSection } from '~shared/Dialog';
-import Heading from '~shared/Heading';
-import ExternalLink from '~shared/ExternalLink';
+import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
 import Button from '~shared/Button';
+import { DialogSection } from '~shared/Dialog';
+import ExternalLink from '~shared/ExternalLink';
+import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import { filterUserSelection } from '~shared/SingleUserPicker';
 import { SelectedPickerItem, SafeTransactionType } from '~types';
-import { SAFE_INTEGRATION_LEARN_MORE } from '~constants/externalUrls';
-import { defaultTransaction } from '~utils/safes';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions';
+import { defaultTransaction } from '~utils/safes';
 
 import { NotEnoughReputation } from '../Messages';
-import TransactionTypesSection from './TransactionTypesSection';
-import { useControlSafeDialogStatus } from './helpers';
-import { ControlSafeProps } from './types';
+
 import AddItemButton from './AddItemButton';
-import SingleSafePicker from './SingleSafePicker';
+import { useControlSafeDialogStatus } from './helpers';
 import SafeTransactionPreview from './SafeTransactionPreview';
+import SingleSafePicker from './SingleSafePicker';
+import TransactionTypesSection from './TransactionTypesSection';
+import { ControlSafeProps } from './types';
 
 import styles from './ControlSafeForm.css';
 

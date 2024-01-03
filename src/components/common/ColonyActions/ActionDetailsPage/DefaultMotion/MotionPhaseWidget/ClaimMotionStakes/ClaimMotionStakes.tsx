@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { ColonyMotion } from '~types';
-import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 import { isEmpty } from '~utils/lodash';
 
 import useClaimWidgetConfig from './useClaimWidgetConfig';
+
 import styles from './ClaimMotionStakes.css';
 
 const displayName = `common.ColonyActions.ActionDetailsPage.DefaultMotion.ClaimMotionStakes`;

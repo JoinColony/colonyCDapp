@@ -1,22 +1,22 @@
-import React, { createContext, useMemo, ReactNode } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 import { ApolloQueryResult } from '@apollo/client';
+import React, { createContext, useMemo, ReactNode } from 'react';
+import { defineMessages } from 'react-intl';
+import { Navigate, useParams } from 'react-router-dom';
 
+import LoadingTemplate from '~frame/LoadingTemplate';
 import {
   Exact,
   GetFullColonyByNameQuery,
   useGetColonyWhitelistByNameQuery,
   useGetFullColonyByNameQuery,
 } from '~gql';
-import { Colony } from '~types';
-import LoadingTemplate from '~frame/LoadingTemplate';
 import {
   useAppContext,
   useCanInteractWithColony,
   useColonySubscription,
 } from '~hooks';
 import { NotFoundRoute } from '~routes';
+import { Colony } from '~types';
 
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
 

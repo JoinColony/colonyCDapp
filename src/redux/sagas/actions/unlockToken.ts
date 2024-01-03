@@ -1,5 +1,5 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 

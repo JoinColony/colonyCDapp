@@ -12,8 +12,8 @@ import {
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes';
 import { Action, AllActions } from '~redux/types';
-import { putError, takeFrom } from '~utils/saga/effects';
 import { fill, omit } from '~utils/lodash';
+import { putError, takeFrom } from '~utils/saga/effects';
 
 import { transactionReady } from '../../actionCreators';
 import {
@@ -21,11 +21,11 @@ import {
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import { createActionMetadataInDB, uploadAnnotation } from '../utils';
 import {
   getHomeBridgeByChain,
   getTransactionEncodedData,
 } from '../utils/safeHelpers';
-import { createActionMetadataInDB, uploadAnnotation } from '../utils';
 
 function* initiateSafeTransactionAction({
   payload: {

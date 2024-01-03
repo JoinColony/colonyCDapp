@@ -1,5 +1,6 @@
 import { ActionTypes } from '~redux/actionTypes';
 import { Address, ColonyDecision } from '~types';
+import { DecisionDraft } from '~utils/decisions';
 
 import {
   ActionTypeWithMeta,
@@ -8,7 +9,6 @@ import {
   MetaWithSetter,
   UniqueActionType,
 } from '../actions';
-import { DecisionDraft } from '~utils/decisions';
 
 export type DecisionActionTypes =
   | ActionTypeWithPayload<ActionTypes.DECISION_DRAFT_CREATED, ColonyDecision>

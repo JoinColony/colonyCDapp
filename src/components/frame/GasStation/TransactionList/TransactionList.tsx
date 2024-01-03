@@ -1,12 +1,10 @@
 import React from 'react';
 
+import { TransactionType, MessageType } from '~redux/immutable';
 import CardList from '~shared/CardList';
 
-import TransactionCard from '../TransactionCard';
 import MessageCard from '../MessageCard';
-
-import { TransactionType, MessageType } from '~redux/immutable';
-
+import TransactionCard from '../TransactionCard';
 import {
   TransactionOrMessageGroup,
   TransactionOrMessageGroups,

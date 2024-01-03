@@ -1,22 +1,21 @@
 import React, { useMemo, useState } from 'react';
-import { string, object, array, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { string, object, array, boolean, InferType } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-
-import { ActionTypes } from '~redux/index';
-import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
+
+import { getManageWhitelistDialogPayload, TABS } from './helpers';
+import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
 import {
   mergeSchemas,
   validationSchemaFile,
   validationSchemaInput,
 } from './whitelistValidation';
-
-import ManageWhitelistDialogForm from './ManageWhitelistDialogForm';
-import { getManageWhitelistDialogPayload, TABS } from './helpers';
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &

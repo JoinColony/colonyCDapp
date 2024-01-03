@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import UserAvatarPopover from '../UserAvatarPopover';
 import Icon from '~shared/Icon';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
+
 import BurgerMenu from '../BurgerMenu';
+import PopoverBase from '../PopoverBase';
+import UserAvatarPopover from '../UserAvatarPopover';
+
 import { SubNavigation } from './partials';
 import UserStatusComponent from './partials/UserStatus';
 import { CardWithBiosProps } from './types';
-import PopoverBase from '../PopoverBase';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 const displayName = 'v5.CardWithBios';
 

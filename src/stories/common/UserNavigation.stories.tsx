@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
-import { useIntl } from 'react-intl';
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub';
@@ -9,9 +8,11 @@ import UserNavigation from '~common/Extensions/UserNavigation';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import { ContextModule, getContext } from '~context';
 import { useDetectClickOutside, useMobile } from '~hooks';
+import Icon from '~shared/Icon';
 import Button, { Hamburger } from '~v5/shared/Button';
 import UserAvatar from '~v5/shared/UserAvatar';
-import Icon from '~shared/Icon';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof UserNavigation> = {
   title: 'Common/User Navigation',

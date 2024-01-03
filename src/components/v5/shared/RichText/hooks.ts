@@ -1,18 +1,20 @@
+import { mergeAttributes } from '@tiptap/core';
+import Blockquote from '@tiptap/extension-blockquote';
+import Bold from '@tiptap/extension-bold';
+import CharacterCount from '@tiptap/extension-character-count';
+import Document from '@tiptap/extension-document';
+import Heading from '@tiptap/extension-heading';
+import Placeholder from '@tiptap/extension-placeholder';
+import Text from '@tiptap/extension-text';
+import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Document from '@tiptap/extension-document';
-import Text from '@tiptap/extension-text';
-import Blockquote from '@tiptap/extension-blockquote';
-import Underline from '@tiptap/extension-underline';
-import Bold from '@tiptap/extension-bold';
-import Heading from '@tiptap/extension-heading';
-import { mergeAttributes } from '@tiptap/core';
-import Placeholder from '@tiptap/extension-placeholder';
-import CharacterCount from '@tiptap/extension-character-count';
 import { useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
-import { MAX_ANNOTATION_NUM } from './consts';
+
 import { formatText } from '~utils/intl';
+
+import { MAX_ANNOTATION_NUM } from './consts';
 
 export const useRichText = (
   name: string,

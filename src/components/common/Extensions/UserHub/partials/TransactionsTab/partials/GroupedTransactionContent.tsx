@@ -1,14 +1,17 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import clsx from 'clsx';
 
-import styles from './TransactionsItem/TransactionsItem.module.css';
 import NotificationBanner from '~v5/shared/NotificationBanner';
+
 import { GroupedTransactionContentProps } from '../types';
-import { useGroupedTransactionContent } from './hooks';
+
 import CancelTransaction from './CancelTransaction';
+import { useGroupedTransactionContent } from './hooks';
 import TransactionStatus from './TransactionStatus';
 import { shortErrorMessage } from './utils';
+
+import styles from './TransactionsItem/TransactionsItem.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';

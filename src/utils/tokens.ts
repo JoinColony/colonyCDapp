@@ -2,13 +2,13 @@ import Decimal from 'decimal.js';
 import { BigNumber, BigNumberish } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { Colony, Address, ColonyBalances, Token } from '~types';
 import {
   DEFAULT_TOKEN_DECIMALS,
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
+import { Colony, Address, ColonyBalances, Token } from '~types';
 
 import { notNull } from './arrays';
 

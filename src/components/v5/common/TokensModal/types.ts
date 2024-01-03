@@ -1,7 +1,10 @@
 import { ObjectSchema } from 'yup';
+
 import { ActionTypes } from '~redux';
 import { Token } from '~types';
+
 import { ModalProps } from '../../shared/Modal/types';
+
 import { TOKENS_MODAL_TYPES } from './consts';
 
 export type TokensModalType =

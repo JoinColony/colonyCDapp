@@ -1,16 +1,17 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context';
-import { Action, ActionTypes, AllActions } from '~redux';
 import {
   GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
+import { Action, ActionTypes, AllActions } from '~redux';
 import { isEqual } from '~utils/lodash';
 
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 import {
   createGroupTransaction,
   createTransactionChannels,
@@ -24,7 +25,6 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils';
-import { transactionAddParams, transactionPending } from '../../actionCreators';
 import {
   getExistingTokenAddresses,
   getModifiedTokenAddresses,

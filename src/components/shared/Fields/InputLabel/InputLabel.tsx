@@ -5,6 +5,7 @@ import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 
 import { InputComponentAppearance as Appearance } from '../Input';
+
 import styles from './InputLabel.css';
 
 const displayName = 'InputLabel';

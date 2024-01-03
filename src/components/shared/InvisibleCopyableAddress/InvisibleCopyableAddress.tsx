@@ -1,3 +1,4 @@
+import copyToClipboard from 'copy-to-clipboard';
 import React, { ReactNode, useState, useEffect } from 'react';
 import {
   defineMessages,
@@ -6,9 +7,8 @@ import {
   useIntl,
 } from 'react-intl';
 
-import copyToClipboard from 'copy-to-clipboard';
-import { Address } from '~types';
 import { Tooltip } from '~shared/Popover';
+import { Address } from '~types';
 
 import styles from './InvisibleCopyableAddress.css';
 

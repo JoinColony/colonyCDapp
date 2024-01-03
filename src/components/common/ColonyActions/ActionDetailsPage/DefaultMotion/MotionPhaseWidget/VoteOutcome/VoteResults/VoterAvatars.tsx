@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { User } from '~types';
 import { useUserAvatars } from '~hooks/useUserAvatars';
 import UserAvatar from '~shared/UserAvatar';
+import { User } from '~types';
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
+
 import styles from './VoterAvatars.css';
 
 interface VoterAvatarsProps {

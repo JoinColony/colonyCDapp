@@ -2,13 +2,13 @@ import React, { ReactElement } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { PopperOptions } from 'react-popper-tooltip';
 
-import { Safe } from '~types';
-import ExternalLink from '~shared/ExternalLink';
-import { getSafeLink } from '~constants/externalUrls';
 import { ETHEREUM_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants';
+import { getSafeLink } from '~constants/externalUrls';
 import Button from '~shared/Button';
-import Popover, { PopoverChildFn } from '~shared/Popover';
 import { DialogType } from '~shared/Dialog';
+import ExternalLink from '~shared/ExternalLink';
+import Popover, { PopoverChildFn } from '~shared/Popover';
+import { Safe } from '~types';
 
 import SafeInfo from './SafeInfo';
 

@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { getMainClasses } from '~utils/css';
 
 import SelectOption from '../SelectOption';
+
 import { Appearance, SelectOption as SelectOptionType } from './types';
 
 import styles from './SelectListBox.css';

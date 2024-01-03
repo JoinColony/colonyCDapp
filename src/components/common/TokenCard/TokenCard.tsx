@@ -1,20 +1,20 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { ADDRESS_ZERO } from '~constants';
+import { useColonyContext } from '~hooks';
 import Card from '~shared/Card';
-import CopyableAddress from '~v5/shared/CopyableAddress';
 import EthUsd from '~shared/EthUsd';
-import Numeral from '~shared/Numeral';
-import TokenInfoPopover from '~shared/TokenInfoPopover';
-import TokenIcon from '~shared/TokenIcon';
 import IconTooltip from '~shared/IconTooltip';
+import Numeral from '~shared/Numeral';
+import TokenIcon from '~shared/TokenIcon';
+import TokenInfoPopover from '~shared/TokenInfoPopover';
 import { Token } from '~types';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import { useColonyContext } from '~hooks';
-import { ADDRESS_ZERO } from '~constants';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 
 import styles from './TokenCard.css';
 

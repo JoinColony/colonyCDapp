@@ -1,10 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { WizardDialogType } from '~hooks';
 import { DialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
-
-import { WizardDialogType } from '~hooks';
 
 const displayName = 'common.ColonyActionsDialog';
 

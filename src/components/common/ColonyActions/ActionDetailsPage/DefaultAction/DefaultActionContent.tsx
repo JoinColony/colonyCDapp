@@ -1,16 +1,18 @@
 import React from 'react';
 
 import { getActionTitleValues } from '~common/ColonyActions/helpers';
-import { Heading3 } from '~shared/Heading';
-import { Colony, ColonyAction } from '~types';
 import { DecisionContent } from '~common/ColonyDecisions/DecisionPreview/DecisionData';
+import { Heading3 } from '~shared/Heading';
 import TimeRelative from '~shared/TimeRelative/TimeRelative';
+import { Colony, ColonyAction } from '~types';
 
 import {
   ActionDetailsPageFeed,
   MotionDetailsPageFeed,
 } from '../ActionDetailsPageFeed';
+
 import ActionAnnotation from './ActionAnnotation';
+
 import styles from './DefaultActionContent.css';
 
 const displayName =

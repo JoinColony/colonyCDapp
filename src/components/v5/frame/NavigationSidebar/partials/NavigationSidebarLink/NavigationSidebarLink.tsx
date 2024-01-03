@@ -1,6 +1,6 @@
+import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 import { NavLink } from 'react-router-dom';
-import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';

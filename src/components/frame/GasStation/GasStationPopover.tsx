@@ -1,16 +1,14 @@
 import React, { useEffect, useMemo, useState, ReactElement } from 'react';
 
-import Popover, { PopoverChildFn } from '~shared/Popover';
 import { usePrevious, useMobile } from '~hooks';
-
+import Popover, { PopoverChildFn } from '~shared/Popover';
 import { removeValueUnits } from '~utils/css';
 
+import GasStationContent from './GasStationContent';
 import {
   TransactionOrMessageGroups,
   transactionCount,
 } from './transactionGroup';
-
-import GasStationContent from './GasStationContent';
 
 import styles from './GasStationPopover.css';
 

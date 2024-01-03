@@ -1,4 +1,5 @@
 import { InferType, object, string } from 'yup';
+
 import {
   MAX_ANNOTATION_LENGTH,
   MAX_COLONY_DISPLAY_NAME,

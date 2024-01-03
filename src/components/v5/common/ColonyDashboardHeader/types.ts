@@ -1,4 +1,5 @@
 import { Token } from '~types';
+
 import { ColonyLinksProps } from './partials/ColonyLinks/types';
 
 export interface ColonyDashboardHeaderProps {

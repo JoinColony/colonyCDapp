@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
+import { useUserTokenBalanceContext } from '~context';
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
 import {
   ColonyActionType,
   useGetColonyActionQuery,
   useGetMotionStateQuery,
 } from '~gql';
-import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
-import { useUserTokenBalanceContext } from '~context';
 import noop from '~utils/noop';
 import { getSafePollingInterval } from '~utils/queries';
+import { isTransactionFormat } from '~utils/web3';
 
 export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery

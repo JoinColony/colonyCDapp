@@ -1,5 +1,5 @@
-import React from 'react';
 import { JsonFragment } from '@ethersproject/abi';
+import React from 'react';
 
 import { Input } from '~shared/Fields';
 

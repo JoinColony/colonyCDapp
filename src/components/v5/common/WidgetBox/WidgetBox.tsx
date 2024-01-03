@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+
 import Icon from '~shared/Icon';
+
 import { WidgetBoxProps } from './types';
 
 const displayName = 'v5.common.WidgetBox';

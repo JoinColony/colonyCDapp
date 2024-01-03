@@ -5,6 +5,7 @@ import { formatText } from '~utils/intl';
 import Checkbox from '~v5/common/Checkbox/Checkbox';
 import Button from '~v5/shared/Button/Button';
 import Modal from '~v5/shared/Modal/Modal';
+
 import { useUninstall } from './hooks';
 
 const displayName = 'pages.ExtensionDetailsPage.UninstallButton';

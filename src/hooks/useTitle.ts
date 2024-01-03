@@ -6,9 +6,10 @@
 // remains same (for example, when multiple dialogue boxes can
 // be present on the same route.)
 
-import { useLocation, matchPath } from 'react-router-dom';
 import { defineMessages, useIntl, MessageDescriptor } from 'react-intl';
+import { useLocation, matchPath } from 'react-router-dom';
 
+import { useGetDisplayNameByColonyNameQuery } from '~gql';
 import {
   CREATE_COLONY_ROUTE,
   CREATE_PROFILE_ROUTE,
@@ -39,7 +40,6 @@ import {
 } from '~routes/routeConstants';
 import { SimpleMessageValues } from '~types';
 import { notNull } from '~utils/arrays';
-import { useGetDisplayNameByColonyNameQuery } from '~gql';
 
 const displayName = 'utils.hooks';
 

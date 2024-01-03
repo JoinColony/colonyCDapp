@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import CardWithBios from '~v5/shared/CardWithBios';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof CardWithBios> = {
   title: 'Shared/Card With Bios',

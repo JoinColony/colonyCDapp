@@ -4,7 +4,6 @@ import { UserFragment } from '~gql';
 import { useAppContext, useUsersByAddresses } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { calculateRemainingItems } from '~utils/avatars';
-
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
 export const useUserAvatars = (

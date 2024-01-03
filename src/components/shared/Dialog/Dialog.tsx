@@ -3,9 +3,9 @@ import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
 
-import styles from './Dialog.css';
-
 import Modal from '../Modal';
+
+import styles from './Dialog.css';
 
 const MSG = defineMessages({
   buttonCancel: {

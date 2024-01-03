@@ -1,11 +1,13 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+
+import Icon from '~shared/Icon';
 import AvatarUploader from '~v5/common/AvatarUploader';
 import { Input } from '~v5/common/Fields';
-import Textarea from '~v5/common/Fields/Textarea';
 import Switch from '~v5/common/Fields/Switch';
+import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
+
 import { RowItemProps } from './types';
 
 const displayName = 'v5.pages.UserProfilePage.partials.RowItem';

@@ -1,7 +1,9 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
+
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
+
 import { ICON_NAME_MAP, StepStage } from './consts';
 import { StepperButtonProps } from './types';
 

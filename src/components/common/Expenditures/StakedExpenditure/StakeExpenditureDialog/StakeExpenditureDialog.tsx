@@ -1,18 +1,18 @@
 import React from 'react';
 
-import Dialog, { DialogSection } from '~shared/Dialog';
-import { Colony } from '~types';
-
-import { SpinnerLoader } from '~shared/Preloaders';
 import { useAppContext } from '~hooks';
+import { ActionTypes } from '~redux';
+import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
+import { ActionButton } from '~shared/Button';
+import { ActionButtonProps } from '~shared/Button/ActionButton';
+import Dialog, { DialogSection } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
 import Numeral from '~shared/Numeral';
-import { ActionButton } from '~shared/Button';
-import { ActionTypes } from '~redux';
-import { ActionButtonProps } from '~shared/Button/ActionButton';
-import { CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { Colony } from '~types';
 
 import { ExpenditureFormValues } from '../../ExpenditureForm';
+
 import useExpenditureStaking from './useExpenditureStaking';
 
 import styles from './StakeExpenditureDialog.module.css';

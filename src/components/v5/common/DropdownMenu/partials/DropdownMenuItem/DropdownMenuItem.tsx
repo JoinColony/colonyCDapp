@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FC } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CaretRight } from 'phosphor-react';
+import React, { FC } from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
 import { accordionAnimation } from '~constants/accordionAnimation';
 import useToggle from '~hooks/useToggle';
+import Tooltip from '~shared/Extensions/Tooltip';
 import Link from '~v5/shared/Link';
 
 import { DropdownMenuItemProps } from './types';

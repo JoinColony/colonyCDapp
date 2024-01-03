@@ -7,26 +7,26 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { useColonyContext, useExtensionData } from '~hooks';
-import ExtensionDetails from './partials/ExtensionDetails';
-import ImageCarousel from '~common/Extensions/ImageCarousel';
-import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import NotFoundRoute from '~routes/NotFoundRoute';
-import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux';
-import { mapPayload, mergePayload, pipe } from '~utils/actions';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import {
   createExtensionSetupInitialValues,
   mapExtensionActionPayload,
 } from '~common/Extensions/ExtensionSetup/utils';
+import ImageCarousel from '~common/Extensions/ImageCarousel';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
+import { useColonyContext, useExtensionData } from '~hooks';
+import { ActionTypes } from '~redux';
+import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
+import NotFoundRoute from '~routes/NotFoundRoute';
+import { ActionForm } from '~shared/Fields';
+import { mapPayload, mergePayload, pipe } from '~utils/actions';
 import { formatText } from '~utils/intl';
 
-import { getValidationSchema } from './validation';
-import { getFormSuccessFn } from './utils';
+import { SetupComponentMap } from './consts';
 import ExtensionInfo from './ExtensionInfo';
 import ExtensionsTopRow from './ExtensionTopRow';
-import { SetupComponentMap } from './consts';
+import ExtensionDetails from './partials/ExtensionDetails';
+import { getFormSuccessFn } from './utils';
+import { getValidationSchema } from './validation';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 

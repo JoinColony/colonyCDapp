@@ -1,18 +1,17 @@
 import React from 'react';
-
 import { useNavigate } from 'react-router-dom';
+
 import { DecisionDialog, DeleteDecisionDialog } from '~common/ColonyDecisions';
-import { useDialog } from '~shared/Dialog';
-import Button, { ActionButton } from '~shared/Button';
 import { useColonyContext, useColonyHasReputation } from '~hooks';
 import { ActionTypes } from '~redux';
+import Button, { ActionButton } from '~shared/Button';
+import { useDialog } from '~shared/Dialog';
+import { withMeta } from '~utils/actions';
+import { DecisionDraft } from '~utils/decisions';
 
 import { DecisionDataProps } from '../DecisionData';
 
-import { withMeta } from '~utils/actions';
-
 import styles from './DecisionPreviewControls.css';
-import { DecisionDraft } from '~utils/decisions';
 
 type DecisionPreviewControlsProps = Omit<DecisionDataProps, 'user'>;
 

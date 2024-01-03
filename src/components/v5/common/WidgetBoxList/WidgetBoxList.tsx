@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+
 import WidgetBox from '../WidgetBox';
+
 import { WidgetBoxListProps } from './types';
 
 const displayName = 'v5.common.WidgetBoxList';

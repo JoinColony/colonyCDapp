@@ -1,21 +1,22 @@
-import React, { ComponentType, ReactNode, useCallback } from 'react';
-import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 import classnames from 'classnames';
+import React, { ComponentType, ReactNode, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 
+import UserAvatar from '~shared/UserAvatar';
 import { SelectedPickerItem, SimpleMessageValues, User } from '~types';
 import { getMainClasses } from '~utils/css';
-import UserAvatar from '~shared/UserAvatar';
 
+import Button from '../Button';
+import { InputLabel, InputStatus } from '../Fields';
+import Icon from '../Icon';
 import {
   ItemDataType,
   withOmniPicker,
   WrappedComponentProps,
 } from '../OmniPicker';
 import { Props as WithOmnipickerInProps } from '../OmniPicker/withOmniPicker';
-import { InputLabel, InputStatus } from '../Fields';
-import Icon from '../Icon';
-import Button from '../Button';
+
 import ItemDefault from './ItemDefault';
 
 import styles from './SingleUserPicker.css';

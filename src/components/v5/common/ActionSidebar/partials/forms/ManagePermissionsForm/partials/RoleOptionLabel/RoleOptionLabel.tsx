@@ -1,5 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
+
 import Icon from '~shared/Icon';
+
 import { RoleOptionLabelProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.RoleOptionLabel';

@@ -8,15 +8,15 @@ import React, {
   useEffect,
 } from 'react';
 
-import { ActionTypes } from '~redux';
 import {
   GetUserByAddressDocument,
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
-import { ColonyWallet, User } from '~types';
 import { useAsyncFunction, usePrevious } from '~hooks';
+import { ActionTypes } from '~redux';
 import { TokenActivationProvider } from '~shared/TokenActivationProvider';
+import { ColonyWallet, User } from '~types';
 import { getLastWallet } from '~utils/autoLogin';
 
 import { getContext, ContextModule } from './index';

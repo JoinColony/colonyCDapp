@@ -1,22 +1,23 @@
-import React, { FC } from 'react';
 import { Id } from '@colony/colony-js';
-import { useFormContext } from 'react-hook-form';
 import { PaintBucket } from 'phosphor-react';
+import React, { FC } from 'react';
+import { useFormContext } from 'react-hook-form';
 
+import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
-import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
+
+import { DecisionMethod, useDecisionMethods } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+import DescriptionRow from '../../DescriptionRow';
 
 import { useEditTeam } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
-import { DecisionMethod, useDecisionMethods } from '../../../hooks';
-import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 

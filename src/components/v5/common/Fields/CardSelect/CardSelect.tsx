@@ -1,5 +1,5 @@
-import React, { useCallback, useId, useMemo, useState } from 'react';
 import clsx from 'clsx';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 
 import { useRelativePortalElement, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
@@ -8,9 +8,10 @@ import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';
 
 import { FIELD_STATE } from '../consts';
-import { isFlatOptions } from './utils';
+
 import { OPTION_LIST_ITEM_CLASSES } from './consts';
 import { CardSelectOptionsGroup, CardSelectProps } from './types';
+import { isFlatOptions } from './utils';
 
 const displayName = 'v5.common.Fields.CardSelect';
 

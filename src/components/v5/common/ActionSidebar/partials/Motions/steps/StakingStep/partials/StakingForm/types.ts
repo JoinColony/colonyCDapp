@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 
-import { MotionVote } from '~utils/colonyMotions';
 import { Action, ActionTypes } from '~redux';
+import { MotionVote } from '~utils/colonyMotions';
 
 export interface StakingFormProps {
   userActivatedTokens: BigNumber;

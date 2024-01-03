@@ -1,6 +1,6 @@
-import React from 'react';
-import classNames from 'classnames';
 import { Editor } from '@tiptap/core';
+import classNames from 'classnames';
+import React from 'react';
 
 import Button from '~shared/Button';
 import Icon from '~shared/Icon';

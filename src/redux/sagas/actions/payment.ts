@@ -1,11 +1,18 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { ClientType, ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
-import { ClientType, ColonyRole } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes, Action, AllActions } from '~redux';
 import { ColonyManager } from '~context';
+import { ActionTypes, Action, AllActions } from '~redux';
+import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
 
+import { transactionPending, transactionAddParams } from '../../actionCreators';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import {
   initiateTransaction,
   putError,
@@ -15,14 +22,6 @@ import {
   getMultiPermissionProofs,
   createActionMetadataInDB,
 } from '../utils';
-
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
-import { transactionPending, transactionAddParams } from '../../actionCreators';
 
 function* createPaymentAction({
   payload: {

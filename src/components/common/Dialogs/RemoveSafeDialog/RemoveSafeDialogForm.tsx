@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';

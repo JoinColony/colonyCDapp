@@ -1,8 +1,9 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import clsx from 'clsx';
 import Icon from '~shared/Icon';
+
 import { BurgerMenuProps } from './types';
 
 const displayName = 'v5.BurgerMenu';

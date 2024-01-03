@@ -1,14 +1,16 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo } from 'react';
 import { Star, Trash } from 'phosphor-react';
-import { formatText } from '~utils/intl';
+import React, { useMemo } from 'react';
+
 import { ColonyContributorFragment } from '~gql';
-import MemberAvatar from '../MemberAvatar';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
+import { formatText } from '~utils/intl';
 import Checkbox from '~v5/common/Checkbox';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 import UserStatusComponent from '~v5/shared/CardWithBios/partials/UserStatus';
+
+import MemberAvatar from '../MemberAvatar';
 import PermissionRow from '../PermissionRow';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 
 export const useVerifiedTableColumns = (): ColumnDef<
   ColonyContributorFragment,

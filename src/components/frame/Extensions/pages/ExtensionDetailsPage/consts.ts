@@ -1,5 +1,7 @@
 import { Extension } from '@colony/colony-js';
+
 import { TabItem } from '~shared/Extensions/Tabs/types';
+
 import LazyConsensusPageSetup from '../LazyConsensusPage/LazyConsensusPageSetup';
 
 export const tabsItems: Partial<{

@@ -1,4 +1,5 @@
 import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types';
+
 import { RadioItemProps } from './types';
 
 export const radioItems: RadioItemProps[] = [

@@ -1,6 +1,6 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 

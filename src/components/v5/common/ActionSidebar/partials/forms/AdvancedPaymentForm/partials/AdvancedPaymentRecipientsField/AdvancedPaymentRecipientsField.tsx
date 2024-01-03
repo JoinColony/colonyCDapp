@@ -1,18 +1,19 @@
-import React, { FC } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
-import Button from '~v5/shared/Button/Button';
 import { useColonyContext, useMobile } from '~hooks';
+import { formatText } from '~utils/intl';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
+import Button from '~v5/shared/Button/Button';
+
 import { useRecipientsFieldTableColumns, useGetTableMenuProps } from './hooks';
 import {
   AdvancedPaymentRecipientsTableModel,
   AdvancedPaymentRecipientsFieldProps,
   AdvancedPaymentRecipientsFieldModel,
 } from './types';
-import { formatText } from '~utils/intl';
 
 const displayName =
   'v5.common.ActionsContent.partials.AdvancedPaymentRecipientsField';

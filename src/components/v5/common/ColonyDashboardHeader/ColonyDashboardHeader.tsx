@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import NativeTokenPill from '../NativeTokenPill/NativeTokenPill';
+
 import ColonyLinks from './partials/ColonyLinks';
 import { ColonyDashboardHeaderProps } from './types';
 

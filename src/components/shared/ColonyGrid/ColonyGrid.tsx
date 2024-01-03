@@ -5,10 +5,9 @@ import {
   MessageDescriptor,
 } from 'react-intl';
 
+import { CREATE_COLONY_ROUTE } from '~routes/index';
 import Heading from '~shared/Heading';
 import Link from '~shared/Link';
-
-import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { notNull } from '~utils/arrays';
 
 import ColonyGridItem from './ColonyGridItem';

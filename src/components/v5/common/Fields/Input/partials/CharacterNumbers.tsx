@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import { DEFAULT_MAX_CHAR_NUMBER } from '../consts';
 import { CharacterNumbersProps } from '../types';

@@ -1,6 +1,8 @@
 import React from 'react';
+
 import MenuWithSections from '../MenuWithSections';
 import StatusText from '../StatusText/StatusText';
+
 import { MenuWithStatusTextProps } from './types';
 
 const displayName = 'v5.shared.MenuWithStatusText';

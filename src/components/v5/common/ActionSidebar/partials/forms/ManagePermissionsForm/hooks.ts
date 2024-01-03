@@ -1,18 +1,19 @@
-import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useMemo } from 'react';
-import { DeepPartial } from 'utility-types';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { DeepPartial } from 'utility-types';
 
-import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
-import { useAppContext, useColonyContext } from '~hooks';
 import { UserRole, USER_ROLE, getRole } from '~constants/permissions';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import { notMaybe } from '~utils/arrays';
+import { useAppContext, useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
 import { getUserRolesForDomain } from '~transformers';
+import { mapPayload, pipe } from '~utils/actions';
+import { notMaybe } from '~utils/arrays';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import {
   AUTHORITY,
   AVAILABLE_ROLES,

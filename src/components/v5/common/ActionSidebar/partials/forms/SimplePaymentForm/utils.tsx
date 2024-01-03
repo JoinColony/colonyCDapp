@@ -1,26 +1,27 @@
 import { ApolloClient } from '@apollo/client';
-import { DeepPartial } from 'utility-types';
 import moveDecimal from 'move-decimal-point';
+import { DeepPartial } from 'utility-types';
 
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import {
   ColonyActionType,
   GetUserByAddressDocument,
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
-import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
+import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
 import { Address, Colony, User } from '~types';
-import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { formatText } from '~utils/intl';
 import {
   calculateFee,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
-import { formatText } from '~utils/intl';
-import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
+import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 
 import { tryGetToken } from '../utils';
+
 import { SimplePaymentFormValues } from './hooks';
 
 const tryGetRecipient = async (

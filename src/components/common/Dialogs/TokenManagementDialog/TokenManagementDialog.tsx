@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux/index';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux/index';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { WizardDialogType } from '~hooks';
-import { formatText } from '~utils/intl';
 import { notNull } from '~utils/arrays';
+import { formatText } from '~utils/intl';
 
 import { getTokenManagementDialogPayload } from './helpers';
 import TokenManagementDialogForm from './TokenManagementDialogForm';

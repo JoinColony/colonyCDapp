@@ -1,13 +1,13 @@
+import classNames from 'classnames';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
 
-import Numeral from '~shared/Numeral';
 import { STAKING_THRESHOLD } from '~constants';
-import { getStakeFromSlider, getRemainingStakePercentage } from '../../helpers';
+import Numeral from '~shared/Numeral';
 
 import { SLIDER_AMOUNT_KEY } from '..';
+import { getStakeFromSlider, getRemainingStakePercentage } from '../../helpers';
 
 import styles from './RequiredStakeMessage.css';
 

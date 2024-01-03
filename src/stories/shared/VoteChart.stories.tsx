@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import VoteChart from '~v5/shared/VoteChart';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const voteChartMeta: Meta<typeof VoteChart> = {
   title: 'Shared/Vote Chart',

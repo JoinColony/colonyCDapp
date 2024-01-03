@@ -1,12 +1,13 @@
-import React from 'react';
 import clsx from 'clsx';
-
+import React from 'react';
 import { useController } from 'react-hook-form';
-import { ActionFormRowProps } from './types';
-import Icon from '~shared/Icon';
-import Tooltip from '~shared/Extensions/Tooltip';
+
 import useToggle from '~hooks/useToggle';
+import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
+
 import { LABEL_CLASSNAME } from './consts';
+import { ActionFormRowProps } from './types';
 
 const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (

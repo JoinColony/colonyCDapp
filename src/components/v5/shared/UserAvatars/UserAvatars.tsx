@@ -1,9 +1,11 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-import UserAvatar from '~v5/shared/UserAvatar';
-import { UserAvatarsProps } from './types';
+import React, { FC } from 'react';
+
 import { User } from '~types';
 import { calculateLastSliceIndex } from '~utils/avatars';
+import UserAvatar from '~v5/shared/UserAvatar';
+
+import { UserAvatarsProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';

@@ -1,5 +1,5 @@
-import { useFormContext } from 'react-hook-form';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Input } from '~shared/Fields';

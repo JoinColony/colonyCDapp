@@ -1,9 +1,10 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
 
 import { getIconName } from '~v5/shared/CardWithBios/partials/consts';
 
 import PillsBase from '../PillsBase';
+
 import { UserStatusProps } from './types';
 
 const displayName = 'v5.common.Pills.UserStatus';

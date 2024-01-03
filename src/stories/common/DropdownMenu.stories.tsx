@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 import { User } from 'phosphor-react';
+import React, { FC } from 'react';
 
 import { useMobile } from '~hooks';
 import DropdownMenu from '~v5/common/DropdownMenu';
 import { DropdownMenuProps } from '~v5/common/DropdownMenu/types';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const dropdownMenuMeta: Meta<typeof DropdownMenu> = {
   title: 'Common/Dropdown Menu',

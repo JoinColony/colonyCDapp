@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InferType } from 'yup';
 
+import { useMemberContext } from '~context/MemberContext';
+import { WizardDialogType, useNetworkInverseFee } from '~hooks';
+import { ActionTypes } from '~redux/index';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { WizardDialogType, useNetworkInverseFee } from '~hooks';
-import { useMemberContext } from '~context/MemberContext';
 
 import DialogForm from './CreatePaymentDialogForm';
 import { getCreatePaymentDialogPayload } from './helpers';

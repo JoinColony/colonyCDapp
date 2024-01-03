@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useColonyContext } from '~hooks';
+import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import { formatText } from '~utils/intl';
-import { useColonyContext } from '~hooks';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyObjectiveFields';
 

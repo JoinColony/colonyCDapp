@@ -1,13 +1,14 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
+import { useColonyContext } from '~hooks';
+import PillsBase from '~v5/common/Pills/PillsBase';
 import {
   setTeamBadge,
   setTeamColor,
 } from '~v5/common/TeamReputationSummary/utils';
-import PillsBase from '~v5/common/Pills/PillsBase';
+
 import { TeamColourBadgeProps } from '../types';
-import { useColonyContext } from '~hooks';
 
 const displayName =
   'v5.common.ActionsContent.partials.TeamColourField.partials.TeamColourBadge';

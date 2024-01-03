@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+
 import { CalamityBannerItemProps } from './types';
 
 export const CALAMITY_BANNER = 'calamity-banner';

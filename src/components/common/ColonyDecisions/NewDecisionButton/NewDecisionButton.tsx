@@ -1,20 +1,20 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { useDialog } from '~shared/Dialog';
-import { DialogButton } from '~shared/Button';
 import {
   DecisionDialog,
   RemoveExistingDecisionDialog,
 } from '~common/ColonyDecisions';
-import { getDraftDecisionFromStore } from '~utils/decisions';
+import { useColonyHomeContext } from '~context';
 import {
   useAppContext,
   useCanInteractWithNetwork,
   useColonyContext,
   useEnabledExtensions,
 } from '~hooks';
-import { useColonyHomeContext } from '~context';
+import { DialogButton } from '~shared/Button';
+import { useDialog } from '~shared/Dialog';
+import { getDraftDecisionFromStore } from '~utils/decisions';
 
 const displayName = 'common.ColonyDecisions.NewDecisionButton';
 

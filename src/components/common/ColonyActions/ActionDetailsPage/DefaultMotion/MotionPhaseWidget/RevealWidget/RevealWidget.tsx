@@ -1,16 +1,17 @@
-import React from 'react';
 import { BigNumber } from 'ethers';
+import React from 'react';
 
-import { MotionState } from '~utils/colonyMotions';
-import { ColonyMotion } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
-import { ActionForm, OnSuccess } from '~shared/Fields';
 import { ActionTypes } from '~redux';
-import { mapPayload } from '~utils/actions';
 import { RevealMotionPayload } from '~redux/sagas/motions/revealVoteMotion';
+import { ActionForm, OnSuccess } from '~shared/Fields';
+import { ColonyMotion } from '~types';
+import { mapPayload } from '~utils/actions';
+import { MotionState } from '~utils/colonyMotions';
 
-import { VoteDetails } from '../VotingWidget';
 import { PollingControls } from '../MotionPhaseWidget';
+import { VoteDetails } from '../VotingWidget';
+
 import RevealWidgetHeading from './RevealWidgetHeading';
 import { useRevealWidgetUpdate } from './useRevealWidgetUpdate';
 

@@ -1,26 +1,26 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC } from 'react';
 
 import { useTablet } from '~hooks';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
+import ColonyLogo from '~images/logo-new.svg';
+import FeedbackButton from '~shared/FeedbackButton';
+import Icon from '~shared/Icon';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import HamburgerButton from '~v5/shared/HamburgerButton';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import FeedbackButton from '~shared/FeedbackButton';
-import ColonyLogo from '~images/logo-new.svg';
-import Icon from '~shared/Icon';
 
-import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
-import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
-import NavigationSidebarMainMenu from './partials/NavigationSidebarMainMenu';
-import useNavigationSidebarContext from './partials/NavigationSidebarContext/hooks';
-import NavigationSidebarMobileContentWrapper from './partials/NavigationSidebarMobileContentWrapper';
-import { NavigationSidebarProps } from './types';
 import {
   secondLevelContentAnimation,
   secondLevelWrapperAnimation,
   thirdLevelWrapperAnimation,
 } from './consts';
+import useNavigationSidebarContext from './partials/NavigationSidebarContext/hooks';
+import NavigationSidebarMainMenu from './partials/NavigationSidebarMainMenu';
+import NavigationSidebarMobileContentWrapper from './partials/NavigationSidebarMobileContentWrapper';
+import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
+import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
+import { NavigationSidebarProps } from './types';
 
 const displayName = 'v5.frame.NavigationSidebarContent';
 

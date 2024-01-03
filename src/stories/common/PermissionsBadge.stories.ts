@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof PermissionsBadge> = {
   title: 'Common/Pills/Permissions Badge',

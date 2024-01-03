@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
+import Icon from '~shared/Icon';
 import { Token } from '~types';
 import { getNetworkByChainId } from '~utils/web3';
-import Icon from '~shared/Icon';
 
 import { getInputError } from '../shared';
 

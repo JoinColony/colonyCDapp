@@ -1,8 +1,7 @@
+import cx from 'classnames';
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 import { PopperOptions } from 'react-popper-tooltip';
-
-import cx from 'classnames';
 
 import Icon from '~shared/Icon';
 import { Tooltip } from '~shared/Popover';

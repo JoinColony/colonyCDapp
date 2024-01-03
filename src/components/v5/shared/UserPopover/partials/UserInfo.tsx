@@ -1,17 +1,17 @@
-import React, { FC } from 'react';
-import clsx from 'clsx';
-
 import { ColonyRole, Id } from '@colony/colony-js';
+import clsx from 'clsx';
+import React, { FC } from 'react';
+
+import { getRole } from '~constants/permissions';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
 import Icon from '~shared/Icon';
+import Numeral from '~shared/Numeral';
+import { formatText } from '~utils/intl';
+import { multiLineTextEllipsis } from '~utils/strings';
+import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+import UserStatus from '~v5/common/Pills/UserStatus';
 import TitleLabel from '~v5/shared/TitleLabel';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
-import UserStatus from '~v5/common/Pills/UserStatus';
-import { formatText } from '~utils/intl';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip';
-import { getRole } from '~constants/permissions';
-import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
-import Numeral from '~shared/Numeral';
-import { multiLineTextEllipsis } from '~utils/strings';
 
 import { UserInfoProps } from '../types';
 

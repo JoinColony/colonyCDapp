@@ -1,10 +1,12 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
+
+import NavLink from '~v5/shared/NavLink';
+
+import { NavItemProps } from '../../types';
 
 import styles from './NavItem.module.css';
-import NavLink from '~v5/shared/NavLink';
-import { NavItemProps } from '../../types';
 
 const displayName = 'v5.common.Navigation.partials.NavItem';
 

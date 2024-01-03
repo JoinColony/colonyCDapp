@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Popover, { PopoverChildFn } from '~shared/Popover';
-import Button from '~shared/Button';
-import MaskedAddress from '~shared/MaskedAddress';
-import ColonyAvatar from '~shared/ColonyAvatar';
 import { useColonyContext } from '~hooks';
+import Button from '~shared/Button';
+import ColonyAvatar from '~shared/ColonyAvatar';
+import MaskedAddress from '~shared/MaskedAddress';
+import Popover, { PopoverChildFn } from '~shared/Popover';
 
 import styles from './ColonySubscriptionInfoPopover.css';
 

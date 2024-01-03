@@ -15,6 +15,7 @@ import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 
 import { getTeam, tryGetUser } from '../utils';
+
 import {
   AVAILABLE_ROLES,
   ManagePermissionsFormValues,

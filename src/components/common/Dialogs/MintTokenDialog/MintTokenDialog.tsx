@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { string, object, bool, InferType, number } from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { string, object, bool, InferType, number } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux';
 import { pipe, mapPayload, withMeta } from '~utils/actions';
-import { WizardDialogType } from '~hooks';
 import { toFinite } from '~utils/lodash';
 
-import MintTokenDialogForm from './MintTokenDialogForm';
 import { getMintTokenDialogPayload } from './helpers';
+import MintTokenDialogForm from './MintTokenDialogForm';
 
 const displayName = 'common.MintTokenDialog';
 

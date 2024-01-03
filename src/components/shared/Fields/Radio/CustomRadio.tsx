@@ -1,12 +1,12 @@
-import React, { useRef } from 'react';
-import { MessageDescriptor, FormattedMessage } from 'react-intl';
-import { nanoid } from 'nanoid';
 import classnames from 'classnames';
+import { nanoid } from 'nanoid';
+import React, { useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
-import { getMainClasses } from '~utils/css';
 import Icon from '~shared/Icon';
 import { UniversalMessageValues } from '~types';
+import { getMainClasses } from '~utils/css';
 
 import styles from './CustomRadio.css';
 

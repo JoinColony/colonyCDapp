@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
 import Tabs from '~shared/Extensions/Tabs';
 import { tabsItems } from '~shared/Extensions/Tabs/consts';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Shared/Tabs',

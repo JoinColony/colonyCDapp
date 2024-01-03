@@ -2,10 +2,10 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
-import Input from '~v5/common/Fields/Input';
 import { MAX_COLONY_DISPLAY_NAME } from '~constants';
-import { formatText } from '~utils/intl';
 import { HOST } from '~routes';
+import { formatText } from '~utils/intl';
+import Input from '~v5/common/Fields/Input';
 
 import { getInputError } from '../shared';
 

@@ -1,15 +1,15 @@
 import React, { FC, useEffect } from 'react';
 
-import { useSearchContext } from '~context/SearchContext';
+import { useSetPageHeadingTitle } from '~context';
 import { useFilterContext } from '~context/FilterContext';
+import { useSearchContext } from '~context/SearchContext';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { formatText } from '~utils/intl';
-import { useSetPageHeadingTitle } from '~context';
 import { FilterTypes } from '~v5/common/TableFiltering/types';
 
-import MembersTabContent from './partials/MembersTabContent';
 import { useMembersPage } from './hooks';
+import MembersTabContent from './partials/MembersTabContent';
 
 const AllMembersPage: FC = () => {
   const { membersList, loading, hasMoreMembers, loadMoreMembers } =

@@ -6,9 +6,9 @@ import {
 } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { LANDING_PAGE_ROUTE } from '~routes/routeConstants';
 import ExternalLink from '~shared/ExternalLink';
 import { Heading3 } from '~shared/Heading';
-import { LANDING_PAGE_ROUTE } from '~routes/routeConstants';
 import Icon from '~shared/Icon';
 import { UniversalMessageValues } from '~types';
 

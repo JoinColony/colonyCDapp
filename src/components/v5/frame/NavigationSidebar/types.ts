@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { ColonyAvatarProps } from '~v5/shared/ColonyAvatar/types';
+
 import { NavigationSidebarMainMenuProps } from './partials/NavigationSidebarMainMenu/types';
 import { NavigationSidebarSecondLevelProps } from './partials/NavigationSidebarSecondLevel/types';
 

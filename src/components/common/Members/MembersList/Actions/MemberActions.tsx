@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import Popover from '~shared/Popover';
-import { ThreeDotsButton } from '~shared/Button';
-
 import { useMobile } from '~hooks';
+import { ThreeDotsButton } from '~shared/Button';
+import Popover from '~shared/Popover';
 
 import MemberActionsPopover from './MemberActionsPopover';
 

@@ -4,8 +4,8 @@ import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
 
 import { FileUploadProps } from '../types';
 
-import ErrorContent from './ErrorContent';
 import DefaultContent from './DefaultContent';
+import ErrorContent from './ErrorContent';
 
 const displayName = 'v5.common.AvatarUploader.partials.partials.FileUpload';
 

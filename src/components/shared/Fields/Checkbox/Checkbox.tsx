@@ -1,13 +1,13 @@
-import React, { InputHTMLAttributes, useState } from 'react';
-import { nanoid } from 'nanoid';
-import { PopperOptions } from 'react-popper-tooltip';
-import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
+import { nanoid } from 'nanoid';
+import React, { InputHTMLAttributes, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { PopperOptions } from 'react-popper-tooltip';
 
 import InputLabel from '~shared/Fields/InputLabel';
 import { Tooltip } from '~shared/Popover';
-import { getMainClasses } from '~utils/css';
 import { Message, UniversalMessageValues } from '~types';
+import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 
 import { CoreInputProps } from '../Input';

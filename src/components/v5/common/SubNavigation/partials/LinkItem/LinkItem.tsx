@@ -1,8 +1,9 @@
+import clsx from 'clsx';
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import clsx from 'clsx';
 
 import { LinkItemProps } from './types';
+
 import styles from './LinkItem.module.css';
 
 const displayName = 'v5.common.SubNavigation.partials.LinkItem';

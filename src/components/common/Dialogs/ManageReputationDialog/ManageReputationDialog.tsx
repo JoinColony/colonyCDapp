@@ -1,16 +1,14 @@
+import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { ColonyRole } from '@colony/colony-js';
-
-import { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import IndexModal from '~shared/IndexModal';
 
 import {
   WizardDialogType,
   useUserAccountRegistered,
   useAppContext,
 } from '~hooks';
-
+import { DialogProps, ActionDialogProps } from '~shared/Dialog';
+import IndexModal from '~shared/IndexModal';
 import { getAllUserRoles } from '~transformers';
 import { userHasRole } from '~utils/checks';
 import { formatText } from '~utils/intl';

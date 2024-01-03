@@ -1,14 +1,15 @@
 import { BigNumber } from 'ethers';
 import React from 'react';
 
+import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext, useUserReputation } from '~hooks';
 import { DetailItemProps } from '~shared/DetailsWidget';
 import MemberReputation from '~shared/MemberReputation';
-import { intl } from '~utils/intl';
 import { MotionState } from '~utils/colonyMotions';
-import { useGetVoterRewardsQuery } from '~gql';
+import { intl } from '~utils/intl';
 
 import { RevealRewardItem, RevealButton } from '../RevealWidget';
+
 import { VoteDetailsProps, VoteButton, VoteRewardItem } from '.';
 
 const { formatMessage } = intl({

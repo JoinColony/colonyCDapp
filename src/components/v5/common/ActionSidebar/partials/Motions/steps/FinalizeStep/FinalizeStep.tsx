@@ -1,20 +1,20 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ActionTypes } from '~redux';
-
-import Button, { TxButton } from '~v5/shared/Button';
-import PillsBase from '~v5/common/Pills';
-import { ActionForm } from '~shared/Fields';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-import Icon from '~shared/Icon';
 
 import { useAppContext, useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
+import { ActionForm } from '~shared/Fields';
+import Icon from '~shared/Icon';
+import { MotionState } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
 import { getSafePollingInterval } from '~utils/queries';
-import { MotionState } from '~utils/colonyMotions';
+import PillsBase from '~v5/common/Pills';
+import Button, { TxButton } from '~v5/shared/Button';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 
-import { FinalizeStepProps, FinalizeStepSections } from './types';
-import { useClaimConfig, useFinalizeStep } from './hooks';
 import DescriptionList from '../VotingStep/partials/DescriptionList';
+
+import { useClaimConfig, useFinalizeStep } from './hooks';
+import { FinalizeStepProps, FinalizeStepSections } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';

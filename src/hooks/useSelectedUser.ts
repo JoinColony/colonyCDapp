@@ -1,4 +1,5 @@
 import { User } from '~types';
+
 import useAppContext from './useAppContext';
 
 const useSelectedUser = (colonyUsers: User[]) => {

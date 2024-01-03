@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 
 import { getActionTitleValues } from '~common/ColonyActions';
-
 import Numeral from '~shared/Numeral';
 import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge';
 

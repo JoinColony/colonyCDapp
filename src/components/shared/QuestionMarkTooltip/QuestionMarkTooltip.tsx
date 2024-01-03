@@ -1,6 +1,6 @@
 import React from 'react';
-import { PopperOptions } from 'react-popper-tooltip';
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
+import { PopperOptions } from 'react-popper-tooltip';
 
 import Icon from '~shared/Icon';
 import { Tooltip } from '~shared/Popover';

@@ -1,10 +1,9 @@
 import React from 'react';
 
-import DetailsWidget from '~shared/DetailsWidget';
-
 import { useColonyContext, useEnabledExtensions } from '~hooks';
-import { ColonyAction } from '~types';
+import DetailsWidget from '~shared/DetailsWidget';
 import { Forced as ForcedTag } from '~shared/Tag';
+import { ColonyAction } from '~types';
 
 import DefaultActionContent from './DefaultActionContent';
 

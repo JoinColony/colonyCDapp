@@ -4,8 +4,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import Heading from '~shared/Heading';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { Colony } from '~types';
-import { isEmpty } from '~utils/lodash';
 import { findDomainByNativeId } from '~utils/domains';
+import { isEmpty } from '~utils/lodash';
 
 import UserReputationItem from './UserReputationItem';
 

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
 import classnames from 'classnames';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { nanoid } from 'nanoid';
+import React, { useState } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Numeral from '~shared/Numeral';
-import Avatar from '~shared/Avatar';
-import { ColonyAction, SafeTransactionType } from '~types';
 import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { useSafeTransactionStatus } from '~hooks';
-import { getNativeTokenByChainId } from '~utils/tokens';
+import Avatar from '~shared/Avatar';
+import Numeral from '~shared/Numeral';
+import { ColonyAction, SafeTransactionType } from '~types';
 import { notNull } from '~utils/arrays';
+import { getNativeTokenByChainId } from '~utils/tokens';
 
 import {
   ContractName,

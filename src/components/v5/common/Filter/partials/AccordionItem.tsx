@@ -1,11 +1,12 @@
-import React, { FC, useState } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC, useState } from 'react';
+import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
 import { accordionAnimation } from '~constants/accordionAnimation';
+import Icon from '~shared/Icon';
 import NestedOptions from '~v5/shared/SubNavigationItem/partials/NestedOptions';
+
 import { AccordionItemProps } from '../types';
 
 const displayName = 'v5.common.Filter.partials.AccordionItem';

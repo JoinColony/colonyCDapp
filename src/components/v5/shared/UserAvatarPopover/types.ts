@@ -1,4 +1,5 @@
 import { AvatarProps } from '~shared/Avatar';
+
 import { UserAvatarDetailsProps } from '../UserAvatarDetails/types';
 import { UserPopoverProps } from '../UserPopover/types';
 

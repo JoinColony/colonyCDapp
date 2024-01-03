@@ -1,23 +1,23 @@
-import React from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useActionDialogStatus } from '~hooks';
+import { ActionDialogProps, DialogControls } from '~shared/Dialog';
 import DialogSection from '~shared/Dialog/DialogSection';
 import { Annotations } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
-
-import { ActionDialogProps, DialogControls } from '~shared/Dialog';
 import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 import UploadAddresses from '~shared/UploadAddresses';
-import { useActionDialogStatus } from '~hooks';
 import { Address, Message } from '~types';
 
 import { NoPermissionMessage, PermissionRequiredInfo } from '../Messages';
-import ManageWhitelistActiveToggle from './ManageWhitelistActiveToggle';
-import WhitelistedAddresses from './WhitelistedAddresses';
-import NoWhitelistedAddressesState from './NoWhitelistedAddressesState';
+
 import { TABS } from './helpers';
+import ManageWhitelistActiveToggle from './ManageWhitelistActiveToggle';
+import NoWhitelistedAddressesState from './NoWhitelistedAddressesState';
+import WhitelistedAddresses from './WhitelistedAddresses';
 
 import styles from './ManageWhitelistDialogForm.css';
 

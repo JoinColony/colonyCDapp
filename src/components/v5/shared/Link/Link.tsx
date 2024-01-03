@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { Link as LinkComponent } from 'react-router-dom';
-import clsx from 'clsx';
 
 import { isUrlExternal } from '~utils/isUrlExternal';
+
 import { LinkProps } from './types';
 
 const displayName = 'v5.Link';

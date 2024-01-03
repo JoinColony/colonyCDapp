@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, bool, object, InferType } from 'yup';
 
+import { ADVANCED_SETTINGS } from '~constants';
+import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
+import ExternalLink from '~shared/ExternalLink';
 import { Form } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
-import ExternalLink from '~shared/ExternalLink';
-import { ADVANCED_SETTINGS } from '~constants';
+import { User } from '~types';
 import { canUseMetatransactions } from '~utils/checks';
 import { yupDebounce } from '~utils/yup/tests';
-import { useAppContext } from '~hooks';
-import { useUpdateUserProfileMutation } from '~gql';
-import { User } from '~types';
 
 import AdvancedSettingsRow, {
   getAdvancedSettingsRows,

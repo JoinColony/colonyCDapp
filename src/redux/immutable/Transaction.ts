@@ -1,7 +1,7 @@
-import { Record } from 'immutable';
-import { BigNumber, Overrides } from 'ethers';
-import { TransactionReceipt } from '@ethersproject/providers';
 import { ClientType } from '@colony/colony-js';
+import { TransactionReceipt } from '@ethersproject/providers';
+import { BigNumber, Overrides } from 'ethers';
+import { Record } from 'immutable';
 import { MessageDescriptor } from 'react-intl';
 
 import {

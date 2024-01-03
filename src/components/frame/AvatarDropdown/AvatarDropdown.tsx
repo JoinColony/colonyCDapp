@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
 import classnames from 'classnames';
+import React, { useMemo } from 'react';
 
+import { useAppContext, useMobile } from '~hooks';
 import Popover from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-import { useAppContext, useMobile } from '~hooks';
-import { removeValueUnits } from '~utils/css';
-import { SimpleMessageValues } from '~types/index';
 import { Colony, UserTokenBalanceData } from '~types';
+import { SimpleMessageValues } from '~types/index';
+import { removeValueUnits } from '~utils/css';
 
 import AvatarDropdownPopover from './AvatarDropdownPopover';
 import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';

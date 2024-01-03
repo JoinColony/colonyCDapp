@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Link from '~v5/shared/Link';
-import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
-import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
 import { USER_HOME_ROUTE, USER_EDIT_PROFILE_ROUTE } from '~routes';
+import Icon from '~shared/Icon';
+import Link from '~v5/shared/Link';
+import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
 import { UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types';
 
 const displayName =

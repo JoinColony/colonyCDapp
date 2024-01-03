@@ -6,7 +6,9 @@ import React, {
   useMemo,
 } from 'react';
 import { Helmet } from 'react-helmet-async';
+
 import { useBeamer } from '~hooks/useBeamer';
+
 import { AnalyticsEvent } from './types';
 
 interface AnalyticsContextValue {

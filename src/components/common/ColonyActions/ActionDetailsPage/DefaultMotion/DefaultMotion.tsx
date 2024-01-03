@@ -1,13 +1,14 @@
-import React from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import React from 'react';
 
-import DetailsWidget from '~shared/DetailsWidget';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
-import { getMotionState } from '~utils/colonyMotions';
+import DetailsWidget from '~shared/DetailsWidget';
 import { MotionAction } from '~types/motions';
+import { getMotionState } from '~utils/colonyMotions';
 
 import { DefaultActionContent } from '../DefaultAction';
 import { RefetchAction, RefetchMotionState } from '../useGetColonyAction';
+
 import MotionHeading from './MotionHeading';
 import MotionPhaseWidget from './MotionPhaseWidget';
 import StakeRequiredBanner from './StakeRequiredBanner';

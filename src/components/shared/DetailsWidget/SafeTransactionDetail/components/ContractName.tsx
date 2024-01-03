@@ -1,10 +1,11 @@
-import React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Avatar from '~shared/Avatar';
 
 import widgetStyles from '../../DetailsWidget.css';
+
 import styles from '../SafeTransactionDetail.css';
 
 const displayName = 'DetailsWidget.SafeTransactionDetail.ContractName';

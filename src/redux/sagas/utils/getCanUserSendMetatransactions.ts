@@ -1,11 +1,12 @@
 import { utils } from 'ethers';
+
 import { getContext, ContextModule } from '~context';
-import { canUseMetatransactions } from '~utils/checks';
 import {
   GetUserByAddressDocument,
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
+import { canUseMetatransactions } from '~utils/checks';
 
 export function* getCanUserSendMetatransactions() {
   const metatransactionsAvailable = canUseMetatransactions();

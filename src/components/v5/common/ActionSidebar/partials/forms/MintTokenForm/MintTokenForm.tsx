@@ -7,9 +7,10 @@ import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 
-import { ActionFormBaseProps } from '../../../types';
 import { useDecisionMethods } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
 import DescriptionRow from '../../DescriptionRow';
+
 import { useMintToken } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';

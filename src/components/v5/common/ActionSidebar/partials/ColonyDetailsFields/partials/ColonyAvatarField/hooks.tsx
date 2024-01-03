@@ -1,13 +1,13 @@
 import { useState } from 'react';
-
 import { FileRejection } from 'react-dropzone';
-import { FileReaderFile } from '~utils/fileReader/types';
+
 import {
   getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation';
 import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils';
+import { FileReaderFile } from '~utils/fileReader/types';
 
 export const useChangeColonyAvatar = () => {
   const [modalValue, setModalValue] = useState<{

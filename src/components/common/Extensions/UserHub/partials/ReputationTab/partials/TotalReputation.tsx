@@ -1,16 +1,18 @@
+import Decimal from 'decimal.js';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import Decimal from 'decimal.js';
 
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useUserReputation } from '~hooks';
-import { TotalReputationProps } from '../types';
-import styles from '../ReputationTab.module.css';
-import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
+import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
 import { getFormattedTokenValue } from '~utils/tokens';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import TitleLabel from '~v5/shared/TitleLabel';
+
+import { TotalReputationProps } from '../types';
+
+import styles from '../ReputationTab.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.TotalReputation';

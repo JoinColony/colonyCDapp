@@ -5,10 +5,12 @@ import { useIntl } from 'react-intl';
 
 import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';
+import Link from '~v5/shared/Link';
+
 import SubMenu from '../SubMenu';
 import { NavItemMobileProps } from '../types';
+
 import styles from './NavMobile.module.css';
-import Link from '~v5/shared/Link';
 
 const displayName = 'common.Extensions.MainNavigation.partials.NavMobile';
 

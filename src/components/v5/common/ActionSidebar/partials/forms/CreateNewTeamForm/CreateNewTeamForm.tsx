@@ -1,20 +1,21 @@
-import React, { FC } from 'react';
 import { PaintBucket } from 'phosphor-react';
+import React, { FC } from 'react';
 
+import { MAX_COLONY_DISPLAY_NAME, MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import { formatText } from '~utils/intl';
-import { MAX_COLONY_DISPLAY_NAME, MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
 
-import { useCreateNewTeam } from './hooks';
+import { useDecisionMethods } from '../../../hooks';
 import { ActionFormBaseProps } from '../../../types';
 import DescriptionRow from '../../DescriptionRow';
-import { useDecisionMethods } from '../../../hooks';
+
+import { useCreateNewTeam } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 

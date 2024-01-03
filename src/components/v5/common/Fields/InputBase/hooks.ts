@@ -7,7 +7,9 @@ import {
   useState,
   useImperativeHandle,
 } from 'react';
+
 import { getInputTextWidth } from '~utils/elements';
+
 import { FormattedInputProps } from './types';
 import { addWidthProperty } from './utils';
 

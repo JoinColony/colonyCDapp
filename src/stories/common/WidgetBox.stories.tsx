@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import WidgetBox from '~v5/common/WidgetBox';
 import UserAvatars from '~v5/shared/UserAvatars';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const widgetBoxMeta: Meta<typeof WidgetBox> = {
   title: 'Common/Widget Box',

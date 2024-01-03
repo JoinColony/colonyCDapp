@@ -1,7 +1,7 @@
-import React from 'react';
-import { defineMessages } from 'react-intl';
 import classnames from 'classnames';
+import React from 'react';
 import { UseFieldArrayRemove, useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import { DialogSection } from '~shared/Dialog';
 import { Select } from '~shared/Fields';
@@ -18,12 +18,12 @@ import { defaultTransaction } from '~utils/safes';
 import { transactionOptions, ContractFunctions } from '../helpers';
 import { UpdatedMethods } from '../types';
 
-import TransactionHeader from './TransactionHeader';
-import TransferNFTSection from './TransferNFTSection';
-import TransferFundsSection from './TransferFundsSection';
-import RawTransactionSection from './RawTransactionSection';
 import ContractInteractionSection from './ContractInteractionSection';
+import RawTransactionSection from './RawTransactionSection';
 import { ErrorMessage } from './shared';
+import TransactionHeader from './TransactionHeader';
+import TransferFundsSection from './TransferFundsSection';
+import TransferNFTSection from './TransferNFTSection';
 
 import styles from './TransactionTypesSection.css';
 

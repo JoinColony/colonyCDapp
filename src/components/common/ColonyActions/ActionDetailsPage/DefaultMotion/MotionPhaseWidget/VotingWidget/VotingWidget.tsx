@@ -1,16 +1,15 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { object, number, InferType } from 'yup';
-import { BigNumber } from 'ethers';
 
-import { ActionForm, OnSuccess } from '~shared/Fields';
-import { ActionTypes } from '~redux';
-
-import { MotionState } from '~utils/colonyMotions';
 import { useAppContext, useColonyContext } from '~hooks';
-import { mapPayload } from '~utils/actions';
+import { ActionTypes } from '~redux';
 import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
+import { ActionForm, OnSuccess } from '~shared/Fields';
 import { MotionAction } from '~types/motions';
+import { mapPayload } from '~utils/actions';
+import { MotionState } from '~utils/colonyMotions';
 
 import { PollingControls } from '../MotionPhaseWidget';
 

@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
-import { SetStateFn } from '~types';
 import { useColonyContractVersion } from '~hooks';
 import {
   ActionDialogProps,
@@ -13,6 +12,7 @@ import {
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
+import { SetStateFn } from '~types';
 
 import {
   CannotCreateMotionMessage,
@@ -21,9 +21,9 @@ import {
   NotEnoughReputation,
 } from '../Messages';
 
-import LegacyPermissionWarning from './LegacyPermissionWarning';
 import ContractVersionSection from './ContractVersionSection';
 import { useNetworkContractUpgradeDialogStatus } from './helpers';
+import LegacyPermissionWarning from './LegacyPermissionWarning';
 
 import styles from './NetworkContractUpgradeDialogForm.css';
 

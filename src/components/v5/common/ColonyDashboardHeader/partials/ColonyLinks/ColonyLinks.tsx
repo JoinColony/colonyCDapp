@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip';
-import Link from '~v5/shared/Link';
 import DropdownMenu from '~v5/common/DropdownMenu';
+import Link from '~v5/shared/Link';
 
 import { ColonyLinksProps } from './types';
 

@@ -3,8 +3,8 @@ import { MessageDescriptor } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
 import NavLink from '~shared/NavLink';
-import { formatText } from '~utils/intl';
 import { ENTER } from '~types';
+import { formatText } from '~utils/intl';
 
 import styles from './NavItem.css';
 

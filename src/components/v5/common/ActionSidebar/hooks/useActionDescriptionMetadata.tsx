@@ -1,34 +1,34 @@
-import React, { useMemo } from 'react';
-import merge from 'lodash/merge';
-import { useFormContext, useWatch } from 'react-hook-form';
 import { useApolloClient } from '@apollo/client';
+import merge from 'lodash/merge';
+import React, { useMemo } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
-import { ACTION, Action } from '~constants/actions';
-import { useAppContext, useColonyContext } from '~hooks';
-import AsyncText from '~v5/shared/AsyncText';
-import { ColonyAction } from '~types';
-import { ADDRESS_ZERO } from '~constants';
 import { getActionTitleValues } from '~common/ColonyActions';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { ADDRESS_ZERO } from '~constants';
+import { ACTION, Action } from '~constants/actions';
+import { useAppContext, useColonyContext } from '~hooks';
+import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
+import AsyncText from '~v5/shared/AsyncText';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { simplePaymentDescriptionMetadataGetter } from '../partials/forms/SimplePaymentForm/utils';
+import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { advancedPaymentDescriptionMetadataGetter } from '../partials/forms/AdvancedPaymentForm/utils';
+import { createDecisionDescriptionMetadataGetter } from '../partials/forms/CreateDecisionForm/utils';
+import { createNewTeamDescriptionMetadataGetter } from '../partials/forms/CreateNewTeamForm/utils';
+import { editColonyDetailsDescriptionMetadataGetter } from '../partials/forms/EditColonyDetailsForm/utils';
+import { editTeamDescriptionMetadataGetter } from '../partials/forms/EditTeamForm/utils';
+import { enterRecoveryModeDescriptionMetadataGetter } from '../partials/forms/EnterRecoveryModeForm/utils';
+import { manageColonyObjectivesDescriptionMetadataGetter } from '../partials/forms/ManageColonyObjectivesForm/utils';
+import { managePermissionsDescriptionMetadataGetter } from '../partials/forms/ManagePermissionsForm/utils';
+import { manageTokensDescriptionMetadataGetter } from '../partials/forms/ManageTokensForm/utils';
+import { mintTokenDescriptionMetadataGetter } from '../partials/forms/MintTokenForm/utils';
+import { simplePaymentDescriptionMetadataGetter } from '../partials/forms/SimplePaymentForm/utils';
 import { splitPaymentDescriptionMetadataGetter } from '../partials/forms/SplitPaymentForm/utils';
 import { trasferFundsDescriptionMetadataGetter } from '../partials/forms/TransferFundsForm/utils';
-import { mintTokenDescriptionMetadataGetter } from '../partials/forms/MintTokenForm/utils';
 import { unlockTokenDescriptionMetadataGetter } from '../partials/forms/UnlockTokenForm/utils';
-import { manageTokensDescriptionMetadataGetter } from '../partials/forms/ManageTokensForm/utils';
-import { editColonyDetailsDescriptionMetadataGetter } from '../partials/forms/EditColonyDetailsForm/utils';
-import { createNewTeamDescriptionMetadataGetter } from '../partials/forms/CreateNewTeamForm/utils';
-import { editTeamDescriptionMetadataGetter } from '../partials/forms/EditTeamForm/utils';
 import { upgradeColonyDescriptionMetadataGetter } from '../partials/forms/UpgradeColonyForm/utils';
-import { enterRecoveryModeDescriptionMetadataGetter } from '../partials/forms/EnterRecoveryModeForm/utils';
-import { createDecisionDescriptionMetadataGetter } from '../partials/forms/CreateDecisionForm/utils';
-import { managePermissionsDescriptionMetadataGetter } from '../partials/forms/ManagePermissionsForm/utils';
-import { manageColonyObjectivesDescriptionMetadataGetter } from '../partials/forms/ManageColonyObjectivesForm/utils';
-import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { DescriptionMetadataGetter } from '../types';
 
 const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {

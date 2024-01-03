@@ -1,7 +1,7 @@
 // import { eventChannel } from 'redux-saga';
-import { providers } from 'ethers';
 import { Network } from '@ethersproject/providers';
 import { WalletState } from '@web3-onboard/core';
+import { providers } from 'ethers';
 
 // import ganacheModule from './ganacheModule';
 
@@ -13,20 +13,23 @@ import { WalletState } from '@web3-onboard/core';
 // } from '@purser/software';
 // import { addChain } from '@purser/metamask/lib-esm/helpers';
 
+// import { ActionTypes } from '../../actionTypes';
+// import { Action, AllActions } from '../../types/actions';
+
+import { isDev } from '~constants';
+import { ContextModule, getContext } from '~context';
+import { BasicWallet, FullWallet } from '~types';
 import {
   setLastWallet,
   LastWallet,
   clearLastWallet,
   getChainIdAsHex,
 } from '~utils/autoLogin';
-// import { ActionTypes } from '../../actionTypes';
-// import { Action, AllActions } from '../../types/actions';
-import { BasicWallet, FullWallet } from '~types';
-import { ContextModule, getContext } from '~context';
-import { isDev } from '~constants';
+
+import RetryProvider from './RetryProvider';
+
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
-import RetryProvider from './RetryProvider';
 
 /**
  * Watch for changes in Metamask account, and log the user out when they happen.

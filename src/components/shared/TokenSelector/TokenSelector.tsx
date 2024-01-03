@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
-import { Input, InputProps } from '~shared/Fields';
-import { createAddress, isAddress } from '~utils/web3';
-import { useGetTokenFromEverywhereQuery } from '~gql';
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { useGetTokenFromEverywhereQuery } from '~gql';
+import { Input, InputProps } from '~shared/Fields';
 import { Token } from '~types';
+import { createAddress, isAddress } from '~utils/web3';
 
 import styles from './TokenSelector.css';
 

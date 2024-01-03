@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
-import { BigNumber } from 'ethers';
-
 import { getSortedRowModel, SortingState } from '@tanstack/react-table';
+import { BigNumber } from 'ethers';
+import React, { FC, useState } from 'react';
+
 import { useColonyContext, useColonyFundsClaims } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import Numeral from '~shared/Numeral';

@@ -1,14 +1,13 @@
+import { Extension } from '@colony/colony-js';
 import { Placement } from '@popperjs/core';
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { BigNumber } from 'ethers';
-import { Extension } from '@colony/colony-js';
 
+import { useExtensionData } from '~hooks';
 import ProgressBar, { ProgressBarAppearance } from '~shared/ProgressBar';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-
 import { InstalledExtensionData, ColonyMotion } from '~types';
-import { useExtensionData } from '~hooks';
 
 import styles from './VotingProgress.css';
 

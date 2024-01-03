@@ -1,17 +1,19 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
+
+import { LEARN_MORE_PAYMENTS } from '~constants';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useMobile } from '~hooks';
+import LearnMore from '~shared/Extensions/LearnMore';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import Button from '~v5/shared/Button';
+import Link from '~v5/shared/Link';
+import MenuContainer from '~v5/shared/MenuContainer';
 
 import { SubMenuProps } from './types';
-import LearnMore from '~shared/Extensions/LearnMore';
-import { LEARN_MORE_PAYMENTS } from '~constants';
-import MenuContainer from '~v5/shared/MenuContainer';
-import Button from '~v5/shared/Button';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import { useMobile } from '~hooks';
+
 import styles from './SubMenu.module.css';
-import Link from '~v5/shared/Link';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 const displayName = 'common.Extensions.MainNavigation.partials.SubMenu';
 

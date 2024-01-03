@@ -1,23 +1,23 @@
-import React, { FC } from 'react';
-import clsx from 'clsx';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import clsx from 'clsx';
+import React, { FC } from 'react';
 
+import { useAppContext } from '~hooks';
+import useToggle from '~hooks/useToggle';
+import { ActionTypes } from '~redux';
+import { ActionForm } from '~shared/Fields';
+import Numeral from '~shared/Numeral';
+import { formatText } from '~utils/intl';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
+import Button from '~v5/shared/Button';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
-import Button from '~v5/shared/Button';
 import StatusText from '~v5/shared/StatusText';
-import Numeral from '~shared/Numeral';
-import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 
-import useToggle from '~hooks/useToggle';
-import { useAppContext } from '~hooks';
-import { formatText } from '~utils/intl';
-import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux';
-
-import RevealInformationList from './partials/RevealInformationList';
-import { useRevealStep } from './hooks';
 import MotionBadge from '../../partials/MotionBadge/MotionBadge';
+
+import { useRevealStep } from './hooks';
+import RevealInformationList from './partials/RevealInformationList';
 import { RevealStepProps } from './types';
 
 const displayName =

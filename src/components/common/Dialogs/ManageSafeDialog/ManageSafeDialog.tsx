@@ -1,11 +1,11 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useTransformer, WizardDialogType, useAppContext } from '~hooks';
 import { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import IndexModal from '~shared/IndexModal';
 import { getAllUserRoles } from '~transformers';
 import { hasRoot } from '~utils/checks';
-import { useTransformer, WizardDialogType, useAppContext } from '~hooks';
 
 const displayName = 'common.ManageSafeDialog';
 

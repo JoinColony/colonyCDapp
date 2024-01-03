@@ -1,19 +1,19 @@
-import React, { useMemo, useCallback, useEffect } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { formatText } from '~utils/intl';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import React, { useMemo, useCallback, useEffect } from 'react';
 
 import { useMemberContext } from '~context/MemberContext';
+import useWrapWithRef from '~hooks/useWrapWithRef';
+import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
 import { ColonyContributor, Token } from '~types';
-import Numeral from '~shared/Numeral';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import useWrapWithRef from '~hooks/useWrapWithRef';
+import { formatText } from '~utils/intl';
 import {
   DISTRIBUTION_METHOD,
   DistributionMethod,
 } from '~v5/common/ActionSidebar/partials/consts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
 import {
   SplitPaymentRecipientsFieldModel,

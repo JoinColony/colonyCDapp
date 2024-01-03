@@ -1,18 +1,17 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useColonyContext, useColonyFundsClaims } from '~hooks';
+import { ActionTypes } from '~redux';
+import { COLONY_INCOMING_ROUTE } from '~routes';
 import { ActionButton } from '~shared/Button';
 import Heading from '~shared/Heading';
+import Link from '~shared/Link';
 import NavLink from '~shared/NavLink';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
-import Link from '~shared/Link';
-
-import { ActionTypes } from '~redux';
-import { useColonyContext, useColonyFundsClaims } from '~hooks';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { COLONY_INCOMING_ROUTE } from '~routes';
 
 import styles from './ColonyUnclaimedTransfers.css';
 

@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import HeaderAvatar from '~common/Extensions/UserNavigation/partials/HeaderAvatar';
 import UserNavigation from '~common/Extensions/UserNavigation';
+import HeaderAvatar from '~common/Extensions/UserNavigation/partials/HeaderAvatar';
 
 import { UserNavigationWrapperProps } from './types';
 

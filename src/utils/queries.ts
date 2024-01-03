@@ -1,4 +1,3 @@
-import { Address } from '~types';
 import { NetworkInfo, DEFAULT_NETWORK_INFO } from '~constants';
 import apolloClient from '~context/apolloClient';
 import {
@@ -6,6 +5,7 @@ import {
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
+import { Address } from '~types';
 
 /*
  * Wrapper around the getTokenFromEveryWhereQuery

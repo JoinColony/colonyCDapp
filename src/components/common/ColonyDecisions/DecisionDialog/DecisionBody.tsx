@@ -1,6 +1,6 @@
+import { Editor } from '@tiptap/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { Editor } from '@tiptap/react';
 
 import { DialogSection } from '~shared/Dialog';
 import RichTextArea from '~shared/RichTextArea';

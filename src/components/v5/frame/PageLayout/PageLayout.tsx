@@ -1,15 +1,16 @@
-import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
+import { AnimatePresence } from 'framer-motion';
+import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
+import { useMatch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { useMatch } from 'react-router-dom';
 import { useTablet } from '~hooks';
+import { COLONY_HOME_ROUTE } from '~routes';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
-import { COLONY_HOME_ROUTE } from '~routes';
 
 import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext';
+
 import PageHeader from './partials/PageHeader';
 import PageHeading from './partials/PageHeading';
 import { PageLayoutProps } from './types';

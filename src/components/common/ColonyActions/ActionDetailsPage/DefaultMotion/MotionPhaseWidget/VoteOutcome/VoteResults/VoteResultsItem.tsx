@@ -1,13 +1,13 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { getMainClasses } from '~utils/css';
 import Icon from '~shared/Icon';
 import ProgressBar from '~shared/ProgressBar';
+import { getMainClasses } from '~utils/css';
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
-import ItemHeading from './VoterResultsItemHeading';
 import VoterAvatars from './VoterAvatars';
+import ItemHeading from './VoterResultsItemHeading';
 
 import styles from './VoteResultsItem.css';
 

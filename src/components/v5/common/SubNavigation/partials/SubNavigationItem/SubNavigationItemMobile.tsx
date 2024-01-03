@@ -1,11 +1,13 @@
-import React, { PropsWithChildren, FC } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { PropsWithChildren, FC } from 'react';
 
-import Icon from '~shared/Icon';
-import { SubNavigationItemProps } from './types';
-import styles from './SubNavigationItemMobile.module.css';
 import { accordionAnimation } from '~constants/accordionAnimation';
+import Icon from '~shared/Icon';
+
+import { SubNavigationItemProps } from './types';
+
+import styles from './SubNavigationItemMobile.module.css';
 
 const displayName =
   'v5.common.SubNavigation.partials.SubNavigationItem.SubNavigationItemMobile';

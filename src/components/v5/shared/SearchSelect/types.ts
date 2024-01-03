@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+
 import { TokenFragment } from '~gql';
 import { BaseFieldProps } from '~v5/common/Fields/types';
 

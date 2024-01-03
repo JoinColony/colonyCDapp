@@ -2,17 +2,17 @@ import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { number } from 'yup';
 
-import { toFinite } from '~utils/lodash';
+import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
+import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
+import reputationHero from '~images/assets/extensions/reputation-hero.png';
+import reputationInterface from '~images/assets/extensions/reputation-interface.png';
 import { ExtensionConfig, ExtensionParamType } from '~types';
 import {
   convertFractionToWei,
   convertPeriodToSeconds,
 } from '~utils/extensions';
+import { toFinite } from '~utils/lodash';
 
-import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
-import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
-import reputationHero from '~images/assets/extensions/reputation-hero.png';
-import reputationInterface from '~images/assets/extensions/reputation-interface.png';
 // @BETA: Disabled for now
 // import advancedHero from '~images/assets/extensions/advanced-hero.png';
 // import advancedInterface from '~images/assets/extensions/advanced-interface.png';

@@ -1,4 +1,5 @@
 import Decimal from 'decimal.js';
+
 import { adjustConvertedValue, convertToDecimalOrNull } from '~shared/Numeral';
 import { NumeralValue } from '~shared/Numeral/Numeral';
 

@@ -1,12 +1,10 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import { defineMessages, FormattedMessage } from 'react-intl';
-
-import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
+import { Navigate } from 'react-router-dom';
 
 import ProfileTemplate from '~frame/ProfileTemplate';
-
 import { useAppContext } from '~hooks';
+import { Tab, TabList, TabPanel, Tabs } from '~shared/Tabs';
 
 import UserProfileSpinner from '../UserProfile/UserProfileSpinner';
 import {

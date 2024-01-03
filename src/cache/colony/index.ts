@@ -1,5 +1,5 @@
-import tokensField from './tokens';
 import balancesField from './balances';
+import tokensField from './tokens';
 
 const colony = {
   Colony: {

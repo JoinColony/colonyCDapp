@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { MD_OBJECTIONS_HELP } from '~constants';
 import { DialogSection } from '~shared/Dialog';
 import ExternalLink from '~shared/ExternalLink';
 import { Heading3 } from '~shared/Heading';
-import { MD_OBJECTIONS_HELP } from '~constants';
 
 import styles from './ObjectionHeading.css';
 

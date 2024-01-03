@@ -1,8 +1,8 @@
 import { Extension, Id } from '@colony/colony-js';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useExtensionData } from '~hooks';
 import { ActionTypes } from '~redux';
 import Button from '~shared/Button';

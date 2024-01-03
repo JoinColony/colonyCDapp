@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import UserMention from '~shared/UserMention';
+import IconTooltip from '~shared/IconTooltip';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
-import IconTooltip from '~shared/IconTooltip';
+import UserMention from '~shared/UserMention';
 
 import styles from './MemberInfo.css';
 

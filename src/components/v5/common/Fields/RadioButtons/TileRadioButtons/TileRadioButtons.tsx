@@ -1,8 +1,9 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
 
 import RadioButtonsBase from '../RadioButtonsBase';
 import { RadioItem } from '../RadioButtonsBase/types';
+
 import { TileRadioButtonsProps } from './types';
 
 const displayName = 'v5.common.TileRadioButtons';

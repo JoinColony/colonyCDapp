@@ -2,8 +2,8 @@ import { call, takeLatest } from 'redux-saga/effects';
 
 import { ActionTypes } from '../actionTypes';
 
-import setupUserContext from './setupUserContext';
 import ipfsSagas from './ipfs';
+import setupUserContext from './setupUserContext';
 
 export default function* rootSaga() {
   /*

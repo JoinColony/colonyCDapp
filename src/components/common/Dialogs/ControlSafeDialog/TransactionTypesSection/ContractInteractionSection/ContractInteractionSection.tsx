@@ -1,18 +1,21 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
   defineMessages,
   FormattedMessage,
   MessageDescriptor,
   useIntl,
 } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 
-import { isAddress } from '~utils/web3';
+import { BINANCE_NETWORK } from '~constants';
+import { DialogSection } from '~shared/Dialog';
 import { Select, SelectOption, Textarea } from '~shared/Fields';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-import { DialogSection } from '~shared/Dialog';
+import { Message } from '~types';
+import { isMessageDescriptor } from '~utils/intl';
+import { isEmpty, isEqual, isNil } from '~utils/lodash';
 import {
   getContractUsefulMethods,
   AbiItemExtended,
@@ -21,24 +24,21 @@ import {
   getSafe,
   getChainNameFromSafe,
 } from '~utils/safes';
-import { isEmpty, isEqual, isNil } from '~utils/lodash';
-import { Message } from '~types';
-import { isMessageDescriptor } from '~utils/intl';
-import { BINANCE_NETWORK } from '~constants';
+import { isAddress } from '~utils/web3';
 
-import { invalidSafeError } from '../TransactionTypesSection';
 import {
   ABIResponse,
   FormSafeTransaction,
   TransactionSectionProps,
   UpdatedMethods,
 } from '../../types';
-
 import { ErrorMessage as Error, Loading, AvatarXS } from '../shared';
+import { invalidSafeError } from '../TransactionTypesSection';
+
+import MethodParamInput from './MethodParamInput';
 
 import defaultStyles from '../TransactionTypesSection.css';
 import styles from './ContractInteractionSection.css';
-import MethodParamInput from './MethodParamInput';
 
 const displayName = `common.ControlSafeDialog.ControlSafeForm.ContractInteractionSection`;
 

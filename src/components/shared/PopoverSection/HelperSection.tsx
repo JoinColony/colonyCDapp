@@ -1,9 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { FEEDBACK, HELP } from '~constants/externalUrls';
 import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
 import ExternalLink from '~shared/ExternalLink';
-import { FEEDBACK, HELP } from '~constants/externalUrls';
 
 import styles from './HelperSection.css';
 

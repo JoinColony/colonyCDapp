@@ -1,8 +1,12 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { isEqual } from '~utils/lodash';
+import { defineMessages } from 'react-intl';
+
+import { MAX_COLONY_DISPLAY_NAME } from '~constants';
+import { ExternalLinks } from '~gql';
+import { useActionDialogStatus } from '~hooks';
+import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 import {
   ActionDialogProps,
   DialogControls,
@@ -10,10 +14,8 @@ import {
   DialogSection,
 } from '~shared/Dialog';
 import { Annotations, Input, Select, Textarea } from '~shared/Fields';
-import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
-import { useActionDialogStatus } from '~hooks';
 import { SetStateFn } from '~types';
-import { MAX_COLONY_DISPLAY_NAME } from '~constants';
+import { isEqual } from '~utils/lodash';
 
 import {
   CannotCreateMotionMessage,
@@ -21,8 +23,8 @@ import {
   NotEnoughReputation,
   PermissionRequiredInfo,
 } from '../Messages';
+
 import ColonyAvatarUploader from './ColonyAvatarUploader';
-import { ExternalLinks } from '~gql';
 
 const displayName =
   'common.EditColonyDetailsDialog.EditColonyDetailsDialogForm';

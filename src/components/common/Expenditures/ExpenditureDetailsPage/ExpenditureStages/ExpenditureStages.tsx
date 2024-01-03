@@ -1,18 +1,18 @@
-import React from 'react';
 import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ExpenditureStatus } from '~gql';
+import { useExtensionData } from '~hooks';
+import { ActionTypes } from '~redux';
+import { ActionButton } from '~shared/Button';
 import MaskedAddress from '~shared/MaskedAddress';
 import Numeral from '~shared/Numeral';
 import { Colony, Expenditure } from '~types';
-import { notNull } from '~utils/arrays';
-import { ExpenditureStatus } from '~gql';
-import { ActionButton } from '~shared/Button';
-import { ActionTypes } from '~redux';
-import { useExtensionData } from '~hooks';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { pipe, withMeta } from '~utils/actions';
+import { notNull } from '~utils/arrays';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 import styles from './ExpenditureStages.module.css';
 

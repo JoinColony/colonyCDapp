@@ -1,11 +1,11 @@
 import { defineMessages } from 'react-intl';
 import { ValidationError, object, string, number } from 'yup';
 
-import { Address, Safe } from '~types';
-import { isAddress } from '~utils/web3';
 import { FETCH_ABORTED, SAFE_NAMES_MAP } from '~constants';
+import { Address, Safe } from '~types';
 import { intl } from '~utils/intl';
 import { getTxServiceBaseUrl } from '~utils/safes';
+import { isAddress } from '~utils/web3';
 
 import { displayName } from './AddExistingSafeDialog';
 

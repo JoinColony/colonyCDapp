@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import { UserSubmenuProps } from './types';
-import { userSubmenuItems } from './consts';
+import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import NavLink from '~v5/shared/NavLink';
-import { useMobile } from '~hooks';
+
+import { userSubmenuItems } from './consts';
+import { UserSubmenuProps } from './types';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
 

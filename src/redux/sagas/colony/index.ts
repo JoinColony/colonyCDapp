@@ -1,16 +1,15 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import { initiateTransaction, putError, takeFrom } from '../utils';
-
 import {
   TransactionChannelMap,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,
 } from '../transactions';
+import { initiateTransaction, putError, takeFrom } from '../utils';
 
 export { default as colonyCreateSaga } from './colonyCreate';
 

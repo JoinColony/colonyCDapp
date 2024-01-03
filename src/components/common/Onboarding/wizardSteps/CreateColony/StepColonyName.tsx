@@ -1,17 +1,16 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { WizardStepProps } from '~shared/Wizard';
-import { Form } from '~shared/Fields';
 import { useAppContext } from '~hooks';
+import { Form } from '~shared/Fields';
+import { WizardStepProps } from '~shared/Wizard';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import { ButtonRow, HeaderRow } from '../shared';
 
+import NameInputs from './StepColonyNameInputs';
 import { FormValues, Step1 } from './types';
 import { colonyNameValidationSchema as validationSchema } from './validation';
-
-import NameInputs from './StepColonyNameInputs';
 
 const displayName = 'common.CreateColonyWizard.StepColonyName';
 

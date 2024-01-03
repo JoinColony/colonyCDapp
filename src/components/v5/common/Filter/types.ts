@@ -1,3 +1,5 @@
+import { Message } from '~types';
+
 import {
   ContributorType,
   FilterType,
@@ -6,7 +8,7 @@ import {
   PermissionsType,
   TeamType,
 } from '../TableFiltering/types';
-import { Message } from '~types';
+
 import { FilterOptionsProps } from './partials/types';
 
 export type AccordionProps = {

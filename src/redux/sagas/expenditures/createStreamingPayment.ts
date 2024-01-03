@@ -1,33 +1,33 @@
-import { call, fork, takeEvery } from 'redux-saga/effects';
 import {
   AnyStreamingPaymentsClient,
   ClientType,
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
+import { call, fork, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '~redux/actionTypes';
-import { Action } from '~redux/types';
 import { ContextModule, getContext } from '~context';
 import {
   CreateStreamingPaymentMetadataDocument,
   CreateStreamingPaymentMetadataMutation,
   CreateStreamingPaymentMetadataMutationVariables,
 } from '~gql';
+import { ActionTypes } from '~redux/actionTypes';
+import { Action } from '~redux/types';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
 
+import {
+  createTransaction,
+  getTxChannel,
+  waitForTxResult,
+} from '../transactions';
 import {
   getColonyManager,
   initiateTransaction,
   putError,
   takeFrom,
 } from '../utils';
-import {
-  createTransaction,
-  getTxChannel,
-  waitForTxResult,
-} from '../transactions';
 
 export type CreateStreamingPaymentPayload =
   Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];

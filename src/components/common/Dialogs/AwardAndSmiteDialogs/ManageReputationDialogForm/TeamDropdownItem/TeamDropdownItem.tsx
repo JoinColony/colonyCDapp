@@ -1,12 +1,12 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { DomainColor } from '~gql';
+import { useUserReputation } from '~hooks';
 import ColorTag from '~shared/ColorTag';
 import { Heading4 } from '~shared/Heading';
 import MemberReputation from '~shared/MemberReputation';
 import { Domain } from '~types';
-import { DomainColor } from '~gql';
-import { useUserReputation } from '~hooks';
 
 import styles from './TeamDropdownItem.css';
 

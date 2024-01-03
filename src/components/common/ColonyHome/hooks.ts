@@ -1,4 +1,3 @@
-import { useMemo, useState } from 'react';
 import { Id } from '@colony/colony-js';
 import {
   // @BETA: Disabled for now
@@ -8,29 +7,30 @@ import {
   ShareNetwork,
   Smiley,
 } from 'phosphor-react';
+import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { getCurrentToken } from '~common/ColonyTotalFunds/SelectedToken/helpers';
+import { useMemberContext } from '~context/MemberContext';
 import { useGetTotalColonyActionsQuery } from '~gql';
 import { useColonyContext, useMobile } from '~hooks';
+import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
 import { notNull } from '~utils/arrays';
-import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { formatText } from '~utils/intl';
-import {
-  setHexTeamColor,
-  setTeamColor,
-} from '~v5/common/TeamReputationSummary/utils';
-import { ColonyDashboardHeaderProps } from '~v5/common/ColonyDashboardHeader/types';
-import { getCurrentToken } from '~common/ColonyTotalFunds/SelectedToken/helpers';
+import { getBalanceForTokenAndDomain } from '~utils/tokens';
 import { ColonyLinksItem } from '~v5/common/ColonyDashboardHeader/partials/ColonyLinks/types';
+import { ColonyDashboardHeaderProps } from '~v5/common/ColonyDashboardHeader/types';
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from '~v5/common/DropdownMenu/types';
+import {
+  setHexTeamColor,
+  setTeamColor,
+} from '~v5/common/TeamReputationSummary/utils';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
-import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
-import { useMemberContext } from '~context/MemberContext';
 
 import { iconMappings, MAX_TEXT_LENGTH } from './consts';
 import { ChartData, UseGetHomeWidgetReturnType } from './types';

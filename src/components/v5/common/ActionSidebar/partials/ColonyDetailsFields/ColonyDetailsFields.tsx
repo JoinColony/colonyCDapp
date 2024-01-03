@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
+
+import { MAX_COLONY_DISPLAY_NAME } from '~constants';
+import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import { MAX_COLONY_DISPLAY_NAME } from '~constants';
-import ColonyAvatarField from './partials/ColonyAvatarField';
-import { formatText } from '~utils/intl';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
+
+import ColonyAvatarField from './partials/ColonyAvatarField';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 

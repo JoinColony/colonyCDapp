@@ -10,6 +10,7 @@ import React, {
   useState,
 } from 'react';
 import { useSelector } from 'react-redux';
+
 import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks';
 import {
   isTxGroup,

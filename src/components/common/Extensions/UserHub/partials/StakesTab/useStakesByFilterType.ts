@@ -6,11 +6,11 @@ import {
   useColonyContext,
   useNetworkMotionStates,
 } from '~hooks';
-import { notNull } from '~utils/arrays';
 import { UserStakeWithStatus } from '~types';
+import { notNull } from '~utils/arrays';
 
-import { getStakeStatus } from './helpers';
 import { stakesFilterOptions } from './consts';
+import { getStakeStatus } from './helpers';
 import { StakesFilterType } from './types';
 
 export const useStakesByFilterType = () => {

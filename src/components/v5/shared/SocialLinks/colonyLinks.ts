@@ -12,6 +12,7 @@ import {
 } from 'phosphor-react';
 import { ComponentType } from 'react';
 import { defineMessages } from 'react-intl';
+
 import { ExternalLinks } from '~gql';
 import { formatText } from '~utils/intl';
 

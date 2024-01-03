@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Safe } from '~types';
-
 import CopyableAddress from '~shared/CopyableAddress';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
+import { Safe } from '~types';
 
 import styles from './SafeInfo.css';
 

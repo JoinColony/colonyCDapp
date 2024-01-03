@@ -1,12 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-
-import Button from '~shared/Button';
-import { DialogSection } from '~shared/Dialog';
-import ExternalLink from '~shared/ExternalLink';
-import Icon from '~shared/Icon';
-import { Input } from '~shared/Fields';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
   ETHEREUM_NETWORK,
@@ -20,6 +14,11 @@ import {
   MODULE_ADDRESS_INSTRUCTIONS,
   SAFE_CONTROL_LEARN_MORE,
 } from '~constants/externalUrls';
+import Button from '~shared/Button';
+import { DialogSection } from '~shared/Dialog';
+import ExternalLink from '~shared/ExternalLink';
+import { Input } from '~shared/Fields';
+import Icon from '~shared/Icon';
 import { isAddress } from '~utils/web3';
 
 import { StatusText, AddExistingSafeProps } from '../types';

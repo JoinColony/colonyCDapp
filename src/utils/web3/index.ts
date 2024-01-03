@@ -1,9 +1,9 @@
-import BN from 'bn.js';
 import { ClientType, TokenClientType } from '@colony/colony-js';
+import BN from 'bn.js';
 
-import { ExtendedClientType } from '~types';
-import { TransactionError } from '~redux/immutable/Transaction';
 import { NETWORK_DATA } from '~constants';
+import { TransactionError } from '~redux/immutable/Transaction';
+import { ExtendedClientType } from '~types';
 
 export {
   isAddress,

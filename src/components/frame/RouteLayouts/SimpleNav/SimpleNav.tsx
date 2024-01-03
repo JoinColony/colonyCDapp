@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
-import UserNavigation from '../UserNavigation';
+
 import { useMobile } from '~hooks';
+
+import UserNavigation from '../UserNavigation';
 
 import styles from './SimpleNav.css';
 

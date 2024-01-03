@@ -1,47 +1,50 @@
 import React from 'react';
 import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
-import ColonyHome from '~common/ColonyHome';
-import ColonyFunding from '~common/ColonyFunding';
-import FourOFour from '~frame/FourOFour';
-import UserProfile from '~common/UserProfile';
-import { Flow } from '~common/Onboarding';
-import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
+import ColonyActions from '~common/ColonyActions';
 import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
-import { NavBar, UserLayout } from '~frame/RouteLayouts';
-import LandingPage from '~frame/LandingPage';
-import { useTitle } from '~hooks';
-import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
-import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
-import ReputationPage from '~frame/Extensions/pages/ReputationPage';
-import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
-import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
-import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
-import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
-import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
+import ColonyDecisions from '~common/ColonyDecisions';
+import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
+import ColonyFunding from '~common/ColonyFunding';
+import ColonyHome from '~common/ColonyHome';
+import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
+import Expenditures from '~common/Expenditures';
+import { Flow } from '~common/Onboarding';
+import UserProfile from '~common/UserProfile';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
+import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
+import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
+import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
+import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
+import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
+import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
+import ReputationPage from '~frame/Extensions/pages/ReputationPage';
+import FourOFour from '~frame/FourOFour';
+import LandingPage from '~frame/LandingPage';
+import { NavBar, UserLayout } from '~frame/RouteLayouts';
+import ActivityPage from '~frame/v5/pages/ActivityPage';
+import BalancePage from '~frame/v5/pages/BalancePage';
 import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage';
 import MembersPage, {
   AllMembersPage,
   ContributorsPage,
 } from '~frame/v5/pages/MembersPage';
-import VerifiedPage from '~frame/v5/pages/VerifiedPage';
-import BalancePage from '~frame/v5/pages/BalancePage';
+import OnboardingPage from '~frame/v5/pages/OnboardingPage';
 import TeamsPage from '~frame/v5/pages/TeamsPage';
+import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
+import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage';
-import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
-import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
-import ActivityPage from '~frame/v5/pages/ActivityPage';
-import OnboardingPage from '~frame/v5/pages/OnboardingPage';
-import ColonyActions from '~common/ColonyActions';
-import ColonyDecisions from '~common/ColonyDecisions';
-import Expenditures from '~common/Expenditures';
-import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
+import VerifiedPage from '~frame/v5/pages/VerifiedPage';
+import { useTitle } from '~hooks';
 
+import ColonyMembersRoute from './ColonyMembersRoute';
+import ColonyRoute from './ColonyRoute';
 import LandingPageRoute from './LandingPageRoute';
-// import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
-
+import MainRoute from './MainRoute';
+import NotFoundRoute from './NotFoundRoute';
+import RootRoute from './RootRoute';
 import {
   COLONY_BALANCES_ROUTE,
   COLONY_HOME_ROUTE,
@@ -81,11 +84,7 @@ import {
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants';
 
-import RootRoute from './RootRoute';
-import NotFoundRoute from './NotFoundRoute';
-import MainRoute from './MainRoute';
-import ColonyRoute from './ColonyRoute';
-import ColonyMembersRoute from './ColonyMembersRoute';
+// import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
 const displayName = 'routes.Routes';
 

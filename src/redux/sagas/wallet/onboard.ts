@@ -1,7 +1,6 @@
 import Onboard, { InitOptions } from '@web3-onboard/core';
 import injectedWallets from '@web3-onboard/injected-wallets';
 
-import colonyIcon from '~images/icons/colony-logo-wallet.svg';
 import {
   TERMS_AND_CONDITIONS,
   CDAPP_VERSION,
@@ -9,9 +8,10 @@ import {
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
 } from '~constants';
-import { intl } from '~utils/intl';
-import { getChainIdAsHex } from '~utils/autoLogin';
+import colonyIcon from '~images/icons/colony-logo-wallet.svg';
 import { Network } from '~types';
+import { getChainIdAsHex } from '~utils/autoLogin';
+import { intl } from '~utils/intl';
 
 import ganacheModule from './ganacheModule';
 

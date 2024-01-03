@@ -3,16 +3,17 @@ import React from 'react';
 // import { BigNumber } from 'ethers';
 
 // import { SpinnerLoader } from '~shared/Preloaders';
-import Tag from '~shared/Tag';
 // import { getAllUserRoles } from '~redux/transformers';
-import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
-import { User } from '~types';
 import { useAppContext, useColonyContext } from '~hooks';
+import Tag from '~shared/Tag';
+import { User } from '~types';
+
+import NotAvailableMessage from '../NotAvailableMessage/NotAvailableMessage';
 
 // import UserPermissions from './UserPermissions';
 // import UserTokens from './UserTokens';
-import UserReputation from './UserReputation';
 import UserInfo from './UserInfo';
+import UserReputation from './UserReputation';
 
 import styles from './UserInfoPopover.css';
 

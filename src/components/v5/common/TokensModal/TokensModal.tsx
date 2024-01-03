@@ -1,16 +1,18 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Modal from '../../shared/Modal/Modal';
+import { ActionForm } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { SpinnerLoader } from '~shared/Preloaders';
-import Button from '~v5/shared/Button';
-import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
-import { formatText } from '~utils/intl';
-import { ActionForm } from '~shared/Fields';
-import { TokensModalProps } from './types';
-import { useTokensModal } from './hooks';
 import TokenIcon from '~shared/TokenIcon';
+import { formatText } from '~utils/intl';
+import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
+import Button from '~v5/shared/Button';
+
+import Modal from '../../shared/Modal/Modal';
+
+import { useTokensModal } from './hooks';
+import { TokensModalProps } from './types';
 
 const displayName = 'v5.Modal.partials.TokensModal';
 

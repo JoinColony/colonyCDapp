@@ -2,10 +2,10 @@ import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 import { RaiseObjectionDialog } from '~common/Dialogs';
+import { useUserTokenBalanceContext } from '~context';
 import { useAppContext, useColonyContext } from '~hooks';
 import { useDialog } from '~shared/Dialog';
 import { MotionVote } from '~utils/colonyMotions';
-import { useUserTokenBalanceContext } from '~context';
 
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 import { getHandleStakeSuccessFn, getStakingTransformFn } from '../helpers';

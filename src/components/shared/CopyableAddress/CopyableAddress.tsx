@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
-import { splitAddress } from '~utils/strings';
 
-import { Address } from '~types';
-
-import { getMainClasses } from '~utils/css';
-import MaskedAddress from '~shared/MaskedAddress';
 import ClipboardCopy from '~shared/ClipboardCopy';
+import MaskedAddress from '~shared/MaskedAddress';
+import { Address } from '~types';
+import { getMainClasses } from '~utils/css';
+import { splitAddress } from '~utils/strings';
 
 import styles from './CopyableAddress.css';
 

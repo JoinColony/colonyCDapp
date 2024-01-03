@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import Decimal from 'decimal.js';
 import { Extension } from '@colony/colony-js';
+import Decimal from 'decimal.js';
+import React, { FC } from 'react';
 
 import { paramsMap } from './consts';
 

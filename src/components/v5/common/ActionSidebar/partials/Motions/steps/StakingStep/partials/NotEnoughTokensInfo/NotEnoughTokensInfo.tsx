@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
+
 import { useTokensModalContext } from '~context';
 import { formatText } from '~utils/intl';
 import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';

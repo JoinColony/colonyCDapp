@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
+import { formatText } from '~utils/intl';
+
 import { defaultMessages } from './consts';
 import { AsyncTextProps } from './types';
 import { getInitialText } from './utils';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.AsyncText';
 

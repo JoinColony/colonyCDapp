@@ -1,18 +1,17 @@
+import { ColonyRole, Id } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { ColonyRole, Id } from '@colony/colony-js';
 
-import Button from '~shared/Button';
-import { SimpleMessageValues } from '~types';
-import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
-
-import { getUserRolesForDomain } from '~transformers';
-import { useDialog } from '~shared/Dialog';
 import {
   MintTokenDialog,
   TokenManagementDialog,
   TransferFundsDialog,
 } from '~common/Dialogs';
+import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
+import Button from '~shared/Button';
+import { useDialog } from '~shared/Dialog';
+import { getUserRolesForDomain } from '~transformers';
+import { SimpleMessageValues } from '~types';
 import { userHasRole } from '~utils/checks';
 
 import styles from './ColonyFundingMenu.css';

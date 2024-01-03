@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
 import Papa, { ParseResult } from 'papaparse';
+import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
-import { FileReaderFile } from '~utils/fileReader/types';
 import { InputStatus } from '~shared/Fields';
+import { FileReaderFile } from '~utils/fileReader/types';
 import { isEqual, isNil } from '~utils/lodash';
 
 import { DefaultPlaceholder, SingleFileUpload } from '../FileUpload';

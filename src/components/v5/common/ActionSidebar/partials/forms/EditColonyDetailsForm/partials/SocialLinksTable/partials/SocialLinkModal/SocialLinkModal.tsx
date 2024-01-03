@@ -1,19 +1,19 @@
 import React, { FC } from 'react';
-import { formatText } from '~utils/intl';
 
-import Modal from '~v5/shared/Modal';
-import Button from '~v5/shared/Button';
 import { Form } from '~shared/Fields';
-import FormTileRadioButtons from '~v5/common/Fields/RadioButtons/TileRadioButtons/FormTileRadioButtons';
+import { formatText } from '~utils/intl';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import FormTileRadioButtons from '~v5/common/Fields/RadioButtons/TileRadioButtons/FormTileRadioButtons';
+import Button from '~v5/shared/Button';
+import Modal from '~v5/shared/Modal';
 
 import {
   LINK_TYPE_RADIO_BUTTONS,
   LINK_TYPE_TO_LABEL_MAP,
   SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA,
 } from './consts';
-import { SocialLinkModalFormValues, SocialLinkFormModalProps } from './types';
 import { useResetFormOnLinkTypeChange } from './hooks';
+import { SocialLinkModalFormValues, SocialLinkFormModalProps } from './types';
 
 const displayName =
   'v5.common.ActionsContent.partials.SocialLinksTable.partials.SocialLinkFormModal';

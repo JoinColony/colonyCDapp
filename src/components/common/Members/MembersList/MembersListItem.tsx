@@ -1,12 +1,11 @@
 import React, { ReactNode, useMemo } from 'react';
 
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { useColonyContext, useMobile } from '~hooks';
 import { ListGroupItem } from '~shared/ListGroup';
 import MemberReputation from '~shared/MemberReputation';
 import UserAvatar from '~shared/UserAvatar';
-
 import { getMainClasses } from '~utils/css';
-import { useColonyContext, useMobile } from '~hooks';
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 
 import MemberActions from './Actions';
 import MemberInfo from './MemberInfo';

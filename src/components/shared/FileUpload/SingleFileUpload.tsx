@@ -1,8 +1,9 @@
-import React, { ComponentType, useImperativeHandle } from 'react';
 import classnames from 'classnames';
+import React, { ComponentType, useImperativeHandle } from 'react';
 
-import { withForwardingRef, ForwardedRefProps } from '~utils/hoc';
 import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
+import { withForwardingRef, ForwardedRefProps } from '~utils/hoc';
+
 import { SingleFileUploadProps } from './types';
 
 import styles from './SingleFileUpload.css';

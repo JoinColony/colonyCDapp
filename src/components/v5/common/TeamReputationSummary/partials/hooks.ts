@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+
 import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 import { useColonyContext } from '~hooks';

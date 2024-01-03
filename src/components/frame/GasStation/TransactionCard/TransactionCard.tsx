@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { TransactionType } from '~redux/immutable';
 import Card from '~shared/Card';
 import Heading from '~shared/Heading';
-
-import { TransactionType } from '~redux/immutable';
 import { arrayToObject } from '~utils/arrays';
 
 import {
@@ -12,6 +11,7 @@ import {
   getGroupStatus,
   getGroupValues,
 } from '../transactionGroup';
+
 import TransactionStatus from './TransactionStatus';
 
 import styles from './TransactionCard.css';

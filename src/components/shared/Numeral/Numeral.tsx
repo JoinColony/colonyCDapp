@@ -1,16 +1,16 @@
-import React, { HTMLAttributes } from 'react';
+import classNames from 'classnames';
+import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 import numbro from 'numbro';
-import classNames from 'classnames';
+import React, { HTMLAttributes } from 'react';
 
-import Decimal from 'decimal.js';
+import { convertToDecimal } from '~utils/convertToDecimal';
 import { getMainClasses } from '~utils/css';
 
-import numbroLanguage from './numbroLanguage';
 import { getFormattedNumeralValue } from './helpers';
+import numbroLanguage from './numbroLanguage';
 
 import styles from './Numeral.css';
-import { convertToDecimal } from '~utils/convertToDecimal';
 
 // needed for capitalized abbreviations
 numbro.registerLanguage(numbroLanguage);

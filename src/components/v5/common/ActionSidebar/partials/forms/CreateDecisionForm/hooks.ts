@@ -1,15 +1,16 @@
-import { useDispatch } from 'react-redux';
 import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
-import { useAppContext, useColonyContext } from '~hooks';
 import { DecisionDialogValues } from '~common/ColonyDecisions/DecisionDialog';
+import { useAppContext, useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
 import { createDecisionAction } from '~redux/actionCreators';
+import { mapPayload, pipe } from '~utils/actions';
 
-import { ActionFormBaseProps } from '../../../types';
 import { useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { validationSchema, CreateDecisionFormValues } from './consts';
 
 export const useCreateDecision = (

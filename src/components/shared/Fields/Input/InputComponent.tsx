@@ -3,8 +3,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { getMainClasses } from '~utils/css';
 
-import { InputProps } from './Input';
 import FormattedInput from './FormattedInputComponent';
+import { InputProps } from './Input';
 
 import styles from './InputComponent.css';
 

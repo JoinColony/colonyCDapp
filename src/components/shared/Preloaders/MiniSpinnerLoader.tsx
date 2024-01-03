@@ -5,6 +5,7 @@ import Heading, { Appearance as HeadingAppearance } from '~shared/Heading';
 import { SimpleMessageValues } from '~types';
 
 import SpinnerLoader, { Appearance } from './SpinnerLoader';
+
 import styles from './MiniSpinnerLoader.css';
 
 interface Props {

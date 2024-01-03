@@ -1,17 +1,16 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useAppContext, useMobile } from '~hooks';
 import CopyableAddress from '~shared/CopyableAddress';
 import ExternalLink from '~shared/ExternalLink';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Link from '~shared/Link';
-import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
-
-import { stripProtocol } from '~utils/strings';
-import { useAppContext, useMobile } from '~hooks';
+import UserMention from '~shared/UserMention';
 import { User } from '~types';
+import { stripProtocol } from '~utils/strings';
 
 import styles from './UserMeta.css';
 

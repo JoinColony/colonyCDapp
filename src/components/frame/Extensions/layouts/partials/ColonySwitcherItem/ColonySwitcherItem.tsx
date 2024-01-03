@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { ADDRESS_ZERO } from '~constants';
 import Icon from '~shared/Icon';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import { ADDRESS_ZERO } from '~constants';
 
 import { ColonySwitcherItemProps } from './types';
 

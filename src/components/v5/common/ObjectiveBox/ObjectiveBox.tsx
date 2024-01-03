@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import ProgressBar from '~v5/shared/ProgressBar';
+
 import { ObjectiveBoxProps } from './types';
 
 const displayName = 'v5.common.ObjectiveBox';

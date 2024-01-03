@@ -1,6 +1,6 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC, PropsWithChildren } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation';
 import Icon from '~shared/Icon';

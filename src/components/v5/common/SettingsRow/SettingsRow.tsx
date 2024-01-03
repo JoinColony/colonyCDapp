@@ -1,11 +1,13 @@
-import React from 'react';
 import clsx from 'clsx';
 import { Info } from 'phosphor-react';
+import React from 'react';
 import { FieldPath, FieldValues } from 'react-hook-form';
+
+import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 import { FormSwitch } from '~v5/common/Fields/Switch';
 import Button from '~v5/shared/Button';
-import Tooltip from '~shared/Extensions/Tooltip';
+
 import { SettingsRowProps } from './types';
 
 const displayName = 'v5.common.SettingsRow';

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { TimerValueProps } from '~shared/TimerValue/TimerValue';
 
 export interface CountDownTimerProps {

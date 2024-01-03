@@ -1,22 +1,21 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
 import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 import { utils } from 'ethers';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
+import { signMessage } from '../messages';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import {
   putError,
   takeFrom,
   getColonyManager,
   initiateTransaction,
 } from '../utils';
-
-import {
-  createGroupTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import { signMessage } from '../messages';
 
 export type MotionVotePayload = Action<ActionTypes.MOTION_VOTE>['payload'];
 function* voteMotion({

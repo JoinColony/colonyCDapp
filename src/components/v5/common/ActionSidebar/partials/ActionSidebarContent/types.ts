@@ -1,5 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
+
 import { ActionFormProps } from '~shared/Fields/Form';
+
 import { ActionFormBaseProps } from '../../types';
 
 export interface ActionSidebarFormContentProps extends ActionFormBaseProps {

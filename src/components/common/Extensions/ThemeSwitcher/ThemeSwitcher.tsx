@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
 import { usePageThemeContext } from '~context/PageThemeContext';
+import Icon from '~shared/Icon';
 
 import styles from './ThemeSwitcher.module.css';
 

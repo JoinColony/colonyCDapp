@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { User } from '~types';
 import UserAvatars from '~v5/shared/UserAvatars';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const items: User[] = [
   {

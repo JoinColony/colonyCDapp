@@ -1,7 +1,7 @@
+import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import { NavLink as NavLinkComponent } from 'react-router-dom';
-import clsx from 'clsx';
 
 import { NavLinkProps } from './types';
 

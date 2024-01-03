@@ -1,9 +1,9 @@
-import React from 'react';
 import { ColonyRole } from '@colony/colony-js';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import PermissionsLabel from '~shared/PermissionsLabel';
 import Heading from '~shared/Heading';
+import PermissionsLabel from '~shared/PermissionsLabel';
 
 import styles from './UserInfoPopover.css';
 

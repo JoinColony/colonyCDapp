@@ -5,8 +5,9 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 
-import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
+
+import styles from '../SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.partials.ContractAddress';
 

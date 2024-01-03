@@ -2,25 +2,29 @@ import React, { useState, useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import { Tooltip } from '~shared/Popover';
 // import { useDialog } from '~shared/Dialog';
 // import ExternalLink from '~shared/ExternalLink';
 
 // import TransactionAlertDialog from '~dialogs/TransactionAlertDialog';
 
-import { TransactionType } from '~redux/immutable';
-import { transactionCancel } from '~redux/actionCreators';
-import { getMainClasses } from '~utils/css';
 // import {
 //   isGasStationMetatransactionError,
 //   isMetatransactionErrorFromColonyContract,
 // } from '~utils/web3';
-import { TransactionStatus as TransactionStatusEnum } from '~gql';
 // import { METATRANSACTIONS_LEARN_MORE } from '~constants/externalUrls';
 
+import { TransactionStatus as TransactionStatusEnum } from '~gql';
+import { transactionCancel } from '~redux/actionCreators';
+import { TransactionType } from '~redux/immutable';
+import { Tooltip } from '~shared/Popover';
+import { getMainClasses } from '~utils/css';
+
 import { Appearance } from '../GasStationContent';
-import styles from './GroupedTransactionCard.css';
+
 import TransactionStatus from './TransactionStatus';
+
+import styles from './GroupedTransactionCard.css';
+
 // import { GasStationContext } from '../GasStationProvider';
 
 const displayName = 'frame.GasStation.GroupedTransactionCard';

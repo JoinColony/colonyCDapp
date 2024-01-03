@@ -1,8 +1,9 @@
 import { call } from 'redux-saga/effects';
 
+import { getContext, setContext, ContextModule, ColonyManager } from '~context';
+
 import { create } from '../utils';
 
-import { getContext, setContext, ContextModule, ColonyManager } from '~context';
 import getNetworkClient from './getNetworkClient';
 
 /*

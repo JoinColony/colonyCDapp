@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 
 import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
-import useColonyContext from './useColonyContext';
 import { notNull } from '~utils/arrays';
+
+import useColonyContext from './useColonyContext';
 
 export const useGetAllTokens = () => {
   const { colony } = useColonyContext();

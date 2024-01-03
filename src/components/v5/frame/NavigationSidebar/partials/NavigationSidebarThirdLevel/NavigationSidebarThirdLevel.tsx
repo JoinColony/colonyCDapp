@@ -1,16 +1,17 @@
-import React, { FC } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC } from 'react';
 
-import Link from '~v5/shared/Link';
+import { accordionAnimation } from '~constants/accordionAnimation';
 import { useTablet } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import Icon from '~shared/Icon';
-import { accordionAnimation } from '~constants/accordionAnimation';
+import Link from '~v5/shared/Link';
 
 import { thirdLevelContentAnimation } from '../../consts';
-import { NavigationSidebarThirdLevelProps } from './types';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
+
+import { NavigationSidebarThirdLevelProps } from './types';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarThirdLevel';

@@ -1,12 +1,12 @@
-import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
 import classnames from 'classnames';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, useIntl } from 'react-intl';
 
-import Heading from '~shared/Heading';
-import Button from '~shared/Button';
-import Icon from '~shared/Icon';
 import { SafeTransactionType } from '~gql';
+import Button from '~shared/Button';
+import Heading from '~shared/Heading';
+import Icon from '~shared/Icon';
 
 import { SafeTransactionMSG } from '../../helpers';
 

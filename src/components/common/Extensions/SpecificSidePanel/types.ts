@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import { ColonyRole } from '@colony/colony-js';
+import { ReactNode } from 'react';
 
 import { AnyExtensionData } from '~types';
 

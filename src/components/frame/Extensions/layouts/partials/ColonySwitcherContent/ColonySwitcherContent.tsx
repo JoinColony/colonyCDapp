@@ -1,14 +1,15 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
 import EmptyContent from '~v5/common/EmptyContent';
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
 
 import ColonySwitcherItem from '../ColonySwitcherItem';
 import ColonySwitcherList from '../ColonySwitcherList';
+
 import { useColonySwitcherContent } from './hooks';
 import { ColonySwitcherContentProps } from './types';
 

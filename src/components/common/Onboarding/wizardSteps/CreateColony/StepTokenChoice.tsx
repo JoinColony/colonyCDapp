@@ -1,15 +1,16 @@
-import React, { ReactNode } from 'react';
-import { defineMessages, MessageDescriptor } from 'react-intl';
 import clsx from 'clsx';
+import React, { ReactNode } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 
+import { Form } from '~shared/Fields';
 import Icon from '~shared/Icon';
 import { WizardStepProps } from '~shared/Wizard';
-import { Form } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import MenuContainer from '~v5/shared/MenuContainer';
 
 import { ButtonRow, HeaderRow } from '../shared';
+
 import { FormValues, Step2 } from './types';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';

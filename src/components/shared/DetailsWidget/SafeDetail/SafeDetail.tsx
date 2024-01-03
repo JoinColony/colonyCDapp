@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Avatar from '~shared/Avatar';
-import { Safe } from '~types';
 import { SAFE_NAMES_MAP } from '~constants';
+import Avatar from '~shared/Avatar';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
+import { Safe } from '~types';
 
 import styles from './SafeDetail.css';
 

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React, { useState } from 'react';
 
 import { ExpenditureStatus } from '~gql';
+import { useAppContext, useEnabledExtensions } from '~hooks';
 import Button from '~shared/Button';
 import { Colony, Expenditure } from '~types';
 import { addressHasRoles } from '~utils/checks';
-import { useAppContext, useEnabledExtensions } from '~hooks';
 
 import CancelStakedExpenditureDialog from './CancelStakedExpenditureDialog';
 

@@ -1,13 +1,14 @@
 /* eslint-disable react/button-has-type */
-import React, { forwardRef, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { forwardRef, PropsWithChildren } from 'react';
 
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 import { formatText } from '~utils/intl';
 
-import styles from './Button.module.css';
 import ButtonContent from './ButtonContent';
 import { ButtonProps } from './types';
+
+import styles from './Button.module.css';
 
 const displayName = 'v5.Button';
 

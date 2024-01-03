@@ -1,14 +1,16 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import clsx from 'clsx';
-import { UserAvatarPopoverProps } from './types';
-import UserAvatar from '~v5/shared/UserAvatar';
-import UserPopover from '../UserPopover';
-import { useColonyContext } from '~hooks';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { useGetColonyContributorQuery } from '~gql';
+import { useColonyContext } from '~hooks';
 import { getColonyContributorId } from '~utils/members';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
+import UserAvatar from '~v5/shared/UserAvatar';
+
+import UserPopover from '../UserPopover';
+
+import { UserAvatarPopoverProps } from './types';
 
 const displayName = 'v5.UserAvatarPopover';
 

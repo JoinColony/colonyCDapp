@@ -1,15 +1,14 @@
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import clsx from 'clsx';
 
-import { Token } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
-
+import Icon from '~shared/Icon';
+import { Token } from '~types';
+import { getBlockExplorerLink } from '~utils/external';
+import PillsBase from '~v5/common/Pills/PillsBase';
 import Avatar from '~v5/shared/Avatar';
 import CopyableAddress from '~v5/shared/CopyableAddress';
-import { getBlockExplorerLink } from '~utils/external';
-import Icon from '~shared/Icon';
-import PillsBase from '~v5/common/Pills/PillsBase';
 
 const displayName = 'TokenInfoPopover.TokenInfo';
 

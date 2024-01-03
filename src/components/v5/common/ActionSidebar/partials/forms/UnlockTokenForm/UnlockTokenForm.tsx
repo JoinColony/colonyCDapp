@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import ActionFormRow from '~v5/common/ActionFormRow';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { formatText } from '~utils/intl';
-
 import { useColonyContext } from '~hooks';
 import { TX_SEARCH_PARAM } from '~routes';
-import { ActionFormBaseProps } from '../../../types';
+import { formatText } from '~utils/intl';
+import ActionFormRow from '~v5/common/ActionFormRow';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+
 import { useDecisionMethods } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
 import DescriptionRow from '../../DescriptionRow';
+
 import { useUnlockToken } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.UnlockTokenForm';

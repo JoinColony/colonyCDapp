@@ -3,16 +3,17 @@ import React from 'react';
 import { StakerRewards } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ColonyActionType, Address } from '~types';
-import { MotionState } from '~utils/colonyMotions';
 import { MotionAction } from '~types/motions';
+import { MotionState } from '~utils/colonyMotions';
+
+import { RefetchAction } from '../../useGetColonyAction';
 
 import ClaimMotionStakes from './ClaimMotionStakes';
 import FinalizeMotion from './FinalizeMotion';
-import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
-import { VotingWidget } from './VotingWidget';
 import { RevealWidget } from './RevealWidget';
+import StakingWidget, { StakingWidgetProvider } from './StakingWidget';
 import { VoteOutcome } from './VoteOutcome';
-import { RefetchAction } from '../../useGetColonyAction';
+import { VotingWidget } from './VotingWidget';
 
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.MotionPhaseWidget';

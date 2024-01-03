@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import styles from '../SpecificSidePanel.module.css';
 import { PanelTypeProps } from '../types';
+
+import styles from '../SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.partials.SpecificSidePanelRow';
 

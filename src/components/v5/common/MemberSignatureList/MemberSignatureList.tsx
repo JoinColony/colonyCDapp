@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders';
+
 import MemberSignature from '../MemberSignature';
+
 import { MemberSignatureListProps } from './types';
 
 const displayName = 'v5.common.MemberSignatureList';

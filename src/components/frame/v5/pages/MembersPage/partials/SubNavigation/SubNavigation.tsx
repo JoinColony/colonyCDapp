@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-import { useActionSidebarContext } from '~context';
 import { ACTION } from '~constants/actions';
+import { useActionSidebarContext } from '~context';
 import { formatText } from '~utils/intl';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
 import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
 import { SubNavigationProps } from './types';
 

@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
-import { SpinnerLoader } from '~shared/Preloaders';
-import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
-import { getDraftDecisionFromStore } from '~utils/decisions';
-import { ModelSortDirection, useGetColonyDecisionsQuery } from '~gql';
-import { notNull } from '~utils/arrays';
-import LoadMoreButton from '~shared/LoadMoreButton/LoadMoreButton';
 import { useColonyHomeContext } from '~context';
+import { ModelSortDirection, useGetColonyDecisionsQuery } from '~gql';
+import { useAppContext, useColonyContext, useEnabledExtensions } from '~hooks';
+import LoadMoreButton from '~shared/LoadMoreButton/LoadMoreButton';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { notNull } from '~utils/arrays';
+import { getDraftDecisionFromStore } from '~utils/decisions';
 
-import DraftDecisionItem from './DraftDecisionItem';
 import DecisionItem from './DecisionItem';
 import DecisionListHeader from './DecisionListHeader';
+import DraftDecisionItem from './DraftDecisionItem';
 
 import styles from './ColonyDecisions.css';
 

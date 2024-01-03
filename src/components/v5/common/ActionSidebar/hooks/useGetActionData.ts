@@ -1,20 +1,21 @@
-import { useMemo } from 'react';
-import moveDecimal from 'move-decimal-point';
 import { Id } from '@colony/colony-js';
+import moveDecimal from 'move-decimal-point';
+import { useMemo } from 'react';
 
 import { ACTION } from '~constants/actions';
+import { getRole, USER_ROLE } from '~constants/permissions';
 import { ColonyActionType } from '~gql';
+import { convertRolesToArray } from '~transformers';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
-import { useGetColonyAction } from './useGetColonyAction';
-import { DecisionMethod } from './useDecisionMethods';
-import { getRole, USER_ROLE } from '~constants/permissions';
-import { convertRolesToArray } from '~transformers';
 import {
   AUTHORITY,
   AVAILABLE_ROLES,
 } from '../partials/forms/ManagePermissionsForm/consts';
+
+import { DecisionMethod } from './useDecisionMethods';
+import { useGetColonyAction } from './useGetColonyAction';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);

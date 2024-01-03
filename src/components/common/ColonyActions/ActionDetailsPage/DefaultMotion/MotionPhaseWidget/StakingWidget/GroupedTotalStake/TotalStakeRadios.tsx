@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { CustomRadioGroup } from '~shared/Fields';
 
 import useTotalStakeRadios from './useTotalStakeRadios';

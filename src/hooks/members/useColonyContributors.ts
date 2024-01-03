@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
 
+import { UserRole } from '~constants/permissions';
 import { ColonyContributor, SortDirection } from '~types';
 import {
   ContributorTypeFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
-import { UserRole } from '~constants/permissions';
-
-import { sortByReputationAscending, sortByReputationDescending } from './utils';
 
 import useMemberFilters from './useMemberFilters';
+import { sortByReputationAscending, sortByReputationDescending } from './utils';
 
 const useColonyContributors = ({
   allMembers,

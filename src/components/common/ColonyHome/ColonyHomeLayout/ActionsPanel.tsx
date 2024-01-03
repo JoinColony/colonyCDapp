@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import NewActionButton from '~common/NewActionButton';
 import NewDecisionButton from '~common/ColonyDecisions/NewDecisionButton';
+import NewActionButton from '~common/NewActionButton';
 import { useColonyHomeContext } from '~context';
 import { COLONY_DECISIONS_ROUTE } from '~routes';
 

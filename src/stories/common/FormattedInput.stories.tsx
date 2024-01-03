@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { FormattedInput } from '~v5/common/Fields/InputBase';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const formattedInputMeta: Meta<typeof FormattedInput> = {
   title: 'Common/Fields/Formatted Input',

@@ -1,8 +1,8 @@
 import React from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types';
 import Button from '~shared/Button';
+import { SimpleMessageValues } from '~types';
 
 import styles from './Warning.css';
 

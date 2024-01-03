@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import Icon from '~shared/Icon';
-import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';
-import Numeral from '~shared/Numeral';
 import { useUserReputation } from '~hooks';
+import Icon from '~shared/Icon';
+import Numeral from '~shared/Numeral';
+import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';
 
 import { MemberReputationProps } from './types';
 

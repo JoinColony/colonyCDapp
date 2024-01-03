@@ -1,6 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 import { InferType, mixed, object, string } from 'yup';
+
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import {
   CUSTOM_USER_ROLE,
@@ -14,6 +15,7 @@ import {
   CardSelectOption,
   CardSelectOptionsGroup,
 } from '~v5/common/Fields/CardSelect/types';
+
 import RoleOptionLabel from './partials/RoleOptionLabel';
 import { UserRoleSelectMeta } from './types';
 

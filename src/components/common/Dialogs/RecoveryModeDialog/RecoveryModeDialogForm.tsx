@@ -1,8 +1,9 @@
-import React from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useAppContext, useTransformer } from '~hooks';
 import {
   DialogSection,
   ActionDialogProps,
@@ -10,8 +11,6 @@ import {
   DialogHeading,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-
-import { useAppContext, useTransformer } from '~hooks';
 import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode } from '~utils/checks';
 

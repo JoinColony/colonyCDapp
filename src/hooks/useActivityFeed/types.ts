@@ -1,10 +1,10 @@
 import { SearchActionsQueryVariables } from '~gql';
+import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
 import {
   ColonyAction,
   ColonyActionType,
   SearchableSortDirection,
 } from '~types';
-import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
 import { MotionState } from '~utils/colonyMotions';
 
 export enum ActivityDecisionMethod {

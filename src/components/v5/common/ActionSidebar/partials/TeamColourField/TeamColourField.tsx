@@ -1,9 +1,9 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
-import clsx from 'clsx';
 
-import { useColors, useRelativePortalElement, useToggle } from '~hooks';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useColors, useRelativePortalElement, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
 import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';

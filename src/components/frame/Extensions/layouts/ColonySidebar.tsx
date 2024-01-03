@@ -1,18 +1,19 @@
 import React, { ReactNode } from 'react';
 
 // import { CREATE_COLONY_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
-import NavigationSidebar from '~v5/frame/NavigationSidebar';
-import Button from '~v5/shared/Button';
-import LearnMore from '~shared/Extensions/LearnMore';
+
 import { LEARN_MORE_PAYMENTS } from '~constants';
 import { useActionSidebarContext } from '~context';
 import { useColonyContext } from '~hooks';
+import LearnMore from '~shared/Extensions/LearnMore';
+import { formatText } from '~utils/intl';
+import NavigationSidebar from '~v5/frame/NavigationSidebar';
+import Button from '~v5/shared/Button';
 
-import UserNavigationWrapper from './partials/UserNavigationWrapper';
-import ColonySwitcherContent from './partials/ColonySwitcherContent';
-import { getChainIconName } from './utils';
 import { useMainMenuItems } from './hooks';
+import ColonySwitcherContent from './partials/ColonySwitcherContent';
+import UserNavigationWrapper from './partials/UserNavigationWrapper';
+import { getChainIconName } from './utils';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout.ColonySidebar';
 

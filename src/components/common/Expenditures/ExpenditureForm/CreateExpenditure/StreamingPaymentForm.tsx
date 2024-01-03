@@ -1,19 +1,20 @@
-import React from 'react';
 import { Id } from '@colony/colony-js';
 import { format, addMonths } from 'date-fns';
+import React from 'react';
 
-import { ActionTypes } from '~redux';
+import { StreamingPaymentEndCondition } from '~gql';
 import { useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
+import { CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment';
 import Button from '~shared/Button';
 import { mapPayload, pipe } from '~utils/actions';
-import { CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment';
 import { findDomainByNativeId } from '~utils/domains';
-import { StreamingPaymentEndCondition } from '~gql';
 
-import CreateExpenditureForm from './CreateExpenditureForm';
-import { StreamingPaymentFormValues } from '../types';
 import { StreamingPaymentFormFields } from '../ExpenditureFormFields';
 import { getTimestampFromCleaveDateAndTime } from '../helpers';
+import { StreamingPaymentFormValues } from '../types';
+
+import CreateExpenditureForm from './CreateExpenditureForm';
 
 import styles from '../ExpenditureForm.module.css';
 

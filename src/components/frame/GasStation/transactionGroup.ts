@@ -1,5 +1,5 @@
-import { TransactionType, MessageType } from '~redux/immutable';
 import { TransactionStatus } from '~gql';
+import { TransactionType, MessageType } from '~redux/immutable';
 
 export type TransactionOrMessageGroup = (TransactionType | MessageType)[];
 

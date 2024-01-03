@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { string, object, boolean, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { string, object, boolean, InferType } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
-import { pipe, withMeta, mapPayload } from '~utils/actions';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
+import { pipe, withMeta, mapPayload } from '~utils/actions';
 
-import { ActionTypes } from '~redux';
-import { WizardDialogType } from '~hooks';
-
-import DialogForm from './NetworkContractUpgradeDialogForm';
 import { getNetworkContractUpgradeDialogPayload } from './helpers';
+import DialogForm from './NetworkContractUpgradeDialogForm';
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &

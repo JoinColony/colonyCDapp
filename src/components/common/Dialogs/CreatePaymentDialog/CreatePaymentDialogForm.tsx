@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
+import React, { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import {
   ActionDialogProps,
@@ -10,10 +10,8 @@ import {
   DialogControls,
 } from '~shared/Dialog';
 import { Annotations } from '~shared/Fields';
-
 import { SetStateFn } from '~types';
 
-import PaymentRecipient from './PaymentRecipient';
 import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import {
   NoPermissionMessage,
@@ -23,6 +21,7 @@ import {
 } from '../Messages';
 
 import { useCreatePaymentDialogStatus } from './helpers';
+import PaymentRecipient from './PaymentRecipient';
 
 import styles from './CreatePaymentDialogForm.css';
 

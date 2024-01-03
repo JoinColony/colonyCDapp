@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, {
   useState,
   useRef,
@@ -6,8 +7,9 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import clsx from 'clsx';
+
 import { ChartData } from '~common/ColonyHome/types';
+
 import { UseDonutChartReturnType } from './types';
 
 export const useDonutChart = (

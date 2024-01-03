@@ -1,11 +1,10 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import MemberReputation from '~shared/MemberReputation';
-import { Tooltip } from '~shared/Popover';
+import { useUserTokenBalanceContext } from '~context';
 import { AvatarDropdown } from '~frame/AvatarDropdown';
-import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 import HamburgerDropdown from '~frame/HamburgerDropdown';
+import UserTokenActivationButton from '~frame/UserTokenActivationButton';
 import {
   useAppContext,
   useUserReputation,
@@ -13,7 +12,8 @@ import {
   useCanInteractWithNetwork,
   useColonyContext,
 } from '~hooks';
-import { useUserTokenBalanceContext } from '~context';
+import MemberReputation from '~shared/MemberReputation';
+import { Tooltip } from '~shared/Popover';
 
 import Wallet from './Wallet';
 

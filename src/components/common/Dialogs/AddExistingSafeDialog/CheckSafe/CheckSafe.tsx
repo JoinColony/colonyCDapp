@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import classnames from 'classnames';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
 import { Select, SelectOption } from '~shared/Fields';
 
-import { AddExistingSafeProps } from '../types';
-import SetupSafeCallout from '../SetupSafeCallout';
 import SafeContractAddressInput from '../SafeContractAddressInput';
+import SetupSafeCallout from '../SetupSafeCallout';
+import { AddExistingSafeProps } from '../types';
 
 import defaultStyles from '../AddExistingSafeDialogForm.css';
 import styles from './CheckSafe.css';

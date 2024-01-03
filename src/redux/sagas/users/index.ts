@@ -1,11 +1,11 @@
-import { call, fork, put, takeLatest } from 'redux-saga/effects';
-import { BigNumber, utils } from 'ethers';
 // import { BigNumber } from 'ethers';
 import { QueryOptions } from '@apollo/client';
 import { ClientType, TokenLockingClient } from '@colony/colony-js';
+import { BigNumber, utils } from 'ethers';
+import { call, fork, put, takeLatest } from 'redux-saga/effects';
 
+import { deauthenticateWallet } from '~auth';
 import { ContextModule, getContext, removeContext } from '~context';
-import { clearLastWallet } from '~utils/autoLogin';
 import {
   CreateUniqueUserDocument,
   CreateUniqueUserMutation,
@@ -14,22 +14,22 @@ import {
   GetUserByNameDocument,
 } from '~gql';
 import { LANDING_PAGE_ROUTE } from '~routes';
-import { deauthenticateWallet } from '~auth';
+import { clearLastWallet } from '~utils/autoLogin';
 
 import { ActionTypes } from '../../actionTypes';
 import { Action, AllActions } from '../../types/actions';
-import {
-  getColonyManager,
-  initiateTransaction,
-  putError,
-  takeFrom,
-} from '../utils';
 import {
   createGroupTransaction,
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+} from '../utils';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 

@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { ActionButton } from '~shared/Button';
-import Numeral from '~shared/Numeral';
-import CopyableAddress from '~shared/CopyableAddress';
-import TokenIcon from '~shared/TokenIcon';
-
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
+import { ActionButton } from '~shared/Button';
+import CopyableAddress from '~shared/CopyableAddress';
+import Numeral from '~shared/Numeral';
+import TokenIcon from '~shared/TokenIcon';
+import { ColonyClaims } from '~types';
 import { mergePayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { ColonyClaims } from '~types';
-import { useColonyContext } from '~hooks';
 
 import styles from './UnclaimedTransfersItem.css';
 

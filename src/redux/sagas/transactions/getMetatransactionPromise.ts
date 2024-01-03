@@ -1,12 +1,7 @@
+import { ContractClient, ClientType } from '@colony/colony-js';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Contract, BigNumberish, utils } from 'ethers';
-import { ContractClient, ClientType } from '@colony/colony-js';
 
-import {
-  generateMetatransactionErrorMessage,
-  generateMetamaskTypedDataSignatureErrorMessage,
-} from '~utils/web3';
-import { TransactionRecord } from '../../immutable';
 import { ContextModule, getContext } from '~context';
 import {
   MethodParams,
@@ -16,7 +11,12 @@ import {
   ExtendedClientType,
   isFullWallet,
 } from '~types';
+import {
+  generateMetatransactionErrorMessage,
+  generateMetamaskTypedDataSignatureErrorMessage,
+} from '~utils/web3';
 
+import { TransactionRecord } from '../../immutable';
 import {
   getChainId,
   generateEIP2612TypedData,

@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import Icon from '~shared/Icon';
 
+import Icon from '~shared/Icon';
 import TxButton from '~v5/shared/Button/TxButton';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof TxButton> = {
   title: 'Shared/Buttons/Tx Button',

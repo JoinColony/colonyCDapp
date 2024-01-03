@@ -1,15 +1,13 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { DialogProps, ActionDialogProps } from '~shared/Dialog';
-import IndexModal from '~shared/IndexModal';
-
 import {
   WizardDialogType,
   useUserAccountRegistered,
   useAppContext,
 } from '~hooks';
-
+import { DialogProps, ActionDialogProps } from '~shared/Dialog';
+import IndexModal from '~shared/IndexModal';
 import { getAllUserRoles } from '~transformers';
 import { canEnterRecoveryMode, hasRoot, canArchitect } from '~utils/checks';
 

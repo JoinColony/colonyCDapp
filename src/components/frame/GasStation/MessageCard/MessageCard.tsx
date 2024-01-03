@@ -2,8 +2,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { MessageType } from '~redux/immutable';
-import Heading from '~shared/Heading';
 import Card from '~shared/Card';
+import Heading from '~shared/Heading';
 
 import MessageCardStatus from './MessageCardStatus';
 

@@ -2,17 +2,16 @@ import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
-import MaskedAddress from '~shared/MaskedAddress';
-import { MiniSpinnerLoader } from '~shared/Preloaders';
-import Button from '~shared/Button';
 import { GasStationPopover, GasStationProvider } from '~frame/GasStation';
 import {
   readyTransactionsCount,
   TransactionOrMessageGroups,
 } from '~frame/GasStation/transactionGroup';
-
-import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { useAppContext, useMobile } from '~hooks';
+import { groupedTransactionsAndMessages } from '~redux/selectors';
+import Button from '~shared/Button';
+import MaskedAddress from '~shared/MaskedAddress';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
 
 import styles from './Wallet.css';
 

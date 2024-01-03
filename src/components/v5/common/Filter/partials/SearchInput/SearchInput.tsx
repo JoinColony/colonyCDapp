@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+import debounce from 'lodash.debounce';
 import React, {
   ChangeEvent,
   ChangeEventHandler,
@@ -9,14 +11,14 @@ import React, {
   useState,
 } from 'react';
 import { useIntl } from 'react-intl';
-import debounce from 'lodash.debounce';
-import clsx from 'clsx';
 
-import Icon from '~shared/Icon';
-import styles from './SearchInput.module.css';
 import { useSearchContext } from '~context/SearchContext';
 import { useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+
 import { SearchInputProps } from './types';
+
+import styles from './SearchInput.module.css';
 
 const displayName = 'v5.common.Filter.partials.SearchInput';
 

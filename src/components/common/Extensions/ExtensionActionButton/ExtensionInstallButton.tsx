@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionButton, IconButton } from '~shared/Button';

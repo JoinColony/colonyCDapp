@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import NavLink from '~shared/NavLink';
 
 import { CrumbText } from './BreadCrumb';
+
 import styles from './BreadCrumb.css';
 
 interface Props {

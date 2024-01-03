@@ -1,16 +1,14 @@
-import React, { FC } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React, { FC } from 'react';
 
-import { ExtensionDetailsProps } from './types';
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel';
-
 import { useAppContext, useColonyContext } from '~hooks';
-
+import { addressHasRoles } from '~utils/checks';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 import DeprecateButton from './DeprecateButton';
+import { ExtensionDetailsProps } from './types';
 import UninstallButton from './UninstallButton';
-import { addressHasRoles } from '~utils/checks';
 
 const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';

@@ -1,7 +1,8 @@
 import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
 
-import { isEmpty, isEqual } from '~utils/lodash';
+import { getRole } from '~constants/permissions';
+import { ColonyActionRoles, ColonyActionType } from '~gql';
 import {
   Address,
   Token,
@@ -12,11 +13,10 @@ import {
   ColonyAction,
   ActionUserRoles,
 } from '~types';
-import { ColonyActionRoles, ColonyActionType } from '~gql';
-import { getRole } from '~constants/permissions';
+import { isEmpty, isEqual } from '~utils/lodash';
 
-import { formatText } from './intl';
 import { MotionVote } from './colonyMotions';
+import { formatText } from './intl';
 import { parseSafeTransactionType } from './safes';
 
 export enum ActionPageDetails {

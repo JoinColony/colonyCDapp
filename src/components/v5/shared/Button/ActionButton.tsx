@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
+
 import { useAsyncFunction, useMounted } from '~hooks';
 import { getFormAction } from '~utils/actions';
-import Button from './Button';
 
+import Button from './Button';
 import { ActionButtonProps } from './types';
 
 const ActionButton: FC<ActionButtonProps> = ({

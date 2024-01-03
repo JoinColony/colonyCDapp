@@ -1,16 +1,16 @@
 import clsx from 'clsx';
-import React from 'react';
 import { subDays, startOfDay } from 'date-fns';
+import React from 'react';
 
-import { notNull } from '~utils/arrays';
 import {
   useGetTotalColonyActionsQuery,
   useGetTotalColonyDomainActionsQuery,
 } from '~gql';
-import { formatText } from '~utils/intl';
-import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
 import { useColonyContext } from '~hooks';
 import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
+import { notNull } from '~utils/arrays';
+import { formatText } from '~utils/intl';
+import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
 
 const getThirtyDaysAgoIso = () => {
   const thirtyDaysAgo = subDays(new Date(), 30);

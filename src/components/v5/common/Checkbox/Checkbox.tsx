@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
-import React, { FC, PropsWithChildren, useId } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren, useId } from 'react';
 
-import { CheckboxProps } from './types';
-import styles from './Checkbox.module.css';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
+
+import { CheckboxProps } from './types';
+
+import styles from './Checkbox.module.css';
 
 const displayName = 'v5.common.Checkbox';
 

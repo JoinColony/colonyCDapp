@@ -1,11 +1,11 @@
+import { Placement } from '@popperjs/core';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { Placement } from '@popperjs/core';
 
+import { useColonyContext } from '~hooks';
 import { Heading5 } from '~shared/Heading';
 import Numeral from '~shared/Numeral';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-import { useColonyContext } from '~hooks';
 
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
 

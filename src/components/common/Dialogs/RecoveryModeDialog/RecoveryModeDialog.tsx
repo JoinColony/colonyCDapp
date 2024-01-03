@@ -1,13 +1,12 @@
 import React from 'react';
-import { object, string, InferType } from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { object, string, InferType } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { useAppContext, WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-
-import { ActionTypes } from '~redux';
-import { useAppContext, WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
 import { getRecoveryModeDialogPayload } from './helpers';

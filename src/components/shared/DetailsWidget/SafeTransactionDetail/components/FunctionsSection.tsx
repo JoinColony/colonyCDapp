@@ -1,17 +1,17 @@
-import React from 'react';
-import { nanoid } from 'nanoid';
 import classnames from 'classnames';
+import { nanoid } from 'nanoid';
+import React from 'react';
 
-import { getArrayFromString } from '~utils/safes';
-import Numeral from '~shared/Numeral';
 import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
+import Numeral from '~shared/Numeral';
+import { getArrayFromString } from '~utils/safes';
 
+import widgetStyles from '../../DetailsWidget.css';
 import {
   DefaultArgument,
   ContractSectionProps,
 } from '../../SafeTransactionDetail';
 
-import widgetStyles from '../../DetailsWidget.css';
 import styles from '../SafeTransactionDetail.css';
 
 type FunctionsSectionProps = Pick<ContractSectionProps, 'transaction'>;

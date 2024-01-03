@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
 
 import { SetStateFn, MotionStakes } from '~types';
-import { compareMotionStakes } from './helpers';
 
+import { compareMotionStakes } from './helpers';
 import { MotionContext } from './MotionContext';
 
 export const useMotionContext = () => {

@@ -1,25 +1,26 @@
-import React, { FC } from 'react';
+import { BigNumber } from 'ethers';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
-import { BigNumber } from 'ethers';
+import React, { FC } from 'react';
 
+import { accordionAnimation } from '~constants/accordionAnimation';
 import { useAppContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
-import { accordionAnimation } from '~constants/accordionAnimation';
-import { formatText } from '~utils/intl';
 import { MotionVote } from '~utils/colonyMotions';
+import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
 import Button from '~v5/shared/Button';
-import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
 
 import { useMotionContext } from '../../../../partials/MotionProvider/hooks';
+import StakingChart from '../StakingChart/StakingChart';
+
+import { getMaxStakeAmount, getPredictedPercentage } from './helpers';
 import { useStakingForm } from './hooks';
 import { StakingFormProps, StakingFormValues } from './types';
-import StakingChart from '../StakingChart/StakingChart';
-import { getMaxStakeAmount, getPredictedPercentage } from './helpers';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.StakingForm';

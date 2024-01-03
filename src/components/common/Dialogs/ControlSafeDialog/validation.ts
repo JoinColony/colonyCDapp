@@ -1,14 +1,14 @@
+import Decimal from 'decimal.js';
 import { isHexString } from 'ethers/lib/utils';
+import moveDecimal from 'move-decimal-point';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 import { object, string, array, number } from 'yup';
-import moveDecimal from 'move-decimal-point';
-import Decimal from 'decimal.js';
 
-import { isAddress } from '~utils/web3';
 import { SafeBalance, SafeTransactionType } from '~types';
 import { intl } from '~utils/intl';
 import { getSelectedSafeBalance, isAbiItem } from '~utils/safes';
 import { validateType } from '~utils/safes/contractParserValidation';
+import { isAddress } from '~utils/web3';
 
 import { FormSafeTransaction } from './types';
 

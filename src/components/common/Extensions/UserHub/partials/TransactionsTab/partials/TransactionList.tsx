@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 
+import { useUserTransactionContext } from '~context/UserTransactionContext';
 import MessageCard from '~frame/GasStation/MessageCard/MessageCard';
 import {
   TransactionOrMessageGroup,
@@ -7,8 +8,8 @@ import {
   isTxGroup,
 } from '~frame/GasStation/transactionGroup';
 import { MessageType } from '~redux/immutable';
+
 import GroupedTransaction from './GroupedTransaction';
-import { useUserTransactionContext } from '~context/UserTransactionContext';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionList';

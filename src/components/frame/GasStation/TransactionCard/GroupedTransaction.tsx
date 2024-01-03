@@ -1,20 +1,21 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Heading from '~shared/Heading';
-import Card from '~shared/Card';
-
 import { TransactionType } from '~redux/immutable';
+import Card from '~shared/Card';
+import Heading from '~shared/Heading';
 import { arrayToObject } from '~utils/arrays';
 
+import { Appearance } from '../GasStationContent';
 import {
   getGroupKey,
   getGroupStatus,
   getGroupValues,
 } from '../transactionGroup';
-import { Appearance } from '../GasStationContent';
+
 import GroupedTransactionCard from './GroupedTransactionCard';
 import TransactionStatus from './TransactionStatus';
+
 import styles from './GroupedTransaction.css';
 
 interface Props {

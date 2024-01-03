@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { string, object, boolean, InferType } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, withKey, mapPayload } from '~utils/actions';
-import { WizardDialogType } from '~hooks';
 
-import UnlockTokenForm from './UnlockTokenForm';
 import { getUnlockTokenDialogPayload } from './helpers';
+import UnlockTokenForm from './UnlockTokenForm';
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &

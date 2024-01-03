@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import { DialogSection } from '~shared/Dialog';
 import Heading from '~shared/Heading';
 
-import ConnectSafe from './ConnectSafe';
 import CheckSafe from './CheckSafe';
 import ConfirmSafe from './ConfirmSafe';
+import ConnectSafe from './ConnectSafe';
 import { AddExistingSafeProps, NetworkOption } from './types';
 
 import styles from './AddExistingSafeDialogForm.css';

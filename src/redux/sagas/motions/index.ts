@@ -1,25 +1,25 @@
 import { all, call } from 'redux-saga/effects';
 
-import stakeMotionSaga from './stakeMotion';
-import voteMotionSaga from './voteMotion';
-import revealVoteMotionSaga from './revealVoteMotion';
-import finalizeMotionSaga from './finalizeMotion';
-import claimMotionRewardsSaga from './claimMotionRewards';
 import claimAllMotionRewardsSaga from './claimAllMotionRewards';
-import rootMotionSaga from './rootMotion';
-import createEditDomainMotionSaga from './createEditDomainMotion';
-import moveFundsMotionSaga from './moveFundsMotion';
-import managePermissionsMotionSaga from './managePermissionsMotion';
-import paymentMotionSaga from './paymentMotion';
+import claimMotionRewardsSaga from './claimMotionRewards';
 // import escalateMotionSaga from './escalateMotion';
-import manageReputationMotionSaga from './manageReputationMotion';
-import editColonyMotionSaga from './editColonyMotion';
 import createDecisionMotionSaga from './createDecisionMotion';
+import createEditDomainMotionSaga from './createEditDomainMotion';
+import editColonyMotionSaga from './editColonyMotion';
 import {
   fundExpenditureMotionSaga,
   cancelStakedExpenditureMotionSaga,
 } from './expenditures';
+import finalizeMotionSaga from './finalizeMotion';
 import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion';
+import managePermissionsMotionSaga from './managePermissionsMotion';
+import manageReputationMotionSaga from './manageReputationMotion';
+import moveFundsMotionSaga from './moveFundsMotion';
+import paymentMotionSaga from './paymentMotion';
+import revealVoteMotionSaga from './revealVoteMotion';
+import rootMotionSaga from './rootMotion';
+import stakeMotionSaga from './stakeMotion';
+import voteMotionSaga from './voteMotion';
 
 export default function* actionsSagas() {
   yield all([

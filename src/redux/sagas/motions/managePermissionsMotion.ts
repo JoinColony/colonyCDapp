@@ -1,4 +1,3 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   Id,
@@ -7,22 +6,23 @@ import {
   ColonyRole,
 } from '@colony/colony-js';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants';
 import { Action, ActionTypes, AllActions } from '~redux/index';
 import { putError, takeFrom } from '~utils/saga/effects';
 
 import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import {
   getColonyManager,
   initiateTransaction,
   uploadAnnotation,
   createActionMetadataInDB,
 } from '../utils';
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
 
 function* managePermissionsMotion({
   payload: {

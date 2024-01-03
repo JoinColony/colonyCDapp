@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { SpinnerLoader } from '~shared/Preloaders';
 import { useMemberContext } from '~context/MemberContext';
+import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList';
 

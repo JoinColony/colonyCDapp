@@ -1,14 +1,13 @@
+import { Extension, Id } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { Extension, Id } from '@colony/colony-js';
 import { Link } from 'react-router-dom';
 
-import Button from '~shared/Button';
-import { useDialog } from '~shared/Dialog';
 import { DecisionDialog } from '~common/ColonyDecisions';
-
 import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes';
+import Button from '~shared/Button';
+import { useDialog } from '~shared/Dialog';
 
 import styles from './DecisionNotFound.css';
 

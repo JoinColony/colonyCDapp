@@ -1,13 +1,14 @@
+import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 import { MessageDescriptor, useIntl, FormattedMessage } from 'react-intl';
-import { ColonyRole } from '@colony/colony-js';
 
 import Icon from '~shared/Icon';
-import { Tooltip } from '../Popover';
-import { permissionsObject } from './permissions';
-
 import { UniversalMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
+
+import { Tooltip } from '../Popover';
+
+import { permissionsObject } from './permissions';
 
 import styles from './PermissionsLabel.css';
 

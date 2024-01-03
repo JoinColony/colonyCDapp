@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import { ColonyRole } from '@colony/colony-js';
+import React, { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { SetStateFn } from '~types';
-import ExternalLink from '~shared/ExternalLink';
+import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
 import {
   DialogSection,
   ActionDialogProps,
   DialogHeading,
   DialogControls,
 } from '~shared/Dialog';
+import ExternalLink from '~shared/ExternalLink';
 import { Annotations } from '~shared/Fields';
-import { TOKEN_UNLOCK_INFO } from '~constants/externalUrls';
+import { SetStateFn } from '~types';
 
 import {
   NoPermissionMessage,
@@ -20,6 +20,7 @@ import {
   PermissionRequiredInfo,
   NotEnoughReputation,
 } from '../Messages';
+
 import { useUnlockTokenDialogStatus } from './helpers';
 
 import styles from './UnlockTokenForm.css';

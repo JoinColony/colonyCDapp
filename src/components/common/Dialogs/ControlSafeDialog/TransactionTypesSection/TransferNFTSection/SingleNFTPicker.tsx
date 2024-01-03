@@ -1,8 +1,8 @@
 import React, { ComponentProps, useMemo } from 'react';
 
 import Avatar from '~shared/Avatar';
-import { nftNameContainsTokenId, getSelectedNFTData } from '~utils/safes';
 import SingleUserPicker from '~shared/SingleUserPicker';
+import { nftNameContainsTokenId, getSelectedNFTData } from '~utils/safes';
 
 /* SingleNFTPicker is a wrapper around SingleUserPicker component */
 interface Props extends ComponentProps<typeof SingleUserPicker> {

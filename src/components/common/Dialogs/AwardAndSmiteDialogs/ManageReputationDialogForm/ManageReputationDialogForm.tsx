@@ -1,30 +1,28 @@
-import React, { useEffect } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
 import Decimal from 'decimal.js';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { ItemDataType } from '~shared/OmniPicker';
+import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
+import { useActionDialogStatus, useUserReputation } from '~hooks';
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import { Select, Annotations } from '~shared/Fields';
 import ExternalLink from '~shared/ExternalLink';
+import { Select, Annotations } from '~shared/Fields';
+import { ItemDataType } from '~shared/OmniPicker';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
 import UserAvatar from '~shared/UserAvatar';
-import { REPUTATION_LEARN_MORE } from '~constants/externalUrls';
-
 import { SetStateFn, User } from '~types';
-
-import { useActionDialogStatus, useUserReputation } from '~hooks';
-import { sortBy } from '~utils/lodash';
 import { notNull } from '~utils/arrays';
 import { findDomainByNativeId } from '~utils/domains';
+import { sortBy } from '~utils/lodash';
 
 import {
   NoPermissionMessage,
@@ -32,6 +30,7 @@ import {
   PermissionRequiredInfo,
   NotEnoughReputation,
 } from '../../Messages';
+
 import ReputationAmountInput from './ReputationAmountInput';
 import TeamDropdownItem from './TeamDropdownItem';
 

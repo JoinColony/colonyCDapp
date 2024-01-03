@@ -1,13 +1,15 @@
-import React, { FC } from 'react';
 import { Extension, Id } from '@colony/colony-js';
-import ActionButtons from '../partials/ActionButtons';
+import React, { FC } from 'react';
 
+import useColonyContext from '~hooks/useColonyContext';
 import { AnyExtensionData } from '~types';
 import { addressHasRoles } from '~utils/checks';
-import PermissionsNeededBanner from './PermissionsNeededBanner';
-import { ExtensionsBadgeMap } from './consts';
 import { formatText } from '~utils/intl';
-import useColonyContext from '~hooks/useColonyContext';
+
+import ActionButtons from '../partials/ActionButtons';
+
+import { ExtensionsBadgeMap } from './consts';
+import PermissionsNeededBanner from './PermissionsNeededBanner';
 
 import styles from '../Pages.module.css';
 

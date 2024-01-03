@@ -1,11 +1,13 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
 import FormError from '~v5/shared/FormError';
-import { TextareaProps } from './types';
-import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
+
 import { useInput } from '../hooks';
+
+import { DEFAULT_MAX_CHAR_NUMBER } from './consts';
+import { TextareaProps } from './types';
 
 const displayName = 'v5.common.Textarea';
 

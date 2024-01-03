@@ -1,8 +1,8 @@
+import { Editor as CoreEditor } from '@tiptap/core';
+import { EditorContent, Editor } from '@tiptap/react';
+import classnames from 'classnames';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { EditorContent, Editor } from '@tiptap/react';
-import { Editor as CoreEditor } from '@tiptap/core';
-import classnames from 'classnames';
 
 import { DEFAULT_CHARACTER_LIMIT } from '~hooks/useRichTextEditor';
 

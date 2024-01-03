@@ -1,5 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
+
 import {
   LAZY_CONSENSUS,
   PAYMENTS,

@@ -1,23 +1,26 @@
-import React, { FC, useState } from 'react';
-import clsx from 'clsx';
 import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
 } from '@tanstack/react-table';
+import clsx from 'clsx';
 import { uniqueId } from 'lodash';
+import React, { FC, useState } from 'react';
+
 import { useColonyContext, useMobile } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import useToggle from '~hooks/useToggle';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 // import { useSearchContext } from '~context/SearchContext';
 // import Filter from '~v5/common/Filter';
 import EmptyContent from '~v5/common/EmptyContent';
 import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
-import CopyWallet from '~v5/shared/CopyWallet';
 import Button from '~v5/shared/Button';
+import CopyWallet from '~v5/shared/CopyWallet';
+
 import BalanceModal from '../BalanceModal';
+
 import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
 import { BalanceTableFieldModel, BalanceTableProps } from './types';
 

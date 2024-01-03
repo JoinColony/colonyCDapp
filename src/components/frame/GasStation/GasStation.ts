@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { RootStateRecord } from '~redux/state';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
+import { RootStateRecord } from '~redux/state';
 
 import GasStationContent from './GasStationContent';
 

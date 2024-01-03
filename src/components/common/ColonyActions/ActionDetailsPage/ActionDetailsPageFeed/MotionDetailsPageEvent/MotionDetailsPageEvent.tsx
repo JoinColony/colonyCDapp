@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
 import {
   ColonyAction,
   ColonyAndExtensionsEvents,
   MotionMessage,
   SystemMessages,
 } from '~types';
-import { TransactionStatus, TransactionStatuses } from '~common/ColonyActions';
+
 import MotionEventData from './MotionEventData';
 
 import styles from '../ActionDetailsPageEvent.css';

@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { useAsyncFunction } from '~hooks';
+import { ActionTransformFnType } from '~utils/actions';
 
 import FileUpload from './FileUpload';
-
-import { ActionTransformFnType } from '~utils/actions';
 
 interface Props {
   submit: string;

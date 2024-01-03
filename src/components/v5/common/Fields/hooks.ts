@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
 import merge from 'lodash/merge';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { BaseFieldProps } from './types';
 
 export const useInput = (maxCharNumber: number, defaultValue?: string) => {

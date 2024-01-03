@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import SupportingDocuments from '~common/Extensions/SupportingDocuments';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof SupportingDocuments> = {
   title: 'Common/Supporting Documents list',

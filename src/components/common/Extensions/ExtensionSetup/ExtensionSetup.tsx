@@ -3,22 +3,22 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { InferType } from 'yup';
 
+import { useColonyHomeContext } from '~context';
 import { useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
+import { IconButton } from '~shared/Button';
 import { ActionForm } from '~shared/Fields';
 import Heading from '~shared/Heading';
 import { InstalledExtensionData } from '~types';
 import { mapPayload, mergePayload, pipe } from '~utils/actions';
-import { IconButton } from '~shared/Button';
-import { ActionTypes } from '~redux';
-import { useColonyHomeContext } from '~context';
-import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
+import InitParamField from './InitParamField';
 import {
   createExtensionSetupInitialValues,
   createExtensionSetupValidationSchema,
   mapExtensionActionPayload,
 } from './utils';
-import InitParamField from './InitParamField';
 
 import styles from './ExtensionSetup.css';
 

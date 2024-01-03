@@ -1,20 +1,21 @@
-import React from 'react';
 import { Id } from '@colony/colony-js';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { string, object, number, InferType } from 'yup';
 
-import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
-import { Form } from '~shared/Fields';
+import { NotEnoughReputation } from '~common/Dialogs/Messages';
 import {
   useAppContext,
   useColonyHasReputation,
   useRichTextEditor,
 } from '~hooks';
-
-import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import { createDecisionAction } from '~redux/actionCreators';
+import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
+import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
+import { Form } from '~shared/Fields';
+import { DecisionDraft } from '~utils/decisions';
 
 import {
   DecisionTitle,
@@ -22,9 +23,6 @@ import {
   DecisionControls,
   DialogHeading,
 } from '../DecisionDialog';
-
-import { NotEnoughReputation } from '~common/Dialogs/Messages';
-import { DecisionDraft } from '~utils/decisions';
 
 import styles from './DecisionDialog.css';
 

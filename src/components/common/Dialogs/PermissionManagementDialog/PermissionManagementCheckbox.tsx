@@ -1,7 +1,7 @@
-import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { Checkbox } from '~shared/Fields';
 import PermissionsLabel from '~shared/PermissionsLabel';

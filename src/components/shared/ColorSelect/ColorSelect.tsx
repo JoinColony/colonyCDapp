@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
-import { Appearance, Select } from '~shared/Fields';
 import ColorTag from '~shared/ColorTag';
+import { Appearance, Select } from '~shared/Fields';
 import { DomainColor } from '~types';
 
 import styles from './ColorSelect.css';

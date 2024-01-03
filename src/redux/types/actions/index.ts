@@ -2,16 +2,16 @@ import { NavigateFunction } from 'react-router-dom';
 
 import { ColonyActionTypes } from './colony';
 import { ColonyActionsActionTypes } from './colonyActions';
-import { MotionActionTypes } from './motion';
+import { DecisionActionTypes } from './decisions';
+import { ExpendituresActionTypes } from './expenditures';
 import { GasPricesActionTypes } from './gasPrices';
-import { TransactionActionTypes } from './transaction';
+import { IpfsActionTypes } from './ipfs';
 import { MessageActionTypes } from './message';
+import { MotionActionTypes } from './motion';
+import { TransactionActionTypes } from './transaction';
 import { UserActionTypes } from './user';
 import { MetacolonyVestingTypes } from './vesting';
 import { WalletActionTypes } from './wallet';
-import { DecisionActionTypes } from './decisions';
-import { IpfsActionTypes } from './ipfs';
-import { ExpendituresActionTypes } from './expenditures';
 
 export { RootMotionMethodNames } from './motion';
 

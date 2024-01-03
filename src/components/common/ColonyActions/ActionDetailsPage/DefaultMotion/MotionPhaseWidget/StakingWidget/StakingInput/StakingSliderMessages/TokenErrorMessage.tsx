@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useColonyContext, useTokenActivationContext } from '~hooks';
-
 import Button from '~shared/Button';
 import Numeral from '~shared/Numeral';
 

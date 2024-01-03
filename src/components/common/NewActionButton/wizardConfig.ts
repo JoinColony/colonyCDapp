@@ -1,5 +1,6 @@
 import { EnabledExtensionData } from '~hooks/useEnabledExtensions';
 import { Colony } from '~types';
+
 import {
   ColonyActionsDialog,
   ManageExpenditureDialog,

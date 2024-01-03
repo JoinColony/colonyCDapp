@@ -1,6 +1,6 @@
 import React from 'react';
-import { PopperOptions } from 'react-popper-tooltip';
 import { MessageDescriptor } from 'react-intl';
+import { PopperOptions } from 'react-popper-tooltip';
 
 import { Toggle } from '~shared/Fields';
 

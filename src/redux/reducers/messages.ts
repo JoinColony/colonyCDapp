@@ -2,11 +2,11 @@ import { fromJS } from 'immutable';
 
 import { TransactionStatus } from '~types';
 
-import { Message } from '../immutable';
 import { ActionTypes } from '../actionTypes';
-import { ReducerType } from '../types/reducer';
-import { CoreMessages, CoreMessagesRecord } from '../state/messages';
 import { CORE_MESSAGES_LIST } from '../constants';
+import { Message } from '../immutable';
+import { CoreMessages, CoreMessagesRecord } from '../state/messages';
+import { ReducerType } from '../types/reducer';
 
 const coreMessagesReducer: ReducerType<CoreMessagesRecord> = (
   state = CoreMessages(),

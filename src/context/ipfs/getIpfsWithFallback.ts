@@ -1,6 +1,5 @@
 import IPFSNode from './ipfsnode';
 import Pinata from './pinata';
-
 import { raceAgainstTimeout } from './utils';
 
 const DEFAULT_TIMEOUT_POST = 30000;

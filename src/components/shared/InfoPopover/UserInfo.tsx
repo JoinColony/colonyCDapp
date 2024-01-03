@@ -2,8 +2,8 @@ import React from 'react';
 
 import CopyableAddress from '~shared/CopyableAddress';
 import Heading from '~shared/Heading';
-import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
+import UserMention from '~shared/UserMention';
 import { User } from '~types';
 
 import styles from './InfoPopover.css';

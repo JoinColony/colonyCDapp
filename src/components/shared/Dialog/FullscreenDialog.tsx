@@ -1,8 +1,10 @@
 import React, { ReactNode } from 'react';
 
 import Icon from '~shared/Icon';
-import styles from './FullscreenDialog.css';
+
 import Modal from '../Modal';
+
+import styles from './FullscreenDialog.css';
 
 interface Props {
   /** Dialog needs the cancel function from your Dialog component */

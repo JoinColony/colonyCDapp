@@ -3,8 +3,8 @@ import React, { FC } from 'react';
 import { useSetPageHeadingTitle } from '~context';
 import { formatText } from '~utils/intl';
 
-import BalanceTable from './partials/BalanceTable';
 import { useBalancePage } from './hooks';
+import BalanceTable from './partials/BalanceTable';
 
 const displayName = 'v5.pages.BalancePage';
 

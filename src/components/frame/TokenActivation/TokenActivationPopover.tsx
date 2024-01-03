@@ -1,7 +1,7 @@
 import React, { ReactElement, useMemo } from 'react';
 
-import Popover, { PopoverChildFn } from '~shared/Popover';
 import { useTokenActivationContext } from '~hooks';
+import Popover, { PopoverChildFn } from '~shared/Popover';
 import { removeValueUnits } from '~utils/css';
 
 import TokenActivationContent from './TokenActivationContent';

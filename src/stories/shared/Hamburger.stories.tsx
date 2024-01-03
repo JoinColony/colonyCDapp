@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import Hamburger from '~v5/shared/Button/Hamburger';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Hamburger> = {
   title: 'Shared/Buttons/Hamburger',

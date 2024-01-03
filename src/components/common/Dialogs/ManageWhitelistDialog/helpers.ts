@@ -1,8 +1,8 @@
 import { Action, ActionTypes } from '~redux';
 import { Address, Colony } from '~types';
 import { notNull } from '~utils/arrays';
-import { createAddress } from '~utils/web3';
 import { difference } from '~utils/lodash';
+import { createAddress } from '~utils/web3';
 
 export enum TABS {
   ADD_ADDRESS = 0,

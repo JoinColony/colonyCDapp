@@ -1,7 +1,6 @@
-import IPFSNode from './ipfsnode';
-
-import pinataClient from './pinataClient';
 import getIPFSWithFallback from './getIpfsWithFallback';
+import IPFSNode from './ipfsnode';
+import pinataClient from './pinataClient';
 
 const getIPFSContext = () => {
   if (

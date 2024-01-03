@@ -1,24 +1,24 @@
-import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { array, InferType, number, object, string } from 'yup';
 
-import { ActionTypes } from '~redux';
-import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { notNull } from '~utils/arrays';
-import { toFinite } from '~utils/lodash';
 import { formatText } from '~utils/intl';
+import { toFinite } from '~utils/lodash';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
-import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();

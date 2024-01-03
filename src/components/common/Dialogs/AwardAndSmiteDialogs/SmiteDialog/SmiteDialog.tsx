@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { AwardAndSmiteDialogProps } from '../types';
 import ManageReputationContainer from '../ManageReputationContainer';
+import { AwardAndSmiteDialogProps } from '../types';
 
 const displayName = 'common.SmiteDialog';
 

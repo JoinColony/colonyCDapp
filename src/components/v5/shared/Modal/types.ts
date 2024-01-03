@@ -1,5 +1,5 @@
-import { Props as ReactModalProps } from 'react-modal';
 import React from 'react';
+import { Props as ReactModalProps } from 'react-modal';
 
 import { ButtonMode } from '../Button/types';
 

@@ -1,3 +1,4 @@
+import { State as PopperJsState } from '@popperjs/core';
 import React, {
   CSSProperties,
   Dispatch,
@@ -7,16 +8,15 @@ import React, {
   useMemo,
 } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
-import { State as PopperJsState } from '@popperjs/core';
 
 import { SimpleMessageValues } from '~types';
 import { getMainClasses } from '~utils/css';
 
+import getPopoverArrowClasses from './getPopoverArrowClasses';
 import {
   PopoverAppearanceType,
   PopoverContent as PopoverContentType,
 } from './types';
-import getPopoverArrowClasses from './getPopoverArrowClasses';
 
 import styles from './PopoverWrapper.css';
 

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { isAddress } from '~utils/web3';
-import MaskedAddress from '~shared/MaskedAddress';
+import { ADDRESS_ZERO } from '~constants';
 import Avatar from '~shared/Avatar';
+import MaskedAddress from '~shared/MaskedAddress';
 import { User } from '~types';
+import { isAddress } from '~utils/web3';
 
 import styles from './AddressDetailsView.css';
-import { ADDRESS_ZERO } from '~constants';
 
 interface Props {
   item: User | undefined;

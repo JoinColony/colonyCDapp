@@ -1,4 +1,5 @@
 import { MotionVote } from '~utils/colonyMotions';
+
 import { opposeOption, supportOption } from '../../consts';
 
 export const renderVoteRadioButtons = (

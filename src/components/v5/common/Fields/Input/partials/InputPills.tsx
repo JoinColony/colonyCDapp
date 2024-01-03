@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import Icon from '~shared/Icon';
-import { PillProps } from '../types';
 import { formatText } from '~utils/intl';
+
+import { PillProps } from '../types';
 
 const displayName = 'v5.common.Fields.Input.partials.InputPills';
 

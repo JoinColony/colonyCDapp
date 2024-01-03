@@ -1,6 +1,6 @@
+import { Id, MotionState } from '@colony/colony-js';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Id, MotionState } from '@colony/colony-js';
 
 import {
   ColonyActionType,
@@ -10,20 +10,21 @@ import {
 } from '~gql';
 import { useColonyContext } from '~hooks';
 import { Heading3 } from '~shared/Heading';
-import { getExpenditureDatabaseId } from '~utils/databaseId';
-import { findDomainByNativeId } from '~utils/domains';
+import { motionTags } from '~shared/Tag';
 import { notNull } from '~utils/arrays';
 import { getMotionState } from '~utils/colonyMotions';
-import { motionTags } from '~shared/Tag';
+import { getExpenditureDatabaseId } from '~utils/databaseId';
+import { findDomainByNativeId } from '~utils/domains';
 import { boolToYesNo } from '~utils/strings';
 
-import ExpenditureBalances from './ExpenditureBalances';
-import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
-import ExpenditurePayouts from './ExpenditurePayouts';
-import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
-import ExpenditureStages from './ExpenditureStages';
-import CancelDraftExpenditureButton from './CancelDraftExpenditureButton';
 import CancelStakedExpenditureButton from '../StakedExpenditure/CancelStakedExpenditureButton';
+import ReclaimStakeButton from '../StakedExpenditure/ReclaimStakeButton';
+
+import CancelDraftExpenditureButton from './CancelDraftExpenditureButton';
+import ExpenditureAdvanceButton from './ExpenditureAdvanceButton';
+import ExpenditureBalances from './ExpenditureBalances';
+import ExpenditurePayouts from './ExpenditurePayouts';
+import ExpenditureStages from './ExpenditureStages';
 import { hasMotionFailed, isMotionInProgress } from './helpers';
 
 import styles from './ExpenditureDetailsPage.module.css';

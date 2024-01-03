@@ -1,12 +1,11 @@
+import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
-import { nanoid } from 'nanoid';
 
+import Button from '~shared/Button';
 import Dialog, { DialogProps } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
-import Button from '~shared/Button';
 import Icon from '~shared/Icon';
-
 import { UniversalMessageValues } from '~types';
 
 import IndexModalItem from './IndexModalItem';

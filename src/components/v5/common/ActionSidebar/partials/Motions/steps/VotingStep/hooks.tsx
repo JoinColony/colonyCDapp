@@ -1,24 +1,23 @@
 import { Extension } from '@colony/colony-js';
-import { number, object } from 'yup';
 import { BigNumber } from 'ethers';
 import React from 'react';
+import { number, object } from 'yup';
 
-import Numeral from '~shared/Numeral';
+import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-
 import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
-import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
+import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
+import { OnSuccess } from '~shared/Fields';
+import Numeral from '~shared/Numeral';
+import { InstalledExtensionData } from '~types';
+import { MotionAction } from '~types/motions';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
 import { getSafePollingInterval } from '~utils/queries';
-import { OnSuccess } from '~shared/Fields';
-import { InstalledExtensionData } from '~types';
-import { MotionAction } from '~types/motions';
-import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
 
-import { VotingFormValues, VotingRewardsSections } from './types';
 import { DescriptionListItem } from './partials/DescriptionList/types';
+import { VotingFormValues, VotingRewardsSections } from './types';
 import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
 
 export const useVotingStep = (

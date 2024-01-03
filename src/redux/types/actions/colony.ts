@@ -8,6 +8,7 @@ import {
   InstalledExtensionData,
   WithKey,
 } from '~types';
+
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 
 export type ColonyActionTypes =

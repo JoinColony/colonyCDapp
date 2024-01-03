@@ -1,7 +1,7 @@
-import React from 'react';
-import { defineMessages } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
 import { Colony } from '~types';

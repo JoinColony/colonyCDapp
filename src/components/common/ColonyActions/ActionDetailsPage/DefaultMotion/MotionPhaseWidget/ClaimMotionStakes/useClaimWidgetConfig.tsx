@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { BigNumber } from 'ethers';
-import { useLocation } from 'react-router-dom';
 import { Extension } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import Numeral from '~shared/Numeral';
-import { intl } from '~utils/intl';
-import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
-import { ActionButton } from '~shared/Button';
-import { ActionTypes } from '~redux';
-import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
-import { DetailItemProps } from '~shared/DetailsWidget';
-import { getTransactionHashFromPathName } from '~utils/urls';
-import { ColonyMotion, InstalledExtensionData } from '~types';
 import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 import { useUserTokenBalanceContext } from '~context';
+import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
+import { ActionTypes } from '~redux';
+import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
+import { ActionButton } from '~shared/Button';
+import { DetailItemProps } from '~shared/DetailsWidget';
+import Numeral from '~shared/Numeral';
+import { ColonyMotion, InstalledExtensionData } from '~types';
+import { intl } from '~utils/intl';
+import { getTransactionHashFromPathName } from '~utils/urls';
 
 import { ClaimMotionStakesStyles } from './ClaimMotionStakes';
 

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import Decimal from 'decimal.js';
+import { useState } from 'react';
 
 import { SortingMethod } from '~gql';
 

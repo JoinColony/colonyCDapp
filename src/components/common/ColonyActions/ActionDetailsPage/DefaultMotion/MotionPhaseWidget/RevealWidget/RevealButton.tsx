@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useAppContext } from '~hooks';
 import Button from '~shared/Button';
-
 import { formatText } from '~utils/intl';
 
 import styles from './RevealButton.css';

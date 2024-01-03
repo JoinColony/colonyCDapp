@@ -1,15 +1,17 @@
-import React from 'react';
 import {
   flexRender,
   useReactTable,
   getCoreRowModel as libGetCoreRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import { TableProps } from './types';
+import React from 'react';
+
 import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';
+
+import { TableProps } from './types';
 import { getDefaultRenderCellWrapper } from './utils';
 
 const displayName = 'v5.common.Table';

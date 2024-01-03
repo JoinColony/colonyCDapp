@@ -1,6 +1,6 @@
+import { Id } from '@colony/colony-js';
 import React, { ReactNode } from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
-import { Id } from '@colony/colony-js';
 
 import { DEFAULT_TOKEN_DECIMALS, SAFE_NAMES_MAP } from '~constants';
 import Numeral from '~shared/Numeral';
@@ -18,8 +18,8 @@ import {
   getDetailItemsKeys,
 } from '~utils/colonyActions';
 import { findDomainByNativeId } from '~utils/domains';
-import { splitTransactionHash } from '~utils/strings';
 import { getAddedSafe, getRemovedSafes } from '~utils/safes';
+import { splitTransactionHash } from '~utils/strings';
 
 import {
   UserDetail,
@@ -32,9 +32,9 @@ import {
   SafeTransactionDetail,
 } from '../DetailsWidget';
 
-import SafeValueDetail from './SafeValueDetail';
-import SafeDetail from './SafeDetail';
 import AddressDetail from './AddressDetail';
+import SafeDetail from './SafeDetail';
+import SafeValueDetail from './SafeValueDetail';
 
 import styles from './DetailsWidget.css';
 

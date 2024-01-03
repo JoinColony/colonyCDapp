@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 import { useAppContext, useColonyContext } from '~hooks';
+import { Tab, Tabs, TabList, TabPanel } from '~shared/Tabs';
 import { notNull } from '~utils/arrays';
 
-import TokensTab, { TokensTabProps } from '../TokensTab';
 import StakesTab from '../StakesTab';
+import TokensTab, { TokensTabProps } from '../TokensTab';
 
 import styles from './TokenActivationContent.css';
 

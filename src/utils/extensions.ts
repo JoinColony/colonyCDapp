@@ -1,6 +1,7 @@
 import { Extension, Id } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 
+import { getUserRolesForDomain } from '~transformers';
 import {
   AnyExtensionData,
   ExtensionConfig,
@@ -9,9 +10,9 @@ import {
   InstallableExtensionData,
   Colony,
 } from '~types';
-import { getUserRolesForDomain } from '~transformers';
 
 import { userHasRole } from './checks';
+
 /**
  * Type guard to distinguish installed extension data from installable extension data
  */

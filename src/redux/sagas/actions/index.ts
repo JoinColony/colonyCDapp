@@ -1,19 +1,19 @@
 import { all, call } from 'redux-saga/effects';
 
-import mintTokensActionSaga from './mintTokens';
-import paymentActionSaga from './payment';
-import moveFundsActionSaga from './moveFunds';
-import versionUpgradeActionSaga from './versionUpgrade';
 import createDomainActionSaga from './createDomain';
-import editDomainActionSaga from './editDomain';
 import editColonyActionSaga from './editColony';
+import editDomainActionSaga from './editDomain';
+import initiateSafeTransactionSaga from './initiateSafeTransaction';
+import manageExistingSafesActionSaga from './manageExistingSafes';
 import managePermissionsActionSaga from './managePermissions';
-import unlockTokenActionSaga from './unlockToken';
-// import enterRecoveryActionSaga from './enterRecovery';
 import manageReputationActionSaga from './manageReputation';
 import manageVerifiedRecipientsSaga from './manageVerifiedRecipients';
-import manageExistingSafesActionSaga from './manageExistingSafes';
-import initiateSafeTransactionSaga from './initiateSafeTransaction';
+import mintTokensActionSaga from './mintTokens';
+import moveFundsActionSaga from './moveFunds';
+import paymentActionSaga from './payment';
+import unlockTokenActionSaga from './unlockToken';
+import versionUpgradeActionSaga from './versionUpgrade';
+// import enterRecoveryActionSaga from './enterRecovery';
 
 export default function* actionsSagas() {
   yield all([

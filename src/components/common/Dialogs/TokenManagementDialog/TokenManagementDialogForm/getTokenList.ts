@@ -3,8 +3,8 @@ import { Network } from '@colony/colony-js';
 import { DEFAULT_NETWORK } from '~constants';
 import { createAddress } from '~utils/web3';
 
-import mainnetTokenList from './tokens/tokenList.mainnet.json';
 import goerliTokenList from './tokens/tokenList.goerli.json';
+import mainnetTokenList from './tokens/tokenList.mainnet.json';
 import xdaiTokenList from './tokens/tokenList.xdai.json';
 
 interface ListToken {

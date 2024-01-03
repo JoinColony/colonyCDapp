@@ -1,6 +1,6 @@
+import classnames from 'classnames';
 import React, { ReactNode } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
-import classnames from 'classnames';
 
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
 import { Message, UniversalMessageValues } from '~types';

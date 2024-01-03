@@ -1,11 +1,10 @@
 import React from 'react';
 
-import ColorTag from '~shared/ColorTag';
-
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useColonyContext } from '~hooks';
-import { findDomainByNativeId } from '~utils/domains';
 import { useColonyHomeContext } from '~context';
+import { useColonyContext } from '~hooks';
+import ColorTag from '~shared/ColorTag';
+import { findDomainByNativeId } from '~utils/domains';
 
 import styles from './ColonyDomainDescription.css';
 

@@ -1,11 +1,11 @@
-import React from 'react';
 import { Id } from '@colony/colony-js';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useColonyContext } from '~hooks';
 import { useColonyHomeContext } from '~context';
+import { useColonyContext } from '~hooks';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
 
 import MembersSubsection from './MembersSubsection';
 

@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
-import { SearchSelectOptionProps } from './types';
+
 import { formatText } from '~utils/intl';
+
+import { SearchSelectOptionProps } from './types';
 
 export const useSearchSelect = (
   items: SearchSelectOptionProps[],

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { TransactionType, MessageType } from '~redux/immutable';
 import Heading from '~shared/Heading';
 import { getMainClasses } from '~utils/css';
-import { TransactionType, MessageType } from '~redux/immutable';
 
-import { TransactionOrMessageGroups, isTxGroup } from '../transactionGroup';
 import GasStationHeader from '../GasStationHeader';
-import TransactionDetails from '../TransactionDetails';
-import TransactionList from '../TransactionList';
 import MessageCardDetails from '../MessageCardDetails';
+import TransactionDetails from '../TransactionDetails';
+import { TransactionOrMessageGroups, isTxGroup } from '../transactionGroup';
+import TransactionList from '../TransactionList';
 
 import styles from './GasStationContent.css';
 

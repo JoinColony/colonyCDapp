@@ -1,6 +1,6 @@
 import React from 'react';
-import { useColonyContext } from '~hooks';
 
+import { useColonyContext } from '~hooks';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
 

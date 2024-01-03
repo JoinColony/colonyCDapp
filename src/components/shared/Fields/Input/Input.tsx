@@ -1,17 +1,18 @@
-import React, { InputHTMLAttributes, useState } from 'react';
-import classnames from 'classnames';
-import { nanoid } from 'nanoid';
-import { useFormContext } from 'react-hook-form';
 import { isConfusing } from '@colony/unicode-confusables-noascii';
+import classnames from 'classnames';
 import { CleaveOptions } from 'cleave.js/options';
+import { nanoid } from 'nanoid';
+import React, { InputHTMLAttributes, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-import { formatText } from '~utils/intl';
 import ConfusableWarning from '~shared/ConfusableWarning';
 import { Message } from '~types';
+import { formatText } from '~utils/intl';
 
+import { InputComponentAppearance } from '../Input';
 import InputLabel from '../InputLabel';
 import InputStatus from '../InputStatus';
-import { InputComponentAppearance } from '../Input';
+
 import InputComponent from './InputComponent';
 import { CoreInputProps, MaxButtonParams } from './types';
 

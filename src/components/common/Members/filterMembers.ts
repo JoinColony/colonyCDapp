@@ -1,6 +1,5 @@
 import { FormValues } from '~common/ColonyMembers/MembersFilter';
 import { VerificationType } from '~common/ColonyMembers/MembersFilter/filtersConfig';
-
 import { Address } from '~types';
 
 const filterMemberBySearchTerm = (member: any, searchTerm: string) => {

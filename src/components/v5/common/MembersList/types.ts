@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+
 import { ColonyContributor } from '~types';
 
 export interface MembersListProps {

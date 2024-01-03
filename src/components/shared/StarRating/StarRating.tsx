@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Icon from '~shared/Icon';
+
 import styles from './StarRating.css';
 
 const MSG = defineMessages({

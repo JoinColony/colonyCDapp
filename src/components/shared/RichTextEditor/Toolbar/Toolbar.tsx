@@ -1,5 +1,5 @@
-import React from 'react';
 import { Editor } from '@tiptap/core';
+import React from 'react';
 
 import { getToolbarItems, ColorPicker, ToolbarItem } from '../Toolbar';
 

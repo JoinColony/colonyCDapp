@@ -1,17 +1,16 @@
 import { Record } from 'immutable';
 
-import { GasPrices, GasPricesRecord } from '../immutable';
-
 import {
   CORE_DECISIONS,
   CORE_GAS_PRICES,
   CORE_MESSAGES,
   CORE_TRANSACTIONS,
 } from '../constants';
+import { GasPrices, GasPricesRecord } from '../immutable';
 
-import { CoreTransactions, CoreTransactionsRecord } from './transactions';
-import { CoreMessages, CoreMessagesRecord } from './messages';
 import { CoreDecisions, CoreDecisionsRecord } from './decisions';
+import { CoreMessages, CoreMessagesRecord } from './messages';
+import { CoreTransactions, CoreTransactionsRecord } from './transactions';
 
 type RootStateProps = {
   [CORE_GAS_PRICES]: GasPricesRecord;

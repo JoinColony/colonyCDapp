@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
+
 import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import VoteChart from '~v5/shared/VoteChart';
+
 import { StakingChartProps } from './types';
 
 const displayName =

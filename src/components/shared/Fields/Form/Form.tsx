@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useCallback, useEffect, useImperativeHandle } from 'react';
 import {
   useForm,
@@ -7,8 +8,8 @@ import {
   FieldValues,
   FieldErrors,
 } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Schema } from 'yup';
+
 import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types';
 

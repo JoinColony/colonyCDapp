@@ -1,9 +1,11 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
+
+import Icon from '~shared/Icon';
 
 import { PillsProps } from './types';
+
 import styles from './PillsBase.module.css';
-import Icon from '~shared/Icon';
 
 const displayName = 'v5.common.Pills.PillsBase';
 

@@ -1,7 +1,6 @@
 import { ClientType } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, AllActions, ActionTypes } from '~redux';
 import { ContextModule, getContext } from '~context';
 import {
   CreateColonyContributorDocument,
@@ -18,6 +17,8 @@ import {
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
+import { Action, AllActions, ActionTypes } from '~redux';
+import { getColonyContributorId } from '~utils/members';
 
 import {
   createGroupTransaction,
@@ -32,7 +33,6 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils';
-import { getColonyContributorId } from '~utils/members';
 
 function* manageVerifiedRecipients({
   payload: {

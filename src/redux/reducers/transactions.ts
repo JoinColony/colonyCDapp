@@ -2,18 +2,18 @@ import getObjectFromPath from 'lodash/get';
 
 import { TransactionStatus } from '~types';
 
+import { ActionTypes } from '../actionTypes';
+import { CORE_TRANSACTIONS_LIST } from '../constants';
 import {
   TransactionRecord,
   Transaction,
   TransactionRecordProps,
 } from '../immutable';
-import { ActionTypes } from '../actionTypes';
-import { ReducerType } from '../types/reducer';
 import {
   CoreTransactions,
   CoreTransactionsRecord,
 } from '../state/transactions';
-import { CORE_TRANSACTIONS_LIST } from '../constants';
+import { ReducerType } from '../types/reducer';
 
 const transactionGroup = (tx: TransactionRecord) => {
   if (!tx.group || typeof tx.group.id === 'string') return tx.group;

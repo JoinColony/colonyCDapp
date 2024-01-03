@@ -1,22 +1,22 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   Id,
   getPermissionProofs,
   ColonyRole,
 } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
-import {
-  transactionAddParams,
-  transactionPending,
-} from '~redux/actionCreators';
 import { ContextModule, getContext, ColonyManager } from '~context';
 import {
   CreateDomainMetadataDocument,
   CreateDomainMetadataMutation,
   CreateDomainMetadataMutationVariables,
 } from '~gql';
+import { Action, ActionTypes, AllActions } from '~redux';
+import {
+  transactionAddParams,
+  transactionPending,
+} from '~redux/actionCreators';
 import { getDomainDatabaseId } from '~utils/databaseId';
 import { toNumber } from '~utils/numbers';
 

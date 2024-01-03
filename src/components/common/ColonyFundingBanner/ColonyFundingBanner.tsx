@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~hooks';
 import MaskedAddress from '~shared/MaskedAddress';
 import { splitAddress } from '~utils/strings';
-import { useColonyContext } from '~hooks';
 
 import styles from './ColonyFundingBanner.css';
 

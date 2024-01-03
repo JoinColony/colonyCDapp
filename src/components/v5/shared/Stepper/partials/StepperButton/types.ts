@@ -1,5 +1,7 @@
 import { ButtonHTMLAttributes } from 'react';
+
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
+
 import { StepStage } from './consts';
 
 export interface StepperButtonProps

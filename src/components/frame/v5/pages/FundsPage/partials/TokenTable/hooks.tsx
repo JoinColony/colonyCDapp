@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import React, { useMemo } from 'react';
 
 import Numeral from '~shared/Numeral';
 import { ColonyClaims } from '~types';
 import { formatText } from '~utils/intl';
+
 import AcceptButton from '../AcceptButton';
 
 export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {

@@ -1,4 +1,3 @@
-import { BigNumberish } from 'ethers';
 import {
   ColonyRole,
   Id,
@@ -7,8 +6,10 @@ import {
   getPermissionProofs,
   getChildIndex,
 } from '@colony/colony-js';
+import { BigNumberish } from 'ethers';
 
 import { ColonyManager } from '~context';
+
 import getColonyManager from './getColonyManager';
 
 export function* getMoveFundsPermissionProofs(

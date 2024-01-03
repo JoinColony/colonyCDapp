@@ -2,8 +2,8 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Heading4 } from '~shared/Heading';
-import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
 import { ColonyAction, ColonyMetadata } from '~types';
+import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
 
 import styles from './VotingWidgetHeading.css';
 

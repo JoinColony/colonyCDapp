@@ -3,8 +3,8 @@ import { CleaveOptions } from 'cleave.js/options';
 import { BigNumberish } from 'ethers';
 import { MessageDescriptor } from 'react-intl';
 import { Schema } from 'yup';
-import { ExtensionCategory } from '~constants';
 
+import { ExtensionCategory } from '~constants';
 import { ColonyExtension } from '~types';
 
 export enum WhitelistPolicy {

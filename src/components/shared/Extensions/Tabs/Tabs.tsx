@@ -1,9 +1,10 @@
+import { clsx } from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 import { Tabs as ReactTabs, Tab, TabScreen } from 'react-tabs-scrollable';
-import { clsx } from 'clsx';
 
-import { formatText } from '~utils/intl';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+
 import { TabsProps } from './types';
 
 const displayName = 'Extensions.Tabs';

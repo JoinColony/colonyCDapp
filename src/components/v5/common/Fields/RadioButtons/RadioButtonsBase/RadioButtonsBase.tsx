@@ -1,10 +1,9 @@
+import isEqual from 'lodash/isEqual';
+import noop from 'lodash/noop';
 import React from 'react';
 
-import noop from 'lodash/noop';
-import isEqual from 'lodash/isEqual';
-
-import { RadioButtonsBaseProps } from './types';
 import RadioBase from './RadioBase';
+import { RadioButtonsBaseProps } from './types';
 
 const displayName = 'v5.common.RadioButtonsBase';
 

@@ -1,9 +1,15 @@
 import { getTokenClient } from '@colony/colony-js';
-import { Contract, ethers } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import { AddressZero } from '@ethersproject/constants';
+import { Contract, ethers } from 'ethers';
 import { FormatTypes } from 'ethers/lib/utils';
+import moveDecimal from 'move-decimal-point';
 
+import {
+  GNOSIS_AMB_BRIDGES,
+  isDev,
+  NetworkInfo,
+  SUPPORTED_SAFE_NETWORKS,
+} from '~constants';
 import {
   Address,
   ModuleAddress,
@@ -11,14 +17,9 @@ import {
   SafeTransactionData,
   SafeTransactionType,
 } from '~types';
-import {
-  GNOSIS_AMB_BRIDGES,
-  isDev,
-  NetworkInfo,
-  SUPPORTED_SAFE_NETWORKS,
-} from '~constants';
-import { getArrayFromString } from '~utils/safes';
 import { fetchTokenFromDatabase } from '~utils/queries';
+import { getArrayFromString } from '~utils/safes';
+
 import RetryProvider from '../wallet/RetryProvider';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary

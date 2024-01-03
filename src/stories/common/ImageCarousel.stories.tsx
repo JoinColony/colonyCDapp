@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import ImageCarousel from '~common/Extensions/ImageCarousel';
 import { images } from '~common/Extensions/ImageCarousel/consts';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ImageCarousel> = {
   title: 'Common/Image Carousel',

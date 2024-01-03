@@ -1,11 +1,13 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+
+import { useUserAvatars } from '~hooks/useUserAvatars';
+import Icon from '~shared/Icon';
+import { MotionVote } from '~utils/colonyMotions';
 import ProgressBar from '~v5/shared/ProgressBar';
 import UserAvatars from '~v5/shared/UserAvatars';
-import Icon from '~shared/Icon';
+
 import { VoteStatusesProps } from './types';
-import { MotionVote } from '~utils/colonyMotions';
-import { useUserAvatars } from '~hooks/useUserAvatars';
 
 const displayName =
   'v5.common.ActionSidebar.partials.Motion.steps.OutcomeStep.partials.VoteStatuses';

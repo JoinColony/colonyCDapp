@@ -1,19 +1,18 @@
+import { ColonyRole } from '@colony/colony-js';
 import React, { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { ColonyRole } from '@colony/colony-js';
+
+import { FormValues } from '~common/ColonyMembers/MembersFilter';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { Domain } from '~gql';
+import { useColonyContext } from '~hooks';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { User, Colony, DomainColor } from '~types';
 import { sortBy } from '~utils/lodash';
 
-import { SpinnerLoader } from '~shared/Preloaders';
-
-import { useColonyContext } from '~hooks';
-import { Domain } from '~gql';
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { User, Colony, DomainColor } from '~types';
-import { FormValues } from '~common/ColonyMembers/MembersFilter';
-
-import MembersTitle from './MembersTitle';
-import MembersContent from './MembersContent';
 import { filterMembers } from './filterMembers';
+import MembersContent from './MembersContent';
+import MembersTitle from './MembersTitle';
 
 import styles from './Members.css';
 

@@ -1,6 +1,6 @@
 import { ADDRESS_ZERO } from '~constants';
-import { notNull } from '~utils/arrays';
 import { ColonyClaims, ColonyChainClaimWithToken } from '~types';
+import { notNull } from '~utils/arrays';
 
 import useColonyContext from './useColonyContext';
 

@@ -3,9 +3,10 @@ import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
-import { FormInputBaseProps } from './types';
 import { FIELD_STATE } from '../consts';
+
 import InputBase from './InputBase';
+import { FormInputBaseProps } from './types';
 
 const displayName = 'v5.common.Fields.FormInputBase';
 

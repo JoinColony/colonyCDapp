@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+
 import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mergePayload } from '~utils/actions';

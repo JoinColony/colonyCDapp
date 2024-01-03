@@ -1,16 +1,16 @@
 import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import Modal from '~v5/shared/Modal';
-import MembersSelect from '~v5/shared/MembersSelect';
+import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 import Select from '~v5/common/Fields/Select';
+import { SelectOption } from '~v5/common/Fields/Select/types';
+import Switch from '~v5/common/Fields/Switch';
 import Textarea from '~v5/common/Fields/Textarea';
 import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
-import Switch from '~v5/common/Fields/Switch';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
-import { SelectOption } from '~v5/common/Fields/Select/types';
+import MembersSelect from '~v5/shared/MembersSelect';
+import Modal from '~v5/shared/Modal';
 
 import { manageMemberActions } from './consts';
 import { ManageMemberModalProps } from './types';

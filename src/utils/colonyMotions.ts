@@ -1,6 +1,6 @@
-import { BigNumber } from 'ethers';
-import { Decimal } from 'decimal.js';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import { Decimal } from 'decimal.js';
+import { BigNumber } from 'ethers';
 
 import { ColonyMotion } from '~types';
 

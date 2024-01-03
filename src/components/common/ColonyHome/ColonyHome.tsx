@@ -1,11 +1,17 @@
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
 
+import ColonyActionsTable from '~common/ColonyActionsTable';
+import { ACTION } from '~constants/actions';
+import { useActionSidebarContext } from '~context';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useColonySubscription, useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
+import {
+  useCreateTeamBreadcrumbs,
+  useGetSelectedTeamFilter,
+} from '~hooks/useTeamsBreadcrumbs';
 import {
   COLONY_MEMBERS_ROUTE,
   COLONY_DETAILS_ROUTE,
@@ -16,29 +22,24 @@ import {
   COLONY_BALANCES_ROUTE,
   TEAM_SEARCH_PARAM,
 } from '~routes';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useActionSidebarContext } from '~context';
-import { ACTION } from '~constants/actions';
 import Numeral from '~shared/Numeral';
-import WidgetBoxList from '~v5/common/WidgetBoxList';
-import UserAvatars from '~v5/shared/UserAvatars';
-import ProgressBar from '~v5/shared/ProgressBar';
-import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
-import MessageNumber from '~v5/shared/MessageNumber';
-import TitleWithNumber from '~v5/shared/TitleWithNumber';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow';
-import DonutChart from '~v5/common/DonutChart';
-import ColonyDashboardHeader from '~v5/common/ColonyDashboardHeader';
-import { useDashboardHeader, useGetHomeWidget } from './hooks';
-import {
-  useCreateTeamBreadcrumbs,
-  useGetSelectedTeamFilter,
-} from '~hooks/useTeamsBreadcrumbs';
-import ColonyActionsTable from '~common/ColonyActionsTable';
-import Link from '~v5/shared/Link';
+import { formatText } from '~utils/intl';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { setQueryParamOnUrl } from '~utils/urls';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import ColonyDashboardHeader from '~v5/common/ColonyDashboardHeader';
+import DonutChart from '~v5/common/DonutChart';
+import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow';
+import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
+import WidgetBoxList from '~v5/common/WidgetBoxList';
+import Link from '~v5/shared/Link';
+import MessageNumber from '~v5/shared/MessageNumber';
 import Modal from '~v5/shared/Modal';
+import ProgressBar from '~v5/shared/ProgressBar';
+import TitleWithNumber from '~v5/shared/TitleWithNumber';
+import UserAvatars from '~v5/shared/UserAvatars';
+
+import { useDashboardHeader, useGetHomeWidget } from './hooks';
 
 // @TODO: add page components
 const displayName = 'common.ColonyHome';

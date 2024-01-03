@@ -1,11 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useDialog } from '~shared/Dialog';
 import { NetworkContractUpgradeDialog } from '~common/Dialogs';
-import Alert from '~shared/Alert';
-import Button from '~shared/Button';
-import ExternalLink from '~shared/ExternalLink';
 import {
   useTransformer,
   useAppContext,
@@ -13,13 +9,17 @@ import {
   useColonyContractVersion,
   useEnabledExtensions,
 } from '~hooks';
-import { getNetworkReleaseLink } from '~utils/external';
+import Alert from '~shared/Alert';
+import Button from '~shared/Button';
+import { useDialog } from '~shared/Dialog';
+import ExternalLink from '~shared/ExternalLink';
+import { getAllUserRoles } from '~transformers';
 import {
   hasRoot,
   mustColonyBeUpgraded,
   canColonyBeUpgraded,
 } from '~utils/checks';
-import { getAllUserRoles } from '~transformers';
+import { getNetworkReleaseLink } from '~utils/external';
 
 import styles from './ColonyUpgrade.css';
 

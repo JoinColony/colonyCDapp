@@ -1,5 +1,6 @@
 import React from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
+
 import { Message } from '~types';
 
 export type InputProps = {

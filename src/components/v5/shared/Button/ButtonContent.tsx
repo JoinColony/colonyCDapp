@@ -1,6 +1,8 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
+
 import Icon from '~shared/Icon';
+
 import { ButtonContentProps } from './types';
 
 const displayName = 'v5.ButtonContent';

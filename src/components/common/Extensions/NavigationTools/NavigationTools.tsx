@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Button from '~v5/shared/Button';
 import Token from '~common/Extensions/UserNavigation/partials/Token';
 import { useMobile } from '~hooks';
+import Button from '~v5/shared/Button';
 
 import UserHubButton from '../UserHubButton';
+
 import { NavigationToolsProps } from './types';
 
 const displayName = 'common.Extensions.NavigationTools';

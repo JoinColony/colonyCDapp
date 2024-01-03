@@ -1,13 +1,13 @@
-import React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { UserDetail } from '~shared/DetailsWidget';
 import { SimpleTarget } from '~gql';
-
-import { MSG } from '../../detailsWidgetConfig';
+import { UserDetail } from '~shared/DetailsWidget';
 
 import widgetStyles from '../../DetailsWidget.css';
+import { MSG } from '../../detailsWidgetConfig';
+
 import styles from '../SafeTransactionDetail.css';
 
 interface RecipientProps {

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ColonyVersionWidget> = {
   title: 'Shared/Colony version widget',

@@ -1,8 +1,10 @@
 import chunk from 'lodash/chunk';
 import React, { FC, Fragment } from 'react';
+
 import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';
+
 import { PERMISSIONS_MODAL_CONTENT } from './consts';
 import { PermissionsModalProps } from './types';
 

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const navigationSidebarLinksListMeta: Meta<typeof NavigationSidebarLinksList> =
   {

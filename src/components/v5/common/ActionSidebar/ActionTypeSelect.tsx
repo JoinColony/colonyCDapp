@@ -1,18 +1,19 @@
-import React, { FC, useState } from 'react';
 import clsx from 'clsx';
+import React, { FC, useState } from 'react';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useRelativePortalElement, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import SearchSelect from '~v5/shared/SearchSelect';
 import Modal from '~v5/shared/Modal';
+import SearchSelect from '~v5/shared/SearchSelect';
 
 import ActionFormRow from '../ActionFormRow';
-import { useActionsList } from './hooks';
-import { translateAction } from './utils';
+
 import { ACTION_TYPE_FIELD_NAME } from './consts';
+import { useActionsList } from './hooks';
 import { ActionTypeSelectProps } from './types';
+import { translateAction } from './utils';
 
 const displayName = 'v5.common.ActionTypeSelect';
 

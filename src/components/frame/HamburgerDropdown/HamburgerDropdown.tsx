@@ -1,8 +1,9 @@
-import React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 
 import HamburgerMenu from '~shared/HamburgerMenu/HamburgerMenu';
 import Popover from '~shared/Popover';
+
 import HamburgerDropdownPopover from './HamburgerDropdownPopover';
 
 import styles from './HamburgerDropdown.css';

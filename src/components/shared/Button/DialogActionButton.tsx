@@ -1,12 +1,12 @@
 import React, { ComponentProps, ComponentType, useCallback } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
+import { ActionTypes } from '~redux';
 import { useDialog } from '~shared/Dialog';
 import { ActionTransformFnType } from '~utils/actions';
-import { ActionTypes } from '~redux';
 
-import { Appearance } from './Button';
 import ActionButton, { ActionButtonProps } from './ActionButton';
+import { Appearance } from './Button';
 
 interface Props<D extends ComponentType<any>> extends ActionButtonProps<any> {
   actionType: ActionTypes;

@@ -1,6 +1,6 @@
-import React from 'react';
 import Decimal from 'decimal.js';
 import numbro from 'numbro';
+import React from 'react';
 
 const displayName = 'Numeral.EngineeringNotation';
 

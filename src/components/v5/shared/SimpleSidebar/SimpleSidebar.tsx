@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import Icon from '~shared/Icon';
 import ColonyLogo from '~images/logo-new.svg';
+import Icon from '~shared/Icon';
 
 const SimpleSidebar: FC = () => {
   return (

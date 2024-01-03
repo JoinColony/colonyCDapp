@@ -3,11 +3,11 @@ import { defineMessage, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { removeDecisionAction } from '~redux/actionCreators';
+import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import Button from '~shared/Button';
 import Dialog, { DialogSection } from '~shared/Dialog';
 import { Heading3 } from '~shared/Heading';
-import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
-import { removeDecisionAction } from '~redux/actionCreators';
 import { DecisionDraft } from '~utils/decisions';
 
 import styles from './DeleteDecisionDialog.css';

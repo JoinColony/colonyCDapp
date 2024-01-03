@@ -1,8 +1,8 @@
-import { Record } from 'immutable';
 import { Id } from '@colony/colony-js';
+import { Record } from 'immutable';
 
-import { DefaultValues, RecordToJS } from '~types';
 import { DecisionDialogValues as DecisionProps } from '~common/ColonyDecisions/DecisionDialog';
+import { DefaultValues, RecordToJS } from '~types';
 
 const defaultValues: DefaultValues<DecisionProps & { colonyAddress: string }> =
   {

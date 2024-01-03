@@ -1,20 +1,21 @@
 import React, { FC } from 'react';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button';
 
+import { useAppContext } from '~hooks';
+import { ActionTypes } from '~redux';
+import { ActionForm } from '~shared/Fields';
+import { MotionVote } from '~utils/colonyMotions';
+import { formatText } from '~utils/intl';
+import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
+import Button from '~v5/shared/Button';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import ProgressBar from '~v5/shared/ProgressBar';
-import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
-import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux';
-import { useAppContext } from '~hooks';
 
+import MotionBadge from '../../partials/MotionBadge/MotionBadge';
+
+import { useVotingStep } from './hooks';
 import DescriptionList from './partials/DescriptionList';
 import { VotingStepProps, VotingStepSections } from './types';
-import { MotionVote } from '~utils/colonyMotions';
 import { renderVoteRadioButtons } from './utils';
-import { useVotingStep } from './hooks';
-import MotionBadge from '../../partials/MotionBadge/MotionBadge';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';

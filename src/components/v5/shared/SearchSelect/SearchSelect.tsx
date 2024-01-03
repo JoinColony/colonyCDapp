@@ -1,21 +1,22 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
-import clsx from 'clsx';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useMobile } from '~hooks';
 import { accordionAnimation } from '~constants/accordionAnimation';
+import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
+import EmptyContent from '~v5/common/EmptyContent';
 import Avatar from '~v5/shared/Avatar';
 import Portal from '~v5/shared/Portal';
-import EmptyContent from '~v5/common/EmptyContent';
 
 import MenuContainer from '../MenuContainer';
+
+import { useSearchSelect } from './hooks';
 import SearchInput from './partials/SearchInput';
 import SearchItem from './partials/SearchItem';
-import { useSearchSelect } from './hooks';
 import { SearchSelectProps } from './types';
 
 const displayName = 'v5.SearchSelect';

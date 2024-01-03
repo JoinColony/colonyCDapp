@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
 import { UseFieldArrayRemove, useFormContext } from 'react-hook-form';
+import { defineMessages, useIntl } from 'react-intl';
 
 import Button from '~shared/Button';
 import Heading from '~shared/Heading';

@@ -1,15 +1,16 @@
-import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
-import { DeepPartial } from 'utility-types';
+import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
+import { DeepPartial } from 'utility-types';
 
-import { ActionTypes } from '~redux';
 import { useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { MintTokenFormValues, validationSchema } from './consts';
 import { getMintTokenPayload } from './utils';
 

@@ -1,4 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
+
 import { getUserRolesForDomain } from '~transformers';
 import { Colony } from '~types';
 

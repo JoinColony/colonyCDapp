@@ -2,15 +2,15 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { WizardStepProps } from '~shared/Wizard';
-import { ActionForm } from '~shared/Fields';
-import { mergePayload, pipe, withMeta } from '~utils/actions';
 import { ActionTypes } from '~redux/index';
+import { ActionForm } from '~shared/Fields';
+import { WizardStepProps } from '~shared/Wizard';
+import { mergePayload, pipe, withMeta } from '~utils/actions';
 
 import { ButtonRow, HeaderRow } from '../shared';
 
-import { FormValues, TokenChoice } from './types';
 import CardRow from './CreateColonyCardRow';
+import { FormValues, TokenChoice } from './types';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
 

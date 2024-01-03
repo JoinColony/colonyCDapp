@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
 
-import { useEnterRecoveryMode } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
-import { formatText } from '~utils/intl';
+
+import { ActionFormBaseProps } from '../../../types';
+
+import { useEnterRecoveryMode } from './hooks';
 
 const displayName = 'v5.common.ActionSidebar.partials.EnterRecoveryModeForm';
 

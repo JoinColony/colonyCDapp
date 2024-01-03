@@ -1,14 +1,14 @@
-import React, { ReactNode } from 'react';
 import classNames from 'classnames';
+import React, { ReactNode } from 'react';
 
-import { ColonyAction } from '~types';
 import { ETHEREUM_NETWORK } from '~constants';
-import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
 import {
   TRANSACTION_STATUS,
   useColonyContext,
   useSafeTransactionStatus,
 } from '~hooks';
+import { ColonyAction } from '~types';
+import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
 
 import SafeTransactionBanner from '../SafeTransactionBanner';
 

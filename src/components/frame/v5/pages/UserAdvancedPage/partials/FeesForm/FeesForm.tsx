@@ -3,6 +3,7 @@ import React from 'react';
 import { Form } from '~shared/Fields';
 import noop from '~utils/noop';
 import SettingsRow from '~v5/common/SettingsRow';
+
 import { METATRANSACTIONS_VALIDATION_SCHEMA } from './consts';
 import { useFeesForm } from './hooks';
 

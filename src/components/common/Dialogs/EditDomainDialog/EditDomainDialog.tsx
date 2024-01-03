@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
+import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { string, object, number, boolean, InferType } from 'yup';
-import { defineMessages } from 'react-intl';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { DomainColor } from '~gql';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-
-import { ActionTypes } from '~redux';
-import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { DomainColor } from '~gql';
-import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 import { notNull } from '~utils/arrays';
+import { findDomainByNativeId, getDomainOptions } from '~utils/domains';
 
 import EditDomainDialogForm from './EditDomainDialogForm';
 import { getEditDomainDialogPayload, notRootDomain } from './helpers';

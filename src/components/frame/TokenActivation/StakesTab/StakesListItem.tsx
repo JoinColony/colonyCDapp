@@ -2,10 +2,10 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
+import { useGetMotionTransactionHashQuery } from '~gql';
+import { useTokenActivationContext } from '~hooks';
 import Link from '~shared/Link';
 import Numeral from '~shared/Numeral';
-import { useTokenActivationContext } from '~hooks';
-import { useGetMotionTransactionHashQuery } from '~gql';
 
 import styles from './StakesTab.css';
 

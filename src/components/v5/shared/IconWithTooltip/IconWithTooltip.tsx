@@ -1,8 +1,9 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
+
 import { IconWithTooltipProps } from './types';
 
 const displayName = 'v5.IconWithTooltip';

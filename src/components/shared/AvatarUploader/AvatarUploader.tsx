@@ -9,8 +9,8 @@ import {
 } from '~shared/Fields';
 import { SingleFileUpload, SingleFileUploadProps } from '~shared/FileUpload';
 import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
 import { Message } from '~types';
+import { formatText } from '~utils/intl';
 
 import { DropzoneErrors, getErrorMessage } from './helpers';
 import UploadControls from './UploadControls';

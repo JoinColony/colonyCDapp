@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import Link from '~shared/Link';
 import { useColonyContext } from '~hooks';
 import { COLONY_INCOMING_ROUTE } from '~routes';
+import Icon from '~shared/Icon';
+import Link from '~shared/Link';
 
 import styles from './ManageFundsLink.css';
 

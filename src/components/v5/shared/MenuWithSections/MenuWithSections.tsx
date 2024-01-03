@@ -1,6 +1,8 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
+
 import MenuContainer from '../MenuContainer';
+
 import { MenuWithSectionsProps } from './types';
 
 const displayName = 'v5.shared.MenuWithSections';

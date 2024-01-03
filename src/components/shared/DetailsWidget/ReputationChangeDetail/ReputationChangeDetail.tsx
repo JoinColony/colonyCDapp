@@ -1,5 +1,5 @@
-import React from 'react';
 import Decimal from 'decimal.js';
+import React from 'react';
 
 import Numeral from '~shared/Numeral';
 import { formatReputationChange } from '~utils/reputation';

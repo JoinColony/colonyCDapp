@@ -1,7 +1,9 @@
 import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
+
 import { UserRole, USER_ROLE } from '~constants/permissions';
 import { formatText } from '~utils/intl';
+
 import { CustomPermissionTableModel } from './types';
 
 export const PERMISSIONS_TABLE_CONTENT: Record<

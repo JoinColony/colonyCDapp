@@ -1,5 +1,5 @@
-import React from 'react';
 import { TableOptions, Row, Cell } from '@tanstack/react-table';
+import React from 'react';
 
 export type RenderCellWrapper<T> = (
   classNames: string,

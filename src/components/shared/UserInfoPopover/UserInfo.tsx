@@ -1,11 +1,10 @@
 import React from 'react';
 
-import CopyableAddress from '~v5/shared/CopyableAddress';
 import Heading from '~shared/Heading';
-import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
-
+import UserMention from '~shared/UserMention';
 import { User } from '~types';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 
 import styles from './UserInfo.css';
 

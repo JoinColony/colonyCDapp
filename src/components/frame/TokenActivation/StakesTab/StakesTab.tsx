@@ -1,10 +1,10 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import { BigNumber } from 'ethers';
 
 import { useAppContext, useColonyContext } from '~hooks';
-import { getFormattedTokenValue } from '~utils/tokens';
 import { UnclaimedStakes } from '~types';
+import { getFormattedTokenValue } from '~utils/tokens';
 
 import ClaimAllButton from './ClaimAllButton';
 import StakesListItem from './StakesListItem';

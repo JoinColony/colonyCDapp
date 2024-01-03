@@ -3,6 +3,7 @@ import {
   COLONY_MEMBERS_ROUTE,
   COLONY_TEAMS_ROUTE,
 } from '~routes';
+
 import { NavItem } from './types';
 
 export const getNavItems = (name: string | undefined): NavItem[] => [

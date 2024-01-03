@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
-
 import { useNavigate } from 'react-router-dom';
+
 import { useColonyContext, useExtensionData } from '~hooks';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { useExtensionsBadge } from '~hooks/useExtensionsBadgeStatus';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 export const useExtensionItem = (extensionId: string) => {
   const { colony } = useColonyContext();

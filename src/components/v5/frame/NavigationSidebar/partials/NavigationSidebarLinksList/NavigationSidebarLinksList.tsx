@@ -2,10 +2,11 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { generatePath } from 'react-router-dom';
 
+import { useColonyContext } from '~hooks';
+import { COLONY_HOME_ROUTE } from '~routes';
+
 import NavigationSidebarLink from '../NavigationSidebarLink/NavigationSidebarLink';
 
-import { COLONY_HOME_ROUTE } from '~routes';
-import { useColonyContext } from '~hooks';
 import { NavigationSidebarLinksListProps } from './types';
 
 const displayName =

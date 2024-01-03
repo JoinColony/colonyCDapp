@@ -1,6 +1,5 @@
-import { defineMessages, MessageDescriptor } from 'react-intl';
-
 import { ColonyRole } from '@colony/colony-js';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 
 const MSG = defineMessages({
   rootLabel: {

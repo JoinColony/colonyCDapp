@@ -1,17 +1,19 @@
-import React, { useMemo, useState } from 'react';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import React, { useMemo, useState } from 'react';
 
+import { useColonyContext, useColonyFundsClaims } from '~hooks';
+import TokenIcon from '~shared/TokenIcon';
+import { notNull } from '~utils/arrays';
+import { formatText } from '~utils/intl';
+
+import { FilterProps } from '../Filter/types';
 import TokenTable from '../TokenTable';
+
 import {
   FundsTableFilters,
   FundsTableModel,
   UseFundsTableProps,
 } from './types';
-import { useColonyContext, useColonyFundsClaims } from '~hooks';
-import { notNull } from '~utils/arrays';
-import { FilterProps } from '../Filter/types';
-import TokenIcon from '~shared/TokenIcon';
-import { formatText } from '~utils/intl';
 
 export const useFundsTableColumns = (): ColumnDef<
   FundsTableModel,

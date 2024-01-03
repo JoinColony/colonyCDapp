@@ -1,13 +1,13 @@
 import React, { useRef, ChangeEvent } from 'react';
 import { defineMessages } from 'react-intl';
 
+import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
+import MembersDomainSelector from '~common/Members/MembersDomainSelector';
+import { useMobile } from '~hooks';
+import { SelectOption } from '~shared/Fields/Select';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
-import { useMobile } from '~hooks';
-import ColonyDomainSelector from '~common/ColonyHome/ColonyDomainSelector';
 import { formatText } from '~utils/intl';
-import { SelectOption } from '~shared/Fields/Select';
-import MembersDomainSelector from '~common/Members/MembersDomainSelector';
 
 import styles from './MembersTitle.css';
 

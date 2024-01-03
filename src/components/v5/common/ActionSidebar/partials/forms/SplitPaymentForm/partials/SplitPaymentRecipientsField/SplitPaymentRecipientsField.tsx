@@ -2,10 +2,14 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
+
 import { useMobile } from '~hooks';
-import Button from '~v5/shared/Button/Button';
 import { formatText } from '~utils/intl';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
+import Button from '~v5/shared/Button/Button';
+
+import { DISTRIBUTION_METHOD } from '../../../../consts';
+
 import {
   useRecipientsFieldTableColumns,
   useGetTableMenuProps,
@@ -16,7 +20,6 @@ import {
   SplitPaymentRecipientsFieldProps,
   SplitPaymentRecipientsTableModel,
 } from './types';
-import { DISTRIBUTION_METHOD } from '../../../../consts';
 
 const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   name,

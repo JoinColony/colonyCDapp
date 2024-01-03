@@ -1,27 +1,27 @@
 import React, { FC, useEffect, useState } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 import {
   Outlet,
   useLocation,
   useNavigate,
   useResolvedPath,
 } from 'react-router-dom';
-import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useMemberModalContext } from '~context';
+import {
+  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_MEMBERS_ROUTE,
+} from '~routes/routeConstants';
 import Tabs from '~shared/Extensions/Tabs';
 import { formatText } from '~utils/intl';
-import { useMemberModalContext } from '~context';
 import Filter from '~v5/common/Filter';
 import { FilterTypes } from '~v5/common/TableFiltering/types';
 import BurgerMenu from '~v5/shared/BurgerMenu';
 import PopoverBase from '~v5/shared/PopoverBase';
 
-import SubNavigation from './partials/SubNavigation';
-import { MembersTabContentWrapper } from './partials/MembersTabContent';
 import { useMembersPage } from './hooks';
-import {
-  COLONY_CONTRIBUTORS_ROUTE,
-  COLONY_MEMBERS_ROUTE,
-} from '~routes/routeConstants';
+import { MembersTabContentWrapper } from './partials/MembersTabContent';
+import SubNavigation from './partials/SubNavigation';
 
 const displayName = 'v5.pages.MembersPage';
 

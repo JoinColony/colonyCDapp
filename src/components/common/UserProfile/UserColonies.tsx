@@ -1,12 +1,11 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useAppContext } from '~hooks';
+import { CREATE_COLONY_ROUTE } from '~routes/index';
 import ColonyGrid from '~shared/ColonyGrid';
 import Link from '~shared/Link';
-
-import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { User } from '~types';
-import { useAppContext } from '~hooks';
 
 import styles from './UserColonies.css';
 

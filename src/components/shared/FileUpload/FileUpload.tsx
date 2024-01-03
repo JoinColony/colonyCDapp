@@ -1,9 +1,10 @@
 import React, { ComponentType, useImperativeHandle } from 'react';
-import { defineMessages } from 'react-intl';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import { withForwardingRef, ForwardedRefProps } from '~utils/hoc';
+
 import { InputLabel, InputStatus } from '../Fields';
 
 import DefaultPlaceholder from './DefaultPlaceholder';

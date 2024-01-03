@@ -1,7 +1,7 @@
 import React from 'react';
-import { getMainClasses } from '~utils/css';
 
 import { CustomRadio, CustomRadioProps } from '~shared/Fields/Radio';
+import { getMainClasses } from '~utils/css';
 
 import styles from './CustomRadioGroup.css';
 

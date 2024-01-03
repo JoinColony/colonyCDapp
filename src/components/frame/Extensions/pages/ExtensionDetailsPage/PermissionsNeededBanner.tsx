@@ -1,12 +1,12 @@
+import { ColonyRole, Id } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import { ColonyRole, Id } from '@colony/colony-js';
 
-import { ActionTypes } from '~redux';
 import { useAppContext, useAsyncFunction, useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
 import { AnyExtensionData } from '~types';
-import NotificationBanner from '~v5/shared/NotificationBanner';
 import { addressHasRoles } from '~utils/checks';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 
 const displayName =
   'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';

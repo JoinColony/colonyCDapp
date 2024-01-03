@@ -2,7 +2,9 @@ import React, { CSSProperties, ReactNode } from 'react';
 
 import Icon from '~shared/Icon';
 import { AvatarSize } from '~v5/shared/Avatar/types';
+
 import getIcon from './identicon';
+
 import styles from './Avatar.module.css';
 
 export interface Props {

@@ -1,10 +1,10 @@
-import { ActionTypes } from '~redux/actionTypes';
-import { Address, Colony, Domain, Expenditure, ExpenditureSlot } from '~types';
 import {
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
 } from '~common/Expenditures/ExpenditureForm';
 import { StreamingPaymentEndCondition } from '~gql';
+import { ActionTypes } from '~redux/actionTypes';
+import { Address, Colony, Domain, Expenditure, ExpenditureSlot } from '~types';
 
 import { UniqueActionType, ErrorActionType, MetaWithSetter } from './index';
 

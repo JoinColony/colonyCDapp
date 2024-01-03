@@ -5,12 +5,12 @@ import { RouteComponentProps } from '~frame/RouteLayouts';
 import SubscribedColoniesList from '~frame/SubscribedColoniesList';
 import { useMobile } from '~hooks';
 
-import SimpleNav from '../SimpleNav';
 import HistoryNavigation from '../HistoryNavigation';
+import SimpleNav from '../SimpleNav';
 import UserNavigation from '../UserNavigation';
 
-import styles from './Default.css';
 import navStyles from '../SimpleNav/SimpleNav.css';
+import styles from './Default.css';
 
 interface Props {
   children: ReactNode;

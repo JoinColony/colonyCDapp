@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { useAppContext } from '~hooks';
 import Slider from '~shared/Slider';
 import { SetStateFn } from '~types';
+
 import { SLIDER_AMOUNT_KEY } from './StakingInput';
 
 import styles from './StakingWidgetSlider.css';

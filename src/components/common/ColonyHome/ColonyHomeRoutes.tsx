@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+
 import { ColonyHomeProvider, useSetPageHeadingTitle } from '~context';
 import { formatText } from '~utils/intl';
 

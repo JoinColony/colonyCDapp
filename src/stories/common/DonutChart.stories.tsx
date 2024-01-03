@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+
 import { ChartData } from '~common/ColonyHome/types';
 import DonutChart from '~v5/common/DonutChart';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const data: ChartData[] = [
   {

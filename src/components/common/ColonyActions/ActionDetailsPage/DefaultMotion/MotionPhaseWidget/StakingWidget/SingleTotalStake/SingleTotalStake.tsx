@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import ProgressBar from '~shared/ProgressBar';
-import { Tooltip } from '~shared/Popover';
 import { STAKING_THRESHOLD } from '~constants';
+import { Tooltip } from '~shared/Popover';
+import ProgressBar from '~shared/ProgressBar';
 
-import UserStakeMessage from './UserStakeMessage';
-import SingleTotalStakeHeading from './SingleTotalStakeHeading';
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
+
+import SingleTotalStakeHeading from './SingleTotalStakeHeading';
+import UserStakeMessage from './UserStakeMessage';
 
 import styles from './SingleTotalStake.css';
 

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import MenuWithSections from '~v5/shared/MenuWithSections';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const cardWithSectionsMeta: Meta<typeof MenuWithSections> = {
   title: 'Shared/Card/With Sections',

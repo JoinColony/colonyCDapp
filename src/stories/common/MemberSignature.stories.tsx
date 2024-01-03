@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import MemberSignature from '~v5/common/MemberSignature';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const memberSignatureMeta: Meta<typeof MemberSignature> = {
   title: 'Common/Member Signature',

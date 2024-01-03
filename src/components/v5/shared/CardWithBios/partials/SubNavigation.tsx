@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 
-import SubNavigationItem from '~v5/shared/SubNavigationItem';
-import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
 import { useMemberModalContext } from '~context/MemberModalContext';
 import { formatText } from '~utils/intl';
+import SubNavigationItem from '~v5/shared/SubNavigationItem';
+import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
 
 import { SubNavigationProps } from '../types';
 

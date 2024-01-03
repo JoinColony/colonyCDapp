@@ -1,15 +1,14 @@
-import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import Decimal from 'decimal.js';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useUserReputation } from '~hooks';
 import { Input } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Colony } from '~types';
-
-import { useUserReputation } from '~hooks';
-import { getFormattedTokenValue } from '~utils/tokens';
 import { calculatePercentageReputation } from '~utils/reputation';
+import { getFormattedTokenValue } from '~utils/tokens';
 
 import styles from './ReputationAmountInput.css';
 

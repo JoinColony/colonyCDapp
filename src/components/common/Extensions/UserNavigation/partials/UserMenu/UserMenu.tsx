@@ -1,19 +1,21 @@
-import React, { FC, useState } from 'react';
 import clsx from 'clsx';
+import React, { FC, useState } from 'react';
 
 // @BETA: Disabled for now
 // import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
+
 import { useAppContext, useTablet } from '~hooks';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Button from '~v5/shared/Button';
-import PopoverBase from '~v5/shared/PopoverBase';
 import Link from '~v5/shared/Link';
+import PopoverBase from '~v5/shared/PopoverBase';
 import TitleLabel from '~v5/shared/TitleLabel';
 
-import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
 import UserSubmenu from '../UserSubmenu';
+import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
+
 import { userMenuItems } from './consts';
 import { UserMenuProps } from './types';
 

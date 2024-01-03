@@ -1,12 +1,12 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import { SpinnerLoader } from '~shared/Preloaders';
-import NavLink from '~shared/NavLink';
-import ColonyAvatar from '~shared/ColonyAvatar';
-import { CREATE_COLONY_ROUTE } from '~routes/index';
 import { useAppContext, useCanInteractWithNetwork, useMobile } from '~hooks';
+import { CREATE_COLONY_ROUTE } from '~routes/index';
+import ColonyAvatar from '~shared/ColonyAvatar';
+import Icon from '~shared/Icon';
+import NavLink from '~shared/NavLink';
+import { SpinnerLoader } from '~shared/Preloaders';
 
 import SubscribedColoniesDropdown from './SubscribedColoniesDropdown';
 

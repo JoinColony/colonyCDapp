@@ -1,12 +1,12 @@
+import classnames from 'classnames';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import classnames from 'classnames';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
 import Avatar from '~shared/Avatar';
 import { Checkbox } from '~shared/Fields';
-import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+import MaskedAddress from '~shared/MaskedAddress';
 import { Safe } from '~types';
 
 import styles from './SafeListItem.css';

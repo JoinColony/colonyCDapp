@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
-import Icon from '~shared/Icon';
 
+import Icon from '~shared/Icon';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import TimerValue from '~shared/TimerValue';
 

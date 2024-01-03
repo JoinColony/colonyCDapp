@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 
 import { useAppContext } from '~hooks';
 
-import { Flow } from './types';
 import { displayName } from './consts';
 import { createWizard } from './helpers';
+import { Flow } from './types';
 
 interface Props {
   flow: Flow;

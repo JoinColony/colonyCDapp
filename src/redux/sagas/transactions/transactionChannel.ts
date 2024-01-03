@@ -1,3 +1,4 @@
+import { ContractClient } from '@colony/colony-js';
 import {
   Provider,
   TransactionReceipt,
@@ -5,9 +6,8 @@ import {
 } from '@ethersproject/providers';
 import { LogDescription, poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel, Buffer } from 'redux-saga';
-import { ContractClient } from '@colony/colony-js';
+
 import { MethodParams, RequireProps } from '~types';
-import { TransactionRecord } from '../../immutable';
 
 import {
   transactionSendError,
@@ -19,6 +19,7 @@ import {
   transactionHashReceived,
   transactionSucceeded,
 } from '../../actionCreators';
+import { TransactionRecord } from '../../immutable';
 
 type TransactionResponseWithHash = RequireProps<TransactionResponse, 'hash'>;
 // @TODO typing here is not great but I have no idea how to improve it atm

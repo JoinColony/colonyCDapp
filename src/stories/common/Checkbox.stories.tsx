@@ -1,9 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import Checkbox from '~v5/common/Checkbox';
 import { CheckboxProps } from '~v5/common/Checkbox/types';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Common/Checkbox',

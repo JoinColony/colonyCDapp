@@ -1,11 +1,12 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import Button, { Props as DefaultButtonProps } from './Button';
+import { useMainClasses } from '~hooks';
 import Icon from '~shared/Icon';
 import { SimpleMessageValues } from '~types';
-import { useMainClasses } from '~hooks';
 import { formatText } from '~utils/intl';
+
+import Button, { Props as DefaultButtonProps } from './Button';
 
 import styles from './IconButton.css';
 

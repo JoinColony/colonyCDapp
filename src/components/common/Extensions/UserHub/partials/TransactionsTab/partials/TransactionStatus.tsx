@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
+import React, { FC } from 'react';
 
 import { TransactionStatus as TransactionStatusEnum } from '~gql';
-
 import Icon from '~shared/Icon';
 
 import { TransactionStatusProps } from '../types';

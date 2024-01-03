@@ -1,10 +1,11 @@
 import { useCallback, useState } from 'react';
 
-import { Colony, JoinedColony } from '~types';
 import { useAppContext, useJoinedColonies } from '~hooks';
+import { Colony, JoinedColony } from '~types';
 
 import { getChainIconName } from '../../utils';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
+
 import { UseColonySwitcherContentReturnType } from './types';
 
 const getColonySwitcherListItem = (

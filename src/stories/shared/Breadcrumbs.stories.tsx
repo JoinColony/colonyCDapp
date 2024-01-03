@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import Breadcrumbs from '~v5/shared/Breadcrumbs';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const breadcrumbsMeta: Meta<typeof Breadcrumbs> = {
   title: 'Shared/Breadcrumbs',

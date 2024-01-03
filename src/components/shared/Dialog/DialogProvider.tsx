@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import React, {
   createContext,
   ComponentType,
@@ -6,7 +7,6 @@ import React, {
   useState,
   useMemo,
 } from 'react';
-import { nanoid } from 'nanoid';
 
 import { DialogType } from './types';
 

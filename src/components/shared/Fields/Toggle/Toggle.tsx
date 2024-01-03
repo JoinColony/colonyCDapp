@@ -1,13 +1,12 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { CheckboxProps } from '~shared/Fields/Checkbox';
 import InputLabel from '~shared/Fields/InputLabel';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-
 import { getMainClasses } from '~utils/css';
 
 import styles from './Toggle.css';
-import { CheckboxProps } from '~shared/Fields/Checkbox';
 
 const displayName = 'Toggle';
 

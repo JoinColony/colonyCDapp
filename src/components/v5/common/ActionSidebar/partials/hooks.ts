@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
+
 import { ACTION, Action } from '~constants/actions';
 import { useColonyContext } from '~hooks';
 import { formatText } from '~utils/intl';
+
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {

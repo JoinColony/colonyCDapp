@@ -1,10 +1,9 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { Address as AddressType } from '~types';
-
-import MaskedAddress from '~shared/MaskedAddress';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+import MaskedAddress from '~shared/MaskedAddress';
+import { Address as AddressType } from '~types';
 
 import styles from './Address.css';
 

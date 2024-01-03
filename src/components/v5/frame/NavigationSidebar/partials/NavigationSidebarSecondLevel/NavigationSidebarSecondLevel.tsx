@@ -1,16 +1,17 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import { useTablet } from '~hooks';
 import Icon from '~shared/Icon';
-import Button from '~v5/shared/Button';
 import { multiLineTextEllipsis } from '~utils/strings';
+import Button from '~v5/shared/Button';
 import ButtonLink from '~v5/shared/Button/ButtonLink';
 
-import { NavigationSidebarSecondLevelProps } from './types';
+import NavigationFeedbackWidget from '../NavigationFeedbackWidget';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
 import NavigationSidebarLinksList from '../NavigationSidebarLinksList';
-import NavigationFeedbackWidget from '../NavigationFeedbackWidget';
+
+import { NavigationSidebarSecondLevelProps } from './types';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarSecondLevel';

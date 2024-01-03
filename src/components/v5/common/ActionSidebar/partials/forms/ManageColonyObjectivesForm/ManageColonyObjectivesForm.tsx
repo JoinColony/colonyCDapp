@@ -1,15 +1,16 @@
 import React, { FC } from 'react';
 
+import { formatText } from '~utils/intl';
+import ActionFormRow from '~v5/common/ActionFormRow';
+import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks';
 import ColonyObjectiveFields from '~v5/common/ActionSidebar/partials/ColonyObjectiveFields';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import { formatText } from '~utils/intl';
-import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks';
 
 import { ActionFormBaseProps } from '../../../types';
-import { useManageColonyObjectives } from './hooks';
 import DescriptionRow from '../../DescriptionRow';
+
+import { useManageColonyObjectives } from './hooks';
 
 const displayName =
   'v5.common.ActionSidebar.partials.ManageColonyObjectivesForm';

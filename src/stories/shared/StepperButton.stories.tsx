@@ -1,8 +1,9 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
 import StepperButton from '~v5/shared/Stepper/partials/StepperButton';
 import { StepStage } from '~v5/shared/Stepper/partials/StepperButton/consts';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof StepperButton> = {
   title: 'Shared/Stepper/Button',

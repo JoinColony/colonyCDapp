@@ -1,14 +1,14 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Numeral from '~shared/Numeral';
 import Icon from '~shared/Icon';
-import { Token, SafeTransactionData } from '~types';
+import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
-
-import { MSG } from '../../detailsWidgetConfig';
+import { Token, SafeTransactionData } from '~types';
 
 import widgetStyles from '../../DetailsWidget.css';
+import { MSG } from '../../detailsWidgetConfig';
+
 import styles from '../SafeTransactionDetail.css';
 
 const renderTokenIcon = (safeToken: Token) => {

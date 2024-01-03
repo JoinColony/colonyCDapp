@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '~shared/Button';
+
 import { useStakingWidgetContext } from '../../StakingWidgetProvider';
 
 const displayName =

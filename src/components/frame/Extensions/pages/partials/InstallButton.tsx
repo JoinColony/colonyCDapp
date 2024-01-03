@@ -1,18 +1,19 @@
+import { Extension } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Extension } from '@colony/colony-js';
 
 import { useColonyContext, useExtensionData, useMobile } from '~hooks';
+import { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux';
+import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import { ActionButton } from '~shared/Button';
 import Toast from '~shared/Extensions/Toast/Toast';
 import { AnyExtensionData } from '~types';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
+
 import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
-import { ExtensionMethods } from '~hooks/useExtensionData';
-import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 
 interface InstallButtonProps {
   extensionData: AnyExtensionData;

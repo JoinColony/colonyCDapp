@@ -2,14 +2,13 @@ import React from 'react';
 
 import { RouteComponentProps } from '~frame/RouteLayouts';
 import SubscribedColoniesList from '~frame/SubscribedColoniesList';
-
 import { useMobile } from '~hooks';
 
-import UserNavigation from '../UserNavigation';
 import SimpleNav from '../SimpleNav';
+import UserNavigation from '../UserNavigation';
 
-import styles from './UserLayout.css';
 import navStyles from '../SimpleNav/SimpleNav.css';
+import styles from './UserLayout.css';
 
 interface Props {
   routeProps?: RouteComponentProps;

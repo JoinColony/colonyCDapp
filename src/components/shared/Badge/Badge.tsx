@@ -1,11 +1,10 @@
-import React from 'react';
 import camelcase from 'camelcase';
+import React from 'react';
 
+import { badges } from '~images/icons.json';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 
 import styles from './Badge.css';
-
-import { badges } from '~images/icons.json';
 
 // @todo we should have typed badges / icon names
 const badgeIcons = badges.reduce((badgeObj, badgeName) => {

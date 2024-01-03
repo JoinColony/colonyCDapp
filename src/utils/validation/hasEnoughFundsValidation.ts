@@ -1,7 +1,7 @@
-import { BigNumber } from 'ethers';
-import { TestContext } from 'yup';
-import moveDecimal from 'move-decimal-point';
 import { Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
+import { TestContext } from 'yup';
 
 import { ColonyFragment } from '~gql';
 import { notNull } from '~utils/arrays';

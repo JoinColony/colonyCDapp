@@ -1,17 +1,18 @@
+import { Id } from '@colony/colony-js';
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Id } from '@colony/colony-js';
 
-import ActionFormRow from '~v5/common/ActionFormRow';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import { formatText } from '~utils/intl';
+import ActionFormRow from '~v5/common/ActionFormRow';
+import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+
+import { DecisionMethod, useDecisionMethods } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+import DescriptionRow from '../../DescriptionRow';
 
 import { useTransferFunds } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
-import { DecisionMethod, useDecisionMethods } from '../../../hooks';
-import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
 

@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useAppContext } from '~hooks';
+
 import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
+import Toast from '~shared/Extensions/Toast';
+import { formatText } from '~utils/intl';
 import {
   UseAvatarUploaderProps,
   useGetUploaderText,
 } from '~v5/common/AvatarUploader/hooks';
-import { formatText } from '~utils/intl';
-import Toast from '~shared/Extensions/Toast';
 import Avatar from '~v5/shared/Avatar';
+
 import {
   profileFileOptions,
   MAX_BIO_CHARS,

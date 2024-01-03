@@ -1,11 +1,13 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import styles from './UserAvatar.module.css';
-import { UserAvatarProps } from './types';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 import Avatar from '~v5/shared/Avatar';
 import Link from '~v5/shared/Link';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
+
+import { UserAvatarProps } from './types';
+
+import styles from './UserAvatar.module.css';
 
 const displayName = 'v5.UserAvatar';
 

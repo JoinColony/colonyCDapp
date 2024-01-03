@@ -1,10 +1,10 @@
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import { Input } from '~shared/Fields';
-import { Colony } from '~types';
 import { IconButton } from '~shared/Button';
+import { Input } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
+import { Colony } from '~types';
 
 import { getInitialStageFieldValue } from '../helpers';
 

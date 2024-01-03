@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import MessageNumber from '~v5/shared/MessageNumber';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const messageNumberMeta: Meta<typeof MessageNumber> = {
   title: 'Shared/Message number',

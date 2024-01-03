@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import clsx from 'clsx';
-import { TokenStatusProps } from './types';
 import Icon from '~shared/Icon';
+
 import { ICON_NAME } from './consts';
+import { TokenStatusProps } from './types';
 
 const displayName =
   'v5.common.ActionsContent.partials.TokenSelect.partials.TokenStatus';

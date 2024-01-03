@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ActionTypes } from '~redux/index';
 import Dialog from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
@@ -12,7 +12,6 @@ import DialogForm from '../ManageReputationDialogForm';
 import { AwardAndSmiteDialogProps } from '../types';
 
 import { getManageReputationDialogPayload } from './helpers';
-
 import {
   FormValues,
   defaultValidationSchema,

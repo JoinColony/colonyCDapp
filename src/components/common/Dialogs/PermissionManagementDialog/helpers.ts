@@ -1,17 +1,17 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import { useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';
+import { useFormContext } from 'react-hook-form';
 
+import { ColonyFragment } from '~gql';
 import {
   EnabledExtensionData,
   useActionDialogStatus,
   useAppContext,
 } from '~hooks';
-import { Address, Colony } from '~types';
-import { ColonyFragment } from '~gql';
-import { isEqual, sortBy } from '~utils/lodash';
-import { notNull, notUndefined } from '~utils/arrays';
 import { getUserRolesForDomain } from '~transformers';
+import { Address, Colony } from '~types';
+import { notNull, notUndefined } from '~utils/arrays';
+import { isEqual, sortBy } from '~utils/lodash';
 
 import { availableRoles } from './constants';
 

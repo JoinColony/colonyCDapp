@@ -1,13 +1,12 @@
 import React, { useCallback, useContext } from 'react';
 import { object, string, InferType } from 'yup';
 
-import { IconButton } from '~shared/Button';
-import { ActionForm } from '~shared/Fields';
-
-import { getMainClasses } from '~utils/css';
-import { withId } from '~utils/actions';
 import { ActionTypes } from '~redux';
 import { TransactionType } from '~redux/immutable';
+import { IconButton } from '~shared/Button';
+import { ActionForm } from '~shared/Fields';
+import { withId } from '~utils/actions';
+import { getMainClasses } from '~utils/css';
 
 import { GasStationContext } from '../GasStationProvider';
 

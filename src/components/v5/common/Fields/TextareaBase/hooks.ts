@@ -1,5 +1,5 @@
-import { useEffect, useImperativeHandle, useRef } from 'react';
 import noop from 'lodash/noop';
+import { useEffect, useImperativeHandle, useRef } from 'react';
 
 const useAutosizeTextArea = (
   value: string | number | readonly string[] | undefined,

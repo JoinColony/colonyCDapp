@@ -11,14 +11,17 @@ import {
   select,
 } from 'redux-saga/effects';
 
-import { ErrorActionType, TakeFilter, Action } from '../../types/actions';
 import {
   transactionEstimateGas,
   transactionReady,
   transactionSend,
   messageSign,
 } from '~redux/actionCreators';
+
+import { ErrorActionType, TakeFilter, Action } from '../../types/actions';
+
 import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions';
+
 /*
  * Effect to take a specific action from a channel.
  */

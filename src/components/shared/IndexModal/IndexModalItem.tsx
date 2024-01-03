@@ -4,8 +4,8 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
 import { Tooltip } from '~shared/Popover';
-
 import { getMainClasses } from '~utils/css';
+
 import { ItemShape } from './IndexModal';
 
 import styles from './IndexModalItem.css';

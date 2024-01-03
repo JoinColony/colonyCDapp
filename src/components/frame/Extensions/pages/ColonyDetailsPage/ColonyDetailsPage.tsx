@@ -1,19 +1,19 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { ADDRESS_ZERO } from '~constants';
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useMobile } from '~hooks';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import NativeTokenPill from '~v5/common/NativeTokenPill';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
 import Button from '~v5/shared/Button';
+import ColonyAvatar from '~v5/shared/ColonyAvatar';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 import SocialLinks from '~v5/shared/SocialLinks';
-import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import NativeTokenPill from '~v5/common/NativeTokenPill';
-import { ADDRESS_ZERO } from '~constants';
 
 import styles from './ColonyDetailsPage.module.css';
 

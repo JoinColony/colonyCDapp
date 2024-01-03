@@ -1,4 +1,5 @@
 import { UserFragment } from '~gql';
+
 import { AvatarSize } from '../Avatar/types';
 
 export interface UserAvatarsItem {

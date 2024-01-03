@@ -1,12 +1,13 @@
+import clsx from 'clsx';
 import React, { useCallback } from 'react';
 import { Props as ReactSelectProps, SingleValue } from 'react-select';
-import clsx from 'clsx';
 
 import CustomOption from './partials/CustomOption';
 import DropdownIndicator from './partials/DropdownIndicator';
 import SelectBase from './SelectBase';
-import styles from './Select.module.css';
 import { SelectOption, SelectProps } from './types';
+
+import styles from './Select.module.css';
 
 const displayName = 'v5.common.Fields.Select';
 

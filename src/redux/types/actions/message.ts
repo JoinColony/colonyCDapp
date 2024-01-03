@@ -1,5 +1,6 @@
 import { ActionTypes } from '../../actionTypes';
 import { ActionTypeWithPayload, UniqueActionType } from '../../types/actions';
+
 import { ErrorActionType } from './index';
 
 export type MessageActionTypes =

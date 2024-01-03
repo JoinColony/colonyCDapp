@@ -3,12 +3,15 @@ import {
   getPaginationRowModel,
 } from '@tanstack/react-table';
 import React, { FC } from 'react';
+
 import { useColonyFundsClaims } from '~hooks';
 import { formatText } from '~utils/intl';
 import EmptyContent from '~v5/common/EmptyContent';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
+
 import AcceptButton from '../AcceptButton';
 import Filter from '../Filter';
+
 import { useFundsTable, useFundsTableColumns } from './hooks';
 import { FundsTableModel } from './types';
 

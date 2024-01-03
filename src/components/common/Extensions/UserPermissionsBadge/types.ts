@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
 import { SimpleMessageValues } from '~types';
 

@@ -1,11 +1,13 @@
+import clsx from 'clsx';
 import React from 'react';
 
-import clsx from 'clsx';
 import { SpinnerLoader } from '~shared/Preloaders';
 import EmptyContent from '~v5/common/EmptyContent';
 
-import StakeItem from './StakeItem';
 import { StakesListProps } from '../types';
+
+import StakeItem from './StakeItem';
+
 import styles from './StakesList.css';
 
 const displayName =

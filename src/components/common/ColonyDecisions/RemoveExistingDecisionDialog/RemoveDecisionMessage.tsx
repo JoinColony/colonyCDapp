@@ -1,6 +1,6 @@
+import { nanoid } from 'nanoid';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { nanoid } from 'nanoid';
 
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
