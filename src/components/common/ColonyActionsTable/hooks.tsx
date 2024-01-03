@@ -11,7 +11,7 @@ import {
   SearchableColonyActionSortInput,
   SearchableSortDirection,
 } from '~gql';
-import { useActivityFeed, useColonyContext, useMobile } from '~hooks';
+import { useActivityFeed, useColonyContext } from '~hooks';
 import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
 import { MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
@@ -47,18 +47,14 @@ export const useColonyActionsTableColumns = (
   loading: boolean,
   loadingMotionStates: boolean,
   refetchMotionStates: RefetchMotionStates,
-) => {
-  const isMobile = useMobile();
-
-  return useMemo(() => {
+) =>
+  useMemo(() => {
     const helper = createColumnHelper<ActivityFeedColonyAction>();
 
     return [
       helper.display({
         id: 'description',
-        staticSize: isMobile
-          ? 'calc(100% - 6.25rem - 3.75rem)'
-          : 'calc(100% - 7.8125rem - 10.3125rem - 3.75rem - 6.25rem)',
+        staticSize: '100%',
         header: formatText(MSG.tableHeaderLatestActivity),
         enableSorting: false,
         cell: ({ row: { original } }) => (
@@ -135,8 +131,7 @@ export const useColonyActionsTableColumns = (
         },
       }),
     ];
-  }, [isMobile, loading, loadingMotionStates, refetchMotionStates]);
-};
+  }, [loading, loadingMotionStates, refetchMotionStates]);
 
 export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
   const navigate = useNavigate();

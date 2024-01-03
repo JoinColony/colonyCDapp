@@ -67,6 +67,7 @@ const Table = <T,>({
           border-spacing-0
           table-fixed
           w-full
+          h-px
         `}
         cellPadding="0"
         cellSpacing="0"
@@ -109,7 +110,7 @@ const Table = <T,>({
                             )}
                       </th>
                       <td
-                        className="p-4 text-left text-sm font-normal"
+                        className="p-4 text-left text-sm font-normal h-full"
                         colSpan={columnsCount}
                       >
                         {flexRender(
@@ -186,7 +187,7 @@ const Table = <T,>({
             <tbody className="w-full">
               {shouldShowEmptyContent ? (
                 <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
-                  <td colSpan={totalColumnsCount} className="h-[1px]">
+                  <td colSpan={totalColumnsCount} className="h-full">
                     <div className="text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start">
                       {emptyContent}
                     </div>
@@ -211,7 +212,7 @@ const Table = <T,>({
                       ] as const;
 
                       return (
-                        <td key={cell?.id} className="h-[1px]">
+                        <td key={cell?.id} className="h-full">
                           {renderCellWrapper(...renderCellWrapperCommonArgs, {
                             cell,
                             row,
@@ -237,7 +238,7 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="text-md text-gray-500 px-[1.125rem] sm:border-t border-gray-200"
+                    className="text-md text-gray-500 px-[1.125rem] sm:border-t border-gray-200 h-full"
                   >
                     {flexRender(
                       column.column.columnDef.footer,
