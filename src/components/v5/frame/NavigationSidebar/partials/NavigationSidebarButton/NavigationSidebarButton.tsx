@@ -32,9 +32,8 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:w-auto
           text-left
           md:rounded-lg
-          px-2
-          md:px-2.5
-          py-2.5
+          px-2.5
+          py-2
           flex
           items-center
           justify-between
