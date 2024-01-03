@@ -6,6 +6,7 @@ export const currencyApiConfig = {
   searchParams: {
     from: 'contract_addresses',
     to: 'vs_currencies',
+    api: 'x_cg_demo_api_key',
   },
 };
 export const coinGeckoMappings = {
