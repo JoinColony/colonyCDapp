@@ -19,5 +19,6 @@ export interface RadioButtonsBaseProps<TValue> {
     value: TValue,
     selectedValue: TValue | undefined,
   ) => boolean;
+  allowUnselect?: boolean;
   className?: string;
 }

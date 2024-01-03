@@ -18,7 +18,7 @@ const RadioBase: FC<RadioProps> = ({
     <input
       {...rest}
       value={value}
-      type="radio"
+      type="checkbox"
       id={id}
       disabled={disabled}
       checked={checked}

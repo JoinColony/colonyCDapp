@@ -15,7 +15,6 @@ import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioBu
 import Button from '~v5/shared/Button';
 import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
 
-import { STAKING_RADIO_BUTTONS } from '../../../../consts';
 import { useMotionContext } from '../../../../partials/MotionProvider/hooks';
 import { useStakingForm } from './hooks';
 import { StakingFormProps, StakingFormValues } from './types';
@@ -55,6 +54,9 @@ const StakingForm: FC<StakingFormProps> = ({
   const { nay, yay } = percentage;
   const objectingStakesPercentageValue = Number(nay) || 0;
   const supportingStakesPercentageValue = Number(yay) || 0;
+
+  const isFullySupported = supportingStakesPercentageValue === 100;
+  const isFullyObjected = objectingStakesPercentageValue === 100;
 
   return (
     <ActionForm<StakingFormValues>
@@ -108,7 +110,34 @@ const StakingForm: FC<StakingFormProps> = ({
               {canInteract && (
                 <FormButtonRadioButtons
                   name="voteType"
-                  items={STAKING_RADIO_BUTTONS}
+                  allowUnselect={!isFullySupported && !isFullyObjected}
+                  items={[
+                    {
+                      label: formatText({ id: 'motion.oppose' }),
+                      id: 'oppose',
+                      value: MotionVote.Nay,
+                      colorClassName: 'text-negative-300',
+                      checkedColorClassName:
+                        'bg-negative-400 border-negative-400',
+                      iconClassName: 'text-negative-400',
+                      hoverColorClassName:
+                        'md:hover:text-negative-400 md:hover:border-negative-400',
+                      iconName: 'thumbs-down',
+                      disabled: isFullyObjected,
+                    },
+                    {
+                      label: formatText({ id: 'motion.support' }),
+                      id: 'support',
+                      value: MotionVote.Yay,
+                      colorClassName: 'text-purple-200',
+                      checkedColorClassName: 'bg-purple-400 border-purple-400',
+                      iconClassName: 'text-purple-400',
+                      hoverColorClassName:
+                        'md:hover:text-purple-400 md:hover:border-purple-400',
+                      iconName: 'thumbs-up',
+                      disabled: isFullySupported,
+                    },
+                  ]}
                   disabled={disableForm}
                 />
               )}

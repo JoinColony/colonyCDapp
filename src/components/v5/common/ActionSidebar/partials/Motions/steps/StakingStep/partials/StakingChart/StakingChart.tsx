@@ -12,44 +12,33 @@ const StakingChart: FC<StakingChartProps> = ({
   tokenDecimals,
   tokenSymbol,
   chartProps,
-}) => {
-  const { threshold } = chartProps;
-
-  return (
-    <>
-      {requiredStake && (
-        <h4 className="text-1 text-center text-gray-900 mb-3">
-          {formatText(
-            {
-              id: 'motion.staking.form.title',
-            },
-            {
-              requiredStake: (
-                <Numeral
-                  value={requiredStake}
-                  suffix={tokenSymbol}
-                  decimals={tokenDecimals}
-                />
-              ),
-            },
-          )}
-        </h4>
-      )}
-      <VoteChart
-        {...chartProps}
-        againstLabel={formatText({ id: 'motion.staking.chart.againstLabel' })}
-        forLabel={formatText({ id: 'motion.staking.chart.forLabel' })}
-        thresholdLabel={formatText(
-          { id: 'motion.staking.chart.thresholdLabel' },
+}) => (
+  <>
+    {requiredStake && (
+      <h4 className="text-1 text-center text-gray-900 mb-3">
+        {formatText(
           {
-            value: `${threshold}%`,
+            id: 'motion.staking.form.title',
+          },
+          {
+            requiredStake: (
+              <Numeral
+                value={requiredStake}
+                suffix={tokenSymbol}
+                decimals={tokenDecimals}
+              />
+            ),
           },
         )}
-      />
-    </>
-  );
-};
-
+      </h4>
+    )}
+    <VoteChart
+      {...chartProps}
+      againstLabel={formatText({ id: 'motion.staking.chart.againstLabel' })}
+      forLabel={formatText({ id: 'motion.staking.chart.forLabel' })}
+    />
+  </>
+);
 StakingChart.displayName = displayName;
 
 export default StakingChart;
