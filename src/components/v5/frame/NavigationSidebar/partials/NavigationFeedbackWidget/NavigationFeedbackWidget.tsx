@@ -22,7 +22,7 @@ const MSG = {
 };
 
 const NavigationFeedbackWidget = () => (
-  <div className="rounded-lg px-2.5 py-3 bg-blue-100 text-blue-400">
+  <div className="rounded-lg px-2.5 py-3 bg-base-bg text-gray-900">
     <h4 className="text-2 mb-2">
       <FormattedMessage {...MSG.widgetTitle} />
     </h4>
@@ -31,7 +31,7 @@ const NavigationFeedbackWidget = () => (
     </p>
     <button
       type="button"
-      className="text-xs font-medium underline hover:text-gray-900"
+      className="text-xs font-medium underline hover:text-blue-400"
       onClick={openFeaturesBugs}
     >
       <FormattedMessage {...MSG.widgetButtonText} />
