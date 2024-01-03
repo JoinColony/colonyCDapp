@@ -16,6 +16,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
   hasSecondLevel,
   isActive,
   isExpanded,
+  isHighlighted,
   ...rest
 }) => {
   const isTablet = useTablet();
@@ -44,7 +45,9 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
         `,
         {
           'text-blue-400 md:text-white md:bg-gray-900': isActive && !isTablet,
-          'text-gray-900 md:hover:bg-gray-900 md:hover:text-white': !isActive,
+          'text-gray-900 md:hover:bg-gray-900 md:hover:text-white':
+            !isActive && !isHighlighted,
+          'bg-blue-100 text-blue-400': isHighlighted,
         },
       )}
       {...rest}
