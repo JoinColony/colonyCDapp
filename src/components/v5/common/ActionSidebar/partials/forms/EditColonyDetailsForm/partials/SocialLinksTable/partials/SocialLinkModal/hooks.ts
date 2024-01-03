@@ -10,16 +10,16 @@ export const useResetFormOnLinkTypeChange = (
     useState<UseFormReturn<SocialLinkModalFormValues> | null>(null);
 
   formRef?.watch((data, { name, type }) => {
-    if (name !== 'linkType' || type !== 'change') {
+    if (name !== 'name' || type !== 'change') {
       return;
     }
 
     formRef.reset(
       defaultValuesProp.find(
-        (defaultValue) => defaultValue.linkType === data.linkType,
+        (defaultValue) => defaultValue.name === data.name,
       ) || {
-        linkType: data.linkType,
-        url: '',
+        name: data.name,
+        link: '',
       },
     );
   });
@@ -31,9 +31,9 @@ export const useResetFormOnLinkTypeChange = (
 
     formRef.reset(
       defaultValuesProp.find(
-        (defaultValue) => defaultValue.linkType === initialLinkType,
+        (defaultValue) => defaultValue.name === initialLinkType,
       ) || {
-        linkType: initialLinkType,
+        name: initialLinkType,
       },
     );
   }, [defaultValuesProp, formRef, initialLinkType]);

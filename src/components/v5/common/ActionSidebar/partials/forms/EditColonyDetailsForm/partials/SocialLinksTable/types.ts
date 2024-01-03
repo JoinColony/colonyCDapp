@@ -6,8 +6,8 @@ export interface SocialLinksTableProps {
 
 export interface SocialLinksTableModel {
   key: string;
-  linkType: ExternalLinks;
-  url: string;
+  name: ExternalLinks;
+  link: string;
 }
 
 export interface SocialLinksButtonsProps {

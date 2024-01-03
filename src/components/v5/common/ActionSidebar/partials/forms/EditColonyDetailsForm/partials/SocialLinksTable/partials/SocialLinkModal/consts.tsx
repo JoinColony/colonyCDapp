@@ -18,8 +18,8 @@ import { formatText } from '~utils/intl';
 
 export const SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA = object()
   .shape({
-    linkType: string().oneOf(Object.values(ExternalLinks)).required(),
-    url: string()
+    name: string().oneOf(Object.values(ExternalLinks)).required(),
+    link: string()
       .url(formatText({ id: 'editColony.socialLinks.modal.invalidUrl' }))
       .required(formatText({ id: 'editColony.socialLinks.modal.requiredUrl' })),
   })

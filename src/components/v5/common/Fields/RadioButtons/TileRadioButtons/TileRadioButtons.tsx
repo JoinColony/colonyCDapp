@@ -27,7 +27,7 @@ function TileRadioButtons<TValue = string>({
               border
               transition-all
               rounded-lg
-              align-center
+              items-center
               justify-center
               duration-75
             `,

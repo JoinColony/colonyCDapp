@@ -18,8 +18,8 @@ export const validationSchema = object()
       .of(
         object()
           .shape({
-            linkType: string().defined().oneOf(Object.values(ExternalLinks)),
-            url: string().url().required(),
+            name: string().defined().oneOf(Object.values(ExternalLinks)),
+            link: string().url().required(),
           })
           .defined(),
       )
