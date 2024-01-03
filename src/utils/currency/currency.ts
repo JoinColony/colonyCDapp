@@ -14,6 +14,7 @@ import {
   mapToAPIFormat,
 } from './utils';
 import { currencyApiConfig, coinGeckoMappings } from './config';
+import { getSavedPrice, savePrice } from './memo';
 
 // The functions defined in this file assume something about the shape of the api response.
 // If that changes, or if we change the api, these functions will need to be updated.
@@ -120,6 +121,18 @@ export const fetchCurrentPrice = async ({
   chainId = Network.Gnosis,
   conversionDenomination = SupportedCurrencies.Usd,
 }: FetchCurrentPriceArgs): Promise<number> => {
+  const savedPrice = getSavedPrice({
+    contractAddress,
+    chainId,
+    currency: conversionDenomination,
+  });
+
+  if (typeof savedPrice !== 'undefined') {
+    return savedPrice;
+  }
+
+  let result = 0;
+
   if (conversionDenomination === SupportedCurrencies.Clny) {
     const tokenPriceinUSD = await fetchPriceFromCoinGecko({
       contractAddress,
@@ -127,12 +140,21 @@ export const fetchCurrentPrice = async ({
     });
 
     const clnyInUSD = await getCLNYPriceInUSD();
-    return convertTokenToCLNY(tokenPriceinUSD, clnyInUSD);
+    result = convertTokenToCLNY(tokenPriceinUSD, clnyInUSD);
+  } else {
+    result = await fetchPriceFromCoinGecko({
+      contractAddress,
+      chainId,
+      conversionDenomination,
+    });
   }
 
-  return fetchPriceFromCoinGecko({
-    contractAddress,
+  savePrice({
     chainId,
-    conversionDenomination,
+    contractAddress,
+    currency: conversionDenomination,
+    price: result,
   });
+
+  return result;
 };
