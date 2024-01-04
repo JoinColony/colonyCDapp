@@ -4,8 +4,9 @@ import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
 
-import store from '~redux/createReduxStore';
 import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
+// eslint-disable-next-line import/order
+import store from '~redux/createReduxStore';
 
 import Entry from './Entry';
 
