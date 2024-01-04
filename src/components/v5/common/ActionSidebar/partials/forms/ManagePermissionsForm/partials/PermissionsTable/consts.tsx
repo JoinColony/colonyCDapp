@@ -69,7 +69,7 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
   },
 };
 
-export const CUTOM_PERMISSION_TABLE_CONTENT: CustomPermissionTableModel[] = [
+export const CUSTOM_PERMISSION_TABLE_CONTENT: CustomPermissionTableModel[] = [
   {
     key: ColonyRole.Root,
     name: ColonyRole.Root,
