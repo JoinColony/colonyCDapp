@@ -9,4 +9,5 @@ export interface NavigationSidebarButtonProps
   hideMobile?: boolean;
   hasSecondLevel?: boolean;
   className?: string;
+  isHighlighted?: boolean;
 }

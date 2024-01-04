@@ -36,6 +36,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
             hideMobile,
             className,
             isActive: isActiveProp,
+            isHighlighted,
           },
           index,
         ) => {
@@ -64,6 +65,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 iconName={iconName}
                 hasSecondLevel={!!secondLevelMenuProps}
                 className={className}
+                isHighlighted={isHighlighted}
               />
               <AnimatePresence>
                 {isTablet && secondLevelMenuProps && isActive && (
