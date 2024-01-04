@@ -2,6 +2,7 @@ import React from 'react';
 import moveDecimal from 'move-decimal-point';
 
 import { ArrowDownRight } from 'phosphor-react';
+import { defineMessages } from 'react-intl';
 import { ColonyAction } from '~types';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
@@ -16,6 +17,7 @@ import TeamBadge from '~v5/common/Pills/TeamBadge';
 import { ICON_SIZE } from '../../consts';
 import DescriptionRow from '../rows/Description';
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
+import UserPopover from '~v5/shared/UserPopover';
 
 const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 
@@ -23,8 +25,21 @@ interface TransferFundsProps {
   action: ColonyAction;
 }
 
+const MSG = defineMessages({
+  defaultTitle: {
+    id: `${displayName}.defaultTitle`,
+    defaultMessage: 'Transfer funds',
+  },
+  subtitle: {
+    id: `${displayName}.subtitle`,
+    defaultMessage:
+      'Move {amount} {token} from {fromDomain} to {toDomain} by {user}',
+  },
+});
+
 const TransferFunds = ({ action }: TransferFundsProps) => {
-  const { customTitle = 'Transfer funds' } = action?.metadata || {};
+  const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
+  const { initiatorUser } = action;
   const transformedAmount = moveDecimal(
     action.amount || '0',
     -getTokenDecimalsWithFallback(action.token?.decimals),
@@ -34,9 +49,22 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
-        Move {transformedAmount} {action.token?.symbol} from{' '}
-        {action.fromDomain?.metadata?.name} to {action.toDomain?.metadata?.name}{' '}
-        by {action.initiatorUser?.profile?.displayName}
+        {formatText(MSG.subtitle, {
+          amount: transformedAmount,
+          token: action.token?.symbol,
+          fromDomain: action.fromDomain?.metadata?.name,
+          toDomain: action.toDomain?.metadata?.name,
+          user: initiatorUser ? (
+            <UserPopover
+              userName={initiatorUser.profile?.displayName}
+              walletAddress={initiatorUser.walletAddress}
+              user={initiatorUser}
+              withVerifiedBadge={false}
+            >
+              {initiatorUser.profile?.displayName}
+            </UserPopover>
+          ) : null,
+        })}
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />

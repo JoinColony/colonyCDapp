@@ -9,7 +9,9 @@ export const ActionTitle = ({
 export const ActionSubtitle = ({
   children,
 }: PropsWithChildren<Record<never, any>>) => {
-  return <div className="mb-7 text-md">{children}</div>;
+  return (
+    <div className="mb-7 text-md flex whitespace-pre-wrap">{children}</div>
+  );
 };
 
 export const ActionDataGrid = ({

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { PaintBucket, Rocket, UserList } from 'phosphor-react';
+import { defineMessages } from 'react-intl';
 import { ColonyAction } from '~types';
 
 import CreatedInRow from '../rows/CreatedInRow';
@@ -12,6 +13,7 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 import { ICON_SIZE } from '../../consts';
 import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColourField/partials/TeamColourBadge';
+import UserPopover from '~v5/shared/UserPopover';
 
 const displayName = 'v5.common.CompletedAction.partials.CreateNewTeam';
 
@@ -19,15 +21,38 @@ interface CreateNewTeamProps {
   action: ColonyAction;
 }
 
+const MSG = defineMessages({
+  defaultTitle: {
+    id: `${displayName}.defaultTitle`,
+    defaultMessage: 'Create a new team',
+  },
+  subtitle: {
+    id: `${displayName}.subtitle`,
+    defaultMessage: 'New team {team} by {user}',
+  },
+});
+
 const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
-  const { customTitle = 'Create decision' } = action?.metadata || {};
+  const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
+  const { initiatorUser } = action;
 
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
-        Create new team {action.fromDomain?.metadata?.name} by{' '}
-        {action.initiatorUser?.profile?.displayName}
+        {formatText(MSG.subtitle, {
+          team: action.fromDomain?.metadata?.name,
+          user: initiatorUser ? (
+            <UserPopover
+              userName={initiatorUser.profile?.displayName}
+              walletAddress={initiatorUser.walletAddress}
+              user={initiatorUser}
+              withVerifiedBadge={false}
+            >
+              {initiatorUser.profile?.displayName}
+            </UserPopover>
+          ) : null,
+        })}
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />

@@ -8,7 +8,7 @@ import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/pa
 import Motions from '../ActionSidebar/partials/Motions';
 import CreateDecision from './partials/CreateDecision';
 import CreateNewTeam from './partials/CreateNewTeam';
-import EditColonyDetails from './partials/EditColonyDetails';
+// import EditColonyDetails from './partials/EditColonyDetails';
 import MintTokens from './partials/MintTokens';
 import SimplePayment from './partials/SimplePayment';
 import TransferFunds from './partials/TransferFunds';
@@ -46,8 +46,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;
+      /* @TODO uncomment when social links are added to action display
       case ColonyActionType.ColonyEdit:
         return <EditColonyDetails action={action} />;
+        */
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;

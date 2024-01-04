@@ -36,7 +36,8 @@ const SUPPORTED_ACTIONS: AnyActionType[] = [
   ColonyActionType.UnlockToken,
   ColonyActionType.VersionUpgrade,
   ColonyActionType.CreateDecisionMotion,
-  ColonyActionType.ColonyEdit,
+  // @TODO uncomment when social links are added to action display
+  // ColonyActionType.ColonyEdit,
 ];
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({

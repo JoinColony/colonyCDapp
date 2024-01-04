@@ -1,6 +1,7 @@
 import React from 'react';
 import moveDecimal from 'move-decimal-point';
 
+import { defineMessages } from 'react-intl';
 import { ColonyAction } from '~types';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
@@ -10,6 +11,8 @@ import DecisionMethodRow from '../rows/DecisionMethod';
 import ActionTypeRow from '../rows/ActionType';
 import DescriptionRow from '../rows/Description';
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
+import UserPopover from '~v5/shared/UserPopover';
+import { formatText } from '~utils/intl';
 
 const displayName = 'v5.common.CompletedAction.partials.MintTokens';
 
@@ -17,8 +20,20 @@ interface MintTokensProps {
   action: ColonyAction;
 }
 
+const MSG = defineMessages({
+  defaultTitle: {
+    id: `${displayName}.defaultTitle`,
+    defaultMessage: 'Minting new tokens',
+  },
+  subtitle: {
+    id: `${displayName}.subtitle`,
+    defaultMessage: 'Mint {amount} {token} by {user}',
+  },
+});
+
 const MintTokens = ({ action }: MintTokensProps) => {
-  const { customTitle = 'Mint Tokens' } = action?.metadata || {};
+  const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
+  const { initiatorUser } = action;
   const transformedAmount = moveDecimal(
     action.amount || '0',
     -getTokenDecimalsWithFallback(action.token?.decimals),
@@ -28,8 +43,20 @@ const MintTokens = ({ action }: MintTokensProps) => {
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
-        Mint {transformedAmount} {action.token?.symbol} by{' '}
-        {action.initiatorUser?.profile?.displayName}
+        {formatText(MSG.subtitle, {
+          amount: transformedAmount,
+          token: action.token?.symbol,
+          user: initiatorUser ? (
+            <UserPopover
+              userName={initiatorUser.profile?.displayName}
+              walletAddress={initiatorUser.walletAddress}
+              user={initiatorUser}
+              withVerifiedBadge={false}
+            >
+              {initiatorUser.profile?.displayName}
+            </UserPopover>
+          ) : null,
+        })}
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
