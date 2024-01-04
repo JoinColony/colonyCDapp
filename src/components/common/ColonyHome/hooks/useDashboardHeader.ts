@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   // @BETA: Disabled for now
   // BellRinging,
@@ -7,22 +6,24 @@ import {
   ShareNetwork,
   Smiley,
 } from 'phosphor-react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useColonyContext, useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
-import { ColonyDashboardHeaderProps } from '~v5/common/ColonyDashboardHeader/types';
 import { getCurrentToken } from '~common/ColonyTotalFunds/SelectedToken/helpers';
+import { ExternalLink } from '~gql';
+import { useColonyContext, useMobile } from '~hooks';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
+import { formatText } from '~utils/intl';
 import { ColonyLinksItem } from '~v5/common/ColonyDashboardHeader/partials/ColonyLinks/types';
+import { ColonyDashboardHeaderProps } from '~v5/common/ColonyDashboardHeader/types';
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from '~v5/common/DropdownMenu/types';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
+
 import { iconMappings, MAX_TEXT_LENGTH } from './consts';
-import { ExternalLink } from '~gql';
 
 const getExternalLinks = (externalLinks: ExternalLink[]): ColonyLinksItem[] => {
   const linksPriority = Object.keys(iconMappings);
