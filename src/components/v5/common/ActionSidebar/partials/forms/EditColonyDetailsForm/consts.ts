@@ -10,6 +10,10 @@ export const validationSchema = object()
       image: string().nullable().defined(),
       thumbnail: string().nullable().defined(),
     }),
+    nativeTokenAvatar: object().nullable().shape({
+      image: string().nullable().defined(),
+      thumbnail: string().nullable().defined(),
+    }),
     colonyName: string().trim().max(MAX_COLONY_DISPLAY_NAME),
     createdIn: string().defined(),
     decisionMethod: string().defined(),

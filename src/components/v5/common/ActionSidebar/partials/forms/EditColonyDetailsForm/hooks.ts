@@ -18,7 +18,7 @@ export const useEditColonyDetails = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const { metadata } = colony || {};
+  const { metadata, nativeToken } = colony || {};
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
@@ -33,6 +33,10 @@ export const useEditColonyDetails = (
           image: metadata?.avatar,
           thumbnail: metadata?.thumbnail,
         },
+        nativeTokenAvatar: {
+          image: nativeToken?.avatar,
+          thumbnail: nativeToken?.thumbnail,
+        },
         createdIn: Id.RootDomain.toString(),
         externalLinks: metadata?.externalLinks ?? [],
       }),
@@ -41,6 +45,7 @@ export const useEditColonyDetails = (
         metadata?.displayName,
         metadata?.externalLinks,
         metadata?.thumbnail,
+        nativeToken,
       ],
     ),
     actionType:
