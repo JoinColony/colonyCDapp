@@ -1,12 +1,12 @@
 /* eslint-disable react/no-this-in-sfc */
+import Blockquote from '@tiptap/extension-blockquote';
+import Bold from '@tiptap/extension-bold';
+import Document from '@tiptap/extension-document';
+import Heading from '@tiptap/extension-heading';
+import Text from '@tiptap/extension-text';
+import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Document from '@tiptap/extension-document';
-import Text from '@tiptap/extension-text';
-import Blockquote from '@tiptap/extension-blockquote';
-import Underline from '@tiptap/extension-underline';
-import Bold from '@tiptap/extension-bold';
-import Heading from '@tiptap/extension-heading';
 import React from 'react';
 
 const displayName = 'v5.RichTextDisplay';

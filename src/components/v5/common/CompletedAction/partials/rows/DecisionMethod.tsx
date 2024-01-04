@@ -1,8 +1,10 @@
-import React from 'react';
 import { Scales } from 'phosphor-react';
+import React from 'react';
+
 import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
+
 import { ICON_SIZE } from '../../consts';
 
 const displayName = 'v5.common.CompletedAction.partials.DecisionMethodRow';

@@ -1,23 +1,23 @@
-import React from 'react';
 import moveDecimal from 'move-decimal-point';
-
 import { ArrowDownRight } from 'phosphor-react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
-import { ColonyAction } from '~types';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
+import Tooltip from '~shared/Extensions/Tooltip';
+import { ColonyAction } from '~types';
+import { formatText } from '~utils/intl';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import TeamBadge from '~v5/common/Pills/TeamBadge';
+import UserPopover from '~v5/shared/UserPopover';
+
+import { ICON_SIZE } from '../../consts';
+import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
+import ActionTypeRow from '../rows/ActionType';
 import AmountRow from '../rows/Amount';
 import CreatedInRow from '../rows/CreatedInRow';
 import DecisionMethodRow from '../rows/DecisionMethod';
-import ActionTypeRow from '../rows/ActionType';
-import TeamFromRow from '../rows/TeamFrom';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
-import TeamBadge from '~v5/common/Pills/TeamBadge';
-import { ICON_SIZE } from '../../consts';
 import DescriptionRow from '../rows/Description';
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
-import UserPopover from '~v5/shared/UserPopover';
+import TeamFromRow from '../rows/TeamFrom';
 
 const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 

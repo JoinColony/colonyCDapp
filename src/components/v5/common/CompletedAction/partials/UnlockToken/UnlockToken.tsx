@@ -1,15 +1,15 @@
 import React from 'react';
-
 import { defineMessages } from 'react-intl';
-import { ColonyAction } from '~types';
 
-import CreatedInRow from '../rows/CreatedInRow';
-import DecisionMethodRow from '../rows/DecisionMethod';
-import ActionTypeRow from '../rows/ActionType';
-import DescriptionRow from '../rows/Description';
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
+import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
 import UserPopover from '~v5/shared/UserPopover';
+
+import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
+import ActionTypeRow from '../rows/ActionType';
+import CreatedInRow from '../rows/CreatedInRow';
+import DecisionMethodRow from '../rows/DecisionMethod';
+import DescriptionRow from '../rows/Description';
 
 const displayName = 'v5.common.CompletedAction.partials.UnlockToken';
 

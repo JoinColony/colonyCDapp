@@ -1,35 +1,35 @@
-import React from 'react';
-import merge from 'lodash/merge';
-import { useFormContext, useWatch } from 'react-hook-form';
 import { useApolloClient } from '@apollo/client';
+import merge from 'lodash/merge';
+import React from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
+import { getActionTitleValues } from '~common/ColonyActions';
+import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import { ADDRESS_ZERO } from '~constants';
 import { ACTION, Action } from '~constants/actions';
 import { useAppContext, useColonyContext } from '~hooks';
-import AsyncText from '~v5/shared/AsyncText';
 import { ColonyAction } from '~types';
-import { ADDRESS_ZERO } from '~constants';
-import { getActionTitleValues } from '~common/ColonyActions';
 import { formatText } from '~utils/intl';
-import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
+import AsyncText from '~v5/shared/AsyncText';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { simplePaymentDescriptionMetadataGetter } from '../forms/SimplePaymentForm/utils';
+import { ACTION_TYPE_FIELD_NAME } from '../../consts';
+import { DescriptionMetadataGetter } from '../../types';
 import { advancedPaymentDescriptionMetadataGetter } from '../forms/AdvancedPaymentForm/utils';
+import { createDecisionDescriptionMetadataGetter } from '../forms/CreateDecisionForm/utils';
+import { createNewTeamDescriptionMetadataGetter } from '../forms/CreateNewTeamForm/utils';
+import { editColonyDetailsDescriptionMetadataGetter } from '../forms/EditColonyDetailsForm/utils';
+import { editTeamDescriptionMetadataGetter } from '../forms/EditTeamForm/utils';
+import { enterRecoveryModeDescriptionMetadataGetter } from '../forms/EnterRecoveryModeForm/utils';
+import { manageColonyObjectivesDescriptionMetadataGetter } from '../forms/ManageColonyObjectivesForm/utils';
+import { managePermissionsDescriptionMetadataGetter } from '../forms/ManagePermissionsForm/utils';
+import { manageTokensDescriptionMetadataGetter } from '../forms/ManageTokensForm/utils';
+import { mintTokenDescriptionMetadataGetter } from '../forms/MintTokenForm/utils';
+import { simplePaymentDescriptionMetadataGetter } from '../forms/SimplePaymentForm/utils';
 import { splitPaymentDescriptionMetadataGetter } from '../forms/SplitPaymentForm/utils';
 import { trasferFundsDescriptionMetadataGetter } from '../forms/TransferFundsForm/utils';
-import { mintTokenDescriptionMetadataGetter } from '../forms/MintTokenForm/utils';
 import { unlockTokenDescriptionMetadataGetter } from '../forms/UnlockTokenForm/utils';
-import { manageTokensDescriptionMetadataGetter } from '../forms/ManageTokensForm/utils';
-import { editColonyDetailsDescriptionMetadataGetter } from '../forms/EditColonyDetailsForm/utils';
-import { createNewTeamDescriptionMetadataGetter } from '../forms/CreateNewTeamForm/utils';
-import { editTeamDescriptionMetadataGetter } from '../forms/EditTeamForm/utils';
 import { upgradeColonyDescriptionMetadataGetter } from '../forms/UpgradeColonyForm/utils';
-import { enterRecoveryModeDescriptionMetadataGetter } from '../forms/EnterRecoveryModeForm/utils';
-import { createDecisionDescriptionMetadataGetter } from '../forms/CreateDecisionForm/utils';
-import { managePermissionsDescriptionMetadataGetter } from '../forms/ManagePermissionsForm/utils';
-import { manageColonyObjectivesDescriptionMetadataGetter } from '../forms/ManageColonyObjectivesForm/utils';
-import { DescriptionMetadataGetter } from '../../types';
-import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 
 const DESC_METADATA: Partial<Record<Action, DescriptionMetadataGetter>> = {
   [ACTION.SIMPLE_PAYMENT]: simplePaymentDescriptionMetadataGetter,

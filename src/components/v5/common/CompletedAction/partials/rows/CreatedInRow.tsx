@@ -1,10 +1,12 @@
-import React from 'react';
 import { HouseLine } from 'phosphor-react';
+import React from 'react';
+
 import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
-import { ICON_SIZE } from '../../consts';
 import { DomainMetadata } from '~types';
+import { formatText } from '~utils/intl';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
+
+import { ICON_SIZE } from '../../consts';
 
 const displayName = 'v5.common.CompletedAction.partials.CreatedInRow';
 

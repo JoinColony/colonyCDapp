@@ -1,8 +1,10 @@
-import React from 'react';
 import { Pencil } from 'phosphor-react';
+import React from 'react';
+
 import { formatText } from '~utils/intl';
-import { ICON_SIZE } from '../../consts';
 import RichTextDisplay from '~v5/shared/RichTextDisplay';
+
+import { ICON_SIZE } from '../../consts';
 
 const displayName = 'v5.common.CompletedAction.partials.DescriptionRow';
 

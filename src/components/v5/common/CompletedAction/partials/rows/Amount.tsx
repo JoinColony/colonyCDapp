@@ -1,11 +1,13 @@
 import moveDecimal from 'move-decimal-point';
 import { Coins } from 'phosphor-react';
 import React from 'react';
+
 import Tooltip from '~shared/Extensions/Tooltip';
 import TokenIcon from '~shared/TokenIcon';
 import { Token } from '~types';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+
 import { ICON_SIZE } from '../../consts';
 
 const displayName = 'v5.common.CompletedAction.partials.AmountRow';

@@ -1,11 +1,14 @@
 import clsx from 'clsx';
 import React from 'react';
+
 import { ColonyActionType } from '~gql';
 import { useColonyContext } from '~hooks';
 import { ColonyAction } from '~types';
 import { getExtendedActionType } from '~utils/colonyActions';
+
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar';
 import Motions from '../ActionSidebar/partials/Motions';
+
 import CreateDecision from './partials/CreateDecision';
 import CreateNewTeam from './partials/CreateNewTeam';
 // import EditColonyDetails from './partials/EditColonyDetails';

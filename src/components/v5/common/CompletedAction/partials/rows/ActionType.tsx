@@ -1,9 +1,11 @@
-import React from 'react';
 import { FilePlus } from 'phosphor-react';
+import React from 'react';
+
+import { ColonyActionType } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
+
 import { ICON_SIZE } from '../../consts';
-import { ColonyActionType } from '~gql';
 
 const displayName = 'v5.common.CompletedAction.partials.ActionTypeRow';
 
