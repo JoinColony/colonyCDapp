@@ -1,13 +1,14 @@
-import { notNull } from '~utils/arrays';
-import {
-  AvailablePermission,
-  DomainWithPermissionsAndReputation,
-} from './types';
 import {
   ColonyContributor,
   ContributorReputation,
   ContributorRoles,
 } from '~types';
+import { notNull } from '~utils/arrays';
+
+import {
+  AvailablePermission,
+  DomainWithPermissionsAndReputation,
+} from './types';
 
 const mergeDomains = (
   reputation: ContributorReputation[],

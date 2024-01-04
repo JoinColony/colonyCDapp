@@ -1,18 +1,18 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Button from '~v5/shared/Button';
+import { useAppContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
-import { withMeta } from '~utils/actions';
-import { useAppContext } from '~hooks';
 import { WizardStepProps } from '~shared/Wizard';
+import { withMeta } from '~utils/actions';
+import Button from '~v5/shared/Button';
 
 import { HeaderRow } from '../shared';
 
-import { validationSchema } from './validation';
-import { CreateUserFormValues } from './types';
 import CreateUserFormInputs from './CreateUserFormInputs';
+import { CreateUserFormValues } from './types';
+import { validationSchema } from './validation';
 
 const displayName = 'common.Onboarding.StepCreateUser';
 

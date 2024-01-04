@@ -7,6 +7,7 @@ import { DropdownIndicator, SelectBase } from '~v5/common/Fields/Select';
 
 import CustomOption from './partials/CustomOption';
 import { MemberSelectProps, MembersSelectOption } from './types';
+
 import styles from './MembersSelect.module.css';
 
 const displayName = 'v5.MembersSelect';

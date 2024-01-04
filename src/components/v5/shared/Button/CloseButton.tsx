@@ -1,12 +1,14 @@
 /* eslint-disable react/button-has-type */
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
+
+import Icon from '~shared/Icon';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
 
 import { CloseButtonProps } from './types';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
+
 import styles from './CloseButton.module.css';
-import Icon from '~shared/Icon';
 
 const displayName = 'v5.Button.CloseButton';
 

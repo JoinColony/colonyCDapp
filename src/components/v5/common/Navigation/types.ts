@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+
 import { SelectOption } from '../Fields/Select/types';
 
 export interface NavItemProps {

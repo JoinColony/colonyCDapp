@@ -1,9 +1,8 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import ReactSlider from 'rc-slider';
 import Decimal from 'decimal.js';
-import { useFormContext } from 'react-hook-form';
-
+import ReactSlider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import styles from './Slider.css';
 

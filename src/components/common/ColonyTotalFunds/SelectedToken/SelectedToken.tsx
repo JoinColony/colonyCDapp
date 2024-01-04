@@ -1,20 +1,22 @@
 import React, { ReactNode, useState } from 'react';
 // import { defineMessages } from 'react-intl';
 
-import Numeral from '~shared/Numeral';
-// import { MiniSpinnerLoader } from '~shared/Preloaders';
-// import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
-import { Address } from '~types';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-// import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { useColonyContext } from '~hooks';
+import Numeral from '~shared/Numeral';
+import { Address } from '~types';
 import { notNull } from '~utils/arrays';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import ColonyTotalFundsPopover from './ColonyTotalFundsPopover';
-import TokenSymbol from './TokenSymbol';
 import { getCurrentToken, getCurrentTokenRootBalance } from './helpers';
+import TokenSymbol from './TokenSymbol';
 
 import styles from './SelectedToken.css';
+
+// import { MiniSpinnerLoader } from '~shared/Preloaders';
+// import { Colony, useTokenBalancesForDomainsQuery } from '~data/index';
+
+// import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 
 const displayName = 'common.ColonyTotalFunds.SelectedToken';
 

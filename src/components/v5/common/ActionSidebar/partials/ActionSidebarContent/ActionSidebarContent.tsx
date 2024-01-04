@@ -1,16 +1,16 @@
-import React, { FC } from 'react';
 import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields';
 import { formatText } from '~utils/intl';
 import { FormTextareaBase } from '~v5/common/Fields/TextareaBase';
 import Link from '~v5/shared/Link';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 
 import ActionTypeSelect from '../../ActionTypeSelect';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
@@ -24,12 +24,13 @@ import {
 import ActionButtons from '../ActionButtons';
 import Motions from '../Motions';
 import PopularActions from '../PopularActions';
+
+import PermissionSidebar from './partials/PermissionSidebar';
 import { SidebarBanner } from './partials/SidebarBanner';
 import {
   ActionSidebarContentProps,
   ActionSidebarFormContentProps,
 } from './types';
-import PermissionSidebar from './partials/PermissionSidebar';
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 

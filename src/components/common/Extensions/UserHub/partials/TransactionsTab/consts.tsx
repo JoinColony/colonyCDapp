@@ -1,4 +1,5 @@
 import { TransactionStatus } from '~gql';
+
 import { TransactionsItemProps } from './types';
 
 export const transactionsItems: TransactionsItemProps[] = [

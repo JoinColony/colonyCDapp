@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import { useDialog } from '~shared/Dialog';
 import { CreateDomainDialog } from '~common/Dialogs';
 import { useColonyContext, useEnabledExtensions } from '~hooks';
+import { useDialog } from '~shared/Dialog';
+import Icon from '~shared/Icon';
 
 import styles from './CreateDomainButton.css';
 

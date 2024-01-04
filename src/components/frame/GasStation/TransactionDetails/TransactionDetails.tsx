@@ -1,15 +1,14 @@
 import React, { MouseEvent } from 'react';
 
+import { TransactionStatus } from '~gql';
+import { TransactionType } from '~redux/immutable';
 import CardList from '~shared/CardList';
 
-import { TransactionType } from '~redux/immutable';
-import { TransactionStatus } from '~gql';
-
-import { getActiveTransactionIdx } from '../transactionGroup';
 import { Appearance } from '../GasStationContent';
-import { GroupedTransaction } from '../TransactionCard';
 import GasStationControls from '../GasStationControls';
 import MetaMaskWalletInteraction from '../MetaMaskWalletInteraction';
+import { GroupedTransaction } from '../TransactionCard';
+import { getActiveTransactionIdx } from '../transactionGroup';
 
 import TransactionBackToList from './TransactionBackToList';
 

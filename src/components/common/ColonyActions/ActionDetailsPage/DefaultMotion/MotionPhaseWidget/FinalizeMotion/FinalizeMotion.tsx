@@ -2,10 +2,10 @@ import { BigNumber } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~hooks';
 import DetailItem from '~shared/DetailsWidget/DetailItem';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { ColonyMotion } from '~types';
-import { useColonyContext } from '~hooks';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
 
 import FinalizeButton from './FinalizeButton';

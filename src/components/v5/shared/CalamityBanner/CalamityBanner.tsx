@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import CalamityBannerContent from './partials/CalamityBannerContent';
 import { useCalamityBanner } from './hooks';
+import CalamityBannerContent from './partials/CalamityBannerContent';
 import { CalamityBannerProps } from './types';
 
 const displayName = 'v5.CalamityBanner';

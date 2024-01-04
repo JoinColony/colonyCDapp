@@ -1,9 +1,11 @@
+import clsx from 'clsx';
 import React, { PropsWithChildren, FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
+
 import { SubNavigationItemProps } from './types';
+
 import styles from './SubNavigationItem.module.css';
 
 const displayName = 'v5.common.SubNavigation.partials.SubNavigationItem';

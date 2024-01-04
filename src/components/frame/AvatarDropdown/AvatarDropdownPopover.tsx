@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { useCanInteractWithNetwork } from '~hooks';
 import DropdownMenu from '~shared/DropdownMenu';
-import UserSection from '~shared/PopoverSection/UserSection';
 import CreateColonySection from '~shared/PopoverSection/CreateColonySection';
 import HelperSection from '~shared/PopoverSection/HelperSection';
 import MetaSection from '~shared/PopoverSection/MetaSection';
-import { useCanInteractWithNetwork } from '~hooks';
+import UserSection from '~shared/PopoverSection/UserSection';
 
 interface Props {
   closePopover: () => void;

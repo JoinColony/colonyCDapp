@@ -1,16 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormContext } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { getSelectedFormData } from './hooks';
 import RadioList from '~common/Extensions/Fields/RadioList';
 import Accordion from '~shared/Extensions/Accordion';
-import { governanceRadioList, initialExtensionContent } from './consts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { AnyExtensionData } from '~types';
+import { isInstalledExtensionData } from '~utils/extensions';
 import { formatText } from '~utils/intl';
+
 import { GovernanceOptions } from '../ExtensionsPage/types';
+
+import { governanceRadioList, initialExtensionContent } from './consts';
+import { getSelectedFormData } from './hooks';
 
 interface LazyConsensusPageSetupProps {
   extensionData: AnyExtensionData;

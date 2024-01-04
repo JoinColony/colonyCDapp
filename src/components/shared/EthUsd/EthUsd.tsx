@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { DEFAULT_NETWORK, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { getEthToUsd } from '~utils/external';
-import { DEFAULT_NETWORK, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { Network } from '~types';
+import { getEthToUsd } from '~utils/external';
 
 const displayName = 'EthUsd';
 

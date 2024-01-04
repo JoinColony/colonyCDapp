@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import ReputationBadge from '~v5/shared/ReputationBadge';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const reputationBadgeMeta: Meta<typeof ReputationBadge> = {
   title: 'Shared/Reputation Badge',

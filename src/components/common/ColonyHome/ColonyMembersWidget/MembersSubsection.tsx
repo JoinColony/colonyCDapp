@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { COLONY_MEMBERS_ROUTE } from '~routes';
+import InviteLinkButton from '~shared/Button/InviteLinkButton';
+import ClickableHeading from '~shared/ClickableHeading';
 import NavLink from '~shared/NavLink';
 import { Tooltip } from '~shared/Popover';
 import UserAvatar from '~shared/UserAvatar';
-import ClickableHeading from '~shared/ClickableHeading';
-import InviteLinkButton from '~shared/Button/InviteLinkButton';
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import { Colony } from '~types';
 import { notNull } from '~utils/arrays';
 // import Icon from '~shared/Icon';
@@ -14,7 +15,6 @@ import {
   calculateLastSliceIndex,
   calculateRemainingItems,
 } from '~utils/avatars';
-import { COLONY_MEMBERS_ROUTE } from '~routes';
 
 import styles from './ColonyMembersWidget.css';
 

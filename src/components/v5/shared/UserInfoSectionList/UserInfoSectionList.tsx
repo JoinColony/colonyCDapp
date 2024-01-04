@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+
+import MotionBadge from '~v5/common/ActionSidebar/partials/Motions/partials/MotionBadge/MotionBadge';
 
 import UserInfoList from './partials/UserInfoList';
 import { UserInfoSectionListProps } from './types';
-import MotionBadge from '~v5/common/ActionSidebar/partials/Motions/partials/MotionBadge/MotionBadge';
 
 const displayName = 'v5.UserInfoSectionList';
 

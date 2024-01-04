@@ -1,6 +1,6 @@
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import clsx from 'clsx';
 import { Optional } from 'utility-types';
 
 import { WizardSidebarStep } from './WizardSidebar';

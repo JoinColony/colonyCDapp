@@ -1,16 +1,15 @@
+import { Placement } from '@popperjs/core';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Placement } from '@popperjs/core';
 
-import ListItem, { ListItemStatus } from '~shared/ListItem';
-import UserAvatar from '~shared/UserAvatar';
 import { useAppContext } from '~hooks';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
+import ListItem, { ListItemStatus } from '~shared/ListItem';
+import { Draft as DraftTag } from '~shared/Tag';
+import UserAvatar from '~shared/UserAvatar';
+import { DecisionDraft } from '~utils/decisions';
 
 import DraftDecisionActions from './DraftDecisionActions';
-
-import { Draft as DraftTag } from '~shared/Tag';
-import { DecisionDraft } from '~utils/decisions';
 
 const displayName = 'common.ColonyDecisions.DraftDecisionItem';
 

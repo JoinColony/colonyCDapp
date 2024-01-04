@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { useUpdateContributorsWithReputationMutation } from '~gql';
 
 export const useUpdateColonyReputation = (colonyAddress?: string) => {

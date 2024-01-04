@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { getSafeTransactionMonitor } from '~constants/externalUrls';
 import Alert from '~shared/Alert';
 import ExternalLink from '~shared/ExternalLink';
 import Icon from '~shared/Icon';
-import { getSafeTransactionMonitor } from '~constants/externalUrls';
 
 import styles from './SafeTransactionBanner.css';
 

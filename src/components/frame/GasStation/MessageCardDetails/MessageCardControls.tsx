@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { MessageType } from '~redux/immutable';
 import { messageSign } from '~redux/actionCreators';
+import { MessageType } from '~redux/immutable';
 
 interface Props {
   message: MessageType;

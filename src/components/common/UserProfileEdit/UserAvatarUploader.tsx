@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { defineMessages } from 'react-intl';
 import { FileRejection } from 'react-dropzone';
+import { defineMessages } from 'react-intl';
 
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
@@ -9,12 +9,12 @@ import {
   getOptimisedThumbnail,
 } from '~images/optimisation';
 import AvatarUploader from '~shared/AvatarUploader';
-import UserAvatar from '~shared/UserAvatar';
+import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
+import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { Heading3 } from '~shared/Heading';
+import UserAvatar from '~shared/UserAvatar';
 import { User } from '~types';
 import { FileReaderFile } from '~utils/fileReader/types';
-import { getFileRejectionErrors } from '~shared/FileUpload/utils';
-import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
 
 import styles from './UserAvatarUploader.css';
 

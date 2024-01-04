@@ -5,6 +5,7 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
+
 import { GetUserTokenBalanceReturn, useGetUserTokenBalanceQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 

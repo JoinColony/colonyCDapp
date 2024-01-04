@@ -1,8 +1,8 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { Input } from '~v5/common/Fields';
 import { formatText } from '~utils/intl';
+import { Input } from '~v5/common/Fields';
 
 import { getInputError } from '../shared';
 

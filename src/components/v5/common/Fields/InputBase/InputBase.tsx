@@ -1,12 +1,13 @@
-import React, { useId } from 'react';
 import clsx from 'clsx';
+import React, { useId } from 'react';
 
 import { notMaybe } from '~utils/arrays';
 
-import { InputBaseProps } from './types';
 import { FIELD_STATE } from '../consts';
 import { useStateClassNames } from '../hooks';
+
 import { useAdjustInputWidth } from './hooks';
+import { InputBaseProps } from './types';
 
 const displayName = 'v5.common.Fields.InputBase';
 

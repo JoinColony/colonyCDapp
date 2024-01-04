@@ -1,12 +1,14 @@
 import { useMemo } from 'react';
+
 import { useColonyContext } from '~hooks';
-import { convertToDecimal } from '~utils/convertToDecimal';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { getFormattedNumeralValue } from '~shared/Numeral';
+import { convertToDecimal } from '~utils/convertToDecimal';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
+
 import { UseBalancePageReturnType } from './types';
 
 export const useBalancePage = (): UseBalancePageReturnType => {

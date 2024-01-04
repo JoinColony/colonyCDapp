@@ -1,8 +1,8 @@
 import { call, all } from 'redux-saga/effects';
 
-import extensionInstallSaga from './extensionInstall';
-import extensionEnableSaga from './extensionEnable';
 import extensionDeprecateSaga from './extensionDeprecate';
+import extensionEnableSaga from './extensionEnable';
+import extensionInstallSaga from './extensionInstall';
 import extensionUninstallSaga from './extensionUninstall';
 import extensionUpgradeSaga from './extensionUpgrade';
 

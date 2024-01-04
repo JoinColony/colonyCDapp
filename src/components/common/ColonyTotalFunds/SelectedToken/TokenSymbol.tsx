@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { useColonyContext } from '~hooks';
 import IconTooltip from '~shared/IconTooltip';
 import { Token } from '~types';
-import { useColonyContext } from '~hooks';
 
 import styles from './TokenSymbol.css';
 

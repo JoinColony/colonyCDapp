@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { MotionState } from '~utils/colonyMotions';
-
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MotionStateBadge> = {
   title: 'Common/Pills/Motion State Badge',

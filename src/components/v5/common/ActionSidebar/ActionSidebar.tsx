@@ -1,25 +1,25 @@
-import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
-import { motion } from 'framer-motion';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
 import { ArrowLineRight, ArrowsOutSimple, X } from 'phosphor-react';
+import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
 
-import { useMobile } from '~hooks';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import useToggle from '~hooks/useToggle';
-import Modal from '~v5/shared/Modal';
-import { formatText } from '~utils/intl';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import { SpinnerLoader } from '~shared/Preloaders';
 import { isFullScreen } from '~constants';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useMobile } from '~hooks';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
+import useToggle from '~hooks/useToggle';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { formatText } from '~utils/intl';
+import Modal from '~v5/shared/Modal';
 
-import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
+import { actionSidebarAnimation } from './consts';
 import {
   useCloseSidebarClick,
   useGetActionData,
   useRemoveTxParamOnClose,
 } from './hooks';
+import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
 import { ActionSidebarProps } from './types';
-import { actionSidebarAnimation } from './consts';
 
 const displayName = 'v5.common.ActionSidebar';
 

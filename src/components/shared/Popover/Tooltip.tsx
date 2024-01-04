@@ -1,10 +1,10 @@
+import { Placement as PlacementType } from '@popperjs/core';
 import React, { ReactNode } from 'react';
 import {
   usePopperTooltip,
   TriggerType,
   PopperOptions,
 } from 'react-popper-tooltip';
-import { Placement as PlacementType } from '@popperjs/core';
 
 import styles from './Tooltip.css';
 

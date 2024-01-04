@@ -1,7 +1,7 @@
 import { InferType, number, object, string } from 'yup';
 
-import { formatText } from '~utils/intl';
 import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
+import { formatText } from '~utils/intl';
 
 export const validationSchema = object()
   .shape({

@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 import { ColonyRole } from '@colony/colony-js';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
-import { Annotations } from '~shared/Fields';
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
-import { findDomainByNativeId } from '~utils/domains';
+import { Annotations } from '~shared/Fields';
 import { SetStateFn } from '~types';
+import { findDomainByNativeId } from '~utils/domains';
 
+import DomainFundSelectorSection from '../DomainFundSelectorSection';
 import {
   NoPermissionMessage,
   CannotCreateMotionMessage,
@@ -20,7 +21,7 @@ import {
   NotEnoughReputation,
 } from '../Messages';
 import TokenAmountInput from '../TokenAmountInput';
-import DomainFundSelectorSection from '../DomainFundSelectorSection';
+
 import { useTransferFundsDialogStatus } from './helpers';
 
 import styles from './TransferFundsDialogForm.css';

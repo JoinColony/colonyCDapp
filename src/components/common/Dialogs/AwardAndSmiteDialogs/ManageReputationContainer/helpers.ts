@@ -1,8 +1,8 @@
 import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 
-import { Colony } from '~types';
 import { ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion';
+import { Colony } from '~types';
 
 import { FormValues } from './validation';
 

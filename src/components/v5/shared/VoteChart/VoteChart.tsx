@@ -1,12 +1,12 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import { formatText } from '~utils/intl';
 
-import { VoteChartProps } from './types';
 import VoteChartBar from './partials/VoteChartBar';
 import { VOTE_CHART_BAR_DIRECTION } from './partials/VoteChartBar/types';
 import VoteChartThresholdIndicator from './partials/VoteChartThresholdIndicator';
+import { VoteChartProps } from './types';
 
 const displayName = 'v5.VoteChart';
 

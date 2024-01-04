@@ -1,24 +1,27 @@
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useCallback, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { formatText } from '~utils/intl';
+
+import { DEFAULT_NETWORK_INFO } from '~constants';
+import { ACTION } from '~constants/actions';
+import { useActionSidebarContext } from '~context';
+import { NativeTokenStatus } from '~gql';
 import Numeral from '~shared/Numeral';
+import { Token } from '~types';
+import { getBlockExplorerLink } from '~utils/external';
+import { formatText } from '~utils/intl';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import { getBlockExplorerLink } from '~utils/external';
-import { ACTION } from '~constants/actions';
-import { DEFAULT_NETWORK_INFO } from '~constants';
-import { NativeTokenStatus } from '~gql';
-import { Token } from '~types';
-import { useActionSidebarContext } from '~context';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import Link from '~v5/shared/Link';
+
 import TokenAvatar from '../TokenAvatar';
+
 import { BalanceTableFieldModel } from './types';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable.hooks';

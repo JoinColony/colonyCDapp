@@ -1,9 +1,9 @@
-import { string, object, number, boolean, array } from 'yup';
 import { defineMessages } from 'react-intl';
+import { string, object, number, boolean, array } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
-import { toFinite } from '~utils/lodash';
 import { Colony } from '~types';
+import { toFinite } from '~utils/lodash';
 import { getHasEnoughBalanceTestFn } from '~utils/yup/tests';
 
 const displayName = 'common.CreatePaymentDialog';

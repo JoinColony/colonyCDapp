@@ -2,8 +2,8 @@ import { SmileySad } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { COLONY_DOCS } from '~constants';
 
+import { COLONY_DOCS } from '~constants';
 import { MainLayout } from '~frame/Extensions/layouts';
 import { openFeaturesBugs } from '~hooks/useBeamer';
 import {

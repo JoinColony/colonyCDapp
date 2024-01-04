@@ -1,15 +1,15 @@
-import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
-import { noop } from 'lodash';
-import { usePopperTooltip } from 'react-popper-tooltip';
 import clsx from 'clsx';
+import { noop } from 'lodash';
+import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useColonyContext, useContributorBreakdown, useMobile } from '~hooks';
 import { useGetColonyContributorQuery } from '~gql';
-import { getColonyContributorId } from '~utils/members';
+import { useColonyContext, useContributorBreakdown, useMobile } from '~hooks';
 import Icon from '~shared/Icon';
+import { getColonyContributorId } from '~utils/members';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
 
 import UserInfo from './partials/UserInfo';
 import { UserPopoverProps } from './types';

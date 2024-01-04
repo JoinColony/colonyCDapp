@@ -1,7 +1,8 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
 import EmptyContent from '~v5/common/EmptyContent';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof EmptyContent> = {
   title: 'Common/Empty Content',

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import TitleWithNumber from '~v5/shared/TitleWithNumber';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const titleWithNumnerMeta: Meta<typeof TitleWithNumber> = {
   title: 'Shared/Title with number',

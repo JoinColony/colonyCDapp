@@ -1,14 +1,14 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
+import Numeral from '~shared/Numeral';
 import { Token, Colony } from '~types';
 import {
   getTokenDecimalsWithFallback,
   getSelectedToken,
   getBalanceForTokenAndDomain,
 } from '~utils/tokens';
-import Numeral from '~shared/Numeral';
 
 import styles from './DomainFundSelector.css';
 

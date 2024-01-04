@@ -1,12 +1,12 @@
+import { BigNumberish } from 'ethers';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { BigNumberish } from 'ethers';
 
 import Heading from '~shared/Heading';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
-import { getFormattedTokenValue } from '~utils/tokens';
 import { Token } from '~types';
+import { getFormattedTokenValue } from '~utils/tokens';
 
 import styles from './UserInfoPopover.css';
 

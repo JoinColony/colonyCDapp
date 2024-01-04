@@ -1,11 +1,11 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Button, { ThreeDotsButton } from '~shared/Button';
-import MaskedAddress from '~shared/MaskedAddress';
-import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import { useAppContext, useColonyContext } from '~hooks';
 import useColonySubscription from '~hooks/useColonySubscription';
+import Button, { ThreeDotsButton } from '~shared/Button';
+import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
+import MaskedAddress from '~shared/MaskedAddress';
 
 import ColonySubscriptionInfoPopover from './ColonySubscriptionInfoPopover';
 

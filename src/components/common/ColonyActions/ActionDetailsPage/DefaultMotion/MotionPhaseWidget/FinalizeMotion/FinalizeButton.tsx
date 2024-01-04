@@ -2,10 +2,10 @@ import React from 'react';
 
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
-import { ActionButton } from '~shared/Button';
-import { mapPayload } from '~utils/actions';
-import { SetStateFn } from '~types';
 import { MotionFinalizePayload } from '~redux/types/actions/motion';
+import { ActionButton } from '~shared/Button';
+import { SetStateFn } from '~types';
+import { mapPayload } from '~utils/actions';
 
 const displayName = `common.ColonyActions.ActionDetailsPage.DefaultMotion.FinalizeMotion.FinalizeButton`;
 

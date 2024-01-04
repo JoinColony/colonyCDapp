@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import Switch from '~v5/common/Fields/Switch';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Switch> = {
   title: 'Common/Fields/Switch',

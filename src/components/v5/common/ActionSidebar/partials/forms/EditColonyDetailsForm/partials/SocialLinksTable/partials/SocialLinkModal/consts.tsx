@@ -1,5 +1,4 @@
-import React from 'react';
-import { object, string } from 'yup';
+import clsx from 'clsx';
 import {
   GlobeHemisphereEast,
   Scroll,
@@ -11,10 +10,12 @@ import {
   InstagramLogo,
   FacebookLogo,
 } from 'phosphor-react';
-import clsx from 'clsx';
-import { TileRadioButtonItem } from '~v5/common/Fields/RadioButtons/TileRadioButtons/types';
+import React from 'react';
+import { object, string } from 'yup';
+
 import { ExternalLinks } from '~gql';
 import { formatText } from '~utils/intl';
+import { TileRadioButtonItem } from '~v5/common/Fields/RadioButtons/TileRadioButtons/types';
 
 export const SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA = object()
   .shape({

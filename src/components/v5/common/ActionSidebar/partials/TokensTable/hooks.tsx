@@ -1,12 +1,14 @@
-import React, { useCallback, useMemo } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import React, { useCallback, useMemo } from 'react';
 
+import useWrapWithRef from '~hooks/useWrapWithRef';
 import { formatText } from '~utils/intl';
-import { TokensTableModel, TokensTableProps } from './types';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+
 import TokenSelect from '../TokenSelect';
 import TokenSymbol from '../TokenSelect/partials/TokenSymbol';
-import useWrapWithRef from '~hooks/useWrapWithRef';
+
+import { TokensTableModel, TokensTableProps } from './types';
 
 export const useTokensTableColumns = (
   name: string,

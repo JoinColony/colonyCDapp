@@ -1,10 +1,11 @@
 import React, { ReactNode, Dispatch, SetStateAction } from 'react';
 
+import Numeral from '~shared/Numeral';
 import Popover from '~shared/Popover';
 import TokenIcon from '~shared/TokenIcon';
-import Numeral from '~shared/Numeral';
 import { Address, ColonyBalances, Token } from '~types';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+
 import { getCurrentTokenRootBalance } from './helpers';
 
 import styles from './ColonyTotalFundsPopover.css';

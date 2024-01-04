@@ -1,9 +1,8 @@
 import { BigNumberish, utils, TypedDataField } from 'ethers';
 
-import { Address, isFullWallet } from '~types';
-
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ContextModule, getContext } from '~context';
+import { Address, isFullWallet } from '~types';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages';
 

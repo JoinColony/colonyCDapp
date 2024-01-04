@@ -1,9 +1,11 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
-import PillsBase from '~v5/common/Pills/PillsBase';
-import { MotionBadgeProps } from './types';
-import { MOTION_BADGE_STATUS } from './consts';
+
 import { formatText } from '~utils/intl';
+import PillsBase from '~v5/common/Pills/PillsBase';
+
+import { MOTION_BADGE_STATUS } from './consts';
+import { MotionBadgeProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.partials.MotionBadge';

@@ -1,12 +1,12 @@
-import React, { FC } from 'react';
-import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
-import { useRelativePortalElement, useTeamsOptions, useToggle } from '~hooks';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import SearchSelect from '~v5/shared/SearchSelect';
+import { useRelativePortalElement, useTeamsOptions, useToggle } from '~hooks';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
+import SearchSelect from '~v5/shared/SearchSelect';
 
 import { TeamSelectProps } from './types';
 

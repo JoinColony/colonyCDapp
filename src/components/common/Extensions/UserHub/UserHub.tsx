@@ -1,22 +1,23 @@
-import React, { FC, useState } from 'react';
 import clsx from 'clsx';
+import React, { FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
-// @BETA: Disabled for now
-// import { COLONY_HOME_ROUTE } from '~routes';
 import Select from '~v5/common/Fields/Select';
-// @BETA: Disabled for now
-// import ButtonLink from '~v5/shared/Button/ButtonLink';
 import TitleLabel from '~v5/shared/TitleLabel';
 
+import { tabList } from './consts';
 import ReputationTab from './partials/ReputationTab';
 import StakesTab from './partials/StakesTab';
 import TransactionsTab from './partials/TransactionsTab';
-import { tabList } from './consts';
 import { UserHubProps, UserHubTabs } from './types';
+
+// @BETA: Disabled for now
+// import { COLONY_HOME_ROUTE } from '~routes';
+// @BETA: Disabled for now
+// import ButtonLink from '~v5/shared/Button/ButtonLink';
 
 export const displayName = 'common.Extensions.UserHub.partials.UserHub';
 

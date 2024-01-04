@@ -1,11 +1,11 @@
 import React from 'react';
 import { FieldValues } from 'react-hook-form';
 
+import { useColonyContext } from '~hooks';
 import { ActionForm } from '~shared/Fields';
+import { ActionFormProps } from '~shared/Fields/Form';
 
 import ExpenditureDomainSelector from '../ExpenditureDomainSelector/ExpenditureDomainSelector';
-import { useColonyContext } from '~hooks';
-import { ActionFormProps } from '~shared/Fields/Form';
 import { ExpenditureFormValues } from '../types';
 
 type CreateExpenditureFormProps<T extends FieldValues> = Pick<

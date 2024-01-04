@@ -1,23 +1,23 @@
 import { Id } from '@colony/colony-js';
+import classnames from 'classnames';
 import React, {
   KeyboardEventHandler,
   MouseEventHandler,
   useCallback,
 } from 'react';
-import classnames from 'classnames';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
 import Button from '~shared/Button';
 import ColorTag from '~shared/ColorTag';
 import Heading from '~shared/Heading';
 import Icon from '~shared/Icon';
 import Paragraph from '~shared/Paragraph';
-// import { OneDomain } from '~data/index';
 import { ENTER, DomainColor, Domain } from '~types';
 
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-
 import styles from './DomainDropdownItem.css';
+
+// import { OneDomain } from '~data/index';
 
 const MSG = defineMessages({
   rootDomain: {

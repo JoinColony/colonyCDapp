@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 
-import styles from '../SpecificSidePanel.module.css';
-import { PanelTypeProps } from '../types';
 import { InstalledExtensionData } from '~types';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
+
+import { PanelTypeProps } from '../types';
+
+import styles from '../SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.partials.InstalledBy';
 

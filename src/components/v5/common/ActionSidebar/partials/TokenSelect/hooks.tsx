@@ -1,15 +1,16 @@
-import React, { useMemo } from 'react';
 import { isAddress } from '@ethersproject/address';
+import React, { useMemo } from 'react';
 
 import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
 import { useGetTokenFromEverywhereQuery } from '~gql';
+import { useColonyContext } from '~hooks';
+import { useGetAllTokens } from '~hooks/useGetAllTokens';
 import { SpinnerLoader } from '~shared/Preloaders';
 import TokenIcon from '~shared/TokenIcon/TokenIcon';
 import { formatText } from '~utils/intl';
 import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
+
 import TokenStatus from './partials/TokenStatus/TokenStatus';
-import { useGetAllTokens } from '~hooks/useGetAllTokens';
-import { useColonyContext } from '~hooks';
 
 export const useTokenSelect = (inputValue: string) => {
   const predefinedTokens = getTokenList();

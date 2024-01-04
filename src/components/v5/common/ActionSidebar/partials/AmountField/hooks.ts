@@ -1,4 +1,5 @@
 import { useMemo, useRef } from 'react';
+
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { getInputTextWidth } from '~utils/elements';

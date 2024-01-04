@@ -1,13 +1,14 @@
-import { object, string } from 'yup';
 import { Variants } from 'framer-motion';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-
-import { ACTION, Action } from '~constants/actions';
-import { formatText } from '~utils/intl';
-import { useColonyContext } from '~hooks';
+import { object, string } from 'yup';
 
 // Do not import these from `./hooks` to avoid circular dependencies
+
+import { ACTION, Action } from '~constants/actions';
+import { useColonyContext } from '~hooks';
+import { formatText } from '~utils/intl';
+
 import { permissionsValidationSchema } from './hooks/usePermissionsValidation';
 import { reputationValidationSchema } from './hooks/useReputationValidation';
 

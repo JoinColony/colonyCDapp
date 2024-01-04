@@ -1,8 +1,9 @@
+import copyToClipboard from 'copy-to-clipboard';
 import React, { useState, useEffect, useCallback } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import copyToClipboard from 'copy-to-clipboard';
 
 import { Tooltip } from '~shared/Popover';
+
 import Button, { Appearance } from './Button';
 
 import styles from './InviteLinkButton.css';

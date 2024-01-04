@@ -1,25 +1,26 @@
-import React, { FC } from 'react';
 import { Id } from '@colony/colony-js';
-import Decimal from 'decimal.js';
 import clsx from 'clsx';
+import Decimal from 'decimal.js';
+import React, { FC } from 'react';
 
-import Icon from '~shared/Icon';
-import { TextButton } from '~v5/shared/Button';
-import TitleLabel from '~v5/shared/TitleLabel';
-import { useColonyContext } from '~hooks';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { ACTION } from '~constants/actions';
+import { useActionSidebarContext } from '~context';
+import { useColonyContext } from '~hooks';
+import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
-import MenuContainer from '~v5/shared/MenuContainer';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
+import { TextButton } from '~v5/shared/Button';
+import MenuContainer from '~v5/shared/MenuContainer';
+import TitleLabel from '~v5/shared/TitleLabel';
+
 import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts';
-import { ACTION } from '~constants/actions';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatPercentage } from './utils';
 
 import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
 import { TeamReputationSummaryProps } from './types';
-import { useActionSidebarContext } from '~context';
+import { formatPercentage } from './utils';
 
 const displayName = 'v5.common.TeamReputationSummary';
 

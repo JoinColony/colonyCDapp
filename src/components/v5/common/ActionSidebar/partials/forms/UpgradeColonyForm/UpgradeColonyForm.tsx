@@ -1,15 +1,16 @@
 import React, { FC } from 'react';
 
-import ActionFormRow from '~v5/common/ActionFormRow';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import ColonyVersionField from '~v5/common/ActionSidebar/partials/ColonyVersionField';
 import { formatText } from '~utils/intl';
+import ActionFormRow from '~v5/common/ActionFormRow';
+import ColonyVersionField from '~v5/common/ActionSidebar/partials/ColonyVersionField';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+
+import { useDecisionMethods } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+import DescriptionRow from '../../DescriptionRow';
 
 import { useUpgradeColony } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
-import { useDecisionMethods } from '../../../hooks';
-import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.UpgradeColonyForm';
 

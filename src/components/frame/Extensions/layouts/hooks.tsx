@@ -1,7 +1,10 @@
+import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import clsx from 'clsx';
 
+import { ACTION } from '~constants/actions';
+import { TransactionGroupStates, useUserTransactionContext } from '~context';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ColonyFragment } from '~gql';
 import {
   useAppContext,
@@ -10,20 +13,16 @@ import {
   useMobile,
   useTransformer,
 } from '~hooks';
+import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants';
+import Icon from '~shared/Icon';
 import { getAllUserRoles } from '~transformers';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { formatText } from '~utils/intl';
-import { ACTION } from '~constants/actions';
-import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants';
-import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types';
-import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import { TransactionGroupStates, useUserTransactionContext } from '~context';
+import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types';
 import { TxButton } from '~v5/shared/Button';
-import Icon from '~shared/Icon';
+import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
 
-import type { UseCalamityBannerInfoReturnType } from './types';
 import {
   adminMenu,
   // @BETA: Disabled for now
@@ -33,8 +32,10 @@ import {
   financesMenu,
   membersMenu,
 } from './consts';
-import { checkIfIsActive } from './utils';
 import DashboardContent from './partials/DashboardContent';
+import { checkIfIsActive } from './utils';
+
+import type { UseCalamityBannerInfoReturnType } from './types';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();

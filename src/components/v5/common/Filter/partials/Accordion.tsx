@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import AccordionItem from './AccordionItem';
 import { AccordionProps } from '../types';
+
+import AccordionItem from './AccordionItem';
 
 const displayName = 'v5.common.Filter.partials.Accordion';
 

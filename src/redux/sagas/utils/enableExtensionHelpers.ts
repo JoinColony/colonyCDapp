@@ -1,9 +1,8 @@
 import { BigNumber } from 'ethers';
 
-import { TxConfig } from '~types';
 import { ContextModule, getContext, setContext } from '~context';
-
 import { createTransactionChannels } from '~redux/sagas';
+import { TxConfig } from '~types';
 
 export type Channel = Omit<TxConfig, 'methodName'>;
 

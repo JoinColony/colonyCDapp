@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 
+import { useAppContext } from '~hooks';
+import { MotionState, MotionVote } from '~utils/colonyMotions';
+import { formatText } from '~utils/intl';
 import MenuWithSections from '~v5/shared/MenuWithSections';
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
-import { formatText } from '~utils/intl';
-import { MotionState, MotionVote } from '~utils/colonyMotions';
-import { useAppContext } from '~hooks';
-
-import { OutcomeStepProps } from './types';
 import { useOutcomeStep } from './hooks';
 import VoteStatuses from './partials/VoteStatuses';
+import { OutcomeStepProps } from './types';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';

@@ -1,6 +1,6 @@
+import { ApolloQueryResult } from '@apollo/client';
 import { getExtensionHash, Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
-import { ApolloQueryResult } from '@apollo/client';
 
 import { supportedExtensionsConfig } from '~constants';
 import {

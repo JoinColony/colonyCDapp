@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
+
 import { formatText } from '~utils/intl';
+
 import PillsBase from '../PillsBase';
+
 import { MOTION_STATE_TO_CLASSNAME_MAP } from './consts';
 import { MotionStateBadgeProps } from './types';
 

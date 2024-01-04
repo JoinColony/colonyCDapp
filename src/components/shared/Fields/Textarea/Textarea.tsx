@@ -1,10 +1,9 @@
-import React, { TextareaHTMLAttributes, useState } from 'react';
 import cx from 'classnames';
 import { nanoid } from 'nanoid';
+import React, { TextareaHTMLAttributes, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { CoreInputProps } from '~shared/Fields/Input';
-
 import { getMainClasses } from '~utils/css';
 import { formatText } from '~utils/intl';
 

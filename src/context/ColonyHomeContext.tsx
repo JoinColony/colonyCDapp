@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { EnabledExtensionData, useEnabledExtensions } from '~hooks';
 import { SetStateFn } from '~types';
 

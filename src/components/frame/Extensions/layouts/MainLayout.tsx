@@ -1,13 +1,13 @@
 import React, { FC, PropsWithChildren } from 'react';
 
 import { usePageHeadingContext } from '~context';
-import PageLayout from '~v5/frame/PageLayout';
 import { useAppContext } from '~hooks';
+import PageLayout from '~v5/frame/PageLayout';
 
-import UserNavigationWrapper from './partials/UserNavigationWrapper';
-import { MainLayoutProps } from './types';
 import MainSidebar from './MainSidebar';
+import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import SimpleSidebar from './SimpleSidebar';
+import { MainLayoutProps } from './types';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 

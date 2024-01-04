@@ -1,15 +1,15 @@
-import React from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React from 'react';
 
 import { ExpenditureStatus, ExpenditureType } from '~gql';
+import { useAppContext, useEnabledExtensions } from '~hooks';
 import { ActionTypes } from '~redux';
+import { ExpenditureFundMotionPayload } from '~redux/types/actions/motion';
 import { ActionButton } from '~shared/Button';
 import { Colony, Expenditure } from '~types';
-import { isExpenditureFunded } from '~utils/expenditures';
-import { findDomainByNativeId } from '~utils/domains';
 import { addressHasRoles } from '~utils/checks';
-import { useAppContext, useEnabledExtensions } from '~hooks';
-import { ExpenditureFundMotionPayload } from '~redux/types/actions/motion';
+import { findDomainByNativeId } from '~utils/domains';
+import { isExpenditureFunded } from '~utils/expenditures';
 
 import ExpenditureClaimButton from '../ExpenditureClaimButton';
 

@@ -1,12 +1,14 @@
-import React, { FC, useState } from 'react';
 import { Extension } from '@colony/colony-js';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AnyExtensionData, InstalledExtensionData } from '~types';
-import TabContent from './partials/TabContent';
-import ParamDetailsTab from './ParamDetailsTab';
-import { tabsItems } from './consts';
-import Tabs from '~shared/Extensions/Tabs/Tabs';
+import React, { FC, useState } from 'react';
+
 import { accordionAnimation } from '~constants/accordionAnimation';
+import Tabs from '~shared/Extensions/Tabs/Tabs';
+import { AnyExtensionData, InstalledExtensionData } from '~types';
+
+import { tabsItems } from './consts';
+import ParamDetailsTab from './ParamDetailsTab';
+import TabContent from './partials/TabContent';
 
 interface ExtensionInfoProps {
   extensionData: AnyExtensionData;

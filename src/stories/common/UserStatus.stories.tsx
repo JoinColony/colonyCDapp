@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import UserStatus from '~v5/common/Pills/UserStatus';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof UserStatus> = {
   title: 'Common/Pills/User Status',

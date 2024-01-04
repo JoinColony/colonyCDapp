@@ -1,11 +1,11 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import clsx from 'clsx';
 
-import Button from '~v5/shared/Button';
 import { profileFileOptions } from '~frame/v5/pages/UserProfilePage/partials/consts';
-import { SuccessContentProps } from '~v5/common/AvatarUploader/types';
 import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks';
+import { SuccessContentProps } from '~v5/common/AvatarUploader/types';
+import Button from '~v5/shared/Button';
 
 const displayName = 'v5.common.CreateColonyWizard.IconSuccessContent';
 

@@ -5,6 +5,7 @@ import { Form } from '~shared/Fields';
 import { StakeSide } from '~types/motions';
 
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
+
 import { GroupedTotalStakeHeading, TotalStakeRadios, SubmitButton } from '.';
 
 const displayName =

@@ -4,8 +4,8 @@ import React, { ReactNode, ButtonHTMLAttributes } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { UniversalMessageValues } from '~types';
 import { useMainClasses } from '~hooks';
+import { UniversalMessageValues } from '~types';
 
 import styles from './Button.css';
 

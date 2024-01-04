@@ -1,8 +1,13 @@
-import React, { useEffect, useMemo } from 'react';
-import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React, { useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
+import {
+  useActionDialogStatus,
+  // useTransformer,
+  // useAppContext,
+} from '~hooks';
 import {
   ActionDialogProps,
   DialogControls,
@@ -10,15 +15,8 @@ import {
   DialogSection,
 } from '~shared/Dialog';
 import { Input, Annotations } from '~shared/Fields';
-import {
-  useActionDialogStatus,
-  // useTransformer,
-  // useAppContext,
-} from '~hooks';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { SetStateFn } from '~types';
-// import { getAllUserRoles } from '~redux/transformers';
-// import { hasRoot } from '~utils/checks';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import {
   NoPermissionMessage,
@@ -28,6 +26,9 @@ import {
 } from '../Messages';
 
 import styles from './MintTokenDialogForm.css';
+
+// import { getAllUserRoles } from '~redux/transformers';
+// import { hasRoot } from '~utils/checks';
 
 const displayName = 'common.MintTokenDialog.MintTokenDialogForm';
 

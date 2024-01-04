@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import { openFeaturesBugs } from '~hooks/useBeamer';
 
 const displayName =

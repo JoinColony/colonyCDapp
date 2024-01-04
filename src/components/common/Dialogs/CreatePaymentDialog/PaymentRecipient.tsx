@@ -1,17 +1,16 @@
+import { isConfusing } from '@colony/unicode-confusables-noascii';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import { isConfusing } from '@colony/unicode-confusables-noascii';
 
-import { DialogSection } from '~shared/Dialog';
-import SingleUserPicker from '~shared/SingleUserPicker/SingleUserPicker';
-
-import { User, Colony } from '~types';
-import { ItemDataType } from '~shared/OmniPicker';
-import UserAvatar from '~shared/UserAvatar/UserAvatar';
-
-import { filterUserSelection } from '~shared/SingleUserPicker';
 import ConfusableWarning from '~shared/ConfusableWarning/ConfusableWarning';
+import { DialogSection } from '~shared/Dialog';
+import { ItemDataType } from '~shared/OmniPicker';
+import { filterUserSelection } from '~shared/SingleUserPicker';
+import SingleUserPicker from '~shared/SingleUserPicker/SingleUserPicker';
+import UserAvatar from '~shared/UserAvatar/UserAvatar';
+import { User, Colony } from '~types';
+
 import TokenAmountInput from '../TokenAmountInput/TokenAmountInput';
 
 import styles from './CreatePaymentDialogForm.css';

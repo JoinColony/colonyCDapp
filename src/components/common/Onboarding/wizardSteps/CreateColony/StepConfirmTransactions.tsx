@@ -10,8 +10,8 @@ import {
   TransactionOrMessageGroups,
 } from '~frame/GasStation/transactionGroup';
 import { TransactionStatus } from '~gql';
-import { groupedTransactionsAndMessages } from '~redux/selectors';
 import { useAppContext } from '~hooks';
+import { groupedTransactionsAndMessages } from '~redux/selectors';
 
 import { HeaderRow } from '../shared';
 

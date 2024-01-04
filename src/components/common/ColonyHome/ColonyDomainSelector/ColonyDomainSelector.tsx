@@ -1,20 +1,20 @@
-import React, { ReactNode, useCallback } from 'react';
 import { Id } from '@colony/colony-js';
+import React, { ReactNode, useCallback } from 'react';
 
-import { useDialog } from '~shared/Dialog';
-import ColorTag from '~shared/ColorTag';
-import { Form, SelectOption } from '~shared/Fields';
-import DomainDropdown from '~shared/DomainDropdown';
 import { EditDomainDialog } from '~common/Dialogs';
-
-import { useColonyContext, useEnabledExtensions } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-// import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
+import ColorTag from '~shared/ColorTag';
+import { useDialog } from '~shared/Dialog';
+import DomainDropdown from '~shared/DomainDropdown';
+import { Form, SelectOption } from '~shared/Fields';
 import { DomainColor } from '~types';
 
 import CreateDomainButton from './CreateDomainButton';
 
 import styles from './ColonyDomainSelector.css';
+
+// import { oneTxMustBeUpgraded } from '~modules/dashboard/checks';
 
 interface FormValues {
   filteredDomainId: number;

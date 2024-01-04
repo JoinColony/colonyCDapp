@@ -1,15 +1,16 @@
-import React, { FC } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
-import Button from '~v5/shared/Button/Button';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useMobile } from '~hooks';
+import { formatText } from '~utils/intl';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
+import Button from '~v5/shared/Button/Button';
+
 import { useTransactionTableColumns, useGetTableMenuProps } from './hooks';
 import { TransactionTableModel, TransactionTableProps } from './types';
-import { formatText } from '~utils/intl';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 

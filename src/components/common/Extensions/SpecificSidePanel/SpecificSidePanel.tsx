@@ -1,15 +1,17 @@
 import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import Permissions from './partials/Permissions';
-import InstalledBy from './partials/InstalledBy';
-import ContractAddress from './partials/ContractAddress';
-import styles from './SpecificSidePanel.module.css';
-import { useSpecificSidePanel } from './hooks';
-import { SpecificSidePanelProps } from './types';
-import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
 import { formatText } from '~utils/intl';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+
+import { useSpecificSidePanel } from './hooks';
+import ContractAddress from './partials/ContractAddress';
+import InstalledBy from './partials/InstalledBy';
+import Permissions from './partials/Permissions';
+import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
+import { SpecificSidePanelProps } from './types';
+
+import styles from './SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 

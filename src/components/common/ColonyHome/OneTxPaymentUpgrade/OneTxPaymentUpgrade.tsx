@@ -1,13 +1,13 @@
+import { Extension } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { Extension } from '@colony/colony-js';
 import { useParams } from 'react-router';
 
+import { useColonyContext, useExtensionData } from '~hooks';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import Alert from '~shared/Alert';
 import Button from '~shared/Button';
-import { useColonyContext, useExtensionData } from '~hooks';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 
 import styles from './OneTxPaymentUpgrade.css';
 

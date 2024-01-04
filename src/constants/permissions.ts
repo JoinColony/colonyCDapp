@@ -1,5 +1,5 @@
-import isEqual from 'lodash/isEqual';
 import { ColonyRole } from '@colony/colony-js';
+import isEqual from 'lodash/isEqual';
 
 import { formatText } from '~utils/intl';
 

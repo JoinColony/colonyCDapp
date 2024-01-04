@@ -1,14 +1,14 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 import { Safe, SafeTransactionData, SafeTransactionType } from '~types';
 import { intl } from '~utils/intl';
 import { extractTokenName } from '~utils/safes';
-import { InvisibleCopyableMaskedAddress } from '~shared/InvisibleCopyableAddress';
 import { getNativeTokenByChainId } from '~utils/tokens';
 
-import { ContractName } from '../../SafeTransactionDetail';
 import widgetStyles from '../../DetailsWidget.css';
+import { ContractName } from '../../SafeTransactionDetail';
 
 const displayName = 'DetailsWidget.SafeTransactionDetail.ContractSection';
 

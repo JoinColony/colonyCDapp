@@ -1,5 +1,6 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
+
 import { HoverWidthWrapperProps } from './types';
 
 const HoverWidthWrapper: FC<PropsWithChildren<HoverWidthWrapperProps>> = ({

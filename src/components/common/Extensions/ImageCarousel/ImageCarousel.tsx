@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import { ImageCarouselProps } from './types';
 import { images } from './consts';
-import DotButton from './partials/DotButton';
-import styles from './ImageCarousel.module.css';
 import { useEmblaCarouselSettings } from './hooks';
+import DotButton from './partials/DotButton';
+import { ImageCarouselProps } from './types';
+
+import styles from './ImageCarousel.module.css';
 
 const displayName = 'common.Extensions.ImageCarousel';
 

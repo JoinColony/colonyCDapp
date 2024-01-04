@@ -1,15 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-
-import { ActionTypes } from '~redux';
-import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
 import { getRemoveSafeDialogPayload } from './helpers';
-
 import DialogForm from './RemoveSafeDialogForm';
 
 const displayName = 'common.RemoveSafeDialog';

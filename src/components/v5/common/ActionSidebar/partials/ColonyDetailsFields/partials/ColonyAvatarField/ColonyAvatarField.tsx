@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import Modal from '~v5/shared/Modal';
-import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
-import Avatar from '~v5/shared/Avatar';
-import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks';
-import { getPlaceholder } from '~v5/common/AvatarUploader/utils';
+import { ADDRESS_ZERO } from '~constants';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useColonyContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
-import { useColonyContext } from '~hooks';
+import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks';
+import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
+import { getPlaceholder } from '~v5/common/AvatarUploader/utils';
+import Avatar from '~v5/shared/Avatar';
 import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import { ADDRESS_ZERO } from '~constants';
+import Modal from '~v5/shared/Modal';
 
 import { useChangeColonyAvatar } from './hooks';
 import { ColonyAvatarFieldProps } from './types';

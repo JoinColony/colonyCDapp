@@ -1,8 +1,9 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useAppContext, useColonyContext } from '~hooks';
 
+import { useAppContext, useColonyContext } from '~hooks';
 import Numeral from '~shared/Numeral';
+
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
 
 import styles from './UserStakeMessage.css';

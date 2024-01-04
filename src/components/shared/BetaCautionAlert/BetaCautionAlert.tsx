@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import ExternalLink from '~shared/ExternalLink';
-
 import { BETA_DISCLAIMER } from '~constants/externalUrls';
+import ExternalLink from '~shared/ExternalLink';
 
 import styles from './BetaCautionAlert.css';
 

@@ -1,11 +1,10 @@
+import classnames from 'classnames';
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
-import classnames from 'classnames';
-
-import Button from '~shared/Button';
-import Icon from '~shared/Icon';
 
 import { SortingMethod } from '~gql';
+import Button from '~shared/Button';
+import Icon from '~shared/Icon';
 
 import styles from './SortingButton.css';
 

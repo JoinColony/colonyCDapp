@@ -1,20 +1,20 @@
-import { call, put } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 import { BigNumber, Contract, ContractInterface } from 'ethers';
+import { call, put } from 'redux-saga/effects';
 // import abis from '@colony/colony-js/lib-esm/abis';
 
-import { ActionTypes } from '../../actionTypes';
-import { Action } from '../../types/actions';
-import { selectAsJS, getGasPrices, getColonyManager } from '../utils';
-import { TransactionRecordProps } from '../../immutable';
 import { ExtendedClientType } from '~types';
 
-import { oneTransaction } from '../../selectors';
 import {
   transactionUpdateGas,
   transactionEstimateError,
   transactionSend,
 } from '../../actionCreators';
+import { ActionTypes } from '../../actionTypes';
+import { TransactionRecordProps } from '../../immutable';
+import { oneTransaction } from '../../selectors';
+import { Action } from '../../types/actions';
+import { selectAsJS, getGasPrices, getColonyManager } from '../utils';
 
 /*
  * @TODO Refactor to support abis (either added to the app or from colonyJS)

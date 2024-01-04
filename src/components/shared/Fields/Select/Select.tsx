@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import React, {
   KeyboardEvent,
   ReactNode,
@@ -7,9 +8,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { defineMessages } from 'react-intl';
-import { nanoid } from 'nanoid';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import { InputLabel, InputStatus } from '~shared/Fields';
 import Icon from '~shared/Icon';

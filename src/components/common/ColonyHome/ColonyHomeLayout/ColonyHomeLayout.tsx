@@ -4,17 +4,17 @@ import { useLocation } from 'react-router-dom';
 import ColonyTotalFunds from '~common/ColonyTotalFunds';
 import { useColonyContext } from '~hooks';
 
-import ActionsPanel from './ActionsPanel';
-
-import ColonyHomeInfo from '../ColonyHomeInfo';
 import ColonyDomainDescription from '../ColonyDomainDescription';
 import ColonyExtensionsWidget from '../ColonyExtensionsWidget';
 import ColonyFundingWidget from '../ColonyFundingWidget';
+import ColonyHomeInfo from '../ColonyHomeInfo';
 import ColonyMembersWidget from '../ColonyMembersWidget';
+import ColonySafes from '../ColonySafes';
 import ColonyUnclaimedTransfers from '../ColonyUnclaimedTransfers';
 import ColonyUpgrade from '../ColonyUpgrade';
 import OneTxPaymentUpgrade from '../OneTxPaymentUpgrade';
-import ColonySafes from '../ColonySafes';
+
+import ActionsPanel from './ActionsPanel';
 
 import styles from './ColonyHomeLayout.css';
 

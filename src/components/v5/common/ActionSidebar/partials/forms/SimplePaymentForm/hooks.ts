@@ -1,24 +1,25 @@
+import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Id } from '@colony/colony-js';
 import { DeepPartial } from 'utility-types';
 import { array, InferType, number, object, string } from 'yup';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import getLastIndexFromPath from '~utils/getLastIndexFromPath';
 import { formatText } from '~utils/intl';
 import { toFinite } from '~utils/lodash';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
-import getLastIndexFromPath from '~utils/getLastIndexFromPath';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { getSimplePaymentPayload } from './utils';
 
 export const useValidationSchema = () => {

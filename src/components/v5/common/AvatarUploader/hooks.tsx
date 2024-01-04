@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
-
 import { useIntl } from 'react-intl';
-import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
-import { getFileRejectionErrors } from '~shared/FileUpload/utils';
-import { FileReaderFile } from '~utils/fileReader/types';
+
 import {
   getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation';
+import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
+import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { convertBytes } from '~utils/convertBytes';
+import { FileReaderFile } from '~utils/fileReader/types';
 
 import { FileUploadOptions } from './types';
 

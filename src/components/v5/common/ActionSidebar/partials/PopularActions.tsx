@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { TextButton } from '~v5/shared/Button';
+
 import { PopularActionsProps } from '../types';
+
 import { POPULAR_ACTIONS } from './consts';
 
 const displayName = 'v5.common.ActionSidebar.partials.PopularActions';

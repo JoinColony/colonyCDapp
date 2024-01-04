@@ -17,6 +17,7 @@ import MemberReputation from '~shared/MemberReputation';
 import { Colony, SimpleMessageValues, UserTokenBalanceData } from '~types';
 
 import { TokenActivationPopover } from '../TokenActivation';
+
 import ItemContainer from './ItemContainer';
 
 import styles from './AvatarDropdownPopoverMobile.css';

@@ -1,9 +1,6 @@
 import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { isEqual } from '~utils/lodash';
-import { ActionTypes } from '~redux/actionTypes';
-import { Action, AllActions } from '~redux/types';
 import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context';
 import {
@@ -11,8 +8,16 @@ import {
   CreateColonyMetadataMutation,
   CreateColonyMetadataMutationVariables,
 } from '~gql';
+import { ActionTypes } from '~redux/actionTypes';
+import { Action, AllActions } from '~redux/types';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId';
+import { isEqual } from '~utils/lodash';
 
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import {
   createActionMetadataInDB,
   getColonyManager,
@@ -21,11 +26,6 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils';
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
 import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens';
 
 function* editColonyMotion({

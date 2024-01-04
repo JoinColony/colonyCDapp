@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Avatar from '~shared/Avatar';
 import { DialogSection } from '~shared/Dialog';
 import { filterUserSelection } from '~shared/SingleUserPicker';
-
+import { Message, NFTData } from '~types';
 import {
   extractTokenName,
   getChainNameFromSafe,
   getSelectedNFTData,
   getTxServiceBaseUrl,
 } from '~utils/safes';
-import { Message, NFTData } from '~types';
 
 import { FormSafeTransaction, TransactionSectionProps } from '../../types';
 import {

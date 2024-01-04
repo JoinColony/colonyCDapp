@@ -1,5 +1,5 @@
-import { GasPricesRecord, GasPrices } from '../immutable';
 import { ActionTypes } from '../actionTypes';
+import { GasPricesRecord, GasPrices } from '../immutable';
 import { ReducerType } from '../types/reducer';
 
 const coreGasPricesReducer: ReducerType<GasPricesRecord> = (

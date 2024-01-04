@@ -2,12 +2,12 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import ProfileTemplate from '~frame/ProfileTemplate';
-import NotFoundRoute from '~routes/NotFoundRoute';
 import { useUserByNameOrAddress } from '~hooks';
+import NotFoundRoute from '~routes/NotFoundRoute';
 
+import UserColonies from './UserColonies';
 import UserMeta from './UserMeta';
 import UserProfileSpinner from './UserProfileSpinner';
-import UserColonies from './UserColonies';
 
 import styles from './UserProfile.css';
 

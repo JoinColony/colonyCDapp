@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip';
-import { formatPercentage, setTeamColor } from '../utils';
+
 import { TeamPointsRowProps } from '../types';
+import { formatPercentage, setTeamColor } from '../utils';
 
 const displayName =
   'v5.common.TeamReputationSummary.partials.TeamReputationSummaryRow';

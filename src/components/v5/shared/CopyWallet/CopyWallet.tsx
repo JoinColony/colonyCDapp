@@ -1,11 +1,13 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-import Button from '~v5/shared/Button';
-import { formatText } from '~utils/intl';
-import Icon from '~shared/Icon';
-import { CopyWalletProps } from './types';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
+import React, { FC } from 'react';
+
 import { useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
+import Button from '~v5/shared/Button';
+
+import { CopyWalletProps } from './types';
 
 const displayName = 'v5.CopyWallet';
 

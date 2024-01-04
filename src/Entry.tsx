@@ -1,20 +1,20 @@
+import { ApolloProvider } from '@apollo/client';
 import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
+import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { IntlProvider } from 'react-intl';
-import { ApolloProvider } from '@apollo/client';
 
-import { HelmetProvider } from 'react-helmet-async';
 import { getContext, ContextModule } from '~context';
 import { AnalyticsContextProvider } from '~context/AnalyticsContext';
+import RouteTracker from '~routes/RouteTracker';
 
-import messages from './i18n/en.json';
 import actionMessages from './i18n/en-actions';
 import eventsMessages from './i18n/en-events';
-import systemMessages from './i18n/en-system-messages';
 import motionStatesMessages from './i18n/en-motion-states';
+import systemMessages from './i18n/en-system-messages';
+import messages from './i18n/en.json';
 import Routes from './routes';
-import RouteTracker from '~routes/RouteTracker';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {

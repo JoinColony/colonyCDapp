@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { TableProps } from '../Table/types';
 
 export interface TableWithActionsHeaderProps<

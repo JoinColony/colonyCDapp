@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { useAnalyticsContext } from '~context/AnalyticsContext';
 
 const RouteTracker = () => {

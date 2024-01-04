@@ -1,13 +1,13 @@
-import React from 'react';
 import { BigNumber } from 'ethers';
+import React from 'react';
 
-import { UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types';
-import Numeral from '~shared/Numeral';
 import { ColonyMotionFragment, useGetUserReputationQuery } from '~gql';
 import { useAppContext, useEnoughTokensForStaking } from '~hooks';
 import useUsersByAddresses from '~hooks/useUsersByAddresses';
-import { formatText } from '~utils/intl';
+import Numeral from '~shared/Numeral';
 import { MotionVote } from '~utils/colonyMotions';
+import { formatText } from '~utils/intl';
+import { UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types';
 
 import { useMotionContext } from '../../partials/MotionProvider/hooks';
 

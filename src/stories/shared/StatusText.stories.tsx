@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import StatusText from '~v5/shared/StatusText';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const statusTextMeta: Meta<typeof StatusText> = {
   title: 'Shared/Status Text',

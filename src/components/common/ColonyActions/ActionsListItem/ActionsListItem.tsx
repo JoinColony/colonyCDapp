@@ -1,12 +1,9 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
-import { Placement } from '@popperjs/core';
 import { Id } from '@colony/colony-js';
+import { Placement } from '@popperjs/core';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
-import UserAvatar from '~shared/UserAvatar';
-import ListItem, { ListItemStatus } from '~shared/ListItem';
-import { ColonyAction, Domain } from '~types';
 import {
   useColonyContext,
   TRANSACTION_STATUS,
@@ -14,13 +11,17 @@ import {
   useSafeTransactionStatus,
   useShouldDisplayMotionCountdownTime,
 } from '~hooks';
+import ListItem, { ListItemStatus } from '~shared/ListItem';
+import Tag from '~shared/Tag';
+import UserAvatar from '~shared/UserAvatar';
+import { ColonyAction, Domain } from '~types';
 import { MotionState } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
-import Tag from '~shared/Tag';
 import { isEmpty } from '~utils/lodash';
 
 import CountDownTimer from '../CountDownTimer';
 import { getActionTitleValues } from '../helpers';
+
 import ActionsListItemMeta from './ActionsListItemMeta';
 import { useColonyMotionState, useMotionTag } from './helpers';
 

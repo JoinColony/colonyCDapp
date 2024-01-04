@@ -1,13 +1,13 @@
+import clsx from 'clsx';
+import { isAddress } from 'ethers/lib/utils';
 import React, { FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
-import { isAddress } from 'ethers/lib/utils';
-import clsx from 'clsx';
 
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useRelativePortalElement, useToggle } from '~hooks';
 import { formatText } from '~utils/intl';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import { FIELD_STATE } from '~v5/common/Fields/consts';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 
 import { useTokenSelect } from './hooks';
 import { TokenSelectProps } from './types';

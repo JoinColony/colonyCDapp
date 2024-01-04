@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
-import { defineMessages } from 'react-intl';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
+import { useActionDialogStatus } from '~hooks';
 import {
   ActionDialogProps,
   DialogControls,
@@ -11,7 +12,6 @@ import {
 } from '~shared/Dialog';
 import { Input, Annotations } from '~shared/Fields';
 import { SetStateFn } from '~types';
-import { useActionDialogStatus } from '~hooks';
 
 import DomainNameAndColorInputGroup from '../DomainNameAndColorInputGroup';
 import {

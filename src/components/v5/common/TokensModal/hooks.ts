@@ -1,14 +1,15 @@
-import { useMemo } from 'react';
-import { object, string } from 'yup';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
+import { useMemo } from 'react';
+import { object, string } from 'yup';
 
-import { useColonyContext } from '~hooks';
 import { useUserTokenBalanceContext } from '~context';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { formatText } from '~utils/intl';
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { pipe, mapPayload } from '~utils/actions';
+import { formatText } from '~utils/intl';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+
 import { TOKENS_MODAL_TYPES } from './consts';
 import { TokensModalType, UseTokensModalReturnType } from './types';
 

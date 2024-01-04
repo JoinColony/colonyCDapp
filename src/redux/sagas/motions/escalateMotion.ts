@@ -1,4 +1,3 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   Id,
@@ -6,27 +5,27 @@ import {
   getChildIndex,
 } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ColonyManager } from '~context';
+import {
+  transactionAddParams,
+  transactionPending,
+} from '~redux/actionCreators';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-import {
-  putError,
-  takeFrom,
-  getColonyManager,
-  initiateTransaction,
-} from '../utils';
-
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
 import {
-  transactionAddParams,
-  transactionPending,
-} from '~redux/actionCreators';
+  putError,
+  takeFrom,
+  getColonyManager,
+  initiateTransaction,
+} from '../utils';
 
 export type EscalateMotionPayload =
   Action<ActionTypes.MOTION_ESCALATE>['payload'];

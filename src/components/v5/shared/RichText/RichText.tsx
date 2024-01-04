@@ -1,19 +1,20 @@
-import React, { FC, useLayoutEffect } from 'react';
 import { EditorContent } from '@tiptap/react';
 import clsx from 'clsx';
+import React, { FC, useLayoutEffect } from 'react';
 
 import { formatText } from '~utils/intl';
 import { omit } from '~utils/lodash';
 
-import MenuBar from './partials/Menu';
+import { TextButton } from '../Button';
+
 import {
   MAX_ANNOTATION_NUM,
   MIN_ANNOTATION_NUM,
   NUMBER_OF_CHARS_IN_TWO_LINES,
 } from './consts';
-import { TextButton } from '../Button';
-import { RichTextProps } from './types';
 import { useRichText } from './hooks';
+import MenuBar from './partials/Menu';
+import { RichTextProps } from './types';
 
 const displayName = 'v5.RichText';
 

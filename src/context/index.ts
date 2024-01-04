@@ -3,11 +3,10 @@ import { OnboardAPI } from '@web3-onboard/core';
 
 import { ColonyWallet } from '~types';
 
-import ColonyManagerClass from './ColonyManager';
-
 import apolloClient from './apolloClient';
-import ipfsWithFallback from './ipfs/ipfsWithFallbackContext';
+import ColonyManagerClass from './ColonyManager';
 import { IPFSWithTimeout } from './ipfs/getIpfsWithFallback';
+import ipfsWithFallback from './ipfs/ipfsWithFallbackContext';
 
 export enum ContextModule {
   Wallet = 'wallet',

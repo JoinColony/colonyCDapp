@@ -1,9 +1,8 @@
 import React from 'react';
 
+import ColonyAvatar from '~shared/ColonyAvatar';
 import Heading from '~shared/Heading';
 import Link from '~shared/Link';
-import ColonyAvatar from '~shared/ColonyAvatar';
-
 import { Colony } from '~types';
 
 import styles from './ColonyGridItem.css';

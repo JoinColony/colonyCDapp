@@ -1,5 +1,5 @@
-import React from 'react';
 import { ApolloError } from '@apollo/client';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Button from '~shared/Button';

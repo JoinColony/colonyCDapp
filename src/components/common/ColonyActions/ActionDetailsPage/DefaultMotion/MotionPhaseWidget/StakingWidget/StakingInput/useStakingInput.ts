@@ -1,8 +1,9 @@
-import { useAppContext, useColonyContext } from '~hooks';
-
-import { MotionVote } from '~utils/colonyMotions';
 import { useUserTokenBalanceContext } from '~context';
+import { useAppContext, useColonyContext } from '~hooks';
+import { MotionVote } from '~utils/colonyMotions';
+
 import { useStakingWidgetContext } from '../StakingWidgetProvider';
+
 import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
 
 export const useStakingInput = () => {

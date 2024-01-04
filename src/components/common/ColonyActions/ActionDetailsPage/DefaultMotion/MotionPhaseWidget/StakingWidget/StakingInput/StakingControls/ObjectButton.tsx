@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Button from '~shared/Button';
 import { useAppContext } from '~hooks';
+import Button from '~shared/Button';
 
 import useObjectButton from './useObjectButton';
 

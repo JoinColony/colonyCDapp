@@ -1,13 +1,14 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+import { UserStatusMode } from '~v5/common/Pills/types';
+import UserStatus from '~v5/common/Pills/UserStatus';
 import Avatar from '~v5/shared/Avatar';
 import CopyableAddress from '~v5/shared/CopyableAddress';
-import Icon from '~shared/Icon';
+
 import { UserAvatarDetailsProps } from './types';
-import UserStatus from '~v5/common/Pills/UserStatus';
-import { UserStatusMode } from '~v5/common/Pills/types';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.UserAvatarDetails';
 

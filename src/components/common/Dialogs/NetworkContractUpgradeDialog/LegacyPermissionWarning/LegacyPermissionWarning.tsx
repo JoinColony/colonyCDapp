@@ -1,6 +1,6 @@
+import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { ColonyRole } from '@colony/colony-js';
 
 import PermissionsLabel from '~shared/PermissionsLabel';
 

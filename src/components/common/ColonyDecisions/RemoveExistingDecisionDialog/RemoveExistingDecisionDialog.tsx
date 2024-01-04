@@ -1,13 +1,13 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import { useAppContext } from '~hooks';
+import { removeDecisionAction } from '~redux/actionCreators';
+import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
 import Button from '~shared/Button';
 import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
-import { useAppContext } from '~hooks';
-import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
-import { removeDecisionAction } from '~redux/actionCreators';
 
 import RemoveDecisionMessage from './RemoveDecisionMessage';
 

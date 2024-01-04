@@ -2,8 +2,9 @@ import React, { FC, useCallback, useState } from 'react';
 
 import { getGroupId } from '~frame/GasStation/transactionGroup';
 
-import GroupedTransaction from './GroupedTransaction';
 import { TransactionDetailsProps } from '../types';
+
+import GroupedTransaction from './GroupedTransaction';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionDetails';

@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { ExtensionItemProps } from './types';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import Link from '~v5/shared/Link';
+
 import { useExtensionItem } from './hooks';
 import ActionButton from './partials/ActionButton';
-import Link from '~v5/shared/Link';
+import { ExtensionItemProps } from './types';
 
 const displayName = 'common.Extensions.ExtensionItem';
 

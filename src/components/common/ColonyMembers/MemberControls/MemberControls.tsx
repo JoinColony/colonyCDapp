@@ -1,9 +1,11 @@
-import React from 'react';
 import { Extension } from '@colony/colony-js';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import InviteLinkButton from '~shared/Button/InviteLinkButton';
-import { isInstalledExtensionData } from '~utils/extensions';
+import {
+  ManageWhitelistDialog,
+  PermissionManagementDialog,
+} from '~common/Dialogs';
 import {
   useAppContext,
   useCanInteractWithNetwork,
@@ -11,15 +13,12 @@ import {
   useEnabledExtensions,
   useExtensionData,
 } from '~hooks';
-
-import { canArchitect, hasRoot } from '~utils/checks';
-import { getAllUserRoles } from '~transformers';
 import Button from '~shared/Button/Button';
+import InviteLinkButton from '~shared/Button/InviteLinkButton';
 import { useDialog } from '~shared/Dialog';
-import {
-  ManageWhitelistDialog,
-  PermissionManagementDialog,
-} from '~common/Dialogs';
+import { getAllUserRoles } from '~transformers';
+import { canArchitect, hasRoot } from '~utils/checks';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 import styles from './MemberControls.css';
 

@@ -1,14 +1,14 @@
-import React, { useRef, useEffect } from 'react';
 import { AddressZero } from '@ethersproject/constants';
+import React, { useRef, useEffect } from 'react';
 
+import { SimpleTarget } from '~gql';
 import MaskedAddress from '~shared/MaskedAddress';
+import { Colony, ColonyExtension, Token, User } from '~types';
 import { removeValueUnits } from '~utils/css';
 
-import { Colony, ColonyExtension, Token, User } from '~types';
+import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers';
 
 import styles from './FriendlyName.css';
-import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers';
-import { SimpleTarget } from '~gql';
 
 const displayName = 'FriendlyName';
 

@@ -1,8 +1,8 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
-import { MessageDescriptor } from 'react-intl';
-import { ReactNode } from 'react';
-
 import { nanoid } from 'nanoid';
+import { ReactNode } from 'react';
+import { MessageDescriptor } from 'react-intl';
+
 import {
   AnyMessageValues,
   ComplexMessageValues,
@@ -11,11 +11,11 @@ import {
   UniversalMessageValues,
 } from '~types';
 
-import colonyMessages from '../i18n/en.json';
 import actionMessages from '../i18n/en-actions';
 import eventsMessages from '../i18n/en-events';
-import systemMessages from '../i18n/en-system-messages';
 import motionStatesMessages from '../i18n/en-motion-states';
+import systemMessages from '../i18n/en-system-messages';
+import colonyMessages from '../i18n/en.json';
 
 // https://formatjs.io/docs/intl
 

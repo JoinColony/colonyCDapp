@@ -1,14 +1,13 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { SimpleMessageValues } from '~types';
-import { getMainClasses } from '~utils/css';
-import { formatText } from '~utils/intl';
-
 import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
 } from '~images/icons.json';
+import { SimpleMessageValues } from '~types';
+import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import styles from './Icon.module.css';
 

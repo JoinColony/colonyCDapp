@@ -5,10 +5,11 @@ import {
   SearchableSortDirection,
   useSearchActionsQuery,
 } from '~gql';
-import { notNull } from '~utils/arrays';
 import { useNetworkMotionStates } from '~hooks';
+import { notNull } from '~utils/arrays';
 
 import useColonyContext from '../useColonyContext';
+
 import {
   filterActionByMotionState,
   getActionsByPageNumber,

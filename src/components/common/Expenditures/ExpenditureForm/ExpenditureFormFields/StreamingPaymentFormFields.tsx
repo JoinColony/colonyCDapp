@@ -1,10 +1,10 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { Input, Select } from '~shared/Fields';
 import TokenAmountInput from '~common/Dialogs/TokenAmountInput';
-import { Colony } from '~types';
 import { StreamingPaymentEndCondition } from '~gql';
+import { Input, Select } from '~shared/Fields';
+import { Colony } from '~types';
 
 import ExpenditureTimeInput from '../ExpenditureTimeInput';
 

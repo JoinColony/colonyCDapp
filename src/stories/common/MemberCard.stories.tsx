@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import MemberCard from '~v5/common/MemberCard';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const memberCardMeta: Meta<typeof MemberCard> = {
   title: 'Common/Member Card',

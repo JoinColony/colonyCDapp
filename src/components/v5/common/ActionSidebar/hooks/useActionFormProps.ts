@@ -1,13 +1,14 @@
 import { useCallback, useRef, useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
+
+import { Action } from '~constants/actions';
+import { ActionTypes } from '~redux';
+import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
+import { setQueryParamOnUrl } from '~utils/urls';
+
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
 import { ActionFormBaseProps } from '../types';
-import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
-import { ActionTypes } from '~redux';
-import { Action } from '~constants/actions';
-import { setQueryParamOnUrl } from '~utils/urls';
 
 export const useActionFormProps = (
   defaultValues: ActionFormProps<any>['defaultValues'],

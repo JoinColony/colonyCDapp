@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import InputBase from '~v5/common/Fields/InputBase';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const inputBaseMeta: Meta<typeof InputBase> = {
   title: 'Common/Fields/Input Base',

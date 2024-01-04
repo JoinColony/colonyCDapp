@@ -6,22 +6,23 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
-import NotificationBanner from '~v5/shared/NotificationBanner';
-import CardWithCallout from '~v5/shared/CardWithCallout';
-import Button from '~v5/shared/Button';
-import { useAppContext } from '~hooks';
+
+import { ADDRESS_ZERO } from '~constants';
 import {
   useGetColonyMemberInviteQuery,
   useGetColonyWhitelistByNameQuery,
   useValidateUserInviteMutation,
   useGetPublicColonyByNameQuery,
 } from '~gql';
+import { useAppContext } from '~hooks';
 import { CREATE_PROFILE_ROUTE } from '~routes';
-import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import SocialLinks from '~v5/shared/SocialLinks';
-import CardConnectWallet from '~v5/shared/CardConnectWallet';
-import { ADDRESS_ZERO } from '~constants';
 import PageLoader from '~v5/common/PageLoader';
+import Button from '~v5/shared/Button';
+import CardConnectWallet from '~v5/shared/CardConnectWallet';
+import CardWithCallout from '~v5/shared/CardWithCallout';
+import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import NotificationBanner from '~v5/shared/NotificationBanner';
+import SocialLinks from '~v5/shared/SocialLinks';
 
 const displayName = 'pages.ColonyPreviewPage';
 

@@ -1,15 +1,15 @@
-import React, { useMemo, useCallback } from 'react';
-import pick from 'lodash/pick';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import pick from 'lodash/pick';
+import React, { useMemo, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { formatText } from '~utils/intl';
 import { useColonyContext } from '~hooks';
 import useWrapWithRef from '~hooks/useWrapWithRef';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
-import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
+import { formatText } from '~utils/intl';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
 import {
   AdvancedPaymentRecipientsFieldModel,

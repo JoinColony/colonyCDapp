@@ -10,13 +10,14 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 
+import { getContext, ContextModule } from '~context';
 import { TxConfig } from '~types';
 import { filterUniqueAction } from '~utils/actions';
-import { getContext, ContextModule } from '~context';
 
+import { createTransactionAction } from '../../actionCreators';
 import { ActionTypes } from '../../actionTypes';
 import { takeFrom, getCanUserSendMetatransactions } from '../utils';
-import { createTransactionAction } from '../../actionCreators';
+
 import estimateGasCost from './estimateGasCost';
 import sendTransaction from './sendTransaction';
 

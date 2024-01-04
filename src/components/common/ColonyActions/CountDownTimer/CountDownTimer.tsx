@@ -1,13 +1,13 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { MotionState } from '~utils/colonyMotions';
 import { MiniSpinnerLoader } from '~shared/Preloaders';
 import TimerValue from '~shared/TimerValue';
 import { MotionStakes } from '~types';
+import { MotionState } from '~utils/colonyMotions';
+import { useMotionCountdown } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer';
 
 import { RefetchMotionState } from '../ActionDetailsPage';
-import { useMotionCountdown } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer';
 
 import styles from './CountDownTimer.css';
 

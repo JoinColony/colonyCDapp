@@ -1,5 +1,5 @@
-import React from 'react';
 import { ColonyRole } from '@colony/colony-js';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { EVENT_ROLES_MAP } from '~common/ColonyActions/ActionDetailsPage';

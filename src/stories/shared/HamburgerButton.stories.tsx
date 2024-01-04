@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+
 import HamburgerButton from '~v5/shared/HamburgerButton';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const hamburgerButtonMeta: Meta<typeof HamburgerButton> = {
   title: 'Shared/Hamburger Button',

@@ -1,4 +1,3 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   ColonyRole,
@@ -6,20 +5,21 @@ import {
   getChildIndex,
   getPermissionProofs,
 } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { ADDRESS_ZERO } from '~constants';
 import { Action, ActionTypes } from '~redux';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  waitForTxResult,
+} from '~redux/sagas/transactions';
 import {
   createInvalidParamsError,
   getColonyManager,
   initiateTransaction,
   takeFrom,
 } from '~redux/sagas/utils';
-import {
-  createGroupTransaction,
-  createTransactionChannels,
-  waitForTxResult,
-} from '~redux/sagas/transactions';
-import { ADDRESS_ZERO } from '~constants';
 
 function* cancelStakedExpenditureMotion({
   meta,

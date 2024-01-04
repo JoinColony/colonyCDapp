@@ -1,5 +1,5 @@
-import { MessageDescriptor } from 'react-intl';
 import React from 'react';
+import { MessageDescriptor } from 'react-intl';
 
 import ExternalLink from '~shared/ExternalLink';
 import { SimpleMessageValues } from '~types';

@@ -1,6 +1,6 @@
-import React, { FC, PropsWithChildren } from 'react';
-import { motion } from 'framer-motion';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
+import React, { FC, PropsWithChildren } from 'react';
 
 import NavigationFeedbackWidget from '../NavigationFeedbackWidget';
 

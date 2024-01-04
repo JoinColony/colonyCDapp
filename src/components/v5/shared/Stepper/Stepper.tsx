@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+
+import { accordionAnimation } from '~constants/accordionAnimation';
 import { useMobile } from '~hooks';
+
+import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts';
+import { StepStage } from './partials/StepperButton/consts';
 import StepperButton from './partials/StepperButton/StepperButton';
 import { StepperProps } from './types';
-import { StepStage } from './partials/StepperButton/consts';
-import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts';
-import { accordionAnimation } from '~constants/accordionAnimation';
 
 const displayName = 'v5.Stepper';
 

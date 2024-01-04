@@ -2,15 +2,16 @@ import React, { FC } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
-import CardWithBios from '~v5/shared/CardWithBios';
-import { TextButton } from '~v5/shared/Button';
-import { SpinnerLoader } from '~shared/Preloaders';
+import { useMemberContext } from '~context/MemberContext';
 import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { useMemberContext } from '~context/MemberContext';
+import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
+import { TextButton } from '~v5/shared/Button';
+import CardWithBios from '~v5/shared/CardWithBios';
 
 import EmptyContent from '../EmptyContent';
+
 import { MembersListProps } from './types';
 
 const displayName = 'v5.common.MembersList';

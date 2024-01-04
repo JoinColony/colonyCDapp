@@ -1,8 +1,13 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes, AllActions, Action } from '~redux';
 
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import {
   createActionMetadataInDB,
   initiateTransaction,
@@ -10,11 +15,6 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils';
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
 
 function* createMintTokensAction({
   payload: {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, useIntl } from 'react-intl';
 
-import { Input, SelectOption, InputStatus, InputLabel } from '~shared/Fields';
 import { FETCH_ABORTED } from '~constants';
-import { Message } from '~types';
 import Avatar from '~shared/Avatar';
+import { Input, SelectOption, InputStatus, InputLabel } from '~shared/Fields';
+import { Message } from '~types';
 
 import styles from './SafeContractAddressInput.css';
 

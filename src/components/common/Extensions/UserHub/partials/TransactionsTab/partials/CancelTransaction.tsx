@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { CancelTransactionProps } from '../types';
 import TextButton from '~v5/shared/Button/TextButton';
+
+import { CancelTransactionProps } from '../types';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.CancelTransaction';

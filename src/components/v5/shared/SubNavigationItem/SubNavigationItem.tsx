@@ -1,15 +1,16 @@
 import React, { FC, useMemo } from 'react';
 
-import Icon from '~shared/Icon';
-import Tooltip from '~shared/Extensions/Tooltip';
 import { useFilterContext } from '~context/FilterContext';
-import { formatText } from '~utils/intl';
 import { useMobile } from '~hooks';
+import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
 
 import PopoverBase from '../PopoverBase';
+
 import { useMembersSubNavigation } from './hooks';
-import { SubNavigationItemProps } from './types';
 import NestedOptions from './partials/NestedOptions';
+import { SubNavigationItemProps } from './types';
 
 const displayName = 'v5.SubNavigationItem';
 

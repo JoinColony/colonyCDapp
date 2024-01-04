@@ -1,10 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
 
-import { AccordionNestedItemProps } from '../../types';
 import { accordionAnimation } from '~constants/accordionAnimation';
-import AccordionHeaderItem from './AccordionNestedHeader';
 import { formatText } from '~utils/intl';
+
+import { AccordionNestedItemProps } from '../../types';
+
+import AccordionHeaderItem from './AccordionNestedHeader';
 
 const displayName =
   'Extensions.Accordion.partials.AccordionNested.AccordionNestedItem';

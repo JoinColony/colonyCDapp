@@ -1,8 +1,10 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
+
 import DescriptionField from '../DescriptionField';
 
 const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';

@@ -1,23 +1,23 @@
 import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { SpinnerLoader } from '~shared/Preloaders';
-import ActionsList from '~shared/ActionsList';
-import { useActivityFeed, useColonyContext } from '~hooks';
-import Button from '~shared/Button';
-
-import { ActionsListHeading } from '.';
-
-import styles from './ColonyActions.css';
-import {
-  ActivityDecisionMethod,
-  ActivityFeedFilters,
-} from '~hooks/useActivityFeed/types';
-import { MotionState } from '~utils/colonyMotions';
 import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
 } from '~gql';
+import { useActivityFeed, useColonyContext } from '~hooks';
+import {
+  ActivityDecisionMethod,
+  ActivityFeedFilters,
+} from '~hooks/useActivityFeed/types';
+import ActionsList from '~shared/ActionsList';
+import Button from '~shared/Button';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { MotionState } from '~utils/colonyMotions';
+
+import { ActionsListHeading } from '.';
+
+import styles from './ColonyActions.css';
 
 const displayName = 'common.ColonyActions';
 

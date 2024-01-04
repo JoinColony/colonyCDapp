@@ -1,11 +1,13 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
-import styles from './EmptyContent.module.css';
-import { EmptyContentProps } from './types';
 import Button from '~v5/shared/Button';
+
+import { EmptyContentProps } from './types';
+
+import styles from './EmptyContent.module.css';
 
 const displayName = 'v5.common.EmptyContent';
 

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-
 import { useFormContext, UseFormReturn } from 'react-hook-form';
+
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 
 export const useCloseSidebarClick = () => {

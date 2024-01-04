@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import fileReader from '~utils/fileReader';
 
@@ -8,11 +8,13 @@ import Button from '../Button';
 import Icon from '../Icon';
 import { Tooltip } from '../Popover';
 import ProgressBar from '../ProgressBar';
+
 import {
   FileUploadFormValues,
   FormUploadItemComponentProps,
   UploadFile,
 } from './types';
+
 import styles from './UploadItem.css';
 
 const MSG = defineMessages({

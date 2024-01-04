@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import PageLoader from './PageLoader';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof PageLoader> = {
   title: 'Common/PageLoader',

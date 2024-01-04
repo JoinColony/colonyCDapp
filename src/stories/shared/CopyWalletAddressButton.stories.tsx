@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof CopyWalletAddressButton> = {
   title: 'Shared/Copy Wallet Address Button',

@@ -1,16 +1,16 @@
 import React, { FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useGetUserTokenBalanceQuery } from '~gql';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import Numeral from '~shared/Numeral';
-import { useColonyContext, useMobile } from '~hooks';
-import TitleLabel from '~v5/shared/TitleLabel';
-import Button from '~v5/shared/Button';
-import { formatText } from '~utils/intl';
-import { useTokensModalContext } from '~context/TokensModalContext';
-import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
 import { UserHubTabs } from '~common/Extensions/UserHub/types';
+import { useTokensModalContext } from '~context/TokensModalContext';
+import { useGetUserTokenBalanceQuery } from '~gql';
+import { useColonyContext, useMobile } from '~hooks';
+import Numeral from '~shared/Numeral';
+import { formatText } from '~utils/intl';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
+import Button from '~v5/shared/Button';
+import TitleLabel from '~v5/shared/TitleLabel';
 
 import { BalanceProps, ViewStakedButtonProps } from '../types';
 

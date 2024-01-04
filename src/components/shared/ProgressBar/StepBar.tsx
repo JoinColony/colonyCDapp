@@ -1,9 +1,9 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import styles from './StepBar.css';
-
 import ProgressBar from './ProgressBar';
+
+import styles from './StepBar.css';
 
 const MSG = defineMessages({
   step: {

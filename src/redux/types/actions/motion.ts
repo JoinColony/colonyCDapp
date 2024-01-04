@@ -1,6 +1,8 @@
-import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 
+import { NetworkInfo } from '~constants';
+import { ExternalLink } from '~gql';
 import {
   Address,
   Colony,
@@ -10,9 +12,14 @@ import {
   Safe,
   SafeTransactionData,
 } from '~types';
-import { NetworkInfo } from '~constants';
 
 import { ActionTypes } from '../../actionTypes';
+
+import { OneTxPaymentPayload } from './colonyActions';
+import {
+  ExpenditureFundPayload,
+  StakedExpenditureCancelPayload,
+} from './expenditures';
 
 import {
   ErrorActionType,
@@ -21,12 +28,6 @@ import {
   MetaWithSetter,
   UniqueActionTypeWithoutPayload,
 } from './index';
-import { ExternalLink } from '~gql';
-import { OneTxPaymentPayload } from './colonyActions';
-import {
-  ExpenditureFundPayload,
-  StakedExpenditureCancelPayload,
-} from './expenditures';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',

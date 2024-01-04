@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 // @BETA: Disabled for now
 // import { ColonyRole } from '@colony/colony-js';
+
 import { ACTION } from '~constants/actions';
 import {
   useAppContext,
@@ -9,7 +10,6 @@ import {
   useEnabledExtensions,
   useUserAccountRegistered,
 } from '~hooks';
-import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 import { getAllUserRoles } from '~transformers';
 import {
   canAdminister,
@@ -21,6 +21,7 @@ import {
   // @BETA: Disabled for now
   // userHasRole,
 } from '~utils/checks';
+import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();

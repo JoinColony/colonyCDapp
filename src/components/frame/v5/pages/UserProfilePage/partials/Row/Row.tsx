@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+
 import RowItem from '../RowItem';
+
 import { RowProps } from './types';
 
 const displayName = 'v5.pages.UserProfilePage.partials.Row';

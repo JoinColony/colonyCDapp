@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
+
 import { useBaseUrl, useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-
 import { Heading3 } from '~shared/Heading';
 import Button from '~v5/shared/Button';
 import CardWithCallout from '~v5/shared/CardWithCallout';

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-import { removeQueryParamFromUrl } from '~utils/urls';
+
 import { TX_SEARCH_PARAM } from '~routes';
+import { removeQueryParamFromUrl } from '~utils/urls';
 
 export const useRemoveTxParamOnClose = () => {
   const navigate = useNavigate();

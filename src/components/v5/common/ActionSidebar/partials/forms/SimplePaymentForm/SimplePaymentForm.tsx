@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
+import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import { formatText } from '~utils/intl';
+
+import { useDecisionMethods } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+import DescriptionRow from '../../DescriptionRow';
 
 import { useSimplePayment } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
-import { useDecisionMethods } from '../../../hooks';
-import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { useColonyContext } from '~hooks';
 import ColonyAvatar from '~shared/ColonyAvatar';
 import DropdownMenu, { DropdownMenuSection } from '~shared/DropdownMenu';
-import ColonyListItem from './ColonyListItem';
 import Popover from '~shared/Popover';
 import { Colony } from '~types';
-import { useColonyContext } from '~hooks';
+
+import ColonyListItem from './ColonyListItem';
 
 import styles from './SubscribedColoniesList.css';
 

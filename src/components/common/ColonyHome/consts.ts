@@ -1,4 +1,3 @@
-import { ComponentType } from 'react';
 import {
   DiscordLogo,
   FacebookLogo,
@@ -11,6 +10,7 @@ import {
   TwitterLogo,
   YoutubeLogo,
 } from 'phosphor-react';
+import { ComponentType } from 'react';
 
 import { DomainColor, ExternalLinks } from '~gql';
 

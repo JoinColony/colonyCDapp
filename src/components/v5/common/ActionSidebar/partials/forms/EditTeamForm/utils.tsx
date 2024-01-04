@@ -7,6 +7,7 @@ import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 
 import { getTeam } from '../utils';
+
 import { EditTeamFormValues } from './consts';
 
 export const editTeamDescriptionMetadataGetter: DescriptionMetadataGetter<

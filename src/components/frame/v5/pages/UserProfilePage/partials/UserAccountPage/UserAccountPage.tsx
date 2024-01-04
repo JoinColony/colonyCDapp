@@ -1,15 +1,18 @@
 import React, { FC } from 'react';
-import { Navigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
-import { formatText } from '~utils/intl';
+import { Navigate } from 'react-router-dom';
+
 import { useSetPageHeadingTitle } from '~context';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import { useAppContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
+import { useAppContext } from '~hooks';
+import { LANDING_PAGE_ROUTE } from '~routes';
 import { Form } from '~shared/Fields';
-import { useUserProfile } from './hooks';
-import { FormValues, validationSchema } from '../validation';
+import { formatText } from '~utils/intl';
+
 import UserAccountForm from '../UserAccountForm';
+import { FormValues, validationSchema } from '../validation';
+
+import { useUserProfile } from './hooks';
 
 const displayName = 'v5.pages.UserProfilePage.partials.UserAccountPage';
 

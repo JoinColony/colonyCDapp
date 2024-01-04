@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
+import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { string, object, boolean, InferType, array } from 'yup';
-import { defineMessages } from 'react-intl';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { ExternalLinks } from '~gql';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-
-import { ActionTypes } from '~redux';
-import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
 import EditColonyDetailsDialogForm from './EditColonyDetailsDialogForm';
 import { getEditColonyDetailsDialogPayload } from './helpers';
-import { ExternalLinks } from '~gql';
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &

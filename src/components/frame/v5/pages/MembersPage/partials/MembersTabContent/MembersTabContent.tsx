@@ -1,13 +1,13 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
 
 import { useAppContext, useColonyContext } from '~hooks';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import EmptyContent from '~v5/common/EmptyContent';
 import MemberCardList from '~v5/common/MemberCardList';
 import { TextButton } from '~v5/shared/Button';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
 import { useMembersTabContentItems } from './hooks';
 import { MembersTabContentProps } from './types';

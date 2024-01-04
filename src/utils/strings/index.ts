@@ -1,9 +1,8 @@
 // import { addressNormalizer, addressValidator } from '@purser/core';
 import { customAlphabet, urlAlphabet } from 'nanoid';
 
-import { isTransactionFormat } from '~utils/web3';
-
 import { Address } from '~types';
+import { isTransactionFormat } from '~utils/web3';
 
 const HTTP_PROTOCOL = 'http://';
 const HTTPS_PROTOCOL = 'https://';

@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useMobile } from '~hooks';
 
+import { useFilterContext } from '~context/FilterContext';
+import { useMobile } from '~hooks';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';
 import Header from '~v5/shared/SubNavigationItem/partials/Header';
-import Accordion from './Accordion';
-import { useFilterContext } from '~context/FilterContext';
+
 import { followersFilterOptions } from '../consts';
+
+import Accordion from './Accordion';
 import { FilterOptionsProps } from './types';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';

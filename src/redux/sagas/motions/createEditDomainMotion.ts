@@ -1,4 +1,3 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   Id,
@@ -7,6 +6,7 @@ import {
   ColonyRole,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context';
 import {
@@ -20,6 +20,11 @@ import { getPendingMetadataDatabaseId } from '~utils/databaseId';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
 import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
+import {
   putError,
   takeFrom,
   // uploadIfpsAnnotation,
@@ -30,11 +35,6 @@ import {
   createActionMetadataInDB,
 } from '../utils';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
 // import { ipfsUpload } from '../ipfs';
 
 function* createEditDomainMotion({

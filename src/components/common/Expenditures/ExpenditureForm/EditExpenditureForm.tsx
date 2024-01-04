@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
+import Button from '~shared/Button';
 import { ActionForm } from '~shared/Fields';
 import { Expenditure } from '~types';
-import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withMeta } from '~utils/actions';
-import Button from '~shared/Button';
 
 import { AdvancedPaymentFormFields } from './ExpenditureFormFields';
 import {

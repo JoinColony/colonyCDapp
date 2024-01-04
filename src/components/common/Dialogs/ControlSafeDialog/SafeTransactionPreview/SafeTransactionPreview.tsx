@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import classnames from 'classnames';
 import { nanoid } from 'nanoid';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
+import Avatar from '~shared/Avatar';
+import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/components/FunctionsSection';
 import { DialogSection } from '~shared/Dialog';
-import { Input, Annotations } from '~shared/Fields';
 import DialogHeading from '~shared/Dialog/DialogHeading';
+import { Input, Annotations } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
-import Avatar from '~shared/Avatar';
 import { NFTData, Token, User, SafeTransactionType } from '~types';
 import { omit } from '~utils/lodash';
 import { defaultTransaction, extractTokenName } from '~utils/safes';
-import { formatArgument } from '~shared/DetailsWidget/SafeTransactionDetail/components/FunctionsSection';
 
-import { ControlSafeProps, FormSafeTransaction } from '../types';
 import { SafeTransactionMSG } from '../helpers';
+import { ControlSafeProps, FormSafeTransaction } from '../types';
 
 import AddressDetailsView from './AddressDetailsView';
 import DetailsItem from './DetailsItem';

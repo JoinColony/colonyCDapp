@@ -1,30 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
-import moveDecimal from 'move-decimal-point';
 import { getAddress } from 'ethers/lib/utils';
+import moveDecimal from 'move-decimal-point';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { TokenType } from '~gql';
 import { DialogSection } from '~shared/Dialog';
-import {
-  getSafe,
-  getSelectedSafeBalance,
-  getTxServiceBaseUrl,
-  getChainNameFromSafe,
-} from '~utils/safes';
+import Icon from '~shared/Icon';
 import {
   Message,
   SafeBalance,
   SafeBalanceApiData,
   SelectedPickerItem,
 } from '~types';
-import Icon from '~shared/Icon';
-import { TokenType } from '~gql';
+import {
+  getSafe,
+  getSelectedSafeBalance,
+  getTxServiceBaseUrl,
+  getChainNameFromSafe,
+} from '~utils/safes';
 
 import AmountBalances from '../AmountBalances';
 import { TransactionSectionProps } from '../types';
 
 import { ErrorMessage as Error, Loading, RecipientPicker } from './shared';
+
 import styles from './TransactionTypesSection.css';
 
 const displayName = `common.ControlSafeDialog.ControlSafeDialogForm.TransferFundsSection`;

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import ExternalLink from '~shared/ExternalLink';
 import { ADD_SAFE_INSTRUCTIONS } from '~constants/externalUrls';
+import ExternalLink from '~shared/ExternalLink';
 import Icon from '~shared/Icon';
 
 import styles from './SetupSafeCallout.css';

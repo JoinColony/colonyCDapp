@@ -2,10 +2,10 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Input from '~v5/common/Fields/Input';
-import Avatar from '~v5/shared/Avatar';
 import AvatarUploader from '~v5/common/AvatarUploader';
 import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
+import Input from '~v5/common/Fields/Input';
+import Avatar from '~v5/shared/Avatar';
 
 import { getInputError } from '../shared';
 

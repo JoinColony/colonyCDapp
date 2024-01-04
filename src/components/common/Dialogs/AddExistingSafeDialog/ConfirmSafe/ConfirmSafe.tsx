@@ -1,18 +1,18 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
   defineMessages,
   FormattedMessage,
   MessageDescriptor,
 } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 
+import { SAFE_NAMES_MAP } from '~constants';
+import Avatar from '~shared/Avatar';
 import Button from '~shared/Button';
 import { DialogSection } from '~shared/Dialog';
 import { Input, Annotations, InputLabel } from '~shared/Fields';
 import MaskedAddress from '~shared/MaskedAddress';
-import Avatar from '~shared/Avatar';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-import { SAFE_NAMES_MAP } from '~constants';
 
 import { AddExistingSafeProps } from '../types';
 

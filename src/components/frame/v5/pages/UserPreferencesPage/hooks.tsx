@@ -1,21 +1,22 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import clsx from 'clsx';
 import { yupResolver } from '@hookform/resolvers/yup';
+import clsx from 'clsx';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { object, string } from 'yup';
 import { toast } from 'react-toastify';
+import { object, string } from 'yup';
+
 import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCreateUser/validation';
+import { isFullScreen } from '~constants';
 import { useUpdateUserProfileMutation } from '~gql';
 import { useAppContext, useMobile } from '~hooks';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import Toast from '~shared/Extensions/Toast';
-import { isFullScreen } from '~constants';
-
 import { formatText } from '~utils/intl';
+import { multiLineTextEllipsis } from '~utils/strings';
 import { Input } from '~v5/common/Fields';
 import Button from '~v5/shared/Button';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { multiLineTextEllipsis } from '~utils/strings';
+
 import { UserPreferencesFormProps } from './types';
 
 export const useUserPreferencesPage = (truncateLimit = 20) => {

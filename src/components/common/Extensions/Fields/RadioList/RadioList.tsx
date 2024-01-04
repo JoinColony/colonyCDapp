@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { RadioListProps } from './types';
 import RadioBase from './RadioBase';
+import { RadioListProps } from './types';
 
 const displayName = 'common.Extensions.Fields.RadioList';
 

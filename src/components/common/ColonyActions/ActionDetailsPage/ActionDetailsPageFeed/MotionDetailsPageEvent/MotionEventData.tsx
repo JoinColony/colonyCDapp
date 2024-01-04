@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { ColonyAndExtensionsEvents } from '~types';
 import {
   useGetMotionEventTitleValues,
   TransactionMeta,
 } from '~common/ColonyActions';
+import { ColonyAndExtensionsEvents } from '~types';
 
 import EventData from '../EventData';
 

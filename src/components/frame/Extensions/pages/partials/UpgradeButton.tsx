@@ -6,8 +6,9 @@ import {
 } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useColonyContext, useMobile } from '~hooks';
 
+import { useColonyContext, useMobile } from '~hooks';
+import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux';
 import { ActionButton } from '~shared/Button';
 import Toast from '~shared/Extensions/Toast/Toast';
@@ -16,8 +17,8 @@ import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
 import { ButtonProps } from '~v5/shared/Button/types';
+
 import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
-import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
 
 interface UpgradeButtonProps {
   extensionData: AnyExtensionData;

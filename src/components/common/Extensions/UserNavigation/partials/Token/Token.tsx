@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import { TokenProps } from './types';
 import Icon from '~shared/Icon';
+
+import { TokenProps } from './types';
 
 export const displayName = 'common.Extensions.UserNavigation.partials.Token';
 

@@ -6,11 +6,11 @@ import {
   useGetColonyContributorQuery,
   useUpdateColonyContributorMutation,
 } from '~gql';
-import { CREATE_PROFILE_ROUTE } from '~routes';
 import { useAppContext, useCanJoinColony } from '~hooks';
-import { handleNewUser } from '~utils/newUser';
-import { getColonyContributorId } from '~utils/members';
+import { CREATE_PROFILE_ROUTE } from '~routes';
 import { Colony } from '~types';
+import { getColonyContributorId } from '~utils/members';
+import { handleNewUser } from '~utils/newUser';
 
 const useColonySubscription = (colony?: Colony) => {
   const { colonyAddress = '' } = colony ?? {};

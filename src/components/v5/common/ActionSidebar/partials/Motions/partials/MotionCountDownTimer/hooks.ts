@@ -1,9 +1,10 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
-import { TimerValueProps } from '~shared/TimerValue/TimerValue';
 import { MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
+import { TimerValueProps } from '~shared/TimerValue/TimerValue';
 import { MotionState } from '~utils/colonyMotions';
+
 import { getCurrentStatePeriodInMs, splitTimeLeft } from './helpers';
 
 const useMotionTimeoutPeriods = (colonyAddress = '', motionId: string) => {

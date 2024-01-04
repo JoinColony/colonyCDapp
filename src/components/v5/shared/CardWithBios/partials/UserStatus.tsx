@@ -1,17 +1,19 @@
 import React, { FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import UserStatus from '~v5/common/Pills/UserStatus';
 import Tooltip from '~shared/Extensions/Tooltip';
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+import UserStatus from '~v5/common/Pills/UserStatus';
+
 import { UserStatusComponentProps } from '../types';
+
 import {
   ACTIVE_CONTRIBUTOR_PERCENT,
   DEDICATED_CONTRIBUTOR_PERCENT,
   TOP_CONTRIBUTOR_PERCENT,
   getIconName,
 } from './consts';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.CardWithBios.partials.UserStatusComponent';
 

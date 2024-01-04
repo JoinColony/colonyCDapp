@@ -1,13 +1,13 @@
+import { BigNumber } from 'ethers';
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import { BigNumber } from 'ethers';
 
-import Icon from '~shared/Icon';
-import TokenInfoPopover from '~shared/TokenInfoPopover';
-import TokenIcon from '~shared/TokenIcon';
-import Numeral from '~shared/Numeral';
-import { UserTokenBalanceData } from '~types';
 import { useColonyContext } from '~hooks';
+import Icon from '~shared/Icon';
+import Numeral from '~shared/Numeral';
+import TokenIcon from '~shared/TokenIcon';
+import TokenInfoPopover from '~shared/TokenInfoPopover';
+import { UserTokenBalanceData } from '~types';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import ChangeTokenStateForm from './ChangeTokenStateForm';

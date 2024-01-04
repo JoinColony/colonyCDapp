@@ -2,18 +2,18 @@ import React, { MouseEvent, useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import CardList from '~shared/CardList';
-import Heading from '~shared/Heading';
-import Card from '~shared/Card';
-
-import { getMainClasses } from '~utils/css';
+import { TransactionStatus } from '~gql';
 import { messageCancel } from '~redux/actionCreators';
 import { MessageType } from '~redux/immutable';
-import { TransactionStatus } from '~gql';
+import Card from '~shared/Card';
+import CardList from '~shared/CardList';
+import Heading from '~shared/Heading';
+import { getMainClasses } from '~utils/css';
 
 import { MessageCardStatus } from '../MessageCard';
-import MessageCardControls from './MessageCardControls';
 import { TransactionBackToList } from '../TransactionDetails';
+
+import MessageCardControls from './MessageCardControls';
 
 import styles from './MessageCardDetails.css';
 

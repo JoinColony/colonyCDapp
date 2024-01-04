@@ -3,8 +3,8 @@ import { nanoid } from 'nanoid';
 import { call, put } from 'redux-saga/effects';
 
 import { uploadIpfsData } from '~redux/actionCreators/ipfs';
-import { filterUniqueAction } from '~utils/actions';
 import { ActionTypes } from '~redux/actionTypes';
+import { filterUniqueAction } from '~utils/actions';
 
 import { raceError } from './effects';
 

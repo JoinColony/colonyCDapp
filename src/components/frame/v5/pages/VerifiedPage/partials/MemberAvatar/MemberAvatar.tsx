@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
+
 import { MemberAvatarProps } from './types';
 
 const displayName = 'v5.pages.VerifiedPage.partials.MemberAvatar';

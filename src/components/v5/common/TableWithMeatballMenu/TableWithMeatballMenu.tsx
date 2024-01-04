@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
+import React, { useMemo } from 'react';
+
 import Table from '~v5/common/Table';
+
 import { TableWithMeatballMenuProps } from './types';
 import { makeMenuColumn } from './utils';
 

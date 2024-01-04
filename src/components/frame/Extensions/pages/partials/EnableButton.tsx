@@ -1,9 +1,11 @@
-import React from 'react';
 import { ColonyRole, Extension, Id } from '@colony/colony-js';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
+import { AnyExtensionData } from '~types';
 import { addressHasRoles } from '~utils/checks';
 import {
   canExtensionBeInitialized,
@@ -11,9 +13,8 @@ import {
 } from '~utils/extensions';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
+
 import ReenableButton from '../ExtensionDetailsPage/partials/ExtensionDetails/ReenableButton';
-import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import { AnyExtensionData } from '~types';
 
 interface EnableButtonProps {
   userHasRoot: boolean;

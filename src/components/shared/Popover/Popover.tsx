@@ -1,3 +1,5 @@
+import { Placement } from '@popperjs/core';
+import { nanoid } from 'nanoid';
 import React, {
   cloneElement,
   ReactElement,
@@ -12,15 +14,12 @@ import React, {
   HTMLAttributes,
   MouseEvent,
 } from 'react';
-import { nanoid } from 'nanoid';
 import { usePopper } from 'react-popper';
 import { PopperOptions } from 'react-popper-tooltip';
-
-import { Placement } from '@popperjs/core';
 import { Unionize } from 'utility-types';
 
-import { SetStateFn, SimpleMessageValues } from '~types';
 import { usePrevious } from '~hooks';
+import { SetStateFn, SimpleMessageValues } from '~types';
 
 import PopoverWrapper from './PopoverWrapper';
 import {

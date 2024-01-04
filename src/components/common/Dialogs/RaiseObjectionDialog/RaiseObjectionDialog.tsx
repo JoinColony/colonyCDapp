@@ -1,12 +1,12 @@
 import React from 'react';
 import { object, number, InferType, string } from 'yup';
 
+import { ActionTypes } from '~redux';
 import Dialog, { DialogProps } from '~shared/Dialog';
 import { ActionForm, OnSuccess } from '~shared/Fields';
-import { ActionTypes } from '~redux';
+import { SetStateFn } from '~types';
 import { mapPayload } from '~utils/actions';
 
-import { SetStateFn } from '~types';
 import {
   ObjectionHeading,
   ObjectionSlider,

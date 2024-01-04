@@ -1,6 +1,7 @@
 import React, { TableHTMLAttributes } from 'react';
 
 import { getMainClasses } from '~utils/css';
+
 import styles from './Table.css';
 
 interface Appearance {

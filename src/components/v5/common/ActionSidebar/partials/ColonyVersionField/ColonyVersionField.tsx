@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
+
 import { useColonyContext } from '~hooks';
 import { formatText } from '~utils/intl';
-
 import ActionFormRow from '~v5/common/ActionFormRow';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyVersionField';

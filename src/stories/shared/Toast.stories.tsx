@@ -1,10 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 import { ToastContainer, toast } from 'react-toastify';
 
 import Toast from '~shared/Extensions/Toast';
-import styles from '~shared/Extensions/Toast/Toast.module.css';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
+import styles from '~shared/Extensions/Toast/Toast.module.css';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Toast> = {
   title: 'Shared/Toast',

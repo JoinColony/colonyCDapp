@@ -1,8 +1,8 @@
-import { Colony, ColonyWallet } from '~types';
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { useGetColonyContributorQuery } from '~gql';
+import { Colony, ColonyWallet } from '~types';
 import { isChainSupported } from '~utils/autoLogin';
 import { getColonyContributorId } from '~utils/members';
-import { useGetColonyContributorQuery } from '~gql';
 
 import useAppContext from './useAppContext';
 

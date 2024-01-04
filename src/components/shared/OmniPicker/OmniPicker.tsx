@@ -1,20 +1,21 @@
-import { MessageDescriptor, FormattedMessage } from 'react-intl';
+import cx from 'classnames';
 import React, {
   Component,
   KeyboardEvent,
   SyntheticEvent,
   MouseEvent,
 } from 'react';
-import cx from 'classnames';
+import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
+import OmniPickerContent from './OmniPickerContent';
+import OmniPickerItemEmpty from './OmniPickerItemEmpty';
 import {
   Choose,
   OmniPickerData,
   EmptyRenderFnType,
   ItemRenderFnType,
 } from './types';
-import OmniPickerContent from './OmniPickerContent';
-import OmniPickerItemEmpty from './OmniPickerItemEmpty';
+
 import styles from './OmniPicker.css';
 
 interface Appearance {

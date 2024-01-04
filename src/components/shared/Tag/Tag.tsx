@@ -1,11 +1,11 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 
-import Icon from '~shared/Icon';
 import { useMainClasses } from '~hooks';
+import Icon from '~shared/Icon';
+import { Message, UniversalMessageValues } from '~types';
 import { formatText } from '~utils/intl';
 
 import styles from './Tag.css';
-import { Message, UniversalMessageValues } from '~types';
 
 export enum TagTheme {
   Primary = 'primary',

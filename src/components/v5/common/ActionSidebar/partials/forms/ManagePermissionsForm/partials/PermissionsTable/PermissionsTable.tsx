@@ -1,14 +1,15 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
+
 import { USER_ROLE } from '~constants/permissions';
 import Table from '~v5/common/Table';
+
 import { CUTOM_PERMISSION_TABLE_CONTENT } from './consts';
 import {
   useCustomPermissionsTableColumns,
   usePermissionsTableProps,
 } from './hooks';
-
 import {
   CustomPermissionTableModel,
   PermissionsTableModel,

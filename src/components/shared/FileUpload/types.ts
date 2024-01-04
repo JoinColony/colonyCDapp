@@ -1,3 +1,4 @@
+import { ComponentType, ReactNode, Ref } from 'react';
 import {
   Accept,
   DropzoneOptions,
@@ -5,7 +6,7 @@ import {
   DropzoneState,
   FileRejection,
 } from 'react-dropzone';
-import { ComponentType, ReactNode, Ref } from 'react';
+
 import {
   CoreInputProps,
   InputComponentAppearance as Appearance,

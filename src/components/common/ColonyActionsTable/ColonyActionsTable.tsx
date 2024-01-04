@@ -1,10 +1,12 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useMobile } from '~hooks';
+import React, { FC } from 'react';
 
+import { useActionSidebarContext } from '~context';
+import { useMobile } from '~hooks';
 import { ColonyAction } from '~types';
-import { merge } from '~utils/lodash';
 import { formatText } from '~utils/intl';
+import { merge } from '~utils/lodash';
+import EmptyContent from '~v5/common/EmptyContent';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
@@ -16,8 +18,6 @@ import {
   useRenderRowLink,
 } from './hooks';
 import { ColonyActionsTableProps } from './types';
-import EmptyContent from '~v5/common/EmptyContent';
-import { useActionSidebarContext } from '~context';
 
 const displayName = 'common.ColonyActionsTable';
 

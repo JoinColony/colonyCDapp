@@ -1,7 +1,7 @@
 import { Colony, Domain } from '~types';
 
-import { sortBy } from './lodash';
 import { notNull } from './arrays';
+import { sortBy } from './lodash';
 
 export const findDomainByNativeId = (
   domainNativeId: number | null | undefined,

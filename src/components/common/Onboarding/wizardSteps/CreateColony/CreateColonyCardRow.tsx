@@ -3,8 +3,8 @@ import { defineMessages } from 'react-intl';
 
 import { WizardStepProps } from '~shared/Wizard';
 import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button';
 import Avatar from '~v5/shared/Avatar';
+import Button from '~v5/shared/Button';
 
 import { FormValues } from './types';
 

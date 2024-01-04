@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
+
 import CountDownTimer from '~v5/common/CountDownTimer';
+
 import { useMotionCountdown } from './hooks';
 import { MotionCountDownTimerProps } from './types';
 

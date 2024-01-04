@@ -1,4 +1,5 @@
 import { UserStakeStatus } from '~types';
+
 import { ContributorType } from '../TableFiltering/types';
 
 export type ExtensionStatusBadgeMode =

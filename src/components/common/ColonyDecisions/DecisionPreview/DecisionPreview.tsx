@@ -2,10 +2,10 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
-import Tag from '~shared/Tag';
-import { getDraftDecisionFromStore } from '~utils/decisions';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import { useAppContext, useColonyContext } from '~hooks';
+import Tag from '~shared/Tag';
+import { getDraftDecisionFromStore } from '~utils/decisions';
 
 import {
   DecisionData,

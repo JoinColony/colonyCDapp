@@ -1,7 +1,7 @@
 import { ApolloQueryResult } from '@apollo/client';
-import { call, cancel, fork, put, take } from 'redux-saga/effects';
-import { Channel, buffers, channel } from 'redux-saga';
 import { utils } from 'ethers';
+import { Channel, buffers, channel } from 'redux-saga';
+import { call, cancel, fork, put, take } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context';
 import {
@@ -20,6 +20,8 @@ import {
   UpdateTransactionMutation,
   UpdateTransactionMutationVariables,
 } from '~gql';
+import { ActionTypes } from '~redux/actionTypes';
+import { ActionTypeWithPayloadAndMeta } from '~redux/types';
 import {
   CreateTransactionActionType,
   Meta,
@@ -34,9 +36,7 @@ import {
   TransactionReceiptReceivedPayload,
   TransactionSucceededPayload,
 } from '~redux/types/actions/transaction';
-import { ActionTypes } from '~redux/actionTypes';
 import { notNull } from '~utils/arrays';
-import { ActionTypeWithPayloadAndMeta } from '~redux/types';
 
 const pendingTransactions = new Set();
 

@@ -1,4 +1,5 @@
 import { FieldValues, UseFormRegister } from 'react-hook-form';
+
 import { Message } from '~types';
 
 export interface CheckboxProps {

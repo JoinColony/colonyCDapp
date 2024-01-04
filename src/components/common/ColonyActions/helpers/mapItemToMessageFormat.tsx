@@ -1,9 +1,26 @@
-import React from 'react';
-import Decimal from 'decimal.js';
 import { AddressZero } from '@ethersproject/constants';
+import Decimal from 'decimal.js';
+import React from 'react';
 
-import Numeral from '~shared/Numeral';
+import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
+import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
+import { DEFAULT_TOKEN_DECIMALS, SAFE_NAMES_MAP } from '~constants';
+import { SimpleTarget } from '~gql';
+import { useColonyContext, useUserReputation } from '~hooks';
+import { unknownContractMSG } from '~shared/DetailsWidget/SafeTransactionDetail';
 import FriendlyName from '~shared/FriendlyName';
+import MaskedAddress from '~shared/MaskedAddress';
+import MemberReputation from '~shared/MemberReputation';
+import Numeral from '~shared/Numeral';
+import {
+  AmountTag,
+  Motion as MotionTag,
+  Opposed as OpposedTag,
+  Voting as VotingTag,
+  Failed as FailedTag,
+  Reveal as RevealTag,
+  Passed as PassedTag,
+} from '~shared/Tag';
 import {
   Colony,
   ColonyAndExtensionsEvents,
@@ -16,43 +33,26 @@ import {
   Token,
   SafeTransactionData,
 } from '~types';
-import { useColonyContext, useUserReputation } from '~hooks';
-import { MotionVote } from '~utils/colonyMotions';
-import { intl } from '~utils/intl';
-import { formatReputationChange } from '~utils/reputation';
-import { DEFAULT_TOKEN_DECIMALS, SAFE_NAMES_MAP } from '~constants';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { notMaybe } from '~utils/arrays';
 import {
   formatRolesTitle,
   getColonyRoleSetTitleValues,
 } from '~utils/colonyActions';
-import {
-  AmountTag,
-  Motion as MotionTag,
-  Opposed as OpposedTag,
-  Voting as VotingTag,
-  Failed as FailedTag,
-  Reveal as RevealTag,
-  Passed as PassedTag,
-} from '~shared/Tag';
-import { VoteResults } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VoteOutcome/VoteResults';
-import { VotingWidgetHeading } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
-import MemberReputation from '~shared/MemberReputation';
-import MaskedAddress from '~shared/MaskedAddress';
+import { MotionVote } from '~utils/colonyMotions';
+import { intl } from '~utils/intl';
+import { formatReputationChange } from '~utils/reputation';
 import {
   getAddedSafe,
   getAddedSafeChainName,
   getRemovedSafes,
 } from '~utils/safes';
-import { unknownContractMSG } from '~shared/DetailsWidget/SafeTransactionDetail';
-import { SimpleTarget } from '~gql';
-import { notMaybe } from '~utils/arrays';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
+import { ActionTitleMessageKeys } from './getActionTitleValues';
 import { getColonyMetadataChangesValue } from './getColonyMetadataChanges';
+import { getDomainMetadataChangesValue } from './getDomainMetadataChanges';
 
 import styles from './itemStyles.css';
-import { ActionTitleMessageKeys } from './getActionTitleValues';
 
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',

@@ -1,13 +1,6 @@
 import withWizard from '~shared/Wizard/withWizard';
 import { User } from '~types';
 
-import { Flow, WizardType } from './types';
-import WizardTemplate from './WizardTemplate';
-import {
-  initialValues as colonyInitialValues,
-  stepArray as stepsCreateColony,
-} from './wizardSteps/CreateColony/CreateColonyWizard';
-import { stepsCreateUser } from './wizardSteps/StepCreateUser/consts';
 import {
   colonySidebarValues,
   completeSideBarValue,
@@ -15,6 +8,13 @@ import {
   userSidebarValues,
   WizardProps,
 } from './consts';
+import { Flow, WizardType } from './types';
+import {
+  initialValues as colonyInitialValues,
+  stepArray as stepsCreateColony,
+} from './wizardSteps/CreateColony/CreateColonyWizard';
+import { stepsCreateUser } from './wizardSteps/StepCreateUser/consts';
+import WizardTemplate from './WizardTemplate';
 
 export const createWizard = (
   user: User | null | undefined,

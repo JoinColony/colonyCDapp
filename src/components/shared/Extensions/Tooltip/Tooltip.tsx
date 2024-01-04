@@ -1,10 +1,12 @@
+import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import clsx from 'clsx';
 
 import Icon from '~shared/Icon';
-import styles from './Tooltip.module.css';
+
 import { TooltipProps } from './types';
+
+import styles from './Tooltip.module.css';
 
 const displayName = 'Extensions.Tooltip';
 

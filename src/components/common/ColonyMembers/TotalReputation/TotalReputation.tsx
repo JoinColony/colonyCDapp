@@ -1,14 +1,13 @@
+import { Id } from '@colony/colony-js';
+import Decimal from 'decimal.js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import Decimal from 'decimal.js';
-import { Id } from '@colony/colony-js';
-
-import Heading from '~shared/Heading';
-import Numeral from '~shared/Numeral';
 
 import { DEFAULT_TOKEN_DECIMALS, ADDRESS_ZERO } from '~constants';
-import { useColonyContext } from '~hooks';
 import { useGetUserReputationQuery } from '~gql';
+import { useColonyContext } from '~hooks';
+import Heading from '~shared/Heading';
+import Numeral from '~shared/Numeral';
 
 import styles from './TotalReputation.css';
 

@@ -1,19 +1,19 @@
 import React, { ButtonHTMLAttributes } from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
   MessageDescriptor,
   defineMessages,
   FormattedMessage,
 } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import { LinkProps } from 'react-router-dom';
 
-import { getMainClasses } from '~utils/css';
 import { useMobile } from '~hooks';
+import { getMainClasses } from '~utils/css';
 
+import Heading from '../Heading';
 import Icon from '../Icon';
 import Link from '../Link';
 import { Tooltip } from '../Popover';
-import Heading from '../Heading';
 
 import styles from './DecisionOption.css';
 

@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
+import ColonyActionsTable from '~common/ColonyActionsTable';
 import { useSetPageBreadcrumbs, useSetPageHeadingTitle } from '~context';
+import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 import { formatText } from '~utils/intl';
 import WidgetBoxList from '~v5/common/WidgetBoxList';
-import ColonyActionsTable from '~common/ColonyActionsTable';
 
 import { useActivityFeedWidgets } from './hooks';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 
 const displayName = 'v5.pages.ActivityPage';
 

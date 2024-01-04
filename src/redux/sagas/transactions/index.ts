@@ -1,6 +1,8 @@
 import { takeEvery } from 'redux-saga/effects';
-import { syncTransactionWithDb } from './transactionsToDb';
+
 import { ActionTypes } from '~redux/actionTypes';
+
+import { syncTransactionWithDb } from './transactionsToDb';
 
 export * from './createTransaction';
 export * from './estimateGasCost';

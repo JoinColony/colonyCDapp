@@ -1,16 +1,16 @@
 import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useNetworkInverseFee } from '~hooks';
+import Numeral from '~shared/Numeral';
+import { Colony } from '~types';
+import { toFinite } from '~utils/lodash';
 import {
   calculateFee,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import Numeral from '~shared/Numeral';
-import { Colony } from '~types';
-import { useNetworkInverseFee } from '~hooks';
-import { toFinite } from '~utils/lodash';
 
 import styles from './NetworkFee.css';
 

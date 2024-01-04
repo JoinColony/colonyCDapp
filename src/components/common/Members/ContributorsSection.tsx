@@ -1,13 +1,13 @@
-import React, { useState, ReactNode } from 'react';
 import classnames from 'classnames';
+import React, { useState, ReactNode } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import MembersList from '~common/Members/MembersList';
-import LoadMoreButton from '~shared/LoadMoreButton';
 import SortingRow, {
   Props as SortingProps,
 } from '~common/Members/MembersList/SortingRow';
 import { useSortedContributors } from '~hooks';
+import LoadMoreButton from '~shared/LoadMoreButton';
 
 import styles from './MembersSection.css';
 

@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 
 import PillsBase from '../PillsBase';
+
 import { useTeamBadge } from './hooks';
 import { TeamBadgeProps } from './types';
 

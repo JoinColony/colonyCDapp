@@ -1,11 +1,12 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { defineMessages } from 'react-intl';
 import { createColumnHelper, SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { FilePlus, ArrowSquareOut, ShareNetwork } from 'phosphor-react';
-
+import React, { useCallback, useMemo, useState } from 'react';
+import { defineMessages } from 'react-intl';
 import { generatePath, Link, useNavigate } from 'react-router-dom';
+
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import {
   SearchableColonyActionSortableFields,
   SearchableColonyActionSortInput,
@@ -13,28 +14,27 @@ import {
 } from '~gql';
 import { useActivityFeed, useColonyContext } from '~hooks';
 import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
-import { MotionState } from '~utils/colonyMotions';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
+import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
 } from '~routes';
-import { formatText } from '~utils/intl';
 import TransactionLink from '~shared/TransactionLink';
-import { DEFAULT_NETWORK_INFO } from '~constants';
-import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
+import { MotionState } from '~utils/colonyMotions';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
+import { formatText } from '~utils/intl';
 import { setQueryParamOnUrl } from '~utils/urls';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 import { RenderCellWrapper } from '~v5/common/Table/types';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
-import { makeLoadingRows } from './utils';
 import ActionDescription from './partials/ActionDescription';
 import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem';
+import { makeLoadingRows } from './utils';
 
 const MSG = defineMessages({
   tableHeaderLatestActivity: {

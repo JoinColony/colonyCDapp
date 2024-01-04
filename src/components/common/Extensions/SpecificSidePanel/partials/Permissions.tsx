@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge';
-import { PermissionsProps } from '../types';
-import { formatText } from '~utils/intl';
 import { votingReputationMessages } from '~constants';
+import { formatText } from '~utils/intl';
+
+import { PermissionsProps } from '../types';
 
 const displayName = 'common.Extensions.partials.Permissions';
 

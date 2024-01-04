@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { SetStateFn } from '~types';
-import { Form, Select } from '~shared/Fields';
 import { ModelSortDirection } from '~gql';
+import { Form, Select } from '~shared/Fields';
+import { SetStateFn } from '~types';
 
 import styles from './ColonyDecisions.css';
 

@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 
-import { providers } from 'ethers';
 import { Block } from '@ethersproject/providers';
+import { providers } from 'ethers';
 import { backOff } from 'exponential-backoff';
 
 import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants';

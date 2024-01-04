@@ -1,5 +1,5 @@
-import React, { useRef, useLayoutEffect } from 'react';
 import QRCodeGenerator from 'qrcode';
+import React, { useRef, useLayoutEffect } from 'react';
 
 import { Address } from '~types';
 

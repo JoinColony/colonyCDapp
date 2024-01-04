@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
-import { Navigate } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
+import { Navigate } from 'react-router-dom';
 
+import { useSetPageHeadingTitle } from '~context';
+import LoadingTemplate from '~frame/LoadingTemplate';
 import { useAppContext } from '~hooks';
 import { LANDING_PAGE_ROUTE } from '~routes';
-import { useSetPageHeadingTitle } from '~context';
 import { formatText } from '~utils/intl';
-import LoadingTemplate from '~frame/LoadingTemplate';
-import { useUserPreferencesPage } from './hooks';
+
 import Rows from '../UserProfilePage/partials/Row';
+
+import { useUserPreferencesPage } from './hooks';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 

@@ -1,17 +1,18 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-
 import { usePopperTooltip } from 'react-popper-tooltip';
-import { useColonyContext, useMobile } from '~hooks';
+
 import { LEARN_MORE_PAYMENTS } from '~constants';
-import Nav from './partials/Nav';
-import { getNavItems } from './partials/utils';
-import { SubNavigationMobile } from '~v5/common/SubNavigation';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useColonyContext, useMobile } from '~hooks';
 import LearnMore from '~shared/Extensions/LearnMore';
+import Icon from '~shared/Icon';
+import { SubNavigationMobile } from '~v5/common/SubNavigation';
 import Button from '~v5/shared/Button';
 import PopoverBase from '~v5/shared/PopoverBase';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import Icon from '~shared/Icon';
+
+import Nav from './partials/Nav';
+import { getNavItems } from './partials/utils';
 
 const displayName = 'common.Extensions.ColonyNavigation';
 

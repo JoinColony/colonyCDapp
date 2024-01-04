@@ -1,11 +1,13 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import { FilterType, TableFilteringProps } from './types';
-import { CloseButton } from '~v5/shared/Button';
-import { formatText } from '~utils/intl';
-import styles from './TableFiltering.module.css';
 import { useFilterContext } from '~context/FilterContext';
+import { formatText } from '~utils/intl';
+import { CloseButton } from '~v5/shared/Button';
+
+import { FilterType, TableFilteringProps } from './types';
+
+import styles from './TableFiltering.module.css';
 
 const displayName = 'v5.common.TableFiltering';
 

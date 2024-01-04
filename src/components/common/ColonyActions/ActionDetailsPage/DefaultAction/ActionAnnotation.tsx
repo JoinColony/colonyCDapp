@@ -1,11 +1,12 @@
 import React from 'react';
-import { useAppContext } from '~hooks';
-import UserAvatar from '~shared/UserAvatar/UserAvatar';
 
+import { useAppContext } from '~hooks';
 import FriendlyName from '~shared/FriendlyName/FriendlyName';
-import TransactionMeta from '../TransactionMeta/TransactionMeta';
+import UserAvatar from '~shared/UserAvatar';
 import { AnnotationType } from '~types';
 import { getMainClasses } from '~utils/css';
+
+import TransactionMeta from '../TransactionMeta';
 
 import styles from './ActionAnnotation.css';
 

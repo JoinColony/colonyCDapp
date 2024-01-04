@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const fileUploadMeta: Meta<typeof FileUpload> = {
   title: 'Common/File Upload',

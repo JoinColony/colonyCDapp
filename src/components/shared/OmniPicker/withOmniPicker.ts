@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import {
   ComponentType,
   createElement,
@@ -6,11 +7,11 @@ import {
   KeyboardEvent,
   MouseEvent,
 } from 'react';
-import { nanoid } from 'nanoid';
+
+import { ESC, TAB, UP, DOWN, ENTER } from '~types';
 
 import OmniPicker, { Props as OmniPickerProps } from './OmniPicker';
 import { OmniPickerData, WrappedComponentProps } from './types';
-import { ESC, TAB, UP, DOWN, ENTER } from '~types';
 
 const defaultProps = {
   getItem: (filteredData: OmniPickerData[], selectedIdx: number) =>

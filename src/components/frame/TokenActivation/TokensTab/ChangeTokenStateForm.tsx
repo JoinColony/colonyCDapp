@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
+import React, { useState } from 'react';
+import { FormattedMessage, defineMessages } from 'react-intl';
 import { number, object, InferType } from 'yup';
 
-import { toFinite } from '~utils/lodash';
+import { useUserTokenBalanceContext } from '~context';
+import { useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
 import Button from '~shared/Button';
 import { ActionForm, Input } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
 import { Tooltip } from '~shared/Popover';
-import { ActionTypes } from '~redux';
-import { pipe, mapPayload } from '~utils/actions';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { useColonyContext } from '~hooks';
 import { UserTokenBalanceData } from '~types';
-import { useUserTokenBalanceContext } from '~context';
+import { pipe, mapPayload } from '~utils/actions';
+import { toFinite } from '~utils/lodash';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import styles from './TokensTab.css';
 

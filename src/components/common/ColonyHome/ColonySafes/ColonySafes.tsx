@@ -1,16 +1,16 @@
+import classnames from 'classnames';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import classnames from 'classnames';
 
-import { isEmpty } from '~utils/lodash';
-import SafeInfoPopover from '~shared/SafeInfoPopover';
-import Heading from '~shared/Heading';
-import { Colony, Safe } from '~types';
-
-import styles from './ColonySafes.css';
-import { useDialog } from '~shared/Dialog';
 import { ControlSafeDialog } from '~common/Dialogs';
 import { useEnabledExtensions } from '~hooks';
+import { useDialog } from '~shared/Dialog';
+import Heading from '~shared/Heading';
+import SafeInfoPopover from '~shared/SafeInfoPopover';
+import { Colony, Safe } from '~types';
+import { isEmpty } from '~utils/lodash';
+
+import styles from './ColonySafes.css';
 
 const displayName = 'common.ColonyHome.ColonySafes';
 

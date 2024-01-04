@@ -1,7 +1,7 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
-import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { ApolloQueryResult } from '@apollo/client';
+import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 
 import { getContext, ContextModule, ColonyManager } from '~context';
 import {
@@ -12,13 +12,11 @@ import {
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
-
 import {
   ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
 } from '../transactions';
-
 import {
   initiateTransaction,
   putError,

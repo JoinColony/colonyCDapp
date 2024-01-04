@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { formatText } from '~utils/intl';
 
+import { formatText } from '~utils/intl';
 import { SuccessContentProps } from '~v5/common/AvatarUploader/types';
 import Button from '~v5/shared/Button';
 

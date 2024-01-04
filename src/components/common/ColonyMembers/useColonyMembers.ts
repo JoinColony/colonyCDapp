@@ -1,14 +1,13 @@
-import { useState } from 'react';
 import { Id } from '@colony/colony-js';
-
-import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { useMobile } from '~hooks';
+import { useState } from 'react';
 
 import { FormValues } from '~common/ColonyMembers/MembersFilter';
 import {
   MemberType,
   VerificationType,
 } from '~common/ColonyMembers/MembersFilter/filtersConfig';
+import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
+import { useMobile } from '~hooks';
 
 const useColonyMembers = () => {
   const [filters, setFilters] = useState<FormValues>({

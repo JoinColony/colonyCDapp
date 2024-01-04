@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import UserInfoSectionList from '~v5/shared/UserInfoSectionList';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const userInfoSectionListMeta: Meta<typeof UserInfoSectionList> = {
   title: 'Shared/User Info Section List',

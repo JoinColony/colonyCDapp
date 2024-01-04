@@ -1,11 +1,13 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
 
-import Icon from '~shared/Icon';
-import { ColonyVersionWidgetProps } from './types';
-import Button from '~v5/shared/Button';
 import { useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+import Button from '~v5/shared/Button';
+
+import { ColonyVersionWidgetProps } from './types';
+
 import styles from './ColonyVersionWidget.module.css';
 
 const displayName = 'v5.ColonyVersionWidget';

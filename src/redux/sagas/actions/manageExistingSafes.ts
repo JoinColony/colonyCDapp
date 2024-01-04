@@ -1,5 +1,5 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context';
 import {
@@ -8,12 +8,12 @@ import {
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { Safe } from '~types';
 import { Action, ActionTypes, AllActions } from '~redux';
-import { putError, takeFrom } from '~utils/saga/effects';
 import { transactionReady, transactionPending } from '~redux/actionCreators';
+import { Safe } from '~types';
 import { notNull } from '~utils/arrays';
 import { excludeTypenameKey } from '~utils/objects';
+import { putError, takeFrom } from '~utils/saga/effects';
 
 import {
   createTransaction,

@@ -1,11 +1,13 @@
 import { formatDistanceToNow } from 'date-fns';
 import React, { FC, useState } from 'react';
+
 import { useGetColonyAction } from '~common/ColonyActions';
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow';
 import { formatText } from '~utils/intl';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import Stepper from '~v5/shared/Stepper';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
+
 import { CustomStep, Steps } from '../../Motions/types';
 import { PermissionSidebarProps } from '../types';
 

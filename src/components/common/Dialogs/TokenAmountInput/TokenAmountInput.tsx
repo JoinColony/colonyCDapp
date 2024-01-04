@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
-import { defineMessages } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
+import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
-import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import EthUsd from '~shared/EthUsd';
+import { Input, InputProps, TokenSymbolSelector } from '~shared/Fields';
+import NetworkFee from '~shared/NetworkFee';
+import { Colony } from '~types';
 import { notNull } from '~utils/arrays';
 import { toFinite } from '~utils/lodash';
-import { Colony } from '~types';
-import { Input, InputProps, TokenSymbolSelector } from '~shared/Fields';
-import EthUsd from '~shared/EthUsd';
-import NetworkFee from '~shared/NetworkFee';
+import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import styles from './TokenAmountInput.css';
 

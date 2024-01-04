@@ -1,8 +1,8 @@
+import { OperationVariables } from '@apollo/client';
 import { BigNumber } from 'ethers';
 import { DocumentNode, OperationDefinitionNode } from 'graphql';
-import { TestContext, ValidationError, TestFunction } from 'yup';
-import { OperationVariables } from '@apollo/client';
 import moveDecimal from 'move-decimal-point';
+import { TestContext, ValidationError, TestFunction } from 'yup';
 
 import { ContextModule, getContext } from '~context';
 import { Colony } from '~types';

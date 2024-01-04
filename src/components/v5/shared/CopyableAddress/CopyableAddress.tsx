@@ -1,10 +1,10 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
 
-import { Address } from '~types';
-import MaskedAddress from '~shared/MaskedAddress';
 import useClipboardCopy from '~hooks/useClipboardCopy';
 import Icon from '~shared/Icon';
+import MaskedAddress from '~shared/MaskedAddress';
+import { Address } from '~types';
 
 interface Props {
   /** Address to display */

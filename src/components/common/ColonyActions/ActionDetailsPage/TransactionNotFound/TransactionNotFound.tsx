@@ -2,14 +2,15 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { Heading3 } from '~shared/Heading';
-import Button from '~shared/Button';
 import NakedMoleImage from '~images/naked-mole.svg';
+import Button from '~shared/Button';
+import { Heading3 } from '~shared/Heading';
 
-import { STATUS_MAP } from '../staticMaps';
-import TransactionHash from './TransactionHash';
-import { TransactionMetaProps } from '../TransactionMeta';
 import { ActionDetailsPageParams } from '../ActionDetailsPage';
+import { STATUS_MAP } from '../staticMaps';
+import { TransactionMetaProps } from '../TransactionMeta';
+
+import TransactionHash from './TransactionHash';
 
 import styles from './TransactionNotFound.css';
 

@@ -1,18 +1,18 @@
-import React, { FC } from 'react';
+import { Id } from '@colony/colony-js';
 import Cleave from 'cleave.js/react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
-import { Id } from '@colony/colony-js';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useColonyContext, useRelativePortalElement, useToggle } from '~hooks';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
+import { formatText } from '~utils/intl';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens';
-import { formatText } from '~utils/intl';
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
 import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';

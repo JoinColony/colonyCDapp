@@ -1,14 +1,14 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
 
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
-import { transactionAddParams, transactionPending } from '../../actionCreators';
 import {
   putError,
   takeFrom,

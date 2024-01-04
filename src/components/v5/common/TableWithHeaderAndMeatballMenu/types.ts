@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { TableWithMeatballMenuProps } from '../TableWithMeatballMenu/types';
 
 export interface TableWithHeaderAndMeatballMenuProps<T>

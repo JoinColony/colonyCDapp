@@ -1,16 +1,17 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useColonyHomeContext } from '~context';
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { DialogActionButton } from '~shared/Button';
 import { ConfirmDialog } from '~shared/Dialog';
 import { Table, TableBody, TableRow, TableCell } from '~shared/Table';
 import { AnyExtensionData, InstalledExtensionData } from '~types';
-import { useColonyContext } from '~hooks';
-import { useColonyHomeContext } from '~context';
 
 import ExtensionActionButton from '../ExtensionActionButton';
 import ExtensionUpgradeButton from '../ExtensionUpgradeButton';
+
 import { getTableData } from './tableData';
 
 import styles from './ExtensionDetails.css';

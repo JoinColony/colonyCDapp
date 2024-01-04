@@ -1,11 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { DeepPartial } from 'utility-types';
+
+import { getRecoveryModeDialogPayload } from '~common/Dialogs/RecoveryModeDialog/helpers';
+import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useAppContext, useColonyContext } from '~hooks';
-import { getRecoveryModeDialogPayload } from '~common/Dialogs/RecoveryModeDialog/helpers';
-import { ActionFormBaseProps } from '../../../types';
+
 import { useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { EnterRecoveryModeFormValues, validationSchema } from './consts';
 
 export const useEnterRecoveryMode = (

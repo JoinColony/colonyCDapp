@@ -2,12 +2,13 @@ import React, { FC, SyntheticEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SpecialInput from '~common/Extensions/SpecialInput';
-import FormError from '~v5/shared/FormError';
-import { SpecialInputProps } from '../types';
+import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types';
+import { Message } from '~types';
 import { formatText } from '~utils/intl';
 import { get } from '~utils/lodash';
-import { Message } from '~types';
-import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types';
+import FormError from '~v5/shared/FormError';
+
+import { SpecialInputProps } from '../types';
 
 const displayName = 'Extensions.ConnectForm.partials.SpecialHourInput';
 

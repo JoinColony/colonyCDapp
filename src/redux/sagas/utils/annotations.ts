@@ -1,4 +1,5 @@
 import { call, put } from 'redux-saga/effects';
+
 import { ContextModule, getContext } from '~context';
 import {
   CreateAnnotationDocument,
@@ -9,10 +10,12 @@ import {
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators';
-import { ipfsUploadAnnotation } from './ipfs';
-import { initiateTransaction, takeFrom } from './effects';
 import { ActionTypes } from '~redux/actionTypes';
+
 import { TransactionChannel } from '../transactions';
+
+import { initiateTransaction, takeFrom } from './effects';
+import { ipfsUploadAnnotation } from './ipfs';
 
 export const uploadAnnotationToDb = async ({
   message,

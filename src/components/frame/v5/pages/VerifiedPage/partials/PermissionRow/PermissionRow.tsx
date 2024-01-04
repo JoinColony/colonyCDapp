@@ -7,6 +7,7 @@ import Tooltip from '~shared/Extensions/Tooltip';
 import { getAllUserRoles } from '~transformers';
 import { formatText } from '~utils/intl';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+
 import { PermissionRowProps } from './types';
 
 const displayName = 'v5.pages.VerifiedPage.partials.PermissionRow';

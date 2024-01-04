@@ -1,4 +1,5 @@
 import { NETWORK_DATA, NetworkInfo } from '~constants';
+
 import useAppContext from './useAppContext';
 
 const useGetNetworkToken = (): NetworkInfo | undefined => {

@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC } from 'react';
 
 import MemberCard from '../MemberCard/MemberCard';
+
 import MemberCardPlaceholder from './partials/MemberCardPlaceholder';
 import { MemberCardListProps } from './types';
 

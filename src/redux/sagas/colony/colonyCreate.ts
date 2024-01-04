@@ -1,4 +1,3 @@
-import { all, call, put } from 'redux-saga/effects';
 import {
   getExtensionHash,
   Extension,
@@ -8,9 +7,16 @@ import {
   ColonyRole,
   colonyRoles2Hex,
 } from '@colony/colony-js';
-import { poll } from 'ethers/lib/utils';
 import { utils } from 'ethers';
+import { poll } from 'ethers/lib/utils';
+import { all, call, put } from 'redux-saga/effects';
 
+import {
+  ADDRESS_ZERO,
+  DEFAULT_TOKEN_DECIMALS,
+  supportedExtensionsConfig,
+} from '~constants';
+import { ColonyManager, ContextModule, getContext } from '~context';
 import {
   CreateColonyEtherealMetadataDocument,
   CreateColonyEtherealMetadataMutation,
@@ -22,12 +28,6 @@ import {
   GetFullColonyByNameQuery,
   GetFullColonyByNameQueryVariables,
 } from '~gql';
-import { ColonyManager, ContextModule, getContext } from '~context';
-import {
-  ADDRESS_ZERO,
-  DEFAULT_TOKEN_DECIMALS,
-  supportedExtensionsConfig,
-} from '~constants';
 import { ActionTypes, Action, AllActions } from '~redux/index';
 import { createAddress } from '~utils/web3';
 
@@ -37,19 +37,19 @@ import {
   transactionPending,
 } from '../../actionCreators';
 import {
+  ChannelDefinition,
+  createGroupTransaction,
+  createTransactionChannels,
+} from '../transactions';
+import { updateTransaction } from '../transactions/transactionsToDb';
+import {
   putError,
   takeFrom,
   takeLatestCancellable,
   getColonyManager,
   initiateTransaction,
 } from '../utils';
-import {
-  ChannelDefinition,
-  createGroupTransaction,
-  createTransactionChannels,
-} from '../transactions';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion';
-import { updateTransaction } from '../transactions/transactionsToDb';
 
 function* colonyCreate({
   meta,

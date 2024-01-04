@@ -1,26 +1,28 @@
-import React, { useCallback } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import set from 'lodash/set';
-import cloneDeep from 'lodash/cloneDeep';
+import React, { useCallback } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import { AnimatePresence, motion } from 'framer-motion';
+
+import { accordionAnimation } from '~constants/accordionAnimation';
+import { useMobile } from '~hooks';
+import useToggle from '~hooks/useToggle';
 import Icon from '~shared/Icon';
 import Checkbox from '~v5/common/Checkbox';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import FilterButton from '~v5/shared/Filter/FilterButton';
+import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
+import Header from '~v5/shared/SubNavigationItem/partials/Header';
+
 import {
   RootFilterProps,
   FilterProps,
   FilterValue,
   NestedFilterProps,
 } from './types';
-import { useMobile } from '~hooks';
-import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
-import useToggle from '~hooks/useToggle';
-import { accordionAnimation } from '~constants/accordionAnimation';
-import Modal from '~v5/shared/Modal';
-import Header from '~v5/shared/SubNavigationItem/partials/Header';
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
 
 const displayName = 'v5.pages.FundsPage.partials.Filter';
 

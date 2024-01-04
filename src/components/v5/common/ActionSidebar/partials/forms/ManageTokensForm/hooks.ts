@@ -1,16 +1,17 @@
-import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useAppContext, useColonyContext } from '~hooks';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { notNull } from '~utils/arrays';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { validationSchema, ManageTokensFormValues } from './consts';
 import { getManageTokensPayload } from './utils';
 

@@ -1,15 +1,16 @@
+import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
-import { Id } from '@colony/colony-js';
 
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext } from '~hooks';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { validationSchema, CreateNewTeamFormValues } from './consts';
 import { getCreateNewTeamPayload } from './utils';
 

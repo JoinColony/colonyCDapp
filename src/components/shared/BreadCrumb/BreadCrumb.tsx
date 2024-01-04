@@ -1,8 +1,9 @@
 import React, { Fragment, ReactElement, isValidElement } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import styles from './BreadCrumb.css';
 import SingleCrumb from './SingleCrumb';
+
+import styles from './BreadCrumb.css';
 
 export type CrumbText = string | ReactElement | MessageDescriptor;
 export type Crumb = CrumbText | [CrumbText, string];

@@ -1,25 +1,26 @@
-import React, { FC, useState } from 'react';
 import clsx from 'clsx';
+import React, { FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+import { useAnalyticsContext } from '~context/AnalyticsContext';
 import {
   useAppContext,
   useColonyContext,
   useDetectClickOutside,
   useMobile,
 } from '~hooks';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import Button from '~v5/shared/Button';
-import UserAvatar from '~v5/shared/UserAvatar';
-import PopoverBase from '~v5/shared/PopoverBase';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
-import { useAnalyticsContext } from '~context/AnalyticsContext';
+import Button from '~v5/shared/Button';
+import PopoverBase from '~v5/shared/PopoverBase';
+import UserAvatar from '~v5/shared/UserAvatar';
 
-import { UserHubButtonProps } from './types';
-import { OPEN_USER_HUB_EVENT } from './consts';
 import { UserHubTabs } from '../UserHub/types';
+
+import { OPEN_USER_HUB_EVENT } from './consts';
+import { UserHubButtonProps } from './types';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';

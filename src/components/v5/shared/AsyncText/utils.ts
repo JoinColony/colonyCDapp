@@ -1,8 +1,9 @@
+import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import React from 'react';
-import { AsyncTextProps } from './types';
 import { formatText } from '~utils/intl';
+
+import { AsyncTextProps } from './types';
 
 export const getInitialText = (
   text: AsyncTextProps['text'],

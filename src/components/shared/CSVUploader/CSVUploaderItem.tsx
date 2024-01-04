@@ -1,10 +1,10 @@
 import React, { useEffect, SyntheticEvent, useCallback } from 'react';
-import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
+import Button from '~shared/Button';
 import { UploadItemComponentProps } from '~shared/FileUpload/types';
 import { SpinnerLoader } from '~shared/Preloaders';
-import Button from '~shared/Button';
 import { FileReaderFile } from '~utils/fileReader/types';
 
 import styles from './CSVUploaderItem.css';

@@ -3,9 +3,9 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { getMainClasses } from '~utils/css';
 
+import { RouteComponentProps } from '..';
 import HistoryNavigation from '../HistoryNavigation';
 import UserNavigation from '../UserNavigation';
-import { RouteComponentProps } from '..';
 
 import styles from './NavBar.css';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { isEqual } from '~utils/lodash';
 import { Colony, ColonyAction, SimpleMessageValues } from '~types';
 import { formatText } from '~utils/intl';
+import { isEqual } from '~utils/lodash';
 
 export const getColonyMetadataChangesValue = (
   { transactionHash }: ColonyAction,

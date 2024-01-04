@@ -4,8 +4,8 @@ import React from 'react';
 import { formatText } from '~utils/intl';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';
 
-import UserNavigationWrapper from './partials/UserNavigationWrapper';
 import ColonySwitcherContent from './partials/ColonySwitcherContent';
+import UserNavigationWrapper from './partials/UserNavigationWrapper';
 
 const displayName = 'frame.Extensions.layouts.MainLayout.MainSidebar';
 

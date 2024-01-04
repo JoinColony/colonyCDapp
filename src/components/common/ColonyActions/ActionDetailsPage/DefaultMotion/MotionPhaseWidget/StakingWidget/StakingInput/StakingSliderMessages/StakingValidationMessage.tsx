@@ -2,11 +2,11 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import TokenErrorMessage from './TokenErrorMessage';
+import { userCanStakeMore, userHasInsufficientReputation } from './helpers';
 import NotEnoughReputationMessage from './NotEnoughReputationMessage';
+import TokenErrorMessage from './TokenErrorMessage';
 
 import styles from './StakingValidationMessage.css';
-import { userCanStakeMore, userHasInsufficientReputation } from './helpers';
 
 const displayName =
   'common.ColonyActions.DefaultMotion.StakingWidget.StakingValidationMessage';

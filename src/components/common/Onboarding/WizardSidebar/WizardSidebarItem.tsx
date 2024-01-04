@@ -1,10 +1,10 @@
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import clsx from 'clsx';
 
-import WizardSidebarSubItem from './WizardSidebarSubItem';
 import { WizardSidebarStep } from './WizardSidebar';
 import WizardSidebarItemFlowLine from './WizardSidebarItemFlowLine';
+import WizardSidebarSubItem from './WizardSidebarSubItem';
 
 const displayName = 'routes.WizardRoute.WizardSidebar.WizardSidebarItem';
 

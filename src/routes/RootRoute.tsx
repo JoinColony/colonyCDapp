@@ -7,8 +7,8 @@ import {
   PageThemeContextProvider,
   usePageThemeContext,
 } from '~context';
-import { applyTheme } from '~frame/Extensions/themes/utils';
 import { Theme } from '~frame/Extensions/themes/enum';
+import { applyTheme } from '~frame/Extensions/themes/utils';
 import { DialogProvider } from '~shared/Dialog';
 
 const RootRouteInner = () => {

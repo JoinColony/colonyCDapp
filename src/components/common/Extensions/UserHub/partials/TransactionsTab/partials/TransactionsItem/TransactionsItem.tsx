@@ -1,15 +1,17 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
+import { accordionAnimation } from '~constants/accordionAnimation';
+import { TransactionStatus } from '~gql';
 import Icon from '~shared/Icon';
 import NotificationBanner from '~v5/shared/NotificationBanner';
-import styles from './TransactionsItem.module.css';
+
 import { TransactionsItemProps } from '../../types';
-import { accordionAnimation } from '~constants/accordionAnimation';
 import TransactionsHeader from '../TransactionsHeader';
-import { TransactionStatus } from '~gql';
+
+import styles from './TransactionsItem.module.css';
 
 export const displayName =
   'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';

@@ -1,19 +1,20 @@
-import { useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { useMemo } from 'react';
 
-import { hasSomeRole } from './utils';
+import { UserRole } from '~constants/permissions';
+import { useSearchContext } from '~context/SearchContext';
+import { useColonyContext } from '~hooks';
+import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { ColonyContributor } from '~types';
+import { notNull } from '~utils/arrays';
+import { searchMembers } from '~utils/members';
 import {
   ContributorTypeFilter,
   StatusFilter,
   StatusType,
 } from '~v5/common/TableFiltering/types';
-import { useColonyContext } from '~hooks';
-import { searchMembers } from '~utils/members';
-import { useSearchContext } from '~context/SearchContext';
-import { ColonyContributor } from '~types';
-import { notNull } from '~utils/arrays';
-import { UserRole } from '~constants/permissions';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+
+import { hasSomeRole } from './utils';
 
 const useMemberFilters = ({
   nativeDomainIds,

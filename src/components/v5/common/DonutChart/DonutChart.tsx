@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
+
 import Numeral from '~shared/Numeral';
+
 import { useDonutChart } from './hooks';
 import { DonutChartProps } from './types';
 

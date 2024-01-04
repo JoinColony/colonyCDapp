@@ -1,12 +1,12 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import classNames from 'classnames';
 
 import { Checkbox } from '~shared/Fields';
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress';
 import MaskedAddress from '~shared/MaskedAddress';
-import UserMention from '~shared/UserMention';
 import UserAvatar from '~shared/UserAvatar';
+import UserMention from '~shared/UserMention';
 import { Address, User } from '~types';
 
 import styles from './UserCheckbox.css';

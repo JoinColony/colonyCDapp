@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 import classnames from 'classnames';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
-import { Input, TokenSymbolSelector } from '~shared/Fields';
 import {
   ADDRESS_ZERO,
   DEFAULT_TOKEN_DECIMALS,
   ETHEREUM_NETWORK,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
-import { Safe, SafeBalance, Token } from '~types';
 import { TokenType } from '~gql';
+import { Input, TokenSymbolSelector } from '~shared/Fields';
 import { MaxButtonParams } from '~shared/Fields/Input';
+import { Safe, SafeBalance, Token } from '~types';
 
 import styles from './AmountBalances.css';
 

@@ -1,11 +1,11 @@
 import { defineMessages } from 'react-intl';
 import { InferType, array, boolean, object, string } from 'yup';
 
+import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { Colony, Token } from '~types';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { createAddress, isAddress } from '~utils/web3';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 
 const displayName = 'common.TokenManagementDialog';
 

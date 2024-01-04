@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import { useMobile } from '~hooks';
 import TokenIcon from '~shared/TokenIcon';
@@ -9,6 +9,7 @@ import Avatar from '~v5/shared/Avatar';
 import IconWithTooltip from '~v5/shared/IconWithTooltip';
 
 import { sortDisabled } from '../../utils';
+
 import { SearchItemProps } from './types';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';

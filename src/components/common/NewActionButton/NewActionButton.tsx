@@ -1,17 +1,19 @@
 import React from 'react';
+
+import UserTokenActivationButton from '~frame/UserTokenActivationButton';
+import { useGetUserTokenBalanceQuery } from '~gql';
 import {
   useAppContext,
   useColonyContext,
   useEnabledExtensions,
   useNaiveBranchingDialogWizard,
 } from '~hooks';
-// import { Extension } from '@colony/colony-js';
-// import { useSelector } from 'react-redux';
+import { DialogButton } from '~shared/Button';
 
 import { getWizardFlowConfig } from './wizardConfig';
-import { DialogButton } from '~shared/Button';
-import { useGetUserTokenBalanceQuery } from '~gql';
-import UserTokenActivationButton from '~frame/UserTokenActivationButton';
+
+// import { Extension } from '@colony/colony-js';
+// import { useSelector } from 'react-redux';
 
 // import {
 //   colonyMustBeUpgraded,

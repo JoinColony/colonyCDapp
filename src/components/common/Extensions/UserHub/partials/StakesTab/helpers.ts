@@ -1,10 +1,10 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { UserStake, UserStakeStatus } from '~types';
 import { MotionStatesMap } from '~hooks/useNetworkMotionStates';
+import { UserStake, UserStakeStatus } from '~types';
 
-import { StakesFilterType } from './types';
 import { stakesFilterOptions } from './consts';
+import { StakesFilterType } from './types';
 
 export const getStakesTabItems = (
   stakesByFilterType: Record<StakesFilterType, UserStake[]>,

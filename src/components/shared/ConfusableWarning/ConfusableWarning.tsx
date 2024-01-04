@@ -1,6 +1,6 @@
+import classnames from 'classnames';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import classnames from 'classnames';
 
 import { useUserReputation } from '~hooks';
 

@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import CardPermission from './CardPermission';
 import { CardPermissionsProps } from '../../types';
+
+import CardPermission from './CardPermission';
 
 const displayName = 'v5.CardWithBios.partials.CardPermissions';
 

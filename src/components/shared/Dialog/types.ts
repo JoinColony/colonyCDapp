@@ -1,7 +1,6 @@
 import { ComponentType } from 'react';
 
 import { EnabledExtensionData } from '~hooks/useEnabledExtensions';
-
 import { Colony } from '~types';
 
 type Cancel = () => void;

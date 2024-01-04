@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import TokenStatus from '~v5/common/ActionSidebar/partials/TokenSelect/partials/TokenStatus';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const tokenStatusMeta: Meta<typeof TokenStatus> = {
   title: 'Common/Token Status',

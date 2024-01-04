@@ -1,26 +1,27 @@
 import React, { FC, useCallback } from 'react';
 
-import ActionFormRow from '~v5/common/ActionFormRow';
-import { formatText } from '~utils/intl';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import useToggle from '~hooks/useToggle';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+import ActionFormRow from '~v5/common/ActionFormRow';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import { CardSelectProps } from '~v5/common/Fields/CardSelect/types';
 
-import { useManagePermissions } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
-import UserSelect from '../../UserSelect';
-import TeamsSelect from '../../TeamsSelect';
 import { useDecisionMethods } from '../../../hooks';
-import PermissionsTable from './partials/PermissionsTable';
+import { ActionFormBaseProps } from '../../../types';
+import DescriptionRow from '../../DescriptionRow';
+import TeamsSelect from '../../TeamsSelect';
+import UserSelect from '../../UserSelect';
+
 import {
   AUTHORITY_OPTIONS,
   PERMISSIONS_OPTIONS,
   REMOVE_ROLE_OPTION_VALUE,
 } from './consts';
+import { useManagePermissions } from './hooks';
 import PermissionsModal from './partials/PermissionsModal';
+import PermissionsTable from './partials/PermissionsTable';
 import { getRoleLabel } from './utils';
-import DescriptionRow from '../../DescriptionRow';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 

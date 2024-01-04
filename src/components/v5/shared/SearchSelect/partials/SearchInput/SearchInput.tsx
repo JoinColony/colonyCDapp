@@ -3,6 +3,7 @@ import React, { FC, useLayoutEffect, useRef } from 'react';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import InputBase from '~v5/common/Fields/InputBase';
+
 import { SearchInputProps } from './types';
 
 const displayName = 'v5.SearchSelect.partials.SearchInput';

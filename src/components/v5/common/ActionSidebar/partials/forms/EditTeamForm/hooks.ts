@@ -1,16 +1,17 @@
-import { useCallback, useEffect, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
-import { useColonyContext } from '~hooks';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import { findDomainByNativeId } from '~utils/domains';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { validationSchema, EditTeamFormValues } from './consts';
 import { getEditDomainPayload } from './utils';
 

@@ -1,14 +1,13 @@
+import classnames from 'classnames';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import classnames from 'classnames';
-
-import { Tooltip } from '~shared/Popover';
-import TransactionLink from '~shared/TransactionLink';
-import { SpinnerLoader } from '~shared/Preloaders';
-import Icon from '~shared/Icon';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { TransactionStatus as TransactionStatusEnum } from '~gql';
+import Icon from '~shared/Icon';
+import { Tooltip } from '~shared/Popover';
+import { SpinnerLoader } from '~shared/Preloaders';
+import TransactionLink from '~shared/TransactionLink';
 
 import styles from './TransactionStatus.css';
 

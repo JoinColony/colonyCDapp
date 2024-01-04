@@ -1,5 +1,5 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
 
 import MenuContainer from '~v5/shared/MenuContainer';
 

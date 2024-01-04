@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { VoterRecord } from '~gql';
 import { useAppContext } from '~hooks';
 

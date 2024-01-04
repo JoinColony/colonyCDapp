@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { Token } from '~types';
 import TokenIcon from '~shared/TokenIcon';
+import { Token } from '~types';
 
 import styles from './AmountDetail.css';
 

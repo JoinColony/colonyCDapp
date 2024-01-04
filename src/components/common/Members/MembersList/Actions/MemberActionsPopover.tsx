@@ -1,18 +1,18 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { ManageWhitelistDialog } from '~common/Dialogs';
 import { getBlockscoutUserURL } from '~constants';
+import { useColonyContext, useEnabledExtensions } from '~hooks';
+import Button from '~shared/Button';
+import { useDialog } from '~shared/Dialog';
 import DropdownMenu, {
   DropdownMenuSection,
   DropdownMenuItem,
 } from '~shared/DropdownMenu';
-import Button from '~shared/Button';
 import ExternalLink from '~shared/ExternalLink';
 
 import styles from './MemberActionsPopover.css';
-import { useDialog } from '~shared/Dialog';
-import { ManageWhitelistDialog } from '~common/Dialogs';
-import { useColonyContext, useEnabledExtensions } from '~hooks';
 
 const displayName = 'MembersList.Actions.MemberActionsPopover';
 

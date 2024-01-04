@@ -1,4 +1,5 @@
 import { ApolloClient } from '@apollo/client';
+
 import {
   GetTokenByAddressDocument,
   GetTokenByAddressQuery,

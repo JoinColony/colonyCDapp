@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { AddressZero } from '@ethersproject/constants';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { useActionDialogStatus } from '~hooks';
 import {
   ActionDialogProps,
   DialogHeading,
@@ -13,11 +14,9 @@ import {
 import { Annotations } from '~shared/Fields';
 import { Heading4 } from '~shared/Heading';
 import Paragraph from '~shared/Paragraph';
-
-import { useActionDialogStatus } from '~hooks';
-import { isEqual } from '~utils/lodash';
 import TokenSelector from '~shared/TokenSelector';
 import { SetStateFn } from '~types';
+import { isEqual } from '~utils/lodash';
 
 import {
   NoPermissionMessage,
@@ -25,8 +24,9 @@ import {
   PermissionRequiredInfo,
 } from '../../Messages';
 import { FormValues } from '../validation';
-import TokenItem from './TokenItem';
+
 import getTokenList from './getTokenList';
+import TokenItem from './TokenItem';
 
 import styles from './TokenManagementDialogForm.css';
 

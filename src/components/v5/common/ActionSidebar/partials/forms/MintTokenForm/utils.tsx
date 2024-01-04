@@ -1,15 +1,15 @@
+import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { DeepPartial } from 'utility-types';
-import { BigNumber } from 'ethers';
 
-import { ColonyActionType } from '~gql';
-import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { formatText } from '~utils/intl';
-import { Colony } from '~types';
+import { ColonyActionType } from '~gql';
 import { RootMotionMethodNames } from '~redux';
+import { Colony } from '~types';
+import { formatText } from '~utils/intl';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
+import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 
 import { MintTokenFormValues } from './consts';
 

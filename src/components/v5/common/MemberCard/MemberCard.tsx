@@ -1,19 +1,20 @@
-import React, { FC } from 'react';
-import clsx from 'clsx';
-
 import { ColonyRole } from '@colony/colony-js';
+import clsx from 'clsx';
+import React, { FC } from 'react';
+
 import { USER_ROLE, USER_ROLES } from '~constants/permissions';
+import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import { AvatarWithStatusBadge } from '~v5/shared/Avatar';
+import Link from '~v5/shared/Link';
 import MeatBallMenu from '~v5/shared/MeatBallMenu';
 import ReputationBadge from '~v5/shared/ReputationBadge';
 import UserPopover from '~v5/shared/UserPopover';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Link from '~v5/shared/Link';
 import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
 
 import PermissionsBadge from '../Pills/PermissionsBadge';
+
 import { MemberCardProps } from './types';
 
 const displayName = 'v5.common.MemberCard';

@@ -1,5 +1,5 @@
-import { Address } from '~types';
 import { CreateUserFormValues } from '~common/Onboarding/wizardSteps/StepCreateUser/types';
+import { Address } from '~types';
 
 import { ActionTypes } from '../../actionTypes';
 

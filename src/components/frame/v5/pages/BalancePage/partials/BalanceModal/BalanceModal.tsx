@@ -1,7 +1,9 @@
 import React, { FC, PropsWithChildren } from 'react';
-import Modal from '~v5/shared/Modal';
-import { ActionForm } from '~shared/Fields';
+
 import { ActionTypes } from '~redux';
+import { ActionForm } from '~shared/Fields';
+import Modal from '~v5/shared/Modal';
+
 import { BalanceModalProps } from './types';
 
 const displayName = 'v5.pages.BalancePage.partials.BalanceModal';

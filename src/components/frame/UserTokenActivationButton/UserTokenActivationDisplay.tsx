@@ -1,10 +1,10 @@
-import React from 'react';
 import classnames from 'classnames';
 import { BigNumber } from 'ethers';
+import React from 'react';
 
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import Numeral from '~shared/Numeral';
 import { Token, UserTokenBalanceData } from '~types';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import styles from './UserTokenActivationButton.css';
 

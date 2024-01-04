@@ -1,18 +1,17 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 
+import { useAppContext } from '~hooks';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
-import Stepper from '~v5/shared/Stepper';
-
+import { MotionAction } from '~types/motions';
 import { getMotionState, MotionState } from '~utils/colonyMotions';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { getSafePollingInterval } from '~utils/queries';
-import { useAppContext } from '~hooks';
-import { MotionAction } from '~types/motions';
+import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
+import Stepper from '~v5/shared/Stepper';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer';
 import MotionProvider from './partials/MotionProvider/MotionProvider';

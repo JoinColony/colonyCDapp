@@ -1,12 +1,11 @@
 import React from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
-import Popover from '~shared/Popover';
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import Link from '~shared/NavLink';
+import Popover from '~shared/Popover';
 import UserInfoPopover from '~shared/UserInfoPopover';
 import { User } from '~types';
-
 import { getMainClasses } from '~utils/css';
 
 import styles from './UserAvatar.css';

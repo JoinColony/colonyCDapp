@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
 import {
   DropzoneErrors,
   getErrorMessage,
 } from '~shared/AvatarUploader/helpers';
+import Icon from '~shared/Icon';
 import { TextButton } from '~v5/shared/Button';
 
 import { ErrorContentProps } from '../types';

@@ -1,12 +1,12 @@
-import React from 'react';
 import clsx from 'clsx';
-import { MessageDescriptor } from 'react-intl';
+import React from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
 
-import Button from '~v5/shared/Button';
-import { AnyMessageValues, SimpleMessageValues } from '~types';
 import { PreviousStep } from '~shared/Wizard/types';
+import { AnyMessageValues, SimpleMessageValues } from '~types';
 import { formatText } from '~utils/intl';
+import Button from '~v5/shared/Button';
 
 interface HeaderRowProps {
   heading: MessageDescriptor | string;

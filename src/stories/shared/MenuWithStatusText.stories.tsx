@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const cardWithStatusTextMeta: Meta<typeof MenuWithStatusText> = {
   title: 'Shared/Card/With Status Text',

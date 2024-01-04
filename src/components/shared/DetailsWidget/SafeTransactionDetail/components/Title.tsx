@@ -1,12 +1,13 @@
-import React from 'react';
 import classnames from 'classnames';
+import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
+import { TRANSACTION_STATUS } from '~hooks';
 import Icon from '~shared/Icon';
 import Tag from '~shared/Tag';
-import { TRANSACTION_STATUS } from '~hooks';
 
 import widgetStyles from '../../DetailsWidget.css';
+
 import styles from '../SafeTransactionDetail.css';
 
 interface TitleProps {

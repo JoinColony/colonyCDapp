@@ -1,15 +1,18 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Button from '~v5/shared/Button';
 import { LEARN_MORE_ADMIN } from '~constants';
-import LinkItem from '../LinkItem';
-import { DECIDE_DROPDOWN_ITEMS, MSG } from './consts';
-import styles from './DropdownContent.module.css';
-import LearnMore from '~shared/Extensions/LearnMore';
-import TitleLabel from '~v5/shared/TitleLabel';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import LearnMore from '~shared/Extensions/LearnMore';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import Button from '~v5/shared/Button';
+import TitleLabel from '~v5/shared/TitleLabel';
+
+import LinkItem from '../LinkItem';
+
+import { DECIDE_DROPDOWN_ITEMS, MSG } from './consts';
+
+import styles from './DropdownContent.module.css';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.DecideDropdown';

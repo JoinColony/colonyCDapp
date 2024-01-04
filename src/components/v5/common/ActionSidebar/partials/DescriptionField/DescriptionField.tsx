@@ -1,11 +1,13 @@
-import React, { FC, useState } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC, useState } from 'react';
 import { useController } from 'react-hook-form';
-import RichText from '~v5/shared/RichText';
+
 import { accordionAnimation } from '~constants/accordionAnimation';
-import { DescriptionFieldProps } from './types';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import RichText from '~v5/shared/RichText';
+
+import { DescriptionFieldProps } from './types';
 
 const DescriptionField: FC<DescriptionFieldProps> = ({
   isDecriptionFieldExpanded,

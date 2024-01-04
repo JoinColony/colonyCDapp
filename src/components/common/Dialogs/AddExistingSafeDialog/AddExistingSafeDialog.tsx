@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InferType } from 'yup';
 
+import { GNOSIS_AMB_BRIDGES, SAFE_NAMES_MAP } from '~constants';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux/index';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { GNOSIS_AMB_BRIDGES, SAFE_NAMES_MAP } from '~constants';
-import { ActionTypes } from '~redux/index';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
-import { WizardDialogType } from '~hooks';
 
 import AddExistingSafeDialogForm from './AddExistingSafeDialogForm';
-import { getValidationSchema } from './validation';
 import { getAddExistingSafeDialogPayload } from './helpers';
 import { NetworkOption } from './types';
+import { getValidationSchema } from './validation';
 
 type Props = Required<DialogProps> &
   WizardDialogType<object> &

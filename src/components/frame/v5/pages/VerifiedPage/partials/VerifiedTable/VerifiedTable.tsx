@@ -1,21 +1,22 @@
-import React, { FC, useState } from 'react';
-import { useIntl } from 'react-intl';
-
 import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import Filter from '~v5/common/Filter';
-import Button from '~v5/shared/Button';
-import { TableProps } from './types';
-import EmptyContent from '~v5/common/EmptyContent';
-import { useVerifiedTableColumns } from './hooks';
+import React, { FC, useState } from 'react';
+import { useIntl } from 'react-intl';
+
+import { ColonyContributorFragment } from '~gql';
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
+import EmptyContent from '~v5/common/EmptyContent';
+import Filter from '~v5/common/Filter';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
-import { ColonyContributorFragment } from '~gql';
+import Button from '~v5/shared/Button';
+
+import { useVerifiedTableColumns } from './hooks';
+import { TableProps } from './types';
 
 const displayName = 'v5.pages.VerifiedPage.partials.VerifiedTable';
 

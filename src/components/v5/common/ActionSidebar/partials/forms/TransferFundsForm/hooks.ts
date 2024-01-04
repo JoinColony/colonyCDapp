@@ -1,23 +1,24 @@
-import { useCallback, useMemo } from 'react';
 import { Id } from '@colony/colony-js';
-import { DeepPartial } from 'utility-types';
+import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { DeepPartial } from 'utility-types';
 import { InferType, number, object, string } from 'yup';
 
-import { ActionTypes } from '~redux';
 import { MAX_ANNOTATION_LENGTH } from '~constants';
-import { mapPayload, pipe } from '~utils/actions';
-import { toFinite } from '~utils/lodash';
 import { useColonyContext } from '~hooks';
-import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
+import { ActionTypes } from '~redux';
+import { mapPayload, pipe } from '~utils/actions';
 import { formatText } from '~utils/intl';
+import { toFinite } from '~utils/lodash';
+import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts';
 
-import { ActionFormBaseProps } from '../../../types';
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
+import { ActionFormBaseProps } from '../../../types';
+
 import { getTransferFundsPayload } from './utils';
 
 export const useValidationSchema = () => {

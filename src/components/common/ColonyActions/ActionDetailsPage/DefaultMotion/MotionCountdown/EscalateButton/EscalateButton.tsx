@@ -1,13 +1,13 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { BigNumber } from 'ethers';
 
+import { useAppContext, useColonyContext } from '~hooks';
+import { ActionTypes } from '~redux';
+import { EscalateMotionPayload } from '~redux/sagas/motions/escalateMotion';
 import { ActionButton } from '~shared/Button';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';
-import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
-import { useAppContext, useColonyContext } from '~hooks';
-import { EscalateMotionPayload } from '~redux/sagas/motions/escalateMotion';
 
 import styles from './EscalateButton.css';
 

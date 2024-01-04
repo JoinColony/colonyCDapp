@@ -1,12 +1,12 @@
-import React, { useLayoutEffect } from 'react';
 import clsx from 'clsx';
+import React, { useLayoutEffect } from 'react';
 
-import { useStateClassNames } from '~v5/common/Fields/hooks';
-import { FIELD_STATE } from '~v5/common/Fields/consts';
 import { notMaybe } from '~utils/arrays';
+import { FIELD_STATE } from '~v5/common/Fields/consts';
+import { useStateClassNames } from '~v5/common/Fields/hooks';
 
-import { TextareaBaseProps } from './types';
 import useAutosizeTextArea from './hooks';
+import { TextareaBaseProps } from './types';
 
 const displayName = 'v5.common.Fields.TextareaBase';
 

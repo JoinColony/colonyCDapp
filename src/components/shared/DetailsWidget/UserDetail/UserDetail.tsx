@@ -1,14 +1,14 @@
-import React from 'react';
 import { Placement } from '@popperjs/core';
+import React from 'react';
 
+import { useUserByAddress } from '~hooks';
 import Address from '~shared/Address';
 import UserAvatar from '~shared/UserAvatar';
 import { Address as AddressType } from '~types';
-import { useUserByAddress } from '~hooks';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import sharedStyles from '../DetailsWidget.css';
 import styles from './UserDetail.css';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'DetailsWidget.UserDetail';
 

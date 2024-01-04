@@ -1,10 +1,10 @@
-import { useIntl } from 'react-intl';
 import React from 'react';
+import { useIntl } from 'react-intl';
 
-import { getMainClasses } from '~utils/css';
-import { formatText } from '~utils/intl';
 import { InputProps } from '~shared/Fields/Input';
 import { UniversalMessageValues, Message } from '~types';
+import { getMainClasses } from '~utils/css';
+import { formatText } from '~utils/intl';
 
 import styles from './InputStatus.css';
 

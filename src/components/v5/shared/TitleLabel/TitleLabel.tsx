@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
+
+import { formatText } from '~utils/intl';
 
 import { TitleLabelProps } from './types';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.TitleLabel';
 

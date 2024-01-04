@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+
 import { Colony } from '~types';
 import { canColonyBeUpgraded } from '~utils/checks';
 

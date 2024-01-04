@@ -1,5 +1,7 @@
 import { Extension } from '@colony/colony-js';
+
 import { useGetExtensionInstallationsCountQuery } from '~gql';
+
 import useColonyContext from './useColonyContext';
 
 const useActiveInstalls = (extensionId: string) => {

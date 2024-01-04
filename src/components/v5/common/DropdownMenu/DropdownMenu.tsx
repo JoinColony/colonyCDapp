@@ -1,12 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { CaretLeft, CaretRight } from 'phosphor-react';
+import React, { FC, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { CaretLeft, CaretRight } from 'phosphor-react';
 import BurgerMenu from '~v5/shared/BurgerMenu';
 import PopoverBase from '~v5/shared/PopoverBase';
-import DropdownMenuItem from './partials/DropdownMenuItem';
 
+import DropdownMenuItem from './partials/DropdownMenuItem';
 import { DropdownMenuProps } from './types';
 
 const DropdownMenu: FC<DropdownMenuProps> = ({

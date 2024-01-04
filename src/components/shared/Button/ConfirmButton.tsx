@@ -1,7 +1,8 @@
-import { MessageDescriptor, FormattedMessage } from 'react-intl';
 import React, { useState } from 'react';
+import { MessageDescriptor, FormattedMessage } from 'react-intl';
 
 import Button from './Button';
+
 import styles from './ConfirmButton.css';
 
 const displayName = 'ConfirmButton';

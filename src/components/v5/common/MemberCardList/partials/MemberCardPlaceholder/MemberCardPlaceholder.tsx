@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-import Tooltip from '~shared/Extensions/Tooltip';
+import React, { FC } from 'react';
 
+import Tooltip from '~shared/Extensions/Tooltip';
 import Button from '~v5/shared/Button';
 
 import { MemberCardPlaceholderProps } from './types';
+
 import styles from './MemberCardPlaceholder.module.css';
 
 const MemberCardPlaceholder: FC<MemberCardPlaceholderProps> = ({

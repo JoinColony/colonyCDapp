@@ -1,11 +1,13 @@
 /* eslint-disable react/button-has-type */
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
+
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
+import { formatText } from '~utils/intl';
 
 import { IconButtonProps } from './types';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
+
 import styles from './TxButton.module.css';
-import { formatText } from '~utils/intl';
 
 const displayName = 'v5.Button.IconButton';
 

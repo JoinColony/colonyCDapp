@@ -1,4 +1,5 @@
 import { InferType } from 'yup';
+
 import { ExternalLink, ExternalLinks } from '~gql';
 import { ModalProps } from '~v5/shared/Modal/types';
 

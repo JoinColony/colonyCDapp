@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Icon from '~shared/Icon';
-import Link from '~v5/shared/Link';
-import { links } from './consts';
 import { formatText } from '~utils/intl';
+import Link from '~v5/shared/Link';
+
+import { links } from './consts';
 
 const displayName = 'common.Extensions.SupportingDocuments.LinkWrapper';
 

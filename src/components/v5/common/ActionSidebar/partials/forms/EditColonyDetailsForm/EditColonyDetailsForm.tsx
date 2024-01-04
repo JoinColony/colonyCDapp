@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 
 import { formatText } from '~utils/intl';
+import ActionFormRow from '~v5/common/ActionFormRow';
 import ColonyDetailsFields from '~v5/common/ActionSidebar/partials/ColonyDetailsFields';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import ActionFormRow from '~v5/common/ActionFormRow';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 
-import { useEditColonyDetails } from './hooks';
-import { ActionFormBaseProps } from '../../../types';
 import { useDecisionMethods } from '../../../hooks';
-import SocialLinksTable from './partials/SocialLinksTable';
+import { ActionFormBaseProps } from '../../../types';
 import DescriptionRow from '../../DescriptionRow';
+
+import { useEditColonyDetails } from './hooks';
+import SocialLinksTable from './partials/SocialLinksTable';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditColonyDetailsForm';
 

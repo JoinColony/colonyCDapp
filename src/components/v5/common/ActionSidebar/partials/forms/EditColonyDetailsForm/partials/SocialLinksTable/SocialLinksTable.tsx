@@ -1,14 +1,14 @@
-import React, { FC, useState } from 'react';
 import clsx from 'clsx';
+import React, { FC, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
+import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import Button from '~v5/shared/Button/Button';
-import { useMobile } from '~hooks';
 
-import SocialLinkModal from './partials/SocialLinkModal';
 import { useGetTableMenuProps, useSocialLinksTableColumns } from './hooks';
+import SocialLinkModal from './partials/SocialLinkModal';
 import { SocialLinksTableModel, SocialLinksTableProps } from './types';
 
 const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';

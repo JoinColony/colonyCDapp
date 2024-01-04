@@ -1,5 +1,6 @@
-import { Dispatch, SetStateAction } from 'react';
 import { BigNumber } from 'ethers';
+import { Dispatch, SetStateAction } from 'react';
+
 import { Token, User, Domain } from '~types';
 
 export interface ChartData {

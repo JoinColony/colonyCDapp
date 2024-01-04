@@ -1,13 +1,14 @@
-import React from 'react';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React from 'react';
 
 import { useAppContext, useColonyContext } from '~hooks';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { getUserRolesForDomain } from '~transformers';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 import { ExtensionDetailsAsideProps } from '../ExtensionDetails';
-import InstallButton from './ExtensionInstallButton';
+
 import EnableButton from './ExtensionEnableButton';
+import InstallButton from './ExtensionInstallButton';
 
 const displayName = 'common.Extensions.ExtensionActionButton';
 

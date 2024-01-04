@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { SpecialInputProps } from './types';
 import { formatText } from '~utils/intl';
+
+import { SpecialInputProps } from './types';
 
 import styles from './SpecialInput.module.css';
 

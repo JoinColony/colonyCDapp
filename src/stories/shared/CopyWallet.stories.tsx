@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import CopyWallet from '~v5/shared/CopyWallet';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const copyWalletMeta: Meta<typeof CopyWallet> = {
   title: 'Shared/Copy wallet',

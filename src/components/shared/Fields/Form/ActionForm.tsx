@@ -1,9 +1,9 @@
 import React from 'react';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
+import { useAsyncFunction } from '~hooks';
 import { ActionTypes, ActionTypeString } from '~redux';
 import { ActionTransformFnType, getFormAction } from '~utils/actions';
-import { useAsyncFunction } from '~hooks';
 
 import Form, {
   CustomSubmitErrorHandler,

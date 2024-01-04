@@ -1,6 +1,6 @@
-import { formatUnits } from 'ethers/lib.esm/utils';
-import { BigNumber } from 'ethers';
 import { LATEST_TAG } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib.esm/utils';
 
 import { DEFAULT_NETWORK } from '~constants';
 import {

@@ -1,11 +1,13 @@
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
-import Button, { Props as ButtonProps } from './Button';
+import { SimpleMessageValues } from '~types';
+
 import Icon from '../Icon';
 
+import Button, { Props as ButtonProps } from './Button';
+
 import styles from './DottedAddButton.css';
-import { SimpleMessageValues } from '~types';
 
 interface Props extends Omit<ButtonProps, 'appearance'> {
   // Make text required (optional in `ButtonProps`)

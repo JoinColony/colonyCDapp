@@ -1,11 +1,10 @@
-import { Selector } from 'reselect';
 import { useEffect, useMemo, useRef } from 'react';
+import { Selector } from 'reselect';
 
-import { ActionTransformFnType } from '~utils/actions';
 import promiseListener, { AsyncFunction } from '~redux/createPromiseListener';
-import { getMainClasses } from '~utils/css';
-
 import { RootStateRecord } from '~redux/state';
+import { ActionTransformFnType } from '~utils/actions';
+import { getMainClasses } from '~utils/css';
 
 type DependantSelector = (
   selector: Selector<RootStateRecord, any>,

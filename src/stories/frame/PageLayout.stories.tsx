@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
-import PageLayout from '~v5/frame/PageLayout';
-import NavigationSidebar from '~v5/frame/NavigationSidebar';
 import { ADDRESS_ZERO } from '~constants';
+import NavigationSidebar from '~v5/frame/NavigationSidebar';
+import PageLayout from '~v5/frame/PageLayout';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const SideBar = () => (
   <NavigationSidebar

@@ -1,4 +1,5 @@
 import { CSSProperties, Dispatch, RefObject, SetStateAction } from 'react';
+
 import { ChartData } from '~common/ColonyHome/types';
 
 export interface DonutChartProps {

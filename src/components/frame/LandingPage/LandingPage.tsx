@@ -1,15 +1,13 @@
+import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import { nanoid } from 'nanoid';
 
-import Heading from '~shared/Heading';
-import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
-import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
-import { useAppContext } from '~hooks';
 import InvitationBlock from '~common/InvitationBlock';
 import { usePageHeadingContext } from '~context';
-
+import { useAppContext } from '~hooks';
+import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
+import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import {
   CREATE_COLONY_ROUTE_BASE,
   CREATE_PROFILE_ROUTE,
@@ -17,6 +15,7 @@ import {
   USER_EDIT_PROFILE_ROUTE,
   USER_HOME_ROUTE,
 } from '~routes';
+import Heading from '~shared/Heading';
 
 import LandingPageItem from './LandingPageItem';
 

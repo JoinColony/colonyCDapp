@@ -1,11 +1,11 @@
-import { defineMessages } from 'react-intl';
-import omitDeep from 'omit-deep-lodash';
 import { ColonyRole, Id } from '@colony/colony-js';
+import omitDeep from 'omit-deep-lodash';
+import { defineMessages } from 'react-intl';
 
 import { SUPPORTED_SAFE_NETWORKS } from '~constants';
+import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
 import { Colony, Safe, SafeTransactionType } from '~types';
 import { getChainNameFromSafe, getNetworkFromChainName } from '~utils/safes';
-import { EnabledExtensionData, useActionDialogStatus } from '~hooks';
 
 import { FormSafeTransaction } from './types';
 

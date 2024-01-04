@@ -1,8 +1,8 @@
-import React from 'react';
 import { weiToEth } from '@web3-onboard/common';
+import React from 'react';
 
-import { Expenditure } from '~types';
 import MaskedAddress from '~shared/MaskedAddress/MaskedAddress';
+import { Expenditure } from '~types';
 import { isExpenditureFunded } from '~utils/expenditures';
 
 import styles from './ExpenditureBalances.module.css';

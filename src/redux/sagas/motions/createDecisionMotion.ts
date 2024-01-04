@@ -1,21 +1,22 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { AnyColonyClient, ClientType, getChildIndex } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants';
+import { ContextModule, getContext } from '~context';
+import {
+  CreateColonyDecisionDocument,
+  CreateColonyDecisionMutation,
+  CreateColonyDecisionMutationVariables,
+} from '~gql';
 import { Action, ActionTypes, AllActions } from '~redux/index';
 import { putError, takeFrom } from '~utils/saga/effects';
-import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants';
+
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
 } from '../transactions';
 import { getColonyManager, initiateTransaction } from '../utils';
-import {
-  CreateColonyDecisionDocument,
-  CreateColonyDecisionMutation,
-  CreateColonyDecisionMutationVariables,
-} from '~gql';
-import { ContextModule, getContext } from '~context';
 import { getColonyDecisionId } from '../utils/decisionMotion';
 
 function* createDecisionMotion({

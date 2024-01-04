@@ -1,11 +1,11 @@
+import cx from 'classnames';
 import React, { ReactNode } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import cx from 'classnames';
 
-import { Address, User } from '~types';
-import { ItemDataType } from '~shared/OmniPicker';
 import MaskedAddress from '~shared/MaskedAddress';
+import { ItemDataType } from '~shared/OmniPicker';
 import UserMention from '~shared/UserMention';
+import { Address, User } from '~types';
 import { isAddress } from '~utils/web3';
 
 import styles from './ItemDefault.css';

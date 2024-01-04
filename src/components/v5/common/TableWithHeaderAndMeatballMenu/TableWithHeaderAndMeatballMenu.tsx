@@ -1,7 +1,10 @@
 import React, { PropsWithChildren } from 'react';
-import TableWithMeatballMenu from '../TableWithMeatballMenu';
-import TableHeader from '~v5/common/TableHeader';
+
 import EmptyContent from '~v5/common/EmptyContent';
+import TableHeader from '~v5/common/TableHeader';
+
+import TableWithMeatballMenu from '../TableWithMeatballMenu';
+
 import { TableWithHeaderAndMeatballMenuProps } from './types';
 
 const displayName = 'v5.common.TableWithHeaderAndMeatballMenu';

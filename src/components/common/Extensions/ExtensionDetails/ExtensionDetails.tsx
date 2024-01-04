@@ -1,16 +1,17 @@
 import React from 'react';
-import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { defineMessages, FormattedMessage } from 'react-intl';
+import { Route, Routes, useLocation, useParams } from 'react-router-dom';
 
 import { useColonyContext, useExtensionData, useAppContext } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
 import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import { isInstalledExtensionData } from '~utils/extensions';
 import BreadCrumb, { Crumb } from '~shared/BreadCrumb';
 import { Heading3, Heading4 } from '~shared/Heading';
+import { SpinnerLoader } from '~shared/Preloaders';
+import { isInstalledExtensionData } from '~utils/extensions';
+
+import ExtensionSetup from '../ExtensionSetup';
 
 import ExtensionDetailsAside from './ExtensionDetailsAside';
-import ExtensionSetup from '../ExtensionSetup';
 
 import styles from './ExtensionDetails.css';
 

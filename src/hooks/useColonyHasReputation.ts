@@ -1,4 +1,5 @@
 import { BigNumber } from 'ethers';
+
 import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 

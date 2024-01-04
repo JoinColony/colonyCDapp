@@ -1,8 +1,8 @@
 import React from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
-import Button, { ButtonAppearance } from '~shared/Button';
 import { useClipboardCopy } from '~hooks';
+import Button, { ButtonAppearance } from '~shared/Button';
 
 interface Props {
   /** Appearance object for styling */

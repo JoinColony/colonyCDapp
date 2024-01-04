@@ -1,7 +1,9 @@
-import React, { FC } from 'react';
 import { isHexString } from 'ethers/lib/utils';
-import UserInfo from './UserInfo';
+import React, { FC } from 'react';
+
 import { UserAvatarContentProps } from '~v5/shared/UserAvatarPopover/types';
+
+import UserInfo from './UserInfo';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserAvatarContent';
 

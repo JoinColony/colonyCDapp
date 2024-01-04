@@ -6,9 +6,9 @@ import {
   MAX_COLONY_DISPLAY_NAME,
 } from '~constants';
 import { CheckColonyNameExistsDocument } from '~gql';
+import { Token } from '~types';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
-import { Token } from '~types';
 
 import { FormValues, TokenChoice } from './types';
 

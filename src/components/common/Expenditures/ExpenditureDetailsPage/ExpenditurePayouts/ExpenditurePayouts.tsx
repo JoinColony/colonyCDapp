@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
 import { BigNumber } from 'ethers';
+import React, { useState } from 'react';
 
 import { EditExpenditureForm } from '~common/Expenditures/ExpenditureForm';
-import MaskedAddress from '~shared/MaskedAddress';
-import { Colony, Expenditure } from '~types';
-import Numeral from '~shared/Numeral';
-import Button from '~shared/Button';
 import { ExpenditureStatus } from '~gql';
+import Button from '~shared/Button';
+import MaskedAddress from '~shared/MaskedAddress';
+import Numeral from '~shared/Numeral';
+import { Colony, Expenditure } from '~types';
 
 import styles from './ExpenditurePayouts.module.css';
 

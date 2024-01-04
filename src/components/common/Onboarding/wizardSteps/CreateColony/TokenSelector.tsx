@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import Input, { InputProps } from '~v5/common/Fields/Input';
-import { createAddress, isAddress } from '~utils/web3';
 import { useGetTokenFromEverywhereQuery } from '~gql';
+import { createAddress, isAddress } from '~utils/web3';
+import Input, { InputProps } from '~v5/common/Fields/Input';
 
 const displayName = 'shared.TokenSelector';
 

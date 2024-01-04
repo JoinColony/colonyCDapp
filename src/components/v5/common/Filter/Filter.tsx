@@ -2,15 +2,16 @@ import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useFilterContext } from '~context/FilterContext';
 import { useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+import Button from '~v5/shared/Button';
 import FilterButton from '~v5/shared/Filter/FilterButton';
 import Modal from '~v5/shared/Modal';
 import PopoverBase from '~v5/shared/PopoverBase';
-import Button from '~v5/shared/Button';
-import Icon from '~shared/Icon';
-import { useFilterContext } from '~context/FilterContext';
 
 import TableFiltering from '../TableFiltering';
+
 import FilterOptions from './partials/FilterOptions';
 import SearchInput from './partials/SearchInput';
 import { FilterProps } from './types';

@@ -9,12 +9,14 @@ import React, {
   useState,
 } from 'react';
 import { FieldValues } from 'react-hook-form';
+
 import useToggle from '~hooks/useToggle';
 import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts';
 import {
   OnBeforeCloseCallback,
   UseToggleReturnType,
 } from '~hooks/useToggle/types';
+
 import {
   useAnalyticsContext,
   AnalyticsEventType,
@@ -23,6 +25,7 @@ import {
   AnalyticsEventLabel,
   AnalyticsEvent,
 } from '../AnalyticsContext';
+
 import { isElementInsideModalOrPortal } from './utils';
 
 type ActionSidebarToggle = [

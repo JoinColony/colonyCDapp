@@ -5,7 +5,7 @@ import {
   useNavigate,
   useResolvedPath,
 } from 'react-router-dom';
-import { formatText } from '~utils/intl';
+
 import { usePageHeadingContext, useSetPageHeadingTitle } from '~context';
 import {
   USER_ADVANCED_ROUTE,
@@ -13,6 +13,8 @@ import {
   USER_PREFERENCES_ROUTE,
 } from '~routes';
 import Tabs from '~shared/Extensions/Tabs';
+import { formatText } from '~utils/intl';
+
 import { TabId } from './types';
 
 const displayName = 'v5.pages.UserProfilePage';

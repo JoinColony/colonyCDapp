@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import Icon from '~shared/Icon';
+
 import { NotificationBannerProps } from './types';
 
 const displayName = 'v5.NotificationBanner';

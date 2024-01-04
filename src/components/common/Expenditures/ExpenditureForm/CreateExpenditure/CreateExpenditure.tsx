@@ -1,13 +1,14 @@
-import React from 'react';
 import { Extension } from '@colony/colony-js';
+import React from 'react';
 
-import { Tab, TabList, Tabs, TabPanel } from '~shared/Tabs';
 import { useEnabledExtensions } from '~hooks';
+import { Tab, TabList, Tabs, TabPanel } from '~shared/Tabs';
 
 import { ExpenditureFormType } from '../types';
+
 import AdvancedPaymentForm from './AdvancedPaymentForm';
-import StreamingPaymentForm from './StreamingPaymentForm';
 import StagedPaymentForm from './StagedPaymentForm';
+import StreamingPaymentForm from './StreamingPaymentForm';
 
 interface TabOption {
   type: ExpenditureFormType;

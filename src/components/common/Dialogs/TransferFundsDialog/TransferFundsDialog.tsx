@@ -1,18 +1,18 @@
+import { Id } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Id } from '@colony/colony-js';
 import { InferType } from 'yup';
 
-import { getDomainOptions } from '~utils/domains';
-import { notNull } from '~utils/arrays';
-import { pipe, mapPayload, withMeta } from '~utils/actions';
+import { WizardDialogType } from '~hooks';
 import { ActionTypes } from '~redux/index';
 import Dialog, { ActionDialogProps, DialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { WizardDialogType } from '~hooks';
+import { pipe, mapPayload, withMeta } from '~utils/actions';
+import { notNull } from '~utils/arrays';
+import { getDomainOptions } from '~utils/domains';
 
-import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getTransferFundsDialogPayload } from './helpers';
+import TransferFundsDialogForm from './TransferFundsDialogForm';
 import { getValidationSchema } from './validation';
 
 export const displayName = 'common.TransferFundsDialog';

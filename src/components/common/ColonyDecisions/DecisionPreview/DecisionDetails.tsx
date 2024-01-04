@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { useColonyContext } from '~hooks';
 import DetailsWidget from '~shared/DetailsWidget';
 import { ColonyAction, ColonyActionType } from '~types';
-import { useColonyContext } from '~hooks';
 import { DecisionDraft } from '~utils/decisions';
 
 const displayName = 'common.ColonyDecisions.DecisionPreview.DecisionDetails';

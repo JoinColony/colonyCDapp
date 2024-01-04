@@ -1,10 +1,12 @@
+import clsx from 'clsx';
 import React, { CSSProperties, FC, PropsWithChildren } from 'react';
 
-import clsx from 'clsx';
-import getIcon from './identicon';
-import styles from './Avatar.module.css';
 import Icon from '~shared/Icon';
+
+import getIcon from './identicon';
 import { AvatarProps } from './types';
+
+import styles from './Avatar.module.css';
 
 const displayName = 'v5.Avatar';
 

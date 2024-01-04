@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { MotionState, VotingReputationFactory } from '@colony/colony-js';
 import { Provider } from '@ethersproject/providers';
+import { useEffect, useState } from 'react';
 
 import useAppContext from './useAppContext';
 import useEnabledExtensions from './useEnabledExtensions';

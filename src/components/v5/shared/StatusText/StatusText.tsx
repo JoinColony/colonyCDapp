@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import clsx from 'clsx';
-import { StatusTextProps } from './types';
 import Icon from '~shared/Icon';
+
 import { STATUS_TYPES } from './consts';
+import { StatusTextProps } from './types';
 
 const displayName = 'v5.shared.StatusText';
 

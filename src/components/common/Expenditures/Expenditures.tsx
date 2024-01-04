@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import ExpendituresPage from './ExpendituresPage';
 import ExpenditureDetailsPage from './ExpenditureDetailsPage';
+import ExpendituresPage from './ExpendituresPage';
 
 const Expenditures = () => {
   return (

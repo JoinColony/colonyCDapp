@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-
 import { useIntl } from 'react-intl';
+
 import { ContentTypeProps } from '../types';
 
 const displayName = 'Extensions.Accordion.partials.AccordionDetails';

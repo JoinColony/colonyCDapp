@@ -6,6 +6,7 @@ import { Address } from '~types';
 import { formatText } from '~utils/intl';
 
 import UserCheckbox from '../UserCheckbox';
+
 import { getFilteredUsers, useWhitelistedUsers } from './helpers';
 
 import styles from './WhitelistedAddresses.css';

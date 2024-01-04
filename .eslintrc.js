@@ -131,5 +131,40 @@ module.exports = {
       'LabeledStatement',
       'WithStatement',
     ],
+    'import/order': [
+      'error',
+      {
+        alphabetize: {
+          caseInsensitive: true,
+          order: 'asc',
+        },
+        groups: [
+          ['builtin', 'external'],
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            pattern: '~*/**',
+            group: 'internal',
+          },
+          {
+            pattern: '~**',
+            group: 'internal',
+          },
+          {
+            pattern: '{.,..}/**/*.css',
+            group: 'type',
+            position: 'after',
+          },
+        ],
+        warnOnUnassignedImports: true,
+      },
+    ],
   },
 };

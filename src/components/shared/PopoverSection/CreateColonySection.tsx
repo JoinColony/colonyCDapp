@@ -1,9 +1,9 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { CREATE_COLONY_ROUTE } from '~routes/routeConstants';
 import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
 import NavLink from '~shared/NavLink';
-import { CREATE_COLONY_ROUTE } from '~routes/routeConstants';
 
 const displayName = 'PopoverSection.ColonySection';
 

@@ -1,14 +1,16 @@
 import { all, call, fork, put } from 'redux-saga/effects';
 
-import { getContext, setContext, ContextModule } from '~context';
 // import AppLoadingState from '~context/appLoadingState';
+
+import { authenticateWallet } from '~auth';
+import { getContext, setContext, ContextModule } from '~context';
 import { ColonyWallet } from '~types';
 import { getLastWallet, LastWallet, setLastWallet } from '~utils/autoLogin';
 import { createAddress } from '~utils/web3';
-import { authenticateWallet } from '~auth';
 
 import { ActionTypes } from '../actionTypes';
 import { AllActions } from '../types/actions';
+
 import actionsSagas from './actions';
 import colonySagas, { colonyCreateSaga } from './colony';
 import decisionsSagas from './decisions';

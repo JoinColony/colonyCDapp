@@ -1,10 +1,10 @@
-import { fork, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   Id,
   getPermissionProofs,
   ColonyRole,
 } from '@colony/colony-js';
+import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ColonyManager } from '~context';
 import { intArrayToBytes32 } from '~utils/web3';

@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { InferType } from 'yup';
-import { useNavigate } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { InferType } from 'yup';
 
-import { pipe, withMeta, mapPayload } from '~utils/actions';
+import { SUPPORTED_SAFE_NETWORKS } from '~constants';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-import { ActionTypes } from '~redux';
-import { WizardDialogType } from '~hooks';
 import { Safe } from '~types';
-import { SUPPORTED_SAFE_NETWORKS } from '~constants';
+import { pipe, withMeta, mapPayload } from '~utils/actions';
 import { defaultTransaction } from '~utils/safes';
 
 import ControlSafeForm from './ControlSafeForm';
-import { getMethodInputValidation, getValidationSchema } from './validation';
 import { getControlSafeDialogPayload } from './helpers';
 import { UpdatedMethods } from './types';
+import { getMethodInputValidation, getValidationSchema } from './validation';
 
 interface CustomWizardDialogProps extends ActionDialogProps {
   preselectedSafe?: Safe;

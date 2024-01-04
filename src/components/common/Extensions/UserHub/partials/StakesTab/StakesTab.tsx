@@ -1,15 +1,15 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { AnimatePresence, motion } from 'framer-motion';
 
-import Tabs from '~shared/Extensions/Tabs';
 import { useColonyContext, useMobile } from '~hooks';
+import Tabs from '~shared/Extensions/Tabs';
 
 import { stakesFilterOptions } from './consts';
-import StakesList from './partials/StakesList';
 import { getStakesTabItems } from './helpers';
-import { useStakesByFilterType } from './useStakesByFilterType';
 import ClaimAllButton from './partials/ClaimAllButton';
+import StakesList from './partials/StakesList';
+import { useStakesByFilterType } from './useStakesByFilterType';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 

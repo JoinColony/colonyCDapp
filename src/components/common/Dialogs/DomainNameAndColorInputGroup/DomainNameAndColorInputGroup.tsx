@@ -1,9 +1,8 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import ColorSelect from '~shared/ColorSelect';
-
 import { Input, Select, SelectOption } from '~shared/Fields';
 
 import styles from './DomainNameAndColorInputGroup.css';

@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
-import { MessageDescriptor } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 import { Id } from '@colony/colony-js';
+import React, { ReactNode } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
 
+import { SelectOption } from '~shared/Fields';
 import { Heading3 } from '~shared/Heading';
 import { Colony, UniversalMessageValues } from '~types';
-import { SelectOption } from '~shared/Fields';
 
 import ForceToggle from './ForceToggle';
 import MotionDomainSelect from './MotionDomainSelect';

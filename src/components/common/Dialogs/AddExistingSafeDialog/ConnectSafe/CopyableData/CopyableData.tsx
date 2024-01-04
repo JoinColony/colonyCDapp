@@ -7,8 +7,8 @@ import {
 } from 'react-intl';
 
 import { useClipboardCopy } from '~hooks';
-import { Tooltip } from '~shared/Popover';
 import Icon from '~shared/Icon';
+import { Tooltip } from '~shared/Popover';
 
 import styles from './CopyableData.css';
 

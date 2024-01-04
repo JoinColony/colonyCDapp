@@ -1,13 +1,13 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import Link from '~v5/shared/Link';
-import Button, { CloseButton } from '~v5/shared/Button';
-import Icon from '~shared/Icon';
 import { useTablet } from '~hooks';
+import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+import Button, { CloseButton } from '~v5/shared/Button';
+import Link from '~v5/shared/Link';
 
 import { CalamityBannerContentProps } from './types';
-import { formatText } from '~utils/intl';
 
 const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
   title,

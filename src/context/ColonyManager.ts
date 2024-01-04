@@ -1,4 +1,3 @@
-import { Signer, providers } from 'ethers';
 import {
   getTokenClient,
   ClientType,
@@ -11,9 +10,10 @@ import {
   ExtensionClient,
   AnyColonyClient,
 } from '@colony/colony-js';
+import { Signer, providers } from 'ethers';
 
-import { isAddress } from '~utils/web3';
 import { Address } from '~types';
+import { isAddress } from '~utils/web3';
 
 export default class ColonyManager {
   private metaColonyClient?: any;

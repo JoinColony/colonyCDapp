@@ -1,8 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+
 import { TokenType } from '~gql';
 
 import TokenInfoPopover from './TokenInfoPopover';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof TokenInfoPopover> = {
   title: 'Shared/TokenInfoPopover',

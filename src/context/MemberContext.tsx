@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import React, {
   createContext,
   FC,
@@ -7,16 +8,7 @@ import React, {
   useMemo,
 } from 'react';
 import { useMatch, useParams } from 'react-router-dom';
-import { Id } from '@colony/colony-js';
 
-import { useGetColonyContributorsQuery } from '~gql';
-import {
-  useColonyContext,
-  useMobile,
-  useColonyContributors,
-  useAllMembers,
-} from '~hooks';
-import { notNull } from '~utils/arrays';
 import {
   ALL_MEMBERS_LIST_LIMIT,
   ALL_MEMBERS_LOAD_MORE_LIST_LIMIT,
@@ -24,11 +16,19 @@ import {
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants';
-import { ColonyContributor } from '~types';
+import { useGetColonyContributorsQuery } from '~gql';
+import {
+  useColonyContext,
+  useMobile,
+  useColonyContributors,
+  useAllMembers,
+} from '~hooks';
 import { COLONY_VERIFIED_ROUTE } from '~routes';
+import { ColonyContributor } from '~types';
+import { notNull } from '~utils/arrays';
 
-import { SearchContextProvider } from './SearchContext';
 import { FilterContextProvider, useFilterContext } from './FilterContext';
+import { SearchContextProvider } from './SearchContext';
 
 const MemberContext = createContext<
   | {

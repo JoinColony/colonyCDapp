@@ -1,8 +1,9 @@
-import { useIntl } from 'react-intl';
 import React from 'react';
+import { useIntl } from 'react-intl';
+
+import { ExternalLinkProps } from './types';
 
 import styles from './ExternalLink.module.css';
-import { ExternalLinkProps } from './types';
 
 const displayName = 'Extensions.ExternalLink';
 

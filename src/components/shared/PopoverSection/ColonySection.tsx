@@ -1,14 +1,14 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
-import NavLink from '~shared/NavLink';
 import { useColonyContext } from '~hooks';
 import {
   COLONY_EXTENSIONS_ROUTE,
   COLONY_INCOMING_ROUTE,
   COLONY_MEMBERS_ROUTE,
 } from '~routes';
+import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
+import NavLink from '~shared/NavLink';
 
 const displayName = 'PopoverSection.ColonySection';
 

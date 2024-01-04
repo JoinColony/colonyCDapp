@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import Heading from '~shared/Heading';
-import TokenInfoPopover from '~shared/TokenInfoPopover';
-import NavLink from '~shared/NavLink';
-import { useColonyContext } from '~hooks';
 import { COLONY_TOTAL_BALANCE_DOMAIN_ID } from '~constants';
-import { notNull } from '~utils/arrays';
 import { useColonyHomeContext } from '~context';
+import { useColonyContext } from '~hooks';
 import { COLONY_INCOMING_ROUTE } from '~routes';
+import Heading from '~shared/Heading';
+import NavLink from '~shared/NavLink';
+import TokenInfoPopover from '~shared/TokenInfoPopover';
+import { notNull } from '~utils/arrays';
 
 import TokenBalanceItem from './TokenBalanceItem';
 

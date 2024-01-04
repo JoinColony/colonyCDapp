@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { BubbleMenu } from '@tiptap/react';
+import clsx from 'clsx';
 import {
   TextHOne,
   TextBolder,
@@ -11,9 +11,10 @@ import {
   ListBullets,
   Quotes,
 } from 'phosphor-react';
-import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import { MenuBarProps } from '../types';
+
 import styles from './Menu.module.css';
 
 const displayName = 'v5.RichText.partials.MenuBar';

@@ -1,8 +1,9 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
-import NavigationSidebar from '~v5/frame/NavigationSidebar';
 import { ADDRESS_ZERO } from '~constants';
+import NavigationSidebar from '~v5/frame/NavigationSidebar';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
   title: 'Frame/Navigation Sidebar',

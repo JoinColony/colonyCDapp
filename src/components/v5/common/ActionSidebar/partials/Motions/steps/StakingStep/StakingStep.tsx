@@ -1,17 +1,16 @@
 import React, { FC, useMemo, useState } from 'react';
 
+import { useAppContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
-
 import { SpinnerLoader } from '~shared/Preloaders';
+import { formatText } from '~utils/intl';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import StatusText from '~v5/shared/StatusText';
 import UserInfoSectionList from '~v5/shared/UserInfoSectionList';
 
-import { useAppContext } from '~hooks';
-import { formatText } from '~utils/intl';
-
 import { useMotionContext } from '../../partials/MotionProvider/hooks';
+
 import { useStakingInformation, useStakingStep } from './hooks';
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo';
 import StakingChart from './partials/StakingChart/StakingChart';

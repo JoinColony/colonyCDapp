@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Id } from '@colony/colony-js';
-import { string, object, boolean, InferType, number } from 'yup';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+import { string, object, boolean, InferType, number } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { WizardDialogType } from '~hooks';
+import { ActionTypes } from '~redux/index';
 import Dialog, { DialogProps, ActionDialogProps } from '~shared/Dialog';
 import { ActionForm } from '~shared/Fields';
-
 import { DomainColor } from '~types';
-import { ActionTypes } from '~redux/index';
-import { WizardDialogType } from '~hooks';
 import { pipe, withMeta, mapPayload } from '~utils/actions';
 
-import { getCreateDomainDialogPayload } from './helpers';
 import CreateDomainDialogForm from './CreateDomainDialogForm';
+import { getCreateDomainDialogPayload } from './helpers';
 
 type Props = DialogProps &
   Partial<WizardDialogType<object>> &

@@ -2,12 +2,12 @@ import { Record, Map as ImmutableMap } from 'immutable';
 
 import { DefaultValues, RecordToJS } from '~types';
 
+import { CORE_TRANSACTIONS_LIST } from '../constants';
 import {
   TransactionRecord,
   TransactionId,
   TransactionType,
 } from '../immutable';
-import { CORE_TRANSACTIONS_LIST } from '../constants';
 
 type TransactionsListObject = { [transactionId: string]: TransactionType };
 

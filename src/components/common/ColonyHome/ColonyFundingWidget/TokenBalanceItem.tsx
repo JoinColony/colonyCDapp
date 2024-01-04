@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Numeral from '~shared/Numeral';
 import IconTooltip from '~shared/IconTooltip';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import Numeral from '~shared/Numeral';
 import { Token, Address } from '~types';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import styles from './ColonyFundingWidget.css';
 

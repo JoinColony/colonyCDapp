@@ -1,10 +1,11 @@
 import React from 'react';
 
 import DetailItem from '~shared/DetailsWidget/DetailItem';
-import { MotionState } from '~utils/colonyMotions';
 import { ColonyMotion } from '~types';
+import { MotionState } from '~utils/colonyMotions';
 
 import { useVoteDetailsConfig } from './useVoteDetailsConfig';
+
 import styles from './VoteDetails.css';
 
 const displayName =

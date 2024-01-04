@@ -1,13 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { MiniSpinnerLoader } from '~shared/Preloaders';
+import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
+import { useColonyContext, useExtensionsData } from '~hooks';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import Heading from '~shared/Heading';
 import NavLink from '~shared/NavLink';
-import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
-import { COLONY_EXTENSIONS_ROUTE } from '~routes';
-
-import { useColonyContext, useExtensionsData } from '~hooks';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
 
 import styles from './ColonyExtensionsWidget.css';
 

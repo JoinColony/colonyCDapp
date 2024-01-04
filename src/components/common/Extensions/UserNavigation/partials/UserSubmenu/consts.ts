@@ -11,9 +11,10 @@ import {
   PRIVACY_POLICY,
   TERMS_AND_CONDITIONS,
 } from '~constants';
-import { UserSubmenuItems } from './types';
 import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
 import { formatText } from '~utils/intl';
+
+import { UserSubmenuItems } from './types';
 
 export const menuMessages = defineMessages({
   getHelp: {

@@ -1,11 +1,11 @@
-import React from 'react';
 import { Id } from '@colony/colony-js';
+import React from 'react';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
-import { SelectOption } from '~shared/Fields';
 import DomainDropdown from '~shared/DomainDropdown';
-import { formatText } from '~utils/intl';
+import { SelectOption } from '~shared/Fields';
 import { Colony } from '~types';
+import { formatText } from '~utils/intl';
 
 import styles from './MotionDomainSelect.css';
 

@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-
 import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { useEffect, useState } from 'react';
 
-import { useGetUserReputationQuery } from '~gql';
 import { ADDRESS_ZERO } from '~constants';
+import { useGetUserReputationQuery } from '~gql';
 import { useEnoughTokensForStaking, useExtensionData } from '~hooks';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { Colony } from '~types';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 const useExpenditureStaking = (
   colony: Colony,

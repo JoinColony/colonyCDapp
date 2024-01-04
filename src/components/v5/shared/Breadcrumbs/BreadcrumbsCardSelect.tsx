@@ -1,9 +1,9 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
 
-import { CardSelect } from '~v5/common/Fields/CardSelect';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
+import { CardSelect } from '~v5/common/Fields/CardSelect';
 
 import Link from '../Link';
 

@@ -1,11 +1,12 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import clsx from 'clsx';
+
+import { useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 import { CopyWalletAddressButtonProps } from './types';
-import Icon from '~shared/Icon';
-import { useMobile } from '~hooks';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
 
 const displayName = 'v5.CopyWalletAddressButton';
 

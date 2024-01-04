@@ -1,16 +1,22 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
 import {
   ClientType,
   ColonyRole,
   getPermissionProofs,
   Id,
 } from '@colony/colony-js';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ColonyManager } from '~context';
 import { intArrayToBytes32 } from '~utils/web3';
 
+import { transactionAddParams, transactionPending } from '../../actionCreators';
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';
+import {
+  createGroupTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions';
 import {
   initiateTransaction,
   putError,
@@ -19,13 +25,6 @@ import {
   getColonyManager,
   createActionMetadataInDB,
 } from '../utils';
-
-import {
-  createGroupTransaction,
-  createTransactionChannels,
-  getTxChannel,
-} from '../transactions';
-import { transactionAddParams, transactionPending } from '../../actionCreators';
 
 function* managePermissionsAction({
   payload: {

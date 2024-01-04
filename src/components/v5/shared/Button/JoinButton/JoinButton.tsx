@@ -1,9 +1,9 @@
-import React, { FC, useState } from 'react';
 import Lottie from 'lottie-react';
+import React, { FC, useState } from 'react';
 
-import { formatText } from '~utils/intl';
-import joinButtonAnimation from '~utils/animations/joinButtonAnimation.json';
 import { useAppContext, useColonyContext } from '~hooks';
+import joinButtonAnimation from '~utils/animations/joinButtonAnimation.json';
+import { formatText } from '~utils/intl';
 
 import Button from '../Button';
 

@@ -1,18 +1,18 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-
 import { LockKey } from 'phosphor-react';
+import React, { FC } from 'react';
+
 import { useMobile, useRelativePortalElement, useToggle } from '~hooks';
 import CopyableAddress from '~shared/CopyableAddress';
+import Tooltip from '~shared/Extensions/Tooltip';
 import TokenIcon from '~shared/TokenIcon';
+import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';
 import { formatText } from '~utils/intl';
-import Modal from '~v5/shared/Modal';
 import MenuContainer from '~v5/shared/MenuContainer';
+import Modal from '~v5/shared/Modal';
 import Portal from '~v5/shared/Portal';
 
 import { TokenAvatarProps } from './types';
-import Tooltip from '~shared/Extensions/Tooltip';
-import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';
 
 const displayName = 'v5.pages.BalancePage.partials.TokenAvatar';
 

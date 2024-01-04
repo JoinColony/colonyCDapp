@@ -11,8 +11,8 @@ import {
   UserTransactionContextProvider,
   TokensModalContextProvider,
 } from '~context';
-import { ColonyLayout } from '~frame/Extensions/layouts';
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
+import { ColonyLayout } from '~frame/Extensions/layouts';
 
 const ColonyRoute = () => (
   <ColonyContextProvider>

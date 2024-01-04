@@ -1,4 +1,5 @@
 import { defineMessages } from 'react-intl';
+
 import { formatText } from '~utils/intl';
 
 import { UserHubTabList, UserHubTabs } from './types';

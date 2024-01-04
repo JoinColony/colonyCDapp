@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import React, {
   FC,
   PropsWithChildren,
@@ -10,7 +11,6 @@ import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 //* Hide Initially */
 // import { defineMessages } from 'react-intl';
 // import { PaperPlaneTilt } from 'phosphor-react';
-import { AnimatePresence } from 'framer-motion';
 
 import UserHubButton from '~common/Extensions/UserHubButton';
 import {
@@ -22,16 +22,16 @@ import {
 } from '~context';
 import { useAppContext, useColonyContext } from '~hooks';
 import { NOT_FOUND_ROUTE, TX_SEARCH_PARAM } from '~routes';
-import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
+import ActionSidebar from '~v5/common/ActionSidebar';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
+import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
 //* Hide Initially */
 // import { InviteMembersModal } from '~v5/common/Modals';
 import PageLayout from '~v5/frame/PageLayout';
 //* Hide Initially */
 // import Button from '~v5/shared/Button';
-import CalamityBanner from '~v5/shared/CalamityBanner';
 import JoinButton from '~v5/shared/Button/JoinButton';
-import ActionSidebar from '~v5/common/ActionSidebar';
+import CalamityBanner from '~v5/shared/CalamityBanner';
 
 import ColonySidebar from './ColonySidebar';
 import { useCalamityBannerInfo, useGetTxButtons } from './hooks';

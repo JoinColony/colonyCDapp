@@ -1,10 +1,10 @@
+import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
-import { ColonyRole } from '@colony/colony-js';
 
 import Heading from '~shared/Heading';
-import PermissionsLabel from '~shared/PermissionsLabel';
 import Icon from '~shared/Icon';
+import PermissionsLabel from '~shared/PermissionsLabel';
 import { Tooltip } from '~shared/Popover';
 
 import styles from './PermissionRequiredInfo.css';

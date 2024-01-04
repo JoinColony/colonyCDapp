@@ -1,9 +1,9 @@
+import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import clsx from 'clsx';
-
-import Icon from '~shared/Icon';
 import { useMobile } from '~hooks';
+import Icon from '~shared/Icon';
+
 import IconButton from './IconButton';
 import { IconButtonProps } from './types';
 

@@ -1,19 +1,19 @@
-import React from 'react';
 import {
   ColonyVersion,
   Extension,
   ExtensionVersion,
   isExtensionCompatible,
 } from '@colony/colony-js';
+import React from 'react';
 
-import { ActionButton } from '~shared/Button';
-import { AnyExtensionData } from '~types';
-import { ActionTypes } from '~redux/index';
-import { mapPayload } from '~utils/actions';
 import { useAppContext, useColonyContext } from '~hooks';
-import { isInstalledExtensionData } from '~utils/extensions';
-import { hasRoot } from '~utils/checks';
+import { ActionTypes } from '~redux/index';
+import { ActionButton } from '~shared/Button';
 import { getAllUserRoles } from '~transformers';
+import { AnyExtensionData } from '~types';
+import { mapPayload } from '~utils/actions';
+import { hasRoot } from '~utils/checks';
+import { isInstalledExtensionData } from '~utils/extensions';
 
 interface Props {
   extensionData: AnyExtensionData;

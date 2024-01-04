@@ -1,6 +1,6 @@
-import { PillsProps } from '~v5/common/Pills/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
 import { Message } from '~types';
+import { PillsProps } from '~v5/common/Pills/types';
 
 export interface RadioItemProps {
   value: string;

@@ -1,15 +1,16 @@
+import { BigNumber } from 'ethers';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import { BigNumber } from 'ethers';
 
 import { useAppContext } from '~hooks';
 import { Heading4 } from '~shared/Heading';
-import { MotionVote } from '~utils/colonyMotions';
-import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
 import { MotionAction } from '~types/motions';
+import { formatActionType, getExtendedActionType } from '~utils/colonyActions';
+import { MotionVote } from '~utils/colonyMotions';
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
 
 import { voteTitleMsg } from '../VotingWidget';
+
 import { VoteResults } from './VoteResults';
 
 import styles from './VoteOutcome.css';

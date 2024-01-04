@@ -1,6 +1,7 @@
 import { InferType, number, object, string } from 'yup';
-import { toFinite } from '~utils/lodash';
+
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { toFinite } from '~utils/lodash';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
 export const validationSchema = object()

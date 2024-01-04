@@ -1,14 +1,14 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
-import NavLink from '~shared/NavLink';
+import { useAppContext, useUserAccountRegistered } from '~hooks';
 import {
   CREATE_PROFILE_ROUTE,
   USER_HOME_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
 } from '~routes/routeConstants';
-import { useAppContext, useUserAccountRegistered } from '~hooks';
+import { DropdownMenuItem, DropdownMenuSection } from '~shared/DropdownMenu';
+import NavLink from '~shared/NavLink';
 
 const displayName = 'PopoverSection.UserSection';
 

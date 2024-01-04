@@ -1,21 +1,23 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { TransactionType } from '~redux/immutable';
-import { arrayToObject } from '~utils/arrays';
-import { formatText } from '~utils/intl';
+import { accordionAnimation } from '~constants/accordionAnimation';
 import {
   getActiveTransactionIdx,
   getGroupKey,
   getGroupStatus,
   getGroupValues,
 } from '~frame/GasStation/transactionGroup';
-import TransactionStatus from './TransactionStatus';
-import GroupedTransactionContent from './GroupedTransactionContent';
+import { TransactionType } from '~redux/immutable';
+import { arrayToObject } from '~utils/arrays';
+import { formatText } from '~utils/intl';
+
 import { GroupedTransactionProps } from '../types';
-import { accordionAnimation } from '~constants/accordionAnimation';
+
+import GroupedTransactionContent from './GroupedTransactionContent';
+import TransactionStatus from './TransactionStatus';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';

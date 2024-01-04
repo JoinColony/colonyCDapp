@@ -1,13 +1,14 @@
-import React, { FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC } from 'react';
 
-import { useTablet } from '~hooks';
 import { accordionAnimation } from '~constants/accordionAnimation';
+import { useTablet } from '~hooks';
 
 import NavigationSidebarButton from '../NavigationSidebarButton';
+import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
 import NavigationSidebarSecondLevel from '../NavigationSidebarSecondLevel';
 import NavigationSidebarThirdLevel from '../NavigationSidebarThirdLevel/NavigationSidebarThirdLevel';
-import useNavigationSidebarContext from '../NavigationSidebarContext/hooks';
+
 import { NavigationSidebarMainMenuProps } from './types';
 
 const displayName =

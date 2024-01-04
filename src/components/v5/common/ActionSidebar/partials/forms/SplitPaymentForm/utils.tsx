@@ -1,14 +1,15 @@
-import { DeepPartial } from 'utility-types';
 import moveDecimal from 'move-decimal-point';
+import { DeepPartial } from 'utility-types';
 
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { ColonyActionType } from '~gql';
+import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-import { formatText } from '~utils/intl';
 
 import { tryGetToken } from '../utils';
+
 import { SplitPaymentFormValues } from './hooks';
 
 export const splitPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<

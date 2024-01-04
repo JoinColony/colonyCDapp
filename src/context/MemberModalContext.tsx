@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
+
 import { User } from '~types';
 
 const MemberModalContext = createContext<

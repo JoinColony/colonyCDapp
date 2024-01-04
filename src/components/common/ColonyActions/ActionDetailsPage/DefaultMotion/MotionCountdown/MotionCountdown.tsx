@@ -1,15 +1,16 @@
-import React from 'react';
-import classNames from 'classnames';
 import { Id } from '@colony/colony-js';
+import classNames from 'classnames';
+import React from 'react';
 
 import CountDownTimer from '~common/ColonyActions/CountDownTimer';
-import { MotionState } from '~utils/colonyMotions';
-import { ColonyMotion } from '~types';
 import { useAppContext, useShouldDisplayMotionCountdownTime } from '~hooks';
+import { ColonyMotion } from '~types';
+import { MotionState } from '~utils/colonyMotions';
 
 import { RefetchMotionState } from '../../useGetColonyAction';
-import VotingProgress from './VotingProgress';
+
 import EscalateButton from './EscalateButton';
+import VotingProgress from './VotingProgress';
 
 import styles from './MotionCountdown.css';
 

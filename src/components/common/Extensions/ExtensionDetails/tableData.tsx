@@ -1,16 +1,16 @@
 import React from 'react';
 import { MessageDescriptor, defineMessages, FormattedDate } from 'react-intl';
 
+import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
+import Address from '~shared/Address';
+import { UserDetail } from '~shared/DetailsWidget';
 import {
   AnyExtensionData,
   InstallableExtensionData,
   InstalledExtensionData,
 } from '~types';
 import { isInstalledExtensionData } from '~utils/extensions';
-import { UserDetail } from '~shared/DetailsWidget';
-import Address from '~shared/Address';
 
-import ExtensionStatusBadge from '~common/ExtensionStatusBadge';
 import { displayName } from './ExtensionDetailsAside';
 
 import styles from './ExtensionDetails.css';

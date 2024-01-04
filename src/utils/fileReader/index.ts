@@ -3,6 +3,7 @@ import {
   DEFAULT_MAX_FILE_SIZE,
   DEFAULT_MIME_TYPES,
 } from '~shared/FileUpload/limits';
+
 import { FileReaderFile, FileReaderOptions } from './types';
 
 const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {

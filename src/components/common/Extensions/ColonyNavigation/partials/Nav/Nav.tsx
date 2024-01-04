@@ -1,14 +1,16 @@
-import React, { FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
+import React, { FC, useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { NavItemProps, NavProps } from '../types';
-import Icon from '~shared/Icon';
-import styles from './Nav.module.css';
-import SubMenu from '../SubMenu';
 import { useMobile } from '~hooks';
-import NavMobile from '../NavMobile';
+import Icon from '~shared/Icon';
 import Link from '~v5/shared/Link';
+
+import NavMobile from '../NavMobile';
+import SubMenu from '../SubMenu';
+import { NavItemProps, NavProps } from '../types';
+
+import styles from './Nav.module.css';
 
 const displayName = 'common.Extensions.MainNavigation.partials.Nav';
 

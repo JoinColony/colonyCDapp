@@ -1,6 +1,6 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import { ColonyFragment, ColonyRoleFragment } from '~gql';
 
+import { ColonyFragment, ColonyRoleFragment } from '~gql';
 import { Address } from '~types';
 import { notUndefined } from '~utils/arrays';
 

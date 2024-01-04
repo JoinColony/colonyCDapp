@@ -1,17 +1,17 @@
-import React, { FC } from 'react';
 import { Extension } from '@colony/colony-js';
-import { FormattedMessage, defineMessages } from 'react-intl';
+import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ACTION } from '~constants/actions';
 import { useExtensionsData, useFlatFormErrors } from '~hooks';
 import { formatText } from '~utils/intl';
-import NotificationBanner from '~v5/shared/NotificationBanner';
 import {
   DecisionMethod,
   PERMISSIONS_VALIDATION_FIELD_NAME,
   REPUTATION_VALIDATION_FIELD_NAME,
 } from '~v5/common/ActionSidebar/hooks';
+import NotificationBanner from '~v5/shared/NotificationBanner';
 
 import {
   ACTION_TYPE_FIELD_NAME,

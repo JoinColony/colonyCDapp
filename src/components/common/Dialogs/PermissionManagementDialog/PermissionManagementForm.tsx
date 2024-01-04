@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { defineMessages } from 'react-intl';
 import { ColonyRole, Id } from '@colony/colony-js';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
-import { InputLabel, Select, Annotations } from '~shared/Fields';
 import {
   ActionDialogProps,
   DialogControls,
   DialogHeading,
   DialogSection,
 } from '~shared/Dialog';
+import { InputLabel, Select, Annotations } from '~shared/Fields';
+import { ItemDataType } from '~shared/OmniPicker';
 import SingleUserPicker, {
   filterUserSelection,
 } from '~shared/SingleUserPicker';
-import { ItemDataType } from '~shared/OmniPicker';
 import UserAvatar from '~shared/UserAvatar';
 import { User, SetStateFn } from '~types';
 import { notNull } from '~utils/arrays';
@@ -27,14 +27,13 @@ import {
 } from '../Messages';
 
 import { availableRoles } from './constants';
-import PermissionManagementCheckbox from './PermissionManagementCheckbox';
-
 import {
   useCanRoleBeSet,
   usePermissionManagementDialogStatus,
   useSelectedUserRoles,
   formatRolesForForm,
 } from './helpers';
+import PermissionManagementCheckbox from './PermissionManagementCheckbox';
 
 import styles from './PermissionManagementDialogForm.css';
 

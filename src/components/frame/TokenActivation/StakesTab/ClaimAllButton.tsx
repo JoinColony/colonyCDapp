@@ -1,15 +1,15 @@
-import React from 'react';
 import { Extension } from '@colony/colony-js';
+import React from 'react';
 
-import { ActionButton } from '~shared/Button';
-import { ActionTypes } from '~redux/actionTypes';
-import { Address, UnclaimedStakes, InstalledExtensionData } from '~types';
+import { useUserTokenBalanceContext } from '~context';
 import {
   useColonyContext,
   useTokenActivationContext,
   useExtensionData,
 } from '~hooks';
-import { useUserTokenBalanceContext } from '~context';
+import { ActionTypes } from '~redux/actionTypes';
+import { ActionButton } from '~shared/Button';
+import { Address, UnclaimedStakes, InstalledExtensionData } from '~types';
 
 const displayName = 'frame.TokenActivation.StakesTab.ClaimAllButton';
 

@@ -2,7 +2,6 @@ import { defineMessages } from 'react-intl';
 
 import { MIN_VOTING_REPUTATION_VERSION_FOR_DECISIONS } from '~constants';
 import { useColonyHomeContext } from '~context';
-
 import {
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXPENDITURES_ROUTE,

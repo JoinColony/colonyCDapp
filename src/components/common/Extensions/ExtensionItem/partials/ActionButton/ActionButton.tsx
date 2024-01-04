@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { ActionButtonProps } from './types';
-import Button from '~v5/shared/Button';
 import { useMobile } from '~hooks';
+import Button from '~v5/shared/Button';
 import Link from '~v5/shared/Link';
+
+import { ActionButtonProps } from './types';
+
 import styles from './ActionButton.module.css';
 
 const displayName = 'common.Extensions.ExtensionItem.partials.ActionButton';

@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useColonyContext } from '~hooks';
 
-import NavItem from './NavItem';
 import useGetNavigationItems, { displayName } from './colonyNavigationConfig';
+import NavItem from './NavItem';
 
 import styles from './ColonyNavigation.css';
 

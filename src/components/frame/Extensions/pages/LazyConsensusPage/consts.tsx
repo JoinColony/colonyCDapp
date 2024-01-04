@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { RadioItemProps } from '~common/Extensions/Fields/RadioList/types';
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText';
+
 import { GovernanceOptions } from '../ExtensionsPage/types';
 
 export const governanceRadioList: RadioItemProps[] = [

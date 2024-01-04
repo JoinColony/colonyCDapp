@@ -1,13 +1,12 @@
-import React from 'react';
 import parse from 'html-react-parser';
+import React from 'react';
 
-import UserAvatar from '~shared/UserAvatar';
-import { Heading3 } from '~shared/Heading';
-import { userDetailPopoverOptions } from '~shared/DetailsWidget';
 import { useAppContext } from '~hooks';
-
-import { getMainClasses } from '~utils/css';
+import { userDetailPopoverOptions } from '~shared/DetailsWidget';
+import { Heading3 } from '~shared/Heading';
 import { Opposed as OpposedTag } from '~shared/Tag';
+import UserAvatar from '~shared/UserAvatar';
+import { getMainClasses } from '~utils/css';
 
 import styles from './DecisionContent.css';
 

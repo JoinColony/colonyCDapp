@@ -6,9 +6,11 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+
 import useToggle from '~hooks/useToggle';
 import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts';
 import { getPortalContainer } from '~v5/shared/Portal/utils';
+
 import { NavigationSidebarContextValue } from './types';
 
 export const NavigationSidebarContext =

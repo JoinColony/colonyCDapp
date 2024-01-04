@@ -1,5 +1,6 @@
-import { DistributionMethod } from '../../../../consts';
 import { Token } from '~types';
+
+import { DistributionMethod } from '../../../../consts';
 
 export interface SplitPaymentRecipientsFieldProps {
   name: string;

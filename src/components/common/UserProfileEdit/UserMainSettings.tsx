@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { string, object, InferType } from 'yup';
 
-import { FieldSet, Form, Input, Textarea } from '~shared/Fields';
-
 import { useUpdateUserProfileMutation } from '~gql';
+import { useAppContext } from '~hooks';
+import { FieldSet, Form, Input, Textarea } from '~shared/Fields';
 import { User } from '~types';
 import { noSpaces } from '~utils/cleave';
-import { useAppContext } from '~hooks';
 
 import { UserInfo, SaveForm } from '../UserProfileEdit';
 

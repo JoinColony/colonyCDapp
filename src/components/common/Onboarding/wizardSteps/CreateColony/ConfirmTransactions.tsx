@@ -1,7 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { SpinnerLoader } from '~shared/Preloaders';
 import GroupedTransaction from '~common/Extensions/UserHub/partials/TransactionsTab/partials/GroupedTransaction';
 import {
   TransactionOrMessageGroup,
@@ -9,6 +8,7 @@ import {
 } from '~frame/GasStation/transactionGroup';
 import { TransactionStatus } from '~gql';
 import { TransactionType } from '~redux/immutable/Transaction';
+import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 
 const displayName = 'common.CreateColonyWizard.ConfirmTransactions';

@@ -7,11 +7,10 @@ import {
   getPotDomain,
 } from '@colony/colony-js';
 import { constants } from 'ethers';
-
 import { call, put, takeEvery } from 'redux-saga/effects';
+
 import { ADDRESS_ZERO } from '~constants';
 import { ActionTypes } from '~redux/actionTypes';
-import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures';
 import {
   createGroupTransaction,
   createTransactionChannels,
@@ -23,6 +22,7 @@ import {
   initiateTransaction,
   takeFrom,
 } from '~redux/sagas/utils';
+import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures';
 import { Action } from '~redux/types';
 
 function* fundExpenditureMotion({

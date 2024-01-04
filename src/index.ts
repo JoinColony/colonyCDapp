@@ -1,14 +1,15 @@
+import Decimal from 'decimal.js';
+import { Logger } from 'ethers/lib.esm/utils';
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
-import { Logger } from 'ethers/lib.esm/utils';
-import Decimal from 'decimal.js';
+
+import store from '~redux/createReduxStore';
+import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
+
+import Entry from './Entry';
 
 import './styles/main.global.css';
-
-import '~utils/yup/customMethods'; // ensures custom yup methods are available when components load
-import Entry from './Entry';
-import store from '~redux/createReduxStore';
 
 Decimal.set({ toExpPos: 78 });
 

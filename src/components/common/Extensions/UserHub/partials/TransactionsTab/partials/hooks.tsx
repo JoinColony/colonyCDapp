@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { TransactionStatus } from '~gql';
-
 import {
   transactionEstimateGas,
   transactionCancel,

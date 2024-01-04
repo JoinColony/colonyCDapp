@@ -1,11 +1,11 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import clsx from 'clsx';
 
-import Button from '~v5/shared/Button';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
-import { formatText } from '~utils/intl';
 import { useMobile } from '~hooks';
+import { formatText } from '~utils/intl';
+import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
+import Button from '~v5/shared/Button';
 
 import { useBatchPaymentsTableColumns, useGetTableMenuProps } from './hooks';
 import { BatchPaymentsTableModel, BatchPaymentsTableProps } from './types';

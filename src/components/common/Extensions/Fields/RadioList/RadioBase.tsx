@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import { RadioBaseProps, RadioItemProps } from './types';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+
+import { RadioBaseProps, RadioItemProps } from './types';
 
 import styles from './RadioList.module.css';
 

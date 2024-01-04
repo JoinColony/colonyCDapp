@@ -1,6 +1,7 @@
+import { ContractClient } from '@colony/colony-js';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Overrides } from 'ethers';
-import { ContractClient } from '@colony/colony-js';
+
 import { TransactionRecord } from '../../immutable';
 
 /*

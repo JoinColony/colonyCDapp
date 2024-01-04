@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
+
 import { formatText } from '~utils/intl';
 import NotificationBanner from '~v5/shared/NotificationBanner';
+
 import { UserPopoverAdditionalContentProps } from './types';
 
 const displayName = 'v5.UserPopoverAdditionalContent';

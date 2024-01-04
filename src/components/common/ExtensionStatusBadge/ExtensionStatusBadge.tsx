@@ -2,8 +2,9 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tag from '~shared/Tag';
-import { isInstalledExtensionData } from '~utils/extensions';
 import { AnyExtensionData } from '~types';
+import { isInstalledExtensionData } from '~utils/extensions';
+
 import styles from './ExtensionStatusBadge.css';
 
 const displayName = 'common.Extensions.ExtensionStatusBadge';

@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 import { string, object, array, ObjectSchema } from 'yup';
-import { isEmpty } from '~utils/lodash';
 
-import { isAddress } from '~utils/web3';
 import { formatText } from '~utils/intl';
+import { isEmpty } from '~utils/lodash';
+import { isAddress } from '~utils/web3';
 
 const MSG = defineMessages({
   requiredField: {

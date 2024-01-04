@@ -1,11 +1,14 @@
-import React, { FC, PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import React, { FC, PropsWithChildren } from 'react';
 
-import { ButtonLinkProps } from './types';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import styles from './Button.module.css';
+
 import Link from '../Link';
+
 import ButtonContent from './ButtonContent';
+import { ButtonLinkProps } from './types';
+
+import styles from './Button.module.css';
 
 const displayName = 'v5.ButtonLink';
 

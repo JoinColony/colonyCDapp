@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
+import { useUserTokenBalanceContext } from '~context';
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
 import {
   ColonyActionType,
   useGetColonyActionQuery,
   useGetMotionStateQuery,
 } from '~gql';
-import { isTransactionFormat } from '~utils/web3';
 import { useColonyContext } from '~hooks';
-import { useUserTokenBalanceContext } from '~context';
+import { isTransactionFormat } from '~utils/web3';
 
 import { ActionDetailsPageParams } from './ActionDetailsPage';
 

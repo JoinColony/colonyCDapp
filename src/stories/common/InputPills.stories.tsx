@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import InputPills from '~v5/common/Fields/Input/partials/InputPills';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof InputPills> = {
   title: 'Common/Pills/Input pills',

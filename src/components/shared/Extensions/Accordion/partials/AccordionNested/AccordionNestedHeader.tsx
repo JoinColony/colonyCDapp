@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
+
 import { AccordionHeaderProps } from '../../types';
 
 const displayName =

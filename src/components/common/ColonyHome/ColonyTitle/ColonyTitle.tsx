@@ -1,11 +1,12 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Heading from '~shared/Heading';
 import { useColonyContext, useMobile } from '~hooks';
-import ColonyAddress from './ColonyAddress';
+import Heading from '~shared/Heading';
 
 import ColonySubscription from '../ColonySubscription';
+
+import ColonyAddress from './ColonyAddress';
 
 import styles from './ColonyTitle.css';
 

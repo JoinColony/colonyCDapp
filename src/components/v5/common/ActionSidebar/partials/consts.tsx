@@ -1,7 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CardSelectOption } from '../../Fields/CardSelect/types';
+
 import { ACTION } from '~constants/actions';
+
+import { CardSelectOption } from '../../Fields/CardSelect/types';
 
 export const DISTRIBUTION_METHOD = {
   Equal: 'equal',

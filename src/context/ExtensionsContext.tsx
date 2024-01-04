@@ -6,7 +6,6 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useExtensionData } from '~hooks';

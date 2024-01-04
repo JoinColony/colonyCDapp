@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { motionTags } from '~shared/Tag';
-import { MotionState } from '~utils/colonyMotions';
 import { ColonyMotion } from '~types';
+import { MotionState } from '~utils/colonyMotions';
 
 import { RefetchMotionState } from '../../useGetColonyAction';
 import MotionCountdown from '../MotionCountdown';

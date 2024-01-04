@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
   defineMessages,
   FormattedMessage,
   MessageDescriptor,
 } from 'react-intl';
-import { useFormContext } from 'react-hook-form';
 
 import { Toggle } from '~shared/Fields';
 import QuestionMarkTooltip from '~shared/QuestionMarkTooltip';

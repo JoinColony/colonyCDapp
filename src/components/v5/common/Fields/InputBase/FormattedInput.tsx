@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
 import Cleave from 'cleave.js/react';
 import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import { FormattedInputProps } from './types';
-import { useStateClassNames } from '../hooks';
 import { FIELD_STATE } from '../consts';
+import { useStateClassNames } from '../hooks';
+
 import { useFormattedInput } from './hooks';
+import { FormattedInputProps } from './types';
 
 const displayName = 'v5.common.Fields.FormattedInput';
 

@@ -1,3 +1,4 @@
+import { ActionDialogProps } from '~shared/Dialog';
 import {
   SetStateFn,
   Token,
@@ -6,7 +7,6 @@ import {
   SafeTransactionType,
 } from '~types';
 import { AbiItemExtended } from '~utils/safes';
-import { ActionDialogProps } from '~shared/Dialog';
 
 export interface ControlSafeProps extends ActionDialogProps {
   selectedContractMethods?: UpdatedMethods;

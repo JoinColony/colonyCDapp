@@ -1,7 +1,9 @@
-import React, { useId } from 'react';
 import clsx from 'clsx';
-import styles from './Switch.module.css';
+import React, { useId } from 'react';
+
 import { SwitchProps } from './types';
+
+import styles from './Switch.module.css';
 
 const displayName = 'v5.common.Fields.Switch';
 

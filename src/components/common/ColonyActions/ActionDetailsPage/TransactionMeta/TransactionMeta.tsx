@@ -1,9 +1,9 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import TimeRelative from '~shared/TimeRelative';
 import TransactionLink from '~shared/TransactionLink';
-import { DEFAULT_NETWORK_INFO } from '~constants';
 
 import { TransactionStatuses } from '../staticMaps';
 

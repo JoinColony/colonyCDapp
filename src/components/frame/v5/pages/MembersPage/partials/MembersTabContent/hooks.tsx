@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
 import clsx from 'clsx';
+import React, { useMemo } from 'react';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ACTION } from '~constants/actions';

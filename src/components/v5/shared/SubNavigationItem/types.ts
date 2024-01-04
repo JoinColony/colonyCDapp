@@ -1,9 +1,9 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
+import { IconSize } from '~shared/Icon/Icon';
 import { FilterOptionProps } from '~v5/common/Filter/types';
 import { FilterType } from '~v5/common/TableFiltering/types';
-import { IconSize } from '~shared/Icon/Icon';
 
 export type SubNavigationItemProps = {
   iconName: string;

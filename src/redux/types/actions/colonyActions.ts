@@ -1,7 +1,9 @@
-import { RefObject } from 'react';
-import { BigNumber } from 'ethers';
 import { ColonyRole } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
+import { RefObject } from 'react';
 
+import { NetworkInfo } from '~constants';
+import { ExternalLink } from '~gql';
 import { ActionTypes } from '~redux';
 import {
   Address,
@@ -13,8 +15,6 @@ import {
   Safe,
   SafeTransactionData,
 } from '~types';
-import { NetworkInfo } from '~constants';
-import { ExternalLink } from '~gql';
 
 import {
   ErrorActionType,

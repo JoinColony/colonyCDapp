@@ -1,17 +1,18 @@
-import React, { FC, useState } from 'react';
 import clsx from 'clsx';
-import { usePopperTooltip } from 'react-popper-tooltip';
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { FC, useState } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useMobile } from '~hooks';
-import Checkbox from '~v5/common/Checkbox';
-import { useFilterContext } from '~context/FilterContext';
-import { formatText } from '~utils/intl';
-import PopoverBase from '~v5/shared/PopoverBase';
-import { NestedFilterOption } from '~v5/common/Filter/types';
 import { accordionAnimation } from '~constants/accordionAnimation';
+import { useFilterContext } from '~context/FilterContext';
+import { useMobile } from '~hooks';
+import { formatText } from '~utils/intl';
+import Checkbox from '~v5/common/Checkbox';
+import { NestedFilterOption } from '~v5/common/Filter/types';
+import PopoverBase from '~v5/shared/PopoverBase';
 
 import { NestedOptionsProps } from '../types';
+
 import Header from './Header';
 
 const displayName = 'v5.SubNavigationItem.partials.NestedOptions';

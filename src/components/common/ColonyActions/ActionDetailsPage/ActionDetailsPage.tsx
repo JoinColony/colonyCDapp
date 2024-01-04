@@ -1,9 +1,9 @@
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import { useColonyContext } from '~hooks';
 import LoadingTemplate from '~frame/LoadingTemplate';
+import { useColonyContext } from '~hooks';
 import { MotionAction } from '~types/motions';
 
 import {

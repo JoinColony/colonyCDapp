@@ -1,15 +1,14 @@
 import { BigNumber } from 'ethers';
 import { useMemo } from 'react';
 
-import { OnSuccess } from '~shared/Fields';
-
-import { useGetVoterRewardsQuery } from '~gql';
 import { useRevealWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/RevealWidget/useRevealWidgetUpdate';
+import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
+import { OnSuccess } from '~shared/Fields';
+import { ColonyMotion } from '~types';
 import { mapPayload } from '~utils/actions';
 import { MotionVote } from '~utils/colonyMotions';
 import { getSafePollingInterval } from '~utils/queries';
-import { ColonyMotion } from '~types';
 
 import { getLocalStorageVoteValue } from '../VotingStep/utils';
 

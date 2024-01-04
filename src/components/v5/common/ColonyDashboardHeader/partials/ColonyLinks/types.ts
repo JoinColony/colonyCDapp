@@ -1,8 +1,8 @@
-import { ComponentType } from 'react';
 import { IconProps } from 'phosphor-react';
+import { ComponentType } from 'react';
 
-import { DropdownMenuProps } from '~v5/common/DropdownMenu/types';
 import { TooltipProps } from '~shared/Extensions/Tooltip/types';
+import { DropdownMenuProps } from '~v5/common/DropdownMenu/types';
 
 export interface ColonyLinksItem {
   key: string;

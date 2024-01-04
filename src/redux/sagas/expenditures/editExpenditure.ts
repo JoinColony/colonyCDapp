@@ -1,20 +1,20 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
 import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
+import { Action, ActionTypes, AllActions } from '~redux';
 
-import {
-  putError,
-  getSetExpenditureValuesFunctionParams,
-  initiateTransaction,
-} from '../utils';
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
 } from '../transactions';
+import {
+  putError,
+  getSetExpenditureValuesFunctionParams,
+  initiateTransaction,
+} from '../utils';
 
 function* editExpenditure({
   payload: { colonyAddress, expenditure, payouts },

@@ -1,12 +1,13 @@
-import React, { useMemo, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import React, { useMemo, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
-import UserSelect from '../UserSelect';
 import AmountField from '../AmountField';
+import UserSelect from '../UserSelect';
+
 import { TransactionTableModel } from './types';
 
 export const useTransactionTableColumns = (

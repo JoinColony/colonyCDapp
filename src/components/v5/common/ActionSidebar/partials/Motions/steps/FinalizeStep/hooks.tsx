@@ -1,25 +1,25 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { BigNumber } from 'ethers';
 import { Extension } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import Numeral from '~shared/Numeral';
-
+import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
+import { ADDRESS_ZERO } from '~constants';
+import { useUserTokenBalanceContext } from '~context';
 import { ColonyActionType } from '~gql';
 import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
-import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
-import { MotionFinalizePayload } from '~redux/types/actions/motion';
 import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
-import { useUserTokenBalanceContext } from '~context';
-import { mapPayload } from '~utils/actions';
-import { formatText } from '~utils/intl';
-import { getBalanceForTokenAndDomain } from '~utils/tokens';
-import { getSafePollingInterval } from '~utils/queries';
-import { isInstalledExtensionData } from '~utils/extensions';
-import { MotionAction } from '~types/motions';
+import { MotionFinalizePayload } from '~redux/types/actions/motion';
+import Numeral from '~shared/Numeral';
 import { InstalledExtensionData } from '~types';
-import { ADDRESS_ZERO } from '~constants';
+import { MotionAction } from '~types/motions';
+import { mapPayload } from '~utils/actions';
+import { isInstalledExtensionData } from '~utils/extensions';
+import { formatText } from '~utils/intl';
+import { getSafePollingInterval } from '~utils/queries';
+import { getBalanceForTokenAndDomain } from '~utils/tokens';
 
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
+
 import { WinningsItems } from './types';
 
 export const useFinalizeStep = (actionData: MotionAction) => {

@@ -1,15 +1,15 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-import { useController } from 'react-hook-form';
 import { utils } from 'ethers';
+import React, { FC } from 'react';
+import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
-import { formatText } from '~utils/intl';
 import Icon from '~shared/Icon';
+import { formatText } from '~utils/intl';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
 import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
 
 import { useUserSelect } from './hooks';
