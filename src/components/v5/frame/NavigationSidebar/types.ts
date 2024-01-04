@@ -20,4 +20,5 @@ export interface NavigationSidebarProps {
   mobileBottomContent?: React.ReactNode;
   hamburgerLabel?: string;
   className?: string;
+  isThirdLevelMenuOpen?: boolean;
 }

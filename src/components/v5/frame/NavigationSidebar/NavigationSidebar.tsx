@@ -39,6 +39,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     mobileMenuToggle,
     secondLevelMenuToggle,
     thirdLevelMenuToggle,
+    setShouldShowThirdLevel,
   } = useNavigationSidebarContext();
   const [isMenuOpen, { toggle: toggleMenu, toggleOff: toggleOffMenu }] =
     mobileMenuToggle;
@@ -46,7 +47,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     secondLevelMenuToggle;
   const [
     isThirdLevelMenuOpen,
-    { toggle: toggleThirdLevelMenu, toggleOff: toggleOffThirdLevelMenu },
+    { toggleOn: toggleOnThirdLevelMenu, toggleOff: toggleOffThirdLevelMenu },
   ] = thirdLevelMenuToggle;
 
   useDisableBodyScroll((isMenuOpen || openItemIndex === 0) && isTablet);
@@ -64,6 +65,16 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   const mainMenu = withMainMenu ? (
     <NavigationSidebarMainMenu mainMenuItems={mainMenuItems} />
   ) : null;
+
+  const handleArrowClick = () => {
+    if (isThirdLevelMenuOpen) {
+      toggleOffThirdLevelMenu();
+      setShouldShowThirdLevel(false);
+    } else {
+      toggleOnThirdLevelMenu();
+      setShouldShowThirdLevel(true);
+    }
+  };
 
   return (
     <nav
@@ -221,9 +232,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 activeMainMenuItem?.secondLevelMenuProps ? (
                   <NavigationSidebarSecondLevel
                     {...activeMainMenuItem.secondLevelMenuProps}
-                    onArrowClick={
-                      hasThirdLevel ? toggleThirdLevelMenu : undefined
-                    }
+                    onArrowClick={hasThirdLevel ? handleArrowClick : undefined}
                     isExpanded={hasThirdLevel ? isThirdLevelMenuOpen : false}
                   />
                 ) : null}
