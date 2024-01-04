@@ -44,7 +44,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <ActionFormRow
         icon="arrow-down-right"
         fieldName="to"
-        title={formatText({ id: 'actionSidebar.recipient' })}
+        title={formatText({ id: 'actionSidebar.to' })}
         tooltips={{
           label: {
             tooltipContent: formatText({

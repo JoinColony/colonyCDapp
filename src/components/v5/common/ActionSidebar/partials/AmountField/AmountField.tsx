@@ -138,7 +138,7 @@ const AmountField: FC<AmountFieldProps> = ({
                   portalElementRef.current = ref;
                 }}
               >
-                <h5 className="text-4 text-gray-400 mb-4 uppercase ml-4">
+                <h5 className="text-4 text-gray-400 mb-2 uppercase ml-4">
                   {formatText({ id: 'actionSidebar.availableTokens' })}
                 </h5>
                 <ul>
@@ -170,7 +170,7 @@ const AmountField: FC<AmountFieldProps> = ({
                             <div className="flex items-center gap-1">
                               <TokenIcon
                                 token={colonyToken}
-                                size="xs"
+                                size="xxs"
                                 className="mr-1.5"
                               />
                               <span className="text-md">

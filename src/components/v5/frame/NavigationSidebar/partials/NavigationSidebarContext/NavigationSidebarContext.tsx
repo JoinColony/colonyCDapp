@@ -20,6 +20,7 @@ export const NavigationSidebarContext =
     mobileMenuToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
     secondLevelMenuToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
     thirdLevelMenuToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+    setShouldShowThirdLevel: () => {},
   });
 
 const NavigationSidebarContextProvider: FC<PropsWithChildren> = ({
@@ -28,6 +29,7 @@ const NavigationSidebarContextProvider: FC<PropsWithChildren> = ({
   const [openItemIndex, setOpenItemIndex] = useState<number | undefined>(
     undefined,
   );
+  const [shouldShowThirdLevel, setShouldShowThirdLevel] = useState(true);
   const mobileMenuToggle = useToggle({
     closeOnRouteChange: true,
   });
@@ -75,9 +77,19 @@ const NavigationSidebarContextProvider: FC<PropsWithChildren> = ({
   }, [isSecondLevelMenuOpen, toggleOffThirdLevelMenu]);
 
   useEffect(() => {
+    if (isSecondLevelMenuOpen && shouldShowThirdLevel) {
+      toggleOnThirdLevelMenu();
+    }
+  }, [
+    isSecondLevelMenuOpen,
+    shouldShowThirdLevel,
+    toggleOnThirdLevelMenu,
+    openItemIndex,
+  ]);
+
+  useEffect(() => {
     if (openItemIndex !== undefined) {
       toggleOnSecondLevelMenu();
-      toggleOnThirdLevelMenu();
     } else {
       toggleOffSecondLevelMenu();
     }
@@ -95,12 +107,14 @@ const NavigationSidebarContextProvider: FC<PropsWithChildren> = ({
       mobileMenuToggle,
       secondLevelMenuToggle,
       thirdLevelMenuToggle,
+      setShouldShowThirdLevel,
     }),
     [
       mobileMenuToggle,
       openItemIndex,
       secondLevelMenuToggle,
       thirdLevelMenuToggle,
+      setShouldShowThirdLevel,
     ],
   );
 
