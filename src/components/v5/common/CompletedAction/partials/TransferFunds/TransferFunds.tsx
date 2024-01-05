@@ -83,7 +83,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           >
             <div className="flex items-center gap-2">
               <ArrowDownRight size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.recipent' })}</span>
+              <span>{formatText({ id: 'actionSidebar.recipient' })}</span>
             </div>
           </Tooltip>
         </div>

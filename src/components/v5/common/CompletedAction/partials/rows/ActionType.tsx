@@ -9,6 +9,18 @@ import { ICON_SIZE } from '../../consts';
 
 const displayName = 'v5.common.CompletedAction.partials.ActionTypeRow';
 
+export const actionTypeTranslations = {
+  [ColonyActionType.CreateDecisionMotion]: 'actions.createDecision',
+  [ColonyActionType.CreateDomain]: 'actions.createNewTeam',
+  [ColonyActionType.ColonyEdit]: 'actions.editColonyDetails',
+  [ColonyActionType.MintTokens]: 'actions.mintTokens',
+  [ColonyActionType.Payment]: 'actions.simplePayment',
+  [ColonyActionType.MoveFunds]: 'actions.transferFunds',
+  [ColonyActionType.UnlockToken]: 'actions.unlockToken',
+  [ColonyActionType.VersionUpgrade]: 'actions.upgradeColonyVersion',
+  default: 'Action',
+};
+
 interface ActionTypeRowProps {
   actionType: ColonyActionType;
 }
@@ -19,7 +31,7 @@ const ActionTypeRow = ({ actionType }: ActionTypeRowProps) => {
       <div>
         <Tooltip
           tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.simplePayment.actionType',
+            id: 'actionSidebar.tooltip.actionType',
           })}
         >
           <div className="flex items-center gap-2">
@@ -28,7 +40,13 @@ const ActionTypeRow = ({ actionType }: ActionTypeRowProps) => {
           </div>
         </Tooltip>
       </div>
-      <div>{formatText(actionType)}</div>
+      <div>
+        {formatText({
+          id:
+            actionTypeTranslations[actionType] ||
+            actionTypeTranslations.default,
+        })}
+      </div>
     </>
   );
 };
