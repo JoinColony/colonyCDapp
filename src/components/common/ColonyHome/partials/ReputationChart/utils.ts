@@ -3,7 +3,7 @@ import { formatText } from '~utils/intl';
 import { getTeamHexColor } from '~utils/teams';
 import { ChartData } from '~v5/common/DonutChart/types';
 
-const WIDGET_TEAM_LIMIT = 4;
+const WIDGET_TEAM_LIMIT = 10;
 const TOP_TEAMS_WIDGET_LIMIT = WIDGET_TEAM_LIMIT - 1;
 
 export const getTeamReputationChartData = (allTeams: Domain[]): ChartData[] => {
