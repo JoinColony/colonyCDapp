@@ -7,12 +7,14 @@ import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
-import ActionTypeRow from '../rows/ActionType';
-import AmountRow from '../rows/Amount';
-import CreatedInRow from '../rows/CreatedInRow';
-import DecisionMethodRow from '../rows/DecisionMethod';
-import DescriptionRow from '../rows/Description';
+import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
+import {
+  ActionTypeRow,
+  AmountRow,
+  CreatedInRow,
+  DecisionMethodRow,
+  DescriptionRow,
+} from '../rows';
 
 const displayName = 'v5.common.CompletedAction.partials.MintTokens';
 

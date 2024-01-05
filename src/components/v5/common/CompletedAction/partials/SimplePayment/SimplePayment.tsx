@@ -11,13 +11,15 @@ import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';
 
 import { ICON_SIZE } from '../../consts';
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
-import ActionTypeRow from '../rows/ActionType';
-import AmountRow from '../rows/Amount';
-import CreatedInRow from '../rows/CreatedInRow';
-import DecisionMethodRow from '../rows/DecisionMethod';
-import DescriptionRow from '../rows/Description';
-import TeamFromRow from '../rows/TeamFrom';
+import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
+import {
+  ActionTypeRow,
+  AmountRow,
+  CreatedInRow,
+  DecisionMethodRow,
+  DescriptionRow,
+  TeamFromRow,
+} from '../rows';
 
 const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
 

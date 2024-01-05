@@ -5,11 +5,13 @@ import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks/Blocks';
-import ActionTypeRow from '../rows/ActionType';
-import CreatedInRow from '../rows/CreatedInRow';
-import DecisionMethodRow from '../rows/DecisionMethod';
-import DescriptionRow from '../rows/Description';
+import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
+import {
+  ActionTypeRow,
+  CreatedInRow,
+  DecisionMethodRow,
+  DescriptionRow,
+} from '../rows';
 
 const displayName = 'v5.common.CompletedAction.partials.UpgradeColonyVersion';
 
