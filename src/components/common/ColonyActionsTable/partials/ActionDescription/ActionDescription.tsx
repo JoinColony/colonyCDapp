@@ -37,6 +37,10 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     motionState || null,
   );
 
+  const actionMetadataDescription = colony
+    ? formatText({ id: 'action.title' }, getActionTitleValues(action, colony))
+    : '';
+
   return (
     <div className="flex gap-4 items-center w-full">
       <Avatar
@@ -59,7 +63,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
               },
             )}
           >
-            {metadata?.customTitle || '-'}
+            {metadata?.customTitle || actionMetadataDescription || '-'}
           </p>
           {colony && (
             <p
@@ -70,12 +74,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
                 },
               )}
             >
-              {loading
-                ? ''.padEnd(40, '-')
-                : formatText(
-                    { id: 'action.title' },
-                    getActionTitleValues(action, colony),
-                  )}
+              {loading ? ''.padEnd(40, '-') : actionMetadataDescription}
             </p>
           )}
         </div>
