@@ -892,6 +892,22 @@ type Mutation {
 }
 
 """
+Represents the currencies/tokens that users' balances can be converted to (for display purposes)
+"""
+enum SupportedCurrencies {
+  USD # US Dollar
+  JPY # Japanese Yen
+  GBP # British Pound Sterling
+  EUR # Euro
+  CAD # Canadian Dollar
+  KRW # South Korean Won
+  INR # Indian Rupee
+  BRL # Brazilian Real
+  ETH # Ethereum
+  CLNY # Colony Network Token.
+}
+
+"""
 Represents a user's profile within the Colony Network
 """
 type Profile @model {
