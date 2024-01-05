@@ -1,10 +1,10 @@
-import React from 'react';
+import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
+import React from 'react';
 
-import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral';
-
-import { useCurrency } from '~hooks';
 import { useCurrencyContext } from '~context/CurrencyContext';
+import { useCurrency } from '~hooks';
+import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral';
 import { FetchCurrentPriceArgs } from '~utils/currency/types';
 
 const displayName = 'CurrencyConversion';
@@ -28,7 +28,7 @@ interface Props extends Omit<NumeralProps, 'value'> {
   /** The network of the token being converted */
   chainId?: FetchCurrentPriceArgs['chainId'];
 
-  /** Contract address of token to be converted */
+  /** Balance of token to be converted */
   tokenBalance: BigNumber;
 }
 
@@ -54,7 +54,9 @@ const CurrencyConversion = ({
       className={className}
       prefix={showPrefix && conversionRate ? '~ ' : ''}
       suffix={showSuffix ? ` ${currency}` : ''}
-      value={tokenBalance.mul(conversionRate) || placeholder}
+      value={
+        new Decimal(tokenBalance.toString()).mul(conversionRate) || placeholder
+      }
       {...rest}
     />
   );
