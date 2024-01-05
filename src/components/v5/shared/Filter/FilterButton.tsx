@@ -33,7 +33,7 @@ const FilterButton: FC<FilterButtonProps> = ({
     >
       {customLabel || formatMessage({ id: 'filter' })}
       {!!numberSelectedFilters && (
-        <span className="bg-blue-100 p-1 rounded-sm text-gray-900 text-6 h-3 flex items-center">
+        <span className="bg-blue-100 py-1 px-1 min-w-[.75rem] rounded-sm text-blue-400 h-3 inline-flex items-center ml-2 text-[.5rem] leading-none font-bold">
           {numberSelectedFilters}
         </span>
       )}

@@ -12,8 +12,8 @@ const RoleOptionLabel: FC<PropsWithChildren<RoleOptionLabelProps>> = ({
   icon,
 }) => {
   return (
-    <div className="flex md:hover:bg-gray-50 p-2 rounded-lg">
-      <span className="pr-3 pt-1 text-gray-900">
+    <div className="flex md:hover:bg-gray-50 rounded-lg">
+      <span className="pr-3 pt-1 text-gray-900 flex-shrink-0">
         <Icon name={icon} appearance={{ size: 'tiny' }} />
       </span>
       <div className="flex flex-col text-left">
