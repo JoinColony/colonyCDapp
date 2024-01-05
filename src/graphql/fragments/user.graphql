@@ -33,4 +33,5 @@ fragment Profile on Profile {
     decentralizedModeEnabled
     customRpc
   }
+  preferredCurrency
 }

@@ -957,6 +957,11 @@ type Profile @model {
   The user associated with this profile
   """
   user: User! @belongsTo(fields: ["id"])
+
+  """
+  A user's prefered currency, for conversion purposes
+  """
+  preferredCurrency: SupportedCurrencies
 }
 
 """

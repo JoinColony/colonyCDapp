@@ -17,7 +17,7 @@ const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
 const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId, setActiveSubmenu }) => {
   const isMobile = useMobile();
   const iconSize = isMobile ? 'small' : 'tiny';
-  const { setCurrency } = useCurrencyContext();
+  const { updatePreferredCurrency } = useCurrencyContext();
   const handleMenuItemClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
     onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void,
@@ -29,7 +29,7 @@ const UserSubmenu: FC<UserSubmenuProps> = ({ submenuId, setActiveSubmenu }) => {
   };
 
   const handleCurrencyClick = (currency: SupportedCurrencies) => {
-    setCurrency(currency);
+    updatePreferredCurrency(currency);
     setActiveSubmenu(null);
   };
 
