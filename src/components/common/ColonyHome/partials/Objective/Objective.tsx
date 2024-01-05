@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import useColonyContext from '~hooks/useColonyContext';

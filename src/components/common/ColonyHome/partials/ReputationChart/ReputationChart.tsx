@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
 import { Id } from '@colony/colony-js';
 import clsx from 'clsx';
-
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
+
+import { ACTION } from '~constants/actions';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useColonyContext } from '~hooks';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
-import WidgetBox from '~v5/common/WidgetBox';
-import DonutChart from '~v5/common/DonutChart';
-import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow';
-import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import { ACTION } from '~constants/actions';
+import DonutChart from '~v5/common/DonutChart';
 import { ChartData } from '~v5/common/DonutChart/types';
+import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow';
+import WidgetBox from '~v5/common/WidgetBox';
+import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
 
-import { getTeamReputationChartData } from './utils';
 import { summaryLegendColor } from './consts';
+import { getTeamReputationChartData } from './utils';
 
 const displayName = 'common.ColonyHome.ReputationChart';
 

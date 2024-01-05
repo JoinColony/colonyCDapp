@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { useMemberContext } from '~context/MemberContext';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { COLONY_MEMBERS_ROUTE } from '~routes';
