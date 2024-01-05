@@ -1,6 +1,10 @@
 import { object, string, array, InferType } from 'yup';
 
-import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
+import {
+  MAX_ANNOTATION_LENGTH,
+  MAX_COLONY_DISPLAY_NAME,
+  MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+} from '~constants';
 import { ExternalLinks } from '~gql';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
@@ -14,7 +18,7 @@ export const validationSchema = object()
     createdIn: string().defined(),
     decisionMethod: string().defined(),
     description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
-    colonyDescription: string(),
+    colonyDescription: string().max(MAX_OBJECTIVE_DESCRIPTION_LENGTH),
     externalLinks: array()
       .of(
         object()

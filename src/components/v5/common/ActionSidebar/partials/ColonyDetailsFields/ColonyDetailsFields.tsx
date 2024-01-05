@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
 
-import { MAX_COLONY_DISPLAY_NAME } from '~constants';
+import {
+  MAX_COLONY_DISPLAY_NAME,
+  MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+} from '~constants';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
@@ -71,6 +74,7 @@ const ColonyDetailsFields: FC = () => (
     >
       <FormTextareaBase
         message={false}
+        minLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
         name="colonyDescription"
         placeholder={formatText({
           id: 'actionSidebar.colonyDescription.placeholder',
