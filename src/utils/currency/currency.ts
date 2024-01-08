@@ -1,5 +1,8 @@
 import { Tokens } from '@colony/colony-js';
+
 import { Network, SupportedCurrencies } from '~gql';
+
+import { currencyApiConfig, coinGeckoMappings } from './config';
 import {
   CoinGeckoPriceRequestSuccessResponse,
   FetchCurrentPriceArgs,
@@ -13,7 +16,6 @@ import {
   fetchData,
   mapToAPIFormat,
 } from './utils';
-import { currencyApiConfig, coinGeckoMappings } from './config';
 
 // The functions defined in this file assume something about the shape of the api response.
 // If that changes, or if we change the api, these functions will need to be updated.
