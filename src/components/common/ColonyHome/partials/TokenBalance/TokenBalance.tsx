@@ -22,7 +22,10 @@ const TokenBalance = () => {
       title={formatText({ id: 'colonyHome.funds' })}
       value={
         <div className="flex items-center gap-2 heading-4">
-          <Numeral value={totalFunds} prefix={currencySymbolMap[currency]} />
+          <Numeral
+            value={totalFunds ?? '-'}
+            prefix={currencySymbolMap[currency]}
+          />
           <span className="text-1">{currency}</span>
         </div>
       }

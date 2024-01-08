@@ -11,7 +11,8 @@ import { fetchCurrentPrice } from '~utils/currency/currency';
 const calculateTotalFunds = async (
   balances: ColonyBalances,
   currency: SupportedCurrencies,
-) => {
+): Promise<Decimal | null> => {
+  let isError = false;
   const funds = balances.items
     ?.filter(notNull)
     .filter(({ domain }) => !!domain?.isRoot)
@@ -21,8 +22,16 @@ const calculateTotalFunds = async (
         conversionDenomination: currency,
       });
 
-      return (await total).add(new Decimal(balance).mul(currentPrice));
+      if (currentPrice == null) {
+        isError = true;
+      }
+
+      return (await total).add(new Decimal(balance).mul(currentPrice ?? 0));
     }, Promise.resolve(new Decimal(0)));
+
+  if (isError) {
+    return null;
+  }
 
   return (await funds) ?? new Decimal(0);
 };
@@ -31,7 +40,7 @@ export const useTotalFunds = () => {
   const { colony } = useColonyContext();
   const { currency } = useCurrencyContext();
   const { balances: colonyBalances } = colony || {};
-  const [totalFunds, setTotalFunds] = useState<Decimal>(new Decimal(0));
+  const [totalFunds, setTotalFunds] = useState<Decimal | null>(new Decimal(0));
 
   useEffect(() => {
     const getTotalFunds = async (balances: ColonyBalances) => {

@@ -8,7 +8,7 @@ const useCurrency = ({
   chainId = Network.Gnosis,
   conversionDenomination = SupportedCurrencies.Usd,
 }: FetchCurrentPriceArgs) => {
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState<number | null>(0);
 
   useEffect(() => {
     if (!contractAddress) return;

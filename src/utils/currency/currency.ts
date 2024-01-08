@@ -94,13 +94,15 @@ const fetchPriceFromCoinGecko = async ({
         );
       }
 
-      console.error(`Unable to get price for ${contractAddress}`);
+      console.error(
+        `Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
+      );
       return 0;
     },
-    `Unable to get latest price at ${url}.`,
+    `Api called failed at ${url}.`,
   );
 
-  return price ?? 0;
+  return price;
 };
 
 const getCLNYPriceInUSD = async () => {
@@ -116,13 +118,13 @@ const getCLNYPriceInUSD = async () => {
  * @param contractAddress The contract address of the token to fetch the price of
  * @param chainId The chain ID of the token to fetch the price of
  * @param conversionDenomination The denomination to convert the price to
- * @returns The current price of the token in the given denomination
+ * @returns The current price of the token in the given denomination, or null if api call fails
  */
 export const fetchCurrentPrice = async ({
   contractAddress,
   chainId = Network.Gnosis,
   conversionDenomination = SupportedCurrencies.Usd,
-}: FetchCurrentPriceArgs): Promise<number> => {
+}: FetchCurrentPriceArgs): Promise<number | null> => {
   const savedPrice = getSavedPrice({
     contractAddress,
     chainId,
@@ -133,7 +135,7 @@ export const fetchCurrentPrice = async ({
     return savedPrice;
   }
 
-  let result = 0;
+  let result: number | null = 0;
 
   if (conversionDenomination === SupportedCurrencies.Clny) {
     const tokenPriceinUSD = await fetchPriceFromCoinGecko({
@@ -142,7 +144,9 @@ export const fetchCurrentPrice = async ({
     });
 
     const clnyInUSD = await getCLNYPriceInUSD();
-    result = convertTokenToCLNY(tokenPriceinUSD, clnyInUSD);
+    if (clnyInUSD !== null && tokenPriceinUSD !== null) {
+      result = convertTokenToCLNY(tokenPriceinUSD, clnyInUSD);
+    }
   } else {
     result = await fetchPriceFromCoinGecko({
       contractAddress,
@@ -151,12 +155,14 @@ export const fetchCurrentPrice = async ({
     });
   }
 
-  savePrice({
-    chainId,
-    contractAddress,
-    currency: conversionDenomination,
-    price: result,
-  });
+  if (result !== null) {
+    savePrice({
+      chainId,
+      contractAddress,
+      currency: conversionDenomination,
+      price: result,
+    });
+  }
 
   return result;
 };

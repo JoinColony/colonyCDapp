@@ -55,7 +55,9 @@ const CurrencyConversion = ({
       prefix={showPrefix && conversionRate ? '~ ' : ''}
       suffix={showSuffix ? ` ${currency}` : ''}
       value={
-        new Decimal(tokenBalance.toString()).mul(conversionRate) || placeholder
+        conversionRate == null
+          ? placeholder
+          : new Decimal(tokenBalance.toString()).mul(conversionRate)
       }
       {...rest}
     />
