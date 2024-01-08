@@ -24,7 +24,7 @@ import {
   TEAM_SEARCH_PARAM,
 } from '~routes';
 import Numeral from '~shared/Numeral';
-import { currencySymbolMap } from '~utils/currency/config';
+import { currencySymbolMap } from '~utils/currency';
 import { formatText } from '~utils/intl';
 import { setQueryParamOnUrl } from '~utils/urls';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
