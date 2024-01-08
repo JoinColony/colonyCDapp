@@ -7,10 +7,11 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+
 import { SupportedCurrencies, useUpdateUserProfileMutation } from '~gql';
 import { useAppContext } from '~hooks';
 import { SetStateFn } from '~types';
-import { getUserCurrencyByLocation } from '~utils/currency/location';
+import { getUserCurrencyByLocation } from '~utils/currency';
 
 interface CurrencyContextValues {
   currency: SupportedCurrencies;

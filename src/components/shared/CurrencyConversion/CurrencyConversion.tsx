@@ -5,7 +5,7 @@ import React from 'react';
 import { useCurrencyContext } from '~context/CurrencyContext';
 import { useCurrency } from '~hooks';
 import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral';
-import { FetchCurrentPriceArgs } from '~utils/currency/types';
+import { FetchCurrentPriceArgs } from '~utils/currency';
 
 const displayName = 'CurrencyConversion';
 
