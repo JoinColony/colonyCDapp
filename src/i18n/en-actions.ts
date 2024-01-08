@@ -11,7 +11,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.PaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.MultiplePayment} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.MultiplePaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.CreateDecisionMotion} {New decision by {initiator}}
+      ${ColonyActionType.CreateDecisionMotion} {New agreement by {initiator}}
       ${ColonyActionType.MoveFunds} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
       ${ColonyActionType.MoveFundsMotion} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
       ${ColonyActionType.UnlockToken} {Unlock native token {tokenSymbol} by {initiator}}
