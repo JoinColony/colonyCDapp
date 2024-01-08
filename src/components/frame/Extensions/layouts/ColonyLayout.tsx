@@ -154,7 +154,13 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           },
           userNavigation: getUserNavigation(isActionSidebarOpen),
         }}
-        sidebar={<ColonySidebar userHub={userHub} txButtons={txButtons} />}
+        sidebar={
+          <ColonySidebar
+            userHub={userHub}
+            txButtons={txButtons}
+            transactionId={transactionId || undefined}
+          />
+        }
       >
         {children}
       </PageLayout>
