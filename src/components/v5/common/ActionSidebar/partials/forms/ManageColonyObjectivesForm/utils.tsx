@@ -1,7 +1,6 @@
 import { DeepPartial } from 'utility-types';
 
-import { ColonyActionType } from '~gql';
-import { Colony } from '~types';
+import { Colony, ColonyActionType } from '~types';
 import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
 
 import { ManageColonyObjectivesFormValues } from './consts';

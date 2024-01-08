@@ -6,6 +6,8 @@ import { ACTION } from '~constants/actions';
 import { getRole, USER_ROLE } from '~constants/permissions';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers';
+import { ExtendedColonyActionType } from '~types';
+import { getExtendedActionType } from '~utils/colonyActions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
@@ -26,7 +28,6 @@ export const useGetActionData = (transactionId: string | undefined) => {
     }
 
     const {
-      type,
       amount,
       token,
       payments,
@@ -40,7 +41,10 @@ export const useGetActionData = (transactionId: string | undefined) => {
       annotation,
       isMotion,
       roles,
+      colony,
     } = action;
+
+    const extendedType = getExtendedActionType(action, colony.metadata);
 
     const repeatableFields = {
       createdIn: isMotion
@@ -53,7 +57,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
         : DecisionMethod.Permissions,
     };
 
-    switch (type) {
+    switch (extendedType) {
       case ColonyActionType.MintTokens:
       case ColonyActionType.MintTokensMotion:
         return {
@@ -121,6 +125,16 @@ export const useGetActionData = (transactionId: string | undefined) => {
             tokenAddress: token?.tokenAddress,
           },
           recipient: recipientAddress,
+          ...repeatableFields,
+        };
+      case ExtendedColonyActionType.UpdateColonyObjective:
+        return {
+          [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
+          colonyName: colony?.metadata?.displayName,
+          colonyAvatar: colony.metadata?.avatar || colony.metadata?.thumbnail,
+          colonyObjectiveTitle: colony.metadata?.objective?.title,
+          colonyObjectiveDescription: colony.metadata?.objective?.description,
+          colonyObjectiveProgress: colony.metadata?.objective?.progress,
           ...repeatableFields,
         };
       case ColonyActionType.ColonyEdit:
