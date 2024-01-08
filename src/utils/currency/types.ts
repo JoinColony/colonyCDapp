@@ -1,4 +1,5 @@
 import { SupportedCurrencies } from '~gql';
+
 import { coinGeckoMappings } from './config';
 
 export type CoinGeckoSupportedCurrencies =
