@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useMemberContext } from '~context/MemberContext';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { useGetSelectedDomainFilter } from '~hooks';
 import { COLONY_MEMBERS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import WidgetBox from '~v5/common/WidgetBox';
@@ -13,18 +13,18 @@ const displayName = 'common.ColonyHome.Members';
 const Members = () => {
   const { search } = useLocation();
 
-  const selectedTeam = useGetSelectedTeamFilter();
-  const nativeTeamId = selectedTeam?.nativeId;
+  const selectedDomain = useGetSelectedDomainFilter();
+  const nativeDomainId = selectedDomain?.nativeId;
   const { totalMembers: members, loading: membersLoading } = useMemberContext();
 
-  const domainMembers = nativeTeamId
+  const domainMembers = nativeDomainId
     ? members.filter(
         ({ roles, reputation }) =>
           roles?.items?.find(
-            (role) => role?.domain.nativeId === nativeTeamId,
+            (role) => role?.domain.nativeId === nativeDomainId,
           ) ||
           reputation?.items?.find(
-            (rep) => rep?.domain.nativeId === nativeTeamId,
+            (rep) => rep?.domain.nativeId === nativeDomainId,
           ),
       )
     : members;

@@ -2,9 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useGetTotalColonyActionsQuery } from '~gql';
-import { useGetSelectedDomainFilter } from '~hooks';
-import { getBaseSearchActionsFilterVariable } from '~hooks/useActivityFeed/helpers';
+import { useActionsCount, useGetSelectedDomainFilter } from '~hooks';
 import useColonyContext from '~hooks/useColonyContext';
 import { COLONY_ACTIVITY_ROUTE } from '~routes';
 import { findDomainByNativeId } from '~utils/domains';
@@ -17,19 +15,13 @@ const displayName = 'common.ColonyHome.TotalActions';
 const TotalActions = () => {
   const { search: searchParams } = useLocation();
   const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony || {};
   const selectedDomain = useGetSelectedDomainFilter();
   const nativeDomainId = selectedDomain?.nativeId;
 
-  const { data: totalActionData } = useGetTotalColonyActionsQuery({
-    variables: {
-      filter: {
-        ...getBaseSearchActionsFilterVariable(colonyAddress),
-      },
-    },
+  const { actionsCount: totalActions } = useActionsCount({
+    domainId: nativeDomainId,
   });
 
-  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
   const selectedTeamColor = findDomainByNativeId(nativeDomainId, colony)
     ?.metadata?.color;
 

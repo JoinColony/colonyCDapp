@@ -25,7 +25,7 @@ const useActionsCount = (params?: UseActionsCountParams) => {
   const { colony } = useColonyContext();
   const { colonyAddress = '' } = colony ?? {};
 
-  const { data: totalActionData } = useGetTotalColonyActionsQuery({
+  const { data, loading } = useGetTotalColonyActionsQuery({
     variables: {
       filter: {
         ...getBaseSearchActionsFilterVariable(colonyAddress),
@@ -51,10 +51,11 @@ const useActionsCount = (params?: UseActionsCountParams) => {
     skip: !colony,
   });
 
-  const actionsCount = totalActionData?.searchColonyActions?.total ?? 0;
+  const actionsCount = data?.searchColonyActions?.total ?? 0;
 
   return {
     actionsCount,
+    loading,
   };
 };
 

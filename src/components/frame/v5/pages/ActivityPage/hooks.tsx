@@ -7,23 +7,29 @@ import {
   useColonyContext,
   useGetSelectedDomainFilter,
 } from '~hooks';
+import { SpinnerLoader } from '~shared/Preloaders';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
+
+const getFormattedActionsCount = (count: number) =>
+  count > 1000 ? '999+' : count;
 
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
   const selectedDomain = useGetSelectedDomainFilter();
 
-  const { actionsCount: totalActions } = useActionsCount({
-    domainId: selectedDomain?.nativeId,
-  });
+  const { actionsCount: totalActions, loading: totalActionsLoading } =
+    useActionsCount({
+      domainId: selectedDomain?.nativeId,
+    });
 
-  const { actionsCount: recentActions } = useActionsCount({
-    domainId: selectedDomain?.nativeId,
-    onlyRecent: true,
-  });
+  const { actionsCount: recentActions, loading: recentActionsLoading } =
+    useActionsCount({
+      domainId: selectedDomain?.nativeId,
+      onlyRecent: true,
+    });
 
   const { data: domainData } = useGetTotalColonyDomainActionsQuery({
     variables: {
@@ -60,7 +66,11 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
       title: formatText({ id: 'widget.totalActions' }),
       value: (
         <span className="heading-4 text-gray-900">
-          {totalActions > 1000 ? '999+' : totalActions}
+          {totalActionsLoading ? (
+            <SpinnerLoader />
+          ) : (
+            getFormattedActionsCount(totalActions)
+          )}
         </span>
       ),
       className: tileClassName,
@@ -75,7 +85,11 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
           {formatText(
             { id: 'activityPage.recentActions.pastMonth' },
             {
-              value: recentActions > 1000 ? '999+' : recentActions,
+              value: recentActionsLoading ? (
+                <SpinnerLoader />
+              ) : (
+                getFormattedActionsCount(recentActions)
+              ),
               span: (chunks) => (
                 <span className="text-1 hidden sm:inline">{chunks}</span>
               ),

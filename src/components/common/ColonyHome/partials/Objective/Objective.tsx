@@ -2,8 +2,8 @@ import React from 'react';
 
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useGetSelectedDomainFilter } from '~hooks';
 import useColonyContext from '~hooks/useColonyContext';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { COLONY_DETAILS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import { getTeamColor } from '~utils/teams';
@@ -15,8 +15,8 @@ import ProgressBar from '~v5/shared/ProgressBar';
 const displayName = 'common.ColonyHome.Objective';
 
 const Objective = () => {
-  const selectedTeam = useGetSelectedTeamFilter();
-  const nativeTeamId = selectedTeam?.nativeId ?? undefined;
+  const selectedDomain = useGetSelectedDomainFilter();
+  const nativeDomainId = selectedDomain?.nativeId ?? undefined;
 
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -27,7 +27,7 @@ const Objective = () => {
   const { objective } = colony?.metadata || {};
 
   const selectedTeamColor = domains?.items.find(
-    (domain) => domain?.nativeId === nativeTeamId,
+    (domain) => domain?.nativeId === nativeDomainId,
   )?.metadata?.color;
   const teamColor = getTeamColor(selectedTeamColor);
 
@@ -55,7 +55,7 @@ const Objective = () => {
               className="ml-0"
               additionalText="%"
               isTall
-              barClassName={selectedTeam ? teamColor : 'bg-blue-400'}
+              barClassName={selectedDomain ? teamColor : 'bg-blue-400'}
             />
           </>
         ) : (

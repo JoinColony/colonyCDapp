@@ -12,6 +12,7 @@ export interface ChartData {
 
 export interface UseGetHomeWidgetReturnType {
   totalActions: number;
+  totalActionsLoading: boolean;
   allMembers: User[];
   teamColor: string;
   nativeToken: Token | undefined;
