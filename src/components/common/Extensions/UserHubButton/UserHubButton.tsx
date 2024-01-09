@@ -96,7 +96,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
           {
             '!border-blue-400': visible,
           },
-          'hover:!border-blue-400',
+          'md:hover:!border-blue-400',
         )}
         onClick={handleButtonClick}
       >
