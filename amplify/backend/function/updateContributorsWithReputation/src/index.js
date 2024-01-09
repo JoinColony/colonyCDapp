@@ -103,6 +103,7 @@ exports.handler = async (event) => {
           AddressZero,
         ));
     } catch (e) {
+      console.error('Could not get total reputation in colony', e);
       // may error if there's no rep in colony. In that case, there are no contributors to update.
       return true;
     }
@@ -155,7 +156,7 @@ exports.handler = async (event) => {
               skillId,
               AddressZero,
             ));
-        } catch {
+        } catch (e) {
           // can error if no rep in domain. skip in this case.
           return;
         }

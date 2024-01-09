@@ -107,8 +107,8 @@ const setEnvVariables = async () => {
         activeBalance: activeBalance.toString(),
         pendingBalance: userLock.pendingBalance.toString(),
       };
-    } catch {
-      console.error('Could not get token balance');
+    } catch (e) {
+      console.error('Could not get token balance', e);
       return null;
     }
   }

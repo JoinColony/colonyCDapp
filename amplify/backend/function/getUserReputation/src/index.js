@@ -67,7 +67,11 @@ exports.handler = async (event) => {
     );
 
     return reputationAmount.toString();
-  } catch (error) {
+  } catch (e) {
+    console.error(
+      `Could not get reputation for ${walletAddress} in colony ${colonyAddress}`,
+      e,
+    );
     return null;
   }
 };
