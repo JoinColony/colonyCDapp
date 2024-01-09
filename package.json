@@ -121,7 +121,7 @@
     "jest-sandbox": "^1.1.2",
     "lint-staged": "^10.2.1",
     "os-browserify": "^0.3.0",
-    "postcss": "^7.0.36",
+    "postcss": "^8.4.33",
     "postcss-import": "^12.0.0",
     "postcss-loader": "^7.0.1",
     "postcss-preset-env": "^6.0.10",
@@ -162,8 +162,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.8",
-    "@colony/abis": "^1.2.0-next.3",
-    "@colony/colony-event-metadata-parser": "^2.0.2",
+    "@colony/abis": "^1.2.3",
     "@colony/colony-js": "^7.0.2",
     "@colony/events": "^1.0.0",
     "@colony/redux-promise-listener": "^1.2.0",

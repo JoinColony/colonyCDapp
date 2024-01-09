@@ -1,4 +1,4 @@
-import { getStringForMetadataAnnotation } from '@colony/colony-event-metadata-parser';
+import { createMetadataFor, MetadataType } from '@colony/events';
 import { nanoid } from 'nanoid';
 import { call, put } from 'redux-saga/effects';
 
@@ -54,9 +54,11 @@ export function* ipfsUploadWithFallback(payload: string) {
 }
 
 export function* ipfsUploadAnnotation(annotationMessage: string) {
-  const annotationMetadata = getStringForMetadataAnnotation({
-    annotationMsg: annotationMessage,
-  });
+  const annotationMetadata = JSON.stringify(
+    createMetadataFor(MetadataType.Annotation, {
+      annotationMsg: annotationMessage,
+    }),
+  );
 
   return yield call(ipfsUploadWithFallback, annotationMetadata);
 }
