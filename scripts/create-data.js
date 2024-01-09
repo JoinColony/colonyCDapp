@@ -1,3 +1,9 @@
+
+process.on('SIGINT', function() {
+  console.log("Caught interrupt signal");
+  process.exit();
+});
+
 require('cross-fetch/polyfill');
 
 const { utils, Wallet, providers, BigNumber, constants, Contract } = require('ethers');
@@ -388,6 +394,7 @@ const createColony = async (
     colonySocialLinks = [],
     colonyAvatar,
     colonyObjective = {},
+    version,
     token: {
       name: tokenName = 'Generic Token',
       symbol: tokenSymbol = 'GTKN',
@@ -403,7 +410,10 @@ const createColony = async (
     signerOrWallet,
   );
 
-  const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
+  if (!version) {
+    version = await colonyNetwork.getCurrentColonyVersion();
+  }
+  // const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
 
   const colonyDeployment = await colonyNetwork[
     'createColonyForFrontend'
@@ -412,7 +422,7 @@ const createColony = async (
     tokenName,
     tokenSymbol,
     tokenDecimals,
-    currentNetworkVersion,
+    version,
     '', // no point in storing ens name on the chain
     '',
   );
@@ -457,7 +467,7 @@ const createColony = async (
     console.log('COLONY COULD NOT BE CREATED.', colonyQuery.errors[0].message);
   } else {
     console.log(
-      `Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`,
+      `Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", nativeToken: "${tokenAddress}", version: "${version.toString()}" }`,
     );
   }
 
@@ -1027,18 +1037,35 @@ const createUserAndColonyData = async () => {
     delay(100);
   }));
 
+  const leelaWallet = availableUsers.walletUsers[utils.getAddress(Object.keys(ganacheAddresses)[0])];
+
+  const colonyNetwork = ColonyNetworkFactory.connect(
+    etherRouterAddress,
+    leelaWallet,
+  );
+
+  const currentVersion = await colonyNetwork.getCurrentColonyVersion();
+
   const colonyNamesToCreate = Object.keys(coloniesTempData).slice(0, DEFAULT_COLONIES);
   for (let index = 0; index < colonyNamesToCreate.length; index++) {
 
     const colonyData = coloniesTempData[colonyNamesToCreate[index]];
+    colonyData.version = currentVersion.toNumber();
+    if (index === 3) {
+      // Check version exists...
+      const resolver = await colonyNetwork.getColonyVersionResolver(colonyData.version - 1);
+      console.log('resolver address for previous version', resolver)
+      if (resolver !== constants.AddressZero){
+        colonyData.version -= 1;
+      }
+    }
 
-    const leela = availableUsers.walletUsers[utils.getAddress(Object.keys(ganacheAddresses)[0])];
     const {
       colonyAddress: newColonyAddress,
       tokenAddress,
       colonyName,
       oneTxExtensionAddress,
-    } = await createColony(colonyData, availableUsers.walletUsers[leela.address]);
+    } = await createColony(colonyData, leelaWallet);
     delay();
 
     availableColonies[newColonyAddress] = {
@@ -1077,7 +1104,7 @@ const createUserAndColonyData = async () => {
     );
 
     // mint colony tokens
-    await mintTokens(newColonyAddress, colonyName, tokenAddress, availableUsers.walletUsers[leela.address]);
+    await mintTokens(newColonyAddress, colonyName, tokenAddress, leelaWallet);
 
     const { data: colonyDomainsdata } = await graphqlRequest(
       getColonyDomains,
@@ -1095,7 +1122,7 @@ const createUserAndColonyData = async () => {
         colonyName,
         tokenAddress,
         domains,
-        availableUsers.walletUsers[leela.address],
+        leelaWallet,
       )
     }
 
@@ -1127,7 +1154,7 @@ const createUserAndColonyData = async () => {
           ...Object.keys(availableUsers.walletUsers).map(userAddress => userAddress),
           contributors[randomBetweenNumbers(0, contributors.length - 1)],
         ],
-        availableUsers.walletUsers[leela.address],
+        leelaWallet,
       );
 
       // All other colonies that are not planex
@@ -1143,7 +1170,7 @@ const createUserAndColonyData = async () => {
           tokenAddress,
           [{ nativeId: 1 }],
           [planetExpressColony?.colonyAddress],
-          availableUsers.walletUsers[leela.address],
+          leelaWallet,
         );
       }
     }
