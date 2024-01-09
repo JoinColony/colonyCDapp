@@ -8,6 +8,7 @@ export const currencyApiConfig = {
     to: 'vs_currencies',
     api: 'x_cg_demo_api_key',
   },
+  attribution: 'https://www.coingecko.com/',
 };
 export const coinGeckoMappings = {
   // This is a map between our internal reference to a supported currency, and the reference the api uses.
