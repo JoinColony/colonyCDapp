@@ -107,6 +107,7 @@ const ColonyDetailsPage: FC = () => {
         ) : null}
         <Button
           mode="primarySolid"
+          size="small"
           text={{ id: 'button.editColonyDetails' }}
           isFullSize={isMobile}
           onClick={() => {
@@ -132,6 +133,7 @@ const ColonyDetailsPage: FC = () => {
           {!isMobile && (
             <Button
               mode="primarySolid"
+              size="small"
               text={{ id: 'button.manageObjective' }}
               textValues={{ existing: !!objective?.title }}
               onClick={() => {
@@ -152,6 +154,7 @@ const ColonyDetailsPage: FC = () => {
           // @TODO: Test functionality to create objective on mobile
           <Button
             mode="primarySolid"
+            size="small"
             text={{ id: 'button.manageObjective' }}
             textValues={{ existing: !!objective?.title }}
             isFullSize
