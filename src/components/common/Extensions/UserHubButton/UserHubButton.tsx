@@ -92,12 +92,15 @@ const UserHubButton: FC<UserHubButtonProps> = ({
         size="large"
         isFullRounded
         ref={setTriggerRef}
-        className={clsx({
-          '!border-blue-400': visible && isMobile,
-        })}
+        className={clsx(
+          {
+            '!border-blue-400': visible,
+          },
+          'hover:!border-blue-400',
+        )}
         onClick={handleButtonClick}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {/* If there's a user, there's a wallet */}
           {walletAddress ? (
             <>
