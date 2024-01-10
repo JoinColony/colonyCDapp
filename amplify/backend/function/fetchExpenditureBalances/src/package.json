@@ -8,7 +8,7 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
-    "@colony/colony-js": "^7.0.1",
+    "@colony/colony-js": "^7.0.3",
     "ethers": "^5.7.2"
   }
 }

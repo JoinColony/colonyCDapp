@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "@colony/colony-js": "^7.0.1",
+    "@colony/colony-js": "^7.0.3",
     "ethers": "^5.7.2",
     "node-fetch": "2.6.7"
   },

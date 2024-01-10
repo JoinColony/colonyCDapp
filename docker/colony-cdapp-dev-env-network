@@ -1,4 +1,4 @@
-FROM colony-cdapp-dev-env/base:latest
+FROM node:16.20.2
 
 ENV NETWORK_HASH=6a12f65ce0d0b271435fefdbc7d82242014ed15f
 
