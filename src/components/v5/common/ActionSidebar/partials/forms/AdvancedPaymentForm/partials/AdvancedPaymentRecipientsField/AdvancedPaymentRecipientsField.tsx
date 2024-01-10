@@ -21,7 +21,9 @@ const displayName =
 const AdvancedPaymentRecipientsField: FC<
   AdvancedPaymentRecipientsFieldProps
 > = ({ name }) => {
-  const { nativeToken } = useColonyContext().colony || {};
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const fieldArrayMethods = useFieldArray({
     name,
   });

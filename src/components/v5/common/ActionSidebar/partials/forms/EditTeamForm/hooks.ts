@@ -58,7 +58,7 @@ export const useEditTeam = (
     transform: useCallback(
       pipe(
         mapPayload((values: EditTeamFormValues) => {
-          if (!colony || !selectedDomain) {
+          if (!selectedDomain) {
             return null;
           }
 

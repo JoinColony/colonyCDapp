@@ -35,8 +35,9 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     fromDomain,
     tokenAddress,
   } = actionData;
-  const { colony } = useColonyContext();
-  const { balances } = colony || {};
+  const {
+    colony: { colonyAddress, balances },
+  } = useColonyContext();
   const { user } = useAppContext();
 
   const domainBalance = getBalanceForTokenAndDomain(
@@ -60,7 +61,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
 
   const transform = mapPayload(
     (): MotionFinalizePayload => ({
-      colonyAddress: colony?.colonyAddress || '',
+      colonyAddress,
       userAddress: user?.walletAddress || '',
       motionId,
       gasEstimate,
@@ -89,7 +90,9 @@ export const useClaimConfig = (
     transactionHash,
   } = actionData;
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, nativeToken, motionsWithUnclaimedStakes },
+  } = useColonyContext();
   const extension = useExtensionData(Extension.VotingReputation);
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
@@ -98,9 +101,8 @@ export const useClaimConfig = (
   const extensionData = extension?.extensionData as InstalledExtensionData;
 
   const userAddress = user?.walletAddress;
-  const colonyAddress = colony?.colonyAddress;
-  const nativeTokenDecimals = colony?.nativeToken.decimals;
-  const nativeTokenSymbol = colony?.nativeToken.symbol;
+  const nativeTokenDecimals = nativeToken.decimals;
+  const nativeTokenSymbol = nativeToken.symbol;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
   const stakerReward = stakerRewards.find(
@@ -109,8 +111,8 @@ export const useClaimConfig = (
 
   // Keep isClaimed state in sync with changes to unclaimed motions on colony object
   useEffect(() => {
-    if (colony?.motionsWithUnclaimedStakes) {
-      const motionIsUnclaimed = colony.motionsWithUnclaimedStakes.some(
+    if (motionsWithUnclaimedStakes) {
+      const motionIsUnclaimed = motionsWithUnclaimedStakes.some(
         ({ motionId }) => motionId === databaseMotionId,
       );
 
@@ -121,7 +123,7 @@ export const useClaimConfig = (
         setIsClaimed(false);
       }
     }
-  }, [colony?.motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
+  }, [motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
 
   // Keep isClaimed state in sync with user changes
   useEffect(() => {

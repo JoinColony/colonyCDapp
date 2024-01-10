@@ -53,8 +53,9 @@ const FinalizeMotion = ({
   startPollingAction,
   stopPollingAction,
 }: FinalizeMotionProps) => {
-  const { colony } = useColonyContext();
-  const { balances } = colony || {};
+  const {
+    colony: { balances },
+  } = useColonyContext();
   const [isPolling, setIsPolling] = useState(false);
 
   /* Stop polling when mounted / dismounted */

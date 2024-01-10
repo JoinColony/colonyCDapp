@@ -40,10 +40,6 @@ export const useMintToken = (
     transform: useCallback(
       pipe(
         mapPayload((values: MintTokenFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getMintTokenPayload(colony, values);
         }),
       ),

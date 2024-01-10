@@ -26,8 +26,9 @@ export const useVotingStep = (
   stopPollingAction: () => void,
   transactionId: string,
 ) => {
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
+  const {
+    colony: { colonyAddress, nativeToken },
+  } = useColonyContext();
   const { wallet, user } = useAppContext();
   const { motionData } = actionData;
   const {
@@ -60,13 +61,13 @@ export const useVotingStep = (
     variables: {
       input: {
         voterAddress: user?.walletAddress ?? '',
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         nativeMotionDomainId,
         motionId,
         rootHash,
       },
     },
-    skip: !user || !colony,
+    skip: !user,
     fetchPolicy: 'cache-and-network',
   });
   const { max: maxReward, min: minReward } = data?.getVoterRewards || {};
@@ -76,7 +77,7 @@ export const useVotingStep = (
   const transform = mapPayload(
     ({ vote }) =>
       ({
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         userAddress: user?.walletAddress,
         vote: Number(vote),
         motionId: BigNumber.from(motionId),
@@ -112,7 +113,7 @@ export const useVotingStep = (
         label: formatText({ id: 'motion.votingStep.teamReputation' }),
         value: (
           <MemberReputation
-            colonyAddress={colony?.colonyAddress ?? ''}
+            colonyAddress={colonyAddress}
             domainId={Number(nativeMotionDomainId)}
             rootHash={rootHash}
             textClassName="text-sm"

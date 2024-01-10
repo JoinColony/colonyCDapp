@@ -34,7 +34,7 @@ const WarningLabel = (chunks: React.ReactNode[]) => (
   <span className={styles.warningLabel}>{chunks}</span>
 );
 
-const ConfusableWarning = ({ walletAddress, colonyAddress }: Props) => {
+const ConfusableWarning = ({ walletAddress, colonyAddress = '' }: Props) => {
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,
     walletAddress,

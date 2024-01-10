@@ -45,14 +45,14 @@ export const useFundsTable = (): UseFundsTableProps => {
   const claims = useColonyFundsClaims();
   const colonyTokens = useMemo(
     () =>
-      colony?.tokens?.items.filter(notNull).sort((a, b) => {
+      colony.tokens?.items.filter(notNull).sort((a, b) => {
         if (!a.token || !b.token) return 0;
 
         return a.token.name
           .toLowerCase()
           .localeCompare(b.token.name.toLowerCase());
       }) || [],
-    [colony?.tokens?.items],
+    [colony.tokens?.items],
   );
   const colonyClaims = colonyTokens.filter(({ token }) =>
     claims.some(

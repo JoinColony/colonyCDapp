@@ -26,10 +26,6 @@ const AdvancedPaymentForm = () => {
 
   const [isStakeDialogOpen, setIsStakeDialogOpen] = useState(false);
 
-  if (!colony) {
-    return null;
-  }
-
   const isStakingRequired = isStakedExpenditureEnabled;
 
   const transformPayload = pipe(

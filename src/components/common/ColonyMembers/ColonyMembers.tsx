@@ -1,11 +1,7 @@
 import React from 'react';
-import { defineMessages } from 'react-intl';
 
 import ColonyHomeInfo from '~common/ColonyHome/ColonyHomeInfo';
 import Members from '~common/Members';
-import { useColonyContext } from '~hooks';
-import NotFoundRoute from '~routes/NotFoundRoute';
-import { SpinnerLoader } from '~shared/Preloaders';
 
 import MemberControls from './MemberControls';
 import MembersFilter from './MembersFilter';
@@ -16,18 +12,10 @@ import styles from './ColonyMembers.css';
 
 const displayName = 'common.ColonyMembers';
 
-const MSG = defineMessages({
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Loading Colony',
-  },
-});
-
 const ColonyMembers = () => {
   // const { extensionId } = useParams<{
   //   extensionId?: string;
   // }>();
-  const { colony, loading } = useColonyContext();
   const {
     filters,
     selectedDomainId,
@@ -37,21 +25,9 @@ const ColonyMembers = () => {
     isMobile,
   } = useColonyMembers();
 
-  if (loading) {
-    return (
-      <div className={styles.loadingWrapper}>
-        <SpinnerLoader loadingText={MSG.loadingText} />
-      </div>
-    );
-  }
-
   // if (!isExtensionIdValid) {
   //   return <NotFoundRoute />;
   // }
-
-  if (!colony) {
-    return <NotFoundRoute />;
-  }
 
   return (
     <div className={styles.main}>

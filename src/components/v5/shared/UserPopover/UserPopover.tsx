@@ -33,8 +33,9 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   const { profile } = user || {};
   const { avatar, thumbnail } = profile || {};
 
-  const { colony } = useColonyContext();
-  const colonyAddress = colony?.colonyAddress ?? '';
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
   const { data: colonyContributorData } = useGetColonyContributorQuery({
     variables: {

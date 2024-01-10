@@ -87,7 +87,7 @@ const ActionsListItem = ({
   const navigate = useNavigate();
 
   const handleActionRedirect = () =>
-    navigate(`/${colony?.name}?tx=${transactionHash}`);
+    navigate(`/${colony.name}?tx=${transactionHash}`);
 
   const status = ListItemStatus.Defused;
 
@@ -105,10 +105,6 @@ const ActionsListItem = ({
   const MotionTag = useMotionTag(isMotion, motionState);
   const showMotionCountdownTimer =
     useShouldDisplayMotionCountdownTime(motionState);
-
-  if (!colony) {
-    return null;
-  }
 
   const domainName = getDomainName(itemDomain, motionData?.motionDomain);
 

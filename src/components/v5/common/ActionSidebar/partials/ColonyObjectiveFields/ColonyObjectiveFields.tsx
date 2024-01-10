@@ -33,7 +33,7 @@ const MSG = defineMessages({
 
 const ColonyObjectiveFields: FC = () => {
   const { colony } = useColonyContext();
-  const { objective } = colony?.metadata || {};
+  const { objective } = colony.metadata || {};
 
   return (
     <>

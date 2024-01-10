@@ -42,7 +42,9 @@ const ViewStakedButton: FC<ViewStakedButtonProps> = ({
 );
 
 const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
@@ -51,7 +53,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
       input: {
         walletAddress: wallet?.address ?? '',
         tokenAddress: nativeToken?.tokenAddress ?? '',
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
       },
     },
     skip: !wallet?.address || !nativeToken?.tokenAddress,

@@ -49,7 +49,10 @@ interface UseExtensionDataReturn {
  * and mapping it into Installed or InstallableExtensionData object
  */
 const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+    colony,
+  } = useColonyContext();
 
   const extensionHash = getExtensionHash(extensionId as Extension);
 
@@ -61,10 +64,9 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     refetch,
   } = useGetColonyExtensionQuery({
     variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress,
       extensionHash,
     },
-    skip: !colony,
     fetchPolicy: 'network-only',
   });
   const colonyExtension = data?.getExtensionByColonyAndHash?.items?.[0];
@@ -74,7 +76,6 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       variables: {
         extensionHash,
       },
-      skip: !colony,
       fetchPolicy: 'cache-and-network',
     });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
@@ -84,7 +85,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   );
 
   const extensionData = useMemo<AnyExtensionData | null>(() => {
-    if (!version || !extensionConfig || !colony) {
+    if (!version || !extensionConfig) {
       return null;
     }
 

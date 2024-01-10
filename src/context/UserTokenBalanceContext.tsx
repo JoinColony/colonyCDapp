@@ -29,8 +29,9 @@ export const UserTokenBalanceProvider = ({
   children: ReactNode;
 }) => {
   const { wallet } = useAppContext();
-  const { colony } = useColonyContext();
-  const { colonyAddress, nativeToken } = colony || {};
+  const {
+    colony: { colonyAddress, nativeToken },
+  } = useColonyContext();
 
   const {
     data: tokenBalanceQueryData,
@@ -40,11 +41,11 @@ export const UserTokenBalanceProvider = ({
     variables: {
       input: {
         walletAddress: wallet?.address ?? '',
-        tokenAddress: nativeToken?.tokenAddress ?? '',
-        colonyAddress: colonyAddress ?? '',
+        tokenAddress: nativeToken.tokenAddress,
+        colonyAddress,
       },
     },
-    skip: !wallet?.address || !nativeToken?.tokenAddress,
+    skip: !wallet?.address,
   });
 
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;

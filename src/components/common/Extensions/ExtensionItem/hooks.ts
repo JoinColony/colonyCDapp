@@ -7,7 +7,9 @@ import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
 
 export const useExtensionItem = (extensionId: string) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
   const { extensionData } = useExtensionData(extensionId);
   const navigate = useNavigate();
 
@@ -16,7 +18,7 @@ export const useExtensionItem = (extensionId: string) => {
 
   const { status, badgeMessage } = useExtensionsBadge(extensionData);
 
-  const extensionUrl = `/${colony?.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
+  const extensionUrl = `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
 
   const handleNavigateToExtensionDetails = useCallback(() => {
     navigate(extensionUrl);

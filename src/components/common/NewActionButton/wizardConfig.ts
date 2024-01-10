@@ -29,7 +29,7 @@ import {
 } from '../Dialogs';
 
 export const getWizardFlowConfig = (
-  colony: Colony | undefined,
+  colony: Colony,
   filteredDomainId: number,
   enabledExtensionData: EnabledExtensionData,
 ) => [

@@ -94,10 +94,10 @@ export const useSplitPayment = (
   const { colony } = useColonyContext();
   const colonyTokens = useMemo(
     () =>
-      colony?.tokens?.items
+      colony.tokens?.items
         .filter(notNull)
         .map((colonyToken) => colonyToken.token) || [],
-    [colony?.tokens?.items],
+    [colony.tokens?.items],
   );
   const amount = useWatch({ name: 'amount' });
   const currentToken = useMemo(
@@ -115,7 +115,7 @@ export const useSplitPayment = (
     defaultValues: useMemo(
       () => ({
         amount: {
-          tokenAddress: colony?.nativeToken.tokenAddress,
+          tokenAddress: colony.nativeToken.tokenAddress,
         },
         createdIn: Id.RootDomain,
         payments: [
@@ -124,7 +124,7 @@ export const useSplitPayment = (
           },
         ],
       }),
-      [colony?.nativeToken.tokenAddress],
+      [colony.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
@@ -144,15 +144,11 @@ export const useSplitPayment = (
             payments: [],
           };
 
-          if (colony) {
-            return getCreatePaymentDialogPayload(
-              colony,
-              values,
-              networkInverseFee,
-            );
-          }
-
-          return null;
+          return getCreatePaymentDialogPayload(
+            colony,
+            values,
+            networkInverseFee,
+          );
         }),
       ),
       [colony, networkInverseFee],

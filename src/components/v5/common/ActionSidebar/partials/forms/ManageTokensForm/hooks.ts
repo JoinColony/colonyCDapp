@@ -26,8 +26,8 @@ export const useManageTokens = (
   });
 
   const colonyTokens = useMemo(
-    () => colony?.tokens?.items.filter(notNull) || [],
-    [colony?.tokens?.items],
+    () => colony.tokens?.items.filter(notNull) || [],
+    [colony.tokens?.items],
   );
 
   const shouldShowMenu = useCallback(
@@ -63,10 +63,6 @@ export const useManageTokens = (
     transform: useCallback(
       pipe(
         mapPayload((values: ManageTokensFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getManageTokensPayload(colony, values);
         }),
       ),

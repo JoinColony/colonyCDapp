@@ -8,14 +8,12 @@ import {
   Exact,
   GetFullColonyByNameQuery,
   useGetColonyWhitelistByNameQuery,
-  useGetFullColonyByNameQuery,
 } from '~gql';
 import {
   useAppContext,
   useCanInteractWithColony,
   useColonySubscription,
 } from '~hooks';
-import { NotFoundRoute } from '~routes';
 import { Colony } from '~types';
 
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
@@ -30,12 +28,11 @@ export type RefetchColonyFn = (
     | undefined,
 ) => Promise<ApolloQueryResult<GetFullColonyByNameQuery>> | null;
 interface ColonyContextValue {
-  colony?: Colony;
-  loading: boolean;
+  colony: Colony;
   canInteractWithColony: boolean;
   refetchColony: RefetchColonyFn;
-  startPolling: (pollInterval: number) => void;
-  stopPolling: () => void;
+  startPollingColonyData: (pollInterval: number) => void;
+  stopPollingColonyData: () => void;
   isSupportedColonyVersion: boolean;
   colonySubscription: {
     canWatch: boolean;
@@ -60,28 +57,22 @@ const MIN_SUPPORTED_COLONY_VERSION = 5;
 
 export const ColonyContextProvider = ({
   children,
+  colony,
+  refetchColony,
+  startPollingColonyData,
+  stopPollingColonyData,
+  isColonyLoading,
 }: {
   children: ReactNode;
+  colony: Colony;
+  refetchColony: RefetchColonyFn;
+  startPollingColonyData: (pollInterval: number) => void;
+  stopPollingColonyData: () => void;
+  isColonyLoading: boolean;
 }) => {
   const { colonyName = '' } = useParams();
   const { user, userLoading, walletConnecting } = useAppContext();
 
-  const {
-    data,
-    loading: colonyLoading,
-    error,
-    refetch: refetchColony,
-    startPolling,
-    stopPolling,
-  } = useGetFullColonyByNameQuery({
-    variables: {
-      name: colonyName,
-    },
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
-  });
-
-  const colony = data?.getColonyByName?.items?.[0] ?? undefined;
   useUpdateColonyReputation(colony?.colonyAddress);
 
   const canInteractWithColony = useCanInteractWithColony(colony);
@@ -93,21 +84,19 @@ export const ColonyContextProvider = ({
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
       colony,
-      loading: colonyLoading,
       canInteractWithColony,
       refetchColony,
-      startPolling,
-      stopPolling,
+      startPollingColonyData,
+      stopPollingColonyData,
       isSupportedColonyVersion,
       colonySubscription,
     }),
     [
       colony,
-      colonyLoading,
       canInteractWithColony,
       refetchColony,
-      startPolling,
-      stopPolling,
+      startPollingColonyData,
+      stopPollingColonyData,
       isSupportedColonyVersion,
       colonySubscription,
     ],
@@ -121,15 +110,8 @@ export const ColonyContextProvider = ({
       skip: !colonyName,
     });
 
-  if (walletConnecting || colonyLoading || userLoading || whitelistLoading) {
+  if (walletConnecting || isColonyLoading || userLoading || whitelistLoading) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
-  }
-
-  if (!colony || error) {
-    if (error) {
-      console.error(error);
-    }
-    return <NotFoundRoute />;
   }
 
   const isMember = !!dataWhitelist?.getColonyByName?.items[0]?.whitelist.some(

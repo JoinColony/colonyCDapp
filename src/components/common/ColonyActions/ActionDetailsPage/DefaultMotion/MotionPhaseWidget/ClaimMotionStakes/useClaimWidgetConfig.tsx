@@ -42,9 +42,9 @@ const useClaimWidgetConfig = (
   const [isClaimed, setIsClaimed] = useState(false);
 
   const userAddress = user?.walletAddress;
-  const colonyAddress = colony?.colonyAddress;
-  const nativeTokenDecimals = colony?.nativeToken.decimals;
-  const nativeTokenSymbol = colony?.nativeToken.symbol;
+  const { colonyAddress, nativeToken, motionsWithUnclaimedStakes } = colony;
+  const { decimals: nativeTokenDecimals, symbol: nativeTokenSymbol } =
+    nativeToken;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
   const stakerReward = stakerRewards.find(
@@ -53,8 +53,8 @@ const useClaimWidgetConfig = (
 
   // Keep isClaimed state in sync with changes to unclaimed motions on colony object
   useEffect(() => {
-    if (colony?.motionsWithUnclaimedStakes) {
-      const motionIsUnclaimed = colony.motionsWithUnclaimedStakes.some(
+    if (motionsWithUnclaimedStakes) {
+      const motionIsUnclaimed = motionsWithUnclaimedStakes.some(
         ({ motionId }) => motionId === databaseMotionId,
       );
 
@@ -65,7 +65,7 @@ const useClaimWidgetConfig = (
         setIsClaimed(false);
       }
     }
-  }, [colony?.motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
+  }, [motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
 
   // Keep isClaimed state in sync with user changes
   useEffect(() => {

@@ -4,8 +4,9 @@ import { useColonyContext } from '~hooks';
 import { Address } from '~types';
 
 const useTokenTotalBalance = (currentTokenAddress?: Address) => {
-  const { colony } = useColonyContext();
-  const { balances } = colony || {};
+  const {
+    colony: { balances },
+  } = useColonyContext();
 
   const totalTokenBalance = useMemo(() => {
     if (balances?.items && currentTokenAddress) {

@@ -36,14 +36,14 @@ const MSG = defineMessages({
 });
 
 const UserNavigation = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, nativeToken },
+  } = useColonyContext();
   const { wallet } = useAppContext();
   const { tokenBalanceData } = useUserTokenBalanceContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const canInteractWithNetwork = useCanInteractWithNetwork();
-
-  const { colonyAddress } = colony || {};
 
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,
@@ -52,7 +52,7 @@ const UserNavigation = () => {
 
   return (
     <div className={styles.main}>
-      {colony?.colonyAddress && wallet && !isMobile && (
+      {wallet && !isMobile && (
         <Tooltip
           content={formatMessage(MSG.userReputationTooltip)}
           placement="bottom-start"
@@ -76,10 +76,10 @@ const UserNavigation = () => {
           </div>
         </Tooltip>
       )}
-      {canInteractWithNetwork && colony?.nativeToken && tokenBalanceData && (
+      {canInteractWithNetwork && tokenBalanceData && (
         <div className={`${styles.elementWrapper} ${styles.walletWrapper}`}>
           <UserTokenActivationButton
-            nativeToken={colony.nativeToken}
+            nativeToken={nativeToken}
             tokenBalanceData={tokenBalanceData}
             dataTest="tokenActivationButton"
           />

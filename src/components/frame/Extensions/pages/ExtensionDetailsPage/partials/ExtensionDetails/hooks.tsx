@@ -10,8 +10,9 @@ import Toast from '~shared/Extensions/Toast';
 import { waitForDbAfterExtensionAction } from '../../utils';
 
 export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony || {};
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
   const deprecateExtensionValues = {
     colonyAddress,
@@ -63,9 +64,10 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
 };
 
 export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const [isLoading, setIsLoading] = useState(false);
-  const { colonyAddress = '' } = colony ?? {};
   const { refetchExtensionData } = useExtensionData(extensionId);
   const uninstallExtensionValues = {
     colonyAddress,
@@ -116,8 +118,9 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
 
 export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony ?? {};
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
 
   const enableExtensionValues = {

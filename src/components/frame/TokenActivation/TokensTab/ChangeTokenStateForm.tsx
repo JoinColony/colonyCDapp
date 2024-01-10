@@ -71,13 +71,14 @@ const ChangeTokenStateForm = ({
   tokenBalanceData: { inactiveBalance, activeBalance, lockedBalance },
   hasLockedTokens,
 }: ChangeTokenStateFormProps) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken, colonyAddress },
+  } = useColonyContext();
   const { pollActiveTokenBalance } = useUserTokenBalanceContext();
 
   const [isActivate, setIsActive] = useState(true);
 
-  const nativeToken = colony?.nativeToken;
-  const tokenDecimals = getTokenDecimalsWithFallback(nativeToken?.decimals);
+  const tokenDecimals = getTokenDecimalsWithFallback(nativeToken.decimals);
   const tokenBalance = isActivate ? inactiveBalance : activeBalance;
   const tokenBalanceInEthers = moveDecimal(tokenBalance, -tokenDecimals);
 
@@ -89,13 +90,13 @@ const ChangeTokenStateForm = ({
     mapPayload(({ amount }) => {
       // Convert amount string with decimals to BigInt (eth to wei)
       const formattedAmount = BigNumber.from(
-        moveDecimal(amount, nativeToken?.decimals),
+        moveDecimal(amount, nativeToken.decimals),
       );
 
       return {
         amount: formattedAmount,
-        colonyAddress: colony?.colonyAddress,
-        tokenAddress: nativeToken?.tokenAddress,
+        colonyAddress,
+        tokenAddress: nativeToken.tokenAddress,
       };
     }),
   );
@@ -145,7 +146,7 @@ const ChangeTokenStateForm = ({
                 formattingOptions={{
                   delimiter: ',',
                   numeral: true,
-                  numeralDecimalScale: nativeToken?.decimals,
+                  numeralDecimalScale: nativeToken.decimals,
                 }}
                 maxButtonParams={{
                   maxAmount: tokenBalanceInEthers,
@@ -173,7 +174,7 @@ const ChangeTokenStateForm = ({
                       <Numeral
                         value={tokenBalance ?? 0}
                         decimals={tokenDecimals}
-                        suffix={nativeToken?.symbol}
+                        suffix={nativeToken.symbol}
                         className={styles.balanceAmount}
                       />
                     ),
@@ -199,7 +200,7 @@ const ChangeTokenStateForm = ({
                         <Numeral
                           value={lockedBalance ?? 0}
                           decimals={tokenDecimals}
-                          suffix={nativeToken?.symbol}
+                          suffix={nativeToken.symbol}
                           className={styles.balanceAmount}
                         />
                       ),

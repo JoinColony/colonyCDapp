@@ -15,8 +15,9 @@ const getFormattedActionsCount = (count: number) =>
   count > 1000 ? '999+' : count;
 
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
-  const { colony } = useColonyContext();
-  const { domains, colonyAddress = '' } = colony ?? {};
+  const {
+    colony: { domains, colonyAddress },
+  } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
 
   const { actionsCount: totalActions, loading: totalActionsLoading } =

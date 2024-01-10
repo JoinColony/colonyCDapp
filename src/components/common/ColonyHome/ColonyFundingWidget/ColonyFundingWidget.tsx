@@ -24,16 +24,11 @@ const MSG = defineMessages({
 });
 
 const ColonyFundingWidget = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { balances, name, tokens: colonyTokenItems, nativeToken, status },
+  } = useColonyContext();
   const { domainIdFilter: currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID } =
     useColonyHomeContext();
-  const {
-    balances,
-    name,
-    tokens: colonyTokenItems,
-    nativeToken,
-    status,
-  } = colony || {};
 
   const tokens = useMemo(
     () =>
@@ -97,13 +92,13 @@ const ColonyFundingWidget = () => {
           <li key={token?.tokenAddress}>
             <TokenInfoPopover
               token={token}
-              isTokenNative={token?.tokenAddress === nativeToken?.tokenAddress}
+              isTokenNative={token?.tokenAddress === nativeToken.tokenAddress}
             >
               <div className={styles.tokenBalance}>
                 <TokenBalanceItem
                   token={token}
                   isTokenNative={
-                    token?.tokenAddress === nativeToken?.tokenAddress
+                    token?.tokenAddress === nativeToken.tokenAddress
                   }
                   isNativeTokenLocked={!status?.nativeToken?.unlocked}
                   balance={domainBalances[token?.tokenAddress]}

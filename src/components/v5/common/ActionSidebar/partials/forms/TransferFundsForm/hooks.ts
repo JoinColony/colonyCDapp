@@ -101,11 +101,10 @@ export const useTransferFunds = (
         createdIn: from || Id.RootDomain,
         from: Id.RootDomain,
         amount: {
-          tokenAddress:
-            selectedTokenAddress ?? colony?.nativeToken.tokenAddress,
+          tokenAddress: selectedTokenAddress ?? colony.nativeToken.tokenAddress,
         },
       }),
-      [from, selectedTokenAddress, colony?.nativeToken.tokenAddress],
+      [from, selectedTokenAddress, colony.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
@@ -116,10 +115,6 @@ export const useTransferFunds = (
     transform: useCallback(
       pipe(
         mapPayload((values: TransferFundsFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getTransferFundsPayload(colony, values);
         }),
       ),

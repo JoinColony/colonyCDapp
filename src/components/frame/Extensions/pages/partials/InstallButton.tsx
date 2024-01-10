@@ -22,8 +22,10 @@ interface InstallButtonProps {
 const displayName = 'pages.ExtensionDetailsPage.InstallButton';
 
 const InstallButton = ({ extensionData }: InstallButtonProps) => {
-  const { colony, isSupportedColonyVersion } = useColonyContext();
-  const { colonyAddress = '', name: colonyName = '' } = colony ?? {};
+  const {
+    colony: { colonyAddress, name: colonyName },
+    isSupportedColonyVersion,
+  } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
   const [isInstallDisabled, setIsInstallDisabled] = useState(false);
   const [isPolling, setIsPolling] = useState(false);

@@ -37,9 +37,10 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     motionState || null,
   );
 
-  const actionMetadataDescription = colony
-    ? formatText({ id: 'action.title' }, getActionTitleValues(action, colony))
-    : '';
+  const actionMetadataDescription = formatText(
+    { id: 'action.title' },
+    getActionTitleValues(action, colony),
+  );
 
   return (
     <div className="flex gap-4 items-center w-full">

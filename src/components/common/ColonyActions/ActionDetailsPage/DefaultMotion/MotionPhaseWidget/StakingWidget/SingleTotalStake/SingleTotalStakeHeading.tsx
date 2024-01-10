@@ -55,9 +55,11 @@ const SingleTotalStakeHeading = ({
   requiredStake,
 }: SingleTotalStakeHeadingProps) => {
   const { isObjection } = useStakingWidgetContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
-    colony?.nativeToken || {};
+    nativeToken;
 
   return (
     <div className={styles.widgetHeading}>

@@ -26,17 +26,15 @@ interface Props {
 }
 
 const EnableButton = ({ extensionData, inputDisabled, stopPolling }: Props) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, name: colonyName },
+  } = useColonyContext();
   const navigate = useNavigate();
   stopPolling();
 
-  if (!colony) {
-    return null;
-  }
-
   const handleEnableButtonClick = () => {
     navigate(
-      `/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}/${COLONY_EXTENSION_SETUP_ROUTE}`,
+      `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}/${COLONY_EXTENSION_SETUP_ROUTE}`,
     );
   };
 
@@ -49,7 +47,7 @@ const EnableButton = ({ extensionData, inputDisabled, stopPolling }: Props) => {
       <ActionButton
         text={MSG.enable}
         actionType={ActionTypes.EXTENSION_ENABLE}
-        values={{ colonyAddress: colony.colonyAddress, extensionData }}
+        values={{ colonyAddress, extensionData }}
       />
     );
   }

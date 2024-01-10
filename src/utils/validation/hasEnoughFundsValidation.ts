@@ -14,7 +14,7 @@ export const hasEnoughFundsValidation = (
   value: number | null | undefined,
   context: TestContext<object>,
   selectedTeam: string | undefined,
-  colony: ColonyFragment | undefined,
+  colony: ColonyFragment,
   tokenAddress?: string,
 ) => {
   const { parent } = context;

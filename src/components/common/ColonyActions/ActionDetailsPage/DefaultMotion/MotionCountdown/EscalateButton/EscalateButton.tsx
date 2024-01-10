@@ -30,16 +30,14 @@ interface EscalateButtonProps {
 }
 
 const EscalateButton = ({ motionId }: EscalateButtonProps) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { user } = useAppContext();
-
-  if (!colony) {
-    return null;
-  }
 
   const escalateTransform = mapPayload(() => {
     const payload: EscalateMotionPayload = {
-      colonyAddress: colony.colonyAddress ?? '',
+      colonyAddress,
       motionId: BigNumber.from(motionId),
       userAddress: user?.walletAddress ?? '',
     };

@@ -38,7 +38,9 @@ const HeadingChunks = (chunks: React.ReactNode[]) => (
 
 const ExtensionDetails = () => {
   const { extensionId } = useParams();
-  const { colony } = useColonyContext();
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
   const { user } = useAppContext();
   const { extensionData, loading, ...pollingControls } = useExtensionData(
     extensionId ?? '',
@@ -47,10 +49,6 @@ const ExtensionDetails = () => {
 
   if (loading) {
     return <SpinnerLoader appearance={{ theme: 'primary', size: 'massive' }} />;
-  }
-
-  if (!colony) {
-    return null;
   }
 
   if (!extensionData) {
@@ -62,9 +60,9 @@ const ExtensionDetails = () => {
   }
 
   const isSetupRoute = pathname.replace(/\/$/, '').endsWith('setup');
-  const extensionUrl = `/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
+  const extensionUrl = `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
   const breadCrumbs: Crumb[] = [
-    [MSG.title, `/${colony.name}/${COLONY_EXTENSIONS_ROUTE}`],
+    [MSG.title, `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}`],
     [extensionData.name, isSetupRoute ? extensionUrl : ''],
   ];
   if (isSetupRoute) {

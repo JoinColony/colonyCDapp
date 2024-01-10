@@ -16,10 +16,6 @@ const DecisionDetails = ({
 }: DecisionDetailsProps) => {
   const { colony } = useColonyContext();
 
-  if (!colony) {
-    return null;
-  }
-
   const widgetValues = {
     type: ColonyActionType.CreateDecisionMotion,
     motionData: {

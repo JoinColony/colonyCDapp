@@ -27,9 +27,8 @@ export const useGetColonyAction = (transactionHash?: string) => {
   const { transactionHash: transactionId } =
     useParams<ActionDetailsPageParams>();
   const isValidTx = isTransactionFormat(transactionHash || transactionId);
-  const skipQuery = !colony || !isValidTx;
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
-  const [isPolling, setIsPolling] = useState(!skipQuery);
+  const [isPolling, setIsPolling] = useState(!!isValidTx);
 
   const {
     data: actionData,
@@ -38,7 +37,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     stopPolling: stopPollingForAction,
     refetch: refetchAction,
   } = useGetColonyActionQuery({
-    skip: skipQuery,
+    skip: !isValidTx,
     variables: {
       transactionHash: (transactionHash || transactionId) ?? '',
     },
@@ -87,7 +86,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     loading: loadingMotionState,
     refetch: refetchMotionState,
   } = useGetMotionStateQuery({
-    skip: !action?.motionData || skipQuery,
+    skip: !action?.motionData || !isValidTx,
     variables: {
       input: {
         colonyAddress: colony?.colonyAddress ?? '',

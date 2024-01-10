@@ -13,8 +13,9 @@ interface RevealRewardProps {
 const displayName = 'common.ColonyActions.DefaultMotion.RevealRewardItem';
 
 const RevealRewardItem = ({ voterReward }: RevealRewardProps) => {
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
 
   return (
     <>

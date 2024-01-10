@@ -44,8 +44,8 @@ const ColonyUnclaimedTransfers = () => {
   const {
     colony,
     canInteractWithColony,
-    startPolling: startPollingColony,
-    stopPolling: stopPollingColony,
+    startPollingColonyData,
+    stopPollingColonyData,
   } = useColonyContext();
   const claims = useColonyFundsClaims();
 
@@ -65,8 +65,8 @@ const ColonyUnclaimedTransfers = () => {
   const token = firstItem?.token;
 
   const handleClaimSuccess = () => {
-    startPollingColony(1_000);
-    setTimeout(stopPollingColony, 10_000);
+    startPollingColonyData(1_000);
+    setTimeout(stopPollingColonyData, 10_000);
   };
 
   return claimsLength ? (

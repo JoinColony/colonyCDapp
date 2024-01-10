@@ -37,10 +37,6 @@ const DefaultMotion = ({
   const { isVotingReputationEnabled } = useEnabledExtensions();
   const isDecision = !!actionData.decisionData;
 
-  if (!colony) {
-    return null;
-  }
-
   const { motionData, showInActionsList } = actionData;
   const motionState = getMotionState(networkMotionState, motionData);
 

@@ -18,8 +18,8 @@ const AcceptButton: FC<AcceptButtonProps> = ({
   const {
     colony,
     canInteractWithColony,
-    startPolling: startPollingColony,
-    stopPolling: stopPollingColony,
+    startPollingColonyData,
+    stopPollingColonyData,
   } = useColonyContext();
   const [isClaimed, setIsClaimed] = useState(false);
 
@@ -30,8 +30,8 @@ const AcceptButton: FC<AcceptButtonProps> = ({
 
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    startPollingColony(1_000);
-    setTimeout(stopPollingColony, 10_000);
+    startPollingColonyData(1_000);
+    setTimeout(stopPollingColonyData, 10_000);
   };
 
   return (

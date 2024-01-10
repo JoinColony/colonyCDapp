@@ -31,8 +31,11 @@ const ColonyDomainSelector = ({
   filteredDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
   onDomainChange,
 }: Props) => {
-  const { colony, canInteractWithColony } = useColonyContext();
-  const { domains } = colony || {};
+  const {
+    colony: { domains },
+    colony,
+    canInteractWithColony,
+  } = useColonyContext();
   const enabledExtensionData = useEnabledExtensions();
 
   const openEditDialog = useDialog(EditDomainDialog);

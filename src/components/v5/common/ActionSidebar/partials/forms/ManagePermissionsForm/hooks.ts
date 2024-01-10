@@ -97,10 +97,6 @@ export const useManagePermissions = (
     transform: useCallback(
       pipe(
         mapPayload((values: ManagePermissionsFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getManagePermissionsPayload(colony, values);
         }),
       ),

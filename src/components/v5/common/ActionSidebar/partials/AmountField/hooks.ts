@@ -14,13 +14,11 @@ export const useAmountField = (
   const { colony } = useColonyContext();
 
   const colonyTokens =
-    colony?.tokens?.items
+    colony.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
 
-  const selectedToken = colony
-    ? getSelectedToken(colony, selectedTokenAddress)
-    : undefined;
+  const selectedToken = getSelectedToken(colony, selectedTokenAddress);
 
   const formattingOptions = useMemo(
     () => ({

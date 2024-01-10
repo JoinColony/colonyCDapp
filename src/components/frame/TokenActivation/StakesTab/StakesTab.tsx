@@ -33,13 +33,10 @@ export interface Props {
 }
 
 const StakesTab = ({ currentUserClaims }: Props) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken, name: colonyName, colonyAddress },
+  } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const { nativeToken } = colony || {};
-
-  if (!nativeToken) {
-    return null;
-  }
 
   return (
     <div className={styles.stakesContainer}>
@@ -50,7 +47,7 @@ const StakesTab = ({ currentUserClaims }: Props) => {
             <ClaimAllButton
               unclaimedStakes={currentUserClaims}
               userAddress={wallet?.address || ''}
-              colonyAddress={colony?.colonyAddress || ''}
+              colonyAddress={colonyAddress}
             />
           </div>
           <ul data-test="claimableMotionsList">
@@ -70,7 +67,7 @@ const StakesTab = ({ currentUserClaims }: Props) => {
                     nativeToken.decimals,
                   )}
                   tokenSymbol={nativeToken.symbol}
-                  colonyName={colony?.name || ''}
+                  colonyName={colonyName}
                   key={motionId}
                   motionId={motionId}
                 />

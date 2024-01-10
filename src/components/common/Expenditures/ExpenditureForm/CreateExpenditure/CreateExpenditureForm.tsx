@@ -19,10 +19,6 @@ const CreateExpenditureForm = <T extends ExpenditureFormValues>({
 }: CreateExpenditureFormProps<T>) => {
   const { colony } = useColonyContext();
 
-  if (!colony) {
-    return null;
-  }
-
   return (
     <ActionForm<T> {...actionFormProps}>
       {(formProps) => (

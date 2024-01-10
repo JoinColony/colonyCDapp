@@ -51,13 +51,15 @@ const extensionLinkMsgValues = (colonyName: string) => {
 
 const DecisionNotFound = () => {
   const openDecisionDialog = useDialog(DecisionDialog);
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, name: colonyName },
+  } = useColonyContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const handleClick = () => {
     openDecisionDialog({
       nativeDomainId: Id.RootDomain,
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress,
     });
   };
 
@@ -71,7 +73,7 @@ const DecisionNotFound = () => {
       ) : (
         <FormattedMessage
           {...MSG.installExtension}
-          values={extensionLinkMsgValues(colony?.name ?? '')}
+          values={extensionLinkMsgValues(colonyName)}
         />
       )}
     </div>

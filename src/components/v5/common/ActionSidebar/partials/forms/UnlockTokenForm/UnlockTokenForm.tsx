@@ -19,7 +19,7 @@ const displayName = 'v5.common.ActionSidebar.partials.UnlockTokenForm';
 const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
   const { colony } = useColonyContext();
-  const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
+  const isNativeTokenUnlocked = !!colony.status?.nativeToken?.unlocked;
   const [searchParams] = useSearchParams();
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
 

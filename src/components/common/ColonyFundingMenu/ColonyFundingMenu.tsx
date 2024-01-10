@@ -65,10 +65,6 @@ const ColonyFundingMenu = ({ filteredDomainId }: ColonyFundingMenuProps) => {
   const openMintTokenDialog = useDialog(MintTokenDialog);
   const openTransferFundsDialog = useDialog(TransferFundsDialog);
 
-  if (!colony) {
-    return null;
-  }
-
   const rootRoles = getUserRolesForDomain(
     colony,
     user?.walletAddress ?? '',

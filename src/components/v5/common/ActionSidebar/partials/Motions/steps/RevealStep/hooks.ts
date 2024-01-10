@@ -21,19 +21,20 @@ export const useRevealStep = (
   const { nativeMotionDomainId, voterRecord, rootHash, motionId } =
     motionData || {};
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
+  const {
+    colony: { colonyAddress, nativeToken },
+  } = useColonyContext();
   const { data } = useGetVoterRewardsQuery({
     variables: {
       input: {
         voterAddress: user?.walletAddress ?? '',
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         nativeMotionDomainId: nativeMotionDomainId || '',
         motionId: motionId || '',
         rootHash: rootHash || '',
       },
     },
-    skip: !user || !colony,
+    skip: !user,
     fetchPolicy: 'cache-and-network',
   });
 
@@ -42,7 +43,7 @@ export const useRevealStep = (
   const { vote, hasUserVoted, userVoteRevealed, setUserVoteRevealed } =
     useRevealWidgetUpdate(voterRecord || [], stopPollingAction);
   const transform = mapPayload(() => ({
-    colonyAddress: colony?.colonyAddress,
+    colonyAddress,
     userAddress: user?.walletAddress ?? '',
     motionId: BigNumber.from(motionId),
   }));

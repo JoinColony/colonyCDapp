@@ -52,7 +52,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
   const handleEnableClick = async () => {
     try {
       await asyncFunction({
-        colonyAddress: colony?.colonyAddress,
+        colonyAddress: colony.colonyAddress,
         extensionData,
       });
       setIsPermissionEnabled(true);

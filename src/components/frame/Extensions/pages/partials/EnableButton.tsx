@@ -41,10 +41,6 @@ const EnableButton = ({
     formState: { isValid, isSubmitting },
   } = useFormContext();
 
-  if (!colony) {
-    return null;
-  }
-
   const userHasArchitecture =
     !!user &&
     addressHasRoles({

@@ -4,7 +4,6 @@ import { defineMessages } from 'react-intl';
 import ColonyActionsTable from '~common/ColonyActionsTable';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 import {
-  useColonyContext,
   useColonySubscription,
   useGetSelectedDomainFilter,
   useMobile,
@@ -50,7 +49,6 @@ const MSG = defineMessages({
 
 const ColonyHome = () => {
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
 
@@ -59,10 +57,6 @@ const ColonyHome = () => {
   const { handleUnwatch } = useColonySubscription();
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
-
-  if (!colony) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col gap-10">

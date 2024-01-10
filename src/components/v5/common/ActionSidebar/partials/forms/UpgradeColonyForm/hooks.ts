@@ -32,10 +32,6 @@ export const useUpgradeColony = (
     transform: useCallback(
       pipe(
         mapPayload((values: UpgradeColonyFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getUpgradeColonyPayload(colony, values);
         }),
       ),

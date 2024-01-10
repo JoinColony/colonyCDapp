@@ -25,8 +25,9 @@ type Props = {
 };
 
 const SelectedToken = ({ children }: Props) => {
-  const { colony } = useColonyContext();
-  const { tokens, nativeToken, balances } = colony || {};
+  const {
+    colony: { tokens, nativeToken, balances },
+  } = useColonyContext();
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
   const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>(
     nativeTokenAddress ?? '',

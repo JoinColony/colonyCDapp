@@ -16,7 +16,7 @@ export const useTokenSelect = (inputValue: string) => {
   const predefinedTokens = getTokenList();
   const allTokens = useGetAllTokens();
   const { colony } = useColonyContext();
-  const colonyTokens = colony?.tokens?.items || [];
+  const colonyTokens = colony.tokens?.items || [];
   const isNativeToken = colonyTokens.some(
     (token) => token?.token.tokenAddress === inputValue,
   );

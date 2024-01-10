@@ -11,7 +11,7 @@ interface UseUserReputationHook {
 }
 
 const useUserReputation = (
-  colonyAddress: Address | null | undefined,
+  colonyAddress: Address,
   walletAddress: Address | null | undefined,
   domainId = Id.RootDomain,
   rootHash?: string,
@@ -20,7 +20,7 @@ const useUserReputation = (
     useGetUserReputationQuery({
       variables: {
         input: {
-          colonyAddress: colonyAddress ?? '',
+          colonyAddress,
           walletAddress: walletAddress ?? '',
           domainId,
           rootHash,
@@ -35,7 +35,7 @@ const useUserReputation = (
     useGetUserReputationQuery({
       variables: {
         input: {
-          colonyAddress: colonyAddress ?? '',
+          colonyAddress,
           walletAddress: ADDRESS_ZERO,
           domainId,
           rootHash,

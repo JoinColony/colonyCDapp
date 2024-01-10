@@ -29,10 +29,6 @@ const StagedPaymentForm = () => {
 
   const [isStakeDialogOpen, setIsStakeDialogOpen] = useState(false);
 
-  if (!colony) {
-    return null;
-  }
-
   const isStakingRequired = isStakedExpenditureEnabled;
 
   const transformPayload = pipe(
@@ -40,9 +36,7 @@ const StagedPaymentForm = () => {
       return {
         ...payload,
         colony,
-        createdInDomain: colony
-          ? findDomainByNativeId(payload.createInDomainId, colony)
-          : null,
+        createdInDomain: findDomainByNativeId(payload.createInDomainId, colony),
         fundFromDomainId: payload.fundFromDomainId,
         payouts: getStagedExpenditurePayouts(payload),
         isStaged: true,

@@ -5,13 +5,15 @@ import { useGetUserReputationQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 
 export const useTeamReputationSummaryRow = (id: number) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
   const { data: totalReputation } = useGetUserReputationQuery({
     variables: {
       input: {
         walletAddress: ADDRESS_ZERO,
-        colonyAddress: colony?.colonyAddress || '',
+        colonyAddress,
         domainId: id || Id.RootDomain,
       },
     },

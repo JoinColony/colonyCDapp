@@ -255,14 +255,14 @@ const getExtendedEventName = (
 export const getActionEventTitleValues = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
+  colony: Colony,
   eventId?: string,
-  colony?: Colony,
 ) => {
   const updatedItem = mapActionEventToExpectedFormat(
     eventName,
     actionData,
-    eventId,
     colony,
+    eventId,
   );
   const extendedEventName = getExtendedEventName(eventName, actionData);
   const keys = EVENT_TYPE_MESSAGE_KEYS_MAP[extendedEventName] ?? DEFAULT_KEYS;

@@ -31,12 +31,11 @@ const MSG = defineMessages({
 
 const DecisionPreview = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const draftDecision = useSelector(
-    getDraftDecisionFromStore(
-      user?.walletAddress || '',
-      colony?.colonyAddress ?? '',
-    ),
+    getDraftDecisionFromStore(user?.walletAddress || '', colonyAddress),
   );
 
   if (walletConnecting || userLoading) {

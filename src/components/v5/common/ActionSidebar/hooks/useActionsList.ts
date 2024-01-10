@@ -50,11 +50,11 @@ export const useActionsList = () => {
       isVotingReputationEnabled);
   const canMoveFunds = canFund(allUserRoles);
   const canUserMintNativeToken = isVotingReputationEnabled
-    ? colony?.status?.nativeToken?.mintable
-    : hasRoot(allUserRoles) && colony?.status?.nativeToken?.mintable;
+    ? colony.status?.nativeToken?.mintable
+    : hasRoot(allUserRoles) && colony.status?.nativeToken?.mintable;
   const canUserUnlockNativeToken = isVotingReputationEnabled
-    ? colony?.status?.nativeToken?.unlockable
-    : hasRoot(allUserRoles) && colony?.status?.nativeToken?.unlockable;
+    ? colony.status?.nativeToken?.unlockable
+    : hasRoot(allUserRoles) && colony.status?.nativeToken?.unlockable;
   const canManageTokens = hasRoot(allUserRoles);
   // @BETA: Disabled for now
   // const canSmiteReputation =

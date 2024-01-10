@@ -3,7 +3,7 @@ import Decimal from 'decimal.js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { DEFAULT_TOKEN_DECIMALS, ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO } from '~constants';
 import { useGetUserReputationQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import Heading from '~shared/Heading';
@@ -25,12 +25,14 @@ type Props = {
 };
 
 const TotalReputation = ({ selectedDomainId }: Props) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, nativeToken },
+  } = useColonyContext();
   const { data: totalReputation } = useGetUserReputationQuery({
     variables: {
       input: {
         walletAddress: ADDRESS_ZERO,
-        colonyAddress: colony?.colonyAddress || '',
+        colonyAddress,
         domainId: selectedDomainId || Id.RootDomain,
       },
     },
@@ -48,7 +50,7 @@ const TotalReputation = ({ selectedDomainId }: Props) => {
           value={new Decimal(totalReputation?.getUserReputation || '0')
             .abs()
             .toString()}
-          decimals={colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
+          decimals={nativeToken.decimals}
           suffix="reputation points"
         />
       </p>

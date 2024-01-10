@@ -24,7 +24,9 @@ const MSG = defineMessages({
 });
 
 const ColonyExtensions = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
 
   const { installedExtensionsData, loading } = useExtensionsData();
 
@@ -60,7 +62,7 @@ const ColonyExtensions = () => {
               <li key={address} className={styles.extension}>
                 <NavLink
                   className={styles.invisibleLink}
-                  to={`/${colony?.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`}
+                  to={`/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`}
                   text={extension.name}
                 />
                 <ExtensionStatusBadge

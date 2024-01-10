@@ -25,12 +25,14 @@ const FinalizeButton = ({
   gasEstimate,
 }: FinalizeButtonProps) => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
   const transform = mapPayload(
     () =>
       ({
-        colonyAddress: colony?.colonyAddress,
+        colonyAddress,
         userAddress: user?.walletAddress,
         motionId,
         gasEstimate,

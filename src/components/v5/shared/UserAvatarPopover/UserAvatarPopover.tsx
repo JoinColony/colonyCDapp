@@ -16,8 +16,9 @@ const displayName = 'v5.UserAvatarPopover';
 
 const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({ size, ...props }) => {
   const { walletAddress, isContributorsList } = props;
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony || {};
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { data } = useGetColonyContributorQuery({
     variables: {
       id: getColonyContributorId(colonyAddress, walletAddress),

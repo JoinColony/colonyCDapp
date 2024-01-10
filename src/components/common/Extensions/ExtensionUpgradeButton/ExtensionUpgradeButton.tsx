@@ -31,12 +31,12 @@ const ExtensionUpgradeButton = ({ extensionData }: Props) => {
   }
 
   const transform = mapPayload(() => ({
-    colonyAddress: colony?.colonyAddress,
+    colonyAddress: colony.colonyAddress,
     extensionId: extensionData.extensionId,
     version: extensionData.availableVersion,
   }));
 
-  if (!user?.profile || !colony) {
+  if (!user?.profile) {
     return null;
   }
 

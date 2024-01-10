@@ -19,8 +19,10 @@ import NotificationBanner from '~v5/shared/NotificationBanner';
 const displayName = 'frame.Extensions.pages.AdvancedPage';
 
 const AdvancedPage: FC = () => {
-  const { colony } = useColonyContext();
-  const { version } = colony || {};
+  const {
+    colony: { version },
+    colony,
+  } = useColonyContext();
   const { colonyContractVersion } = useColonyContractVersion();
   // @BETA: Disabled for now
   // const isMobile = useMobile();

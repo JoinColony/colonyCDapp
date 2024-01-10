@@ -23,7 +23,7 @@ const ManageFundsLink = () => {
   return (
     <Link
       className={styles.manageFundsLink}
-      to={`/${colony?.name}/${COLONY_INCOMING_ROUTE}`}
+      to={`/${colony.name}/${COLONY_INCOMING_ROUTE}`}
       data-test="manageFunds"
     >
       <Icon

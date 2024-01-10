@@ -21,10 +21,6 @@ import styles from '../ExpenditureForm.module.css';
 const StreamingPaymentForm = () => {
   const { colony } = useColonyContext();
 
-  if (!colony) {
-    return null;
-  }
-
   const transformPayload = pipe(
     mapPayload(
       (payload: StreamingPaymentFormValues) =>

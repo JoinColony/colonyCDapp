@@ -16,8 +16,9 @@ import { TokensModalType, UseTokensModalReturnType } from './types';
 export const useTokensModal = (
   type: TokensModalType,
 ): UseTokensModalReturnType => {
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
+  const {
+    colony: { nativeToken, colonyAddress },
+  } = useColonyContext();
   const { symbol: tokenSymbol } = nativeToken || {};
   const {
     tokenBalanceData: tokenData,
@@ -74,7 +75,7 @@ export const useTokensModal = (
 
       return {
         amount: formattedAmount,
-        colonyAddress: colony?.colonyAddress,
+        colonyAddress,
         tokenAddress: nativeToken?.tokenAddress,
       };
     }),

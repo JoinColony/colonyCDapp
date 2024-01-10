@@ -60,7 +60,7 @@ export const useActionDescriptionMetadata = () => {
   const { colony } = useColonyContext();
 
   return useMemo(() => {
-    if (!selectedAction || !colony || !user) {
+    if (!selectedAction || !user) {
       return undefined;
     }
 

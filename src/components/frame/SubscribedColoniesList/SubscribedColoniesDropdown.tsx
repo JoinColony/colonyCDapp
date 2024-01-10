@@ -19,8 +19,6 @@ interface Props {
 
 const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
   const { colony: activeColony } = useColonyContext();
-  const colonyToDisplay = activeColony || watchlist[0]?.colony;
-  const colonyToDisplayAddress = colonyToDisplay?.colonyAddress;
 
   return (
     <Popover
@@ -58,13 +56,13 @@ const SubscribedColoniesDropdown = ({ watchlist }: Props) => {
         className={({ isActive }) =>
           isActive ? styles.activeColony : styles.itemLink
         }
-        title={colonyToDisplay?.name}
-        to={`/${colonyToDisplay?.name}`}
+        title={activeColony.name}
+        to={`/${activeColony.name}`}
       >
         <div className={styles.itemImage}>
           <ColonyAvatar
-            colony={colonyToDisplay as Colony}
-            colonyAddress={colonyToDisplayAddress || ''}
+            colony={activeColony}
+            colonyAddress={activeColony.colonyAddress}
             size="xs"
           />
         </div>

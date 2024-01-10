@@ -48,7 +48,7 @@ export const useSubmitButtonText = () => {
 
 export const useSubmitButtonDisabled = () => {
   const { colony } = useColonyContext();
-  const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
+  const isNativeTokenUnlocked = !!colony.status?.nativeToken?.unlocked;
   const selectedAction: Action | undefined = useWatch({
     name: ACTION_TYPE_FIELD_NAME,
   });

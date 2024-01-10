@@ -37,12 +37,8 @@ export const useUnlockToken = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        withKey(colony?.colonyAddress || ''),
+        withKey(colony.colonyAddress),
         mapPayload((values: UnlockTokenFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getUnlockTokenPayload(colony, values);
         }),
       ),

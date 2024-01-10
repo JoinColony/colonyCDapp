@@ -25,15 +25,16 @@ const MSG = defineMessages({
 });
 
 const OneTxPaymentUpgrade = () => {
-  const { colony } = useColonyContext();
-  const { name } = colony || {};
+  const {
+    colony: { name },
+  } = useColonyContext();
   const { extensionId } = useParams<{
     extensionId: string;
   }>();
 
   const { extensionData } = useExtensionData(Extension.OneTxPayment);
 
-  if (!colony || !extensionData) {
+  if (!extensionData) {
     return null;
   }
 

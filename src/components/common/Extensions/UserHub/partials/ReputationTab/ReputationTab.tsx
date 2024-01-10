@@ -12,14 +12,14 @@ const displayName = 'common.Extensions.UserHub.partials.ReputationTab';
 
 const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
   const { formatMessage } = useIntl();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, nativeToken },
+  } = useColonyContext();
   const { wallet } = useAppContext();
 
-  if (!colony || !wallet) {
+  if (!wallet) {
     return null;
   }
-
-  const { colonyAddress, nativeToken } = colony;
 
   // @TODO: handle empty state <EmptyContent />
   return (

@@ -49,19 +49,21 @@ const ExtensionSetup = ({
   },
 }: Props) => {
   const navigate = useNavigate();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, name: colonyName },
+  } = useColonyContext();
   const { shortPollExtensions } = useColonyHomeContext();
   const transform = pipe(
     mapPayload((payload) =>
       mapExtensionActionPayload(payload, initializationParams),
     ),
-    mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
+    mergePayload({ colonyAddress, extensionData }),
   );
 
   const handleFormSuccess = useCallback(async () => {
     shortPollExtensions();
-    navigate(`/${colony?.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`);
-  }, [colony?.name, extensionId, navigate, shortPollExtensions]);
+    navigate(`/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`);
+  }, [colonyName, extensionId, navigate, shortPollExtensions]);
 
   const initialValues = useMemo(() => {
     if (!initializationParams) {
@@ -70,14 +72,10 @@ const ExtensionSetup = ({
     return createExtensionSetupInitialValues(initializationParams);
   }, [initializationParams]);
 
-  if (!colony) {
-    return null;
-  }
-
   if (isInitialized || isDeprecated || !initializationParams) {
     return (
       <Navigate
-        to={`/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`}
+        to={`/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`}
       />
     );
   }

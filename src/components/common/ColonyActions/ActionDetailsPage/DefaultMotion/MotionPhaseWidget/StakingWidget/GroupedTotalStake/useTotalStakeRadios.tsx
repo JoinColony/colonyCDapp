@@ -39,9 +39,11 @@ const useTotalStakeRadios = () => {
       percentage: { yay: yayPercentage, nay: nayPercentage },
     },
   } = useStakingWidgetContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
-    colony?.nativeToken || {};
+    nativeToken;
   const { getValues } = useFormContext();
   const { stakeSide } = getValues();
   const { user } = useAppContext();

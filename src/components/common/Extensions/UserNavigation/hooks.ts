@@ -122,14 +122,15 @@ export const useGroupedTransactionsAndMessages = (): {
     ApolloQueryResult<GetUserTransactionsQuery>
   >;
 } => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { user } = useAppContext();
   const [page, setPage] = useState(1);
 
   const visibleItems = TRANSACTION_LIST_PAGE_SIZE * page;
 
   const { walletAddress = '' } = user ?? {};
-  const { colonyAddress = '' } = colony ?? {};
 
   const transactionGroups = useSelector(groupedTransactionsSelector);
 

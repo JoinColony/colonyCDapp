@@ -32,17 +32,13 @@ const ActionDetailsPageLayout = ({
   const { colony } = useColonyContext();
   const safeTransactionStatus = useSafeTransactionStatus(actionData);
 
-  if (!colony) {
-    return null;
-  }
-
   const hasPendingSafeTransactions = safeTransactionStatus.find(
     (transactionStatus) =>
       transactionStatus === TRANSACTION_STATUS.ACTION_NEEDED,
   );
 
   const extendedActionType = actionData
-    ? getExtendedActionType(actionData, colony?.metadata)
+    ? getExtendedActionType(actionData, colony.metadata)
     : undefined;
 
   return (

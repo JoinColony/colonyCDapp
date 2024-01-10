@@ -14,7 +14,9 @@ import { getStakeStatus } from './helpers';
 import { StakesFilterType } from './types';
 
 export const useStakesByFilterType = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { user } = useAppContext();
   const { walletAddress } = user ?? {};
 
@@ -25,9 +27,9 @@ export const useStakesByFilterType = () => {
   } = useGetUserStakesQuery({
     variables: {
       userAddress: walletAddress ?? '',
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress,
     },
-    skip: !walletAddress || !colony?.colonyAddress,
+    skip: !walletAddress,
     fetchPolicy: 'cache-and-network',
   });
   const userStakes = useMemo(

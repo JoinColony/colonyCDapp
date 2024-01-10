@@ -39,10 +39,6 @@ export const useCreateNewTeam = (
     transform: useCallback(
       pipe(
         mapPayload((values: CreateNewTeamFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getCreateNewTeamPayload(colony, values);
         }),
       ),

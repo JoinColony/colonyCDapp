@@ -109,16 +109,14 @@ const UserInfoPopover = ({ user, banned = false, address }: Props) => {
             )}
           </div>
         )}
-        {colony && (
-          <div className={styles.section}>
-            <UserReputation
-              colony={colony}
-              userReputationForTopDomains={userReputation || []}
-              isCurrentUserReputation={wallet?.address === walletAddress}
-              isUserReputationLoading={loadingUserReputation}
-            />
-          </div>
-        )}
+        <div className={styles.section}>
+          <UserReputation
+            colony={colony}
+            userReputationForTopDomains={userReputation || []}
+            isCurrentUserReputation={wallet?.address === walletAddress}
+            isUserReputationLoading={loadingUserReputation}
+          />
+        </div>
         {/* {!totalBalance.isZero() && nativeToken && (
           <div className={styles.section}>
             <UserTokens totalBalance={totalBalance} nativeToken={nativeToken} />

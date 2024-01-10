@@ -9,8 +9,8 @@ export const useGetAllTokens = () => {
   const { colony } = useColonyContext();
   const predefinedTokens = getTokenList();
   const colonyTokens = useMemo(
-    () => colony?.tokens?.items.filter(notNull) || [],
-    [colony?.tokens?.items],
+    () => colony.tokens?.items.filter(notNull) || [],
+    [colony.tokens?.items],
   );
 
   return useMemo(

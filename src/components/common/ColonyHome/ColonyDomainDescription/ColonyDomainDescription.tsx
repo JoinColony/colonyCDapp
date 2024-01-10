@@ -13,7 +13,7 @@ const displayName = 'common.ColonyHome.ColonyDomainDescription';
 const ColonyDomainDescription = () => {
   const { colony } = useColonyContext();
   const { domainIdFilter: currentDomainId } = useColonyHomeContext();
-  if (!colony || currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) {
+  if (currentDomainId === COLONY_TOTAL_BALANCE_DOMAIN_ID) {
     return null;
   }
 

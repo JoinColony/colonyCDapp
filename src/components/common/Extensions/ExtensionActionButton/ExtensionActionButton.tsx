@@ -24,7 +24,7 @@ const ExtensionActionButton = ({
   const { colony, isSupportedColonyVersion } = useColonyContext();
   const { user, wallet } = useAppContext();
 
-  if (!colony || !user) {
+  if (!user) {
     return null;
   }
 

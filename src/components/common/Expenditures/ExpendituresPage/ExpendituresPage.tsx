@@ -14,18 +14,15 @@ import styles from './ExpendituresPage.module.css';
 // import { CreateExpenditureForm } from '../ExpenditureForm';
 
 const ExpendituresPage = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, name: colonyName },
+  } = useColonyContext();
 
   const { data, loading } = useGetColonyExpendituresQuery({
     variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress,
     },
-    skip: !colony,
   });
-
-  if (!colony) {
-    return null;
-  }
 
   return (
     <div className={styles.pageWrapper}>
@@ -36,7 +33,7 @@ const ExpendituresPage = () => {
           .map((expenditure) => (
             <li key={expenditure.id}>
               <Link
-                to={`/${colony.name}/${COLONY_EXPENDITURES_ROUTE}/${expenditure.nativeId}`}
+                to={`/${colonyName}/${COLONY_EXPENDITURES_ROUTE}/${expenditure.nativeId}`}
               >
                 Expenditure ID: {expenditure.nativeId}
               </Link>

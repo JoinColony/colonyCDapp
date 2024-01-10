@@ -31,8 +31,9 @@ const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
 const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
   const selectedDomain = useGetSelectedDomainFilter();
-  const { colony } = useColonyContext();
-  const { balances, nativeToken, status, colonyAddress } = colony || {};
+  const {
+    colony: { balances, nativeToken, status, colonyAddress },
+  } = useColonyContext();
   const { nativeToken: nativeTokenStatus } = status || {};
   const isMobile = useMobile();
   // const { searchValue } = useSearchContext();

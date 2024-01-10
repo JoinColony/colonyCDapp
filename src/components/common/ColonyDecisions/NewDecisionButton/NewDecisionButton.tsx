@@ -20,16 +20,15 @@ const displayName = 'common.ColonyDecisions.NewDecisionButton';
 
 const NewDecisionButton = () => {
   const { user, walletConnecting, userLoading } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { domainIdFilter: domainId } = useColonyHomeContext();
   const { isVotingReputationEnabled, loading: isLoadingExtensions } =
     useEnabledExtensions();
   const canInteractWithNetwork = useCanInteractWithNetwork();
   const draftDecision = useSelector(
-    getDraftDecisionFromStore(
-      user?.walletAddress || '',
-      colony?.colonyAddress ?? '',
-    ),
+    getDraftDecisionFromStore(user?.walletAddress || '', colonyAddress),
   );
 
   const openDecisionDialog = useDialog(DecisionDialog);
@@ -41,15 +40,15 @@ const NewDecisionButton = () => {
         onClick: () =>
           openDecisionDialog({
             nativeDomainId: domainId,
-            colonyAddress: colony?.colonyAddress ?? '',
+            colonyAddress,
           }),
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
       });
     } else {
       openDecisionDialog({
         nativeDomainId: domainId,
         draftDecision,
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
       });
     }
   };

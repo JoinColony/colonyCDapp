@@ -25,16 +25,17 @@ interface UpgradeButtonProps {
 }
 
 const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
-  const { colony, isSupportedColonyVersion } = useColonyContext();
+  const {
+    colony: { colonyAddress, version: colonyVersion },
+    isSupportedColonyVersion,
+  } = useColonyContext();
   const isMobile = useMobile();
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
   const [isPolling, setIsPolling] = useState(false);
   const [isUpgradeDisabled, setIsUpgradeDisabled] = useState(false);
 
-  const { colonyAddress = '' } = colony || {};
-
   const transformUpgrade = mapPayload(() => ({
-    colonyAddress: colony?.colonyAddress,
+    colonyAddress,
     extensionId: extensionData.extensionId,
     version: extensionData.availableVersion,
   }));
@@ -42,7 +43,7 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
   const extensionCompatible = isExtensionCompatible(
     Extension[extensionData.extensionId],
     extensionData.availableVersion as ExtensionVersion,
-    colony?.version as ColonyVersion,
+    colonyVersion as ColonyVersion,
   );
   const isUpgradeButtonDisabled =
     !isSupportedColonyVersion || !extensionCompatible || isUpgradeDisabled;

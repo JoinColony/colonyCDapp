@@ -38,9 +38,11 @@ export const useVoteDetailsConfig = ({
   userVoteRevealed = false,
 }: VoteDetailsProps): VoteDetailsConfig[] => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { userReputation, totalReputation } = useUserReputation(
-    colony?.colonyAddress ?? '',
+    colonyAddress,
     user?.walletAddress ?? '',
     Number(nativeMotionDomainId),
     rootHash,
@@ -50,13 +52,13 @@ export const useVoteDetailsConfig = ({
     variables: {
       input: {
         voterAddress: user?.walletAddress ?? '',
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         nativeMotionDomainId,
         motionId,
         rootHash,
       },
     },
-    skip: !user || !colony,
+    skip: !user,
     fetchPolicy: 'cache-and-network',
   });
 

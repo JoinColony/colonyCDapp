@@ -8,7 +8,9 @@ import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
 
 export const useStakingInput = () => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const {
@@ -26,7 +28,7 @@ export const useStakingInput = () => {
     remainingToStake,
     userMinStake,
     user?.walletAddress ?? '',
-    colony?.colonyAddress ?? '',
+    colonyAddress,
     motionId,
     vote,
   );

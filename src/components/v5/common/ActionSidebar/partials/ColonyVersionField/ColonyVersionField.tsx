@@ -7,13 +7,9 @@ import ActionFormRow from '~v5/common/ActionFormRow';
 const displayName = 'v5.common.ActionsContent.partials.ColonyVersionField';
 
 const ColonyVersionField: FC = () => {
-  const { colony } = useColonyContext();
-
-  if (!colony) {
-    return null;
-  }
-
-  const currentVersion = colony.version;
+  const {
+    colony: { version: currentVersion },
+  } = useColonyContext();
   const nextVersion = currentVersion + 1;
 
   return (

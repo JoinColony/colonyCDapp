@@ -8,8 +8,9 @@ import NavItem from './NavItem';
 import styles from './ColonyNavigation.css';
 
 const ColonyNavigation = () => {
-  const { colony } = useColonyContext();
-  const { name } = colony || {};
+  const {
+    colony: { name },
+  } = useColonyContext();
 
   const items = useGetNavigationItems(name);
   return (

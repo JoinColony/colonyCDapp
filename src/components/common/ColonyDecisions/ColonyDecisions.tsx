@@ -40,7 +40,9 @@ const MSG = defineMessages({
 });
 
 const ColonyDecisions = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { domainIdFilter: domainId } = useColonyHomeContext();
 
   const [sortDirection, setSortDirection] = useState<ModelSortDirection>(
@@ -53,10 +55,7 @@ const ColonyDecisions = () => {
   const { user } = useAppContext();
 
   const draftDecision = useSelector(
-    getDraftDecisionFromStore(
-      user?.walletAddress || '',
-      colony?.colonyAddress ?? '',
-    ),
+    getDraftDecisionFromStore(user?.walletAddress || '', colonyAddress),
   );
 
   const filter: {
@@ -72,7 +71,7 @@ const ColonyDecisions = () => {
 
   const { data, loading: isLoadingDecisions } = useGetColonyDecisionsQuery({
     variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress,
       sortDirection,
       filter,
       limit: page * ITEMS_PER_PAGE,
