@@ -91,11 +91,17 @@ export const useActionDescriptionMetadata = () => {
             {
               client: apolloClient,
               colony,
-              getActionTitleValues: (action, keyFallbackValues) =>
+              getActionTitleValues: (
+                action,
+                keyFallbackValues,
+                actionTypeOverride,
+              ) =>
                 getActionTitleValues(
                   merge({}, commonActionData, action),
                   colony,
                   keyFallbackValues,
+                  // @TODO a temporary hack until we fix this properly via https://github.com/JoinColony/colonyCDapp/issues/1669
+                  actionTypeOverride,
                 ),
             },
           );

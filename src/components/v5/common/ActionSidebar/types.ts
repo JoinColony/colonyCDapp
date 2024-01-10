@@ -5,7 +5,7 @@ import { DeepPartial } from 'utility-types';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
 import { Action } from '~constants/actions';
 import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
-import { AnyMessageValues, Colony, ColonyAction } from '~types';
+import { AnyActionType, AnyMessageValues, Colony, ColonyAction } from '~types';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
@@ -47,6 +47,7 @@ export type DescriptionMetadataGetter<TValues = FieldValues> = (
       keyFallbackValues?: Partial<
         Record<ActionTitleMessageKeys, React.ReactNode>
       >,
+      actionTypeOverride?: AnyActionType,
     ) => AnyMessageValues;
   },
 ) => Promise<AnyMessageValues>;
