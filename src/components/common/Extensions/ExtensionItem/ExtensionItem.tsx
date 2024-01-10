@@ -42,7 +42,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
       <div className="flex flex-col sm:flex-row items-center w-full gap-6 sm:gap-12">
         <Link
           to={extensionUrl}
-          className="flex flex-1 flex-row items-center w-full"
+          className="flex flex-1 flex-row items-start w-full"
         >
           <div className="flex shrink-0">
             <Icon name={icon} appearance={{ size: 'extraBig' }} />
