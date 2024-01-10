@@ -57,7 +57,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
               </h5>
               <ExtensionStatusBadge mode={status} text={badgeMessage} />
             </div>
-            <p className="text-sm text-gray-600 mt-0.5">
+            <p className="text-md text-gray-600 mt-1.5">
               {formatMessage(description)}
             </p>
           </div>
