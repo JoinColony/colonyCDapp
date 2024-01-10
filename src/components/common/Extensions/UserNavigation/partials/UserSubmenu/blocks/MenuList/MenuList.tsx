@@ -5,8 +5,9 @@ const displayName =
 
 type MenuListProps = PropsWithChildren<unknown>;
 
-export const MenuList = ({ children }: MenuListProps) => {
+const MenuList = ({ children }: MenuListProps) => {
   return <ul className="-mb-2">{children}</ul>;
 };
 
 MenuList.displayName = displayName;
+export default MenuList;
