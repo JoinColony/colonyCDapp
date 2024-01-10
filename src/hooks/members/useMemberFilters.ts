@@ -7,6 +7,7 @@ import { useColonyContext } from '~hooks';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { ColonyContributor } from '~types';
 import { notNull } from '~utils/arrays';
+import { getDomainDatabaseId } from '~utils/databaseId';
 import { searchMembers } from '~utils/members';
 import {
   ContributorTypeFilter,
@@ -40,14 +41,18 @@ const useMemberFilters = ({
       new Set(
         selectedTeam
           ? [selectedTeam.id]
-          : nativeDomainIds.map((id) => `${colonyAddress}_${id}`),
+          : nativeDomainIds.map((id) => getDomainDatabaseId(colonyAddress, id)),
       ),
     [nativeDomainIds, colonyAddress, selectedTeam],
   );
 
   // Always include the root domain, since if the user has a permission in root, they have it in all domains
   const permissionsDomainIds = useMemo(
-    () => new Set([`${colonyAddress}_${Id.RootDomain}`, ...databaseDomainIds]),
+    () =>
+      new Set([
+        getDomainDatabaseId(colonyAddress, Id.RootDomain),
+        ...databaseDomainIds,
+      ]),
     [databaseDomainIds, colonyAddress],
   );
 
