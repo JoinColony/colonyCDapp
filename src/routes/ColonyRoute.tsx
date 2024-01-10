@@ -1,5 +1,6 @@
 import React from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { defineMessages } from 'react-intl';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
 
 import {
   ColonyCreatedModalProvider,
@@ -13,15 +14,29 @@ import {
 } from '~context';
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
 import { ColonyLayout } from '~frame/Extensions/layouts';
-import { useGetFullColonyByNameQuery } from '~gql';
+import LoadingTemplate from '~frame/LoadingTemplate';
+import {
+  useGetColonyWhitelistByNameQuery,
+  useGetFullColonyByNameQuery,
+} from '~gql';
+import { useAppContext } from '~hooks';
 
 import NotFoundRoute from './NotFoundRoute';
+
+const displayName = 'routes.ColonyRoute';
+
+const MSG = defineMessages({
+  loadingText: {
+    id: `${displayName}.loadingText`,
+    defaultMessage: 'Loading Colony',
+  },
+});
 
 const ColonyRoute = () => {
   const { colonyName = '' } = useParams();
   const {
     data,
-    loading,
+    loading: isColonyLoading,
     error,
     refetch: refetchColony,
     startPolling,
@@ -33,8 +48,21 @@ const ColonyRoute = () => {
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-first',
   });
+  const { user, userLoading, walletConnecting } = useAppContext();
+
+  // @TODO: This is terrible. Once we have auth, we need a method
+  // to check whether the logged in user is a member of the Colony
+  const { data: dataWhitelist, loading: whitelistLoading } =
+    useGetColonyWhitelistByNameQuery({
+      variables: { name: colonyName },
+      skip: !colonyName,
+    });
 
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
+
+  if (walletConnecting || isColonyLoading || userLoading || whitelistLoading) {
+    return <LoadingTemplate loadingText={MSG.loadingText} />;
+  }
 
   if (!colony || error) {
     if (error) {
@@ -43,10 +71,17 @@ const ColonyRoute = () => {
     return <NotFoundRoute />;
   }
 
+  const isMember = !!dataWhitelist?.getColonyByName?.items[0]?.whitelist.some(
+    (addr) => addr === user?.walletAddress,
+  );
+
+  if (!user || !isMember) {
+    return <Navigate to={`/go/${colony.name}`} />;
+  }
+
   return (
     <ColonyContextProvider
       colony={colony}
-      isColonyLoading={loading}
       refetchColony={refetchColony}
       startPollingColonyData={startPolling}
       stopPollingColonyData={stopPolling}

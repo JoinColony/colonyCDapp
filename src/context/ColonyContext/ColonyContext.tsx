@@ -1,19 +1,8 @@
 import { ApolloQueryResult } from '@apollo/client';
 import React, { createContext, useMemo, ReactNode } from 'react';
-import { defineMessages } from 'react-intl';
-import { Navigate, useParams } from 'react-router-dom';
 
-import LoadingTemplate from '~frame/LoadingTemplate';
-import {
-  Exact,
-  GetFullColonyByNameQuery,
-  useGetColonyWhitelistByNameQuery,
-} from '~gql';
-import {
-  useAppContext,
-  useCanInteractWithColony,
-  useColonySubscription,
-} from '~hooks';
+import { Exact, GetFullColonyByNameQuery } from '~gql';
+import { useCanInteractWithColony, useColonySubscription } from '~hooks';
 import { Colony } from '~types';
 
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
@@ -46,13 +35,6 @@ const ColonyContext = createContext<ColonyContextValue | null>(null);
 
 const displayName = 'ColonyContextProvider';
 
-const MSG = defineMessages({
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Loading Colony',
-  },
-});
-
 const MIN_SUPPORTED_COLONY_VERSION = 5;
 
 export const ColonyContextProvider = ({
@@ -61,18 +43,13 @@ export const ColonyContextProvider = ({
   refetchColony,
   startPollingColonyData,
   stopPollingColonyData,
-  isColonyLoading,
 }: {
   children: ReactNode;
   colony: Colony;
   refetchColony: RefetchColonyFn;
   startPollingColonyData: (pollInterval: number) => void;
   stopPollingColonyData: () => void;
-  isColonyLoading: boolean;
 }) => {
-  const { colonyName = '' } = useParams();
-  const { user, userLoading, walletConnecting } = useAppContext();
-
   useUpdateColonyReputation(colony?.colonyAddress);
 
   const canInteractWithColony = useCanInteractWithColony(colony);
@@ -101,26 +78,6 @@ export const ColonyContextProvider = ({
       colonySubscription,
     ],
   );
-
-  // @TODO: This is terrible. Once we have auth, we need a method
-  // to check whether the logged in user is a member of the Colony
-  const { data: dataWhitelist, loading: whitelistLoading } =
-    useGetColonyWhitelistByNameQuery({
-      variables: { name: colonyName },
-      skip: !colonyName,
-    });
-
-  if (walletConnecting || isColonyLoading || userLoading || whitelistLoading) {
-    return <LoadingTemplate loadingText={MSG.loadingText} />;
-  }
-
-  const isMember = !!dataWhitelist?.getColonyByName?.items[0]?.whitelist.some(
-    (addr) => addr === user?.walletAddress,
-  );
-
-  if (!user || !isMember) {
-    return <Navigate to={`/go/${colony.name}`} />;
-  }
 
   return (
     <ColonyContext.Provider value={colonyContext}>
