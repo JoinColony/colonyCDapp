@@ -18,7 +18,7 @@ const RevealInformationItem: FC<RevealInformationListItem> = ({
   const { avatar, displayName: userName } = profile || {};
 
   return (
-    <div className="flex items-center justify-between gap-2">
+    <div className="flex items-center justify-between gap-2 text-gray-900">
       <AvatarUser avatar={avatar} userName={userName || ''} size="xs" />
       <div className="flex items-center gap-2 text-gray-900">
         <Icon

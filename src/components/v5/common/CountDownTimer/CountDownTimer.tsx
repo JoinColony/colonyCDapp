@@ -15,7 +15,8 @@ const CountDownTimer: FC<CountDownTimerProps> = ({
   prefix = (
     <Icon
       name="clock"
-      className="text-negative-400 [&_svg]:h-[1em] [&_svg]:w-[1em] [&_svg]:text-[.875rem]"
+      className="text-negative-400"
+      appearance={{ size: 'tiny' }}
     />
   ),
   className,

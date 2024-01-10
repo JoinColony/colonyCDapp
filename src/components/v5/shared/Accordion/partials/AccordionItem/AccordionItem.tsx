@@ -12,6 +12,7 @@ const displayName = 'v5.Accordion.partials.AccordionItem';
 const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
   title,
   iconName = 'arrow-down',
+  iconSize = 'extraTiny',
   isOpen,
   onToggle,
   className,
@@ -21,7 +22,8 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
     <button
       type="button"
       onClick={onToggle}
-      className={`
+      className={clsx(
+        `
           accordion-toggler
           w-full
           flex
@@ -31,18 +33,20 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
           gap-4
           transition-colors
           md:hover:text-blue-500
-        `}
+        `,
+        { 'text-blue-500': isOpen },
+      )}
     >
       {title}
       <span
         className={clsx(
           'flex items-center flex-shrink-0 transition-transform duration-[400ms] ease-out',
           {
-            'rotate-180': isOpen,
+            'rotate-180 text-blue-500': isOpen,
           },
         )}
       >
-        <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+        <Icon name={iconName} appearance={{ size: iconSize }} />
       </span>
     </button>
     <AnimatePresence>

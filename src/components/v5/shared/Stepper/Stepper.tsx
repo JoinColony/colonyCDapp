@@ -77,13 +77,14 @@ function Stepper<TKey extends React.Key>({
                   sm:after:h-[calc(100%+1rem)]
                   after:w-full
                   sm:after:w-0
-                  sm:after:border-l
+                  sm:after:border-l-[.084rem]
                   sm:after:border-t-0
                   after:border-gray-900
                   after:top-[.875rem]
                   after:left-0
                   sm:after:left-[.2813rem]
                   last:after:hidden
+                  sm:before:border-gray-900
                 `,
                 {
                   'sm:mb-4 sm:last-mb-0': !isHidden,
@@ -91,8 +92,6 @@ function Stepper<TKey extends React.Key>({
                   'sm:before:bg-base-white': index > activeItemIndex,
                   'after:border-dashed': isNextStepOptional,
                   'after:border-gray-400': isNextStepSkipped,
-                  'sm:before:border-gray-400': isSkipped,
-                  'sm:before:border-gray-900': !isSkipped,
                   'w-1/4 flex-shrink-0': withArrowsOnMobile,
                 },
               )}

@@ -19,14 +19,16 @@ const MenuWithSections: React.FC<MenuWithSectionsProps> = ({
           key={key}
           className={clsx(
             className,
-            'border-b border-gray-200 last:border-b-0 p-[1.125rem]',
+            'border-b border-gray-200 last:border-b-0 px-[1.125rem] py-3',
           )}
         >
           {content}
         </div>
       ))}
       {footer && (
-        <div className={clsx(footerClassName, 'p-[1.125rem]')}>{footer}</div>
+        <div className={clsx(footerClassName, 'px-[1.125rem] py-3')}>
+          {footer}
+        </div>
       )}
     </MenuContainer>
   ) : null;

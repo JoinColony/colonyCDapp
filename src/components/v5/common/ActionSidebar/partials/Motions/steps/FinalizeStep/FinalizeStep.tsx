@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 
 import { useAppContext, useColonyContext } from '~hooks';
@@ -109,6 +110,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           //   )}
           // </div>
         ),
+        iconSize: 'extraSmall',
       }}
       sections={[
         {
@@ -125,7 +127,16 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   )}
                 </h4>
               </div>
-              {items && <DescriptionList items={items} className="mb-6" />}
+              {items && (
+                <DescriptionList
+                  items={items}
+                  className={clsx({
+                    'mb-6':
+                      (!actionData.motionData.isFinalized && isFinalizable) ||
+                      (!isClaimed && canClaimStakes),
+                  })}
+                />
+              )}
               {canInteract && (
                 <>
                   {isPolling && (

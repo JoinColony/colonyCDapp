@@ -1,8 +1,11 @@
-import React, { FC, useMemo, useState } from 'react';
+import clsx from 'clsx';
+import { formatRelative } from 'date-fns';
+import React, { FC, useState } from 'react';
 
 import { useAppContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
 import { SpinnerLoader } from '~shared/Preloaders';
+import { SystemMessages } from '~types';
 import { formatText } from '~utils/intl';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
@@ -64,7 +67,11 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     objectingStakesPercentageValue !== 100 &&
     supportingStakesPercentageValue === 100;
 
-  const cardTitleText = useMemo(() => {
+  const votingPhaseStartedMessage = motionData.messages?.items.find(
+    (message) => message?.name === SystemMessages.MotionVotingPhase,
+  );
+
+  const cardTitleMessageId = (() => {
     if (isFullyStaked) {
       return 'motion.staking.status.text.locked';
     }
@@ -76,11 +83,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     }
 
     return 'motion.staking.status.text';
-  }, [
-    isFullyStaked,
-    objectingStakesPercentageValue,
-    supportingStakesPercentageValue,
-  ]);
+  })();
 
   return isLoading ? (
     <SpinnerLoader />
@@ -91,12 +94,17 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           textClassName: 'text-4 text-gray-900',
           children: formatText(
             {
-              id: cardTitleText,
+              id: cardTitleMessageId,
             },
-            // @todo: update time when it will be available in the API
-            { time: 'today at 3:14pm' },
+            {
+              time: formatRelative(
+                new Date(votingPhaseStartedMessage?.createdAt || new Date()),
+                new Date(),
+              ),
+            },
           ),
           iconAlignment: 'top',
+          iconSize: 'extraSmall',
           content: showFullySupportedPassInfo ? (
             <StatusText
               status="info"
@@ -105,6 +113,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
               iconClassName="text-blue-400"
               textClassName="text-4 text-gray-900"
               iconAlignment="top"
+              iconSize="extraSmall"
             >
               {formatText({ id: 'motion.staking.passIfNotOpposed' })}
             </StatusText>
@@ -179,12 +188,18 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                       })}
                       isOpen={isAccordionOpen}
                       onToggle={toggleAccordion}
-                      className={`
+                      className={clsx(
+                        `
                           [&_.accordion-toggler]:text-gray-500
                           [&_.accordion-toggler]:text-sm
-                          [&_.accordion-toggler_svg]:h-[0.875rem]
-                          [&_.accordion-toggler_svg]:w-[0.875rem]
-                        `}
+                        `,
+                        {
+                          '[&_.accordion-toggler]:text-blue-500':
+                            isAccordionOpen,
+                        },
+                      )}
+                      iconName="caret-down"
+                      iconSize="extraSmall"
                     >
                       {isVotingLoading ? (
                         <SpinnerLoader />

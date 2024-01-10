@@ -204,6 +204,7 @@ fragment MotionMessage on MotionMessage {
   }
   vote
   amount
+  createdAt
 }
 
 fragment VoterRecord on VoterRecord {

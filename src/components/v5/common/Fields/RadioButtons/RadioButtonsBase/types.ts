@@ -15,10 +15,10 @@ export interface RadioButtonsBaseProps<TValue> {
   defaultValue?: string;
   disabled?: boolean;
   keyExtractor?: (value: TValue) => React.Key;
+  allowUnselect?: boolean;
   valueComparator?: (
     value: TValue,
     selectedValue: TValue | undefined,
   ) => boolean;
-  allowUnselect?: boolean;
   className?: string;
 }
