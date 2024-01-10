@@ -71,7 +71,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         </Button>
       )}
       <Hamburger
-        isOpened={visible && isMobile}
+        isOpened={visible}
         iconName={isMobile ? 'gear-six' : 'list'}
         iconSize={isMobile ? 'small' : 'extraTiny'}
         setTriggerRef={setTriggerRef}

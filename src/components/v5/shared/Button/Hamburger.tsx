@@ -42,7 +42,7 @@ const Hamburger: FC<HamburgerProps> = ({
             'relative flex items-center justify-center border transition-all duration-normal min-w-[2.625rem] min-h-[2.5rem] p-2.5 bg-base-white rounded-full disabled:text-gray-300 z-50 text-1 text-gray-700',
             {
               'pointer-events-none': disabled,
-              'border-blue-400 md:hover:border-base-white': isOpened,
+              'border-blue-400': isOpened,
               'border-gray-200 md:hover:border-blue-400': !isOpened,
             },
           )}
