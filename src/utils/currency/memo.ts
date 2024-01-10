@@ -1,4 +1,5 @@
 import { SupportedCurrencies } from '~gql';
+
 import { SupportedChains } from './types';
 
 export const savedPrices = new Map<

@@ -1,4 +1,5 @@
 import { SupportedCurrencies } from '~gql';
+
 import { currencyIconTitles } from '../UserSubmenu/consts';
 
 export const CURRENCY_MENU_ID = 'userMenu.supportedCurrenciesTitle';

@@ -7,10 +7,10 @@ import {
   PageThemeContextProvider,
   usePageThemeContext,
 } from '~context';
+import { CurrencyContextProvider } from '~context/CurrencyContext';
 import { Theme } from '~frame/Extensions/themes/enum';
 import { applyTheme } from '~frame/Extensions/themes/utils';
 import { DialogProvider } from '~shared/Dialog';
-import { CurrencyContextProvider } from '~context/CurrencyContext';
 
 const RootRouteInner = () => {
   const { isDarkMode } = usePageThemeContext();

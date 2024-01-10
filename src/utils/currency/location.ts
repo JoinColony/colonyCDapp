@@ -1,4 +1,5 @@
 import { SupportedCurrencies } from '~gql';
+
 import { countryCodeToCurrencyMap, locationApiConfig } from './config';
 import { IpLocationResponse, IpifyResponse } from './types';
 import { buildAPIEndpoint, fetchData } from './utils';
