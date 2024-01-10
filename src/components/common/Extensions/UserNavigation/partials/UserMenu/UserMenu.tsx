@@ -18,7 +18,7 @@ import UserSubmenu from '../UserSubmenu';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
 
 import { userMenuItems } from './consts';
-import { UserMenuProps } from './types';
+import { UserMenuItemName, UserMenuProps } from './types';
 
 import styles from './UserMenu.module.css';
 
@@ -32,11 +32,14 @@ const UserMenu: FC<UserMenuProps> = ({
   const isTablet = useTablet();
   const { connectWallet, disconnectWallet, user, wallet } = useAppContext();
   const { profile } = user || {};
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [activeSubmenu, setActiveSubmenu] = useState<UserMenuItemName | null>(
+    null,
+  );
 
   const iconName = isTablet ? 'caret-down' : 'caret-right';
   const iconSize = isTablet ? 'small' : 'extraSmall';
   const { currency } = useCurrencyContext();
+  
   return (
     <PopoverBase
       setTooltipRef={setTooltipRef}
@@ -103,42 +106,37 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
-            {userMenuItems({ currency }).map(
-              ({ id, link, icon, name: itemName, message }) => (
-                <li
-                  key={id}
-                  className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+            <li className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+              <Link to="/" className="navigation-link">
+                <Icon
+                  name="circles-three-plus"
+                  appearance={{ size: iconSize }}
+                />
+                <p className="ml-2">
+                  {formatText({ id: 'userMenu.getStartedTitle' })}
+                </p>
+              </Link>
+            </li>
+            {userMenuItems.map(({ id, icon, name: itemName }) => (
+              <li
+                key={id}
+                className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+              >
+                <button
+                  type="button"
+                  className="navigation-link"
+                  onClick={() => setActiveSubmenu(itemName)}
+                  aria-expanded={activeSubmenu === itemName}
+                  aria-controls="actionsWithVisibility"
                 >
-                  {link ? (
-                    <Link to={link} className="navigation-link">
-                      <Icon name={icon} appearance={{ size: iconSize }} />
-                      <p className="ml-2">
-                        {formatText(message ?? { id: itemName })}
-                      </p>
-                    </Link>
-                  ) : (
-                    <button
-                      type="button"
-                      className="navigation-link"
-                      onClick={() => setActiveSubmenu(itemName)}
-                      aria-expanded={activeSubmenu === itemName}
-                      aria-controls="actionsWithVisibility"
-                    >
-                      <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
-                        <Icon name={icon} appearance={{ size: iconSize }} />
-                        <p className="ml-2">
-                          {formatText(message ?? { id: itemName })}
-                        </p>
-                      </span>
-                      <Icon
-                        name={iconName}
-                        appearance={{ size: 'extraTiny' }}
-                      />
-                    </button>
-                  )}
-                </li>
-              ),
-            )}
+                  <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                    <Icon name={icon} appearance={{ size: iconSize }} />
+                    <p className="ml-2">{formatText({ id: itemName })}</p>
+                  </span>
+                  <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
         {wallet && (

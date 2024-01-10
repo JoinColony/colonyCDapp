@@ -1,39 +1,23 @@
-import { SupportedCurrencies } from '~gql';
+import { UserMenuItemName } from './types';
 
-import { currencyIconTitles } from '../UserSubmenu/consts';
-
-export const CURRENCY_MENU_ID = 'userMenu.supportedCurrenciesTitle';
-
-export const userMenuItems = ({
-  currency,
-}: {
-  currency: SupportedCurrencies;
-}) => [
+export const userMenuItems: Array<{
+  id: string;
+  icon: string;
+  name: UserMenuItemName;
+}> = [
   {
     id: '1',
-    link: '/',
-    icon: 'circles-three-plus',
-    name: 'userMenu.getStartedTitle',
+    icon: 'lifebuoy',
+    name: UserMenuItemName.CONTACT_AND_SUPPORT,
   },
   {
     id: '2',
-    icon: 'lifebuoy',
-    name: 'userMenu.contactAndSupportTitle',
+    icon: 'code',
+    name: UserMenuItemName.DEVELOPERS,
   },
   {
     id: '3',
-    icon: 'code',
-    name: 'userMenu.developersTitle',
-  },
-  {
-    id: '4',
     icon: 'briefcase',
-    name: 'userMenu.legalAndPrivacyTitle',
-  },
-  {
-    id: '5',
-    icon: currencyIconTitles[currency],
-    name: CURRENCY_MENU_ID,
-    message: currency.toUpperCase(),
+    name: UserMenuItemName.LEGAL_AND_PRIVACY,
   },
 ];

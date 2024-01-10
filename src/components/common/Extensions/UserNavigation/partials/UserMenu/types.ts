@@ -12,3 +12,9 @@ export interface UserMenuProps {
   nativeToken?: NetworkInfo;
   hideColonies?: boolean;
 }
+
+export enum UserMenuItemName {
+  CONTACT_AND_SUPPORT = 'userMenu.contactAndSupportTitle',
+  DEVELOPERS = 'userMenu.developersTitle',
+  LEGAL_AND_PRIVACY = 'userMenu.legalAndPrivacyTitle',
+}

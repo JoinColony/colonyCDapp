@@ -1,19 +1,22 @@
 import React from 'react';
 
+import { UserMenuItemName } from '../UserMenu/types';
+
 import { Contact, Developers, Legal } from './partials';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
 
 interface UserSubmenuProps {
-  submenuId: string;
+  submenuId: UserMenuItemName;
 }
+
 const UserSubmenu = ({ submenuId }: UserSubmenuProps) => {
   switch (submenuId) {
-    case 'userMenu.contactAndSupportTitle':
+    case UserMenuItemName.CONTACT_AND_SUPPORT:
       return <Contact />;
-    case 'userMenu.developersTitle':
+    case UserMenuItemName.DEVELOPERS:
       return <Developers />;
-    case 'userMenu.legalAndPrivacyTitle':
+    case UserMenuItemName.LEGAL_AND_PRIVACY:
       return <Legal />;
     default:
       return null;
