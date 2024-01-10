@@ -36,7 +36,7 @@ export const useDonutChart = ({
               id: '1',
               label: '',
               value: 100,
-              color: '--color-base-bg',
+              color: '--color-gray-100',
               stroke: '--color-base-white',
             },
           ],

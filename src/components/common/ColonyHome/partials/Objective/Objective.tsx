@@ -44,10 +44,10 @@ const Objective = () => {
       value={
         objective ? (
           <>
-            <span className="text-2 mb-1 transition-all line-clamp-1 w-full sm:hover:text-blue-400">
+            <span className="text-2 mb-2 transition-all line-clamp-1 w-full sm:hover:text-blue-400">
               {objective.title}
             </span>
-            <p className="text-sm text-gray-600 mb-[1.6875rem] line-clamp-2 break-word w-full">
+            <p className="text-sm text-gray-600 mb-2 line-clamp-2 break-word w-full">
               {objective.description}
             </p>
             <ProgressBar
@@ -72,7 +72,7 @@ const Objective = () => {
         )
       }
       contentClassName="w-full"
-      className="flex-col p-6 bg-base-white min-h-[11.25rem]"
+      className="flex-col p-6 bg-base-white min-h-[10.5rem]"
       href={objective ? COLONY_DETAILS_ROUTE : undefined}
       onClick={openManageObjectives}
     />

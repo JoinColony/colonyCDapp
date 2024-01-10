@@ -95,7 +95,7 @@ const ReputationChart = () => {
 
     return (
       <div className="w-full">
-        <ul className="flex flex-col justify-center gap-[.6875rem]">
+        <ul className="flex flex-col justify-center gap-2">
           {chartData.map(({ id, label, color, value }) => (
             <li
               key={id}
@@ -118,22 +118,20 @@ const ReputationChart = () => {
   return (
     <WidgetBox
       value={
-        <div className="grid grid-cols-[36%_1fr] w-full gap-6">
-          <div className="relative w-full flex-shrink-0 flex justify-center items-center">
-            <div className="w-full max-w-[9.375rem]">
-              <DonutChart
-                data={chartData || []}
-                hoveredSegment={hoveredSegment}
-                updateHoveredSegment={updateHoveredSegment}
-              />
-            </div>
+        <div className="grid grid-cols-[36%_1fr] justify-items-center w-full gap-6">
+          <div className="relative w-full max-w-[9.375rem] flex-shrink-0 flex justify-center items-center">
+            <DonutChart
+              data={chartData || []}
+              hoveredSegment={hoveredSegment}
+              updateHoveredSegment={updateHoveredSegment}
+            />
           </div>
-          <div className="flex flex-col gap-2.5 w-full">
+          <div className="flex flex-col w-full">
             <div>
               <p className="uppercase text-4 text-gray-400">
                 {formatText({ id: 'dashboard.team.widget.title' })}
               </p>
-              <h3 className="text-2">
+              <h3 className="text-2 mb-3">
                 {formatText({ id: 'dashboard.team.widget.subtitle' })}
               </h3>
             </div>

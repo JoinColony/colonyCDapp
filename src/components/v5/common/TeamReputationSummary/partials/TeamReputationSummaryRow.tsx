@@ -29,7 +29,9 @@ const TeamReputationSummaryRow: FC<TeamReputationSummaryRowProps> = ({
         </span>
       </div>
       <Tooltip tooltipContent={`${totalReputation || '0.00'}%`} placement="top">
-        <span className="font-medium">{formatPercentage(totalReputation)}</span>
+        <span className="font-medium text-gray-600">
+          {formatPercentage(totalReputation)}
+        </span>
       </Tooltip>
     </>
   );
