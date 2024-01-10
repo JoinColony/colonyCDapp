@@ -1,11 +1,17 @@
-import { CSSProperties, Dispatch, RefObject, SetStateAction } from 'react';
+import { CSSProperties, RefObject } from 'react';
 
-import { ChartData } from '~common/ColonyHome/types';
+export interface ChartData {
+  id: string;
+  label: string;
+  value: number;
+  color: string;
+  stroke: string;
+}
 
 export interface DonutChartProps {
   data: ChartData[];
   hoveredSegment?: ChartData | null;
-  setHoveredSegment: Dispatch<SetStateAction<ChartData | null | undefined>>;
+  updateHoveredSegment: (data: ChartData | null | undefined) => void;
 }
 
 export interface UseDonutChartReturnType {

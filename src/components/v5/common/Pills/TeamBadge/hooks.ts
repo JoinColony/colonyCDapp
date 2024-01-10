@@ -1,5 +1,5 @@
 import { useColonyContext } from '~hooks';
-import { setTeamBadge } from '~v5/common/TeamReputationSummary/utils';
+import { getTeamBadgeStyles } from '~utils/teams';
 
 export const useTeamBadge = (teamName: string) => {
   const { colony } = useColonyContext();
@@ -15,7 +15,7 @@ export const useTeamBadge = (teamName: string) => {
   const { metadata } = team || {};
   const { color } = metadata || {};
 
-  const teamColor = setTeamBadge(color);
+  const teamColor = getTeamBadgeStyles(color);
 
   return teamColor;
 };

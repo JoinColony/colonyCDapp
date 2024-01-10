@@ -10,7 +10,7 @@ const displayName = 'v5.common.DonutChart';
 const DonutChart: FC<DonutChartProps> = ({
   data,
   hoveredSegment,
-  setHoveredSegment,
+  updateHoveredSegment,
 }) => {
   const {
     tooltipStyle,
@@ -20,7 +20,7 @@ const DonutChart: FC<DonutChartProps> = ({
     renderMultipleSegments,
     size,
     summedChartValues,
-  } = useDonutChart(data, hoveredSegment, setHoveredSegment);
+  } = useDonutChart({ data, hoveredSegment, updateHoveredSegment });
 
   return (
     <div ref={chartRef} className="relative w-full h-full max-w-full">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { ChartData } from '~common/ColonyHome/types';
 import DonutChart from '~v5/common/DonutChart';
+import { ChartData } from '~v5/common/DonutChart/types';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -48,12 +48,16 @@ const DonutChartWithHooks = () => {
     ChartData | undefined | null
   >();
 
+  const updateHoveredSegment = (segment) => {
+    setHoveredSegment(segment);
+  };
+
   return (
     <div className="relative w-[12.5rem]">
       <DonutChart
         data={data}
         hoveredSegment={hoveredSegment}
-        setHoveredSegment={setHoveredSegment}
+        updateHoveredSegment={updateHoveredSegment}
       />
     </div>
   );

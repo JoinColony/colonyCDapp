@@ -12,7 +12,8 @@ import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
-import { TextButton } from '~v5/shared/Button';
+import { getTeamColor } from '~utils/teams';
+import TextButton from '~v5/shared/Button/TextButton';
 import MenuContainer from '~v5/shared/MenuContainer';
 import TitleLabel from '~v5/shared/TitleLabel';
 
@@ -86,7 +87,11 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
                     key={nativeId}
                     className="flex items-center text-sm mb-3 last:mb-0"
                   >
-                    <TeamReputationSummaryRow team={team} />
+                    <TeamReputationSummaryRow
+                      color={getTeamColor(team.metadata?.color)}
+                      name={team.metadata?.name}
+                      totalReputation={team.reputationPercentage}
+                    />
                   </li>
                 )
               );

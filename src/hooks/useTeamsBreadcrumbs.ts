@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { TEAM_SEARCH_PARAM } from '~routes';
 import { notMaybe } from '~utils/arrays';
 import { formatText } from '~utils/intl';
+import { getTeamColor } from '~utils/teams';
 import { setQueryParamOnUrl } from '~utils/urls';
-import { setTeamColor } from '~v5/common/TeamReputationSummary/utils';
 
 import useColonyContext from './useColonyContext';
 
@@ -51,7 +51,7 @@ export const useCreateTeamBreadcrumbs = () => {
   const teamOptions = useMemo(
     () =>
       domains?.items.filter(notMaybe).map((domain) => {
-        const color = setTeamColor(domain.metadata?.color);
+        const color = getTeamColor(domain.metadata?.color);
 
         return {
           label: domain.metadata?.name,

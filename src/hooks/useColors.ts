@@ -1,12 +1,12 @@
 import { DomainColor } from '~gql';
-import { setTeamColor } from '~v5/common/TeamReputationSummary/utils';
+import { getTeamColor } from '~utils/teams';
 
 const useColors = () => {
   const colors = Object.values(DomainColor).map((color) => {
     return {
       label: color,
       value: color,
-      color: setTeamColor(color),
+      color: getTeamColor(color),
       isDisabled: false,
     };
   });

@@ -2,11 +2,8 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 
 import { useColonyContext } from '~hooks';
+import { getTeamBadgeStyles, getTeamColor } from '~utils/teams';
 import PillsBase from '~v5/common/Pills/PillsBase';
-import {
-  setTeamBadge,
-  setTeamColor,
-} from '~v5/common/TeamReputationSummary/utils';
 
 import { TeamColourBadgeProps } from '../types';
 
@@ -19,8 +16,8 @@ const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title, defaultColor }) => {
   const selectedTeam = colony?.domains?.items.find(
     (domain) => domain?.metadata?.name === title,
   );
-  const color = setTeamColor(defaultColor || selectedTeam?.metadata?.color);
-  const badgeColor = setTeamBadge(
+  const color = getTeamColor(defaultColor || selectedTeam?.metadata?.color);
+  const badgeColor = getTeamBadgeStyles(
     defaultColor || selectedTeam?.metadata?.color,
   );
 

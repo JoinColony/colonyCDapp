@@ -21,7 +21,7 @@ const WidgetBox: FC<WidgetBoxProps> = ({
   titleClassName,
 }) => {
   const wrapperClassName =
-    'rounded-lg py-[1.4375rem] px-6 w-full flex items-center justify-between gap-2 border';
+    'rounded-lg py-6 px-6 w-full flex items-center justify-between gap-2 border';
   const baseContent = (
     <>
       <span className={contentClassName}>
