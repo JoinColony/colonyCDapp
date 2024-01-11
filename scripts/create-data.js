@@ -52,6 +52,8 @@ const timeoutArgValue = process.argv[timeoutArg + 1];
 const coloniesArg = process.argv.indexOf('--coloniesCount');
 const coloniesArgValue = process.argv[coloniesArg + 1];
 
+const yesArg = process.argv.indexOf('--yes');
+
 const DEFAULT_COLONIES = parseInt(coloniesArgValue, 10) || 2;
 const DEFAULT_TIMEOUT = parseInt(timeoutArgValue, 10) || 300;
 
@@ -1352,6 +1354,11 @@ const checkNodeVersion = () => {
 };
 
 const pressKeyToContinue = async () => {
+  // Skip confirmation if --yes is passed
+  if (yesArg > -1) {
+    return Promise.resolve();
+  }
+
   console.log();
   console.log(`Only run this script on blank databases and chain state`);
   console.log(
