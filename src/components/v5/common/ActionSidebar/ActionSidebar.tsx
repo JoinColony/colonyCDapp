@@ -83,7 +83,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       );
     }
 
-    if (action !== undefined && action !== null && colony) {
+    if (action !== undefined && action !== null) {
       const actionType = getExtendedActionType(action, colony.metadata);
 
       if (SUPPORTED_ACTIONS.includes(actionType)) {

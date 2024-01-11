@@ -43,7 +43,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
   const { initiatorUser, recipientUser } = action;
 
   const transformedAmount = moveDecimal(
-    action.amount || '0',
+    action.amount || '1',
     -getTokenDecimalsWithFallback(action.token?.decimals),
   );
 

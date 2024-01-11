@@ -5,7 +5,6 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { getActionTitleValues } from '~common/ColonyActions';
 import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
-import { ADDRESS_ZERO } from '~constants';
 import { ACTION, Action } from '~constants/actions';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ColonyAction } from '~types';
@@ -62,14 +61,14 @@ const ActionDescriptionMetadata = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
 
-  if (!selectedAction || !colony || !user) {
+  if (!selectedAction || !user) {
     return null;
   }
 
   const commonActionData: Omit<ColonyAction, 'type'> = {
     initiatorAddress: user.walletAddress,
     initiatorUser: user,
-    blockNumber: 0,
+    blockNumber: 1,
     createdAt: new Date().toISOString(),
     colony: {
       ...colony,
@@ -82,7 +81,7 @@ const ActionDescriptionMetadata = () => {
     },
     colonyAddress: colony.colonyAddress,
     showInActionsList: true,
-    transactionHash: ADDRESS_ZERO,
+    transactionHash: '',
   };
 
   return (
@@ -93,13 +92,18 @@ const ActionDescriptionMetadata = () => {
           {
             client: apolloClient,
             colony,
-            getActionTitleValues: (action, keyFallbackValues) => {
-              return getActionTitleValues(
+            getActionTitleValues: (
+              action,
+              keyFallbackValues,
+              actionTypeOverride,
+            ) =>
+              getActionTitleValues(
                 merge({}, commonActionData, action),
                 colony,
                 keyFallbackValues,
-              );
-            },
+                // @TODO a temporary hack until we fix this properly via https://github.com/JoinColony/colonyCDapp/issues/1669
+                actionTypeOverride,
+              ),
           },
         );
 

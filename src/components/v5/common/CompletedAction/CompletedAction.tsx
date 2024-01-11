@@ -27,10 +27,6 @@ const displayName = 'v5.common.CompletedAction';
 const CompletedAction = ({ action }: CompletedActionProps) => {
   const { colony } = useColonyContext();
 
-  if (!colony) {
-    return null;
-  }
-
   const actionType = getExtendedActionType(action, colony.metadata);
 
   const getActionContent = () => {

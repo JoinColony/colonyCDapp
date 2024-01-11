@@ -37,7 +37,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
   const transformedAmount = moveDecimal(
-    action.amount || '0',
+    action.amount || '1',
     -getTokenDecimalsWithFallback(action.token?.decimals),
   );
 
@@ -64,7 +64,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
         <ActionTypeRow actionType={action.type} />
 
         <AmountRow
-          amount={action.amount || '0'}
+          amount={action.amount || '1'}
           token={action.token || undefined}
         />
 
