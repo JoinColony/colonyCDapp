@@ -1,5 +1,5 @@
 import { isAddress } from '@ethersproject/address';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
@@ -33,13 +33,10 @@ export const useTokenSelect = (inputValue: string) => {
     })),
   };
 
-  const isRemoteTokenAddress = useMemo(
-    () =>
-      inputValue &&
-      isAddress(inputValue) &&
-      !allTokens.some(({ token }) => token.tokenAddress === inputValue),
-    [inputValue, allTokens],
-  );
+  const isRemoteTokenAddress =
+    !!inputValue &&
+    isAddress(inputValue) &&
+    !allTokens.some(({ token }) => token.tokenAddress === inputValue);
 
   const { data: tokenData, loading } = useGetTokenFromEverywhereQuery({
     variables: {

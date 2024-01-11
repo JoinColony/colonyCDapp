@@ -139,10 +139,15 @@ export const useGetActionData = (transactionId: string | undefined) => {
         };
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion: {
-        const changelog = action.colony.metadata?.changelog?.find(
+        const changelog = isMotion
+          ? action.pendingColonyMetadata?.changelog
+          : action.colony.metadata?.changelog;
+
+        const currentChangelogItem = changelog?.find(
           ({ transactionHash }) => transactionHash === action.transactionHash,
         );
-        const { haveTokensChanged } = changelog || {};
+
+        const { haveTokensChanged } = currentChangelogItem || {};
         const modifiedTokens = isMotion
           ? action.pendingColonyMetadata?.modifiedTokenAddresses
           : action.colony.metadata?.modifiedTokenAddresses;

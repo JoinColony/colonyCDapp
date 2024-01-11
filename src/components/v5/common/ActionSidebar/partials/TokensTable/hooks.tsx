@@ -16,16 +16,16 @@ import TokenSymbol from '../TokenSelect/partials/TokenSymbol';
 
 import { TokensTableModel, TokensTableProps } from './types';
 
+const columnHelper = createColumnHelper<TokensTableModel>();
+
 export const useTokensTableColumns = (
   name: string,
   data,
 ): ColumnDef<TokensTableModel, string>[] => {
-  const columnHelper = createColumnHelper<TokensTableModel>();
-
   const dataRef = useWrapWithRef(data);
 
-  const columns: ColumnDef<TokensTableModel, string>[] = useMemo(
-    () => [
+  const columns: ColumnDef<TokensTableModel, string>[] = useMemo(() => {
+    return [
       columnHelper.display({
         id: 'token',
         header: () => formatText({ id: 'table.row.token' }),
@@ -66,9 +66,8 @@ export const useTokensTableColumns = (
           );
         },
       }),
-    ],
-    [columnHelper, dataRef, name],
-  );
+    ];
+  }, [dataRef, name]);
 
   return columns;
 };
