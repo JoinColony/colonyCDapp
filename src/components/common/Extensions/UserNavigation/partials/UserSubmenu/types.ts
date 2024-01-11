@@ -1,5 +1,8 @@
+import { SetStateFn } from '~types';
+
 export interface UserSubmenuProps {
   submenuId: string;
+  setActiveSubmenu: SetStateFn;
 }
 
 export interface UserSubmenuItems {
@@ -9,7 +12,7 @@ export interface UserSubmenuItems {
 export interface UserSubmenuItem {
   id: string;
   label: string;
-  url: string;
+  url?: string;
   external?: boolean;
   icon: string;
   className?: string;

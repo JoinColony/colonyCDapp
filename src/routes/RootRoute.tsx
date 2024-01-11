@@ -7,6 +7,7 @@ import {
   PageThemeContextProvider,
   usePageThemeContext,
 } from '~context';
+import { CurrencyContextProvider } from '~context/CurrencyContext';
 import { Theme } from '~frame/Extensions/themes/enum';
 import { applyTheme } from '~frame/Extensions/themes/utils';
 import { DialogProvider } from '~shared/Dialog';
@@ -31,7 +32,9 @@ const RootRouteInner = () => {
 const RootRoute = () => (
   <PageThemeContextProvider>
     <AppContextProvider>
-      <RootRouteInner />
+      <CurrencyContextProvider>
+        <RootRouteInner />
+      </CurrencyContextProvider>
     </AppContextProvider>
   </PageThemeContextProvider>
 );

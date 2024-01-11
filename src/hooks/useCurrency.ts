@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { Network, SupportedCurrencies } from '~gql';
-import { fetchCurrentPrice } from '~utils/currency/currency';
-import { FetchCurrentPriceArgs } from '~utils/currency/types';
+import { fetchCurrentPrice, FetchCurrentPriceArgs } from '~utils/currency';
 
 const useCurrency = ({
   contractAddress,
   chainId = Network.Gnosis,
   conversionDenomination = SupportedCurrencies.Usd,
 }: FetchCurrentPriceArgs) => {
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState<number | null>(0);
 
   useEffect(() => {
     if (!contractAddress) return;
