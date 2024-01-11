@@ -7,8 +7,9 @@ import useMobile from '~hooks/useMobile';
 import ExternalLink from '~shared/ExternalLink';
 import { formatText } from '~utils/intl';
 
-import { MenuList, MenuListItem } from '../../blocks';
 import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts';
+import MenuList from '../MenuList';
+import MenuListItem from '../MenuListItem';
 
 import styles from '../Submenu.module.css';
 
