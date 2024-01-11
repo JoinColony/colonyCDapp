@@ -88,15 +88,28 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   };
 };
 
-export const useMainMenuItems = () => {
+export const useMainMenuItems = (hasTransactionId: boolean) => {
   const { colony } = useColonyContext();
   const { metadata } = colony || {};
 
   const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+    actionSidebarToggle: [
+      ,
+      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
+    ],
   } = useActionSidebarContext();
   const { pathname } = useLocation();
   const nestedColonyPathname = pathname.split('/').slice(2).join('/');
+  const handleNewActionClick = () => {
+    if (hasTransactionId) {
+      toggleActionSidebarOff();
+      setTimeout(() => {
+        toggleActionSidebarOn();
+      }, 500);
+    } else {
+      toggleActionSidebarOn();
+    }
+  };
 
   // @todo: update menu items with correct contents and related actions
   const mainMenuItems: NavigationSidebarItem[] = [
@@ -104,7 +117,7 @@ export const useMainMenuItems = () => {
       key: '1',
       iconName: 'file-plus',
       label: formatText({ id: 'navigation.newAction' }),
-      onClick: () => toggleActionSidebarOn(),
+      onClick: handleNewActionClick,
       hideMobile: true,
       isHighlighted: true,
     },

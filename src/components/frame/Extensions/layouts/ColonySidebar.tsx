@@ -20,10 +20,11 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout.ColonySidebar';
 interface Props {
   txButtons: ReactNode;
   userHub: ReactNode;
+  transactionId?: string;
 }
 
-const ColonySidebar = ({ txButtons, userHub }: Props) => {
-  const mainMenuItems = useMainMenuItems();
+const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
+  const mainMenuItems = useMainMenuItems(!!transactionId);
   const {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
