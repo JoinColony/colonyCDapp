@@ -27,6 +27,7 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [ACTION.ENTER_RECOVERY_MODE]: 'button.enterRecovery',
   [ACTION.MANAGE_COLONY_OBJECTIVES]: 'button.updateObjective',
   [ACTION.CREATE_NEW_INTEGRATION]: 'button.createIntegration',
+  [ACTION.CREATE_DECISION]: 'button.createDecision',
 };
 
 export const useSubmitButtonText = () => {
