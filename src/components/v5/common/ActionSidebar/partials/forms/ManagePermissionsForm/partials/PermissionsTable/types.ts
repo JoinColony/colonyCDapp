@@ -6,6 +6,7 @@ import { UserRole } from '~constants/permissions';
 export interface PermissionsTableProps {
   name: string;
   role?: UserRole;
+  className?: string;
 }
 
 export interface PermissionsTableModel {
