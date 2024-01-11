@@ -18,7 +18,7 @@ const TotalActions = () => {
   const selectedDomain = useGetSelectedDomainFilter();
   const nativeDomainId = selectedDomain?.nativeId;
 
-  const { actionsCount: totalActions } = useActionsCount({
+  const { actionsCount: totalActions, loading } = useActionsCount({
     domainId: nativeDomainId,
   });
 
@@ -30,7 +30,15 @@ const TotalActions = () => {
   return (
     <WidgetBox
       title={formatText({ id: 'widget.totalActions' })}
-      value={<h4 className="heading-4">{totalActions}</h4>}
+      value={
+        <h4 className="heading-4">
+          {loading ? (
+            <div className="skeleton opacity-25 w-[60px] h-[1.5em]" />
+          ) : (
+            totalActions
+          )}
+        </h4>
+      }
       className={clsx('text-base-white', {
         [teamColor]: selectedDomain,
         'bg-gray-900 border-gray-900': !selectedDomain,

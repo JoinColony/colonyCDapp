@@ -7,7 +7,6 @@ import {
   useColonyContext,
   useGetSelectedDomainFilter,
 } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
@@ -60,17 +59,19 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const contentClassName =
     'flex flex-row-reverse items-center gap-1.5 text-right sm:text-left sm:gap-0 sm:flex-col sm:items-start';
 
+  const countSkeleton = (
+    <div className="skeleton w-[60px] h-[1em] my-[0.25em]" />
+  );
+
   return [
     {
       key: '1',
       title: formatText({ id: 'widget.totalActions' }),
       value: (
         <span className="heading-4 text-gray-900">
-          {totalActionsLoading ? (
-            <SpinnerLoader />
-          ) : (
-            getFormattedActionsCount(totalActions)
-          )}
+          {totalActionsLoading
+            ? countSkeleton
+            : getFormattedActionsCount(totalActions)}
         </span>
       ),
       className: tileClassName,
@@ -82,19 +83,17 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
       title: formatText({ id: 'activityPage.recentActions' }),
       value: (
         <span className="heading-4 text-gray-900">
-          {formatText(
-            { id: 'activityPage.recentActions.pastMonth' },
-            {
-              value: recentActionsLoading ? (
-                <SpinnerLoader />
-              ) : (
-                getFormattedActionsCount(recentActions)
-              ),
-              span: (chunks) => (
-                <span className="text-1 hidden sm:inline">{chunks}</span>
-              ),
-            },
-          )}
+          {recentActionsLoading
+            ? countSkeleton
+            : formatText(
+                { id: 'activityPage.recentActions.pastMonth' },
+                {
+                  value: getFormattedActionsCount(recentActions),
+                  span: (chunks) => (
+                    <span className="text-1 hidden sm:inline">{chunks}</span>
+                  ),
+                },
+              )}
         </span>
       ),
       className: tileClassName,
