@@ -257,8 +257,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-nvm install 16
-nvm use 16
+nvm install 20.11
+nvm use 20.11
 
 # Set env vars (reputation endpoint is 3001 and graphql is 20002, but increasing number by 1 to serve from nginx)
 cat <<EOL > ./.env
@@ -273,8 +273,7 @@ AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
 GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:13006"
 EOL
 
-# Install appropriate npm version and dependencies
-npm install -g npm@8
+# Install dependencies
 npm ci
 
 # For the authentication proxy
