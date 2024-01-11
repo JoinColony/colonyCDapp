@@ -31,12 +31,7 @@ const ActionButton: FC<ActionButtonProps> = ({
           {formatMessage({ id: 'button.manage' })}
         </Link>
       ) : (
-        <Button
-          mode="primarySolid"
-          size="small"
-          isFullSize={isMobile}
-          onClick={handleClick}
-        >
+        <Button mode="primarySolid" isFullSize={isMobile} onClick={handleClick}>
           {formatMessage({ id: 'button.install' })}
         </Button>
       )}
