@@ -19,7 +19,7 @@ const MemberCardList: FC<MemberCardListProps> = ({
       className={clsx('grid', {
         'grid-cols-[repeat(auto-fit,minmax(14.75rem,1fr))]':
           !isSimple && items.length > 2,
-        'grid-cols-[repeat(auto-fit,minmax(14.75rem,1fr))] md:grid-cols-4':
+        'grid-cols-[repeat(auto-fit,minmax(14.75rem,1fr))] lg:grid-cols-4':
           !isSimple && items.length <= 2,
         'grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))]':
           isSimple && items.length > 3,
