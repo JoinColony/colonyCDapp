@@ -42,7 +42,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
       <div className="flex flex-col sm:flex-row items-center w-full gap-6 sm:gap-12">
         <Link
           to={extensionUrl}
-          className="flex flex-1 flex-row items-center w-full"
+          className="flex flex-1 flex-row items-start w-full"
         >
           <div className="flex shrink-0">
             <Icon name={icon} appearance={{ size: 'extraBig' }} />
@@ -57,7 +57,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
               </h5>
               <ExtensionStatusBadge mode={status} text={badgeMessage} />
             </div>
-            <p className="text-sm text-gray-600 mt-0.5">
+            <p className="text-md text-gray-600 mt-1.5">
               {formatMessage(description)}
             </p>
           </div>
