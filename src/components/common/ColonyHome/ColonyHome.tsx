@@ -17,12 +17,12 @@ import {
 } from '~routes';
 import { formatText } from '~utils/intl';
 import { setQueryParamOnUrl } from '~utils/urls';
-import ColonyDashboardHeader from '~v5/common/ColonyDashboardHeader';
 import Link from '~v5/shared/Link';
 import Modal from '~v5/shared/Modal';
 
 import { useDashboardHeader } from './hooks/useDashboardHeader';
 import Agreements from './partials/Agreements';
+import ColonyDashboardHeader from './partials/ColonyDashboardHeader';
 import Members from './partials/Members';
 import Objective from './partials/Objective';
 import ReputationChart from './partials/ReputationChart';
