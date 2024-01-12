@@ -1,6 +1,7 @@
 import {
   // @BETA: Disabled for now
   // BellRinging,
+  CopySimple,
   Door,
   Rocket,
   ShareNetwork,
@@ -44,17 +45,29 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   const { colony, colonySubscription } = useColonyContext();
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(5000);
   const {
-    handleClipboardCopy: itemHandleClipboardCopy,
-    isCopied: itemIsCopied,
+    handleClipboardCopy: shareUrlhandleClipboardCopy,
+    isCopied: shareUrlIsCopied,
   } = useCopyToClipboard(5000);
+  const {
+    handleClipboardCopy: shareUrlItemHandleClipboardCopy,
+    isCopied: shareUrlItemIsCopied,
+  } = useCopyToClipboard(5000);
+  const {
+    handleClipboardCopy: colonyAddressHandleClipboardCopy,
+    isCopied: colonyAddressIsCopied,
+  } = useCopyToClipboard(5000);
+  const {
+    handleClipboardCopy: contractAddressItemHandleClipboardCopy,
+    isCopied: contractAddressItemIsCopied,
+  } = useCopyToClipboard(5000);
+
   const [leaveColonyConfirmOpen, setLeaveColonyConfirm] =
     useState<boolean>(false);
   const isMobile = useMobile();
   const { isWatching } = colonySubscription;
 
-  const { tokens, nativeToken } = colony || {};
+  const { colonyAddress, tokens, nativeToken } = colony || {};
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
   const currentToken = getCurrentToken(tokens, nativeTokenAddress ?? '');
   const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
@@ -83,6 +96,20 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
           icon: Rocket,
           to: `/${colony?.name}/${COLONY_DETAILS_ROUTE}`,
         },
+        {
+          key: '1.2',
+          label: formatText({ id: 'dashboard.burgerMenu.item.colonyAddress' }),
+          icon: CopySimple,
+          onClick: () =>
+            contractAddressItemHandleClipboardCopy(colonyAddress ?? ''),
+          tooltipProps: {
+            tooltipContent: formatText({
+              id: 'colony.tooltip.colonyAddress.copied',
+            }),
+            isOpen: contractAddressItemIsCopied,
+            isSuccess: true,
+          },
+        },
       ],
     },
     {
@@ -108,12 +135,12 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
           key: '2.2',
           label: formatText({ id: 'dashboard.burgerMenu.item.share' }),
           icon: ShareNetwork,
-          onClick: () => itemHandleClipboardCopy(colonyUrl),
+          onClick: () => shareUrlItemHandleClipboardCopy(colonyUrl),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',
             }),
-            isOpen: itemIsCopied,
+            isOpen: shareUrlItemIsCopied,
             isSuccess: true,
           },
         },
@@ -162,12 +189,25 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
         {
           key: 'share-url',
           icon: ShareNetwork,
-          onClick: () => handleClipboardCopy(colonyUrl),
+          onClick: () => shareUrlhandleClipboardCopy(colonyUrl),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',
             }),
-            isOpen: isCopied,
+            isOpen: shareUrlIsCopied,
+            isSuccess: true,
+            placement: 'right',
+          },
+        },
+        {
+          key: 'copy-address',
+          icon: CopySimple,
+          onClick: () => colonyAddressHandleClipboardCopy(colonyAddress ?? ''),
+          tooltipProps: {
+            tooltipContent: formatText({
+              id: 'colony.tooltip.colonyAddress.copied',
+            }),
+            isOpen: colonyAddressIsCopied,
             isSuccess: true,
             placement: 'right',
           },
