@@ -7,6 +7,7 @@ import { useColonyContext } from '~hooks';
 import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import { ColonyContributor } from '~types';
 import { notNull } from '~utils/arrays';
+import { getDomainDatabaseId } from '~utils/databaseId';
 import { searchMembers } from '~utils/members';
 import {
   ContributorTypeFilter,
@@ -35,14 +36,60 @@ const useMemberFilters = ({
 
   const { colonyAddress = '' } = colony ?? {};
 
-  const filteredByStatus = useMemo(() => {
-    if (!filterStatus) {
+  const databaseDomainIds = useMemo(
+    () =>
+      new Set(
+        selectedTeam
+          ? [selectedTeam.id]
+          : nativeDomainIds.map((id) => getDomainDatabaseId(colonyAddress, id)),
+      ),
+    [nativeDomainIds, colonyAddress, selectedTeam],
+  );
+
+  // Always include the root domain, since if the user has a permission in root, they have it in all domains
+  const permissionsDomainIds = useMemo(
+    () =>
+      new Set([
+        getDomainDatabaseId(colonyAddress, Id.RootDomain),
+        ...databaseDomainIds,
+      ]),
+    [databaseDomainIds, colonyAddress],
+  );
+
+  const filteredByTeam = useMemo(() => {
+    if (!selectedTeam) {
       return members;
     }
-    return members.filter(({ isVerified }) =>
+
+    return (
+      members.filter(({ roles, reputation }) => {
+        const filteredRoles = roles?.items.filter(notNull) ?? [];
+        const filteredReputation = reputation?.items.filter(notNull) ?? [];
+
+        // Filter contributors list by whether there's some rep in the selected domains
+        // or some permissions in the selected domains
+        return (
+          filteredReputation.some(({ domainId }) =>
+            databaseDomainIds.has(domainId),
+          ) ||
+          filteredRoles.some(
+            ({ domainId, ...rest }) =>
+              permissionsDomainIds.has(domainId) &&
+              hasSomeRole(rest, undefined),
+          )
+        );
+      }) ?? []
+    );
+  }, [members, databaseDomainIds, permissionsDomainIds, selectedTeam]);
+
+  const filteredByStatus = useMemo(() => {
+    if (!filterStatus) {
+      return filteredByTeam;
+    }
+    return filteredByTeam.filter(({ isVerified }) =>
       filterStatus === StatusFilter.Verified ? isVerified : !isVerified,
     );
-  }, [filterStatus, members]);
+  }, [filterStatus, filteredByTeam]);
 
   const filteredByType = useMemo(() => {
     if (!contributorTypes.size) {
@@ -59,38 +106,8 @@ const useMemberFilters = ({
   }, [filteredByStatus, contributorTypes]);
 
   const filteredByPermissions = useMemo(() => {
-    const databaseDomainIds = new Set(
-      selectedTeam
-        ? [selectedTeam.id]
-        : nativeDomainIds.map((id) => `${colonyAddress}_${id}`),
-    );
-
-    // Always include the root domain, since if the user has a permission in root, they have it in all domains
-    const permissionsDomainIds = new Set([
-      `${colonyAddress}_${Id.RootDomain}`,
-      ...databaseDomainIds,
-    ]);
-
     if (!Object.keys(filterPermissions).length) {
-      return (
-        filteredByType?.filter(notNull).filter(({ roles, reputation }) => {
-          const filteredRoles = roles?.items.filter(notNull) ?? [];
-          const filteredReputation = reputation?.items.filter(notNull) ?? [];
-
-          // Filter contributors list by whether there's some rep in the selected domains
-          // or some permissions in the selected domains
-          return (
-            filteredReputation.some(({ domainId }) =>
-              databaseDomainIds.has(domainId),
-            ) ||
-            filteredRoles.some(
-              ({ domainId, ...rest }) =>
-                permissionsDomainIds.has(domainId) &&
-                hasSomeRole(rest, undefined),
-            )
-          );
-        }) ?? []
-      );
+      return filteredByType;
     }
 
     return filteredByType.filter(({ roles }) => {
@@ -104,13 +121,7 @@ const useMemberFilters = ({
           hasSomeRole(rest, filterPermissions),
       );
     });
-  }, [
-    nativeDomainIds,
-    colonyAddress,
-    filteredByType,
-    selectedTeam,
-    filterPermissions,
-  ]);
+  }, [filteredByType, filterPermissions, permissionsDomainIds]);
 
   const searchedMembers = useMemo(
     () => searchMembers(filteredByPermissions, searchValue),
