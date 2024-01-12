@@ -46,20 +46,20 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
   const {
-    handleClipboardCopy: shareUrlhandleClipboardCopy,
+    handleClipboardCopy: handleShareUrlCopy,
     isCopied: shareUrlIsCopied,
   } = useCopyToClipboard(5000);
   const {
-    handleClipboardCopy: shareUrlItemHandleClipboardCopy,
+    handleClipboardCopy: handleShareUrlItemCopy,
     isCopied: shareUrlItemIsCopied,
   } = useCopyToClipboard(5000);
   const {
-    handleClipboardCopy: colonyAddressHandleClipboardCopy,
+    handleClipboardCopy: handleColonyAddressCopy,
     isCopied: colonyAddressIsCopied,
   } = useCopyToClipboard(5000);
   const {
-    handleClipboardCopy: contractAddressItemHandleClipboardCopy,
-    isCopied: contractAddressItemIsCopied,
+    handleClipboardCopy: handleColonyAddressItemCopy,
+    isCopied: colonyAddressItemIsCopied,
   } = useCopyToClipboard(5000);
 
   const [leaveColonyConfirmOpen, setLeaveColonyConfirm] =
@@ -100,13 +100,12 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
           key: '1.2',
           label: formatText({ id: 'dashboard.burgerMenu.item.colonyAddress' }),
           icon: CopySimple,
-          onClick: () =>
-            contractAddressItemHandleClipboardCopy(colonyAddress ?? ''),
+          onClick: () => handleColonyAddressItemCopy(colonyAddress ?? ''),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.colonyAddress.copied',
             }),
-            isOpen: contractAddressItemIsCopied,
+            isOpen: colonyAddressItemIsCopied,
             isSuccess: true,
           },
         },
@@ -135,7 +134,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
           key: '2.2',
           label: formatText({ id: 'dashboard.burgerMenu.item.share' }),
           icon: ShareNetwork,
-          onClick: () => shareUrlItemHandleClipboardCopy(colonyUrl),
+          onClick: () => handleShareUrlItemCopy(colonyUrl),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',
@@ -189,7 +188,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
         {
           key: 'share-url',
           icon: ShareNetwork,
-          onClick: () => shareUrlhandleClipboardCopy(colonyUrl),
+          onClick: () => handleShareUrlCopy(colonyUrl),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',
@@ -202,7 +201,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
         {
           key: 'copy-address',
           icon: CopySimple,
-          onClick: () => colonyAddressHandleClipboardCopy(colonyAddress ?? ''),
+          onClick: () => handleColonyAddressCopy(colonyAddress ?? ''),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.colonyAddress.copied',
