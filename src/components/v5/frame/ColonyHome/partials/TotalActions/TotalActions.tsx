@@ -10,7 +10,7 @@ import { formatText } from '~utils/intl';
 import { getTeamColor } from '~utils/teams';
 import WidgetBox from '~v5/common/WidgetBox';
 
-const displayName = 'common.ColonyHome.TotalActions';
+const displayName = 'v5.frame.ColonyHome.TotalActions';
 
 const TotalActions = () => {
   const { search: searchParams } = useLocation();

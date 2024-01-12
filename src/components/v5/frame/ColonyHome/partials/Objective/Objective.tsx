@@ -12,7 +12,7 @@ import WidgetBox from '~v5/common/WidgetBox';
 import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
 import ProgressBar from '~v5/shared/ProgressBar';
 
-const displayName = 'common.ColonyHome.Objective';
+const displayName = 'v5.frame.ColonyHome.Objective';
 
 const Objective = () => {
   const selectedDomain = useGetSelectedDomainFilter();
@@ -22,9 +22,10 @@ const Objective = () => {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
-  const { colony } = useColonyContext();
-  const { domains } = colony || {};
-  const { objective } = colony?.metadata || {};
+  const {
+    colony: { domains, metadata },
+  } = useColonyContext();
+  const { objective } = metadata || {};
 
   const selectedTeamColor = domains?.items.find(
     (domain) => domain?.nativeId === nativeDomainId,

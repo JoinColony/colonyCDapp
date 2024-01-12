@@ -7,13 +7,13 @@ import NativeTokenPill from '~v5/common/NativeTokenPill';
 
 import ColonyLinks from './partials/ColonyLinks';
 
-const displayName = 'common.ColonyHome.DashboardHeader';
+const displayName = 'v5.frame.ColonyHome.DashboardHeader';
 
 const MAX_DESCRIPTION_LENGTH = 250;
 
 const DashboardHeader = () => {
   const { colony } = useColonyContext();
-  const { metadata, nativeToken, status } = colony || {};
+  const { metadata, nativeToken, status } = colony;
 
   const colonyName = metadata?.displayName || '';
   const description = metadata?.description

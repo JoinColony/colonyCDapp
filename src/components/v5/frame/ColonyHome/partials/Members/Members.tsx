@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl';
 import WidgetBox from '~v5/common/WidgetBox';
 import UserAvatars from '~v5/shared/UserAvatars';
 
-const displayName = 'common.ColonyHome.Members';
+const displayName = 'v5.frame.ColonyHome.Members';
 
 const Members = () => {
   const { search } = useLocation();
