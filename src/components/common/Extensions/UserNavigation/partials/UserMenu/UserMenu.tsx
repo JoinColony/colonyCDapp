@@ -155,9 +155,7 @@ const UserMenu: FC<UserMenuProps> = ({
                     name={currencyIconTitles[currency]}
                     appearance={{ size: iconSize }}
                   />
-                  <p className="ml-2">
-                    {formatText({ id: UserMenuItemName.CURRENCY })}
-                  </p>
+                  <p className="ml-2">{currency.toUpperCase()}</p>
                 </span>
                 <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
               </button>

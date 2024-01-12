@@ -29,7 +29,7 @@ const Currency = ({ closeSubmenu }: CurrencyProps) => {
   };
 
   return (
-    <MenuList>
+    <MenuList className="columns-2">
       {Object.values(SupportedCurrencies)
         .reverse()
         .map((currency) => (
