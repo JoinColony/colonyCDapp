@@ -48,7 +48,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
             className={clsx('font-medium', {
               'truncate max-w-[6.25rem] md:max-w-full': !isTokenModalOpened,
               'md:whitespace-normal': isTokenModalOpened,
-              'text-gray-900': !isTokenInfoShown,
+              'text-gray-900 group-hover:text-blue-400': !isTokenInfoShown,
               'text-blue-400': isTokenInfoShown,
             })}
           >
@@ -77,7 +77,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
       <button
         type="button"
         ref={relativeElementRef}
-        className="flex gap-4 items-center"
+        className="flex gap-4 items-center group"
         onClick={isMobile ? toggleTokenModalOn : toggleToken}
       >
         {content}
