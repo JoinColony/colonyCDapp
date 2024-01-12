@@ -47,19 +47,19 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   const colonyUrl = `${window.location.host}${pathname}`;
   const {
     handleClipboardCopy: handleShareUrlCopy,
-    isCopied: shareUrlIsCopied,
+    isCopied: isShareUrlCopied,
   } = useCopyToClipboard(5000);
   const {
     handleClipboardCopy: handleShareUrlItemCopy,
-    isCopied: shareUrlItemIsCopied,
+    isCopied: isSharedUrlItemCopied,
   } = useCopyToClipboard(5000);
   const {
     handleClipboardCopy: handleColonyAddressCopy,
-    isCopied: colonyAddressIsCopied,
+    isCopied: isColonyAddressCopied,
   } = useCopyToClipboard(5000);
   const {
     handleClipboardCopy: handleColonyAddressItemCopy,
-    isCopied: colonyAddressItemIsCopied,
+    isCopied: isColonyAddressItemCopied,
   } = useCopyToClipboard(5000);
 
   const [leaveColonyConfirmOpen, setLeaveColonyConfirm] =
@@ -105,7 +105,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
             tooltipContent: formatText({
               id: 'colony.tooltip.colonyAddress.copied',
             }),
-            isOpen: colonyAddressItemIsCopied,
+            isOpen: isColonyAddressItemCopied,
             isSuccess: true,
           },
         },
@@ -139,7 +139,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',
             }),
-            isOpen: shareUrlItemIsCopied,
+            isOpen: isSharedUrlItemCopied,
             isSuccess: true,
           },
         },
@@ -193,7 +193,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',
             }),
-            isOpen: shareUrlIsCopied,
+            isOpen: isShareUrlCopied,
             isSuccess: true,
             placement: 'right',
           },
@@ -206,7 +206,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
             tooltipContent: formatText({
               id: 'colony.tooltip.colonyAddress.copied',
             }),
-            isOpen: colonyAddressIsCopied,
+            isOpen: isColonyAddressCopied,
             isSuccess: true,
             placement: 'right',
           },
