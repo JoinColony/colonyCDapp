@@ -1,46 +1,65 @@
+import { ShareNetwork } from 'phosphor-react';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
+import useColonyContext from '~hooks/useColonyContext';
+import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import ExternalLink from '~shared/Extensions/ExternalLink';
 import Tooltip from '~shared/Extensions/Tooltip';
+import { formatText } from '~utils/intl';
 import DropdownMenu from '~v5/common/DropdownMenu';
-import Link from '~v5/shared/Link';
+import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 
+import { sortExternalLinks } from './helpers';
 import { useHeaderLinks } from './useHeaderLinks';
 
 const displayName = 'v5.common.ColonyDashboardHeader.partials.ColonyLinks';
 
 const ColonyLinks = () => {
-  const { items, dropdownMenuProps } = useHeaderLinks();
-  const itemClassName =
-    'flex items-center transition-all md:hover:text-blue-400';
+  const { colony } = useColonyContext();
+  const { metadata } = colony || {};
+  const { dropdownMenuProps } = useHeaderLinks();
+  const { pathname } = useLocation();
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard(5000);
+
+  const colonyUrl = `${window.location.host}${pathname}`;
+  const topLinks = metadata?.externalLinks
+    ? sortExternalLinks(metadata.externalLinks).slice(0, 3)
+    : [];
 
   return (
     <ul className="flex items-center gap-4">
-      {items.map(({ key, to, tooltipProps, icon: Icon, label, onClick }) => {
-        const content = label ? (
-          <>
-            <Icon />
-            {label}
-          </>
-        ) : (
-          <Icon />
-        );
+      {topLinks.map(({ link, name }) => {
+        const { label, LinkIcon } = COLONY_LINK_CONFIG[name];
 
-        const item = to ? (
-          <Link to={to} onClick={onClick} className={itemClassName}>
-            {content}
-          </Link>
-        ) : (
-          <button type="button" onClick={onClick} className={itemClassName}>
-            {content}
-          </button>
-        );
+        if (!label || !LinkIcon) {
+          return null;
+        }
 
         return (
-          <li key={key}>
-            {tooltipProps ? <Tooltip {...tooltipProps}>{item}</Tooltip> : item}
+          <li key={name} className="md:hover:text-blue-400">
+            <ExternalLink href={link} className="text-gray-900">
+              <LinkIcon size={16} />
+            </ExternalLink>
           </li>
         );
       })}
+      <Tooltip
+        isOpen={isCopied}
+        isSuccess
+        placement="right"
+        tooltipContent={formatText({
+          id: 'colony.tooltip.url.copied',
+        })}
+      >
+        <button
+          type="button"
+          className="md:hover:text-blue-400"
+          onClick={() => handleClipboardCopy(colonyUrl)}
+        >
+          <ShareNetwork size={16} />
+        </button>
+      </Tooltip>
       <li>
         <DropdownMenu {...dropdownMenuProps} />
       </li>

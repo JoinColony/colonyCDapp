@@ -1,88 +1,42 @@
-import {
-  // @BETA: Disabled for now
-  // BellRinging,
-  CopySimple,
-  DiscordLogo,
-  Door,
-  FacebookLogo,
-  GithubLogo,
-  Globe,
-  IconProps,
-  InstagramLogo,
-  Rocket,
-  Scroll,
-  ShareNetwork,
-  Smiley,
-  TelegramLogo,
-  TwitterLogo,
-  YoutubeLogo,
-} from 'phosphor-react';
-import { ComponentType } from 'react';
+import { CopySimple, Door, Rocket, ShareNetwork, Smiley } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext';
-import { ExternalLink, ExternalLinks } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 import useMobile from '~hooks/useMobile';
 import { COLONY_DETAILS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import {
+  DropdownMenuProps,
   DropdownMenuGroup,
   DropdownMenuItem,
 } from '~v5/common/DropdownMenu/types';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 
-import { ColonyLinksItem, ColonyLinksProps } from './types';
+import { sortExternalLinks } from './helpers';
 
-export const iconMappings: Record<ExternalLinks, ComponentType<IconProps>> = {
-  [ExternalLinks.Custom]: Globe,
-  [ExternalLinks.Whitepaper]: Scroll,
-  [ExternalLinks.Github]: GithubLogo,
-  [ExternalLinks.Discord]: DiscordLogo,
-  [ExternalLinks.Twitter]: TwitterLogo,
-  [ExternalLinks.Telegram]: TelegramLogo,
-  [ExternalLinks.Youtube]: YoutubeLogo,
-  [ExternalLinks.Facebook]: FacebookLogo,
-  [ExternalLinks.Instagram]: InstagramLogo,
-};
-
-const getExternalLinks = (externalLinks: ExternalLink[]): ColonyLinksItem[] => {
-  const linksPriority = Object.keys(iconMappings);
-
-  const sortedLinks = [...(externalLinks || [])]?.sort(
-    (link1, link2) =>
-      linksPriority.indexOf(link1.name) - linksPriority.indexOf(link2.name),
-  );
-
-  return sortedLinks.map(({ name, link }) => ({
-    key: name,
-    icon: iconMappings[name],
-    to: link,
-  }));
-};
-
-export const useHeaderLinks = (): ColonyLinksProps => {
+export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
   const isMobile = useMobile()
+
   const { colony, colonySubscription } = useColonyContext();
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
-
-const {
-  handleClipboardCopy: handleShareUrlItemCopy,
-  isCopied: isShareUrlItemCopied,
-} = useCopyToClipboard(5000);
-const {
-  handleClipboardCopy: handleColonyAddressItemCopy,
-  isCopied: isColonyAddressItemCopied,
-} = useCopyToClipboard(5000);
+  const {
+    handleClipboardCopy: handleShareUrlItemCopy,
+    isCopied: isShareUrlItemCopied,
+  } = useCopyToClipboard(5000);
+  const {
+    handleClipboardCopy: handleColonyAddressItemCopy,
+    isCopied: isColonyAddressItemCopied,
+  } = useCopyToClipboard(5000);
   const { openLeaveColonyModal } = useColonyDashboardContext();
 
   const { isWatching } = colonySubscription;
   const { metadata } = colony || {};
 
-  const items = metadata?.externalLinks
-    ? getExternalLinks(metadata.externalLinks)
+  const externalLinks = metadata?.externalLinks
+    ? sortExternalLinks(metadata.externalLinks)
     : [];
 
   const menuItems: DropdownMenuGroup[] = [
@@ -115,7 +69,7 @@ const {
     {
       key: '2',
       items: [
-        ...(items.length
+        ...(externalLinks.length
           ? [
               {
                 key: '2.1',
@@ -123,11 +77,14 @@ const {
                   id: 'dashboard.burgerMenu.item.externalLinks',
                 }),
                 icon: Smiley,
-                items: items.map<DropdownMenuItem>(({ key, ...item }) => ({
-                  ...item,
-                  key,
-                  label: COLONY_LINK_CONFIG[key].label,
-                })),
+                items: externalLinks.map<DropdownMenuItem>(
+                  ({ link, name }) => ({
+                    key: name,
+                    label: COLONY_LINK_CONFIG[name].label || '',
+                    icon: COLONY_LINK_CONFIG[name].LinkIcon,
+                    to: link,
+                  }),
+                ),
               },
             ]
           : []),
@@ -179,22 +136,6 @@ const {
   ].filter((menuItem) => menuItem.items.length !== 0);
 
   return {
-    items: [
-      ...items.slice(0, 3),
-      {
-        key: 'share-url',
-        icon: ShareNetwork,
-        onClick: () => handleShareUrlItemCopy(colonyUrl),
-        tooltipProps: {
-          tooltipContent: formatText({
-            id: 'colony.tooltip.url.copied',
-          }),
-          isOpen: isShareUrlItemCopied,
-          isSuccess: true,
-          placement: 'right',
-        },
-      },
-    ],
     dropdownMenuProps: {
       groups: menuItems,
       showSubMenuInPopover: !isMobile,
