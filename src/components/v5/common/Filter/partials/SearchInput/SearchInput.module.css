@@ -3,13 +3,17 @@
 }
 
 .searchInput {
-  @apply z-[1] min-h-[2.125rem] pr-3 pl-[2.125rem] py-1.5 w-full border rounded-lg border-gray-300 placeholder:text-gray-400;
+  @apply z-[1] min-h-[2.125rem] px-[2.125rem] py-1.5 w-full border rounded-lg border-gray-300 placeholder:text-gray-400;
 }
 
 .searchButton {
-  @apply text-gray-900 sm:text-gray-500 flex items-center transition-all duration-normal justify-center h-full absolute top-0 right-0 px-4 bg-blue-400 rounded-lg;
+  @apply z-[1] text-white sm:text-gray-500 flex items-center transition-all duration-normal justify-center h-full absolute top-0 right-0 px-4 bg-blue-400 rounded-lg;
 }
 
 .icon {
   @apply z-[2] absolute top-[50%] translate-y-[-50%] left-3 sm:left-[0.75rem] flex text-gray-900 sm:text-gray-500 pointer-events-none;
+}
+
+.clearSearchButton {
+  @apply z-[1] absolute top-0 right-0 flex h-[2.25rem] w-[2.25rem] justify-center items-center;
 }
