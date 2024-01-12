@@ -1,4 +1,19 @@
+import { SupportedCurrencies } from '~gql';
+
 import { UserMenuItemName } from './types';
+
+export const currencyIconTitles = {
+  [SupportedCurrencies.Usd]: 'flag-us',
+  [SupportedCurrencies.Jpy]: 'flag-japan',
+  [SupportedCurrencies.Gbp]: 'flag-uk',
+  [SupportedCurrencies.Eur]: 'flag-eu',
+  [SupportedCurrencies.Cad]: 'flag-canada',
+  [SupportedCurrencies.Krw]: 'flag-southkorea',
+  [SupportedCurrencies.Inr]: 'flag-india',
+  [SupportedCurrencies.Brl]: 'flag-brazil',
+  [SupportedCurrencies.Eth]: 'ether',
+  [SupportedCurrencies.Clny]: 'clny-token',
+};
 
 export const userMenuItems: Array<{
   id: string;

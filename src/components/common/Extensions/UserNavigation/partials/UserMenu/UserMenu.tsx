@@ -17,7 +17,7 @@ import TitleLabel from '~v5/shared/TitleLabel';
 import UserSubmenu from '../UserSubmenu';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
 
-import { userMenuItems } from './consts';
+import { currencyIconTitles, userMenuItems } from './consts';
 import { UserMenuItemName, UserMenuProps } from './types';
 
 import styles from './UserMenu.module.css';
@@ -39,7 +39,11 @@ const UserMenu: FC<UserMenuProps> = ({
   const iconName = isTablet ? 'caret-down' : 'caret-right';
   const iconSize = isTablet ? 'small' : 'extraSmall';
   const { currency } = useCurrencyContext();
-  
+
+  const closeSubmenu = () => {
+    setActiveSubmenu(null);
+  };
+
   return (
     <PopoverBase
       setTooltipRef={setTooltipRef}
@@ -106,7 +110,7 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
-            <li className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+            <li className="mb-2 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
               <Link to="/" className="navigation-link">
                 <Icon
                   name="circles-three-plus"
@@ -120,7 +124,7 @@ const UserMenu: FC<UserMenuProps> = ({
             {userMenuItems.map(({ id, icon, name: itemName }) => (
               <li
                 key={id}
-                className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+                className="mb-2 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
               >
                 <button
                   type="button"
@@ -137,6 +141,27 @@ const UserMenu: FC<UserMenuProps> = ({
                 </button>
               </li>
             ))}
+
+            <li className="mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+              <button
+                type="button"
+                className="navigation-link"
+                onClick={() => setActiveSubmenu(UserMenuItemName.CURRENCY)}
+                aria-expanded={activeSubmenu === UserMenuItemName.CURRENCY}
+                aria-controls="actionsWithVisibility"
+              >
+                <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                  <Icon
+                    name={currencyIconTitles[currency]}
+                    appearance={{ size: iconSize }}
+                  />
+                  <p className="ml-2">
+                    {formatText({ id: UserMenuItemName.CURRENCY })}
+                  </p>
+                </span>
+                <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+              </button>
+            </li>
           </ul>
         </div>
         {wallet && (
@@ -165,7 +190,7 @@ const UserMenu: FC<UserMenuProps> = ({
               type="button"
               aria-label={formatText({ id: 'ariaLabel.backToMainMenu' })}
               className={clsx(styles.buttonBack, 'group text-4 mb-2')}
-              onClick={() => setActiveSubmenu(null)}
+              onClick={closeSubmenu}
             >
               <Icon name="caret-left" appearance={{ size: 'extraExtraTiny' }} />
 
@@ -176,7 +201,7 @@ const UserMenu: FC<UserMenuProps> = ({
             </button>
             <UserSubmenu
               submenuId={activeSubmenu}
-              setActiveSubmenu={setActiveSubmenu}
+              closeSubmenu={closeSubmenu}
             />
           </>
         )}
