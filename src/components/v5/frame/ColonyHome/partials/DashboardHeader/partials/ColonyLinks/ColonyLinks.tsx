@@ -1,14 +1,15 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip';
 import DropdownMenu from '~v5/common/DropdownMenu';
 import Link from '~v5/shared/Link';
 
-import { ColonyLinksProps } from './types';
+import { useHeaderLinks } from './useHeaderLinks';
 
 const displayName = 'v5.common.ColonyDashboardHeader.partials.ColonyLinks';
 
-const ColonyLinks: FC<ColonyLinksProps> = ({ items, dropdownMenuProps }) => {
+const ColonyLinks = () => {
+  const { items, dropdownMenuProps } = useHeaderLinks();
   const itemClassName =
     'flex items-center transition-all md:hover:text-blue-400';
 

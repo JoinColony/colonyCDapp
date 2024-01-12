@@ -2,29 +2,50 @@ import {
   // @BETA: Disabled for now
   // BellRinging,
   CopySimple,
+  DiscordLogo,
   Door,
+  FacebookLogo,
+  GithubLogo,
+  Globe,
+  IconProps,
+  InstagramLogo,
   Rocket,
+  Scroll,
   ShareNetwork,
   Smiley,
+  TelegramLogo,
+  TwitterLogo,
+  YoutubeLogo,
 } from 'phosphor-react';
-import { useState } from 'react';
+import { ComponentType } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { getCurrentToken } from '~common/ColonyTotalFunds/SelectedToken/helpers';
-import { ExternalLink } from '~gql';
-import { useColonyContext, useMobile } from '~hooks';
+import { useColonyDashboardContext } from '~context/ColonyDashboardContext';
+import { ExternalLink, ExternalLinks } from '~gql';
+import useColonyContext from '~hooks/useColonyContext';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { COLONY_DETAILS_ROUTE } from '~routes/routeConstants';
+import useMobile from '~hooks/useMobile';
+import { COLONY_DETAILS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
-import { ColonyLinksItem } from '~v5/common/ColonyDashboardHeader/partials/ColonyLinks/types';
-import { ColonyDashboardHeaderProps } from '~v5/common/ColonyDashboardHeader/types';
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from '~v5/common/DropdownMenu/types';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 
-import { iconMappings, MAX_TEXT_LENGTH } from './consts';
+import { ColonyLinksItem, ColonyLinksProps } from './types';
+
+export const iconMappings: Record<ExternalLinks, ComponentType<IconProps>> = {
+  [ExternalLinks.Custom]: Globe,
+  [ExternalLinks.Whitepaper]: Scroll,
+  [ExternalLinks.Github]: GithubLogo,
+  [ExternalLinks.Discord]: DiscordLogo,
+  [ExternalLinks.Twitter]: TwitterLogo,
+  [ExternalLinks.Telegram]: TelegramLogo,
+  [ExternalLinks.Youtube]: YoutubeLogo,
+  [ExternalLinks.Facebook]: FacebookLogo,
+  [ExternalLinks.Instagram]: InstagramLogo,
+};
 
 const getExternalLinks = (externalLinks: ExternalLink[]): ColonyLinksItem[] => {
   const linksPriority = Object.keys(iconMappings);
@@ -41,48 +62,28 @@ const getExternalLinks = (externalLinks: ExternalLink[]): ColonyLinksItem[] => {
   }));
 };
 
-export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
+export const useHeaderLinks = (): ColonyLinksProps => {
+  const isMobile = useMobile()
   const { colony, colonySubscription } = useColonyContext();
   const { pathname } = useLocation();
   const colonyUrl = `${window.location.host}${pathname}`;
-  const {
-    handleClipboardCopy: handleShareUrlCopy,
-    isCopied: isShareUrlCopied,
-  } = useCopyToClipboard(5000);
-  const {
-    handleClipboardCopy: handleShareUrlItemCopy,
-    isCopied: isShareUrlItemCopied,
-  } = useCopyToClipboard(5000);
-  const {
-    handleClipboardCopy: handleColonyAddressCopy,
-    isCopied: isColonyAddressCopied,
-  } = useCopyToClipboard(5000);
-  const {
-    handleClipboardCopy: handleColonyAddressItemCopy,
-    isCopied: isColonyAddressItemCopied,
-  } = useCopyToClipboard(5000);
 
-  const [leaveColonyConfirmOpen, setLeaveColonyConfirm] =
-    useState<boolean>(false);
-  const isMobile = useMobile();
+const {
+  handleClipboardCopy: handleShareUrlItemCopy,
+  isCopied: isShareUrlItemCopied,
+} = useCopyToClipboard(5000);
+const {
+  handleClipboardCopy: handleColonyAddressItemCopy,
+  isCopied: isColonyAddressItemCopied,
+} = useCopyToClipboard(5000);
+  const { openLeaveColonyModal } = useColonyDashboardContext();
+
   const { isWatching } = colonySubscription;
-
-  const { colonyAddress, tokens, nativeToken } = colony || {};
-  const { tokenAddress: nativeTokenAddress } = nativeToken || {};
-  const currentToken = getCurrentToken(tokens, nativeTokenAddress ?? '');
-  const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
-
   const { metadata } = colony || {};
-  const description =
-    metadata?.description || formatText({ id: 'colony.description' });
+
   const items = metadata?.externalLinks
     ? getExternalLinks(metadata.externalLinks)
     : [];
-
-  const truncatedText =
-    description.length > MAX_TEXT_LENGTH
-      ? `${description.slice(0, MAX_TEXT_LENGTH - 3)}...`
-      : description;
 
   const menuItems: DropdownMenuGroup[] = [
     {
@@ -100,7 +101,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
           key: '1.2',
           label: formatText({ id: 'dashboard.burgerMenu.item.colonyAddress' }),
           icon: CopySimple,
-          onClick: () => handleColonyAddressItemCopy(colonyAddress ?? ''),
+          onClick: () => handleColonyAddressItemCopy(colony?.colonyAddress  ?? ''),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.colonyAddress.copied',
@@ -170,7 +171,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
                 id: 'dashboard.burgerMenu.item.leaveColony',
               }),
               icon: Door,
-              onClick: () => setLeaveColonyConfirm(true),
+              onClick: () => openLeaveColonyModal(),
             },
           ]
         : [],
@@ -178,46 +179,25 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   ].filter((menuItem) => menuItem.items.length !== 0);
 
   return {
-    colonyName: metadata?.displayName || '',
-    description: truncatedText,
-    token: currentToken?.token,
-    isTokenUnlocked: isNativeTokenUnlocked,
-    colonyLinksProps: {
-      items: [
-        ...items.slice(0, 3),
-        {
-          key: 'share-url',
-          icon: ShareNetwork,
-          onClick: () => handleShareUrlCopy(colonyUrl),
-          tooltipProps: {
-            tooltipContent: formatText({
-              id: 'colony.tooltip.url.copied',
-            }),
-            isOpen: isShareUrlCopied,
-            isSuccess: true,
-            placement: 'right',
-          },
+    items: [
+      ...items.slice(0, 3),
+      {
+        key: 'share-url',
+        icon: ShareNetwork,
+        onClick: () => handleShareUrlItemCopy(colonyUrl),
+        tooltipProps: {
+          tooltipContent: formatText({
+            id: 'colony.tooltip.url.copied',
+          }),
+          isOpen: isShareUrlItemCopied,
+          isSuccess: true,
+          placement: 'right',
         },
-        {
-          key: 'copy-address',
-          icon: CopySimple,
-          onClick: () => handleColonyAddressCopy(colonyAddress ?? ''),
-          tooltipProps: {
-            tooltipContent: formatText({
-              id: 'colony.tooltip.colonyAddress.copied',
-            }),
-            isOpen: isColonyAddressCopied,
-            isSuccess: true,
-            placement: 'right',
-          },
-        },
-      ],
-      dropdownMenuProps: {
-        groups: menuItems,
-        showSubMenuInPopover: !isMobile,
       },
+    ],
+    dropdownMenuProps: {
+      groups: menuItems,
+      showSubMenuInPopover: !isMobile,
     },
-    leaveColonyConfirmOpen,
-    setLeaveColonyConfirm,
   };
 };

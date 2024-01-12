@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import ColonyActionsTable from '~common/ColonyActionsTable';
+import { useColonyDashboardContext } from '~context/ColonyDashboardContext';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
 import {
   useColonySubscription,
@@ -20,17 +21,15 @@ import { setQueryParamOnUrl } from '~utils/urls';
 import Link from '~v5/shared/Link';
 import Modal from '~v5/shared/Modal';
 
-import { useDashboardHeader } from './hooks/useDashboardHeader';
 import Agreements from './partials/Agreements';
-import ColonyDashboardHeader from './partials/ColonyDashboardHeader';
+import DashboardHeader from './partials/DashboardHeader';
 import Members from './partials/Members';
 import Objective from './partials/Objective';
 import ReputationChart from './partials/ReputationChart';
 import TokenBalance from './partials/TokenBalance';
 import TotalActions from './partials/TotalActions';
 
-// @TODO: add page components
-const displayName = 'common.ColonyHome';
+const displayName = 'v5.frame.ColonyHome';
 
 const MSG = defineMessages({
   leaveConfimModalTitle: {
@@ -52,15 +51,15 @@ const ColonyHome = () => {
   const selectedDomain = useGetSelectedDomainFilter();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
 
-  const { leaveColonyConfirmOpen, setLeaveColonyConfirm, ...headerProps } =
-    useDashboardHeader();
+  const { isLeaveColonyModalOpen, closeLeaveColonyModal } =
+    useColonyDashboardContext();
   const { handleUnwatch } = useColonySubscription();
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   return (
     <div className="flex flex-col gap-10">
-      <ColonyDashboardHeader {...headerProps} />
+      <DashboardHeader />
       <div className="flex flex-col sm:flex-row items-center gap-[1.125rem] w-full">
         <TotalActions />
         <Members />
@@ -110,10 +109,10 @@ const ColonyHome = () => {
       <Modal
         title={formatText(MSG.leaveConfimModalTitle)}
         subTitle={formatText(MSG.leaveConfirmModalSubtitle)}
-        isOpen={leaveColonyConfirmOpen}
-        onClose={() => setLeaveColonyConfirm(false)}
+        isOpen={isLeaveColonyModalOpen}
+        onClose={() => closeLeaveColonyModal()}
         onConfirm={() => {
-          setLeaveColonyConfirm(false);
+          closeLeaveColonyModal();
           handleUnwatch();
         }}
         icon="warning-circle"

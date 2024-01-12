@@ -6,7 +6,6 @@ import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
 import ColonyDecisions from '~common/ColonyDecisions';
 import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ColonyFunding from '~common/ColonyFunding';
-import ColonyHome from '~common/ColonyHome';
 import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
 import Expenditures from '~common/Expenditures';
 import { Flow } from '~common/Onboarding';
@@ -38,6 +37,7 @@ import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
 import { useTitle } from '~hooks';
+import ColonyHomePage from '~v5/frame/ColonyHome';
 
 import ColonyMembersRoute from './ColonyMembersRoute';
 import ColonyRoute from './ColonyRoute';
@@ -139,7 +139,7 @@ const Routes = () => {
 
         {/* Colony routes */}
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
-          <Route index element={<ColonyHome />} />
+          <Route index element={<ColonyHomePage />} />
           <Route path={COLONY_ACTIVITY_ROUTE} element={<ActivityPage />} />
 
           <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
