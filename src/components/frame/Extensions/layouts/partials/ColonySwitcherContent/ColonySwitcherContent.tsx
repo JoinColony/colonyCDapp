@@ -73,7 +73,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
           'pt-6 border-t border-t-gray-200': colony,
         })}
       >
-        <SearchInput onChange={onSearchValueChange} />
+        <SearchInput onChange={onSearchValueChange} value={searchValue} />
         <div>
           <h3 className={titleClassName}>
             {formatText(MSG.joinedColonyTitle)}

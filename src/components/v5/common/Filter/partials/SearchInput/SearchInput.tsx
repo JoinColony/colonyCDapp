@@ -44,16 +44,26 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
   const onInput: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const { value: inputValue } = e.target;
+      setValue(inputValue);
 
       if (!isMobile) {
         debounced(inputValue);
-
-        return;
       }
-      setValue(inputValue);
     },
     [debounced, isMobile],
   );
+
+  const showClearButton = ref.current?.value ?? searchValue !== '';
+
+  const handleClearSearchInput = () => {
+    if (ref.current) {
+      ref.current.focus();
+      ref.current.value = '';
+    }
+
+    setValue('');
+    setSearchValue('');
+  };
 
   return (
     <div
@@ -70,12 +80,25 @@ const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
         className={clsx(
           styles.searchInput,
           'border-gray-300 focus:outline-none group-hover:border-blue-200 group-focus-within:border-blue-200',
+          isMobile && value && '!pr-[5.375rem]',
         )}
         type="text"
         onInput={onInput}
         placeholder={formatMessage({ id: 'filter.input.placeholder' })}
         defaultValue={searchValue}
       />
+      {showClearButton && (
+        <button
+          className={clsx(
+            styles.clearSearchButton,
+            isMobile && value && '!right-[3.25rem]',
+          )}
+          onClick={handleClearSearchInput}
+          type="button"
+        >
+          <Icon name="close" appearance={{ size: 'extraExtraTiny' }} />
+        </button>
+      )}
       {isMobile && value && (
         <button
           type="button"
