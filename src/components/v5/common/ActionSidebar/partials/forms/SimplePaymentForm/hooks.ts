@@ -54,7 +54,7 @@ export const useValidationSchema = () => {
             })
             .required()
             .defined(),
-          createdIn: string().defined(),
+          createdIn: number().defined(),
           description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
           recipient: string().address().required(),
           from: number().required(),
@@ -117,7 +117,7 @@ export const useSimplePayment = (
     validationSchema,
     defaultValues: useMemo<DeepPartial<SimplePaymentFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
         payments: [],
         amount: {
           tokenAddress:

@@ -1,4 +1,4 @@
-import { object, string, array, InferType } from 'yup';
+import { object, string, array, InferType, number } from 'yup';
 
 import {
   MAX_ANNOTATION_LENGTH,
@@ -15,7 +15,7 @@ export const validationSchema = object()
       thumbnail: string().nullable().defined(),
     }),
     colonyName: string().trim().max(MAX_COLONY_DISPLAY_NAME),
-    createdIn: string().defined(),
+    createdIn: number().defined(),
     decisionMethod: string().defined(),
     description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
     colonyDescription: string().max(MAX_OBJECTIVE_DESCRIPTION_LENGTH),

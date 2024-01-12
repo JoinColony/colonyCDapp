@@ -33,7 +33,7 @@ export const useEditColonyDetails = (
           image: metadata?.avatar,
           thumbnail: metadata?.thumbnail,
         },
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
         externalLinks: metadata?.externalLinks ?? [],
       }),
       [

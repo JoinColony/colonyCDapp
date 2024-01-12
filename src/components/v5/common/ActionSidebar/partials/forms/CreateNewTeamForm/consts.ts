@@ -1,4 +1,4 @@
-import { InferType, object, string } from 'yup';
+import { InferType, object, string, number } from 'yup';
 
 import {
   MAX_ANNOTATION_LENGTH,
@@ -15,7 +15,7 @@ export const validationSchema = object()
       .required(() => 'Team name required.'),
     domainPurpose: string().trim().max(MAX_DOMAIN_PURPOSE_LENGTH).notRequired(),
     domainColor: string().defined(),
-    createdIn: string().defined(),
+    createdIn: number().defined(),
     decisionMethod: string().defined(),
     description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })

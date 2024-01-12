@@ -33,7 +33,7 @@ export const useManageColonyObjectives = (
           image: metadata?.avatar,
           thumbnail: metadata?.thumbnail,
         },
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
       }),
       [metadata?.avatar, metadata?.displayName, metadata?.thumbnail],
     ),
