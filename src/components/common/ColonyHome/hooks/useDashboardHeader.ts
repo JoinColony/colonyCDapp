@@ -51,7 +51,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
   } = useCopyToClipboard(5000);
   const {
     handleClipboardCopy: handleShareUrlItemCopy,
-    isCopied: isSharedUrlItemCopied,
+    isCopied: isShareUrlItemCopied,
   } = useCopyToClipboard(5000);
   const {
     handleClipboardCopy: handleColonyAddressCopy,
@@ -139,7 +139,7 @@ export const useDashboardHeader = (): ColonyDashboardHeaderProps => {
             tooltipContent: formatText({
               id: 'colony.tooltip.url.copied',
             }),
-            isOpen: isSharedUrlItemCopied,
+            isOpen: isShareUrlItemCopied,
             isSuccess: true,
           },
         },
