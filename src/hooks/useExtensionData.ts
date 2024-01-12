@@ -49,10 +49,7 @@ interface UseExtensionDataReturn {
  * and mapping it into Installed or InstallableExtensionData object
  */
 const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
-  const {
-    colony: { colonyAddress },
-    colony,
-  } = useColonyContext();
+  const { colony } = useColonyContext();
 
   const extensionHash = getExtensionHash(extensionId as Extension);
 
@@ -64,7 +61,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     refetch,
   } = useGetColonyExtensionQuery({
     variables: {
-      colonyAddress,
+      colonyAddress: colony.colonyAddress,
       extensionHash,
     },
     fetchPolicy: 'network-only',
