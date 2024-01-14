@@ -1,6 +1,6 @@
 import { Domain } from '~types';
 import { getTeamHexColor } from '~utils/teams';
-import { ChartData } from '~v5/common/DonutChart/types';
+import { ChartData } from '~v5/shared/DonutChart/types';
 
 const WIDGET_TEAM_LIMIT = 5;
 
