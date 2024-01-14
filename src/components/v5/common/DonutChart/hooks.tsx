@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
+import { flushSync } from 'react-dom';
 
 import { ChartData, DonutChartProps, UseDonutChartReturnType } from './types';
 
@@ -129,6 +130,17 @@ export const useDonutChart = ({
 
   const handleMouseOver = useCallback(
     (event, item?: ChartData | null) => {
+      if (item) {
+        /**
+         * @NOTE: We're using flushSync to ensure the DOM is updated
+         * (and specifically the tooltip contents) before we calculate
+         * the tooltip position
+         */
+        flushSync(() => {
+          updateHoveredSegment(item);
+        });
+      }
+
       const tooltipWidth = tooltipRef.current
         ? tooltipRef.current.offsetWidth
         : 0;
@@ -154,16 +166,9 @@ export const useDonutChart = ({
           tooltipHeight -
           10;
 
-      if (item) {
-        updateHoveredSegment(item);
-      }
       setTooltipStyle({
-        display: 'block',
-        position: 'absolute',
         left: `${left}px`,
         top: `${top}px`,
-        pointerEvents: 'none',
-        zIndex: 10,
         transform: `translate(-50%, -100%) translate(${
           event.offsetX - size / 2
         }px, ${event.offsetY - size / 2}px)`, // Center the tooltip above the cursor
@@ -180,6 +185,11 @@ export const useDonutChart = ({
     [handleMouseOver],
   );
 
+  const handleSegmentMouseLeave = useCallback(() => {
+    updateHoveredSegment(null);
+    setTooltipStyle(undefined);
+  }, [updateHoveredSegment]);
+
   const renderSingleSegment = (item: ChartData) => {
     const outerRadius = size / 2;
     const innerRadius = outerRadius - donutWidth;
@@ -188,10 +198,10 @@ export const useDonutChart = ({
       <g
         onMouseOver={(event) => handleMouseOver(event, item)}
         onMouseMove={(event) => handleMouseOver(event, hoveredSegment)}
-        onMouseOut={() => updateHoveredSegment(null)}
+        onMouseOut={handleSegmentMouseLeave}
         onTouchStart={(event) => handleTouch(event, item)}
         onTouchMove={(event) => handleTouch(event, hoveredSegment)}
-        onTouchEnd={() => updateHoveredSegment(null)}
+        onTouchEnd={handleSegmentMouseLeave}
       >
         <circle
           cx={size / 2}
@@ -247,10 +257,10 @@ export const useDonutChart = ({
           key={item.id}
           onMouseOver={(event) => handleMouseOver(event, item)}
           onMouseMove={(event) => handleMouseOver(event, item)}
-          onMouseOut={() => updateHoveredSegment(null)}
+          onMouseOut={handleSegmentMouseLeave}
           onTouchStart={(event) => handleTouch(event, item)}
           onTouchMove={(event) => handleTouch(event, item)}
-          onTouchEnd={() => updateHoveredSegment(null)}
+          onTouchEnd={handleSegmentMouseLeave}
         >
           <path
             key={`segment-${item.id}`}
@@ -277,14 +287,15 @@ export const useDonutChart = ({
       );
     });
   }, [
-    calculatePath,
     chartData,
-    getTooltipPosition,
+    calculatePath,
+    totalValue,
+    handleSegmentMouseLeave,
+    hoveredSegment?.id,
     handleMouseOver,
     handleTouch,
-    hoveredSegment,
     updateHoveredSegment,
-    totalValue,
+    getTooltipPosition,
   ]);
 
   return {
