@@ -29,24 +29,28 @@ const DonutChart: FC<DonutChartProps> = ({
           ? renderSingleSegment()
           : renderMultipleSegments()}
       </svg>
-      <div
-        ref={tooltipRef}
-        className="py-2 px-4 text-base-white vertical-align bg-gray-900 rounded-full shadow-lg -mt-2.5 absolute pointer-events-none z-10 left-[9999px] top-[9999px]"
-        style={tooltipStyle}
-      >
-        <div className="flex items-center justify-center text-xs md:text-sm font-bold text-center">
-          <div className="flex-shrink overflow-hidden truncate max-w-[6.25rem] mr-1">
-            {hoveredSegment?.label}
-          </div>
-          <div>
-            <Numeral value={`(${Number(hoveredSegment?.value).toFixed(1)}%)`} />
-          </div>
-        </div>
+      {hoveredSegment && (
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gray-900 rotate-45"
-          style={{ boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)' }}
-        />
-      </div>
+          ref={tooltipRef}
+          className="py-2 px-4 text-base-white vertical-align bg-gray-900 rounded-full shadow-lg -mt-2.5 absolute pointer-events-none z-10 left-[9999px] top-[9999px]"
+          style={tooltipStyle}
+        >
+          <div className="flex items-center justify-center text-xs md:text-sm font-bold text-center">
+            <div className="flex-shrink overflow-hidden truncate max-w-[6.25rem] mr-1">
+              {hoveredSegment?.label}
+            </div>
+            <div>
+              <Numeral
+                value={`(${Number(hoveredSegment?.value).toFixed(1)}%)`}
+              />
+            </div>
+          </div>
+          <div
+            className="absolute left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gray-900 rotate-45"
+            style={{ boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)' }}
+          />
+        </div>
+      )}
     </div>
   );
 };
