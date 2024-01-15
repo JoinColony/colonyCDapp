@@ -166,5 +166,6 @@ module.exports = {
         warnOnUnassignedImports: true,
       },
     ],
+    'no-underscore-dangle': ['error', { allow: ['__typename'] }],
   },
 };

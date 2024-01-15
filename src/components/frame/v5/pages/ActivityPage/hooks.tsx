@@ -39,7 +39,6 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const domainCountsResult =
     domainData?.searchColonyActions?.aggregateItems[0]?.result || {};
   const domainsActionCount =
-    // eslint-disable-next-line no-underscore-dangle
     domainCountsResult?.__typename === 'SearchableAggregateBucketResult'
       ? domainCountsResult?.buckets?.filter(notNull) ?? []
       : [];
