@@ -17,11 +17,12 @@ import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
 import { sortExternalLinks } from './helpers';
 
 export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
-  const isMobile = useMobile()
+  const isMobile = useMobile();
 
   const { colony, colonySubscription } = useColonyContext();
   const { pathname } = useLocation();
-  const colonyUrl = `${window.location.host}${pathname}`;
+  const { openLeaveColonyModal } = useColonyDashboardContext();
+
   const {
     handleClipboardCopy: handleShareUrlItemCopy,
     isCopied: isShareUrlItemCopied,
@@ -30,10 +31,10 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     handleClipboardCopy: handleColonyAddressItemCopy,
     isCopied: isColonyAddressItemCopied,
   } = useCopyToClipboard(5000);
-  const { openLeaveColonyModal } = useColonyDashboardContext();
 
+  const colonyUrl = `${window.location.host}${pathname}`;
   const { isWatching } = colonySubscription;
-  const { metadata } = colony || {};
+  const { colonyAddress, metadata } = colony || {};
 
   const externalLinks = metadata?.externalLinks
     ? sortExternalLinks(metadata.externalLinks)
@@ -55,7 +56,7 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
           key: '1.2',
           label: formatText({ id: 'dashboard.burgerMenu.item.colonyAddress' }),
           icon: CopySimple,
-          onClick: () => handleColonyAddressItemCopy(colony?.colonyAddress  ?? ''),
+          onClick: () => handleColonyAddressItemCopy(colonyAddress ?? ''),
           tooltipProps: {
             tooltipContent: formatText({
               id: 'colony.tooltip.colonyAddress.copied',

@@ -1,4 +1,4 @@
-import { ShareNetwork } from 'phosphor-react';
+import { CopySimple, ShareNetwork } from 'phosphor-react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -17,10 +17,17 @@ const displayName = 'v5.common.ColonyDashboardHeader.partials.ColonyLinks';
 
 const ColonyLinks = () => {
   const { colony } = useColonyContext();
-  const { metadata } = colony || {};
+  const { colonyAddress, metadata } = colony || {};
   const { dropdownMenuProps } = useHeaderLinks();
   const { pathname } = useLocation();
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard(5000);
+  const {
+    handleClipboardCopy: handleShareUrlCopy,
+    isCopied: isShareUrlCopied,
+  } = useCopyToClipboard(5000);
+  const {
+    handleClipboardCopy: handleColonyAddressCopy,
+    isCopied: isColonyAddressCopied,
+  } = useCopyToClipboard(5000);
 
   const colonyUrl = `${window.location.host}${pathname}`;
   const topLinks = metadata?.externalLinks
@@ -45,7 +52,7 @@ const ColonyLinks = () => {
         );
       })}
       <Tooltip
-        isOpen={isCopied}
+        isOpen={isColonyAddressCopied}
         isSuccess
         placement="right"
         tooltipContent={formatText({
@@ -55,7 +62,23 @@ const ColonyLinks = () => {
         <button
           type="button"
           className="md:hover:text-blue-400"
-          onClick={() => handleClipboardCopy(colonyUrl)}
+          onClick={() => handleColonyAddressCopy(colonyAddress ?? '')}
+        >
+          <CopySimple size={16} />
+        </button>
+      </Tooltip>
+      <Tooltip
+        isOpen={isShareUrlCopied}
+        isSuccess
+        placement="right"
+        tooltipContent={formatText({
+          id: 'colony.tooltip.url.copied',
+        })}
+      >
+        <button
+          type="button"
+          className="md:hover:text-blue-400"
+          onClick={() => handleShareUrlCopy(colonyUrl)}
         >
           <ShareNetwork size={16} />
         </button>
