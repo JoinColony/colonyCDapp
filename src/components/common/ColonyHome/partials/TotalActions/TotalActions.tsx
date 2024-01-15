@@ -33,7 +33,7 @@ const TotalActions = () => {
       value={
         <h4 className="heading-4">
           {loading ? (
-            <div className="skeleton opacity-25 w-[60px] h-[1.5em]" />
+            <div className="skeleton opacity-25 w-[60px] h-[1em] my-[0.25em]" />
           ) : (
             totalActions
           )}
