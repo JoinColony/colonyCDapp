@@ -1,4 +1,5 @@
 import { getSortedRowModel, SortingState } from '@tanstack/react-table';
+import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { FC, useState } from 'react';
 
@@ -46,6 +47,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
   ] = useToggle();
   const [isTokenVisible, { toggle: toggleToken, registerContainerRef }] =
     useToggle();
+  const isTokenInfoShown = isTokenModalOpened || isTokenVisible;
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -76,12 +78,21 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           <div className="flex items-center justify-between w-full py-4 text-gray-900">
             <button
               type="button"
-              className="flex items-center gap-4 hover:text-blue-400"
+              className="flex items-center gap-4 group"
               ref={relativeElementRef}
               onClick={handleToggleToken}
             >
               <TokenIcon token={token} size="xs" />
-              {token?.name}
+              <span
+                className={clsx('font-medium', {
+                  'truncate max-w-[6.25rem] md:max-w-full': !isTokenModalOpened,
+                  'md:whitespace-normal': isTokenModalOpened,
+                  'text-gray-900 group-hover:text-blue-400': !isTokenInfoShown,
+                  'text-blue-400': isTokenInfoShown,
+                })}
+              >
+                {token.name}
+              </span>
             </button>
             <div>
               <Numeral value={claimsAmount} decimals={nativeToken?.decimals} />{' '}
