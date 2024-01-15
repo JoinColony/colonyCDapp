@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useId } from 'react';
+import React, { useId, useLayoutEffect } from 'react';
 
 import { notMaybe } from '~utils/arrays';
 
@@ -29,6 +29,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       id: idProp,
       maxLength,
       onBlur,
+      shouldFocus,
       ...rest
     },
     ref,
@@ -44,6 +45,16 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
 
     const inputRef = useAdjustInputWidth(autoWidth, ref);
     const id = idProp || defaultId;
+
+    useLayoutEffect(() => {
+      if (inputRef.current) {
+        if (shouldFocus) {
+          inputRef.current.focus();
+        }
+      }
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shouldFocus]);
 
     return (
       <div className={clsx(wrapperClassName, 'w-full')}>

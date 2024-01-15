@@ -14,12 +14,11 @@ import { useController } from 'react-hook-form';
 
 import { formatText } from '~utils/intl';
 
-import { MAX_ANNOTATION_NUM } from './consts';
-
 export const useRichText = (
   name: string,
   isDecriptionFieldExpanded: boolean,
   isReadonly?: boolean,
+  maxDescriptionLength?: number,
 ) => {
   const [notFormattedContent, setNotFormattedContent] = useState<string>('');
   const { field } = useController({
@@ -81,7 +80,7 @@ export const useRichText = (
           },
         }),
         CharacterCount.configure({
-          limit: MAX_ANNOTATION_NUM,
+          limit: maxDescriptionLength,
         }),
       ],
       editorProps: {

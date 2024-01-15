@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
+import { multiLineTextEllipsis } from '~utils/strings';
 
 import ProgressBar from '~v5/shared/ProgressBar';
 
@@ -28,7 +30,12 @@ const ObjectiveBox: FC<ObjectiveBoxProps> = ({ objective }) => {
         {objective?.title || formatMessage(MSG.noObjectiveBoxTitle)}
       </h6>
       <p className="text-sm text-gray-600 mb-[1.125rem]">
-        {objective?.description || formatMessage(MSG.noObjectiveBoxDescription)}
+        {objective
+          ? multiLineTextEllipsis(
+              objective.description,
+              MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+            )
+          : formatMessage(MSG.noObjectiveBoxDescription)}
       </p>
       <ProgressBar progress={objective?.progress || 0} additionalText="%" />
     </div>

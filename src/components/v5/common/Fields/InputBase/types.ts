@@ -13,6 +13,7 @@ export interface InputBaseProps
   mode?: 'primary' | 'secondary';
   autoWidth?: boolean;
   label?: React.ReactNode;
+  shouldFocus?: boolean;
 }
 
 export interface FormInputBaseProps

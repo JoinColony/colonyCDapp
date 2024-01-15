@@ -2,11 +2,12 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO, MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useMobile } from '~hooks';
+import { multiLineTextEllipsis } from '~utils/strings';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import NativeTokenPill from '~v5/common/NativeTokenPill';
 import ObjectiveBox from '~v5/common/ObjectiveBox';
@@ -95,7 +96,10 @@ const ColonyDetailsPage: FC = () => {
           })}
         >
           {description && description.length > 0
-            ? description
+            ? multiLineTextEllipsis(
+                description,
+                MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+              )
             : formatMessage(MSG.descriptionPlaceholder)}
         </p>
         {externalLinks && externalLinks.length ? (
