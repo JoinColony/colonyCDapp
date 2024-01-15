@@ -74,7 +74,8 @@ const getVoterRewardRange = async (
       userAddress,
     );
     return range;
-  } catch {
+  } catch (e) {
+    console.error('Error getting voter reward range', e);
     return undefined;
   }
 };
@@ -88,6 +89,7 @@ const getVoterReward = async (colonyAddress, motionId, userReputation) => {
     );
     return reward;
   } catch {
+    console.error('Error getting voter reward', e);
     return undefined;
   }
 };

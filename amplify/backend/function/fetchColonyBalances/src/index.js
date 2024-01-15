@@ -54,7 +54,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     }
 
     const provider = new providers.JsonRpcProvider(rpcURL);
-    const networkClient = await getColonyNetworkClient(network, provider, {
+    const networkClient = getColonyNetworkClient(network, provider, {
       networkAddress,
     });
 
@@ -118,6 +118,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
       items: await Promise.all(balances.map(async (resolve) => resolve())),
     };
   } catch (e) {
+    console.error(e);
     return { items: [] };
   }
 };
