@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const fetch = require('cross-fetch');
 const isArray = require('lodash/isArray');
 const { providers, Contract, utils } = require('ethers');
 const Web3 = require('web3');

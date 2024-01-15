@@ -1,4 +1,4 @@
-const { default: fetch, Request } = require('node-fetch');
+const fetch = require('cross-fetch');
 const { getColonyStake } = require('./graphql');
 
 const graphqlRequest = async (
@@ -19,13 +19,11 @@ const graphqlRequest = async (
     }),
   };
 
-  const request = new Request(graphqlURL, options);
-
   let body;
   let response;
 
   try {
-    response = await fetch(request);
+    response = await fetch(graphqlURL, options);
     body = await response.json();
     return body;
   } catch (error) {

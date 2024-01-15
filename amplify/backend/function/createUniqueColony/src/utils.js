@@ -17,7 +17,7 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   let response;
 
   try {
-    response = await fetch(request, options);
+    response = await fetch(url, options);
     body = await response.json();
     return body;
   } catch (error) {
