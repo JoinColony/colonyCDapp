@@ -1,0 +1,7 @@
+.actionItem {
+  @apply flex items-center navigation-link shrink-0 mr-2 sm:mr-0 flex-grow;
+}
+
+.actionItemLabel {
+  @apply ml-2;
+}
