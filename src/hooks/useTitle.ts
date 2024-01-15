@@ -18,7 +18,6 @@ import {
   COLONY_HOME_ROUTE,
   COLONY_EVENTS_ROUTE,
   ACTIONS_QUERY_STRING,
-  USER_ROUTE,
   COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
@@ -183,11 +182,6 @@ const MSG = defineMessages({
     defaultMessage: `Advanced Settings | Colony`,
   },
 
-  userProfile: {
-    id: `${displayName}.useTitle.userProfile`,
-    defaultMessage: `{username} | Colony`,
-  },
-
   transactionDetails: {
     id: `${displayName}.useTitle.transactionDetails`,
     defaultMessage: `Transaction - {transactionHash} | Colony`,
@@ -222,7 +216,6 @@ const routeMessages: Record<string, MessageDescriptor> = {
     MSG.colonyExtensionDetails,
   [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_SETUP_ROUTE}`]:
     MSG.colonyExtensionSetup,
-  [USER_ROUTE]: MSG.userProfile,
   [ACTIONS_QUERY_STRING]: MSG.transactionDetails,
   [`${COLONY_HOME_ROUTE}${COLONY_MEMBERS_ROUTE}`]: MSG.colonyMembers,
   [`${COLONY_HOME_ROUTE}${COLONY_CONTRIBUTORS_ROUTE}`]: MSG.colonyContributors,

@@ -9,7 +9,6 @@ import ColonyFunding from '~common/ColonyFunding';
 import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
 import Expenditures from '~common/Expenditures';
 import { Flow } from '~common/Onboarding';
-import UserProfile from '~common/UserProfile';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
@@ -21,7 +20,7 @@ import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import ReputationPage from '~frame/Extensions/pages/ReputationPage';
 import FourOFour from '~frame/FourOFour';
 import LandingPage from '~frame/LandingPage';
-import { NavBar, UserLayout } from '~frame/RouteLayouts';
+import { NavBar } from '~frame/RouteLayouts';
 import ActivityPage from '~frame/v5/pages/ActivityPage';
 import BalancePage from '~frame/v5/pages/BalancePage';
 import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage';
@@ -53,7 +52,6 @@ import {
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
-  USER_ROUTE,
   NOT_FOUND_ROUTE,
   DECISIONS_PAGE_ROUTE,
   COLONY_DECISIONS_PREVIEW_ROUTE,
@@ -104,14 +102,6 @@ const Routes = () => {
         <Route element={<MainRoute />}>
           <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
           <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
-          <Route
-            path={USER_ROUTE}
-            element={
-              <UserLayout routeProps={{ hasBackLink: false }}>
-                <UserProfile />
-              </UserLayout>
-            }
-          />
 
           {/* User routes */}
           <Route path={USER_HOME_ROUTE} element={<UserProfilePage />}>
@@ -279,28 +269,8 @@ const Routes = () => {
         </Route>
 
         {/*
-      <AlwaysAccesibleRoute
-        path={UNWRAP_TOKEN_ROUTE}
-        component={UnwrapTokensPage}
-        layout={NavBar}
-        routeProps={({ colonyName }) => ({
-          backText: ColonyBackText,
-          backRoute: `/${colonyName}`,
-        })}
-      />
-      <AlwaysAccesibleRoute
-        path={CLAIM_TOKEN_ROUTE}
-        component={ClaimTokensPage}
-        layout={NavBar}
-        routeProps={({ colonyName }) => ({
-          backText: ColonyBackText,
-          backRoute: `/${colonyName}`,
-        })}
-      />
-
-      /*
-       * Redirect anything else that's not found to the 404 route
-       */}
+         * Redirect anything else that's not found to the 404 route
+         */}
         <Route path="*" element={<NotFoundRoute />} />
       </Route>
     </RoutesSwitch>
