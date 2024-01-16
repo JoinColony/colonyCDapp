@@ -103,9 +103,8 @@ const UserMenu: FC<UserMenuProps> = ({
           </>
         )}
         <div
-          className={clsx('w-full pb-4 border-b border-b-gray-200 sm:pb-3', {
-            'mb-0': !wallet,
-            'mb-5': wallet,
+          className={clsx('w-full', {
+            'mb-5 border-b border-b-gray-200 pb-4 sm:pb-3': wallet,
           })}
         >
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
