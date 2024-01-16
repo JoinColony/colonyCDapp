@@ -49,12 +49,26 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     HTMLDivElement
   >([isUserSelectVisible]);
 
+  const selectedUserOption = usersOptions.options.find(
+    (option) => option.value === field.value,
+  );
+
+  const selectedUser =
+    userByAddress || selectedUserOption
+      ? {
+          profile: {
+            displayName: selectedUserOption?.label,
+          },
+          walletAddress: selectedUserOption?.walletAddress,
+        }
+      : undefined;
+
   return (
     <div className="sm:relative w-full flex items-center">
       {readonly ? (
         <>
           <UserAvatar
-            user={userByAddress || field.value}
+            user={selectedUser || field.value}
             size="xs"
             showUsername
             className={clsx({
@@ -83,10 +97,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             onClick={toggleUserSelect}
             aria-label={formatText({ id: 'ariaLabel.selectUser' })}
           >
-            {userByAddress || field.value ? (
+            {selectedUser || field.value ? (
               <>
                 <UserAvatar
-                  user={userByAddress || field.value}
+                  user={selectedUser || field.value}
                   size="xs"
                   showUsername
                   className={clsx({
@@ -145,11 +159,9 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                 />
               }
             >
-              <button type="button">
-                <span className="flex ml-2 text-warning-400">
-                  <Icon name="warning-circle" />
-                </span>
-              </button>
+              <span className="flex ml-2 text-warning-400">
+                <Icon name="warning-circle" />
+              </span>
             </UserPopover>
           )}
         </>
