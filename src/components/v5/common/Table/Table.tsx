@@ -254,7 +254,8 @@ const Table = <T,>({
         )}
       </table>
       {hasPagination &&
-        (showPageNumber || canGoToPreviousPage || canGoToNextPage) && (
+        showPageNumber &&
+        (canGoToPreviousPage || canGoToNextPage) && (
           <div
             className={clsx(
               'grid grid-cols-3 gap-2 items-center pt-2 pb-[1.4375rem] px-[1.125rem]',
