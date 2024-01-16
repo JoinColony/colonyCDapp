@@ -114,7 +114,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
     />
   );
 
-  const isTopSectionWithBackground = userStatus === 'top';
+  const isTopSectionWithBackground = userStatus === ContributorTypeFilter.Top;
 
   return (
     <>
