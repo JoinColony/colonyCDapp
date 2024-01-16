@@ -174,10 +174,11 @@ export const dashboardMenu: NavigationSidebarLinksListProps['items'] = [
     to: COLONY_ACTIVITY_ROUTE,
     iconName: 'presentation-chart',
   },
-  {
-    key: '2',
-    label: formatText({ id: 'navigation.dashboard.about' }),
-    to: COLONY_DETAILS_ROUTE,
-    iconName: 'book-open-text',
-  },
+  // Disabled for now
+  // {
+  //   key: '2',
+  //   label: formatText({ id: 'navigation.dashboard.about' }),
+  //   to: COLONY_DETAILS_ROUTE,
+  //   iconName: 'book-open-text',
+  // },
 ];
