@@ -70,7 +70,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
-            'w-full text-gray-900 text-md outline-0 placeholder:text-gray-400',
+            'w-full text-gray-900 text-md outline-0 placeholder:text-gray-400 focus:outline-none',
             {
               'text-gray-400 pointer-events-none': disabled,
               'bg-base-white rounded border py-2 px-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
