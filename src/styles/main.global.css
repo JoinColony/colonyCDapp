@@ -122,7 +122,7 @@
   }
 
   .skeleton::before {
-    @apply absolute -top-px -bottom-px -left-px -right-px content-[""] z-10 bg-gray-200 bg-no-repeat min-h-[1em];
+    @apply absolute -top-px -bottom-px -left-px -right-px content-[""] z-1 bg-gray-200 bg-no-repeat min-h-[1em];
 
     background-image: linear-gradient(
       90deg,
