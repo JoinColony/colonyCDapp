@@ -1,6 +1,6 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
 import { nanoid } from 'nanoid';
-import { ReactNode } from 'react';
+import { ReactNode, cloneElement, isValidElement } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import {
@@ -57,19 +57,17 @@ const { formatMessage: formatIntlMessage } = intl<ReactNode>();
 
 const addKeyToFormattedMessage = (
   formattedMessage: ReturnType<typeof formatIntlMessage>,
+  key?: string,
 ) => {
   if (Array.isArray(formattedMessage)) {
-    return formattedMessage.map((element) => {
-      if (typeof element === 'object') {
-        return {
-          ...element,
-          // apply key when formatting ComplexMessageValues
-          key: nanoid(),
-        };
-      }
+    return formattedMessage.map((element) =>
+      addKeyToFormattedMessage(element, key),
+    );
+  }
 
-      return element;
-    });
+  if (isValidElement(formattedMessage)) {
+    // apply key when formatting ComplexMessageValues
+    return cloneElement(formattedMessage, { key: key ?? nanoid() });
   }
 
   return formattedMessage;
@@ -83,23 +81,35 @@ export function formatText(
 export function formatText(
   message: Message,
   messageValues?: ComplexMessageValues,
+  keyForComplexMessageValues?: string,
 ): ReactNode;
 export function formatText(
   message: Message,
   messageValues?: UniversalMessageValues,
+  keyForComplexMessageValues?: string,
 ): ReactNode;
 export function formatText(
   message: Message,
   messageValues?: AnyMessageValues,
+  keyForComplexMessageValues?: string,
 ): ReactNode;
 // Implementation
 export function formatText(
   message: Message,
   messageValues?: UniversalMessageValues,
+  /*
+   * If you're experiencing an infinite render loop when calling this function
+   * it's possibly due to the ever-changing random key that's generated.
+   * Pass in a static key to avoid this.
+   */
+  keyForComplexMessageValues?: string,
 ) {
   if (isMessageDescriptor(message)) {
     const formattedMessage = formatIntlMessage(message, messageValues);
-    return addKeyToFormattedMessage(formattedMessage);
+    return addKeyToFormattedMessage(
+      formattedMessage,
+      keyForComplexMessageValues,
+    );
   }
 
   return message;
