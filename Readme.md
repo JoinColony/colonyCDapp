@@ -28,6 +28,9 @@ npm install
 
 _Note: at the end of the install there's a post-install script that will recursively install dependencies for all the currently declared lambda functions_
 
+### Create `.env` file
+Copy `.env.example` and rename it to `.env`. You should not need to change any of the values to get CDapp running.
+
 ## Running the dev environment
 
 ```bash
