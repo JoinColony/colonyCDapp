@@ -61,11 +61,10 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
             motionDomainMetadata={action.motionData.motionDomain.metadata}
           />
         )}
-
-        {action.annotation?.message && (
-          <DescriptionRow description={action.annotation.message} />
-        )}
       </ActionDataGrid>
+      {action.annotation?.message && (
+        <DescriptionRow description={action.annotation.message} />
+      )}
     </>
   );
 };

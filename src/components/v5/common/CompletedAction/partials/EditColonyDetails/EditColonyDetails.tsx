@@ -81,13 +81,11 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
             motionDomainMetadata={action.motionData.motionDomain.metadata}
           />
         )}
-
-        {action.annotation?.message && (
-          <DescriptionRow description={action.annotation.message} />
-        )}
-
         {/* @TODO implement social links table display */}
       </ActionDataGrid>
+      {action.annotation?.message && (
+        <DescriptionRow description={action.annotation.message} />
+      )}
     </>
   );
 };
