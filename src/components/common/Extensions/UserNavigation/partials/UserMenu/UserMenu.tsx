@@ -66,8 +66,7 @@ const UserMenu: FC<UserMenuProps> = ({
         {wallet ? (
           <WalletConnectedTopMenu
             userName={
-              profile?.displayName ??
-              splitWalletAddress(user?.walletAddress ?? '')
+              profile?.displayName ?? splitWalletAddress(wallet.address ?? '')
             }
             isVerified={isVerified}
             walletAddress={wallet.address}
