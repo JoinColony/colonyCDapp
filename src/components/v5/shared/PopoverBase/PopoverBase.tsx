@@ -19,7 +19,7 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   <div
     ref={setTooltipRef}
     {...tooltipProps({
-      className: clsx(classNames, 'z-12', {
+      className: clsx(classNames, 'z-10', {
         'tooltip-container': withTooltipStyles,
       }),
     })}
