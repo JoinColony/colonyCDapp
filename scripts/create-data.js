@@ -409,7 +409,9 @@ const createColony = async (
 
   const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
 
-  const colonyDeployment = await colonyNetwork['createColonyForFrontend'](
+  const populatedTransaction = await colonyNetwork.populateTransaction[
+    'createColonyForFrontend'
+  ](
     constants.AddressZero,
     tokenName,
     tokenSymbol,
@@ -418,24 +420,13 @@ const createColony = async (
     '', // no point in storing ens name on the chain
     '',
   );
-  await delay();
 
-  const colonyDeploymentTransaction = await colonyDeployment.wait();
-  await delay();
+  populatedTransaction.gasPrice = BigNumber.from(1000000000);
 
-  const createColonyEvent = colonyDeploymentTransaction.events.find(
-    (event) => !!event?.args?.colonyAddress,
-  );
-  const createTokenAuthorityEvent = colonyDeploymentTransaction.events.find(
-    (event) => !!event?.args?.tokenAuthorityAddress,
-  );
-  const { transactionHash } = colonyDeploymentTransaction;
-
-  const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
-  const tokenAddress = utils.getAddress(createColonyEvent.args.token);
-  const tokenAuthorityAddress = utils.getAddress(
-    createTokenAuthorityEvent.args.tokenAuthorityAddress,
-  );
+  const gas = await signerOrWallet.provider.estimateGas(populatedTransaction);
+  populatedTransaction.gasLimit = gas;
+  const signedTransaction = await signerOrWallet.signTransaction(populatedTransaction);
+  const hash = utils.keccak256(signedTransaction);
 
   // create the colony
   const colonyQuery = await graphqlRequest(
@@ -448,7 +439,7 @@ const createColony = async (
         tokenAvatar,
         tokenThumbnail: tokenAvatar,
         initiatorAddress: utils.getAddress(signerOrWallet.address),
-        transactionHash,
+        transactionHash: hash,
         inviteCode: 'dev',
       },
     },
@@ -456,15 +447,39 @@ const createColony = async (
     API_KEY,
   );
 
-  await delay();
-
   if (colonyQuery?.errors) {
-    console.log('COLONY COULD NOT BE CREATED.', colonyQuery.errors[0].message);
+    console.log('COLONY ETHEREAL DATA COULD NOT BE CREATED.', colonyQuery.errors[0].message);
   } else {
     console.log(
-      `Creating colony { name: "${colonyName}", colonyAddress: "${colonyAddress}", nativeToken: "${tokenAddress}", version: "${currentNetworkVersion.toString()}" }`,
+      `Creating colony ethereal data { name: "${colonyName}", creationTransactionHash: "${hash}", version: "${currentNetworkVersion.toString()}" }`,
     );
   }
+
+  const colonyDeployment = await signerOrWallet.provider.sendTransaction(signedTransaction);
+  const colonyDeploymentTransaction = await colonyDeployment.wait();
+
+  await delay();
+
+  const events = colonyDeploymentTransaction.logs.map((log) => {
+    try {
+      return colonyNetwork.interface.parseLog(log);
+    } catch (err) {
+      return null;
+    }
+  });
+
+  const createColonyEvent = events.find(
+    (event) => !!event?.args?.colonyAddress,
+  );
+  const createTokenAuthorityEvent = events.find(
+    (event) => !!event?.args?.tokenAuthorityAddress,
+  );
+
+  const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
+  const tokenAddress = utils.getAddress(createColonyEvent.args.token);
+  const tokenAuthorityAddress = utils.getAddress(
+    createTokenAuthorityEvent.args.tokenAuthorityAddress,
+  );
 
   const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
   const tokenClient = ColonyTokenFactory.connect(tokenAddress, signerOrWallet);
