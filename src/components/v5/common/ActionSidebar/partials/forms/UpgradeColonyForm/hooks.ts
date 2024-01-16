@@ -43,7 +43,7 @@ export const useUpgradeColony = (
     ),
     defaultValues: useMemo<DeepPartial<UpgradeColonyFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
       }),
       [],
     ),

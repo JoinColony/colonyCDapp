@@ -1,6 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
-import { InferType, mixed, object, string } from 'yup';
+import { InferType, mixed, object, string, number } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import {
@@ -22,8 +22,8 @@ import { UserRoleSelectMeta } from './types';
 export const validationSchema = object()
   .shape({
     member: string().required(),
-    team: string().required(),
-    createdIn: string().required(),
+    team: number().required(),
+    createdIn: number().required(),
     role: string().required(),
     authority: string().required(),
     permissions: mixed<Partial<Record<string, boolean>>>().test(

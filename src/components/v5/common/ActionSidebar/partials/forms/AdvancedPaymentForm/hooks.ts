@@ -31,7 +31,7 @@ export const useValidationSchema = () => {
         .shape({
           from: number().required(),
           decisionMethod: string().defined(),
-          createdIn: string().defined(),
+          createdIn: number().defined(),
           description: string().max(MAX_ANNOTATION_NUM).notRequired(),
           payments: array()
             .of(
@@ -98,7 +98,7 @@ export const useAdvancedPayment = (
     validationSchema,
     defaultValues: useMemo<DeepPartial<AdvancedPaymentFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
         payments: [
           {
             delay: 0,

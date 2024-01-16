@@ -27,7 +27,7 @@ const useTeamsOptions = (
 
         return {
           label: teamName || '',
-          value: (nativeId || '').toString(),
+          value: nativeId,
           isDisabled: false,
           color: teamColor,
           isRoot,

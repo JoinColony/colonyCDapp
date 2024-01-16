@@ -52,9 +52,9 @@ export const useValidationSchema = () => {
               tokenAddress: string().address().required(),
             })
             .required(),
-          createdIn: string().defined(),
-          from: string().required(),
-          to: string()
+          createdIn: number().defined(),
+          from: number().required(),
+          to: number()
             .required()
             .when('from', (from, schema) =>
               schema.notOneOf(
@@ -94,24 +94,18 @@ export const useTransferFunds = (
   const selectedTokenAddress = amount?.tokenAddress;
   const validationSchema = useValidationSchema();
 
-  const selectedDomainId = Number(from);
-
   useActionFormBaseHook({
     validationSchema,
     defaultValues: useMemo<DeepPartial<TransferFundsFormValues>>(
       () => ({
-        createdIn: selectedDomainId.toString() || Id.RootDomain.toString(),
-        from: Id.RootDomain.toString(),
+        createdIn: from || Id.RootDomain,
+        from: Id.RootDomain,
         amount: {
           tokenAddress:
             selectedTokenAddress ?? colony?.nativeToken.tokenAddress,
         },
       }),
-      [
-        selectedDomainId,
-        selectedTokenAddress,
-        colony?.nativeToken.tokenAddress,
-      ],
+      [from, selectedTokenAddress, colony?.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions

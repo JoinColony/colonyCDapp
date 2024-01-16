@@ -1,4 +1,4 @@
-import { InferType, object, string } from 'yup';
+import { InferType, object, string, number } from 'yup';
 
 import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
@@ -8,7 +8,7 @@ export const validationSchema = object()
     title: string()
       .trim()
       .required(() => 'Please enter a title.'),
-    createdIn: string().defined(),
+    createdIn: number().defined(),
     description: string().max(MAX_OBJECTIVE_DESCRIPTION_LENGTH).notRequired(),
     decisionMethod: string().defined(),
     walletAddress: string().address().required(),

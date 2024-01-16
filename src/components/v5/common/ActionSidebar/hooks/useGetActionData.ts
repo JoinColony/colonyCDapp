@@ -47,9 +47,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
     const extendedType = getExtendedActionType(action, colony.metadata);
 
     const repeatableFields = {
-      createdIn: isMotion
-        ? motionData?.motionDomain.nativeId.toString()
-        : Id.RootDomain.toString(),
+      createdIn: isMotion ? motionData?.motionDomain.nativeId : Id.RootDomain,
       description: annotation?.message,
       title: action.metadata?.customTitle,
       decisionMethod: action.isMotion
@@ -79,7 +77,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
             ),
             tokenAddress: token?.tokenAddress,
           },
-          from: fromDomain?.nativeId.toString(),
+          from: fromDomain?.nativeId,
           recipient: recipientAddress,
           ...repeatableFields,
         };
@@ -90,7 +88,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
 
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
-          from: fromDomain?.nativeId.toString(),
+          from: fromDomain?.nativeId,
           amount: {
             amount: moveDecimal(
               firstPayment.amount,
@@ -118,8 +116,8 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.MoveFundsMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
-          from: fromDomain?.nativeId.toString(),
-          to: toDomain?.nativeId.toString(),
+          from: fromDomain?.nativeId,
+          to: toDomain?.nativeId,
           amount: {
             amount,
             tokenAddress: token?.tokenAddress,
@@ -193,7 +191,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
 
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
-          team: fromDomain?.nativeId?.toString(),
+          team: fromDomain?.nativeId,
           teamName: isMotion ? pendingDomainMetadata?.name : changelog?.newName,
           domainColor: isMotion
             ? pendingDomainMetadata?.color
@@ -207,7 +205,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.CreateDecisionMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
-          createdIn: decisionData?.motionDomainId.toString(),
+          createdIn: decisionData?.motionDomainId,
           title: decisionData?.title,
           description: decisionData?.description,
         };
@@ -227,7 +225,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           member: recipientAddress,
           authority: AUTHORITY.Own,
           role,
-          team: fromDomain?.nativeId.toString(),
+          team: fromDomain?.nativeId,
           permissions:
             role === USER_ROLE.Custom
               ? AVAILABLE_ROLES.reduce(

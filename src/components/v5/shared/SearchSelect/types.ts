@@ -24,7 +24,7 @@ export interface SearchSelectOptionProps {
 
 export interface SearchSelectOption {
   label: MessageDescriptor | string;
-  value: string;
+  value: string | number;
   isDisabled?: boolean;
   avatar?: string;
   showAvatar?: boolean;

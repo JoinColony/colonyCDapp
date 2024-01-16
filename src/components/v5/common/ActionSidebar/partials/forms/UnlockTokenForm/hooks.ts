@@ -30,7 +30,7 @@ export const useUnlockToken = (
         : ActionTypes.ROOT_MOTION,
     defaultValues: useMemo<DeepPartial<UnlockTokenFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
       }),
       [],
     ),

@@ -14,11 +14,14 @@ export const useSearchSelect = (
         ...item,
         options: item.options.filter((option) => {
           const searchQuery = searchValue.toLowerCase();
-          const optionValue = option.value.replace('-', ' ').toLowerCase();
+          const optionValue =
+            typeof option.value === 'string'
+              ? option.value.replace('-', ' ').toLowerCase()
+              : option.value;
           const optionUserName = formatText(option.label).toLowerCase();
 
           return [optionValue, optionUserName].some((value) =>
-            value.includes(searchQuery),
+            value.toString().includes(searchQuery),
           );
         }),
       })),

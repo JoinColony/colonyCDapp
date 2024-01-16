@@ -43,9 +43,9 @@ export const useValidationSchema = () => {
             ),
           tokenAddress: string().address().required(),
         }).required(),
-        createdIn: string().defined(),
+        createdIn: number().defined(),
         description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
-        team: string().required(),
+        team: number().required(),
         decisionMethod: string().defined(),
         distributionMethod: string().defined(),
         payments: array(
@@ -117,7 +117,7 @@ export const useSplitPayment = (
         amount: {
           tokenAddress: colony?.nativeToken.tokenAddress,
         },
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
         payments: [
           {
             percent: 0,

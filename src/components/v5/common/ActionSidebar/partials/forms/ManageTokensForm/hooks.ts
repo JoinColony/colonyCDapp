@@ -52,7 +52,7 @@ export const useManageTokens = (
         : ActionTypes.MOTION_EDIT_COLONY,
     defaultValues: useMemo(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
         selectedTokenAddresses: colonyTokens.map(({ token }) => ({
           token: token.tokenAddress,
         })),

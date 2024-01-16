@@ -26,7 +26,7 @@ export const useMintToken = (
     validationSchema,
     defaultValues: useMemo<DeepPartial<MintTokenFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
         amount: {},
       }),
       [],

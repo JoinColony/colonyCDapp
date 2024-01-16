@@ -29,7 +29,7 @@ export const useCreateNewTeam = (
         : ActionTypes.ACTION_DOMAIN_CREATE,
     defaultValues: useMemo<DeepPartial<CreateNewTeamFormValues>>(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
       }),
       [],
     ),

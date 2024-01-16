@@ -16,7 +16,7 @@ export const validationSchema = object()
     colonyObjectiveProgress: number()
       .max(100)
       .required(() => formatText({ id: 'errors.colonyObjective.progress' })),
-    createdIn: string().defined(),
+    createdIn: number().defined(),
     decisionMethod: string().defined(),
     description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
   })

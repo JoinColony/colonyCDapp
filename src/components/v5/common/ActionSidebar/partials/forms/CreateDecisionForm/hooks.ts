@@ -43,7 +43,7 @@ export const useCreateDecision = (
     getFormOptions,
     defaultValues: useMemo(
       () => ({
-        createdIn: Id.RootDomain.toString(),
+        createdIn: Id.RootDomain,
         walletAddress,
       }),
       [walletAddress],

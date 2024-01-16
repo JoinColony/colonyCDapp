@@ -34,8 +34,8 @@ export const getTransferFundsDialogPayload = (
   // Convert amount string with decimals to BigInt (eth to wei)
   const amount = BigNumber.from(moveDecimal(transferAmount, decimals));
 
-  const fromDomain = findDomainByNativeId(Number(fromDomainId), colony);
-  const toDomain = findDomainByNativeId(Number(toDomainId), colony);
+  const fromDomain = findDomainByNativeId(fromDomainId, colony);
+  const toDomain = findDomainByNativeId(toDomainId, colony);
 
   return {
     colonyAddress: colony.colonyAddress,

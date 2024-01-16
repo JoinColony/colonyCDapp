@@ -23,11 +23,10 @@ export const useEditTeam = (
 
   const { [DECISION_METHOD_FIELD_NAME]: decisionMethod, team } = useWatch<{
     decisionMethod: DecisionMethod;
-    team: string;
+    team: number;
   }>();
 
-  const selectedDomainId = Number(team);
-  const selectedDomain = findDomainByNativeId(selectedDomainId, colony);
+  const selectedDomain = findDomainByNativeId(team, colony);
 
   useEffect(() => {
     if (!selectedDomain) {
@@ -39,7 +38,7 @@ export const useEditTeam = (
     setValue('teamName', metadata?.name);
     setValue('domainPurpose', metadata?.description);
     setValue('domainColor', metadata?.color);
-    setValue('createdIn', nativeId.toString());
+    setValue('createdIn', nativeId);
   }, [selectedDomain, setValue]);
 
   useActionFormBaseHook({
@@ -51,9 +50,9 @@ export const useEditTeam = (
         : ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
-        createdIn: selectedDomainId.toString() || Id.RootDomain.toString(),
+        createdIn: team || Id.RootDomain,
       }),
-      [selectedDomainId],
+      [team],
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
