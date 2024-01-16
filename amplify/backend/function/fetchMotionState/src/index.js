@@ -1,3 +1,4 @@
+require('cross-fetch/polyfill');
 const { MotionState } = require('@colony/colony-js');
 const {
   getLatestMotionState,
