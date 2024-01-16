@@ -1,8 +1,12 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useMobile } from '~hooks';
-import { USER_HOME_ROUTE, USER_EDIT_PROFILE_ROUTE } from '~routes';
+import { useAppContext, useMobile } from '~hooks';
+import {
+  USER_HOME_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+  CREATE_PROFILE_ROUTE,
+} from '~routes';
 import Icon from '~shared/Icon';
 import Link from '~v5/shared/Link';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
@@ -18,6 +22,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
   avatar,
 }) => {
   const { formatMessage } = useIntl();
+  const { user } = useAppContext();
   const isMobile = useMobile();
 
   const iconSize = isMobile ? 'small' : 'extraSmall';
@@ -32,13 +37,27 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
           isVerified={isVerified}
         />
       </div>
-      <Link
-        to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
-        className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
-      >
-        <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
-        <p className="ml-2">{formatMessage({ id: 'userMenu.menageTitle' })}</p>
-      </Link>
+      {user ? (
+        <Link
+          to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
+          className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+        >
+          <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
+          <p className="ml-2">
+            {formatMessage({ id: 'userMenu.manageTitle' })}
+          </p>
+        </Link>
+      ) : (
+        <Link
+          to={`${CREATE_PROFILE_ROUTE}`}
+          className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+        >
+          <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
+          <p className="ml-2">
+            {formatMessage({ id: 'userMenu.createTitle' })}
+          </p>
+        </Link>
+      )}
     </div>
   );
 };
