@@ -19,7 +19,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
   return (
     <>
       <button
-        className="flex items-center self-start"
+        className="flex items-center"
         type="button"
         onClick={() => {
           setIsExpanded((previousExpanded) => !previousExpanded);
@@ -32,7 +32,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
         <CaretRight
           size={12}
           className={clsx(
-            'transition-transform duration-300 ease-in-out rotate-0',
+            'transition-transform duration-300 ease-in-out rotate-0 text-gray-900',
             {
               'rotate-90': isExpanded,
             },
@@ -40,7 +40,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
         />
       </button>
       <div
-        className={clsx('self-start', {
+        className={clsx({
           'col-span-2': isExpanded,
         })}
       >

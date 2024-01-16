@@ -1,4 +1,3 @@
-import moveDecimal from 'move-decimal-point';
 import { UserFocus } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
@@ -6,11 +5,10 @@ import { defineMessages } from 'react-intl';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
 import {
   ActionTypeRow,
@@ -20,6 +18,7 @@ import {
   DescriptionRow,
   TeamFromRow,
 } from '../rows';
+import { getFormattedTokenAmount } from '../utils';
 
 const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
 
@@ -40,11 +39,11 @@ const MSG = defineMessages({
 
 const SimplePayment = ({ action }: SimplePaymentProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser, recipientUser } = action;
+  const { amount, initiatorUser, recipientUser, token } = action;
 
-  const transformedAmount = moveDecimal(
-    action.amount || '1',
-    -getTokenDecimalsWithFallback(action.token?.decimals),
+  const formattedAmount = getFormattedTokenAmount(
+    amount || '1',
+    token?.decimals,
   );
 
   return (
@@ -52,7 +51,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          amount: transformedAmount,
+          amount: formattedAmount,
           token: action.token?.symbol,
           recipient: recipientUser ? (
             <UserPopover
@@ -85,6 +84,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
 
         <div>
           <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
             tooltipContent={formatText({
               id: 'actionSidebar.tooltip.simplePayment.recipient',
             })}
@@ -107,7 +107,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         </div>
 
         <AmountRow
-          amount={action.amount || '0'}
+          amount={action.amount || '1'}
           token={action.token || undefined}
         />
 

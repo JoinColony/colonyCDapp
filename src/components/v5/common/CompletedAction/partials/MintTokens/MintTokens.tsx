@@ -1,10 +1,8 @@
-import moveDecimal from 'move-decimal-point';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import UserPopover from '~v5/shared/UserPopover';
 
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
@@ -15,6 +13,7 @@ import {
   DecisionMethodRow,
   DescriptionRow,
 } from '../rows';
+import { getFormattedTokenAmount } from '../utils';
 
 const displayName = 'v5.common.CompletedAction.partials.MintTokens';
 
@@ -35,10 +34,10 @@ const MSG = defineMessages({
 
 const MintTokens = ({ action }: MintTokensProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser } = action;
-  const transformedAmount = moveDecimal(
-    action.amount || '1',
-    -getTokenDecimalsWithFallback(action.token?.decimals),
+  const { amount, initiatorUser, token } = action;
+  const formattedAmount = getFormattedTokenAmount(
+    amount || '1',
+    token?.decimals,
   );
 
   return (
@@ -46,7 +45,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          amount: transformedAmount,
+          amount: formattedAmount,
           token: action.token?.symbol,
           user: initiatorUser ? (
             <UserPopover

@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl';
 import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColourField/partials/TeamColourBadge';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
 import {
   ActionTypeRow,
@@ -61,6 +61,7 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
 
         <div>
           <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
             tooltipContent={formatText({
               id: 'actionSidebar.tooltip.createNewTeam.team.name',
             })}
@@ -77,6 +78,7 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
 
         <div>
           <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
             tooltipContent={formatText({
               id: 'actionSidebar.tooltip.createNewTeam.team.purpose',
             })}
@@ -93,6 +95,7 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
 
         <div>
           <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
             tooltipContent={formatText({
               id: 'actionSidebar.tooltip.createNewTeam.team.colour',
             })}

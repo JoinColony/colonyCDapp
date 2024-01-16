@@ -5,7 +5,7 @@ import { ColonyActionType } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 
-import { ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
 
 const displayName = 'v5.common.CompletedAction.partials.ActionTypeRow';
 
@@ -30,6 +30,7 @@ const ActionTypeRow = ({ actionType }: ActionTypeRowProps) => {
     <>
       <div>
         <Tooltip
+          placement={DEFAULT_TOOLTIP_POSITION}
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.actionType',
           })}

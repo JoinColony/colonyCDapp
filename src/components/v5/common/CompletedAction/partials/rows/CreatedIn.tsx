@@ -6,7 +6,7 @@ import { DomainMetadata } from '~types';
 import { formatText } from '~utils/intl';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 
-import { ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
 
 const displayName = 'v5.common.CompletedAction.partials.CreatedInRow';
 
@@ -19,6 +19,7 @@ const CreatedInRow = ({ motionDomainMetadata }: CreatedInRowProps) => {
     <>
       <div>
         <Tooltip
+          placement={DEFAULT_TOOLTIP_POSITION}
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.createdIn',
           })}

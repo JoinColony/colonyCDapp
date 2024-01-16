@@ -1,4 +1,3 @@
-import moveDecimal from 'move-decimal-point';
 import { ArrowDownRight } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
@@ -6,11 +5,10 @@ import { defineMessages } from 'react-intl';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
 import {
   ActionTypeRow,
@@ -20,6 +18,7 @@ import {
   DescriptionRow,
   TeamFromRow,
 } from '../rows';
+import { getFormattedTokenAmount } from '../utils';
 
 const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 
@@ -41,10 +40,11 @@ const MSG = defineMessages({
 
 const TransferFunds = ({ action }: TransferFundsProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser } = action;
-  const transformedAmount = moveDecimal(
-    action.amount || '1',
-    -getTokenDecimalsWithFallback(action.token?.decimals),
+  const { amount, initiatorUser, token } = action;
+
+  const formattedAmount = getFormattedTokenAmount(
+    amount || '1',
+    token?.decimals,
   );
 
   return (
@@ -52,7 +52,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          amount: transformedAmount,
+          amount: formattedAmount,
           token: action.token?.symbol,
           fromDomain: action.fromDomain?.metadata?.name,
           toDomain: action.toDomain?.metadata?.name,
@@ -77,6 +77,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
 
         <div>
           <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
             tooltipContent={formatText({
               id: 'actionSidebar.tooltip.transferFunds.to',
             })}

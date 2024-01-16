@@ -1,5 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 
+// @NOTE if you use grid-cols in tailwind, the rows property doesn't get applied, so I had to use CSS
+import styles from './Blocks.module.css';
+
 export const ActionTitle = ({
   children,
 }: PropsWithChildren<Record<never, any>>) => {
@@ -17,9 +20,5 @@ export const ActionSubtitle = ({
 export const ActionDataGrid = ({
   children,
 }: PropsWithChildren<Record<never, any>>) => {
-  return (
-    <div className="grid grid-cols-[10rem_auto] sm:grid-cols-[12.5rem_auto] gap-y-3 text-md text-gray-900 items-center [&>*]:py-[5px]">
-      {children}
-    </div>
-  );
+  return <div className={styles.actionGrid}>{children}</div>;
 };

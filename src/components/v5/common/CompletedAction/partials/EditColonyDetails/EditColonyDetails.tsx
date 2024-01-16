@@ -7,7 +7,7 @@ import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
 import UserPopover from '~v5/shared/UserPopover';
 
-import { ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
 import {
   ActionTypeRow,
@@ -59,6 +59,7 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
 
         <div>
           <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
             tooltipContent={formatText({
               id: 'actionSidebar.tooltip.editColony.colonyName',
             })}
