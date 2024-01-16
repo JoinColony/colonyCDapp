@@ -8865,7 +8865,6 @@ export type GetUserTokenBalanceQuery = { __typename?: 'Query', getUserTokenBalan
 
 export type GetUserTransactionsQueryVariables = Exact<{
   userAddress: Scalars['ID'];
-  colonyAddress?: InputMaybe<Scalars['ID']>;
   transactionsOlderThan?: InputMaybe<Scalars['String']>;
   nextToken?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -12069,11 +12068,11 @@ export type GetUserTokenBalanceQueryHookResult = ReturnType<typeof useGetUserTok
 export type GetUserTokenBalanceLazyQueryHookResult = ReturnType<typeof useGetUserTokenBalanceLazyQuery>;
 export type GetUserTokenBalanceQueryResult = Apollo.QueryResult<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>;
 export const GetUserTransactionsDocument = gql`
-    query GetUserTransactions($userAddress: ID!, $colonyAddress: ID, $transactionsOlderThan: String, $nextToken: String, $limit: Int) {
+    query GetUserTransactions($userAddress: ID!, $transactionsOlderThan: String, $nextToken: String, $limit: Int) {
   getTransactionsByUser(
     from: $userAddress
     createdAt: {lt: $transactionsOlderThan}
-    filter: {colonyAddress: {eq: $colonyAddress}, deleted: {ne: true}}
+    filter: {deleted: {ne: true}}
     sortDirection: DESC
     nextToken: $nextToken
     limit: $limit
@@ -12099,7 +12098,6 @@ export const GetUserTransactionsDocument = gql`
  * const { data, loading, error } = useGetUserTransactionsQuery({
  *   variables: {
  *      userAddress: // value for 'userAddress'
- *      colonyAddress: // value for 'colonyAddress'
  *      transactionsOlderThan: // value for 'transactionsOlderThan'
  *      nextToken: // value for 'nextToken'
  *      limit: // value for 'limit'
