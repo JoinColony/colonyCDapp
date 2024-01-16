@@ -4,6 +4,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context';
 import {
   GetFullColonyByNameDocument,
+  PendingModifiedTokenAddressesInput,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
@@ -28,6 +29,7 @@ import {
 import {
   getExistingTokenAddresses,
   getModifiedTokenAddresses,
+  getPendingModifiedTokenAddresses,
   updateColonyTokens,
 } from '../utils/updateColonyTokens';
 
@@ -151,11 +153,18 @@ function* editColonyAction({
     const haveTokensChanged = !!(
       tokenAddresses && modifiedTokenAddresses.length
     );
+    let modifiedTokenAddressesInput: PendingModifiedTokenAddressesInput | null =
+      null;
 
     if (haveTokensChanged) {
       yield updateColonyTokens(
         colony,
         existingTokenAddresses,
+        modifiedTokenAddresses,
+      );
+
+      modifiedTokenAddressesInput = getPendingModifiedTokenAddresses(
+        colony,
         modifiedTokenAddresses,
       );
     }
@@ -178,6 +187,7 @@ function* editColonyAction({
             description: colonyDescription,
             externalLinks: colonyExternalLinks,
             objective: colonyObjective,
+            modifiedTokenAddresses: modifiedTokenAddressesInput,
             // @TODO: refactor this function to take an object
             changelog: getUpdatedColonyMetadataChangelog(
               txHash,

@@ -30,18 +30,22 @@ export const useManageTokens = (
     [colony?.tokens?.items],
   );
 
-  const shouldShowMenu = useCallback(
-    (token: string) => {
-      if (readonly) {
-        return false;
-      }
+  const blockchainNativeTokenAddress = colonyTokens.find(
+    ({ colonyTokensId }) => colonyTokensId === 'DEFAULT_TOKEN_ID',
+  )?.token.tokenAddress;
 
-      return !colonyTokens
-        .map(({ token: colonyToken }) => colonyToken.tokenAddress)
-        .some((colonyTokenAddress) => colonyTokenAddress === token);
-    },
-    [colonyTokens, readonly],
-  );
+  const colonyNativeTokenAddress = colony?.nativeToken.tokenAddress;
+
+  const shouldShowMenu = (token: string) => {
+    if (readonly) {
+      return false;
+    }
+
+    return (
+      token !== blockchainNativeTokenAddress &&
+      token !== colonyNativeTokenAddress
+    );
+  };
 
   useActionFormBaseHook({
     getFormOptions,
@@ -53,11 +57,18 @@ export const useManageTokens = (
     defaultValues: useMemo(
       () => ({
         createdIn: Id.RootDomain.toString(),
-        selectedTokenAddresses: colonyTokens.map(({ token }) => ({
-          token: token.tokenAddress,
-        })),
+        selectedTokenAddresses: colonyTokens
+          .map(({ token }) => ({
+            token: token.tokenAddress,
+          }))
+          .sort((a) =>
+            a.token === blockchainNativeTokenAddress ||
+            a.token === colonyNativeTokenAddress
+              ? -1
+              : 0,
+          ),
       }),
-      [colonyTokens],
+      [blockchainNativeTokenAddress, colonyNativeTokenAddress, colonyTokens],
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
@@ -67,7 +78,14 @@ export const useManageTokens = (
             return null;
           }
 
-          return getManageTokensPayload(colony, values);
+          const updatedValues = {
+            ...values,
+            selectedTokenAddresses: values.selectedTokenAddresses.filter(
+              ({ isRemoved }) => !isRemoved,
+            ),
+          };
+
+          return getManageTokensPayload(colony, updatedValues);
         }),
       ),
       [colony, user],

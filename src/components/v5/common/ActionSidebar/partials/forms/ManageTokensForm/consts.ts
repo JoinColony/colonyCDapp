@@ -1,6 +1,7 @@
-import { array, InferType, object, string } from 'yup';
+import { array, bool, InferType, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { formatText } from '~utils/intl';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
 
 export const validationSchema = object()
@@ -13,10 +14,19 @@ export const validationSchema = object()
         object()
           .shape({
             token: string().required(),
+            isRemoved: bool(),
+            isNew: bool(),
           })
           .required(),
       )
-      .unique('Duplicate tokens are not allowed.', ({ token }) => token)
+      .unique(
+        formatText({ id: 'validation.duplicateTokensNotAllowed' }),
+        ({ token }) => token?.toLowerCase(),
+      )
+      .some(
+        formatText({ id: 'validation.noChangesInTheTable' }),
+        ({ isRemoved, isNew }) => isRemoved || isNew,
+      )
       .defined(),
   })
   .defined()

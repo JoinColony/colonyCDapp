@@ -51,7 +51,20 @@ function unique(message, mapper = (a) => a) {
   });
 }
 
+function some(message, mapper = (a) => a) {
+  return this.test({
+    name: 'some',
+    message,
+    test(list) {
+      if (!list) return false;
+
+      return list.some(mapper);
+    },
+  });
+}
+
 addMethod(string, 'address', address);
 addMethod(string, 'hexString', hexString);
 addMethod(string, 'hasHexPrefix', hasHexPrefix);
 addMethod(array, 'unique', unique);
+addMethod(array, 'some', some);

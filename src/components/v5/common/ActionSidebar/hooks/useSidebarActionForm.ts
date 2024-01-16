@@ -15,7 +15,7 @@ import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectives
 import ManagePermissionsForm from '../partials/forms/ManagePermissionsForm';
 import ManageTokensForm from '../partials/forms/ManageTokensForm';
 import MintTokenForm from '../partials/forms/MintTokenForm';
-import SinglePaymentForm from '../partials/forms/SimplePaymentForm';
+import SimplePaymentForm from '../partials/forms/SimplePaymentForm';
 import SplitPaymentForm from '../partials/forms/SplitPaymentForm';
 import TransferFundsForm from '../partials/forms/TransferFundsForm';
 import UnlockTokenForm from '../partials/forms/UnlockTokenForm';
@@ -27,7 +27,7 @@ export const useSidebarActionForm = () => {
     Partial<Record<Action, React.FC<ActionFormBaseProps>>>
   >(
     () => ({
-      [ACTION.SIMPLE_PAYMENT]: SinglePaymentForm,
+      [ACTION.SIMPLE_PAYMENT]: SimplePaymentForm,
       [ACTION.MINT_TOKENS]: MintTokenForm,
       [ACTION.TRANSFER_FUNDS]: TransferFundsForm,
       [ACTION.CREATE_NEW_TEAM]: CreateNewTeamForm,
