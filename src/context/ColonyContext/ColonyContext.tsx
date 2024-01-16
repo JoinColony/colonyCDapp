@@ -1,13 +1,12 @@
 import { ApolloQueryResult } from '@apollo/client';
 import React, { createContext, useMemo, ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import LoadingTemplate from '~frame/LoadingTemplate';
 import {
   Exact,
   GetFullColonyByNameQuery,
-  useGetColonyWhitelistByNameQuery,
   useGetFullColonyByNameQuery,
 } from '~gql';
 import {
@@ -64,7 +63,7 @@ export const ColonyContextProvider = ({
   children: ReactNode;
 }) => {
   const { colonyName = '' } = useParams();
-  const { user, userLoading, walletConnecting } = useAppContext();
+  const { userLoading, walletConnecting } = useAppContext();
 
   const {
     data,
@@ -113,15 +112,7 @@ export const ColonyContextProvider = ({
     ],
   );
 
-  // @TODO: This is terrible. Once we have auth, we need a method
-  // to check whether the logged in user is a member of the Colony
-  const { data: dataWhitelist, loading: whitelistLoading } =
-    useGetColonyWhitelistByNameQuery({
-      variables: { name: colonyName },
-      skip: !colonyName,
-    });
-
-  if (walletConnecting || colonyLoading || userLoading || whitelistLoading) {
+  if (walletConnecting || colonyLoading || userLoading) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
@@ -130,14 +121,6 @@ export const ColonyContextProvider = ({
       console.error(error);
     }
     return <NotFoundRoute />;
-  }
-
-  const isMember = !!dataWhitelist?.getColonyByName?.items[0]?.whitelist.some(
-    (addr) => addr === user?.walletAddress,
-  );
-
-  if (!user || !isMember) {
-    return <Navigate to={`/go/${colony.name}`} />;
   }
 
   return (
