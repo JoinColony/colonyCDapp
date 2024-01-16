@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
-import { useColonyContext } from '~hooks';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
+import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
 import { getFormattedNumeralValue } from '~shared/Numeral';
 import { convertToDecimal } from '~utils/convertToDecimal';
 import {
@@ -13,7 +12,7 @@ import { UseBalancePageReturnType } from './types';
 
 export const useBalancePage = (): UseBalancePageReturnType => {
   const { colony } = useColonyContext();
-  const selectedTeam = useGetSelectedTeamFilter();
+  const selectedDomain = useGetSelectedDomainFilter();
   const { balances } = colony || {};
 
   const tokensData = useMemo(
@@ -23,7 +22,7 @@ export const useBalancePage = (): UseBalancePageReturnType => {
           getBalanceForTokenAndDomain(
             balances,
             item?.token?.tokenAddress || '',
-            selectedTeam ? Number(selectedTeam.nativeId) : undefined,
+            selectedDomain ? Number(selectedDomain.nativeId) : undefined,
           ) || 0;
         const decimals = getTokenDecimalsWithFallback(item?.token.decimals);
         const convertedValue = convertToDecimal(
@@ -41,7 +40,7 @@ export const useBalancePage = (): UseBalancePageReturnType => {
           balance: typeof formattedValue === 'string' ? formattedValue : '',
         };
       }),
-    [colony, balances, selectedTeam],
+    [colony, balances, selectedDomain],
   );
 
   const sortedTokens = useMemo(

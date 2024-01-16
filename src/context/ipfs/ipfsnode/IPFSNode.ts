@@ -10,26 +10,26 @@ class IPFSNode {
     preload: { enabled: false, addresses: [] },
   });
 
-  _ipfs: IPFS;
+  ipfs: IPFS;
 
   ready: Promise<boolean>;
 
   constructor() {
     const promise = IPFS.create(IPFSNode.getIpfsConfig()).then((ipfs) => {
-      this._ipfs = ipfs;
+      this.ipfs = ipfs;
     });
     this.ready = promise.then(() => true);
   }
 
   /** Get the IPFS instance */
   getIPFS() {
-    return this._ipfs;
+    return this.ipfs;
   }
 
   /** Upload a string */
   async addString(data: string): Promise<string> {
     await this.ready;
-    const resultIterator = await this._ipfs.add(data);
+    const resultIterator = await this.ipfs.add(data);
     const {
       value: { path },
     } = await resultIterator.next();
@@ -38,12 +38,12 @@ class IPFSNode {
 
   /** Start the connection to IPFS (if not connected already) */
   start(): Promise<void> {
-    return this._ipfs.start();
+    return this.ipfs.start();
   }
 
   /** Stop the connection to IPFS */
   async stop(): Promise<void> {
-    return this._ipfs.stop();
+    return this.ipfs.stop();
   }
 }
 

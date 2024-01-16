@@ -1,47 +1,34 @@
 import clsx from 'clsx';
-import { subDays, startOfDay } from 'date-fns';
 import React from 'react';
 
+import { useGetTotalColonyDomainActionsQuery } from '~gql';
 import {
-  useGetTotalColonyActionsQuery,
-  useGetTotalColonyDomainActionsQuery,
-} from '~gql';
-import { useColonyContext } from '~hooks';
-import { createBaseActionFilter } from '~hooks/useActivityFeed/helpers';
+  useActionsCount,
+  useColonyContext,
+  useGetSelectedDomainFilter,
+} from '~hooks';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
 
-const getThirtyDaysAgoIso = () => {
-  const thirtyDaysAgo = subDays(new Date(), 30);
-  const midnightThirtyDaysAgo = startOfDay(thirtyDaysAgo);
-  return midnightThirtyDaysAgo.toISOString();
-};
+const getFormattedActionsCount = (count: number) =>
+  count > 1000 ? '999+' : count;
 
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const { colony } = useColonyContext();
   const { domains, colonyAddress = '' } = colony ?? {};
+  const selectedDomain = useGetSelectedDomainFilter();
 
-  const { data: totalActionData } = useGetTotalColonyActionsQuery({
-    variables: {
-      filter: {
-        ...createBaseActionFilter(colonyAddress),
-      },
-    },
-  });
+  const { actionsCount: totalActions, loading: totalActionsLoading } =
+    useActionsCount({
+      domainId: selectedDomain?.nativeId,
+    });
 
-  const totalActions = totalActionData?.searchColonyActions?.total ?? 0;
-
-  const { data: recentActionData } = useGetTotalColonyActionsQuery({
-    variables: {
-      filter: {
-        ...createBaseActionFilter(colonyAddress),
-        createdAt: { gte: getThirtyDaysAgoIso() },
-      },
-    },
-  });
-
-  const recentActions = recentActionData?.searchColonyActions?.total ?? 0;
+  const { actionsCount: recentActions, loading: recentActionsLoading } =
+    useActionsCount({
+      domainId: selectedDomain?.nativeId,
+      onlyRecent: true,
+    });
 
   const { data: domainData } = useGetTotalColonyDomainActionsQuery({
     variables: {
@@ -52,7 +39,6 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const domainCountsResult =
     domainData?.searchColonyActions?.aggregateItems[0]?.result || {};
   const domainsActionCount =
-    // eslint-disable-next-line no-underscore-dangle
     domainCountsResult?.__typename === 'SearchableAggregateBucketResult'
       ? domainCountsResult?.buckets?.filter(notNull) ?? []
       : [];
@@ -72,13 +58,19 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const contentClassName =
     'flex flex-row-reverse items-center gap-1.5 text-right sm:text-left sm:gap-0 sm:flex-col sm:items-start';
 
+  const countSkeleton = (
+    <div className="skeleton w-[60px] h-[1em] my-[0.25em]" />
+  );
+
   return [
     {
       key: '1',
       title: formatText({ id: 'widget.totalActions' }),
       value: (
         <span className="heading-4 text-gray-900">
-          {totalActions > 1000 ? '999+' : totalActions}
+          {totalActionsLoading
+            ? countSkeleton
+            : getFormattedActionsCount(totalActions)}
         </span>
       ),
       className: tileClassName,
@@ -90,15 +82,17 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
       title: formatText({ id: 'activityPage.recentActions' }),
       value: (
         <span className="heading-4 text-gray-900">
-          {formatText(
-            { id: 'activityPage.recentActions.pastMonth' },
-            {
-              value: recentActions > 1000 ? '999+' : recentActions,
-              span: (chunks) => (
-                <span className="text-1 hidden sm:inline">{chunks}</span>
-              ),
-            },
-          )}
+          {recentActionsLoading
+            ? countSkeleton
+            : formatText(
+                { id: 'activityPage.recentActions.pastMonth' },
+                {
+                  value: getFormattedActionsCount(recentActions),
+                  span: (chunks) => (
+                    <span className="text-1 hidden sm:inline">{chunks}</span>
+                  ),
+                },
+              )}
         </span>
       ),
       className: tileClassName,

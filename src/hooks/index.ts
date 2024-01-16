@@ -1,21 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { Selector } from 'reselect';
 
 import promiseListener, { AsyncFunction } from '~redux/createPromiseListener';
-import { RootStateRecord } from '~redux/state';
 import { ActionTransformFnType } from '~utils/actions';
 import { getMainClasses } from '~utils/css';
-
-type DependantSelector = (
-  selector: Selector<RootStateRecord, any>,
-  reduxState: RootStateRecord,
-  extraArgs?: any[],
-) => boolean;
-
-export type Given = (
-  potentialSelector: Selector<RootStateRecord, any>,
-  dependantSelector?: DependantSelector,
-) => any | boolean;
 
 export {
   default as useNaiveBranchingDialogWizard,
@@ -78,6 +65,8 @@ export { default as useTeamsOptions } from './useTeamsOptions';
 export { default as useUsersByAddresses } from './useUsersByAddresses';
 export { default as useJoinedColonies } from './useJoinedColonies';
 export { default as useCurrency } from './useCurrency';
+export { default as useGetSelectedDomainFilter } from './useGetSelectedDomainFilter';
+export { default as useActionsCount } from './useActionsCount';
 
 export {
   default as useSafeTransactionStatus,

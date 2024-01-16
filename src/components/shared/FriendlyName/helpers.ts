@@ -9,7 +9,6 @@ export const getAddressFromAgent = (
     return undefined;
   }
 
-  // eslint-disable-next-line no-underscore-dangle
   switch (agent.__typename) {
     case 'Colony': {
       return agent.colonyAddress;
@@ -41,7 +40,6 @@ export const getDisplayNameFromAgent = (
     return undefined;
   }
 
-  // eslint-disable-next-line no-underscore-dangle
   switch (agent.__typename) {
     case 'Colony': {
       return agent.metadata?.displayName || agent.name;

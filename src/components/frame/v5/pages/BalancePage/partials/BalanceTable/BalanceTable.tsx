@@ -7,9 +7,12 @@ import clsx from 'clsx';
 import { uniqueId } from 'lodash';
 import React, { FC, useState } from 'react';
 
-import { useColonyContext, useMobile } from '~hooks';
+import {
+  useColonyContext,
+  useGetSelectedDomainFilter,
+  useMobile,
+} from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { useGetSelectedTeamFilter } from '~hooks/useTeamsBreadcrumbs';
 import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 // import { useSearchContext } from '~context/SearchContext';
@@ -27,7 +30,7 @@ import { BalanceTableFieldModel, BalanceTableProps } from './types';
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
 const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
-  const selectedTeam = useGetSelectedTeamFilter();
+  const selectedDomain = useGetSelectedDomainFilter();
   const { colony } = useColonyContext();
   const { balances, nativeToken, status, colonyAddress } = colony || {};
   const { nativeToken: nativeTokenStatus } = status || {};
@@ -47,7 +50,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
     nativeToken,
     balances,
     nativeTokenStatus,
-    Number(selectedTeam?.nativeId) || undefined,
+    Number(selectedDomain?.nativeId) || undefined,
   );
   const { getMenuProps } = useGetTableMenuProps(
     data,

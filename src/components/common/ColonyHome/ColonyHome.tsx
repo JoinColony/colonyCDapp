@@ -3,11 +3,13 @@ import { defineMessages } from 'react-intl';
 
 import ColonyActionsTable from '~common/ColonyActionsTable';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
-import { useColonyContext, useColonySubscription, useMobile } from '~hooks';
 import {
-  useCreateTeamBreadcrumbs,
-  useGetSelectedTeamFilter,
-} from '~hooks/useTeamsBreadcrumbs';
+  useColonyContext,
+  useColonySubscription,
+  useGetSelectedDomainFilter,
+  useMobile,
+} from '~hooks';
+import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 import {
   // @BETA: Disabled for now
   // COLONY_TEAMS_ROUTE,
@@ -49,7 +51,7 @@ const MSG = defineMessages({
 const ColonyHome = () => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
-  const selectedTeam = useGetSelectedTeamFilter();
+  const selectedDomain = useGetSelectedDomainFilter();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
 
   const { leaveColonyConfirmOpen, setLeaveColonyConfirm, ...headerProps } =
@@ -102,7 +104,7 @@ const ColonyHome = () => {
                 to={setQueryParamOnUrl(
                   COLONY_ACTIVITY_ROUTE,
                   TEAM_SEARCH_PARAM,
-                  selectedTeam?.nativeId.toString(),
+                  selectedDomain?.nativeId.toString(),
                 )}
               >
                 {formatText({ id: 'view.all' })}
