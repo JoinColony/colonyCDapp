@@ -90,7 +90,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
               {getPlaceholder(
                 isLoading,
                 <ColonyAvatar
-                  size="xm"
+                  size="m"
                   colonyImageProps={{
                     src: modalValue?.image,
                   }}
