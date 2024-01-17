@@ -76,7 +76,7 @@ const StreamingPaymentForm = () => {
       }}
       transform={transformPayload}
     >
-      <StreamingPaymentFormFields colony={colony} />
+      <StreamingPaymentFormFields />
 
       <div className={styles.buttons}>
         <Button type="submit">Create</Button>

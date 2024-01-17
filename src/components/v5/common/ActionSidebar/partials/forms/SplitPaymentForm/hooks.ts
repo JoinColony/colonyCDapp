@@ -1,12 +1,11 @@
 import { Id } from '@colony/colony-js';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { array, InferType, number, object, string } from 'yup';
 
-import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
-import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
+import { mapPayload } from '~utils/actions';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { toFinite } from '~utils/lodash';
@@ -88,7 +87,6 @@ export const useSplitPayment = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();
   const colonyTokens = useMemo(
     () =>
@@ -129,28 +127,10 @@ export const useSplitPayment = (
         ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
         : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
     getFormOptions,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    transform: useCallback(
-      pipe(
-        mapPayload((payload: SplitPaymentFormValues) => {
-          const values = {
-            amount: payload.amount.amount,
-            tokenAddress: payload.amount.tokenAddress,
-            motionDomainId: payload.createdIn,
-            annotation: payload.description,
-            decisionMethod: payload.decisionMethod,
-            payments: [],
-          };
-
-          return getCreatePaymentDialogPayload(
-            colony,
-            values,
-            networkInverseFee,
-          );
-        }),
-      ),
-      [colony, networkInverseFee],
-    ),
+    transform: mapPayload((payload: SplitPaymentFormValues) => {
+      // @TODO: Add a helper function mapping form values to action payload
+      return payload;
+    }),
   });
 
   return {

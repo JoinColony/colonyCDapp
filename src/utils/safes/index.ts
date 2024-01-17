@@ -1,4 +1,3 @@
-import { FormSafeTransaction } from '~common/Dialogs/ControlSafeDialog/types';
 import {
   ADDRESS_ZERO,
   SAFE_NAMES_MAP,
@@ -12,6 +11,7 @@ import {
   Safe,
   NFTData,
   ExtendedColonyActionType,
+  FormSafeTransaction,
 } from '~types';
 import { notNull } from '~utils/arrays';
 import { isEmpty } from '~utils/lodash';

@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { string, object, number, InferType } from 'yup';
 
-import { NotEnoughReputation } from '~common/Dialogs/Messages';
 import {
   useAppContext,
   useColonyHasReputation,
@@ -13,7 +12,7 @@ import {
 } from '~hooks';
 import { createDecisionAction } from '~redux/actionCreators';
 import { DECISIONS_PREVIEW_ROUTE_SUFFIX as DECISIONS_PREVIEW } from '~routes';
-import Dialog, { DialogProps, DialogSection } from '~shared/Dialog';
+import Dialog, { DialogProps } from '~shared/Dialog';
 import { Form } from '~shared/Fields';
 import { DecisionDraft } from '~utils/decisions';
 
@@ -112,14 +111,6 @@ const DecisionDialog = ({
             editor={editor}
             disabled={!hasReputation}
           />
-          {!hasReputation && (
-            <DialogSection>
-              <NotEnoughReputation
-                domainId={motionDomainId}
-                includeForceCopy={false}
-              />
-            </DialogSection>
-          )}
           <DecisionControls cancel={cancel} disabled={!hasReputation} />
         </div>
       </Form>
