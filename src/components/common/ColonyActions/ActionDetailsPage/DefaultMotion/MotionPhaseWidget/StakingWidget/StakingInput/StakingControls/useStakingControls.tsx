@@ -14,7 +14,9 @@ import {
 } from '../StakingSliderMessages/helpers';
 
 const useStakingControls = (limitExceeded: boolean) => {
-  const { colony, loading: loadingColony } = useColonyContext();
+  const {
+    colony: { nativeToken, colonyAddress },
+  } = useColonyContext();
   const { user, userLoading, walletConnecting } = useAppContext();
   const {
     motionStakes: {
@@ -31,16 +33,16 @@ const useStakingControls = (limitExceeded: boolean) => {
     hasEnoughTokens: enoughTokensToStakeMinimum,
     loadingUserTokenBalance,
   } = useEnoughTokensForStaking(
-    colony?.nativeToken.tokenAddress ?? '',
+    nativeToken.tokenAddress,
     user?.walletAddress ?? '',
-    colony?.colonyAddress ?? '',
+    colonyAddress,
     userMinStake,
   );
 
   const { data, loading: loadingReputation } = useGetUserReputationQuery({
     variables: {
       input: {
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         walletAddress: user?.walletAddress ?? '',
         domainId: Number(nativeMotionDomainId),
         rootHash,
@@ -83,7 +85,6 @@ const useStakingControls = (limitExceeded: boolean) => {
     userActivatedTokens,
     canStakeMore,
     isLoadingData:
-      loadingColony ||
       userLoading ||
       walletConnecting ||
       loadingUserTokenBalance ||

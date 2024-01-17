@@ -13,7 +13,7 @@ const displayName =
 const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title, defaultColor }) => {
   const { colony } = useColonyContext();
 
-  const selectedTeam = colony?.domains?.items.find(
+  const selectedTeam = colony.domains?.items.find(
     (domain) => domain?.metadata?.name === title,
   );
   const color = getTeamColor(defaultColor || selectedTeam?.metadata?.color);

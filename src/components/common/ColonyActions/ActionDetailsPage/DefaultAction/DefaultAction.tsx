@@ -20,10 +20,6 @@ const DefaultAction = ({ actionData }: DefaultActionProps) => {
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  if (!colony) {
-    return null;
-  }
-
   return (
     <div className={styles.main}>
       {/* {isMobile && <ColonyHomeInfo showNavigation isMobile />} */}

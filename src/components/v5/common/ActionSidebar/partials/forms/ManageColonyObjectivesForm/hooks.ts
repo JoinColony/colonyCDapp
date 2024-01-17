@@ -18,7 +18,7 @@ export const useManageColonyObjectives = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const { metadata } = colony || {};
+  const { metadata } = colony;
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
@@ -45,10 +45,6 @@ export const useManageColonyObjectives = (
     transform: useCallback(
       pipe(
         mapPayload((values: ManageColonyObjectivesFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getManageColonyObjectivesPayload(colony, values);
         }),
       ),

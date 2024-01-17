@@ -27,10 +27,6 @@ const ActionButtons: FC<ActionButtonProps> = ({
 
   const activeInstalls = useActiveInstalls(extensionData.extensionId);
 
-  if (!colony) {
-    return null;
-  }
-
   const userHasRoot =
     !!user &&
     addressHasRoles({

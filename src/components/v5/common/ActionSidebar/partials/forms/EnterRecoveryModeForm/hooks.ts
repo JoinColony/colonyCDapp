@@ -33,11 +33,7 @@ export const useEnterRecoveryMode = (
             annotation: payload.description,
           };
 
-          if (colony) {
-            return getRecoveryModeDialogPayload(colony, values, user);
-          }
-
-          return null;
+          return getRecoveryModeDialogPayload(colony, values, user);
         }),
       ),
       [colony, user],

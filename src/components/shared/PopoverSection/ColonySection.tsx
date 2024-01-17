@@ -33,7 +33,7 @@ const MSG = defineMessages({
 
 const ColonySection = () => {
   const { colony } = useColonyContext();
-  const colonyHomePath = `/${colony?.name}`;
+  const colonyHomePath = `/${colony.name}`;
 
   return (
     <DropdownMenuSection>

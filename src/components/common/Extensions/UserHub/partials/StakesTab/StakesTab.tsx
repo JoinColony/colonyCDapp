@@ -41,10 +41,6 @@ const StakesTab = () => {
 
   const claimableStakes = stakesByFilterType.claimable;
 
-  if (!colony) {
-    return null;
-  }
-
   return (
     <div>
       <div className="flex items-center justify-between mb-4">

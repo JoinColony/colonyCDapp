@@ -21,12 +21,14 @@ export type RefetchAction = ReturnType<
 >['refetch'];
 
 export const useGetColonyAction = (transactionHash?: string) => {
-  const { colony, refetchColony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+    refetchColony,
+  } = useColonyContext();
   const { refetchTokenBalances } = useUserTokenBalanceContext();
-  const isValidTx = isTransactionFormat(transactionHash);
-  const skipQuery = !colony || !isValidTx;
+  const isInvalidTx = !isTransactionFormat(transactionHash);
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
-  const [isPolling, setIsPolling] = useState(!skipQuery);
+  const [isPolling, setIsPolling] = useState(!isInvalidTx);
 
   const pollInterval = getSafePollingInterval();
 
@@ -37,7 +39,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     stopPolling: stopPollingForAction,
     refetch: refetchAction,
   } = useGetColonyActionQuery({
-    skip: skipQuery,
+    skip: isInvalidTx,
     variables: {
       transactionHash: transactionHash ?? '',
     },
@@ -47,7 +49,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
   const action = actionData?.getColonyAction;
 
   useEffect(() => {
-    const shouldPool = !skipQuery && !action;
+    const shouldPool = !isInvalidTx && !action;
 
     setIsPolling(shouldPool);
 
@@ -79,7 +81,7 @@ export const useGetColonyAction = (transactionHash?: string) => {
     pollInterval,
     refetchColony,
     refetchTokenBalances,
-    skipQuery,
+    isInvalidTx,
     startPollingForAction,
     stopPollingForAction,
   ]);
@@ -89,10 +91,10 @@ export const useGetColonyAction = (transactionHash?: string) => {
     loading: loadingMotionState,
     refetch: refetchMotionState,
   } = useGetMotionStateQuery({
-    skip: !action?.motionData || skipQuery,
+    skip: !action?.motionData || isInvalidTx,
     variables: {
       input: {
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         databaseMotionId: action?.motionData?.databaseMotionId ?? '',
       },
     },
@@ -110,9 +112,9 @@ export const useGetColonyAction = (transactionHash?: string) => {
   }, [action?.motionData, refetchMotionState]);
 
   return {
-    isInvalidTransactionHash: !isValidTx,
+    isInvalidTransactionHash: isInvalidTx,
     isUnknownTransaction:
-      isValidTx && action?.colony?.colonyAddress !== colony?.colonyAddress,
+      !isInvalidTx && action?.colony?.colonyAddress !== colonyAddress,
     loadingAction: loadingAction || isPolling || loadingMotionState,
     action,
     startPollingForAction,

@@ -13,7 +13,9 @@ import { SLIDER_AMOUNT_KEY } from '../StakingInput';
 
 const useObjectButton = () => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
   const { transactionHash } = useParams();
 
@@ -33,7 +35,7 @@ const useObjectButton = () => {
     nayRemaining,
     userMinStake,
     user?.walletAddress ?? '',
-    colony?.colonyAddress ?? '',
+    colonyAddress,
     motionId,
     MotionVote.Nay,
     transactionHash,

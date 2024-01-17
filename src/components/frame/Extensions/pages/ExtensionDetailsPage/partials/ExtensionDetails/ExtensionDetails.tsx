@@ -17,10 +17,6 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
 
-  if (!colony) {
-    return null;
-  }
-
   const hasRootPermission =
     !!user &&
     addressHasRoles({

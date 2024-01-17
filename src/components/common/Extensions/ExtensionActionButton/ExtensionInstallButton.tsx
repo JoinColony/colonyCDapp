@@ -16,12 +16,10 @@ const InstallButton = ({
   startPolling,
   inputDisabled,
 }: Props) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const [disableInstall, setDisableInstall] = useState(inputDisabled);
-
-  if (!colony) {
-    return null;
-  }
 
   const handleInstallSuccess = () => {
     startPolling(1000);
@@ -33,7 +31,7 @@ const InstallButton = ({
       button={IconButton}
       actionType={ActionTypes.EXTENSION_INSTALL}
       values={{
-        colonyAddress: colony.colonyAddress,
+        colonyAddress,
         extensionData,
       }}
       text={{ id: 'button.install' }}

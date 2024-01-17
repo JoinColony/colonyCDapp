@@ -23,7 +23,9 @@ export const reputationValidationSchema = object()
   .defined();
 
 export const useReputationValidation = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const {
     watch,
     setValue,
@@ -42,11 +44,10 @@ export const useReputationValidation = () => {
 
   const createdInDomainId = createdIn ? Number(createdIn) : Id.RootDomain;
   const { data } = useGetUserReputationQuery({
-    skip: !colony?.colonyAddress,
     variables: {
       input: {
         walletAddress: ADDRESS_ZERO,
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         domainId: createdInDomainId,
       },
     },

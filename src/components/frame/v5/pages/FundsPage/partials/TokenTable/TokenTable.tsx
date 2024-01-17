@@ -26,8 +26,9 @@ const displayName = 'v5.pages.FundsPage.partials.TokenTable';
 
 const TokenTable: FC<TokenTableProps> = ({ token }) => {
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony || {};
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const claims = useColonyFundsClaims();
   const currentClaims = claims.filter(
     ({ token: currentClaimToken }) => currentClaimToken?.name === token?.name,
@@ -56,7 +57,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
     top: 8,
   });
 
-  const isTokenNative = token?.tokenAddress === nativeToken?.tokenAddress;
+  const isTokenNative = token?.tokenAddress === nativeToken.tokenAddress;
 
   const handleToggleToken = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -95,7 +96,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
               </span>
             </button>
             <div>
-              <Numeral value={claimsAmount} decimals={nativeToken?.decimals} />{' '}
+              <Numeral value={claimsAmount} decimals={nativeToken.decimals} />{' '}
               {token?.symbol}
             </div>
           </div>

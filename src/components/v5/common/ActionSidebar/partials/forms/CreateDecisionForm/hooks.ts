@@ -16,8 +16,9 @@ import { validationSchema, CreateDecisionFormValues } from './consts';
 export const useCreateDecision = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
-  const { colony } = useColonyContext();
-  const colonyAddress = colony?.colonyAddress ?? '';
+  const {
+    colony: { colonyAddress, name: colonyName },
+  } = useColonyContext();
   const { user } = useAppContext();
   const walletAddress = user?.walletAddress || '';
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ export const useCreateDecision = (
 
           return {
             colonyAddress,
-            colonyName: colony?.name,
+            colonyName,
             decisionMethod: payload.decisionMethod,
             motionParams: [],
             draftDecision: {
@@ -73,7 +74,7 @@ export const useCreateDecision = (
           };
         }),
       ),
-      [colony],
+      [],
     ),
   });
 };

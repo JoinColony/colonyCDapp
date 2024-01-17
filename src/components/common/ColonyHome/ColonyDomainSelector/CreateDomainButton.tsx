@@ -23,7 +23,6 @@ const CreateDomainButton = () => {
   const openCreateDomainDialog = useDialog(CreateDomainDialog);
 
   const handleClick = () =>
-    colony &&
     openCreateDomainDialog({
       colony,
       enabledExtensionData,

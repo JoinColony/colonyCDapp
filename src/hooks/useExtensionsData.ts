@@ -27,16 +27,18 @@ interface UseExtensionsDataReturn {
  * and mapping it into Installed or InstallableExtensionData object
  */
 const useExtensionsData = (): UseExtensionsDataReturn => {
-  const { colony } = useColonyContext();
+  const {
+    colony,
+    colony: { colonyAddress },
+  } = useColonyContext();
   const {
     data,
     loading: extensionsLoading,
     refetch: refetchExtensions,
   } = useGetColonyExtensionsQuery({
     variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress,
     },
-    skip: !colony,
     fetchPolicy: 'cache-and-network',
   });
   const colonyExtensions = data?.getColony?.extensions?.items?.filter(notNull);
@@ -64,7 +66,7 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
           {};
 
         // Unsupported extension
-        if (!extensionConfig || !version || !colony) {
+        if (!extensionConfig || !version) {
           return null;
         }
 

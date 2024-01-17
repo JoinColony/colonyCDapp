@@ -15,25 +15,20 @@ interface VoteRewardItemProps {
 }
 
 const VoteRewardItem = ({ minReward, maxReward }: VoteRewardItemProps) => {
-  const { colony } = useColonyContext();
-
-  const { nativeToken } = colony || {};
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const showRewardRange = minReward !== maxReward;
+
   return (
     <>
-      {nativeToken && (
-        <TokenIcon
-          className={styles.tokenIcon}
-          token={nativeToken}
-          size="xxs"
-        />
-      )}
+      <TokenIcon className={styles.tokenIcon} token={nativeToken} size="xxs" />
       {minReward && (
         <Numeral
           value={minReward}
-          decimals={nativeToken?.decimals}
+          decimals={nativeToken.decimals}
           appearance={{ theme: 'dark', size: 'small' }}
-          suffix={showRewardRange ? undefined : nativeToken?.symbol}
+          suffix={showRewardRange ? undefined : nativeToken.symbol}
         />
       )}
       {showRewardRange && maxReward && (
@@ -41,9 +36,9 @@ const VoteRewardItem = ({ minReward, maxReward }: VoteRewardItemProps) => {
           <div className={styles.range} />
           <Numeral
             value={maxReward}
-            decimals={nativeToken?.decimals}
+            decimals={nativeToken.decimals}
             appearance={{ theme: 'dark', size: 'small' }}
-            suffix={nativeToken?.symbol}
+            suffix={nativeToken.symbol}
           />
         </>
       )}

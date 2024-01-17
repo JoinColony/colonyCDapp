@@ -37,8 +37,9 @@ const MSG = defineMessages({
 });
 
 const TokenCard = ({ domainId, token }: Props) => {
-  const { colony } = useColonyContext();
-  const { balances, nativeToken, status } = colony || {};
+  const {
+    colony: { balances, nativeToken, status },
+  } = useColonyContext();
   const { nativeToken: nativeTokenStatus } = status || {};
 
   const currentTokenBalance =

@@ -33,8 +33,8 @@ const ActionEventData = ({
           values={getActionEventTitleValues(
             eventName,
             actionData,
-            eventId,
             colony,
+            eventId,
           )}
         />
       }

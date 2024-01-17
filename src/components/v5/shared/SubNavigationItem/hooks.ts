@@ -4,9 +4,10 @@ import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
 
 export const useMembersSubNavigation = () => {
-  const { colony } = useColonyContext();
-  const { name } = colony || {};
-  const colonyURL = `${window.location.origin}/${name}`;
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
+  const colonyURL = `${window.location.origin}/${colonyName}`;
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 

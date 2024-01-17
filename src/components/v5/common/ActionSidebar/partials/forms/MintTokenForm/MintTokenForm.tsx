@@ -17,7 +17,9 @@ const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
 const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { decisionMethods } = useDecisionMethods();
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
 
   useMintToken(getFormOptions);
 
@@ -38,7 +40,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField
           name="amount"
           maxWidth={270}
-          tokenAddress={colony?.nativeToken.tokenAddress}
+          tokenAddress={nativeToken.tokenAddress}
         />
       </ActionFormRow>
       <ActionFormRow

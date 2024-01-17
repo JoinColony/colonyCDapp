@@ -10,9 +10,10 @@ import useColonyContext from './useColonyContext';
 import useGetSelectedDomainFilter from './useGetSelectedDomainFilter';
 
 export const useCreateTeamBreadcrumbs = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { domains },
+  } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
-  const { domains } = colony || {};
   const navigationPathname = window.location.pathname;
 
   const activeItem = selectedDomain

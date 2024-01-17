@@ -17,12 +17,12 @@ const ContributorsPage: FC = () => {
     loadMoreContributors,
   } = useMembersPage();
   const { handleClipboardCopy } = useCopyToClipboard();
-  const { colony } = useColonyContext();
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
-
-  const { name } = colony || {};
-  const colonyURL = `${window.location.origin}/${name}`;
+  const colonyURL = `${window.location.origin}/${colonyName}`;
 
   return (
     <MembersTabContent

@@ -37,9 +37,10 @@ const MembersList: FC<MembersListProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const { colony } = useColonyContext();
-  const { name } = colony || {};
-  const colonyURL = `${window.location.origin}/${name}`;
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
+  const colonyURL = `${window.location.origin}/${colonyName}`;
 
   const { handleClipboardCopy } = useCopyToClipboard();
 

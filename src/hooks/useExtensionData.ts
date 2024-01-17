@@ -61,10 +61,9 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     refetch,
   } = useGetColonyExtensionQuery({
     variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress: colony.colonyAddress,
       extensionHash,
     },
-    skip: !colony,
     fetchPolicy: 'network-only',
   });
   const colonyExtension = data?.getExtensionByColonyAndHash?.items?.[0];
@@ -74,7 +73,6 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       variables: {
         extensionHash,
       },
-      skip: !colony,
       fetchPolicy: 'cache-and-network',
     });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
@@ -84,7 +82,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   );
 
   const extensionData = useMemo<AnyExtensionData | null>(() => {
-    if (!version || !extensionConfig || !colony) {
+    if (!version || !extensionConfig) {
       return null;
     }
 

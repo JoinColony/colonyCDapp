@@ -17,8 +17,9 @@ import { getNavItems } from './partials/utils';
 const displayName = 'common.Extensions.ColonyNavigation';
 
 const ColonyNavigation = () => {
-  const { colony } = useColonyContext();
-  const { name } = colony || {};
+  const {
+    colony: { name },
+  } = useColonyContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const navItems = getNavItems(name);

@@ -4,9 +4,10 @@ import { useColonyContext } from '~hooks';
 import { Address } from '~types';
 
 const useCurrentSelectedToken = () => {
-  const { colony } = useColonyContext();
-  const { tokens, nativeToken } = colony || {};
-  const { tokenAddress: nativeTokenAddress } = nativeToken || {};
+  const {
+    colony: { tokens, nativeToken },
+  } = useColonyContext();
+  const { tokenAddress: nativeTokenAddress } = nativeToken;
 
   const [currentTokenAddress, setCurrentTokenAddress] = useState<Address>();
 

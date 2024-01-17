@@ -28,7 +28,7 @@ const TokenActivationContent = ({ tokenBalanceData }: TokensTabProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  const currentUserClaims = colony?.motionsWithUnclaimedStakes
+  const currentUserClaims = colony.motionsWithUnclaimedStakes
     ?.filter(notNull)
     .filter(({ unclaimedRewards }) =>
       unclaimedRewards.some(({ address }) => address === user?.walletAddress),

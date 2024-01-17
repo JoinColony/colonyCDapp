@@ -15,7 +15,9 @@ export const ColonyDecisionProvider = ({
   children,
 }: ColonyDecisionProviderProps) => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
   /*
    * Get saved decision from local storage and, if it exists, add to the store.
@@ -23,7 +25,7 @@ export const ColonyDecisionProvider = ({
 
   const decision = getDraftDecisionFromLocalStorage(
     user?.walletAddress || '',
-    colony?.colonyAddress || '',
+    colonyAddress,
   );
 
   const dispatch = useDispatch();

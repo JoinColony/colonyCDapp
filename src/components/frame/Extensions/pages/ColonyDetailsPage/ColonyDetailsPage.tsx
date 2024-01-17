@@ -44,13 +44,14 @@ const MSG = defineMessages({
 const ColonyDetailsPage: FC = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
+  const {
+    colony: { metadata, colonyAddress, nativeToken, status },
+  } = useColonyContext();
 
   useSetPageHeadingTitle(
     formatMessage({ id: 'navigation.admin.colonyDetails' }),
   );
 
-  const { metadata, colonyAddress, nativeToken, status } = colony || {};
   const {
     avatar,
     thumbnail,

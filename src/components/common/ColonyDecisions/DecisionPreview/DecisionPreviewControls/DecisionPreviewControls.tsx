@@ -21,8 +21,9 @@ const displayName =
 const DecisionPreviewControls = ({
   draftDecision,
 }: DecisionPreviewControlsProps) => {
-  const { colony } = useColonyContext();
-  const colonyAddress = colony?.colonyAddress ?? '';
+  const {
+    colony: { colonyAddress, name: colonyName },
+  } = useColonyContext();
   const colonyHasReputation = useColonyHasReputation(colonyAddress);
   const openConfirmDeleteDialog = useDialog(DeleteDecisionDialog);
   const openDecisionDialog = useDialog(DecisionDialog);
@@ -53,7 +54,7 @@ const DecisionPreviewControls = ({
         actionType={ActionTypes.MOTION_CREATE_DECISION}
         values={{
           colonyAddress,
-          colonyName: colony?.name,
+          colonyName,
           // btn disabled if decision is undefined
           draftDecision: draftDecision as DecisionDraft,
         }}

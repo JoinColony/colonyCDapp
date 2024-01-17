@@ -28,10 +28,6 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
 }) => {
   const { colony } = useColonyContext();
 
-  if (!colony) {
-    return null;
-  }
-
   const {
     neededColonyPermissions,
     // address will be undefined if the extension hasn't been installed / initialized yet

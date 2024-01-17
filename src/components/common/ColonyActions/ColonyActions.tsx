@@ -5,7 +5,7 @@ import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
 } from '~gql';
-import { useActivityFeed, useColonyContext } from '~hooks';
+import { useActivityFeed } from '~hooks';
 import {
   ActivityDecisionMethod,
   ActivityFeedFilters,
@@ -79,8 +79,6 @@ const motionStateOptions = [
 ];
 
 const ColonyActions = (/* { ethDomainId }: Props */) => {
-  const { colony } = useColonyContext();
-
   const [filters, setFilters] = useState<ActivityFeedFilters>({});
   const [sortDirection, setSortDirection] = useState<SearchableSortDirection>(
     SearchableSortDirection.Desc,
@@ -104,10 +102,6 @@ const ColonyActions = (/* { ethDomainId }: Props */) => {
       [sortDirection],
     ),
   );
-
-  if (!colony) {
-    return null;
-  }
 
   if (loadingFirstPage) {
     return (

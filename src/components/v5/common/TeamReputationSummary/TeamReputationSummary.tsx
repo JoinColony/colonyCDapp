@@ -28,11 +28,12 @@ const displayName = 'v5.common.TeamReputationSummary';
 const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
   className,
 }) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken, domains, reputation },
+  } = useColonyContext();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
-  const { nativeToken, domains, reputation } = colony || {};
 
   const colonyReputation = reputation ?? '0';
   const teams = domains?.items

@@ -20,14 +20,10 @@ const MSG = defineMessages({
 });
 
 const ColonyTitle = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { metadata, name, colonyAddress },
+  } = useColonyContext();
   const isMobile = useMobile();
-
-  if (!colony) {
-    return null;
-  }
-
-  const { metadata, name } = colony;
 
   return (
     <div className={styles.main}>
@@ -42,7 +38,7 @@ const ColonyTitle = () => {
             text={metadata?.displayName || name || MSG.fallbackColonyName}
             data-test="colonyTitle"
           />
-          {isMobile && <ColonyAddress colonyAddress={colony.colonyAddress} />}
+          {isMobile && <ColonyAddress colonyAddress={colonyAddress} />}
         </div>
         <div>
           <ColonySubscription />

@@ -58,7 +58,9 @@ const VotingWidget = ({
   startPollingAction,
   stopPollingAction,
 }: VotingWidgetProps) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { user } = useAppContext();
   const { hasUserVoted, setHasUserVoted } = useVotingWidgetUpdate(
     voterRecord,
@@ -68,7 +70,7 @@ const VotingWidget = ({
   const transform = mapPayload(
     ({ vote }) =>
       ({
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress,
         userAddress: user?.walletAddress,
         vote: Number(vote),
         motionId: BigNumber.from(motionId),

@@ -1,21 +1,8 @@
 import { ApolloQueryResult } from '@apollo/client';
 import React, { createContext, useMemo, ReactNode } from 'react';
-import { defineMessages } from 'react-intl';
-import { Navigate, useParams } from 'react-router-dom';
 
-import LoadingTemplate from '~frame/LoadingTemplate';
-import {
-  Exact,
-  GetFullColonyByNameQuery,
-  useGetColonyWhitelistByNameQuery,
-  useGetFullColonyByNameQuery,
-} from '~gql';
-import {
-  useAppContext,
-  useCanInteractWithColony,
-  useColonySubscription,
-} from '~hooks';
-import { NotFoundRoute } from '~routes';
+import { Exact, GetFullColonyByNameQuery } from '~gql';
+import { useCanInteractWithColony, useColonySubscription } from '~hooks';
 import { Colony } from '~types';
 
 import { useUpdateColonyReputation } from './useUpdateColonyReputation';
@@ -30,12 +17,11 @@ export type RefetchColonyFn = (
     | undefined,
 ) => Promise<ApolloQueryResult<GetFullColonyByNameQuery>> | null;
 interface ColonyContextValue {
-  colony?: Colony;
-  loading: boolean;
+  colony: Colony;
   canInteractWithColony: boolean;
   refetchColony: RefetchColonyFn;
-  startPolling: (pollInterval: number) => void;
-  stopPolling: () => void;
+  startPollingColonyData: (pollInterval: number) => void;
+  stopPollingColonyData: () => void;
   isSupportedColonyVersion: boolean;
   colonySubscription: {
     canWatch: boolean;
@@ -49,39 +35,21 @@ const ColonyContext = createContext<ColonyContextValue | null>(null);
 
 const displayName = 'ColonyContextProvider';
 
-const MSG = defineMessages({
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Loading Colony',
-  },
-});
-
 const MIN_SUPPORTED_COLONY_VERSION = 5;
 
 export const ColonyContextProvider = ({
   children,
+  colony,
+  refetchColony,
+  startPollingColonyData,
+  stopPollingColonyData,
 }: {
   children: ReactNode;
+  colony: Colony;
+  refetchColony: RefetchColonyFn;
+  startPollingColonyData: (pollInterval: number) => void;
+  stopPollingColonyData: () => void;
 }) => {
-  const { colonyName = '' } = useParams();
-  const { user, userLoading, walletConnecting } = useAppContext();
-
-  const {
-    data,
-    loading: colonyLoading,
-    error,
-    refetch: refetchColony,
-    startPolling,
-    stopPolling,
-  } = useGetFullColonyByNameQuery({
-    variables: {
-      name: colonyName,
-    },
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
-  });
-
-  const colony = data?.getColonyByName?.items?.[0] ?? undefined;
   useUpdateColonyReputation(colony?.colonyAddress);
 
   const canInteractWithColony = useCanInteractWithColony(colony);
@@ -93,52 +61,23 @@ export const ColonyContextProvider = ({
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
       colony,
-      loading: colonyLoading,
       canInteractWithColony,
       refetchColony,
-      startPolling,
-      stopPolling,
+      startPollingColonyData,
+      stopPollingColonyData,
       isSupportedColonyVersion,
       colonySubscription,
     }),
     [
       colony,
-      colonyLoading,
       canInteractWithColony,
       refetchColony,
-      startPolling,
-      stopPolling,
+      startPollingColonyData,
+      stopPollingColonyData,
       isSupportedColonyVersion,
       colonySubscription,
     ],
   );
-
-  // @TODO: This is terrible. Once we have auth, we need a method
-  // to check whether the logged in user is a member of the Colony
-  const { data: dataWhitelist, loading: whitelistLoading } =
-    useGetColonyWhitelistByNameQuery({
-      variables: { name: colonyName },
-      skip: !colonyName,
-    });
-
-  if (walletConnecting || colonyLoading || userLoading || whitelistLoading) {
-    return <LoadingTemplate loadingText={MSG.loadingText} />;
-  }
-
-  if (!colony || error) {
-    if (error) {
-      console.error(error);
-    }
-    return <NotFoundRoute />;
-  }
-
-  const isMember = !!dataWhitelist?.getColonyByName?.items[0]?.whitelist.some(
-    (addr) => addr === user?.walletAddress,
-  );
-
-  if (!user || !isMember) {
-    return <Navigate to={`/go/${colony.name}`} />;
-  }
 
   return (
     <ColonyContext.Provider value={colonyContext}>

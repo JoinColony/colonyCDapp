@@ -15,14 +15,15 @@ const AllMembersPage: FC = () => {
   const { membersList, loading, hasMoreMembers, loadMoreMembers } =
     useMembersPage();
   const { handleClipboardCopy } = useCopyToClipboard();
-  const { colony } = useColonyContext();
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
   const { setSearchValue } = useSearchContext();
   const { handleClearFilters } = useFilterContext();
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
 
-  const { name } = colony || {};
-  const colonyURL = `${window.location.origin}/${name}`;
+  const colonyURL = `${window.location.origin}/${colonyName}`;
 
   // clear filters and searches when unmounting
   useEffect(

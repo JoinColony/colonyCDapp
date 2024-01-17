@@ -144,7 +144,7 @@ const AmountField: FC<AmountFieldProps> = ({
                 <ul>
                   {colonyTokens.map((colonyToken) => {
                     const tokenBalance = getBalanceForTokenAndDomain(
-                      colony?.balances,
+                      colony.balances,
                       colonyToken.tokenAddress,
                       Number(teamId) || Id.RootDomain,
                     );

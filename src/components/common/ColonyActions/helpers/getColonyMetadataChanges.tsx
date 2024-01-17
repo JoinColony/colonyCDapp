@@ -6,7 +6,7 @@ import { isEqual } from '~utils/lodash';
 
 export const getColonyMetadataChangesValue = (
   { transactionHash }: ColonyAction,
-  colony?: Colony,
+  colony: Colony,
 ) => {
   const {
     newDisplayName,
@@ -17,7 +17,7 @@ export const getColonyMetadataChangesValue = (
     newSafes,
     oldSafes,
   } =
-    colony?.metadata?.changelog?.find(
+    colony.metadata?.changelog?.find(
       (item) => item.transactionHash === transactionHash,
     ) || {};
 
@@ -31,7 +31,7 @@ export const getColonyMetadataChangesValue = (
     !haveTokensChanged &&
     !haveSafesChanged;
 
-  if (!colony || hasNoChanges) {
+  if (hasNoChanges) {
     return formatText({
       id: 'colonyMetadata.fallback',
       defaultMessage: 'metadata, but the values are the same',

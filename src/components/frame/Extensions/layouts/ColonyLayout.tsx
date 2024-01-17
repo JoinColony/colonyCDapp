@@ -7,7 +7,7 @@ import React, {
   useMemo,
   // useState,
 } from 'react';
-import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 //* Hide Initially */
 // import { defineMessages } from 'react-intl';
 // import { PaperPlaneTilt } from 'phosphor-react';
@@ -21,7 +21,7 @@ import {
   useTokensModalContext,
 } from '~context';
 import { useAppContext, useColonyContext } from '~hooks';
-import { NOT_FOUND_ROUTE, TX_SEARCH_PARAM } from '~routes';
+import { TX_SEARCH_PARAM } from '~routes';
 import ActionSidebar from '~v5/common/ActionSidebar';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
@@ -49,7 +49,7 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
-  const { colony, loading } = useColonyContext();
+  const { colony } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
   const { actionSidebarToggle, actionSidebarInitialValues } =
@@ -118,15 +118,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       ) : null,
     [isTokensModalOpen, txButtons, userHub],
   );
-
-  if (loading) {
-    // We have a spinner outside of this
-    return null;
-  }
-
-  if (!colony) {
-    return <Navigate to={NOT_FOUND_ROUTE} />;
-  }
 
   return (
     <>

@@ -46,10 +46,10 @@ export type Member = User & {
   banned: boolean;
 };
 
-const getDomainSelectOptions = (colony?: Colony) => {
+const getDomainSelectOptions = (colony: Colony) => {
   return sortBy(
     [
-      ...(colony?.domains?.items || []),
+      ...(colony.domains?.items || []),
       {
         id: '',
         isRoot: true,
@@ -92,14 +92,14 @@ const Members = ({
 
   const filteredContributors = filterMembers(
     [],
-    colony?.metadata?.whitelistedAddresses ?? [],
+    colony.metadata?.whitelistedAddresses ?? [],
     searchValue,
     filters,
   );
 
   const filteredWatchers = filterMembers(
     [],
-    colony?.metadata?.whitelistedAddresses ?? [],
+    colony.metadata?.whitelistedAddresses ?? [],
     searchValue,
     filters,
   );

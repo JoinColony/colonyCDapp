@@ -33,7 +33,10 @@ const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 const ExtensionDetailsPage: FC = () => {
   const { extensionId } = useParams();
   const { pathname } = useLocation();
-  const { colony, refetchColony } = useColonyContext();
+  const {
+    colony: { colonyAddress, name: colonyName },
+    refetchColony,
+  } = useColonyContext();
   const navigate = useNavigate();
   const { extensionData, refetchExtensionData } = useExtensionData(
     extensionId ?? '',
@@ -43,7 +46,7 @@ const ExtensionDetailsPage: FC = () => {
 
   useSetPageHeadingTitle(formatText({ id: 'extensionsPage.title' }));
 
-  if (!colony || !extensionData) {
+  if (!extensionData) {
     return null;
   }
 
@@ -61,7 +64,7 @@ const ExtensionDetailsPage: FC = () => {
     mapPayload(({ params }) =>
       mapExtensionActionPayload(params, initializationParams),
     ),
-    mergePayload({ colonyAddress: colony?.colonyAddress, extensionData }),
+    mergePayload({ colonyAddress, extensionData }),
   );
 
   const schema = getValidationSchema({ initializationParams });
@@ -73,7 +76,7 @@ const ExtensionDetailsPage: FC = () => {
   };
 
   const handleFormSuccess = getFormSuccessFn<typeof defaultValues>({
-    colonyName: colony.name,
+    colonyName,
     extensionData,
     navigate,
     refetchColony,

@@ -54,10 +54,6 @@ const MemberControls = ({ isRootOrAllDomains }: Props) => {
   const openPermissionManagementDialog = useDialog(PermissionManagementDialog);
   const openToggleManageWhitelistDialog = useDialog(ManageWhitelistDialog);
 
-  if (!colony) {
-    return null;
-  }
-
   const handlePermissionManagementDialog = () =>
     openPermissionManagementDialog({
       colony,
@@ -88,7 +84,7 @@ const MemberControls = ({ isRootOrAllDomains }: Props) => {
           {isRootOrAllDomains && (
             <li>
               <InviteLinkButton
-                colonyName={colony?.name || ''}
+                colonyName={colony.name}
                 buttonAppearance={{ theme: 'blue' }}
               />
             </li>

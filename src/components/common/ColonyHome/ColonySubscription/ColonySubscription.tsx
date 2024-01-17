@@ -30,7 +30,10 @@ const MSG = defineMessages({
 
 const ColonySubscription = () => {
   const { wallet, user, walletConnecting, userLoading } = useAppContext();
-  const { colony, canInteractWithColony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+    canInteractWithColony,
+  } = useColonyContext();
   const { canWatch, handleWatch, handleUnwatch } = useColonySubscription();
   const noRegisteredUser = !user && !userLoading;
   const noWalletConnected = !wallet && !walletConnecting;
@@ -39,13 +42,13 @@ const ColonySubscription = () => {
   return (
     <div className={styles.main}>
       <div className={canInteractWithColony ? styles.colonySubscribed : ''}>
-        {colony?.colonyAddress && (
+        {colonyAddress && (
           <InvisibleCopyableAddress
-            address={colony?.colonyAddress}
+            address={colonyAddress}
             copyMessage={MSG.copyMessage}
           >
             <div className={styles.colonyAddress}>
-              <MaskedAddress address={colony?.colonyAddress} />
+              <MaskedAddress address={colonyAddress} />
             </div>
           </InvisibleCopyableAddress>
         )}

@@ -17,8 +17,9 @@ const MSG = defineMessages({
 });
 
 const ColonyFundingBanner = () => {
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony || {};
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
   const formattedAddress = useMemo(() => {
     const addressElements = splitAddress(colonyAddress);

@@ -30,14 +30,16 @@ const RevealWidget = ({
   startPollingAction,
   stopPollingAction,
 }: RevealWidgetProps) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { user } = useAppContext();
   const { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed } =
     useRevealWidgetUpdate(voterRecord, stopPollingAction);
   const transform = mapPayload(
     () =>
       ({
-        colonyAddress: colony?.colonyAddress,
+        colonyAddress,
         userAddress: user?.walletAddress ?? '',
         motionId: BigNumber.from(motionId),
       } as RevealMotionPayload),

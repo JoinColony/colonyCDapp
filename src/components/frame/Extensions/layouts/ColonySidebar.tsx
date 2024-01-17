@@ -28,10 +28,11 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
   const {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
-  const { colony } = useColonyContext();
-
-  const { metadata, chainMetadata, colonyAddress = '' } = colony || {};
-  const { chainId } = chainMetadata || {};
+  const {
+    colony: { metadata, chainMetadata, colonyAddress },
+    colony,
+  } = useColonyContext();
+  const { chainId } = chainMetadata;
 
   const chainIcon = getChainIconName(chainId);
 

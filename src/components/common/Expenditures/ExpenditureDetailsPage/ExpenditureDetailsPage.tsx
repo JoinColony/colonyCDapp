@@ -32,8 +32,10 @@ import styles from './ExpenditureDetailsPage.module.css';
 const ExpenditureDetailsPage = () => {
   const { expenditureId } = useParams();
 
-  const { colony } = useColonyContext();
-  const { colonyAddress = '' } = colony || {};
+  const {
+    colony: { colonyAddress },
+    colony,
+  } = useColonyContext();
   const { data, loading } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(
@@ -41,7 +43,7 @@ const ExpenditureDetailsPage = () => {
         Number(expenditureId),
       ),
     },
-    skip: !expenditureId || !colony,
+    skip: !expenditureId,
   });
   const expenditure = data?.getExpenditure;
 
@@ -103,10 +105,6 @@ const ExpenditureDetailsPage = () => {
   const latestCancelMotionState =
     latestCancelMotion &&
     getMotionState(networkCancelMotionState, latestCancelMotion);
-
-  if (!colony) {
-    return null;
-  }
 
   if (loading) {
     return <div>Loading expenditure...</div>;

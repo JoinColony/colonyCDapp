@@ -22,15 +22,16 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
   emptyContentProps,
 }) => {
   const items = useMembersTabContentItems(itemsProp);
-  const { colony, canInteractWithColony } = useColonyContext();
+  const {
+    colony: { name: colonyName },
+    canInteractWithColony,
+  } = useColonyContext();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
   const { user } = useAppContext();
 
   const showPlaceholderCard =
     user && !withSimpleCards && canInteractWithColony && items.length < 12;
-
-  const { name } = colony || {};
-  const colonyURL = `${window.location.origin}/${name}`;
+  const colonyURL = `${window.location.origin}/${colonyName}`;
 
   return (
     <div

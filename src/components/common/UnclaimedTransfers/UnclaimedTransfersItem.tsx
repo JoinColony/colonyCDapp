@@ -41,8 +41,8 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
   const {
     colony,
     canInteractWithColony,
-    startPolling: startPollingColony,
-    stopPolling: stopPollingColony,
+    startPollingColonyData,
+    stopPollingColonyData,
   } = useColonyContext();
   const [isClaimed, setIsClaimed] = useState(false);
 
@@ -55,8 +55,8 @@ const UnclaimedTransfersItem = ({ claim }: Props) => {
 
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    startPollingColony(1_000);
-    setTimeout(stopPollingColony, 10_000);
+    startPollingColonyData(1_000);
+    setTimeout(stopPollingColonyData, 10_000);
   };
 
   return (

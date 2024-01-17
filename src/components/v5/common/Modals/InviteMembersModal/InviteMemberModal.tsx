@@ -43,13 +43,15 @@ const MSG = defineMessages({
 });
 
 const InviteMembersModal = ({ isOpen, onClose }: Props) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyMemberInvite, name: colonyName },
+  } = useColonyContext();
 
   const invitesAvailable = 100;
   const inviteLink = useBaseUrl(
-    `/invite/${colony?.name}/${colony?.colonyMemberInvite?.id}`,
+    `/invite/${colonyName}/${colonyMemberInvite?.id}`,
   );
-  const invitesUsed = 100 - (colony?.colonyMemberInvite?.invitesRemaining || 0);
+  const invitesUsed = 100 - (colonyMemberInvite?.invitesRemaining || 0);
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 

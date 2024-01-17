@@ -7,7 +7,7 @@ import { MotionState } from '~utils/colonyMotions';
 
 import { getCurrentStatePeriodInMs, splitTimeLeft } from './helpers';
 
-const useMotionTimeoutPeriods = (colonyAddress = '', motionId: string) => {
+const useMotionTimeoutPeriods = (colonyAddress: string, motionId: string) => {
   const { data, loading, refetch } = useGetMotionTimeoutPeriodsQuery({
     variables: { input: { colonyAddress, motionId } },
     notifyOnNetworkStatusChange: true,
@@ -47,7 +47,7 @@ export const useMotionCountdown = (
     motionTimeoutPeriods,
     loadingMotionTimeoutPeriods,
     refetchMotionTimeoutPeriods,
-  } = useMotionTimeoutPeriods(colony?.colonyAddress, motionId);
+  } = useMotionTimeoutPeriods(colony.colonyAddress, motionId);
 
   const currentStatePeriodInMs = getCurrentStatePeriodInMs(
     state,

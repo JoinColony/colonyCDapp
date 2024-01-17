@@ -40,10 +40,6 @@ const MemberActionsPopover = ({ closePopover, userAddress }: Props) => {
 
   const openManageWhitelistDialog = useDialog(ManageWhitelistDialog);
 
-  if (!colony) {
-    return null;
-  }
-
   const handleManageWhitelist = () => {
     openManageWhitelistDialog({
       userAddress,

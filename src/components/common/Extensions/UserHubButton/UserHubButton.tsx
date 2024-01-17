@@ -30,7 +30,9 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   hideUserNameOnMobile,
 }) => {
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { wallet, user } = useAppContext();
   const [isUserHubOpen, setIsUserHubOpen] = useState(false);
 
@@ -110,7 +112,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
                 size="xxs"
               />
               <MemberReputation
-                colonyAddress={colony?.colonyAddress}
+                colonyAddress={colonyAddress}
                 hideOnMobile={hideMemberReputationOnMobile}
                 walletAddress={walletAddress}
               />

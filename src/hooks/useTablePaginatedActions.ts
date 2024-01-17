@@ -22,7 +22,9 @@ export const useTablePaginatedActions = (
   page: number,
   perPage = ITEMS_PER_PAGE,
 ): UseTablePaginatedActionsReturn => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
   const [sortDirection, setSortDirection] = useState<SortDirection>(
     SortDirection.Desc,
@@ -30,7 +32,7 @@ export const useTablePaginatedActions = (
 
   const { data, loading, fetchMore } = useGetColonyActionsQuery({
     variables: {
-      colonyAddress: colony?.colonyAddress ?? '',
+      colonyAddress,
       limit: perPage,
       sortDirection,
       filter: {
@@ -39,7 +41,6 @@ export const useTablePaginatedActions = (
         not: { colonyDecisionId: { beginsWith: '0x' } },
       },
     },
-    skip: !colony,
     fetchPolicy: 'network-only',
   });
   const { items, nextToken } = data?.getActionsByColony || {};

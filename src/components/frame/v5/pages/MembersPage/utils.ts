@@ -9,7 +9,7 @@ import { UserStatusMode } from '~v5/common/Pills/types';
 export const getMembersList = (
   members: ColonyContributorFragment[],
   selectedTeamId: number | undefined,
-  colony: ColonyFragment | undefined,
+  colony: ColonyFragment,
 ) => {
   return members.map((contributor) => {
     const {

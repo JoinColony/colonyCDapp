@@ -50,7 +50,6 @@ const ColonyUpgrade = () => {
   const { user, wallet } = useAppContext();
   const enabledExtensionData = useEnabledExtensions();
   const handleUpgradeColony = () =>
-    colony &&
     openUpgradeColonyDialog({
       colony,
       enabledExtensionData,

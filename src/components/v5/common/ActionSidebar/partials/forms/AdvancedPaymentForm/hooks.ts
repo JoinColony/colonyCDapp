@@ -88,7 +88,10 @@ export const useAdvancedPayment = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { networkInverseFee } = useNetworkInverseFee();
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+    colony,
+  } = useColonyContext();
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
@@ -104,12 +107,12 @@ export const useAdvancedPayment = (
             delay: 0,
             amount: {
               amount: 0,
-              tokenAddress: colony?.nativeToken?.tokenAddress,
+              tokenAddress: nativeToken.tokenAddress,
             },
           },
         ],
       }),
-      [colony?.nativeToken?.tokenAddress],
+      [nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
@@ -120,10 +123,6 @@ export const useAdvancedPayment = (
     transform: useCallback(
       pipe(
         mapPayload((payload: AdvancedPaymentFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getCreatePaymentDialogPayload(
             colony,
             {

@@ -5,9 +5,9 @@ import { sortBy } from './lodash';
 
 export const findDomainByNativeId = (
   domainNativeId: number | null | undefined,
-  colony: Colony | undefined,
+  colony: Colony,
 ) => {
-  const domains = colony?.domains?.items;
+  const domains = colony.domains?.items;
   if (!domains) {
     return undefined;
   }

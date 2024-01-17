@@ -20,9 +20,11 @@ const MSG = defineMessages({
 const UserStakeMessage = () => {
   const { usersStakes, isObjection } = useStakingWidgetContext();
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
-    colony?.nativeToken || {};
+    nativeToken;
 
   const userStakes = usersStakes.find(
     ({ address }) => address === user?.walletAddress,

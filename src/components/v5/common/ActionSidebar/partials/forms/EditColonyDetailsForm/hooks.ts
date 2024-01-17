@@ -51,10 +51,6 @@ export const useEditColonyDetails = (
     transform: useCallback(
       pipe(
         mapPayload((values: EditColonyDetailsFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getEditColonyDetailsPayload(colony, values);
         }),
       ),

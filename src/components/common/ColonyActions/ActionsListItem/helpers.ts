@@ -8,15 +8,17 @@ export const useColonyMotionState = (
   isMotion: boolean | null | undefined,
   motionData: ColonyMotion | null | undefined,
 ) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const { data: motionStateData, refetch: refetchMotionState } =
     useGetMotionStateQuery({
-      skip: !isMotion || !motionData || !colony || !isVotingReputationEnabled,
+      skip: !isMotion || !motionData || !isVotingReputationEnabled,
       variables: {
         input: {
-          colonyAddress: colony?.colonyAddress ?? '',
+          colonyAddress,
           databaseMotionId: motionData?.databaseMotionId ?? '',
         },
       },

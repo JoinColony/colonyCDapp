@@ -6,6 +6,7 @@ import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 
 import DescriptionField from '../DescriptionField';
+
 import { DescriptionRowProps } from './types';
 
 const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';

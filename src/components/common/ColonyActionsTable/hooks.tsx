@@ -138,7 +138,7 @@ export const useColonyActionsTableColumns = (
 
 export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
   const navigate = useNavigate();
-  const colonyName = useColonyContext().colony?.name || '';
+  const colonyName = useColonyContext().colony.name;
 
   return useCallback<
     TableWithMeatballMenuProps<ActivityFeedColonyAction>['getMenuProps']

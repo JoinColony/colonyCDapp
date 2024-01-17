@@ -37,11 +37,6 @@ const ColonySubscriptionInfoPopover = ({
   onUnsubscribe = () => {},
 }: Props) => {
   const { colony } = useColonyContext();
-
-  if (!colony) {
-    return null;
-  }
-
   const { colonyAddress, name, nativeToken, metadata } = colony;
   const { tokenAddress } = nativeToken;
 

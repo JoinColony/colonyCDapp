@@ -27,7 +27,10 @@ interface Props {
 }
 
 const NewActionButton = ({ filteredDomainId }: Props) => {
-  const { colony } = useColonyContext();
+  const {
+    colony,
+    colony: { nativeToken, colonyAddress },
+  } = useColonyContext();
   const { user, walletConnecting } = useAppContext();
 
   // const { version: networkVersion } = useNetworkContracts();
@@ -71,17 +74,13 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
     variables: {
       input: {
         walletAddress: user?.walletAddress ?? '',
-        tokenAddress: colony?.nativeToken?.tokenAddress ?? '',
-        colonyAddress: colony?.colonyAddress ?? '',
+        tokenAddress: nativeToken.tokenAddress,
+        colonyAddress,
       },
     },
-    skip: !user?.walletAddress || !colony,
+    skip: !user?.walletAddress,
   });
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
-
-  if (!colony) {
-    return null;
-  }
 
   return (
     <>
@@ -98,9 +97,9 @@ const NewActionButton = ({ filteredDomainId }: Props) => {
       />
       {/* Temporary way of activating tokens, to be deleted once the User Hub
   token activation is wired in */}
-      {tokenBalanceData && colony?.nativeToken && (
+      {tokenBalanceData && nativeToken && (
         <UserTokenActivationButton
-          nativeToken={colony?.nativeToken}
+          nativeToken={nativeToken}
           tokenBalanceData={tokenBalanceData}
         />
       )}

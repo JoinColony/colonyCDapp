@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import { ACTION } from '~constants/actions';
 import { TransactionGroupStates, useUserTransactionContext } from '~context';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { ColonyFragment } from '~gql';
 import {
   useAppContext,
   useColonyContext,
@@ -42,7 +41,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colonyContractVersion } = useColonyContractVersion();
   const { user, wallet } = useAppContext();
   const allUserRoles = useTransformer(getAllUserRoles, [
-    colony as ColonyFragment,
+    colony,
     wallet?.address || '',
   ]);
 
@@ -89,8 +88,9 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
 };
 
 export const useMainMenuItems = (hasTransactionId: boolean) => {
-  const { colony } = useColonyContext();
-  const { metadata } = colony || {};
+  const {
+    colony: { metadata },
+  } = useColonyContext();
 
   const {
     actionSidebarToggle: [

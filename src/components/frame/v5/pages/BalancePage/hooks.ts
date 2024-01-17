@@ -11,13 +11,14 @@ import {
 import { UseBalancePageReturnType } from './types';
 
 export const useBalancePage = (): UseBalancePageReturnType => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { tokens: colonyTokens, balances },
+  } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
-  const { balances } = colony || {};
 
   const tokensData = useMemo(
     () =>
-      colony?.tokens?.items.map((item) => {
+      colonyTokens?.items.map((item) => {
         const currentTokenBalance =
           getBalanceForTokenAndDomain(
             balances,
@@ -40,7 +41,7 @@ export const useBalancePage = (): UseBalancePageReturnType => {
           balance: typeof formattedValue === 'string' ? formattedValue : '',
         };
       }),
-    [colony, balances, selectedDomain],
+    [colonyTokens, balances, selectedDomain],
   );
 
   const sortedTokens = useMemo(

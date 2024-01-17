@@ -36,10 +36,6 @@ const ColonyHomeLayout = ({ children }: ColonyHomeLayoutProps) => {
   const { colony } = useColonyContext();
   const { pathname } = useLocation();
 
-  if (!colony) {
-    return null;
-  }
-
   const isExtensions = isExtensionsRoute(pathname);
 
   return (

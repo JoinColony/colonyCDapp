@@ -14,9 +14,9 @@ import AvatarDropdownPopoverMobile from './AvatarDropdownPopoverMobile';
 import styles from './AvatarDropdown.css';
 
 interface Props {
+  spinnerMsg: SimpleMessageValues;
   colony?: Colony;
   preventTransactions?: boolean;
-  spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;
 }
 
@@ -57,11 +57,9 @@ const AvatarDropdown = ({
         user?.profile?.displayName &&
         wallet?.address && (
           <AvatarDropdownPopoverMobile
-            {...{
-              colony,
-              spinnerMsg,
-              tokenBalanceData,
-            }}
+            colony={colony}
+            spinnerMsg={spinnerMsg}
+            tokenBalanceData={tokenBalanceData}
           />
         )
     : ({ close }) => (

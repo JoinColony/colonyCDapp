@@ -24,9 +24,11 @@ interface TokenErrorMessageProps {
 const TokenErrorMessage = ({
   tokensLeftToActivate,
 }: TokenErrorMessageProps) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const { symbol: nativeTokenSymbol, decimals: nativeTokenDecimals } =
-    colony?.nativeToken || {};
+    nativeToken;
   const { setIsOpen: openTokenActivationPopover } = useTokenActivationContext();
   return (
     <div className={styles.activateTokens}>

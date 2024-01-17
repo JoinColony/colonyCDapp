@@ -14,8 +14,9 @@ const sortByDomainId = (
 const useTeamsOptions = (
   filterOptionsFn?: (option: SearchSelectOption) => boolean,
 ): SearchSelectOptionProps['options'] => {
-  const { colony } = useColonyContext();
-  const { domains } = colony || {};
+  const {
+    colony: { domains },
+  } = useColonyContext();
 
   const teams =
     domains?.items

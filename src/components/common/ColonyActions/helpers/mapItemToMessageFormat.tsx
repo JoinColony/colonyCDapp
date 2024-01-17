@@ -334,8 +334,8 @@ export const mapColonyActionToExpectedFormat = (
 export const mapActionEventToExpectedFormat = (
   eventName: ColonyAndExtensionsEvents,
   actionData: ColonyAction,
+  colony: Colony,
   eventId?: string,
-  colony?: Colony,
 ) => {
   const firstSafeTransaction =
     actionData?.safeTransaction?.transactions?.items[0] || undefined;
@@ -371,13 +371,13 @@ export const mapActionEventToExpectedFormat = (
       actionData.amount &&
       formatReputationChange(
         actionData.amount,
-        getTokenDecimalsWithFallback(colony?.nativeToken.decimals),
+        getTokenDecimalsWithFallback(colony.nativeToken.decimals),
       ),
     newVersion: actionData.newColonyVersion,
     reputationChangeNumeral: actionData.amount && (
       <Numeral
         value={actionData.amount}
-        decimals={getTokenDecimalsWithFallback(colony?.nativeToken.decimals)}
+        decimals={getTokenDecimalsWithFallback(colony.nativeToken.decimals)}
       />
     ),
     chainName: getAddedSafeChainName(actionData),
@@ -402,7 +402,9 @@ export const useMapMotionEventToExpectedFormat = (
 ) => {
   const { colonyAddress, motionData, pendingColonyMetadata } = actionData;
   const { nativeMotionDomainId } = motionData || {};
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
 
   const initiatorUserReputation = useUserReputation(
     colonyAddress,
@@ -421,8 +423,8 @@ export const useMapMotionEventToExpectedFormat = (
       <AmountTag>
         <Numeral
           value={motionMessageData?.amount ?? 0}
-          decimals={colony?.nativeToken.decimals ?? undefined}
-          suffix={colony?.nativeToken.symbol ?? ''}
+          decimals={nativeToken.decimals}
+          suffix={nativeToken.symbol}
         />
       </AmountTag>
     ),

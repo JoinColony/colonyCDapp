@@ -21,7 +21,9 @@ const MSG = defineMessages({
 });
 
 const UnclaimedTransfers = () => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { metadata },
+  } = useColonyContext();
   const claims = useColonyFundsClaims();
   if (!claims.length) {
     return null;
@@ -33,7 +35,7 @@ const UnclaimedTransfers = () => {
         <FormattedMessage
           {...MSG.title}
           values={{
-            colony: colony?.metadata?.displayName || 'colony',
+            colony: metadata?.displayName || 'colony',
           }}
         />
       </div>

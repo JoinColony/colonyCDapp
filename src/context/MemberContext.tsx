@@ -53,8 +53,9 @@ const MemberContext = createContext<
 
 const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { colonyName } = useParams();
-  const { colony } = useColonyContext();
-  const { domains, colonyAddress = '' } = colony ?? {};
+  const {
+    colony: { domains, colonyAddress },
+  } = useColonyContext();
   const isMobile = useMobile();
   const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
 

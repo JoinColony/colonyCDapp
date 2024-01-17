@@ -8,8 +8,7 @@ const useActiveInstalls = (extensionId: string) => {
   const { colony } = useColonyContext();
 
   const { data } = useGetExtensionInstallationsCountQuery({
-    variables: { id: colony?.chainMetadata.chainId.toString() ?? '' },
-    skip: !colony,
+    variables: { id: colony.chainMetadata.chainId.toString() ?? '' },
   });
 
   const {

@@ -17,14 +17,16 @@ interface VotingPanelProps {
 
 const VotingPanel = ({ motionDomainId }: VotingPanelProps) => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const {
     formState: { isSubmitting },
     getValues,
   } = useFormContext();
 
   const { userReputation } = useUserReputation(
-    colony?.colonyAddress ?? '',
+    colonyAddress,
     user?.walletAddress ?? '',
     motionDomainId,
   );

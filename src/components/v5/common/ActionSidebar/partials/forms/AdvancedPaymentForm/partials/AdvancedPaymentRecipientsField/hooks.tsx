@@ -20,21 +20,21 @@ export const useRecipientsFieldTableColumns = (
   name: string,
   data: AdvancedPaymentRecipientsFieldModel[],
 ): ColumnDef<AdvancedPaymentRecipientsTableModel, string>[] => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { expendituresGlobalClaimDelay },
+  } = useColonyContext();
   const columnHelper = useMemo(
     () => createColumnHelper<AdvancedPaymentRecipientsTableModel>(),
     [],
   );
   const dataRef = useWrapWithRef(data);
   const expendituresGlobalClaimDelayHours = useMemo(() => {
-    if (!colony || typeof colony.expendituresGlobalClaimDelay !== 'number') {
+    if (typeof expendituresGlobalClaimDelay !== 'number') {
       return null;
     }
 
-    const { expendituresGlobalClaimDelay } = colony;
-
     return expendituresGlobalClaimDelay / (60 * 60);
-  }, [colony]);
+  }, [expendituresGlobalClaimDelay]);
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
 
@@ -109,7 +109,7 @@ export const useRecipientsFieldTableColumns = (
       ],
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
-        colony?.expendituresGlobalClaimDelay,
+        expendituresGlobalClaimDelay,
         columnHelper,
         name,
         expendituresGlobalClaimDelayHours,

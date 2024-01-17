@@ -1,11 +1,7 @@
 import React from 'react';
 // import { defineMessages } from 'react-intl';
 
-import {
-  useAppContext,
-  useColonyContext,
-  useCanInteractWithNetwork,
-} from '~hooks';
+import { useAppContext, useCanInteractWithNetwork } from '~hooks';
 import DropdownMenu from '~shared/DropdownMenu';
 import {
   ColonySection,
@@ -31,14 +27,13 @@ interface Props {
 }
 
 const HamburgerDropdownPopover = ({ closePopover }: Props) => {
-  const { colony } = useColonyContext();
   const { user, wallet } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
   return (
     <div className={styles.menu}>
       <DropdownMenu onClick={closePopover}>
-        {user?.profile?.displayName && colony?.name && <ColonySection />}
+        {user?.profile?.displayName && <ColonySection />}
         <UserSection />
         {canInteractWithNetwork && <CreateColonySection />}
         <HelperSection />

@@ -76,15 +76,11 @@ const ExtensionDetailsAside = ({
   canBeUninstalled,
   pollingControls,
 }: ExtensionDetailsAsideProps) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { shortPollExtensions } = useColonyHomeContext();
-
-  if (!colony) {
-    return null;
-  }
-
   const { extensionId } = extensionData;
-  const { colonyAddress } = colony;
 
   return (
     <aside>

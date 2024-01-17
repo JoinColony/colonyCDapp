@@ -31,7 +31,6 @@ const ColonyMembersWidget = ({ maxAvatars }: Props) => {
   const { colony } = useColonyContext();
   const { domainIdFilter: currentDomainId = COLONY_TOTAL_BALANCE_DOMAIN_ID } =
     useColonyHomeContext();
-  if (!colony) return null;
 
   const contributors = [];
   const watchers = [];

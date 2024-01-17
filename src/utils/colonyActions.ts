@@ -575,7 +575,7 @@ const getChangelogItem = (
     transactionHash,
     pendingColonyMetadata,
   }: ColonyAction,
-  colonyMetadata?: ColonyMetadata | null,
+  colonyMetadata: ColonyMetadata | null | undefined,
 ) => {
   const metadataObject = actionIsMotion
     ? pendingColonyMetadata
@@ -591,7 +591,7 @@ const getChangelogItem = (
  */
 export const getExtendedActionType = (
   actionData: ColonyAction,
-  metadata?: ColonyMetadata | null,
+  metadata: ColonyMetadata | null | undefined,
 ): AnyActionType => {
   const { type } = actionData;
   const changelogItem = getChangelogItem(actionData, metadata);

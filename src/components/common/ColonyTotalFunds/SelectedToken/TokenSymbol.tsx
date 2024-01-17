@@ -16,8 +16,9 @@ type Props = {
 };
 
 const TokenSymbol = ({ token, tokenAddress, innerRef, onClick }: Props) => {
-  const { colony } = useColonyContext();
-  const { nativeToken, status } = colony || {};
+  const {
+    colony: { nativeToken, status },
+  } = useColonyContext();
   const { tokenAddress: nativeTokenAddress } = nativeToken || {};
 
   return (

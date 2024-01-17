@@ -17,13 +17,10 @@ const MSG = defineMessages({
 });
 
 const ColonyBackText = () => {
-  const { colony } = useColonyContext();
-
-  if (!colony) {
-    return null;
-  }
-
-  const { displayName } = colony.metadata || {};
+  const {
+    colony: { metadata },
+  } = useColonyContext();
+  const { displayName } = metadata || {};
 
   return <FormattedMessage {...MSG.backText} values={{ displayName }} />;
 };

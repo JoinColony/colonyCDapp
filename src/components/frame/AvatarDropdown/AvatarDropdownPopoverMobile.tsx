@@ -44,9 +44,9 @@ const MSG = defineMessages({
 });
 
 interface Props {
-  colony?: Colony;
   spinnerMsg: SimpleMessageValues;
   tokenBalanceData?: UserTokenBalanceData;
+  colony?: Colony;
 }
 
 const AvatarDropdownPopoverMobile = ({
@@ -57,7 +57,7 @@ const AvatarDropdownPopoverMobile = ({
   const { wallet } = useAppContext();
   const canInteractWithNetwork = useCanInteractWithNetwork();
 
-  const { colonyAddress, nativeToken } = colony || {};
+  const { colonyAddress = '', nativeToken } = colony || {};
 
   const { userReputation, totalReputation } = useUserReputation(
     colonyAddress,

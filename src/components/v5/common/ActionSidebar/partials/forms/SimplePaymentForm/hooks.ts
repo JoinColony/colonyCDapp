@@ -120,11 +120,10 @@ export const useSimplePayment = (
         createdIn: Id.RootDomain,
         payments: [],
         amount: {
-          tokenAddress:
-            selectedTokenAddress ?? colony?.nativeToken.tokenAddress,
+          tokenAddress: selectedTokenAddress ?? colony.nativeToken.tokenAddress,
         },
       }),
-      [selectedTokenAddress, colony?.nativeToken.tokenAddress],
+      [selectedTokenAddress, colony.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
@@ -135,10 +134,6 @@ export const useSimplePayment = (
     transform: useCallback(
       pipe(
         mapPayload((values: SimplePaymentFormValues) => {
-          if (!colony) {
-            return null;
-          }
-
           return getSimplePaymentPayload(colony, values, networkInverseFee);
         }),
       ),

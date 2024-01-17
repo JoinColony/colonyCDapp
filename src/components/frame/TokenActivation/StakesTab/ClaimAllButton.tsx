@@ -24,7 +24,7 @@ const ClaimAllButton = ({
   userAddress,
   colonyAddress,
 }: Props) => {
-  const { startPolling, stopPolling } = useColonyContext();
+  const { startPollingColonyData, stopPollingColonyData } = useColonyContext();
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
   const { setIsOpen } = useTokenActivationContext();
   const { extensionData: votingRepitationExtension } = useExtensionData(
@@ -46,8 +46,8 @@ const ClaimAllButton = ({
       dataTest="claimAllStakesButton"
       onSuccess={() => {
         setIsOpen(false);
-        startPolling(1000);
-        setTimeout(stopPolling, 10_000);
+        startPollingColonyData(1000);
+        setTimeout(stopPollingColonyData, 10_000);
         pollLockedTokenBalance();
       }}
     />

@@ -29,11 +29,11 @@ const useMemberFilters = ({
   contributorTypes: Set<ContributorTypeFilter>;
   filterStatus?: StatusType;
 }) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
   const { searchValue } = useSearchContext();
   const selectedDomain = useGetSelectedDomainFilter();
-
-  const { colonyAddress = '' } = colony ?? {};
 
   const databaseDomainIds = useMemo(
     () =>

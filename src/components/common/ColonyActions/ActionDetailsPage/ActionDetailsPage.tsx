@@ -46,10 +46,6 @@ const ActionDetailsPage = () => {
     refetchAction,
   } = useGetColonyAction();
 
-  if (!colony) {
-    return null;
-  }
-
   const isMotion = action?.isMotion;
   const createdAt = action?.createdAt;
   const isInvalidMotion =

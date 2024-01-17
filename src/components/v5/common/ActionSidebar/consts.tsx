@@ -17,7 +17,7 @@ export const DECISION_METHOD_FIELD_NAME = 'decisionMethod';
 
 export const useCreateActionTypeNotification = (action: Action | undefined) => {
   const { colony } = useColonyContext();
-  const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
+  const isNativeTokenUnlocked = !!colony.status?.nativeToken?.unlocked;
 
   if (!action) {
     return undefined;

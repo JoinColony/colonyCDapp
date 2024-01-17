@@ -66,10 +66,11 @@ export interface TokensTabProps {
 }
 
 const TokensTab = ({ tokenBalanceData }: TokensTabProps) => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const targetRef = useRef<HTMLParagraphElement>(null);
 
-  const { nativeToken } = colony || {};
   const {
     balance,
     inactiveBalance,

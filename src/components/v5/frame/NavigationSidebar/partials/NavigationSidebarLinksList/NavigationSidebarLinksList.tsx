@@ -16,8 +16,9 @@ const NavigationSidebarLinksList: FC<NavigationSidebarLinksListProps> = ({
   items,
   className,
 }) => {
-  const { colony } = useColonyContext();
-  const colonyName = colony?.name || '';
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
 
   const updatedItems = items.map((item) => {
     // Check if the 'to' field needs to be modified

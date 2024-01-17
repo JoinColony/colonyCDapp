@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { ADDRESS_ZERO } from '~constants';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { useColonyContext } from '~hooks';
 import useToggle from '~hooks/useToggle';
@@ -39,7 +38,9 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
     { toggleOff: toggleAvatarModalOff, toggleOn: toggleAvatarModalOn },
   ] = useToggle();
   const uploaderText = useGetUploaderText(fileOptions);
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress, name: colonyName },
+  } = useColonyContext();
 
   return (
     <>
@@ -47,8 +48,8 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
         <Avatar
           avatar={field.value?.image}
           placeholderIcon="at-sign-circle"
-          seed={colony?.colonyAddress && colony?.colonyAddress.toLowerCase()}
-          title={colony?.name}
+          seed={colonyAddress.toLowerCase()}
+          title={colonyName}
           size="xs"
         />
       </div>
@@ -94,7 +95,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
                   colonyImageProps={{
                     src: modalValue?.image,
                   }}
-                  colonyAddress={colony?.colonyAddress || ADDRESS_ZERO}
+                  colonyAddress={colonyAddress}
                 />,
               )}
             </div>

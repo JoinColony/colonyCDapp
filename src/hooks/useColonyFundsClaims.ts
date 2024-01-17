@@ -8,8 +8,9 @@ import useColonyContext from './useColonyContext';
  *
  */
 const useColonyFundsClaims = (): ColonyClaims[] => {
-  const { colony } = useColonyContext();
-  const { fundsClaims, chainFundsClaim, tokens } = colony || {};
+  const {
+    colony: { fundsClaims, chainFundsClaim, tokens },
+  } = useColonyContext();
   const { items: claims = [] } = fundsClaims || {};
 
   /*

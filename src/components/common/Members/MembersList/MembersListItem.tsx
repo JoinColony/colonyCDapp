@@ -29,7 +29,9 @@ const MembersListItem = ({
   member,
 }: Props) => {
   const { address: walletAddress } = member;
-  const { colony } = useColonyContext();
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const { reputationAmount, reputationPercentage } = member as any;
 
   const renderedExtraItemContent = useMemo(
@@ -67,7 +69,7 @@ const MembersListItem = ({
           <div className={styles.reputationSection}>
             <MemberReputation
               nativeTokenDecimals={
-                colony?.nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS
+                nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS
               }
               userReputation={reputationAmount || ''}
               userReputationPercentage={reputationPercentage || ''}

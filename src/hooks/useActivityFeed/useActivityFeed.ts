@@ -30,7 +30,9 @@ const useActivityFeed = (
   sort?: ActivityFeedSort,
   { pageSize = ITEMS_PER_PAGE }: ActivityFeedOptions = {},
 ): UseActivityFeedReturn => {
-  const { colony } = useColonyContext();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
   const [pageNumber, setPageNumber] = useState(1);
   /**
@@ -45,10 +47,7 @@ const useActivityFeed = (
 
   const { data, fetchMore, loading } = useSearchActionsQuery({
     variables: {
-      filter: getSearchActionsFilterVariable(
-        colony?.colonyAddress ?? '',
-        filters,
-      ),
+      filter: getSearchActionsFilterVariable(colonyAddress, filters),
       sort: sort || {
         field: SearchableColonyActionSortableFields.CreatedAt,
         direction: SearchableSortDirection.Desc,
@@ -56,7 +55,6 @@ const useActivityFeed = (
       limit: pageSize * 2,
     },
     fetchPolicy: 'network-only',
-    skip: !colony,
   });
 
   const { items, nextToken } = data?.searchColonyActions ?? {};
