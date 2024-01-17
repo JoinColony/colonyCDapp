@@ -1,13 +1,14 @@
 import React, { FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 
+import { getRole } from '~constants/permissions';
 import { formatText } from '~utils/intl';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import RolesTooltip from '~v5/shared/RolesTooltip';
 
 import { useSpecificSidePanel } from './hooks';
 import ContractAddress from './partials/ContractAddress';
 import InstalledBy from './partials/InstalledBy';
-import Permissions from './partials/Permissions';
 import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
 import { SpecificSidePanelProps } from './types';
 
@@ -90,7 +91,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
                 {formatText({ id: 'extensionsPage.permissions' })}
               </div>
-              <Permissions roles={permissions} />
+              <RolesTooltip role={getRole(permissions)} />
             </div>
           </Fragment>
         ),

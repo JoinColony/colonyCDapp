@@ -1,19 +1,13 @@
-import { ColonyRole } from '@colony/colony-js';
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { USER_ROLE, USER_ROLES } from '~constants/permissions';
-import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
 import { AvatarWithStatusBadge } from '~v5/shared/Avatar';
-import Link from '~v5/shared/Link';
 import MeatBallMenu from '~v5/shared/MeatBallMenu';
 import ReputationBadge from '~v5/shared/ReputationBadge';
+import RolesTooltip from '~v5/shared/RolesTooltip';
 import UserPopover from '~v5/shared/UserPopover';
 import UserPopoverAdditionalContent from '~v5/shared/UserPopoverAdditionalContent';
-
-import PermissionsBadge from '../Pills/PermissionsBadge';
 
 import { MemberCardProps } from './types';
 
@@ -104,35 +98,7 @@ const MemberCard: FC<MemberCardProps> = ({
           )}
           {role && (
             <div className="ml-auto">
-              <Tooltip
-                tooltipContent={
-                  <>
-                    {formatText(
-                      { id: 'role.description' },
-                      { role: role.name },
-                    )}
-                    <ul className="list-disc font-medium pl-4 mb-4">
-                      {role.permissions.map((permission) => (
-                        <li key={permission}>{ColonyRole[permission]}</li>
-                      ))}
-                    </ul>
-                    <Link to="https://docs.colony.io/learn/advanced-concepts/permissions">
-                      {formatText({ id: 'learn.more' })}
-                    </Link>
-                  </>
-                }
-              >
-                <PermissionsBadge
-                  text={
-                    USER_ROLES.find(
-                      ({ role: roleField }) => roleField === role.role,
-                    )?.name || formatText({ id: 'role.custom' })
-                  }
-                  iconName={
-                    role.role !== USER_ROLE.Custom ? 'user' : 'users-three'
-                  }
-                />
-              </Tooltip>
+              <RolesTooltip {...{ role }} />
             </div>
           )}
         </div>
