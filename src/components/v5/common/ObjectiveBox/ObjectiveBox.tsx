@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+
 import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
 import { multiLineTextEllipsis } from '~utils/strings';
-
 import ProgressBar from '~v5/shared/ProgressBar';
 
 import { ObjectiveBoxProps } from './types';
