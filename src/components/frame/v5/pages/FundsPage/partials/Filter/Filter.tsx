@@ -279,11 +279,7 @@ function Filter<TValue extends FilterValue>({
               classNames="w-full sm:max-w-[20.375rem]"
             >
               <div className="px-3.5 mb-6">
-                <SearchInput
-                  onChange={onInputChange}
-                  value={searchValue}
-                  shouldFocus
-                />
+                <SearchInput onChange={onInputChange} value={searchValue} />
               </div>
               <Header title={{ id: 'filters' }} />
               {RootItems}
