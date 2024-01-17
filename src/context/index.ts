@@ -56,7 +56,6 @@ export * from './ActionSidebarContext';
 export * from './AppContext';
 export { ColonyManagerClass as ColonyManager };
 export * from './ColonyContext';
-export * from './ColonyHomeContext';
 export * from './PageHeadingContext';
 export * from './PageThemeContext';
 export * from './MemberModalContext';

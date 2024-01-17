@@ -2,11 +2,11 @@ import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { DecisionDialogValues } from '~common/ColonyDecisions/DecisionDialog';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { createDecisionAction } from '~redux/actionCreators';
 import { mapPayload, pipe } from '~utils/actions';
+import { DecisionDraft } from '~utils/decisions';
 
 import { useActionFormBaseHook } from '../../../hooks';
 import { ActionFormBaseProps } from '../../../types';
@@ -31,8 +31,8 @@ export const useCreateDecision = (
   //   ),
   // );
 
-  const handleSaveDecisionInlocalStoage = useCallback(
-    (values: DecisionDialogValues) => {
+  const handleSaveDecisionInLocalStorage = useCallback(
+    (values: DecisionDraft) => {
       dispatch(createDecisionAction({ ...values, colonyAddress }));
     },
     [colonyAddress, dispatch],
@@ -53,7 +53,8 @@ export const useCreateDecision = (
     transform: useCallback(
       pipe(
         mapPayload((payload: CreateDecisionFormValues) => {
-          handleSaveDecisionInlocalStoage({
+          handleSaveDecisionInLocalStorage({
+            colonyAddress,
             title: payload.title,
             motionDomainId: Number(payload.createdIn),
             description: payload.description || '',

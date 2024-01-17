@@ -1,8 +1,0 @@
-.tokenContainer {
-  display: flex;
-  align-items: center;
-}
-
-.tokenContainer > figure {
-  margin-right: 7px;
-}

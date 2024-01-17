@@ -1,16 +1,46 @@
 import { BigNumber } from 'ethers';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { useRevealWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/RevealWidget/useRevealWidgetUpdate';
 import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { OnSuccess } from '~shared/Fields';
-import { ColonyMotion } from '~types';
+import { ColonyMotion, VoterRecord } from '~types';
 import { mapPayload } from '~utils/actions';
 import { MotionVote } from '~utils/colonyMotions';
 import { getSafePollingInterval } from '~utils/queries';
 
 import { getLocalStorageVoteValue } from '../VotingStep/utils';
+
+const useRevealWidgetUpdate = (
+  voterRecord: VoterRecord[],
+  stopPollingAction: () => void,
+) => {
+  const { user } = useAppContext();
+  const currentVotingRecord = voterRecord.find(
+    ({ address }) => address === user?.walletAddress,
+  );
+  const hasUserVoted = !!currentVotingRecord;
+  const vote = currentVotingRecord?.vote ?? null;
+  const [prevVote, setPrevVote] = useState(vote);
+  const [userVoteRevealed, setUserVoteRevealed] = useState(vote !== null);
+
+  /* Keep revealed state in sync with user changes */
+  useEffect(() => {
+    if (!user) {
+      setUserVoteRevealed(false);
+    } else {
+      setUserVoteRevealed(typeof vote === 'number');
+    }
+  }, [user, vote]);
+
+  /* Vote has been updated in db, stop polling */
+  if (vote !== prevVote) {
+    stopPollingAction();
+    setPrevVote(vote);
+  }
+
+  return { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed };
+};
 
 export const useRevealStep = (
   motionData: ColonyMotion | undefined | null,

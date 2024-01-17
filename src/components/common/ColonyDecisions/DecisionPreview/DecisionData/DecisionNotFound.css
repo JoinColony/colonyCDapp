@@ -1,7 +1,0 @@
-.governanceLink {
-  color: var(--colony-blue);
-}
-
-.governanceLink:hover {
-  text-decoration: underline;
-}

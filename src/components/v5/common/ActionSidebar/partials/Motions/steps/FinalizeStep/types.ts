@@ -1,8 +1,11 @@
-import { PollingControls } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/MotionPhaseWidget';
 import { MotionAction } from '~types/motions';
 import { MotionState } from '~utils/colonyMotions';
+import { RefetchAction } from '~v5/common/ActionSidebar/hooks';
 
-export interface FinalizeStepProps extends PollingControls {
+export interface FinalizeStepProps {
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
+  refetchAction: RefetchAction;
   actionData: MotionAction;
   motionState?: MotionState;
 }

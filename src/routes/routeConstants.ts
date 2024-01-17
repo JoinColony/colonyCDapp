@@ -29,15 +29,11 @@ export const COLONY_CONTRIBUTORS_ROUTE = `members/contributors`;
 export const COLONY_VERIFIED_ROUTE = `verified`;
 export const COLONY_TEAMS_ROUTE = `teams`;
 export const COLONY_AGREEMENTS_ROUTE = `agreements`;
-export const COLONY_DECISIONS_ROUTE = `decisions`;
 export const COLONY_DECISIONS_PREVIEW_ROUTE = `decisions/preview`;
-export const DECISIONS_PAGE_ROUTE = `decisions/tx/:transactionHash`;
 export const COLONY_ACTIVITY_ROUTE = `activity`;
 export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
 export const ACTIONS_QUERY_STRING = '?tx=:transactionHash';
-// Remove when no longer needed
-export const OLD_ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
 // User routes
 export const USER_HOME_ROUTE = '/account';

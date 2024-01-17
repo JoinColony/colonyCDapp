@@ -1,8 +1,0 @@
-.activateTokens {
-  margin-top: 20px;
-  font-size: var(--size-tiny);
-}
-
-.validationErrorValues {
-  composes: validationErrorValues from './StakingValidationMessage.css';
-}

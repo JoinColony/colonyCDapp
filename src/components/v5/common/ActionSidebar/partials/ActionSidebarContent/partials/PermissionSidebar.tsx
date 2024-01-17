@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import { useGetColonyAction } from '~common/ColonyActions';
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow';
 import { formatText } from '~utils/intl';
+import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 
