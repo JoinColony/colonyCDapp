@@ -2,8 +2,8 @@ import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ExpenditurePayoutFieldValue } from '~common/Expenditures/ExpenditureForm';
 import { Action, ActionTypes, AllActions } from '~redux';
+import { ExpenditurePayoutFieldValue } from '~types/expenditures';
 
 import {
   createTransaction,
