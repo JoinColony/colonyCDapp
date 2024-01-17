@@ -138,6 +138,9 @@ module.exports = {
         md: '64rem',
         lg: '90rem',
       },
+      zIndex: {
+        '1': '1',
+      },
     },
   },
   plugins: [
