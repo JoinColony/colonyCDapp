@@ -1,13 +1,12 @@
 import { Id } from '@colony/colony-js';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 import { array, InferType, number, object, string } from 'yup';
 
-import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
-import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
+import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
 import { toFinite } from '~utils/lodash';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
@@ -85,10 +84,8 @@ export type AdvancedPaymentFormValues = InferType<
 export const useAdvancedPayment = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
-  const { networkInverseFee } = useNetworkInverseFee();
   const {
     colony: { nativeToken },
-    colony,
   } = useColonyContext();
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
@@ -117,23 +114,9 @@ export const useAdvancedPayment = (
         ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
         : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
     getFormOptions,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    transform: useCallback(
-      pipe(
-        mapPayload((payload: AdvancedPaymentFormValues) => {
-          return getCreatePaymentDialogPayload(
-            colony,
-            {
-              fromDomainId: payload.from,
-              payments: [],
-              annotation: payload.description,
-              motionDomainId: payload.createdIn,
-            },
-            networkInverseFee,
-          );
-        }),
-      ),
-      [colony, networkInverseFee],
-    ),
+    transform: mapPayload((payload: AdvancedPaymentFormValues) => {
+      // @TODO: Add a helper function mapping form values to action payload
+      return payload;
+    }),
   });
 };

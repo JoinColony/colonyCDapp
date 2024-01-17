@@ -1,7 +1,7 @@
 import { isAddress } from '@ethersproject/address';
 import React, { useMemo } from 'react';
 
-import getTokenList from '~common/Dialogs/TokenManagementDialog/TokenManagementDialogForm/getTokenList';
+import { getNetworkTokenList } from '~constants/tokens';
 import { useGetTokenFromEverywhereQuery } from '~gql';
 import { useColonyContext } from '~hooks';
 import { useGetAllTokens } from '~hooks/useGetAllTokens';
@@ -13,7 +13,8 @@ import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
 import TokenStatus from './partials/TokenStatus/TokenStatus';
 
 export const useTokenSelect = (inputValue: string) => {
-  const predefinedTokens = getTokenList();
+  // @TODO: `getNetworkTokenList` and `useGetAllTokens` return the same data - no need to use both
+  const predefinedTokens = getNetworkTokenList();
   const allTokens = useGetAllTokens();
   const { colony } = useColonyContext();
   const colonyTokens = colony.tokens?.items || [];

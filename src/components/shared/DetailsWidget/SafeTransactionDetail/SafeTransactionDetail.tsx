@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { SafeTransactionMSG } from '~common/Dialogs/ControlSafeDialog/helpers';
 import { useSafeTransactionStatus } from '~hooks';
 import Avatar from '~shared/Avatar';
 import Numeral from '~shared/Numeral';
@@ -82,7 +81,7 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionStatus[index]}
-                    title={SafeTransactionMSG.TRANSFER_FUNDS}
+                    title={{ id: '' }}
                     {...{
                       isOpen: openWidgets[index],
                       setIsOpen,
@@ -113,7 +112,7 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionStatus[index]}
-                    title={SafeTransactionMSG.TRANSFER_NFT}
+                    title={{ id: '' }}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
                   {openWidgets[index] && (
@@ -162,7 +161,7 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionStatus[index]}
-                    title={SafeTransactionMSG.CONTRACT_INTERACTION}
+                    title={{ id: '' }}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
                   {openWidgets[index] && (
@@ -183,7 +182,7 @@ const SafeTransactionDetail = ({ actionData }: Props) => {
                   <Title
                     index={idx}
                     transactionStatus={safeTransactionStatus[index]}
-                    title={SafeTransactionMSG.RAW_TRANSACTION}
+                    title={{ id: '' }}
                     {...{ isOpen: openWidgets[index], setIsOpen }}
                   />
                   {openWidgets[index] && (

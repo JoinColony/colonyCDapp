@@ -3,8 +3,6 @@ import React from 'react';
 import { useAppContext } from '~hooks';
 import Button from '~shared/Button';
 
-import useObjectButton from './useObjectButton';
-
 const displayName =
   'common.ColonyActions.ActionDetailsPage.DefaultMotion.StakingWidget.ObjectButton';
 
@@ -20,7 +18,6 @@ const ObjectButton = ({
   enoughReputationToStakeMinimum,
 }: ObjectButtonProps) => {
   const { user } = useAppContext();
-  const { handleObjection } = useObjectButton();
 
   return (
     <Button
@@ -33,7 +30,6 @@ const ObjectButton = ({
         !enoughReputationToStakeMinimum
       }
       dataTest="stakeWidgetObjectButton"
-      onClick={handleObjection}
     />
   );
 };

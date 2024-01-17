@@ -1,20 +1,12 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import TokenAmountInput from '~common/Dialogs/TokenAmountInput';
 import { StreamingPaymentEndCondition } from '~gql';
 import { Input, Select } from '~shared/Fields';
-import { Colony } from '~types';
 
 import ExpenditureTimeInput from '../ExpenditureTimeInput';
 
-interface StreamingPaymentFormFieldsProps {
-  colony: Colony;
-}
-
-const StreamingPaymentFormFields = ({
-  colony,
-}: StreamingPaymentFormFieldsProps) => {
+const StreamingPaymentFormFields = () => {
   const { watch } = useFormContext();
   const endCondition = watch('endCondition') as StreamingPaymentEndCondition;
 
@@ -41,17 +33,6 @@ const StreamingPaymentFormFields = ({
         ]}
       />
 
-      <TokenAmountInput colony={colony} />
-
-      {endCondition === StreamingPaymentEndCondition.LimitReached && (
-        <TokenAmountInput
-          colony={colony}
-          tokenAddressFieldName="tokenAddress"
-          amountFieldName="limitAmount"
-          label="Limit"
-          disabledTokenAddress
-        />
-      )}
       {endCondition === StreamingPaymentEndCondition.FixedTime && (
         <ExpenditureTimeInput namePrefix="end" labelPrefix="End" />
       )}

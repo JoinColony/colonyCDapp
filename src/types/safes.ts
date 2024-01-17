@@ -1,5 +1,7 @@
 import { Address, Token } from '~types';
 
+import { SafeTransactionData, SafeTransactionType, User } from './graphql';
+
 export type ModuleAddress = Address;
 
 export interface SelectedSafe {
@@ -29,4 +31,16 @@ export interface SafeBalanceApiData {
     decimals: number;
     logoUri: string;
   } | null;
+}
+
+export interface FormSafeTransaction
+  extends Omit<
+    SafeTransactionData,
+    'functionParams' | 'rawAmount' | 'recipient' | 'token' | 'transactionType'
+  > {
+  transactionType: SafeTransactionType | undefined;
+  token?: Token;
+  rawAmount?: number;
+  recipient?: User;
+  functionParamTypes?: FunctionParamType[];
 }

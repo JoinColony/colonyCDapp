@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { DeepPartial } from 'utility-types';
 
-import { getRecoveryModeDialogPayload } from '~common/Dialogs/RecoveryModeDialog/helpers';
 import { useAppContext, useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
@@ -10,6 +9,7 @@ import { useActionFormBaseHook } from '../../../hooks';
 import { ActionFormBaseProps } from '../../../types';
 
 import { EnterRecoveryModeFormValues, validationSchema } from './consts';
+import { getRecoveryModePayload } from './utils';
 
 export const useEnterRecoveryMode = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -28,13 +28,9 @@ export const useEnterRecoveryMode = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
-        mapPayload((payload: EnterRecoveryModeFormValues) => {
-          const values = {
-            annotation: payload.description,
-          };
-
-          return getRecoveryModeDialogPayload(colony, values, user);
-        }),
+        mapPayload((values: EnterRecoveryModeFormValues) =>
+          getRecoveryModePayload(colony, values, user),
+        ),
       ),
       [colony, user],
     ),
