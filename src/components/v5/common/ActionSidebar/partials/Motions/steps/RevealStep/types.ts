@@ -1,8 +1,8 @@
-import { PollingControls } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/MotionPhaseWidget';
 import { ColonyMotion } from '~types';
 
-export interface RevealStepProps
-  extends Omit<PollingControls, 'refetchAction'> {
+export interface RevealStepProps {
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
   motionData: ColonyMotion | undefined | null;
   motionState?: number;
   transactionId: string;

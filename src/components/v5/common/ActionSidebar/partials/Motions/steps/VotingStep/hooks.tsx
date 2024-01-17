@@ -1,16 +1,15 @@
 import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { number, object } from 'yup';
 
-import { useVotingWidgetUpdate } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/VotingWidget';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import { useGetVoterRewardsQuery } from '~gql';
 import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
 import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
 import { OnSuccess } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
-import { InstalledExtensionData } from '~types';
+import { InstalledExtensionData, VoterRecord } from '~types';
 import { MotionAction } from '~types/motions';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
@@ -19,6 +18,42 @@ import { getSafePollingInterval } from '~utils/queries';
 import { DescriptionListItem } from './partials/DescriptionList/types';
 import { VotingFormValues, VotingRewardsSections } from './types';
 import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
+
+const useVotingWidgetUpdate = (
+  voterRecord: VoterRecord[],
+  stopPollingAction: () => void,
+) => {
+  const { user } = useAppContext();
+
+  const currentVotingRecord = voterRecord.find(
+    ({ address }) => address === user?.walletAddress,
+  );
+
+  const [prevRecord, setPrevRecord] = useState(currentVotingRecord);
+  const [hasUserVoted, setHasUserVoted] = useState(!!currentVotingRecord);
+
+  if (currentVotingRecord && !hasUserVoted) {
+    setHasUserVoted(true);
+  }
+
+  useEffect(() => {
+    if (!user) {
+      setHasUserVoted(false);
+    } else {
+      setHasUserVoted(!!currentVotingRecord);
+    }
+  }, [user, currentVotingRecord]);
+
+  // if user's vote count increased, db has been updated, stop polling
+  if (currentVotingRecord?.voteCount !== prevRecord?.voteCount) {
+    stopPollingAction();
+    setPrevRecord(currentVotingRecord);
+  }
+
+  useEffect(() => stopPollingAction, [stopPollingAction]);
+
+  return { hasUserVoted, setHasUserVoted };
+};
 
 export const useVotingStep = (
   actionData: MotionAction,

@@ -2,7 +2,6 @@ import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { RefetchAction } from '~common/ColonyActions/ActionDetailsPage/useGetColonyAction';
 import { ADDRESS_ZERO } from '~constants';
 import { useUserTokenBalanceContext } from '~context';
 import { ColonyActionType } from '~gql';
@@ -17,6 +16,7 @@ import { isInstalledExtensionData } from '~utils/extensions';
 import { formatText } from '~utils/intl';
 import { getSafePollingInterval } from '~utils/queries';
 import { getBalanceForTokenAndDomain } from '~utils/tokens';
+import { RefetchAction } from '~v5/common/ActionSidebar/hooks';
 
 import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
 

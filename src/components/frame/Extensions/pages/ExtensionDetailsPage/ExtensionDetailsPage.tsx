@@ -7,10 +7,6 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import {
-  createExtensionSetupInitialValues,
-  mapExtensionActionPayload,
-} from '~common/Extensions/ExtensionSetup/utils';
 import ImageCarousel from '~common/Extensions/ImageCarousel';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 import { useColonyContext, useExtensionData } from '~hooks';
@@ -25,7 +21,11 @@ import { SetupComponentMap } from './consts';
 import ExtensionInfo from './ExtensionInfo';
 import ExtensionsTopRow from './ExtensionTopRow';
 import ExtensionDetails from './partials/ExtensionDetails';
-import { getFormSuccessFn } from './utils';
+import {
+  createExtensionSetupInitialValues,
+  getFormSuccessFn,
+  mapExtensionActionPayload,
+} from './utils';
 import { getValidationSchema } from './validation';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';

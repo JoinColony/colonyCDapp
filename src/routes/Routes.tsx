@@ -1,12 +1,7 @@
 import React from 'react';
 import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
-import ColonyActions from '~common/ColonyActions';
-import ActionDetailsPage from '~common/ColonyActions/ActionDetailsPage';
-import ColonyDecisions from '~common/ColonyDecisions';
-import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ColonyFunding from '~common/ColonyFunding';
-import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
 import { Flow } from '~common/Onboarding';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
@@ -19,7 +14,6 @@ import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
 import ReputationPage from '~frame/Extensions/pages/ReputationPage';
 import FourOFour from '~frame/FourOFour';
 import LandingPage from '~frame/LandingPage';
-import { NavBar } from '~frame/RouteLayouts';
 import ActivityPage from '~frame/v5/pages/ActivityPage';
 import BalancePage from '~frame/v5/pages/BalancePage';
 import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage';
@@ -52,8 +46,6 @@ import {
   CREATE_COLONY_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   NOT_FOUND_ROUTE,
-  DECISIONS_PAGE_ROUTE,
-  COLONY_DECISIONS_PREVIEW_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   USER_INVITE_ROUTE,
@@ -70,8 +62,6 @@ import {
   USER_ADVANCED_ROUTE,
   USER_HOME_ROUTE,
   COLONY_ACTIVITY_ROUTE,
-  COLONY_DECISIONS_ROUTE,
-  OLD_ACTIONS_PAGE_ROUTE,
   COLONY_INCOMING_ROUTE,
   COLONY_SPLASH_ROUTE,
   CREATE_PROFILE_ROUTE,
@@ -210,22 +200,7 @@ const Routes = () => {
               </ColonyHomeLayout>
             }
           /> */}
-          <Route element={<ColonyHomeRoutes />}>
-            <Route index element={<ColonyActions />} />
-            <Route
-              path={COLONY_DECISIONS_ROUTE}
-              element={<ColonyDecisions />}
-            />
-          </Route>
           <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
-          <Route
-            path={COLONY_DECISIONS_PREVIEW_ROUTE}
-            element={
-              <NavBar>
-                <DecisionPreview />
-              </NavBar>
-            }
-          />
 
           {/* Colony settings routes */}
 
@@ -254,12 +229,6 @@ const Routes = () => {
             element={<IncorporationPage />}
           />
           <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
-
-          <Route
-            path={OLD_ACTIONS_PAGE_ROUTE}
-            element={<ActionDetailsPage />}
-          />
-          <Route path={DECISIONS_PAGE_ROUTE} element={<ActionDetailsPage />} />
         </Route>
 
         {/*

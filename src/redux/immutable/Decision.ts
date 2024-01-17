@@ -1,10 +1,10 @@
 import { Id } from '@colony/colony-js';
 import { Record } from 'immutable';
 
-import { DecisionDialogValues as DecisionProps } from '~common/ColonyDecisions/DecisionDialog';
 import { DefaultValues, RecordToJS } from '~types';
+import { DecisionDraft } from '~utils/decisions';
 
-const defaultValues: DefaultValues<DecisionProps & { colonyAddress: string }> =
+const defaultValues: DefaultValues<DecisionDraft & { colonyAddress: string }> =
   {
     description: undefined,
     walletAddress: undefined,
@@ -14,7 +14,7 @@ const defaultValues: DefaultValues<DecisionProps & { colonyAddress: string }> =
   };
 
 export class DecisionRecord
-  extends Record<DecisionProps>(defaultValues)
-  implements RecordToJS<DecisionProps> {}
+  extends Record<DecisionDraft>(defaultValues)
+  implements RecordToJS<DecisionDraft> {}
 
-export const Decision = (p?: DecisionProps) => new DecisionRecord(p);
+export const Decision = (p?: DecisionDraft) => new DecisionRecord(p);

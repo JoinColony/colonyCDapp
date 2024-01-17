@@ -1,8 +1,8 @@
-import { PollingControls } from '~common/ColonyActions/ActionDetailsPage/DefaultMotion/MotionPhaseWidget/MotionPhaseWidget';
 import { MotionAction } from '~types/motions';
 
-export interface VotingStepProps
-  extends Omit<PollingControls, 'refetchAction'> {
+export interface VotingStepProps {
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
   actionData: MotionAction;
   transactionId: string;
 }

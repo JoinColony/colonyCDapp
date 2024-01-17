@@ -12,7 +12,12 @@ import {
 import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import Toast from '~shared/Extensions/Toast/Toast';
 import { OnSuccess } from '~shared/Fields';
-import { AnyExtensionData, InstalledExtensionData, SetStateFn } from '~types';
+import {
+  AnyExtensionData,
+  ExtensionInitParam,
+  InstalledExtensionData,
+  SetStateFn,
+} from '~types';
 import { notNull } from '~utils/arrays';
 import { addressHasRoles } from '~utils/checks';
 
@@ -175,3 +180,32 @@ export const getFormSuccessFn =
       setWaitingForEnableConfirmation(false);
     }
   };
+
+export const createExtensionSetupInitialValues = (
+  initializationParams: ExtensionInitParam[],
+) => {
+  return initializationParams.reduce((initialValues, param) => {
+    return {
+      ...initialValues,
+      [param.paramName]: param.defaultValue,
+    };
+  }, {});
+};
+
+export const mapExtensionActionPayload = (
+  payload: Record<string, any>,
+  initializationParams?: ExtensionInitParam[],
+) => {
+  return initializationParams?.reduce(
+    (formattedPayload, { paramName, transformValue }) => {
+      const paramValue = transformValue
+        ? transformValue(payload[paramName])
+        : payload[paramName];
+      return {
+        ...formattedPayload,
+        [paramName]: paramValue,
+      };
+    },
+    {},
+  );
+};

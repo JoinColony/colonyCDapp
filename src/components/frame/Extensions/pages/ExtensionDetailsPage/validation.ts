@@ -1,10 +1,22 @@
 import { Extension } from '@colony/colony-js';
 import { object, string } from 'yup';
 
-import { createExtensionSetupValidationSchema } from '~common/Extensions/ExtensionSetup/utils';
+import { ExtensionInitParam } from '~types';
 import { formatText } from '~utils/intl';
 
 import { GovernanceOptions } from '../ExtensionsPage/types';
+
+export const createExtensionSetupValidationSchema = (
+  initializationParams: ExtensionInitParam[],
+) => {
+  const validationFields = initializationParams.reduce((fields, param) => {
+    return {
+      ...fields,
+      [param.paramName]: param.validation,
+    };
+  }, {});
+  return object().shape(validationFields).defined();
+};
 
 export const getValidationSchema = ({ initializationParams }) => {
   const paramsSchema =
