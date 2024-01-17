@@ -1,3 +1,0 @@
-.navLink {
-  @apply flex items-center justify-between w-full py-3 transition-all duration-normal sm:min-h-[2rem] sm:rounded-lg sm:hover:text-gray-900 sm:hover:bg-base-bg sm:px-3 sm:py-1.5 sm:text-md sm:justify-start sm:w-auto;
-}
