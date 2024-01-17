@@ -34,8 +34,16 @@ export const useManageColonyObjectives = (
           thumbnail: metadata?.thumbnail,
         },
         createdIn: Id.RootDomain,
+        colonyObjectiveTitle: metadata?.objective?.title,
+        colonyObjectiveDescription: metadata?.objective?.description,
+        colonyObjectiveProgress: metadata?.objective?.progress,
       }),
-      [metadata?.avatar, metadata?.displayName, metadata?.thumbnail],
+      [
+        metadata?.avatar,
+        metadata?.displayName,
+        metadata?.thumbnail,
+        metadata?.objective,
+      ],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
