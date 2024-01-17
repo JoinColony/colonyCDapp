@@ -1,9 +1,5 @@
 import { BigNumber } from 'ethers';
 
-import {
-  ExpenditurePayoutFieldValue,
-  ExpenditureStageFieldValue,
-} from '~common/Expenditures/ExpenditureForm';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ContextModule, getContext } from '~context';
 import {
@@ -12,6 +8,10 @@ import {
   CreateExpenditureMetadataMutationVariables,
 } from '~gql';
 import { Expenditure, MethodParams } from '~types';
+import {
+  ExpenditurePayoutFieldValue,
+  ExpenditureStageFieldValue,
+} from '~types/expenditures';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 
 /**

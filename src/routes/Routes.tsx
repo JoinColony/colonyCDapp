@@ -7,7 +7,6 @@ import ColonyDecisions from '~common/ColonyDecisions';
 import DecisionPreview from '~common/ColonyDecisions/DecisionPreview';
 import ColonyFunding from '~common/ColonyFunding';
 import ColonyHomeRoutes from '~common/ColonyHome/ColonyHomeRoutes';
-import Expenditures from '~common/Expenditures';
 import { Flow } from '~common/Onboarding';
 import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
@@ -72,7 +71,6 @@ import {
   USER_HOME_ROUTE,
   COLONY_ACTIVITY_ROUTE,
   COLONY_DECISIONS_ROUTE,
-  COLONY_EXPENDITURES_DETAILS_ROUTE,
   OLD_ACTIONS_PAGE_ROUTE,
   COLONY_INCOMING_ROUTE,
   COLONY_SPLASH_ROUTE,
@@ -217,10 +215,6 @@ const Routes = () => {
             <Route
               path={COLONY_DECISIONS_ROUTE}
               element={<ColonyDecisions />}
-            />
-            <Route
-              path={COLONY_EXPENDITURES_DETAILS_ROUTE}
-              element={<Expenditures />}
             />
           </Route>
           <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />

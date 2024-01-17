@@ -35,8 +35,6 @@ export const DECISIONS_PAGE_ROUTE = `decisions/tx/:transactionHash`;
 export const COLONY_ACTIVITY_ROUTE = `activity`;
 export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
-export const COLONY_EXPENDITURES_ROUTE = 'expenditures';
-export const COLONY_EXPENDITURES_DETAILS_ROUTE = `${COLONY_EXPENDITURES_ROUTE}/*`;
 export const ACTIONS_QUERY_STRING = '?tx=:transactionHash';
 // Remove when no longer needed
 export const OLD_ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
