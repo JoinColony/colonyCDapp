@@ -1,5 +1,8 @@
+import { Id } from '@colony/colony-js';
 import React, { FC, useCallback } from 'react';
+import { useWatch } from 'react-hook-form';
 
+import { USER_ROLE } from '~constants/permissions';
 import useToggle from '~hooks/useToggle';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
@@ -35,6 +38,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
+  const team: string | undefined = useWatch({ name: 'team' });
   const permissionSelectFooter = useCallback<
     Exclude<CardSelectProps<string>['footer'], React.ReactNode>
   >(
@@ -56,6 +60,15 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </button>
     ),
     [togglePermissionsModalOn],
+  );
+
+  const ALLOWED_PERMISSION_OPTIONS = PERMISSIONS_OPTIONS.map(
+    ({ options, ...rest }) => ({
+      ...rest,
+      options: options.filter(({ value }) =>
+        value === USER_ROLE.Owner ? Number(team) === Id.RootDomain : true,
+      ),
+    }),
   );
 
   return (
@@ -110,7 +123,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           renderSelectedValue={(option, placeholder) =>
             getRoleLabel(option?.value) || placeholder
           }
-          options={PERMISSIONS_OPTIONS}
+          options={ALLOWED_PERMISSION_OPTIONS}
           title={formatText({ id: 'actionSidebar.permissions' })}
           placeholder={formatText({
             id: 'actionSidebar.managePermissions.roleSelect.placeholder',

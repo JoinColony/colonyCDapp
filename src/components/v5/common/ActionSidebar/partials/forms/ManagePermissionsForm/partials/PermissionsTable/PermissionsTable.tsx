@@ -1,11 +1,12 @@
+import { ColonyRole, Id } from '@colony/colony-js';
 import clsx from 'clsx';
 import React, { FC } from 'react';
-import { useController } from 'react-hook-form';
+import { useController, useWatch } from 'react-hook-form';
 
 import { USER_ROLE } from '~constants/permissions';
 import Table from '~v5/common/Table';
 
-import { CUTOM_PERMISSION_TABLE_CONTENT } from './consts';
+import { CUSTOM_PERMISSION_TABLE_CONTENT } from './consts';
 import {
   useCustomPermissionsTableColumns,
   usePermissionsTableProps,
@@ -26,10 +27,18 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
   const permissionsTableProps = usePermissionsTableProps(role);
   const { fieldState } = useController({ name });
+  const team: string | undefined = useWatch({ name: 'team' });
 
   if (!role) {
     return null;
   }
+
+  const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
+    CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>
+      key === ColonyRole.Root || key === ColonyRole.Recovery
+        ? Number(team) === Id.RootDomain
+        : true,
+    );
 
   return (
     <div className={className}>
@@ -46,7 +55,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
               '!border-negative-400': !!fieldState.error,
             },
           )}
-          data={CUTOM_PERMISSION_TABLE_CONTENT}
+          data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
         />
       )}
