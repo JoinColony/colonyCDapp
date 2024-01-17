@@ -42,10 +42,10 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
 
   const menuItems: DropdownMenuGroup[] = [
     {
-      key: '1',
+      key: 'headerDropdown.section1',
       items: [
         {
-          key: '1.1',
+          key: 'headerDropdown.section1.about',
           label: formatText({
             id: 'dashboard.burgerMenu.item.aboutColony',
           }),
@@ -53,7 +53,7 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
           to: `/${colony?.name}/${COLONY_DETAILS_ROUTE}`,
         },
         {
-          key: '1.2',
+          key: 'colonyData.section1.copyAddress',
           label: formatText({ id: 'dashboard.burgerMenu.item.colonyAddress' }),
           icon: CopySimple,
           onClick: () => handleColonyAddressItemCopy(colonyAddress ?? ''),
@@ -68,12 +68,12 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
       ],
     },
     {
-      key: '2',
+      key: 'headerDropdown.section2',
       items: [
         ...(externalLinks.length
           ? [
               {
-                key: '2.1',
+                key: 'headerDropdown.section2.externalLinks',
                 label: formatText({
                   id: 'dashboard.burgerMenu.item.externalLinks',
                 }),
@@ -90,7 +90,7 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
             ]
           : []),
         {
-          key: '2.2',
+          key: 'headerDropdown.section2.copyUrl',
           label: formatText({ id: 'dashboard.burgerMenu.item.share' }),
           icon: ShareNetwork,
           onClick: () => handleShareUrlItemCopy(colonyUrl),
@@ -106,10 +106,10 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     },
     // @BETA: Notifcations not implemented yet
     // {
-    //   key: '3',
+    //   key: 'headerDropdown.section3',
     //   items: [
     //     {
-    //       key: '3.1',
+    //       key: 'headerDropdown.section3.notifications',
     //       label: formatText({
     //         id: 'dashboard.burgerMenu.item.notifications',
     //       }),
@@ -120,11 +120,11 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     //   ],
     // },
     {
-      key: '4',
+      key: 'headerDropdown.section4',
       items: isWatching
         ? [
             {
-              key: '4.1',
+              key: 'headerDropdown.section4.leaveColony',
               label: formatText({
                 id: 'dashboard.burgerMenu.item.leaveColony',
               }),
