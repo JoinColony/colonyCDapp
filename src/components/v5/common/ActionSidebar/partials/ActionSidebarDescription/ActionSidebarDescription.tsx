@@ -9,6 +9,7 @@ import CreateDecisionDescription from './partials/CreateDecisionDescription/Crea
 import CreateNewDomainDescription from './partials/CreateNewDomainDescription/CreateNewDomainDescription';
 import EditColonyDetailsDescription from './partials/EditColonyDetailsDescription/EditColonyDetailsDescription';
 import EditDomainDescription from './partials/EditDomainDescription/EditDomainDescription';
+import EnterRecoveryModeDescription from './partials/EnterRecoveryModeDescription/EnterRecoveryModeDescription';
 import MintTokensDescription from './partials/MintTokensDescription/MintTokensDescription';
 import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
 
@@ -33,6 +34,8 @@ const ActionSidebarDescription = () => {
       return <EditColonyDetailsDescription />;
     case ACTION.EDIT_EXISTING_TEAM:
       return <EditDomainDescription />;
+    case ACTION.ENTER_RECOVERY_MODE:
+      return <EnterRecoveryModeDescription />;
     default:
       return null;
   }
