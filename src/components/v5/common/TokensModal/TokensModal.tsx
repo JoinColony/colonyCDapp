@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ActionForm } from '~shared/Fields';
+import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { SpinnerLoader } from '~shared/Preloaders';
 import TokenIcon from '~shared/TokenIcon';
 import { formatText } from '~utils/intl';
 import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
-import Button from '~v5/shared/Button';
+import Button, { TxButton } from '~v5/shared/Button';
 
 import Modal from '../../shared/Modal/Modal';
 
@@ -44,7 +45,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
           onClose();
         }}
       >
-        {({ setValue }) => (
+        {({ setValue, formState: { isSubmitting, isLoading } }) => (
           <>
             <h4 className="heading-5 mb-1.5">
               {formatText({ id: `tokensModal.${type}.title` })}
@@ -107,12 +108,29 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                 text={formatText({ id: 'button.cancel' })}
                 isFullSize
               />
-              <Button
-                mode="primarySolid"
-                type="submit"
-                text={formatText({ id: `tokensModal.${type}.submit` })}
-                isFullSize
-              />
+              {isSubmitting || isLoading ? (
+                <TxButton
+                  className="w-full"
+                  rounded="s"
+                  text={{ id: 'button.pending' }}
+                  icon={
+                    <span className="flex shrink-0 ml-1.5">
+                      <Icon
+                        name="spinner-gap"
+                        className="animate-spin"
+                        appearance={{ size: 'tiny' }}
+                      />
+                    </span>
+                  }
+                />
+              ) : (
+                <Button
+                  mode="primarySolid"
+                  type="submit"
+                  text={formatText({ id: `tokensModal.${type}.submit` })}
+                  isFullSize
+                />
+              )}
             </div>
           </>
         )}
