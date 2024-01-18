@@ -9,6 +9,7 @@ export type FilterValue = {
 export interface NestedItem<TValue extends FilterValue, TLevel extends number> {
   label: React.ReactNode;
   name: KeysAtLevel<TValue, TLevel>;
+  // @ts-ignore
   items?: NestedItem<TValue, Add<TLevel, 1>>[];
 }
 

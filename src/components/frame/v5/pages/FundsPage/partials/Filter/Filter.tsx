@@ -46,6 +46,7 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
   const isChecked = !!get(value, path);
   const isMobile = useMobile();
   const NestedItems = nestedItems?.map(({ ...nestedItem }) => (
+    // @ts-ignore
     <NestedFilterItem
       key={nestedItem.name}
       onChange={onChange}

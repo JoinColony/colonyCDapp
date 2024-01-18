@@ -39,7 +39,7 @@ const BreadCrumb = ({ elements }: Props) => {
           if (isValidElement(crumb) || typeof crumb === 'string') {
             crumbText = crumb;
           } else {
-            crumbText = formatMessage(crumb);
+            crumbText = formatMessage(crumb as MessageDescriptor);
           }
           crumbLink = '';
         }
