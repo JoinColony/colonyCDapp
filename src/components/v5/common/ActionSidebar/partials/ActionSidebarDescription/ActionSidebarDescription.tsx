@@ -12,6 +12,7 @@ import EditDomainDescription from './partials/EditDomainDescription/EditDomainDe
 import EnterRecoveryModeDescription from './partials/EnterRecoveryModeDescription/EnterRecoveryModeDescription';
 import ManageColonyObjectiveDescription from './partials/ManageColonyObjectiveDescription/ManageColonyObjectiveDescription';
 import ManagePermissionsDescription from './partials/ManagePermissionsDescription/ManagePermissionsDescription';
+import ManageTokensDescription from './partials/ManageTokensDescription/ManageTokensDescription';
 import MintTokensDescription from './partials/MintTokensDescription/MintTokensDescription';
 import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
 
@@ -42,6 +43,8 @@ const ActionSidebarDescription = () => {
       return <ManageColonyObjectiveDescription />;
     case ACTION.MANAGE_PERMISSIONS:
       return <ManagePermissionsDescription />;
+    case ACTION.MANAGE_TOKENS:
+      return <ManageTokensDescription />;
     default:
       return null;
   }
