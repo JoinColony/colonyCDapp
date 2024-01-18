@@ -17,6 +17,7 @@ import MintTokensDescription from './partials/MintTokensDescription/MintTokensDe
 import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
 import TransferFundsDescription from './partials/TransferFundsDescription/TransferFundsDescription';
 import UnlockTokenDescription from './partials/UnlockTokenDescription/UnlockTokenDescription';
+import UpgradeColonyDescription from './partials/UpgradeColonyDescription/UpgradeColonyDescription';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';
@@ -51,6 +52,8 @@ const ActionSidebarDescription = () => {
       return <TransferFundsDescription />;
     case ACTION.UNLOCK_TOKEN:
       return <UnlockTokenDescription />;
+    case ACTION.UPGRADE_COLONY_VERSION:
+      return <UpgradeColonyDescription />;
     default:
       return null;
   }
