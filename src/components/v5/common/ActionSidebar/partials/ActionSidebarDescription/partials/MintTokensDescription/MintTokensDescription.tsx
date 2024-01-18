@@ -1,5 +1,6 @@
 import moveDecimal from 'move-decimal-point';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
@@ -7,17 +8,15 @@ import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
+import { MintTokenFormValues } from '../../../forms/MintTokenForm/consts';
 import CurrentUser from '../CurrentUser/CurrentUser';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.MintTokensDescription';
 
-interface MintTokensDescriptionProps {
-  amount?: number;
-}
-export const MintTokensDescription = ({
-  amount,
-}: MintTokensDescriptionProps) => {
+export const MintTokensDescription = () => {
+  const formValues = useFormContext<MintTokenFormValues>().getValues();
+  const { amount: { amount } = {} } = formValues;
   const {
     colony: { nativeToken },
   } = useColonyContext();
