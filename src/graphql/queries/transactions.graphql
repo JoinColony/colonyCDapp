@@ -1,6 +1,5 @@
 query GetUserTransactions(
   $userAddress: ID!
-  $colonyAddress: ID
   $transactionsOlderThan: String
   $nextToken: String
   $limit: Int
@@ -8,7 +7,7 @@ query GetUserTransactions(
   getTransactionsByUser(
     from: $userAddress
     createdAt: { lt: $transactionsOlderThan }
-    filter: { colonyAddress: { eq: $colonyAddress }, deleted: { ne: true } }
+    filter: { deleted: { ne: true } }
     sortDirection: DESC
     nextToken: $nextToken
     limit: $limit
