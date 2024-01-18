@@ -48,7 +48,8 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     !!amount &&
     type !== ColonyActionType.MintTokensMotion &&
     type !== ColonyActionType.EmitDomainReputationPenaltyMotion &&
-    type !== ColonyActionType.EmitDomainReputationRewardMotion;
+    type !== ColonyActionType.EmitDomainReputationRewardMotion &&
+    motionStateHistory.hasPassed;
 
   const hasEnoughFundsToFinalize =
     !requiresDomainFunds ||

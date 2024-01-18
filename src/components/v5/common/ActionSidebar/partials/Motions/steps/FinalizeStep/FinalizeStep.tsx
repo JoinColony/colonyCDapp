@@ -155,7 +155,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   items={items}
                   className={clsx({
                     'mb-6':
-                      (!actionData.motionData.isFinalized && isFinalizable) ||
+                      !actionData.motionData.isFinalized ||
                       (!isClaimed && canClaimStakes),
                   })}
                 />
