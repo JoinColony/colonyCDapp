@@ -1,9 +1,12 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 
+import { ACTION } from '~constants/actions';
+import { useActionSidebarContext } from '~context';
 import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import Button from '~v5/shared/Button';
 
 import { ColonyVersionWidgetProps } from './types';
@@ -19,6 +22,18 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
+
+  const handleUpgradeColony = useCallback(
+    () =>
+      toggleActionSidebarOn({
+        [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
+      }),
+    [toggleActionSidebarOn],
+  );
 
   return (
     <div
@@ -72,6 +87,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
       </div>
       <Button
         type="button"
+        onClick={handleUpgradeColony}
         disabled={status === 'success'}
         mode="primarySolid"
         isFullSize={isMobile}
