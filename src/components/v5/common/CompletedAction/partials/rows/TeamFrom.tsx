@@ -31,7 +31,7 @@ const TeamFromRow = ({ teamMetadata }: TeamFromRowProps) => {
         </Tooltip>
       </div>
       <div>
-        <TeamBadge teamName={teamMetadata.name} />
+        <TeamBadge name={teamMetadata.name} />
       </div>
     </>
   );

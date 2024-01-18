@@ -88,9 +88,11 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
             </div>
           </Tooltip>
         </div>
-        <div>
-          <TeamBadge teamName={action.toDomain?.metadata?.name} />
-        </div>
+        {action.toDomain?.metadata?.name ? (
+          <div>
+            <TeamBadge name={action.toDomain?.metadata?.name} />
+          </div>
+        ) : null}
 
         <AmountRow
           amount={action.amount || '1'}
