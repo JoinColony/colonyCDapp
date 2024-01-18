@@ -2,8 +2,11 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
+const childProcess = require('child_process');
 
 const webpackBaseConfig = require('./webpack.base').config;
+
+const commitHash = childProcess.execSync('git rev-parse HEAD').toString().trim();
 
 module.exports = () => ({
   ...webpackBaseConfig,
@@ -63,6 +66,9 @@ module.exports = () => ({
     }),
     new webpack.DefinePlugin({
       SAFE_ENABLED_LOCALLY: JSON.stringify(false),
+    }),
+    new webpack.DefinePlugin({
+      PROD_COMMIT_HASH: JSON.stringify(commitHash),
     }),
   ],
 });

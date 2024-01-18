@@ -28,6 +28,19 @@ interface Props {
   store: any;
 }
 
+/**
+ * @NOTE Coming from webpack DefinePlugin, only on production
+ *
+ * It became apparent that we need a "live" way to check what commit we're running on
+ * while debugging issues strait into production
+ */
+declare const PROD_COMMIT_HASH: string | undefined;
+
+if (PROD_COMMIT_HASH) {
+  // eslint-disable-next-line no-console
+  console.log(`Running on ${PROD_COMMIT_HASH}`);
+}
+
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
