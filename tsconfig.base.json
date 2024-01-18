@@ -44,6 +44,7 @@
     "lib": ["dom", "es2019"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
