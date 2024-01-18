@@ -72,5 +72,8 @@ module.exports = () => ({
     new webpack.DefinePlugin({
       SAFE_ENABLED_LOCALLY: JSON.stringify(process.env.SAFE === 'enabled'),
     }),
+    new webpack.DefinePlugin({
+      PROD_COMMIT_HASH: undefined, // only set for production
+    }),
   ],
 });
