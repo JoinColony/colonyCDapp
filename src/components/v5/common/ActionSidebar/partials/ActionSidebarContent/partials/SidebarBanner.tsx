@@ -4,7 +4,12 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ACTION } from '~constants/actions';
-import { useExtensionsData } from '~hooks';
+import {
+  useColonyContext,
+  useColonyContractVersion,
+  useExtensionsData,
+} from '~hooks';
+import { canColonyBeUpgraded } from '~utils/checks';
 import { formatText } from '~utils/intl';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
 import NotificationBanner from '~v5/shared/NotificationBanner';
@@ -57,6 +62,13 @@ export const SidebarBanner: FC = () => {
     },
   );
 
+  const { colony } = useColonyContext();
+  const { colonyContractVersion } = useColonyContractVersion();
+  const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
+
+  const showVersionUpToDateNotification =
+    selectedAction === ACTION.UPGRADE_COLONY_VERSION && !canUpgrade;
+
   return (
     <>
       {actionTypeNotificationTitle && (
@@ -88,6 +100,13 @@ export const SidebarBanner: FC = () => {
           </NotificationBanner>
         </div>
       ))}
+      {showVersionUpToDateNotification && (
+        <div className="mt-6">
+          <NotificationBanner icon="check-circle" status="success">
+            <FormattedMessage id="actionSidebar.upToDate" />
+          </NotificationBanner>
+        </div>
+      )}
     </>
   );
 };
