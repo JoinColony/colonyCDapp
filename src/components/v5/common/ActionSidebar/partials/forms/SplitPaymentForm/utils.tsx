@@ -12,6 +12,7 @@ import { tryGetToken } from '../utils';
 
 import { SplitPaymentFormValues } from './hooks';
 
+// @NOTE this is just docs for when we implement split payments and need a reference for the form description
 export const splitPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<SplitPaymentFormValues>
 > = async (

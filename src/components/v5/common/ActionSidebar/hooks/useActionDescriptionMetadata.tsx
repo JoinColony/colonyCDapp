@@ -116,14 +116,6 @@ export const useActionDescriptionMetadata = () => {
 
           const initiator = actionTitleValues[ActionTitleMessageKeys.Initiator];
 
-          /*
-          console.log('ekshn values', {
-            actionTitleValues,
-            formValues,
-            commonActionData,
-          });
-          */
-
           return formatText(
             { id: 'action.title' },
             {

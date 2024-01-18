@@ -63,6 +63,7 @@ const getTokensText = (
   }
 };
 
+// @NOTE this is just docs for when we implement advanced payments and need a reference for the form description
 export const advancedPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<AdvancedPaymentFormValues>
 > = async ({ payments, decisionMethod }, { getActionTitleValues }) => {

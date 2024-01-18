@@ -27,7 +27,11 @@ export const MintTokensDescription = () => {
         { id: 'action.title' },
         {
           actionType: ColonyActionType.MintTokens,
-          tokenSymbol: amount ? nativeToken.symbol : undefined,
+          tokenSymbol: amount
+            ? nativeToken.symbol
+            : formatText({
+                id: 'actionSidebar.metadataDescription.nativeTokens',
+              }),
           amount: amount ? (
             <Numeral
               value={moveDecimal(
