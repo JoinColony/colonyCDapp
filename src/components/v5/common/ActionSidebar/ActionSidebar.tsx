@@ -5,12 +5,17 @@ import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useMobile } from '~hooks';
+import { ColonyActionType } from '~gql';
+import { useColonyContext, useMobile } from '~hooks';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import useToggle from '~hooks/useToggle';
 import { SpinnerLoader } from '~shared/Preloaders';
+import { AnyActionType } from '~types';
+import { getExtendedActionType } from '~utils/colonyActions';
 import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';
+
+import CompletedAction from '../CompletedAction';
 
 import { actionSidebarAnimation } from './consts';
 import {
@@ -23,12 +28,25 @@ import { ActionSidebarProps } from './types';
 
 const displayName = 'v5.common.ActionSidebar';
 
+const SUPPORTED_ACTIONS: AnyActionType[] = [
+  ColonyActionType.Payment,
+  ColonyActionType.MintTokens,
+  ColonyActionType.MoveFunds,
+  ColonyActionType.CreateDomain,
+  ColonyActionType.UnlockToken,
+  ColonyActionType.VersionUpgrade,
+  ColonyActionType.CreateDecisionMotion,
+  // @TODO uncomment when social links are added to action display
+  // ColonyActionType.ColonyEdit,
+];
+
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   initialValues,
   transactionId,
 }) => {
-  const { defaultValues, loadingAction, isMotion } =
+  const { colony } = useColonyContext();
+  const { action, defaultValues, loadingAction, isMotion } =
     useGetActionData(transactionId);
 
   const {
@@ -52,6 +70,37 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   useDisableBodyScroll(isActionSidebarOpen);
   useRemoveTxParamOnClose();
+
+  const getSidebarContent = () => {
+    if (loadingAction) {
+      return (
+        <div className="h-full flex items-center justify-center flex-col gap-4">
+          <SpinnerLoader appearance={{ size: 'huge' }} />
+          <p className="text-gray-600">
+            {formatText({ id: 'actionSidebar.loading' })}
+          </p>
+        </div>
+      );
+    }
+
+    if (action !== undefined && action !== null) {
+      const actionType = getExtendedActionType(action, colony.metadata);
+
+      if (SUPPORTED_ACTIONS.includes(actionType)) {
+        return <CompletedAction action={action} />;
+      }
+    }
+
+    return (
+      <ActionSidebarContent
+        key={transactionId}
+        transactionId={transactionId}
+        formRef={formRef}
+        defaultValues={defaultValues || initialValues}
+        isMotion={!!isMotion}
+      />
+    );
+  };
 
   return (
     <motion.div
@@ -120,23 +169,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         )}
         {children}
       </div>
-      {loadingAction ? (
-        <div className="h-full flex items-center justify-center flex-col gap-4">
-          <SpinnerLoader appearance={{ size: 'huge' }} />
-          <p className="text-gray-600">
-            {formatText({ id: 'actionSidebar.loading' })}
-          </p>
-        </div>
-      ) : (
-        <ActionSidebarContent
-          key={transactionId}
-          transactionId={transactionId}
-          formRef={formRef}
-          defaultValues={defaultValues || initialValues}
-          isMotion={!!isMotion}
-        />
-      )}
-
+      {getSidebarContent()}
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
         subTitle={formatText({

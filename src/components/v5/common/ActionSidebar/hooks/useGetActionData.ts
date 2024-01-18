@@ -245,6 +245,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
   }, [action]);
 
   return {
+    action,
     defaultValues,
     loadingAction,
     isMotion: action?.isMotion,
