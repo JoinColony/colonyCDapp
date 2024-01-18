@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { Logger } from 'ethers/lib.esm/utils';
+import { utils } from 'ethers';
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
@@ -13,6 +13,8 @@ import store from '~redux/createReduxStore';
 
 import Entry from './Entry';
 /* eslint-enable import/order */
+
+const { Logger } = utils;
 
 Decimal.set({ toExpPos: 78 });
 
