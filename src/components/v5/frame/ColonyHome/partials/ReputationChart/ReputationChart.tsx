@@ -18,7 +18,7 @@ import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
 import { summaryLegendColor } from './consts';
 import { getTeamReputationChartData } from './utils';
 
-const displayName = 'common.ColonyHome.ReputationChart';
+const displayName = 'v5.frame.ColonyHome.ReputationChart';
 
 const MSG = defineMessages({
   legendNoTeams: {
@@ -32,8 +32,9 @@ const MSG = defineMessages({
 });
 
 const ReputationChart = () => {
-  const { colony } = useColonyContext();
-  const { domains } = colony || {};
+  const {
+    colony: { domains },
+  } = useColonyContext();
 
   const [hoveredSegment, setHoveredSegment] = useState<
     ChartData | undefined | null

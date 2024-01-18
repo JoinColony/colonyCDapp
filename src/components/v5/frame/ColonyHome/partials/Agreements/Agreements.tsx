@@ -11,7 +11,7 @@ import EmptyWidgetState from '~v5/common/WidgetBox/partials';
 import MessageNumber from '~v5/shared/MessageNumber';
 import TitleWithNumber from '~v5/shared/TitleWithNumber';
 
-const displayName = 'common.ColonyHome.TotalActions';
+const displayName = 'v5.frame.ColonyHome.Agreements';
 
 const Agreements = () => {
   const agreements = undefined;

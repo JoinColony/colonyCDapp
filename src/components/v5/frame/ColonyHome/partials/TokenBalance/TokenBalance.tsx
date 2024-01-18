@@ -10,7 +10,7 @@ import WidgetBox from '~v5/common/WidgetBox';
 
 import { useTotalFunds } from './hooks';
 
-const displayName = 'common.ColonyHome.Members';
+const displayName = 'v5.frame.ColonyHome.TokenBalance';
 
 const TokenBalance = () => {
   const { search } = useLocation();

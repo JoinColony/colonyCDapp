@@ -56,7 +56,7 @@ const MSG = defineMessages({
   },
 });
 
-type ColonyLink = {
+export type ColonyLink = {
   id: ExternalLinks;
   label: string | undefined;
   LinkIcon: ComponentType<IconProps>;
