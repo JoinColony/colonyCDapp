@@ -15,6 +15,7 @@ import ManagePermissionsDescription from './partials/ManagePermissionsDescriptio
 import ManageTokensDescription from './partials/ManageTokensDescription/ManageTokensDescription';
 import MintTokensDescription from './partials/MintTokensDescription/MintTokensDescription';
 import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
+import TransferFundsDescription from './partials/TransferFundsDescription/TransferFundsDescription';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';
@@ -45,6 +46,8 @@ const ActionSidebarDescription = () => {
       return <ManagePermissionsDescription />;
     case ACTION.MANAGE_TOKENS:
       return <ManageTokensDescription />;
+    case ACTION.TRANSFER_FUNDS:
+      return <TransferFundsDescription />;
     default:
       return null;
   }
