@@ -16,6 +16,7 @@ import ManageTokensDescription from './partials/ManageTokensDescription/ManageTo
 import MintTokensDescription from './partials/MintTokensDescription/MintTokensDescription';
 import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
 import TransferFundsDescription from './partials/TransferFundsDescription/TransferFundsDescription';
+import UnlockTokenDescription from './partials/UnlockTokenDescription/UnlockTokenDescription';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';
@@ -48,6 +49,8 @@ const ActionSidebarDescription = () => {
       return <ManageTokensDescription />;
     case ACTION.TRANSFER_FUNDS:
       return <TransferFundsDescription />;
+    case ACTION.UNLOCK_TOKEN:
+      return <UnlockTokenDescription />;
     default:
       return null;
   }
