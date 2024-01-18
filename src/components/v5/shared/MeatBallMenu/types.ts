@@ -25,4 +25,8 @@ export interface MeatBallMenuProps {
   className?: string;
   renderItemWrapper?: RenderMeatBallItemWrapper;
   withVerticalIcon?: boolean;
+  dropdownPlacementProps?: {
+    top?: number;
+    withAutoTopPlacement?: boolean;
+  };
 }

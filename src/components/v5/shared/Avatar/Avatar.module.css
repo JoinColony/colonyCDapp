@@ -47,7 +47,7 @@
 }
 
 .m {
-  @apply inline-block relative w-[3.75rem] h-[60px];
+  @apply inline-block relative w-[3.75rem] h-[3.75rem];
 }
 
 .md {

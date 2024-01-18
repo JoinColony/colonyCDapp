@@ -15,4 +15,5 @@ export interface UserAvatarsProps {
   size?: AvatarSize;
   showRemainingAvatars?: boolean;
   remainingAvatarsCount?: number;
+  withThickerBorder?: boolean;
 }

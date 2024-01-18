@@ -56,6 +56,7 @@ const Members = () => {
         <UserAvatars
           maxAvatarsToShow={4}
           size="xms"
+          withThickerBorder
           items={allMembers}
           showRemainingAvatars={false}
         />

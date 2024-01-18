@@ -51,8 +51,16 @@ export const useEditTeam = (
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
         createdIn: team || Id.RootDomain,
+        teamName: selectedDomain?.metadata?.name,
+        domainPurpose: selectedDomain?.metadata?.description,
+        domainColor: selectedDomain?.metadata?.color,
       }),
-      [team],
+      [
+        selectedDomain?.metadata?.color,
+        selectedDomain?.metadata?.description,
+        selectedDomain?.metadata?.name,
+        team,
+      ],
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

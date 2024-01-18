@@ -708,6 +708,8 @@
     "table.previous": "Previous",
     "teamsPage.title": "Teams",
     "teamsPage.description": "Teams of the Colony",
+    "teamsPage.createNewTeam": "Create new team",
+    "teamsPage.allTeams": "All teams",
     "userProfile.title": "Account",
     "userProfilePage.title": "User account",
     "userProfilePage.description": "Edit and update your account information",
@@ -1538,5 +1540,13 @@
     "useProfile.advancedTab.title": "Advanced",
     "profilePage.customRpc": "Gnosis Chain Custom RPC",
     "wallet.information": "Wallet information",
-    "advancedSettings.title": "Advanced settings"
+    "advancedSettings.title": "Advanced settings",
+    "teamsPage.menu.editTeam": "Edit team",
+    "teamsPage.menu.viewTeamMembers": "View team members",
+    "teamsPage.menu.viewTeamActivity": "View team activity",
+    "teamsPage.menu.viewTeamFunds": "View team funds",
+    "teamsPage.menu.viewTeamDecisions": "View team decisions",
+    "teamsPage.menu.viewTeamDashboard": "View team dashboard",
+    "teamsPage.links.agreements": "Agreements",
+    "teamsPage.links.activity": "Activity"
 }

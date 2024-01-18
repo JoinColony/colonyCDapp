@@ -6,10 +6,12 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
     bottomWindowPadding = 20,
     rightWindowPadding = 20,
     top = 0,
+    withAutoTopPlacement = false,
   }: {
     bottomWindowPadding?: number;
     rightWindowPadding?: number;
     top?: number;
+    withAutoTopPlacement?: boolean;
   } = {},
 ) => {
   const relativeElementRef = useRef<T | null>(null);
@@ -21,8 +23,18 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
         return;
       }
 
-      const { bottom, left } =
-        relativeElementRef.current.getBoundingClientRect();
+      const {
+        bottom,
+        top: relativeElementTop,
+        left,
+      } = relativeElementRef.current.getBoundingClientRect();
+      const { height: dropdownHeight } =
+        portalElementRef.current.getBoundingClientRect();
+
+      const shouldShowOnTop =
+        withAutoTopPlacement &&
+        window.innerHeight - window.scrollY - bottom - dropdownHeight < 0;
+
       const leftPosition =
         portalElementRef.current.clientWidth + left + rightWindowPadding >
         window.innerWidth
@@ -31,11 +43,19 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
             rightWindowPadding
           : left;
 
-      portalElementRef.current.style.top = `${bottom + window.scrollY + top}px`;
       portalElementRef.current.style.left = `${leftPosition}px`;
-      portalElementRef.current.style.maxHeight = `${
-        window.innerHeight - bottom - bottomWindowPadding
-      }px`;
+      if (shouldShowOnTop) {
+        portalElementRef.current.style.top = `${
+          relativeElementTop + window.scrollY - top - dropdownHeight
+        }px`;
+      } else {
+        portalElementRef.current.style.top = `${
+          bottom + window.scrollY + top
+        }px`;
+        portalElementRef.current.style.maxHeight = `${
+          window.innerHeight - bottom - bottomWindowPadding
+        }px`;
+      }
     };
 
     onScroll();

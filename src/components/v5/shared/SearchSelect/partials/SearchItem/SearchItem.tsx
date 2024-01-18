@@ -1,9 +1,12 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
+import { DomainColor } from '~gql';
 import { useMobile } from '~hooks';
 import TokenIcon from '~shared/TokenIcon';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
+import { getTeamColor } from '~utils/teams';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
 import Avatar from '~v5/shared/Avatar';
 import IconWithTooltip from '~v5/shared/IconWithTooltip';
@@ -48,6 +51,9 @@ const SearchItem: FC<SearchItemProps> = ({
           const labelText = formatText(label || '');
 
           const hasAvatar = showAvatar || !!color || !!token;
+          const teamColor = getTeamColor(
+            color ? getEnumValueFromKey(DomainColor, color) : undefined,
+          );
 
           return (
             <li
@@ -78,7 +84,7 @@ const SearchItem: FC<SearchItemProps> = ({
               >
                 {color && !isLabelVisible && (
                   <div
-                    className={clsx(color, 'rounded shrink-0', {
+                    className={clsx(teamColor, 'rounded shrink-0', {
                       'w-[1.125rem] h-[1.125rem]': !isMobile,
                       'w-7 h-7': isMobile,
                     })}
@@ -90,7 +96,9 @@ const SearchItem: FC<SearchItemProps> = ({
                   </div>
                 )}
                 {color && isLabelVisible && (
-                  <span className={clsx(color, 'mr-2 w-3.5 h-3.5 rounded')} />
+                  <span
+                    className={clsx(teamColor, 'mr-2 w-3.5 h-3.5 rounded')}
+                  />
                 )}
                 {showAvatar && (
                   <div className="mr-2 items-center justify-center flex">

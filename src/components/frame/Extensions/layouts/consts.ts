@@ -13,7 +13,7 @@ import {
   // COLONY_INTEGRATIONS_ROUTE,
   // COLONY_PERMISSIONS_ROUTE,
   // COLONY_REPUTATION_ROUTE,
-  // COLONY_TEAMS_ROUTE,
+  COLONY_TEAMS_ROUTE,
   // COLONY_VERIFIED_ROUTE,
 } from '~routes/routeConstants';
 import { formatText } from '~utils/intl';
@@ -45,12 +45,12 @@ export const membersMenu: NavigationSidebarLinksListProps['items'] = [
   //   to: COLONY_PERMISSIONS_ROUTE,
   //   iconName: 'signature',
   // },
-  // {
-  //   key: '5',
-  //   label: formatText({ id: 'navigation.members.teams' }),
-  //   to: COLONY_TEAMS_ROUTE,
-  //   iconName: 'users-four',
-  // },
+  {
+    key: '5',
+    label: formatText({ id: 'navigation.members.teams' }),
+    to: COLONY_TEAMS_ROUTE,
+    iconName: 'users-four',
+  },
 ];
 
 // @todo: update routes when pages will be ready
