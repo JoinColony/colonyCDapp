@@ -20,8 +20,13 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.MintTokensMotion} {Mint {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.CreateDomain} {Create new team {fromDomain} by {initiator}}
       ${ColonyActionType.CreateDomainMotion} {Create new team {fromDomain} by {initiator}}
+<<<<<<< HEAD
       ${ColonyActionType.VersionUpgrade} {Upgrade Colony version from v{version} to v{newVersion} by {initiator}}
       ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version from v{version} to v{newVersion} by {initiator}}
+=======
+      ${ColonyActionType.VersionUpgrade} {Upgrade Colony version to v{newVersion} by {initiator}}
+      ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
+>>>>>>> 4be05ee29 (Fix: Improve Colony upgrade action sidebar when on latest version)
       ${ColonyActionType.ColonyEdit} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.ColonyEditMotion} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.EditDomain} {Change {fromDomain} team details by {initiator}}
