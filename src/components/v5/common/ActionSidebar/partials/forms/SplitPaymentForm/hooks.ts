@@ -4,7 +4,6 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { array, InferType, number, object, string } from 'yup';
 
 import { getCreatePaymentDialogPayload } from '~common/Dialogs/CreatePaymentDialog/helpers';
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { useColonyContext, useNetworkInverseFee } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
@@ -44,7 +43,6 @@ export const useValidationSchema = () => {
           tokenAddress: string().address().required(),
         }).required(),
         createdIn: number().defined(),
-        description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
         team: number().required(),
         decisionMethod: string().defined(),
         distributionMethod: string().defined(),

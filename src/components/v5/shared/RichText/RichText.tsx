@@ -1,19 +1,15 @@
-import { EditorContent } from '@tiptap/react';
 import clsx from 'clsx';
-import React, { FC, useLayoutEffect } from 'react';
+import React, { FC, useLayoutEffect, useState } from 'react';
 
 import { formatText } from '~utils/intl';
 import { omit } from '~utils/lodash';
 
 import { TextButton } from '../Button';
 
-import {
-  MAX_ANNOTATION_NUM,
-  MIN_ANNOTATION_NUM,
-  NUMBER_OF_CHARS_IN_TWO_LINES,
-} from './consts';
+import { MAX_ANNOTATION_NUM } from './consts';
 import { useRichText } from './hooks';
 import MenuBar from './partials/Menu';
+import RichTextContent from './partials/RichTextContent';
 import { RichTextProps } from './types';
 
 const displayName = 'v5.RichText';
@@ -42,41 +38,49 @@ const RichText: FC<RichTextProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldFocus]);
 
+  const [isTextTruncated, setIsTextTruncated] = useState(false);
+
   return (
     <>
       {isReadonly ? (
         <>
           {editor && isDecriptionFieldExpanded ? (
-            <EditorContent editor={editor} />
+            <RichTextContent editor={editor} {...omit(field, 'ref')} />
           ) : (
             <>
               <button
                 type="button"
                 onClick={toggleOnDecriptionSelect}
-                className={clsx('sm:hover:text-blue-400 w-full', {
-                  'text-gray-900': characterCount,
-                  'text-gray-400': !characterCount,
-                })}
+                className={clsx(
+                  'transition sm:hover:text-blue-400 w-full text-left',
+                  {
+                    'text-gray-900': characterCount,
+                    'text-gray-400': !characterCount,
+                  },
+                )}
               >
                 <span
-                  className={clsx({
-                    'line-clamp-2 text-left break-words':
-                      characterCount >= MIN_ANNOTATION_NUM,
-                  })}
+                  ref={(ref) => {
+                    if (!ref) {
+                      return;
+                    }
+
+                    setIsTextTruncated(ref.scrollHeight > ref.offsetHeight);
+                  }}
+                  className="line-clamp-2 text-left break-words"
                 >
                   {notFormattedContent}
                 </span>
               </button>
-              {characterCount > NUMBER_OF_CHARS_IN_TWO_LINES &&
-                !isDecriptionFieldExpanded && (
-                  <TextButton
-                    mode="underlined"
-                    className="text-gray-400 ml-1"
-                    onClick={toggleOnDecriptionSelect}
-                  >
-                    {formatText({ id: 'button.expand' })}
-                  </TextButton>
-                )}
+              {isTextTruncated && !isDecriptionFieldExpanded && (
+                <TextButton
+                  mode="underlined"
+                  className="text-gray-400 ml-1"
+                  onClick={toggleOnDecriptionSelect}
+                >
+                  {formatText({ id: 'button.expand' })}
+                </TextButton>
+              )}
             </>
           )}
         </>
@@ -85,7 +89,7 @@ const RichText: FC<RichTextProps> = ({
           {editor && isDecriptionFieldExpanded ? (
             <>
               <MenuBar editor={editor} />
-              <EditorContent editor={editor} {...omit(field, 'ref')} />
+              <RichTextContent editor={editor} {...omit(field, 'ref')} />
 
               {(characterCount || isDecriptionFieldExpanded) && (
                 <div className="flex items-center justify-between mt-4">
@@ -112,30 +116,33 @@ const RichText: FC<RichTextProps> = ({
               <button
                 type="button"
                 onClick={toggleOnDecriptionSelect}
-                className={clsx('sm:hover:text-blue-400', {
+                className={clsx('transition sm:hover:text-blue-400 text-left', {
                   'text-gray-900': characterCount,
                   'text-gray-400': !characterCount,
                 })}
               >
                 <span
-                  className={clsx({
-                    'line-clamp-2 text-left':
-                      characterCount >= MIN_ANNOTATION_NUM,
-                  })}
+                  ref={(ref) => {
+                    if (!ref) {
+                      return;
+                    }
+
+                    setIsTextTruncated(ref.scrollHeight > ref.offsetHeight);
+                  }}
+                  className="line-clamp-2 text-left"
                 >
                   {notFormattedContent}
                 </span>
               </button>
-              {characterCount > NUMBER_OF_CHARS_IN_TWO_LINES &&
-                !isDecriptionFieldExpanded && (
-                  <TextButton
-                    mode="underlined"
-                    className="text-gray-400 ml-1"
-                    onClick={toggleOnDecriptionSelect}
-                  >
-                    {formatText({ id: 'button.expand' })}
-                  </TextButton>
-                )}
+              {isTextTruncated && !isDecriptionFieldExpanded && (
+                <TextButton
+                  mode="underlined"
+                  className="text-gray-400 ml-1"
+                  onClick={toggleOnDecriptionSelect}
+                >
+                  {formatText({ id: 'button.expand' })}
+                </TextButton>
+              )}
             </>
           )}
         </>

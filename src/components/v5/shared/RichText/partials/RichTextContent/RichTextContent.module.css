@@ -1,0 +1,15 @@
+.rich-text-content :global(.tiptap) > *:not(:first-child) {
+  @apply mt-3.5;
+}
+
+.rich-text-content :global(.tiptap) > ul {
+  @apply pl-4;
+
+  list-style: disc;
+}
+
+.rich-text-content :global(.tiptap) > ol {
+  @apply pl-4;
+
+  list-style: decimal;
+}

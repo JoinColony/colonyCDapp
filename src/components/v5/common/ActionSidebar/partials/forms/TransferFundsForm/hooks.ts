@@ -4,7 +4,6 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 import { InferType, number, object, string } from 'yup';
 
-import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { useColonyContext } from '~hooks';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
@@ -63,7 +62,6 @@ export const useValidationSchema = () => {
               ),
             ),
           decisionMethod: string().defined(),
-          description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
