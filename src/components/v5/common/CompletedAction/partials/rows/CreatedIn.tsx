@@ -31,7 +31,7 @@ const CreatedInRow = ({ motionDomainMetadata }: CreatedInRowProps) => {
         </Tooltip>
       </div>
       <div>
-        <TeamBadge teamName={motionDomainMetadata.name} />
+        <TeamBadge name={motionDomainMetadata.name} />
       </div>
     </>
   );
