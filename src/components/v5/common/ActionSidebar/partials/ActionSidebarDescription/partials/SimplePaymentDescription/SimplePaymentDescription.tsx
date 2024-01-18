@@ -4,14 +4,13 @@ import { useFormContext } from 'react-hook-form';
 
 import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
-import useUserByAddress from '~hooks/useUserByAddress';
-import MaskedAddress from '~shared/MaskedAddress';
 import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { SimplePaymentFormValues } from '../../../forms/SimplePaymentForm/hooks';
 import CurrentUser from '../CurrentUser/CurrentUser';
+import RecipientUser from '../RecipientUser/RecipientUser';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.SimplePaymentDescription';
@@ -21,34 +20,12 @@ export const SimplePaymentDescription = () => {
   const { colony } = useColonyContext();
   const { amount: { amount, tokenAddress } = {}, recipient } = formValues;
 
-  const { error, loading, user } = useUserByAddress(recipient);
-
   const { nativeToken } = colony;
   const matchingColonyToken = colony.tokens?.items.find(
     (colonyToken) => colonyToken?.token?.tokenAddress === tokenAddress,
   );
 
-  if (error) {
-    return <>{formatText({ id: 'error.message' })}</>;
-  }
-
-  const getRecipientText = () => {
-    if (loading) {
-      return formatText({ id: 'actionSidebar.loading' });
-    }
-
-    if (!user) {
-      return formatText({
-        id: 'actionSidebar.metadataDescription.recipient',
-      });
-    }
-
-    if (user.profile) {
-      return user.profile.displayName;
-    }
-
-    return <MaskedAddress address={user.walletAddress} />;
-  };
+  const recipientUser = <RecipientUser userAddress={recipient} />;
 
   return (
     <>
@@ -61,7 +38,7 @@ export const SimplePaymentDescription = () => {
             : formatText({
                 id: 'actionSidebar.metadataDescription.tokens',
               }),
-          recipient: getRecipientText(),
+          recipient: recipientUser,
           amount: amount ? (
             <Numeral
               value={moveDecimal(
