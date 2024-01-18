@@ -49,7 +49,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
         </Link>
       ) : (
         <Link
-          to={`${CREATE_PROFILE_ROUTE}`}
+          to={CREATE_PROFILE_ROUTE}
           className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
         >
           <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
