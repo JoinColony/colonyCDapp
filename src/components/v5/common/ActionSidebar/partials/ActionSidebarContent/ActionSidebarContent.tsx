@@ -21,6 +21,7 @@ import {
 } from '../../hooks';
 import ActionButtons from '../ActionButtons';
 import ActionDescriptionMetadata from '../ActionDescriptionMetadata';
+import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription';
 import Motions from '../Motions';
 import PopularActions from '../PopularActions';
 
@@ -82,6 +83,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         />
         <div className="text-gray-900 text-md flex gap-1 break-all">
           <ActionDescriptionMetadata />
+          <ActionSidebarDescription />
         </div>
         <SidebarBanner />
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
