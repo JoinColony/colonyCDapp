@@ -14,7 +14,7 @@ const displayName = 'v5.ColonyVersionWidget';
 
 const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
   status,
-  lastVersion,
+  latestVersion,
   currentVersion,
 }) => {
   const { formatMessage } = useIntl();
@@ -61,12 +61,12 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
         />
 
         <div className={styles.wrapper}>
-          {formatMessage({ id: 'last.version' })}
+          {formatMessage({ id: 'latest.version' })}
           <div className={styles.text}>
             <span className="text-success-400">
               <Icon appearance={{ size: 'extraTiny' }} name="check-circle" />
             </span>
-            <span className={styles.value}>{lastVersion}</span>
+            <span className={styles.value}>{latestVersion}</span>
           </div>
         </div>
       </div>
