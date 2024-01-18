@@ -1,12 +1,11 @@
 import { DomainColor } from '~gql';
-import { getTeamColor } from '~utils/teams';
 
 const useColors = () => {
   const colors = Object.values(DomainColor).map((color) => {
     return {
       label: color,
       value: color,
-      color: getTeamColor(color),
+      color,
       isDisabled: false,
     };
   });

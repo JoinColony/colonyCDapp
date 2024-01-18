@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
+import { DomainColor } from '~gql';
 import { useColonyContext } from '~hooks';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { getTeamBadgeStyles, getTeamColor } from '~utils/teams';
 import PillsBase from '~v5/common/Pills/PillsBase';
 
@@ -16,9 +18,21 @@ const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title, defaultColor }) => {
   const selectedTeam = colony.domains?.items.find(
     (domain) => domain?.metadata?.name === title,
   );
-  const color = getTeamColor(defaultColor || selectedTeam?.metadata?.color);
+  const color = getTeamColor(
+    defaultColor || selectedTeam?.metadata?.color
+      ? getEnumValueFromKey(
+          DomainColor,
+          defaultColor || selectedTeam?.metadata?.color,
+        )
+      : undefined,
+  );
   const badgeColor = getTeamBadgeStyles(
-    defaultColor || selectedTeam?.metadata?.color,
+    defaultColor || selectedTeam?.metadata?.color
+      ? getEnumValueFromKey(
+          DomainColor,
+          defaultColor || selectedTeam?.metadata?.color,
+        )
+      : undefined,
   );
 
   return (

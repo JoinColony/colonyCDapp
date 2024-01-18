@@ -49,11 +49,12 @@ const TeamsSelect: FC<TeamSelectProps> = ({
     <div className="sm:relative w-full">
       {readonly || readonlyProp ? (
         <TeamBadge
-          teamName={
+          name={
             typeof selectedOption?.label === 'object'
               ? formatMessage(selectedOption?.label)
-              : selectedOption?.label
+              : selectedOption?.label || ''
           }
+          color={selectedOption?.color}
         />
       ) : (
         <>
@@ -72,11 +73,12 @@ const TeamsSelect: FC<TeamSelectProps> = ({
           >
             {selectedOption ? (
               <TeamBadge
-                teamName={
+                name={
                   typeof selectedOption.label === 'object'
                     ? formatMessage(selectedOption.label)
                     : selectedOption.label
                 }
+                color={selectedOption.color}
               />
             ) : (
               formatMessage({ id: 'actionSidebar.selectTeam' })

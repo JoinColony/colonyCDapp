@@ -89,7 +89,8 @@ export const useColonyActionsTableColumns = (
                 skeleton: loading,
               })}
               textClassName="line-clamp-1 break-all"
-              teamName={team?.name || ''.padEnd(6, '-')}
+              name={team?.name || ''.padEnd(6, '-')}
+              color={team?.color}
             />
           ) : null;
         },

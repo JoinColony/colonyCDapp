@@ -22,6 +22,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   renderItemWrapper = DEFAULT_ITEM_WRAPPER_RENDERER,
   withVerticalIcon,
   contentWrapperClassName,
+  dropdownPlacementProps,
 }) => {
   const [
     isMenuOpen,
@@ -30,7 +31,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
-  >([isMenuOpen]);
+  >([isMenuOpen], dropdownPlacementProps);
 
   if (!items.length) {
     throw new Error('There are no items added to the menu.');

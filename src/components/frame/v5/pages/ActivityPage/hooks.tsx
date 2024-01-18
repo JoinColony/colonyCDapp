@@ -1,13 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { useGetTotalColonyDomainActionsQuery } from '~gql';
-import {
-  useActionsCount,
-  useColonyContext,
-  useGetSelectedDomainFilter,
-} from '~hooks';
-import { notNull } from '~utils/arrays';
+import { useActivityData } from '~hooks/useActivityData';
 import { formatText } from '~utils/intl';
 import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
 
@@ -16,44 +10,12 @@ const getFormattedActionsCount = (count: number) =>
 
 export const useActivityFeedWidgets = (): WidthBoxItem[] => {
   const {
-    colony: { domains, colonyAddress },
-  } = useColonyContext();
-  const selectedDomain = useGetSelectedDomainFilter();
-
-  const { actionsCount: totalActions, loading: totalActionsLoading } =
-    useActionsCount({
-      domainId: selectedDomain?.nativeId,
-    });
-
-  const { actionsCount: recentActions, loading: recentActionsLoading } =
-    useActionsCount({
-      domainId: selectedDomain?.nativeId,
-      onlyRecent: true,
-    });
-
-  const { data: domainData } = useGetTotalColonyDomainActionsQuery({
-    variables: {
-      colonyId: colonyAddress,
-    },
-  });
-
-  const domainCountsResult =
-    domainData?.searchColonyActions?.aggregateItems[0]?.result || {};
-  const domainsActionCount =
-    domainCountsResult?.__typename === 'SearchableAggregateBucketResult'
-      ? domainCountsResult?.buckets?.filter(notNull) ?? []
-      : [];
-
-  const domainWithMaxActions = domainsActionCount.reduce(
-    (max, item) => (item.docCount > (max || 0) ? item : max),
-    null,
-  );
-
-  const mostActiveDomain = domains?.items
-    .filter(notNull)
-    .find((domain) => domain.id === domainWithMaxActions?.key || '');
-
-  const mostActiveDomainName = mostActiveDomain?.metadata?.name || '~';
+    totalActions,
+    recentActions,
+    mostActiveDomainName,
+    totalActionsLoading,
+    recentActionsLoading,
+  } = useActivityData();
 
   const tileClassName = 'text-gray-400';
   const contentClassName =
