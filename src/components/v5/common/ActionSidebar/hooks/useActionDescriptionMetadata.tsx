@@ -118,20 +118,9 @@ export const useActionDescriptionMetadata = () => {
 
           /*
           console.log('ekshn values', {
-            ...actionTitleValues,
-            [ActionTitleMessageKeys.Initiator]: (
-              <UserPopover
-                userName={user.profile?.displayName}
-                walletAddress={user.walletAddress}
-                aboutDescription={user.profile?.bio || ''}
-                user={user}
-                wrapperClassName="!inline-flex"
-              >
-                <span className="text-gray-900">
-                  {React.isValidElement(initiator) ? initiator : null}
-                </span>
-              </UserPopover>
-            ),
+            actionTitleValues,
+            formValues,
+            commonActionData,
           });
           */
 

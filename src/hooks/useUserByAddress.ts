@@ -1,11 +1,17 @@
 import { useGetUserByAddressQuery } from '~gql';
 import { Address } from '~types';
 
-const useUserByAddress = (address: Address) => {
+const useUserByAddress = (address?: Address) => {
   const { data, error, loading } = useGetUserByAddressQuery({
-    variables: {
-      address,
-    },
+    ...(address
+      ? {
+          variables: {
+            address,
+          },
+        }
+      : {
+          skip: true,
+        }),
     fetchPolicy: 'cache-and-network',
   });
 

@@ -6,6 +6,7 @@ import { ACTION, Action } from '~constants/actions';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 
 import MintTokensDescription from './partials/MintTokensDescription/MintTokensDescription';
+import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';
@@ -23,6 +24,14 @@ const ActionSidebarDescription = () => {
   switch (selectedAction) {
     case ACTION.MINT_TOKENS:
       return <MintTokensDescription amount={formValues?.amount?.amount} />;
+    case ACTION.SIMPLE_PAYMENT:
+      return (
+        <SimplePaymentDescription
+          amount={formValues?.amount?.amount}
+          recipientAddress={formValues?.recipient}
+          tokenAddress={formValues?.amount?.tokenAddress}
+        />
+      );
     default:
       return null;
   }
