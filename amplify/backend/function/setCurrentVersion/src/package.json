@@ -6,6 +6,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@types/aws-lambda": "^8.10.92",
-    "node-fetch": "^2.6.7"
+    "cross-fetch": "^4.0.0"
   }
 }

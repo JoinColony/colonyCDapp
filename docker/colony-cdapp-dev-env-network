@@ -1,4 +1,21 @@
-FROM colony-cdapp-dev-env/base:latest
+FROM node:16.20.2
+
+# Update the apt cache
+RUN apt-get clean
+RUN apt-get update
+
+# Adding various nicities and libraries we use through the container
+RUN apt-get install -y \
+  apt-utils \
+  locales \
+  build-essential \
+  curl \
+  file \
+  zip \
+  jq \
+  netcat \
+  libusb-1.0-0-dev \
+  libudev-dev
 
 ENV NETWORK_HASH=6a12f65ce0d0b271435fefdbc7d82242014ed15f
 

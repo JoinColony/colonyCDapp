@@ -1,3 +1,4 @@
+require('cross-fetch/polyfill');
 const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const {
   providers,

@@ -1,4 +1,4 @@
-const { default: fetch, Request } = require('node-fetch');
+const fetch = require('cross-fetch');
 
 const TokenType = {
   COLONY: 'COLONY',
@@ -31,13 +31,11 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
     }),
   };
 
-  const request = new Request(url, options);
-
   let body;
   let response;
 
   try {
-    response = await fetch(request);
+    response = await fetch(url, options);
     body = await response.json();
     return body;
   } catch (error) {

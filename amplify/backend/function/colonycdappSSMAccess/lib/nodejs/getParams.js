@@ -1,4 +1,4 @@
-const { default: fetch } = require('node-fetch');
+const fetch = require('cross-fetch');
 
 const AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN;
 const ENV = process.env.ENV;

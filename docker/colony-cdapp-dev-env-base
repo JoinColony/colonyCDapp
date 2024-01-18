@@ -1,4 +1,4 @@
-FROM node:16.16.0
+FROM node:20.11.0-buster
 
 USER root
 
@@ -15,7 +15,7 @@ RUN apt-get install -y \
   file \
   zip \
   jq \
-  netcat \
+  netcat-openbsd \
   libusb-1.0-0-dev \
   libudev-dev
 
@@ -34,9 +34,6 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto
 # Reconfigure locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN locale-gen
-
-# Install a certain version of NPM
-RUN npm install --location=global --registry=https://registry.npmjs.org npm@8.11
 
 # Amplify needs a specific version of python for opensearch
 ARG PYTHON_VERSION=3.8.18

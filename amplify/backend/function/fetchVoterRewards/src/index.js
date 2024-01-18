@@ -1,3 +1,4 @@
+require('cross-fetch/polyfill');
 const {
   graphqlRequest,
   getVoterRewardRange,

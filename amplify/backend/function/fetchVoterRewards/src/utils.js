@@ -4,7 +4,7 @@ const {
   Network,
   Extension,
 } = require('@colony/colony-js');
-const { default: fetch, Request } = require('node-fetch');
+const fetch = require('cross-fetch');
 
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
@@ -107,13 +107,11 @@ const graphqlRequest = async (queryOrMutation, variables) => {
     }),
   };
 
-  const request = new Request(graphqlURL, options);
-
   let body;
   let response;
 
   try {
-    response = await fetch(request);
+    response = await fetch(graphqlURL, options);
     body = await response.json();
     return body;
   } catch (error) {

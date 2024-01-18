@@ -13,11 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     # Job steps
     steps:
-      - name: 'Setup node'
+      - uses: actions/checkout@v1
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.16
-      - uses: actions/checkout@v1
+          node-version-file: '.nvmrc'
+          cache: 'npm'
       - name: Install dependencies
         # 👇 Install dependencies
         run: npm install
