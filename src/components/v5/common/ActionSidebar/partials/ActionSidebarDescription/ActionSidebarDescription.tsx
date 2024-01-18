@@ -6,8 +6,9 @@ import { ACTION, Action } from '~constants/actions';
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 
 import CreateDecisionDescription from './partials/CreateDecisionDescription/CreateDecisionDescription';
-import CreateNewDomainDescription from './partials/CreateNewDomain/CreateNewDomain';
+import CreateNewDomainDescription from './partials/CreateNewDomainDescription/CreateNewDomainDescription';
 import EditColonyDetailsDescription from './partials/EditColonyDetailsDescription/EditColonyDetailsDescription';
+import EditDomainDescription from './partials/EditDomainDescription/EditDomainDescription';
 import MintTokensDescription from './partials/MintTokensDescription/MintTokensDescription';
 import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
 
@@ -30,6 +31,8 @@ const ActionSidebarDescription = () => {
       return <CreateNewDomainDescription />;
     case ACTION.EDIT_COLONY_DETAILS:
       return <EditColonyDetailsDescription />;
+    case ACTION.EDIT_EXISTING_TEAM:
+      return <EditDomainDescription />;
     default:
       return null;
   }
