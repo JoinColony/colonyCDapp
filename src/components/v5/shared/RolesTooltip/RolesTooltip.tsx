@@ -5,7 +5,6 @@ import { USER_ROLE, USER_ROLES } from '~constants/permissions';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
-import Link from '~v5/shared/Link';
 
 import { RolesTooltipProps } from './types';
 
@@ -13,25 +12,18 @@ const RolesTooltip: FC<RolesTooltipProps> = ({
   role,
   roleDescription,
   tooltipProps,
-  learnMoreProps: { link, label } = {},
 }) => {
   return (
     <Tooltip
       tooltipContent={
         <>
-          {roleDescription ??
+          {roleDescription ||
             formatText({ id: 'role.description' }, { role: role.name })}
-          <ul className="list-disc font-medium pl-4 mb-4">
+          <ul className="list-disc font-medium pl-4">
             {role.permissions.map((permission) => (
               <li key={permission}>{ColonyRole[permission]}</li>
             ))}
           </ul>
-          <Link
-            to="https://docs.colony.io/learn/advanced-concepts/permissions"
-            {...link}
-          >
-            {label ?? formatText({ id: 'learn.more' })}
-          </Link>
         </>
       }
       {...tooltipProps}

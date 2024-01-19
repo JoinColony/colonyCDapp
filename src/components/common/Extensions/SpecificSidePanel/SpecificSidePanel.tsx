@@ -87,9 +87,9 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               title={developer.title}
               description={developer.developer}
             />
-            <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
-                {formatText({ id: 'extensionsPage.permissions' })}
+            <div className={styles.panelRow}>
+              <div className={styles.panelTitle}>
+                {formatText({ id: 'extensionsPage.permission' })}
               </div>
               <RolesTooltip role={getRole(permissions)} />
             </div>

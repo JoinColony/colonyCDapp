@@ -98,7 +98,7 @@ const MemberCard: FC<MemberCardProps> = ({
           )}
           {role && (
             <div className="ml-auto">
-              <RolesTooltip {...{ role }} />
+              <RolesTooltip role={role} />
             </div>
           )}
         </div>
