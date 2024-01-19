@@ -8,8 +8,6 @@ import { useTransactionsListObserver } from './hooks';
 import TransactionList from './partials/TransactionList';
 import { TransactionsProps } from './types';
 
-import styles from './TransactionsTab.css';
-
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 
 const TransactionsTab: FC<TransactionsProps> = () =>
@@ -60,20 +58,15 @@ const TransactionsTab: FC<TransactionsProps> = () =>
         <p className="heading-5 mb-2.5 sm:mb-0.5">
           {formatText({ id: 'transactions' })}
         </p>
-        <div
-          id="transactionsListContainer"
-          className={styles.transactionsListContainer}
-        >
-          {isEmpty ? (
-            <EmptyContent
-              title={{ id: 'empty.content.title.transactions' }}
-              description={{ id: 'empty.content.subtitle.transactions' }}
-              icon="binoculars"
-            />
-          ) : (
-            <TransactionList />
-          )}
-        </div>
+        {isEmpty ? (
+          <EmptyContent
+            title={{ id: 'empty.content.title.transactions' }}
+            description={{ id: 'empty.content.subtitle.transactions' }}
+            icon="binoculars"
+          />
+        ) : (
+          <TransactionList />
+        )}
       </div>
     );
   };
