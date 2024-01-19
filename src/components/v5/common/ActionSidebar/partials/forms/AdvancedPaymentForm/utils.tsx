@@ -1,13 +1,4 @@
-import { DeepPartial } from 'utility-types';
-
-import { ActionTitleMessageKeys } from '~common/ColonyActions/helpers/getActionTitleValues';
-import { ColonyActionType } from '~gql';
-import { formatText } from '~utils/intl';
-import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
-import { DescriptionMetadataGetter } from '~v5/common/ActionSidebar/types';
-
-import { AdvancedPaymentFormValues } from './hooks';
-
+/* @NOTE this is just docs for when we implement advanced payments and need a reference for the form description
 const getRecipientsText = (paymentsCount: number): string | undefined => {
   switch (paymentsCount) {
     case 0:
@@ -63,7 +54,6 @@ const getTokensText = (
   }
 };
 
-// @NOTE this is just docs for when we implement advanced payments and need a reference for the form description
 export const advancedPaymentDescriptionMetadataGetter: DescriptionMetadataGetter<
   DeepPartial<AdvancedPaymentFormValues>
 > = async ({ payments, decisionMethod }, { getActionTitleValues }) => {
@@ -83,3 +73,4 @@ export const advancedPaymentDescriptionMetadataGetter: DescriptionMetadataGetter
     },
   );
 };
+*/
