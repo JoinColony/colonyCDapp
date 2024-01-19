@@ -32,7 +32,7 @@ let networkAddress;
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qa' || ENV === 'sc' || ENV === 'prod') {
+  if (ENV === 'qa' || ENV === 'prod') {
     const { getParams } = require('/opt/nodejs/getParams');
     [networkAddress, apiKey, graphqlURL, rpcURL, network] = await getParams([
       'networkContractAddress',
