@@ -12,10 +12,13 @@ import ActionFormRow from '../ActionFormRow';
 
 import { ACTION_TYPE_FIELD_NAME } from './consts';
 import { useActionsList } from './hooks';
-import { ActionTypeSelectProps } from './types';
 import { translateAction } from './utils';
 
 const displayName = 'v5.common.ActionTypeSelect';
+
+interface ActionTypeSelectProps {
+  className?: string;
+}
 
 const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
   const actionsList = useActionsList();
