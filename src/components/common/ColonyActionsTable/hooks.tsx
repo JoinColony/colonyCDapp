@@ -276,12 +276,14 @@ export const useActionsTableData = (pageSize: number) => {
 export const useRenderRowLink = (
   loading: boolean,
 ): RenderCellWrapper<ActivityFeedColonyAction> => {
-  return (className, content, { cell, row, renderDefault }) =>
+  const cellWrapperClassName = '!pt-[.5625rem] !pb-2';
+
+  return (className, content, { cell, row }) =>
     cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID || loading ? (
-      renderDefault()
+      <div className={clsx(className, cellWrapperClassName)}>{content}</div>
     ) : (
       <Link
-        className={clsx(className, '!py-[.5625rem]')}
+        className={clsx(className, cellWrapperClassName)}
         to={setQueryParamOnUrl(
           window.location.search,
           TX_SEARCH_PARAM,
