@@ -42,7 +42,7 @@ const setEnvVariables = async (network) => {
     [apiKey, graphqlURL, rpcURL] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
-      'chainRpcEndpoint',
+      chainRpcParam,
     ]);
   }
 };

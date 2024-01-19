@@ -67,8 +67,10 @@ const getRpcUrlParamName = (network) => {
       chainRpcParam = 'bnbRpcEndpoint';
       break;
     case ETHEREUM_NETWORK.shortName:
-    default:
       chainRpcParam = 'ethRpcEndpoint';
+      break;
+    default:
+      chainRpcParam = 'chainRpcEndpoint';
       break;
   }
 
