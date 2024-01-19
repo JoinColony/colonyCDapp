@@ -33,7 +33,7 @@ export const WithCustomClasses: StoryObj<typeof MenuWithSections> = {
       {
         key: '2',
         content: 'Section 2',
-        className: 'bg-red-100',
+        className: 'bg-negative-100',
       },
     ],
   },

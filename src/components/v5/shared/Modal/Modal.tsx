@@ -48,7 +48,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           className={clsx(
             'flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-content mb-4 border-gray-200 flex-shrink-0',
             {
-              'border-red-200 text-negative-400': isWarning,
+              'border-negative-200 text-negative-400': isWarning,
             },
           )}
         >

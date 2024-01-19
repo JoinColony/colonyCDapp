@@ -33,7 +33,8 @@ function TileRadioButtons<TValue = string>({
               duration-75
             `,
             {
-              'text-white bg-gray-900 border-gray-900': checked && !disabled,
+              'text-base-white bg-gray-900 border-gray-900':
+                checked && !disabled,
               'text-gray-300 border-gray-900': disabled,
               'text-gray-900 border-gray-300 md:hover:border-gray-900':
                 !checked && !disabled,

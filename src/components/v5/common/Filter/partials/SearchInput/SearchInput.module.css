@@ -7,7 +7,7 @@
 }
 
 .searchButton {
-  @apply z-[1] text-white sm:text-gray-500 flex items-center transition-all duration-normal justify-center h-full absolute top-0 right-0 px-4 bg-blue-400 rounded-lg;
+  @apply z-[1] text-base-white sm:text-gray-500 flex items-center transition-all duration-normal justify-center h-full absolute top-0 right-0 px-4 bg-blue-400 rounded-lg;
 }
 
 .icon {
