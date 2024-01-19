@@ -21,7 +21,7 @@ const CancelTransaction: FC<CancelTransactionProps> = ({
         <div className="flex gap-2">
           <TextButton
             type="button"
-            className="text-red-400"
+            className="text-negative-400"
             onClick={handleCancelTransaction}
           >
             {formatMessage({ id: 'button.yes' })}

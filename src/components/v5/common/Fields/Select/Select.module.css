@@ -27,7 +27,7 @@
 }
 
 .wrapper :global(.select__menu) {
-  @apply bg-red-500;
+  @apply bg-negative-400;
 }
 
 .menu {

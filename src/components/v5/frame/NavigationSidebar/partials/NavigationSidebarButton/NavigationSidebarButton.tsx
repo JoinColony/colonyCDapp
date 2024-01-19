@@ -43,8 +43,9 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           md:transition-all
         `,
         {
-          'text-blue-400 md:text-white md:bg-gray-900': isActive && !isTablet,
-          'text-gray-900 md:hover:bg-gray-900 md:hover:text-white':
+          'text-blue-400 md:text-base-white md:bg-gray-900':
+            isActive && !isTablet,
+          'text-gray-900 md:hover:bg-gray-900 md:hover:text-base-white':
             !isActive && !isHighlighted,
           'bg-blue-100 text-blue-400': isHighlighted,
         },
