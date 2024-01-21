@@ -7,7 +7,6 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { flushSync } from 'react-dom';
 
 import { ChartData, DonutChartProps, UseDonutChartReturnType } from './types';
 
@@ -129,49 +128,22 @@ export const useDonutChart = ({
   );
 
   const handleMouseOver = useCallback(
-    (event, item?: ChartData | null) => {
+    (event: React.MouseEvent | React.Touch, item?: ChartData | null) => {
       if (item) {
-        /**
-         * @NOTE: We're using flushSync to ensure the DOM is updated
-         * (and specifically the tooltip contents) before we calculate
-         * the tooltip position
-         */
-        flushSync(() => {
-          updateHoveredSegment(item);
-        });
+        updateHoveredSegment(item);
       }
 
-      const tooltipWidth = tooltipRef.current
-        ? tooltipRef.current.offsetWidth
-        : 0;
-      const tooltipHeight = tooltipRef.current
-        ? tooltipRef.current.offsetHeight
-        : 0;
-
-      // Adjust the left and top values to prevent the tooltip from going off screen
-      const left =
-        chartRef.current !== null &&
-        Math.min(
-          chartRef.current.offsetWidth - tooltipWidth / 2,
-          event.clientX - tooltipWidth / 2,
-          event.clientX -
-            chartRef.current.getBoundingClientRect().left -
-            tooltipWidth / 2,
-        );
-
-      const top =
-        chartRef.current !== null &&
-        event.clientY -
-          chartRef.current.getBoundingClientRect().top -
-          tooltipHeight -
-          10;
+      /**
+       * Set the tooltip position to the mouse position relative to the chart
+       */
+      const { left: chartLeft = 0, top: chartTop = 0 } =
+        chartRef.current?.getBoundingClientRect() ?? {};
+      const left = event.clientX - chartLeft;
+      const top = event.clientY - chartTop;
 
       setTooltipStyle({
         left: `${left}px`,
         top: `${top}px`,
-        transform: `translate(-50%, -100%) translate(${
-          event.offsetX - size / 2
-        }px, ${event.offsetY - size / 2}px)`, // Center the tooltip above the cursor
       });
     },
     [updateHoveredSegment],
@@ -219,32 +191,6 @@ export const useDonutChart = ({
     );
   };
 
-  const getTooltipPosition = useCallback(
-    (value: number, total: number, index: number) => {
-      const angle = (value / total) * 360;
-      const startAngle =
-        index === 0
-          ? 0
-          : chartData
-              .slice(0, index)
-              .reduce((acc, item) => acc + (item.value / total) * 360, 0);
-      const middleAngle = startAngle + angle / 2;
-      const radius = size / 4; // Positioning tooltip in the middle of the donut width
-      const position = polarToCartesian(
-        size / 2,
-        size / 2,
-        radius,
-        middleAngle,
-      );
-
-      return {
-        left: position.x,
-        top: position.y,
-      };
-    },
-    [chartData, polarToCartesian],
-  );
-
   const renderMultipleSegments = useCallback(() => {
     return chartData.map((item, index) => {
       // Calculate the path for this segment
@@ -268,13 +214,6 @@ export const useDonutChart = ({
             fill={fillColor}
             stroke={strokeColor}
             strokeWidth={3}
-            onMouseEnter={() => {
-              updateHoveredSegment(item);
-              setTooltipStyle(
-                getTooltipPosition(item.value, totalValue, index),
-              );
-            }}
-            onMouseLeave={() => updateHoveredSegment(null)}
             className={clsx(
               'cursor-pointer transition-opacity duration-300 ease-in-out',
               {
@@ -294,8 +233,6 @@ export const useDonutChart = ({
     hoveredSegment?.id,
     handleMouseOver,
     handleTouch,
-    updateHoveredSegment,
-    getTooltipPosition,
   ]);
 
   return {
