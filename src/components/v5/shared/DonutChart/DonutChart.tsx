@@ -29,10 +29,10 @@ const DonutChart: FC<DonutChartProps> = ({
           ? renderSingleSegment()
           : renderMultipleSegments()}
       </svg>
-      {hoveredSegment && (
+      {tooltipStyle && (
         <div
           ref={tooltipRef}
-          className="py-2 px-4 text-base-white vertical-align bg-gray-900 rounded-full shadow-lg -mt-2.5 absolute pointer-events-none z-10 left-[9999px] top-[9999px]"
+          className="py-2 px-4 text-base-white vertical-align bg-gray-900 rounded-full shadow-lg -mt-2.5 absolute pointer-events-none z-10 translate-x-[-50%] translate-y-[-100%]"
           style={tooltipStyle}
         >
           <div className="flex items-center justify-center text-xs md:text-sm font-bold text-center">
