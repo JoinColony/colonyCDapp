@@ -57,13 +57,12 @@ export const useSubmitButtonDisabled = () => {
     name: ACTION_TYPE_FIELD_NAME,
   });
 
-  if (selectedAction === ACTION.UNLOCK_TOKEN && isNativeTokenUnlocked) {
-    return true;
+  switch (selectedAction) {
+    case ACTION.UNLOCK_TOKEN:
+      return isNativeTokenUnlocked;
+    case ACTION.UPGRADE_COLONY_VERSION:
+      return !canUpgrade;
+    default:
+      return false;
   }
-
-  if (selectedAction === ACTION.UPGRADE_COLONY_VERSION && !canUpgrade) {
-    return true;
-  }
-
-  return false;
 };
