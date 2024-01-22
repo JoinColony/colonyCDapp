@@ -54,7 +54,7 @@ exports.handler = async (event) => {
     Extension.VotingReputation,
   );
 
-  const blockTime = (await getBlockTime(networkClient.provider, 'latest')) || 0;
+  const blockTime = (await getBlockTime('latest', networkClient.provider)) || 0;
 
   const escalationPeriod = await votingReputationClient.getEscalationPeriod();
 
