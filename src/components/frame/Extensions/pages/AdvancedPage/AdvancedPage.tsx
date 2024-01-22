@@ -48,7 +48,7 @@ const AdvancedPage: FC = () => {
         )}
       </div>
       <ColonyVersionWidget
-        currentVersion={version || 0}
+        currentVersion={version}
         latestVersion={colonyContractVersion}
         status={canUpgrade ? 'error' : 'success'}
       />
