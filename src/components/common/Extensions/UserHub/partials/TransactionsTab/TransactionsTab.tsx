@@ -58,15 +58,17 @@ const TransactionsTab: FC<TransactionsProps> = () =>
         <p className="heading-5 mb-2.5 sm:mb-0.5">
           {formatText({ id: 'transactions' })}
         </p>
-        {isEmpty ? (
-          <EmptyContent
-            title={{ id: 'empty.content.title.transactions' }}
-            description={{ id: 'empty.content.subtitle.transactions' }}
-            icon="binoculars"
-          />
-        ) : (
-          <TransactionList />
-        )}
+        <div id="transactionsListContainer">
+          {isEmpty ? (
+            <EmptyContent
+              title={{ id: 'empty.content.title.transactions' }}
+              description={{ id: 'empty.content.subtitle.transactions' }}
+              icon="binoculars"
+            />
+          ) : (
+            <TransactionList />
+          )}
+        </div>
       </div>
     );
   };
