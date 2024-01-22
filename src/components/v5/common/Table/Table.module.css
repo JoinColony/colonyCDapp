@@ -1,0 +1,27 @@
+.table {
+  width: 100%;
+  border: 1px solid theme(colors.gray.200);
+  border-radius: theme(borderRadius.lg);
+  border-collapse: separate;
+
+  tr {
+    border-bottom: 1px solid theme(colors.gray.200);
+  }
+
+  th {
+    padding: 0.625rem 1.125rem;
+    background-color: theme(colors.gray.50);
+    font-size: theme(fontSize.sm);
+    font-weight: theme(fontWeight.normal);
+    text-align: left;
+    color: theme(textColor.gray.600);
+  }
+
+  td {
+    padding: 0.625rem 1.125rem;
+    border-bottom: 1px solid theme(colors.gray.200);
+    background-color: theme(colors.base.white);
+    font-size: theme(fontSize.md);
+    color: theme(textColor.gray.900);
+  }
+}

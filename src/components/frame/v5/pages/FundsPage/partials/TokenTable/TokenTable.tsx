@@ -13,7 +13,7 @@ import {
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
 import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';
-import Table from '~v5/common/Table';
+import TableOld from '~v5/common/TableOld';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import MenuContainer from '~v5/shared/MenuContainer';
 import Modal from '~v5/shared/Modal';
@@ -102,7 +102,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           </div>
         }
       >
-        <Table
+        <TableOld
           data={currentClaims}
           state={{ sorting }}
           onSortingChange={setSorting}

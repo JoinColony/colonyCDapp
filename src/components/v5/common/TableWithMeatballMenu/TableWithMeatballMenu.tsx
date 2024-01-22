@@ -1,7 +1,7 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
-import Table from '~v5/common/Table';
+import TableOld from '../TableOld';
 
 import { TableWithMeatballMenuProps } from './types';
 import { makeMenuColumn } from './utils';
@@ -39,7 +39,7 @@ const TableWithMeatballMenu = <T,>({
   );
 
   return (
-    <Table<T>
+    <TableOld<T>
       verticalOnMobile={verticalOnMobile}
       getRowClassName={() =>
         'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9'

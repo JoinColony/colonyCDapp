@@ -68,7 +68,9 @@ export const useBalanceTableColumns = (
           return (
             <TokenAvatar
               token={row.original.token}
-              tokenAddress={nativeToken.tokenAddress}
+              isTokenNative={
+                row.original.token.tokenAddress === nativeToken.tokenAddress
+              }
               nativeTokenStatus={nativeTokenStatus}
             />
           );

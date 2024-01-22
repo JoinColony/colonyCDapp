@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
 import { USER_ROLE } from '~constants/permissions';
-import Table from '~v5/common/Table';
+import TableOld from '~v5/common/TableOld';
 
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from './consts';
 import {
@@ -43,12 +43,12 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   return (
     <div className={className}>
       {role !== USER_ROLE.Custom ? (
-        <Table<PermissionsTableModel>
+        <TableOld<PermissionsTableModel>
           verticalOnMobile={false}
           {...permissionsTableProps}
         />
       ) : (
-        <Table<CustomPermissionTableModel>
+        <TableOld<CustomPermissionTableModel>
           className={clsx(
             'sm:[&_td>div]:py-2 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td:nth-child(2)>div]:px-0 sm:[&_th:nth-child(2)]:px-0 sm:[&_tr>td]:border-none',
             {

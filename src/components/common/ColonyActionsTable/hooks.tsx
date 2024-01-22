@@ -31,7 +31,6 @@ import { formatText } from '~utils/intl';
 import { setQueryParamOnUrl } from '~utils/urls';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
-import { RenderCellWrapper } from '~v5/common/Table/types';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts';
 import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
 
@@ -273,9 +272,7 @@ export const useActionsTableData = (pageSize: number) => {
   };
 };
 
-export const useRenderRowLink = (
-  loading: boolean,
-): RenderCellWrapper<ActivityFeedColonyAction> => {
+export const useRenderRowLink = (loading: boolean) => {
   const cellWrapperClassName = '!pt-[.5625rem] !pb-2';
 
   return (className, content, { cell, row }) =>

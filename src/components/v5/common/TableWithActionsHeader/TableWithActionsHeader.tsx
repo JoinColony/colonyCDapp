@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 
-import Table from '../Table/Table';
-import { TableProps } from '../Table/types';
+import TableOld from '../TableOld';
+import { TableProps } from '../TableOld/types';
 
 import { TableWithActionsHeaderProps } from './types';
 
@@ -18,7 +18,7 @@ function TableWithActionsHeader<
   children,
   emptyContent,
   tableProps,
-  tableComponent: TableComponent = Table,
+  tableComponent: TableComponent = TableOld,
 }: PropsWithChildren<TableWithActionsHeaderProps<TData, TProps>>) {
   return (
     <>

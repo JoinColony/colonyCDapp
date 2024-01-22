@@ -18,11 +18,10 @@ const displayName = 'v5.pages.BalancePage.partials.TokenAvatar';
 
 const TokenAvatar: FC<TokenAvatarProps> = ({
   token,
-  tokenAddress,
+  isTokenNative,
   nativeTokenStatus,
 }) => {
   const isMobile = useMobile();
-  const isTokenNative = token.tokenAddress === tokenAddress;
 
   const [
     isTokenModalOpened,
