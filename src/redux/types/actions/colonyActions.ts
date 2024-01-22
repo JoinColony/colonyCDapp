@@ -298,6 +298,23 @@ export type ColonyActionsActionTypes =
       object
     >
   | UniqueActionType<
+      ActionTypes.ACTION_ADD_VERIFIED_MEMBERS,
+      {
+        colonyAddress: Address;
+        colonyName: string;
+        members: string[];
+        annotationMessage?: string;
+        customActionTitle?: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_ADD_VERIFIED_MEMBERS_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.ACTION_ADD_VERIFIED_MEMBERS_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
       ActionTypes.ACTION_MANAGE_EXISTING_SAFES,
       {
         colony: Colony;
