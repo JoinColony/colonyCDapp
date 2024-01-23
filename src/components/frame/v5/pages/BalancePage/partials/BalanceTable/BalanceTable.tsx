@@ -9,9 +9,11 @@ import CurrencyConversion from '~shared/CurrencyConversion';
 import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import EmptyContent from '~v5/common/EmptyContent';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import Table from '~v5/common/Table';
+import Button from '~v5/shared/Button';
 import CopyWallet from '~v5/shared/CopyWallet';
 
 import BalanceModal from '../BalanceModal';
@@ -52,82 +54,109 @@ const BalanceTable = () => {
 
   return (
     <>
-      <div className="overflow-x-auto max-w-full">
-        <Table>
-          <tr>
-            <th>{formatText({ id: 'table.row.asset' })}</th>
-            <th className="hidden sm:table-cell">
-              {formatText({ id: 'table.row.symbol' })}
-            </th>
-            <th className="hidden sm:table-cell">
-              {formatText({ id: 'table.row.type' })}
-            </th>
-            <th>
-              <button
-                type="button"
-                className="flex items-center gap-1"
-                onClick={() => {
-                  handleSortFieldClick(BalanceTableSortFields.BALANCE);
-                }}
-              >
-                {formatText({ id: 'table.row.balance' })}
-                {getSortArrow(BalanceTableSortFields.BALANCE)}
-              </button>
-            </th>
-
-            <th> </th>
-          </tr>
-          <tbody>
-            {data.map(({ balance, token }) => {
-              const isTokenNative =
-                token.tokenAddress === nativeToken.tokenAddress;
-
-              return (
-                <tr key={token.name}>
-                  <td className="w-full">
-                    <TokenAvatar
-                      token={token}
-                      isTokenNative={isTokenNative}
-                      nativeTokenStatus={nativeTokenStatus ?? undefined}
-                    />
-                  </td>
-                  <td className="hidden sm:table-cell">{token.symbol}</td>
-                  <td className="hidden sm:table-cell">
-                    {isTokenNative && (
-                      <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
-                        {formatText({ id: 'token.type.native' })}
-                      </TokenTypeBadge>
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap">
-                    <div className="flex flex-col justify-center">
-                      <Numeral
-                        value={balance}
-                        decimals={getTokenDecimalsWithFallback(token.decimals)}
-                        className="text-1 text-gray-900"
-                        suffix={token.symbol}
-                      />
-                      <CurrencyConversion
-                        tokenBalance={balance}
-                        contractAddress={token.tokenAddress}
-                        className="text-gray-600 !text-sm"
-                      />
-                    </div>
-                  </td>
-                  <td className="w-6">
-                    <TokenMeatballMenu
-                      token={token}
-                      toggleAddFundsModalOn={toggleAddFundsModalOn}
-                      isTokenNative={isTokenNative}
-                      nativeTokenStatus={nativeTokenStatus}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+      <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col pb-[.875rem]">
+        <h4 className="heading-5">
+          {formatText({ id: 'balancePage.table.title' })}
+        </h4>
+        <div className="flex items-center mt-2.5 sm:mt-0">
+          <Button
+            mode="primarySolid"
+            onClick={toggleAddFundsModalOn}
+            size="small"
+          >
+            {formatText({ id: 'balancePage.table.addFunds' })}
+          </Button>
+        </div>
       </div>
+
+      {data.length === 0 ? (
+        <EmptyContent
+          className="border rounded-b-lg border-gray-200"
+          icon="binoculars"
+          title={{ id: 'balancePage.table.emptyTitle' }}
+          description={{ id: 'balancePage.table.emptyDescription' }}
+          withoutButtonIcon
+        />
+      ) : (
+        <div className="overflow-x-auto max-w-full">
+          <Table>
+            <tr>
+              <th>{formatText({ id: 'table.row.asset' })}</th>
+              <th className="hidden sm:table-cell">
+                {formatText({ id: 'table.row.symbol' })}
+              </th>
+              <th className="hidden sm:table-cell">
+                {formatText({ id: 'table.row.type' })}
+              </th>
+              <th>
+                <button
+                  type="button"
+                  className="flex items-center gap-1"
+                  onClick={() => {
+                    handleSortFieldClick(BalanceTableSortFields.BALANCE);
+                  }}
+                >
+                  {formatText({ id: 'table.row.balance' })}
+                  {getSortArrow(BalanceTableSortFields.BALANCE)}
+                </button>
+              </th>
+
+              <th> </th>
+            </tr>
+            <tbody>
+              {data.map(({ balance, token }) => {
+                const isTokenNative =
+                  token.tokenAddress === nativeToken.tokenAddress;
+
+                return (
+                  <tr key={token.name}>
+                    <td className="w-full">
+                      <TokenAvatar
+                        token={token}
+                        isTokenNative={isTokenNative}
+                        nativeTokenStatus={nativeTokenStatus ?? undefined}
+                      />
+                    </td>
+                    <td className="hidden sm:table-cell">{token.symbol}</td>
+                    <td className="hidden sm:table-cell">
+                      {isTokenNative && (
+                        <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
+                          {formatText({ id: 'token.type.native' })}
+                        </TokenTypeBadge>
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap">
+                      <div className="flex flex-col justify-center">
+                        <Numeral
+                          value={balance}
+                          decimals={getTokenDecimalsWithFallback(
+                            token.decimals,
+                          )}
+                          className="text-1 text-gray-900"
+                          suffix={token.symbol}
+                        />
+                        <CurrencyConversion
+                          tokenBalance={balance}
+                          contractAddress={token.tokenAddress}
+                          className="text-gray-600 !text-sm"
+                        />
+                      </div>
+                    </td>
+                    <td className="w-6">
+                      <TokenMeatballMenu
+                        token={token}
+                        toggleAddFundsModalOn={toggleAddFundsModalOn}
+                        isTokenNative={isTokenNative}
+                        nativeTokenStatus={nativeTokenStatus}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </div>
+      )}
       <BalanceModal
         isOpen={isAddFundsModalOpened}
         onClose={toggleAddFundsModalOff}
