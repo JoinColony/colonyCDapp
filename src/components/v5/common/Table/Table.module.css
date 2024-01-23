@@ -2,6 +2,7 @@
   width: 100%;
   border: 1px solid theme(colors.gray.200);
   border-radius: theme(borderRadius.lg);
+  table-layout: auto;
   border-collapse: separate;
 
   tr {
@@ -10,6 +11,7 @@
 
   th {
     padding: 0.625rem 1.125rem;
+    height: 100%;
     background-color: theme(colors.gray.50);
     font-size: theme(fontSize.sm);
     font-weight: theme(fontWeight.normal);
@@ -19,6 +21,7 @@
 
   td {
     padding: 0.625rem 1.125rem;
+    height: 100%;
     border-bottom: 1px solid theme(colors.gray.200);
     background-color: theme(colors.base.white);
     font-size: theme(fontSize.md);

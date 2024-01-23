@@ -1,0 +1,1 @@
+export const DEFAULT_BALANCE_DOMAIN_ID = 1;

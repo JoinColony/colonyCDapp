@@ -1,21 +1,24 @@
+import { BigNumber } from 'ethers';
+
 import { TokenFragment } from '~gql';
 import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
-import { getFormattedNumeralValue } from '~shared/Numeral';
-import { convertToDecimal } from '~utils/convertToDecimal';
-import {
-  getBalanceForTokenAndDomain,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
+import { TableSortDirection } from '~hooks/useTableSort';
+import { getBalanceForTokenAndDomain } from '~utils/tokens';
+
+import { DEFAULT_BALANCE_DOMAIN_ID } from './consts';
+import { BalanceTableSort, BalanceTableSortFields } from './types';
 
 interface TokenBalance {
   token: TokenFragment;
-  balance: string | JSX.Element;
+  balance: BigNumber;
 }
-export interface UseTokenBalancesResult {
+interface UseTokenBalancesResult {
   data: TokenBalance[];
 }
 
-export const useTokenBalances = (): UseTokenBalancesResult => {
+export const useTokenBalances = (
+  sort: BalanceTableSort | null,
+): UseTokenBalancesResult => {
   const {
     colony: { tokens, balances },
   } = useColonyContext();
@@ -27,28 +30,19 @@ export const useTokenBalances = (): UseTokenBalancesResult => {
         return tokenBalances;
       }
 
-      const currentTokenBalance =
-        getBalanceForTokenAndDomain(
-          balances,
-          item.token.tokenAddress,
-          selectedDomain ? Number(selectedDomain.nativeId) : undefined,
-        ) || 0;
-      const decimals = getTokenDecimalsWithFallback(item?.token.decimals);
-      const convertedValue = convertToDecimal(
-        currentTokenBalance,
-        decimals || 0,
-      );
-
-      const balance = getFormattedNumeralValue(
-        convertedValue,
-        currentTokenBalance,
+      const currentTokenBalance = getBalanceForTokenAndDomain(
+        balances,
+        item.token.tokenAddress,
+        selectedDomain
+          ? Number(selectedDomain.nativeId)
+          : DEFAULT_BALANCE_DOMAIN_ID,
       );
 
       return [
         ...tokenBalances,
         {
           token: item.token,
-          balance,
+          balance: currentTokenBalance,
         },
       ];
     },
@@ -56,10 +50,22 @@ export const useTokenBalances = (): UseTokenBalancesResult => {
   );
 
   const sortedTokens = tokensData.sort((a, b) => {
-    // @NOTE this is due to the  getFormattedNumeralValue possibly returning JSX
-    if (typeof a.balance !== 'string' || typeof b.balance !== 'string')
-      return 0;
-    return parseInt(b.balance, 10) - parseInt(a.balance, 10);
+    let modifier = 1;
+    if (
+      sort !== null &&
+      sort.field === BalanceTableSortFields.BALANCE &&
+      sort.direction === TableSortDirection.ASC
+    ) {
+      modifier = -1;
+    }
+
+    if (a.balance.lt(b.balance)) {
+      return modifier * 1;
+    }
+    if (a.balance.gt(b.balance)) {
+      return modifier * -1;
+    }
+    return 0;
   });
 
   return {

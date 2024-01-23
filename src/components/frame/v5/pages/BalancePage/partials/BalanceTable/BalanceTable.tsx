@@ -1,194 +1,133 @@
-import {
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-} from '@tanstack/react-table';
-import clsx from 'clsx';
-import { uniqueId } from 'lodash';
-import React, { useState } from 'react';
+import { ArrowDown, ArrowUp } from 'phosphor-react';
+import React from 'react';
 
-import {
-  useColonyContext,
-  useGetSelectedDomainFilter,
-  useMobile,
-} from '~hooks';
+import { useColonyContext } from '~hooks';
 import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import useTableSort, { TableSortDirection } from '~hooks/useTableSort';
 import useToggle from '~hooks/useToggle';
 import CurrencyConversion from '~shared/CurrencyConversion';
 import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
-import {
-  getBalanceForTokenAndDomain,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens';
-// import { useSearchContext } from '~context/SearchContext';
-// import Filter from '~v5/common/Filter';
-import EmptyContent from '~v5/common/EmptyContent';
+import { getTokenDecimalsWithFallback } from '~utils/tokens';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
 import Table from '~v5/common/Table';
-import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
-import Button from '~v5/shared/Button';
 import CopyWallet from '~v5/shared/CopyWallet';
 
 import BalanceModal from '../BalanceModal';
 import TokenAvatar from '../TokenAvatar';
 
-import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
-import { BalanceTableFieldModel } from './types';
+import { TokenMeatballMenu } from './partials/TokenMeatballMenu';
+import { BalanceTableSortFields } from './types';
 import { useTokenBalances } from './useTokenBalances';
 
-const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
+const displayName = 'v5.pages.BalancePage.partials.BalanceTable';
 
 const BalanceTable = () => {
-  const selectedDomain = useGetSelectedDomainFilter();
   const {
-    colony: { balances, nativeToken, status, colonyAddress },
+    colony: { nativeToken, status, colonyAddress },
   } = useColonyContext();
+  const { sort, handleSortFieldClick } = useTableSort<BalanceTableSortFields>();
 
   const [
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
   ] = useToggle();
 
-  const { data } = useTokenBalances();
+  const { data } = useTokenBalances(sort);
   const { nativeToken: nativeTokenStatus } = status || {};
-
-  const { getMenuProps } = useGetTableMenuProps(
-    data,
-    toggleAddFundsModalOn,
-    nativeTokenStatus,
-    nativeToken,
-  );
-  const isMobile = useMobile();
-  // const { searchValue } = useSearchContext();
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [rowSelection, setRowSelection] = useState({});
-  const tokensDataLength = data.length;
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
-  const columns = useBalanceTableColumns(
-    nativeToken,
-    balances,
-    nativeTokenStatus,
-    Number(selectedDomain?.nativeId) || undefined,
-  );
+  const getSortArrow = (field: BalanceTableSortFields) => {
+    if (sort === null || sort.field !== field) {
+      return null;
+    }
+
+    if (sort.direction === TableSortDirection.ASC) {
+      return <ArrowUp size={12} />;
+    }
+    return <ArrowDown size={12} />;
+  };
 
   return (
     <>
-      <Table>
-        <tr>
-          <th>{formatText({ id: 'table.row.asset' })}</th>
-          <th>{formatText({ id: 'table.row.symbol' })}</th>
-          <th>{formatText({ id: 'table.row.type' })}</th>
-          <th>{formatText({ id: 'table.row.balance' })}</th>
-        </tr>
-        <tbody>
-          {data.map(({ token }) => {
-            const isTokenNative =
-              token.tokenAddress === nativeToken.tokenAddress;
+      <div className="overflow-x-auto max-w-full">
+        <Table>
+          <tr>
+            <th>{formatText({ id: 'table.row.asset' })}</th>
+            <th className="hidden sm:table-cell">
+              {formatText({ id: 'table.row.symbol' })}
+            </th>
+            <th className="hidden sm:table-cell">
+              {formatText({ id: 'table.row.type' })}
+            </th>
+            <th>
+              <button
+                type="button"
+                className="flex items-center gap-1"
+                onClick={() => {
+                  handleSortFieldClick(BalanceTableSortFields.BALANCE);
+                }}
+              >
+                {formatText({ id: 'table.row.balance' })}
+                {getSortArrow(BalanceTableSortFields.BALANCE)}
+              </button>
+            </th>
 
-            const currentTokenBalance = getBalanceForTokenAndDomain(
-              balances,
-              token.tokenAddress,
-              Number(selectedDomain?.nativeId) || undefined,
-            );
+            <th> </th>
+          </tr>
+          <tbody>
+            {data.map(({ balance, token }) => {
+              const isTokenNative =
+                token.tokenAddress === nativeToken.tokenAddress;
 
-            return (
-              <tr key={token.name}>
-                <td>
-                  <TokenAvatar
-                    token={token}
-                    isTokenNative={isTokenNative}
-                    nativeTokenStatus={nativeTokenStatus ?? undefined}
-                  />
-                </td>
-                <td>{token.symbol}</td>
-                <td>
-                  {isTokenNative && (
-                    <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
-                      {formatText({ id: 'token.type.native' })}
-                    </TokenTypeBadge>
-                  )}
-                </td>
-                <td>
-                  <div className="flex flex-col justify-center">
-                    <Numeral
-                      value={currentTokenBalance}
-                      decimals={getTokenDecimalsWithFallback(token.decimals)}
-                      className="text-1 text-gray-900"
-                      suffix={token.symbol}
+              return (
+                <tr key={token.name}>
+                  <td className="w-full">
+                    <TokenAvatar
+                      token={token}
+                      isTokenNative={isTokenNative}
+                      nativeTokenStatus={nativeTokenStatus ?? undefined}
                     />
-                    <CurrencyConversion
-                      tokenBalance={currentTokenBalance}
-                      contractAddress={token.tokenAddress}
-                      className="text-gray-600 !text-sm"
+                  </td>
+                  <td className="hidden sm:table-cell">{token.symbol}</td>
+                  <td className="hidden sm:table-cell">
+                    {isTokenNative && (
+                      <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
+                        {formatText({ id: 'token.type.native' })}
+                      </TokenTypeBadge>
+                    )}
+                  </td>
+                  <td className="whitespace-nowrap">
+                    <div className="flex flex-col justify-center">
+                      <Numeral
+                        value={balance}
+                        decimals={getTokenDecimalsWithFallback(token.decimals)}
+                        className="text-1 text-gray-900"
+                        suffix={token.symbol}
+                      />
+                      <CurrencyConversion
+                        tokenBalance={balance}
+                        contractAddress={token.tokenAddress}
+                        className="text-gray-600 !text-sm"
+                      />
+                    </div>
+                  </td>
+                  <td className="w-6">
+                    <TokenMeatballMenu
+                      token={token}
+                      toggleAddFundsModalOn={toggleAddFundsModalOn}
+                      isTokenNative={isTokenNative}
+                      nativeTokenStatus={nativeTokenStatus}
                     />
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-      <TableWithHeaderAndMeatballMenu<BalanceTableFieldModel>
-        title={formatText({ id: 'balancePage.table.title' })}
-        verticalOnMobile={false}
-        hasPagination
-        getRowId={({ token }) => (token ? token.tokenAddress : uniqueId())}
-        columns={columns}
-        data={data || []}
-        state={{
-          sorting,
-          rowSelection,
-          columnVisibility: {
-            symbol: !isMobile,
-            type: !isMobile,
-          },
-        }}
-        initialState={{
-          pagination: {
-            pageSize: 10,
-          },
-        }}
-        showPageNumber={data.length >= 10}
-        onSortingChange={setSorting}
-        onRowSelectionChange={setRowSelection}
-        getSortedRowModel={getSortedRowModel()}
-        getPaginationRowModel={getPaginationRowModel()}
-        emptyContent={
-          !tokensDataLength && (
-            <div className="border border-1 w-full rounded-b-lg border-gray-200">
-              <EmptyContent
-                icon="binoculars"
-                title={{ id: 'balancePage.table.emptyTitle' }}
-                description={{ id: 'balancePage.table.emptyDescription' }}
-                withoutButtonIcon
-              />
-            </div>
-          )
-        }
-        getMenuProps={getMenuProps}
-        renderCellWrapper={(className, content) => (
-          <div className={clsx(className, 'min-h-[3.625rem] !py-[0.1rem]')}>
-            {content}
-          </div>
-        )}
-      >
-        <>
-          {/* # TODO Enable correct filtering */}
-          {/* {(!!tokensDataLength || !!searchValue) && <Filter />} */}
-          <Button
-            mode="primarySolid"
-            className="ml-2"
-            onClick={toggleAddFundsModalOn}
-            size="small"
-          >
-            {formatText({ id: 'balancePage.table.addFunds' })}
-          </Button>
-        </>
-      </TableWithHeaderAndMeatballMenu>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
       <BalanceModal
         isOpen={isAddFundsModalOpened}
         onClose={toggleAddFundsModalOff}

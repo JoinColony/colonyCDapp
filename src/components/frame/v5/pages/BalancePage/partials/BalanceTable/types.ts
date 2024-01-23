@@ -1,10 +1,7 @@
-import { TokenFragment } from '~gql';
+import { TableSort } from '~hooks/useTableSort';
 
-export interface BalanceTableProps {
-  data: BalanceTableFieldModel[];
+export enum BalanceTableSortFields {
+  BALANCE = 'balance',
 }
 
-export interface BalanceTableFieldModel {
-  balance: string | JSX.Element;
-  token?: TokenFragment;
-}
+export type BalanceTableSort = TableSort<BalanceTableSortFields>;

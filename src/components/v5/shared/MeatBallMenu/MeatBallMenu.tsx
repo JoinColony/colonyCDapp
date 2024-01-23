@@ -38,7 +38,10 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   }
 
   return (
-    <div className={clsx(className, 'md:relative')} ref={registerContainerRef}>
+    <div
+      className={clsx(className, 'md:relative w-min')}
+      ref={registerContainerRef}
+    >
       <button
         type="button"
         ref={relativeElementRef}
