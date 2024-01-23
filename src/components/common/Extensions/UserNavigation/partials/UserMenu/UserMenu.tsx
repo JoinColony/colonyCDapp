@@ -140,24 +140,26 @@ const UserMenu: FC<UserMenuProps> = ({
               </li>
             ))}
 
-            <li className="mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
-              <button
-                type="button"
-                className="navigation-link"
-                onClick={() => setActiveSubmenu(UserMenuItemName.CURRENCY)}
-                aria-expanded={activeSubmenu === UserMenuItemName.CURRENCY}
-                aria-controls="actionsWithVisibility"
-              >
-                <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
-                  <Icon
-                    name={currencyIconTitles[currency]}
-                    appearance={{ size: iconSize }}
-                  />
-                  <p className="ml-2">{currency.toUpperCase()}</p>
-                </span>
-                <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
-              </button>
-            </li>
+            {wallet && (
+              <li className="mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+                <button
+                  type="button"
+                  className="navigation-link"
+                  onClick={() => setActiveSubmenu(UserMenuItemName.CURRENCY)}
+                  aria-expanded={activeSubmenu === UserMenuItemName.CURRENCY}
+                  aria-controls="actionsWithVisibility"
+                >
+                  <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                    <Icon
+                      name={currencyIconTitles[currency]}
+                      appearance={{ size: iconSize }}
+                    />
+                    <p className="ml-2">{currency.toUpperCase()}</p>
+                  </span>
+                  <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+                </button>
+              </li>
+            )}
           </ul>
         </div>
         {wallet && (
