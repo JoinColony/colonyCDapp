@@ -5,8 +5,9 @@ import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
 import { formatText } from '~utils/intl';
 
-import { EditTeamFormValues } from '../../../forms/EditTeamForm/consts';
-import CurrentUser from '../CurrentUser/CurrentUser';
+import { EditTeamFormValues } from '../../forms/EditTeamForm/consts';
+
+import CurrentUser from './CurrentUser';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.EditDomainDescription';

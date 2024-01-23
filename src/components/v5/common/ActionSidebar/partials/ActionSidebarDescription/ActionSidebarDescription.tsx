@@ -5,19 +5,19 @@ import { ACTION, Action } from '~constants/actions';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts';
 
-import CreateDecisionDescription from './partials/CreateDecisionDescription/CreateDecisionDescription';
-import CreateNewDomainDescription from './partials/CreateNewDomainDescription/CreateNewDomainDescription';
-import EditColonyDetailsDescription from './partials/EditColonyDetailsDescription/EditColonyDetailsDescription';
-import EditDomainDescription from './partials/EditDomainDescription/EditDomainDescription';
-import EnterRecoveryModeDescription from './partials/EnterRecoveryModeDescription/EnterRecoveryModeDescription';
-import ManageColonyObjectiveDescription from './partials/ManageColonyObjectiveDescription/ManageColonyObjectiveDescription';
-import ManagePermissionsDescription from './partials/ManagePermissionsDescription/ManagePermissionsDescription';
-import ManageTokensDescription from './partials/ManageTokensDescription/ManageTokensDescription';
-import MintTokensDescription from './partials/MintTokensDescription/MintTokensDescription';
-import SimplePaymentDescription from './partials/SimplePaymentDescription/SimplePaymentDescription';
-import TransferFundsDescription from './partials/TransferFundsDescription/TransferFundsDescription';
-import UnlockTokenDescription from './partials/UnlockTokenDescription/UnlockTokenDescription';
-import UpgradeColonyDescription from './partials/UpgradeColonyDescription/UpgradeColonyDescription';
+import CreateDecisionDescription from './partials/CreateDecisionDescription';
+import CreateNewDomainDescription from './partials/CreateNewDomainDescription';
+import EditColonyDetailsDescription from './partials/EditColonyDetailsDescription';
+import EditDomainDescription from './partials/EditDomainDescription';
+import EnterRecoveryModeDescription from './partials/EnterRecoveryModeDescription';
+import ManageColonyObjectiveDescription from './partials/ManageColonyObjectiveDescription';
+import ManagePermissionsDescription from './partials/ManagePermissionsDescription';
+import ManageTokensDescription from './partials/ManageTokensDescription';
+import MintTokensDescription from './partials/MintTokensDescription';
+import SimplePaymentDescription from './partials/SimplePaymentDescription';
+import TransferFundsDescription from './partials/TransferFundsDescription';
+import UnlockTokenDescription from './partials/UnlockTokenDescription';
+import UpgradeColonyDescription from './partials/UpgradeColonyDescription';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';

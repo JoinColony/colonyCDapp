@@ -4,7 +4,7 @@ import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
 import { formatText } from '~utils/intl';
 
-import CurrentUser from '../CurrentUser/CurrentUser';
+import CurrentUser from './CurrentUser';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.UpgradeColonyDescription';

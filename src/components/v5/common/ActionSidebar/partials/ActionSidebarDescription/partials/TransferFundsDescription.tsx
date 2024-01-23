@@ -8,37 +8,40 @@ import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { SimplePaymentFormValues } from '../../../forms/SimplePaymentForm/hooks';
-import CurrentUser from '../CurrentUser/CurrentUser';
-import RecipientUser from '../RecipientUser/RecipientUser';
+import { TransferFundsFormValues } from '../../forms/TransferFundsForm/hooks';
+
+import CurrentUser from './CurrentUser';
 
 const displayName =
-  'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.SimplePaymentDescription';
+  'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.TransferFundsDescription';
 
-export const SimplePaymentDescription = () => {
-  const formValues = useFormContext<SimplePaymentFormValues>().getValues();
-  const { colony } = useColonyContext();
-  const { amount: { amount, tokenAddress } = {}, recipient } = formValues;
+export const TransferFundsDescription = () => {
+  const {
+    colony: { domains, nativeToken, tokens },
+  } = useColonyContext();
+  const formValues = useFormContext<TransferFundsFormValues>().getValues();
 
-  const { nativeToken } = colony;
-  const matchingColonyToken = colony.tokens?.items.find(
+  const { amount: { amount, tokenAddress } = {}, from, to } = formValues;
+
+  const fromDomain = domains?.items.find((domain) => domain?.nativeId === from);
+  const toDomain = domains?.items.find((domain) => domain?.nativeId === to);
+  const matchingColonyToken = tokens?.items.find(
     (colonyToken) => colonyToken?.token?.tokenAddress === tokenAddress,
   );
-
-  const recipientUser = <RecipientUser userAddress={recipient} />;
 
   return (
     <>
       {formatText(
         { id: 'action.title' },
         {
-          actionType: ColonyActionType.Payment,
+          actionType: ColonyActionType.MoveFunds,
+          fromDomain: fromDomain?.metadata ? fromDomain.metadata.name : '',
+          toDomain: toDomain?.metadata ? toDomain.metadata.name : '',
           tokenSymbol: matchingColonyToken
             ? matchingColonyToken.token.symbol
             : formatText({
                 id: 'actionSidebar.metadataDescription.tokens',
               }),
-          recipient: recipientUser,
           amount: amount ? (
             <Numeral
               value={moveDecimal(
@@ -49,7 +52,7 @@ export const SimplePaymentDescription = () => {
             />
           ) : (
             formatText({
-              id: 'actionSidebar.metadataDescription.anAmount',
+              id: 'actionSidebar.metadataDescription.funds',
             })
           ),
           initiator: <CurrentUser />,
@@ -59,5 +62,5 @@ export const SimplePaymentDescription = () => {
   );
 };
 
-SimplePaymentDescription.displayName = displayName;
-export default SimplePaymentDescription;
+TransferFundsDescription.displayName = displayName;
+export default TransferFundsDescription;

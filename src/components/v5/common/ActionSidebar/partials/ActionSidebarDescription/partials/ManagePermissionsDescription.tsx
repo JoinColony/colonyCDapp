@@ -6,10 +6,11 @@ import useColonyContext from '~hooks/useColonyContext';
 import { formatRolesTitle } from '~utils/colonyActions';
 import { formatText } from '~utils/intl';
 
-import { ManagePermissionsFormValues } from '../../../forms/ManagePermissionsForm/consts';
-import { getPermissionsMap } from '../../../forms/ManagePermissionsForm/utils';
-import CurrentUser from '../CurrentUser/CurrentUser';
-import RecipientUser from '../RecipientUser/RecipientUser';
+import { ManagePermissionsFormValues } from '../../forms/ManagePermissionsForm/consts';
+import { getPermissionsMap } from '../../forms/ManagePermissionsForm/utils';
+
+import CurrentUser from './CurrentUser';
+import RecipientUser from './RecipientUser';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.ManagePermissionsDescription';

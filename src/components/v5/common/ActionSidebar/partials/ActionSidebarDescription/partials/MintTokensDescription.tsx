@@ -8,8 +8,9 @@ import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
-import { MintTokenFormValues } from '../../../forms/MintTokenForm/consts';
-import CurrentUser from '../CurrentUser/CurrentUser';
+import { MintTokenFormValues } from '../../forms/MintTokenForm/consts';
+
+import CurrentUser from './CurrentUser';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.MintTokensDescription';
