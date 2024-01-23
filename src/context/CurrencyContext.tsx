@@ -30,13 +30,17 @@ export const CurrencyContextProvider = ({
   const [currency, setCurrency] = useState(SupportedCurrencies.Usd);
   const [updateProfile] = useUpdateUserProfileMutation();
 
+  const STORED_CURRENCY_KEY = 'preferredCurrency';
+
   const updatePreferredCurrency = useCallback(
     async (newCurrency: SupportedCurrencies) => {
+      setCurrency(newCurrency);
+      localStorage.setItem(STORED_CURRENCY_KEY, JSON.stringify(newCurrency));
+
       if (!user?.walletAddress) {
         return;
       }
 
-      setCurrency(newCurrency);
       await updateProfile({
         variables: {
           input: {
@@ -51,8 +55,15 @@ export const CurrencyContextProvider = ({
 
   useEffect(() => {
     const setDefaultUserCurrency = async () => {
-      const defaultCurrency = await getUserCurrencyByLocation();
-      updatePreferredCurrency(defaultCurrency);
+      const storedCurrency = localStorage.getItem(STORED_CURRENCY_KEY);
+      if (storedCurrency !== null) {
+        updatePreferredCurrency(
+          JSON.parse(storedCurrency) as SupportedCurrencies,
+        );
+      } else {
+        const defaultCurrency = await getUserCurrencyByLocation();
+        updatePreferredCurrency(defaultCurrency);
+      }
     };
 
     if (user?.profile?.preferredCurrency) {
