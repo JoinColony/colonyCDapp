@@ -5,8 +5,11 @@
   table-layout: auto;
   border-collapse: separate;
 
-  tr {
-    border-bottom: 1px solid theme(colors.gray.200);
+  tr:not(:last-child) {
+    th,
+    td {
+      border-bottom: 1px solid theme(colors.gray.200);
+    }
   }
 
   th {
@@ -22,7 +25,6 @@
   td {
     padding: 0.625rem 1.125rem;
     height: 100%;
-    border-bottom: 1px solid theme(colors.gray.200);
     background-color: theme(colors.base.white);
     font-size: theme(fontSize.md);
     color: theme(textColor.gray.900);
