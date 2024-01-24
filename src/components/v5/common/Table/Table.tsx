@@ -47,7 +47,7 @@ const Table = <T,>({
   const columnsWithMenu = useMemo(
     () => [
       ...columns,
-      ...(meatBallMenuSize
+      ...(getMenuProps
         ? [
             makeMenuColumn<T>(
               helper,
@@ -125,7 +125,7 @@ const Table = <T,>({
                   '[&:not(:last-child)>tr:last-child>th]:border-b [&:not(:last-child)>tr:last-child>td]:border-b',
                   {
                     'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
-                      meatBallMenuSize,
+                      getMenuProps,
                   },
                 )}
               >
@@ -244,6 +244,10 @@ const Table = <T,>({
                     className={clsx(
                       getRowClassName(row),
                       '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100',
+                      {
+                        'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
+                          getMenuProps,
+                      },
                     )}
                   >
                     {row.getVisibleCells().map((cell) => {
