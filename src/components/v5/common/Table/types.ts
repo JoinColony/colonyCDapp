@@ -38,4 +38,5 @@ export interface TableProps<T>
   title?: React.ReactNode;
   additionalHeaderContent?: React.ReactNode;
   headerClassName?: string;
+  tableHeaderChildren?: React.ReactNode;
 }

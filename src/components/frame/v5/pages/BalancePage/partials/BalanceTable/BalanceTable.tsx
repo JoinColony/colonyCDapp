@@ -22,7 +22,7 @@ import { formatText } from '~utils/intl.ts';
 // import Filter from '~v5/common/Filter';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu/index.ts';
+import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import CopyWallet from '~v5/shared/CopyWallet/index.ts';
 import Link from '~v5/shared/Link/index.ts';
@@ -170,7 +170,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
 
   return (
     <>
-      <TableWithHeaderAndMeatballMenu<BalanceTableFieldModel>
+      <Table<BalanceTableFieldModel>
         title={formatText({ id: 'balancePage.table.title' })}
         verticalOnMobile={false}
         hasPagination
@@ -213,20 +213,21 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
             {content}
           </div>
         )}
-      >
-        <>
-          {/* # TODO Enable correct filtering */}
-          {/* {(!!tokensDataLength || !!searchValue) && <Filter />} */}
-          <Button
-            mode="primarySolid"
-            className="ml-2"
-            onClick={toggleAddFundsModalOn}
-            size="small"
-          >
-            {formatText({ id: 'balancePage.table.addFunds' })}
-          </Button>
-        </>
-      </TableWithHeaderAndMeatballMenu>
+        // # TODO Enable correct filtering
+        tableHeaderChildren={
+          <>
+            {/** (!!tokensDataLength || !!searchValue) && <Filter />} */}
+            <Button
+              mode="primarySolid"
+              className="ml-2"
+              onClick={toggleAddFundsModalOn}
+              size="small"
+            >
+              {formatText({ id: 'balancePage.table.addFunds' })}
+            </Button>
+          </>
+        }
+      />
       <BalanceModal
         isOpen={isAddFundsModalOpened}
         onClose={toggleAddFundsModalOff}
