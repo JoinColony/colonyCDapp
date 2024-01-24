@@ -43,16 +43,21 @@ const Table = <T,>({
 }: TableProps<T>) => {
   const isMobile = useMobile();
   const helper = useMemo(() => createColumnHelper<T>(), []);
+
   const columnsWithMenu = useMemo(
     () => [
       ...columns,
-      makeMenuColumn<T>(
-        helper,
-        getMenuProps,
-        meatBallMenuSize,
-        verticalOnMobile,
-        meatBallMenuStaticSize,
-      ),
+      ...(meatBallMenuSize
+        ? [
+            makeMenuColumn<T>(
+              helper,
+              getMenuProps,
+              meatBallMenuSize,
+              verticalOnMobile,
+              meatBallMenuStaticSize,
+            ),
+          ]
+        : []),
     ],
     [
       columns,
