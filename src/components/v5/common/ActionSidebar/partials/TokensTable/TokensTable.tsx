@@ -5,10 +5,10 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 
-import { useGetTableMenuProps, useTokensTableColumns } from './hooks.tsx';
+import { useTokensTableColumns } from './hooks.tsx';
 import { type TokensTableModel, type TokensTableProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokensTable';
@@ -28,11 +28,24 @@ const TokensTable: FC<TokensTableProps> = ({
   const fieldState = getFieldState(name);
   const value = useWatch({ name }) || [];
   const columns = useTokensTableColumns(name, value);
-  const getMenuProps = useGetTableMenuProps(
-    fieldArrayMethods,
-    value,
-    shouldShowMenu,
-  );
+  const getMenuProps = ({ index }) => {
+    const shouldShow = shouldShowMenu(value[index]?.token);
+
+    return shouldShow
+      ? {
+          cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+          items: [
+            {
+              key: 'remove',
+              onClick: () => fieldArrayMethods.remove(index),
+              label: formatText({ id: 'table.row.remove' }),
+              icon: 'trash',
+            },
+          ],
+        }
+      : undefined;
+  };
+
   const { readonly } = useAdditionalFormOptionsContext();
 
   return (
@@ -41,7 +54,7 @@ const TokensTable: FC<TokensTableProps> = ({
         {formatText({ id: 'actionSidebar.approvedTokens' })}
       </h5>
       {!!data.length && (
-        <TableWithMeatballMenu<TokensTableModel>
+        <Table<TokensTableModel>
           className={clsx('mb-6', {
             '!border-negative-400': !!fieldState.error,
           })}

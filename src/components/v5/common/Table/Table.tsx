@@ -2,9 +2,10 @@ import {
   flexRender,
   useReactTable,
   getCoreRowModel as libGetCoreRowModel,
+  createColumnHelper,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
@@ -12,7 +13,7 @@ import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import { type TableProps } from './types.ts';
-import { getDefaultRenderCellWrapper } from './utils.tsx';
+import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
 
 const displayName = 'v5.common.Table';
 
@@ -34,12 +35,39 @@ const Table = <T,>({
   additionalPaginationButtonsContent,
   emptyContent,
   data,
+  getMenuProps,
+  meatBallMenuSize,
+  meatBallMenuStaticSize,
+  columns,
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
+  const helper = useMemo(() => createColumnHelper<T>(), []);
+  const columnsWithMenu = useMemo(
+    () => [
+      ...columns,
+      makeMenuColumn<T>(
+        helper,
+        getMenuProps,
+        meatBallMenuSize,
+        verticalOnMobile,
+        meatBallMenuStaticSize,
+      ),
+    ],
+    [
+      columns,
+      helper,
+      getMenuProps,
+      meatBallMenuSize,
+      verticalOnMobile,
+      meatBallMenuStaticSize,
+    ],
+  );
+
   const table = useReactTable<T>({
     getCoreRowModel: getCoreRowModel || libGetCoreRowModel<T>(),
     data,
+    columns: columnsWithMenu,
     ...rest,
   });
   const { rows } = table.getRowModel();
@@ -90,6 +118,10 @@ const Table = <T,>({
                 className={clsx(
                   getRowClassName(row),
                   '[&:not(:last-child)>tr:last-child>th]:border-b [&:not(:last-child)>tr:last-child>td]:border-b',
+                  {
+                    'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
+                      meatBallMenuSize,
+                  },
                 )}
               >
                 {headerGroups.map((headerGroup) =>

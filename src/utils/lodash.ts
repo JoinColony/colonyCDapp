@@ -18,3 +18,4 @@ export { default as fill } from 'lodash/fill';
 export { default as range } from 'lodash/range';
 export { default as merge } from 'lodash/merge';
 export { default as isPlainObject } from 'lodash/isPlainObject';
+export { default as pick } from 'lodash/pick';

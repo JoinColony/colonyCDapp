@@ -6,13 +6,11 @@ import { FormattedMessage } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import { pick } from '~utils/lodash.ts';
+import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import {
-  useRecipientsFieldTableColumns,
-  useGetTableMenuProps,
-} from './hooks.tsx';
+import { useRecipientsFieldTableColumns } from './hooks.tsx';
 import {
   type AdvancedPaymentRecipientsTableModel,
   type AdvancedPaymentRecipientsFieldProps,
@@ -38,7 +36,35 @@ const AdvancedPaymentRecipientsField: FC<
   const value: AdvancedPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
   const columns = useRecipientsFieldTableColumns(name, value);
   const isMobile = useMobile();
-  const getMenuProps = useGetTableMenuProps(fieldArrayMethods, value);
+  const getMenuProps = ({ index }) => ({
+    cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+    items: [
+      {
+        key: 'add-token',
+        onClick: () =>
+          fieldArrayMethods.insert(index + 1, {
+            ...pick(data[index], ['recipient', 'delay']),
+          }),
+        label: formatText({ id: 'button.addToken' }),
+        icon: 'coins',
+      },
+      {
+        key: 'duplicate',
+        onClick: () =>
+          fieldArrayMethods.insert(index + 1, {
+            ...data[index],
+          }),
+        label: formatText({ id: 'table.row.duplicate' }),
+        icon: 'copy-simple',
+      },
+      {
+        key: 'remove',
+        onClick: () => fieldArrayMethods.remove(index),
+        label: formatText({ id: 'table.row.remove' }),
+        icon: 'trash',
+      },
+    ],
+  });
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
@@ -48,7 +74,7 @@ const AdvancedPaymentRecipientsField: FC<
         {formatText({ id: 'actionSidebar.additionalPayments' })}
       </h5>
       {!!data.length && (
-        <TableWithMeatballMenu<AdvancedPaymentRecipientsTableModel>
+        <Table<AdvancedPaymentRecipientsTableModel>
           className={clsx({
             '!border-negative-400': !!fieldState.error,
           })}

@@ -1,13 +1,10 @@
 import { createColumnHelper, type SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { FilePlus, ArrowSquareOut, ShareNetwork } from 'phosphor-react';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { generatePath, Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
   SearchableColonyActionSortableFields,
   type SearchableColonyActionSortInput,
@@ -17,12 +14,7 @@ import useActivityFeed from '~hooks/useActivityFeed/index.ts';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
-import {
-  COLONY_ACTIVITY_ROUTE,
-  COLONY_HOME_ROUTE,
-  TX_SEARCH_PARAM,
-} from '~routes/index.ts';
-import TransactionLink from '~shared/TransactionLink/index.ts';
+import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
@@ -31,10 +23,8 @@ import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import { type RenderCellWrapper } from '~v5/common/Table/types.ts';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts.ts';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import ActionDescription from './partials/ActionDescription/index.ts';
-import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem/index.ts';
 import { makeLoadingRows } from './utils.ts';
 
 const MSG = defineMessages({
@@ -134,65 +124,6 @@ export const useColonyActionsTableColumns = (
       }),
     ];
   }, [loading, loadingMotionStates, refetchMotionStates]);
-
-export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
-  const navigate = useNavigate();
-  const colonyName = useColonyContext().colony.name;
-
-  return useCallback<
-    TableWithMeatballMenuProps<ActivityFeedColonyAction>['getMenuProps']
-  >(
-    ({ original: { transactionHash } }) => ({
-      disabled: loading,
-      items: [
-        {
-          key: '1',
-          label: formatText({ id: 'activityFeedTable.menu.view' }),
-          icon: <FilePlus size={16} />,
-          onClick: () => {
-            navigate(
-              `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
-              {
-                replace: true,
-              },
-            );
-          },
-        },
-        {
-          key: '2',
-          label: (
-            <TransactionLink
-              hash={transactionHash}
-              text={{ id: 'activityFeedTable.menu.viewOnNetwork' }}
-              textValues={{
-                blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
-              }}
-            />
-          ),
-          icon: <ArrowSquareOut size={16} />,
-        },
-        {
-          key: '3',
-          label: formatText({ id: 'activityFeedTable.menu.share' }),
-          renderItemWrapper: (props, children) => (
-            <MeatballMenuCopyItem
-              textToCopy={`${window.location.origin}/${generatePath(
-                COLONY_HOME_ROUTE,
-                { colonyName },
-              )}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
-              {...props}
-            >
-              {children}
-            </MeatballMenuCopyItem>
-          ),
-          icon: <ShareNetwork size={16} />,
-          onClick: () => false,
-        },
-      ],
-    }),
-    [colonyName, loading, navigate],
-  );
-};
 
 export const useActionsTableData = (pageSize: number) => {
   const selectedDomain = useGetSelectedDomainFilter();

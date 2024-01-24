@@ -1,8 +1,8 @@
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import { type TableProps } from '~v5/common/Table/types.ts';
 
 export interface ColonyActionsTableProps
-  extends Partial<TableWithMeatballMenuProps<ActivityFeedColonyAction>> {
+  extends Partial<TableProps<ActivityFeedColonyAction>> {
   pageSize?: number;
   withHeader?: boolean;
 }

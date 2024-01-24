@@ -1,6 +1,5 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
-import pick from 'lodash/pick';
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -9,7 +8,6 @@ import { formatText } from '~utils/intl.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
   type AdvancedPaymentRecipientsFieldModel,
@@ -118,39 +116,3 @@ export const useRecipientsFieldTableColumns = (
 
   return columns;
 };
-
-export const useGetTableMenuProps = ({ insert, remove }, data) =>
-  useCallback<
-    TableWithMeatballMenuProps<AdvancedPaymentRecipientsTableModel>['getMenuProps']
-  >(
-    ({ index }) => ({
-      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-      items: [
-        {
-          key: 'add-token',
-          onClick: () =>
-            insert(index + 1, {
-              ...pick(data[index], ['recipient', 'delay']),
-            }),
-          label: formatText({ id: 'button.addToken' }),
-          icon: 'coins',
-        },
-        {
-          key: 'duplicate',
-          onClick: () =>
-            insert(index + 1, {
-              ...data[index],
-            }),
-          label: formatText({ id: 'table.row.duplicate' }),
-          icon: 'copy-simple',
-        },
-        {
-          key: 'remove',
-          onClick: () => remove(index),
-          label: formatText({ id: 'table.row.remove' }),
-          icon: 'trash',
-        },
-      ],
-    }),
-    [data, insert, remove],
-  );

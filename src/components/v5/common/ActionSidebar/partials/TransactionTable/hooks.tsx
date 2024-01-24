@@ -1,9 +1,8 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import AmountField from '../AmountField/index.ts';
 import UserSelect from '../UserSelect/index.ts';
@@ -49,38 +48,3 @@ export const useTransactionTableColumns = (
 
   return columns;
 };
-
-export const useGetTableMenuProps = (
-  { insert, remove },
-  data,
-  shouldShowMenu?: boolean,
-) =>
-  useCallback<
-    TableWithMeatballMenuProps<TransactionTableModel>['getMenuProps']
-  >(
-    ({ index }) => {
-      return shouldShowMenu
-        ? {
-            cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-            items: [
-              {
-                key: 'duplicate',
-                onClick: () =>
-                  insert(index + 1, {
-                    ...data[index],
-                  }),
-                label: formatText({ id: 'table.row.duplicate' }),
-                icon: 'copy-simple',
-              },
-              {
-                key: 'remove',
-                onClick: () => remove(index),
-                label: formatText({ id: 'table.row.remove' }),
-                icon: 'trash',
-              },
-            ],
-          }
-        : undefined;
-    },
-    [data, insert, remove, shouldShowMenu],
-  );

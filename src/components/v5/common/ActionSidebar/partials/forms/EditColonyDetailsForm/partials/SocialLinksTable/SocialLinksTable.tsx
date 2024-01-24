@@ -5,10 +5,10 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import { getTableMenuProps, useSocialLinksTableColumns } from './hooks.tsx';
+import { useSocialLinksTableColumns } from './hooks.tsx';
 import SocialLinkModal from './partials/SocialLinkModal/index.ts';
 import {
   type SocialLinksTableModel,
@@ -24,9 +24,27 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
   const fieldArrayMethods = useFieldArray({ name });
   const value = useWatch({ name });
   const { readonly } = useAdditionalFormOptionsContext();
-  const getMenuProps = readonly
-    ? () => undefined
-    : getTableMenuProps(fieldArrayMethods, setSocialLinkIndex);
+  const getMenuProps = ({ index }) => {
+    return {
+      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+      items: [
+        {
+          key: 'edit',
+          onClick: () => {
+            setSocialLinkIndex(index);
+          },
+          label: formatText({ id: 'table.row.edit.link' }),
+          icon: 'edit-pencil',
+        },
+        {
+          key: 'remove',
+          onClick: () => fieldArrayMethods.remove(index),
+          label: formatText({ id: 'button.delete' }),
+          icon: 'trash',
+        },
+      ],
+    };
+  };
   const columns = useSocialLinksTableColumns();
   const data: SocialLinksTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
@@ -44,14 +62,14 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
           <h5 className="text-2 mb-3 mt-6">
             {formatText({ id: 'editColony.socialLinks.table.title' })}
           </h5>
-          <TableWithMeatballMenu<SocialLinksTableModel>
+          <Table<SocialLinksTableModel>
             sizeUnit="%"
             meatBallMenuSize={10}
             className={clsx({ '!border-negative-400': !!fieldState.error })}
             getRowId={({ key }) => key}
             columns={columns}
             data={data}
-            getMenuProps={getMenuProps}
+            getMenuProps={readonly ? undefined : getMenuProps}
           />
         </>
       )}

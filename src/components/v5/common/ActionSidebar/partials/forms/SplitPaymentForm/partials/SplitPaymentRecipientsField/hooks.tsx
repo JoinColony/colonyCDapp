@@ -13,7 +13,6 @@ import {
 } from '~v5/common/ActionSidebar/partials/consts.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
   type SplitPaymentRecipientsFieldModel,
@@ -145,33 +144,6 @@ export const useRecipientsFieldTableColumns = (
 
   return columns;
 };
-
-export const useGetTableMenuProps = (
-  { remove, insert },
-  data: SplitPaymentRecipientsFieldModel[],
-) =>
-  useCallback<
-    TableWithMeatballMenuProps<SplitPaymentRecipientsTableModel>['getMenuProps']
-  >(
-    ({ index }) => ({
-      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-      items: [
-        {
-          key: 'duplicate',
-          onClick: () => insert(index + 1, data[index]),
-          label: formatText({ id: 'table.row.duplicate' }),
-          icon: 'copy-simple',
-        },
-        {
-          key: 'remove',
-          onClick: () => remove(index),
-          label: formatText({ id: 'table.row.remove' }),
-          icon: 'trash',
-        },
-      ],
-    }),
-    [remove, insert, data],
-  );
 
 export const useDistributionMethodUpdate = (
   distributionMethod: DistributionMethod,
