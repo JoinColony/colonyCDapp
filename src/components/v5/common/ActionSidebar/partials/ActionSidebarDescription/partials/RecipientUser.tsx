@@ -2,6 +2,7 @@ import React from 'react';
 
 import useUserByAddress from '~hooks/useUserByAddress';
 import MaskedAddress from '~shared/MaskedAddress';
+import { MiniSpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 
 interface RecipientUserProps {
@@ -25,7 +26,7 @@ const RecipientUser = ({
   }
 
   if (loading && !user) {
-    return <>{formatText({ id: 'actionSidebar.loading' })}</>;
+    return <MiniSpinnerLoader className="mx-1" />;
   }
 
   if (!user) {
