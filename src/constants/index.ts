@@ -1,6 +1,6 @@
 import { constants as ethersContants } from 'ethers';
 
-import { Network } from '~types';
+import { Network } from '~types/network';
 
 import { version } from '../../package.json';
 

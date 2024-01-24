@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
-import { useSetPageHeadingTitle } from '~context';
+import { useAppContext } from '~context/AppContext';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext';
 import LoadingTemplate from '~frame/LoadingTemplate';
-import { useAppContext } from '~hooks';
 import { LANDING_PAGE_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 

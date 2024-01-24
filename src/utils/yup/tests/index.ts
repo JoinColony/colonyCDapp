@@ -5,7 +5,7 @@ import moveDecimal from 'move-decimal-point';
 import { TestContext, ValidationError, TestFunction } from 'yup';
 
 import { ContextModule, getContext } from '~context';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 import { now } from '~utils/lodash';
 import {

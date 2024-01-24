@@ -7,7 +7,7 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
-import { useMemberModalContext } from '~context';
+import { useMemberModalContext } from '~context/MemberModalContext';
 import {
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_MEMBERS_ROUTE,

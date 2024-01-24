@@ -1,4 +1,4 @@
-import { ColonyContributor } from '~types';
+import { ColonyContributor } from '~types/graphql';
 
 export const searchMembers = (
   members: ColonyContributor[],

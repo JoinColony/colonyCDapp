@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext';
 import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
   useSearchActionsQuery,
 } from '~gql';
-import { useNetworkMotionStates } from '~hooks';
 import { notNull } from '~utils/arrays';
 
-import useColonyContext from '../useColonyContext';
+import useNetworkMotionStates from '../useNetworkMotionStates';
 
 import {
   filterActionByMotionState,

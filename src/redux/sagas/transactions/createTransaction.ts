@@ -11,7 +11,7 @@ import {
 } from 'redux-saga/effects';
 
 import { getContext, ContextModule } from '~context';
-import { TxConfig } from '~types';
+import { TxConfig } from '~types/transactions';
 import { filterUniqueAction } from '~utils/actions';
 
 import { createTransactionAction } from '../../actionCreators';

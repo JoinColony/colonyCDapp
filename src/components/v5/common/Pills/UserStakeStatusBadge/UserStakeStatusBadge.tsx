@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { UserStakeStatus } from '~types';
+import { UserStakeStatus } from '~types/userStake';
 
 import PillsBase from '../PillsBase';
 import { UserStakeStatusBadgeProps } from '../types';

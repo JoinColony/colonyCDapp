@@ -2,8 +2,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { ColonyActionRoles, ColonyActionType } from '~gql';
-import useColonyContext from '~hooks/useColonyContext';
 import { formatRolesTitle } from '~utils/colonyActions';
 import { formatText } from '~utils/intl';
 

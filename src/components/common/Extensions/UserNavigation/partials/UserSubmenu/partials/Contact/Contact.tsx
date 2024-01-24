@@ -3,8 +3,8 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { COLONY_DISCORD, COLONY_DOCS, COLONY_TWITTER } from '~constants';
+import { useMobile } from '~hooks';
 import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
-import useMobile from '~hooks/useMobile';
 import ExternalLink from '~shared/ExternalLink';
 import { formatText } from '~utils/intl';
 

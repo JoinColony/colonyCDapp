@@ -1,12 +1,7 @@
 import React from 'react';
 
-import {
-  ColonyAction,
-  ColonyActionType,
-  Colony,
-  ExtendedColonyActionType,
-  AnyActionType,
-} from '~types';
+import { ExtendedColonyActionType, AnyActionType } from '~types/actions';
+import { ColonyAction, ColonyActionType, Colony } from '~types/graphql';
 import { getExtendedActionType, safeActionTypes } from '~utils/colonyActions';
 
 import { generateMessageValues } from './getEventTitleValues';

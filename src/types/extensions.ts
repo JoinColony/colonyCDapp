@@ -5,7 +5,7 @@ import { MessageDescriptor } from 'react-intl';
 import { Schema } from 'yup';
 
 import { ExtensionCategory } from '~constants';
-import { ColonyExtension } from '~types';
+import { ColonyExtension } from '~types/graphql';
 
 export enum WhitelistPolicy {
   KycOnly = 0,

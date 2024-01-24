@@ -6,7 +6,7 @@ import { ACTION } from '~constants/actions';
 import { getRole, USER_ROLE } from '~constants/permissions';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers';
-import { ExtendedColonyActionType } from '~types';
+import { ExtendedColonyActionType } from '~types/actions';
 import { getExtendedActionType } from '~utils/colonyActions';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 

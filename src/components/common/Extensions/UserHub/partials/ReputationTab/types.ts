@@ -1,4 +1,5 @@
-import { Token, ColonyWallet } from '~types';
+import { Token } from '~types/graphql';
+import { ColonyWallet } from '~types/wallet';
 
 import { UserHubTabs } from '../../types';
 

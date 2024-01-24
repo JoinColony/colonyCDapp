@@ -3,12 +3,10 @@ import React, { useMemo } from 'react';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ACTION } from '~constants/actions';
-import {
-  useActionSidebarContext,
-  // @BETA: Disabled for now
-  // useMemberModalContext,
-} from '~context';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+// @BETA: Disabled for now
+// import { useMemberModalContext } from '~context/MemberModalContext';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { getBlockExplorerLink } from '~utils/external';
 import { formatText } from '~utils/intl';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import { Form } from '~shared/Fields';
 import { WizardStepProps } from '~shared/Wizard';
 import { splitWalletAddress } from '~utils/splitWalletAddress';

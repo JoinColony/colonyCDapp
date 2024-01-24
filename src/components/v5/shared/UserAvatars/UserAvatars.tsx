@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { User } from '~types';
+import { User } from '~types/graphql';
 import { calculateLastSliceIndex } from '~utils/avatars';
 import UserAvatar from '~v5/shared/UserAvatar';
 

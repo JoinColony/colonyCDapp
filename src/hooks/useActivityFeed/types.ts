@@ -4,7 +4,7 @@ import {
   ColonyAction,
   ColonyActionType,
   SearchableSortDirection,
-} from '~types';
+} from '~types/graphql';
 import { MotionState } from '~utils/colonyMotions';
 
 export enum ActivityDecisionMethod {

@@ -5,6 +5,7 @@ import React, {
   useMemo,
   ReactNode,
   useCallback,
+  useContext,
   useEffect,
 } from 'react';
 
@@ -13,11 +14,14 @@ import {
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
-import { useAsyncFunction, usePrevious } from '~hooks';
+import useAsyncFunction from '~hooks/useAsyncFunction';
+import usePrevious from '~hooks/usePrevious';
 import { ActionTypes } from '~redux';
-import { TokenActivationProvider } from '~shared/TokenActivationProvider';
-import { ColonyWallet, User } from '~types';
+import { User } from '~types/graphql';
+import { ColonyWallet } from '~types/wallet';
 import { getLastWallet } from '~utils/autoLogin';
+
+import { TokenActivationProvider } from './TokenActivationContext';
 
 import { getContext, ContextModule } from './index';
 
@@ -211,4 +215,14 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       <TokenActivationProvider>{children}</TokenActivationProvider>
     </AppContext.Provider>
   );
+};
+
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+
+  if (!context) {
+    throw new Error('This hook must be used within the "AppContext" provider');
+  }
+
+  return context;
 };

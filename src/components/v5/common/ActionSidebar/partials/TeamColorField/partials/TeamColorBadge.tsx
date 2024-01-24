@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { DomainColor } from '~gql';
-import { useColonyContext } from '~hooks';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { getTeamBadgeStyles, getTeamColor } from '~utils/teams';
 import PillsBase from '~v5/common/Pills/PillsBase';
@@ -10,7 +10,7 @@ import PillsBase from '~v5/common/Pills/PillsBase';
 import { TeamColourBadgeProps } from '../types';
 
 const displayName =
-  'v5.common.ActionsContent.partials.TeamColourField.partials.TeamColourBadge';
+  'v5.common.ActionsContent.partials.TeamColourField.partials.TeamColorBadge';
 
 const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title, defaultColor }) => {
   const { colony } = useColonyContext();

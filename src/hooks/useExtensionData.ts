@@ -3,19 +3,18 @@ import { getExtensionHash, Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants';
+import { useColonyContext } from '~context/ColonyContext';
 import {
   Exact,
   GetColonyExtensionQuery,
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
 } from '~utils/extensions';
-
-import useColonyContext from './useColonyContext';
 
 export enum ExtensionMethods {
   INSTALL = 'installExtension',

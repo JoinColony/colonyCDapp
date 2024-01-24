@@ -2,9 +2,10 @@ import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { UserRole } from '~constants/permissions';
+import { useColonyContext } from '~context/ColonyContext';
 import { useSearchContext } from '~context/SearchContext';
-import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
-import { ColonyContributor } from '~types';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
+import { ColonyContributor } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 import { getDomainDatabaseId } from '~utils/databaseId';
 import { searchMembers } from '~utils/members';

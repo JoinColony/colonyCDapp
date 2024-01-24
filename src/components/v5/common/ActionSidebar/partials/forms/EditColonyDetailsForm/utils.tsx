@@ -1,4 +1,4 @@
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 
 import { EditColonyDetailsFormValues } from './consts';
 

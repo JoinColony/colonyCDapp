@@ -1,4 +1,4 @@
-import { MotionStakes } from '~types';
+import { MotionStakes } from '~types/graphql';
 import { MotionState } from '~utils/colonyMotions';
 import { CountDownTimerProps } from '~v5/common/CountDownTimer/types';
 

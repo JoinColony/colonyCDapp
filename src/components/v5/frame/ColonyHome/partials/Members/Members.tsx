@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useMemberContext } from '~context/MemberContext';
-import { useGetSelectedDomainFilter } from '~hooks';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import { COLONY_MEMBERS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import WidgetBox from '~v5/common/WidgetBox';

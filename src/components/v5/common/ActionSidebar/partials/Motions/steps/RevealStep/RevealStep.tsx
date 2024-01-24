@@ -2,7 +2,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import useToggle from '~hooks/useToggle';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';

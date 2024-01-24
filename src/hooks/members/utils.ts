@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 
 import { CUSTOM_USER_ROLE, getRole, UserRole } from '~constants/permissions';
-import { ColonyContributor } from '~types';
+import { ColonyContributor } from '~types/graphql';
 
 export const hasSomeRole = (
   roles: object,

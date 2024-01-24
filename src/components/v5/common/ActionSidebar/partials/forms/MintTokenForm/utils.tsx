@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { RootMotionMethodNames } from '~redux';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 
 import { MintTokenFormValues } from './consts';

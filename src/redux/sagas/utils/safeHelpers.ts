@@ -10,13 +10,9 @@ import {
   NetworkInfo,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
-import {
-  Address,
-  ModuleAddress,
-  Safe,
-  SafeTransactionData,
-  SafeTransactionType,
-} from '~types';
+import { Address } from '~types';
+import { Safe, SafeTransactionData, SafeTransactionType } from '~types/graphql';
+import { ModuleAddress } from '~types/safes';
 import { fetchTokenFromDatabase } from '~utils/queries';
 import { getArrayFromString } from '~utils/safes';
 

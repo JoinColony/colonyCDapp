@@ -4,8 +4,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import InvitationBlock from '~common/InvitationBlock';
-import { usePageHeadingContext } from '~context';
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { usePageHeadingContext } from '~context/PageHeadingContext';
 import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
 import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import {

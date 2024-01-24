@@ -3,15 +3,15 @@ import { BigNumber } from 'ethers';
 
 import { NetworkInfo } from '~constants';
 import { ExternalLink } from '~gql';
+import { Address } from '~types';
 import {
-  Address,
   Colony,
   ColonyObjective,
   Domain,
   DomainColor,
   Safe,
   SafeTransactionData,
-} from '~types';
+} from '~types/graphql';
 
 import { ActionTypes } from '../../actionTypes';
 

@@ -4,11 +4,9 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ACTION } from '~constants/actions';
-import {
-  useColonyContext,
-  useColonyContractVersion,
-  useExtensionsData,
-} from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import useColonyContractVersion from '~hooks/useColonyContractVersion';
+import useExtensionsData from '~hooks/useExtensionsData';
 import { canColonyBeUpgraded } from '~utils/checks';
 import { formatText } from '~utils/intl';
 import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';

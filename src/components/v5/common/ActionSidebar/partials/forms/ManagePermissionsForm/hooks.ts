@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { DeepPartial } from 'utility-types';
 
 import { UserRole, USER_ROLE, getRole } from '~constants/permissions';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { getUserRolesForDomain } from '~transformers';
 import { mapPayload, pipe } from '~utils/actions';

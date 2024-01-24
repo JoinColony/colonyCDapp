@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import useAppContext from './useAppContext';
+import { useAppContext } from '~context/AppContext';
 
 const useCurrentBlockTime = () => {
   const { wallet } = useAppContext();

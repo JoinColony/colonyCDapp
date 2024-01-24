@@ -8,9 +8,10 @@ import { object, string } from 'yup';
 
 import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCreateUser/validation';
 import { isFullScreen } from '~constants';
+import { useAppContext } from '~context/AppContext';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext, useMobile } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useMobile } from '~hooks';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import Toast from '~shared/Extensions/Toast';
 import { formatText } from '~utils/intl';
 import { multiLineTextEllipsis } from '~utils/strings';

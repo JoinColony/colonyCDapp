@@ -6,7 +6,8 @@ import {
 
 import { DEFAULT_NETWORK } from '~constants';
 import { ContextModule, getContext } from '~context';
-import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
+import { ColonyJSNetworkMapping, Network } from '~types/network';
+import { isFullWallet } from '~types/wallet';
 
 /*
  * Return an initialized ColonyNetworkClient instance.

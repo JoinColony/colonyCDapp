@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import MaskedAddress from '~shared/MaskedAddress';
 import UserPopover from '~v5/shared/UserPopover';
 

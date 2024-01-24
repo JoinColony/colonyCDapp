@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useMobile } from '~hooks';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button/Button';
 import Modal from '~v5/shared/Modal/Modal';

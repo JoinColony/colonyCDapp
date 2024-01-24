@@ -3,7 +3,8 @@ import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import { notNull } from '~utils/arrays';

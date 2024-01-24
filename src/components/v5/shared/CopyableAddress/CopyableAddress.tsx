@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import useClipboardCopy from '~hooks/useClipboardCopy';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import Icon from '~shared/Icon';
 import MaskedAddress from '~shared/MaskedAddress';
 import { Address } from '~types';
@@ -16,7 +16,7 @@ interface Props {
 const displayName = 'CopyableAddress';
 
 const CopyableAddress = ({ address, full }: Props) => {
-  const { isCopied, handleClipboardCopy } = useClipboardCopy(address);
+  const { isCopied, handleClipboardCopy } = useCopyToClipboard();
 
   return (
     <button
@@ -25,7 +25,7 @@ const CopyableAddress = ({ address, full }: Props) => {
         'flex flex-row items-center gap-[0.375rem] text-gray-600 hover:text-blue-400',
         isCopied && 'text-success-400 hover:text-success-400',
       )}
-      onClick={handleClipboardCopy}
+      onClick={() => handleClipboardCopy(address)}
     >
       <MaskedAddress address={address} full={full} />
       {/*

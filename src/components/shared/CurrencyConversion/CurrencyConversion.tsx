@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 
 import { useCurrencyContext } from '~context/CurrencyContext';
-import { useCurrency } from '~hooks';
+import useCurrency from '~hooks/useCurrency';
 import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral';
 import { FetchCurrentPriceArgs } from '~utils/currency';
 

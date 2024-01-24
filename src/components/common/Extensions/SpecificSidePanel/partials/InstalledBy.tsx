@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { InstalledExtensionData } from '~types';
+import type { InstalledExtensionData } from '~types/extensions';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
 
 import { PanelTypeProps } from '../types';

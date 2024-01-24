@@ -5,7 +5,7 @@ import {
   USER_ROLE,
   USER_ROLES,
 } from '~constants/permissions';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 

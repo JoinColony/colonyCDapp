@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';

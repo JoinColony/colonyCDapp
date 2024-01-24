@@ -4,7 +4,7 @@ import moveDecimal from 'move-decimal-point';
 import React, { FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation';
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import Numeral from '~shared/Numeral';

@@ -6,7 +6,7 @@ import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.p
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
 import reputationInterface from '~images/assets/extensions/reputation-interface.png';
-import { ExtensionConfig, ExtensionParamType } from '~types';
+import { ExtensionConfig, ExtensionParamType } from '~types/extensions';
 import {
   convertFractionToWei,
   convertPeriodToSeconds,

@@ -2,7 +2,8 @@ import { MotionState, VotingReputationFactory } from '@colony/colony-js';
 import { Provider } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
 
-import useAppContext from './useAppContext';
+import { useAppContext } from '~context/AppContext';
+
 import useEnabledExtensions from './useEnabledExtensions';
 
 export type MotionStatesMap = Map<string, MotionState | null>;

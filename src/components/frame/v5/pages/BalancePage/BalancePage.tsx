@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext';
 import { formatText } from '~utils/intl';
 
 import { useBalancePage } from './hooks';

@@ -1,4 +1,4 @@
-import { Token } from '~types';
+import { Token } from '~types/graphql';
 
 import { DistributionMethod } from '../../../../consts';
 

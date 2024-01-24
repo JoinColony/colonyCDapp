@@ -2,7 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useColonyContext, useMobile } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
 import Tabs from '~shared/Extensions/Tabs';
 
 import { stakesFilterOptions } from './consts';

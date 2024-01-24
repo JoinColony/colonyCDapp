@@ -1,6 +1,7 @@
 import { CORE_DECISIONS, CORE_DECISIONS_LIST } from '~redux/constants';
 import { CoreDecisionsRecord } from '~redux/state/decisions';
-import { Address, ColonyDecision } from '~types';
+import { Address } from '~types';
+import { ColonyDecision } from '~types/graphql';
 
 export type DecisionDraft = Omit<
   ColonyDecision,

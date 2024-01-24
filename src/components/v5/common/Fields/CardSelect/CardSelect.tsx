@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import React, { useCallback, useId, useMemo, useState } from 'react';
 
-import { useRelativePortalElement, useToggle } from '~hooks';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
 import MenuContainer from '~v5/shared/MenuContainer';

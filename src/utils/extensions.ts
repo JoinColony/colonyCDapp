@@ -6,10 +6,9 @@ import {
   AnyExtensionData,
   ExtensionConfig,
   InstalledExtensionData,
-  ColonyExtension,
   InstallableExtensionData,
-  Colony,
-} from '~types';
+} from '~types/extensions';
+import { Colony, ColonyExtension } from '~types/graphql';
 
 import { userHasRole } from './checks';
 

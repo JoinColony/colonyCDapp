@@ -5,7 +5,7 @@ import { MAX_COLONY_DISPLAY_NAME, MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
-import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
+import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
@@ -85,7 +85,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
       >
-        <TeamColourField name="domainColor" />
+        <TeamColorField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
         icon="scales"

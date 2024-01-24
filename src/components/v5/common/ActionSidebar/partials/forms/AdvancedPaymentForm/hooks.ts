@@ -4,7 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 import { array, InferType, number, object, string } from 'yup';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';

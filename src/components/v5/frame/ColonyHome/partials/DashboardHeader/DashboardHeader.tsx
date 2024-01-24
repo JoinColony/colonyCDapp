@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useColonyContext from '~hooks/useColonyContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { formatText } from '~utils/intl';
 import { multiLineTextEllipsis } from '~utils/strings';
 import NativeTokenPill from '~v5/common/NativeTokenPill';

@@ -1,4 +1,4 @@
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { notNull } from '~utils/arrays';
 import {
   SearchSelectOption,

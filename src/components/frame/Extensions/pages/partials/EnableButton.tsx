@@ -3,9 +3,11 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useAppContext, useColonyContext, useMobile } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 import { addressHasRoles } from '~utils/checks';
 import {
   canExtensionBeInitialized,

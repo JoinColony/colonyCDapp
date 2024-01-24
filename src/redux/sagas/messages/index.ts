@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import { call, put } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context';
-import { isFullWallet } from '~types';
+import { isFullWallet } from '~types/wallet';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions } from '../../types/actions';

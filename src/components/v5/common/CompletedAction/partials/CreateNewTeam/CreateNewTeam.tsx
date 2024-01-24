@@ -3,9 +3,9 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip';
-import { ColonyAction } from '~types';
+import { ColonyAction } from '~types/graphql';
 import { formatText } from '~utils/intl';
-import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColourField/partials/TeamColourBadge';
+import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColorField/partials/TeamColorBadge';
 import UserPopover from '~v5/shared/UserPopover';
 
 import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';

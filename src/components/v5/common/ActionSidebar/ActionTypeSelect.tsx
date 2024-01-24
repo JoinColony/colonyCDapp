@@ -3,7 +3,8 @@ import React, { FC, useState } from 'react';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useRelativePortalElement, useToggle } from '~hooks';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';
 import SearchSelect from '~v5/shared/SearchSelect';

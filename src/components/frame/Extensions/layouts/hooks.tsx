@@ -3,15 +3,16 @@ import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ACTION } from '~constants/actions';
-import { TransactionGroupStates, useUserTransactionContext } from '~context';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import {
-  useAppContext,
-  useColonyContext,
-  useColonyContractVersion,
-  useMobile,
-  useTransformer,
-} from '~hooks';
+  TransactionGroupStates,
+  useUserTransactionContext,
+} from '~context/UserTransactionContext';
+import { useMobile } from '~hooks';
+import useColonyContractVersion from '~hooks/useColonyContractVersion';
+import useTransformer from '~hooks/useTransformer';
 import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants';
 import Icon from '~shared/Icon';
 import { getAllUserRoles } from '~transformers';

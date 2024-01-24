@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe, withKey } from '~utils/actions';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';

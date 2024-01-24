@@ -3,7 +3,7 @@ import BN from 'bn.js';
 
 import { NETWORK_DATA } from '~constants';
 import { TransactionError } from '~redux/immutable/Transaction';
-import { ExtendedClientType } from '~types';
+import { ExtendedClientType } from '~types/transactions';
 
 export {
   isAddress,

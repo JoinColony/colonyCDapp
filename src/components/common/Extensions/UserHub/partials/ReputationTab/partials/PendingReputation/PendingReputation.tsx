@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useGetReputationMiningCycleMetadataQuery } from '~gql';
-import { useUserReputation } from '~hooks';
+import useUserReputation from '~hooks/useUserReputation';
 import TimeRelative from '~shared/TimeRelative';
 import TitleLabel from '~v5/shared/TitleLabel';
 

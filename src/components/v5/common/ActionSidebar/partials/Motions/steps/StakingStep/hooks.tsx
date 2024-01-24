@@ -1,8 +1,9 @@
 import { BigNumber } from 'ethers';
 import React from 'react';
 
+import { useAppContext } from '~context/AppContext';
 import { ColonyMotionFragment, useGetUserReputationQuery } from '~gql';
-import { useAppContext, useEnoughTokensForStaking } from '~hooks';
+import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking';
 import useUsersByAddresses from '~hooks/useUsersByAddresses';
 import Numeral from '~shared/Numeral';
 import { MotionVote } from '~utils/colonyMotions';

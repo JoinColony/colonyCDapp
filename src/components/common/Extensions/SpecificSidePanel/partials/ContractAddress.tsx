@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';

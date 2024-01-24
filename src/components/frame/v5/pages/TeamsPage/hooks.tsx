@@ -10,10 +10,11 @@ import {
 import React, { useCallback } from 'react';
 
 import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { useMemberContext } from '~context/MemberContext';
-import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
 import { useActivityData } from '~hooks/useActivityData';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_BALANCES_ROUTE,

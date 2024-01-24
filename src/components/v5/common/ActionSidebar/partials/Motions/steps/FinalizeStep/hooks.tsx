@@ -3,13 +3,15 @@ import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { ADDRESS_ZERO } from '~constants';
-import { useUserTokenBalanceContext } from '~context';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext';
 import { ColonyActionType } from '~gql';
-import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
+import useExtensionData from '~hooks/useExtensionData';
 import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
 import { MotionFinalizePayload } from '~redux/types/actions/motion';
 import Numeral from '~shared/Numeral';
-import { InstalledExtensionData } from '~types';
+import { InstalledExtensionData } from '~types/extensions';
 import { MotionAction } from '~types/motions';
 import { mapPayload } from '~utils/actions';
 import { isInstalledExtensionData } from '~utils/extensions';

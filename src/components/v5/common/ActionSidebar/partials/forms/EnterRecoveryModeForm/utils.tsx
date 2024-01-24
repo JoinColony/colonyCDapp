@@ -1,4 +1,4 @@
-import { Colony, User } from '~types';
+import { Colony, User } from '~types/graphql';
 
 import { EnterRecoveryModeFormValues } from './consts';
 

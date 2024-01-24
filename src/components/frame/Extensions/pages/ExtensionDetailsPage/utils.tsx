@@ -12,12 +12,12 @@ import {
 import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import Toast from '~shared/Extensions/Toast/Toast';
 import { OnSuccess } from '~shared/Fields';
+import { SetStateFn } from '~types';
 import {
   AnyExtensionData,
   ExtensionInitParam,
   InstalledExtensionData,
-  SetStateFn,
-} from '~types';
+} from '~types/extensions';
 import { notNull } from '~utils/arrays';
 import { addressHasRoles } from '~utils/checks';
 

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover';
-import { Token } from '~types';
+import { Token } from '~types/graphql';
 
 import TokenInfo from './TokenInfo';
 

@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { MotionAction } from '~types/motions';
 import { getMotionState, MotionState } from '~utils/colonyMotions';

@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import Icon from '~shared/Icon';

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { string, bool, object } from 'yup';
 
+import { useAppContext } from '~context/AppContext';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
 import { yupDebounce } from '~utils/yup/tests';
 
 import { isValidURL, validateCustomGnosisRPC } from './helpers';

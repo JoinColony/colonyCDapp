@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon';
-import { Token } from '~types';
+import { Token } from '~types/graphql';
 import { getNetworkByChainId } from '~utils/web3';
 
 import { getInputError } from '../shared';

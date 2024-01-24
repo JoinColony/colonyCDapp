@@ -2,8 +2,8 @@ import React, { FC, useMemo } from 'react';
 
 import ExtensionItem from '~common/Extensions/ExtensionItem';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
-import { useExtensionsData } from '~hooks';
-import { AnyExtensionData } from '~types';
+import useExtensionsData from '~hooks/useExtensionsData';
+import { AnyExtensionData } from '~types/extensions';
 import { formatText } from '~utils/intl';
 
 const displayName = 'frame.Extensions.pages.ExtensionsPage';

@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
 
-import { useAppContext, useJoinedColonies } from '~hooks';
-import { Colony, JoinedColony } from '~types';
+import { useAppContext } from '~context/AppContext';
+import useJoinedColonies from '~hooks/useJoinedColonies';
+import { Colony, JoinedColony } from '~types/graphql';
 
 import { getChainIconName } from '../../utils';
 import { ColonySwitcherListItem } from '../ColonySwitcherList/types';

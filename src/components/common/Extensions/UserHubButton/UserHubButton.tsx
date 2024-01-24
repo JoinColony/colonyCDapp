@@ -5,12 +5,10 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import UserHub from '~common/Extensions/UserHub';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
 import { useAnalyticsContext } from '~context/AnalyticsContext';
-import {
-  useAppContext,
-  useColonyContext,
-  useDetectClickOutside,
-  useMobile,
-} from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
+import useDetectClickOutside from '~hooks/useDetectClickOutside';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 import Button from '~v5/shared/Button';

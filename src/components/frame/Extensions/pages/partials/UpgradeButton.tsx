@@ -7,11 +7,12 @@ import {
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { useColonyContext, useMobile } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux';
 import Toast from '~shared/Extensions/Toast/Toast';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
 import ActionButton from '~v5/shared/Button/ActionButton';

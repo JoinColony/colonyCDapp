@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { useSetPageBreadcrumbs, useSetPageHeadingTitle } from '~context';
+import {
+  useSetPageBreadcrumbs,
+  useSetPageHeadingTitle,
+} from '~context/PageHeadingContext';
 import FundsTable from '~frame/v5/pages/FundsPage/partials/FundsTable';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 import { formatText } from '~utils/intl';

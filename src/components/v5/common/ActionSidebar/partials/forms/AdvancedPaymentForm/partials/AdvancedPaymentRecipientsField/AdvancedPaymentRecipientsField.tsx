@@ -3,7 +3,8 @@ import React, { FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { useColonyContext, useMobile } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
 import Button from '~v5/shared/Button/Button';

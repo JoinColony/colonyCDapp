@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { useMemberContext } from '~context/MemberContext';
-import { useColonyContext } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import { TextButton } from '~v5/shared/Button';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { ColonyActionType } from '~gql';
-import useColonyContext from '~hooks/useColonyContext';
 
 import CurrentUser from './CurrentUser';
 

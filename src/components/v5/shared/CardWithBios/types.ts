@@ -1,4 +1,4 @@
-import { ColonyContributor, User } from '~types';
+import { ColonyContributor, User } from '~types/graphql';
 import { PillSize, UserStatusMode } from '~v5/common/Pills/types';
 
 export type Permissions = {

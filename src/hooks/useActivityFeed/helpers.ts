@@ -1,5 +1,5 @@
-import { MotionStatesMap } from '~hooks';
-import { ColonyAction } from '~types';
+import { MotionStatesMap } from '~hooks/useNetworkMotionStates';
+import { ColonyAction } from '~types/graphql';
 import { MotionState, getMotionState } from '~utils/colonyMotions';
 
 import {

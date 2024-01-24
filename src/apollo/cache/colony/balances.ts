@@ -5,7 +5,7 @@ import {
   ADDRESS_ZERO,
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
 } from '~constants';
-import { ColonyBalance } from '~types';
+import { ColonyBalance } from '~types/graphql';
 
 const BALANCE_TYPE_NAME = 'ColonyBalance';
 

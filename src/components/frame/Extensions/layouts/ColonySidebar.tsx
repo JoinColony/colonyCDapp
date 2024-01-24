@@ -3,8 +3,8 @@ import React, { ReactNode } from 'react';
 // import { CREATE_COLONY_ROUTE } from '~routes';
 
 import { LEARN_MORE_PAYMENTS } from '~constants';
-import { useActionSidebarContext } from '~context';
-import { useColonyContext } from '~hooks';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useColonyContext } from '~context/ColonyContext';
 import LearnMore from '~shared/Extensions/LearnMore';
 import { formatText } from '~utils/intl';
 import NavigationSidebar from '~v5/frame/NavigationSidebar';

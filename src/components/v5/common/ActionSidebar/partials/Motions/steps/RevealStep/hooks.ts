@@ -1,10 +1,11 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetVoterRewardsQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
 import { OnSuccess } from '~shared/Fields';
-import { ColonyMotion, VoterRecord } from '~types';
+import { ColonyMotion, VoterRecord } from '~types/graphql';
 import { mapPayload } from '~utils/actions';
 import { MotionVote } from '~utils/colonyMotions';
 import { getSafePollingInterval } from '~utils/queries';

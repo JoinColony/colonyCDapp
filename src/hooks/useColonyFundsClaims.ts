@@ -1,8 +1,7 @@
 import { ADDRESS_ZERO } from '~constants';
-import { ColonyClaims, ColonyChainClaimWithToken } from '~types';
+import { useColonyContext } from '~context/ColonyContext';
+import { ColonyClaims, ColonyChainClaimWithToken } from '~types/graphql';
 import { notNull } from '~utils/arrays';
-
-import useColonyContext from './useColonyContext';
 
 /*
  *

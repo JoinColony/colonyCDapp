@@ -5,12 +5,13 @@ import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { ColonyActionType } from '~gql';
-import { useColonyContext, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
 import useToggle from '~hooks/useToggle';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { AnyActionType } from '~types';
+import { AnyActionType } from '~types/actions';
 import { getExtendedActionType } from '~utils/colonyActions';
 import { formatText } from '~utils/intl';
 import Modal from '~v5/shared/Modal';

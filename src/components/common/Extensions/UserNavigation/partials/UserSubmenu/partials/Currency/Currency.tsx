@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useCurrencyContext } from '~context/CurrencyContext';
 import { SupportedCurrencies } from '~gql';
-import useMobile from '~hooks/useMobile';
+import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 
 import { currencyIconTitles } from '../../../UserMenu/consts';

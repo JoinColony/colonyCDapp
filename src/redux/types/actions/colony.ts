@@ -2,12 +2,11 @@ import { Extension } from '@colony/colony-js';
 import { NavigateFunction } from 'react-router-dom';
 
 import { ActionTypes } from '~redux';
+import { Address, WithKey } from '~types';
 import {
-  Address,
   InstallableExtensionData,
   InstalledExtensionData,
-  WithKey,
-} from '~types';
+} from '~types/extensions';
 
 import { ActionType, ErrorActionType, UniqueActionType } from './index';
 

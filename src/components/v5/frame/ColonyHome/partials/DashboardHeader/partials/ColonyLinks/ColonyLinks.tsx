@@ -2,8 +2,8 @@ import { CopySimple, ShareNetwork } from 'phosphor-react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import useColonyContext from '~hooks/useColonyContext';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useColonyContext } from '~context/ColonyContext';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import ExternalLink from '~shared/Extensions/ExternalLink';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { formatText } from '~utils/intl';

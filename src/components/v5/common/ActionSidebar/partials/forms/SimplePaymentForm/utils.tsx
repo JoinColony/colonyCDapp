@@ -1,5 +1,5 @@
 import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 import {
   calculateFee,
   getSelectedToken,

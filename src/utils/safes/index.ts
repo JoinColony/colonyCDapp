@@ -3,16 +3,10 @@ import {
   SAFE_NAMES_MAP,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
-import {
-  Address,
-  ColonyAction,
-  SafeBalance,
-  SelectedPickerItem,
-  Safe,
-  NFTData,
-  ExtendedColonyActionType,
-  FormSafeTransaction,
-} from '~types';
+import { Address, SelectedPickerItem } from '~types';
+import { ExtendedColonyActionType } from '~types/actions';
+import { NFTData, Safe, ColonyAction } from '~types/graphql';
+import { FormSafeTransaction, SafeBalance } from '~types/safes';
 import { notNull } from '~utils/arrays';
 import { isEmpty } from '~utils/lodash';
 

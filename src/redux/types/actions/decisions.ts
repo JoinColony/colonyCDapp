@@ -1,5 +1,6 @@
 import { ActionTypes } from '~redux/actionTypes';
-import { Address, ColonyDecision } from '~types';
+import { Address } from '~types';
+import { ColonyDecision } from '~types/graphql';
 import { DecisionDraft } from '~utils/decisions';
 
 import {

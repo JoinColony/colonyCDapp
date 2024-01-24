@@ -2,8 +2,8 @@ import { format } from 'date-fns';
 import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useUserByNameOrAddress } from '~hooks';
-import { AnyExtensionData, InstalledExtensionData } from '~types';
+import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress';
+import { AnyExtensionData, InstalledExtensionData } from '~types/extensions';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 import UserAvatar from '~v5/shared/UserAvatar';

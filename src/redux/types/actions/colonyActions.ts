@@ -5,16 +5,15 @@ import { RefObject } from 'react';
 import { NetworkInfo } from '~constants';
 import { ExternalLink } from '~gql';
 import { ActionTypes } from '~redux';
+import { Address, WithKey } from '~types';
 import {
-  Address,
-  WithKey,
   DomainColor,
   Domain,
   Colony,
   ColonyObjective,
   Safe,
   SafeTransactionData,
-} from '~types';
+} from '~types/graphql';
 
 import {
   ErrorActionType,

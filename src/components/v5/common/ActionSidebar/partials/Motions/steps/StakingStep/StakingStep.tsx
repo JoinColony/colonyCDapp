@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
 import React, { FC, useState } from 'react';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import useToggle from '~hooks/useToggle';
 import { SpinnerLoader } from '~shared/Preloaders';
-import { SystemMessages } from '~types';
+import { SystemMessages } from '~types/actions';
 import { formatText } from '~utils/intl';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText';

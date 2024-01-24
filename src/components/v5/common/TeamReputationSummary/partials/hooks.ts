@@ -1,8 +1,8 @@
 import { Id } from '@colony/colony-js';
 
 import { ADDRESS_ZERO } from '~constants';
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetUserReputationQuery } from '~gql';
-import { useColonyContext } from '~hooks';
 
 export const useTeamReputationSummaryRow = (id: number) => {
   const {

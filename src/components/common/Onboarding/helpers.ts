@@ -1,5 +1,5 @@
 import withWizard from '~shared/Wizard/withWizard';
-import { User } from '~types';
+import { User } from '~types/graphql';
 
 import {
   colonySidebarValues,

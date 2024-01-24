@@ -2,8 +2,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { ColonyActionType } from '~gql';
-import useColonyContext from '~hooks/useColonyContext';
 
 import { EditTeamFormValues } from '../../forms/EditTeamForm/consts';
 

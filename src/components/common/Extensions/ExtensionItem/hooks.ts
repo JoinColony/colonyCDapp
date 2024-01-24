@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useColonyContext, useExtensionData } from '~hooks';
-import { useExtensionsBadge } from '~hooks/useExtensionsBadgeStatus';
+import { useColonyContext } from '~context/ColonyContext';
+import useExtensionData from '~hooks/useExtensionData';
+import useExtensionsBadge from '~hooks/useExtensionsBadgeStatus';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import { isInstalledExtensionData } from '~utils/extensions';
 

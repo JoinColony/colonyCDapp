@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
 
-export const useExtensionsBadge = (extensionData) => {
+const useExtensionsBadge = (extensionData) => {
   const { formatMessage } = useIntl();
   const [status, setStatus] = useState<ExtensionStatusBadgeMode>();
   const [badgeMessage, setBadgeMessage] = useState<string>('');
@@ -33,3 +33,5 @@ export const useExtensionsBadge = (extensionData) => {
     badgeMessage,
   };
 };
+
+export default useExtensionsBadge;

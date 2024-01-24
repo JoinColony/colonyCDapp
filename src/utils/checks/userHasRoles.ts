@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 
 import { getUserRolesForDomain } from '~transformers';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 
 export const userHasRole = (userRoles: ColonyRole[], role: ColonyRole) =>
   userRoles.includes(role);

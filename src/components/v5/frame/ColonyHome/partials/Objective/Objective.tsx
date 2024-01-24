@@ -2,8 +2,8 @@ import React from 'react';
 
 import { ACTION } from '~constants/actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useGetSelectedDomainFilter } from '~hooks';
-import useColonyContext from '~hooks/useColonyContext';
+import { useColonyContext } from '~context/ColonyContext';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import { COLONY_DETAILS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import { getTeamColor } from '~utils/teams';

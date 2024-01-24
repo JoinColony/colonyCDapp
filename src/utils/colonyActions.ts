@@ -3,16 +3,18 @@ import { ReactNode } from 'react';
 
 import { getRole } from '~constants/permissions';
 import { ColonyActionRoles, ColonyActionType } from '~gql';
+import { Address } from '~types';
 import {
-  Address,
-  Token,
-  Domain as ColonyDomain,
   AnyActionType,
   ExtendedColonyActionType,
+  ActionUserRoles,
+} from '~types/actions';
+import {
+  Token,
+  Domain as ColonyDomain,
   ColonyMetadata,
   ColonyAction,
-  ActionUserRoles,
-} from '~types';
+} from '~types/graphql';
 import { isEmpty, isEqual } from '~utils/lodash';
 
 import { MotionVote } from './colonyMotions';

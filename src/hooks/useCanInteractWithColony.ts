@@ -1,10 +1,10 @@
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { useAppContext } from '~context/AppContext';
 import { useGetColonyContributorQuery } from '~gql';
-import { Colony, ColonyWallet } from '~types';
+import { Colony } from '~types/graphql';
+import { ColonyWallet } from '~types/wallet';
 import { isChainSupported } from '~utils/autoLogin';
 import { getColonyContributorId } from '~utils/members';
-
-import useAppContext from './useAppContext';
 
 export const useUserAccountRegistered = (): boolean => {
   const { user } = useAppContext();

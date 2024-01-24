@@ -13,14 +13,13 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 // import { PaperPlaneTilt } from 'phosphor-react';
 
 import UserHubButton from '~common/Extensions/UserHubButton';
-import {
-  useMemberModalContext,
-  usePageHeadingContext,
-  useColonyCreatedModalContext,
-  useActionSidebarContext,
-  useTokensModalContext,
-} from '~context';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import { useColonyCreatedModalContext } from '~context/ColonyCreatedModalContext';
+import { useMemberModalContext } from '~context/MemberModalContext';
+import { usePageHeadingContext } from '~context/PageHeadingContext';
+import { useTokensModalContext } from '~context/TokensModalContext';
 import { TX_SEARCH_PARAM } from '~routes';
 import ActionSidebar from '~v5/common/ActionSidebar';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';

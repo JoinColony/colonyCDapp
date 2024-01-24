@@ -2,7 +2,8 @@ import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { createDecisionAction } from '~redux/actionCreators';
 import { mapPayload, pipe } from '~utils/actions';

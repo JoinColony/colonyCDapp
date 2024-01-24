@@ -10,7 +10,7 @@ import {
 } from '~gql';
 import { Action, ActionTypes, AllActions } from '~redux';
 import { transactionReady, transactionPending } from '~redux/actionCreators';
-import { Safe } from '~types';
+import { Safe } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 import { excludeTypenameKey } from '~utils/objects';
 import { putError, takeFrom } from '~utils/saga/effects';

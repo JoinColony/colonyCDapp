@@ -1,7 +1,7 @@
 import { SiweMessage } from 'siwe';
 
 import { ContextModule, getContext } from '~context';
-import { isFullWallet } from '~types';
+import { isFullWallet } from '~types/wallet';
 
 const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
   const { host, origin } = window.location;

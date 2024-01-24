@@ -1,8 +1,8 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 
+import { useAppContext } from '~context/AppContext';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
 import Toast from '~shared/Extensions/Toast';
 import { formatText } from '~utils/intl';
 

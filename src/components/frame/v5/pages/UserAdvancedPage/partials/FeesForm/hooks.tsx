@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import { useAppContext } from '~context/AppContext';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
 import Toast from '~shared/Extensions/Toast';
 import { notMaybe } from '~utils/arrays';
 import { canUseMetatransactions } from '~utils/checks';

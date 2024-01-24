@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useAppContext, useMobile } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useMobile } from '~hooks';
 import {
   USER_HOME_ROUTE,
   USER_EDIT_PROFILE_ROUTE,

@@ -1,4 +1,4 @@
-import { UserStakeStatus } from '~types';
+import { UserStakeStatus } from '~types/userStake';
 
 import { StakesFilterOption } from './types';
 

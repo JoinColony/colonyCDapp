@@ -633,7 +633,7 @@
     "ariaLabel.selectUser": "Select user",
     "ariaLabel.selectDecisionMethod": "Select decision method",
     "ariaLabel.selectToken": "Select token",
-    "ariaLabel.selectTeamColour": "Select team colour",
+    "ariaLabel.selectTeamColor": "Select team color",
     "ariaLabel.sortBalace": "Sort by balance",
     "ariaLabel.openTabNotfication": "Open tab notification",
     "userInfo.about.section": "about",

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { Address } from '~types';
 
 const useTokenTotalBalance = (currentTokenAddress?: Address) => {

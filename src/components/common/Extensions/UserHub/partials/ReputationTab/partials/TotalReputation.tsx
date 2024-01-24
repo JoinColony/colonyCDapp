@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { useUserReputation } from '~hooks';
+import useUserReputation from '~hooks/useUserReputation';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';

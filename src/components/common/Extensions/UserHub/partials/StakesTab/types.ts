@@ -1,5 +1,6 @@
 import { TabItem } from '~shared/Extensions/Tabs/types';
-import { Token, Colony, UserStakeStatus, UserStakeWithStatus } from '~types';
+import { Token, Colony } from '~types/graphql';
+import { UserStakeStatus, UserStakeWithStatus } from '~types/userStake';
 
 export interface StakesListProps {
   loading: boolean;

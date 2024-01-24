@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation';
 import Tabs from '~shared/Extensions/Tabs/Tabs';
-import { AnyExtensionData, InstalledExtensionData } from '~types';
+import { AnyExtensionData, InstalledExtensionData } from '~types/extensions';
 
 import { tabsItems } from './consts';
 import ParamDetailsTab from './ParamDetailsTab';

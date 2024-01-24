@@ -11,7 +11,7 @@ import {
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 import { xor } from '~utils/lodash';
 

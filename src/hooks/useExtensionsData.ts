@@ -2,18 +2,20 @@ import { getExtensionHash } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants';
+import { useColonyContext } from '~context/ColonyContext';
 import {
   useGetColonyExtensionsQuery,
   useGetCurrentExtensionsVersionsQuery,
 } from '~gql';
-import { InstallableExtensionData, InstalledExtensionData } from '~types';
+import {
+  InstallableExtensionData,
+  InstalledExtensionData,
+} from '~types/extensions';
 import { notNull } from '~utils/arrays';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
 } from '~utils/extensions';
-
-import useColonyContext from './useColonyContext';
 
 interface UseExtensionsDataReturn {
   installedExtensionsData: InstalledExtensionData[];

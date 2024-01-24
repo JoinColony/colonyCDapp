@@ -4,11 +4,11 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { NativeTokenStatus } from '~gql';
 import CurrencyConversion from '~shared/CurrencyConversion';
 import Numeral from '~shared/Numeral';
-import { Token } from '~types';
+import { Token } from '~types/graphql';
 import { getBlockExplorerLink } from '~utils/external';
 import { formatText } from '~utils/intl';
 import {

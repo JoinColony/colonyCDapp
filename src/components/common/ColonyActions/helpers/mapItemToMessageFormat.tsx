@@ -13,7 +13,7 @@ import {
   User,
   ColonyExtension,
   Token,
-} from '~types';
+} from '~types/graphql';
 import { notMaybe } from '~utils/arrays';
 import { formatRolesTitle } from '~utils/colonyActions';
 import { intl } from '~utils/intl';

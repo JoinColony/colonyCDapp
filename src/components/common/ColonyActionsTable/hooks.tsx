@@ -7,17 +7,15 @@ import { defineMessages } from 'react-intl';
 import { generatePath, Link, useNavigate } from 'react-router-dom';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { useColonyContext } from '~context/ColonyContext';
 import {
   SearchableColonyActionSortableFields,
   SearchableColonyActionSortInput,
   SearchableSortDirection,
 } from '~gql';
-import {
-  useActivityFeed,
-  useColonyContext,
-  useGetSelectedDomainFilter,
-} from '~hooks';
+import useActivityFeed from '~hooks/useActivityFeed';
 import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
 import {
   COLONY_ACTIVITY_ROUTE,

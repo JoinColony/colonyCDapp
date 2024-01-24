@@ -2,7 +2,7 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
 import Numeral from '~shared/Numeral';
-import { ColonyClaims } from '~types';
+import { ColonyClaims } from '~types/graphql';
 import { formatText } from '~utils/intl';
 
 import AcceptButton from '../AcceptButton';

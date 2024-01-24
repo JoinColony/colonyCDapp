@@ -1,7 +1,8 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { MotionStatesMap } from '~hooks/useNetworkMotionStates';
-import { UserStake, UserStakeStatus } from '~types';
+import { UserStake } from '~types/graphql';
+import { UserStakeStatus } from '~types/userStake';
 
 import { stakesFilterOptions } from './consts';
 import { StakesFilterType } from './types';

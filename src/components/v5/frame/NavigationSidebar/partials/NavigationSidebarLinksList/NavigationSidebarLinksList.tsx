@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { COLONY_HOME_ROUTE } from '~routes';
 
 import NavigationSidebarLink from '../NavigationSidebarLink/NavigationSidebarLink';

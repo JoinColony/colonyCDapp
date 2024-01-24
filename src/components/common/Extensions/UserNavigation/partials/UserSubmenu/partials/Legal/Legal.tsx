@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { PRIVACY_POLICY, TERMS_AND_CONDITIONS } from '~constants';
-import useMobile from '~hooks/useMobile';
+import { useMobile } from '~hooks';
 import ExternalLink from '~shared/ExternalLink';
 import { formatText } from '~utils/intl';
 

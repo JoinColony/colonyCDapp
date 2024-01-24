@@ -2,8 +2,9 @@ import clsx from 'clsx';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useActionsCount, useGetSelectedDomainFilter } from '~hooks';
-import useColonyContext from '~hooks/useColonyContext';
+import { useColonyContext } from '~context/ColonyContext';
+import useActionsCount from '~hooks/useActionsCount';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import { COLONY_ACTIVITY_ROUTE } from '~routes';
 import { findDomainByNativeId } from '~utils/domains';
 import { formatText } from '~utils/intl';

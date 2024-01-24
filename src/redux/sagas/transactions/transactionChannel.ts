@@ -7,7 +7,8 @@ import {
 import { LogDescription, poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel, Buffer } from 'redux-saga';
 
-import { MethodParams, RequireProps } from '~types';
+import { RequireProps } from '~types';
+import { MethodParams } from '~types/transactions';
 
 import {
   transactionSendError,

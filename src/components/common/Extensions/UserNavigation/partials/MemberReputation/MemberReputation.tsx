@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { useUserReputation } from '~hooks';
+import useUserReputation from '~hooks/useUserReputation';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';
 import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';

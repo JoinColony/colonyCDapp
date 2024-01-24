@@ -8,13 +8,13 @@ import {
 } from 'react-router-dom';
 
 import { ADDRESS_ZERO } from '~constants';
+import { useAppContext } from '~context/AppContext';
 import {
   useGetColonyMemberInviteQuery,
   useGetColonyWhitelistByNameQuery,
   useValidateUserInviteMutation,
   useGetPublicColonyByNameQuery,
 } from '~gql';
-import { useAppContext } from '~hooks';
 import { CREATE_PROFILE_ROUTE } from '~routes';
 import PageLoader from '~v5/common/PageLoader';
 import Button from '~v5/shared/Button';

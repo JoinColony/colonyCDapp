@@ -2,9 +2,10 @@ import React, { FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { UserHubTabs } from '~common/Extensions/UserHub/types';
+import { useColonyContext } from '~context/ColonyContext';
 import { useTokensModalContext } from '~context/TokensModalContext';
 import { useGetUserTokenBalanceQuery } from '~gql';
-import { useColonyContext, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
 import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';

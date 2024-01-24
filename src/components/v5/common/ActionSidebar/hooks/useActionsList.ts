@@ -4,12 +4,10 @@ import { useMemo } from 'react';
 // import { ColonyRole } from '@colony/colony-js';
 
 import { ACTION } from '~constants/actions';
-import {
-  useAppContext,
-  useColonyContext,
-  useEnabledExtensions,
-  useUserAccountRegistered,
-} from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import { useUserAccountRegistered } from '~hooks/useCanInteractWithColony';
+import useEnabledExtensions from '~hooks/useEnabledExtensions';
 import { getAllUserRoles } from '~transformers';
 import {
   canAdminister,

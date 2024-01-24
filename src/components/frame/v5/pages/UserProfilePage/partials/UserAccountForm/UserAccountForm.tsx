@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext';
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl';
 import Button from '~v5/shared/Button';

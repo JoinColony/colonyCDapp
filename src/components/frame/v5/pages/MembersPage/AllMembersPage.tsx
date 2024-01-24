@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
+import { useColonyContext } from '~context/ColonyContext';
 import { useFilterContext } from '~context/FilterContext';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext';
 import { useSearchContext } from '~context/SearchContext';
-import { useColonyContext } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import { formatText } from '~utils/intl';
 import { FilterTypes } from '~v5/common/TableFiltering/types';
 

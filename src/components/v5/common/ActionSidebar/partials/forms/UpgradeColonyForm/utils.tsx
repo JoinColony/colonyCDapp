@@ -1,5 +1,5 @@
 import { RootMotionMethodNames } from '~redux';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 
 import { UpgradeColonyFormValues } from './consts';
 

@@ -1,6 +1,6 @@
 import getObjectFromPath from 'lodash/get';
 
-import { TransactionStatus } from '~types';
+import { TransactionStatus } from '~types/graphql';
 
 import { ActionTypes } from '../actionTypes';
 import { CORE_TRANSACTIONS_LIST } from '../constants';

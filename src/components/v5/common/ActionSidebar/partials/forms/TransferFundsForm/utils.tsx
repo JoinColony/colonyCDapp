@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 import { findDomainByNativeId } from '~utils/domains';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';
 

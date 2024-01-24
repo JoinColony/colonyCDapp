@@ -5,7 +5,9 @@ import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useColonyContext, useRelativePortalElement, useToggle } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
 import { formatText } from '~utils/intl';

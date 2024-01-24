@@ -3,11 +3,8 @@ import { Contract, ContractInterface } from 'ethers';
 import { call, put, take } from 'redux-saga/effects';
 // import abis from '@colony/colony-js/lib-esm/abis';
 
-import {
-  TransactionStatus,
-  TRANSACTION_METHODS,
-  ExtendedClientType,
-} from '~types';
+import { TransactionStatus } from '~gql';
+import { TRANSACTION_METHODS, ExtendedClientType } from '~types/transactions';
 import { mergePayload } from '~utils/actions';
 
 import { transactionSendError } from '../../actionCreators';

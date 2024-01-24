@@ -6,7 +6,7 @@ import {
   MAX_COLONY_DISPLAY_NAME,
 } from '~constants';
 import { CheckColonyNameExistsDocument } from '~gql';
-import { Token } from '~types';
+import { Token } from '~types/graphql';
 import { intl } from '~utils/intl';
 import { createYupTestFromQuery } from '~utils/yup/tests';
 

@@ -1,6 +1,5 @@
-import { User } from '~types';
-
-import useAppContext from './useAppContext';
+import { useAppContext } from '~context/AppContext';
+import { User } from '~types/graphql';
 
 const useSelectedUser = (colonyUsers: User[]) => {
   const { user } = useAppContext();

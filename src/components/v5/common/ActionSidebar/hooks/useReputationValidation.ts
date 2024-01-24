@@ -5,8 +5,8 @@ import { useFormContext } from 'react-hook-form';
 import { boolean, object } from 'yup';
 
 import { ADDRESS_ZERO } from '~constants';
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetUserReputationQuery } from '~gql';
-import { useColonyContext } from '~hooks';
 
 import { DecisionMethod } from './useDecisionMethods';
 

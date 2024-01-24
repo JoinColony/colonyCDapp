@@ -1,4 +1,5 @@
-import { Address, Token } from '~types';
+import { Address } from '~types';
+import { Token } from '~types/graphql';
 
 import { SafeTransactionData, SafeTransactionType, User } from './graphql';
 

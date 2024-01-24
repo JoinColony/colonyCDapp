@@ -1,4 +1,4 @@
-import { Domain } from '~types';
+import { Domain } from '~types/graphql';
 import { getTeamHexColor } from '~utils/teams';
 import { ChartData } from '~v5/shared/DonutChart/types';
 

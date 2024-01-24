@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { useUserByAddress } from '~hooks';
+import useUserByAddress from '~hooks/useUserByAddress';
 import Icon from '~shared/Icon';
 import AvatarUser from '~v5/shared/AvatarUser';
 

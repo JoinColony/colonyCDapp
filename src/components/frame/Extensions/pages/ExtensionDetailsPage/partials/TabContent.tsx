@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import SupportingDocuments from '~common/Extensions/SupportingDocuments';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 
 const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.TabContent';

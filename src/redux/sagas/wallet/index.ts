@@ -18,7 +18,7 @@ import { providers } from 'ethers';
 
 import { isDev } from '~constants';
 import { ContextModule, getContext } from '~context';
-import { BasicWallet, FullWallet } from '~types';
+import { BasicWallet, FullWallet } from '~types/wallet';
 import {
   setLastWallet,
   LastWallet,

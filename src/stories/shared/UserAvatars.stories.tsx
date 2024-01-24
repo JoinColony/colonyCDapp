@@ -1,4 +1,4 @@
-import { User } from '~types';
+import { User } from '~types/graphql';
 import UserAvatars from '~v5/shared/UserAvatars';
 
 import type { Meta, StoryObj } from '@storybook/react';

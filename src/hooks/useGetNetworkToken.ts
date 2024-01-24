@@ -1,6 +1,5 @@
 import { NETWORK_DATA, NetworkInfo } from '~constants';
-
-import useAppContext from './useAppContext';
+import { useAppContext } from '~context/AppContext';
 
 const useGetNetworkToken = (): NetworkInfo | undefined => {
   const { wallet } = useAppContext();

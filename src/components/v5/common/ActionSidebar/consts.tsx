@@ -7,7 +7,7 @@ import { object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { ACTION, Action } from '~constants/actions';
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { stripHTMLFromText } from '~utils/elements';
 import { formatText } from '~utils/intl';
 

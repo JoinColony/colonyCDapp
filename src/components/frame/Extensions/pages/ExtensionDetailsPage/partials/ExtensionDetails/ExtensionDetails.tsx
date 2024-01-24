@@ -2,7 +2,8 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import React, { FC } from 'react';
 
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { addressHasRoles } from '~utils/checks';
 import { isInstalledExtensionData } from '~utils/extensions';
 

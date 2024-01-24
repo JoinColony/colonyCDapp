@@ -17,16 +17,14 @@ import {
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants';
 import { useGetColonyContributorsQuery } from '~gql';
-import {
-  useColonyContext,
-  useMobile,
-  useColonyContributors,
-  useAllMembers,
-} from '~hooks';
+import { useMobile } from '~hooks';
+import useAllMembers from '~hooks/members/useAllMembers';
+import useColonyContributors from '~hooks/members/useColonyContributors';
 import { COLONY_VERIFIED_ROUTE } from '~routes';
-import { ColonyContributor } from '~types';
+import { ColonyContributor } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 
+import { useColonyContext } from './ColonyContext';
 import { FilterContextProvider, useFilterContext } from './FilterContext';
 import { SearchContextProvider } from './SearchContext';
 

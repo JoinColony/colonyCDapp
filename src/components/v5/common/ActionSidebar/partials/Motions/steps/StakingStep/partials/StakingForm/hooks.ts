@@ -3,8 +3,8 @@ import moveDecimal from 'move-decimal-point';
 import { defineMessages } from 'react-intl';
 import { number, object, ObjectSchema, string } from 'yup';
 
-import { useUserTokenBalanceContext } from '~context';
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext';
 import { MotionVote } from '~utils/colonyMotions';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';

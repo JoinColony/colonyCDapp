@@ -3,7 +3,7 @@ import pick from 'lodash/pick';
 import React, { useMemo, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import useWrapWithRef from '~hooks/useWrapWithRef';
 import { formatText } from '~utils/intl';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';

@@ -6,7 +6,10 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
-import { usePageHeadingContext, useSetPageHeadingTitle } from '~context';
+import {
+  usePageHeadingContext,
+  useSetPageHeadingTitle,
+} from '~context/PageHeadingContext';
 import {
   USER_ADVANCED_ROUTE,
   USER_EDIT_PROFILE_ROUTE,

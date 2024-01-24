@@ -2,7 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { takeEvery, fork, put, all } from 'redux-saga/effects';
 
 import { Action, ActionTypes, AllActions } from '~redux';
-import { ExpenditurePayout } from '~types';
+import { ExpenditurePayout } from '~types/graphql';
 
 import {
   createTransaction,

@@ -2,24 +2,22 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate, Outlet, useParams } from 'react-router-dom';
 
-import {
-  ColonyCreatedModalProvider,
-  ActionSidebarContextProvider,
-  ColonyContextProvider,
-  ColonyDecisionProvider,
-  MemberModalProvider,
-  UserTokenBalanceProvider,
-  UserTransactionContextProvider,
-  TokensModalContextProvider,
-} from '~context';
+import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
+import { useAppContext } from '~context/AppContext';
+import { ColonyContextProvider } from '~context/ColonyContext';
+import { ColonyCreatedModalProvider } from '~context/ColonyCreatedModalContext';
+import { ColonyDecisionProvider } from '~context/ColonyDecisionContext';
 import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
+import { MemberModalProvider } from '~context/MemberModalContext';
+import { TokensModalContextProvider } from '~context/TokensModalContext';
+import { UserTokenBalanceProvider } from '~context/UserTokenBalanceContext';
+import { UserTransactionContextProvider } from '~context/UserTransactionContext';
 import { ColonyLayout } from '~frame/Extensions/layouts';
 import LoadingTemplate from '~frame/LoadingTemplate';
 import {
   useGetColonyWhitelistByNameQuery,
   useGetFullColonyByNameQuery,
 } from '~gql';
-import { useAppContext } from '~hooks';
 
 import NotFoundRoute from './NotFoundRoute';
 

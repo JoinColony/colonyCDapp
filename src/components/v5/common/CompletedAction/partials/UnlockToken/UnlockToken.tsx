@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ColonyAction } from '~types';
+import { ColonyAction } from '~types/graphql';
 import { formatText } from '~utils/intl';
 import UserPopover from '~v5/shared/UserPopover';
 

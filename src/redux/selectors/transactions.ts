@@ -1,7 +1,7 @@
 import { Collection, Map as ImmutableMap, List } from 'immutable';
 import { createSelector } from 'reselect';
 
-import { TransactionStatus } from '~types';
+import { TransactionStatus } from '~types/graphql';
 
 import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '../constants';
 import { TransactionRecord } from '../immutable';

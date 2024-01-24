@@ -18,7 +18,7 @@ import { usePopper } from 'react-popper';
 import { PopperOptions } from 'react-popper-tooltip';
 import { Unionize } from 'utility-types';
 
-import { usePrevious } from '~hooks';
+import usePrevious from '~hooks/usePrevious';
 import { SetStateFn, SimpleMessageValues } from '~types';
 
 import PopoverWrapper from './PopoverWrapper';

@@ -1,7 +1,8 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
 import { TimerValueProps } from '~shared/TimerValue/TimerValue';
 import { MotionState } from '~utils/colonyMotions';
 

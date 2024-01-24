@@ -3,18 +3,20 @@ import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useColors, useRelativePortalElement, useToggle } from '~hooks';
+import useColors from '~hooks/useColors';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 import MenuContainer from '~v5/shared/MenuContainer';
 import Portal from '~v5/shared/Portal';
 import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
 
-import TeamColourBadge from './partials/TeamColourBadge';
+import TeamColorBadge from './partials/TeamColorBadge';
 import { TeamColourFieldProps } from './types';
 
-const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
+const displayName = 'v5.common.ActionsContent.partials.TeamColorField';
 
-const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
+const TeamColorField: FC<TeamColourFieldProps> = ({ name }) => {
   const {
     field,
     fieldState: { error },
@@ -44,7 +46,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
   return (
     <div className="sm:relative w-full">
       {readonly ? (
-        <TeamColourBadge defaultColor={field.value} title={teamNameValue} />
+        <TeamColorBadge defaultColor={field.value} title={teamNameValue} />
       ) : (
         <>
           <button
@@ -61,7 +63,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
             onClick={toggleDecisionSelect}
           >
             {field.value ? (
-              <TeamColourBadge
+              <TeamColorBadge
                 defaultColor={field.value}
                 title={
                   teamNameValue || formatText({ id: 'actionSidebar.teamName' })
@@ -99,6 +101,6 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
   );
 };
 
-TeamColourField.displayName = displayName;
+TeamColorField.displayName = displayName;
 
-export default TeamColourField;
+export default TeamColorField;

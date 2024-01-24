@@ -7,12 +7,10 @@ import clsx from 'clsx';
 import { uniqueId } from 'lodash';
 import React, { FC, useState } from 'react';
 
-import {
-  useColonyContext,
-  useGetSelectedDomainFilter,
-  useMobile,
-} from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 // import { useSearchContext } from '~context/SearchContext';

@@ -1,12 +1,8 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 
+import { TransactionStatus } from '~gql';
 import { TransactionSucceededPayload } from '~redux/types/actions/transaction';
-import {
-  MethodParams,
-  TxConfig,
-  TransactionErrors,
-  TransactionStatus,
-} from '~types';
+import { MethodParams, TxConfig, TransactionErrors } from '~types/transactions';
 
 import { ActionTypes } from '../actionTypes';
 import { GasPricesProps, TransactionError } from '../immutable';

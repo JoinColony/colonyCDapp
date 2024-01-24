@@ -4,7 +4,8 @@ import { call, put, select } from 'redux-saga/effects';
 import { DEFAULT_NETWORK } from '~constants';
 import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls';
 import { ContextModule, getContext } from '~context';
-import { RpcMethods, Network } from '~types';
+import { Network } from '~types/network';
+import { RpcMethods } from '~types/rpcMethods';
 
 import { updateGasPrices } from '../../actionCreators';
 import { GasPricesProps } from '../../immutable';

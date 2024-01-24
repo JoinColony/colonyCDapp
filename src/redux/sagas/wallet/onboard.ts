@@ -9,7 +9,7 @@ import {
   GANACHE_LOCAL_RPC_URL,
 } from '~constants';
 import colonyIcon from '~images/icons/colony-logo-wallet.svg';
-import { Network } from '~types';
+import { Network } from '~types/network';
 import { getChainIdAsHex } from '~utils/autoLogin';
 import { intl } from '~utils/intl';
 

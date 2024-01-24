@@ -1,5 +1,5 @@
 import { ADDRESS_ZERO } from '~constants';
-import { Colony } from '~types';
+import { Colony } from '~types/graphql';
 import { createAddress } from '~utils/web3';
 
 import { ManageTokensFormValues } from './consts';

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks';

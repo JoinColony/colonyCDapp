@@ -4,9 +4,9 @@ import { useParams, Navigate } from 'react-router-dom';
 
 import Onboarding, { Flow } from '~common/Onboarding';
 import { HeaderRow } from '~common/Onboarding/wizardSteps/shared';
+import { useAppContext } from '~context/AppContext';
 import { MainLayout } from '~frame/Extensions/layouts';
 import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql';
-import { useAppContext } from '~hooks';
 import { LANDING_PAGE_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import PageLoader from '~v5/common/PageLoader';

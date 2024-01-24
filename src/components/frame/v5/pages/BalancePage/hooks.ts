@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
-import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import { getFormattedNumeralValue } from '~shared/Numeral';
 import { convertToDecimal } from '~utils/convertToDecimal';
 import {

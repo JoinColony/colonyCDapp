@@ -2,7 +2,8 @@ import React from 'react';
 
 import Avatar, { AvatarProps } from '~shared/Avatar';
 import NavLink from '~shared/NavLink';
-import { Address, Colony } from '~types';
+import { Address } from '~types';
+import { Colony } from '~types/graphql';
 
 export interface Props
   extends Pick<AvatarProps, 'className' | 'notSet' | 'size'> {

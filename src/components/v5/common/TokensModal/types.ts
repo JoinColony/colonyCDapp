@@ -1,7 +1,7 @@
 import { ObjectSchema } from 'yup';
 
 import { ActionTypes } from '~redux';
-import { Token } from '~types';
+import { Token } from '~types/graphql';
 
 import { ModalProps } from '../../shared/Modal/types';
 

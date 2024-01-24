@@ -4,7 +4,8 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 import { array, InferType, number, object, string } from 'yup';
 
-import { useColonyContext, useNetworkInverseFee } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath';

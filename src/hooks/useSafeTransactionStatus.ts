@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 import { ETHEREUM_NETWORK } from '~constants';
 import { useGetSafeTransactionStatusQuery } from '~gql';
-import { ColonyAction } from '~types';
+import { ColonyAction } from '~types/graphql';
 
 export enum TRANSACTION_STATUS {
   COMPLETED = 'Completed',

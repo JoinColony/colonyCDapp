@@ -4,7 +4,7 @@ import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip';
 import TokenInfoPopover from '~shared/TokenInfoPopover';
-import { Token } from '~types';
+import { Token } from '~types/graphql';
 import { formatText } from '~utils/intl';
 
 interface NativeTokenPillProps {

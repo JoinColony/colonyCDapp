@@ -1,6 +1,6 @@
 import { utils } from 'ethers';
 
-import { ContractRevertErrors, TRANSACTION_METHODS } from '~types';
+import { ContractRevertErrors, TRANSACTION_METHODS } from '~types/transactions';
 import { intl } from '~utils/intl';
 
 const { formatMessage } = intl({

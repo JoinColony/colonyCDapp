@@ -7,11 +7,12 @@ import {
   CreateExpenditureMetadataMutation,
   CreateExpenditureMetadataMutationVariables,
 } from '~gql';
-import { Expenditure, MethodParams } from '~types';
 import {
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
 } from '~types/expenditures';
+import { Expenditure } from '~types/graphql';
+import { MethodParams } from '~types/transactions';
 import { getExpenditureDatabaseId } from '~utils/databaseId';
 
 /**

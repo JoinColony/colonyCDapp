@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { useColonyContext, useExtensionData, useMobile } from '~hooks';
-import { ExtensionMethods } from '~hooks/useExtensionData';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
+import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux';
 import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import Toast from '~shared/Extensions/Toast/Toast';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 import { formatText } from '~utils/intl';
 import ActionButton from '~v5/shared/Button/ActionButton';
 

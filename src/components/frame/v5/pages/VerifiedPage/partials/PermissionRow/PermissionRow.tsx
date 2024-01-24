@@ -2,7 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 import React, { FC } from 'react';
 
 import { getRole } from '~constants/permissions';
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import Tooltip from '~shared/Extensions/Tooltip';
 import { getAllUserRoles } from '~transformers';
 import { formatText } from '~utils/intl';

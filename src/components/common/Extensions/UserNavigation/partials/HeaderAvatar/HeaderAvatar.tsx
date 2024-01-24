@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import UserAvatar from '~v5/shared/UserAvatar';
 
 export const displayName =

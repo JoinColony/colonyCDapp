@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
-import { useFlatFormErrors } from '~hooks';
+import useFlatFormErrors from '~hooks/useFlatFormErrors';
 
 import { REPUTATION_VALIDATION_FIELD_NAME } from '../../hooks/useReputationValidation';
 

@@ -4,11 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { TransactionOrMessageGroups } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { GetUserTransactionsQuery, useGetUserTransactionsQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
 import { TransactionType } from '~redux/immutable';
 import { groupedTransactions as groupedTransactionsSelector } from '~redux/selectors';
-import { ExtendedClientType, Transaction } from '~types';
+import { Transaction } from '~types/graphql';
+import { ExtendedClientType } from '~types/transactions';
 import { notNull } from '~utils/arrays';
 import { groupBy, unionBy } from '~utils/lodash';
 

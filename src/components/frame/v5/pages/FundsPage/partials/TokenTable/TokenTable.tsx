@@ -3,13 +3,11 @@ import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { FC, useState } from 'react';
 
-import {
-  useMobile,
-  useColonyContext,
-  useRelativePortalElement,
-  useColonyFundsClaims,
-  useToggle,
-} from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import { useMobile } from '~hooks';
+import useColonyFundsClaims from '~hooks/useColonyFundsClaims';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
 import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';

@@ -3,8 +3,10 @@ import { noop } from 'lodash';
 import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetColonyContributorQuery } from '~gql';
-import { useColonyContext, useContributorBreakdown, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
+import useContributorBreakdown from '~hooks/members/useContributorBreakdown';
 import Icon from '~shared/Icon';
 import { getColonyContributorId } from '~utils/members';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';

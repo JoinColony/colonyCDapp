@@ -3,8 +3,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { ColonyActionType } from '~gql';
-import useColonyContext from '~hooks/useColonyContext';
 import Numeral from '~shared/Numeral';
 import { formatText } from '~utils/intl';
 import { getTokenDecimalsWithFallback } from '~utils/tokens';

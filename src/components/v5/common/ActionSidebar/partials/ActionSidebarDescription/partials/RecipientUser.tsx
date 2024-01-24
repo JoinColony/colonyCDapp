@@ -2,7 +2,7 @@ import React from 'react';
 
 import useUserByAddress from '~hooks/useUserByAddress';
 import MaskedAddress from '~shared/MaskedAddress';
-import { User } from '~types';
+import { User } from '~types/graphql';
 import { formatText } from '~utils/intl';
 
 interface RecipientUserProps {

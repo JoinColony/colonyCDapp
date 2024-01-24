@@ -1,8 +1,9 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import { useAppContext, useColonyContext } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import { SpinnerLoader } from '~shared/Preloaders';
 import { formatText } from '~utils/intl';
 import EmptyContent from '~v5/common/EmptyContent';

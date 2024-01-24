@@ -1,7 +1,9 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import React, { FC } from 'react';
 
-import { useActiveInstalls, useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import useActiveInstalls from '~hooks/useActiveInstalls';
 import { addressHasRoles } from '~utils/checks';
 import { isInstalledExtensionData } from '~utils/extensions';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';

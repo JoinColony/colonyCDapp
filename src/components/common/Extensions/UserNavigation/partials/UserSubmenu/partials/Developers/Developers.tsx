@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { COLONY_DEV_DOCS, COLONY_GITHUB } from '~constants';
-import useMobile from '~hooks/useMobile';
+import { useMobile } from '~hooks';
 import ExternalLink from '~shared/ExternalLink';
 import { formatText } from '~utils/intl';
 

@@ -2,7 +2,7 @@ import {
   ColonyContributor,
   ContributorReputation,
   ContributorRoles,
-} from '~types';
+} from '~types/graphql';
 import { notNull } from '~utils/arrays';
 
 import {

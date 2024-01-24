@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { ExtendedColonyActionType } from '~types';
+import { ExtendedColonyActionType } from '~types/actions';
 
 import CurrentUser from './CurrentUser';
 

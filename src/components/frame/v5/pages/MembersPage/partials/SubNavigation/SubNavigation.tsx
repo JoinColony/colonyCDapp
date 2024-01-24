@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { formatText } from '~utils/intl';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
 import SubNavigationItem from '~v5/shared/SubNavigationItem';

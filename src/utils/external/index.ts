@@ -7,7 +7,7 @@ import {
   NETWORK_RELEASES,
   ETHERSCAN_CONVERSION_RATE,
 } from '~constants/externalUrls';
-import { Network } from '~types';
+import { Network } from '~types/network';
 
 interface EthUsdResponse {
   status: string;
@@ -31,7 +31,9 @@ interface BlockExplorerLinkProps {
 /*
   Request dollar conversion value from etherScan
 */
-export const getEthToUsd = (ethValue: BigNumber): Promise<number | void> => {
+export const getEthToUsd = async (
+  ethValue: BigNumber,
+): Promise<number | void> => {
   const ETH_USD_KEY = 'ethUsd';
   const ETH_USD_TIMESTAMP_KEY = 'ethUsdTimestamp';
 

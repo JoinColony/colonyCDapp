@@ -1,7 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { DeepPartial } from 'utility-types';
 
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { mapPayload, pipe } from '~utils/actions';
 

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { TX_SEARCH_PARAM } from '~routes';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';

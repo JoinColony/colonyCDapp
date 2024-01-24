@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { DEFAULT_NETWORK_TOKEN, ADDRESS_ZERO } from '~constants';
 import { TokenType } from '~gql';
-import { UnaliasedColonyTokensItem } from '~types';
+import { UnaliasedColonyTokensItem } from '~types/graphql';
 
 const tokensFieldCache = {
   /*

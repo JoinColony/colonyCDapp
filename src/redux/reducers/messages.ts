@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 
-import { TransactionStatus } from '~types';
+import { TransactionStatus } from '~types/graphql';
 
 import { ActionTypes } from '../actionTypes';
 import { CORE_MESSAGES_LIST } from '../constants';

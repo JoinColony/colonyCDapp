@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields';
 import { MotionVote } from '~utils/colonyMotions';

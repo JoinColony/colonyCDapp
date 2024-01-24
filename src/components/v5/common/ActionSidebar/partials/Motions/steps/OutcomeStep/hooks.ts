@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { ColonyMotion } from '~types';
+import { ColonyMotion } from '~types/graphql';
 import { MotionVote } from '~utils/colonyMotions';
 
 import { supportOption, opposeOption } from '../../consts';

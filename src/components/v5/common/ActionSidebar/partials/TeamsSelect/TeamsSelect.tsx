@@ -4,7 +4,9 @@ import { useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useRelativePortalElement, useTeamsOptions, useToggle } from '~hooks';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useTeamsOptions from '~hooks/useTeamsOptions';
+import useToggle from '~hooks/useToggle';
 import TeamBadge from '~v5/common/Pills/TeamBadge';
 import SearchSelect from '~v5/shared/SearchSelect';
 

@@ -7,7 +7,9 @@ import React, {
 } from 'react';
 
 import { GetUserTokenBalanceReturn, useGetUserTokenBalanceQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
+
+import { useAppContext } from './AppContext';
+import { useColonyContext } from './ColonyContext';
 
 export const UserTokenBalanceContext = createContext<{
   tokenBalanceData: GetUserTokenBalanceReturn | null | undefined;

@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetColonyContributorQuery } from '~gql';
-import { useColonyContext } from '~hooks';
 import { getColonyContributorId } from '~utils/members';
 import { splitWalletAddress } from '~utils/splitWalletAddress';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';

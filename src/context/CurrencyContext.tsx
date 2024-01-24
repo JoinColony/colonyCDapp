@@ -8,8 +8,8 @@ import React, {
   useState,
 } from 'react';
 
+import { useAppContext } from '~context/AppContext';
 import { SupportedCurrencies, useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
 import { SetStateFn } from '~types';
 import { getUserCurrencyByLocation } from '~utils/currency';
 

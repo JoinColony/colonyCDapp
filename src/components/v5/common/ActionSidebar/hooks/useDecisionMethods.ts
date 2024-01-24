@@ -1,4 +1,4 @@
-import { useEnabledExtensions } from '~hooks';
+import useEnabledExtensions from '~hooks/useEnabledExtensions';
 import { formatText } from '~utils/intl';
 import { CardSelectOption } from '~v5/common/Fields/CardSelect/types';
 

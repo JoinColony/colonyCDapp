@@ -1,7 +1,8 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 
-import { useColonyContext, useColonyFundsClaims } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import useColonyFundsClaims from '~hooks/useColonyFundsClaims';
 import TokenIcon from '~shared/TokenIcon';
 import { notNull } from '~utils/arrays';
 import { formatText } from '~utils/intl';

@@ -5,7 +5,7 @@ import { useMemberContext } from '~context/MemberContext';
 import useWrapWithRef from '~hooks/useWrapWithRef';
 import Numeral from '~shared/Numeral';
 import TokenIcon from '~shared/TokenIcon';
-import { ColonyContributor, Token } from '~types';
+import { ColonyContributor, Token } from '~types/graphql';
 import { formatText } from '~utils/intl';
 import {
   DISTRIBUTION_METHOD,

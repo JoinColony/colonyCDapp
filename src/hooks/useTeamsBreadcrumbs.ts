@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { TEAM_SEARCH_PARAM } from '~routes';
 import { notMaybe } from '~utils/arrays';
 import { formatText } from '~utils/intl';
 import { getTeamColor } from '~utils/teams';
 import { setQueryParamOnUrl } from '~utils/urls';
 
-import useColonyContext from './useColonyContext';
 import useGetSelectedDomainFilter from './useGetSelectedDomainFilter';
 
 export const useCreateTeamBreadcrumbs = () => {

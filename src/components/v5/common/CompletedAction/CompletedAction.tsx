@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { ColonyActionType } from '~gql';
-import { useColonyContext } from '~hooks';
-import { ColonyAction } from '~types';
+import { ColonyAction } from '~types/graphql';
 import { getExtendedActionType } from '~utils/colonyActions';
 
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar';

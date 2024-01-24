@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useAppContext, useGetNetworkToken, useMobile } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useMobile } from '~hooks';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
+import useGetNetworkToken from '~hooks/useGetNetworkToken';
 import { formatText } from '~utils/intl';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
 import Button, { Hamburger } from '~v5/shared/Button';

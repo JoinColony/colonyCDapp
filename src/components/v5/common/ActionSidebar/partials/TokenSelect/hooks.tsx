@@ -2,8 +2,8 @@ import { isAddress } from '@ethersproject/address';
 import React, { useMemo } from 'react';
 
 import { getNetworkTokenList } from '~constants/tokens';
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetTokenFromEverywhereQuery } from '~gql';
-import { useColonyContext } from '~hooks';
 import { useGetAllTokens } from '~hooks/useGetAllTokens';
 import { SpinnerLoader } from '~shared/Preloaders';
 import TokenIcon from '~shared/TokenIcon/TokenIcon';

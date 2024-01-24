@@ -4,12 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { number, object } from 'yup';
 
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetVoterRewardsQuery } from '~gql';
-import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
+import useExtensionData from '~hooks/useExtensionData';
 import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
 import { OnSuccess } from '~shared/Fields';
 import Numeral from '~shared/Numeral';
-import { InstalledExtensionData, VoterRecord } from '~types';
+import { InstalledExtensionData } from '~types/extensions';
+import { VoterRecord } from '~types/graphql';
 import { MotionAction } from '~types/motions';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';

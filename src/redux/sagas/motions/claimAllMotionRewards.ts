@@ -13,7 +13,8 @@ import {
   GetColonyMotionQuery,
   GetColonyMotionQueryVariables,
 } from '~gql';
-import { Address, ColonyMotion } from '~types';
+import { Address } from '~types';
+import { ColonyMotion } from '~types/graphql';
 
 import { ActionTypes } from '../../actionTypes';
 import { AllActions, Action } from '../../types/actions';

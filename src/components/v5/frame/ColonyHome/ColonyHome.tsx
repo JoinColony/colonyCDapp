@@ -2,7 +2,8 @@ import React from 'react';
 
 import ColonyActionsTable from '~common/ColonyActionsTable';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
-import { useGetSelectedDomainFilter, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 import {
   // @BETA: Disabled for now

@@ -4,8 +4,9 @@ import React, { FC, useState } from 'react';
 // @BETA: Disabled for now
 // import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 
+import { useAppContext } from '~context/AppContext';
 import { useCurrencyContext } from '~context/CurrencyContext';
-import { useAppContext, useTablet } from '~hooks';
+import { useTablet } from '~hooks';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import { splitWalletAddress } from '~utils/splitWalletAddress';

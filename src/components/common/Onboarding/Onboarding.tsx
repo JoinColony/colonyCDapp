@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { useAppContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
 
 import { displayName } from './consts';
 import { createWizard } from './helpers';

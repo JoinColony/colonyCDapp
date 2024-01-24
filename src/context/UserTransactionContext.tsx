@@ -16,15 +16,15 @@ import {
   TransactionOrMessageGroup,
 } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
 import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks';
+import { useAppContext } from '~context/AppContext';
 import {
   GetUserTransactionsQuery,
   useGetTransactionsByGroupLazyQuery,
   useUpdateTransactionMutation,
 } from '~gql';
-import { useAppContext } from '~hooks';
 import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '~redux/constants';
 import { TransactionType } from '~redux/immutable';
-import { TransactionStatus } from '~types';
+import { TransactionStatus } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 
 interface UserTransactionContextValues

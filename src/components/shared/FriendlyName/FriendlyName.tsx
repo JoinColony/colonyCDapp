@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 
 import { SimpleTarget } from '~gql';
 import MaskedAddress from '~shared/MaskedAddress';
-import { Colony, ColonyExtension, Token, User } from '~types';
+import { Colony, ColonyExtension, Token, User } from '~types/graphql';
 import { removeValueUnits } from '~utils/css';
 
 import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers';

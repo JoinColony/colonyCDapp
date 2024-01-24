@@ -1,10 +1,10 @@
 import { CopySimple, Door, Rocket, ShareNetwork, Smiley } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext';
-import useColonyContext from '~hooks/useColonyContext';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import useMobile from '~hooks/useMobile';
+import { useMobile } from '~hooks';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import { COLONY_DETAILS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl';
 import {

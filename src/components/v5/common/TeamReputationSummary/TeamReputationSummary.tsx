@@ -5,8 +5,8 @@ import React, { FC } from 'react';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
-import { useColonyContext } from '~hooks';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { useColonyContext } from '~context/ColonyContext';
 import Tooltip from '~shared/Extensions/Tooltip';
 import Icon from '~shared/Icon';
 import Numeral from '~shared/Numeral';

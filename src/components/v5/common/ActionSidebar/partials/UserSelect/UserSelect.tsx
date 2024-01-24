@@ -4,7 +4,9 @@ import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
+import useUserByAddress from '~hooks/useUserByAddress';
 import Icon from '~shared/Icon';
 import { formatText } from '~utils/intl';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';

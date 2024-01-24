@@ -1,4 +1,4 @@
-import { Colony, Domain } from '~types';
+import { Colony, Domain } from '~types/graphql';
 
 import { notNull } from './arrays';
 import { sortBy } from './lodash';

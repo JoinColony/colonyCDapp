@@ -2,9 +2,11 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { useAppContext, useAsyncFunction, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
+import useAsyncFunction from '~hooks/useAsyncFunction';
 import { ActionTypes } from '~redux';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 import { addressHasRoles } from '~utils/checks';
 import NotificationBanner from '~v5/shared/NotificationBanner';
 

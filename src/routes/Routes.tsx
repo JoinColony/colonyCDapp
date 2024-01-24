@@ -27,7 +27,7 @@ import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage';
 import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage';
-import { useTitle } from '~hooks';
+import useTitle from '~hooks/useTitle';
 import ColonyHomePage from '~v5/frame/ColonyHome';
 
 import ColonyMembersRoute from './ColonyMembersRoute';

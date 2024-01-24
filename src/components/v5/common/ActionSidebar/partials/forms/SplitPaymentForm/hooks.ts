@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { array, InferType, number, object, string } from 'yup';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions';
 import { notNull } from '~utils/arrays';

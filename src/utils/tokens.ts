@@ -8,7 +8,8 @@ import {
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants';
-import { Colony, Address, ColonyBalances, Token } from '~types';
+import { Address } from '~types';
+import { Colony, ColonyBalances, Token } from '~types/graphql';
 
 import { notNull } from './arrays';
 

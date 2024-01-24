@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import RadioList from '~common/Extensions/Fields/RadioList';
 import Accordion from '~shared/Extensions/Accordion';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks';
-import { AnyExtensionData } from '~types';
+import { AnyExtensionData } from '~types/extensions';
 import { isInstalledExtensionData } from '~utils/extensions';
 import { formatText } from '~utils/intl';
 

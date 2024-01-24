@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { formatText } from '~utils/intl';
 import ActionFormRow from '~v5/common/ActionFormRow';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField';

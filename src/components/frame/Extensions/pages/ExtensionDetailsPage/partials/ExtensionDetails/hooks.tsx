@@ -2,7 +2,8 @@ import { Extension } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { useAsyncFunction, useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
+import useAsyncFunction from '~hooks/useAsyncFunction';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux';
 import Toast from '~shared/Extensions/Toast';

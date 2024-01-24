@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 
-import { useCurrentPage, useMobile } from '~hooks';
+import { useMobile } from '~hooks';
+import useCurrentPage from '~hooks/useCurrentPage';
 import Select from '~v5/common/Fields/Select';
 
 import NavItem from './partials/NavItem';

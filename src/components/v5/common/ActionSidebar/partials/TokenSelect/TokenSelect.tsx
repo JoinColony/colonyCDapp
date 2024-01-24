@@ -4,7 +4,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useRelativePortalElement, useToggle } from '~hooks';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
 import { formatText } from '~utils/intl';
 import { FIELD_STATE } from '~v5/common/Fields/consts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';

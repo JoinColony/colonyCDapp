@@ -1,8 +1,8 @@
 import { Extension, Id } from '@colony/colony-js';
 import React, { FC } from 'react';
 
-import useColonyContext from '~hooks/useColonyContext';
-import { AnyExtensionData } from '~types';
+import { useColonyContext } from '~context/ColonyContext';
+import { AnyExtensionData } from '~types/extensions';
 import { addressHasRoles } from '~utils/checks';
 import { formatText } from '~utils/intl';
 
@@ -28,14 +28,9 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
 }) => {
   const { colony } = useColonyContext();
 
-  const {
-    neededColonyPermissions,
-    // address will be undefined if the extension hasn't been installed / initialized yet
-    // @ts-expect-error
-    address,
-    isInitialized,
-    isDeprecated,
-  } = extensionData;
+  // @ts-expect-error address will be undefined if the extension hasn't been installed / initialized yet
+  const { neededColonyPermissions, address, isInitialized, isDeprecated } =
+    extensionData;
 
   const isVotingReputationExtension =
     extensionData.extensionId === Extension.VotingReputation;

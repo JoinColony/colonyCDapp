@@ -3,7 +3,7 @@ import {
   DomainMetadataChangelogInput,
   ColonyMetadataChangelogInput,
 } from '~gql';
-import { ColonyMetadata, DomainMetadata, Safe } from '~types';
+import { ColonyMetadata, DomainMetadata, Safe } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 import { excludeTypenameKey } from '~utils/objects';
 

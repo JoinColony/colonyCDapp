@@ -2,7 +2,9 @@ import clsx from 'clsx';
 import { LockKey } from 'phosphor-react';
 import React, { FC } from 'react';
 
-import { useMobile, useRelativePortalElement, useToggle } from '~hooks';
+import { useMobile } from '~hooks';
+import useRelativePortalElement from '~hooks/useRelativePortalElement';
+import useToggle from '~hooks/useToggle';
 import Tooltip from '~shared/Extensions/Tooltip';
 import TokenIcon from '~shared/TokenIcon';
 import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 
 import Balance from './partials/Balance';
 import PendingReputation from './partials/PendingReputation';

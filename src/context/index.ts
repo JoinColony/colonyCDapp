@@ -2,7 +2,7 @@ import { ApolloClient as ApolloClientClass } from '@apollo/client';
 import { OnboardAPI } from '@web3-onboard/core';
 
 import { apolloClient } from '~apollo';
-import { ColonyWallet } from '~types';
+import { ColonyWallet } from '~types/wallet';
 
 import ColonyManagerClass from './ColonyManager';
 import { IPFSWithTimeout } from './ipfs/getIpfsWithFallback';
@@ -52,15 +52,4 @@ export const removeContext = <K extends keyof Context>(contextKey: K) => {
   context[contextKey] = undefined;
 };
 
-export * from './ActionSidebarContext';
-export * from './AppContext';
 export { ColonyManagerClass as ColonyManager };
-export * from './ColonyContext';
-export * from './PageHeadingContext';
-export * from './PageThemeContext';
-export * from './MemberModalContext';
-export * from './ColonyCreatedModalContext';
-export * from './UserTokenBalanceContext';
-export * from './UserTransactionContext';
-export * from './ColonyDecisionContext';
-export * from './TokensModalContext';

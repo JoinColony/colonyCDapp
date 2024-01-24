@@ -4,16 +4,18 @@ import { BigNumber, Overrides } from 'ethers';
 import { Record } from 'immutable';
 import { MessageDescriptor } from 'react-intl';
 
+import { TransactionStatus } from '~gql';
 import {
   AddressOrENSName,
   DefaultValues,
-  MethodParams,
   RecordToJS,
   SimpleMessageValues,
-  ExtendedClientType,
-  TransactionStatus,
-  TransactionErrors,
 } from '~types';
+import {
+  MethodParams,
+  ExtendedClientType,
+  TransactionErrors,
+} from '~types/transactions';
 
 export interface TransactionError {
   type: TransactionErrors;

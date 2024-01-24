@@ -4,7 +4,7 @@ import {
 } from '@tanstack/react-table';
 import React, { FC } from 'react';
 
-import { useColonyFundsClaims } from '~hooks';
+import useColonyFundsClaims from '~hooks/useColonyFundsClaims';
 import { formatText } from '~utils/intl';
 import EmptyContent from '~v5/common/EmptyContent';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';

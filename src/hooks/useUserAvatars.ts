@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 
+import { useAppContext } from '~context/AppContext';
 import { UserFragment } from '~gql';
-import { useAppContext, useUsersByAddresses } from '~hooks';
+import useUsersByAddresses from '~hooks/useUsersByAddresses';
 import { notNull } from '~utils/arrays';
 import { calculateRemainingItems } from '~utils/avatars';
 import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';

@@ -1,10 +1,10 @@
 import Decimal from 'decimal.js';
 import { useEffect, useState } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { useCurrencyContext } from '~context/CurrencyContext';
 import { SupportedCurrencies } from '~gql';
-import { useColonyContext } from '~hooks';
-import { ColonyBalances } from '~types';
+import { ColonyBalances } from '~types/graphql';
 import { notNull } from '~utils/arrays';
 import { fetchCurrentPrice } from '~utils/currency/currency';
 

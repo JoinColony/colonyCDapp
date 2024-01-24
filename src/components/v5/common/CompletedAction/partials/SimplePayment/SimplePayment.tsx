@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip';
-import { ColonyAction } from '~types';
+import { ColonyAction } from '~types/graphql';
 import { formatText } from '~utils/intl';
 import UserAvatar from '~v5/shared/UserAvatar';
 import UserPopover from '~v5/shared/UserPopover';

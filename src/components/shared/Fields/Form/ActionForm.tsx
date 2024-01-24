@@ -1,7 +1,7 @@
 import React from 'react';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-import { useAsyncFunction } from '~hooks';
+import useAsyncFunction from '~hooks/useAsyncFunction';
 import { ActionTypes, ActionTypeString } from '~redux';
 import { ActionTransformFnType, getFormAction } from '~utils/actions';
 

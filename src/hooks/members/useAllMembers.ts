@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { UserRole } from '~constants/permissions';
-import { ColonyContributor, SortDirection } from '~types';
+import { ColonyContributor, SortDirection } from '~types/graphql';
 import { range } from '~utils/lodash';
 import {
   ContributorTypeFilter,

@@ -1,16 +1,13 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
 // @BETA: Disabled for now
 // import Button from '~v5/shared/Button';
 // import Link from '~v5/shared/Link';
-import {
-  useColonyContext,
-  useColonyContractVersion,
-  // @BETA: Disabled for now
-  // useMobile
-} from '~hooks';
+import useColonyContractVersion from '~hooks/useColonyContractVersion';
+// import { useMobile } from '~hooks';
 import { canColonyBeUpgraded } from '~utils/checks';
 import { formatText } from '~utils/intl';
 import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';

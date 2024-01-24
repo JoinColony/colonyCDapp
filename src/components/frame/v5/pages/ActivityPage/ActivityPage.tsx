@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
 
 import ColonyActionsTable from '~common/ColonyActionsTable';
-import { useSetPageBreadcrumbs, useSetPageHeadingTitle } from '~context';
+import {
+  useSetPageBreadcrumbs,
+  useSetPageHeadingTitle,
+} from '~context/PageHeadingContext';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
 import { formatText } from '~utils/intl';
 import WidgetBoxList from '~v5/common/WidgetBoxList';

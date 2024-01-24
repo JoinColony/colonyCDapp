@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 
-import { useColonyContext } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext';
 import { notNull } from '~utils/arrays';
 import { getInputTextWidth } from '~utils/elements';
 import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';

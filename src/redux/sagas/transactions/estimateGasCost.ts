@@ -3,7 +3,7 @@ import { BigNumber, Contract, ContractInterface } from 'ethers';
 import { call, put } from 'redux-saga/effects';
 // import abis from '@colony/colony-js/lib-esm/abis';
 
-import { ExtendedClientType } from '~types';
+import { ExtendedClientType } from '~types/transactions';
 
 import {
   transactionUpdateGas,

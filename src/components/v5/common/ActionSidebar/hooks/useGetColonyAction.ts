@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { useUserTokenBalanceContext } from '~context';
+import { useColonyContext } from '~context/ColonyContext';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext';
 import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate';
 import {
   ColonyActionType,
   useGetColonyActionQuery,
   useGetMotionStateQuery,
 } from '~gql';
-import { useColonyContext } from '~hooks';
 import noop from '~utils/noop';
 import { getSafePollingInterval } from '~utils/queries';
 import { isTransactionFormat } from '~utils/web3';

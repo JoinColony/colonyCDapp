@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useMobile } from '~hooks';
 import Icon from '~shared/Icon';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';

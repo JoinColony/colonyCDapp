@@ -9,8 +9,8 @@ import {
   findNewestGroup,
   TransactionOrMessageGroups,
 } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
+import { useAppContext } from '~context/AppContext';
 import { TransactionStatus } from '~gql';
-import { useAppContext } from '~hooks';
 import { groupedTransactionsAndMessages } from '~redux/selectors';
 
 import { HeaderRow } from '../shared';

@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { useActionSidebarContext } from '~context';
+import { useActionSidebarContext } from '~context/ActionSidebarContext';
 import { useMobile } from '~hooks';
-import { ColonyAction } from '~types';
+import { ColonyAction } from '~types/graphql';
 import { formatText } from '~utils/intl';
 import { merge } from '~utils/lodash';
 import EmptyContent from '~v5/common/EmptyContent';

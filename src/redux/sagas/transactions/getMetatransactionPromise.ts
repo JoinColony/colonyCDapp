@@ -9,8 +9,8 @@ import {
   MetamaskRpcErrors,
   TRANSACTION_METHODS,
   ExtendedClientType,
-  isFullWallet,
-} from '~types';
+} from '~types/transactions';
+import { isFullWallet } from '~types/wallet';
 import {
   generateMetatransactionErrorMessage,
   generateMetamaskTypedDataSignatureErrorMessage,

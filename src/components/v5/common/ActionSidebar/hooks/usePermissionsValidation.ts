@@ -4,7 +4,8 @@ import { useFormContext } from 'react-hook-form';
 import { boolean, object } from 'yup';
 
 import { Action, ACTION } from '~constants/actions';
-import { useAppContext, useColonyContext } from '~hooks';
+import { useAppContext } from '~context/AppContext';
+import { useColonyContext } from '~context/ColonyContext';
 import { addressHasRoles } from '~utils/checks';
 
 import { DecisionMethod } from './useDecisionMethods';

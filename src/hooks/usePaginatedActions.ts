@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext';
 import { useGetColonyActionsQuery } from '~gql';
-import { ColonyAction, SortDirection } from '~types';
+import { ColonyAction, SortDirection } from '~types/graphql';
 import { notNull } from '~utils/arrays';
-
-import useColonyContext from './useColonyContext';
 
 const ITEMS_PER_PAGE = 10;
 

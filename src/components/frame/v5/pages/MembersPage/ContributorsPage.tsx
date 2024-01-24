@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
-import { useColonyContext } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
+import { useColonyContext } from '~context/ColonyContext';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext';
+import useCopyToClipboard from '~hooks/useCopyToClipboard';
 import { formatText } from '~utils/intl';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary';
 

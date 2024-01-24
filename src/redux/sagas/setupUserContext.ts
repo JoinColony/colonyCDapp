@@ -4,7 +4,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 
 import { authenticateWallet } from '~auth';
 import { getContext, setContext, ContextModule } from '~context';
-import { ColonyWallet } from '~types';
+import { ColonyWallet } from '~types/wallet';
 import { getLastWallet, LastWallet, setLastWallet } from '~utils/autoLogin';
 import { createAddress } from '~utils/web3';
 
