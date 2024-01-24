@@ -178,10 +178,10 @@ export const useGetColonyActionsTableMenuProps = (loading: boolean) => {
           label: formatText({ id: 'activityFeedTable.menu.share' }),
           renderItemWrapper: (props, children) => (
             <MeatballMenuCopyItem
-              textToCopy={`${window.location.origin}${generatePath(
+              textToCopy={`${window.location.origin}/${generatePath(
                 COLONY_HOME_ROUTE,
                 { colonyName },
-              )}/${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
+              )}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
               {...props}
             >
               {children}
