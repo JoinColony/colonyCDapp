@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionRoles, ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
@@ -52,23 +53,21 @@ export const ManagePermissionsDescription = () => {
   );
 
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.SetUserRoles,
-          recipient: recipientUser,
-          direction: rolesTitle.direction,
-          rolesChanged: rolesTitle.roleTitle,
-          fromDomain: selectedDomain?.metadata
-            ? selectedDomain.metadata.name
-            : formatText({
-                id: 'actionSidebar.metadataDescription.team',
-              }),
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.SetUserRoles,
+        recipient: recipientUser,
+        direction: rolesTitle.direction,
+        rolesChanged: rolesTitle.roleTitle,
+        fromDomain: selectedDomain?.metadata
+          ? selectedDomain.metadata.name
+          : formatText({
+              id: 'actionSidebar.metadataDescription.team',
+            }),
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

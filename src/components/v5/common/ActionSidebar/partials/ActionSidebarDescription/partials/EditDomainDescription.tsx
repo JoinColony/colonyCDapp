@@ -1,9 +1,9 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
-import { formatText } from '~utils/intl';
 
 import { EditTeamFormValues } from '../../forms/EditTeamForm/consts';
 
@@ -25,18 +25,16 @@ export const EditDomainDescription = () => {
   );
 
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.EditDomain,
-          fromDomain: selectedDomain?.metadata
-            ? selectedDomain.metadata.name
-            : '',
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.EditDomain,
+        fromDomain: selectedDomain?.metadata
+          ? selectedDomain.metadata.name
+          : '',
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

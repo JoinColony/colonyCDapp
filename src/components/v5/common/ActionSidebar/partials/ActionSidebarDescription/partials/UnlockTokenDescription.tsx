@@ -1,7 +1,7 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
-import { formatText } from '~utils/intl';
 
 import CurrentUser from './CurrentUser';
 
@@ -10,16 +10,14 @@ const displayName =
 
 export const UnlockTokenDescription = () => {
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.UnlockToken,
-          tokenSymbol: '', // apparently the designs don't use it
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.UnlockToken,
+        tokenSymbol: '', // apparently the designs don't use it
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

@@ -1,8 +1,8 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
-import { formatText } from '~utils/intl';
 
 import CurrentUser from './CurrentUser';
 
@@ -15,17 +15,15 @@ export const UpgradeColonyDescription = () => {
   } = useColonyContext();
 
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.VersionUpgrade,
-          version,
-          newVersion: version + 1,
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.VersionUpgrade,
+        version,
+        newVersion: version + 1,
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

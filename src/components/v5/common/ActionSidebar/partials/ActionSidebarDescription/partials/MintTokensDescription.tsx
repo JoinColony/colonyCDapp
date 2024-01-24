@@ -1,6 +1,7 @@
 import moveDecimal from 'move-decimal-point';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
@@ -23,29 +24,27 @@ export const MintTokensDescription = () => {
   } = useColonyContext();
 
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.MintTokens,
-          tokenSymbol: amount
-            ? nativeToken.symbol
-            : formatText({
-                id: 'actionSidebar.metadataDescription.nativeTokens',
-              }),
-          amount: amount ? (
-            <Numeral
-              value={moveDecimal(
-                amount.toString(),
-                getTokenDecimalsWithFallback(nativeToken.decimals),
-              )}
-              decimals={getTokenDecimalsWithFallback(nativeToken.decimals)}
-            />
-          ) : undefined,
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.MintTokens,
+        tokenSymbol: amount
+          ? nativeToken.symbol
+          : formatText({
+              id: 'actionSidebar.metadataDescription.nativeTokens',
+            }),
+        amount: amount ? (
+          <Numeral
+            value={moveDecimal(
+              amount.toString(),
+              getTokenDecimalsWithFallback(nativeToken.decimals),
+            )}
+            decimals={getTokenDecimalsWithFallback(nativeToken.decimals)}
+          />
+        ) : undefined,
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

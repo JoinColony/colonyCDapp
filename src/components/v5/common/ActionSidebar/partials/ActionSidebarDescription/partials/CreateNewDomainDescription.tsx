@@ -1,8 +1,8 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
-import { formatText } from '~utils/intl';
 
 import { CreateNewTeamFormValues } from '../../forms/CreateNewTeamForm/consts';
 
@@ -16,16 +16,14 @@ export const CreateNewDomainDescription = () => {
   const { teamName } = formValues;
 
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.CreateDomain,
-          fromDomain: teamName,
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.CreateDomain,
+        fromDomain: teamName,
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

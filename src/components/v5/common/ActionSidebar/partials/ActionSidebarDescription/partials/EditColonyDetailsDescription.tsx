@@ -1,7 +1,7 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
-import { formatText } from '~utils/intl';
 
 import CurrentUser from './CurrentUser';
 
@@ -10,15 +10,13 @@ const displayName =
 
 export const EditColonyDetailsDescription = () => {
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.ColonyEdit,
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.ColonyEdit,
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

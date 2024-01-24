@@ -1,6 +1,7 @@
 import moveDecimal from 'move-decimal-point';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 import useColonyContext from '~hooks/useColonyContext';
@@ -30,35 +31,33 @@ export const TransferFundsDescription = () => {
   );
 
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ColonyActionType.MoveFunds,
-          fromDomain: fromDomain?.metadata ? fromDomain.metadata.name : '',
-          toDomain: toDomain?.metadata ? toDomain.metadata.name : '',
-          tokenSymbol: matchingColonyToken
-            ? matchingColonyToken.token.symbol
-            : formatText({
-                id: 'actionSidebar.metadataDescription.tokens',
-              }),
-          amount: amount ? (
-            <Numeral
-              value={moveDecimal(
-                amount.toString(),
-                getTokenDecimalsWithFallback(nativeToken.decimals),
-              )}
-              decimals={getTokenDecimalsWithFallback(nativeToken.decimals)}
-            />
-          ) : (
-            formatText({
-              id: 'actionSidebar.metadataDescription.funds',
-            })
-          ),
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ColonyActionType.MoveFunds,
+        fromDomain: fromDomain?.metadata ? fromDomain.metadata.name : '',
+        toDomain: toDomain?.metadata ? toDomain.metadata.name : '',
+        tokenSymbol: matchingColonyToken
+          ? matchingColonyToken.token.symbol
+          : formatText({
+              id: 'actionSidebar.metadataDescription.tokens',
+            }),
+        amount: amount ? (
+          <Numeral
+            value={moveDecimal(
+              amount.toString(),
+              getTokenDecimalsWithFallback(nativeToken.decimals),
+            )}
+            decimals={getTokenDecimalsWithFallback(nativeToken.decimals)}
+          />
+        ) : (
+          formatText({
+            id: 'actionSidebar.metadataDescription.funds',
+          })
+        ),
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

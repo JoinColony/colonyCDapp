@@ -1,7 +1,7 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { ExtendedColonyActionType } from '~types';
-import { formatText } from '~utils/intl';
 
 import CurrentUser from './CurrentUser';
 
@@ -10,15 +10,13 @@ const displayName =
 
 export const ManageTokensDescription = () => {
   return (
-    <>
-      {formatText(
-        { id: 'action.title' },
-        {
-          actionType: ExtendedColonyActionType.UpdateTokens,
-          initiator: <CurrentUser />,
-        },
-      )}
-    </>
+    <FormattedMessage
+      id="action.title"
+      values={{
+        actionType: ExtendedColonyActionType.UpdateTokens,
+        initiator: <CurrentUser />,
+      }}
+    />
   );
 };
 

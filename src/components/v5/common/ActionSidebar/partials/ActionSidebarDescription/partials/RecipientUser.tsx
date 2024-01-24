@@ -2,7 +2,7 @@ import React from 'react';
 
 import useUserByAddress from '~hooks/useUserByAddress';
 import MaskedAddress from '~shared/MaskedAddress';
-import { MiniSpinnerLoader } from '~shared/Preloaders';
+import { User } from '~types';
 import { formatText } from '~utils/intl';
 
 interface RecipientUserProps {
@@ -19,25 +19,29 @@ const RecipientUser = ({
     id: 'actionSidebar.metadataDescription.recipient',
   }),
 }: RecipientUserProps) => {
-  const { error, loading, user } = useUserByAddress(userAddress);
+  const { error, loading, user, previousUser } = useUserByAddress(userAddress);
+
+  const getUserText = (member?: User | null) => {
+    if (!member) {
+      return <>{noUserText}</>;
+    }
+
+    if (member.profile) {
+      return <>{member.profile.displayName}</>;
+    }
+
+    return <MaskedAddress address={member.walletAddress} />;
+  };
 
   if (error) {
     return <>{formatText({ id: 'error.message' })}</>;
   }
 
-  if (loading && !user) {
-    return <MiniSpinnerLoader className="mx-1" />;
+  if (loading) {
+    return getUserText(previousUser);
   }
 
-  if (!user) {
-    return <>{noUserText}</>;
-  }
-
-  if (user.profile) {
-    return <>{user.profile.displayName}</>;
-  }
-
-  return <MaskedAddress address={user.walletAddress} />;
+  return getUserText(user || previousUser);
 };
 
 RecipientUser.displayName = displayName;
