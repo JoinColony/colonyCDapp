@@ -1,13 +1,14 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { useUserTransactionContext } from '~context/UserTransactionContext';
-import MessageCard from '~frame/GasStation/MessageCard/MessageCard';
+import MessageCard from '~frame/MessageCard/MessageCard';
+import { MessageType } from '~redux/immutable';
+
 import {
   TransactionOrMessageGroup,
   getGroupId,
   isTxGroup,
-} from '~frame/GasStation/transactionGroup';
-import { MessageType } from '~redux/immutable';
+} from '../transactionGroup';
 
 import GroupedTransaction from './GroupedTransaction';
 

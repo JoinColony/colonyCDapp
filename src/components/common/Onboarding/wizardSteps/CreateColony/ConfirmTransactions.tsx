@@ -5,7 +5,7 @@ import GroupedTransaction from '~common/Extensions/UserHub/partials/Transactions
 import {
   TransactionOrMessageGroup,
   getGroupStatus,
-} from '~frame/GasStation/transactionGroup';
+} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
 import { TransactionStatus } from '~gql';
 import { TransactionType } from '~redux/immutable/Transaction';
 import { SpinnerLoader } from '~shared/Preloaders';

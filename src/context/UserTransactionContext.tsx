@@ -11,11 +11,11 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks';
 import {
   isTxGroup,
   TransactionOrMessageGroup,
-} from '~frame/GasStation/transactionGroup';
+} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
+import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks';
 import {
   GetUserTransactionsQuery,
   useGetTransactionsByGroupLazyQuery,

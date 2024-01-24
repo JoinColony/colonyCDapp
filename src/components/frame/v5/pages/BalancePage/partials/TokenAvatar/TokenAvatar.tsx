@@ -3,11 +3,11 @@ import { LockKey } from 'phosphor-react';
 import React, { FC } from 'react';
 
 import { useMobile, useRelativePortalElement, useToggle } from '~hooks';
-import CopyableAddress from '~shared/CopyableAddress';
 import Tooltip from '~shared/Extensions/Tooltip';
 import TokenIcon from '~shared/TokenIcon';
 import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';
 import { formatText } from '~utils/intl';
+import CopyableAddress from '~v5/shared/CopyableAddress';
 import MenuContainer from '~v5/shared/MenuContainer';
 import Modal from '~v5/shared/Modal';
 import Portal from '~v5/shared/Portal';
@@ -55,7 +55,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
             {token.name}
           </span>
         ) : (
-          <CopyableAddress>{token.tokenAddress}</CopyableAddress>
+          <CopyableAddress address={token.tokenAddress} />
         )}
         {isTokenNative && !nativeTokenStatus?.unlocked && (
           <Tooltip

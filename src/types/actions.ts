@@ -1,8 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { ListItemStatus } from '~shared/ListItem';
-
-import { Address, ColonyActionType } from './index';
+import { ColonyActionType } from './index';
 
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',
@@ -126,39 +124,6 @@ export type ActionUserRoles = {
   id: ColonyRole;
   setTo: boolean;
 };
-
-export interface FormattedEvent {
-  id: string;
-  status?: ListItemStatus;
-  eventName: ColonyAndExtensionsEvents;
-  colonyAddress: Address;
-  agent: Address | null;
-  recipient: Address;
-  transactionHash: string;
-  createdAt: Date;
-  displayValues: string;
-  domainId: string;
-  newDomainId: string;
-  fundingPot?: string;
-  metadata?: string;
-  tokenAddress?: string | null;
-  paymentId?: string;
-  decimals: number;
-  amount: string;
-  role: ColonyRole;
-  setTo: boolean;
-  extensionHash?: string;
-  extensionVersion?: string;
-  oldVersion?: string;
-  newVersion?: string;
-  storageSlot?: string;
-  storageSlotValue?: string;
-  motionId?: string;
-  vote?: string;
-  whiteListStatus?: boolean;
-  activePeriod?: string;
-  currentPeriod?: string;
-}
 
 export enum ExtendedColonyActionType {
   UpdateAddressBook = 'UPDATE_ADDRESS_BOOK',

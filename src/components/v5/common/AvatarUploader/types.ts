@@ -5,13 +5,16 @@ import {
   FileRejection,
 } from 'react-dropzone';
 
-import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
-import { HandleFileAccept } from '~shared/FileUpload/types';
+import { FileReaderFile } from '~utils/fileReader/types';
+
+import { DropzoneErrors } from './utils';
 
 export type SuccessContentProps = Pick<
   ErrorContentProps,
   'open' | 'handleFileRemove'
 >;
+
+export type HandleFileAccept = (file: FileReaderFile) => void;
 
 export interface ErrorContentProps
   extends Pick<FileUploadProps, 'handleFileRemove' | 'errorCode'> {

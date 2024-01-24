@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 
-import { getGroupId } from '~frame/GasStation/transactionGroup';
-
+import { getGroupId } from '../transactionGroup';
 import { TransactionDetailsProps } from '../types';
 
 import GroupedTransaction from './GroupedTransaction';

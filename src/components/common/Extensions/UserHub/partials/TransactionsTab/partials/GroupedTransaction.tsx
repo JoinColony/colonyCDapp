@@ -4,16 +4,16 @@ import React, { FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { accordionAnimation } from '~constants/accordionAnimation';
+import { TransactionType } from '~redux/immutable';
+import { arrayToObject } from '~utils/arrays';
+import { formatText } from '~utils/intl';
+
 import {
   getActiveTransactionIdx,
   getGroupKey,
   getGroupStatus,
   getGroupValues,
-} from '~frame/GasStation/transactionGroup';
-import { TransactionType } from '~redux/immutable';
-import { arrayToObject } from '~utils/arrays';
-import { formatText } from '~utils/intl';
-
+} from '../transactionGroup';
 import { GroupedTransactionProps } from '../types';
 
 import GroupedTransactionContent from './GroupedTransactionContent';

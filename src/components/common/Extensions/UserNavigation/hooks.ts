@@ -3,7 +3,7 @@ import { ClientTypeTokens } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { TransactionOrMessageGroups } from '~frame/GasStation/transactionGroup';
+import { TransactionOrMessageGroups } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
 import { GetUserTransactionsQuery, useGetUserTransactionsQuery } from '~gql';
 import { useAppContext, useColonyContext } from '~hooks';
 import { TransactionType } from '~redux/immutable';

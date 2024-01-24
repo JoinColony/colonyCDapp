@@ -5,9 +5,11 @@ import {
   getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation';
-import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
-import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { FileReaderFile } from '~utils/fileReader/types';
+import {
+  DropzoneErrors,
+  getFileRejectionErrors,
+} from '~v5/common/AvatarUploader/utils';
 
 export const useChangeColonyAvatar = () => {
   const [modalValue, setModalValue] = useState<{

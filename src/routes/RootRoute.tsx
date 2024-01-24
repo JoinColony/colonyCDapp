@@ -10,7 +10,6 @@ import {
 import { CurrencyContextProvider } from '~context/CurrencyContext';
 import { Theme } from '~frame/Extensions/themes/enum';
 import { applyTheme } from '~frame/Extensions/themes/utils';
-import { DialogProvider } from '~shared/Dialog';
 
 const RootRouteInner = () => {
   const { isDarkMode } = usePageThemeContext();
@@ -21,11 +20,9 @@ const RootRouteInner = () => {
   }, [isDarkMode]);
 
   return (
-    <DialogProvider>
-      <PageHeadingContextProvider>
-        <Outlet />
-      </PageHeadingContextProvider>
-    </DialogProvider>
+    <PageHeadingContextProvider>
+      <Outlet />
+    </PageHeadingContextProvider>
   );
 };
 
