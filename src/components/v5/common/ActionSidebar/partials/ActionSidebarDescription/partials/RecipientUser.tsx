@@ -5,7 +5,7 @@ import MaskedAddress from '~shared/MaskedAddress';
 import { formatText } from '~utils/intl';
 
 interface RecipientUserProps {
-  userAddress?: string;
+  userAddress: string;
   noUserText?: string;
 }
 
@@ -24,7 +24,7 @@ const RecipientUser = ({
     return <>{formatText({ id: 'error.message' })}</>;
   }
 
-  if (loading) {
+  if (loading && !user) {
     return <>{formatText({ id: 'actionSidebar.loading' })}</>;
   }
 

@@ -26,7 +26,13 @@ export const SimplePaymentDescription = () => {
     (colonyToken) => colonyToken?.token?.tokenAddress === tokenAddress,
   );
 
-  const recipientUser = <RecipientUser userAddress={recipient} />;
+  const recipientUser = recipient ? (
+    <RecipientUser userAddress={recipient} />
+  ) : (
+    formatText({
+      id: 'actionSidebar.metadataDescription.recipient',
+    })
+  );
 
   return (
     <>

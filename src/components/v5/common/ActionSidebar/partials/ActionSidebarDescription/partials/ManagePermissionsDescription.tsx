@@ -38,13 +38,17 @@ export const ManagePermissionsDescription = () => {
   );
   const rolesTitle = formatRolesTitle(memberRoles);
 
-  const recipientUser = (
+  const recipientUser = member ? (
     <RecipientUser
       userAddress={member}
       noUserText={formatText({
         id: 'actionSidebar.metadataDescription.user',
       })}
     />
+  ) : (
+    formatText({
+      id: 'actionSidebar.metadataDescription.user',
+    })
   );
 
   return (
