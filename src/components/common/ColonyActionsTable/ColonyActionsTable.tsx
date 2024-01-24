@@ -20,7 +20,6 @@ import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader.tsx';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu.tsx';
 
 import {
   useActionsTableData,
@@ -172,7 +171,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
   return withHeader ? (
     <TableWithActionsHeader<ColonyAction, TableProps<ColonyAction>>
       title={formatText({ id: 'activityFeedTable.table.title' })}
-      tableComponent={TableWithMeatballMenu}
+      tableComponent={Table}
       tableProps={tableProps}
     />
   ) : (

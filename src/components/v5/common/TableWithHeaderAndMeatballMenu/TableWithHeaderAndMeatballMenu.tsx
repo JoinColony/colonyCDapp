@@ -3,7 +3,7 @@ import React, { type PropsWithChildren } from 'react';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import TableHeader from '~v5/common/TableHeader/index.ts';
 
-import TableWithMeatballMenu from '../TableWithMeatballMenu/index.ts';
+import Table from '../Table/index.ts';
 
 import { type TableWithHeaderAndMeatballMenuProps } from './types.ts';
 
@@ -25,7 +25,7 @@ const TableWithHeaderAndMeatballMenu = <T,>({
       {children}
     </TableHeader>
     {rest.data?.length ? (
-      <TableWithMeatballMenu {...rest} />
+      <Table {...rest} />
     ) : (
       <div className="border w-full rounded-b-lg border-gray-200">
         <EmptyContent
