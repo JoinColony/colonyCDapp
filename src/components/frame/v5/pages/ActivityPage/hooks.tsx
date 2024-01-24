@@ -17,9 +17,9 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
     recentActionsLoading,
   } = useActivityData();
 
-  const tileClassName = 'text-gray-400';
+  const tileClassName = 'text-gray-600';
   const contentClassName =
-    'flex flex-row-reverse items-center gap-1.5 text-right sm:text-left sm:gap-0 sm:flex-col sm:items-start';
+    'flex flex-row-reverse items-center gap-1.5 text-right sm:text-left sm:gap-0.5 sm:flex-col sm:items-start';
 
   const countSkeleton = (
     <div className="skeleton w-[60px] h-[1em] my-[0.25em]" />
