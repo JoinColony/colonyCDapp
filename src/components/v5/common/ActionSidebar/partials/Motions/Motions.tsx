@@ -70,6 +70,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
     motionState,
+    0,
   );
 
   const [activeStepKey, setActiveStepKey] = useState<Steps>(
