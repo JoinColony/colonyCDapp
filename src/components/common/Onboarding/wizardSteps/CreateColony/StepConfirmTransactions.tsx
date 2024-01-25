@@ -8,7 +8,7 @@ import {
   getGroupKey,
   findNewestGroup,
   TransactionOrMessageGroups,
-} from '~frame/GasStation/transactionGroup';
+} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
 import { TransactionStatus } from '~gql';
 import { useAppContext } from '~hooks';
 import { groupedTransactionsAndMessages } from '~redux/selectors';

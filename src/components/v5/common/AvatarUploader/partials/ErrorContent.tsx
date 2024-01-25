@@ -1,14 +1,11 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import {
-  DropzoneErrors,
-  getErrorMessage,
-} from '~shared/AvatarUploader/helpers';
 import Icon from '~shared/Icon';
 import { TextButton } from '~v5/shared/Button';
 
 import { ErrorContentProps } from '../types';
+import { DropzoneErrors, getErrorMessage } from '../utils';
 
 const displayName = 'v5.common.AvatarUploader.partials.ErrorContent';
 

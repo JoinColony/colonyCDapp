@@ -7,11 +7,10 @@ import { useColonyContext, useExtensionData, useMobile } from '~hooks';
 import { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux';
 import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import { ActionButton } from '~shared/Button';
 import Toast from '~shared/Extensions/Toast/Toast';
 import { AnyExtensionData } from '~types';
 import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button/Button';
+import ActionButton from '~v5/shared/Button/ActionButton';
 
 import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
 
@@ -75,14 +74,11 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
       values={{ colonyAddress, extensionData }}
       onSuccess={handleInstallSuccess}
       onError={handleInstallError}
-      button={Button}
-      buttonProps={{
-        mode: 'primarySolid',
-        isFullSize: isMobile,
-        disabled: isInstallDisabled || !isSupportedColonyVersion,
-        children: formatText({ id: 'button.install' }),
-      }}
-    />
+      isFullSize={isMobile}
+      disabled={isInstallDisabled || !isSupportedColonyVersion}
+    >
+      {formatText({ id: 'button.install' })}
+    </ActionButton>
   );
 };
 

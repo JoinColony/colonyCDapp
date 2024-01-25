@@ -10,13 +10,11 @@ import { toast } from 'react-toastify';
 import { useColonyContext, useMobile } from '~hooks';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux';
-import { ActionButton } from '~shared/Button';
 import Toast from '~shared/Extensions/Toast/Toast';
 import { AnyExtensionData } from '~types';
 import { mapPayload } from '~utils/actions';
 import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button/Button';
-import { ButtonProps } from '~v5/shared/Button/types';
+import ActionButton from '~v5/shared/Button/ActionButton';
 
 import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
 
@@ -79,21 +77,18 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
     );
   };
   return (
-    <ActionButton<ButtonProps>
+    <ActionButton
       actionType={ActionTypes.EXTENSION_UPGRADE}
       values={{ colonyAddress, extensionData }}
       transform={transformUpgrade}
       onSuccess={handleUpgradeSuccess}
       onError={handleUpgradeError}
       isLoading={isPolling}
-      button={Button}
-      buttonProps={{
-        mode: 'primarySolid',
-        isFullSize: isMobile,
-        disabled: isUpgradeButtonDisabled,
-        children: formatText({ id: 'button.updateVersion' }),
-      }}
-    />
+      isFullSize={isMobile}
+      disabled={isUpgradeButtonDisabled}
+    >
+      {formatText({ id: 'button.updateVersion' })}
+    </ActionButton>
   );
 };
 

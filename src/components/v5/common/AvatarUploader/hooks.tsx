@@ -6,12 +6,11 @@ import {
   getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation';
-import { DropzoneErrors } from '~shared/AvatarUploader/helpers';
-import { getFileRejectionErrors } from '~shared/FileUpload/utils';
 import { convertBytes } from '~utils/convertBytes';
 import { FileReaderFile } from '~utils/fileReader/types';
 
 import { FileUploadOptions } from './types';
+import { DropzoneErrors, getFileRejectionErrors } from './utils';
 
 export interface UseAvatarUploaderProps {
   updateFn: (

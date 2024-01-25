@@ -2,7 +2,7 @@ import {
   DEFAULT_MAX_FILE_LIMIT,
   DEFAULT_MAX_FILE_SIZE,
   DEFAULT_MIME_TYPES,
-} from '~shared/FileUpload/limits';
+} from '~v5/common/AvatarUploader/utils';
 
 import { FileReaderFile, FileReaderOptions } from './types';
 

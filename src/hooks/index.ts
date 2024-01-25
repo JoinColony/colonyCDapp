@@ -2,12 +2,6 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import promiseListener, { AsyncFunction } from '~redux/createPromiseListener';
 import { ActionTransformFnType } from '~utils/actions';
-import { getMainClasses } from '~utils/css';
-
-export {
-  default as useNaiveBranchingDialogWizard,
-  WizardDialogType,
-} from './useNaiveBranchingDialogWizard';
 
 export { default as useColonyHasReputation } from './useColonyHasReputation';
 export { default as useDialogActionPermissions } from './useDialogActionPermissions';
@@ -154,16 +148,6 @@ export const useMounted = () => {
   );
   return ref;
 };
-
-export const useMainClasses = (
-  appearance: any,
-  styles: any,
-  className?: string,
-) =>
-  useMemo(
-    () => className || getMainClasses(appearance, styles),
-    [appearance, className, styles],
-  );
 
 export const useBaseUrl = (path?: string) => {
   return useMemo(
