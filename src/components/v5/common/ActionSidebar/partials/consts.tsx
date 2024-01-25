@@ -5,11 +5,11 @@ import { ACTION } from '~constants/actions';
 
 import { CardSelectOption } from '../../Fields/CardSelect/types';
 
-export const DISTRIBUTION_METHOD = {
-  Equal: 'equal',
-  Unequal: 'unequal',
-  ReputationPercentage: 'reputation-percentage',
-} as const;
+export enum DISTRIBUTION_METHOD {
+  Equal = 'equal',
+  Unequal = 'unequal',
+  ReputationPercentage = 'reputation-percentage',
+}
 
 export type DistributionMethod =
   (typeof DISTRIBUTION_METHOD)[keyof typeof DISTRIBUTION_METHOD];

@@ -1,7 +1,7 @@
-export const VOTE_CHART_BAR_DIRECTION = {
-  Left: 'left',
-  Right: 'right',
-} as const;
+export enum VOTE_CHART_BAR_DIRECTION {
+  Left = 'left',
+  Right = 'right',
+}
 
 export type VoteChartBarDirection =
   (typeof VOTE_CHART_BAR_DIRECTION)[keyof typeof VOTE_CHART_BAR_DIRECTION];

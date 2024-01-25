@@ -43,10 +43,10 @@ export const validationSchema = object()
 
 export type ManagePermissionsFormValues = InferType<typeof validationSchema>;
 
-export const AUTHORITY = {
-  ViaMultiSig: 'via-multi-sig',
-  Own: 'own',
-} as const;
+export enum AUTHORITY {
+  ViaMultiSig = 'via-multi-sig',
+  Own = 'own',
+}
 
 export type Authority = (typeof AUTHORITY)[keyof typeof AUTHORITY];
 
@@ -92,7 +92,9 @@ const ROLE_SELECT_META: Record<
   },
 };
 
-export const REMOVE_ROLE_OPTION_VALUE = 'remove' as const;
+export enum REMOVE_ROLE_OPTION_VALUE {
+  Remove = 'remove',
+}
 
 export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
   {
@@ -145,7 +147,7 @@ export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
             })}
           </RoleOptionLabel>
         ),
-        value: REMOVE_ROLE_OPTION_VALUE,
+        value: REMOVE_ROLE_OPTION_VALUE.Remove,
       },
     ],
   },

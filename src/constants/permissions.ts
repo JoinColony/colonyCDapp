@@ -3,13 +3,13 @@ import isEqual from 'lodash/isEqual';
 
 import { formatText } from '~utils/intl';
 
-export const USER_ROLE = {
-  Mod: 'mod',
-  Payer: 'payer',
-  Admin: 'admin',
-  Owner: 'owner',
-  Custom: 'custom',
-} as const;
+export enum USER_ROLE {
+  Mod = 'mod',
+  Payer = 'payer',
+  Admin = 'admin',
+  Owner = 'owner',
+  Custom = 'custom',
+}
 
 export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
