@@ -11,7 +11,7 @@ const TableHeader = ({
   additionalHeaderContent,
   children,
 }: PropsWithChildren<TableHeaderProps>) => (
-  <div className={clsx(headerClassName, 'pb-[0.875rem]')}>
+  <div className={clsx(headerClassName, 'pb-3.5')}>
     <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col">
       <div className="flex items-center">
         <h4 className="heading-5 mr-3">{title}</h4>

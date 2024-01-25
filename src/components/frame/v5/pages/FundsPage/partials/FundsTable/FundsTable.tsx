@@ -7,7 +7,7 @@ import React, { type FC } from 'react';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
+import Table from '~v5/common/Table/index.ts';
 
 import AcceptButton from '../AcceptButton/index.ts';
 import Filter from '../Filter/index.ts';
@@ -26,22 +26,19 @@ const FundsTable: FC = () => {
   );
 
   return (
-    <TableWithActionsHeader<FundsTableModel>
-      tableProps={{
-        data: searchedTokens,
-        columns,
-        verticalOnMobile: false,
-        hasPagination: true,
-        initialState: {
-          pagination: {
-            pageSize: 10,
-          },
+    <Table<FundsTableModel>
+      data={searchedTokens}
+      columns={columns}
+      verticalOnMobile={false}
+      hasPagination
+      initialState={{
+        pagination: {
+          pageSize: 10,
         },
-        getFilteredRowModel: getFilteredRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        className:
-          '[&_td]:border-b [&_td]:border-gray-100 [&_tr:last-child>td]:border-0 [&_td>div]:p-0 [&_th:last-child]:text-right w-full [&_th:empty]:border-none',
       }}
+      getFilteredRowModel={getFilteredRowModel()}
+      getPaginationRowModel={getPaginationRowModel()}
+      className="[&_td]:border-b [&_td]:border-gray-100 [&_tr:last-child>td]:border-0 [&_td>div]:p-0 [&_th:last-child]:text-right w-full [&_th:empty]:border-none"
       title={formatText({ id: 'incomingFundsPage.table.title' })}
       emptyContent={
         (!searchedTokens.length || claims.length <= 0) && (
@@ -55,19 +52,20 @@ const FundsTable: FC = () => {
           </div>
         )
       }
-    >
-      <div className="flex items-center gap-2">
-        <Filter {...filters} />
-        {claims.length > 0 && (
-          <AcceptButton
-            tokenAddresses={allClaims}
-            disabled={!searchedTokens.length}
-          >
-            {formatText({ id: 'incomingFundsPage.table.claimAllFunds' })}
-          </AcceptButton>
-        )}
-      </div>
-    </TableWithActionsHeader>
+      tableHeaderChildren={
+        <div className="flex items-center gap-2">
+          <Filter {...filters} />
+          {claims.length > 0 && (
+            <AcceptButton
+              tokenAddresses={allClaims}
+              disabled={!searchedTokens.length}
+            >
+              {formatText({ id: 'incomingFundsPage.table.claimAllFunds' })}
+            </AcceptButton>
+          )}
+        </div>
+      }
+    />
   );
 };
 
