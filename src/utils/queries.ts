@@ -1,5 +1,5 @@
+import { apolloClient } from '~apollo';
 import { NetworkInfo, DEFAULT_NETWORK_INFO } from '~constants';
-import apolloClient from '~context/apolloClient';
 import {
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,

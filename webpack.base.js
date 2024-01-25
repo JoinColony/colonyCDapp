@@ -37,7 +37,7 @@ const config = {
         //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
         //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
-        '~cache': path.resolve(__dirname, 'src/cache'),
+        '~apollo': path.resolve(__dirname, 'src/apollo'),
         '~transformers': path.resolve(__dirname, 'src/transformers'),
         '~v5': path.resolve(__dirname, 'src/components/v5'),
         '~auth': path.resolve(__dirname, 'src/auth'),
