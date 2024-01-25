@@ -3,7 +3,6 @@ import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
 import ColonyFunding from '~common/ColonyFunding';
 import { Flow } from '~common/Onboarding';
-import { ExtensionsContextProvider } from '~context/ExtensionsContext';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
@@ -176,12 +175,7 @@ const Routes = () => {
           <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={
-              /* I am not sure why this needs a provider, but I guess we'll find out soon enough */
-              <ExtensionsContextProvider>
-                <ExtensionDetailsPage />
-              </ExtensionsContextProvider>
-            }
+            element={<ExtensionDetailsPage />}
           />
           <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
         </Route>
@@ -213,12 +207,7 @@ const Routes = () => {
           <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={
-              /* I am not sure why this needs a provider, but I guess we'll find out soon enough */
-              <ExtensionsContextProvider>
-                <ExtensionDetailsPage />
-              </ExtensionsContextProvider>
-            }
+            element={<ExtensionDetailsPage />}
           />
           <Route
             path={COLONY_INTEGRATIONS_ROUTE}
