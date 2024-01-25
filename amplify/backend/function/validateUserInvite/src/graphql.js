@@ -1,13 +1,10 @@
 module.exports = {
   getColonyMemberInvite: /* GraphQL */ `
-    query GetColonyMemberInvite($colonyAddress: ID!) {
-      getColonyByAddress(id: $colonyAddress) {
-        items {
-          colonyMemberInvite {
-            id
-            invitesRemaining
-            valid
-          }
+    query GetColonyMemberInvite($inviteCode: ID!) {
+      getColonyMemberInvite(id: $inviteCode) {
+        invitesRemaining
+        colonyId
+        colony {
           whitelist
         }
       }

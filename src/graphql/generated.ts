@@ -113,9 +113,13 @@ export type Colony = {
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   /** Metadata related to the chain of the Colony */
   chainMetadata: ChainMetadata;
-  /** Colony MemberInvite */
+  /**
+   * The main member invite object
+   * It is possible to create multiple member invites for a given colony
+   * but only one of them is considered the `main` one
+   */
   colonyMemberInvite?: Maybe<ColonyMemberInvite>;
-  /** Invite code ID associated with the invite */
+  /** ID of the main member invite object */
   colonyMemberInviteCode?: Maybe<Scalars['ID']>;
   createdAt: Scalars['AWSDateTime'];
   domains?: Maybe<ModelDomainConnection>;
@@ -664,7 +668,7 @@ export type ColonyMemberInvite = {
   /** Colony ID associated with the ColonyMemberInvite */
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
-  /** The uuid invite code generated automatically by amplify */
+  /** Self-managed id which is used as the invite code */
   id: Scalars['ID'];
   /** Decrementing count of how many times this invite has been used */
   invitesRemaining: Scalars['Int'];
