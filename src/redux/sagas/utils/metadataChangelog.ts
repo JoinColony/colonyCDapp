@@ -1,5 +1,3 @@
-import omitDeep from 'omit-deep-lodash';
-
 import {
   DomainColor,
   DomainMetadataChangelogInput,
@@ -9,12 +7,6 @@ import { ColonyMetadata, DomainMetadata, Safe } from '~types';
 import { notNull } from '~utils/arrays';
 import { excludeTypenameKey } from '~utils/objects';
 
-const getExistingChangelog = <T extends { __typename?: string }>(
-  changelog?: T[] | null,
-) =>
-  changelog?.map((changelogItem) => omitDeep(changelogItem, '__typename')) ??
-  [];
-
 export const getUpdatedDomainMetadataChangelog = (
   transactionHash: string,
   metadata: DomainMetadata,
@@ -22,7 +14,7 @@ export const getUpdatedDomainMetadataChangelog = (
   newColor?: DomainColor,
   newDescription?: string,
 ): DomainMetadataChangelogInput[] => {
-  const existingChangelog = getExistingChangelog(metadata.changelog);
+  const existingChangelog = metadata.changelog ?? [];
 
   return [
     ...existingChangelog,
@@ -50,7 +42,7 @@ export const getUpdatedColonyMetadataChangelog = (
   hasObjectiveChanged = false,
   newSafes?: Safe[],
 ): ColonyMetadataChangelogInput[] => {
-  const existingChangelog = getExistingChangelog(metadata.changelog);
+  const existingChangelog = metadata.changelog ?? [];
   const currentColonySafes =
     metadata.safes?.filter(notNull).map(excludeTypenameKey) || [];
 
