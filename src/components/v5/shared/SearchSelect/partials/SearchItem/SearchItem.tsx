@@ -8,8 +8,8 @@ import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
 import { formatText } from '~utils/intl';
 import { getTeamColor } from '~utils/teams';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import Avatar from '~v5/shared/Avatar';
 import IconWithTooltip from '~v5/shared/IconWithTooltip';
+import UserAvatar from '~v5/shared/UserAvatar';
 
 import { sortDisabled } from '../../utils';
 
@@ -102,7 +102,11 @@ const SearchItem: FC<SearchItemProps> = ({
                 )}
                 {showAvatar && (
                   <div className="mr-2 items-center justify-center flex">
-                    <Avatar avatar={avatar} seed={walletAddress} />
+                    <UserAvatar
+                      avatar={avatar}
+                      user={walletAddress}
+                      size="xs"
+                    />
                   </div>
                 )}
                 {isLabelVisible && labelText}
