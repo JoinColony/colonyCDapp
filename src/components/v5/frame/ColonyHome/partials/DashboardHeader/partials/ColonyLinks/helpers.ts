@@ -6,7 +6,7 @@ export const sortExternalLinks = (
 ): ExternalLink[] => {
   const linksPriority = Object.keys(COLONY_LINK_CONFIG);
 
-  return externalLinks.sort(
+  return [...externalLinks].sort(
     (link1, link2) =>
       linksPriority.indexOf(link1.name) - linksPriority.indexOf(link2.name),
   );
