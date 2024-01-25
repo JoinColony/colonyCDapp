@@ -1,10 +1,13 @@
+import { Browser, Browsers } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import Tooltip from '~shared/Extensions/Tooltip';
 import { ColonyAction } from '~types';
 import { formatText } from '~utils/intl';
 import UserPopover from '~v5/shared/UserPopover';
 
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
 import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
 import {
   ActionTypeRow,
@@ -26,20 +29,20 @@ const MSG = defineMessages({
   },
   subtitle: {
     id: `${displayName}.subtitle`,
-    defaultMessage: 'Upgrade Colony version by {user}',
+    defaultMessage: 'Upgrade Colony version to v{newVersion} by {user}',
   },
 });
 
-// @TODO connect actual version number
 const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser } = action;
+  const { initiatorUser, newColonyVersion } = action;
 
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
+          newVersion: newColonyVersion,
           user: initiatorUser ? (
             <UserPopover
               userName={initiatorUser.profile?.displayName}
@@ -51,10 +54,53 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
             </UserPopover>
           ) : null,
         })}
-        Upgrade colony version by {action.initiatorUser?.profile?.displayName}
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
+
+        {action.newColonyVersion && (
+          <>
+            <div>
+              <Tooltip
+                placement={DEFAULT_TOOLTIP_POSITION}
+                tooltipContent={formatText({
+                  id: 'actionSidebar.tooltip.upgradeColonyVersion.currentVersion',
+                })}
+              >
+                <div className="flex items-center gap-2">
+                  <Browser size={ICON_SIZE} />
+                  <span>
+                    {formatText({ id: 'actionSidebar.currentVersion' })}
+                  </span>
+                </div>
+              </Tooltip>
+            </div>
+
+            <div className="flex items-center gap-1">
+              {action.newColonyVersion - 1}
+            </div>
+
+            <div>
+              <Tooltip
+                placement={DEFAULT_TOOLTIP_POSITION}
+                tooltipContent={formatText({
+                  id: 'actionSidebar.tooltip.upgradeColonyVersion.newVersion',
+                })}
+              >
+                <div className="flex items-center gap-2">
+                  <Browsers size={ICON_SIZE} />
+                  <span>
+                    {formatText({ id: 'actionSidebar.latestVersion' })}
+                  </span>
+                </div>
+              </Tooltip>
+            </div>
+
+            <div className="flex items-center gap-1">
+              {action.newColonyVersion}
+            </div>
+          </>
+        )}
 
         <DecisionMethodRow isMotion={action.isMotion || false} />
 

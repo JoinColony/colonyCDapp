@@ -18,6 +18,7 @@ export const actionTypeTranslations = {
   [ColonyActionType.MoveFunds]: 'actions.transferFunds',
   [ColonyActionType.UnlockToken]: 'actions.unlockToken',
   [ColonyActionType.VersionUpgrade]: 'actions.upgradeColonyVersion',
+  [ColonyActionType.VersionUpgradeMotion]: 'actions.upgradeColonyVersion',
   default: 'Action',
 };
 
