@@ -74,7 +74,7 @@ const ColonyDetailsFields: FC = () => (
     >
       <FormTextareaBase
         message={false}
-        minLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
+        maxLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
         name="colonyDescription"
         placeholder={formatText({
           id: 'actionSidebar.colonyDescription.placeholder',
