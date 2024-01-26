@@ -4,10 +4,10 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import Icon from '~shared/Icon';
+import TokenIcon from '~shared/TokenIcon';
 import { Token } from '~types';
 import { getBlockExplorerLink } from '~utils/external';
 import PillsBase from '~v5/common/Pills/PillsBase';
-import Avatar from '~v5/shared/Avatar';
 import CopyableAddress from '~v5/shared/CopyableAddress';
 
 const displayName = 'TokenInfoPopover.TokenInfo';
@@ -30,7 +30,7 @@ const MSG = defineMessages({
 });
 
 const TokenInfo = ({ token, isTokenNative, className }: Props) => {
-  const { avatar, name, symbol, tokenAddress, thumbnail } = token;
+  const { name, symbol, tokenAddress } = token;
   const { formatMessage } = useIntl();
 
   return (
@@ -41,12 +41,7 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
       )}
     >
       <div className="flex flex-row items-center w-full gap-4">
-        <Avatar
-          size="m"
-          title={name}
-          avatar={thumbnail || avatar}
-          className="flex-shrink-0"
-        />
+        <TokenIcon size="m" token={token} className="flex-shrink-0" />
         <div className="flex flex-col flex-1 gap-1 min-w-0">
           <div className="w-full flex items-center">
             <h4 className="heading-4 truncate" title={`${name} (${symbol})`}>
