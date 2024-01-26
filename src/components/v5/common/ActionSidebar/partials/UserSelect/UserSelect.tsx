@@ -57,6 +57,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       ? {
           profile: {
             displayName: selectedUserOption?.label,
+            thumbnail: selectedUserOption?.thumbnail,
           },
           walletAddress: selectedUserOption?.walletAddress,
           isVerified: selectedUserOption?.isVerified,

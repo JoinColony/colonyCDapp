@@ -24,6 +24,7 @@ export const useUserSelect = () => {
               walletAddress ||
               member.contributorAddress,
             avatar: profile?.thumbnail || profile?.avatar || '',
+            thumbnail: profile?.thumbnail || '',
             id: result.length,
             showAvatar: true,
             walletAddress,

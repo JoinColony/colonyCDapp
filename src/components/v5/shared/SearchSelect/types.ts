@@ -27,6 +27,7 @@ export interface SearchSelectOption {
   value: string | number;
   isDisabled?: boolean;
   avatar?: string;
+  thumbnail?: string;
   showAvatar?: boolean;
   color?: string;
   walletAddress?: string;
