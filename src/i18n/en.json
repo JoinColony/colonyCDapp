@@ -994,7 +994,7 @@
     "actionSidebar.value": "Value",
     "actionSidebar.currentVersion": "Current version",
     "actionSidebar.upToDate": "Your Colony version is up to date",
-    "actionSidebar.latestVersion": "Latest version",
+    "actionSidebar.newVersion": "New version",
     "actionSidebar.availableTokens": "Available tokens",
     "actionSidebar.availableDecisions": "Available decision methods",
     "actionSidebar.decisionMethod": "Decision method",

@@ -89,9 +89,7 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
               >
                 <div className="flex items-center gap-2">
                   <Browsers size={ICON_SIZE} />
-                  <span>
-                    {formatText({ id: 'actionSidebar.latestVersion' })}
-                  </span>
+                  <span>{formatText({ id: 'actionSidebar.newVersion' })}</span>
                 </div>
               </Tooltip>
             </div>
