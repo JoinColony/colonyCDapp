@@ -34,4 +34,5 @@ export interface SearchSelectOption {
   missingPermissions?: string;
   token?: TokenFragment;
   isRoot?: boolean;
+  isVerified?: boolean;
 }
