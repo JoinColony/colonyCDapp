@@ -1,9 +1,9 @@
 import { ApolloClient as ApolloClientClass } from '@apollo/client';
 import { OnboardAPI } from '@web3-onboard/core';
 
+import { apolloClient } from '~apollo';
 import { ColonyWallet } from '~types';
 
-import apolloClient from './apolloClient';
 import ColonyManagerClass from './ColonyManager';
 import { IPFSWithTimeout } from './ipfs/getIpfsWithFallback';
 import ipfsWithFallback from './ipfs/ipfsWithFallbackContext';
