@@ -2,12 +2,12 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
 
-import { EditTeamFormValues } from '../../forms/EditTeamForm/consts';
+import { EditTeamFormValues } from '../../forms/EditTeamForm/consts.ts';
 
-import CurrentUser from './CurrentUser';
+import CurrentUser from './CurrentUser.tsx';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.EditDomainDescription';

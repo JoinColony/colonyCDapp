@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { TitleWithNumberProps } from './types';
+import { TitleWithNumberProps } from './types.ts';
 
 const displayName = 'v5.TitleWithNumber';
 

@@ -1,25 +1,25 @@
 import { BigNumber } from 'ethers';
 import { ReactNode } from 'react';
 
-import { getRole } from '~constants/permissions';
+import { getRole } from '~constants/permissions.ts';
 import { ColonyActionRoles, ColonyActionType } from '~gql';
-import { Address } from '~types';
 import {
   AnyActionType,
   ExtendedColonyActionType,
   ActionUserRoles,
-} from '~types/actions';
+} from '~types/actions.ts';
 import {
   Token,
   Domain as ColonyDomain,
   ColonyMetadata,
   ColonyAction,
-} from '~types/graphql';
-import { isEmpty, isEqual } from '~utils/lodash';
+} from '~types/graphql.ts';
+import { Address } from '~types/index.ts';
+import { isEmpty, isEqual } from '~utils/lodash.ts';
 
-import { MotionVote } from './colonyMotions';
-import { formatText } from './intl';
-import { parseSafeTransactionType } from './safes';
+import { MotionVote } from './colonyMotions.ts';
+import { formatText } from './intl.ts';
+import { parseSafeTransactionType } from './safes/index.ts';
 
 export enum ActionPageDetails {
   Type = 'Type',

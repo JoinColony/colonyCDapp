@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import { FormErrorProps } from './types';
+import { FormErrorProps } from './types.ts';
 
 const displayName = 'Extensions.FormError';
 

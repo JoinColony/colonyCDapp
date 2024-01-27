@@ -4,33 +4,33 @@ import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { SearchActionsDocument } from '~gql';
-import { ActionForm } from '~shared/Fields';
-import { formatText } from '~utils/intl';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import Link from '~v5/shared/Link';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import { ActionForm } from '~shared/Fields/index.ts';
+import { formatText } from '~utils/intl.ts';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import Link from '~v5/shared/Link/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import ActionTypeSelect from '../../ActionTypeSelect';
-import { ACTION_TYPE_FIELD_NAME } from '../../consts';
+import ActionTypeSelect from '../../ActionTypeSelect.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
 import {
   useActionFormProps,
   useSidebarActionForm,
   useReputationValidation,
-} from '../../hooks';
-import ActionButtons from '../ActionButtons';
-import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription';
-import Motions from '../Motions';
-import PopularActions from '../PopularActions';
+} from '../../hooks/index.ts';
+import ActionButtons from '../ActionButtons.tsx';
+import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
+import Motions from '../Motions/index.ts';
+import PopularActions from '../PopularActions.tsx';
 
-import { useGetActionErrors } from './hooks';
-import PermissionSidebar from './partials/PermissionSidebar';
-import { SidebarBanner } from './partials/SidebarBanner';
+import { useGetActionErrors } from './hooks.ts';
+import PermissionSidebar from './partials/PermissionSidebar.tsx';
+import { SidebarBanner } from './partials/SidebarBanner.tsx';
 import {
   ActionSidebarContentProps,
   ActionSidebarFormContentProps,
-} from './types';
+} from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 

@@ -1,7 +1,7 @@
 import { Props as CleaveProps } from 'cleave.js/react/props';
 import { InputHTMLAttributes } from 'react';
 
-import { BaseFieldProps } from '../types';
+import { BaseFieldProps } from '../types.ts';
 
 export interface InputBaseProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'>,

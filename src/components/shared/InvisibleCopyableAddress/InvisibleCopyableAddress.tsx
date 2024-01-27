@@ -7,8 +7,8 @@ import {
   useIntl,
 } from 'react-intl';
 
-import { Tooltip } from '~shared/Popover';
-import { Address } from '~types';
+import { Tooltip } from '~shared/Popover/index.ts';
+import { Address } from '~types/index.ts';
 
 import styles from './InvisibleCopyableAddress.css';
 

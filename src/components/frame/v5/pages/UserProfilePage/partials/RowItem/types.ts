@@ -1,8 +1,8 @@
-import { AvatarUploaderProps } from '~v5/common/AvatarUploader/types';
-import { InputProps } from '~v5/common/Fields/Input';
-import { SwitchProps } from '~v5/common/Fields/Switch/types';
-import { TextareaProps } from '~v5/common/Fields/Textarea/types';
-import { ButtonMode, IconSize } from '~v5/shared/Button/types';
+import { AvatarUploaderProps } from '~v5/common/AvatarUploader/types.ts';
+import { InputProps } from '~v5/common/Fields/Input/index.ts';
+import { SwitchProps } from '~v5/common/Fields/Switch/types.ts';
+import { TextareaProps } from '~v5/common/Fields/Textarea/types.ts';
+import { ButtonMode, IconSize } from '~v5/shared/Button/types.ts';
 
 interface AvatarProps extends AvatarUploaderProps {
   updateFn: (

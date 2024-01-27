@@ -1,1 +1,1 @@
-export { default } from './UserNavigationWrapper';
+export { default } from './UserNavigationWrapper.tsx';

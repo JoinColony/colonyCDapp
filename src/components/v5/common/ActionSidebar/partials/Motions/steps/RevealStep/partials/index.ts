@@ -1,1 +1,1 @@
-export { default } from './RevealInformationList';
+export { default } from './RevealInformationList.tsx';

@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import React, { useId, useLayoutEffect } from 'react';
 
-import { notMaybe } from '~utils/arrays';
+import { notMaybe } from '~utils/arrays/index.ts';
 
-import { FIELD_STATE } from '../consts';
-import { useStateClassNames } from '../hooks';
+import { FIELD_STATE } from '../consts.ts';
+import { useStateClassNames } from '../hooks.ts';
 
-import { useAdjustInputWidth } from './hooks';
-import { InputBaseProps } from './types';
+import { useAdjustInputWidth } from './hooks.ts';
+import { InputBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.InputBase';
 

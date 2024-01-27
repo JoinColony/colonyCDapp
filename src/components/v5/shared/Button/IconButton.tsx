@@ -2,10 +2,10 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
-import { formatText } from '~utils/intl';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { formatText } from '~utils/intl.ts';
 
-import { IconButtonProps } from './types';
+import { IconButtonProps } from './types.ts';
 
 import styles from './TxButton.module.css';
 

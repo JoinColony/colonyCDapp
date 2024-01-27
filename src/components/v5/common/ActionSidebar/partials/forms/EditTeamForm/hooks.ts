@@ -3,17 +3,17 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
-import { findDomainByNativeId } from '~utils/domains';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { mapPayload, pipe } from '~utils/actions.ts';
+import { findDomainByNativeId } from '~utils/domains.ts';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 
-import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
+import { ActionFormBaseProps } from '../../../types.ts';
 
-import { validationSchema, EditTeamFormValues } from './consts';
-import { getEditDomainPayload } from './utils';
+import { validationSchema, EditTeamFormValues } from './consts.ts';
+import { getEditDomainPayload } from './utils.tsx';
 
 export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],

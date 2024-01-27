@@ -1,6 +1,6 @@
 import { SupportedCurrencies } from '~gql';
 
-import { coinGeckoMappings } from './config';
+import { coinGeckoMappings } from './config.ts';
 
 export type CoinGeckoSupportedCurrencies =
   keyof typeof coinGeckoMappings.currencies;

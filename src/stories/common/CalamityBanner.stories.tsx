@@ -1,5 +1,5 @@
-import CalamityBanner from '~v5/shared/CalamityBanner';
-import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
+import CalamityBanner from '~v5/shared/CalamityBanner/index.ts';
+import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

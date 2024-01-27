@@ -13,7 +13,7 @@ import {
 } from 'phosphor-react';
 import React, { FC } from 'react';
 
-import { MenuBarProps } from '../types';
+import { MenuBarProps } from '../types.ts';
 
 import styles from './Menu.module.css';
 

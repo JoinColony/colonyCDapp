@@ -1,11 +1,11 @@
 import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import { ActionTypes } from '~redux';
-import { SimpleMessageValues } from '~types';
-import { ActionTransformFnType } from '~utils/actions';
+import { ActionTypes } from '~redux/index.ts';
+import { SimpleMessageValues } from '~types/index.ts';
+import { ActionTransformFnType } from '~utils/actions.ts';
 
-import { LinkProps } from '../Link/types';
+import { LinkProps } from '../Link/types.ts';
 
 export type ButtonMode =
   | 'primarySolid'

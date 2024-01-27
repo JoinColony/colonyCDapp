@@ -1,22 +1,25 @@
 import { ClientType } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { Action, ActionTypes, AllActions } from '~redux';
-import { isEqual } from '~utils/lodash';
+import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { isEqual } from '~utils/lodash.ts';
 
-import { transactionAddParams, transactionPending } from '../../actionCreators';
+import {
+  transactionAddParams,
+  transactionPending,
+} from '../../actionCreators/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
   getUpdatedColonyMetadataChangelog,
@@ -24,12 +27,12 @@ import {
   putError,
   takeFrom,
   uploadAnnotation,
-} from '../utils';
+} from '../utils/index.ts';
 import {
   getExistingTokenAddresses,
   getModifiedTokenAddresses,
   updateColonyTokens,
-} from '../utils/updateColonyTokens';
+} from '../utils/updateColonyTokens.ts';
 
 function* editColonyAction({
   payload: {

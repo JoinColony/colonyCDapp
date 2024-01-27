@@ -1,1 +1,1 @@
-export { default } from './ManageColonyObjectivesForm';
+export { default } from './ManageColonyObjectivesForm.tsx';

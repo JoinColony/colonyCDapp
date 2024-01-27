@@ -1,1 +1,1 @@
-export { default } from './VerifiedTable';
+export { default } from './VerifiedTable.tsx';

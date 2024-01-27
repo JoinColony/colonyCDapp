@@ -1,13 +1,13 @@
-import { MotionStatesMap } from '~hooks/useNetworkMotionStates';
-import { ColonyAction } from '~types/graphql';
-import { MotionState, getMotionState } from '~utils/colonyMotions';
+import { MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
+import { ColonyAction } from '~types/graphql.ts';
+import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
 
 import {
   ActivityDecisionMethod,
   ActivityFeedFilters,
   ActivityFeedColonyAction,
   SearchActionsFilterVariable,
-} from './types';
+} from './types.ts';
 
 const getActivityFeedMotionState = (
   action: ColonyAction,

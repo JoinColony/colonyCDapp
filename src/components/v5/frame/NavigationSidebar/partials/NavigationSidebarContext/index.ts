@@ -1,1 +1,1 @@
-export { default } from './NavigationSidebarContext';
+export { default } from './NavigationSidebarContext.tsx';

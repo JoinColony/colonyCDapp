@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { ProgressBarProps } from './types';
+import { ProgressBarProps } from './types.ts';
 
 const ProgressBar: FC<ProgressBarProps> = ({
   progress,

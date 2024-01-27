@@ -2,28 +2,28 @@ import { ContractClient, ClientType } from '@colony/colony-js';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Contract, BigNumberish, utils } from 'ethers';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   MethodParams,
   MetatransactionFlavour,
   MetamaskRpcErrors,
   TRANSACTION_METHODS,
   ExtendedClientType,
-} from '~types/transactions';
-import { isFullWallet } from '~types/wallet';
+} from '~types/transactions.ts';
+import { isFullWallet } from '~types/wallet.ts';
 import {
   generateMetatransactionErrorMessage,
   generateMetamaskTypedDataSignatureErrorMessage,
-} from '~utils/web3';
+} from '~utils/web3/index.ts';
 
-import { TransactionRecord } from '../../immutable';
+import { TransactionRecord } from '../../immutable/index.ts';
 import {
   getChainId,
   generateEIP2612TypedData,
   generateMetatransactionMessage,
   broadcastMetatransaction,
   signTypedData,
-} from '../utils';
+} from '../utils/index.ts';
 
 async function getMetatransactionPromise(
   client: ContractClient,

@@ -3,15 +3,15 @@ import React, { ReactNode } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
-import { Form } from '~shared/Fields';
-import Icon from '~shared/Icon';
-import { WizardStepProps } from '~shared/Wizard';
-import { formatText } from '~utils/intl';
-import MenuContainer from '~v5/shared/MenuContainer';
+import { Form } from '~shared/Fields/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { WizardStepProps } from '~shared/Wizard/index.ts';
+import { formatText } from '~utils/intl.ts';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 
-import { ButtonRow, HeaderRow } from '../shared';
+import { ButtonRow, HeaderRow } from '../shared.tsx';
 
-import { FormValues, Step2 } from './types';
+import { FormValues, Step2 } from './types.ts';
 
 const displayName = 'common.CreateColonyWizard.StepTokenChoice';
 

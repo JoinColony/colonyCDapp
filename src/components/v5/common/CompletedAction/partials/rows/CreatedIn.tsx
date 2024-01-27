@@ -1,12 +1,12 @@
 import { HouseLine } from 'phosphor-react';
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import { DomainMetadata } from '~types/graphql';
-import { formatText } from '~utils/intl';
-import TeamBadge from '~v5/common/Pills/TeamBadge';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { DomainMetadata } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
+import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.CreatedInRow';
 

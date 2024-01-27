@@ -3,26 +3,26 @@ import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
-import { getContext, ContextModule, ColonyManager } from '~context';
+import { getContext, ContextModule, ColonyManager } from '~context/index.ts';
 import {
   GetColonyActionDocument,
   GetColonyActionQuery,
   GetColonyActionQueryVariables,
 } from '~gql';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+import { AllActions, Action } from '../../types/actions/index.ts';
 import {
   ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   initiateTransaction,
   putError,
   takeFrom,
   getColonyManager,
-} from '../utils';
+} from '../utils/index.ts';
 
 export type ClaimMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM>['payload'];

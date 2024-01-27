@@ -1,13 +1,13 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 
-import Balance from './partials/Balance';
-import PendingReputation from './partials/PendingReputation';
-import TotalReputation from './partials/TotalReputation';
-import { ReputationTabProps } from './types';
+import Balance from './partials/Balance.tsx';
+import PendingReputation from './partials/PendingReputation/index.ts';
+import TotalReputation from './partials/TotalReputation.tsx';
+import { ReputationTabProps } from './types.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.ReputationTab';
 

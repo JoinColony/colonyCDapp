@@ -4,8 +4,8 @@ import { BigNumberish } from 'ethers';
 import { MessageDescriptor } from 'react-intl';
 import { Schema } from 'yup';
 
-import { ExtensionCategory } from '~constants';
-import { ColonyExtension } from '~types/graphql';
+import { ExtensionCategory } from '~constants/index.ts';
+import { ColonyExtension } from '~types/graphql.ts';
 
 export enum WhitelistPolicy {
   KycOnly = 0,

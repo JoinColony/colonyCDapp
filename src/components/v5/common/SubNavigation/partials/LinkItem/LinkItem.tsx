@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { PropsWithChildren, FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { LinkItemProps } from './types';
+import { LinkItemProps } from './types.ts';
 
 import styles from './LinkItem.module.css';
 

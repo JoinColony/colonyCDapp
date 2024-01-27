@@ -1,1 +1,1 @@
-export { default } from './TimerValue';
+export { default } from './TimerValue.tsx';

@@ -1,13 +1,13 @@
 import { Coins } from 'phosphor-react';
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import TokenIcon from '~shared/TokenIcon';
-import { Token } from '~types/graphql';
-import { formatText } from '~utils/intl';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import { Token } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
-import { getFormattedTokenAmount } from '../utils';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
+import { getFormattedTokenAmount } from '../utils.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.AmountRow';
 

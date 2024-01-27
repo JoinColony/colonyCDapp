@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import ColonyDetailsFields from '~v5/common/ActionSidebar/partials/ColonyDetailsFields';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import ColonyDetailsFields from '~v5/common/ActionSidebar/partials/ColonyDetailsFields/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
+import { useDecisionMethods } from '../../../hooks/index.ts';
+import { ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
 
-import { useEditColonyDetails } from './hooks';
-import SocialLinksTable from './partials/SocialLinksTable';
+import { useEditColonyDetails } from './hooks.ts';
+import SocialLinksTable from './partials/SocialLinksTable/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditColonyDetailsForm';
 

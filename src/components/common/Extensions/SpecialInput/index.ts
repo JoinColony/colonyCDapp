@@ -1,1 +1,1 @@
-export { default } from './SpecialInput';
+export { default } from './SpecialInput.tsx';

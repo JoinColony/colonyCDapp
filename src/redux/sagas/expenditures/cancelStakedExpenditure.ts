@@ -1,15 +1,19 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context';
-import { Action, ActionTypes, AllActions } from '~redux';
+import { ColonyManager } from '~context/index.ts';
+import { Action, ActionTypes, AllActions } from '~redux/index.ts';
 
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
-} from '../transactions';
-import { getColonyManager, initiateTransaction, putError } from '../utils';
+} from '../transactions/index.ts';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+} from '../utils/index.ts';
 
 function* cancelStakedExpenditure({
   meta,

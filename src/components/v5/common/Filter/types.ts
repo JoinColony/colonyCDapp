@@ -1,4 +1,4 @@
-import { Message } from '~types';
+import { Message } from '~types/index.ts';
 
 import {
   ContributorType,
@@ -7,9 +7,9 @@ import {
   ReputationType,
   PermissionsType,
   TeamType,
-} from '../TableFiltering/types';
+} from '../TableFiltering/types.ts';
 
-import { FilterOptionsProps } from './partials/types';
+import { FilterOptionsProps } from './partials/types.ts';
 
 export type AccordionProps = {
   items: ParentFilterOption[];

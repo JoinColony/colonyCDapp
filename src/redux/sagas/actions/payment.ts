@@ -3,16 +3,19 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context';
-import { ActionTypes, Action, AllActions } from '~redux';
-import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
+import { ColonyManager } from '~context/index.ts';
+import { ActionTypes, Action, AllActions } from '~redux/index.ts';
+import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
 
-import { transactionPending, transactionAddParams } from '../../actionCreators';
+import {
+  transactionPending,
+  transactionAddParams,
+} from '../../actionCreators/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   initiateTransaction,
   putError,
@@ -21,7 +24,7 @@ import {
   getColonyManager,
   getMultiPermissionProofs,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* createPaymentAction({
   payload: {

@@ -1,6 +1,6 @@
-import { UserStakeStatus } from '~types/userStake';
+import { UserStakeStatus } from '~types/userStake.ts';
 
-import { ContributorType } from '../TableFiltering/types';
+import { ContributorType } from '../TableFiltering/types.ts';
 
 export type ExtensionStatusBadgeMode =
   | 'coming-soon'

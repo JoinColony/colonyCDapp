@@ -2,9 +2,9 @@ import React from 'react';
 import { MessageDescriptor, FormattedMessage } from 'react-intl';
 import { PopperOptions } from 'react-popper-tooltip';
 
-import Icon from '~shared/Icon';
-import { Tooltip } from '~shared/Popover';
-import { UniversalMessageValues } from '~types';
+import Icon from '~shared/Icon/index.ts';
+import { Tooltip } from '~shared/Popover/index.ts';
+import { UniversalMessageValues } from '~types/index.ts';
 
 const displayName = 'QuestionMarkTooltip';
 

@@ -1,6 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 
-import { ColonyContributor } from '~types/graphql';
+import { ColonyContributor } from '~types/graphql.ts';
 
 export interface MembersListProps {
   title: MessageDescriptor;

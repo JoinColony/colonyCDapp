@@ -1,6 +1,6 @@
-import { MemberCardProps } from '../MemberCard/types';
+import { MemberCardProps } from '../MemberCard/types.ts';
 
-import { MemberCardPlaceholderProps } from './partials/MemberCardPlaceholder/types';
+import { MemberCardPlaceholderProps } from './partials/MemberCardPlaceholder/types.ts';
 
 export interface MemberCardListItem extends Omit<MemberCardProps, 'isSimple'> {
   key: string;

@@ -1,8 +1,8 @@
 import { ClientType, getChildIndex, Id } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO, isDev } from '~constants';
-import { ContextModule, getContext } from '~context';
+import { ADDRESS_ZERO, isDev } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateSafeTransactionDocument,
   CreateSafeTransactionMutation,
@@ -11,27 +11,27 @@ import {
   CreateSafeTransactionDataMutationVariables,
   CreateSafeTransactionDataDocument,
 } from '~gql';
-import { ActionTypes } from '~redux/actionTypes';
-import { Action, AllActions } from '~redux/types';
-import { fill, omit } from '~utils/lodash';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { Action, AllActions } from '~redux/types/index.ts';
+import { fill, omit } from '~utils/lodash.ts';
+import { putError, takeFrom } from '~utils/saga/effects.ts';
 
-import { transactionReady } from '../../actionCreators';
+import { transactionReady } from '../../actionCreators/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   getColonyManager,
   uploadAnnotation,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 import {
   getHomeBridgeByChain,
   ZODIAC_BRIDGE_MODULE_ADDRESS,
   getTransactionEncodedData,
-} from '../utils/safeHelpers';
+} from '../utils/safeHelpers.ts';
 
 function* initiateSafeTransactionMotion({
   payload: {

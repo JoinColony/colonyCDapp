@@ -4,23 +4,23 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { DeepPartial } from 'utility-types';
 import { array, InferType, number, object, string } from 'yup';
 
-import { useColonyContext } from '~context/ColonyContext';
-import useNetworkInverseFee from '~hooks/useNetworkInverseFee';
-import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
-import getLastIndexFromPath from '~utils/getLastIndexFromPath';
-import { formatText } from '~utils/intl';
-import { toFinite } from '~utils/lodash';
-import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
+import { ActionTypes } from '~redux/index.ts';
+import { mapPayload, pipe } from '~utils/actions.ts';
+import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
+import { formatText } from '~utils/intl.ts';
+import { toFinite } from '~utils/lodash.ts';
+import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts';
+} from '~v5/common/ActionSidebar/consts.tsx';
 
-import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
+import { ActionFormBaseProps } from '../../../types.ts';
 
-import { getSimplePaymentPayload } from './utils';
+import { getSimplePaymentPayload } from './utils.tsx';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();

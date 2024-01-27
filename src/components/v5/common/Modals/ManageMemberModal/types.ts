@@ -1,4 +1,4 @@
-import { User } from '~types/graphql';
+import { User } from '~types/graphql.ts';
 
 export interface ManageMemberModalProps {
   isOpen: boolean;

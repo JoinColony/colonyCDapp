@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PageLoader from './PageLoader';
+import PageLoader from './PageLoader.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

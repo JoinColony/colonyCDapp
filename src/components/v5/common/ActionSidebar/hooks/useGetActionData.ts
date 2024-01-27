@@ -2,22 +2,22 @@ import { Id } from '@colony/colony-js';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
-import { ACTION } from '~constants/actions';
-import { getRole, USER_ROLE } from '~constants/permissions';
+import { ACTION } from '~constants/actions.ts';
+import { getRole, USER_ROLE } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
-import { convertRolesToArray } from '~transformers';
-import { ExtendedColonyActionType } from '~types/actions';
-import { getExtendedActionType } from '~utils/colonyActions';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { convertRolesToArray } from '~transformers/index.ts';
+import { ExtendedColonyActionType } from '~types/actions.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts';
+import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
 import {
   AUTHORITY,
   AVAILABLE_ROLES,
-} from '../partials/forms/ManagePermissionsForm/consts';
+} from '../partials/forms/ManagePermissionsForm/consts.tsx';
 
-import { DecisionMethod } from './useDecisionMethods';
-import { useGetColonyAction } from './useGetColonyAction';
+import { DecisionMethod } from './useDecisionMethods.ts';
+import { useGetColonyAction } from './useGetColonyAction.ts';
 
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);

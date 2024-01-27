@@ -2,14 +2,18 @@ import { ArrowDownRight } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import { ColonyAction } from '~types/graphql';
-import { formatText } from '~utils/intl';
-import TeamBadge from '~v5/common/Pills/TeamBadge';
-import UserPopover from '~v5/shared/UserPopover';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { ColonyAction } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
+import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
+import {
+  ActionDataGrid,
+  ActionSubtitle,
+  ActionTitle,
+} from '../Blocks/index.ts';
 import {
   ActionTypeRow,
   AmountRow,
@@ -17,8 +21,8 @@ import {
   DecisionMethodRow,
   DescriptionRow,
   TeamFromRow,
-} from '../rows';
-import { getFormattedTokenAmount } from '../utils';
+} from '../rows/index.ts';
+import { getFormattedTokenAmount } from '../utils.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 

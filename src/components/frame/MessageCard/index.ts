@@ -1,3 +1,3 @@
-export { default } from './MessageCard';
+export { default } from './MessageCard.tsx';
 
-export { default as MessageCardStatus } from './MessageCardStatus';
+export { default as MessageCardStatus } from './MessageCardStatus.tsx';

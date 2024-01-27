@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useColonyContext } from '~context/ColonyContext';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
-import { COLONY_DETAILS_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
-import { getTeamColor } from '~utils/teams';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import WidgetBox from '~v5/common/WidgetBox';
-import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
-import ProgressBar from '~v5/shared/ProgressBar';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTeamColor } from '~utils/teams.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import WidgetBox from '~v5/common/WidgetBox/index.ts';
+import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState.tsx';
+import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.Objective';
 

@@ -1,4 +1,4 @@
-import { UserStatusMode } from '~v5/common/Pills/types';
+import { UserStatusMode } from '~v5/common/Pills/types.ts';
 
 export type AvatarSize =
   | 'xxxs'

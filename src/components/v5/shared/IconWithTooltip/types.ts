@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconProps } from '~shared/Icon/Icon';
+import { IconProps } from '~shared/Icon/Icon.tsx';
 
 export interface IconWithTooltipProps {
   tooltipContent: React.ReactNode;

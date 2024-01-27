@@ -1,13 +1,13 @@
 import { Record, Map as ImmutableMap } from 'immutable';
 
-import { DefaultValues, RecordToJS } from '~types';
+import { DefaultValues, RecordToJS } from '~types/index.ts';
 
-import { CORE_TRANSACTIONS_LIST } from '../constants';
+import { CORE_TRANSACTIONS_LIST } from '../constants.ts';
 import {
   TransactionRecord,
   TransactionId,
   TransactionType,
-} from '../immutable';
+} from '../immutable/index.ts';
 
 type TransactionsListObject = { [transactionId: string]: TransactionType };
 

@@ -4,23 +4,23 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useColonyContext } from '~context/ColonyContext';
-import useRelativePortalElement from '~hooks/useRelativePortalElement';
-import useToggle from '~hooks/useToggle';
-import Numeral from '~shared/Numeral';
-import TokenIcon from '~shared/TokenIcon';
-import { formatText } from '~utils/intl';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import { formatText } from '~utils/intl.ts';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
-} from '~utils/tokens';
-import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
-import MenuContainer from '~v5/shared/MenuContainer';
-import Portal from '~v5/shared/Portal';
+} from '~utils/tokens.ts';
+import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
+import Portal from '~v5/shared/Portal/index.ts';
 
-import { useAmountField } from './hooks';
-import { AmountFieldProps, CleaveChangeEvent } from './types';
+import { useAmountField } from './hooks.ts';
+import { AmountFieldProps, CleaveChangeEvent } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 

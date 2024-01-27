@@ -1,4 +1,4 @@
-import Textarea from '~v5/common/Fields/Textarea';
+import Textarea from '~v5/common/Fields/Textarea/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

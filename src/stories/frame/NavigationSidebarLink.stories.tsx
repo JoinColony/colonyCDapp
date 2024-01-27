@@ -1,4 +1,4 @@
-import NavigationSidebarLink from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLink';
+import NavigationSidebarLink from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLink/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

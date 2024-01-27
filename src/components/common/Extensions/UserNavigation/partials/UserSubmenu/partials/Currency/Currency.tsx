@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { useCurrencyContext } from '~context/CurrencyContext';
+import { useCurrencyContext } from '~context/CurrencyContext.tsx';
 import { SupportedCurrencies } from '~gql';
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
 
-import { currencyIconTitles } from '../../../UserMenu/consts';
-import CoinGeckoAttribution from '../../CoinGeckoAttribution';
-import MenuList from '../MenuList';
-import MenuListItem from '../MenuListItem';
+import { currencyIconTitles } from '../../../UserMenu/consts.ts';
+import CoinGeckoAttribution from '../../CoinGeckoAttribution.tsx';
+import MenuList from '../MenuList/index.ts';
+import MenuListItem from '../MenuListItem/index.ts';
 
 import styles from '../Submenu.module.css';
 

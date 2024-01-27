@@ -1,8 +1,8 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
-import Toast from '~shared/Extensions/Toast';
-import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
+import Toast from '~shared/Extensions/Toast/index.ts';
+import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 import type { Meta, StoryObj } from '@storybook/react';

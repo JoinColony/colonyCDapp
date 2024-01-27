@@ -4,16 +4,16 @@ import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import { useMatch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { useTablet } from '~hooks';
-import { COLONY_HOME_ROUTE } from '~routes';
-import CloseButton from '~shared/Extensions/Toast/partials/CloseButton';
+import { useTablet } from '~hooks/index.ts';
+import { COLONY_HOME_ROUTE } from '~routes/index.ts';
+import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
 import styles from '~shared/Extensions/Toast/Toast.module.css';
 
-import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext';
+import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext/index.ts';
 
-import PageHeader from './partials/PageHeader';
-import PageHeading from './partials/PageHeading';
-import { PageLayoutProps } from './types';
+import PageHeader from './partials/PageHeader/index.ts';
+import PageHeading from './partials/PageHeading/index.ts';
+import { PageLayoutProps } from './types.ts';
 
 const displayName = 'v5.frame.PageLayout';
 

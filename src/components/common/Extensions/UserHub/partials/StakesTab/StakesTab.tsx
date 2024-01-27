@@ -2,15 +2,15 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { useMobile } from '~hooks';
-import Tabs from '~shared/Extensions/Tabs';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import Tabs from '~shared/Extensions/Tabs/index.ts';
 
-import { stakesFilterOptions } from './consts';
-import { getStakesTabItems } from './helpers';
-import ClaimAllButton from './partials/ClaimAllButton';
-import StakesList from './partials/StakesList';
-import { useStakesByFilterType } from './useStakesByFilterType';
+import { stakesFilterOptions } from './consts.ts';
+import { getStakesTabItems } from './helpers.ts';
+import ClaimAllButton from './partials/ClaimAllButton.tsx';
+import StakesList from './partials/StakesList.tsx';
+import { useStakesByFilterType } from './useStakesByFilterType.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 

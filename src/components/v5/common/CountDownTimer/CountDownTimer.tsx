@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import Icon from '~shared/Icon';
-import { MiniSpinnerLoader } from '~shared/Preloaders';
-import TimerValue from '~shared/TimerValue';
+import Icon from '~shared/Icon/index.ts';
+import { MiniSpinnerLoader } from '~shared/Preloaders/index.ts';
+import TimerValue from '~shared/TimerValue/index.ts';
 
-import { CountDownTimerProps } from './types';
+import { CountDownTimerProps } from './types.ts';
 
 const displayName = 'common.CountDownTimer';
 

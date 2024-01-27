@@ -1,6 +1,6 @@
-import { ActionTypes } from '../../index';
+import { ActionTypes } from '../../index.ts';
 
-import { ErrorActionType, UniqueActionType } from './index';
+import { ErrorActionType, UniqueActionType } from './index.ts';
 
 export type IpfsActionTypes =
   | UniqueActionType<

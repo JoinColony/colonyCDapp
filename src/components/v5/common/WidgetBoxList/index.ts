@@ -1,1 +1,1 @@
-export { default } from './WidgetBoxList';
+export { default } from './WidgetBoxList.tsx';

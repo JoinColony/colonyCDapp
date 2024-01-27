@@ -1,1 +1,1 @@
-export { default } from './SocialLinkModal';
+export { default } from './SocialLinkModal.tsx';

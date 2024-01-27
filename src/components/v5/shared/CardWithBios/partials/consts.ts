@@ -1,7 +1,7 @@
 import {
   ExtensionStatusBadgeMode,
   UserStatusMode,
-} from '~v5/common/Pills/types';
+} from '~v5/common/Pills/types.ts';
 
 export const TOP_CONTRIBUTOR_PERCENT = 20;
 export const DEDICATED_CONTRIBUTOR_PERCENT = 40;

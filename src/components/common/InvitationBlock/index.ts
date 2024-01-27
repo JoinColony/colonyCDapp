@@ -1,1 +1,1 @@
-export { default } from './InvitationBlock';
+export { default } from './InvitationBlock.tsx';

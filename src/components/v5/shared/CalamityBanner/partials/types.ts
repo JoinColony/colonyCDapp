@@ -1,5 +1,5 @@
-import { ButtonProps } from '~v5/shared/Button/types';
-import { LinkProps } from '~v5/shared/Link/types';
+import { ButtonProps } from '~v5/shared/Button/types.ts';
+import { LinkProps } from '~v5/shared/Link/types.ts';
 
 export enum CalamityBannerModeEnum {
   error = 'error',

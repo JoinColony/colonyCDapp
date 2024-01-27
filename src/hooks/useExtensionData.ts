@@ -2,19 +2,19 @@ import { ApolloQueryResult } from '@apollo/client';
 import { getExtensionHash, Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 
-import { supportedExtensionsConfig } from '~constants';
-import { useColonyContext } from '~context/ColonyContext';
+import { supportedExtensionsConfig } from '~constants/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
   Exact,
   GetColonyExtensionQuery,
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
-import { AnyExtensionData } from '~types/extensions';
+import { AnyExtensionData } from '~types/extensions.ts';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
-} from '~utils/extensions';
+} from '~utils/extensions.ts';
 
 export enum ExtensionMethods {
   INSTALL = 'installExtension',

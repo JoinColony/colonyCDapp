@@ -1,4 +1,4 @@
-import { AllActions } from './actions';
+import { AllActions } from './actions/index.ts';
 
 /*
  * This type, when assigned to a reducer, ensures that the actions specified

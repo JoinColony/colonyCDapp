@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
-import { EXTENSIONS_COUNT_THRESHOLD } from '~constants';
-import { formatText } from '~utils/intl';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import { EXTENSIONS_COUNT_THRESHOLD } from '~constants/index.ts';
+import { formatText } from '~utils/intl.ts';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
-import { ActiveInstallsProps } from './types';
+import { ActiveInstallsProps } from './types.ts';
 
 const displayName = 'frame.Extensions.pages.partials.ActiveInstalls';
 

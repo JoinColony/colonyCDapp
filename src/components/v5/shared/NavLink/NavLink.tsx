@@ -3,7 +3,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import { NavLink as NavLinkComponent } from 'react-router-dom';
 
-import { NavLinkProps } from './types';
+import { NavLinkProps } from './types.ts';
 
 const displayName = 'v5.NavLink';
 

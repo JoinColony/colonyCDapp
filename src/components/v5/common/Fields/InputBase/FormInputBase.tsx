@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 
-import { FIELD_STATE } from '../consts';
+import { FIELD_STATE } from '../consts.ts';
 
-import InputBase from './InputBase';
-import { FormInputBaseProps } from './types';
+import InputBase from './InputBase.tsx';
+import { FormInputBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.FormInputBase';
 

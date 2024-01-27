@@ -1,4 +1,4 @@
-import CloseButton from '~v5/shared/Button/CloseButton';
+import CloseButton from '~v5/shared/Button/CloseButton.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

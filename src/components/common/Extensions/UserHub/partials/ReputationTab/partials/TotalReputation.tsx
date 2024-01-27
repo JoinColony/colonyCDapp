@@ -2,15 +2,15 @@ import Decimal from 'decimal.js';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import useUserReputation from '~hooks/useUserReputation';
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
-import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
-import { getFormattedTokenValue } from '~utils/tokens';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
+import useUserReputation from '~hooks/useUserReputation.ts';
+import Icon from '~shared/Icon/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { calculatePercentageReputation, ZeroValue } from '~utils/reputation.ts';
+import { getFormattedTokenValue } from '~utils/tokens.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { TotalReputationProps } from '../types';
+import { TotalReputationProps } from '../types.ts';
 
 import styles from '../ReputationTab.module.css';
 

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { FileRejection } from 'react-dropzone';
 import { defineMessages } from 'react-intl';
 
-import { SpinnerLoader } from '~shared/Preloaders';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 
 export const getFileRejectionErrors = (rejectedFiles: FileRejection[]) => {
   return rejectedFiles.map((file) => file.errors);

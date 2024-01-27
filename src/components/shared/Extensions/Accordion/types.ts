@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, SyntheticEvent } from 'react';
 import { FieldErrorsImpl } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 
-import { ComponentType } from '~common/Extensions/SpecialInput/types';
+import { ComponentType } from '~common/Extensions/SpecialInput/types.ts';
 
 export interface AccordionProps {
   items: AccordionContent[] | unknown[];

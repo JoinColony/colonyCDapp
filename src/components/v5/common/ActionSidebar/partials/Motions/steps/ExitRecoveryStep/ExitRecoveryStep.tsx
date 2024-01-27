@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
 
-import { ActionTypes } from '~redux';
-import { ActionForm } from '~shared/Fields';
-import { formatText } from '~utils/intl';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import MemberSignatureList from '~v5/common/MemberSignatureList';
-import Button from '~v5/shared/Button';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-import NotificationBanner from '~v5/shared/NotificationBanner';
-import ProgressBar from '~v5/shared/ProgressBar';
+import { ActionTypes } from '~redux/index.ts';
+import { ActionForm } from '~shared/Fields/index.ts';
+import { formatText } from '~utils/intl.ts';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import MemberSignatureList from '~v5/common/MemberSignatureList/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
+import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
-import { membersList } from './consts';
+import { membersList } from './consts.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.ExitRecoveryStep';

@@ -1,4 +1,4 @@
-import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
+import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget/index.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

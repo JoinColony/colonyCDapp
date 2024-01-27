@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { PageHeaderProps } from './partials/PageHeader/types';
+import { PageHeaderProps } from './partials/PageHeader/types.ts';
 
 export interface PageLayoutProps {
   sidebar: ReactNode;

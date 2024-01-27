@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
 
-import { CardPermissionProps } from '../../types';
+import { CardPermissionProps } from '../../types.ts';
 
 const displayName = 'v5.CardWithBios.partials.CardPermission';
 

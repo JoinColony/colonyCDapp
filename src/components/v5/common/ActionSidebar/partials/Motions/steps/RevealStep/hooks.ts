@@ -1,16 +1,16 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetVoterRewardsQuery } from '~gql';
-import { OnSuccess } from '~shared/Fields';
-import { ColonyMotion, VoterRecord } from '~types/graphql';
-import { mapPayload } from '~utils/actions';
-import { MotionVote } from '~utils/colonyMotions';
-import { getSafePollingInterval } from '~utils/queries';
+import { OnSuccess } from '~shared/Fields/index.ts';
+import { ColonyMotion, VoterRecord } from '~types/graphql.ts';
+import { mapPayload } from '~utils/actions.ts';
+import { MotionVote } from '~utils/colonyMotions.ts';
+import { getSafePollingInterval } from '~utils/queries.ts';
 
-import { getLocalStorageVoteValue } from '../VotingStep/utils';
+import { getLocalStorageVoteValue } from '../VotingStep/utils.tsx';
 
 const useRevealWidgetUpdate = (
   voterRecord: VoterRecord[],

@@ -15,18 +15,18 @@ import {
   CONTRIBUTORS_MEMBERS_LIST_LIMIT,
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
-} from '~constants';
+} from '~constants/index.ts';
 import { useGetColonyContributorsQuery } from '~gql';
-import { useMobile } from '~hooks';
-import useAllMembers from '~hooks/members/useAllMembers';
-import useColonyContributors from '~hooks/members/useColonyContributors';
-import { COLONY_VERIFIED_ROUTE } from '~routes';
-import { ColonyContributor } from '~types/graphql';
-import { notNull } from '~utils/arrays';
+import { useMobile } from '~hooks/index.ts';
+import useAllMembers from '~hooks/members/useAllMembers.ts';
+import useColonyContributors from '~hooks/members/useColonyContributors.ts';
+import { COLONY_VERIFIED_ROUTE } from '~routes/index.ts';
+import { ColonyContributor } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
-import { useColonyContext } from './ColonyContext';
-import { FilterContextProvider, useFilterContext } from './FilterContext';
-import { SearchContextProvider } from './SearchContext';
+import { useColonyContext } from './ColonyContext.tsx';
+import { FilterContextProvider, useFilterContext } from './FilterContext.tsx';
+import { SearchContextProvider } from './SearchContext.tsx';
 
 const MemberContext = createContext<
   | {

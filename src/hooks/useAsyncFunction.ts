@@ -1,9 +1,11 @@
 import { useEffect, useMemo } from 'react';
 
-import promiseListener, { AsyncFunction } from '~redux/createPromiseListener';
-import { ActionTransformFnType } from '~utils/actions';
+import promiseListener, {
+  AsyncFunction,
+} from '~redux/createPromiseListener.ts';
+import { ActionTransformFnType } from '~utils/actions.ts';
 
-import usePrevious from './usePrevious';
+import usePrevious from './usePrevious.ts';
 
 const useAsyncFunction = <P, R>({
   submit,

@@ -7,23 +7,26 @@ import {
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context';
+import { ColonyManager } from '~context/index.ts';
 
-import { transactionAddParams, transactionPending } from '../../actionCreators';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import {
+  transactionAddParams,
+  transactionPending,
+} from '../../actionCreators/index.ts';
+import { ActionTypes } from '../../actionTypes.ts';
+import { AllActions, Action } from '../../types/actions/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
   getColonyManager,
   uploadAnnotation,
   initiateTransaction,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* stakeMotion({
   meta,

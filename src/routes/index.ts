@@ -1,7 +1,7 @@
-import Routes from './Routes';
+import Routes from './Routes.tsx';
 
-export * from './routeConstants';
+export * from './routeConstants.ts';
 
 export default Routes;
 
-export { default as NotFoundRoute } from './NotFoundRoute';
+export { default as NotFoundRoute } from './NotFoundRoute.tsx';

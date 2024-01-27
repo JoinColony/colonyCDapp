@@ -2,18 +2,18 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 
 import { DomainColor } from '~gql';
-import { useMobile } from '~hooks';
-import TokenIcon from '~shared/TokenIcon';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { formatText } from '~utils/intl';
-import { getTeamColor } from '~utils/teams';
-import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import IconWithTooltip from '~v5/shared/IconWithTooltip';
-import UserAvatar from '~v5/shared/UserAvatar';
+import { useMobile } from '~hooks/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTeamColor } from '~utils/teams.ts';
+import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+import IconWithTooltip from '~v5/shared/IconWithTooltip/index.ts';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { sortDisabled } from '../../utils';
+import { sortDisabled } from '../../utils.ts';
 
-import { SearchItemProps } from './types';
+import { SearchItemProps } from './types.ts';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 

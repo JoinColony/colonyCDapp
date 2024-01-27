@@ -1,1 +1,1 @@
-export { default } from './AdvancedPaymentRecipientsField';
+export { default } from './AdvancedPaymentRecipientsField.tsx';

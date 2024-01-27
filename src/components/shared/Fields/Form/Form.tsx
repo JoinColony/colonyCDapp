@@ -10,8 +10,8 @@ import {
 } from 'react-hook-form';
 import { Schema } from 'yup';
 
-import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types';
+import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types.ts';
 
 const displayName = 'Form';
 

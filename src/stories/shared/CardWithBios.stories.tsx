@@ -1,4 +1,4 @@
-import CardWithBios from '~v5/shared/CardWithBios';
+import CardWithBios from '~v5/shared/CardWithBios/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

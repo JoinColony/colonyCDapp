@@ -1,1 +1,1 @@
-export { default } from './ActivityPage';
+export { default } from './ActivityPage.tsx';

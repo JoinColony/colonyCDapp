@@ -2,12 +2,12 @@ import { LATEST_TAG } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib.esm/utils';
 
-import { DEFAULT_NETWORK } from '~constants';
 import {
   NETWORK_RELEASES,
   ETHERSCAN_CONVERSION_RATE,
-} from '~constants/externalUrls';
-import { Network } from '~types/network';
+} from '~constants/externalUrls.ts';
+import { DEFAULT_NETWORK } from '~constants/index.ts';
+import { Network } from '~types/network.ts';
 
 interface EthUsdResponse {
   status: string;

@@ -1,5 +1,5 @@
-import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
-import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
+import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
+import { RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
 
 export interface ActionDescriptionProps {
   action: ActivityFeedColonyAction;

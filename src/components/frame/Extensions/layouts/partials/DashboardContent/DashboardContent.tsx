@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-import { useMemberContext } from '~context/MemberContext';
-import { SpinnerLoader } from '~shared/Preloaders';
-import { formatText } from '~utils/intl';
-import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList';
+import { useMemberContext } from '~context/MemberContext.tsx';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { formatText } from '~utils/intl.ts';
+import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/index.ts';
 
-import { dashboardMainMenu, dashboardMenu } from '../../consts';
+import { dashboardMainMenu, dashboardMenu } from '../../consts.ts';
 
 const DashboardContent: FC = () => {
   const { totalContributorCount, totalMemberCount, loading } =

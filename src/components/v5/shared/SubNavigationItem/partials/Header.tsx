@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { useMobile } from '~hooks';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { useMobile } from '~hooks/index.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { HeaderProps } from '../types';
+import { HeaderProps } from '../types.ts';
 
 const displayName = 'v5.SubNavigationItem.partials.Header';
 

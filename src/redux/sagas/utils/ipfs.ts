@@ -2,11 +2,11 @@ import { createMetadataFor, MetadataType } from '@colony/events';
 import { nanoid } from 'nanoid';
 import { call, put } from 'redux-saga/effects';
 
-import { uploadIpfsData } from '~redux/actionCreators/ipfs';
-import { ActionTypes } from '~redux/actionTypes';
-import { filterUniqueAction } from '~utils/actions';
+import { uploadIpfsData } from '~redux/actionCreators/ipfs.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { filterUniqueAction } from '~utils/actions.ts';
 
-import { raceError } from './effects';
+import { raceError } from './effects.ts';
 
 export function* ipfsUpload(data: string) {
   const id = nanoid();

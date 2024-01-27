@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { UseToggleReturnType } from '~hooks/useToggle/types';
+import { UseToggleReturnType } from '~hooks/useToggle/types.ts';
 
 export interface NavigationSidebarContextValue {
   openItemIndex: number | undefined;

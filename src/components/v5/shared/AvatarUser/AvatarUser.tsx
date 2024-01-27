@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import Avatar from '~v5/shared/Avatar';
-import Link from '~v5/shared/Link';
+import Avatar from '~v5/shared/Avatar/index.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import { AvatarUserProps } from './types';
+import { AvatarUserProps } from './types.ts';
 
 const displayName = 'v5.AvatarUser';
 

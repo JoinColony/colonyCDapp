@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
 interface Props {
   onClick: () => void;

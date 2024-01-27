@@ -1,2 +1,2 @@
-export { default } from './Avatar';
-export { default as AvatarWithStatusBadge } from './AvatarWithStatusBadge';
+export { default } from './Avatar.tsx';
+export { default as AvatarWithStatusBadge } from './AvatarWithStatusBadge.tsx';

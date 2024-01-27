@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 
-import AccordionItem from './partials/AccordionItem';
-import { AccordionProps } from './types';
+import AccordionItem from './partials/AccordionItem/index.ts';
+import { AccordionProps } from './types.ts';
 
 const displayName = 'v5.Accordion';
 

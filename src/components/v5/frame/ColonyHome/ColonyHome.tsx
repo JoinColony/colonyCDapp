@@ -1,28 +1,28 @@
 import React from 'react';
 
-import ColonyActionsTable from '~common/ColonyActionsTable';
-import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
-import { useMobile } from '~hooks';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
+import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
+import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks.ts';
+import { useMobile } from '~hooks/index.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import {
   // @BETA: Disabled for now
   // COLONY_TEAMS_ROUTE,
   COLONY_ACTIVITY_ROUTE,
   TEAM_SEARCH_PARAM,
-} from '~routes';
-import { formatText } from '~utils/intl';
-import { setQueryParamOnUrl } from '~utils/urls';
-import Link from '~v5/shared/Link';
+} from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import Agreements from './partials/Agreements';
-import DashboardHeader from './partials/DashboardHeader';
-import LeaveColonyModal from './partials/LeaveColonyModal';
-import Members from './partials/Members';
-import Objective from './partials/Objective';
-import ReputationChart from './partials/ReputationChart';
-import TokenBalance from './partials/TokenBalance';
-import TotalActions from './partials/TotalActions';
+import Agreements from './partials/Agreements/index.ts';
+import DashboardHeader from './partials/DashboardHeader/index.ts';
+import LeaveColonyModal from './partials/LeaveColonyModal/index.ts';
+import Members from './partials/Members/index.ts';
+import Objective from './partials/Objective/index.ts';
+import ReputationChart from './partials/ReputationChart/index.ts';
+import TokenBalance from './partials/TokenBalance/index.ts';
+import TotalActions from './partials/TotalActions/index.ts';
 
 const displayName = 'v5.frame.ColonyHome';
 

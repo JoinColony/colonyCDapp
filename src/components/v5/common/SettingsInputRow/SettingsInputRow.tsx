@@ -2,12 +2,12 @@ import React, { FC, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
-import Toast from '~shared/Extensions/Toast';
-import Input from '~v5/common/Fields/Input';
-import Button from '~v5/shared/Button';
+import Toast from '~shared/Extensions/Toast/index.ts';
+import Input from '~v5/common/Fields/Input/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { useSettingsInputRow } from './hooks';
-import { SettingsInputRowProps } from './types';
+import { useSettingsInputRow } from './hooks.ts';
+import { SettingsInputRowProps } from './types.ts';
 
 const displayName = 'v5.common.SettingsInputRow';
 

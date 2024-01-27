@@ -2,13 +2,13 @@ import { format } from 'date-fns';
 import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress';
-import { AnyExtensionData, InstalledExtensionData } from '~types/extensions';
-import { isInstalledExtensionData } from '~utils/extensions';
-import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
-import UserAvatar from '~v5/shared/UserAvatar';
+import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress.ts';
+import { AnyExtensionData, InstalledExtensionData } from '~types/extensions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
+import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { SidePanelDataProps } from './types';
+import { SidePanelDataProps } from './types.ts';
 
 export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode[]>([

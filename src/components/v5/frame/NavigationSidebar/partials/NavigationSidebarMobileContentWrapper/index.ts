@@ -1,1 +1,1 @@
-export { default } from './NavigationSidebarMobileContentWrapper';
+export { default } from './NavigationSidebarMobileContentWrapper.tsx';

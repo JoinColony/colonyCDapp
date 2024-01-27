@@ -1,1 +1,1 @@
-export { default } from './TokenTable';
+export { default } from './TokenTable.tsx';

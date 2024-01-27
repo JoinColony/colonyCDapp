@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TokenStatus from '~v5/common/ActionSidebar/partials/TokenSelect/partials/TokenStatus';
+import TokenStatus from '~v5/common/ActionSidebar/partials/TokenSelect/partials/TokenStatus/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -1,4 +1,4 @@
-export { default } from './Input';
-export { InputProps } from './types';
-export { default as CharacterNumbers } from './partials/CharacterNumbers';
-export { default as InputPills } from './partials/InputPills';
+export { default } from './Input.tsx';
+export { InputProps } from './types.ts';
+export { default as CharacterNumbers } from './partials/CharacterNumbers.tsx';
+export { default as InputPills } from './partials/InputPills.tsx';

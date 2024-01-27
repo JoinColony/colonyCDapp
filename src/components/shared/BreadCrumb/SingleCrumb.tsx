@@ -1,9 +1,9 @@
 import React, { isValidElement } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import NavLink from '~shared/NavLink';
+import NavLink from '~shared/NavLink/index.ts';
 
-import { CrumbText } from './BreadCrumb';
+import { CrumbText } from './BreadCrumb.tsx';
 
 import styles from './BreadCrumb.css';
 

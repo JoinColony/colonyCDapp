@@ -14,18 +14,18 @@ import { useSelector } from 'react-redux';
 import {
   isTxGroup,
   TransactionOrMessageGroup,
-} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
-import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks';
-import { useAppContext } from '~context/AppContext';
+} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
+import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks.ts';
+import { useAppContext } from '~context/AppContext.tsx';
 import {
   GetUserTransactionsQuery,
   useGetTransactionsByGroupLazyQuery,
   useUpdateTransactionMutation,
 } from '~gql';
-import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '~redux/constants';
-import { TransactionType } from '~redux/immutable';
-import { TransactionStatus } from '~types/graphql';
-import { notNull } from '~utils/arrays';
+import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '~redux/constants.ts';
+import { TransactionType } from '~redux/immutable/index.ts';
+import { TransactionStatus } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
 interface UserTransactionContextValues
   extends Omit<

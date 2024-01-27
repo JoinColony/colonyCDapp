@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyVersionField';
 

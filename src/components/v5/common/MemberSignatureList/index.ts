@@ -1,1 +1,1 @@
-export { default } from './MemberSignatureList';
+export { default } from './MemberSignatureList.tsx';

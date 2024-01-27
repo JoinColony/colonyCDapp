@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useAppContext } from '~context/AppContext';
-import MaskedAddress from '~shared/MaskedAddress';
-import UserPopover from '~v5/shared/UserPopover';
+import { useAppContext } from '~context/AppContext.tsx';
+import MaskedAddress from '~shared/MaskedAddress/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.CurrentUser';

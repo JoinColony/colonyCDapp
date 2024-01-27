@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { formatText } from '~utils/intl';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import SubNavigationItem from '~v5/shared/SubNavigationItem';
-import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks.ts';
+import SubNavigationItem from '~v5/shared/SubNavigationItem/index.ts';
 
-import { SubNavigationProps } from './types';
+import { SubNavigationProps } from './types.ts';
 
 const displayName = 'v5.pages.MembersPage.partials.SubNavigation';
 

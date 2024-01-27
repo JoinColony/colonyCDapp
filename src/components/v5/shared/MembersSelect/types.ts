@@ -1,7 +1,7 @@
 import {
   SelectBaseOption,
   SelectBaseProps,
-} from '~v5/common/Fields/Select/types';
+} from '~v5/common/Fields/Select/types.ts';
 
 export interface MembersSelectOption extends SelectBaseOption {
   isDisabled?: boolean;

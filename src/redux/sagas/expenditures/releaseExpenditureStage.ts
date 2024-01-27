@@ -1,15 +1,19 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '~redux/actionTypes';
-import { Action, AllActions } from '~redux/types';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { Action, AllActions } from '~redux/types/index.ts';
 
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
-} from '../transactions';
-import { getColonyManager, initiateTransaction, putError } from '../utils';
+} from '../transactions/index.ts';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+} from '../utils/index.ts';
 
 function* releaseExpenditureStage({
   payload: {

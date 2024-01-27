@@ -1,21 +1,21 @@
 import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 
-import { UserRole } from '~constants/permissions';
-import { useColonyContext } from '~context/ColonyContext';
-import { useSearchContext } from '~context/SearchContext';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
-import { ColonyContributor } from '~types/graphql';
-import { notNull } from '~utils/arrays';
-import { getDomainDatabaseId } from '~utils/databaseId';
-import { searchMembers } from '~utils/members';
+import { UserRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useSearchContext } from '~context/SearchContext.tsx';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { ColonyContributor } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { getDomainDatabaseId } from '~utils/databaseId.ts';
+import { searchMembers } from '~utils/members.ts';
 import {
   ContributorTypeFilter,
   StatusFilter,
   StatusType,
-} from '~v5/common/TableFiltering/types';
+} from '~v5/common/TableFiltering/types.ts';
 
-import { hasSomeRole } from './utils';
+import { hasSomeRole } from './utils.ts';
 
 const useMemberFilters = ({
   nativeDomainIds,

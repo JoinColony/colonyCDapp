@@ -8,14 +8,14 @@ import {
   getGroupKey,
   findNewestGroup,
   TransactionOrMessageGroups,
-} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
-import { useAppContext } from '~context/AppContext';
+} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
+import { useAppContext } from '~context/AppContext.tsx';
 import { TransactionStatus } from '~gql';
-import { groupedTransactionsAndMessages } from '~redux/selectors';
+import { groupedTransactionsAndMessages } from '~redux/selectors/index.ts';
 
-import { HeaderRow } from '../shared';
+import { HeaderRow } from '../shared.tsx';
 
-import ConfirmTransactions from './ConfirmTransactions';
+import ConfirmTransactions from './ConfirmTransactions.tsx';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
 

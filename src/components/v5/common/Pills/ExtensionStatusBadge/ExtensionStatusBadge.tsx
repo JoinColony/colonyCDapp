@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import PillsBase from '../PillsBase';
-import { PillsProps } from '../types';
+import PillsBase from '../PillsBase.tsx';
+import { PillsProps } from '../types.ts';
 
 const displayName = 'v5.common.Pills.ExtensionStatusBadge';
 

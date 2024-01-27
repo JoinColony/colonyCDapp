@@ -2,23 +2,23 @@ import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
 import React, { FC, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext';
-import useToggle from '~hooks/useToggle';
-import { SpinnerLoader } from '~shared/Preloaders';
-import { SystemMessages } from '~types/actions';
-import { formatText } from '~utils/intl';
-import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-import StatusText from '~v5/shared/StatusText';
-import UserInfoSectionList from '~v5/shared/UserInfoSectionList';
+import { useAppContext } from '~context/AppContext.tsx';
+import useToggle from '~hooks/useToggle/index.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { SystemMessages } from '~types/actions.ts';
+import { formatText } from '~utils/intl.ts';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import StatusText from '~v5/shared/StatusText/index.ts';
+import UserInfoSectionList from '~v5/shared/UserInfoSectionList/index.ts';
 
-import { useMotionContext } from '../../partials/MotionProvider/hooks';
+import { useMotionContext } from '../../partials/MotionProvider/hooks.ts';
 
-import { useStakingInformation, useStakingStep } from './hooks';
-import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo';
-import StakingChart from './partials/StakingChart/StakingChart';
-import StakingForm from './partials/StakingForm';
-import { StakingStepProps } from './types';
+import { useStakingInformation, useStakingStep } from './hooks.tsx';
+import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo/index.ts';
+import StakingChart from './partials/StakingChart/StakingChart.tsx';
+import StakingForm from './partials/StakingForm/index.ts';
+import { StakingStepProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep';

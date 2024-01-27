@@ -2,17 +2,17 @@ import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import Select from '~v5/common/Fields/Select';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Select from '~v5/common/Fields/Select/index.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { tabList } from './consts';
-import ReputationTab from './partials/ReputationTab';
-import StakesTab from './partials/StakesTab';
-import TransactionsTab from './partials/TransactionsTab';
-import { UserHubProps, UserHubTabs } from './types';
+import { tabList } from './consts.ts';
+import ReputationTab from './partials/ReputationTab/index.ts';
+import StakesTab from './partials/StakesTab/index.ts';
+import TransactionsTab from './partials/TransactionsTab/index.ts';
+import { UserHubProps, UserHubTabs } from './types.ts';
 
 // @BETA: Disabled for now
 // import { COLONY_HOME_ROUTE } from '~routes';

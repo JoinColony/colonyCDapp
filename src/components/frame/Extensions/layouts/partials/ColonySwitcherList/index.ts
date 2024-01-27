@@ -1,1 +1,1 @@
-export { default } from './ColonySwitcherList';
+export { default } from './ColonySwitcherList.tsx';

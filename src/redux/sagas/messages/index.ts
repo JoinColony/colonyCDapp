@@ -1,12 +1,12 @@
 import { nanoid } from 'nanoid';
 import { call, put } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
-import { isFullWallet } from '~types/wallet';
+import { ContextModule, getContext } from '~context/index.ts';
+import { isFullWallet } from '~types/wallet.ts';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions } from '../../types/actions';
-import { putError, initiateMessageSigning } from '../utils';
+import { ActionTypes } from '../../actionTypes.ts';
+import { AllActions } from '../../types/actions/index.ts';
+import { putError, initiateMessageSigning } from '../utils/index.ts';
 
 export function* signMessage(purpose, message) {
   const wallet = getContext(ContextModule.Wallet);

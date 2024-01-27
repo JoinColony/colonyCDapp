@@ -1,10 +1,10 @@
 import { call, all } from 'redux-saga/effects';
 
-import extensionDeprecateSaga from './extensionDeprecate';
-import extensionEnableSaga from './extensionEnable';
-import extensionInstallSaga from './extensionInstall';
-import extensionUninstallSaga from './extensionUninstall';
-import extensionUpgradeSaga from './extensionUpgrade';
+import extensionDeprecateSaga from './extensionDeprecate.ts';
+import extensionEnableSaga from './extensionEnable.ts';
+import extensionInstallSaga from './extensionInstall.ts';
+import extensionUninstallSaga from './extensionUninstall.ts';
+import extensionUpgradeSaga from './extensionUpgrade.ts';
 
 export default function* extensionsSagas() {
   yield all([

@@ -1,18 +1,18 @@
 import clsx from 'clsx';
 import React, { useCallback, useId, useMemo, useState } from 'react';
 
-import useRelativePortalElement from '~hooks/useRelativePortalElement';
-import useToggle from '~hooks/useToggle';
-import { formatText } from '~utils/intl';
-import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper';
-import MenuContainer from '~v5/shared/MenuContainer';
-import Portal from '~v5/shared/Portal';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
+import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
+import Portal from '~v5/shared/Portal/index.ts';
 
-import { FIELD_STATE } from '../consts';
+import { FIELD_STATE } from '../consts.ts';
 
-import { OPTION_LIST_ITEM_CLASSES } from './consts';
-import { CardSelectOptionsGroup, CardSelectProps } from './types';
-import { isFlatOptions } from './utils';
+import { OPTION_LIST_ITEM_CLASSES } from './consts.ts';
+import { CardSelectOptionsGroup, CardSelectProps } from './types.ts';
+import { isFlatOptions } from './utils.ts';
 
 const displayName = 'v5.common.Fields.CardSelect';
 

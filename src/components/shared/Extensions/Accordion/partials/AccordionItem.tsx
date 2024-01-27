@@ -1,12 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC } from 'react';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
 
-import { AccordionItemProps } from '../types';
+import { AccordionItemProps } from '../types.ts';
 
-import AccordionContent from './AccordionContent';
-import AccordionHeader from './AccordionHeader';
+import AccordionContent from './AccordionContent.tsx';
+import AccordionHeader from './AccordionHeader.tsx';
 
 const displayName = 'Extensions.Accordion.partials.AccordionItem';
 

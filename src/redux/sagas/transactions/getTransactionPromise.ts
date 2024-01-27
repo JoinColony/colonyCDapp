@@ -2,7 +2,7 @@ import { ContractClient } from '@colony/colony-js';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Overrides } from 'ethers';
 
-import { TransactionRecord } from '../../immutable';
+import { TransactionRecord } from '../../immutable/index.ts';
 
 /*
  * Given a method and a transaction record, create a promise for sending the

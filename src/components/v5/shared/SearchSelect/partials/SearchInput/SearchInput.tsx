@@ -1,10 +1,10 @@
 import React, { FC, useLayoutEffect, useRef } from 'react';
 
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import InputBase from '~v5/common/Fields/InputBase';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import InputBase from '~v5/common/Fields/InputBase/index.ts';
 
-import { SearchInputProps } from './types';
+import { SearchInputProps } from './types.ts';
 
 const displayName = 'v5.SearchSelect.partials.SearchInput';
 

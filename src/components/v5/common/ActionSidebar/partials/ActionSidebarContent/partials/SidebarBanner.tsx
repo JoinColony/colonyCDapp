@@ -3,21 +3,21 @@ import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { ACTION } from '~constants/actions';
-import { useColonyContext } from '~context/ColonyContext';
-import useColonyContractVersion from '~hooks/useColonyContractVersion';
-import useExtensionsData from '~hooks/useExtensionsData';
-import { canColonyBeUpgraded } from '~utils/checks';
-import { formatText } from '~utils/intl';
-import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import { ACTION } from '~constants/actions.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
+import useExtensionsData from '~hooks/useExtensionsData.ts';
+import { canColonyBeUpgraded } from '~utils/checks/canColonyBeUpgraded.ts';
+import { formatText } from '~utils/intl.ts';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import {
   ACTION_TYPE_FIELD_NAME,
   useCreateActionTypeNotification,
   useCreateActionTypeNotificationHref,
   DECISION_METHOD_FIELD_NAME,
-} from '../../../consts';
+} from '../../../consts.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';

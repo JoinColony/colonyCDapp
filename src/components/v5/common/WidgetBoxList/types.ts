@@ -1,4 +1,4 @@
-import { WidgetBoxProps } from '../WidgetBox/types';
+import { WidgetBoxProps } from '../WidgetBox/types.ts';
 
 export interface WidthBoxItem extends WidgetBoxProps {
   key: string;

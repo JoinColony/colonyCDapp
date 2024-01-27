@@ -12,29 +12,29 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
 // import { PaperPlaneTilt } from 'phosphor-react';
 
-import UserHubButton from '~common/Extensions/UserHubButton';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
-import { useColonyCreatedModalContext } from '~context/ColonyCreatedModalContext';
-import { useMemberModalContext } from '~context/MemberModalContext';
-import { usePageHeadingContext } from '~context/PageHeadingContext';
-import { useTokensModalContext } from '~context/TokensModalContext';
-import { TX_SEARCH_PARAM } from '~routes';
-import ActionSidebar from '~v5/common/ActionSidebar';
-import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal';
-import ManageMemberModal from '~v5/common/Modals/ManageMemberModal';
+import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyCreatedModalContext } from '~context/ColonyCreatedModalContext.tsx';
+import { useMemberModalContext } from '~context/MemberModalContext.tsx';
+import { usePageHeadingContext } from '~context/PageHeadingContext/index.ts';
+import { useTokensModalContext } from '~context/TokensModalContext.tsx';
+import { TX_SEARCH_PARAM } from '~routes/index.ts';
+import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
+import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal/index.ts';
+import ManageMemberModal from '~v5/common/Modals/ManageMemberModal/index.ts';
 //* Hide Initially */
 // import { InviteMembersModal } from '~v5/common/Modals';
-import PageLayout from '~v5/frame/PageLayout';
+import PageLayout from '~v5/frame/PageLayout/index.ts';
 //* Hide Initially */
 // import Button from '~v5/shared/Button';
-import JoinButton from '~v5/shared/Button/JoinButton';
-import CalamityBanner from '~v5/shared/CalamityBanner';
+import JoinButton from '~v5/shared/Button/JoinButton/index.ts';
+import CalamityBanner from '~v5/shared/CalamityBanner/index.ts';
 
-import ColonySidebar from './ColonySidebar';
-import { useCalamityBannerInfo, useGetTxButtons } from './hooks';
-import UserNavigationWrapper from './partials/UserNavigationWrapper';
+import ColonySidebar from './ColonySidebar.tsx';
+import { useCalamityBannerInfo, useGetTxButtons } from './hooks.tsx';
+import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
 

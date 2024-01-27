@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropdownIndicatorProps, components } from 'react-select';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
 const displayName = 'v5.common.Fields.Select.partials.DropdownIndicator';
 

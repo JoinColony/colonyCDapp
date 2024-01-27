@@ -1,1 +1,1 @@
-export { default } from './ColonyPreviewPage';
+export { default } from './ColonyPreviewPage.tsx';

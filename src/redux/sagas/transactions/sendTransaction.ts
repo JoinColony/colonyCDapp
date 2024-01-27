@@ -4,19 +4,22 @@ import { call, put, take } from 'redux-saga/effects';
 // import abis from '@colony/colony-js/lib-esm/abis';
 
 import { TransactionStatus } from '~gql';
-import { TRANSACTION_METHODS, ExtendedClientType } from '~types/transactions';
-import { mergePayload } from '~utils/actions';
+import {
+  TRANSACTION_METHODS,
+  ExtendedClientType,
+} from '~types/transactions.ts';
+import { mergePayload } from '~utils/actions.ts';
 
-import { transactionSendError } from '../../actionCreators';
-import { ActionTypes } from '../../actionTypes';
-import { TransactionRecord } from '../../immutable';
-import { oneTransaction } from '../../selectors';
-import { Action } from '../../types/actions';
-import { selectAsJS, getColonyManager } from '../utils';
+import { transactionSendError } from '../../actionCreators/index.ts';
+import { ActionTypes } from '../../actionTypes.ts';
+import { TransactionRecord } from '../../immutable/index.ts';
+import { oneTransaction } from '../../selectors/index.ts';
+import { Action } from '../../types/actions/index.ts';
+import { selectAsJS, getColonyManager } from '../utils/index.ts';
 
-import getMetatransactionPromise from './getMetatransactionPromise';
-import getTransactionPromise from './getTransactionPromise';
-import transactionChannel from './transactionChannel';
+import getMetatransactionPromise from './getMetatransactionPromise.ts';
+import getTransactionPromise from './getTransactionPromise.ts';
+import transactionChannel from './transactionChannel.ts';
 
 /*
  * @TODO Refactor to support abis (either added to the app or from colonyJS)

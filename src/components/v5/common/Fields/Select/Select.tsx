@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import React, { useCallback } from 'react';
 import { Props as ReactSelectProps, SingleValue } from 'react-select';
 
-import CustomOption from './partials/CustomOption';
-import DropdownIndicator from './partials/DropdownIndicator';
-import SelectBase from './SelectBase';
-import { SelectOption, SelectProps } from './types';
+import CustomOption from './partials/CustomOption/index.ts';
+import DropdownIndicator from './partials/DropdownIndicator/index.ts';
+import SelectBase from './SelectBase.tsx';
+import { SelectOption, SelectProps } from './types.ts';
 
 import styles from './Select.module.css';
 

@@ -1,41 +1,41 @@
 import React from 'react';
 import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
-import ColonyFunding from '~common/ColonyFunding';
-import { Flow } from '~common/Onboarding';
-import AdvancedPage from '~frame/Extensions/pages/AdvancedPage';
-import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage';
-import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage';
-import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage';
-import IncorporationPage from '~frame/Extensions/pages/IncorporationPage';
-import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage';
-import PermissionsPage from '~frame/Extensions/pages/PermissionsPage';
-import ReputationPage from '~frame/Extensions/pages/ReputationPage';
-import FourOFour from '~frame/FourOFour';
-import LandingPage from '~frame/LandingPage';
-import ActivityPage from '~frame/v5/pages/ActivityPage';
-import BalancePage from '~frame/v5/pages/BalancePage';
-import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage';
+import ColonyFunding from '~common/ColonyFunding/index.ts';
+import { Flow } from '~common/Onboarding/index.ts';
+import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
+import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/index.ts';
+import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
+import IncorporationPage from '~frame/Extensions/pages/IncorporationPage/index.ts';
+import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
+import PermissionsPage from '~frame/Extensions/pages/PermissionsPage/index.ts';
+import ReputationPage from '~frame/Extensions/pages/ReputationPage/index.ts';
+import FourOFour from '~frame/FourOFour/index.ts';
+import LandingPage from '~frame/LandingPage/index.ts';
+import ActivityPage from '~frame/v5/pages/ActivityPage/index.ts';
+import BalancePage from '~frame/v5/pages/BalancePage/index.ts';
+import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage/index.ts';
 import MembersPage, {
   AllMembersPage,
   ContributorsPage,
-} from '~frame/v5/pages/MembersPage';
-import OnboardingPage from '~frame/v5/pages/OnboardingPage';
-import TeamsPage from '~frame/v5/pages/TeamsPage';
-import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage';
-import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage';
-import UserProfilePage from '~frame/v5/pages/UserProfilePage';
-import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage';
-import VerifiedPage from '~frame/v5/pages/VerifiedPage';
-import useTitle from '~hooks/useTitle';
-import ColonyHomePage from '~v5/frame/ColonyHome';
+} from '~frame/v5/pages/MembersPage/index.ts';
+import OnboardingPage from '~frame/v5/pages/OnboardingPage/index.ts';
+import TeamsPage from '~frame/v5/pages/TeamsPage/index.ts';
+import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage/index.ts';
+import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage/index.ts';
+import UserProfilePage from '~frame/v5/pages/UserProfilePage/index.ts';
+import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage/index.ts';
+import VerifiedPage from '~frame/v5/pages/VerifiedPage/index.ts';
+import useTitle from '~hooks/useTitle.ts';
+import ColonyHomePage from '~v5/frame/ColonyHome/index.ts';
 
-import ColonyMembersRoute from './ColonyMembersRoute';
-import ColonyRoute from './ColonyRoute';
-import LandingPageRoute from './LandingPageRoute';
-import MainRoute from './MainRoute';
-import NotFoundRoute from './NotFoundRoute';
-import RootRoute from './RootRoute';
+import ColonyMembersRoute from './ColonyMembersRoute.tsx';
+import ColonyRoute from './ColonyRoute.tsx';
+import LandingPageRoute from './LandingPageRoute/index.ts';
+import MainRoute from './MainRoute.tsx';
+import NotFoundRoute from './NotFoundRoute.tsx';
+import RootRoute from './RootRoute.tsx';
 import {
   COLONY_BALANCES_ROUTE,
   COLONY_HOME_ROUTE,
@@ -67,7 +67,7 @@ import {
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
-} from './routeConstants';
+} from './routeConstants.ts';
 
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 

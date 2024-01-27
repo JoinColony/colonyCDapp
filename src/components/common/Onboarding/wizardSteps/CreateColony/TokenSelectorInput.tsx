@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import { Token } from '~types/graphql';
-import { getNetworkByChainId } from '~utils/web3';
+import Icon from '~shared/Icon/index.ts';
+import { Token } from '~types/graphql.ts';
+import { getNetworkByChainId } from '~utils/web3/index.ts';
 
-import { getInputError } from '../shared';
+import { getInputError } from '../shared.tsx';
 
-import TokenSelector from './TokenSelector';
+import TokenSelector from './TokenSelector.tsx';
 
 const displayName = 'common.CreateColonyWizard.TokenSelector';
 

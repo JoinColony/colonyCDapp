@@ -2,29 +2,29 @@ import { Id } from '@colony/colony-js';
 import React, { FC, useCallback } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { USER_ROLE } from '~constants/permissions';
-import useToggle from '~hooks/useToggle';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import { CardSelectProps } from '~v5/common/Fields/CardSelect/types';
+import { USER_ROLE } from '~constants/permissions.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
+import { CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
-import { useDecisionMethods } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
-import TeamsSelect from '../../TeamsSelect';
-import UserSelect from '../../UserSelect';
+import { useDecisionMethods } from '../../../hooks/index.ts';
+import { ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
+import TeamsSelect from '../../TeamsSelect/index.ts';
+import UserSelect from '../../UserSelect/index.ts';
 
 import {
   AUTHORITY_OPTIONS,
   PERMISSIONS_OPTIONS,
   REMOVE_ROLE_OPTION_VALUE,
-} from './consts';
-import { useManagePermissions } from './hooks';
-import PermissionsModal from './partials/PermissionsModal';
-import PermissionsTable from './partials/PermissionsTable';
-import { getRoleLabel } from './utils';
+} from './consts.tsx';
+import { useManagePermissions } from './hooks.ts';
+import PermissionsModal from './partials/PermissionsModal/index.ts';
+import PermissionsTable from './partials/PermissionsTable/index.ts';
+import { getRoleLabel } from './utils.tsx';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 

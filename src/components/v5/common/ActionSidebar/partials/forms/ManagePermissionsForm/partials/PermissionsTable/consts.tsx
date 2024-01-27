@@ -1,10 +1,10 @@
 import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 
-import { UserRole, USER_ROLE } from '~constants/permissions';
-import { formatText } from '~utils/intl';
+import { UserRole, USER_ROLE } from '~constants/permissions.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { CustomPermissionTableModel } from './types';
+import { CustomPermissionTableModel } from './types.ts';
 
 export const PERMISSIONS_TABLE_CONTENT: Record<
   Exclude<UserRole, 'custom'>,

@@ -1,10 +1,12 @@
 import React from 'react';
 import { FormattedMessage, MessageDescriptor } from 'react-intl';
 
-import Heading, { Appearance as HeadingAppearance } from '~shared/Heading';
-import { SimpleMessageValues } from '~types';
+import Heading, {
+  Appearance as HeadingAppearance,
+} from '~shared/Heading/index.ts';
+import { SimpleMessageValues } from '~types/index.ts';
 
-import SpinnerLoader, { Appearance } from './SpinnerLoader';
+import SpinnerLoader, { Appearance } from './SpinnerLoader.tsx';
 
 import styles from './MiniSpinnerLoader.css';
 

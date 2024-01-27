@@ -2,17 +2,17 @@ import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
-import { useAppContext } from '~context/AppContext';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext';
-import LoadingTemplate from '~frame/LoadingTemplate';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import { Form } from '~shared/Fields';
-import { formatText } from '~utils/intl';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
+import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
+import { Form } from '~shared/Fields/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import UserAccountForm from '../UserAccountForm';
-import { FormValues, validationSchema } from '../validation';
+import UserAccountForm from '../UserAccountForm/index.ts';
+import { FormValues, validationSchema } from '../validation.ts';
 
-import { useUserProfile } from './hooks';
+import { useUserProfile } from './hooks.tsx';
 
 const displayName = 'v5.pages.UserProfilePage.partials.UserAccountPage';
 

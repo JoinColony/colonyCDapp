@@ -10,16 +10,16 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 
-import { getContext, ContextModule } from '~context';
-import { TxConfig } from '~types/transactions';
-import { filterUniqueAction } from '~utils/actions';
+import { getContext, ContextModule } from '~context/index.ts';
+import { TxConfig } from '~types/transactions.ts';
+import { filterUniqueAction } from '~utils/actions.ts';
 
-import { createTransactionAction } from '../../actionCreators';
-import { ActionTypes } from '../../actionTypes';
-import { takeFrom, getCanUserSendMetatransactions } from '../utils';
+import { createTransactionAction } from '../../actionCreators/index.ts';
+import { ActionTypes } from '../../actionTypes.ts';
+import { takeFrom, getCanUserSendMetatransactions } from '../utils/index.ts';
 
-import estimateGasCost from './estimateGasCost';
-import sendTransaction from './sendTransaction';
+import estimateGasCost from './estimateGasCost.ts';
+import sendTransaction from './sendTransaction.ts';
 
 export function* createTransaction(id: string, config: TxConfig) {
   const { address: walletAddress } = getContext(ContextModule.Wallet);

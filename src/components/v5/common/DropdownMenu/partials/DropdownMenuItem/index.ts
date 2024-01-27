@@ -1,1 +1,1 @@
-export { default } from './DropdownMenuItem';
+export { default } from './DropdownMenuItem.tsx';

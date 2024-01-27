@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils';
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import Button, { TxButton } from '~v5/shared/Button';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils.ts';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Button, { TxButton } from '~v5/shared/Button/index.ts';
 
-import { useCloseSidebarClick } from '../hooks';
-import { ActionButtonsProps } from '../types';
+import { useCloseSidebarClick } from '../hooks/index.ts';
+import { ActionButtonsProps } from '../types.ts';
 
-import { useSubmitButtonDisabled, useSubmitButtonText } from './hooks';
+import { useSubmitButtonDisabled, useSubmitButtonText } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 

@@ -1,12 +1,12 @@
 import { AddressZero } from '@ethersproject/constants';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   GetUserReputationDocument,
   GetUserReputationQuery,
   GetUserReputationQueryVariables,
 } from '~gql';
-import { Address } from '~types';
+import { Address } from '~types/index.ts';
 
 export function* updateDomainReputation(
   colonyAddress: Address,

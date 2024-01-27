@@ -1,1 +1,1 @@
-export { default } from './ColonyAvatar';
+export { default } from './ColonyAvatar.tsx';

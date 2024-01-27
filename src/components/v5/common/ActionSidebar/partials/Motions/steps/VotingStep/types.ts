@@ -1,4 +1,4 @@
-import { MotionAction } from '~types/motions';
+import { MotionAction } from '~types/motions.ts';
 
 export interface VotingStepProps {
   startPollingAction: (pollingInterval: number) => void;

@@ -2,12 +2,12 @@ import clsx from 'clsx';
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import useToggle from '~hooks/useToggle';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
+import useToggle from '~hooks/useToggle/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
 
-import { LABEL_CLASSNAME } from './consts';
-import { ActionFormRowProps } from './types';
+import { LABEL_CLASSNAME } from './consts.ts';
+import { ActionFormRowProps } from './types.ts';
 
 const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (

@@ -3,12 +3,12 @@ import { useCallback, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { boolean, object } from 'yup';
 
-import { Action, ACTION } from '~constants/actions';
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
-import { addressHasRoles } from '~utils/checks';
+import { Action, ACTION } from '~constants/actions.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { addressHasRoles } from '~utils/checks/index.ts';
 
-import { DecisionMethod } from './useDecisionMethods';
+import { DecisionMethod } from './useDecisionMethods.ts';
 
 const getPermissionsNeededForAction = (
   actionType: Action,

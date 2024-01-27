@@ -7,25 +7,25 @@ import {
 import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context';
+import { ColonyManager } from '~context/index.ts';
 import {
   transactionAddParams,
   transactionPending,
-} from '~redux/actionCreators';
+} from '~redux/actionCreators/index.ts';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+import { AllActions, Action } from '../../types/actions/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
   getColonyManager,
   initiateTransaction,
-} from '../utils';
+} from '../utils/index.ts';
 
 export type EscalateMotionPayload =
   Action<ActionTypes.MOTION_ESCALATE>['payload'];

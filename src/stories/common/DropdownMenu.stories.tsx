@@ -1,9 +1,9 @@
 import { User } from 'phosphor-react';
 import React, { FC } from 'react';
 
-import { useMobile } from '~hooks';
-import DropdownMenu from '~v5/common/DropdownMenu';
-import { DropdownMenuProps } from '~v5/common/DropdownMenu/types';
+import { useMobile } from '~hooks/index.ts';
+import DropdownMenu from '~v5/common/DropdownMenu/index.ts';
+import { DropdownMenuProps } from '~v5/common/DropdownMenu/types.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

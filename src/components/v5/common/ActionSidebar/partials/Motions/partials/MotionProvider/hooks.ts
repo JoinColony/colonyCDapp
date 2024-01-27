@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect } from 'react';
 
-import { SetStateFn } from '~types';
-import { MotionStakes } from '~types/graphql';
+import { MotionStakes } from '~types/graphql.ts';
+import { SetStateFn } from '~types/index.ts';
 
-import { compareMotionStakes } from './helpers';
-import { MotionContext } from './MotionContext';
+import { compareMotionStakes } from './helpers.ts';
+import { MotionContext } from './MotionContext.ts';
 
 export const useMotionContext = () => {
   const context = useContext(MotionContext);

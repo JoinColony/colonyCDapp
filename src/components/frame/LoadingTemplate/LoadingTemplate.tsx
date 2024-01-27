@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MessageDescriptor, defineMessages } from 'react-intl';
 
-import { formatText } from '~utils/intl';
-import PageLoader from '~v5/common/PageLoader';
+import { formatText } from '~utils/intl.ts';
+import PageLoader from '~v5/common/PageLoader/index.ts';
 
 import styles from './LoadingTemplate.css';
 

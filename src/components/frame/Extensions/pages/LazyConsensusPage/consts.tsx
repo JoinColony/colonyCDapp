@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { RadioItemProps } from '~common/Extensions/Fields/RadioList/types';
-import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText';
+import { RadioItemProps } from '~common/Extensions/Fields/RadioList/types.ts';
+import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText.tsx';
 
-import { GovernanceOptions } from '../ExtensionsPage/types';
+import { GovernanceOptions } from '../ExtensionsPage/types.ts';
 
 export const governanceRadioList: RadioItemProps[] = [
   {

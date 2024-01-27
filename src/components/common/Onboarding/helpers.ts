@@ -1,5 +1,5 @@
-import withWizard from '~shared/Wizard/withWizard';
-import { User } from '~types/graphql';
+import withWizard from '~shared/Wizard/withWizard.tsx';
+import { User } from '~types/graphql.ts';
 
 import {
   colonySidebarValues,
@@ -7,14 +7,14 @@ import {
   userInitialValues,
   userSidebarValues,
   WizardProps,
-} from './consts';
-import { Flow, WizardType } from './types';
+} from './consts.ts';
+import { Flow, WizardType } from './types.ts';
 import {
   initialValues as colonyInitialValues,
   stepArray as stepsCreateColony,
-} from './wizardSteps/CreateColony/CreateColonyWizard';
-import { stepsCreateUser } from './wizardSteps/StepCreateUser/consts';
-import WizardTemplate from './WizardTemplate';
+} from './wizardSteps/CreateColony/CreateColonyWizard.ts';
+import { stepsCreateUser } from './wizardSteps/StepCreateUser/consts.ts';
+import WizardTemplate from './WizardTemplate.tsx';
 
 export const createWizard = (
   user: User | null | undefined,

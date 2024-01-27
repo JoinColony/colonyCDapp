@@ -3,15 +3,15 @@ import { InferType, boolean, object, string } from 'yup';
 import {
   USERNAME_REGEX,
   isUsernameTaken,
-} from '~common/Onboarding/wizardSteps/StepCreateUser/validation';
-import { formatText } from '~utils/intl';
+} from '~common/Onboarding/wizardSteps/StepCreateUser/validation.ts';
+import { formatText } from '~utils/intl.ts';
 
 import {
   MAX_BIO_CHARS,
   MAX_DISPLAYNAME_CHARS,
   MAX_LOCATION_CHARS,
-} from './consts';
-import { UserProfileFormProps } from './types';
+} from './consts.ts';
+import { UserProfileFormProps } from './types.ts';
 
 export const validationSchema = object<UserProfileFormProps>({
   hasDisplayNameChanged: boolean().default(false),

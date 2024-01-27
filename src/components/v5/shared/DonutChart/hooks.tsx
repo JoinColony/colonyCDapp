@@ -8,7 +8,11 @@ import React, {
   useMemo,
 } from 'react';
 
-import { ChartData, DonutChartProps, UseDonutChartReturnType } from './types';
+import {
+  ChartData,
+  DonutChartProps,
+  UseDonutChartReturnType,
+} from './types.ts';
 
 export const useDonutChart = ({
   data,

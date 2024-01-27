@@ -1,1 +1,1 @@
-export { default } from './CardWithCallout';
+export { default } from './CardWithCallout.tsx';

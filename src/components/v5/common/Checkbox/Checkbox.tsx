@@ -2,10 +2,10 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren, useId } from 'react';
 
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { CheckboxProps } from './types';
+import { CheckboxProps } from './types.ts';
 
 import styles from './Checkbox.module.css';
 

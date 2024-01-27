@@ -5,12 +5,12 @@ import { useIntl } from 'react-intl';
 import {
   getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
-} from '~images/optimisation';
-import { convertBytes } from '~utils/convertBytes';
-import { FileReaderFile } from '~utils/fileReader/types';
+} from '~images/optimisation/index.ts';
+import { convertBytes } from '~utils/convertBytes.ts';
+import { FileReaderFile } from '~utils/fileReader/types.ts';
 
-import { FileUploadOptions } from './types';
-import { DropzoneErrors, getFileRejectionErrors } from './utils';
+import { FileUploadOptions } from './types.ts';
+import { DropzoneErrors, getFileRejectionErrors } from './utils.tsx';
 
 export interface UseAvatarUploaderProps {
   updateFn: (

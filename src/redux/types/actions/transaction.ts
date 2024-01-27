@@ -1,13 +1,11 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 
-import { TransactionError, TransactionType } from '~redux/immutable';
-import { MethodParams } from '~types/transactions';
+import { TransactionError, TransactionType } from '~redux/immutable/index.ts';
+import { MethodParams } from '~types/transactions.ts';
 
-import { ActionTypes } from '../../actionTypes';
-import {
-  ActionTypeWithMeta,
-  ActionTypeWithPayloadAndMeta,
-} from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+
+import { ActionTypeWithMeta, ActionTypeWithPayloadAndMeta } from './index.ts';
 
 export type Meta = { id: string; metatransaction?: boolean };
 

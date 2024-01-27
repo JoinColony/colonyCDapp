@@ -5,9 +5,9 @@ import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
 } from '~images/icons.json';
-import { SimpleMessageValues } from '~types';
-import { getMainClasses } from '~utils/css';
-import { formatText } from '~utils/intl';
+import { SimpleMessageValues } from '~types/index.ts';
+import { getMainClasses } from '~utils/css/index.ts';
+import { formatText } from '~utils/intl.ts';
 
 import styles from './Icon.module.css';
 

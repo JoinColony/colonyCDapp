@@ -3,21 +3,21 @@ import { PaintBucket } from 'phosphor-react';
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
+import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants/index.ts';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
-import { DecisionMethod, useDecisionMethods } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
+import { DecisionMethod, useDecisionMethods } from '../../../hooks/index.ts';
+import { ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
 
-import { useEditTeam } from './hooks';
+import { useEditTeam } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 

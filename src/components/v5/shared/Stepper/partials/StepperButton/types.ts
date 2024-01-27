@@ -1,8 +1,8 @@
 import { ButtonHTMLAttributes } from 'react';
 
-import { TooltipProps } from '~shared/Extensions/Tooltip/types';
+import { TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
 
-import { StepStage } from './consts';
+import { StepStage } from './consts.ts';
 
 export interface StepperButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {

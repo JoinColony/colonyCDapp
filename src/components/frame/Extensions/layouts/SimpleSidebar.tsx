@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
 const SimpleSidebar: FC = () => {
   return (

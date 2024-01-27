@@ -16,11 +16,15 @@ import {
   transactionReady,
   transactionSend,
   messageSign,
-} from '~redux/actionCreators';
+} from '~redux/actionCreators/index.ts';
 
-import { ErrorActionType, TakeFilter, Action } from '../../types/actions';
+import {
+  ErrorActionType,
+  TakeFilter,
+  Action,
+} from '../../types/actions/index.ts';
 
-import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions';
+import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions.ts';
 
 /*
  * Effect to take a specific action from a channel.

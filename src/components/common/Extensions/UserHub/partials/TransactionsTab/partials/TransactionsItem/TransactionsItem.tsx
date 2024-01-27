@@ -3,13 +3,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { TransactionStatus } from '~gql';
-import Icon from '~shared/Icon';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import Icon from '~shared/Icon/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { TransactionsItemProps } from '../../types';
-import TransactionsHeader from '../TransactionsHeader';
+import { TransactionsItemProps } from '../../types.ts';
+import TransactionsHeader from '../TransactionsHeader.tsx';
 
 import styles from './TransactionsItem.module.css';
 

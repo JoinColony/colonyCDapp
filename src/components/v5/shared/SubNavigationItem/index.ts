@@ -1,1 +1,1 @@
-export { default } from './SubNavigationItem';
+export { default } from './SubNavigationItem.tsx';

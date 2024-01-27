@@ -3,11 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
 import { useController } from 'react-hook-form';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import RichText from '~v5/shared/RichText';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import RichText from '~v5/shared/RichText/index.ts';
 
-import { DescriptionFieldProps } from './types';
+import { DescriptionFieldProps } from './types.ts';
 
 const DescriptionField: FC<DescriptionFieldProps> = ({
   isDecriptionFieldExpanded,

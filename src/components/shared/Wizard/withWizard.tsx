@@ -6,7 +6,7 @@ import {
   StepValues,
   WizardOuterProps,
   WizardStepProps,
-} from './types';
+} from './types.ts';
 
 export type StepType = ComponentType<any> & { stepName?: string };
 

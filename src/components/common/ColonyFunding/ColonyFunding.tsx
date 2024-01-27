@@ -3,10 +3,10 @@ import React from 'react';
 import {
   useSetPageBreadcrumbs,
   useSetPageHeadingTitle,
-} from '~context/PageHeadingContext';
-import FundsTable from '~frame/v5/pages/FundsPage/partials/FundsTable';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
-import { formatText } from '~utils/intl';
+} from '~context/PageHeadingContext/index.ts';
+import FundsTable from '~frame/v5/pages/FundsPage/partials/FundsTable/index.ts';
+import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
+import { formatText } from '~utils/intl.ts';
 
 const displayName = 'common.ColonyFunding';
 

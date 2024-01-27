@@ -1,7 +1,7 @@
 import { MessageDescriptor } from 'react-intl';
 
-import { TooltipProps } from '~shared/Extensions/Tooltip/types';
-import { SimpleMessageValues } from '~types';
+import { TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
+import { SimpleMessageValues } from '~types/index.ts';
 
 export interface UserPermissionsBadgeProps
   extends Omit<TooltipProps, 'tooltipContent'> {

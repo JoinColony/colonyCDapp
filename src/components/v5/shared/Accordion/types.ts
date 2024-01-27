@@ -1,4 +1,4 @@
-import { AccordionItemProps } from './partials/AccordionItem/types';
+import { AccordionItemProps } from './partials/AccordionItem/types.ts';
 
 export interface AccordionItem
   extends Omit<AccordionItemProps, 'className' | 'isOpen' | 'onToggle'> {

@@ -1,16 +1,16 @@
 import React, { PropsWithChildren, FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { LEARN_MORE_PAYMENTS } from '~constants';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import LearnMore from '~shared/Extensions/LearnMore';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import Button from '~v5/shared/Button';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { LEARN_MORE_PAYMENTS } from '~constants/index.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import LearnMore from '~shared/Extensions/LearnMore/index.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import Button from '~v5/shared/Button/index.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import LinkItem from '../LinkItem';
+import LinkItem from '../LinkItem/index.ts';
 
-import { MSG, PAY_DROPDOWN_ITEMS } from './consts';
+import { MSG, PAY_DROPDOWN_ITEMS } from './consts.tsx';
 
 import styles from './DropdownContent.module.css';
 

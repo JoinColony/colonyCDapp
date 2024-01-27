@@ -12,8 +12,8 @@ import {
 } from '@colony/colony-js';
 import { Signer, providers } from 'ethers';
 
-import { Address } from '~types';
-import { isAddress } from '~utils/web3';
+import { Address } from '~types/index.ts';
+import { isAddress } from '~utils/web3/index.ts';
 
 export default class ColonyManager {
   private metaColonyClient?: any;

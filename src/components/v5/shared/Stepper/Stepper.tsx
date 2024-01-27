@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import { useMobile } from '~hooks';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { useMobile } from '~hooks/index.ts';
 
-import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts';
-import { StepStage } from './partials/StepperButton/consts';
-import StepperButton from './partials/StepperButton/StepperButton';
-import { StepperProps } from './types';
+import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts.ts';
+import { StepStage } from './partials/StepperButton/consts.ts';
+import StepperButton from './partials/StepperButton/StepperButton.tsx';
+import { StepperProps } from './types.ts';
 
 const displayName = 'v5.Stepper';
 

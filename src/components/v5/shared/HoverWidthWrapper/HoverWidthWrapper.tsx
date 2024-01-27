@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import { HoverWidthWrapperProps } from './types';
+import { HoverWidthWrapperProps } from './types.ts';
 
 const HoverWidthWrapper: FC<PropsWithChildren<HoverWidthWrapperProps>> = ({
   hoverClassName,

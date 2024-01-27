@@ -9,12 +9,12 @@ import {
 } from 'phosphor-react';
 import React, { useCallback } from 'react';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useColonyContext } from '~context/ColonyContext';
-import { useMemberContext } from '~context/MemberContext';
-import { useActivityData } from '~hooks/useActivityData';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMemberContext } from '~context/MemberContext.tsx';
+import { useActivityData } from '~hooks/useActivityData.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_BALANCES_ROUTE,
@@ -22,18 +22,18 @@ import {
   // @todo: uncomment when decisions page will be ready
   // COLONY_DECISIONS_ROUTE,
   TEAM_SEARCH_PARAM,
-} from '~routes';
-import Numeral from '~shared/Numeral';
-import { formatText } from '~utils/intl';
-import { getBalanceForTokenAndDomain } from '~utils/tokens';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+} from '~routes/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import {
   TeamCardListItem,
   TeamCardListProps,
-} from '~v5/common/TeamCardList/types';
-import Link from '~v5/shared/Link';
+} from '~v5/common/TeamCardList/types.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import { getMembersList } from '../MembersPage/utils';
+import { getMembersList } from '../MembersPage/utils.ts';
 
 export const useTeams = (): TeamCardListProps['items'] => {
   const { colony } = useColonyContext();

@@ -4,11 +4,11 @@ import { BigNumber } from 'ethers';
 import numbro from 'numbro';
 import React, { HTMLAttributes } from 'react';
 
-import { convertToDecimal } from '~utils/convertToDecimal';
-import { getMainClasses } from '~utils/css';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
+import { getMainClasses } from '~utils/css/index.ts';
 
-import { getFormattedNumeralValue } from './helpers';
-import numbroLanguage from './numbroLanguage';
+import { getFormattedNumeralValue } from './helpers.tsx';
+import numbroLanguage from './numbroLanguage.ts';
 
 import styles from './Numeral.css';
 

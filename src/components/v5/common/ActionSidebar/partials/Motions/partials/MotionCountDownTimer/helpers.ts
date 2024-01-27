@@ -1,5 +1,5 @@
 import { GetMotionTimeoutPeriodsReturn } from '~gql';
-import { MotionState } from '~utils/colonyMotions';
+import { MotionState } from '~utils/colonyMotions.ts';
 
 export const splitTimeLeft = (period: number) => ({
   days: Math.floor(period / (60 * 60 * 24)),

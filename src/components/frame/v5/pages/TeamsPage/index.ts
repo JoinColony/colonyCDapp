@@ -1,1 +1,1 @@
-export { default } from './TeamsPage';
+export { default } from './TeamsPage.tsx';

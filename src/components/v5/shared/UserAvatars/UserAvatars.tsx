@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { User } from '~types/graphql';
-import { calculateLastSliceIndex } from '~utils/avatars';
-import UserAvatar from '~v5/shared/UserAvatar';
+import { User } from '~types/graphql.ts';
+import { calculateLastSliceIndex } from '~utils/avatars.ts';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { UserAvatarsProps } from './types';
+import { UserAvatarsProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';

@@ -2,27 +2,27 @@ import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { ADDRESS_ZERO } from '~constants';
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
-import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext.tsx';
 import { ColonyActionType } from '~gql';
-import useExtensionData from '~hooks/useExtensionData';
-import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards';
-import { MotionFinalizePayload } from '~redux/types/actions/motion';
-import Numeral from '~shared/Numeral';
-import { InstalledExtensionData } from '~types/extensions';
-import { MotionAction } from '~types/motions';
-import { mapPayload } from '~utils/actions';
-import { isInstalledExtensionData } from '~utils/extensions';
-import { formatText } from '~utils/intl';
-import { getSafePollingInterval } from '~utils/queries';
-import { getBalanceForTokenAndDomain } from '~utils/tokens';
-import { RefetchAction } from '~v5/common/ActionSidebar/hooks';
+import useExtensionData from '~hooks/useExtensionData.ts';
+import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
+import { MotionFinalizePayload } from '~redux/types/actions/motion.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { InstalledExtensionData } from '~types/extensions.ts';
+import { MotionAction } from '~types/motions.ts';
+import { mapPayload } from '~utils/actions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
+import { formatText } from '~utils/intl.ts';
+import { getSafePollingInterval } from '~utils/queries.ts';
+import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
+import { RefetchAction } from '~v5/common/ActionSidebar/hooks/index.ts';
 
-import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types';
+import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
 
-import { WinningsItems } from './types';
+import { WinningsItems } from './types.ts';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {

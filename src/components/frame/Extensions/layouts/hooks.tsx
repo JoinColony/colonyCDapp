@@ -2,26 +2,26 @@ import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
   TransactionGroupStates,
   useUserTransactionContext,
-} from '~context/UserTransactionContext';
-import { useMobile } from '~hooks';
-import useColonyContractVersion from '~hooks/useColonyContractVersion';
-import useTransformer from '~hooks/useTransformer';
-import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants';
-import Icon from '~shared/Icon';
-import { getAllUserRoles } from '~transformers';
-import { canColonyBeUpgraded, hasRoot } from '~utils/checks';
-import { formatText } from '~utils/intl';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types';
-import { TxButton } from '~v5/shared/Button';
-import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
+} from '~context/UserTransactionContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
+import useTransformer from '~hooks/useTransformer.ts';
+import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants.ts';
+import Icon from '~shared/Icon/index.ts';
+import { getAllUserRoles } from '~transformers/index.ts';
+import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types.ts';
+import { TxButton } from '~v5/shared/Button/index.ts';
+import { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts';
 
 import {
   adminMenu,
@@ -31,11 +31,11 @@ import {
   dashboardMenu,
   financesMenu,
   membersMenu,
-} from './consts';
-import DashboardContent from './partials/DashboardContent';
-import { checkIfIsActive } from './utils';
+} from './consts.ts';
+import DashboardContent from './partials/DashboardContent/index.ts';
+import { checkIfIsActive } from './utils.ts';
 
-import type { UseCalamityBannerInfoReturnType } from './types';
+import type { UseCalamityBannerInfoReturnType } from './types.ts';
 
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();

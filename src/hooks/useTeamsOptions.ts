@@ -1,9 +1,9 @@
-import { useColonyContext } from '~context/ColonyContext';
-import { notNull } from '~utils/arrays';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { notNull } from '~utils/arrays/index.ts';
 import {
   SearchSelectOption,
   SearchSelectOptionProps,
-} from '~v5/shared/SearchSelect/types';
+} from '~v5/shared/SearchSelect/types.ts';
 
 const sortByDomainId = (
   { nativeId: firstDomainId },

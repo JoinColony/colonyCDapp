@@ -1,1 +1,1 @@
-export * from './getNetworkTokenList';
+export * from './getNetworkTokenList.ts';

@@ -1,1 +1,1 @@
-export { default } from './EnterRecoveryModeForm';
+export { default } from './EnterRecoveryModeForm.tsx';

@@ -1,23 +1,23 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useMobile } from '~hooks';
-import { ColonyAction } from '~types/graphql';
-import { formatText } from '~utils/intl';
-import { merge } from '~utils/lodash';
-import EmptyContent from '~v5/common/EmptyContent';
-import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useMobile } from '~hooks/index.ts';
+import { ColonyAction } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
+import { merge } from '~utils/lodash.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
+import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
   useActionsTableData,
   useColonyActionsTableColumns,
   useGetColonyActionsTableMenuProps,
   useRenderRowLink,
-} from './hooks';
-import { ColonyActionsTableProps } from './types';
+} from './hooks.tsx';
+import { ColonyActionsTableProps } from './types.ts';
 
 const displayName = 'common.ColonyActionsTable';
 

@@ -1,1 +1,1 @@
-export { default } from './ReputationPage';
+export { default } from './ReputationPage.tsx';

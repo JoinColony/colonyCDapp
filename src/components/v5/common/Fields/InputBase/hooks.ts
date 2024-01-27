@@ -8,10 +8,10 @@ import {
   useImperativeHandle,
 } from 'react';
 
-import { getInputTextWidth } from '~utils/elements';
+import { getInputTextWidth } from '~utils/elements.ts';
 
-import { FormattedInputProps } from './types';
-import { addWidthProperty } from './utils';
+import { FormattedInputProps } from './types.ts';
+import { addWidthProperty } from './utils.ts';
 
 export const useAdjustInputWidth = (
   autoWidth: boolean,

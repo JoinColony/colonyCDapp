@@ -1,7 +1,7 @@
 import { ClientType } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyContributorDocument,
   CreateColonyContributorMutation,
@@ -17,14 +17,14 @@ import {
   UpdateColonyMetadataMutation,
   UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { Action, AllActions, ActionTypes } from '~redux';
-import { getColonyContributorId } from '~utils/members';
+import { Action, AllActions, ActionTypes } from '~redux/index.ts';
+import { getColonyContributorId } from '~utils/members.ts';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
   getUpdatedColonyMetadataChangelog,
@@ -32,7 +32,7 @@ import {
   putError,
   takeFrom,
   uploadAnnotation,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* manageVerifiedRecipients({
   payload: {

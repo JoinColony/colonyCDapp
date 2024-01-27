@@ -2,14 +2,14 @@ import clsx from 'clsx';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext';
-import useActionsCount from '~hooks/useActionsCount';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
-import { COLONY_ACTIVITY_ROUTE } from '~routes';
-import { findDomainByNativeId } from '~utils/domains';
-import { formatText } from '~utils/intl';
-import { getTeamColor } from '~utils/teams';
-import WidgetBox from '~v5/common/WidgetBox';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useActionsCount from '~hooks/useActionsCount.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { COLONY_ACTIVITY_ROUTE } from '~routes/index.ts';
+import { findDomainByNativeId } from '~utils/domains.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTeamColor } from '~utils/teams.ts';
+import WidgetBox from '~v5/common/WidgetBox/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.TotalActions';
 

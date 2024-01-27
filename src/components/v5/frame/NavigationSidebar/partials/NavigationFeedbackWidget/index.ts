@@ -1,1 +1,1 @@
-export { default } from './NavigationFeedbackWidget';
+export { default } from './NavigationFeedbackWidget.tsx';

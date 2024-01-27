@@ -1,4 +1,4 @@
-import { RenderMeatBallItemWrapperProps } from '~v5/shared/MeatBallMenu/types';
+import { RenderMeatBallItemWrapperProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 export interface MeatballMenuCopyItemProps
   extends RenderMeatBallItemWrapperProps {

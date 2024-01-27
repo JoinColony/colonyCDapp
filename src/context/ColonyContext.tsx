@@ -12,9 +12,9 @@ import {
   GetFullColonyByNameQuery,
   useUpdateContributorsWithReputationMutation,
 } from '~gql';
-import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony';
-import useColonySubscription from '~hooks/useColonySubscription';
-import { Colony } from '~types/graphql';
+import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
+import useColonySubscription from '~hooks/useColonySubscription.ts';
+import { Colony } from '~types/graphql.ts';
 
 const useUpdateColonyReputation = (colonyAddress?: string) => {
   const [updateContributorsWithReputation] =

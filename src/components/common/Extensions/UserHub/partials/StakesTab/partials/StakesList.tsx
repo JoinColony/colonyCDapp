@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { SpinnerLoader } from '~shared/Preloaders';
-import EmptyContent from '~v5/common/EmptyContent';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
-import { StakesListProps } from '../types';
+import { StakesListProps } from '../types.ts';
 
-import StakeItem from './StakeItem';
+import StakeItem from './StakeItem.tsx';
 
 import styles from './StakesList.css';
 

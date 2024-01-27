@@ -4,8 +4,8 @@ import {
   DEFAULT_NETWORK_TOKEN,
   ADDRESS_ZERO,
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
-} from '~constants';
-import { ColonyBalance } from '~types/graphql';
+} from '~constants/index.ts';
+import { ColonyBalance } from '~types/graphql.ts';
 
 const BALANCE_TYPE_NAME = 'ColonyBalance';
 

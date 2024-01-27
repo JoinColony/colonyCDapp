@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import useLocalStorage from 'use-local-storage';
 
-import noop from '~utils/noop';
+import noop from '~utils/noop.ts';
 
 export const PageThemeContext = createContext<{
   isDarkMode: boolean;

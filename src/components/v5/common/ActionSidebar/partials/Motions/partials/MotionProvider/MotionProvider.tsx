@@ -1,8 +1,8 @@
 import React, { FC, PropsWithChildren, useMemo } from 'react';
 
-import { useStakingWidgetUpdate } from './hooks';
-import { MotionContext } from './MotionContext';
-import { MotionProviderProps } from './types';
+import { useStakingWidgetUpdate } from './hooks.ts';
+import { MotionContext } from './MotionContext.ts';
+import { MotionProviderProps } from './types.ts';
 
 const MotionProvider: FC<PropsWithChildren<MotionProviderProps>> = ({
   children,

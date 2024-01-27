@@ -1,5 +1,5 @@
-import { NETWORK_DATA, NetworkInfo } from '~constants';
-import { useAppContext } from '~context/AppContext';
+import { NETWORK_DATA, NetworkInfo } from '~constants/index.ts';
+import { useAppContext } from '~context/AppContext.tsx';
 
 const useGetNetworkToken = (): NetworkInfo | undefined => {
   const { wallet } = useAppContext();

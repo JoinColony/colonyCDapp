@@ -3,19 +3,19 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
-import { USER_ROLE } from '~constants/permissions';
-import Table from '~v5/common/Table';
+import { USER_ROLE } from '~constants/permissions.ts';
+import Table from '~v5/common/Table/index.ts';
 
-import { CUSTOM_PERMISSION_TABLE_CONTENT } from './consts';
+import { CUSTOM_PERMISSION_TABLE_CONTENT } from './consts.tsx';
 import {
   useCustomPermissionsTableColumns,
   usePermissionsTableProps,
-} from './hooks';
+} from './hooks.tsx';
 import {
   CustomPermissionTableModel,
   PermissionsTableModel,
   PermissionsTableProps,
-} from './types';
+} from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 

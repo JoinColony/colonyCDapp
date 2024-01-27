@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import { PopperOptions } from 'react-popper-tooltip';
 
-import Popover from '~shared/Popover';
-import { Token } from '~types/graphql';
+import Popover from '~shared/Popover/index.ts';
+import { Token } from '~types/graphql.ts';
 
-import TokenInfo from './TokenInfo';
+import TokenInfo from './TokenInfo.tsx';
 
 export type Props = {
   /** Token object */

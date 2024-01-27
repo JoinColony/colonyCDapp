@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { useActivityData } from '~hooks/useActivityData';
-import { formatText } from '~utils/intl';
-import { WidthBoxItem } from '~v5/common/WidgetBoxList/types';
+import { useActivityData } from '~hooks/useActivityData.ts';
+import { formatText } from '~utils/intl.ts';
+import { WidthBoxItem } from '~v5/common/WidgetBoxList/types.ts';
 
 const getFormattedActionsCount = (count: number) =>
   count > 1000 ? '999+' : count;

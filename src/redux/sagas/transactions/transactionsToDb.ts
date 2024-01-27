@@ -3,7 +3,7 @@ import { utils } from 'ethers';
 import { Channel, buffers, channel } from 'redux-saga';
 import { call, cancel, fork, put, take } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   ClientType,
   CreateTransactionDocument,
@@ -20,8 +20,7 @@ import {
   UpdateTransactionMutation,
   UpdateTransactionMutationVariables,
 } from '~gql';
-import { ActionTypes } from '~redux/actionTypes';
-import { ActionTypeWithPayloadAndMeta } from '~redux/types';
+import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   CreateTransactionActionType,
   Meta,
@@ -35,8 +34,9 @@ import {
   TransactionLoadRelatedPayload,
   TransactionReceiptReceivedPayload,
   TransactionSucceededPayload,
-} from '~redux/types/actions/transaction';
-import { notNull } from '~utils/arrays';
+} from '~redux/types/actions/transaction.ts';
+import { ActionTypeWithPayloadAndMeta } from '~redux/types/index.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
 const pendingTransactions = new Set();
 

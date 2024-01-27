@@ -4,9 +4,9 @@ import {
   MAX_ANNOTATION_LENGTH,
   MAX_COLONY_DISPLAY_NAME,
   MAX_OBJECTIVE_DESCRIPTION_LENGTH,
-} from '~constants';
+} from '~constants/index.ts';
 import { ExternalLinks } from '~gql';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 
 export const validationSchema = object()
   .shape({

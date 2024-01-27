@@ -1,4 +1,4 @@
-import Switch from '~v5/common/Fields/Switch';
+import Switch from '~v5/common/Fields/Switch/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

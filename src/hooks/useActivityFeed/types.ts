@@ -1,11 +1,11 @@
 import { SearchActionsQueryVariables } from '~gql';
-import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
+import { RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
 import {
   ColonyAction,
   ColonyActionType,
   SearchableSortDirection,
-} from '~types/graphql';
-import { MotionState } from '~utils/colonyMotions';
+} from '~types/graphql.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
 
 export enum ActivityDecisionMethod {
   Permissions = 'Permissions',

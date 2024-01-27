@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import ColonySwitcherItem from '../ColonySwitcherItem';
+import ColonySwitcherItem from '../ColonySwitcherItem/index.ts';
 
-import { ColonySwitcherListProps } from './types';
+import { ColonySwitcherListProps } from './types.ts';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherList';
 

@@ -2,14 +2,17 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useGetReputationMiningCycleMetadataQuery } from '~gql';
-import useUserReputation from '~hooks/useUserReputation';
-import TimeRelative from '~shared/TimeRelative';
-import TitleLabel from '~v5/shared/TitleLabel';
+import useUserReputation from '~hooks/useUserReputation.ts';
+import TimeRelative from '~shared/TimeRelative/index.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import styles from '../../ReputationTab.module.css';
-import { PendingReputationProps } from '../../types';
+import { PendingReputationProps } from '../../types.ts';
 
-import { getNextMiningCycleDate, getReputationDecayInNextDay } from './utils';
+import {
+  getNextMiningCycleDate,
+  getReputationDecayInNextDay,
+} from './utils.ts';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.PendingReputation';

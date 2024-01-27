@@ -6,36 +6,36 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath, Link, useNavigate } from 'react-router-dom';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
-import { useColonyContext } from '~context/ColonyContext';
+import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
   SearchableColonyActionSortableFields,
   SearchableColonyActionSortInput,
   SearchableSortDirection,
 } from '~gql';
-import useActivityFeed from '~hooks/useActivityFeed';
-import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
-import { RefetchMotionStates } from '~hooks/useNetworkMotionStates';
+import useActivityFeed from '~hooks/useActivityFeed/index.ts';
+import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
-} from '~routes';
-import TransactionLink from '~shared/TransactionLink';
-import { MotionState } from '~utils/colonyMotions';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { formatText } from '~utils/intl';
-import { setQueryParamOnUrl } from '~utils/urls';
-import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
-import TeamBadge from '~v5/common/Pills/TeamBadge';
-import { RenderCellWrapper } from '~v5/common/Table/types';
-import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+} from '~routes/index.ts';
+import TransactionLink from '~shared/TransactionLink/index.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { formatText } from '~utils/intl.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
+import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
+import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
+import { RenderCellWrapper } from '~v5/common/Table/types.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts.ts';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
-import ActionDescription from './partials/ActionDescription';
-import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem';
-import { makeLoadingRows } from './utils';
+import ActionDescription from './partials/ActionDescription/index.ts';
+import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem/index.ts';
+import { makeLoadingRows } from './utils.ts';
 
 const MSG = defineMessages({
   tableHeaderLatestActivity: {

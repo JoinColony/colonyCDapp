@@ -1,9 +1,8 @@
 import { ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 
-import { NetworkInfo } from '~constants';
+import { NetworkInfo } from '~constants/index.ts';
 import { ExternalLink } from '~gql';
-import { Address } from '~types';
 import {
   Colony,
   ColonyObjective,
@@ -11,23 +10,23 @@ import {
   DomainColor,
   Safe,
   SafeTransactionData,
-} from '~types/graphql';
+} from '~types/graphql.ts';
+import { Address } from '~types/index.ts';
 
-import { ActionTypes } from '../../actionTypes';
+import { ActionTypes } from '../../actionTypes.ts';
 
-import { OneTxPaymentPayload } from './colonyActions';
+import { OneTxPaymentPayload } from './colonyActions.ts';
 import {
   ExpenditureFundPayload,
   StakedExpenditureCancelPayload,
-} from './expenditures';
-
+} from './expenditures.ts';
 import {
   ErrorActionType,
   UniqueActionType,
   ActionTypeWithMeta,
   MetaWithSetter,
   UniqueActionTypeWithoutPayload,
-} from './index';
+} from './index.ts';
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',

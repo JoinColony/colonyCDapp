@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import { TRANSACTION_LIST_PAGE_SIZE } from '~common/Extensions/UserNavigation/hooks';
-import { useUserTransactionContext } from '~context/UserTransactionContext';
+import { TRANSACTION_LIST_PAGE_SIZE } from '~common/Extensions/UserNavigation/hooks.ts';
+import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
 
 export const useTransactionsListObserver = () => {
   const lastListItem = useRef<Element | null>(null);

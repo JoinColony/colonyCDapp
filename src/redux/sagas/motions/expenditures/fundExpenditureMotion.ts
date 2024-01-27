@@ -9,21 +9,21 @@ import {
 import { constants } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO } from '~constants';
-import { ActionTypes } from '~redux/actionTypes';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   waitForTxResult,
-} from '~redux/sagas/transactions';
+} from '~redux/sagas/transactions/index.ts';
+import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures.ts';
 import {
   createInvalidParamsError,
   getColonyManager,
   initiateTransaction,
   takeFrom,
-} from '~redux/sagas/utils';
-import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures';
-import { Action } from '~redux/types';
+} from '~redux/sagas/utils/index.ts';
+import { Action } from '~redux/types/index.ts';
 
 function* fundExpenditureMotion({
   payload: {

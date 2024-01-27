@@ -2,8 +2,8 @@ import Decimal from 'decimal.js';
 import numbro from 'numbro';
 import React from 'react';
 
-import EngineeringNotation from './EngineeringNotation';
-import { NumeralValue } from './Numeral';
+import EngineeringNotation from './EngineeringNotation.tsx';
+import { NumeralValue } from './Numeral.tsx';
 
 export const convertToDecimalOrNull = (value: NumeralValue): Decimal | null => {
   try {

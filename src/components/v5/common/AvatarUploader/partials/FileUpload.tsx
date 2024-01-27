@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react';
 
-import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader';
+import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader.ts';
 
-import { FileUploadProps } from '../types';
+import { FileUploadProps } from '../types.ts';
 
-import DefaultContent from './DefaultContent';
-import ErrorContent from './ErrorContent';
+import DefaultContent from './DefaultContent.tsx';
+import ErrorContent from './ErrorContent.tsx';
 
 const displayName = 'v5.common.AvatarUploader.partials.partials.FileUpload';
 

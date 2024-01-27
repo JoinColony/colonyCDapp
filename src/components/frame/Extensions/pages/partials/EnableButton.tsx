@@ -3,20 +3,20 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
-import { useMobile } from '~hooks';
-import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import { AnyExtensionData } from '~types/extensions';
-import { addressHasRoles } from '~utils/checks';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes/index.ts';
+import { AnyExtensionData } from '~types/extensions.ts';
+import { addressHasRoles } from '~utils/checks/index.ts';
 import {
   canExtensionBeInitialized,
   isInstalledExtensionData,
-} from '~utils/extensions';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button/Button';
+} from '~utils/extensions.ts';
+import { formatText } from '~utils/intl.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 
-import ReenableButton from '../ExtensionDetailsPage/partials/ExtensionDetails/ReenableButton';
+import ReenableButton from '../ExtensionDetailsPage/partials/ExtensionDetails/ReenableButton.tsx';
 
 interface EnableButtonProps {
   userHasRoot: boolean;

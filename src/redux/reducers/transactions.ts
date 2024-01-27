@@ -1,19 +1,19 @@
 import getObjectFromPath from 'lodash/get';
 
-import { TransactionStatus } from '~types/graphql';
+import { TransactionStatus } from '~types/graphql.ts';
 
-import { ActionTypes } from '../actionTypes';
-import { CORE_TRANSACTIONS_LIST } from '../constants';
+import { ActionTypes } from '../actionTypes.ts';
+import { CORE_TRANSACTIONS_LIST } from '../constants.ts';
 import {
   TransactionRecord,
   Transaction,
   TransactionRecordProps,
-} from '../immutable';
+} from '../immutable/index.ts';
 import {
   CoreTransactions,
   CoreTransactionsRecord,
-} from '../state/transactions';
-import { ReducerType } from '../types/reducer';
+} from '../state/transactions.ts';
+import { ReducerType } from '../types/reducer.ts';
 
 const transactionGroup = (tx: TransactionRecord) => {
   if (!tx.group || typeof tx.group.id === 'string') return tx.group;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TwoColumns from '~v5/frame/TwoColumns';
+import TwoColumns from '~v5/frame/TwoColumns/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

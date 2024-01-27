@@ -1,3 +1,3 @@
-export { default } from './Numeral';
+export { default } from './Numeral.tsx';
 
-export * from './helpers';
+export * from './helpers.tsx';

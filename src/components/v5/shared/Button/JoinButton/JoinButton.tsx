@@ -1,12 +1,12 @@
 import Lottie from 'lottie-react';
 import React, { FC, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import joinButtonAnimation from '~utils/animations/joinButtonAnimation.json';
-import { formatText } from '~utils/intl';
+import { formatText } from '~utils/intl.ts';
 
-import Button from '../Button';
+import Button from '../Button.tsx';
 
 const displayName = 'v5.JoinButton';
 

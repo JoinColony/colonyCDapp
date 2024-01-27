@@ -7,16 +7,16 @@ import {
   UserRole,
   USER_ROLE,
   USER_ROLES,
-} from '~constants/permissions';
-import { formatText } from '~utils/intl';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
+} from '~constants/permissions.ts';
+import { formatText } from '~utils/intl.ts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 import {
   CardSelectOption,
   CardSelectOptionsGroup,
-} from '~v5/common/Fields/CardSelect/types';
+} from '~v5/common/Fields/CardSelect/types.ts';
 
-import RoleOptionLabel from './partials/RoleOptionLabel';
-import { UserRoleSelectMeta } from './types';
+import RoleOptionLabel from './partials/RoleOptionLabel/index.ts';
+import { UserRoleSelectMeta } from './types.ts';
 
 export const validationSchema = object()
   .shape({

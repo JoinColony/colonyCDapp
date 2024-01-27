@@ -1,4 +1,4 @@
-import FormError from '~v5/shared/FormError';
+import FormError from '~v5/shared/FormError/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

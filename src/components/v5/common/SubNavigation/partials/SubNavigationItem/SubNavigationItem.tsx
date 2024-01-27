@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React, { PropsWithChildren, FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
-import { SubNavigationItemProps } from './types';
+import { SubNavigationItemProps } from './types.ts';
 
 import styles from './SubNavigationItem.module.css';
 

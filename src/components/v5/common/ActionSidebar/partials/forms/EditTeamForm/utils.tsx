@@ -1,6 +1,6 @@
-import { Colony, Domain } from '~types/graphql';
+import { Colony, Domain } from '~types/graphql.ts';
 
-import { EditTeamFormValues } from './consts';
+import { EditTeamFormValues } from './consts.ts';
 
 export const getEditDomainPayload = (
   colony: Colony,

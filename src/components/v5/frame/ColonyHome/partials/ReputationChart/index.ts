@@ -1,1 +1,1 @@
-export { default } from './ReputationChart';
+export { default } from './ReputationChart.tsx';

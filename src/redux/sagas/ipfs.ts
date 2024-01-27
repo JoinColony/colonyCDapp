@@ -1,8 +1,8 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context/index';
-import { Action, ActionTypes, AllActions } from '~redux/index';
-import { putError } from '~utils/saga/effects';
+import { ContextModule, getContext } from '~context/index.ts';
+import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { putError } from '~utils/saga/effects.ts';
 
 function* ipfsDataUpload({
   meta,

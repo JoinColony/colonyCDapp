@@ -1,12 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useMemberContext } from '~context/MemberContext';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
-import { COLONY_MEMBERS_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
-import WidgetBox from '~v5/common/WidgetBox';
-import UserAvatars from '~v5/shared/UserAvatars';
+import { useMemberContext } from '~context/MemberContext.tsx';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
+import WidgetBox from '~v5/common/WidgetBox/index.ts';
+import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.Members';
 

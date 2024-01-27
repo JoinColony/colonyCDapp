@@ -36,9 +36,9 @@ import {
   COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_BALANCES_ROUTE,
-} from '~routes/routeConstants';
-import { SimpleMessageValues } from '~types';
-import { notNull } from '~utils/arrays';
+} from '~routes/routeConstants.ts';
+import { SimpleMessageValues } from '~types/index.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
 const displayName = 'utils.hooks';
 

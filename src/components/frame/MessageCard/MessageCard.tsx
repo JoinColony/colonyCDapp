@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { MessageType } from '~redux/immutable';
-import Card from '~shared/Card';
-import Heading from '~shared/Heading';
+import { MessageType } from '~redux/immutable/index.ts';
+import Card from '~shared/Card/index.ts';
+import Heading from '~shared/Heading/index.ts';
 
-import MessageCardStatus from './MessageCardStatus';
+import MessageCardStatus from './MessageCardStatus.tsx';
 
 import styles from './MessageCard.css';
 

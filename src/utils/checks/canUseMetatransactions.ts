@@ -1,4 +1,7 @@
-import { NETWORKS_WITH_METATRANSACTIONS, DEFAULT_NETWORK } from '~constants';
+import {
+  NETWORKS_WITH_METATRANSACTIONS,
+  DEFAULT_NETWORK,
+} from '~constants/index.ts';
 
 /*
  * There's only two conditions for the user to actually send metatransactions, rather

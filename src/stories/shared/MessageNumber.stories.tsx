@@ -1,4 +1,4 @@
-import MessageNumber from '~v5/shared/MessageNumber';
+import MessageNumber from '~v5/shared/MessageNumber/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

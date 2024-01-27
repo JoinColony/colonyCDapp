@@ -9,16 +9,16 @@ import {
 import {
   usePageHeadingContext,
   useSetPageHeadingTitle,
-} from '~context/PageHeadingContext';
+} from '~context/PageHeadingContext/index.ts';
 import {
   USER_ADVANCED_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_PREFERENCES_ROUTE,
-} from '~routes';
-import Tabs from '~shared/Extensions/Tabs';
-import { formatText } from '~utils/intl';
+} from '~routes/index.ts';
+import Tabs from '~shared/Extensions/Tabs/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { TabId } from './types';
+import { TabId } from './types.ts';
 
 const displayName = 'v5.pages.UserProfilePage';
 

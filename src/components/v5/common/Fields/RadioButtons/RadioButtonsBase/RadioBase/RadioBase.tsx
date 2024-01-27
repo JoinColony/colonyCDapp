@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { RadioProps } from './types';
+import { RadioProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.RadioButtons.RadioBase';
 

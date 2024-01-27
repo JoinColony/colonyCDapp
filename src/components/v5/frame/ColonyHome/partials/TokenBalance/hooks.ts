@@ -1,12 +1,12 @@
 import Decimal from 'decimal.js';
 import { useEffect, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { useCurrencyContext } from '~context/CurrencyContext';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useCurrencyContext } from '~context/CurrencyContext.tsx';
 import { SupportedCurrencies } from '~gql';
-import { ColonyBalances } from '~types/graphql';
-import { notNull } from '~utils/arrays';
-import { fetchCurrentPrice } from '~utils/currency/currency';
+import { ColonyBalances } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { fetchCurrentPrice } from '~utils/currency/currency.ts';
 
 const calculateTotalFunds = async (
   balances: ColonyBalances,

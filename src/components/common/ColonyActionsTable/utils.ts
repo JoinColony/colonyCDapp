@@ -1,6 +1,6 @@
-import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { ColonyActionType } from '~gql';
-import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types';
+import { ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 
 export const makeLoadingRows = (pageSize: number): ActivityFeedColonyAction[] =>
   Array.from(

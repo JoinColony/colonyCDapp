@@ -7,10 +7,10 @@ import React, {
   useState,
 } from 'react';
 
-import useToggle from '~hooks/useToggle';
-import noop from '~utils/noop';
-import TokensModal from '~v5/common/TokensModal';
-import { TokensModalType } from '~v5/common/TokensModal/types';
+import useToggle from '~hooks/useToggle/index.ts';
+import noop from '~utils/noop.ts';
+import TokensModal from '~v5/common/TokensModal/index.ts';
+import { TokensModalType } from '~v5/common/TokensModal/types.ts';
 
 export const TokensModalContext = createContext<{
   toggleOnTokensModal: () => void;

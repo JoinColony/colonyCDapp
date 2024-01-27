@@ -1,12 +1,12 @@
-import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions';
-import { Colony } from '~types/graphql';
+import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
+import { Colony } from '~types/graphql.ts';
 import {
   calculateFee,
   getSelectedToken,
   getTokenDecimalsWithFallback,
-} from '~utils/tokens';
+} from '~utils/tokens.ts';
 
-import { SimplePaymentFormValues } from './hooks';
+import { SimplePaymentFormValues } from './hooks.ts';
 
 type PaymentPayload = OneTxPaymentPayload['payments'][number];
 

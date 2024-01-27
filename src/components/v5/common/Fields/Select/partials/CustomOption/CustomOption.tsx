@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Link from '~v5/shared/Link';
+import Link from '~v5/shared/Link/index.ts';
 
-import { SelectOption } from '../../types';
+import { SelectOption } from '../../types.ts';
 
 const displayName = 'v5.common.Fields.Select.partials.CustomOption';
 

@@ -1,4 +1,4 @@
-import { CardSelectOption } from '~v5/common/Fields/CardSelect/types';
+import { CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 export interface BreadcrumbDropdownOption
   extends Omit<CardSelectOption<string>, 'value'> {

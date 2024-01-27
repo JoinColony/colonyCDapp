@@ -1,9 +1,9 @@
 import { ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { useAppContext } from '~context/AppContext';
-import { Colony } from '~types/graphql';
-import { addressHasRoles } from '~utils/checks';
+import { useAppContext } from '~context/AppContext.tsx';
+import { Colony } from '~types/graphql.ts';
+import { addressHasRoles } from '~utils/checks/index.ts';
 
 const useDialogActionPermissions = (
   colony: Colony,

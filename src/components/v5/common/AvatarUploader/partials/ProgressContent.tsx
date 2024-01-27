@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import Icon from '~shared/Icon';
-import ProgressBar from '~v5/shared/ProgressBar';
+import Icon from '~shared/Icon/index.ts';
+import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
-import { ProgressContentProps } from '../types';
+import { ProgressContentProps } from '../types.ts';
 
 const displayName = 'v5.common.AvatarUploader.partials.ProgressContent';
 

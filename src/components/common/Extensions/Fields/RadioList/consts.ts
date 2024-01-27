@@ -1,6 +1,6 @@
-import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types';
+import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types.ts';
 
-import { RadioItemProps } from './types';
+import { RadioItemProps } from './types.ts';
 
 export const radioItems: RadioItemProps[] = [
   {

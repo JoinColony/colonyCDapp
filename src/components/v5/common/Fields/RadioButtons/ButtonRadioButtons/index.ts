@@ -1,1 +1,1 @@
-export { default } from './ButtonRadioButtons';
+export { default } from './ButtonRadioButtons.tsx';

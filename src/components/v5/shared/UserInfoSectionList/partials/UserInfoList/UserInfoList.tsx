@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import UserAvatar from '~v5/shared/UserAvatar';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { UserInfoListProps } from './types';
+import { UserInfoListProps } from './types.ts';
 
 const displayName = 'v5.UserInfoSectionList.partials.UserInfoList';
 

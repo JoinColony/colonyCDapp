@@ -1,4 +1,4 @@
-import blockies from './blockies';
+import blockies from './blockies.ts';
 
 const iconCache = {};
 

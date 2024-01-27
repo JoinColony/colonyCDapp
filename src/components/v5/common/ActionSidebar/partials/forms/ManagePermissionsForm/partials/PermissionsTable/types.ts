@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
 
-import { UserRole } from '~constants/permissions';
+import { UserRole } from '~constants/permissions.ts';
 
 export interface PermissionsTableProps {
   name: string;

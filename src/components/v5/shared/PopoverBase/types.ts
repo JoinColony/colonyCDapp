@@ -1,6 +1,6 @@
 import { PropsGetterArgs } from 'react-popper-tooltip';
 
-import { CardProps } from '~v5/shared/Card/types';
+import { CardProps } from '~v5/shared/Card/types.ts';
 
 export interface PopoverBaseProps {
   tooltipProps: (args?: PropsGetterArgs) => {

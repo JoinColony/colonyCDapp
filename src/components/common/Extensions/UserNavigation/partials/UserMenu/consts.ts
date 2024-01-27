@@ -1,6 +1,6 @@
 import { SupportedCurrencies } from '~gql';
 
-import { UserMenuItemName } from './types';
+import { UserMenuItemName } from './types.ts';
 
 export const currencyIconTitles = {
   [SupportedCurrencies.Usd]: 'flag-us',

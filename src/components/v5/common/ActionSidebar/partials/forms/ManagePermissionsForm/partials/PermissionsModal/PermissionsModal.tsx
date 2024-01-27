@@ -1,12 +1,12 @@
 import chunk from 'lodash/chunk';
 import React, { FC, Fragment } from 'react';
 
-import useToggle from '~hooks/useToggle';
-import { formatText } from '~utils/intl';
-import Modal from '~v5/shared/Modal';
+import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
-import { PERMISSIONS_MODAL_CONTENT } from './consts';
-import { PermissionsModalProps } from './types';
+import { PERMISSIONS_MODAL_CONTENT } from './consts.ts';
+import { PermissionsModalProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.PermissionsModal';
 

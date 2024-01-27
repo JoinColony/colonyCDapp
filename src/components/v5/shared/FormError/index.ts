@@ -1,1 +1,1 @@
-export { default } from './FormError';
+export { default } from './FormError.tsx';

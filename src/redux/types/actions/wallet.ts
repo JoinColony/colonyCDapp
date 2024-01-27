@@ -1,6 +1,6 @@
-import { ActionTypes } from '../../actionTypes';
+import { ActionTypes } from '../../actionTypes.ts';
 
-import { ErrorActionType, ActionType } from './index';
+import { ErrorActionType, ActionType } from './index.ts';
 
 export type WalletActionTypes =
   | ActionType<ActionTypes.WALLET_OPEN>

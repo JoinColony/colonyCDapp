@@ -1,1 +1,1 @@
-export { default } from './StakingForm';
+export { default } from './StakingForm.tsx';

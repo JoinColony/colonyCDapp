@@ -4,22 +4,22 @@ import React, { FC, useState } from 'react';
 // @BETA: Disabled for now
 // import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 
-import { useAppContext } from '~context/AppContext';
-import { useCurrencyContext } from '~context/CurrencyContext';
-import { useTablet } from '~hooks';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import { splitWalletAddress } from '~utils/splitWalletAddress';
-import Button from '~v5/shared/Button';
-import Link from '~v5/shared/Link';
-import PopoverBase from '~v5/shared/PopoverBase';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { useTablet } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import Button from '~v5/shared/Button/index.ts';
+import Link from '~v5/shared/Link/index.ts';
+import PopoverBase from '~v5/shared/PopoverBase/index.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import UserSubmenu from '../UserSubmenu';
-import WalletConnectedTopMenu from '../WalletConnectedTopMenu';
+import UserSubmenu from '../UserSubmenu/index.ts';
+import WalletConnectedTopMenu from '../WalletConnectedTopMenu/index.ts';
 
-import { currencyIconTitles, userMenuItems } from './consts';
-import { UserMenuItemName, UserMenuProps } from './types';
+import { currencyIconTitles, userMenuItems } from './consts.ts';
+import { UserMenuItemName, UserMenuProps } from './types.ts';
 
 import styles from './UserMenu.module.css';
 

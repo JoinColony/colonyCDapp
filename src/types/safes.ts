@@ -1,7 +1,7 @@
-import { Address } from '~types';
-import { Token } from '~types/graphql';
+import { Token } from '~types/graphql.ts';
+import { Address } from '~types/index.ts';
 
-import { SafeTransactionData, SafeTransactionType, User } from './graphql';
+import { SafeTransactionData, SafeTransactionType, User } from './graphql.ts';
 
 export type ModuleAddress = Address;
 

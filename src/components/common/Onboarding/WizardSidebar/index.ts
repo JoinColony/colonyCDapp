@@ -1,1 +1,1 @@
-export { default, WizardSidebarStep } from './WizardSidebar';
+export { default, WizardSidebarStep } from './WizardSidebar.tsx';

@@ -1,6 +1,6 @@
-import { Domain } from '~types/graphql';
-import { getTeamHexColor } from '~utils/teams';
-import { ChartData } from '~v5/shared/DonutChart/types';
+import { Domain } from '~types/graphql.ts';
+import { getTeamHexColor } from '~utils/teams.ts';
+import { ChartData } from '~v5/shared/DonutChart/types.ts';
 
 const WIDGET_TEAM_LIMIT = 5;
 

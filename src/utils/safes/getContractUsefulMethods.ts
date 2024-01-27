@@ -1,7 +1,7 @@
 import { JsonFragment } from '@ethersproject/abi';
 import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
-import { BINANCE_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants';
+import { BINANCE_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants/index.ts';
 
 export interface AbiItemExtended extends JsonFragment {
   name: string;

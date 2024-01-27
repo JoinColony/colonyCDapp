@@ -1,1 +1,1 @@
-export { default } from './ColonyAvatarField';
+export { default } from './ColonyAvatarField.tsx';

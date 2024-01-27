@@ -2,13 +2,13 @@ import {
   ADDRESS_ZERO,
   SAFE_NAMES_MAP,
   SUPPORTED_SAFE_NETWORKS,
-} from '~constants';
-import { Address, SelectedPickerItem } from '~types';
-import { ExtendedColonyActionType } from '~types/actions';
-import { NFTData, Safe, ColonyAction } from '~types/graphql';
-import { FormSafeTransaction, SafeBalance } from '~types/safes';
-import { notNull } from '~utils/arrays';
-import { isEmpty } from '~utils/lodash';
+} from '~constants/index.ts';
+import { ExtendedColonyActionType } from '~types/actions.ts';
+import { NFTData, Safe, ColonyAction } from '~types/graphql.ts';
+import { Address, SelectedPickerItem } from '~types/index.ts';
+import { FormSafeTransaction, SafeBalance } from '~types/safes.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { isEmpty } from '~utils/lodash.ts';
 
 export {
   getContractUsefulMethods,
@@ -16,9 +16,9 @@ export {
   fetchContractABI,
   isAbiItem,
   fetchContractName,
-} from './getContractUsefulMethods';
+} from './getContractUsefulMethods.ts';
 
-export { getArrayFromString } from './contractParserValidation';
+export { getArrayFromString } from './contractParserValidation.ts';
 
 export const getSafe = (
   safes: Safe[],

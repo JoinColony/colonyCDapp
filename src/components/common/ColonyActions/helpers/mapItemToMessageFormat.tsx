@@ -3,9 +3,9 @@ import Decimal from 'decimal.js';
 import React from 'react';
 
 import { SimpleTarget } from '~gql';
-import FriendlyName from '~shared/FriendlyName';
-import MaskedAddress from '~shared/MaskedAddress';
-import Numeral from '~shared/Numeral';
+import FriendlyName from '~shared/FriendlyName/index.ts';
+import MaskedAddress from '~shared/MaskedAddress/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
 import {
   Colony,
   ColonyAction,
@@ -13,15 +13,15 @@ import {
   User,
   ColonyExtension,
   Token,
-} from '~types/graphql';
-import { notMaybe } from '~utils/arrays';
-import { formatRolesTitle } from '~utils/colonyActions';
-import { intl } from '~utils/intl';
-import { formatReputationChange } from '~utils/reputation';
-import { getAddedSafeChainName } from '~utils/safes';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+} from '~types/graphql.ts';
+import { notMaybe } from '~utils/arrays/index.ts';
+import { formatRolesTitle } from '~utils/colonyActions.ts';
+import { intl } from '~utils/intl.ts';
+import { formatReputationChange } from '~utils/reputation.ts';
+import { getAddedSafeChainName } from '~utils/safes/index.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { ActionTitleMessageKeys } from './getActionTitleValues';
+import { ActionTitleMessageKeys } from './getActionTitleValues.ts';
 
 const { formatMessage } = intl({
   unknownDomain: 'UnknownDomain',

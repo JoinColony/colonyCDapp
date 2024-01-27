@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 
-import { TableHeaderProps } from './types';
+import { TableHeaderProps } from './types.ts';
 
 const displayName = 'v5.common.TableHeader';
 

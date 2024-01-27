@@ -18,16 +18,16 @@ import { usePopper } from 'react-popper';
 import { PopperOptions } from 'react-popper-tooltip';
 import { Unionize } from 'utility-types';
 
-import usePrevious from '~hooks/usePrevious';
-import { SetStateFn, SimpleMessageValues } from '~types';
+import usePrevious from '~hooks/usePrevious.ts';
+import { SetStateFn, SimpleMessageValues } from '~types/index.ts';
 
-import PopoverWrapper from './PopoverWrapper';
+import PopoverWrapper from './PopoverWrapper.tsx';
 import {
   PopoverAppearanceType,
   PopoverChildFn,
   PopoverContent,
   PopoverTriggerType,
-} from './types';
+} from './types.ts';
 
 interface Props {
   /** Appearance object for styling */

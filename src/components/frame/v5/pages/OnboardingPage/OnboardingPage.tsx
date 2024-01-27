@@ -2,16 +2,16 @@ import React, { PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
 import { useParams, Navigate } from 'react-router-dom';
 
-import Onboarding, { Flow } from '~common/Onboarding';
-import { HeaderRow } from '~common/Onboarding/wizardSteps/shared';
-import { useAppContext } from '~context/AppContext';
-import { MainLayout } from '~frame/Extensions/layouts';
+import Onboarding, { Flow } from '~common/Onboarding/index.ts';
+import { HeaderRow } from '~common/Onboarding/wizardSteps/shared.tsx';
+import { useAppContext } from '~context/AppContext.tsx';
+import { MainLayout } from '~frame/Extensions/layouts/index.ts';
 import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
-import PageLoader from '~v5/common/PageLoader';
-import CardConnectWallet from '~v5/shared/CardConnectWallet';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
+import PageLoader from '~v5/common/PageLoader/index.ts';
+import CardConnectWallet from '~v5/shared/CardConnectWallet/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName = 'frame.v5.OnboardingPage';
 

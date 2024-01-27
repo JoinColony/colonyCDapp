@@ -5,14 +5,14 @@ import { object, string } from 'yup';
 
 // Do not import these from `./hooks` to avoid circular dependencies
 
-import { MAX_ANNOTATION_LENGTH } from '~constants';
-import { ACTION, Action } from '~constants/actions';
-import { useColonyContext } from '~context/ColonyContext';
-import { stripHTMLFromText } from '~utils/elements';
-import { formatText } from '~utils/intl';
+import { ACTION, Action } from '~constants/actions.ts';
+import { MAX_ANNOTATION_LENGTH } from '~constants/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { stripHTMLFromText } from '~utils/elements.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { permissionsValidationSchema } from './hooks/usePermissionsValidation';
-import { reputationValidationSchema } from './hooks/useReputationValidation';
+import { permissionsValidationSchema } from './hooks/usePermissionsValidation.ts';
+import { reputationValidationSchema } from './hooks/useReputationValidation.ts';
 
 export const ACTION_TYPE_FIELD_NAME = 'actionType';
 export const DECISION_METHOD_FIELD_NAME = 'decisionMethod';

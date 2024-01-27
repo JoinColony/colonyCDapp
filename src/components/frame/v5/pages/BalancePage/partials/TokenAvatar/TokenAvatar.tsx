@@ -2,19 +2,19 @@ import clsx from 'clsx';
 import { LockKey } from 'phosphor-react';
 import React, { FC } from 'react';
 
-import { useMobile } from '~hooks';
-import useRelativePortalElement from '~hooks/useRelativePortalElement';
-import useToggle from '~hooks/useToggle';
-import Tooltip from '~shared/Extensions/Tooltip';
-import TokenIcon from '~shared/TokenIcon';
-import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';
-import { formatText } from '~utils/intl';
-import CopyableAddress from '~v5/shared/CopyableAddress';
-import MenuContainer from '~v5/shared/MenuContainer';
-import Modal from '~v5/shared/Modal';
-import Portal from '~v5/shared/Portal';
+import { useMobile } from '~hooks/index.ts';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import TokenInfo from '~shared/TokenInfoPopover/TokenInfo.tsx';
+import { formatText } from '~utils/intl.ts';
+import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
+import Portal from '~v5/shared/Portal/index.ts';
 
-import { TokenAvatarProps } from './types';
+import { TokenAvatarProps } from './types.ts';
 
 const displayName = 'v5.pages.BalancePage.partials.TokenAvatar';
 

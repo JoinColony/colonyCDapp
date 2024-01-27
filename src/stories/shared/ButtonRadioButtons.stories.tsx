@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons';
+import ButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

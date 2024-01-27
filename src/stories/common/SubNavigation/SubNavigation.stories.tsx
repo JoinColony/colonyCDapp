@@ -1,4 +1,4 @@
-import SubNavigation from './SubNavigation';
+import SubNavigation from './SubNavigation.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

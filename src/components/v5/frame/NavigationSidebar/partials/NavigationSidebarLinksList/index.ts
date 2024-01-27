@@ -1,1 +1,1 @@
-export { default } from './NavigationSidebarLinksList';
+export { default } from './NavigationSidebarLinksList.tsx';

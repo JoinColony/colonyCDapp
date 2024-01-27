@@ -5,7 +5,7 @@ import {
   OnBeforeCloseCallback,
   RefRegistryEntry,
   UseToggleReturnType,
-} from './types';
+} from './types.ts';
 
 let documentMousedownHandlerRegistered = false;
 let htmlElementInstance: HTMLElement | null = null;

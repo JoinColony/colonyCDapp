@@ -1,6 +1,6 @@
-import { EmptyContentProps } from '~v5/common/EmptyContent/types';
-import { MemberCardListItem } from '~v5/common/MemberCardList/types';
-import { TextButtonProps } from '~v5/shared/Button/types';
+import { EmptyContentProps } from '~v5/common/EmptyContent/types.ts';
+import { MemberCardListItem } from '~v5/common/MemberCardList/types.ts';
+import { TextButtonProps } from '~v5/shared/Button/types.ts';
 
 export type MembersTabContentListItem = Omit<
   MemberCardListItem,

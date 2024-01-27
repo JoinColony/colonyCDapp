@@ -7,11 +7,11 @@ import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
-} from '~constants';
-import { Address } from '~types';
-import { Colony, ColonyBalances, Token } from '~types/graphql';
+} from '~constants/index.ts';
+import { Colony, ColonyBalances, Token } from '~types/graphql.ts';
+import { Address } from '~types/index.ts';
 
-import { notNull } from './arrays';
+import { notNull } from './arrays/index.ts';
 
 export const getBalanceForTokenAndDomain = (
   balances: ColonyBalances | null | undefined,

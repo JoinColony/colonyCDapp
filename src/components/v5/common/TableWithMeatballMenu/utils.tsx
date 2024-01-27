@@ -2,10 +2,10 @@ import { ColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React from 'react';
 
-import MeatBallMenu from '~v5/shared/MeatBallMenu';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
-import { MEATBALL_MENU_COLUMN_ID } from './consts';
-import { TableWithMeatballMenuProps } from './types';
+import { MEATBALL_MENU_COLUMN_ID } from './consts.ts';
+import { TableWithMeatballMenuProps } from './types.ts';
 
 export const makeMenuColumn = <T,>(
   helper: ColumnHelper<T>,

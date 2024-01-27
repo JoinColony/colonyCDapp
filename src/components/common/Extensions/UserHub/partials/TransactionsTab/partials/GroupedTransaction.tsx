@@ -3,21 +3,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import { TransactionType } from '~redux/immutable';
-import { arrayToObject } from '~utils/arrays';
-import { formatText } from '~utils/intl';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { TransactionType } from '~redux/immutable/index.ts';
+import { arrayToObject } from '~utils/arrays/index.ts';
+import { formatText } from '~utils/intl.ts';
 
 import {
   getActiveTransactionIdx,
   getGroupKey,
   getGroupStatus,
   getGroupValues,
-} from '../transactionGroup';
-import { GroupedTransactionProps } from '../types';
+} from '../transactionGroup.ts';
+import { GroupedTransactionProps } from '../types.ts';
 
-import GroupedTransactionContent from './GroupedTransactionContent';
-import TransactionStatus from './TransactionStatus';
+import GroupedTransactionContent from './GroupedTransactionContent.tsx';
+import TransactionStatus from './TransactionStatus.tsx';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';

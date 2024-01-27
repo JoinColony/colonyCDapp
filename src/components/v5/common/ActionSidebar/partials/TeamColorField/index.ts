@@ -1,1 +1,1 @@
-export { default } from './TeamColorField';
+export { default } from './TeamColorField.tsx';

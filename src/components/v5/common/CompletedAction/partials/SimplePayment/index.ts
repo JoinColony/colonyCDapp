@@ -1,1 +1,1 @@
-export { default } from './SimplePayment';
+export { default } from './SimplePayment.tsx';

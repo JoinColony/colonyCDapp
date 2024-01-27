@@ -9,12 +9,12 @@ import {
   Message,
   SimpleMessageValues,
   UniversalMessageValues,
-} from '~types';
+} from '~types/index.ts';
 
-import actionMessages from '../i18n/en-actions';
-import eventsMessages from '../i18n/en-events';
-import motionStatesMessages from '../i18n/en-motion-states';
-import systemMessages from '../i18n/en-system-messages';
+import actionMessages from '../i18n/en-actions.ts';
+import eventsMessages from '../i18n/en-events.ts';
+import motionStatesMessages from '../i18n/en-motion-states.ts';
+import systemMessages from '../i18n/en-system-messages.ts';
 import colonyMessages from '../i18n/en.json';
 
 // https://formatjs.io/docs/intl

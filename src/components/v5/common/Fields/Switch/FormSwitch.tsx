@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 
-import Switch from './Switch';
-import { FormSwitchProps } from './types';
+import Switch from './Switch.tsx';
+import { FormSwitchProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.FormSwitch';
 

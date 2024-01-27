@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { DEFAULT_MAX_CHAR_NUMBER } from '../consts';
-import { CharacterNumbersProps } from '../types';
+import { DEFAULT_MAX_CHAR_NUMBER } from '../consts.ts';
+import { CharacterNumbersProps } from '../types.ts';
 
 const displayName = 'v5.common.Fields.partials.CharacterNumbers';
 

@@ -8,15 +8,15 @@ import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ColonyContributorFragment } from '~gql';
-import { useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
-import EmptyContent from '~v5/common/EmptyContent';
-import Filter from '~v5/common/Filter';
-import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
-import Button from '~v5/shared/Button';
+import { useMobile } from '~hooks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import Filter from '~v5/common/Filter/index.ts';
+import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { useVerifiedTableColumns } from './hooks';
-import { TableProps } from './types';
+import { useVerifiedTableColumns } from './hooks.tsx';
+import { TableProps } from './types.ts';
 
 const displayName = 'v5.pages.VerifiedPage.partials.VerifiedTable';
 

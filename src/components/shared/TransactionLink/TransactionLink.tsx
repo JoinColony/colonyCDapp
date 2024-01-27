@@ -1,9 +1,9 @@
 import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
-import ExternalLink from '~shared/ExternalLink';
-import { SimpleMessageValues } from '~types';
-import { getBlockExplorerLink } from '~utils/external';
+import ExternalLink from '~shared/ExternalLink/index.ts';
+import { SimpleMessageValues } from '~types/index.ts';
+import { getBlockExplorerLink } from '~utils/external/index.ts';
 
 interface Props {
   /** Allows for link style customization (Eg: we need to disguise the link as a button)

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types';
+import { SimpleMessageValues } from '~types/index.ts';
 
 interface Props {
   /** Render a react-node into the link */

@@ -1,4 +1,4 @@
-import { Token } from '~types/graphql';
+import { Token } from '~types/graphql.ts';
 
 export enum TokenChoice {
   Create = 'create',

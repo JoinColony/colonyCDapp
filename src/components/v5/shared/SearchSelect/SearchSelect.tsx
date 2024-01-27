@@ -3,21 +3,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import { SpinnerLoader } from '~shared/Preloaders';
-import { formatText } from '~utils/intl';
-import EmptyContent from '~v5/common/EmptyContent';
-import Avatar from '~v5/shared/Avatar';
-import Portal from '~v5/shared/Portal';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { formatText } from '~utils/intl.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import Avatar from '~v5/shared/Avatar/index.ts';
+import Portal from '~v5/shared/Portal/index.ts';
 
-import MenuContainer from '../MenuContainer';
+import MenuContainer from '../MenuContainer/index.ts';
 
-import { useSearchSelect } from './hooks';
-import SearchInput from './partials/SearchInput';
-import SearchItem from './partials/SearchItem';
-import { SearchSelectProps } from './types';
+import { useSearchSelect } from './hooks.ts';
+import SearchInput from './partials/SearchInput/index.ts';
+import SearchItem from './partials/SearchItem/index.ts';
+import { SearchSelectProps } from './types.ts';
 
 const displayName = 'v5.SearchSelect';
 

@@ -4,11 +4,11 @@ import moveDecimal from 'move-decimal-point';
 import { TestContext } from 'yup';
 
 import { ColonyFragment } from '~gql';
-import { notNull } from '~utils/arrays';
+import { notNull } from '~utils/arrays/index.ts';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
-} from '~utils/tokens';
+} from '~utils/tokens.ts';
 
 export const hasEnoughFundsValidation = (
   value: number | null | undefined,

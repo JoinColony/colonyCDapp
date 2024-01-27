@@ -6,17 +6,17 @@ import {
 } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context';
-import { intArrayToBytes32 } from '~utils/web3';
+import { ColonyManager } from '~context/index.ts';
+import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
-import { ActionTypes } from '../../actionTypes';
-import { Action } from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+import { Action } from '../../types/actions/index.ts';
 import {
   ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   modifyParams,
   putError,
@@ -24,7 +24,7 @@ import {
   takeFrom,
   getColonyManager,
   initiateTransaction,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* extensionEnable({
   meta,

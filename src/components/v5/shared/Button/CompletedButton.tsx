@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
 
-import IconButton from './IconButton';
-import { IconButtonProps } from './types';
+import IconButton from './IconButton.tsx';
+import { IconButtonProps } from './types.ts';
 
 const displayName = 'v5.Button.CompleteButton';
 

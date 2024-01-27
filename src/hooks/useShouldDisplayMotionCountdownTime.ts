@@ -1,6 +1,6 @@
-import { MotionState } from '~utils/colonyMotions';
+import { MotionState } from '~utils/colonyMotions.ts';
 
-import useEnabledExtensions from './useEnabledExtensions';
+import useEnabledExtensions from './useEnabledExtensions.tsx';
 
 const useShouldDisplayMotionCountdownTime = (
   motionState: MotionState | null,

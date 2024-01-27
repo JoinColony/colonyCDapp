@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppContext } from '~context/AppContext';
+import { useAppContext } from '~context/AppContext.tsx';
 import {
   useCreateColonyContributorMutation,
   useGetColonyContributorQuery,
   useUpdateColonyContributorMutation,
 } from '~gql';
-import { CREATE_PROFILE_ROUTE } from '~routes';
-import { Colony } from '~types/graphql';
-import { getColonyContributorId } from '~utils/members';
-import { handleNewUser } from '~utils/newUser';
+import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
+import { Colony } from '~types/graphql.ts';
+import { getColonyContributorId } from '~utils/members.ts';
+import { handleNewUser } from '~utils/newUser.ts';
 
-import { useCanJoinColony } from './useCanInteractWithColony';
+import { useCanJoinColony } from './useCanInteractWithColony.ts';
 
 const useColonySubscription = (colony?: Colony) => {
   const { colonyAddress = '' } = colony ?? {};

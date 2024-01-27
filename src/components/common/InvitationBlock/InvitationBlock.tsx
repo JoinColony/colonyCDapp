@@ -1,12 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext';
-import useBaseUrl from '~hooks/useBaseUrl';
-import useCopyToClipboard from '~hooks/useCopyToClipboard';
-import { CREATE_COLONY_ROUTE_BASE } from '~routes';
-import Button from '~v5/shared/Button';
-import CardWithCallout from '~v5/shared/CardWithCallout';
+import { useAppContext } from '~context/AppContext.tsx';
+import useBaseUrl from '~hooks/useBaseUrl.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { CREATE_COLONY_ROUTE_BASE } from '~routes/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
 
 const displayName = 'common.InvitationBlock';
 

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
 
-import Button from '~v5/shared/Button';
-import CardWithCallout from '~v5/shared/CardWithCallout';
+import Button from '~v5/shared/Button/index.ts';
+import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
 
 const displayName = 'v5.shared.CardConnectWallet';
 

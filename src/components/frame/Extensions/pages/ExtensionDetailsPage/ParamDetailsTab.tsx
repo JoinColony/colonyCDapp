@@ -2,7 +2,7 @@ import { Extension } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 import React, { FC } from 'react';
 
-import { paramsMap } from './consts';
+import { paramsMap } from './consts.ts';
 
 interface ParamDetailsTabProps {
   extension: Extension;

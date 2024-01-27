@@ -1,14 +1,14 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
+import { Action, ActionTypes, AllActions } from '~redux/index.ts';
 
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
-} from '../transactions';
-import { initiateTransaction, putError } from '../utils';
+} from '../transactions/index.ts';
+import { initiateTransaction, putError } from '../utils/index.ts';
 
 function* lockExpenditure({
   payload: { colonyAddress, nativeExpenditureId },

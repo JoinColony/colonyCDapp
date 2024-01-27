@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 
-import { formatText } from '~utils/intl';
-import { SelectOption } from '~v5/common/Fields/Select/types';
+import { formatText } from '~utils/intl.ts';
+import { SelectOption } from '~v5/common/Fields/Select/types.ts';
 
 const actionMessages = defineMessages({
   banMember: {

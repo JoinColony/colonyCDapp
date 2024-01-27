@@ -1,4 +1,4 @@
-import Breadcrumbs from '~v5/shared/Breadcrumbs';
+import Breadcrumbs from '~v5/shared/Breadcrumbs/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

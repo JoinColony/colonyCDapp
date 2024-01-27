@@ -1,15 +1,15 @@
 import React from 'react';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-import useAsyncFunction from '~hooks/useAsyncFunction';
-import { ActionTypes, ActionTypeString } from '~redux';
-import { ActionTransformFnType, getFormAction } from '~utils/actions';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import { ActionTypes, ActionTypeString } from '~redux/index.ts';
+import { ActionTransformFnType, getFormAction } from '~utils/actions.ts';
 
 import Form, {
   CustomSubmitErrorHandler,
   CustomSubmitHandler,
   FormProps,
-} from './Form';
+} from './Form.tsx';
 
 const displayName = 'Form.ActionForm';
 

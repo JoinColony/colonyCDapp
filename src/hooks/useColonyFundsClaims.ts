@@ -1,7 +1,7 @@
-import { ADDRESS_ZERO } from '~constants';
-import { useColonyContext } from '~context/ColonyContext';
-import { ColonyClaims, ColonyChainClaimWithToken } from '~types/graphql';
-import { notNull } from '~utils/arrays';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { ColonyClaims, ColonyChainClaimWithToken } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
 /*
  *

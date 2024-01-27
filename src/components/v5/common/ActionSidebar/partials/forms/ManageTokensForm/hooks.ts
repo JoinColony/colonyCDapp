@@ -2,19 +2,19 @@ import { Id } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
-import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
-import { notNull } from '~utils/arrays';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { mapPayload, pipe } from '~utils/actions.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 
-import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
+import { ActionFormBaseProps } from '../../../types.ts';
 
-import { validationSchema, ManageTokensFormValues } from './consts';
-import { getManageTokensPayload } from './utils';
+import { validationSchema, ManageTokensFormValues } from './consts.ts';
+import { getManageTokensPayload } from './utils.tsx';
 
 export const useManageTokens = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],

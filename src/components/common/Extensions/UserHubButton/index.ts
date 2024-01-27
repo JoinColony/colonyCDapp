@@ -1,1 +1,1 @@
-export { default } from './UserHubButton';
+export { default } from './UserHubButton.tsx';

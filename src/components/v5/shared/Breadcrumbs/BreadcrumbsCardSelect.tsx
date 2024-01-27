@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import { CardSelect } from '~v5/common/Fields/CardSelect';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { CardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import Link from '../Link';
+import Link from '../Link/index.ts';
 
-import { BreadCrumbsCardSelectItem } from './types';
+import { BreadCrumbsCardSelectItem } from './types.ts';
 
 const displayName = 'v5.Breadcrumbs.BreadcrumbsCardSelect';
 

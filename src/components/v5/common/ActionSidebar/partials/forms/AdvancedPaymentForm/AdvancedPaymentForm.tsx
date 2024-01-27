@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
 
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
+import { useDecisionMethods } from '../../../hooks/index.ts';
+import { ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
 
-import { useAdvancedPayment } from './hooks';
-import AdvancedPaymentRecipientsField from './partials/AdvancedPaymentRecipientsField';
+import { useAdvancedPayment } from './hooks.ts';
+import AdvancedPaymentRecipientsField from './partials/AdvancedPaymentRecipientsField/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.AdvancedPaymentForm';
 

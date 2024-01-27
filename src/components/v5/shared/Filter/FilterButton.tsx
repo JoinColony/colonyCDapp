@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../Button/index.ts';
 
-import { FilterButtonProps } from './types';
+import { FilterButtonProps } from './types.ts';
 
 const displayName = 'v5.Filter.FilterButton';
 

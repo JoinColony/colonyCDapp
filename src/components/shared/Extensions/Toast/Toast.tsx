@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import Link from '~v5/shared/Link';
+import Icon from '~shared/Icon/index.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import { ToastProps } from './types';
+import { ToastProps } from './types.ts';
 
 const displayName = 'Extensions.Toast';
 

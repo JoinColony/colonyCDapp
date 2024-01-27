@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { PropsWithChildren, FC } from 'react';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import Icon from '~shared/Icon';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import Icon from '~shared/Icon/index.ts';
 
-import { SubNavigationItemProps } from './types';
+import { SubNavigationItemProps } from './types.ts';
 
 import styles from './SubNavigationItemMobile.module.css';
 

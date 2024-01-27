@@ -1,20 +1,20 @@
 import { CopySimple, Door, Rocket, ShareNetwork, Smiley } from 'phosphor-react';
 import { useLocation } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { useColonyDashboardContext } from '~context/ColonyDashboardContext';
-import { useMobile } from '~hooks';
-import useCopyToClipboard from '~hooks/useCopyToClipboard';
-import { COLONY_DETAILS_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyDashboardContext } from '~context/ColonyDashboardContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
 import {
   DropdownMenuProps,
   DropdownMenuGroup,
   DropdownMenuItem,
-} from '~v5/common/DropdownMenu/types';
-import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
+} from '~v5/common/DropdownMenu/types.ts';
+import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 
-import { sortExternalLinks } from './helpers';
+import { sortExternalLinks } from './helpers.ts';
 
 export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
   const isMobile = useMobile();

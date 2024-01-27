@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
 import styles from './StarRating.css';
 

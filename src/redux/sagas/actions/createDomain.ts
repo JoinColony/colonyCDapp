@@ -6,25 +6,25 @@ import {
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext, ColonyManager } from '~context';
+import { ContextModule, getContext, ColonyManager } from '~context/index.ts';
 import {
   CreateDomainMetadataDocument,
   CreateDomainMetadataMutation,
   CreateDomainMetadataMutationVariables,
 } from '~gql';
-import { Action, ActionTypes, AllActions } from '~redux';
 import {
   transactionAddParams,
   transactionPending,
-} from '~redux/actionCreators';
-import { getDomainDatabaseId } from '~utils/databaseId';
-import { toNumber } from '~utils/numbers';
+} from '~redux/actionCreators/index.ts';
+import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { getDomainDatabaseId } from '~utils/databaseId.ts';
+import { toNumber } from '~utils/numbers.ts';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   initiateTransaction,
   putError,
@@ -32,7 +32,7 @@ import {
   uploadAnnotation,
   getColonyManager,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* createDomainAction({
   payload: {

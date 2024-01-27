@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { ContextModule, getContext } from '~context';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
   CreateExpenditureMetadataMutation,
@@ -10,10 +10,10 @@ import {
 import {
   ExpenditurePayoutFieldValue,
   ExpenditureStageFieldValue,
-} from '~types/expenditures';
-import { Expenditure } from '~types/graphql';
-import { MethodParams } from '~types/transactions';
-import { getExpenditureDatabaseId } from '~utils/databaseId';
+} from '~types/expenditures.ts';
+import { Expenditure } from '~types/graphql.ts';
+import { MethodParams } from '~types/transactions.ts';
+import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values

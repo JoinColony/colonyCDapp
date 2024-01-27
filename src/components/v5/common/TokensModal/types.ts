@@ -1,11 +1,11 @@
 import { ObjectSchema } from 'yup';
 
-import { ActionTypes } from '~redux';
-import { Token } from '~types/graphql';
+import { ActionTypes } from '~redux/index.ts';
+import { Token } from '~types/graphql.ts';
 
-import { ModalProps } from '../../shared/Modal/types';
+import { ModalProps } from '../../shared/Modal/types.ts';
 
-import { TOKENS_MODAL_TYPES } from './consts';
+import { TOKENS_MODAL_TYPES } from './consts.ts';
 
 export type TokensModalType =
   (typeof TOKENS_MODAL_TYPES)[keyof typeof TOKENS_MODAL_TYPES];

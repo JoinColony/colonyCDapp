@@ -1,6 +1,6 @@
 import { Editor } from '@tiptap/react';
 
-import { DescriptionFieldProps } from '~v5/common/ActionSidebar/partials/DescriptionField/types';
+import { DescriptionFieldProps } from '~v5/common/ActionSidebar/partials/DescriptionField/types.ts';
 
 export type MenuBarProps = {
   editor: Editor | null;

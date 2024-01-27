@@ -1,4 +1,4 @@
-import { Permissions } from '../../types';
+import { Permissions } from '../../types.ts';
 
 export const permissions: Permissions[] = [
   {

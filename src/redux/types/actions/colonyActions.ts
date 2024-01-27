@@ -2,10 +2,9 @@ import { ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { RefObject } from 'react';
 
-import { NetworkInfo } from '~constants';
+import { NetworkInfo } from '~constants/index.ts';
 import { ExternalLink } from '~gql';
-import { ActionTypes } from '~redux';
-import { Address, WithKey } from '~types';
+import { ActionTypes } from '~redux/index.ts';
 import {
   DomainColor,
   Domain,
@@ -13,14 +12,15 @@ import {
   ColonyObjective,
   Safe,
   SafeTransactionData,
-} from '~types/graphql';
+} from '~types/graphql.ts';
+import { Address, WithKey } from '~types/index.ts';
 
 import {
   ErrorActionType,
   UniqueActionType,
   ActionTypeWithMeta,
   MetaWithSetter,
-} from './index';
+} from './index.ts';
 
 export type OneTxPaymentPayload = {
   colonyAddress: Address;

@@ -2,24 +2,24 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate, Outlet, useParams } from 'react-router-dom';
 
-import { ActionSidebarContextProvider } from '~context/ActionSidebarContext';
-import { useAppContext } from '~context/AppContext';
-import { ColonyContextProvider } from '~context/ColonyContext';
-import { ColonyCreatedModalProvider } from '~context/ColonyCreatedModalContext';
-import { ColonyDecisionProvider } from '~context/ColonyDecisionContext';
-import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext';
-import { MemberModalProvider } from '~context/MemberModalContext';
-import { TokensModalContextProvider } from '~context/TokensModalContext';
-import { UserTokenBalanceProvider } from '~context/UserTokenBalanceContext';
-import { UserTransactionContextProvider } from '~context/UserTransactionContext';
-import { ColonyLayout } from '~frame/Extensions/layouts';
-import LoadingTemplate from '~frame/LoadingTemplate';
+import { ActionSidebarContextProvider } from '~context/ActionSidebarContext/index.tsx';
+import { useAppContext } from '~context/AppContext.tsx';
+import { ColonyContextProvider } from '~context/ColonyContext.tsx';
+import { ColonyCreatedModalProvider } from '~context/ColonyCreatedModalContext.tsx';
+import { ColonyDecisionProvider } from '~context/ColonyDecisionContext.tsx';
+import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext.tsx';
+import { MemberModalProvider } from '~context/MemberModalContext.tsx';
+import { TokensModalContextProvider } from '~context/TokensModalContext.tsx';
+import { UserTokenBalanceProvider } from '~context/UserTokenBalanceContext.tsx';
+import { UserTransactionContextProvider } from '~context/UserTransactionContext.tsx';
+import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
+import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import {
   useGetColonyWhitelistByNameQuery,
   useGetFullColonyByNameQuery,
 } from '~gql';
 
-import NotFoundRoute from './NotFoundRoute';
+import NotFoundRoute from './NotFoundRoute.tsx';
 
 const displayName = 'routes.ColonyRoute';
 

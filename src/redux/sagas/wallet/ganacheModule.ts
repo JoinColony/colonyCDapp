@@ -4,7 +4,7 @@ import { createEIP1193Provider, EIP1193Provider } from '@web3-onboard/common';
 import { providers, Wallet, utils } from 'ethers';
 
 import walletIcon from '~images/icons/wallet.svg';
-import { RpcMethods } from '~types/rpcMethods';
+import { RpcMethods } from '~types/rpcMethods.ts';
 
 type CustomJsonRpcProvider = providers.JsonRpcProvider & {
   request: (args) => void;

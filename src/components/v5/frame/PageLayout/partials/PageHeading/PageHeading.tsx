@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import Breadcrumbs from '~v5/shared/Breadcrumbs';
+import Breadcrumbs from '~v5/shared/Breadcrumbs/index.ts';
 
-import { PageHeadingProps } from './types';
+import { PageHeadingProps } from './types.ts';
 
 const displayName = 'v5.frame.PageLayout.partials.PageHeading';
 

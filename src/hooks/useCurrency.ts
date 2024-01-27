@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import { Network, SupportedCurrencies } from '~gql';
-import { fetchCurrentPrice, FetchCurrentPriceArgs } from '~utils/currency';
+import {
+  fetchCurrentPrice,
+  FetchCurrentPriceArgs,
+} from '~utils/currency/index.ts';
 
 const useCurrency = ({
   contractAddress,

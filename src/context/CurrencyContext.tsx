@@ -8,10 +8,10 @@ import React, {
   useState,
 } from 'react';
 
-import { useAppContext } from '~context/AppContext';
+import { useAppContext } from '~context/AppContext.tsx';
 import { SupportedCurrencies, useUpdateUserProfileMutation } from '~gql';
-import { SetStateFn } from '~types';
-import { getUserCurrencyByLocation } from '~utils/currency';
+import { SetStateFn } from '~types/index.ts';
+import { getUserCurrencyByLocation } from '~utils/currency/index.ts';
 
 interface CurrencyContextValues {
   currency: SupportedCurrencies;

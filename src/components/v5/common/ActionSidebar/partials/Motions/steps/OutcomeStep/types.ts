@@ -1,4 +1,4 @@
-import { ColonyMotion } from '~types/graphql';
+import { ColonyMotion } from '~types/graphql.ts';
 
 export interface OutcomeStepProps {
   motionData: ColonyMotion | undefined | null;

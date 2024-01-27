@@ -1,6 +1,6 @@
-import { ActionTypes } from '~redux/actionTypes';
-import { Address } from '~types';
-import { DecisionDraft } from '~utils/decisions';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { Address } from '~types/index.ts';
+import { DecisionDraft } from '~utils/decisions.ts';
 
 export const createDecisionAction = (decision: DecisionDraft) => {
   return {

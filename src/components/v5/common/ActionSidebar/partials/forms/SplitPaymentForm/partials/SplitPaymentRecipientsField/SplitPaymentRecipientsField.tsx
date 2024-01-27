@@ -3,23 +3,23 @@ import React, { FC } from 'react';
 import { useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
-import Button from '~v5/shared/Button/Button';
+import { useMobile } from '~hooks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 
-import { DISTRIBUTION_METHOD } from '../../../../consts';
+import { DISTRIBUTION_METHOD } from '../../../../consts.tsx';
 
 import {
   useRecipientsFieldTableColumns,
   useGetTableMenuProps,
   useDistributionMethodUpdate,
-} from './hooks';
+} from './hooks.tsx';
 import {
   SplitPaymentRecipientsFieldModel,
   SplitPaymentRecipientsFieldProps,
   SplitPaymentRecipientsTableModel,
-} from './types';
+} from './types.ts';
 
 const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   name,

@@ -1,7 +1,7 @@
 import { Network } from '@colony/colony-js';
 
-import { DEFAULT_NETWORK } from '~constants';
-import { createAddress } from '~utils/web3';
+import { DEFAULT_NETWORK } from '~constants/index.ts';
+import { createAddress } from '~utils/web3/index.ts';
 
 import goerliTokenList from './tokenList.goerli.json';
 import mainnetTokenList from './tokenList.mainnet.json';

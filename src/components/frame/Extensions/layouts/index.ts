@@ -1,4 +1,4 @@
-export { default as ColonyLayout } from './ColonyLayout';
-export { default as MainLayout } from './MainLayout';
-export { default as UserNavigationWrapper } from './partials/UserNavigationWrapper';
-export { default as MainSidebar } from './MainSidebar';
+export { default as ColonyLayout } from './ColonyLayout.tsx';
+export { default as MainLayout } from './MainLayout.tsx';
+export { default as UserNavigationWrapper } from './partials/UserNavigationWrapper/index.ts';
+export { default as MainSidebar } from './MainSidebar.tsx';

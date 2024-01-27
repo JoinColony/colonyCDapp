@@ -1,11 +1,11 @@
 import { BigNumberish, utils, TypedDataField } from 'ethers';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
-import { ContextModule, getContext } from '~context';
-import { Address } from '~types';
-import { isFullWallet } from '~types/wallet';
+import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
+import { Address } from '~types/index.ts';
+import { isFullWallet } from '~types/wallet.ts';
 
-import { generateBroadcasterHumanReadableError } from './errorMessages';
+import { generateBroadcasterHumanReadableError } from './errorMessages.ts';
 
 export const getChainId = (): number => DEFAULT_NETWORK_INFO.chainId;
 

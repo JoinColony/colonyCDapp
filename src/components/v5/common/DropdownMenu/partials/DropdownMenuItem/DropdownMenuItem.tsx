@@ -4,12 +4,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CaretRight } from 'phosphor-react';
 import React, { FC } from 'react';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import useToggle from '~hooks/useToggle';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Link from '~v5/shared/Link';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import { DropdownMenuItemProps } from './types';
+import { DropdownMenuItemProps } from './types.ts';
 
 const DropdownMenuItem: FC<DropdownMenuItemProps> = (props) => {
   const [isOpen, { toggle, registerContainerRef }] = useToggle();

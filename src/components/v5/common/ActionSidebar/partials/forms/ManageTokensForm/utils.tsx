@@ -1,8 +1,8 @@
-import { ADDRESS_ZERO } from '~constants';
-import { Colony } from '~types/graphql';
-import { createAddress } from '~utils/web3';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { Colony } from '~types/graphql.ts';
+import { createAddress } from '~utils/web3/index.ts';
 
-import { ManageTokensFormValues } from './consts';
+import { ManageTokensFormValues } from './consts.ts';
 
 export const getManageTokensPayload = (
   colony: Colony,

@@ -1,4 +1,4 @@
-import { SearchSelectOption } from './types';
+import { SearchSelectOption } from './types.ts';
 
 export const sortDisabled = (options: SearchSelectOption[]) => {
   const enabled = options.filter((option) => !option.isDisabled);

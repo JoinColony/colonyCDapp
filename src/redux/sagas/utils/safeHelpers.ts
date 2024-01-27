@@ -9,16 +9,20 @@ import {
   isDev,
   NetworkInfo,
   SUPPORTED_SAFE_NETWORKS,
-} from '~constants';
-import { Address } from '~types';
-import { Safe, SafeTransactionData, SafeTransactionType } from '~types/graphql';
-import { ModuleAddress } from '~types/safes';
-import { fetchTokenFromDatabase } from '~utils/queries';
-import { getArrayFromString } from '~utils/safes';
+} from '~constants/index.ts';
+import {
+  Safe,
+  SafeTransactionData,
+  SafeTransactionType,
+} from '~types/graphql.ts';
+import { Address } from '~types/index.ts';
+import { ModuleAddress } from '~types/safes.ts';
+import { fetchTokenFromDatabase } from '~utils/queries.ts';
+import { getArrayFromString } from '~utils/safes/index.ts';
 
-import RetryProvider from '../wallet/RetryProvider';
+import RetryProvider from '../wallet/RetryProvider.ts';
 
-import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
+import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis.ts'; // Temporary
 
 export interface SafeTxData {
   title: string;

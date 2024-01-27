@@ -1,1 +1,1 @@
-export { default } from './ManagePermissionsForm';
+export { default } from './ManagePermissionsForm.tsx';

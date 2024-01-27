@@ -1,3 +1,3 @@
-export { default } from './InputBase';
-export { default as FormattedInput } from './FormattedInput';
-export { default as FormFormattedInput } from './FormFormattedInput';
+export { default } from './InputBase.tsx';
+export { default as FormattedInput } from './FormattedInput.tsx';
+export { default as FormFormattedInput } from './FormFormattedInput.tsx';

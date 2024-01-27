@@ -5,12 +5,12 @@ import {
   CORE_GAS_PRICES,
   CORE_MESSAGES,
   CORE_TRANSACTIONS,
-} from '../constants';
-import { GasPrices, GasPricesRecord } from '../immutable';
+} from '../constants.ts';
+import { GasPrices, GasPricesRecord } from '../immutable/index.ts';
 
-import { CoreDecisions, CoreDecisionsRecord } from './decisions';
-import { CoreMessages, CoreMessagesRecord } from './messages';
-import { CoreTransactions, CoreTransactionsRecord } from './transactions';
+import { CoreDecisions, CoreDecisionsRecord } from './decisions.ts';
+import { CoreMessages, CoreMessagesRecord } from './messages.ts';
+import { CoreTransactions, CoreTransactionsRecord } from './transactions.ts';
 
 type RootStateProps = {
   [CORE_GAS_PRICES]: GasPricesRecord;

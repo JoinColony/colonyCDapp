@@ -1,8 +1,8 @@
 import { Extension } from '@colony/colony-js';
 
-import { Address } from '~types';
+import { Address } from '~types/index.ts';
 
-import useExtensionsData from './useExtensionsData';
+import useExtensionsData from './useExtensionsData.ts';
 
 export interface EnabledExtensionData {
   loading: boolean;

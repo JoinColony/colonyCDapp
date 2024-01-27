@@ -1,12 +1,12 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { SetStateFn } from '~types';
-import { mapPayload } from '~utils/actions';
-import { MotionVote } from '~utils/colonyMotions';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { SetStateFn } from '~types/index.ts';
+import { mapPayload } from '~utils/actions.ts';
+import { MotionVote } from '~utils/colonyMotions.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { StakeMotionPayload } from './types';
+import { StakeMotionPayload } from './types.ts';
 
 export const getStakingTransformFn = (
   userAddress: string,

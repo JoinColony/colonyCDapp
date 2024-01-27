@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
-import { BurgerMenuProps } from './types';
+import { BurgerMenuProps } from './types.ts';
 
 const displayName = 'v5.BurgerMenu';
 

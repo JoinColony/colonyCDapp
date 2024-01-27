@@ -1,4 +1,4 @@
-import VoteChart from '~v5/shared/VoteChart';
+import VoteChart from '~v5/shared/VoteChart/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

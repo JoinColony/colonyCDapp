@@ -1,6 +1,6 @@
 import { PropsGetterArgs } from 'react-popper-tooltip';
 
-import { NetworkInfo } from '~constants';
+import { NetworkInfo } from '~constants/index.ts';
 
 export interface UserMenuProps {
   tooltipProps: (args?: PropsGetterArgs) => {

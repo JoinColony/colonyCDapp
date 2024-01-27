@@ -1,27 +1,27 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
   useSearchActionsQuery,
 } from '~gql';
-import { notNull } from '~utils/arrays';
+import { notNull } from '~utils/arrays/index.ts';
 
-import useNetworkMotionStates from '../useNetworkMotionStates';
+import useNetworkMotionStates from '../useNetworkMotionStates.ts';
 
 import {
   filterActionByMotionState,
   getActionsByPageNumber,
   getSearchActionsFilterVariable,
   makeWithMotionStateMapper,
-} from './helpers';
+} from './helpers.ts';
 import {
   ActivityFeedFilters,
   ActivityFeedOptions,
   ActivityFeedSort,
   UseActivityFeedReturn,
-} from './types';
+} from './types.ts';
 
 const ITEMS_PER_PAGE = 2;
 

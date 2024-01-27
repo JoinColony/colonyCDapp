@@ -1,12 +1,16 @@
 import { TransactionReceipt } from '@ethersproject/providers';
 
 import { TransactionStatus } from '~gql';
-import { TransactionSucceededPayload } from '~redux/types/actions/transaction';
-import { MethodParams, TxConfig, TransactionErrors } from '~types/transactions';
+import { TransactionSucceededPayload } from '~redux/types/actions/transaction.ts';
+import {
+  MethodParams,
+  TxConfig,
+  TransactionErrors,
+} from '~types/transactions.ts';
 
-import { ActionTypes } from '../actionTypes';
-import { GasPricesProps, TransactionError } from '../immutable';
-import { AllActions } from '../types/actions';
+import { ActionTypes } from '../actionTypes.ts';
+import { GasPricesProps, TransactionError } from '../immutable/index.ts';
+import { AllActions } from '../types/actions/index.ts';
 
 export const createTransactionAction = (
   id: string,

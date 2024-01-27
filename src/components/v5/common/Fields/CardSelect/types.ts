@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { UseToggleReturnType } from '~hooks/useToggle/types';
+import { UseToggleReturnType } from '~hooks/useToggle/types.ts';
 
-import { BaseFieldProps } from '../types';
+import { BaseFieldProps } from '../types.ts';
 
 export interface CardSelectOption<TValue> {
   value: TValue;

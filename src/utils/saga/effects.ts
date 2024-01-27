@@ -12,7 +12,7 @@ import {
   select,
 } from 'redux-saga/effects';
 
-import { ErrorActionType, TakeFilter, Action } from '~redux';
+import { ErrorActionType, TakeFilter, Action } from '~redux/index.ts';
 
 /*
  * Effect to take a specific action from a channel.

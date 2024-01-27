@@ -15,9 +15,9 @@ import {
   // COLONY_REPUTATION_ROUTE,
   COLONY_TEAMS_ROUTE,
   // COLONY_VERIFIED_ROUTE,
-} from '~routes/routeConstants';
-import { formatText } from '~utils/intl';
-import { NavigationSidebarLinksListProps } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/types';
+} from '~routes/routeConstants.ts';
+import { formatText } from '~utils/intl.ts';
+import { NavigationSidebarLinksListProps } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/types.ts';
 
 export const membersMenu: NavigationSidebarLinksListProps['items'] = [
   {

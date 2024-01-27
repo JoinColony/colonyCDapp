@@ -1,4 +1,4 @@
-import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

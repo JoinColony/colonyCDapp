@@ -2,13 +2,13 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
-import { useAppContext } from '~context/AppContext';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext';
-import LoadingTemplate from '~frame/LoadingTemplate';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
+import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import UserAdvancedSettings from './partials/UserAdvancedSettings';
+import UserAdvancedSettings from './partials/UserAdvancedSettings/index.ts';
 
 const displayName = 'v5.pages.UserAdvancedPage';
 

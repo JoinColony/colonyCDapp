@@ -3,18 +3,18 @@ import pick from 'lodash/pick';
 import React, { useMemo, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useColonyContext } from '~context/ColonyContext';
-import useWrapWithRef from '~hooks/useWrapWithRef';
-import { formatText } from '~utils/intl';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
-import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useWrapWithRef from '~hooks/useWrapWithRef.ts';
+import { formatText } from '~utils/intl.ts';
+import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
   AdvancedPaymentRecipientsFieldModel,
   AdvancedPaymentRecipientsTableModel,
-} from './types';
+} from './types.ts';
 
 export const useRecipientsFieldTableColumns = (
   name: string,

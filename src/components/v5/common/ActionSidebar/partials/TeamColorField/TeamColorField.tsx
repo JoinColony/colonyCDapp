@@ -2,17 +2,17 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import useColors from '~hooks/useColors';
-import useRelativePortalElement from '~hooks/useRelativePortalElement';
-import useToggle from '~hooks/useToggle';
-import { formatText } from '~utils/intl';
-import MenuContainer from '~v5/shared/MenuContainer';
-import Portal from '~v5/shared/Portal';
-import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import useColors from '~hooks/useColors.ts';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
+import Portal from '~v5/shared/Portal/index.ts';
+import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem.tsx';
 
-import TeamColorBadge from './partials/TeamColorBadge';
-import { TeamColourFieldProps } from './types';
+import TeamColorBadge from './partials/TeamColorBadge.tsx';
+import { TeamColourFieldProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColorField';
 

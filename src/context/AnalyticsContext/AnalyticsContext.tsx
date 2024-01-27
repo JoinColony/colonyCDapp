@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { useBeamer } from '~hooks/useBeamer';
+import { useBeamer } from '~hooks/useBeamer.ts';
 
-import { AnalyticsEvent } from './types';
+import { AnalyticsEvent } from './types.ts';
 
 interface AnalyticsContextValue {
   trackEvent: (event: AnalyticsEvent) => void;

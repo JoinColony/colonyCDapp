@@ -1,22 +1,22 @@
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
-import { ActionTypes } from '~redux';
-import { ActionForm } from '~shared/Fields';
-import Icon from '~shared/Icon';
-import { MotionState } from '~utils/colonyMotions';
-import { formatText } from '~utils/intl';
-import { getSafePollingInterval } from '~utils/queries';
-import PillsBase from '~v5/common/Pills';
-import Button, { TxButton } from '~v5/shared/Button';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { ActionForm } from '~shared/Fields/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
+import { formatText } from '~utils/intl.ts';
+import { getSafePollingInterval } from '~utils/queries.ts';
+import PillsBase from '~v5/common/Pills/index.ts';
+import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 
-import DescriptionList from '../VotingStep/partials/DescriptionList';
+import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
-import { useClaimConfig, useFinalizeStep } from './hooks';
-import { FinalizeStepProps, FinalizeStepSections } from './types';
+import { useClaimConfig, useFinalizeStep } from './hooks.tsx';
+import { FinalizeStepProps, FinalizeStepSections } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';

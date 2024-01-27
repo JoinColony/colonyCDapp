@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 
-import type { InstalledExtensionData } from '~types/extensions';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
+import type { InstalledExtensionData } from '~types/extensions.ts';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 
-import { PanelTypeProps } from '../types';
+import { PanelTypeProps } from '../types.ts';
 
 import styles from '../SpecificSidePanel.module.css';
 

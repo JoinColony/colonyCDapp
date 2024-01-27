@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { Record } from 'immutable';
 
-import { DefaultValues, RecordToJS } from '~types';
+import { DefaultValues, RecordToJS } from '~types/index.ts';
 
 export interface GasPricesProps {
   cheaper?: BigNumber;

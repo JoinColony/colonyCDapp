@@ -1,19 +1,23 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ColonyAction } from '~types/graphql';
-import { formatText } from '~utils/intl';
-import UserPopover from '~v5/shared/UserPopover';
+import { ColonyAction } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
+import {
+  ActionDataGrid,
+  ActionSubtitle,
+  ActionTitle,
+} from '../Blocks/index.ts';
 import {
   ActionTypeRow,
   AmountRow,
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
-} from '../rows';
-import { getFormattedTokenAmount } from '../utils';
+} from '../rows/index.ts';
+import { getFormattedTokenAmount } from '../utils.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.MintTokens';
 

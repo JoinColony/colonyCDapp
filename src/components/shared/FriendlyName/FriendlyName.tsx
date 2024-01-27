@@ -2,11 +2,11 @@ import { AddressZero } from '@ethersproject/constants';
 import React, { useRef, useEffect } from 'react';
 
 import { SimpleTarget } from '~gql';
-import MaskedAddress from '~shared/MaskedAddress';
-import { Colony, ColonyExtension, Token, User } from '~types/graphql';
-import { removeValueUnits } from '~utils/css';
+import MaskedAddress from '~shared/MaskedAddress/index.ts';
+import { Colony, ColonyExtension, Token, User } from '~types/graphql.ts';
+import { removeValueUnits } from '~utils/css/index.ts';
 
-import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers';
+import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers.ts';
 
 import styles from './FriendlyName.css';
 

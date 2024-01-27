@@ -3,15 +3,15 @@ import { isAddress } from 'ethers/lib/utils';
 import React, { FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import useRelativePortalElement from '~hooks/useRelativePortalElement';
-import useToggle from '~hooks/useToggle';
-import { formatText } from '~utils/intl';
-import { FIELD_STATE } from '~v5/common/Fields/consts';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { FIELD_STATE } from '~v5/common/Fields/consts.ts';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
-import { useTokenSelect } from './hooks';
-import { TokenSelectProps } from './types';
+import { useTokenSelect } from './hooks.tsx';
+import { TokenSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 

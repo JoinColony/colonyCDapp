@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext';
-import { formatText } from '~utils/intl';
-import EmptyContent from '~v5/common/EmptyContent';
+import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
-import { useTransactionsListObserver } from './hooks';
-import TransactionList from './partials/TransactionList';
-import { TransactionsProps } from './types';
+import { useTransactionsListObserver } from './hooks.ts';
+import TransactionList from './partials/TransactionList.tsx';
+import { TransactionsProps } from './types.ts';
 
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 

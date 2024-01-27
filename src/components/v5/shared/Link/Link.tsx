@@ -3,9 +3,9 @@ import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 import { Link as LinkComponent } from 'react-router-dom';
 
-import { isUrlExternal } from '~utils/isUrlExternal';
+import { isUrlExternal } from '~utils/isUrlExternal.ts';
 
-import { LinkProps } from './types';
+import { LinkProps } from './types.ts';
 
 const displayName = 'v5.Link';
 

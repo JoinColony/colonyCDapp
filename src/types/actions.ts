@@ -1,6 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { ColonyActionType } from './graphql';
+import { ColonyActionType } from './graphql.ts';
 
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',

@@ -1,17 +1,17 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import useRelativePortalElement from '~hooks/useRelativePortalElement';
-import useToggle from '~hooks/useToggle';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import Portal from '~v5/shared/Portal';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Portal from '~v5/shared/Portal/index.ts';
 
-import HoverWidthWrapper from '../HoverWidthWrapper';
-import MenuContainer from '../MenuContainer';
+import HoverWidthWrapper from '../HoverWidthWrapper/index.ts';
+import MenuContainer from '../MenuContainer/index.ts';
 
-import { MeatBallMenuProps } from './types';
-import { DEFAULT_ITEM_WRAPPER_RENDERER } from './utils';
+import { MeatBallMenuProps } from './types.ts';
+import { DEFAULT_ITEM_WRAPPER_RENDERER } from './utils.tsx';
 
 const displayName = 'v5.shared.MeatBallMenu';
 

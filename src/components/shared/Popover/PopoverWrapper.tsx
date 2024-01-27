@@ -9,14 +9,14 @@ import React, {
 } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types';
-import { getMainClasses } from '~utils/css';
+import { SimpleMessageValues } from '~types/index.ts';
+import { getMainClasses } from '~utils/css/index.ts';
 
-import getPopoverArrowClasses from './getPopoverArrowClasses';
+import getPopoverArrowClasses from './getPopoverArrowClasses.ts';
 import {
   PopoverAppearanceType,
   PopoverContent as PopoverContentType,
-} from './types';
+} from './types.ts';
 
 import styles from './PopoverWrapper.css';
 

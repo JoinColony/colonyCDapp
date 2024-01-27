@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { isInstalledExtensionData } from '~utils/extensions';
-import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
+import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 
 const useExtensionsBadge = (extensionData) => {
   const { formatMessage } = useIntl();

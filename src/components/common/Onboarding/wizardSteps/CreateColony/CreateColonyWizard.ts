@@ -1,11 +1,11 @@
-import { StepType } from '~shared/Wizard/withWizard';
+import { StepType } from '~shared/Wizard/withWizard.tsx';
 
-import StepColonyName from './StepColonyName';
-import StepConfirmAllInput from './StepConfirmAllInput';
-import StepConfirmTransactions from './StepConfirmTransactions';
-import StepCreateToken from './StepCreateToken';
-import StepTokenChoice from './StepTokenChoice';
-import { TokenChoice } from './types';
+import StepColonyName from './StepColonyName.tsx';
+import StepConfirmAllInput from './StepConfirmAllInput.tsx';
+import StepConfirmTransactions from './StepConfirmTransactions.tsx';
+import StepCreateToken from './StepCreateToken.tsx';
+import StepTokenChoice from './StepTokenChoice.tsx';
+import { TokenChoice } from './types.ts';
 
 export const stepArray: StepType[] = [
   StepColonyName,

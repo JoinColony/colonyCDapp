@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 import { object, string } from 'yup';
 
 import { GetProfileByEmailDocument, GetUserByNameDocument } from '~gql';
-import { formatText } from '~utils/intl';
-import { createYupTestFromQuery } from '~utils/yup/tests';
+import { formatText } from '~utils/intl.ts';
+import { createYupTestFromQuery } from '~utils/yup/tests/index.ts';
 
 export const MAX_USERNAME_LENGTH = 30;
 

@@ -1,1 +1,1 @@
-export { default } from './UnlockTokenForm';
+export { default } from './UnlockTokenForm.tsx';

@@ -1,4 +1,4 @@
-import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge';
+import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -1,7 +1,7 @@
 import { Placement as PlacementType } from '@popperjs/core';
 import camelcase from 'camelcase';
 
-import { capitalizeFirstLetter } from '~utils/strings';
+import { capitalizeFirstLetter } from '~utils/strings/index.ts';
 
 /**
  * This is a stripped down version of the `getMainClasses` method, that is specifically

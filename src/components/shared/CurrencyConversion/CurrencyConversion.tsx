@@ -2,10 +2,10 @@ import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
 import React from 'react';
 
-import { useCurrencyContext } from '~context/CurrencyContext';
-import useCurrency from '~hooks/useCurrency';
-import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral';
-import { FetchCurrentPriceArgs } from '~utils/currency';
+import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import useCurrency from '~hooks/useCurrency.ts';
+import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral.tsx';
+import { FetchCurrentPriceArgs } from '~utils/currency/index.ts';
 
 const displayName = 'CurrencyConversion';
 

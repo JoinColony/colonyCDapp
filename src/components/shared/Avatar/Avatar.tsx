@@ -1,9 +1,9 @@
 import React, { CSSProperties, ReactNode } from 'react';
 
-import Icon from '~shared/Icon';
-import { AvatarSize } from '~v5/shared/Avatar/types';
+import Icon from '~shared/Icon/index.ts';
+import { AvatarSize } from '~v5/shared/Avatar/types.ts';
 
-import getIcon from './identicon';
+import getIcon from './identicon.ts';
 
 import styles from './Avatar.module.css';
 

@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { DomainColor } from '~gql';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { getTeamBadgeStyles, getTeamColor } from '~utils/teams';
-import PillsBase from '~v5/common/Pills/PillsBase';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { getTeamBadgeStyles, getTeamColor } from '~utils/teams.ts';
+import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
-import { TeamColourBadgeProps } from '../types';
+import { TeamColourBadgeProps } from '../types.ts';
 
 const displayName =
   'v5.common.ActionsContent.partials.TeamColourField.partials.TeamColorBadge';

@@ -10,12 +10,12 @@ import {
   DefaultValues,
   RecordToJS,
   SimpleMessageValues,
-} from '~types';
+} from '~types/index.ts';
 import {
   MethodParams,
   ExtendedClientType,
   TransactionErrors,
-} from '~types/transactions';
+} from '~types/transactions.ts';
 
 export interface TransactionError {
   type: TransactionErrors;

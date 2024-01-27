@@ -3,11 +3,11 @@ import { CaretLeft, CaretRight } from 'phosphor-react';
 import React, { FC, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import BurgerMenu from '~v5/shared/BurgerMenu';
-import PopoverBase from '~v5/shared/PopoverBase';
+import BurgerMenu from '~v5/shared/BurgerMenu/index.ts';
+import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import DropdownMenuItem from './partials/DropdownMenuItem';
-import { DropdownMenuProps } from './types';
+import DropdownMenuItem from './partials/DropdownMenuItem/index.ts';
+import { DropdownMenuProps } from './types.ts';
 
 const DropdownMenu: FC<DropdownMenuProps> = ({
   groups,

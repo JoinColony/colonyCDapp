@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import { ReactNode } from 'react';
 
-import { AnyExtensionData } from '~types/extensions';
+import { AnyExtensionData } from '~types/extensions.ts';
 
 export interface PermissionsProps {
   roles: ColonyRole[];

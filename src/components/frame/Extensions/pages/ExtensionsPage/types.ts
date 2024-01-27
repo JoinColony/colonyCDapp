@@ -1,4 +1,4 @@
-import { ExtensionItemProps } from '~common/Extensions/ExtensionItem/types';
+import { ExtensionItemProps } from '~common/Extensions/ExtensionItem/types.ts';
 
 export interface ExtensionItem extends ExtensionItemProps {
   id: string;

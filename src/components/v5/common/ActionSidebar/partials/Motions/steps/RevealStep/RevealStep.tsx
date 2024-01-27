@@ -2,23 +2,23 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { useAppContext } from '~context/AppContext';
-import useToggle from '~hooks/useToggle';
-import { ActionTypes } from '~redux';
-import { ActionForm } from '~shared/Fields';
-import Numeral from '~shared/Numeral';
-import { formatText } from '~utils/intl';
-import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
-import Button from '~v5/shared/Button';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-import ProgressBar from '~v5/shared/ProgressBar';
-import StatusText from '~v5/shared/StatusText';
+import { useAppContext } from '~context/AppContext.tsx';
+import useToggle from '~hooks/useToggle/index.ts';
+import { ActionTypes } from '~redux/index.ts';
+import { ActionForm } from '~shared/Fields/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { formatText } from '~utils/intl.ts';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import ProgressBar from '~v5/shared/ProgressBar/index.ts';
+import StatusText from '~v5/shared/StatusText/index.ts';
 
-import MotionBadge from '../../partials/MotionBadge/MotionBadge';
+import MotionBadge from '../../partials/MotionBadge/MotionBadge.tsx';
 
-import { useRevealStep } from './hooks';
-import RevealInformationList from './partials/RevealInformationList';
-import { RevealStepProps } from './types';
+import { useRevealStep } from './hooks.ts';
+import RevealInformationList from './partials/RevealInformationList.tsx';
+import { RevealStepProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';

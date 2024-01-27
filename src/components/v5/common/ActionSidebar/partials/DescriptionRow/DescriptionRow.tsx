@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
-import DescriptionField from '../DescriptionField';
+import DescriptionField from '../DescriptionField/index.ts';
 
-import { DescriptionRowProps } from './types';
+import { DescriptionRowProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';
 

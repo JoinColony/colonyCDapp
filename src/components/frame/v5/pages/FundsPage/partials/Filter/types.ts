@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Add, KeysAtLevel } from '~types/utilities';
+import { Add, KeysAtLevel } from '~types/utilities.ts';
 
 export type FilterValue = {
   [key: string]: boolean | FilterValue;

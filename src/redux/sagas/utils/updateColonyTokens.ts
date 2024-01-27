@@ -1,5 +1,5 @@
-import { ADDRESS_ZERO } from '~constants';
-import { ContextModule, getContext } from '~context';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyTokensDocument,
   CreateColonyTokensMutation,
@@ -11,9 +11,9 @@ import {
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
-import { Colony } from '~types/graphql';
-import { notNull } from '~utils/arrays';
-import { xor } from '~utils/lodash';
+import { Colony } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { xor } from '~utils/lodash.ts';
 
 /**
  * Returns an array of the token addresses currently associated with the Colony.

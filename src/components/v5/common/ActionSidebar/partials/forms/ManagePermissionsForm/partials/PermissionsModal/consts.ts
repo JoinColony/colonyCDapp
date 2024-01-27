@@ -1,5 +1,5 @@
-import { USER_ROLE } from '~constants/permissions';
-import { formatText } from '~utils/intl';
+import { USER_ROLE } from '~constants/permissions.ts';
+import { formatText } from '~utils/intl.ts';
 
 export const PERMISSIONS_MODAL_CONTENT = [
   {

@@ -4,7 +4,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import { TransactionErrors } from '~gql';
 
-import { SimpleMessageValues } from './index';
+import { SimpleMessageValues } from './index.ts';
 
 export type MethodParam = string | BigNumberish | boolean;
 

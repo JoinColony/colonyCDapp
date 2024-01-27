@@ -1,7 +1,7 @@
-import { AvatarProps } from '~shared/Avatar';
+import { AvatarProps } from '~shared/Avatar/index.ts';
 
-import { UserAvatarDetailsProps } from '../UserAvatarDetails/types';
-import { UserPopoverProps } from '../UserPopover/types';
+import { UserAvatarDetailsProps } from '../UserAvatarDetails/types.ts';
+import { UserPopoverProps } from '../UserPopover/types.ts';
 
 export interface UserAvatarPopoverProps
   extends Omit<UserPopoverProps, 'aboutDescription'>,

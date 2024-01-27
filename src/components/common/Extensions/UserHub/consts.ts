@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
-import { formatText } from '~utils/intl';
+import { formatText } from '~utils/intl.ts';
 
-import { UserHubTabList, UserHubTabs } from './types';
+import { UserHubTabList, UserHubTabs } from './types.ts';
 
 export const menuMessages = defineMessages({
   balance: {

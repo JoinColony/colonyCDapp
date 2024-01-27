@@ -1,4 +1,4 @@
-import { getPortalContainer } from '~v5/shared/Portal/utils';
+import { getPortalContainer } from '~v5/shared/Portal/utils.ts';
 
 export const isElementInsideModalOrPortal = (element: Element) => {
   const reactModalPortals = Array.from(

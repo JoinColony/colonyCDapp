@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { createDecisionAction } from '~redux/actionCreators';
-import { getDraftDecisionFromLocalStorage } from '~utils/decisions';
+import { createDecisionAction } from '~redux/actionCreators/index.ts';
+import { getDraftDecisionFromLocalStorage } from '~utils/decisions.ts';
 
-import { useAppContext } from './AppContext';
-import { useColonyContext } from './ColonyContext';
+import { useAppContext } from './AppContext.tsx';
+import { useColonyContext } from './ColonyContext.tsx';
 
 export const ColonyDecisionContext = createContext<void>(undefined);
 

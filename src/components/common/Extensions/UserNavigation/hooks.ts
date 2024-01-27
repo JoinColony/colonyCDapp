@@ -3,16 +3,16 @@ import { ClientTypeTokens } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { TransactionOrMessageGroups } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
-import { useAppContext } from '~context/AppContext';
-import { useColonyContext } from '~context/ColonyContext';
+import { TransactionOrMessageGroups } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { GetUserTransactionsQuery, useGetUserTransactionsQuery } from '~gql';
-import { TransactionType } from '~redux/immutable';
-import { groupedTransactions as groupedTransactionsSelector } from '~redux/selectors';
-import { Transaction } from '~types/graphql';
-import { ExtendedClientType } from '~types/transactions';
-import { notNull } from '~utils/arrays';
-import { groupBy, unionBy } from '~utils/lodash';
+import { TransactionType } from '~redux/immutable/index.ts';
+import { groupedTransactions as groupedTransactionsSelector } from '~redux/selectors/index.ts';
+import { Transaction } from '~types/graphql.ts';
+import { ExtendedClientType } from '~types/transactions.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { groupBy, unionBy } from '~utils/lodash.ts';
 
 export const TRANSACTION_LIST_PAGE_SIZE = 10;
 

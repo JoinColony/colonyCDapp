@@ -1,11 +1,11 @@
-import { apolloClient } from '~apollo';
-import { NetworkInfo, DEFAULT_NETWORK_INFO } from '~constants';
+import { apolloClient } from '~apollo/index.ts';
+import { NetworkInfo, DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import {
   GetTokenFromEverywhereDocument,
   GetTokenFromEverywhereQuery,
   GetTokenFromEverywhereQueryVariables,
 } from '~gql';
-import { Address } from '~types';
+import { Address } from '~types/index.ts';
 
 /*
  * Wrapper around the getTokenFromEveryWhereQuery

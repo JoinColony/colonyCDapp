@@ -15,8 +15,8 @@ import {
   ADDRESS_ZERO,
   DEFAULT_TOKEN_DECIMALS,
   supportedExtensionsConfig,
-} from '~constants';
-import { ColonyManager, ContextModule, getContext } from '~context';
+} from '~constants/index.ts';
+import { ColonyManager, ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyEtherealMetadataDocument,
   CreateColonyEtherealMetadataMutation,
@@ -28,28 +28,28 @@ import {
   GetFullColonyByNameQuery,
   GetFullColonyByNameQueryVariables,
 } from '~gql';
-import { ActionTypes, Action, AllActions } from '~redux/index';
-import { createAddress } from '~utils/web3';
+import { ActionTypes, Action, AllActions } from '~redux/index.ts';
+import { createAddress } from '~utils/web3/index.ts';
 
 import {
   transactionAddParams,
   transactionAddIdentifier,
   transactionPending,
-} from '../../actionCreators';
+} from '../../actionCreators/index.ts';
 import {
   ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
-} from '../transactions';
-import { updateTransaction } from '../transactions/transactionsToDb';
+} from '../transactions/index.ts';
+import { updateTransaction } from '../transactions/transactionsToDb.ts';
+import { getOneTxPaymentVersion } from '../utils/extensionVersion.ts';
 import {
   putError,
   takeFrom,
   takeLatestCancellable,
   getColonyManager,
   initiateTransaction,
-} from '../utils';
-import { getOneTxPaymentVersion } from '../utils/extensionVersion';
+} from '../utils/index.ts';
 
 function* colonyCreate({
   meta,

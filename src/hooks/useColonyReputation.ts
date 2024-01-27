@@ -1,5 +1,5 @@
 // import { useColonyReputationQuery } from '~data/index';
-import { Address } from '~types';
+import { Address } from '~types/index.ts';
 
 /*
  * @TODO This needs to be addressed and either refactored or removed

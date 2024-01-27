@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext';
-import { useMobile } from '~hooks';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useMobile } from '~hooks/index.ts';
 import {
   USER_HOME_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   CREATE_PROFILE_ROUTE,
-} from '~routes';
-import Icon from '~shared/Icon';
-import Link from '~v5/shared/Link';
-import UserAvatarDetails from '~v5/shared/UserAvatarDetails';
-import { UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types';
+} from '~routes/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Link from '~v5/shared/Link/index.ts';
+import UserAvatarDetails from '~v5/shared/UserAvatarDetails/index.ts';
+import { UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types.ts';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';

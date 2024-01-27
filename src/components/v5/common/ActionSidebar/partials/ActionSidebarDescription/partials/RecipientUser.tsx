@@ -1,9 +1,9 @@
 import React from 'react';
 
-import useUserByAddress from '~hooks/useUserByAddress';
-import MaskedAddress from '~shared/MaskedAddress';
-import { User } from '~types/graphql';
-import { formatText } from '~utils/intl';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
+import MaskedAddress from '~shared/MaskedAddress/index.ts';
+import { User } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
 
 interface RecipientUserProps {
   userAddress: string;

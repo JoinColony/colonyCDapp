@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 
-import HamburgerButton from '~v5/shared/HamburgerButton';
+import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

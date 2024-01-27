@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
-import RadioButtonsBase from '../RadioButtonsBase';
-import { RadioItem } from '../RadioButtonsBase/types';
+import RadioButtonsBase from '../RadioButtonsBase/index.ts';
+import { RadioItem } from '../RadioButtonsBase/types.ts';
 
-import { ButtonRadioButtonsProps } from './types';
+import { ButtonRadioButtonsProps } from './types.ts';
 
 const displayName = 'v5.common.ButtonRadioButtons';
 

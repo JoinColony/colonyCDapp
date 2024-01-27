@@ -1,5 +1,5 @@
-import { User } from '~types/graphql';
-import UserAvatars from '~v5/shared/UserAvatars';
+import { User } from '~types/graphql.ts';
+import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

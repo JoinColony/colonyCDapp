@@ -1,19 +1,19 @@
 import React, { FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useColonyContext } from '~context/ColonyContext';
-import useToggle from '~hooks/useToggle';
-import { formatText } from '~utils/intl';
-import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks';
-import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
-import { getPlaceholder } from '~v5/common/AvatarUploader/utils';
-import Avatar from '~v5/shared/Avatar';
-import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import Modal from '~v5/shared/Modal';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks.tsx';
+import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload.tsx';
+import { getPlaceholder } from '~v5/common/AvatarUploader/utils.tsx';
+import Avatar from '~v5/shared/Avatar/index.ts';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
-import { useChangeColonyAvatar } from './hooks';
-import { ColonyAvatarFieldProps } from './types';
+import { useChangeColonyAvatar } from './hooks.tsx';
+import { ColonyAvatarFieldProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionsContent.partials.ColonyDetailsFields.partials.ColonyAvatarField';

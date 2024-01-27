@@ -1,16 +1,16 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Form } from '~shared/Fields';
-import { WizardStepProps } from '~shared/Wizard';
+import { Form } from '~shared/Fields/index.ts';
+import { WizardStepProps } from '~shared/Wizard/index.ts';
 
-import { ButtonRow, HeaderRow } from '../shared';
+import { ButtonRow, HeaderRow } from '../shared.tsx';
 
-import { TokenChoiceOptions } from './StepCreateTokenComponents';
-import TokenInputs from './StepCreateTokenInputs';
-import TokenSelectorInput from './TokenSelectorInput';
-import { FormValues, Step3, TokenChoice } from './types';
-import { tokenValidationSchema as validationSchema } from './validation';
+import { TokenChoiceOptions } from './StepCreateTokenComponents.tsx';
+import TokenInputs from './StepCreateTokenInputs.tsx';
+import TokenSelectorInput from './TokenSelectorInput.tsx';
+import { FormValues, Step3, TokenChoice } from './types.ts';
+import { tokenValidationSchema as validationSchema } from './validation.ts';
 
 const displayName = `common.CreateColonyWizard.StepCreateToken`;
 

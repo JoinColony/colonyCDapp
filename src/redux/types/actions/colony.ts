@@ -1,14 +1,14 @@
 import { Extension } from '@colony/colony-js';
 import { NavigateFunction } from 'react-router-dom';
 
-import { ActionTypes } from '~redux';
-import { Address, WithKey } from '~types';
+import { ActionTypes } from '~redux/index.ts';
 import {
   InstallableExtensionData,
   InstalledExtensionData,
-} from '~types/extensions';
+} from '~types/extensions.ts';
+import { Address, WithKey } from '~types/index.ts';
 
-import { ActionType, ErrorActionType, UniqueActionType } from './index';
+import { ActionType, ErrorActionType, UniqueActionType } from './index.ts';
 
 export type ColonyActionTypes =
   | UniqueActionType<

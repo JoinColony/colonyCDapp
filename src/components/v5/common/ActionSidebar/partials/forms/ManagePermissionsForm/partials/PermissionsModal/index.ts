@@ -1,1 +1,1 @@
-export { default } from './PermissionsModal';
+export { default } from './PermissionsModal.tsx';

@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import UserHub from '~common/Extensions/UserHub';
-import UserNavigation from '~common/Extensions/UserNavigation';
-import Token from '~common/Extensions/UserNavigation/partials/Token';
-import { ContextModule, getContext } from '~context';
-import { useMobile } from '~hooks';
-import useDetectClickOutside from '~hooks/useDetectClickOutside';
-import Icon from '~shared/Icon';
-import Button, { Hamburger } from '~v5/shared/Button';
-import UserAvatar from '~v5/shared/UserAvatar';
+import UserHub from '~common/Extensions/UserHub/index.ts';
+import UserNavigation from '~common/Extensions/UserNavigation/index.ts';
+import Token from '~common/Extensions/UserNavigation/partials/Token/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
+import { useMobile } from '~hooks/index.ts';
+import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
+import Icon from '~shared/Icon/index.ts';
+import Button, { Hamburger } from '~v5/shared/Button/index.ts';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

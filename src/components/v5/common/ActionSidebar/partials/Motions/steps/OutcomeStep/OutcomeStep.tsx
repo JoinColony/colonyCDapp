@@ -2,15 +2,15 @@ import { BigNumber } from 'ethers';
 import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext';
-import { MotionVote } from '~utils/colonyMotions';
-import { formatText } from '~utils/intl';
-import MenuWithSections from '~v5/shared/MenuWithSections';
-import { UserAvatarsItem } from '~v5/shared/UserAvatars/types';
+import { useAppContext } from '~context/AppContext.tsx';
+import { MotionVote } from '~utils/colonyMotions.ts';
+import { formatText } from '~utils/intl.ts';
+import MenuWithSections from '~v5/shared/MenuWithSections/index.ts';
+import { UserAvatarsItem } from '~v5/shared/UserAvatars/types.ts';
 
-import { useOutcomeStep } from './hooks';
-import VoteStatuses from './partials/VoteStatuses';
-import { OutcomeStepProps } from './types';
+import { useOutcomeStep } from './hooks.ts';
+import VoteStatuses from './partials/VoteStatuses/index.ts';
+import { OutcomeStepProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep';

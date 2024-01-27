@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { PanelTypeProps } from '../types';
+import { PanelTypeProps } from '../types.ts';
 
 import styles from '../SpecificSidePanel.module.css';
 

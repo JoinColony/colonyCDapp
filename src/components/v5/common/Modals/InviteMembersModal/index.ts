@@ -1,1 +1,1 @@
-export { default } from './InviteMemberModal';
+export { default } from './InviteMemberModal.tsx';

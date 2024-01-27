@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { TEAM_SEARCH_PARAM } from '~routes';
-import { notMaybe } from '~utils/arrays';
-import { formatText } from '~utils/intl';
-import { getTeamColor } from '~utils/teams';
-import { setQueryParamOnUrl } from '~utils/urls';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { TEAM_SEARCH_PARAM } from '~routes/index.ts';
+import { notMaybe } from '~utils/arrays/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTeamColor } from '~utils/teams.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
 
-import useGetSelectedDomainFilter from './useGetSelectedDomainFilter';
+import useGetSelectedDomainFilter from './useGetSelectedDomainFilter.tsx';
 
 export const useCreateTeamBreadcrumbs = () => {
   const {

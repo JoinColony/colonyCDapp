@@ -1,6 +1,6 @@
-import { Colony } from '~types/graphql';
+import { Colony } from '~types/graphql.ts';
 
-import { EditColonyDetailsFormValues } from './consts';
+import { EditColonyDetailsFormValues } from './consts.ts';
 
 export const getEditColonyDetailsPayload = (
   colony: Colony,

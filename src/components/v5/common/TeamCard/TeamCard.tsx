@@ -2,18 +2,18 @@ import clsx from 'clsx';
 import { Cardholder } from 'phosphor-react';
 import React, { FC } from 'react';
 
-import { useMobile } from '~hooks';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { SpinnerLoader } from '~shared/Preloaders';
-import Card from '~v5/shared/Card';
-import Link from '~v5/shared/Link';
-import MeatBallMenu from '~v5/shared/MeatBallMenu';
-import ReputationBadge from '~v5/shared/ReputationBadge';
-import UserAvatars from '~v5/shared/UserAvatars';
+import { useMobile } from '~hooks/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import Card from '~v5/shared/Card/index.ts';
+import Link from '~v5/shared/Link/index.ts';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
+import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
+import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
-import TeamBadge from '../Pills/TeamBadge';
+import TeamBadge from '../Pills/TeamBadge/index.ts';
 
-import { TeamCardProps } from './types';
+import { TeamCardProps } from './types.ts';
 
 const TeamCard: FC<TeamCardProps> = ({
   title,

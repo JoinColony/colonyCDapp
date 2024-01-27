@@ -1,4 +1,4 @@
-import Pinata from './pinata';
+import Pinata from './pinata/index.ts';
 
 const pinataClient = new Pinata();
 

@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { AppContextProvider } from '~context/AppContext';
-import { CurrencyContextProvider } from '~context/CurrencyContext';
-import { PageHeadingContextProvider } from '~context/PageHeadingContext';
+import { AppContextProvider } from '~context/AppContext.tsx';
+import { CurrencyContextProvider } from '~context/CurrencyContext.tsx';
+import { PageHeadingContextProvider } from '~context/PageHeadingContext/index.ts';
 import {
   PageThemeContextProvider,
   usePageThemeContext,
-} from '~context/PageThemeContext';
-import { Theme } from '~frame/Extensions/themes/enum';
-import { applyTheme } from '~frame/Extensions/themes/utils';
+} from '~context/PageThemeContext.tsx';
+import { Theme } from '~frame/Extensions/themes/enum.ts';
+import { applyTheme } from '~frame/Extensions/themes/utils.ts';
 
 const RootRouteInner = () => {
   const { isDarkMode } = usePageThemeContext();

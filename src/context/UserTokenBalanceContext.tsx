@@ -8,8 +8,8 @@ import React, {
 
 import { GetUserTokenBalanceReturn, useGetUserTokenBalanceQuery } from '~gql';
 
-import { useAppContext } from './AppContext';
-import { useColonyContext } from './ColonyContext';
+import { useAppContext } from './AppContext.tsx';
+import { useColonyContext } from './ColonyContext.tsx';
 
 export const UserTokenBalanceContext = createContext<{
   tokenBalanceData: GetUserTokenBalanceReturn | null | undefined;

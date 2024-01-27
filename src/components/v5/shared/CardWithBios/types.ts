@@ -1,5 +1,5 @@
-import { ColonyContributor, User } from '~types/graphql';
-import { PillSize, UserStatusMode } from '~v5/common/Pills/types';
+import { ColonyContributor, User } from '~types/graphql.ts';
+import { PillSize, UserStatusMode } from '~v5/common/Pills/types.ts';
 
 export type Permissions = {
   key: string;

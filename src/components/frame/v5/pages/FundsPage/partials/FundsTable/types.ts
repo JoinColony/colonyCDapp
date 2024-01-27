@@ -1,4 +1,4 @@
-import { FilterProps } from '../Filter/types';
+import { FilterProps } from '../Filter/types.ts';
 
 export interface FundsTableModel {
   token?: {

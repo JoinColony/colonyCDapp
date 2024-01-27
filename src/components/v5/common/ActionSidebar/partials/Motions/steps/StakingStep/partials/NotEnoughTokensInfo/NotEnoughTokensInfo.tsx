@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useTokensModalContext } from '~context/TokensModalContext';
-import { formatText } from '~utils/intl';
-import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
+import { useTokensModalContext } from '~context/TokensModalContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.NotEnoughTokensInfo';

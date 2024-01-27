@@ -1,1 +1,1 @@
-export { default } from './CurrencyConversion';
+export { default } from './CurrencyConversion.tsx';

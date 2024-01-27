@@ -6,14 +6,14 @@ import {
 } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { LANDING_PAGE_ROUTE } from '~routes/routeConstants';
-import ExternalLink from '~shared/ExternalLink';
-import { Heading3 } from '~shared/Heading';
-import Icon from '~shared/Icon';
-import { UniversalMessageValues } from '~types';
+import { LANDING_PAGE_ROUTE } from '~routes/routeConstants.ts';
+import ExternalLink from '~shared/ExternalLink/index.ts';
+import { Heading3 } from '~shared/Heading/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { UniversalMessageValues } from '~types/index.ts';
 
-import WizardSidebarItem from './WizardSidebarItem';
-import { WizardSidebarSubStep } from './WizardSidebarSubItem';
+import WizardSidebarItem from './WizardSidebarItem.tsx';
+import { WizardSidebarSubStep } from './WizardSidebarSubItem.tsx';
 
 const displayName = 'routes.WizardRoute.WizardSidebar';
 

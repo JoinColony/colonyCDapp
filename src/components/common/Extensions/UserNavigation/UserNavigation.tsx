@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useAppContext } from '~context/AppContext';
-import { useMobile } from '~hooks';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import useGetNetworkToken from '~hooks/useGetNetworkToken';
-import { formatText } from '~utils/intl';
-import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
-import Button, { Hamburger } from '~v5/shared/Button';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import useGetNetworkToken from '~hooks/useGetNetworkToken.ts';
+import { formatText } from '~utils/intl.ts';
+import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
+import Button, { Hamburger } from '~v5/shared/Button/index.ts';
 
-import Token from './partials/Token';
-import UserMenu from './partials/UserMenu';
-import { UserNavigationProps } from './types';
+import Token from './partials/Token/index.ts';
+import UserMenu from './partials/UserMenu/index.ts';
+import { UserNavigationProps } from './types.ts';
 
 export const displayName = 'common.Extensions.UserNavigation';
 

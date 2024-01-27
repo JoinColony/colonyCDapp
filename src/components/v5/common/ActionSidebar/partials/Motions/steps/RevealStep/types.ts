@@ -1,4 +1,4 @@
-import { ColonyMotion } from '~types/graphql';
+import { ColonyMotion } from '~types/graphql.ts';
 
 export interface RevealStepProps {
   startPollingAction: (pollingInterval: number) => void;

@@ -4,17 +4,17 @@ import { DocumentNode, OperationDefinitionNode } from 'graphql';
 import moveDecimal from 'move-decimal-point';
 import { TestContext, ValidationError, TestFunction } from 'yup';
 
-import { ContextModule, getContext } from '~context';
-import { Colony } from '~types/graphql';
-import { notNull } from '~utils/arrays';
-import { now } from '~utils/lodash';
+import { ContextModule, getContext } from '~context/index.ts';
+import { Colony } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { now } from '~utils/lodash.ts';
 import {
   calculateFee,
   getSelectedToken,
   getTokenDecimalsWithFallback,
-} from '~utils/tokens';
+} from '~utils/tokens.ts';
 
-import { cancelEarly, createUnknownError, formatMessage } from './helpers';
+import { cancelEarly, createUnknownError, formatMessage } from './helpers.ts';
 
 const apolloClient = getContext(ContextModule.ApolloClient);
 

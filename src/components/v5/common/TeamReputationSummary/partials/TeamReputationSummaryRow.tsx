@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 
-import { formatPercentage } from '../utils';
+import { formatPercentage } from '../utils.ts';
 
 const displayName =
   'v5.common.TeamReputationSummary.partials.TeamReputationSummaryRow';

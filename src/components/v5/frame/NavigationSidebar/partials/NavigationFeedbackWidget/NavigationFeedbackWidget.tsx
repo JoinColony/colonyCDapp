@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { openFeaturesBugs } from '~hooks/useBeamer';
+import { openFeaturesBugs } from '~hooks/useBeamer.ts';
 
 const displayName =
   'v5.frame.NavigationSidebar.NavigationSidebarSecondLevel.NavigationSidebarButton';

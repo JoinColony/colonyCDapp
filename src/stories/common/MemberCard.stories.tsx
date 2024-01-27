@@ -1,4 +1,4 @@
-import MemberCard from '~v5/common/MemberCard';
+import MemberCard from '~v5/common/MemberCard/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

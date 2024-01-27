@@ -14,7 +14,7 @@ import { ComponentType } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ExternalLinks } from '~gql';
-import { formatText } from '~utils/intl';
+import { formatText } from '~utils/intl.ts';
 
 const linksPrefix = 'socialLinks';
 const MSG = defineMessages({

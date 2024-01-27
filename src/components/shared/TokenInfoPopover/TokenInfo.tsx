@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
-import Icon from '~shared/Icon';
-import TokenIcon from '~shared/TokenIcon';
-import { Token } from '~types/graphql';
-import { getBlockExplorerLink } from '~utils/external';
-import PillsBase from '~v5/common/Pills/PillsBase';
-import CopyableAddress from '~v5/shared/CopyableAddress';
+import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import { Token } from '~types/graphql.ts';
+import { getBlockExplorerLink } from '~utils/external/index.ts';
+import PillsBase from '~v5/common/Pills/PillsBase.tsx';
+import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
 
 const displayName = 'TokenInfoPopover.TokenInfo';
 

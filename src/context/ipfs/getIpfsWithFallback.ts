@@ -1,6 +1,6 @@
-import IPFSNode from './ipfsnode';
-import Pinata from './pinata';
-import { raceAgainstTimeout } from './utils';
+import IPFSNode from './ipfsnode/index.ts';
+import Pinata from './pinata/index.ts';
+import { raceAgainstTimeout } from './utils.ts';
 
 const DEFAULT_TIMEOUT_POST = 30000;
 

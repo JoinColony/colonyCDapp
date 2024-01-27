@@ -1,1 +1,1 @@
-export { default } from './ColonyObjectiveFields';
+export { default } from './ColonyObjectiveFields.tsx';

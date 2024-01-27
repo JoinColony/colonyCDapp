@@ -2,13 +2,13 @@ import {
   ColonyContributor,
   ContributorReputation,
   ContributorRoles,
-} from '~types/graphql';
-import { notNull } from '~utils/arrays';
+} from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
 import {
   AvailablePermission,
   DomainWithPermissionsAndReputation,
-} from './types';
+} from './types.ts';
 
 const mergeDomains = (
   reputation: ContributorReputation[],

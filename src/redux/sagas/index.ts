@@ -1,9 +1,9 @@
 import { call, takeLatest } from 'redux-saga/effects';
 
-import { ActionTypes } from '../actionTypes';
+import { ActionTypes } from '../actionTypes.ts';
 
-import ipfsSagas from './ipfs';
-import setupUserContext from './setupUserContext';
+import ipfsSagas from './ipfs.ts';
+import setupUserContext from './setupUserContext.ts';
 
 export default function* rootSaga() {
   /*
@@ -16,5 +16,5 @@ export default function* rootSaga() {
   yield call(ipfsSagas);
 }
 
-export * from './messages';
-export * from './transactions';
+export * from './messages/index.ts';
+export * from './transactions/index.ts';

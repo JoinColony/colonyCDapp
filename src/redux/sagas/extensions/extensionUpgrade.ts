@@ -1,14 +1,14 @@
 import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { takeEvery, call, fork, put } from 'redux-saga/effects';
 
-import { AllActions, Action, ActionTypes } from '~redux';
+import { AllActions, Action, ActionTypes } from '~redux/index.ts';
 
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
-} from '../transactions';
-import { initiateTransaction, putError, takeFrom } from '../utils';
+} from '../transactions/index.ts';
+import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 function* extensionUpgrade({
   meta,

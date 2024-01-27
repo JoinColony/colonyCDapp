@@ -14,16 +14,15 @@ import {
   GetUserByAddressQuery,
   GetUserByAddressQueryVariables,
 } from '~gql';
-import useAsyncFunction from '~hooks/useAsyncFunction';
-import usePrevious from '~hooks/usePrevious';
-import { ActionTypes } from '~redux';
-import { User } from '~types/graphql';
-import { ColonyWallet } from '~types/wallet';
-import { getLastWallet } from '~utils/autoLogin';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import usePrevious from '~hooks/usePrevious.ts';
+import { ActionTypes } from '~redux/index.ts';
+import { User } from '~types/graphql.ts';
+import { ColonyWallet } from '~types/wallet.ts';
+import { getLastWallet } from '~utils/autoLogin.ts';
 
-import { TokenActivationProvider } from './TokenActivationContext';
-
-import { getContext, ContextModule } from './index';
+import { getContext, ContextModule } from './index.ts';
+import { TokenActivationProvider } from './TokenActivationContext.tsx';
 
 export interface AppContextValues {
   wallet?: ColonyWallet | null;

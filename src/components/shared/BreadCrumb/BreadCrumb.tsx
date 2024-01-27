@@ -1,7 +1,7 @@
 import React, { Fragment, ReactElement, isValidElement } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import SingleCrumb from './SingleCrumb';
+import SingleCrumb from './SingleCrumb.tsx';
 
 import styles from './BreadCrumb.css';
 

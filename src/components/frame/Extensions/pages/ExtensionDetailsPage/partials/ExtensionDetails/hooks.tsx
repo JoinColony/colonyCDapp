@@ -2,13 +2,13 @@ import { Extension } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { useColonyContext } from '~context/ColonyContext';
-import useAsyncFunction from '~hooks/useAsyncFunction';
-import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
-import { ActionTypes } from '~redux';
-import Toast from '~shared/Extensions/Toast';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
+import { ActionTypes } from '~redux/index.ts';
+import Toast from '~shared/Extensions/Toast/index.ts';
 
-import { waitForDbAfterExtensionAction } from '../../utils';
+import { waitForDbAfterExtensionAction } from '../../utils.tsx';
 
 export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
   const {

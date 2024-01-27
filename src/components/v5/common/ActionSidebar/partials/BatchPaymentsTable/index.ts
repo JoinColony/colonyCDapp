@@ -1,1 +1,1 @@
-export { default } from './BatchPaymentsTable';
+export { default } from './BatchPaymentsTable.tsx';

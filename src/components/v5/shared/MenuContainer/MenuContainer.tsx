@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-import { MenuContainerProps } from './types';
+import { MenuContainerProps } from './types.ts';
 
 const displayName = 'v5.shared.MenuContainer';
 

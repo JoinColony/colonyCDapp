@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ProgressBar from '~v5/shared/ProgressBar';
+import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

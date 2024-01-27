@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
 // @BETA: Disabled for now
 // import Button from '~v5/shared/Button';
 // import Link from '~v5/shared/Link';
-import useColonyContractVersion from '~hooks/useColonyContractVersion';
+import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 // import { useMobile } from '~hooks';
-import { canColonyBeUpgraded } from '~utils/checks';
-import { formatText } from '~utils/intl';
-import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import { canColonyBeUpgraded } from '~utils/checks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget/index.tsx';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName = 'frame.Extensions.pages.AdvancedPage';
 

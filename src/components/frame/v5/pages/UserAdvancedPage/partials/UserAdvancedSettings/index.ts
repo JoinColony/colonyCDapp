@@ -1,1 +1,1 @@
-export { default } from './UserAdvancedSettings';
+export { default } from './UserAdvancedSettings.tsx';

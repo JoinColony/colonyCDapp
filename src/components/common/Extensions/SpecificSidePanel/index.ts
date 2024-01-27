@@ -1,1 +1,1 @@
-export { default } from './SpecificSidePanel';
+export { default } from './SpecificSidePanel.tsx';

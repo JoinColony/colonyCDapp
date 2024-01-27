@@ -1,9 +1,9 @@
-import { CORE_DECISIONS_LIST } from '~redux/constants';
-import { Decision } from '~redux/immutable/Decision';
-import { CoreDecisions, CoreDecisionsRecord } from '~redux/state/decisions';
-import { ReducerType } from '~redux/types';
+import { CORE_DECISIONS_LIST } from '~redux/constants.ts';
+import { Decision } from '~redux/immutable/Decision.ts';
+import { CoreDecisions, CoreDecisionsRecord } from '~redux/state/decisions.ts';
+import { ReducerType } from '~redux/types/index.ts';
 
-import { ActionTypes } from '../actionTypes';
+import { ActionTypes } from '../actionTypes.ts';
 
 const coreDecisionsReducer: ReducerType<CoreDecisionsRecord> = (
   state = CoreDecisions(),

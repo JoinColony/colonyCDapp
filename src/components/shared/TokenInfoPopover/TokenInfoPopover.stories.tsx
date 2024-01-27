@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TokenType } from '~gql';
 
-import TokenInfoPopover from './TokenInfoPopover';
+import TokenInfoPopover from './TokenInfoPopover.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

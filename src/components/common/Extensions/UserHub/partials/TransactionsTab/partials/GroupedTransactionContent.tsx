@@ -2,14 +2,14 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { GroupedTransactionContentProps } from '../types';
+import { GroupedTransactionContentProps } from '../types.ts';
 
-import CancelTransaction from './CancelTransaction';
-import { useGroupedTransactionContent } from './hooks';
-import TransactionStatus from './TransactionStatus';
-import { shortErrorMessage } from './utils';
+import CancelTransaction from './CancelTransaction.tsx';
+import { useGroupedTransactionContent } from './hooks.tsx';
+import TransactionStatus from './TransactionStatus.tsx';
+import { shortErrorMessage } from './utils.ts';
 
 import styles from './TransactionsItem/TransactionsItem.module.css';
 

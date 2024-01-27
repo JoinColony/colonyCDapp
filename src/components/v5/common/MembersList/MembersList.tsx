@@ -2,17 +2,17 @@ import React, { FC } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { useMemberContext } from '~context/MemberContext';
-import useCopyToClipboard from '~hooks/useCopyToClipboard';
-import { SpinnerLoader } from '~shared/Preloaders';
-import { formatText } from '~utils/intl';
-import { TextButton } from '~v5/shared/Button';
-import CardWithBios from '~v5/shared/CardWithBios';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMemberContext } from '~context/MemberContext.tsx';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { TextButton } from '~v5/shared/Button/index.ts';
+import CardWithBios from '~v5/shared/CardWithBios/index.ts';
 
-import EmptyContent from '../EmptyContent';
+import EmptyContent from '../EmptyContent/index.ts';
 
-import { MembersListProps } from './types';
+import { MembersListProps } from './types.ts';
 
 const displayName = 'v5.common.MembersList';
 

@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 
 import { useGetUserTokenBalanceQuery } from '~gql';
-import { Address } from '~types';
+import { Address } from '~types/index.ts';
 
 const useEnoughTokensForStaking = (
   tokenAddress: Address,

@@ -7,23 +7,23 @@ import clsx from 'clsx';
 import { uniqueId } from 'lodash';
 import React, { FC, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext';
-import { useMobile } from '~hooks';
-import useCopyToClipboard from '~hooks/useCopyToClipboard';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter';
-import useToggle from '~hooks/useToggle';
-import { formatText } from '~utils/intl';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
 // import { useSearchContext } from '~context/SearchContext';
 // import Filter from '~v5/common/Filter';
-import EmptyContent from '~v5/common/EmptyContent';
-import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu';
-import Button from '~v5/shared/Button';
-import CopyWallet from '~v5/shared/CopyWallet';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import TableWithHeaderAndMeatballMenu from '~v5/common/TableWithHeaderAndMeatballMenu/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import CopyWallet from '~v5/shared/CopyWallet/index.ts';
 
-import BalanceModal from '../BalanceModal';
+import BalanceModal from '../BalanceModal/index.ts';
 
-import { useBalanceTableColumns, useGetTableMenuProps } from './hooks';
-import { BalanceTableFieldModel, BalanceTableProps } from './types';
+import { useBalanceTableColumns, useGetTableMenuProps } from './hooks.tsx';
+import { BalanceTableFieldModel, BalanceTableProps } from './types.ts';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 

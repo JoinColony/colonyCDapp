@@ -1,4 +1,4 @@
-import { UserAvatarProps } from '~v5/shared/UserAvatar/types';
+import { UserAvatarProps } from '~v5/shared/UserAvatar/types.ts';
 
 export interface UserInfoListItem {
   key: string;

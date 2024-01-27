@@ -1,14 +1,14 @@
 import { Collection, Map as ImmutableMap, List } from 'immutable';
 import { createSelector } from 'reselect';
 
-import { TransactionStatus } from '~types/graphql';
+import { TransactionStatus } from '~types/graphql.ts';
 
-import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '../constants';
-import { TransactionRecord } from '../immutable';
-import { RootStateRecord } from '../state';
-import { TransactionsListMap } from '../state/transactions';
+import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '../constants.ts';
+import { TransactionRecord } from '../immutable/index.ts';
+import { RootStateRecord } from '../state/index.ts';
+import { TransactionsListMap } from '../state/transactions.ts';
 
-import { messageGroups } from './messages';
+import { messageGroups } from './messages.ts';
 
 /*
  * Transactions sorting functions.

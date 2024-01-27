@@ -2,7 +2,7 @@
 // import { open as purserOpenMetaMaskWallet } from '@purser/metamask';
 // import { open as purserOpenSoftwareWallet } from '@purser/software';
 
-import { NETWORK_AVAILABLE_CHAINS } from '~constants';
+import { NETWORK_AVAILABLE_CHAINS } from '~constants/index.ts';
 
 // import { getAccounts } from '~users/ConnectWalletWizard/StepGanache';
 // import { WalletMethod } from '~redux/immutable';

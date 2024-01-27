@@ -1,6 +1,6 @@
-import { NavigationSidebarButtonProps } from '../NavigationSidebarButton/types';
-import { NavigationSidebarSecondLevelProps } from '../NavigationSidebarSecondLevel/types';
-import { NavigationSidebarThirdLevelProps } from '../NavigationSidebarThirdLevel/types';
+import { NavigationSidebarButtonProps } from '../NavigationSidebarButton/types.ts';
+import { NavigationSidebarSecondLevelProps } from '../NavigationSidebarSecondLevel/types.ts';
+import { NavigationSidebarThirdLevelProps } from '../NavigationSidebarThirdLevel/types.ts';
 
 export interface NavigationSidebarItem
   extends Omit<NavigationSidebarButtonProps, 'hasSecondLevel'> {

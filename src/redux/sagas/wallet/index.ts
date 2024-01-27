@@ -16,17 +16,17 @@ import { providers } from 'ethers';
 // import { ActionTypes } from '../../actionTypes';
 // import { Action, AllActions } from '../../types/actions';
 
-import { isDev } from '~constants';
-import { ContextModule, getContext } from '~context';
-import { BasicWallet, FullWallet } from '~types/wallet';
+import { isDev } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
+import { BasicWallet, FullWallet } from '~types/wallet.ts';
 import {
   setLastWallet,
   LastWallet,
   clearLastWallet,
   getChainIdAsHex,
-} from '~utils/autoLogin';
+} from '~utils/autoLogin.ts';
 
-import RetryProvider from './RetryProvider';
+import RetryProvider from './RetryProvider.ts';
 
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';

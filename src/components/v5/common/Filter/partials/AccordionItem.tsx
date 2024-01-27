@@ -3,11 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import Icon from '~shared/Icon';
-import NestedOptions from '~v5/shared/SubNavigationItem/partials/NestedOptions';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import Icon from '~shared/Icon/index.ts';
+import NestedOptions from '~v5/shared/SubNavigationItem/partials/NestedOptions.tsx';
 
-import { AccordionItemProps } from '../types';
+import { AccordionItemProps } from '../types.ts';
 
 const displayName = 'v5.common.Filter.partials.AccordionItem';
 

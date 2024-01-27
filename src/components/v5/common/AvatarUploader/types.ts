@@ -5,9 +5,9 @@ import {
   FileRejection,
 } from 'react-dropzone';
 
-import { FileReaderFile } from '~utils/fileReader/types';
+import { FileReaderFile } from '~utils/fileReader/types.ts';
 
-import { DropzoneErrors } from './utils';
+import { DropzoneErrors } from './utils.tsx';
 
 export type SuccessContentProps = Pick<
   ErrorContentProps,

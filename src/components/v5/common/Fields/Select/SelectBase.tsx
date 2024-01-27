@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useId } from 'react';
 import ReactSelect from 'react-select';
 
-import { SelectBaseOption, SelectBaseProps } from './types';
+import { SelectBaseOption, SelectBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.SelectBase';
 

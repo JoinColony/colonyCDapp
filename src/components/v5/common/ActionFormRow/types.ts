@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { UseToggleReturnType } from '~hooks/useToggle/types';
-import { TooltipProps } from '~shared/Extensions/Tooltip/types';
+import { UseToggleReturnType } from '~hooks/useToggle/types.ts';
+import { TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
 
 export interface ActionFormRowProps {
   icon: React.ReactNode;
