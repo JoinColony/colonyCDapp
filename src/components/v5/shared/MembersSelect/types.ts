@@ -1,6 +1,6 @@
 import {
-  SelectBaseOption,
-  SelectBaseProps,
+  type SelectBaseOption,
+  type SelectBaseProps,
 } from '~v5/common/Fields/Select/types.ts';
 
 export interface MembersSelectOption extends SelectBaseOption {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { ACTION, Action } from '~constants/actions.ts';
+import { ACTION, type Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import { canColonyBeUpgraded } from '~utils/checks/index.ts';

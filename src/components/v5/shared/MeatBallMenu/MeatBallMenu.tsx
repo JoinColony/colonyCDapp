@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -10,7 +10,7 @@ import Portal from '~v5/shared/Portal/index.ts';
 import HoverWidthWrapper from '../HoverWidthWrapper/index.ts';
 import MenuContainer from '../MenuContainer/index.ts';
 
-import { MeatBallMenuProps } from './types.ts';
+import { type MeatBallMenuProps } from './types.ts';
 import { DEFAULT_ITEM_WRAPPER_RENDERER } from './utils.tsx';
 
 const displayName = 'v5.shared.MeatBallMenu';

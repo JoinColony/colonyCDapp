@@ -1,7 +1,7 @@
 import {
-  ColonyVersion,
+  type ColonyVersion,
   Extension,
-  ExtensionVersion,
+  type ExtensionVersion,
   isExtensionCompatible,
 } from '@colony/colony-js';
 import React, { useState } from 'react';
@@ -12,7 +12,7 @@ import { useMobile } from '~hooks/index.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import Icon from '~shared/Icon/index.ts';
 import { AvatarWithStatusBadge } from '~v5/shared/Avatar/index.ts';
@@ -8,7 +8,7 @@ import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
 import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { MemberCardProps } from './types.ts';
+import { type MemberCardProps } from './types.ts';
 
 const displayName = 'v5.common.MemberCard';
 

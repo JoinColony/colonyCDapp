@@ -1,13 +1,13 @@
 import {
-  ColonyContributor,
-  ContributorReputation,
-  ContributorRoles,
+  type ColonyContributor,
+  type ContributorReputation,
+  type ContributorRoles,
 } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
 import {
-  AvailablePermission,
-  DomainWithPermissionsAndReputation,
+  type AvailablePermission,
+  type DomainWithPermissionsAndReputation,
 } from './types.ts';
 
 const mergeDomains = (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { tabList } from '~common/Extensions/UserHub/consts.ts';
-import { UserHubTabs } from '~common/Extensions/UserHub/types.ts';
+import { type UserHubTabs } from '~common/Extensions/UserHub/types.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';

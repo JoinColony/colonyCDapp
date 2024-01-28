@@ -9,7 +9,7 @@ import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {

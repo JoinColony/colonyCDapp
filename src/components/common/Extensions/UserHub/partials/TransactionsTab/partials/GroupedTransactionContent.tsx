@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { GroupedTransactionContentProps } from '../types.ts';
+import { type GroupedTransactionContentProps } from '../types.ts';
 
 import CancelTransaction from './CancelTransaction.tsx';
 import { useGroupedTransactionContent } from './hooks.tsx';

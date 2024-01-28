@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -6,7 +6,7 @@ import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 
-import { PermissionSidebarProps } from '../types.ts';
+import { type PermissionSidebarProps } from '../types.ts';
 
 const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
   const { action } = useGetColonyAction(transactionId);

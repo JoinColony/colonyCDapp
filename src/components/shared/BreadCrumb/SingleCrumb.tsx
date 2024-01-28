@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import NavLink from '~shared/NavLink/index.ts';
 
-import { CrumbText } from './BreadCrumb.tsx';
+import { type CrumbText } from './BreadCrumb.tsx';
 
 import styles from './BreadCrumb.css';
 

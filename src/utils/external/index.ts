@@ -1,5 +1,5 @@
 import { LATEST_TAG } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { type BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib.esm/utils';
 
 import {

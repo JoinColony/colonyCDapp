@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
-import { PopperOptions } from 'react-popper-tooltip';
+import React, { type ReactNode } from 'react';
+import { type PopperOptions } from 'react-popper-tooltip';
 
 import Popover from '~shared/Popover/index.ts';
-import { Token } from '~types/graphql.ts';
+import { type Token } from '~types/graphql.ts';
 
 import TokenInfo from './TokenInfo.tsx';
 

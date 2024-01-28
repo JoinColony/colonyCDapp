@@ -1,7 +1,7 @@
 import { SupportedCurrencies } from '~gql';
 
 import { countryCodeToCurrencyMap, locationApiConfig } from './config.ts';
-import { IpLocationResponse, IpifyResponse } from './types.ts';
+import { type IpLocationResponse, type IpifyResponse } from './types.ts';
 import { buildAPIEndpoint, fetchData } from './utils.ts';
 
 const { ipGeolocatorEndpoint, ipLookupEndpoint } = locationApiConfig;

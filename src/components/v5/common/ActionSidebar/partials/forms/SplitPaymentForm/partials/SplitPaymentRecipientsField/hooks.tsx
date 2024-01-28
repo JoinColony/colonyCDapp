@@ -1,23 +1,23 @@
-import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo, useCallback, useEffect } from 'react';
 
 import { useMemberContext } from '~context/MemberContext.tsx';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
-import { ColonyContributor, Token } from '~types/graphql.ts';
+import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   DISTRIBUTION_METHOD,
-  DistributionMethod,
+  type DistributionMethod,
 } from '~v5/common/ActionSidebar/partials/consts.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
-  SplitPaymentRecipientsFieldModel,
-  SplitPaymentRecipientsTableModel,
+  type SplitPaymentRecipientsFieldModel,
+  type SplitPaymentRecipientsTableModel,
 } from './types.ts';
 
 export const useRecipientsFieldTableColumns = (

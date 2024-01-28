@@ -1,4 +1,4 @@
-import { NETWORK_DATA, NetworkInfo } from '~constants/index.ts';
+import { NETWORK_DATA, type NetworkInfo } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 
 const useGetNetworkToken = (): NetworkInfo | undefined => {

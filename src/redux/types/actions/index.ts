@@ -1,17 +1,17 @@
-import { NavigateFunction } from 'react-router-dom';
+import { type NavigateFunction } from 'react-router-dom';
 
-import { ColonyActionTypes } from './colony.ts';
-import { ColonyActionsActionTypes } from './colonyActions.ts';
-import { DecisionActionTypes } from './decisions.ts';
-import { ExpendituresActionTypes } from './expenditures.ts';
-import { GasPricesActionTypes } from './gasPrices.ts';
-import { IpfsActionTypes } from './ipfs.ts';
-import { MessageActionTypes } from './message.ts';
-import { MotionActionTypes } from './motion.ts';
-import { TransactionActionTypes } from './transaction.ts';
-import { UserActionTypes } from './user.ts';
-import { MetacolonyVestingTypes } from './vesting.ts';
-import { WalletActionTypes } from './wallet.ts';
+import { type ColonyActionTypes } from './colony.ts';
+import { type ColonyActionsActionTypes } from './colonyActions.ts';
+import { type DecisionActionTypes } from './decisions.ts';
+import { type ExpendituresActionTypes } from './expenditures.ts';
+import { type GasPricesActionTypes } from './gasPrices.ts';
+import { type IpfsActionTypes } from './ipfs.ts';
+import { type MessageActionTypes } from './message.ts';
+import { type MotionActionTypes } from './motion.ts';
+import { type TransactionActionTypes } from './transaction.ts';
+import { type UserActionTypes } from './user.ts';
+import { type MetacolonyVestingTypes } from './vesting.ts';
+import { type WalletActionTypes } from './wallet.ts';
 
 export { RootMotionMethodNames } from './motion.ts';
 

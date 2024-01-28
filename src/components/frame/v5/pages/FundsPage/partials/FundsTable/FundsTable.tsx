@@ -2,7 +2,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from '@tanstack/react-table';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { formatText } from '~utils/intl.ts';
@@ -13,7 +13,7 @@ import AcceptButton from '../AcceptButton/index.ts';
 import Filter from '../Filter/index.ts';
 
 import { useFundsTable, useFundsTableColumns } from './hooks.tsx';
-import { FundsTableModel } from './types.ts';
+import { type FundsTableModel } from './types.ts';
 
 const displayName = 'pages.FundsPage.partials.FundsTable';
 

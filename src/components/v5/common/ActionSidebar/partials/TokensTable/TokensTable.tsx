@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -9,7 +9,7 @@ import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import { useGetTableMenuProps, useTokensTableColumns } from './hooks.tsx';
-import { TokensTableModel, TokensTableProps } from './types.ts';
+import { type TokensTableModel, type TokensTableProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokensTable';
 

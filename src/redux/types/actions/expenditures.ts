@@ -1,18 +1,22 @@
-import { StreamingPaymentEndCondition } from '~gql';
-import { ActionTypes } from '~redux/actionTypes.ts';
+import { type StreamingPaymentEndCondition } from '~gql';
+import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
-  ExpenditurePayoutFieldValue,
-  ExpenditureStageFieldValue,
+  type ExpenditurePayoutFieldValue,
+  type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
 import {
-  Colony,
-  Domain,
-  Expenditure,
-  ExpenditureSlot,
+  type Colony,
+  type Domain,
+  type Expenditure,
+  type ExpenditureSlot,
 } from '~types/graphql.ts';
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 
-import { UniqueActionType, ErrorActionType, MetaWithSetter } from './index.ts';
+import {
+  type UniqueActionType,
+  type ErrorActionType,
+  type MetaWithSetter,
+} from './index.ts';
 
 export type ExpenditureFundPayload = {
   colonyAddress: Address;

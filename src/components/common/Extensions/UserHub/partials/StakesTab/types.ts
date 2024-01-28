@@ -1,6 +1,9 @@
-import { TabItem } from '~shared/Extensions/Tabs/types.ts';
-import { Token, Colony } from '~types/graphql.ts';
-import { UserStakeStatus, UserStakeWithStatus } from '~types/userStake.ts';
+import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
+import { type Token, type Colony } from '~types/graphql.ts';
+import {
+  type UserStakeStatus,
+  type UserStakeWithStatus,
+} from '~types/userStake.ts';
 
 export interface StakesListProps {
   loading: boolean;

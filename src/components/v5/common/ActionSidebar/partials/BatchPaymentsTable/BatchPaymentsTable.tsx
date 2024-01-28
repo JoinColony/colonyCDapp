@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { useMobile } from '~hooks/index.ts';
@@ -11,7 +11,10 @@ import {
   useBatchPaymentsTableColumns,
   useGetTableMenuProps,
 } from './hooks.tsx';
-import { BatchPaymentsTableModel, BatchPaymentsTableProps } from './types.ts';
+import {
+  type BatchPaymentsTableModel,
+  type BatchPaymentsTableProps,
+} from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.BatchPaymentsTable';
 

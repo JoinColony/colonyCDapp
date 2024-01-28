@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
-import { WizardStepProps } from '~shared/Wizard/index.ts';
+import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { mergePayload, pipe, withMeta } from '~utils/actions.ts';
 
 import { ButtonRow, HeaderRow } from '../shared.tsx';
 
 import CardRow from './CreateColonyCardRow.tsx';
-import { FormValues, TokenChoice } from './types.ts';
+import { type FormValues, TokenChoice } from './types.ts';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmAllInput';
 

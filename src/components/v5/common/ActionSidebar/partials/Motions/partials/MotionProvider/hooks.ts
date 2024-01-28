@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 
-import { MotionStakes } from '~types/graphql.ts';
-import { SetStateFn } from '~types/index.ts';
+import { type MotionStakes } from '~types/graphql.ts';
+import { type SetStateFn } from '~types/index.ts';
 
 import { compareMotionStakes } from './helpers.ts';
 import { MotionContext } from './MotionContext.ts';

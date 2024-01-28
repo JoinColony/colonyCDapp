@@ -1,7 +1,9 @@
 declare module 'image-blob-reduce' {
   // Source: https://github.com/nodeca/image-blob-reduce
 
-  import pica, { PicaResizeOptions } from '@types/pica';
+  import { type PicaResizeOptions } from '@types/pica';
+
+  import type pica from '@types/pica';
 
   /* eslint-disable @typescript-eslint/ban-types */
   export default class ImageBlobReduce {

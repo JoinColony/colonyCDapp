@@ -1,4 +1,4 @@
-import { Placement as PlacementType } from '@popperjs/core';
+import { type Placement as PlacementType } from '@popperjs/core';
 import camelcase from 'camelcase';
 
 import { capitalizeFirstLetter } from '~utils/strings/index.ts';

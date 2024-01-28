@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -7,7 +7,7 @@ import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
 import DescriptionField from '../DescriptionField/index.ts';
 
-import { DescriptionRowProps } from './types.ts';
+import { type DescriptionRowProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';
 

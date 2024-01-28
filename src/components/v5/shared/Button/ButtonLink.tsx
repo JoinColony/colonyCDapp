@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 
 import Link from '../Link/index.ts';
 
 import ButtonContent from './ButtonContent.tsx';
-import { ButtonLinkProps } from './types.ts';
+import { type ButtonLinkProps } from './types.ts';
 
 import styles from './Button.module.css';
 

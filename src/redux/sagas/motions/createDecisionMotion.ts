@@ -1,14 +1,18 @@
-import { AnyColonyClient, ClientType, getChildIndex } from '@colony/colony-js';
+import {
+  type AnyColonyClient,
+  ClientType,
+  getChildIndex,
+} from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyDecisionDocument,
-  CreateColonyDecisionMutation,
-  CreateColonyDecisionMutationVariables,
+  type CreateColonyDecisionMutation,
+  type CreateColonyDecisionMutationVariables,
 } from '~gql';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {

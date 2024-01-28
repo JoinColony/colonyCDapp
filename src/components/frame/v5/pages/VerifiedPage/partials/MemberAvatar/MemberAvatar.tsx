@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 
-import { MemberAvatarProps } from './types.ts';
+import { type MemberAvatarProps } from './types.ts';
 
 const displayName = 'v5.pages.VerifiedPage.partials.MemberAvatar';
 

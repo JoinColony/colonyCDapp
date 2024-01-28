@@ -1,8 +1,11 @@
-import React, { ReactNode } from 'react';
-import { MessageDescriptor } from 'react-intl';
-import { NavLink as NavLinkComponent, NavLinkProps } from 'react-router-dom';
+import React, { type ReactNode } from 'react';
+import { type MessageDescriptor } from 'react-intl';
+import {
+  NavLink as NavLinkComponent,
+  type NavLinkProps,
+} from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types/index.ts';
+import { type SimpleMessageValues } from '~types/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import styles from './NavLink.css';

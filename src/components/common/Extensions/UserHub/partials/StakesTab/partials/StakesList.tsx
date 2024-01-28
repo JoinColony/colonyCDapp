@@ -4,7 +4,7 @@ import React from 'react';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
-import { StakesListProps } from '../types.ts';
+import { type StakesListProps } from '../types.ts';
 
 import StakeItem from './StakeItem.tsx';
 

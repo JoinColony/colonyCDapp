@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-import { ColonyMotion } from '~types/graphql.ts';
+import { type ColonyMotion } from '~types/graphql.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 
 import { supportOption, opposeOption } from '../../consts.ts';
 
-import { VoteStatuses } from './partials/VoteStatuses/types.ts';
+import { type VoteStatuses } from './partials/VoteStatuses/types.ts';
 
 export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
   const voteStatuses: VoteStatuses[] = useMemo(() => {

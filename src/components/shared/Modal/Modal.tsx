@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import ReactModal, { Props as ModalProps } from 'react-modal';
+import React, { type FC } from 'react';
+import ReactModal, { type Props as ModalProps } from 'react-modal';
 
 import styles from './Modal.css';
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -10,7 +10,7 @@ import useToggle from '~hooks/useToggle/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import SearchSelect from '~v5/shared/SearchSelect/index.ts';
 
-import { TeamSelectProps } from './types.ts';
+import { type TeamSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 

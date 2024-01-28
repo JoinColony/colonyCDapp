@@ -1,6 +1,6 @@
-import { MotionState } from '~utils/colonyMotions.ts';
+import { type MotionState } from '~utils/colonyMotions.ts';
 
-import { PillsProps } from '../types.ts';
+import { type PillsProps } from '../types.ts';
 
 export interface MotionStateBadgeProps extends PillsProps {
   state: MotionState;

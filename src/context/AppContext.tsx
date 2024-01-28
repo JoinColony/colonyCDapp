@@ -3,7 +3,7 @@ import React, {
   createContext,
   useState,
   useMemo,
-  ReactNode,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -11,14 +11,14 @@ import React, {
 
 import {
   GetUserByAddressDocument,
-  GetUserByAddressQuery,
-  GetUserByAddressQueryVariables,
+  type GetUserByAddressQuery,
+  type GetUserByAddressQueryVariables,
 } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { User } from '~types/graphql.ts';
-import { ColonyWallet } from '~types/wallet.ts';
+import { type User } from '~types/graphql.ts';
+import { type ColonyWallet } from '~types/wallet.ts';
 import { getLastWallet } from '~utils/autoLogin.ts';
 
 import { getContext, ContextModule } from './index.ts';

@@ -5,7 +5,7 @@ import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import Icon from '~shared/Icon/index.ts';
 
 import { ICON_NAME_MAP, StepStage } from './consts.ts';
-import { StepperButtonProps } from './types.ts';
+import { type StepperButtonProps } from './types.ts';
 
 const displayName = 'v5.Stepper.partials.StepperButton';
 

@@ -6,7 +6,7 @@ import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { UserProfileFormProps } from '../types.ts';
+import { type UserProfileFormProps } from '../types.ts';
 
 const USERNAME_CHANGE_LIMIT = 90; // username can be changed once every 90 days
 

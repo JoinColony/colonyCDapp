@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import SpecialHourInput from '~shared/Extensions/ConnectForm/partials/SpecialHourInput.tsx';
 import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput.tsx';
 
-import { AccordionItemProps } from '../types.ts';
+import { type AccordionItemProps } from '../types.ts';
 
 import AccordionNestedItem from './AccordionNested/AccordionNestedItem.tsx';
 

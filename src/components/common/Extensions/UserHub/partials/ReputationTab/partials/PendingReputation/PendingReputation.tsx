@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useGetReputationMiningCycleMetadataQuery } from '~gql';
@@ -7,7 +7,7 @@ import TimeRelative from '~shared/TimeRelative/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import styles from '../../ReputationTab.module.css';
-import { PendingReputationProps } from '../../types.ts';
+import { type PendingReputationProps } from '../../types.ts';
 
 import {
   getNextMiningCycleDate,

@@ -5,8 +5,8 @@ import { TransactionStatus } from '~types/graphql.ts';
 import { ActionTypes } from '../actionTypes.ts';
 import { CORE_MESSAGES_LIST } from '../constants.ts';
 import { Message } from '../immutable/index.ts';
-import { CoreMessages, CoreMessagesRecord } from '../state/messages.ts';
-import { ReducerType } from '../types/reducer.ts';
+import { CoreMessages, type CoreMessagesRecord } from '../state/messages.ts';
+import { type ReducerType } from '../types/reducer.ts';
 
 const coreMessagesReducer: ReducerType<CoreMessagesRecord> = (
   state = CoreMessages(),

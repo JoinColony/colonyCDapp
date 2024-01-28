@@ -1,11 +1,11 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 
 import Avatar from './Avatar.tsx';
 import { badgeTextMapping } from './consts.ts';
-import { AvatarWithStatusBadgeProps } from './types.ts';
+import { type AvatarWithStatusBadgeProps } from './types.ts';
 
 const displayName = 'v5.AvatarWithStatusBadge';
 

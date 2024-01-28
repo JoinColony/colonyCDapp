@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
@@ -11,7 +11,7 @@ import NavigationFeedbackWidget from '../NavigationFeedbackWidget/index.ts';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks.ts';
 import NavigationSidebarLinksList from '../NavigationSidebarLinksList/index.ts';
 
-import { NavigationSidebarSecondLevelProps } from './types.ts';
+import { type NavigationSidebarSecondLevelProps } from './types.ts';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarSecondLevel';

@@ -11,7 +11,10 @@ import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { TOKENS_MODAL_TYPES } from './consts.ts';
-import { TokensModalType, UseTokensModalReturnType } from './types.ts';
+import {
+  type TokensModalType,
+  type UseTokensModalReturnType,
+} from './types.ts';
 
 export const useTokensModal = (
   type: TokensModalType,

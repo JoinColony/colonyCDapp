@@ -1,11 +1,11 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { type FC, useCallback, useState } from 'react';
 
 import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
 import MessageCard from '~frame/MessageCard/MessageCard.tsx';
-import { MessageType } from '~redux/immutable/index.ts';
+import { type MessageType } from '~redux/immutable/index.ts';
 
 import {
-  TransactionOrMessageGroup,
+  type TransactionOrMessageGroup,
   getGroupId,
   isTxGroup,
 } from '../transactionGroup.ts';

@@ -1,6 +1,6 @@
-import { HTMLAttributes } from 'react';
-import { UseFormRegister, FieldValues } from 'react-hook-form';
-import { MessageDescriptor } from 'react-intl';
+import { type HTMLAttributes } from 'react';
+import { type UseFormRegister, type FieldValues } from 'react-hook-form';
+import { type MessageDescriptor } from 'react-intl';
 
 export type TextareaProps = HTMLAttributes<HTMLTextAreaElement> & {
   textareaTitle?: MessageDescriptor | string;

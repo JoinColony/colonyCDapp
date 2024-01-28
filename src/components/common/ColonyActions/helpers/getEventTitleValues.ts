@@ -1,4 +1,4 @@
-import { AnyMessageValues } from '~types/index.ts';
+import { type AnyMessageValues } from '~types/index.ts';
 
 export const generateMessageValues = (
   item: Record<string, any>,

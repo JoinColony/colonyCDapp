@@ -1,9 +1,9 @@
-import { InferType } from 'yup';
+import { type InferType } from 'yup';
 
-import { ExternalLink, ExternalLinks } from '~gql';
-import { ModalProps } from '~v5/shared/Modal/types.ts';
+import { type ExternalLink, type ExternalLinks } from '~gql';
+import { type ModalProps } from '~v5/shared/Modal/types.ts';
 
-import { SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA } from './consts.tsx';
+import { type SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA } from './consts.tsx';
 
 export type SocialLinkModalFormValues = InferType<
   typeof SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA

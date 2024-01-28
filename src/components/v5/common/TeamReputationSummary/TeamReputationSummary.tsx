@@ -1,7 +1,7 @@
 import { Id } from '@colony/colony-js';
 import clsx from 'clsx';
 import Decimal from 'decimal.js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { ACTION } from '~constants/actions.ts';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
@@ -20,7 +20,7 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts.tsx';
 
 import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow.tsx';
-import { TeamReputationSummaryProps } from './types.ts';
+import { type TeamReputationSummaryProps } from './types.ts';
 import { formatPercentage } from './utils.ts';
 
 const displayName = 'v5.common.TeamReputationSummary';

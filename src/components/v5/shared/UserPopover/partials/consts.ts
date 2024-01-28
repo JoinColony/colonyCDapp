@@ -1,4 +1,4 @@
-import { ColonyRole } from '@colony/colony-js';
+import { type ColonyRole } from '@colony/colony-js';
 
 type Subtract<T, U> = T extends U ? never : T;
 

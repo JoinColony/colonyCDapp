@@ -1,4 +1,4 @@
-import { ApolloQueryResult } from '@apollo/client';
+import { type ApolloQueryResult } from '@apollo/client';
 import {
   ClientType,
   getPermissionProofs,
@@ -7,19 +7,23 @@ import {
 } from '@colony/colony-js';
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
-import { getContext, ContextModule, ColonyManager } from '~context/index.ts';
+import {
+  getContext,
+  ContextModule,
+  type ColonyManager,
+} from '~context/index.ts';
 import {
   GetColonyMotionDocument,
-  GetColonyMotionQuery,
-  GetColonyMotionQueryVariables,
+  type GetColonyMotionQuery,
+  type GetColonyMotionQueryVariables,
 } from '~gql';
-import { ColonyMotion } from '~types/graphql.ts';
-import { Address } from '~types/index.ts';
+import { type ColonyMotion } from '~types/graphql.ts';
+import { type Address } from '~types/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions, Action } from '../../types/actions/index.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,

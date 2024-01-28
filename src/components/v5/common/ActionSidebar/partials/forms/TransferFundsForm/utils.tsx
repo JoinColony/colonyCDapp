@@ -1,11 +1,11 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { TransferFundsFormValues } from './hooks.ts';
+import { type TransferFundsFormValues } from './hooks.ts';
 
 export const getTransferFundsPayload = (
   colony: Colony,

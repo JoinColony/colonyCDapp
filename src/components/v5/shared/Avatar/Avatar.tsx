@@ -1,10 +1,14 @@
 import clsx from 'clsx';
-import React, { CSSProperties, FC, PropsWithChildren } from 'react';
+import React, {
+  type CSSProperties,
+  type FC,
+  type PropsWithChildren,
+} from 'react';
 
 import Icon from '~shared/Icon/index.ts';
 
 import getIcon from './identicon.ts';
-import { AvatarProps } from './types.ts';
+import { type AvatarProps } from './types.ts';
 
 import styles from './Avatar.module.css';
 

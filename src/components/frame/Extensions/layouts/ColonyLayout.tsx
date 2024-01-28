@@ -1,7 +1,7 @@
 import { AnimatePresence } from 'framer-motion';
 import React, {
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useCallback,
   useEffect,
   useMemo,

@@ -2,14 +2,14 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import { WizardStepProps } from '~shared/Wizard/index.ts';
+import { type WizardStepProps } from '~shared/Wizard/index.ts';
 
 import { ButtonRow, HeaderRow } from '../shared.tsx';
 
 import { TokenChoiceOptions } from './StepCreateTokenComponents.tsx';
 import TokenInputs from './StepCreateTokenInputs.tsx';
 import TokenSelectorInput from './TokenSelectorInput.tsx';
-import { FormValues, Step3, TokenChoice } from './types.ts';
+import { type FormValues, type Step3, TokenChoice } from './types.ts';
 import { tokenValidationSchema as validationSchema } from './validation.ts';
 
 const displayName = `common.CreateColonyWizard.StepCreateToken`;

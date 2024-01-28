@@ -1,4 +1,4 @@
-import { CardSelectOption, CardSelectProps } from './types.ts';
+import { type CardSelectOption, type CardSelectProps } from './types.ts';
 
 export const isFlatOptions = <TValue>(
   options: CardSelectProps<TValue>['options'],

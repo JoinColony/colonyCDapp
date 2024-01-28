@@ -3,7 +3,7 @@ import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
-import { Token } from '~types/graphql.ts';
+import { type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';

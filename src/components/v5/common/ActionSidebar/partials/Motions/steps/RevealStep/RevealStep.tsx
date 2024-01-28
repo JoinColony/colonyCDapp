@@ -1,6 +1,6 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -18,7 +18,7 @@ import MotionBadge from '../../partials/MotionBadge/MotionBadge.tsx';
 
 import { useRevealStep } from './hooks.ts';
 import RevealInformationList from './partials/RevealInformationList.tsx';
-import { RevealStepProps } from './types.ts';
+import { type RevealStepProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';

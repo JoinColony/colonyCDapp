@@ -1,5 +1,5 @@
 import {
-  AnyStreamingPaymentsClient,
+  type AnyStreamingPaymentsClient,
   ClientType,
   ColonyRole,
   getPermissionProofs,
@@ -9,11 +9,11 @@ import { call, fork, takeEvery } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateStreamingPaymentMetadataDocument,
-  CreateStreamingPaymentMetadataMutation,
-  CreateStreamingPaymentMetadataMutationVariables,
+  type CreateStreamingPaymentMetadataMutation,
+  type CreateStreamingPaymentMetadataMutationVariables,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { Action } from '~redux/types/index.ts';
+import { type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 

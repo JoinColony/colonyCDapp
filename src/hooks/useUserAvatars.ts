@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
-import { UserFragment } from '~gql';
+import { type UserFragment } from '~gql';
 import useUsersByAddresses from '~hooks/useUsersByAddresses.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { calculateRemainingItems } from '~utils/avatars.ts';
-import { UserAvatarsItem } from '~v5/shared/UserAvatars/types.ts';
+import { type UserAvatarsItem } from '~v5/shared/UserAvatars/types.ts';
 
 export const useUserAvatars = (
   maxAvatars: number,

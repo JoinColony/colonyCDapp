@@ -28,8 +28,8 @@ import { formatText } from '~utils/intl.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import {
-  TeamCardListItem,
-  TeamCardListProps,
+  type TeamCardListItem,
+  type TeamCardListProps,
 } from '~v5/common/TeamCardList/types.ts';
 import Link from '~v5/shared/Link/index.ts';
 

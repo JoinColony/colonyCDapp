@@ -1,12 +1,12 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { type FC, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import { MotionAction } from '~types/motions.ts';
+import { type MotionAction } from '~types/motions.ts';
 import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
@@ -21,7 +21,7 @@ import OutcomeStep from './steps/OutcomeStep/index.ts';
 import RevealStep from './steps/RevealStep/index.ts';
 import StakingStep from './steps/StakingStep/index.ts';
 import VotingStep from './steps/VotingStep/index.ts';
-import { MotionsProps, Steps, CustomStep } from './types.ts';
+import { type MotionsProps, type Steps, CustomStep } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 

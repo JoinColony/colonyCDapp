@@ -1,7 +1,7 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import { DotButtonProps } from '../types.ts';
+import { type DotButtonProps } from '../types.ts';
 
 const displayName = 'common.Extensions.ImageCarousel.partials.DotButton';
 

@@ -1,6 +1,6 @@
 import { UserStakeStatus } from '~types/userStake.ts';
 
-import { StakesFilterOption } from './types.ts';
+import { type StakesFilterOption } from './types.ts';
 
 export const stakesFilterOptions: StakesFilterOption[] = [
   {

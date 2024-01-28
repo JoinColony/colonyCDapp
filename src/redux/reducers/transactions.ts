@@ -5,15 +5,15 @@ import { TransactionStatus } from '~types/graphql.ts';
 import { ActionTypes } from '../actionTypes.ts';
 import { CORE_TRANSACTIONS_LIST } from '../constants.ts';
 import {
-  TransactionRecord,
+  type TransactionRecord,
   Transaction,
-  TransactionRecordProps,
+  type TransactionRecordProps,
 } from '../immutable/index.ts';
 import {
   CoreTransactions,
-  CoreTransactionsRecord,
+  type CoreTransactionsRecord,
 } from '../state/transactions.ts';
-import { ReducerType } from '../types/reducer.ts';
+import { type ReducerType } from '../types/reducer.ts';
 
 const transactionGroup = (tx: TransactionRecord) => {
   if (!tx.group || typeof tx.group.id === 'string') return tx.group;

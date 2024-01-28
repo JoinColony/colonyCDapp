@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { DomainColor } from '~gql';
 import { useMobile } from '~hooks/index.ts';
@@ -13,7 +13,7 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { sortDisabled } from '../../utils.ts';
 
-import { SearchItemProps } from './types.ts';
+import { type SearchItemProps } from './types.ts';
 
 const displayName = 'v5.SearchSelect.partials.SearchItem';
 

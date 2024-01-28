@@ -1,8 +1,8 @@
-import { BigNumberish, utils, TypedDataField } from 'ethers';
+import { type BigNumberish, utils, type TypedDataField } from 'ethers';
 
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 import { isFullWallet } from '~types/wallet.ts';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages.ts';

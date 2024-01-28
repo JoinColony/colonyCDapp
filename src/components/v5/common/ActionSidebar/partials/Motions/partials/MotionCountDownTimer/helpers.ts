@@ -1,4 +1,4 @@
-import { GetMotionTimeoutPeriodsReturn } from '~gql';
+import { type GetMotionTimeoutPeriodsReturn } from '~gql';
 import { MotionState } from '~utils/colonyMotions.ts';
 
 export const splitTimeLeft = (period: number) => ({

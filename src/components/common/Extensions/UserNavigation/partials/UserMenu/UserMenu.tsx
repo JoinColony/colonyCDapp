@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 // @BETA: Disabled for now
 // import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
@@ -19,7 +19,7 @@ import UserSubmenu from '../UserSubmenu/index.ts';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu/index.ts';
 
 import { currencyIconTitles, userMenuItems } from './consts.ts';
-import { UserMenuItemName, UserMenuProps } from './types.ts';
+import { UserMenuItemName, type UserMenuProps } from './types.ts';
 
 import styles from './UserMenu.module.css';
 

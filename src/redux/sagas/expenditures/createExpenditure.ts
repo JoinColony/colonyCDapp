@@ -1,12 +1,12 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context/index.ts';
+import { type ColonyManager } from '~context/index.ts';
 import { transactionAddParams } from '~redux/actionCreators/index.ts';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,

@@ -1,5 +1,5 @@
-import React, { Fragment, ReactElement, isValidElement } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import React, { Fragment, type ReactElement, isValidElement } from 'react';
+import { type MessageDescriptor, useIntl } from 'react-intl';
 
 import SingleCrumb from './SingleCrumb.tsx';
 

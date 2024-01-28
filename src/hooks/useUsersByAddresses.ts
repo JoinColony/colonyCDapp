@@ -1,5 +1,5 @@
 import { useGetUsersQuery } from '~gql';
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 
 const useUsersByAddresses = (addresses: Address[]) => {
   const { data, error, loading } = useGetUsersQuery({

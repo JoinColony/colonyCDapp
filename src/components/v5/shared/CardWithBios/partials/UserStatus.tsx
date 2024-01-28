@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
@@ -6,7 +6,7 @@ import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 
-import { UserStatusComponentProps } from '../types.ts';
+import { type UserStatusComponentProps } from '../types.ts';
 
 import {
   ACTIVE_CONTRIBUTOR_PERCENT,

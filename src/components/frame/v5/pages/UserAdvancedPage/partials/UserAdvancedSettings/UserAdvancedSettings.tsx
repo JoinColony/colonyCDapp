@@ -1,5 +1,5 @@
 import React, {
-  FC,
+  type FC,
   // @BETA: Disabled for now
   // useState
 } from 'react';

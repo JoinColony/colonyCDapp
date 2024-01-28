@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import { MembersTabContentWrapperProps } from './types.ts';
+import { type MembersTabContentWrapperProps } from './types.ts';
 
 const MembersTabContentWrapper: FC<
   PropsWithChildren<MembersTabContentWrapperProps>

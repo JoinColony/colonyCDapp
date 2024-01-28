@@ -1,4 +1,4 @@
-import { InferType, object, string, number } from 'yup';
+import { type InferType, object, string, number } from 'yup';
 
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 

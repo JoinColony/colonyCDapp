@@ -2,17 +2,17 @@ import { AddressZero } from '@ethersproject/constants';
 import Decimal from 'decimal.js';
 import React from 'react';
 
-import { SimpleTarget } from '~gql';
+import { type SimpleTarget } from '~gql';
 import FriendlyName from '~shared/FriendlyName/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import {
-  Colony,
-  ColonyAction,
-  DomainMetadata,
-  User,
-  ColonyExtension,
-  Token,
+  type Colony,
+  type ColonyAction,
+  type DomainMetadata,
+  type User,
+  type ColonyExtension,
+  type Token,
 } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';

@@ -3,12 +3,15 @@ import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress.ts';
-import { AnyExtensionData, InstalledExtensionData } from '~types/extensions.ts';
+import {
+  type AnyExtensionData,
+  type InstalledExtensionData,
+} from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
-import { ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
+import { type ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { SidePanelDataProps } from './types.ts';
+import { type SidePanelDataProps } from './types.ts';
 
 export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode[]>([

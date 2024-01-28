@@ -1,7 +1,7 @@
-import { MessageDescriptor } from 'react-intl';
+import { type MessageDescriptor } from 'react-intl';
 
-import { TokenFragment } from '~gql';
-import { BaseFieldProps } from '~v5/common/Fields/types.ts';
+import { type TokenFragment } from '~gql';
+import { type BaseFieldProps } from '~v5/common/Fields/types.ts';
 
 export interface SearchSelectProps extends BaseFieldProps {
   items: SearchSelectOptionProps[];

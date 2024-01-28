@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import Numeral from '~shared/Numeral/index.ts';
 
 import { useDonutChart } from './hooks.tsx';
-import { DonutChartProps } from './types.ts';
+import { type DonutChartProps } from './types.ts';
 
 const displayName = 'v5.common.DonutChart';
 

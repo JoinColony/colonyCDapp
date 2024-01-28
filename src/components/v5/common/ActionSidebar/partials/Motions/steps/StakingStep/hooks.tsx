@@ -2,13 +2,13 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
-import { ColonyMotionFragment, useGetUserReputationQuery } from '~gql';
+import { type ColonyMotionFragment, useGetUserReputationQuery } from '~gql';
 import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking.ts';
 import useUsersByAddresses from '~hooks/useUsersByAddresses.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import { UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types.ts';
+import { type UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types.ts';
 
 import { useMotionContext } from '../../partials/MotionProvider/hooks.ts';
 

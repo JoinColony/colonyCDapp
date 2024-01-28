@@ -1,11 +1,11 @@
 /* eslint-disable react/button-has-type */
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 
-import { IconButtonProps } from './types.ts';
+import { type IconButtonProps } from './types.ts';
 
 import styles from './TxButton.module.css';
 

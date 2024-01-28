@@ -1,14 +1,14 @@
-import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import AmountField from '../AmountField/index.ts';
 import UserSelect from '../UserSelect/index.ts';
 
-import { TransactionTableModel } from './types.ts';
+import { type TransactionTableModel } from './types.ts';
 
 export const useTransactionTableColumns = (
   name: string,

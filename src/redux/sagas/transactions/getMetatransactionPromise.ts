@@ -1,10 +1,10 @@
-import { ContractClient, ClientType } from '@colony/colony-js';
-import { TransactionResponse } from '@ethersproject/providers';
-import { Contract, BigNumberish, utils } from 'ethers';
+import { type ContractClient, ClientType } from '@colony/colony-js';
+import { type TransactionResponse } from '@ethersproject/providers';
+import { Contract, type BigNumberish, utils } from 'ethers';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
-  MethodParams,
+  type MethodParams,
   MetatransactionFlavour,
   MetamaskRpcErrors,
   TRANSACTION_METHODS,
@@ -16,7 +16,7 @@ import {
   generateMetamaskTypedDataSignatureErrorMessage,
 } from '~utils/web3/index.ts';
 
-import { TransactionRecord } from '../../immutable/index.ts';
+import { type TransactionRecord } from '../../immutable/index.ts';
 import {
   getChainId,
   generateEIP2612TypedData,

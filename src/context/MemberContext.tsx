@@ -1,8 +1,8 @@
 import { Id } from '@colony/colony-js';
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useMemo,
@@ -21,7 +21,7 @@ import { useMobile } from '~hooks/index.ts';
 import useAllMembers from '~hooks/members/useAllMembers.ts';
 import useColonyContributors from '~hooks/members/useColonyContributors.ts';
 import { COLONY_VERIFIED_ROUTE } from '~routes/index.ts';
-import { ColonyContributor } from '~types/graphql.ts';
+import { type ColonyContributor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
 import { useColonyContext } from './ColonyContext.tsx';

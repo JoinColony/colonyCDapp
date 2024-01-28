@@ -5,13 +5,13 @@ import {
   USER_ROLE,
   USER_ROLES,
 } from '~constants/permissions.ts';
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 
 import {
   AVAILABLE_ROLES,
-  ManagePermissionsFormValues,
+  type ManagePermissionsFormValues,
   REMOVE_ROLE_OPTION_VALUE,
 } from './consts.tsx';
 

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useCallback } from 'react';
+import React, { type ReactNode, useState, useCallback } from 'react';
 
 import Icon from '~shared/Icon/index.ts';
 

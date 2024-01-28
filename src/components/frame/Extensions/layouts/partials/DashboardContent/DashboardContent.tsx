@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useMemberContext } from '~context/MemberContext.tsx';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';

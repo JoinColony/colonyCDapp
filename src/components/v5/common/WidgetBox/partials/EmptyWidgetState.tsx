@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { TextButton } from '~v5/shared/Button/index.ts';
 
-import { EmptyWidgetStateProps } from './types.ts';
+import { type EmptyWidgetStateProps } from './types.ts';
 
 const displayName = 'common.WidgetBox.partials.EmptyState';
 

@@ -19,7 +19,7 @@ import {
   // @BETA: Disabled for now
   // userHasRole,
 } from '~utils/checks/index.ts';
-import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
+import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();

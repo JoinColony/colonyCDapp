@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useLayoutEffect, useState } from 'react';
+import React, { type FC, useLayoutEffect, useState } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import { omit } from '~utils/lodash.ts';
@@ -10,7 +10,7 @@ import { MAX_ANNOTATION_NUM } from './consts.ts';
 import { useRichText } from './hooks.ts';
 import MenuBar from './partials/Menu.tsx';
 import RichTextContent from './partials/RichTextContent/index.ts';
-import { RichTextProps } from './types.ts';
+import { type RichTextProps } from './types.ts';
 
 const displayName = 'v5.RichText';
 

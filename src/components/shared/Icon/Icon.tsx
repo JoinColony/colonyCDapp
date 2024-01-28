@@ -1,11 +1,11 @@
-import React, { HTMLAttributes, ReactNode } from 'react';
-import { MessageDescriptor } from 'react-intl';
+import React, { type HTMLAttributes, type ReactNode } from 'react';
+import { type MessageDescriptor } from 'react-intl';
 
 import {
   icons as iconNames,
   multiColorIcons as multiColorIconNames,
 } from '~images/icons.json';
-import { SimpleMessageValues } from '~types/index.ts';
+import { type SimpleMessageValues } from '~types/index.ts';
 import { getMainClasses } from '~utils/css/index.ts';
 import { formatText } from '~utils/intl.ts';
 

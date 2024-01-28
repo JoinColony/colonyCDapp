@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { DescriptionListProps } from './types.ts';
+import { type DescriptionListProps } from './types.ts';
 
 const DescriptionList: FC<DescriptionListProps> = ({ items, className }) => (
   <dl className={className}>

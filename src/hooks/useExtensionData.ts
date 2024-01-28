@@ -1,16 +1,16 @@
-import { ApolloQueryResult } from '@apollo/client';
-import { getExtensionHash, Extension } from '@colony/colony-js';
+import { type ApolloQueryResult } from '@apollo/client';
+import { getExtensionHash, type Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
-  Exact,
-  GetColonyExtensionQuery,
+  type Exact,
+  type GetColonyExtensionQuery,
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,

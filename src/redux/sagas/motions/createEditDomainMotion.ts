@@ -11,14 +11,14 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateDomainMetadataDocument,
-  CreateDomainMetadataMutation,
-  CreateDomainMetadataMutationVariables,
+  type CreateDomainMetadataMutation,
+  type CreateDomainMetadataMutationVariables,
   DomainColor,
 } from '~gql';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions, Action } from '../../types/actions/index.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createTransaction,
   createTransactionChannels,

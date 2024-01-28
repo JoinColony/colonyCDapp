@@ -1,14 +1,14 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useMemo,
   useState,
 } from 'react';
 
-import { PageHeadingProps } from '~v5/frame/PageLayout/partials/PageHeading/types.ts';
+import { type PageHeadingProps } from '~v5/frame/PageLayout/partials/PageHeading/types.ts';
 
-import { PageHeadingContextValue } from './types.ts';
+import { type PageHeadingContextValue } from './types.ts';
 
 export const PageHeadingContext = createContext<PageHeadingContextValue>({
   title: undefined,

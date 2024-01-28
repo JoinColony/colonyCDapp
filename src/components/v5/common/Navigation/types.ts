@@ -1,6 +1,6 @@
-import { MessageDescriptor } from 'react-intl';
+import { type MessageDescriptor } from 'react-intl';
 
-import { SelectOption } from '../Fields/Select/types.ts';
+import { type SelectOption } from '../Fields/Select/types.ts';
 
 export interface NavItemProps {
   disabled?: boolean;

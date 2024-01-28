@@ -1,6 +1,6 @@
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 
-import { ColonySwitcherListItem } from '../ColonySwitcherList/types.ts';
+import { type ColonySwitcherListItem } from '../ColonySwitcherList/types.ts';
 
 export interface ColonySwitcherContentProps {
   colony?: Colony;

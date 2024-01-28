@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropdownIndicatorProps, components } from 'react-select';
+import { type DropdownIndicatorProps, components } from 'react-select';
 
 import Icon from '~shared/Icon/index.ts';
 

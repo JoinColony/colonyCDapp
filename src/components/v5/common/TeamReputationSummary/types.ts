@@ -1,4 +1,4 @@
-import { Domain } from '~types/graphql.ts';
+import { type Domain } from '~types/graphql.ts';
 
 export interface TeamPointsRowProps {
   team: Domain;

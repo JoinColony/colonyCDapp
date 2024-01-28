@@ -1,23 +1,23 @@
 import { Id } from '@colony/colony-js';
 import React from 'react';
-import { FieldValues } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { type FieldValues } from 'react-hook-form';
+import { type useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { RefetchColonyFn } from '~context/ColonyContext.tsx';
+import { type RefetchColonyFn } from '~context/ColonyContext.tsx';
 import {
   ExtensionMethods,
-  RefetchExtensionDataFn,
+  type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
-import { OnSuccess } from '~shared/Fields/index.ts';
+import { type OnSuccess } from '~shared/Fields/index.ts';
 import {
-  AnyExtensionData,
-  ExtensionInitParam,
-  InstalledExtensionData,
+  type AnyExtensionData,
+  type ExtensionInitParam,
+  type InstalledExtensionData,
 } from '~types/extensions.ts';
-import { SetStateFn } from '~types/index.ts';
+import { type SetStateFn } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 

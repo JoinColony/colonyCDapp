@@ -8,7 +8,7 @@ import {
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { Action, ActionTypes } from '~redux/index.ts';
+import { type Action, ActionTypes } from '~redux/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,

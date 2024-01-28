@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import PillsBase from '../PillsBase.tsx';
-import { PillsProps } from '../types.ts';
+import { type PillsProps } from '../types.ts';
 
 const displayName = 'v5.common.Pills.PermissionsBadge';
 

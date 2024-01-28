@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
@@ -8,10 +8,10 @@ import { useFilterContext } from '~context/FilterContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
-import { NestedFilterOption } from '~v5/common/Filter/types.ts';
+import { type NestedFilterOption } from '~v5/common/Filter/types.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import { NestedOptionsProps } from '../types.ts';
+import { type NestedOptionsProps } from '../types.ts';
 
 import Header from './Header.tsx';
 

@@ -9,7 +9,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { SimplePaymentFormValues } from '../../forms/SimplePaymentForm/hooks.ts';
+import { type SimplePaymentFormValues } from '../../forms/SimplePaymentForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 import RecipientUser from './RecipientUser.tsx';

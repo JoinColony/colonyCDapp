@@ -3,13 +3,13 @@ import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { Form } from '~shared/Fields/index.ts';
-import { WizardStepProps } from '~shared/Wizard/index.ts';
+import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 
 import { ButtonRow, HeaderRow } from '../shared.tsx';
 
 import NameInputs from './StepColonyNameInputs.tsx';
-import { FormValues, Step1 } from './types.ts';
+import { type FormValues, type Step1 } from './types.ts';
 import { colonyNameValidationSchema as validationSchema } from './validation.ts';
 
 const displayName = 'common.CreateColonyWizard.StepColonyName';

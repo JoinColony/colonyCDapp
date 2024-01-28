@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub/index.ts';
@@ -18,7 +18,7 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import { UserHubTabs } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
-import { UserHubButtonProps } from './types.ts';
+import { type UserHubButtonProps } from './types.ts';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';

@@ -1,7 +1,8 @@
-import React from 'react';
-import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { type UseFormRegister, type FieldValues } from 'react-hook-form';
 
-import { Message } from '~types/index.ts';
+import { type Message } from '~types/index.ts';
+
+import type React from 'react';
 
 export type InputProps = {
   maxCharNumber?: number;

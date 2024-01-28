@@ -11,9 +11,9 @@ import { notNull } from '~utils/arrays/index.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 
-import { validationSchema, ManageTokensFormValues } from './consts.ts';
+import { validationSchema, type ManageTokensFormValues } from './consts.ts';
 import { getManageTokensPayload } from './utils.tsx';
 
 export const useManageTokens = (

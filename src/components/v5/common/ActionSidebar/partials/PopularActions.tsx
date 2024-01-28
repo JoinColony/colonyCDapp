@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { TextButton } from '~v5/shared/Button/index.ts';
 
-import { PopularActionsProps } from '../types.ts';
+import { type PopularActionsProps } from '../types.ts';
 
 import { POPULAR_ACTIONS } from './consts.tsx';
 

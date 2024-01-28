@@ -1,8 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import useDropzoneWithFileReader from '~hooks/useDropzoneWithFileReader.ts';
 
-import { FileUploadProps } from '../types.ts';
+import { type FileUploadProps } from '../types.ts';
 
 import DefaultContent from './DefaultContent.tsx';
 import ErrorContent from './ErrorContent.tsx';

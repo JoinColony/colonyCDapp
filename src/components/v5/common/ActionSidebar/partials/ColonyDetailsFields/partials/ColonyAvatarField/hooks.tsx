@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { FileRejection } from 'react-dropzone';
+import { type FileRejection } from 'react-dropzone';
 
 import {
   getOptimisedAvatarUnder300KB,
   getOptimisedThumbnail,
 } from '~images/optimisation/index.ts';
-import { FileReaderFile } from '~utils/fileReader/types.ts';
+import { type FileReaderFile } from '~utils/fileReader/types.ts';
 import {
   DropzoneErrors,
   getFileRejectionErrors,

@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
-import { ActionButtonProps } from './types.ts';
+import { type ActionButtonProps } from './types.ts';
 
 import styles from './ActionButton.module.css';
 

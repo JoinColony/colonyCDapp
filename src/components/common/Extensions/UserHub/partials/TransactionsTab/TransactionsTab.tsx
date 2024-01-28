@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
 import { formatText } from '~utils/intl.ts';
@@ -6,7 +6,7 @@ import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
 import { useTransactionsListObserver } from './hooks.ts';
 import TransactionList from './partials/TransactionList.tsx';
-import { TransactionsProps } from './types.ts';
+import { type TransactionsProps } from './types.ts';
 
 export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 

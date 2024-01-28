@@ -1,4 +1,4 @@
-import { CalamityBannerContentProps } from './partials/types.ts';
+import { type CalamityBannerContentProps } from './partials/types.ts';
 
 export interface CalamityBannerItemProps extends CalamityBannerContentProps {
   // linkName: string;

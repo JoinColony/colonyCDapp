@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
 import useCurrentPage from '~hooks/useCurrentPage.tsx';
 import Select from '~v5/common/Fields/Select/index.ts';
 
 import NavItem from './partials/NavItem/index.ts';
-import { NavigationProps } from './types.ts';
+import { type NavigationProps } from './types.ts';
 
 const displayName = 'v5.common.Navigation';
 

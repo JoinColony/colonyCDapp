@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Icon from '~shared/Icon/index.ts';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
-import { NavigationSidebarLinkProps } from './types.ts';
+import { type NavigationSidebarLinkProps } from './types.ts';
 
 const displayName = 'v5.frame.NavigationSidebar.partials.NavigationSidebarLink';
 

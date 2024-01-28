@@ -7,7 +7,7 @@ import { CardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import Link from '../Link/index.ts';
 
-import { BreadCrumbsCardSelectItem } from './types.ts';
+import { type BreadCrumbsCardSelectItem } from './types.ts';
 
 const displayName = 'v5.Breadcrumbs.BreadcrumbsCardSelect';
 

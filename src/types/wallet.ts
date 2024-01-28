@@ -1,8 +1,8 @@
-import { WalletState } from '@web3-onboard/core';
-import { Account } from '@web3-onboard/core/dist/types';
+import { type WalletState } from '@web3-onboard/core';
+import { type Account } from '@web3-onboard/core/dist/types';
 
-import { CustomEIP1193Provider } from '~redux/sagas/wallet/ganacheModule.ts';
-import RetryRpcProvider from '~redux/sagas/wallet/RetryProvider.ts';
+import { type CustomEIP1193Provider } from '~redux/sagas/wallet/ganacheModule.ts';
+import type RetryRpcProvider from '~redux/sagas/wallet/RetryProvider.ts';
 
 export type ColonyWallet = BasicWallet | FullWallet;
 

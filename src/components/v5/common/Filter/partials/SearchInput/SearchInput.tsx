@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import debounce from 'lodash.debounce';
 import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  FC,
+  type ChangeEvent,
+  type ChangeEventHandler,
+  type FC,
   useCallback,
   useLayoutEffect,
   useMemo,
@@ -16,7 +16,7 @@ import { useSearchContext } from '~context/SearchContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
 
-import { SearchInputProps } from './types.ts';
+import { type SearchInputProps } from './types.ts';
 
 import styles from './SearchInput.module.css';
 

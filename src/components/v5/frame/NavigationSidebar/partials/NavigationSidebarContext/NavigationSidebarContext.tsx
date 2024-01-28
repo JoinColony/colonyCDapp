@@ -1,7 +1,7 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useEffect,
   useMemo,
   useState,
@@ -11,7 +11,7 @@ import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { getPortalContainer } from '~v5/shared/Portal/utils.ts';
 
-import { NavigationSidebarContextValue } from './types.ts';
+import { type NavigationSidebarContextValue } from './types.ts';
 
 export const NavigationSidebarContext =
   createContext<NavigationSidebarContextValue>({

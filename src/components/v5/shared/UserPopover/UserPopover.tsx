@@ -1,6 +1,11 @@
 import clsx from 'clsx';
 import { noop } from 'lodash';
-import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
+import React, {
+  type FC,
+  type PropsWithChildren,
+  useCallback,
+  useState,
+} from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -16,7 +21,7 @@ import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import UserPopoverAdditionalContent from '../UserPopoverAdditionalContent/index.ts';
 
 import UserInfo from './partials/UserInfo.tsx';
-import { UserPopoverProps } from './types.ts';
+import { type UserPopoverProps } from './types.ts';
 
 const displayName = 'v5.UserPopover';
 

@@ -13,7 +13,7 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import Link from '~v5/shared/Link/index.ts';
 
-import { MembersTabContentListItem } from './types.ts';
+import { type MembersTabContentListItem } from './types.ts';
 
 export const useMembersTabContentItems = (
   items: MembersTabContentListItem[],

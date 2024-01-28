@@ -4,9 +4,9 @@ import React from 'react';
 import Icon from '~shared/Icon/index.ts';
 
 import RadioButtonsBase from '../RadioButtonsBase/index.ts';
-import { RadioItem } from '../RadioButtonsBase/types.ts';
+import { type RadioItem } from '../RadioButtonsBase/types.ts';
 
-import { ButtonRadioButtonsProps } from './types.ts';
+import { type ButtonRadioButtonsProps } from './types.ts';
 
 const displayName = 'v5.common.ButtonRadioButtons';
 

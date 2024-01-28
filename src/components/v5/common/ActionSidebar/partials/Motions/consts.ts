@@ -1,6 +1,6 @@
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import { ButtonRadioButtonItem } from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/types.ts';
+import { type ButtonRadioButtonItem } from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/types.ts';
 
 export const supportOption = {
   label: formatText({ id: 'motion.support' }),

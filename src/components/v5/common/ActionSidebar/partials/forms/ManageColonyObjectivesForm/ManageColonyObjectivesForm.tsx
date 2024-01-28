@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -8,7 +8,7 @@ import ColonyObjectiveFields from '~v5/common/ActionSidebar/partials/ColonyObjec
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useManageColonyObjectives } from './hooks.ts';

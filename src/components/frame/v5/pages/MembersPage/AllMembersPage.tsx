@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { type FC, useEffect } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useFilterContext } from '~context/FilterContext.tsx';

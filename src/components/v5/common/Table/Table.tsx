@@ -11,7 +11,7 @@ import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 
-import { TableProps } from './types.ts';
+import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper } from './utils.tsx';
 
 const displayName = 'v5.common.Table';

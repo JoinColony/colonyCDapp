@@ -1,21 +1,21 @@
-import { State as PopperJsState } from '@popperjs/core';
+import { type State as PopperJsState } from '@popperjs/core';
 import React, {
-  CSSProperties,
-  Dispatch,
-  FocusEvent,
+  type CSSProperties,
+  type Dispatch,
+  type FocusEvent,
   isValidElement,
-  SetStateAction,
+  type SetStateAction,
   useMemo,
 } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { type MessageDescriptor, useIntl } from 'react-intl';
 
-import { SimpleMessageValues } from '~types/index.ts';
+import { type SimpleMessageValues } from '~types/index.ts';
 import { getMainClasses } from '~utils/css/index.ts';
 
 import getPopoverArrowClasses from './getPopoverArrowClasses.ts';
 import {
-  PopoverAppearanceType,
-  PopoverContent as PopoverContentType,
+  type PopoverAppearanceType,
+  type PopoverContent as PopoverContentType,
 } from './types.ts';
 
 import styles from './PopoverWrapper.css';

@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import AccordionItem from './partials/AccordionItem.tsx';
-import { AccordionProps } from './types.ts';
+import { type AccordionProps } from './types.ts';
 
 const displayName = 'Extensions.Accordion';
 

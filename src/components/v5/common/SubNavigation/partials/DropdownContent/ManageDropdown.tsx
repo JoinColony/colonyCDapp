@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, FC } from 'react';
+import React, { type PropsWithChildren, type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { LEARN_MORE_DECISIONS } from '~constants/index.ts';

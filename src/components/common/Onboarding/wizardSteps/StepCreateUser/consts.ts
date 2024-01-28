@@ -1,4 +1,4 @@
-import { StepType } from '~shared/Wizard/withWizard.tsx';
+import { type StepType } from '~shared/Wizard/withWizard.tsx';
 
 import StepRedirect from '../StepRedirect/index.ts';
 

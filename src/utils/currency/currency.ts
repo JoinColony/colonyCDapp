@@ -5,11 +5,11 @@ import { Network, SupportedCurrencies } from '~gql';
 import { currencyApiConfig, coinGeckoMappings } from './config.ts';
 import { getSavedPrice, savePrice } from './memo.ts';
 import {
-  CoinGeckoPriceRequestSuccessResponse,
-  FetchCurrentPriceArgs,
-  CoinGeckoSupportedCurrencies,
-  SupportedChains,
-  CoinGeckoPriceRequestResponse,
+  type CoinGeckoPriceRequestSuccessResponse,
+  type FetchCurrentPriceArgs,
+  type CoinGeckoSupportedCurrencies,
+  type SupportedChains,
+  type CoinGeckoPriceRequestResponse,
 } from './types.ts';
 import {
   buildAPIEndpoint,

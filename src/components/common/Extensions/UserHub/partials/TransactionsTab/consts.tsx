@@ -1,6 +1,6 @@
 import { TransactionStatus } from '~gql';
 
-import { TransactionsItemProps } from './types.ts';
+import { type TransactionsItemProps } from './types.ts';
 
 export const transactionsItems: TransactionsItemProps[] = [
   {

@@ -1,7 +1,7 @@
-import { ColonyRole, Id } from '@colony/colony-js';
+import { type ColonyRole, Id } from '@colony/colony-js';
 
-import { ColonyFragment, ColonyRoleFragment } from '~gql';
-import { Address } from '~types/index.ts';
+import { type ColonyFragment, type ColonyRoleFragment } from '~gql';
+import { type Address } from '~types/index.ts';
 import { notUndefined } from '~utils/arrays/index.ts';
 
 // export const getRolesForUserAndDomain = (

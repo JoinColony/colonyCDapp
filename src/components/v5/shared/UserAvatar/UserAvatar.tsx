@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
-import { UserAvatarProps } from './types.ts';
+import { type UserAvatarProps } from './types.ts';
 
 import styles from './UserAvatar.module.css';
 

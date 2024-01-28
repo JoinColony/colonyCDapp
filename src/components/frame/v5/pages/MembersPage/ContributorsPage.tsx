@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';

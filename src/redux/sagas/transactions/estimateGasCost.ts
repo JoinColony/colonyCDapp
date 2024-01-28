@@ -1,5 +1,5 @@
 import { ClientType } from '@colony/colony-js';
-import { BigNumber, Contract, ContractInterface } from 'ethers';
+import { BigNumber, Contract, type ContractInterface } from 'ethers';
 import { call, put } from 'redux-saga/effects';
 // import abis from '@colony/colony-js/lib-esm/abis';
 
@@ -10,10 +10,10 @@ import {
   transactionEstimateError,
   transactionSend,
 } from '../../actionCreators/index.ts';
-import { ActionTypes } from '../../actionTypes.ts';
-import { TransactionRecordProps } from '../../immutable/index.ts';
+import { type ActionTypes } from '../../actionTypes.ts';
+import { type TransactionRecordProps } from '../../immutable/index.ts';
 import { oneTransaction } from '../../selectors/index.ts';
-import { Action } from '../../types/actions/index.ts';
+import { type Action } from '../../types/actions/index.ts';
 import { selectAsJS, getGasPrices, getColonyManager } from '../utils/index.ts';
 
 /*

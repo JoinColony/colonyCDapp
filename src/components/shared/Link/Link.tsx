@@ -1,11 +1,11 @@
 import React from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import { type MessageDescriptor, useIntl } from 'react-intl';
 import {
   Link as LinkComponent,
-  LinkProps as LinkComponentProps,
+  type LinkProps as LinkComponentProps,
 } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types/index.ts';
+import { type SimpleMessageValues } from '~types/index.ts';
 
 interface Props extends LinkComponentProps {
   /** A string or a `messageDescriptor` that make up the link's text */

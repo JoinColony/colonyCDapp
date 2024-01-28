@@ -1,7 +1,10 @@
 import { CORE_DECISIONS_LIST } from '~redux/constants.ts';
 import { Decision } from '~redux/immutable/Decision.ts';
-import { CoreDecisions, CoreDecisionsRecord } from '~redux/state/decisions.ts';
-import { ReducerType } from '~redux/types/index.ts';
+import {
+  CoreDecisions,
+  type CoreDecisionsRecord,
+} from '~redux/state/decisions.ts';
+import { type ReducerType } from '~redux/types/index.ts';
 
 import { ActionTypes } from '../actionTypes.ts';
 

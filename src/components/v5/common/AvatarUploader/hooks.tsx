@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-import { FileRejection } from 'react-dropzone';
+import { type Dispatch, type SetStateAction, useState } from 'react';
+import { type FileRejection } from 'react-dropzone';
 import { useIntl } from 'react-intl';
 
 import {
@@ -7,9 +7,9 @@ import {
   getOptimisedThumbnail,
 } from '~images/optimisation/index.ts';
 import { convertBytes } from '~utils/convertBytes.ts';
-import { FileReaderFile } from '~utils/fileReader/types.ts';
+import { type FileReaderFile } from '~utils/fileReader/types.ts';
 
-import { FileUploadOptions } from './types.ts';
+import { type FileUploadOptions } from './types.ts';
 import { DropzoneErrors, getFileRejectionErrors } from './utils.tsx';
 
 export interface UseAvatarUploaderProps {

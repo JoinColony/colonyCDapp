@@ -1,6 +1,6 @@
-import { Token } from '~types/graphql.ts';
+import { type Token } from '~types/graphql.ts';
 
-import { DistributionMethod } from '../../../../consts.tsx';
+import { type DistributionMethod } from '../../../../consts.tsx';
 
 export interface SplitPaymentRecipientsFieldProps {
   name: string;

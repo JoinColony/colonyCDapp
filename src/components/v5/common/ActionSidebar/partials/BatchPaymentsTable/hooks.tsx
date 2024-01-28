@@ -1,10 +1,10 @@
-import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import { useCallback, useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
-import { BatchPaymentsTableModel } from './types.ts';
+import { type BatchPaymentsTableModel } from './types.ts';
 
 export const useBatchPaymentsTableColumns = (): ColumnDef<
   BatchPaymentsTableModel,

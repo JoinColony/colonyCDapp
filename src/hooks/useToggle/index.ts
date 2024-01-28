@@ -2,9 +2,9 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import {
-  OnBeforeCloseCallback,
-  RefRegistryEntry,
-  UseToggleReturnType,
+  type OnBeforeCloseCallback,
+  type RefRegistryEntry,
+  type UseToggleReturnType,
 } from './types.ts';
 
 let documentMousedownHandlerRegistered = false;

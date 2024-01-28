@@ -1,4 +1,4 @@
-import ImageBlobReduce, { Options } from 'image-blob-reduce';
+import ImageBlobReduce, { type Options } from 'image-blob-reduce';
 
 import getFileReader from '~utils/fileReader/index.ts';
 

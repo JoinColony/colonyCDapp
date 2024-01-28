@@ -1,7 +1,7 @@
-import { Token } from '~types/graphql.ts';
-import { ColonyWallet } from '~types/wallet.ts';
+import { type Token } from '~types/graphql.ts';
+import { type ColonyWallet } from '~types/wallet.ts';
 
-import { UserHubTabs } from '../../types.ts';
+import { type UserHubTabs } from '../../types.ts';
 
 export interface ReputationTabProps {
   onTabChange: (newTab: UserHubTabs) => void;

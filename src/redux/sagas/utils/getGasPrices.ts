@@ -8,7 +8,7 @@ import { Network } from '~types/network.ts';
 import { RpcMethods } from '~types/rpcMethods.ts';
 
 import { updateGasPrices } from '../../actionCreators/index.ts';
-import { GasPricesProps } from '../../immutable/index.ts';
+import { type GasPricesProps } from '../../immutable/index.ts';
 import { gasPrices as gasPricesSelector } from '../../selectors/index.ts';
 
 interface EthGasStationAPIResponse {

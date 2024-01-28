@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -16,7 +16,7 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
 import { useClaimConfig, useFinalizeStep } from './hooks.tsx';
-import { FinalizeStepProps, FinalizeStepSections } from './types.ts';
+import { type FinalizeStepProps, FinalizeStepSections } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';

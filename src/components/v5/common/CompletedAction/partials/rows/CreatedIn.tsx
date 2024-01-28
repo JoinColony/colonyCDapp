@@ -2,7 +2,7 @@ import { HouseLine } from 'phosphor-react';
 import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import { DomainMetadata } from '~types/graphql.ts';
+import { type DomainMetadata } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 

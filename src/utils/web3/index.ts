@@ -2,7 +2,7 @@ import { ClientType, TokenClientType } from '@colony/colony-js';
 import BN from 'bn.js';
 
 import { NETWORK_DATA } from '~constants/index.ts';
-import { TransactionError } from '~redux/immutable/Transaction.ts';
+import { type TransactionError } from '~redux/immutable/Transaction.ts';
 import { ExtendedClientType } from '~types/transactions.ts';
 
 export {

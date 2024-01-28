@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { isAddress } from 'ethers/lib/utils';
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -11,7 +11,7 @@ import { FIELD_STATE } from '~v5/common/Fields/consts.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
 import { useTokenSelect } from './hooks.tsx';
-import { TokenSelectProps } from './types.ts';
+import { type TokenSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 

@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import { MessageDescriptor } from 'react-intl';
+import { type ReactNode } from 'react';
+import { type MessageDescriptor } from 'react-intl';
 
-import { SimpleMessageValues } from '~types/index.ts';
+import { type SimpleMessageValues } from '~types/index.ts';
 
 export interface ExternalLinkProps {
   children?: ReactNode;

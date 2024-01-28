@@ -1,5 +1,5 @@
 import {
-  AnalyticsEvent,
+  type AnalyticsEvent,
   AnalyticsEventAction,
   AnalyticsEventCategory,
   AnalyticsEventLabel,

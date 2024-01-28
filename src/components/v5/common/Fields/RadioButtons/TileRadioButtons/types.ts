@@ -1,7 +1,10 @@
-import React from 'react';
+import { type RadioProps } from '../RadioButtonsBase/RadioBase/types.ts';
+import {
+  type RadioButtonsBaseProps,
+  type RadioItem,
+} from '../RadioButtonsBase/types.ts';
 
-import { RadioProps } from '../RadioButtonsBase/RadioBase/types.ts';
-import { RadioButtonsBaseProps, RadioItem } from '../RadioButtonsBase/types.ts';
+import type React from 'react';
 
 export interface TileRadioButtonItem<TValue>
   extends Omit<RadioItem<TValue>, 'children' | 'label'> {

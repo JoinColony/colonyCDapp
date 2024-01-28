@@ -1,4 +1,4 @@
-import Onboard, { InitOptions } from '@web3-onboard/core';
+import Onboard, { type InitOptions } from '@web3-onboard/core';
 import injectedWallets from '@web3-onboard/injected-wallets';
 
 import {

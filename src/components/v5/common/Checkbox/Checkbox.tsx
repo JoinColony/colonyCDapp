@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren, useId } from 'react';
+import React, { type FC, type PropsWithChildren, useId } from 'react';
 
 import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { CheckboxProps } from './types.ts';
+import { type CheckboxProps } from './types.ts';
 
 import styles from './Checkbox.module.css';
 

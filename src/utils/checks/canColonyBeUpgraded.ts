@@ -1,4 +1,4 @@
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 
 const minimumRequiredColonyVersion = 4;
 

@@ -1,4 +1,4 @@
-import { Channel, buffers } from 'redux-saga';
+import { type Channel, buffers } from 'redux-saga';
 import {
   actionChannel,
   all,
@@ -11,7 +11,7 @@ import {
 } from 'redux-saga/effects';
 
 import { getContext, ContextModule } from '~context/index.ts';
-import { TxConfig } from '~types/transactions.ts';
+import { type TxConfig } from '~types/transactions.ts';
 import { filterUniqueAction } from '~utils/actions.ts';
 
 import { createTransactionAction } from '../../actionCreators/index.ts';

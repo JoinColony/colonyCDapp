@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 // import { CREATE_COLONY_ROUTE } from '~routes';
 

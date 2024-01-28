@@ -1,7 +1,7 @@
-import { getSortedRowModel, SortingState } from '@tanstack/react-table';
+import { getSortedRowModel, type SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMobile } from '~hooks/index.ts';
@@ -18,7 +18,7 @@ import Modal from '~v5/shared/Modal/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
 import { useTokenTableColumns } from './hooks.tsx';
-import { TokenTableProps } from './types.ts';
+import { type TokenTableProps } from './types.ts';
 
 const displayName = 'v5.pages.FundsPage.partials.TokenTable';
 

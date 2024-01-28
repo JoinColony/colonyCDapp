@@ -1,4 +1,4 @@
-import { GovernanceOptions } from '../ExtensionsPage/types.ts';
+import { type GovernanceOptions } from '../ExtensionsPage/types.ts';
 
 import { defaultGovernanceOptions } from './consts.tsx';
 

@@ -1,4 +1,4 @@
-import { TeamPointsProps } from './types.ts';
+import { type TeamPointsProps } from './types.ts';
 
 export const emptyTeamsData: TeamPointsProps[] = [];
 

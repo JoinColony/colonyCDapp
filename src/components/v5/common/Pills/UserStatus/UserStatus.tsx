@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import { getIconName } from '~v5/shared/CardWithBios/partials/consts.ts';
 
 import PillsBase from '../PillsBase.tsx';
 
-import { UserStatusProps } from './types.ts';
+import { type UserStatusProps } from './types.ts';
 
 const displayName = 'v5.common.Pills.UserStatus';
 

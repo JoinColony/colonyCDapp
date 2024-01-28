@@ -1,4 +1,4 @@
-import { StepperButtonProps } from './partials/StepperButton/types.ts';
+import { type StepperButtonProps } from './partials/StepperButton/types.ts';
 
 export interface StepperItem<TKey> {
   key: TKey;

@@ -6,7 +6,7 @@ import { DEFAULT_GAS_LIMIT } from '~constants/index.ts';
 
 import { transactionUpdateGas } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions, Action } from '../../types/actions/index.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,

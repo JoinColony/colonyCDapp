@@ -1,6 +1,6 @@
-import { TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
-import { Message } from '~types/index.ts';
-import { PillsProps } from '~v5/common/Pills/types.ts';
+import { type TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
+import { type Message } from '~types/index.ts';
+import { type PillsProps } from '~v5/common/Pills/types.ts';
 
 export interface RadioItemProps {
   value: string;

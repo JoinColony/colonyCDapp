@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -11,7 +11,7 @@ import MemberCardList from '~v5/common/MemberCardList/index.ts';
 import { TextButton } from '~v5/shared/Button/index.ts';
 
 import { useMembersTabContentItems } from './hooks.tsx';
-import { MembersTabContentProps } from './types.ts';
+import { type MembersTabContentProps } from './types.ts';
 
 const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
   items: itemsProp,

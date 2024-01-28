@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useMemberModalContext } from '~context/MemberModalContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks.ts';
 import SubNavigationItem from '~v5/shared/SubNavigationItem/index.ts';
 
-import { SubNavigationProps } from '../types.ts';
+import { type SubNavigationProps } from '../types.ts';
 
 const displayName = 'v5.CardWithBios.partials.SubNavigation';
 

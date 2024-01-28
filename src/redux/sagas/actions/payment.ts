@@ -3,9 +3,9 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context/index.ts';
-import { ActionTypes, Action, AllActions } from '~redux/index.ts';
-import { OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
+import { type ColonyManager } from '~context/index.ts';
+import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
+import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
 
 import {
   transactionPending,

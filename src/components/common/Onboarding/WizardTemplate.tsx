@@ -1,11 +1,13 @@
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
-import { WizardOuterProps } from '~shared/Wizard/types.ts';
+import { type WizardOuterProps } from '~shared/Wizard/types.ts';
 
-import { WizardType } from './types.ts';
-import WizardSidebar, { WizardSidebarStep } from './WizardSidebar/index.ts';
+import { type WizardType } from './types.ts';
+import WizardSidebar, {
+  type WizardSidebarStep,
+} from './WizardSidebar/index.ts';
 
 const displayName = 'frame.WizardTemplate';
 

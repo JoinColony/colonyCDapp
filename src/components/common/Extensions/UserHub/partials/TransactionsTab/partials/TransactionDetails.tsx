@@ -1,7 +1,7 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { type FC, useCallback, useState } from 'react';
 
 import { getGroupId } from '../transactionGroup.ts';
-import { TransactionDetailsProps } from '../types.ts';
+import { type TransactionDetailsProps } from '../types.ts';
 
 import GroupedTransaction from './GroupedTransaction.tsx';
 

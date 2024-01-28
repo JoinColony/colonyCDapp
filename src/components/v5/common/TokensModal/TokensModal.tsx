@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ActionForm } from '~shared/Fields/index.ts';
@@ -13,7 +13,7 @@ import Button, { TxButton } from '~v5/shared/Button/index.ts';
 import Modal from '../../shared/Modal/Modal.tsx';
 
 import { useTokensModal } from './hooks.ts';
-import { TokensModalProps } from './types.ts';
+import { type TokensModalProps } from './types.ts';
 
 const displayName = 'v5.Modal.partials.TokensModal';
 

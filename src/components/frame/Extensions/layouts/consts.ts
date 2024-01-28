@@ -17,7 +17,7 @@ import {
   // COLONY_VERIFIED_ROUTE,
 } from '~routes/routeConstants.ts';
 import { formatText } from '~utils/intl.ts';
-import { NavigationSidebarLinksListProps } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/types.ts';
+import { type NavigationSidebarLinksListProps } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/types.ts';
 
 export const membersMenu: NavigationSidebarLinksListProps['items'] = [
   {

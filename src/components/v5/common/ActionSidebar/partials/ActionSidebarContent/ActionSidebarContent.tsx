@@ -1,6 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -28,8 +28,8 @@ import { useGetActionErrors } from './hooks.ts';
 import PermissionSidebar from './partials/PermissionSidebar.tsx';
 import { SidebarBanner } from './partials/SidebarBanner.tsx';
 import {
-  ActionSidebarContentProps,
-  ActionSidebarFormContentProps,
+  type ActionSidebarContentProps,
+  type ActionSidebarFormContentProps,
 } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';

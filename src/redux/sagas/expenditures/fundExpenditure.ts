@@ -5,10 +5,10 @@ import {
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators/index.ts';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,

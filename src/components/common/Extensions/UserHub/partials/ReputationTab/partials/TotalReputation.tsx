@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
@@ -10,7 +10,7 @@ import { calculatePercentageReputation, ZeroValue } from '~utils/reputation.ts';
 import { getFormattedTokenValue } from '~utils/tokens.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { TotalReputationProps } from '../types.ts';
+import { type TotalReputationProps } from '../types.ts';
 
 import styles from '../ReputationTab.module.css';
 

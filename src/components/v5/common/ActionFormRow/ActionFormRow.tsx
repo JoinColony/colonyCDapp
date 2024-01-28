@@ -7,7 +7,7 @@ import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import Icon from '~shared/Icon/index.ts';
 
 import { LABEL_CLASSNAME } from './consts.ts';
-import { ActionFormRowProps } from './types.ts';
+import { type ActionFormRowProps } from './types.ts';
 
 const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (

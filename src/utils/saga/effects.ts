@@ -1,6 +1,6 @@
-import { ActionPattern } from '@redux-saga/types';
-import { NavigateFunction, NavigateOptions } from 'react-router-dom';
-import { Channel } from 'redux-saga';
+import { type ActionPattern } from '@redux-saga/types';
+import { type NavigateFunction, type NavigateOptions } from 'react-router-dom';
+import { type Channel } from 'redux-saga';
 import {
   all,
   call,
@@ -12,7 +12,11 @@ import {
   select,
 } from 'redux-saga/effects';
 
-import { ErrorActionType, TakeFilter, Action } from '~redux/index.ts';
+import {
+  type ErrorActionType,
+  type TakeFilter,
+  type Action,
+} from '~redux/index.ts';
 
 /*
  * Effect to take a specific action from a channel.

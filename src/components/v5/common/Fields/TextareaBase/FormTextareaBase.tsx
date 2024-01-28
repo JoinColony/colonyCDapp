@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -6,7 +6,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { FIELD_STATE } from '../consts.ts';
 
 import TextareaBase from './TextareaBase.tsx';
-import { FormTextareaBaseProps } from './types.ts';
+import { type FormTextareaBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.FormTextAreaBase';
 

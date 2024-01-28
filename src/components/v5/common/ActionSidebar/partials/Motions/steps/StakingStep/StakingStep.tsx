@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -18,7 +18,7 @@ import { useStakingInformation, useStakingStep } from './hooks.tsx';
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo/index.ts';
 import StakingChart from './partials/StakingChart/StakingChart.tsx';
 import StakingForm from './partials/StakingForm/index.ts';
-import { StakingStepProps } from './types.ts';
+import { type StakingStepProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep';

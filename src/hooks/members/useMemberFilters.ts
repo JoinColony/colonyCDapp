@@ -1,18 +1,18 @@
 import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 
-import { UserRole } from '~constants/permissions.ts';
+import { type UserRole } from '~constants/permissions.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useSearchContext } from '~context/SearchContext.tsx';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { ColonyContributor } from '~types/graphql.ts';
+import { type ColonyContributor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 import { searchMembers } from '~utils/members.ts';
 import {
-  ContributorTypeFilter,
+  type ContributorTypeFilter,
   StatusFilter,
-  StatusType,
+  type StatusType,
 } from '~v5/common/TableFiltering/types.ts';
 
 import { hasSomeRole } from './utils.ts';

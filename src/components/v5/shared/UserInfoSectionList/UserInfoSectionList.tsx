@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import MotionBadge from '~v5/common/ActionSidebar/partials/Motions/partials/MotionBadge/MotionBadge.tsx';
 
 import UserInfoList from './partials/UserInfoList/index.ts';
-import { UserInfoSectionListProps } from './types.ts';
+import { type UserInfoSectionListProps } from './types.ts';
 
 const displayName = 'v5.UserInfoSectionList';
 

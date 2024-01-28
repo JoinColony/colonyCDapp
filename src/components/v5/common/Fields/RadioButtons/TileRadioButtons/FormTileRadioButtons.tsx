@@ -2,7 +2,7 @@ import React from 'react';
 import { useController } from 'react-hook-form';
 
 import TileRadioButtons from './TileRadioButtons.tsx';
-import { FormTileRadioButtonsProps } from './types.ts';
+import { type FormTileRadioButtonsProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.CardSelect.FormTileRadioButtons';
 

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useTablet } from '~hooks/index.ts';
@@ -9,7 +9,7 @@ import useNavigationSidebarContext from '../NavigationSidebarContext/hooks.ts';
 import NavigationSidebarSecondLevel from '../NavigationSidebarSecondLevel/index.ts';
 import NavigationSidebarThirdLevel from '../NavigationSidebarThirdLevel/NavigationSidebarThirdLevel.tsx';
 
-import { NavigationSidebarMainMenuProps } from './types.ts';
+import { type NavigationSidebarMainMenuProps } from './types.ts';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarMainMenu';

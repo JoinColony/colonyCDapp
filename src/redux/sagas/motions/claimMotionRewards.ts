@@ -1,19 +1,23 @@
-import { ApolloQueryResult } from '@apollo/client';
+import { type ApolloQueryResult } from '@apollo/client';
 import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
-import { getContext, ContextModule, ColonyManager } from '~context/index.ts';
+import {
+  getContext,
+  ContextModule,
+  type ColonyManager,
+} from '~context/index.ts';
 import {
   GetColonyActionDocument,
-  GetColonyActionQuery,
-  GetColonyActionQueryVariables,
+  type GetColonyActionQuery,
+  type GetColonyActionQueryVariables,
 } from '~gql';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions, Action } from '../../types/actions/index.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
 } from '../transactions/index.ts';

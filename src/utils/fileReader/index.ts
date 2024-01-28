@@ -4,7 +4,7 @@ import {
   DEFAULT_MIME_TYPES,
 } from '~v5/common/AvatarUploader/utils.tsx';
 
-import { FileReaderFile, FileReaderOptions } from './types.ts';
+import { type FileReaderFile, type FileReaderOptions } from './types.ts';
 
 const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {
   function defaultFileReadingFunction(reader: FileReader, file: File | Blob) {

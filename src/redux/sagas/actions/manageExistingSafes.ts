@@ -5,15 +5,15 @@ import { ContextModule, getContext } from '~context/index.ts';
 import {
   GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
-  UpdateColonyMetadataMutation,
-  UpdateColonyMetadataMutationVariables,
+  type UpdateColonyMetadataMutation,
+  type UpdateColonyMetadataMutationVariables,
 } from '~gql';
 import {
   transactionReady,
   transactionPending,
 } from '~redux/actionCreators/index.ts';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
-import { Safe } from '~types/graphql.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { type Safe } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { excludeTypenameKey } from '~utils/objects/index.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';

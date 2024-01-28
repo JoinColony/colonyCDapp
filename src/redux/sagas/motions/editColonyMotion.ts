@@ -5,11 +5,11 @@ import { ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyMetadataDocument,
-  CreateColonyMetadataMutation,
-  CreateColonyMetadataMutationVariables,
+  type CreateColonyMetadataMutation,
+  type CreateColonyMetadataMutationVariables,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { Action, AllActions } from '~redux/types/index.ts';
+import { type Action, type AllActions } from '~redux/types/index.ts';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
 import { isEqual } from '~utils/lodash.ts';
 

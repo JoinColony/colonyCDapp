@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext.tsx';
@@ -15,7 +15,7 @@ import MotionBadge from '../../partials/MotionBadge/MotionBadge.tsx';
 
 import { useVotingStep } from './hooks.tsx';
 import DescriptionList from './partials/DescriptionList/index.ts';
-import { VotingStepProps, VotingStepSections } from './types.ts';
+import { type VotingStepProps, VotingStepSections } from './types.ts';
 import { renderVoteRadioButtons } from './utils.tsx';
 
 const displayName =

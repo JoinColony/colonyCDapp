@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { usePageHeadingContext } from '~context/PageHeadingContext/index.ts';
@@ -7,7 +7,7 @@ import PageLayout from '~v5/frame/PageLayout/index.ts';
 import MainSidebar from './MainSidebar.tsx';
 import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
 import SimpleSidebar from './SimpleSidebar.tsx';
-import { MainLayoutProps } from './types.ts';
+import { type MainLayoutProps } from './types.ts';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 

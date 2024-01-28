@@ -3,7 +3,7 @@ import {
   ReputationSort,
 } from '~v5/common/TableFiltering/types.ts';
 
-import { FilterOptionProps } from '../types.ts';
+import { type FilterOptionProps } from '../types.ts';
 
 export const contributorFilters: FilterOptionProps[] = [
   {

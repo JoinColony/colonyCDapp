@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import Button from '~v5/shared/Button/Button.tsx';

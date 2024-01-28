@@ -1,6 +1,9 @@
 import React from 'react';
 
-import Heading, { HeadingAppearance, HeadingProps } from './Heading.tsx';
+import Heading, {
+  type HeadingAppearance,
+  type HeadingProps,
+} from './Heading.tsx';
 
 const displayName = 'Heading.Heading5';
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
@@ -12,7 +12,7 @@ import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 import JoinButton from '../Button/JoinButton/index.ts';
 
 import ModalBase from './ModalBase.tsx';
-import { ModalProps } from './types.ts';
+import { type ModalProps } from './types.ts';
 
 const displayName = 'v5.Modal';
 

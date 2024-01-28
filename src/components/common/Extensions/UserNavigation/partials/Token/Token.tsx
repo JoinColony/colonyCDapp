@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import Icon from '~shared/Icon/index.ts';
 
-import { TokenProps } from './types.ts';
+import { type TokenProps } from './types.ts';
 
 export const displayName = 'common.Extensions.UserNavigation.partials.Token';
 

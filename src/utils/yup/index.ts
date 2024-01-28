@@ -1,4 +1,4 @@
-import { Schema, ValidateOptions } from 'yup';
+import { type Schema, type ValidateOptions } from 'yup';
 
 export const validate =
   <I>(schema: Schema<any>) =>

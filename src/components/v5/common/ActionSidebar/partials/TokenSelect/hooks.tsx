@@ -8,7 +8,7 @@ import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import TokenIcon from '~shared/TokenIcon/TokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';
-import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
+import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
 import TokenStatus from './partials/TokenStatus/TokenStatus.tsx';
 

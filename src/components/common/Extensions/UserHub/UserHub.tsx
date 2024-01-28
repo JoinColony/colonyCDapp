@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
@@ -12,7 +12,7 @@ import { tabList } from './consts.ts';
 import ReputationTab from './partials/ReputationTab/index.ts';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
-import { UserHubProps, UserHubTabs } from './types.ts';
+import { type UserHubProps, UserHubTabs } from './types.ts';
 
 // @BETA: Disabled for now
 // import { COLONY_HOME_ROUTE } from '~routes';

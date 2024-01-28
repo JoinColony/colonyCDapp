@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
@@ -20,7 +20,7 @@ import NavigationSidebarMainMenu from './partials/NavigationSidebarMainMenu/inde
 import NavigationSidebarMobileContentWrapper from './partials/NavigationSidebarMobileContentWrapper/index.ts';
 import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel/index.ts';
 import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel/index.ts';
-import { NavigationSidebarProps } from './types.ts';
+import { type NavigationSidebarProps } from './types.ts';
 
 const displayName = 'v5.frame.NavigationSidebarContent';
 

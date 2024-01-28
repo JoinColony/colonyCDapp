@@ -1,10 +1,10 @@
-import React, { PropsWithChildren, FC } from 'react';
+import React, { type PropsWithChildren, type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
 import Icon from '~shared/Icon/index.ts';
 
-import { LearnMoreProps } from './types.ts';
+import { type LearnMoreProps } from './types.ts';
 
 const displayName = 'Extensions.LearnMore';
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
-import { ColonyAction } from '~types/graphql.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';

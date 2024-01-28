@@ -1,4 +1,4 @@
-import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
+import useEmblaCarousel, { type EmblaCarouselType } from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
 
 export const useEmblaCarouselSettings = (options) => {

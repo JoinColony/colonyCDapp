@@ -23,7 +23,7 @@ import {
   initiateTransaction,
   takeFrom,
 } from '~redux/sagas/utils/index.ts';
-import { Action } from '~redux/types/index.ts';
+import { type Action } from '~redux/types/index.ts';
 
 function* fundExpenditureMotion({
   payload: {

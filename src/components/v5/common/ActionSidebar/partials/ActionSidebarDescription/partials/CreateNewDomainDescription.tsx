@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 
-import { CreateNewTeamFormValues } from '../../forms/CreateNewTeamForm/consts.ts';
+import { type CreateNewTeamFormValues } from '../../forms/CreateNewTeamForm/consts.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

@@ -3,7 +3,7 @@ import React from 'react';
 import MenuWithSections from '../MenuWithSections/index.ts';
 import StatusText from '../StatusText/StatusText.tsx';
 
-import { MenuWithStatusTextProps } from './types.ts';
+import { type MenuWithStatusTextProps } from './types.ts';
 
 const displayName = 'v5.shared.MenuWithStatusText';
 

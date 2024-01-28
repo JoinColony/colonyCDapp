@@ -1,11 +1,11 @@
-import { ApolloClient as ApolloClientClass } from '@apollo/client';
-import { OnboardAPI } from '@web3-onboard/core';
+import { type ApolloClient as ApolloClientClass } from '@apollo/client';
+import { type OnboardAPI } from '@web3-onboard/core';
 
 import { apolloClient } from '~apollo/index.ts';
-import { ColonyWallet } from '~types/wallet.ts';
+import { type ColonyWallet } from '~types/wallet.ts';
 
 import ColonyManagerClass from './ColonyManager.ts';
-import { IPFSWithTimeout } from './ipfs/getIpfsWithFallback.ts';
+import { type IPFSWithTimeout } from './ipfs/getIpfsWithFallback.ts';
 import ipfsWithFallback from './ipfs/ipfsWithFallbackContext.ts';
 
 export enum ContextModule {

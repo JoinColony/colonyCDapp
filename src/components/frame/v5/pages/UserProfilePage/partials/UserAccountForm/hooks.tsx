@@ -7,7 +7,7 @@ import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  UseAvatarUploaderProps,
+  type UseAvatarUploaderProps,
   useGetUploaderText,
 } from '~v5/common/AvatarUploader/hooks.tsx';
 import Avatar from '~v5/shared/Avatar/index.ts';
@@ -18,7 +18,7 @@ import {
   MAX_DISPLAYNAME_CHARS,
 } from '../consts.ts';
 import IconSuccessContent from '../IconSuccessContent.tsx';
-import { RowGroup } from '../Row/types.ts';
+import { type RowGroup } from '../Row/types.ts';
 import { useUserProfile } from '../UserAccountPage/hooks.tsx';
 
 export const useUserProfilePageForm = () => {

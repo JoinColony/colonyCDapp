@@ -1,7 +1,7 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { type CSSProperties, type ReactNode } from 'react';
 
 import Icon from '~shared/Icon/index.ts';
-import { AvatarSize } from '~v5/shared/Avatar/types.ts';
+import { type AvatarSize } from '~v5/shared/Avatar/types.ts';
 
 import getIcon from './identicon.ts';
 

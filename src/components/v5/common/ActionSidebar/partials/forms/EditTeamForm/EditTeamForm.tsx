@@ -1,6 +1,6 @@
 import { Id } from '@colony/colony-js';
 import { PaintBucket } from 'phosphor-react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants/index.ts';
@@ -14,7 +14,7 @@ import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
 import { DecisionMethod, useDecisionMethods } from '../../../hooks/index.ts';
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useEditTeam } from './hooks.ts';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { ACTION, Action } from '~constants/actions.ts';
+import { ACTION, type Action } from '~constants/actions.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
 

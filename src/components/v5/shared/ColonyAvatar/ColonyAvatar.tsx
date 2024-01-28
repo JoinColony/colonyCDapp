@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import Avatar from '../Avatar/index.ts';
 
-import { ColonyAvatarProps } from './types.ts';
+import { type ColonyAvatarProps } from './types.ts';
 
 const displayName = 'v5.ColonyAvatar';
 

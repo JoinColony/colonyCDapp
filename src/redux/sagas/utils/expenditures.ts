@@ -4,15 +4,15 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
-  CreateExpenditureMetadataMutation,
-  CreateExpenditureMetadataMutationVariables,
+  type CreateExpenditureMetadataMutation,
+  type CreateExpenditureMetadataMutationVariables,
 } from '~gql';
 import {
-  ExpenditurePayoutFieldValue,
-  ExpenditureStageFieldValue,
+  type ExpenditurePayoutFieldValue,
+  type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
-import { Expenditure } from '~types/graphql.ts';
-import { MethodParams } from '~types/transactions.ts';
+import { type Expenditure } from '~types/graphql.ts';
+import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 
 /**

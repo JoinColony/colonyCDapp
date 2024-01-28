@@ -1,5 +1,5 @@
 import { Id } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
@@ -9,7 +9,7 @@ import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts'
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { DecisionMethod, useDecisionMethods } from '../../../hooks/index.ts';
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useTransferFunds } from './hooks.ts';

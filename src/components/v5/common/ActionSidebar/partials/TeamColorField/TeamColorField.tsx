@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -12,7 +12,7 @@ import Portal from '~v5/shared/Portal/index.ts';
 import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem.tsx';
 
 import TeamColorBadge from './partials/TeamColorBadge.tsx';
-import { TeamColourFieldProps } from './types.ts';
+import { type TeamColourFieldProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColorField';
 

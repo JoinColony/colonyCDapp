@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 
 import Table from '../Table/Table.tsx';
-import { TableProps } from '../Table/types.ts';
+import { type TableProps } from '../Table/types.ts';
 
-import { TableWithActionsHeaderProps } from './types.ts';
+import { type TableWithActionsHeaderProps } from './types.ts';
 
 const displayName = 'v5.common.TableWithActionsHeader';
 

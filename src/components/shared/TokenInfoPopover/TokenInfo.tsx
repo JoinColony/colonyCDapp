@@ -5,7 +5,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import Icon from '~shared/Icon/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
-import { Token } from '~types/graphql.ts';
+import { type Token } from '~types/graphql.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';

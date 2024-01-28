@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { TransactionStatus } from '~gql';
 import Icon from '~shared/Icon/index.ts';
 
-import { TransactionHeaderProps } from '../types.ts';
+import { type TransactionHeaderProps } from '../types.ts';
 
 export const displayName =
   'common.Extensions.UserHub.TransactionsTab.partials.TransactionHeader';

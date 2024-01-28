@@ -1,6 +1,6 @@
-import React from 'react';
+import { type FieldState } from './consts.ts';
 
-import { FieldState } from './consts.ts';
+import type React from 'react';
 
 export interface BaseFieldProps {
   state?: FieldState;

@@ -5,10 +5,10 @@ import { ContextModule, getContext } from '~context/index.ts';
 import {
   GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
-  UpdateColonyMetadataMutation,
-  UpdateColonyMetadataMutationVariables,
+  type UpdateColonyMetadataMutation,
+  type UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { isEqual } from '~utils/lodash.ts';
 
 import {

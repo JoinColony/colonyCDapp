@@ -7,7 +7,7 @@ import { useColonyContext } from '~context/ColonyContext.tsx';
 import Balance from './partials/Balance.tsx';
 import PendingReputation from './partials/PendingReputation/index.ts';
 import TotalReputation from './partials/TotalReputation.tsx';
-import { ReputationTabProps } from './types.ts';
+import { type ReputationTabProps } from './types.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.ReputationTab';
 

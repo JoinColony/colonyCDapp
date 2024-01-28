@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -14,7 +14,7 @@ import TableFiltering from '../TableFiltering/index.ts';
 
 import FilterOptions from './partials/FilterOptions.tsx';
 import SearchInput from './partials/SearchInput/index.ts';
-import { FilterProps } from './types.ts';
+import { type FilterProps } from './types.ts';
 
 const displayName = 'v5.common.Filter';
 

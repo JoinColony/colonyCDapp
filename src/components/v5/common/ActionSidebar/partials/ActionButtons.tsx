@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
@@ -8,7 +8,7 @@ import Icon from '~shared/Icon/index.ts';
 import Button, { TxButton } from '~v5/shared/Button/index.ts';
 
 import { useCloseSidebarClick } from '../hooks/index.ts';
-import { ActionButtonsProps } from '../types.ts';
+import { type ActionButtonsProps } from '../types.ts';
 
 import { useSubmitButtonDisabled, useSubmitButtonText } from './hooks.ts';
 

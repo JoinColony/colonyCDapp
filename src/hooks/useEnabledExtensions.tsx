@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 
 import useExtensionsData from './useExtensionsData.ts';
 

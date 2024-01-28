@@ -16,19 +16,23 @@ import {
   DEFAULT_TOKEN_DECIMALS,
   supportedExtensionsConfig,
 } from '~constants/index.ts';
-import { ColonyManager, ContextModule, getContext } from '~context/index.ts';
+import {
+  type ColonyManager,
+  ContextModule,
+  getContext,
+} from '~context/index.ts';
 import {
   CreateColonyEtherealMetadataDocument,
-  CreateColonyEtherealMetadataMutation,
-  CreateColonyEtherealMetadataMutationVariables,
+  type CreateColonyEtherealMetadataMutation,
+  type CreateColonyEtherealMetadataMutationVariables,
   GetCurrentColonyVersionDocument,
-  GetCurrentColonyVersionQuery,
-  GetCurrentColonyVersionQueryVariables,
+  type GetCurrentColonyVersionQuery,
+  type GetCurrentColonyVersionQueryVariables,
   GetFullColonyByNameDocument,
-  GetFullColonyByNameQuery,
-  GetFullColonyByNameQueryVariables,
+  type GetFullColonyByNameQuery,
+  type GetFullColonyByNameQueryVariables,
 } from '~gql';
-import { ActionTypes, Action, AllActions } from '~redux/index.ts';
+import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
 import {
@@ -37,7 +41,7 @@ import {
   transactionPending,
 } from '../../actionCreators/index.ts';
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
 } from '../transactions/index.ts';

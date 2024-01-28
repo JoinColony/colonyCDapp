@@ -1,8 +1,8 @@
 import { Id } from '@colony/colony-js';
 import { Record } from 'immutable';
 
-import { DefaultValues, RecordToJS } from '~types/index.ts';
-import { DecisionDraft } from '~utils/decisions.ts';
+import { type DefaultValues, type RecordToJS } from '~types/index.ts';
+import { type DecisionDraft } from '~utils/decisions.ts';
 
 const defaultValues: DefaultValues<DecisionDraft & { colonyAddress: string }> =
   {

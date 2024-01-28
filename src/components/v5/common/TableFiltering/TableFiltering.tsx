@@ -1,11 +1,11 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useFilterContext } from '~context/FilterContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 
-import { FilterType, TableFilteringProps } from './types.ts';
+import { type FilterType, type TableFilteringProps } from './types.ts';
 
 import styles from './TableFiltering.module.css';
 

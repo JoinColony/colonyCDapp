@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { ArrowLineRight, ArrowsOutSimple, X } from 'phosphor-react';
-import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
+import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
@@ -11,7 +11,7 @@ import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import { AnyActionType } from '~types/actions.ts';
+import { type AnyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -25,7 +25,7 @@ import {
   useRemoveTxParamOnClose,
 } from './hooks/index.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
-import { ActionSidebarProps } from './types.ts';
+import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 

@@ -4,9 +4,9 @@ import {
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants/index.ts';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-import { NFTData, Safe, ColonyAction } from '~types/graphql.ts';
-import { Address, SelectedPickerItem } from '~types/index.ts';
-import { FormSafeTransaction, SafeBalance } from '~types/safes.ts';
+import { type NFTData, type Safe, type ColonyAction } from '~types/graphql.ts';
+import { type Address, type SelectedPickerItem } from '~types/index.ts';
+import { type FormSafeTransaction, type SafeBalance } from '~types/safes.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { isEmpty } from '~utils/lodash.ts';
 

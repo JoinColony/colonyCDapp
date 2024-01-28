@@ -1,6 +1,11 @@
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
-import React, { FC, PropsWithChildren, useEffect, useRef } from 'react';
+import React, {
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+  useRef,
+} from 'react';
 import { useMatch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
@@ -13,7 +18,7 @@ import NavigationSidebarContextProvider from '../NavigationSidebar/partials/Navi
 
 import PageHeader from './partials/PageHeader/index.ts';
 import PageHeading from './partials/PageHeading/index.ts';
-import { PageLayoutProps } from './types.ts';
+import { type PageLayoutProps } from './types.ts';
 
 const displayName = 'v5.frame.PageLayout';
 

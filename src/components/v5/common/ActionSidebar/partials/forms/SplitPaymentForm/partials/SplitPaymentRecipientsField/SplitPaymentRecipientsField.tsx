@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -16,9 +16,9 @@ import {
   useDistributionMethodUpdate,
 } from './hooks.tsx';
 import {
-  SplitPaymentRecipientsFieldModel,
-  SplitPaymentRecipientsFieldProps,
-  SplitPaymentRecipientsTableModel,
+  type SplitPaymentRecipientsFieldModel,
+  type SplitPaymentRecipientsFieldProps,
+  type SplitPaymentRecipientsTableModel,
 } from './types.ts';
 
 const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({

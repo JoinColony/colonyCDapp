@@ -18,10 +18,10 @@ import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
 import Header from '~v5/shared/SubNavigationItem/partials/Header.tsx';
 
 import {
-  RootFilterProps,
-  FilterProps,
-  FilterValue,
-  NestedFilterProps,
+  type RootFilterProps,
+  type FilterProps,
+  type FilterValue,
+  type NestedFilterProps,
 } from './types.ts';
 
 const displayName = 'v5.pages.FundsPage.partials.Filter';

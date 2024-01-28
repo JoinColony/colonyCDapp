@@ -6,7 +6,7 @@ import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 

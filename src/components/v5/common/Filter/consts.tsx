@@ -8,7 +8,7 @@ import {
   reputationFilters,
   statusFilters,
 } from './partials/consts.tsx';
-import { NestedFilterOption, ParentFilterOption } from './types.ts';
+import { type NestedFilterOption, type ParentFilterOption } from './types.ts';
 
 export const followersFilterOptions: ParentFilterOption[] = [
   {

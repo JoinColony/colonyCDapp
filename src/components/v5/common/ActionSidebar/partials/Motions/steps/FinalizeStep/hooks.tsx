@@ -8,19 +8,19 @@ import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext.tsx';
 import { ColonyActionType } from '~gql';
 import useExtensionData from '~hooks/useExtensionData.ts';
-import { ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
-import { MotionFinalizePayload } from '~redux/types/actions/motion.ts';
+import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
+import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import { InstalledExtensionData } from '~types/extensions.ts';
-import { MotionAction } from '~types/motions.ts';
+import { type InstalledExtensionData } from '~types/extensions.ts';
+import { type MotionAction } from '~types/motions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
-import { RefetchAction } from '~v5/common/ActionSidebar/hooks/index.ts';
+import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/index.ts';
 
-import { DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
+import { type DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
 
 import { WinningsItems } from './types.ts';
 

@@ -1,20 +1,20 @@
-import { ApolloQueryResult } from '@apollo/client';
+import { type ApolloQueryResult } from '@apollo/client';
 import React, {
   createContext,
   useContext,
   useEffect,
   useMemo,
-  ReactNode,
+  type ReactNode,
 } from 'react';
 
 import {
-  Exact,
-  GetFullColonyByNameQuery,
+  type Exact,
+  type GetFullColonyByNameQuery,
   useUpdateContributorsWithReputationMutation,
 } from '~gql';
 import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 
 const useUpdateColonyReputation = (colonyAddress?: string) => {
   const [updateContributorsWithReputation] =

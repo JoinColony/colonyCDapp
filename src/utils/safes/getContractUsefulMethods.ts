@@ -1,4 +1,4 @@
-import { JsonFragment } from '@ethersproject/abi';
+import { type JsonFragment } from '@ethersproject/abi';
 import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
 import { BINANCE_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants/index.ts';

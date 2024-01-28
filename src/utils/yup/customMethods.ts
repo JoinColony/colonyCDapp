@@ -1,4 +1,4 @@
-import { addMethod, string, TestOptionsMessage, array } from 'yup';
+import { addMethod, string, type TestOptionsMessage, array } from 'yup';
 
 import { isAddress } from '~utils/web3/index.ts';
 

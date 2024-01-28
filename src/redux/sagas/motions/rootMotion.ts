@@ -2,10 +2,10 @@ import { ClientType, Id, getChildIndex } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context/index.ts';
+import { type ColonyManager } from '~context/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions, Action } from '../../types/actions/index.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createTransaction,
   createTransactionChannels,

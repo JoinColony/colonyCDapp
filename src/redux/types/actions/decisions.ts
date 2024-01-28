@@ -1,14 +1,14 @@
-import { ActionTypes } from '~redux/actionTypes.ts';
-import { ColonyDecision } from '~types/graphql.ts';
-import { Address } from '~types/index.ts';
-import { DecisionDraft } from '~utils/decisions.ts';
+import { type ActionTypes } from '~redux/actionTypes.ts';
+import { type ColonyDecision } from '~types/graphql.ts';
+import { type Address } from '~types/index.ts';
+import { type DecisionDraft } from '~utils/decisions.ts';
 
 import {
-  ActionTypeWithMeta,
-  ActionTypeWithPayload,
-  ErrorActionType,
-  MetaWithSetter,
-  UniqueActionType,
+  type ActionTypeWithMeta,
+  type ActionTypeWithPayload,
+  type ErrorActionType,
+  type MetaWithSetter,
+  type UniqueActionType,
 } from './index.ts';
 
 export type DecisionActionTypes =

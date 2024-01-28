@@ -3,7 +3,7 @@ import React from 'react';
 
 import MenuContainer from '../MenuContainer/index.ts';
 
-import { MenuWithSectionsProps } from './types.ts';
+import { type MenuWithSectionsProps } from './types.ts';
 
 const displayName = 'v5.shared.MenuWithSections';
 

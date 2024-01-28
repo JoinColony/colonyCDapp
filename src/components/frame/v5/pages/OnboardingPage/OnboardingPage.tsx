@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
 import { useParams, Navigate } from 'react-router-dom';
 

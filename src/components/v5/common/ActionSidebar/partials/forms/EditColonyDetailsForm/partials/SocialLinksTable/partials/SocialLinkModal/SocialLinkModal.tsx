@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -14,8 +14,8 @@ import {
 } from './consts.tsx';
 import { useResetFormOnLinkTypeChange } from './hooks.ts';
 import {
-  SocialLinkModalFormValues,
-  SocialLinkFormModalProps,
+  type SocialLinkModalFormValues,
+  type SocialLinkFormModalProps,
 } from './types.ts';
 
 const displayName =

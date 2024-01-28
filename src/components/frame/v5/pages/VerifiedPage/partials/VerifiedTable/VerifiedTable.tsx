@@ -1,13 +1,13 @@
 import {
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { ColonyContributorFragment } from '~gql';
+import { type ColonyContributorFragment } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
@@ -16,7 +16,7 @@ import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import { useVerifiedTableColumns } from './hooks.tsx';
-import { TableProps } from './types.ts';
+import { type TableProps } from './types.ts';
 
 const displayName = 'v5.pages.VerifiedPage.partials.VerifiedTable';
 

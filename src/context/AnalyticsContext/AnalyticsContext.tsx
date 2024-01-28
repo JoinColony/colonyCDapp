@@ -1,7 +1,7 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useContext,
   useMemo,
 } from 'react';
@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 
 import { useBeamer } from '~hooks/useBeamer.ts';
 
-import { AnalyticsEvent } from './types.ts';
+import { type AnalyticsEvent } from './types.ts';
 
 interface AnalyticsContextValue {
   trackEvent: (event: AnalyticsEvent) => void;

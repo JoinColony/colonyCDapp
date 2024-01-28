@@ -5,7 +5,7 @@ import { useAppContext } from '~context/AppContext.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
 import { ActionTypes } from '~redux/index.ts';
-import { UserStakeWithStatus } from '~types/userStake.ts';
+import { type UserStakeWithStatus } from '~types/userStake.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 

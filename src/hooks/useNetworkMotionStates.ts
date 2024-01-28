@@ -1,5 +1,5 @@
-import { MotionState, VotingReputationFactory } from '@colony/colony-js';
-import { Provider } from '@ethersproject/providers';
+import { type MotionState, VotingReputationFactory } from '@colony/colony-js';
+import { type Provider } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { utils } from 'ethers';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -14,7 +14,7 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { useUserSelect } from './hooks.ts';
-import { UserSelectProps } from './types.ts';
+import { type UserSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 

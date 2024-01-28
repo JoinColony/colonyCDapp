@@ -1,4 +1,4 @@
-import { Accept } from 'react-dropzone';
+import { type Accept } from 'react-dropzone';
 
 export interface FileReaderFile
   extends Pick<File, 'name' | 'type' | 'size' | 'lastModified'> {

@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { type FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 
 import { getRole } from '~constants/permissions.ts';
@@ -10,7 +10,7 @@ import { useSpecificSidePanel } from './hooks.tsx';
 import ContractAddress from './partials/ContractAddress.tsx';
 import InstalledBy from './partials/InstalledBy.tsx';
 import SpecificSidePanelRow from './partials/SpecificSidePanelRow.tsx';
-import { SpecificSidePanelProps } from './types.ts';
+import { type SpecificSidePanelProps } from './types.ts';
 
 import styles from './SpecificSidePanel.module.css';
 

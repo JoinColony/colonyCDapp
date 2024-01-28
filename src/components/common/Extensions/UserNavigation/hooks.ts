@@ -1,16 +1,19 @@
-import { ApolloQueryResult } from '@apollo/client';
-import { ClientTypeTokens } from '@colony/colony-js';
+import { type ApolloQueryResult } from '@apollo/client';
+import { type ClientTypeTokens } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { TransactionOrMessageGroups } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
+import { type TransactionOrMessageGroups } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
-import { GetUserTransactionsQuery, useGetUserTransactionsQuery } from '~gql';
-import { TransactionType } from '~redux/immutable/index.ts';
+import {
+  type GetUserTransactionsQuery,
+  useGetUserTransactionsQuery,
+} from '~gql';
+import { type TransactionType } from '~redux/immutable/index.ts';
 import { groupedTransactions as groupedTransactionsSelector } from '~redux/selectors/index.ts';
-import { Transaction } from '~types/graphql.ts';
-import { ExtendedClientType } from '~types/transactions.ts';
+import { type Transaction } from '~types/graphql.ts';
+import { type ExtendedClientType } from '~types/transactions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { groupBy, unionBy } from '~utils/lodash.ts';
 

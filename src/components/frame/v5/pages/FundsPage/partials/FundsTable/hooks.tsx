@@ -1,4 +1,4 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -7,13 +7,13 @@ import TokenIcon from '~shared/TokenIcon/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { FilterProps } from '../Filter/types.ts';
+import { type FilterProps } from '../Filter/types.ts';
 import TokenTable from '../TokenTable/index.ts';
 
 import {
-  FundsTableFilters,
-  FundsTableModel,
-  UseFundsTableProps,
+  type FundsTableFilters,
+  type FundsTableModel,
+  type UseFundsTableProps,
 } from './types.ts';
 
 export const useFundsTableColumns = (): ColumnDef<

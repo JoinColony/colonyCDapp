@@ -1,8 +1,8 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import Icon from '~shared/Icon/index.ts';
 
-import { RoleOptionLabelProps } from './types.ts';
+import { type RoleOptionLabelProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.RoleOptionLabel';
 

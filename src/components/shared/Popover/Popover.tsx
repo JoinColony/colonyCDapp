@@ -1,32 +1,32 @@
-import { Placement } from '@popperjs/core';
+import { type Placement } from '@popperjs/core';
 import { nanoid } from 'nanoid';
 import React, {
   cloneElement,
-  ReactElement,
-  ReactNode,
+  type ReactElement,
+  type ReactNode,
   useCallback,
   useEffect,
   useRef,
   useState,
   useMemo,
-  Dispatch,
-  SetStateAction,
-  HTMLAttributes,
-  MouseEvent,
+  type Dispatch,
+  type SetStateAction,
+  type HTMLAttributes,
+  type MouseEvent,
 } from 'react';
 import { usePopper } from 'react-popper';
-import { PopperOptions } from 'react-popper-tooltip';
-import { Unionize } from 'utility-types';
+import { type PopperOptions } from 'react-popper-tooltip';
+import { type Unionize } from 'utility-types';
 
 import usePrevious from '~hooks/usePrevious.ts';
-import { SetStateFn, SimpleMessageValues } from '~types/index.ts';
+import { type SetStateFn, type SimpleMessageValues } from '~types/index.ts';
 
 import PopoverWrapper from './PopoverWrapper.tsx';
 import {
-  PopoverAppearanceType,
-  PopoverChildFn,
-  PopoverContent,
-  PopoverTriggerType,
+  type PopoverAppearanceType,
+  type PopoverChildFn,
+  type PopoverContent,
+  type PopoverTriggerType,
 } from './types.ts';
 
 interface Props {

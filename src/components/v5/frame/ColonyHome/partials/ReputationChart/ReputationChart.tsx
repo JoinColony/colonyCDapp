@@ -13,7 +13,7 @@ import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/
 import WidgetBox from '~v5/common/WidgetBox/index.ts';
 import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState.tsx';
 import DonutChart from '~v5/shared/DonutChart/index.ts';
-import { ChartData } from '~v5/shared/DonutChart/types.ts';
+import { type ChartData } from '~v5/shared/DonutChart/types.ts';
 
 import { summaryLegendColor } from './consts.ts';
 import { getTeamReputationChartData } from './utils.ts';

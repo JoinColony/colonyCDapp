@@ -7,7 +7,7 @@ import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes/index.ts';
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import {
   canExtensionBeInitialized,

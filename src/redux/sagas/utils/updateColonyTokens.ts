@@ -2,16 +2,16 @@ import { ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyTokensDocument,
-  CreateColonyTokensMutation,
-  CreateColonyTokensMutationVariables,
+  type CreateColonyTokensMutation,
+  type CreateColonyTokensMutationVariables,
   DeleteColonyTokensDocument,
-  DeleteColonyTokensMutation,
-  DeleteColonyTokensMutationVariables,
+  type DeleteColonyTokensMutation,
+  type DeleteColonyTokensMutationVariables,
   GetTokenFromEverywhereDocument,
-  GetTokenFromEverywhereQuery,
-  GetTokenFromEverywhereQueryVariables,
+  type GetTokenFromEverywhereQuery,
+  type GetTokenFromEverywhereQueryVariables,
 } from '~gql';
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { xor } from '~utils/lodash.ts';
 

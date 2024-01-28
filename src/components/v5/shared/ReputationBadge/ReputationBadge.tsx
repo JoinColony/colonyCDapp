@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { Star } from 'phosphor-react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { ReputationBadgeProps } from './types.ts';
+import { type ReputationBadgeProps } from './types.ts';
 
 const displayName = 'v5.ReputationBadge';
 

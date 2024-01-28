@@ -2,16 +2,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useCallback, useEffect, useImperativeHandle } from 'react';
 import {
   useForm,
-  UseFormProps,
+  type UseFormProps,
   FormProvider,
-  UseFormReturn,
-  FieldValues,
-  FieldErrors,
+  type UseFormReturn,
+  type FieldValues,
+  type FieldErrors,
 } from 'react-hook-form';
-import { Schema } from 'yup';
+import { type Schema } from 'yup';
 
 import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
-import { AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types.ts';
+import { type AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/types.ts';
 
 const displayName = 'Form';
 

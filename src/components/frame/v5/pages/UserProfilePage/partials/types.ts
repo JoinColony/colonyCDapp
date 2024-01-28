@@ -1,4 +1,4 @@
-import { UserFragment } from '~gql';
+import { type UserFragment } from '~gql';
 
 export type LeftColumnProps = {
   fieldTitle: React.ReactNode;

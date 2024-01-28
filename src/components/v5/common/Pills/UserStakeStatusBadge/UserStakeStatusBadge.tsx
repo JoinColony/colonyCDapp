@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { UserStakeStatus } from '~types/userStake.ts';
 
 import PillsBase from '../PillsBase.tsx';
-import { UserStakeStatusBadgeProps } from '../types.ts';
+import { type UserStakeStatusBadgeProps } from '../types.ts';
 
 const displayName = 'v5.common.Pills.UserStakeStatusBadge';
 

@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import { TextButton } from '~v5/shared/Button/index.ts';
 
 import { REVEAL_INFORMATION_LIST_MAX_ITEMS } from './consts.ts';
 import RevealInformationItem from './RevealInformationItem/index.ts';
-import { RevealInformationListProps } from './types.ts';
+import { type RevealInformationListProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep.partials.RevealInformationList';

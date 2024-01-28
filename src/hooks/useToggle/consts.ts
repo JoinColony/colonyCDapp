@@ -1,6 +1,6 @@
 import noop from '~utils/noop.ts';
 
-import { UseToggleReturnType } from './types.ts';
+import { type UseToggleReturnType } from './types.ts';
 
 export const DEFAULT_USE_TOGGLE_RETURN_VALUE: UseToggleReturnType = [
   false,

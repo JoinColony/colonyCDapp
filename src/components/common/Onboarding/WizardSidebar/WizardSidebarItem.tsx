@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { WizardSidebarStep } from './WizardSidebar.tsx';
+import { type WizardSidebarStep } from './WizardSidebar.tsx';
 import WizardSidebarItemFlowLine from './WizardSidebarItemFlowLine.tsx';
 import WizardSidebarSubItem from './WizardSidebarSubItem.tsx';
 

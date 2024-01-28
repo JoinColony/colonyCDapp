@@ -8,9 +8,9 @@ import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  DropdownMenuProps,
-  DropdownMenuGroup,
-  DropdownMenuItem,
+  type DropdownMenuProps,
+  type DropdownMenuGroup,
+  type DropdownMenuItem,
 } from '~v5/common/DropdownMenu/types.ts';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 

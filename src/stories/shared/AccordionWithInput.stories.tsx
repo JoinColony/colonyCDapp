@@ -3,7 +3,7 @@ import React from 'react';
 import { accordionMocksContent } from '~shared/Extensions/Accordion/consts.tsx';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks.ts';
 import Accordion from '~shared/Extensions/Accordion/index.ts';
-import { AccordionContent } from '~shared/Extensions/Accordion/types.ts';
+import { type AccordionContent } from '~shared/Extensions/Accordion/types.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

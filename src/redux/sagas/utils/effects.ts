@@ -1,5 +1,5 @@
-import { ActionPattern } from '@redux-saga/types';
-import { Channel } from 'redux-saga';
+import { type ActionPattern } from '@redux-saga/types';
+import { type Channel } from 'redux-saga';
 import {
   all,
   call,
@@ -19,9 +19,9 @@ import {
 } from '~redux/actionCreators/index.ts';
 
 import {
-  ErrorActionType,
-  TakeFilter,
-  Action,
+  type ErrorActionType,
+  type TakeFilter,
+  type Action,
 } from '../../types/actions/index.ts';
 
 import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions.ts';

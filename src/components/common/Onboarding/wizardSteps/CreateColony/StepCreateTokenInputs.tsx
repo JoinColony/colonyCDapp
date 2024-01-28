@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks.tsx';
+import { type UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks.tsx';
 import AvatarUploader from '~v5/common/AvatarUploader/index.ts';
 import Input from '~v5/common/Fields/Input/index.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';

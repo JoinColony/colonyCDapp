@@ -1,5 +1,5 @@
 import { ActionTypes } from '../actionTypes.ts';
-import { AllActions } from '../types/actions/index.ts';
+import { type AllActions } from '../types/actions/index.ts';
 
 export const messageCancel = (id: string): AllActions => ({
   type: ActionTypes.MESSAGE_CANCEL,

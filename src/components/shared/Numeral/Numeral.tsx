@@ -1,14 +1,15 @@
 import classNames from 'classnames';
-import Decimal from 'decimal.js';
-import { BigNumber } from 'ethers';
+import { type BigNumber } from 'ethers';
 import numbro from 'numbro';
-import React, { HTMLAttributes } from 'react';
+import React, { type HTMLAttributes } from 'react';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { getMainClasses } from '~utils/css/index.ts';
 
 import { getFormattedNumeralValue } from './helpers.tsx';
 import numbroLanguage from './numbroLanguage.ts';
+
+import type Decimal from 'decimal.js';
 
 import styles from './Numeral.css';
 

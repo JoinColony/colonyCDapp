@@ -1,6 +1,6 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
@@ -13,7 +13,7 @@ import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails/index.ts';
 
-import { UserInfoProps } from '../types.ts';
+import { type UserInfoProps } from '../types.ts';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 

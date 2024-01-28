@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import Icon from '~shared/Icon/index.ts';
 
-import { HeadingIconProps } from './types.ts';
+import { type HeadingIconProps } from './types.ts';
 
 const displayName = 'frame.Extensions.pages.partials.HeadingIcon';
 

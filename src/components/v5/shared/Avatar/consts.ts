@@ -1,4 +1,4 @@
-import { UserStatusMode } from '~v5/common/Pills/types.ts';
+import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 
 export const badgeTextMapping: Partial<Record<UserStatusMode, string>> = {
   active: 'badge.active',

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { type UseFormReturn } from 'react-hook-form';
 
 import {
-  SocialLinkModalFormValues,
-  SocialLinkFormModalProps,
+  type SocialLinkModalFormValues,
+  type SocialLinkFormModalProps,
 } from './types.ts';
 
 export const useResetFormOnLinkTypeChange = (

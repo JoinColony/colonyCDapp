@@ -1,4 +1,4 @@
-import { InferType, boolean, object, string } from 'yup';
+import { type InferType, boolean, object, string } from 'yup';
 
 import {
   USERNAME_REGEX,
@@ -11,7 +11,7 @@ import {
   MAX_DISPLAYNAME_CHARS,
   MAX_LOCATION_CHARS,
 } from './consts.ts';
-import { UserProfileFormProps } from './types.ts';
+import { type UserProfileFormProps } from './types.ts';
 
 export const validationSchema = object<UserProfileFormProps>({
   hasDisplayNameChanged: boolean().default(false),

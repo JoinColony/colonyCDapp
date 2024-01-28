@@ -1,4 +1,4 @@
-import { InferType, object, string, number } from 'yup';
+import { type InferType, object, string, number } from 'yup';
 
 import {
   MAX_COLONY_DISPLAY_NAME,

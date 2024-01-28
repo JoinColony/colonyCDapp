@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useFilterContext } from '~context/FilterContext.tsx';
@@ -9,7 +9,7 @@ import Header from '~v5/shared/SubNavigationItem/partials/Header.tsx';
 import { followersFilterOptions } from '../consts.tsx';
 
 import Accordion from './Accordion.tsx';
-import { FilterOptionsProps } from './types.ts';
+import { type FilterOptionsProps } from './types.ts';
 
 const displayName = 'v5.common.Filter.partials.FilterOptions';
 

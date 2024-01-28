@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import {
   MAX_COLONY_DISPLAY_NAME,

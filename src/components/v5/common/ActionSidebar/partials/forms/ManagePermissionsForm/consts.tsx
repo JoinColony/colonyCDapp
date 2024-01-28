@@ -1,22 +1,22 @@
 import { ColonyRole } from '@colony/colony-js';
 import React from 'react';
-import { InferType, mixed, object, string, number } from 'yup';
+import { type InferType, mixed, object, string, number } from 'yup';
 
 import {
   CUSTOM_USER_ROLE,
-  UserRole,
+  type UserRole,
   USER_ROLE,
   USER_ROLES,
 } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 import {
-  CardSelectOption,
-  CardSelectOptionsGroup,
+  type CardSelectOption,
+  type CardSelectOptionsGroup,
 } from '~v5/common/Fields/CardSelect/types.ts';
 
 import RoleOptionLabel from './partials/RoleOptionLabel/index.ts';
-import { UserRoleSelectMeta } from './types.ts';
+import { type UserRoleSelectMeta } from './types.ts';
 
 export const validationSchema = object()
   .shape({

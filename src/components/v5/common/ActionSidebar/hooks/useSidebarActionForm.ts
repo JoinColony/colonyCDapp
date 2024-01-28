@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { ACTION, Action } from '~constants/actions.ts';
+import { ACTION, type Action } from '~constants/actions.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
 import AdvancedPaymentForm from '../partials/forms/AdvancedPaymentForm/index.ts';
@@ -20,7 +20,9 @@ import SplitPaymentForm from '../partials/forms/SplitPaymentForm/index.ts';
 import TransferFundsForm from '../partials/forms/TransferFundsForm/index.ts';
 import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
 import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm/index.ts';
-import { ActionFormBaseProps } from '../types.ts';
+import { type ActionFormBaseProps } from '../types.ts';
+
+import type React from 'react';
 
 export const useSidebarActionForm = () => {
   const actionFormComponents = useMemo<

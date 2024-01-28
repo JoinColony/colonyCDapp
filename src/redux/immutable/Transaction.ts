@@ -1,20 +1,20 @@
-import { ClientType } from '@colony/colony-js';
-import { TransactionReceipt } from '@ethersproject/providers';
-import { BigNumber, Overrides } from 'ethers';
+import { type ClientType } from '@colony/colony-js';
+import { type TransactionReceipt } from '@ethersproject/providers';
+import { type BigNumber, type Overrides } from 'ethers';
 import { Record } from 'immutable';
-import { MessageDescriptor } from 'react-intl';
+import { type MessageDescriptor } from 'react-intl';
 
-import { TransactionStatus } from '~gql';
+import { type TransactionStatus } from '~gql';
 import {
-  AddressOrENSName,
-  DefaultValues,
-  RecordToJS,
-  SimpleMessageValues,
+  type AddressOrENSName,
+  type DefaultValues,
+  type RecordToJS,
+  type SimpleMessageValues,
 } from '~types/index.ts';
 import {
-  MethodParams,
-  ExtendedClientType,
-  TransactionErrors,
+  type MethodParams,
+  type ExtendedClientType,
+  type TransactionErrors,
 } from '~types/transactions.ts';
 
 export interface TransactionError {

@@ -1,5 +1,5 @@
 import { Id } from '@colony/colony-js';
-import React, { FC, useCallback } from 'react';
+import React, { type FC, useCallback } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { USER_ROLE } from '~constants/permissions.ts';
@@ -8,10 +8,10 @@ import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
-import { CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
+import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
 import { useDecisionMethods } from '../../../hooks/index.ts';
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';

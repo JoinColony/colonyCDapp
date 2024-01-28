@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
@@ -11,7 +11,7 @@ import ColonySwitcherItem from '../ColonySwitcherItem/index.ts';
 import ColonySwitcherList from '../ColonySwitcherList/index.ts';
 
 import { useColonySwitcherContent } from './hooks.ts';
-import { ColonySwitcherContentProps } from './types.ts';
+import { type ColonySwitcherContentProps } from './types.ts';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
 

@@ -1,5 +1,5 @@
 import { PaintBucket } from 'phosphor-react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import {
   MAX_COLONY_DISPLAY_NAME,
@@ -15,7 +15,7 @@ import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
 import { useDecisionMethods } from '../../../hooks/index.ts';
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useCreateNewTeam } from './hooks.ts';

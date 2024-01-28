@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import {
   Outlet,

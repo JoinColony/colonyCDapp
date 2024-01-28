@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 
-import { AccordionItemProps } from '../types.ts';
+import { type AccordionItemProps } from '../types.ts';
 
 import AccordionContent from './AccordionContent.tsx';
 import AccordionHeader from './AccordionHeader.tsx';

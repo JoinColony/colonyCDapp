@@ -1,8 +1,8 @@
 import { ClientType } from '@colony/colony-js';
 import { takeEvery, fork, put, all } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
-import { ExpenditurePayout } from '~types/graphql.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { type ExpenditurePayout } from '~types/graphql.ts';
 
 import {
   createTransaction,

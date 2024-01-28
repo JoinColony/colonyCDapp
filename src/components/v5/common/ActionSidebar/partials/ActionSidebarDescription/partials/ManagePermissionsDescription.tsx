@@ -3,11 +3,11 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
-import { ColonyActionRoles, ColonyActionType } from '~gql';
+import { type ColonyActionRoles, ColonyActionType } from '~gql';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { ManagePermissionsFormValues } from '../../forms/ManagePermissionsForm/consts.tsx';
+import { type ManagePermissionsFormValues } from '../../forms/ManagePermissionsForm/consts.tsx';
 import { getPermissionsMap } from '../../forms/ManagePermissionsForm/utils.tsx';
 
 import CurrentUser from './CurrentUser.tsx';

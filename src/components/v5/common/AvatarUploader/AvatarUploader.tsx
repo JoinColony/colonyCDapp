@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useAvatarUploader, UseAvatarUploaderProps } from './hooks.tsx';
+import { useAvatarUploader, type UseAvatarUploaderProps } from './hooks.tsx';
 import FileUpload from './partials/FileUpload.tsx';
 import ProgressContent from './partials/ProgressContent.tsx';
-import { AvatarUploaderProps } from './types.ts';
+import { type AvatarUploaderProps } from './types.ts';
 import { getPlaceholder } from './utils.tsx';
 
 const displayName = 'v5.common.AvatarUploader';

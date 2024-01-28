@@ -1,14 +1,18 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext, ColonyManager } from '~context/index.ts';
+import {
+  ContextModule,
+  getContext,
+  type ColonyManager,
+} from '~context/index.ts';
 import {
   GetFullColonyByNameDocument,
   UpdateDomainMetadataDocument,
-  UpdateDomainMetadataMutation,
-  UpdateDomainMetadataMutationVariables,
+  type UpdateDomainMetadataMutation,
+  type UpdateDomainMetadataMutationVariables,
 } from '~gql';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 
 import {

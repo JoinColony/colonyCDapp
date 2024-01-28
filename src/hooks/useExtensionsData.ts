@@ -8,8 +8,8 @@ import {
   useGetCurrentExtensionsVersionsQuery,
 } from '~gql';
 import {
-  InstallableExtensionData,
-  InstalledExtensionData,
+  type InstallableExtensionData,
+  type InstalledExtensionData,
 } from '~types/extensions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import {

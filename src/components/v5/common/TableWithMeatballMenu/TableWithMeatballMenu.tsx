@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 
 import Table from '~v5/common/Table/index.ts';
 
-import { TableWithMeatballMenuProps } from './types.ts';
+import { type TableWithMeatballMenuProps } from './types.ts';
 import { makeMenuColumn } from './utils.tsx';
 
 const displayName = 'v5.common.TableWithMeatballMenu';

@@ -1,7 +1,13 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  type FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -17,7 +23,7 @@ import MenuContainer from '../MenuContainer/index.ts';
 import { useSearchSelect } from './hooks.ts';
 import SearchInput from './partials/SearchInput/index.ts';
 import SearchItem from './partials/SearchItem/index.ts';
-import { SearchSelectProps } from './types.ts';
+import { type SearchSelectProps } from './types.ts';
 
 const displayName = 'v5.SearchSelect';
 

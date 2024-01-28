@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { WizardSidebarSubStep } from './WizardSidebarSubItem.tsx';
+import { type WizardSidebarSubStep } from './WizardSidebarSubItem.tsx';
 
 const displayName =
   'routes.WizardRoute.WizardSidebar.WizardSidebarItem.WizardSidebarItemFlowLine';

@@ -1,4 +1,4 @@
-import { MOTION_BADGE_STATUS } from './consts.ts';
+import { type MOTION_BADGE_STATUS } from './consts.ts';
 
 export interface MotionBadgeProps {
   status: keyof typeof MOTION_BADGE_STATUS;

@@ -6,7 +6,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { FIELD_STATE } from '../consts.ts';
 
 import CardSelect from './CardSelect.tsx';
-import { FormCardSelectProps } from './types.ts';
+import { type FormCardSelectProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.CardSelect.FormCardSelect';
 

@@ -3,7 +3,7 @@ import numbro from 'numbro';
 import React from 'react';
 
 import EngineeringNotation from './EngineeringNotation.tsx';
-import { NumeralValue } from './Numeral.tsx';
+import { type NumeralValue } from './Numeral.tsx';
 
 export const convertToDecimalOrNull = (value: NumeralValue): Decimal | null => {
   try {

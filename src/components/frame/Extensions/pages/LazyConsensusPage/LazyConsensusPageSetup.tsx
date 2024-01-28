@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import RadioList from '~common/Extensions/Fields/RadioList/index.ts';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks.ts';
 import Accordion from '~shared/Extensions/Accordion/index.ts';
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 

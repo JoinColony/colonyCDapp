@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 
-import { createEIP1193Provider, EIP1193Provider } from '@web3-onboard/common';
+import {
+  createEIP1193Provider,
+  type EIP1193Provider,
+} from '@web3-onboard/common';
 import { providers, Wallet, utils } from 'ethers';
 
 import walletIcon from '~images/icons/wallet.svg';

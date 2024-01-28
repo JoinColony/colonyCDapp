@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { object, string } from 'yup';
@@ -18,7 +18,7 @@ import { multiLineTextEllipsis } from '~utils/strings/index.ts';
 import { Input } from '~v5/common/Fields/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 
-import { UserPreferencesFormProps } from './types.ts';
+import { type UserPreferencesFormProps } from './types.ts';
 
 export const useUserPreferencesPage = (truncateLimit = 20) => {
   const { formatMessage } = useIntl();

@@ -6,11 +6,11 @@ import {
   MAX_COLONY_DISPLAY_NAME,
 } from '~constants/index.ts';
 import { CheckColonyNameExistsDocument } from '~gql';
-import { Token } from '~types/graphql.ts';
+import { type Token } from '~types/graphql.ts';
 import { intl } from '~utils/intl.ts';
 import { createYupTestFromQuery } from '~utils/yup/tests/index.ts';
 
-import { FormValues, TokenChoice } from './types.ts';
+import { type FormValues, TokenChoice } from './types.ts';
 
 export const MAX_TOKEN_NAME = 30;
 export const MAX_TOKEN_SYMBOL = 5;

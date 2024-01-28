@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { UserHubTabs } from '~common/Extensions/UserHub/types.ts';
@@ -13,7 +13,7 @@ import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { BalanceProps, ViewStakedButtonProps } from '../types.ts';
+import { type BalanceProps, type ViewStakedButtonProps } from '../types.ts';
 
 import styles from '../ReputationTab.module.css';
 

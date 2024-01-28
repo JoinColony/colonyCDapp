@@ -1,4 +1,4 @@
-import { ExternalLink } from '~gql';
+import { type ExternalLink } from '~gql';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 
 export const sortExternalLinks = (

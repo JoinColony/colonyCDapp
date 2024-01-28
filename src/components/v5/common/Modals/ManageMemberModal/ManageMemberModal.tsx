@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
-import { SelectOption } from '~v5/common/Fields/Select/types.ts';
+import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
 import Switch from '~v5/common/Fields/Switch/index.ts';
 import Textarea from '~v5/common/Fields/Textarea/index.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -13,7 +13,7 @@ import MembersSelect from '~v5/shared/MembersSelect/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import { manageMemberActions } from './consts.ts';
-import { ManageMemberModalProps } from './types.ts';
+import { type ManageMemberModalProps } from './types.ts';
 
 const displayName = 'v5.common.Modals.ManageMemberModal';
 

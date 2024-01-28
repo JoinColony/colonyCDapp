@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 
 const useTokenTotalBalance = (currentTokenAddress?: Address) => {
   const {

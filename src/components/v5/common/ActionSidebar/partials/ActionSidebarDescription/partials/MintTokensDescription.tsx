@@ -9,7 +9,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { MintTokenFormValues } from '../../forms/MintTokenForm/consts.ts';
+import { type MintTokenFormValues } from '../../forms/MintTokenForm/consts.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

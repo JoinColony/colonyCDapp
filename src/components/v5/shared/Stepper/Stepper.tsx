@@ -8,7 +8,7 @@ import { useMobile } from '~hooks/index.ts';
 import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts.ts';
 import { StepStage } from './partials/StepperButton/consts.ts';
 import StepperButton from './partials/StepperButton/StepperButton.tsx';
-import { StepperProps } from './types.ts';
+import { type StepperProps } from './types.ts';
 
 const displayName = 'v5.Stepper';
 

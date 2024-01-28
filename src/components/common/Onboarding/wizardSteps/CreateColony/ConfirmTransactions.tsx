@@ -3,11 +3,11 @@ import { defineMessages } from 'react-intl';
 
 import GroupedTransaction from '~common/Extensions/UserHub/partials/TransactionsTab/partials/GroupedTransaction.tsx';
 import {
-  TransactionOrMessageGroup,
+  type TransactionOrMessageGroup,
   getGroupStatus,
 } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
 import { TransactionStatus } from '~gql';
-import { TransactionType } from '~redux/immutable/Transaction.ts';
+import { type TransactionType } from '~redux/immutable/Transaction.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 

@@ -4,7 +4,7 @@ import { useAppContext } from '~context/AppContext.tsx';
 
 import { displayName } from './consts.ts';
 import { createWizard } from './helpers.ts';
-import { Flow } from './types.ts';
+import { type Flow } from './types.ts';
 
 interface Props {
   flow: Flow;

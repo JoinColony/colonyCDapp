@@ -1,4 +1,4 @@
-import { PillsProps } from '../types.ts';
+import { type PillsProps } from '../types.ts';
 
 export interface TeamBadgeProps extends PillsProps {
   name: string;

@@ -1,31 +1,31 @@
-import { ColonyRole } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { type ColonyRole } from '@colony/colony-js';
+import { type BigNumber } from 'ethers';
 
-import { NetworkInfo } from '~constants/index.ts';
-import { ExternalLink } from '~gql';
+import { type NetworkInfo } from '~constants/index.ts';
+import { type ExternalLink } from '~gql';
 import {
-  Colony,
-  ColonyObjective,
-  Domain,
-  DomainColor,
-  Safe,
-  SafeTransactionData,
+  type Colony,
+  type ColonyObjective,
+  type Domain,
+  type DomainColor,
+  type Safe,
+  type SafeTransactionData,
 } from '~types/graphql.ts';
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 
-import { ActionTypes } from '../../actionTypes.ts';
+import { type ActionTypes } from '../../actionTypes.ts';
 
-import { OneTxPaymentPayload } from './colonyActions.ts';
+import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
-  ExpenditureFundPayload,
-  StakedExpenditureCancelPayload,
+  type ExpenditureFundPayload,
+  type StakedExpenditureCancelPayload,
 } from './expenditures.ts';
 import {
-  ErrorActionType,
-  UniqueActionType,
-  ActionTypeWithMeta,
-  MetaWithSetter,
-  UniqueActionTypeWithoutPayload,
+  type ErrorActionType,
+  type UniqueActionType,
+  type ActionTypeWithMeta,
+  type MetaWithSetter,
+  type UniqueActionTypeWithoutPayload,
 } from './index.ts';
 
 export enum RootMotionMethodNames {

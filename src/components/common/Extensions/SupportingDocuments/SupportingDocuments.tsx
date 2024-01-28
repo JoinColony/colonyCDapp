@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';

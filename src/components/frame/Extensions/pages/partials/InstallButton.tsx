@@ -12,7 +12,7 @@ import {
   COLONY_EXTENSION_SETUP_ROUTE,
 } from '~routes/index.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 

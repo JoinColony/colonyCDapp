@@ -1,15 +1,15 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useMobile } from '~hooks/index.ts';
-import { ColonyAction } from '~types/graphql.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { merge } from '~utils/lodash.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
 import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
   useActionsTableData,
@@ -17,7 +17,7 @@ import {
   useGetColonyActionsTableMenuProps,
   useRenderRowLink,
 } from './hooks.tsx';
-import { ColonyActionsTableProps } from './types.ts';
+import { type ColonyActionsTableProps } from './types.ts';
 
 const displayName = 'common.ColonyActionsTable';
 

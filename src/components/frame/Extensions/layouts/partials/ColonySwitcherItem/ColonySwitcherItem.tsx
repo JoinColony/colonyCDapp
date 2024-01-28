@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import Icon from '~shared/Icon/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 
-import { ColonySwitcherItemProps } from './types.ts';
+import { type ColonySwitcherItemProps } from './types.ts';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherItem';
 

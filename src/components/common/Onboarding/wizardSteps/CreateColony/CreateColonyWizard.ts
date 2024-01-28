@@ -1,4 +1,4 @@
-import { StepType } from '~shared/Wizard/withWizard.tsx';
+import { type StepType } from '~shared/Wizard/withWizard.tsx';
 
 import StepColonyName from './StepColonyName.tsx';
 import StepConfirmAllInput from './StepConfirmAllInput.tsx';

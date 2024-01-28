@@ -9,7 +9,7 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 
-import { UseBalancePageReturnType } from './types.ts';
+import { type UseBalancePageReturnType } from './types.ts';
 
 export const useBalancePage = (): UseBalancePageReturnType => {
   const {

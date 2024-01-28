@@ -1,7 +1,7 @@
 // import { addressNormalizer, addressValidator } from '@purser/core';
 import { customAlphabet, urlAlphabet } from 'nanoid';
 
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
 
 const HTTP_PROTOCOL = 'http://';

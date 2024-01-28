@@ -1,4 +1,4 @@
-import { RowItemProps } from '../RowItem/types.ts';
+import { type RowItemProps } from '../RowItem/types.ts';
 
 export interface RowItem extends RowItemProps {
   key: string;

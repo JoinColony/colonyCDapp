@@ -4,7 +4,7 @@ import React from 'react';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Icon from '~shared/Icon/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 
 interface Props {
   /** Address to display */

@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 
 import promiseListener, {
-  AsyncFunction,
+  type AsyncFunction,
 } from '~redux/createPromiseListener.ts';
-import { ActionTransformFnType } from '~utils/actions.ts';
+import { type ActionTransformFnType } from '~utils/actions.ts';
 
 import usePrevious from './usePrevious.ts';
 

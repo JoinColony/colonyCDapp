@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import UserAccountForm from '../UserAccountForm/index.ts';
-import { FormValues, validationSchema } from '../validation.ts';
+import { type FormValues, validationSchema } from '../validation.ts';
 
 import { useUserProfile } from './hooks.tsx';
 

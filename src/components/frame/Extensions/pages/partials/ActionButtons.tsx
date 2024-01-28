@@ -1,5 +1,5 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -12,7 +12,7 @@ import ActiveInstalls from './ActiveInstalls.tsx';
 import EnableButton from './EnableButton.tsx';
 import HeadingIcon from './HeadingIcon.tsx';
 import InstallButton from './InstallButton.tsx';
-import { ActionButtonProps } from './types.ts';
+import { type ActionButtonProps } from './types.ts';
 import UpgradeButton from './UpgradeButton.tsx';
 
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';

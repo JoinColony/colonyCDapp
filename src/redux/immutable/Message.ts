@@ -1,7 +1,7 @@
 import { Record } from 'immutable';
 
 import { TransactionStatus } from '~gql';
-import { DefaultValues, RecordToJS } from '~types/index.ts';
+import { type DefaultValues, type RecordToJS } from '~types/index.ts';
 
 interface Shared {
   id: string;

@@ -1,12 +1,12 @@
 /* eslint-disable react/button-has-type */
 import clsx from 'clsx';
-import React, { forwardRef, PropsWithChildren } from 'react';
+import React, { forwardRef, type PropsWithChildren } from 'react';
 
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import ButtonContent from './ButtonContent.tsx';
-import { ButtonProps } from './types.ts';
+import { type ButtonProps } from './types.ts';
 
 import styles from './Button.module.css';
 

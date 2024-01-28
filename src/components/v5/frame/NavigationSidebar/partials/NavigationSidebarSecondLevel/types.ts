@@ -1,6 +1,9 @@
-import { ButtonLinkProps, ButtonProps } from '~v5/shared/Button/types.ts';
+import {
+  type ButtonLinkProps,
+  type ButtonProps,
+} from '~v5/shared/Button/types.ts';
 
-import { NavigationSidebarLinksListProps } from '../NavigationSidebarLinksList/types.ts';
+import { type NavigationSidebarLinksListProps } from '../NavigationSidebarLinksList/types.ts';
 
 export interface NavigationSidebarSecondLevelProps {
   title: string;

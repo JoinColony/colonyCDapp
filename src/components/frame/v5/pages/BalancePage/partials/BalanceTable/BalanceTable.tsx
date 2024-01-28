@@ -1,11 +1,11 @@
 import {
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { uniqueId } from 'lodash';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMobile } from '~hooks/index.ts';
@@ -23,7 +23,10 @@ import CopyWallet from '~v5/shared/CopyWallet/index.ts';
 import BalanceModal from '../BalanceModal/index.ts';
 
 import { useBalanceTableColumns, useGetTableMenuProps } from './hooks.tsx';
-import { BalanceTableFieldModel, BalanceTableProps } from './types.ts';
+import {
+  type BalanceTableFieldModel,
+  type BalanceTableProps,
+} from './types.ts';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Heading, { Heading3Props as Heading4Props } from './index.ts';
+import Heading, { type Heading3Props as Heading4Props } from './index.ts';
 
 const displayName = 'Heading.Heading4';
 

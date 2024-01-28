@@ -6,7 +6,7 @@ import { FIELD_STATE } from '~v5/common/Fields/consts.ts';
 import { useStateClassNames } from '~v5/common/Fields/hooks.ts';
 
 import useAutosizeTextArea from './hooks.ts';
-import { TextareaBaseProps } from './types.ts';
+import { type TextareaBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.TextareaBase';
 

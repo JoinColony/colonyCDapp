@@ -1,6 +1,6 @@
-import React from 'react';
+import { type TableProps } from '../Table/types.ts';
 
-import { TableProps } from '../Table/types.ts';
+import type React from 'react';
 
 export interface TableWithActionsHeaderProps<
   TData,

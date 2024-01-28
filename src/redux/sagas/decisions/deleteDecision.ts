@@ -1,7 +1,7 @@
 import { call, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { Action } from '~redux/types/index.ts';
+import { type Action } from '~redux/types/index.ts';
 import { removeDraftDecisionFromLocalStorage } from '~utils/decisions.ts';
 
 function* deleteDecision({

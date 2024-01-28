@@ -1,8 +1,8 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { Star, Trash } from 'phosphor-react';
 import React, { useMemo } from 'react';
 
-import { ColonyContributorFragment } from '~gql';
+import { type ColonyContributorFragment } from '~gql';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';

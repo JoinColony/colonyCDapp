@@ -1,7 +1,7 @@
 import { Extension } from '@colony/colony-js';
 import { object, string } from 'yup';
 
-import { ExtensionInitParam } from '~types/extensions.ts';
+import { type ExtensionInitParam } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { GovernanceOptions } from '../ExtensionsPage/types.ts';

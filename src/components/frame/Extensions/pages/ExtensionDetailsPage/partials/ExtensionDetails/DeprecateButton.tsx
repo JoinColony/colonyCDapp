@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { AnyExtensionData } from '~types/extensions.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';

@@ -1,12 +1,12 @@
 import { ColonyRole } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { USER_ROLE, USER_ROLES } from '~constants/permissions';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
-import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+import { USER_ROLE, USER_ROLES } from '~constants/permissions.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { formatText } from '~utils/intl.ts';
+import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/PermissionsBadge.tsx';
 
-import { RolesTooltipProps } from './types';
+import { type RolesTooltipProps } from './types.ts';
 
 const RolesTooltip: FC<RolesTooltipProps> = ({
   role,

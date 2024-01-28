@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ActionTypes } from '~redux/index.ts';
 import { mergePayload } from '~utils/actions.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
-import { AcceptButtonProps } from './types.ts';
+import { type AcceptButtonProps } from './types.ts';
 
 const displayName = 'pages.FundsPage.partials.AcceptButton';
 

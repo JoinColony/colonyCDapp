@@ -1,11 +1,11 @@
-import React, { ComponentType, useState } from 'react';
+import React, { type ComponentType, useState } from 'react';
 
 import {
-  InitialValuesProp,
-  StepsValues,
-  StepValues,
-  WizardOuterProps,
-  WizardStepProps,
+  type InitialValuesProp,
+  type StepsValues,
+  type StepValues,
+  type WizardOuterProps,
+  type WizardStepProps,
 } from './types.ts';
 
 export type StepType = ComponentType<any> & { stepName?: string };

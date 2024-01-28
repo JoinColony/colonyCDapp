@@ -1,5 +1,5 @@
-import { ReactNode, useState } from 'react';
-import { MessageDescriptor } from 'react-intl';
+import { type ReactNode, type useState } from 'react';
+import { type MessageDescriptor } from 'react-intl';
 
 // export * from './keyboard';
 // export * from './actions';

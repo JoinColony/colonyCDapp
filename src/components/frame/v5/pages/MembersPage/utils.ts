@@ -1,10 +1,10 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getRole } from '~constants/permissions.ts';
-import { ColonyContributorFragment, ColonyFragment } from '~gql';
+import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
 import { getContributorBreakdown } from '~hooks/members/useContributorBreakdown.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
-import { UserStatusMode } from '~v5/common/Pills/types.ts';
+import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 
 export const getMembersList = (
   members: ColonyContributorFragment[],

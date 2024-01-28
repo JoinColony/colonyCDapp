@@ -1,7 +1,7 @@
 import { Id } from '@colony/colony-js';
 import Cleave from 'cleave.js/react';
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -20,7 +20,7 @@ import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
 import { useAmountField } from './hooks.ts';
-import { AmountFieldProps, CleaveChangeEvent } from './types.ts';
+import { type AmountFieldProps, type CleaveChangeEvent } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 

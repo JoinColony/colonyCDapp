@@ -2,7 +2,7 @@ import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { Action, AllActions } from '~redux/types/index.ts';
+import { type Action, type AllActions } from '~redux/types/index.ts';
 
 import {
   createTransaction,

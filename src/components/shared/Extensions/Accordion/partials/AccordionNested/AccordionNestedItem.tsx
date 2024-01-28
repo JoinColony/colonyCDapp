@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { AccordionNestedItemProps } from '../../types.ts';
+import { type AccordionNestedItemProps } from '../../types.ts';
 
 import AccordionHeaderItem from './AccordionNestedHeader.tsx';
 

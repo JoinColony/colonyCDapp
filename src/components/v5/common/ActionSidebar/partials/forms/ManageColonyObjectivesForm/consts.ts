@@ -1,4 +1,4 @@
-import { InferType, number, object, string } from 'yup';
+import { type InferType, number, object, string } from 'yup';
 
 import {
   MAX_ANNOTATION_LENGTH,

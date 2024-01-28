@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import Checkbox from '~v5/common/Checkbox/index.ts';
-import { CheckboxProps } from '~v5/common/Checkbox/types.ts';
+import { type CheckboxProps } from '~v5/common/Checkbox/types.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

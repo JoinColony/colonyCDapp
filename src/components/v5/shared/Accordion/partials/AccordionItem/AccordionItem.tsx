@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import Icon from '~shared/Icon/index.ts';
 
-import { AccordionItemProps } from './types.ts';
+import { type AccordionItemProps } from './types.ts';
 
 const displayName = 'v5.Accordion.partials.AccordionItem';
 

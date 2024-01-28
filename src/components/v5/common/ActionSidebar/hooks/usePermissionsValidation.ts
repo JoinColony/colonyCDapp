@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { boolean, object } from 'yup';
 
-import { Action, ACTION } from '~constants/actions.ts';
+import { type Action, ACTION } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { addressHasRoles } from '~utils/checks/index.ts';

@@ -3,12 +3,12 @@ import Decimal from 'decimal.js';
 
 import { getUserRolesForDomain } from '~transformers/index.ts';
 import {
-  AnyExtensionData,
-  ExtensionConfig,
-  InstalledExtensionData,
-  InstallableExtensionData,
+  type AnyExtensionData,
+  type ExtensionConfig,
+  type InstalledExtensionData,
+  type InstallableExtensionData,
 } from '~types/extensions.ts';
-import { Colony, ColonyExtension } from '~types/graphql.ts';
+import { type Colony, type ColonyExtension } from '~types/graphql.ts';
 
 import { userHasRole } from './checks/index.ts';
 

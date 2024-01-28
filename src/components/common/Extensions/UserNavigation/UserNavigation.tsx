@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useAppContext } from '~context/AppContext.tsx';
@@ -11,7 +11,7 @@ import Button, { Hamburger } from '~v5/shared/Button/index.ts';
 
 import Token from './partials/Token/index.ts';
 import UserMenu from './partials/UserMenu/index.ts';
-import { UserNavigationProps } from './types.ts';
+import { type UserNavigationProps } from './types.ts';
 
 export const displayName = 'common.Extensions.UserNavigation';
 

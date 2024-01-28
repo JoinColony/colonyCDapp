@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { useMemberContext } from '~context/MemberContext.tsx';
-import { SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 export const useUserSelect = () => {
   const { totalMembers, loading } = useMemberContext();

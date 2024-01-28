@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import DecideDropdown from './partials/DropdownContent/DecideDropdown.tsx';
 import ManageDropdown from './partials/DropdownContent/ManageDropdown.tsx';
 import PayDropdown from './partials/DropdownContent/PayDropdown.tsx';
-import { SubNavigationItemProps } from './partials/SubNavigationItem/types.ts';
+import { type SubNavigationItemProps } from './partials/SubNavigationItem/types.ts';
 
 export const displayName = 'v5.common.SubNavigation';
 

@@ -3,15 +3,15 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
-  CreateSafeTransactionMutation,
+  type CreateSafeTransactionMutation,
   CreateSafeTransactionDocument,
-  CreateSafeTransactionMutationVariables,
-  CreateSafeTransactionDataMutation,
+  type CreateSafeTransactionMutationVariables,
+  type CreateSafeTransactionDataMutation,
   CreateSafeTransactionDataDocument,
-  CreateSafeTransactionDataMutationVariables,
+  type CreateSafeTransactionDataMutationVariables,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { Action, AllActions } from '~redux/types/index.ts';
+import { type Action, type AllActions } from '~redux/types/index.ts';
 import { fill, omit } from '~utils/lodash.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 

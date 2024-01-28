@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 
-import { TabItem } from '~shared/Extensions/Tabs/types.ts';
+import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
 
 import LazyConsensusPageSetup from '../LazyConsensusPage/LazyConsensusPageSetup.tsx';
 

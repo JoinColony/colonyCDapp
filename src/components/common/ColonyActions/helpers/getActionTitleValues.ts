@@ -1,7 +1,12 @@
-import React from 'react';
-
-import { ExtendedColonyActionType, AnyActionType } from '~types/actions.ts';
-import { ColonyAction, ColonyActionType, Colony } from '~types/graphql.ts';
+import {
+  ExtendedColonyActionType,
+  type AnyActionType,
+} from '~types/actions.ts';
+import {
+  type ColonyAction,
+  ColonyActionType,
+  type Colony,
+} from '~types/graphql.ts';
 import {
   getExtendedActionType,
   safeActionTypes,
@@ -9,6 +14,8 @@ import {
 
 import { generateMessageValues } from './getEventTitleValues.ts';
 import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat.tsx';
+
+import type React from 'react';
 
 export enum ActionTitleMessageKeys {
   Amount = 'amount',

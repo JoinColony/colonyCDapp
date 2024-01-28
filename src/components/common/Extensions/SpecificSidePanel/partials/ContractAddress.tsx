@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 
-import { PanelTypeProps } from '../types.ts';
+import { type PanelTypeProps } from '../types.ts';
 
 import styles from '../SpecificSidePanel.module.css';
 

@@ -6,13 +6,13 @@ import {
 } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context/index.ts';
+import { type ColonyManager } from '~context/index.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { Action } from '../../types/actions/index.ts';
+import { type Action } from '../../types/actions/index.ts';
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,

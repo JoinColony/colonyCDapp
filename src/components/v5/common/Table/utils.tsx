@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RenderCellWrapper } from './types.ts';
+import { type RenderCellWrapper } from './types.ts';
 
 export const getDefaultRenderCellWrapper =
   <T,>(): RenderCellWrapper<T> =>

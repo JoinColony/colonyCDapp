@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useTablet } from '~hooks/index.ts';
@@ -11,7 +11,7 @@ import Link from '~v5/shared/Link/index.ts';
 import { thirdLevelContentAnimation } from '../../consts.ts';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks.ts';
 
-import { NavigationSidebarThirdLevelProps } from './types.ts';
+import { type NavigationSidebarThirdLevelProps } from './types.ts';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarThirdLevel';

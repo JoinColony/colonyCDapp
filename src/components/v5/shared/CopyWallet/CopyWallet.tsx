@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
@@ -7,7 +7,7 @@ import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import Button from '~v5/shared/Button/index.ts';
 
-import { CopyWalletProps } from './types.ts';
+import { type CopyWalletProps } from './types.ts';
 
 const displayName = 'v5.CopyWallet';
 

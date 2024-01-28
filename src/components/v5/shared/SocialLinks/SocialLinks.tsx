@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { ExternalLink as ExternalLinkFragment } from '~gql';
+import { type ExternalLink as ExternalLinkFragment } from '~gql';
 import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
 
 import { COLONY_LINK_CONFIG } from './colonyLinks.ts';

@@ -1,4 +1,4 @@
-import { VoteChartProps } from '~v5/shared/VoteChart/types.ts';
+import { type VoteChartProps } from '~v5/shared/VoteChart/types.ts';
 
 export interface StakingChartProps {
   chartProps: Omit<

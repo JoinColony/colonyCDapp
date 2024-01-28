@@ -17,10 +17,10 @@ import {
   makeWithMotionStateMapper,
 } from './helpers.ts';
 import {
-  ActivityFeedFilters,
-  ActivityFeedOptions,
-  ActivityFeedSort,
-  UseActivityFeedReturn,
+  type ActivityFeedFilters,
+  type ActivityFeedOptions,
+  type ActivityFeedSort,
+  type UseActivityFeedReturn,
 } from './types.ts';
 
 const ITEMS_PER_PAGE = 2;

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState, FC } from 'react';
+import React, { type PropsWithChildren, useState, type FC } from 'react';
 
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 

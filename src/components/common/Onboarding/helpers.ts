@@ -1,14 +1,14 @@
 import withWizard from '~shared/Wizard/withWizard.tsx';
-import { User } from '~types/graphql.ts';
+import { type User } from '~types/graphql.ts';
 
 import {
   colonySidebarValues,
   completeSideBarValue,
   userInitialValues,
   userSidebarValues,
-  WizardProps,
+  type WizardProps,
 } from './consts.ts';
-import { Flow, WizardType } from './types.ts';
+import { type Flow, WizardType } from './types.ts';
 import {
   initialValues as colonyInitialValues,
   stepArray as stepsCreateColony,

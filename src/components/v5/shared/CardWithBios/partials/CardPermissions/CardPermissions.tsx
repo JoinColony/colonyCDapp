@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { CardPermissionsProps } from '../../types.ts';
+import { type CardPermissionsProps } from '../../types.ts';
 
 import CardPermission from './CardPermission.tsx';
 

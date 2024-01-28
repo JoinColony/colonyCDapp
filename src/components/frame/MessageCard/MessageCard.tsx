@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { MessageType } from '~redux/immutable/index.ts';
+import { type MessageType } from '~redux/immutable/index.ts';
 import Card from '~shared/Card/index.ts';
 import Heading from '~shared/Heading/index.ts';
 

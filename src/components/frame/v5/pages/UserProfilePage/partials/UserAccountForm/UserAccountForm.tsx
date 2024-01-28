@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
 import { useMobile } from '~hooks/index.ts';

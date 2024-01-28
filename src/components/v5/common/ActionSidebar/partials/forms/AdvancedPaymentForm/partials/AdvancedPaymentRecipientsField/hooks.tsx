@@ -1,4 +1,4 @@
-import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import pick from 'lodash/pick';
 import React, { useMemo, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -9,11 +9,11 @@ import { formatText } from '~utils/intl.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
-  AdvancedPaymentRecipientsFieldModel,
-  AdvancedPaymentRecipientsTableModel,
+  type AdvancedPaymentRecipientsFieldModel,
+  type AdvancedPaymentRecipientsTableModel,
 } from './types.ts';
 
 export const useRecipientsFieldTableColumns = (

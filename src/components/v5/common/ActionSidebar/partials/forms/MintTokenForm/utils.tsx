@@ -2,10 +2,10 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { RootMotionMethodNames } from '~redux/index.ts';
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { MintTokenFormValues } from './consts.ts';
+import { type MintTokenFormValues } from './consts.ts';
 
 export const getMintTokenPayload = (
   colony: Colony,

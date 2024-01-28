@@ -1,23 +1,23 @@
-import { BigNumber } from 'ethers';
-import { ReactNode } from 'react';
+import { type BigNumber } from 'ethers';
+import { type ReactNode } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
-import { ColonyActionRoles, ColonyActionType } from '~gql';
+import { type ColonyActionRoles, ColonyActionType } from '~gql';
 import {
-  AnyActionType,
+  type AnyActionType,
   ExtendedColonyActionType,
-  ActionUserRoles,
+  type ActionUserRoles,
 } from '~types/actions.ts';
 import {
-  Token,
-  Domain as ColonyDomain,
-  ColonyMetadata,
-  ColonyAction,
+  type Token,
+  type Domain as ColonyDomain,
+  type ColonyMetadata,
+  type ColonyAction,
 } from '~types/graphql.ts';
-import { Address } from '~types/index.ts';
+import { type Address } from '~types/index.ts';
 import { isEmpty, isEqual } from '~utils/lodash.ts';
 
-import { MotionVote } from './colonyMotions.ts';
+import { type MotionVote } from './colonyMotions.ts';
 import { formatText } from './intl.ts';
 import { parseSafeTransactionType } from './safes/index.ts';
 

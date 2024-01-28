@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import { TransactionType } from '~redux/immutable/index.ts';
+import { type TransactionType } from '~redux/immutable/index.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -14,7 +14,7 @@ import {
   getGroupStatus,
   getGroupValues,
 } from '../transactionGroup.ts';
-import { GroupedTransactionProps } from '../types.ts';
+import { type GroupedTransactionProps } from '../types.ts';
 
 import GroupedTransactionContent from './GroupedTransactionContent.tsx';
 import TransactionStatus from './TransactionStatus.tsx';

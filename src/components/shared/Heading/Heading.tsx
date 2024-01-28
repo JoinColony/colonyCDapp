@@ -1,6 +1,6 @@
-import React, { HTMLAttributes, ReactNode } from 'react';
+import React, { type HTMLAttributes, type ReactNode } from 'react';
 
-import { Message, UniversalMessageValues } from '~types/index.ts';
+import { type Message, type UniversalMessageValues } from '~types/index.ts';
 import { getMainClasses } from '~utils/css/index.ts';
 import { formatText } from '~utils/intl.ts';
 

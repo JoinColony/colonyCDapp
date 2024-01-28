@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 
 import MemberSignature from '../MemberSignature/index.ts';
 
-import { MemberSignatureListProps } from './types.ts';
+import { type MemberSignatureListProps } from './types.ts';
 
 const displayName = 'v5.common.MemberSignatureList';
 

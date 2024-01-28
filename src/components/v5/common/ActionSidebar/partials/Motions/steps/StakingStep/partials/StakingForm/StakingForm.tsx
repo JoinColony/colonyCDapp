@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useAppContext } from '~context/AppContext.tsx';
@@ -20,7 +20,7 @@ import StakingChart from '../StakingChart/StakingChart.tsx';
 
 import { getMaxStakeAmount, getPredictedPercentage } from './helpers.ts';
 import { useStakingForm } from './hooks.ts';
-import { StakingFormProps, StakingFormValues } from './types.ts';
+import { type StakingFormProps, type StakingFormValues } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.StakingForm';

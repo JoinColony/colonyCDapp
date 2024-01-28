@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import { ColonyAction } from '~types/graphql.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColorField/partials/TeamColorBadge.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';

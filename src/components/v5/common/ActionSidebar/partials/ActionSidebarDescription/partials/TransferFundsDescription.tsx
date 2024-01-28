@@ -9,7 +9,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { TransferFundsFormValues } from '../../forms/TransferFundsForm/hooks.ts';
+import { type TransferFundsFormValues } from '../../forms/TransferFundsForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

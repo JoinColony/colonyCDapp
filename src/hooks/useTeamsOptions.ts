@@ -1,8 +1,8 @@
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { notNull } from '~utils/arrays/index.ts';
 import {
-  SearchSelectOption,
-  SearchSelectOptionProps,
+  type SearchSelectOption,
+  type SearchSelectOptionProps,
 } from '~v5/shared/SearchSelect/types.ts';
 
 const sortByDomainId = (

@@ -1,5 +1,5 @@
-import React, { FC, useCallback, useState } from 'react';
-import { Props as ReactSelectProps, SingleValue } from 'react-select';
+import React, { type FC, useCallback, useState } from 'react';
+import { type Props as ReactSelectProps, type SingleValue } from 'react-select';
 
 import { useMemberContext } from '~context/MemberContext.tsx';
 import { formatText } from '~utils/intl.ts';
@@ -9,7 +9,7 @@ import {
 } from '~v5/common/Fields/Select/index.ts';
 
 import CustomOption from './partials/CustomOption/index.ts';
-import { MemberSelectProps, MembersSelectOption } from './types.ts';
+import { type MemberSelectProps, type MembersSelectOption } from './types.ts';
 
 import styles from './MembersSelect.module.css';
 

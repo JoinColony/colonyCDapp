@@ -1,10 +1,10 @@
-import Decimal from 'decimal.js';
-
 import {
   adjustConvertedValue,
   convertToDecimalOrNull,
 } from '~shared/Numeral/index.ts';
-import { NumeralValue } from '~shared/Numeral/Numeral.tsx';
+import { type NumeralValue } from '~shared/Numeral/Numeral.tsx';
+
+import type Decimal from 'decimal.js';
 
 export const convertToDecimal = (
   value: NumeralValue,

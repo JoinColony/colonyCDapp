@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 
-import { UserRole } from '~constants/permissions.ts';
-import { ColonyContributor, SortDirection } from '~types/graphql.ts';
+import { type UserRole } from '~constants/permissions.ts';
+import { type ColonyContributor, SortDirection } from '~types/graphql.ts';
 import {
-  ContributorTypeFilter,
-  StatusType,
+  type ContributorTypeFilter,
+  type StatusType,
 } from '~v5/common/TableFiltering/types.ts';
 
 import useMemberFilters from './useMemberFilters.ts';

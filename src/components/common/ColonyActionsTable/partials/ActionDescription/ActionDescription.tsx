@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
@@ -9,7 +9,7 @@ import { formatText } from '~utils/intl.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
 
-import { ActionDescriptionProps } from './types.ts';
+import { type ActionDescriptionProps } from './types.ts';
 
 const ActionDescription: FC<ActionDescriptionProps> = ({
   action,

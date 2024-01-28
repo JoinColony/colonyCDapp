@@ -1,4 +1,7 @@
-import { RadioButtonsBaseProps, RadioItem } from '../RadioButtonsBase/types.ts';
+import {
+  type RadioButtonsBaseProps,
+  type RadioItem,
+} from '../RadioButtonsBase/types.ts';
 
 export interface ButtonRadioButtonItem<TValue>
   extends Omit<RadioItem<TValue>, 'children' | 'label'> {

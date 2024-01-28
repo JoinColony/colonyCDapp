@@ -1,5 +1,5 @@
 import Lottie from 'lottie-react';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';

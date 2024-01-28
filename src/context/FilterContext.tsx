@@ -1,7 +1,7 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useState,
   useCallback,
   useEffect,
@@ -12,22 +12,22 @@ import { useLocation } from 'react-router-dom';
 
 import {
   CUSTOM_USER_ROLE,
-  UserRole,
+  type UserRole,
   USER_ROLES,
 } from '~constants/permissions.ts';
 import { ModelSortDirection } from '~gql';
 import { useFilterOptions } from '~v5/common/Filter/consts.tsx';
 import {
-  ParentFilterOption,
-  NestedFilterOption,
+  type ParentFilterOption,
+  type NestedFilterOption,
 } from '~v5/common/Filter/types.ts';
 import {
-  ContributorTypeFilter,
-  FilterType,
+  type ContributorTypeFilter,
+  type FilterType,
   FilterTypes,
   PermissionToNetworkIdMap,
   ReputationSort,
-  StatusType,
+  type StatusType,
 } from '~v5/common/TableFiltering/types.ts';
 
 type SelectedFilterLabel = { [k: string]: string[] };

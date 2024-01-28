@@ -1,6 +1,6 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
 import { USER_ROLE } from '~constants/permissions.ts';
@@ -12,9 +12,9 @@ import {
   usePermissionsTableProps,
 } from './hooks.tsx';
 import {
-  CustomPermissionTableModel,
-  PermissionsTableModel,
-  PermissionsTableProps,
+  type CustomPermissionTableModel,
+  type PermissionsTableModel,
+  type PermissionsTableProps,
 } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';

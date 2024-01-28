@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Network, SupportedCurrencies } from '~gql';
 import {
   fetchCurrentPrice,
-  FetchCurrentPriceArgs,
+  type FetchCurrentPriceArgs,
 } from '~utils/currency/index.ts';
 
 const useCurrency = ({

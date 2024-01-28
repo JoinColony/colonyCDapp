@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
-import { ObjectiveBoxProps } from './types.ts';
+import { type ObjectiveBoxProps } from './types.ts';
 
 const displayName = 'v5.common.ObjectiveBox';
 

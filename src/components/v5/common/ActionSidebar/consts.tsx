@@ -1,11 +1,11 @@
-import { Variants } from 'framer-motion';
+import { type Variants } from 'framer-motion';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { object, string } from 'yup';
 
 // Do not import these from `./hooks` to avoid circular dependencies
 
-import { ACTION, Action } from '~constants/actions.ts';
+import { ACTION, type Action } from '~constants/actions.ts';
 import { MAX_ANNOTATION_LENGTH } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { stripHTMLFromText } from '~utils/elements.ts';

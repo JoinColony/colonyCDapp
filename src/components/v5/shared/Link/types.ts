@@ -1,7 +1,7 @@
-import { MessageDescriptor } from 'react-intl';
-import { LinkProps as LinkComponentProps } from 'react-router-dom';
+import { type MessageDescriptor } from 'react-intl';
+import { type LinkProps as LinkComponentProps } from 'react-router-dom';
 
-import { SimpleMessageValues } from '~types/index.ts';
+import { type SimpleMessageValues } from '~types/index.ts';
 
 export interface LinkProps extends LinkComponentProps {
   text?: MessageDescriptor | string;

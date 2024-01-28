@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import PageHeading from '../PageHeading/index.ts';
 
-import { PageHeaderProps } from './types.ts';
+import { type PageHeaderProps } from './types.ts';
 
 const displayName = 'v5.frame.PageLayout.partials.PageHeader';
 

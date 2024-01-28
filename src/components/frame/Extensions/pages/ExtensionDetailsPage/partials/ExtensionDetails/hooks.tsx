@@ -1,4 +1,4 @@
-import { Extension } from '@colony/colony-js';
+import { type Extension } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 

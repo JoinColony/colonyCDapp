@@ -1,9 +1,9 @@
 import React from 'react';
-import { MessageDescriptor } from 'react-intl';
+import { type MessageDescriptor } from 'react-intl';
 
 import InvisibleCopyableAddress from '~shared/InvisibleCopyableAddress/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
-import { Address as AddressType } from '~types/index.ts';
+import { type Address as AddressType } from '~types/index.ts';
 
 import styles from './Address.css';
 

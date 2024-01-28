@@ -5,7 +5,7 @@ import { ContextModule, getContext } from '~context/index.ts';
 import { isFullWallet } from '~types/wallet.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions } from '../../types/actions/index.ts';
+import { type AllActions } from '../../types/actions/index.ts';
 import { putError, initiateMessageSigning } from '../utils/index.ts';
 
 export function* signMessage(purpose, message) {

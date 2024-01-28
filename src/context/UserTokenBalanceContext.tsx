@@ -1,12 +1,15 @@
 import React, {
-  ReactNode,
+  type ReactNode,
   createContext,
   useCallback,
   useContext,
   useMemo,
 } from 'react';
 
-import { GetUserTokenBalanceReturn, useGetUserTokenBalanceQuery } from '~gql';
+import {
+  type GetUserTokenBalanceReturn,
+  useGetUserTokenBalanceQuery,
+} from '~gql';
 
 import { useAppContext } from './AppContext.tsx';
 import { useColonyContext } from './ColonyContext.tsx';

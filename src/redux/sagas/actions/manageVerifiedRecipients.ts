@@ -4,20 +4,20 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyContributorDocument,
-  CreateColonyContributorMutation,
-  CreateColonyContributorMutationVariables,
+  type CreateColonyContributorMutation,
+  type CreateColonyContributorMutationVariables,
   GetColonyContributorDocument,
-  GetColonyContributorQuery,
-  GetColonyContributorQueryVariables,
+  type GetColonyContributorQuery,
+  type GetColonyContributorQueryVariables,
   GetFullColonyByNameDocument,
   UpdateColonyContributorDocument,
-  UpdateColonyContributorMutation,
-  UpdateColonyContributorMutationVariables,
+  type UpdateColonyContributorMutation,
+  type UpdateColonyContributorMutationVariables,
   UpdateColonyMetadataDocument,
-  UpdateColonyMetadataMutation,
-  UpdateColonyMetadataMutationVariables,
+  type UpdateColonyMetadataMutation,
+  type UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { Action, AllActions, ActionTypes } from '~redux/index.ts';
+import { type Action, type AllActions, ActionTypes } from '~redux/index.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 
 import {

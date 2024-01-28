@@ -1,5 +1,5 @@
 import { themeList } from './index.ts';
-import { IMappedTheme, ITheme } from './types.ts';
+import { type IMappedTheme, type ITheme } from './types.ts';
 
 export const mapTheme = (variables: ITheme): IMappedTheme => {
   return {

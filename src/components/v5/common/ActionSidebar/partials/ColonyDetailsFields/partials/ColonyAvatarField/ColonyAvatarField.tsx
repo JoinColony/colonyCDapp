@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -13,7 +13,7 @@ import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import { useChangeColonyAvatar } from './hooks.tsx';
-import { ColonyAvatarFieldProps } from './types.ts';
+import { type ColonyAvatarFieldProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionsContent.partials.ColonyDetailsFields.partials.ColonyAvatarField';

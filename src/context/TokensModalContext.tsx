@@ -1,7 +1,7 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useContext,
   useMemo,
   useState,
@@ -10,7 +10,7 @@ import React, {
 import useToggle from '~hooks/useToggle/index.ts';
 import noop from '~utils/noop.ts';
 import TokensModal from '~v5/common/TokensModal/index.ts';
-import { TokensModalType } from '~v5/common/TokensModal/types.ts';
+import { type TokensModalType } from '~v5/common/TokensModal/types.ts';
 
 export const TokensModalContext = createContext<{
   toggleOnTokensModal: () => void;

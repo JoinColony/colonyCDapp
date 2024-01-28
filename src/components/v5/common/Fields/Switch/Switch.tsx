@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { useId } from 'react';
 
-import { SwitchProps } from './types.ts';
+import { type SwitchProps } from './types.ts';
 
 import styles from './Switch.module.css';
 

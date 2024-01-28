@@ -1,14 +1,18 @@
-import { Extension } from '@colony/colony-js';
-import { NavigateFunction } from 'react-router-dom';
+import { type Extension } from '@colony/colony-js';
+import { type NavigateFunction } from 'react-router-dom';
 
-import { ActionTypes } from '~redux/index.ts';
+import { type ActionTypes } from '~redux/index.ts';
 import {
-  InstallableExtensionData,
-  InstalledExtensionData,
+  type InstallableExtensionData,
+  type InstalledExtensionData,
 } from '~types/extensions.ts';
-import { Address, WithKey } from '~types/index.ts';
+import { type Address, type WithKey } from '~types/index.ts';
 
-import { ActionType, ErrorActionType, UniqueActionType } from './index.ts';
+import {
+  type ActionType,
+  type ErrorActionType,
+  type UniqueActionType,
+} from './index.ts';
 
 export type ColonyActionTypes =
   | UniqueActionType<

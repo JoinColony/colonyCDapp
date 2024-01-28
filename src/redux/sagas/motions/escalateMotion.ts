@@ -1,20 +1,20 @@
 import {
   ClientType,
   Id,
-  AnyVotingReputationClient,
+  type AnyVotingReputationClient,
   getChildIndex,
 } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context/index.ts';
+import { type ColonyManager } from '~context/index.ts';
 import {
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions, Action } from '../../types/actions/index.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,

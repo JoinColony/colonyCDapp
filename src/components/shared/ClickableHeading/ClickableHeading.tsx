@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
-import Heading, { Appearance } from '~shared/Heading/index.ts';
+import Heading, { type Appearance } from '~shared/Heading/index.ts';
 import Icon from '~shared/Icon/index.ts';
 import NavLink from '~shared/NavLink/index.ts';
 

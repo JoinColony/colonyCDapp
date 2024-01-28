@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import UserNavigation from '~common/Extensions/UserNavigation/index.ts';
 import HeaderAvatar from '~common/Extensions/UserNavigation/partials/HeaderAvatar/index.ts';
 
-import { UserNavigationWrapperProps } from './types.ts';
+import { type UserNavigationWrapperProps } from './types.ts';
 
 const displayName = 'frame.Extensions.partials.UserNavigationWrapper';
 

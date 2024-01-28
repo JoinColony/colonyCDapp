@@ -1,12 +1,12 @@
-import { ColonyRole } from '@colony/colony-js';
+import { type ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { noMotionsVotingReputationVersion } from '~utils/colonyMotions.ts';
 
 import useColonyHasReputation from './useColonyHasReputation.ts';
 import useDialogActionPermissions from './useDialogActionPermissions.ts';
-import { EnabledExtensionData } from './useEnabledExtensions.tsx';
+import { type EnabledExtensionData } from './useEnabledExtensions.tsx';
 
 const useActionDialogStatus = (
   colony: Colony,

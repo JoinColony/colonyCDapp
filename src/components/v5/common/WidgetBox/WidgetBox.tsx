@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import Icon from '~shared/Icon/index.ts';
 
-import { WidgetBoxProps } from './types.ts';
+import { type WidgetBoxProps } from './types.ts';
 
 const displayName = 'v5.common.WidgetBox';
 

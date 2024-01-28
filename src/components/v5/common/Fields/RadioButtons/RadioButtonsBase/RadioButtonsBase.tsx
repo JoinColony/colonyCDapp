@@ -3,7 +3,7 @@ import noop from 'lodash/noop';
 import React from 'react';
 
 import RadioBase from './RadioBase/index.ts';
-import { RadioButtonsBaseProps } from './types.ts';
+import { type RadioButtonsBaseProps } from './types.ts';
 
 const displayName = 'v5.common.RadioButtonsBase';
 

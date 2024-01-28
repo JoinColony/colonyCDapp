@@ -1,11 +1,13 @@
 import Decimal from 'decimal.js';
-import { BigNumber } from 'ethers';
+import { type BigNumber } from 'ethers';
 import React from 'react';
 
 import { useCurrencyContext } from '~context/CurrencyContext.tsx';
 import useCurrency from '~hooks/useCurrency.ts';
-import Numeral, { Props as NumeralProps } from '~shared/Numeral/Numeral.tsx';
-import { FetchCurrentPriceArgs } from '~utils/currency/index.ts';
+import Numeral, {
+  type Props as NumeralProps,
+} from '~shared/Numeral/Numeral.tsx';
+import { type FetchCurrentPriceArgs } from '~utils/currency/index.ts';
 
 const displayName = 'CurrencyConversion';
 

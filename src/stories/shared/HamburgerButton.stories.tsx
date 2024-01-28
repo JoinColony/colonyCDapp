@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
 import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
 

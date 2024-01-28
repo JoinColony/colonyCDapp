@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 
 import { useFilterContext } from '~context/FilterContext.tsx';
 import { useMobile } from '~hooks/index.ts';
@@ -10,7 +10,7 @@ import PopoverBase from '../PopoverBase/index.ts';
 
 import { useMembersSubNavigation } from './hooks.ts';
 import NestedOptions from './partials/NestedOptions.tsx';
-import { SubNavigationItemProps } from './types.ts';
+import { type SubNavigationItemProps } from './types.ts';
 
 const displayName = 'v5.SubNavigationItem';
 

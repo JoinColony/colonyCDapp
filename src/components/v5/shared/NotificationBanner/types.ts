@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import { type PropsWithChildren, type ReactNode } from 'react';
 
 type BannerStatus = 'success' | 'error' | 'warning' | 'info';
 export type NotificationBannerProps = PropsWithChildren<{

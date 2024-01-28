@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber, type BigNumberish } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import {
@@ -8,8 +8,12 @@ import {
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants/index.ts';
-import { Colony, ColonyBalances, Token } from '~types/graphql.ts';
-import { Address } from '~types/index.ts';
+import {
+  type Colony,
+  type ColonyBalances,
+  type Token,
+} from '~types/graphql.ts';
+import { type Address } from '~types/index.ts';
 
 import { notNull } from './arrays/index.ts';
 

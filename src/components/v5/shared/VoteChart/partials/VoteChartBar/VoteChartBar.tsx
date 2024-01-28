@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { VOTE_CHART_BAR_DIRECTION, VoteChartBarProps } from './types.ts';
+import { VOTE_CHART_BAR_DIRECTION, type VoteChartBarProps } from './types.ts';
 
 const displayName = 'v5.VoteChart.partials.VoteChartBar';
 

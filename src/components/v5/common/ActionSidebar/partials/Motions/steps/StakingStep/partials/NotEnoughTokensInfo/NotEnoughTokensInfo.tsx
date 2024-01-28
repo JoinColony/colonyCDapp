@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useTokensModalContext } from '~context/TokensModalContext.tsx';

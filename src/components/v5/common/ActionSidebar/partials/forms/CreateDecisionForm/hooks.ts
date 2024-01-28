@@ -7,12 +7,12 @@ import { useColonyContext } from '~context/ColonyContext.tsx';
 import { createDecisionAction } from '~redux/actionCreators/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
-import { DecisionDraft } from '~utils/decisions.ts';
+import { type DecisionDraft } from '~utils/decisions.ts';
 
 import { useActionFormBaseHook } from '../../../hooks/index.ts';
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 
-import { validationSchema, CreateDecisionFormValues } from './consts.ts';
+import { validationSchema, type CreateDecisionFormValues } from './consts.ts';
 
 export const useCreateDecision = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],

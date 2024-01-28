@@ -7,7 +7,7 @@ import { FIELD_STATE } from '../consts.ts';
 import { useStateClassNames } from '../hooks.ts';
 
 import { useAdjustInputWidth } from './hooks.ts';
-import { InputBaseProps } from './types.ts';
+import { type InputBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.InputBase';
 

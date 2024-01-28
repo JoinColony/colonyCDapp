@@ -4,12 +4,16 @@ import { all, call, fork, put } from 'redux-saga/effects';
 
 import { authenticateWallet } from '~auth/index.ts';
 import { getContext, setContext, ContextModule } from '~context/index.ts';
-import { ColonyWallet } from '~types/wallet.ts';
-import { getLastWallet, LastWallet, setLastWallet } from '~utils/autoLogin.ts';
+import { type ColonyWallet } from '~types/wallet.ts';
+import {
+  getLastWallet,
+  type LastWallet,
+  setLastWallet,
+} from '~utils/autoLogin.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
 import { ActionTypes } from '../actionTypes.ts';
-import { AllActions } from '../types/actions/index.ts';
+import { type AllActions } from '../types/actions/index.ts';
 
 import actionsSagas from './actions/index.ts';
 import colonySagas, { colonyCreateSaga } from './colony/index.ts';

@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { RefObject, forwardRef } from 'react';
+import React, { type RefObject, forwardRef } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { Address } from '~types/index.ts';
-import { splitAddress, AddressElements } from '~utils/strings/index.ts';
+import { type Address } from '~types/index.ts';
+import { splitAddress, type AddressElements } from '~utils/strings/index.ts';
 
 const MSG = defineMessages({
   wrongAddressFormat: {

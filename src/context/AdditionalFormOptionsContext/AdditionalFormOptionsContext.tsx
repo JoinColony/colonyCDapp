@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { AdditionalFormOptionsContextValue } from './types.ts';
+import { type AdditionalFormOptionsContextValue } from './types.ts';
 
 const AdditionalFormOptionsContext =
   createContext<AdditionalFormOptionsContextValue>({});

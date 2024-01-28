@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { AccordionProps } from '../types.ts';
+import { type AccordionProps } from '../types.ts';
 
 import AccordionItem from './AccordionItem.tsx';
 

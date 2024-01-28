@@ -1,4 +1,4 @@
-import { Colony, Domain } from '~types/graphql.ts';
+import { type Colony, type Domain } from '~types/graphql.ts';
 
 import { notNull } from './arrays/index.ts';
 import { sortBy } from './lodash.ts';

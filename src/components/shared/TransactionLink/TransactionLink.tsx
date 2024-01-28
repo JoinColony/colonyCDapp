@@ -1,8 +1,8 @@
 import React from 'react';
-import { MessageDescriptor } from 'react-intl';
+import { type MessageDescriptor } from 'react-intl';
 
 import ExternalLink from '~shared/ExternalLink/index.ts';
-import { SimpleMessageValues } from '~types/index.ts';
+import { type SimpleMessageValues } from '~types/index.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 
 interface Props {

@@ -8,7 +8,7 @@ import {
   useUpdateColonyContributorMutation,
 } from '~gql';
 import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 import { handleNewUser } from '~utils/newUser.ts';
 

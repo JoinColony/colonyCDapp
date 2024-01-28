@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Cardholder } from 'phosphor-react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
@@ -13,7 +13,7 @@ import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
 import TeamBadge from '../Pills/TeamBadge/index.ts';
 
-import { TeamCardProps } from './types.ts';
+import { type TeamCardProps } from './types.ts';
 
 const TeamCard: FC<TeamCardProps> = ({
   title,

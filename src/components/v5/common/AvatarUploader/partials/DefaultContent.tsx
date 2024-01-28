@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
 
 import { useFormatFormats } from '../hooks.tsx';
-import { DefaultContentProps } from '../types.ts';
+import { type DefaultContentProps } from '../types.ts';
 
 const displayName = 'v5.common.AvatarUploader.partials.DefaultContent';
 

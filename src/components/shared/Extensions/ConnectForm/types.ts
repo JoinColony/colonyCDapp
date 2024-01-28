@@ -1,8 +1,8 @@
-import { SyntheticEvent } from 'react';
-import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
+import { type SyntheticEvent } from 'react';
+import { type FieldErrorsImpl, type UseFormRegister } from 'react-hook-form';
 
-import { FormRadioButton } from '~common/Extensions/Fields/RadioList/types.ts';
-import { FormPercentageInput } from '~common/Extensions/SpecialInput/types.ts';
+import { type FormRadioButton } from '~common/Extensions/Fields/RadioList/types.ts';
+import { type FormPercentageInput } from '~common/Extensions/SpecialInput/types.ts';
 
 export interface SpecialInputProps {
   defaultValue?: number | string;

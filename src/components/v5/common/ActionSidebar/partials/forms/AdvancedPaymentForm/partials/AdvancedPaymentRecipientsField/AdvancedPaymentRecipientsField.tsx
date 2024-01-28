@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,9 +14,9 @@ import {
   useGetTableMenuProps,
 } from './hooks.tsx';
 import {
-  AdvancedPaymentRecipientsTableModel,
-  AdvancedPaymentRecipientsFieldProps,
-  AdvancedPaymentRecipientsFieldModel,
+  type AdvancedPaymentRecipientsTableModel,
+  type AdvancedPaymentRecipientsFieldProps,
+  type AdvancedPaymentRecipientsFieldModel,
 } from './types.ts';
 
 const displayName =

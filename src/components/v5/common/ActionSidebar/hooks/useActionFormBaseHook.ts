@@ -2,7 +2,7 @@ import { useUnmountEffect } from 'framer-motion';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { UseActionFormBaseHook } from '../types.ts';
+import { type UseActionFormBaseHook } from '../types.ts';
 
 export const useActionFormBaseHook: UseActionFormBaseHook = ({
   validationSchema,

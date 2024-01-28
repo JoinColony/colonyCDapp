@@ -2,13 +2,16 @@ import { createColumnHelper } from '@tanstack/react-table';
 import chunk from 'lodash/chunk';
 import React, { useMemo } from 'react';
 
-import { UserRole, USER_ROLE } from '~constants/permissions.ts';
+import { type UserRole, USER_ROLE } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 import { FormSwitch } from '~v5/common/Fields/Switch/index.ts';
-import { TableProps } from '~v5/common/Table/types.ts';
+import { type TableProps } from '~v5/common/Table/types.ts';
 
 import { PERMISSIONS_TABLE_CONTENT } from './consts.tsx';
-import { CustomPermissionTableModel, PermissionsTableModel } from './types.ts';
+import {
+  type CustomPermissionTableModel,
+  type PermissionsTableModel,
+} from './types.ts';
 
 const customPermissionsColumnHelper =
   createColumnHelper<CustomPermissionTableModel>();

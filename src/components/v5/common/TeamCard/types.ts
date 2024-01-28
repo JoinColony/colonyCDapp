@@ -1,8 +1,8 @@
-import { LinkProps } from '~v5/shared/Link/types.ts';
-import { MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
-import { UserAvatarsProps } from '~v5/shared/UserAvatars/types.ts';
+import { type LinkProps } from '~v5/shared/Link/types.ts';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
+import { type UserAvatarsProps } from '~v5/shared/UserAvatars/types.ts';
 
-import { TeamBadgeProps } from '../Pills/TeamBadge/types.ts';
+import { type TeamBadgeProps } from '../Pills/TeamBadge/types.ts';
 
 export interface TeamCardProps {
   teamProps: TeamBadgeProps;

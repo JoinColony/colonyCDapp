@@ -1,9 +1,9 @@
-import { ActionTypes } from '../../actionTypes.ts';
+import { type ActionTypes } from '../../actionTypes.ts';
 
 import {
-  ActionTypeWithPayload,
-  UniqueActionType,
-  ErrorActionType,
+  type ActionTypeWithPayload,
+  type UniqueActionType,
+  type ErrorActionType,
 } from './index.ts';
 
 export type MessageActionTypes =

@@ -1,9 +1,9 @@
-import { AnyVotingReputationClient, ClientType } from '@colony/colony-js';
+import { type AnyVotingReputationClient, ClientType } from '@colony/colony-js';
 import { utils } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '../../actionTypes.ts';
-import { AllActions, Action } from '../../types/actions/index.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import { signMessage } from '../messages/index.ts';
 import {
   createGroupTransaction,

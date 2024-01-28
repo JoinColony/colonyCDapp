@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
 
 import Button from '~v5/shared/Button/index.ts';

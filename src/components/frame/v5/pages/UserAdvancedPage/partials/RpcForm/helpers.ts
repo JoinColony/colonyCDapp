@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { TestContext } from 'yup';
+import { type TestContext } from 'yup';
 
 import { intl } from '~utils/intl.ts';
 

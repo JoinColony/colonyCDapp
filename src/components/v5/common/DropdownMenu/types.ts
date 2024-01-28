@@ -1,4 +1,4 @@
-import { DropdownMenuItemProps } from './partials/DropdownMenuItem/types.ts';
+import { type DropdownMenuItemProps } from './partials/DropdownMenuItem/types.ts';
 
 export type DropdownMenuItem = DropdownMenuItemProps & {
   key: string;

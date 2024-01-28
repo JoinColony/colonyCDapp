@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
 import PillsBase from '../PillsBase.tsx';
 
 import { MOTION_STATE_TO_CLASSNAME_MAP } from './consts.ts';
-import { MotionStateBadgeProps } from './types.ts';
+import { type MotionStateBadgeProps } from './types.ts';
 
 const displayName = 'v5.common.Pills.MotionStateBadge';
 

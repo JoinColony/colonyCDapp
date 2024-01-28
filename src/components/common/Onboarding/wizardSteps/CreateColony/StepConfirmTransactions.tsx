@@ -7,7 +7,7 @@ import {
   findTransactionGroupByKey,
   getGroupKey,
   findNewestGroup,
-  TransactionOrMessageGroups,
+  type TransactionOrMessageGroups,
 } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { TransactionStatus } from '~gql';

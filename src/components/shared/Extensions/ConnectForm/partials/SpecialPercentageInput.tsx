@@ -1,14 +1,14 @@
-import React, { FC, SyntheticEvent } from 'react';
+import React, { type FC, type SyntheticEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SpecialInput from '~common/Extensions/SpecialInput/index.ts';
 import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types.ts';
-import { Message } from '~types/index.ts';
+import { type Message } from '~types/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
 import FormError from '~v5/shared/FormError/index.ts';
 
-import { SpecialInputProps } from '../types.ts';
+import { type SpecialInputProps } from '../types.ts';
 
 const displayName = 'Extensions.ConnectForm.partials.SpecialPercentageInput';
 

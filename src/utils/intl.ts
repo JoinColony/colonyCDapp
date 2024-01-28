@@ -1,14 +1,14 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
 import { nanoid } from 'nanoid';
-import { ReactNode, cloneElement, isValidElement } from 'react';
-import { MessageDescriptor } from 'react-intl';
+import { type ReactNode, cloneElement, isValidElement } from 'react';
+import { type MessageDescriptor } from 'react-intl';
 
 import {
-  AnyMessageValues,
-  ComplexMessageValues,
-  Message,
-  SimpleMessageValues,
-  UniversalMessageValues,
+  type AnyMessageValues,
+  type ComplexMessageValues,
+  type Message,
+  type SimpleMessageValues,
+  type UniversalMessageValues,
 } from '~types/index.ts';
 
 import actionMessages from '../i18n/en-actions.ts';

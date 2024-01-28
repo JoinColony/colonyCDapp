@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { type FC, useEffect, useLayoutEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
@@ -11,7 +11,7 @@ import { useInput } from '../hooks.ts';
 import { DEFAULT_MAX_CHAR_NUMBER } from './consts.ts';
 import CharacterNumbers from './partials/CharacterNumbers.tsx';
 import InputPills from './partials/InputPills.tsx';
-import { InputProps } from './types.ts';
+import { type InputProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.Input';
 

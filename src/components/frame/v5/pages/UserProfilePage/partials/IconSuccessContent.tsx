@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
-import { SuccessContentProps } from '~v5/common/AvatarUploader/types.ts';
+import { type SuccessContentProps } from '~v5/common/AvatarUploader/types.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 const displayName = 'v5.pages.UserProfilePage.AvatarSuccessContent';

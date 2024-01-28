@@ -1,20 +1,20 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
-import { FieldValues } from 'react-hook-form';
+import { type FieldValues } from 'react-hook-form';
 
 import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import {
-  OnBeforeCloseCallback,
-  UseToggleReturnType,
+  type OnBeforeCloseCallback,
+  type UseToggleReturnType,
 } from '~hooks/useToggle/types.ts';
 
 import {
@@ -23,7 +23,7 @@ import {
   AnalyticsEventCategory,
   AnalyticsEventAction,
   AnalyticsEventLabel,
-  AnalyticsEvent,
+  type AnalyticsEvent,
 } from '../AnalyticsContext/index.ts';
 
 import { isElementInsideModalOrPortal } from './utils.ts';

@@ -4,12 +4,12 @@ import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetUserStakesQuery } from '~gql';
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
-import { UserStakeWithStatus } from '~types/userStake.ts';
+import { type UserStakeWithStatus } from '~types/userStake.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
 import { stakesFilterOptions } from './consts.ts';
 import { getStakeStatus } from './helpers.ts';
-import { StakesFilterType } from './types.ts';
+import { type StakesFilterType } from './types.ts';
 
 export const useStakesByFilterType = () => {
   const {

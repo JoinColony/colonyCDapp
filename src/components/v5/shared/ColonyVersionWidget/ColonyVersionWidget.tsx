@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ACTION } from '~constants/actions.ts';
@@ -9,7 +9,7 @@ import Icon from '~shared/Icon/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
-import { ColonyVersionWidgetProps } from './types.ts';
+import { type ColonyVersionWidgetProps } from './types.ts';
 
 import styles from './ColonyVersionWidget.module.css';
 

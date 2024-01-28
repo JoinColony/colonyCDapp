@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useUserAvatars } from '~hooks/useUserAvatars.ts';
 import Icon from '~shared/Icon/index.ts';
@@ -7,7 +7,7 @@ import { MotionVote } from '~utils/colonyMotions.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
-import { VoteStatusesProps } from './types.ts';
+import { type VoteStatusesProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.Motion.steps.OutcomeStep.partials.VoteStatuses';

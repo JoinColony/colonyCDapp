@@ -11,7 +11,7 @@ import Portal from '~v5/shared/Portal/index.ts';
 import { FIELD_STATE } from '../consts.ts';
 
 import { OPTION_LIST_ITEM_CLASSES } from './consts.ts';
-import { CardSelectOptionsGroup, CardSelectProps } from './types.ts';
+import { type CardSelectOptionsGroup, type CardSelectProps } from './types.ts';
 import { isFlatOptions } from './utils.ts';
 
 const displayName = 'v5.common.Fields.CardSelect';

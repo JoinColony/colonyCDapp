@@ -1,7 +1,7 @@
 import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { array, InferType, number, object, string } from 'yup';
+import { array, type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ActionTypes } from '~redux/index.ts';
@@ -16,7 +16,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.tsx';
 
 import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
-import { ActionFormBaseProps } from '../../../types.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();

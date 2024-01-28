@@ -1,8 +1,8 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
 import Numeral from '~shared/Numeral/index.ts';
-import { ColonyClaims } from '~types/graphql.ts';
+import { type ColonyClaims } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 
 import AcceptButton from '../AcceptButton/index.ts';

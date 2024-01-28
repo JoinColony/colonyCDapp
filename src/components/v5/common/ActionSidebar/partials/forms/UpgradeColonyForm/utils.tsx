@@ -1,7 +1,7 @@
 import { RootMotionMethodNames } from '~redux/index.ts';
-import { Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 
-import { UpgradeColonyFormValues } from './consts.ts';
+import { type UpgradeColonyFormValues } from './consts.ts';
 
 export const getUpgradeColonyPayload = (
   colony: Colony,

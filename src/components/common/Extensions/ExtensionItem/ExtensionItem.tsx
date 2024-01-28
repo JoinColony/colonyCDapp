@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
@@ -8,7 +8,7 @@ import Link from '~v5/shared/Link/index.ts';
 
 import { useExtensionItem } from './hooks.ts';
 import ActionButton from './partials/ActionButton/index.ts';
-import { ExtensionItemProps } from './types.ts';
+import { type ExtensionItemProps } from './types.ts';
 
 const displayName = 'common.Extensions.ExtensionItem';
 

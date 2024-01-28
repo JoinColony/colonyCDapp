@@ -5,14 +5,14 @@ import { ADDRESS_ZERO, isDev } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateSafeTransactionDocument,
-  CreateSafeTransactionMutation,
-  CreateSafeTransactionMutationVariables,
-  CreateSafeTransactionDataMutation,
-  CreateSafeTransactionDataMutationVariables,
+  type CreateSafeTransactionMutation,
+  type CreateSafeTransactionMutationVariables,
+  type CreateSafeTransactionDataMutation,
+  type CreateSafeTransactionDataMutationVariables,
   CreateSafeTransactionDataDocument,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { Action, AllActions } from '~redux/types/index.ts';
+import { type Action, type AllActions } from '~redux/types/index.ts';
 import { fill, omit } from '~utils/lodash.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 

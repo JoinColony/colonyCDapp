@@ -1,5 +1,5 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
@@ -8,7 +8,7 @@ import { addressHasRoles } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import DeprecateButton from './DeprecateButton.tsx';
-import { ExtensionDetailsProps } from './types.ts';
+import { type ExtensionDetailsProps } from './types.ts';
 import UninstallButton from './UninstallButton.tsx';
 
 const displayName =

@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react';
 
-import { PageHeadingProps } from '~v5/frame/PageLayout/partials/PageHeading/types.ts';
+import { type PageHeadingProps } from '~v5/frame/PageLayout/partials/PageHeading/types.ts';
 
 import { PageHeadingContext } from './PageHeadingContext.tsx';
-import { PageHeadingContextValue } from './types.ts';
+import { type PageHeadingContextValue } from './types.ts';
 
 export const usePageHeadingContext = (): PageHeadingContextValue =>
   useContext(PageHeadingContext);

@@ -6,17 +6,21 @@ import {
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext, ColonyManager } from '~context/index.ts';
+import {
+  ContextModule,
+  getContext,
+  type ColonyManager,
+} from '~context/index.ts';
 import {
   CreateDomainMetadataDocument,
-  CreateDomainMetadataMutation,
-  CreateDomainMetadataMutationVariables,
+  type CreateDomainMetadataMutation,
+  type CreateDomainMetadataMutationVariables,
 } from '~gql';
 import {
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators/index.ts';
-import { Action, ActionTypes, AllActions } from '~redux/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 
