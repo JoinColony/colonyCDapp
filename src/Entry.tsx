@@ -13,6 +13,7 @@ import motionStatesMessages from './i18n/en-motion-states.ts';
 import systemMessages from './i18n/en-system-messages.ts';
 import messages from './i18n/en.json';
 import Routes from './routes/index.ts';
+import { uiEvents } from './uiEvents/index.ts';
 
 interface Props {
   store: any;
@@ -35,6 +36,8 @@ if (PROD_COMMIT_HASH) {
 
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
+
+  uiEvents.load({ writeKey: '' }, { disableClientPersistence: true });
 
   return (
     <IntlProvider

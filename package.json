@@ -170,6 +170,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@phosphor-icons/react": "^2.0.15",
     "@popperjs/core": "^2.3.3",
+    "@segment/analytics-next": "^1.64.0",
     "@storybook/addon-styling": "^1.0.0",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.9",
