@@ -754,7 +754,7 @@
     "extensionsPage.title": "Extensions",
     "extensionsPage.description": "Extend the functionality of your Colony",
     "extensionsPage.availableExtensions": "Available Extensions",
-    "extensionsPage.permissions": "Permissions the extension needs in the colony",
+    "extensionsPage.permission": "Permission",
     "advancedPage.title": "Advanced settings",
     "advancedPage.description": "Advanced settings of the Colony",
     "advancedPage.colony.title": "Colony version",
