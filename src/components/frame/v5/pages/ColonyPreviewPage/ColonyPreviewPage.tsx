@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import {
   Navigate,
@@ -114,7 +114,7 @@ const ColonyPreviewPage = () => {
   const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
   const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
 
-  const validateInviteCode = useCallback(async () => {
+  const validateInviteCode = async () => {
     if (!colonyAddress || !inviteCode || !wallet) return;
     const valid = await validate({
       variables: {
@@ -125,7 +125,7 @@ const ColonyPreviewPage = () => {
     if (valid.data?.validateUserInvite) {
       navigate(`/${colonyName}`);
     }
-  }, [colonyName, colonyAddress, wallet, validate, navigate, inviteCode]);
+  };
 
   if (
     userLoading ||
@@ -152,7 +152,7 @@ const ColonyPreviewPage = () => {
   }
 
   const inviteIsValid =
-    !!inviteData?.getColonyMemberInvite?.valid &&
+    inviteData?.getColonyMemberInvite &&
     inviteData.getColonyMemberInvite.invitesRemaining > 0 &&
     inviteData.getColonyMemberInvite.colony.name === colonyName;
   const inviteIsInvalid = inviteCode && !inviteIsValid;
