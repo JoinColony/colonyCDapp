@@ -2,14 +2,15 @@
   description = "Flake to develop the CDapp using nix(OS)";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # node 20.11.0
+    nixpkgs_node.url = "github:NixOS/nixpkgs/97b17f32362e475016f942bbdfda4a4a72a8a652";
   };
 
   outputs = {
     self,
-    nixpkgs,
+    nixpkgs_node
   }: {
-    devShell.x86_64-linux = with nixpkgs.legacyPackages.x86_64-linux;
+    devShell.x86_64-linux = with nixpkgs_node.legacyPackages.x86_64-linux;
       mkShell {
         buildInputs = [nodejs_20 zsh];
         shellHook = ''
