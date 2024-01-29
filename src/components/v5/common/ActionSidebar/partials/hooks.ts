@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { ACTION, Action } from '~constants/actions';
-import { useColonyContext } from '~hooks';
+import { useColonyContext, useColonyContractVersion } from '~hooks';
+import { canColonyBeUpgraded } from '~utils/checks';
 import { formatText } from '~utils/intl';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts';
@@ -48,14 +49,20 @@ export const useSubmitButtonText = () => {
 
 export const useSubmitButtonDisabled = () => {
   const { colony } = useColonyContext();
+  const { colonyContractVersion } = useColonyContractVersion();
+  const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
+
   const isNativeTokenUnlocked = !!colony.status?.nativeToken?.unlocked;
   const selectedAction: Action | undefined = useWatch({
     name: ACTION_TYPE_FIELD_NAME,
   });
 
-  if (selectedAction === ACTION.UNLOCK_TOKEN && isNativeTokenUnlocked) {
-    return true;
+  switch (selectedAction) {
+    case ACTION.UNLOCK_TOKEN:
+      return isNativeTokenUnlocked;
+    case ACTION.UPGRADE_COLONY_VERSION:
+      return !canUpgrade;
+    default:
+      return false;
   }
-
-  return false;
 };

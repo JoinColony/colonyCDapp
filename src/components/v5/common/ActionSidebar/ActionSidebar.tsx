@@ -35,6 +35,7 @@ const SUPPORTED_ACTIONS: AnyActionType[] = [
   ColonyActionType.CreateDomain,
   ColonyActionType.UnlockToken,
   ColonyActionType.VersionUpgrade,
+  ColonyActionType.VersionUpgradeMotion,
   ColonyActionType.CreateDecisionMotion,
   // @TODO uncomment when social links are added to action display
   // ColonyActionType.ColonyEdit,

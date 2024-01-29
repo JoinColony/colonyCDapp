@@ -42,6 +42,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.UnlockToken:
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
+      case ColonyActionType.VersionUpgradeMotion:
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;

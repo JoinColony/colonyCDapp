@@ -1,6 +1,6 @@
 export type ColonyVersionWidgetProps = {
   status: Status;
-  lastVersion: string | number;
+  latestVersion: string | number;
   currentVersion: string | number;
 };
 
