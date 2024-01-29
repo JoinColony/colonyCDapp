@@ -1,5 +1,13 @@
-.rich-text-content :global(.tiptap) > p {
-  @apply my-1;
+.rich-text-content :global(.tiptap) > * {
+  @apply mb-1;
+}
+
+.rich-text-content :global(.tiptap) > :is(h1, h2, h3) {
+  @apply mb-2.5;
+}
+
+.rich-text-content :global(.tiptap) > blockquote {
+  @apply pl-4;
 }
 
 .rich-text-content :global(.tiptap) > ul {
