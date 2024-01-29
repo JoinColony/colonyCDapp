@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ACTION } from '~constants/actions';
@@ -27,13 +27,11 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
-  const handleUpgradeColony = useCallback(
-    () =>
-      toggleActionSidebarOn({
-        [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
-      }),
-    [toggleActionSidebarOn],
-  );
+  const handleUpgradeColony = () => {
+    toggleActionSidebarOn({
+      [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
+    });
+  };
 
   return (
     <div
