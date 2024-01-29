@@ -24,9 +24,11 @@ export const useUserSelect = () => {
               walletAddress ||
               member.contributorAddress,
             avatar: profile?.thumbnail || profile?.avatar || '',
+            thumbnail: profile?.thumbnail || '',
             id: result.length,
             showAvatar: true,
             walletAddress,
+            isVerified: member.isVerified,
           },
         ];
       }, []),
@@ -40,6 +42,5 @@ export const useUserSelect = () => {
       key: 'users',
       title: { id: 'actions.recipient' },
     },
-    showVerifiedUsers: false,
   };
 };

@@ -24,7 +24,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     name,
   });
   const isError = !!error;
-  const { usersOptions, showVerifiedUsers } = useUserSelect();
+  const { usersOptions } = useUserSelect();
   const [
     isUserSelectVisible,
     {
@@ -57,8 +57,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       ? {
           profile: {
             displayName: selectedUserOption?.label,
+            thumbnail: selectedUserOption?.thumbnail,
           },
           walletAddress: selectedUserOption?.walletAddress,
+          isVerified: selectedUserOption?.isVerified,
         }
       : undefined;
 
@@ -71,10 +73,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             size="xs"
             showUsername
             className={clsx({
-              'text-warning-400': !showVerifiedUsers,
+              'text-warning-400': !selectedUser?.isVerified,
             })}
           />
-          {showVerifiedUsers && (
+          {selectedUser?.isVerified && (
             <span className="flex ml-2 text-blue-400">
               <Icon name="verified" />
             </span>
@@ -103,11 +105,11 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                   size="xs"
                   showUsername
                   className={clsx({
-                    'text-warning-400': !showVerifiedUsers,
-                    'text-gray-900': showVerifiedUsers,
+                    'text-warning-400': !selectedUser?.isVerified,
+                    'text-gray-900': selectedUser?.isVerified,
                   })}
                 />
-                {showVerifiedUsers && (
+                {selectedUser?.isVerified && (
                   <span className="flex ml-2 text-blue-400">
                     <Icon name="verified" />
                   </span>
@@ -137,7 +139,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               showEmptyContent={false}
             />
           )}
-          {!showVerifiedUsers && field.value && (
+          {!selectedUser?.isVerified && field.value && (
             <UserPopover
               userName={userDisplayName}
               walletAddress={userWalletAddress}
