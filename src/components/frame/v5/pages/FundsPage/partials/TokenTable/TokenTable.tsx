@@ -1,26 +1,24 @@
-import { getSortedRowModel, SortingState } from '@tanstack/react-table';
+import { getSortedRowModel, type SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
-import {
-  useMobile,
-  useColonyContext,
-  useRelativePortalElement,
-  useColonyFundsClaims,
-  useToggle,
-} from '~hooks';
-import Numeral from '~shared/Numeral';
-import TokenIcon from '~shared/TokenIcon';
-import TokenInfo from '~shared/TokenInfoPopover/TokenInfo';
-import Table from '~v5/common/Table';
-import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
-import MenuContainer from '~v5/shared/MenuContainer';
-import Modal from '~v5/shared/Modal';
-import Portal from '~v5/shared/Portal';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import TokenInfo from '~shared/TokenInfoPopover/TokenInfo.tsx';
+import Table from '~v5/common/Table/index.ts';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
+import Portal from '~v5/shared/Portal/index.ts';
 
-import { useTokenTableColumns } from './hooks';
-import { TokenTableProps } from './types';
+import { useTokenTableColumns } from './hooks.tsx';
+import { type TokenTableProps } from './types.ts';
 
 const displayName = 'v5.pages.FundsPage.partials.TokenTable';
 

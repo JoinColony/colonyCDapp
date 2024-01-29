@@ -1,4 +1,4 @@
-import { ExternalLinks } from '~gql';
+import { type ExternalLinks } from '~gql';
 
 export interface SocialLinksTableProps {
   name: string;

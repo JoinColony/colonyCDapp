@@ -1,4 +1,4 @@
-import UserAvatar from '~v5/shared/UserAvatar';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

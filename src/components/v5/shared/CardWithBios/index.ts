@@ -1,1 +1,1 @@
-export { default } from './CardWithBios';
+export { default } from './CardWithBios.tsx';

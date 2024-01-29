@@ -1,4 +1,4 @@
-import ColonyAvatar from '~v5/shared/ColonyAvatar';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

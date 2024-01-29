@@ -1,25 +1,25 @@
 import { all, call } from 'redux-saga/effects';
 
-import claimAllMotionRewardsSaga from './claimAllMotionRewards';
-import claimMotionRewardsSaga from './claimMotionRewards';
+import claimAllMotionRewardsSaga from './claimAllMotionRewards.ts';
+import claimMotionRewardsSaga from './claimMotionRewards.ts';
 // import escalateMotionSaga from './escalateMotion';
-import createDecisionMotionSaga from './createDecisionMotion';
-import createEditDomainMotionSaga from './createEditDomainMotion';
-import editColonyMotionSaga from './editColonyMotion';
+import createDecisionMotionSaga from './createDecisionMotion.ts';
+import createEditDomainMotionSaga from './createEditDomainMotion.ts';
+import editColonyMotionSaga from './editColonyMotion.ts';
 import {
   fundExpenditureMotionSaga,
   cancelStakedExpenditureMotionSaga,
-} from './expenditures';
-import finalizeMotionSaga from './finalizeMotion';
-import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion';
-import managePermissionsMotionSaga from './managePermissionsMotion';
-import manageReputationMotionSaga from './manageReputationMotion';
-import moveFundsMotionSaga from './moveFundsMotion';
-import paymentMotionSaga from './paymentMotion';
-import revealVoteMotionSaga from './revealVoteMotion';
-import rootMotionSaga from './rootMotion';
-import stakeMotionSaga from './stakeMotion';
-import voteMotionSaga from './voteMotion';
+} from './expenditures/index.ts';
+import finalizeMotionSaga from './finalizeMotion.ts';
+import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion.ts';
+import managePermissionsMotionSaga from './managePermissionsMotion.ts';
+import manageReputationMotionSaga from './manageReputationMotion.ts';
+import moveFundsMotionSaga from './moveFundsMotion.ts';
+import paymentMotionSaga from './paymentMotion.ts';
+import revealVoteMotionSaga from './revealVoteMotion.ts';
+import rootMotionSaga from './rootMotion.ts';
+import stakeMotionSaga from './stakeMotion.ts';
+import voteMotionSaga from './voteMotion.ts';
 
 export default function* actionsSagas() {
   yield all([

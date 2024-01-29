@@ -1,21 +1,21 @@
 import { call, put } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateAnnotationDocument,
-  CreateAnnotationMutation,
-  CreateAnnotationMutationVariables,
+  type CreateAnnotationMutation,
+  type CreateAnnotationMutationVariables,
 } from '~gql';
 import {
   transactionAddParams,
   transactionPending,
-} from '~redux/actionCreators';
-import { ActionTypes } from '~redux/actionTypes';
+} from '~redux/actionCreators/index.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
 
-import { TransactionChannel } from '../transactions';
+import { type TransactionChannel } from '../transactions/index.ts';
 
-import { initiateTransaction, takeFrom } from './effects';
-import { ipfsUploadAnnotation } from './ipfs';
+import { initiateTransaction, takeFrom } from './effects.ts';
+import { ipfsUploadAnnotation } from './ipfs.ts';
 
 export const uploadAnnotationToDb = async ({
   message,

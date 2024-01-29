@@ -7,14 +7,14 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import { sortAndCombinePayments } from '../actions/payment';
+import { ActionTypes } from '../../actionTypes.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
+import { sortAndCombinePayments } from '../actions/payment.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
@@ -22,7 +22,7 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* createPaymentMotion({
   payload: {

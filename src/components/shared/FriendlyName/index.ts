@@ -1,1 +1,1 @@
-export { default } from './FriendlyName';
+export { default } from './FriendlyName.tsx';

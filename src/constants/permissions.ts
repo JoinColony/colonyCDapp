@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import isEqual from 'lodash/isEqual';
 
-import { formatText } from '~utils/intl';
+import { formatText } from '~utils/intl.ts';
 
 export const USER_ROLE = {
   Mod: 'mod',

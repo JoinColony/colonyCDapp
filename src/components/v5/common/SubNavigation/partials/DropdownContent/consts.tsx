@@ -2,7 +2,7 @@
 // import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ACTION } from '~constants/actions';
+import { ACTION } from '~constants/actions.ts';
 // @BETA: DISABLED
 // import { formatText } from '~utils/intl';
 // import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';

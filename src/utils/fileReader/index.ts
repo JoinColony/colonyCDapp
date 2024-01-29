@@ -2,9 +2,9 @@ import {
   DEFAULT_MAX_FILE_LIMIT,
   DEFAULT_MAX_FILE_SIZE,
   DEFAULT_MIME_TYPES,
-} from '~v5/common/AvatarUploader/utils';
+} from '~v5/common/AvatarUploader/utils.tsx';
 
-import { FileReaderFile, FileReaderOptions } from './types';
+import { type FileReaderFile, type FileReaderOptions } from './types.ts';
 
 const fileReaderFactory = (options?: Partial<FileReaderOptions>) => {
   function defaultFileReadingFunction(reader: FileReader, file: File | Blob) {

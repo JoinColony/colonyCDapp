@@ -1,15 +1,18 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
-import { useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
-import Button from '~v5/shared/Button/Button';
+import { useMobile } from '~hooks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 
-import { useGetTableMenuProps, useSocialLinksTableColumns } from './hooks';
-import SocialLinkModal from './partials/SocialLinkModal';
-import { SocialLinksTableModel, SocialLinksTableProps } from './types';
+import { useGetTableMenuProps, useSocialLinksTableColumns } from './hooks.tsx';
+import SocialLinkModal from './partials/SocialLinkModal/index.ts';
+import {
+  type SocialLinksTableModel,
+  type SocialLinksTableProps,
+} from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';
 

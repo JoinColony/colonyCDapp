@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { UserPermissionsBadgeProps } from './types';
+import { type UserPermissionsBadgeProps } from './types.ts';
 
 import styles from './UserPermissionsBadge.module.css';
 

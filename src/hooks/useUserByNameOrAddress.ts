@@ -1,5 +1,5 @@
 import { useGetUserByNameQuery, useGetUserByAddressQuery } from '~gql';
-import { isAddress as isAddressFunction } from '~utils/web3';
+import { isAddress as isAddressFunction } from '~utils/web3/index.ts';
 
 /*
  * Can't conditionally call the codegen query hooks so querying GraphQL directly

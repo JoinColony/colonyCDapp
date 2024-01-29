@@ -1,22 +1,22 @@
 import clsx from 'clsx';
 import React from 'react';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
-import { useColonyContext } from '~hooks';
-import { ColonyAction } from '~types';
-import { getExtendedActionType } from '~utils/colonyActions';
+import { type ColonyAction } from '~types/graphql.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
 
-import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar';
-import Motions from '../ActionSidebar/partials/Motions';
+import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
+import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
-import CreateDecision from './partials/CreateDecision';
-import CreateNewTeam from './partials/CreateNewTeam';
+import CreateDecision from './partials/CreateDecision/index.ts';
+import CreateNewTeam from './partials/CreateNewTeam/index.ts';
 // import EditColonyDetails from './partials/EditColonyDetails';
-import MintTokens from './partials/MintTokens';
-import SimplePayment from './partials/SimplePayment';
-import TransferFunds from './partials/TransferFunds';
-import UnlockToken from './partials/UnlockToken';
-import UpgradeColonyVersion from './partials/UpgradeColonyVersion';
+import MintTokens from './partials/MintTokens/index.ts';
+import SimplePayment from './partials/SimplePayment/index.ts';
+import TransferFunds from './partials/TransferFunds/index.ts';
+import UnlockToken from './partials/UnlockToken/index.ts';
+import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
   action: ColonyAction;

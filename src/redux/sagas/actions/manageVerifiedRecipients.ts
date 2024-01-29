@@ -1,30 +1,30 @@
 import { ClientType } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyContributorDocument,
-  CreateColonyContributorMutation,
-  CreateColonyContributorMutationVariables,
+  type CreateColonyContributorMutation,
+  type CreateColonyContributorMutationVariables,
   GetColonyContributorDocument,
-  GetColonyContributorQuery,
-  GetColonyContributorQueryVariables,
+  type GetColonyContributorQuery,
+  type GetColonyContributorQueryVariables,
   GetFullColonyByNameDocument,
   UpdateColonyContributorDocument,
-  UpdateColonyContributorMutation,
-  UpdateColonyContributorMutationVariables,
+  type UpdateColonyContributorMutation,
+  type UpdateColonyContributorMutationVariables,
   UpdateColonyMetadataDocument,
-  UpdateColonyMetadataMutation,
-  UpdateColonyMetadataMutationVariables,
+  type UpdateColonyMetadataMutation,
+  type UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { Action, AllActions, ActionTypes } from '~redux';
-import { getColonyContributorId } from '~utils/members';
+import { type Action, type AllActions, ActionTypes } from '~redux/index.ts';
+import { getColonyContributorId } from '~utils/members.ts';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
   getUpdatedColonyMetadataChangelog,
@@ -32,7 +32,7 @@ import {
   putError,
   takeFrom,
   uploadAnnotation,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* manageVerifiedRecipients({
   payload: {

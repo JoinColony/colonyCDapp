@@ -1,1 +1,1 @@
-export { default } from './TimeRelative';
+export { default } from './TimeRelative.tsx';

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useTablet } from '~hooks';
-import Icon from '~shared/Icon';
+import { useTablet } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
 
-import { NavigationSidebarButtonProps } from './types';
+import { type NavigationSidebarButtonProps } from './types.ts';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarButton';

@@ -1,4 +1,4 @@
-import Hamburger from '~v5/shared/Button/Hamburger';
+import Hamburger from '~v5/shared/Button/Hamburger.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

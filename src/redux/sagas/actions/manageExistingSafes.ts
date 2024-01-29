@@ -1,30 +1,33 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
-  UpdateColonyMetadataMutation,
-  UpdateColonyMetadataMutationVariables,
+  type UpdateColonyMetadataMutation,
+  type UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { Action, ActionTypes, AllActions } from '~redux';
-import { transactionReady, transactionPending } from '~redux/actionCreators';
-import { Safe } from '~types';
-import { notNull } from '~utils/arrays';
-import { excludeTypenameKey } from '~utils/objects';
-import { putError, takeFrom } from '~utils/saga/effects';
+import {
+  transactionReady,
+  transactionPending,
+} from '~redux/actionCreators/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { type Safe } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { excludeTypenameKey } from '~utils/objects/index.ts';
+import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
   getUpdatedColonyMetadataChangelog,
   uploadAnnotation,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* manageExistingSafesAction({
   payload: {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MeatBallMenu from '~v5/shared/MeatBallMenu';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

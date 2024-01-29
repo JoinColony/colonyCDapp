@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import Numeral from '~shared/Numeral';
-import { formatText } from '~utils/intl';
-import VoteChart from '~v5/shared/VoteChart';
+import Numeral from '~shared/Numeral/index.ts';
+import { formatText } from '~utils/intl.ts';
+import VoteChart from '~v5/shared/VoteChart/index.ts';
 
-import { StakingChartProps } from './types';
+import { type StakingChartProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.StakingChart';

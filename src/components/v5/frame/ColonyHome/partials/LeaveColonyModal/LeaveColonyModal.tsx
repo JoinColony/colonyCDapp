@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useColonyDashboardContext } from '~context/ColonyDashboardContext';
-import useColonySubscription from '~hooks/useColonySubscription';
-import { formatText } from '~utils/intl';
-import Modal from '~v5/shared/Modal';
+import { useColonyDashboardContext } from '~context/ColonyDashboardContext.tsx';
+import useColonySubscription from '~hooks/useColonySubscription.ts';
+import { formatText } from '~utils/intl.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.LeaveColonyModal';
 const MSG = defineMessages({

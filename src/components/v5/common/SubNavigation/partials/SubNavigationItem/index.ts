@@ -1,2 +1,2 @@
-export { default } from './SubNavigationItem';
-export { default as SubNavigationItemMobile } from './SubNavigationItemMobile';
+export { default } from './SubNavigationItem.tsx';
+export { default as SubNavigationItemMobile } from './SubNavigationItemMobile.tsx';

@@ -1,1 +1,1 @@
-export { default } from './QuestionMarkTooltip';
+export { default } from './QuestionMarkTooltip.tsx';

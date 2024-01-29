@@ -1,14 +1,14 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon';
-import { AvatarWithStatusBadge } from '~v5/shared/Avatar';
-import MeatBallMenu from '~v5/shared/MeatBallMenu';
-import ReputationBadge from '~v5/shared/ReputationBadge';
-import RolesTooltip from '~v5/shared/RolesTooltip';
-import UserPopover from '~v5/shared/UserPopover';
+import Icon from '~shared/Icon/index.ts';
+import { AvatarWithStatusBadge } from '~v5/shared/Avatar/index.ts';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
+import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
+import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { MemberCardProps } from './types';
+import { type MemberCardProps } from './types.ts';
 
 const displayName = 'v5.common.MemberCard';
 

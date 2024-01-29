@@ -1,5 +1,5 @@
-import { SyntheticEvent } from 'react';
-import { FieldValues, UseFormRegister } from 'react-hook-form';
+import { type SyntheticEvent } from 'react';
+import { type FieldValues, type UseFormRegister } from 'react-hook-form';
 
 export interface SpecialInputProps {
   id?: string;

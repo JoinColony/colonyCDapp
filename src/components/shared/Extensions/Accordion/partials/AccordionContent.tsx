@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import SpecialHourInput from '~shared/Extensions/ConnectForm/partials/SpecialHourInput';
-import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput';
+import SpecialHourInput from '~shared/Extensions/ConnectForm/partials/SpecialHourInput.tsx';
+import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput.tsx';
 
-import { AccordionItemProps } from '../types';
+import { type AccordionItemProps } from '../types.ts';
 
-import AccordionNestedItem from './AccordionNested/AccordionNestedItem';
+import AccordionNestedItem from './AccordionNested/AccordionNestedItem.tsx';
 
 const displayName = 'Extensions.Accordion.partials.AccordionContent';
 

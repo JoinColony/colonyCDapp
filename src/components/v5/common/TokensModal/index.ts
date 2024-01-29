@@ -1,1 +1,1 @@
-export { default } from './TokensModal';
+export { default } from './TokensModal.tsx';

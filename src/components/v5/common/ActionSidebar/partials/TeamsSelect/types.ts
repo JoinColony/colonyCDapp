@@ -1,4 +1,4 @@
-import { SearchSelectOption } from '~v5/shared/SearchSelect/types';
+import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 export interface TeamSelectProps {
   name: string;

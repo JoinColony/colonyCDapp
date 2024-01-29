@@ -1,14 +1,14 @@
 import { ColonyRole } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { getRole } from '~constants/permissions';
-import { useColonyContext } from '~hooks';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { getAllUserRoles } from '~transformers';
-import { formatText } from '~utils/intl';
-import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+import { getRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { getAllUserRoles } from '~transformers/index.ts';
+import { formatText } from '~utils/intl.ts';
+import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 
-import { PermissionRowProps } from './types';
+import { type PermissionRowProps } from './types.ts';
 
 const displayName = 'v5.pages.VerifiedPage.partials.PermissionRow';
 

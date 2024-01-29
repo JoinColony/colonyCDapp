@@ -1,2 +1,2 @@
-export { default } from './MembersTabContent';
-export { default as MembersTabContentWrapper } from './MembersTabContentWrapper';
+export { default } from './MembersTabContent.tsx';
+export { default as MembersTabContentWrapper } from './MembersTabContentWrapper.tsx';

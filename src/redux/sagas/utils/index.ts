@@ -1,17 +1,17 @@
-export { default as getColonyManager } from './getColonyManager';
-export { default as getNetworkClient } from './getNetworkClient';
-export { default as getGasPrices } from './getGasPrices';
+export { default as getColonyManager } from './getColonyManager.ts';
+export { default as getNetworkClient } from './getNetworkClient.ts';
+export { default as getGasPrices } from './getGasPrices.ts';
 
-export * from './getCanUserSendMetatransactions';
-export * from './metatransactions';
-export * from './errorMessages';
-export * from './effects';
-export * from './enableExtensionHelpers';
-export * from './metadataChangelog';
-export * from './ipfs';
-export * from './annotations';
-export * from './proofs';
-export * from './expenditures';
+export * from './getCanUserSendMetatransactions.ts';
+export * from './metatransactions.ts';
+export * from './errorMessages.ts';
+export * from './effects.ts';
+export * from './enableExtensionHelpers.ts';
+export * from './metadataChangelog.ts';
+export * from './ipfs.ts';
+export * from './annotations.ts';
+export * from './proofs.ts';
+export * from './expenditures.ts';
 
 // export * from './updateColonyDisplayCache';
 // export { updateMotionValues } from './updateMotionValues';
@@ -22,5 +22,5 @@ export * from './expenditures';
 //   setupEnablingGroupTransactions,
 //   Channel,
 // } from './enableExtensionHelpers';
-export { updateDomainReputation } from './updateDomainReputation';
-export { createActionMetadataInDB } from './createActionMetadata';
+export { updateDomainReputation } from './updateDomainReputation.ts';
+export { createActionMetadataInDB } from './createActionMetadata.ts';

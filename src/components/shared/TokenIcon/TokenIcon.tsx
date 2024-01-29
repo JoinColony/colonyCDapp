@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Avatar, { AvatarProps } from '~shared/Avatar';
-import Icon from '~shared/Icon';
-import { Token } from '~types';
+import Avatar, { type AvatarProps } from '~shared/Avatar/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { type Token } from '~types/graphql.ts';
 
 interface Props extends Pick<AvatarProps, 'size'> {
   /** Is passed through to Icon / Avatar */

@@ -1,4 +1,4 @@
-import { ColonySwitcherItemProps } from '../ColonySwitcherItem';
+import { type ColonySwitcherItemProps } from '../ColonySwitcherItem/index.ts';
 
 export interface ColonySwitcherListItem extends ColonySwitcherItemProps {
   key: string;

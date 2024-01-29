@@ -1,9 +1,9 @@
 import createReduxPromiseListener, {
-  State,
-  Action,
-  Config,
+  type State,
+  type Action,
+  type Config,
 } from '@colony/redux-promise-listener';
-import { Middleware } from 'redux';
+import { type Middleware } from 'redux';
 
 // More specific types than in package (with generics)
 export type AsyncFunction<Params, Return> = {

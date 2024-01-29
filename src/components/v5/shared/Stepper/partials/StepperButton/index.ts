@@ -1,1 +1,1 @@
-export { default } from './StepperButton';
+export { default } from './StepperButton.tsx';

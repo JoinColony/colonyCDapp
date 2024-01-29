@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useUserByAddress } from '~hooks';
-import Icon from '~shared/Icon';
-import AvatarUser from '~v5/shared/AvatarUser';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
+import Icon from '~shared/Icon/index.ts';
+import AvatarUser from '~v5/shared/AvatarUser/index.ts';
 
-import { RevealInformationListItem } from './types';
+import { type RevealInformationListItem } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep.partials.RevealInformationItem';

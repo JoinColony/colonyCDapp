@@ -2,7 +2,7 @@ import camelcase from 'camelcase';
 import React from 'react';
 
 import { badges } from '~images/icons.json';
-import Avatar, { AvatarProps } from '~shared/Avatar';
+import Avatar, { type AvatarProps } from '~shared/Avatar/index.ts';
 
 import styles from './Badge.css';
 

@@ -1,17 +1,17 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks';
-import ColonyObjectiveFields from '~v5/common/ActionSidebar/partials/ColonyObjectiveFields';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
+import ColonyObjectiveFields from '~v5/common/ActionSidebar/partials/ColonyObjectiveFields/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
+import { type ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
 
-import { useManageColonyObjectives } from './hooks';
+import { useManageColonyObjectives } from './hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.ManageColonyObjectivesForm';

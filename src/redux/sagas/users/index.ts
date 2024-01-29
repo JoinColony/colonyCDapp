@@ -1,35 +1,35 @@
 // import { BigNumber } from 'ethers';
-import { QueryOptions } from '@apollo/client';
-import { ClientType, TokenLockingClient } from '@colony/colony-js';
+import { type QueryOptions } from '@apollo/client';
+import { ClientType, type TokenLockingClient } from '@colony/colony-js';
 import { BigNumber, utils } from 'ethers';
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 
-import { deauthenticateWallet } from '~auth';
-import { ContextModule, getContext, removeContext } from '~context';
+import { deauthenticateWallet } from '~auth/index.ts';
+import { ContextModule, getContext, removeContext } from '~context/index.ts';
 import {
   CreateUniqueUserDocument,
-  CreateUniqueUserMutation,
-  CreateUniqueUserMutationVariables,
+  type CreateUniqueUserMutation,
+  type CreateUniqueUserMutationVariables,
   GetProfileByEmailDocument,
   GetUserByNameDocument,
 } from '~gql';
-import { LANDING_PAGE_ROUTE } from '~routes';
-import { clearLastWallet } from '~utils/autoLogin';
+import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
+import { clearLastWallet } from '~utils/autoLogin.ts';
 
-import { ActionTypes } from '../../actionTypes';
-import { Action, AllActions } from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+import { type Action, type AllActions } from '../../types/actions/index.ts';
 import {
   createGroupTransaction,
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   getColonyManager,
   initiateTransaction,
   putError,
   takeFrom,
-} from '../utils';
+} from '../utils/index.ts';
 
 // import { transactionLoadRelated, transactionReady } from '../../actionCreators';
 

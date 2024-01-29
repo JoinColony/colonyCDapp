@@ -2,18 +2,18 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from '@tanstack/react-table';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useColonyFundsClaims } from '~hooks';
-import { formatText } from '~utils/intl';
-import EmptyContent from '~v5/common/EmptyContent';
-import TableWithActionsHeader from '~v5/common/TableWithActionsHeader';
+import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
+import { formatText } from '~utils/intl.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
 
-import AcceptButton from '../AcceptButton';
-import Filter from '../Filter';
+import AcceptButton from '../AcceptButton/index.ts';
+import Filter from '../Filter/index.ts';
 
-import { useFundsTable, useFundsTableColumns } from './hooks';
-import { FundsTableModel } from './types';
+import { useFundsTable, useFundsTableColumns } from './hooks.tsx';
+import { type FundsTableModel } from './types.ts';
 
 const displayName = 'pages.FundsPage.partials.FundsTable';
 

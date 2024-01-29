@@ -12,7 +12,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
-import { formatText } from '~utils/intl';
+import { formatText } from '~utils/intl.ts';
 
 export const useRichText = (
   name: string,

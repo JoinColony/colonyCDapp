@@ -1,1 +1,1 @@
-export { default } from './ReputationBadge';
+export { default } from './ReputationBadge.tsx';

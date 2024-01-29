@@ -14,8 +14,8 @@ import React from 'react';
 import { object, string } from 'yup';
 
 import { ExternalLinks } from '~gql';
-import { formatText } from '~utils/intl';
-import { TileRadioButtonItem } from '~v5/common/Fields/RadioButtons/TileRadioButtons/types';
+import { formatText } from '~utils/intl.ts';
+import { type TileRadioButtonItem } from '~v5/common/Fields/RadioButtons/TileRadioButtons/types.ts';
 
 export const SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA = object()
   .shape({

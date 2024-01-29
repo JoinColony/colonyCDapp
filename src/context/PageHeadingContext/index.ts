@@ -1,2 +1,2 @@
-export * from './PageHeadingContext';
-export * from './hooks';
+export * from './PageHeadingContext.tsx';
+export * from './hooks.ts';

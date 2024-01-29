@@ -1,4 +1,4 @@
-import { RadioProps } from './RadioBase/types';
+import { type RadioProps } from './RadioBase/types.ts';
 
 export type OnRadioListChange<V> = (item: V | undefined) => void;
 

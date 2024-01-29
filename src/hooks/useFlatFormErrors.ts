@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import {
-  FieldValues,
-  FieldErrors,
-  FieldErrorsImpl,
-  DeepRequired,
+  type FieldValues,
+  type FieldErrors,
+  type FieldErrorsImpl,
+  type DeepRequired,
 } from 'react-hook-form';
 
 export interface FlatFormError {

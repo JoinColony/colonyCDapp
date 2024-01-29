@@ -1,1 +1,1 @@
-export { default } from './TokenAvatar';
+export { default } from './TokenAvatar.tsx';

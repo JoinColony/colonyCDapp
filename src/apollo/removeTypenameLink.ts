@@ -7,7 +7,7 @@
 
 import { ApolloLink } from '@apollo/client';
 
-import { isPlainObject } from '~utils/lodash';
+import { isPlainObject } from '~utils/lodash.ts';
 
 const omitDeep = <T extends Record<string, unknown>, K>(
   value: T,

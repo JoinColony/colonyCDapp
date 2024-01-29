@@ -1,1 +1,1 @@
-export { default } from './TokenBalance';
+export { default } from './TokenBalance.tsx';

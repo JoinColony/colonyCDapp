@@ -1,12 +1,12 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField/index.ts';
 
-import { ActionFormBaseProps } from '../../../types';
+import { type ActionFormBaseProps } from '../../../types.ts';
 
-import { useEnterRecoveryMode } from './hooks';
+import { useEnterRecoveryMode } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.EnterRecoveryModeForm';
 

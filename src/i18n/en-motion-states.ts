@@ -1,4 +1,4 @@
-import { MotionState } from '~utils/colonyMotions';
+import { MotionState } from '~utils/colonyMotions.ts';
 
 const motionStatesMessageDescriptors = {
   'motion.state': `{state, select,

@@ -1,7 +1,7 @@
-import { RootMotionMethodNames } from '~redux';
-import { Colony } from '~types';
+import { RootMotionMethodNames } from '~redux/index.ts';
+import { type Colony } from '~types/graphql.ts';
 
-import { UnlockTokenFormValues } from './consts';
+import { type UnlockTokenFormValues } from './consts.ts';
 
 export const getUnlockTokenPayload = (
   colony: Colony,

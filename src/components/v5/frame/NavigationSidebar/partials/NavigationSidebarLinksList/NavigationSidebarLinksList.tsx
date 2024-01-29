@@ -1,13 +1,13 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { useColonyContext } from '~hooks';
-import { COLONY_HOME_ROUTE } from '~routes';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { COLONY_HOME_ROUTE } from '~routes/index.ts';
 
-import NavigationSidebarLink from '../NavigationSidebarLink/NavigationSidebarLink';
+import NavigationSidebarLink from '../NavigationSidebarLink/NavigationSidebarLink.tsx';
 
-import { NavigationSidebarLinksListProps } from './types';
+import { type NavigationSidebarLinksListProps } from './types.ts';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarLinksList';

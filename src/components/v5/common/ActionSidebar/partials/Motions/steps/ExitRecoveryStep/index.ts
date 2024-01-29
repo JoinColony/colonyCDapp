@@ -1,1 +1,1 @@
-export { default } from './ExitRecoveryStep';
+export { default } from './ExitRecoveryStep.tsx';

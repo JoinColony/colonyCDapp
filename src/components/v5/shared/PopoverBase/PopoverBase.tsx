@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import MenuContainer from '~v5/shared/MenuContainer';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 
-import { PopoverBaseProps } from './types';
+import { type PopoverBaseProps } from './types.ts';
 
 const displayName = 'v5.PopoverBase';
 

@@ -1,14 +1,14 @@
 import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
-} from '../transactions';
-import { initiateTransaction, putError, takeFrom } from '../utils';
+} from '../transactions/index.ts';
+import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 function* extensionDeprecate({
   meta,

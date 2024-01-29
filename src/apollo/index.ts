@@ -1,1 +1,1 @@
-export { default as apolloClient } from './apolloClient';
+export { default as apolloClient } from './apolloClient.ts';

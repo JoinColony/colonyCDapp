@@ -1,1 +1,1 @@
-export { default } from './ObjectiveBox';
+export { default } from './ObjectiveBox.tsx';

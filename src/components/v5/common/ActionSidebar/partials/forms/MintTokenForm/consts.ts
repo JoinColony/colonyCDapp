@@ -1,7 +1,7 @@
-import { InferType, number, object, string } from 'yup';
+import { type InferType, number, object, string } from 'yup';
 
-import { toFinite } from '~utils/lodash';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
+import { toFinite } from '~utils/lodash.ts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 
 export const validationSchema = object()
   .shape({

@@ -1,1 +1,1 @@
-export { default } from './MeatballMenuCopyItem';
+export { default } from './MeatballMenuCopyItem.tsx';

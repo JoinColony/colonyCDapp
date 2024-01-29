@@ -1,1 +1,1 @@
-export { default } from './NotificationBanner';
+export { default } from './NotificationBanner.tsx';

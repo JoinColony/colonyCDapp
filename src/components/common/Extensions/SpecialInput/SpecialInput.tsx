@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { formatText } from '~utils/intl';
+import { formatText } from '~utils/intl.ts';
 
-import { SpecialInputProps } from './types';
+import { type SpecialInputProps } from './types.ts';
 
 import styles from './SpecialInput.module.css';
 

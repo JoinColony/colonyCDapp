@@ -1,2 +1,2 @@
-export * from './AnalyticsContext';
-export * from './types';
+export * from './AnalyticsContext.tsx';
+export * from './types.ts';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

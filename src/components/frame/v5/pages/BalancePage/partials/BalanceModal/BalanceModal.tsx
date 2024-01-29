@@ -1,10 +1,10 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import { ActionTypes } from '~redux';
-import { ActionForm } from '~shared/Fields';
-import Modal from '~v5/shared/Modal';
+import { ActionTypes } from '~redux/index.ts';
+import { ActionForm } from '~shared/Fields/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
-import { BalanceModalProps } from './types';
+import { type BalanceModalProps } from './types.ts';
 
 const displayName = 'v5.pages.BalancePage.partials.BalanceModal';
 

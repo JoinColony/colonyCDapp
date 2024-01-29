@@ -1,4 +1,4 @@
-import { PageHeadingProps } from '~v5/frame/PageLayout/partials/PageHeading/types';
+import { type PageHeadingProps } from '~v5/frame/PageLayout/partials/PageHeading/types.ts';
 
 export interface PageHeadingContextValue {
   title?: string;

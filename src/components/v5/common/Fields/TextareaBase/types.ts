@@ -1,6 +1,6 @@
-import { TextareaHTMLAttributes } from 'react';
+import { type TextareaHTMLAttributes } from 'react';
 
-import { BaseFieldProps } from '../types';
+import { type BaseFieldProps } from '../types.ts';
 
 export interface TextareaBaseProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement>,

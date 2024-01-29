@@ -1,9 +1,12 @@
 import { useMemo, useRef } from 'react';
 
-import { useColonyContext } from '~hooks';
-import { notNull } from '~utils/arrays';
-import { getInputTextWidth } from '~utils/elements';
-import { getSelectedToken, getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { notNull } from '~utils/arrays/index.ts';
+import { getInputTextWidth } from '~utils/elements.ts';
+import {
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
 
 export const useAmountField = (
   selectedTokenAddress: string,

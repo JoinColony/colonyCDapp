@@ -3,10 +3,10 @@ import DOMPurify from 'dompurify';
 import { CaretRight, Pencil } from 'phosphor-react';
 import React, { useState } from 'react';
 
-import { formatText } from '~utils/intl';
-import RichTextDisplay from '~v5/shared/RichTextDisplay';
+import { formatText } from '~utils/intl.ts';
+import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
 
-import { ICON_SIZE } from '../../consts';
+import { ICON_SIZE } from '../../consts.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.DescriptionRow';
 

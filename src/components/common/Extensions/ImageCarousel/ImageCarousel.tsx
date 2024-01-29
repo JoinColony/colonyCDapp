@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { images } from './consts';
-import { useEmblaCarouselSettings } from './hooks';
-import DotButton from './partials/DotButton';
-import { ImageCarouselProps } from './types';
+import { images } from './consts.ts';
+import { useEmblaCarouselSettings } from './hooks.ts';
+import DotButton from './partials/DotButton.tsx';
+import { type ImageCarouselProps } from './types.ts';
 
 import styles from './ImageCarousel.module.css';
 

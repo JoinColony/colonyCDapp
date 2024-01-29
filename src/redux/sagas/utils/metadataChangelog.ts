@@ -1,11 +1,15 @@
 import {
-  DomainColor,
-  DomainMetadataChangelogInput,
-  ColonyMetadataChangelogInput,
+  type DomainColor,
+  type DomainMetadataChangelogInput,
+  type ColonyMetadataChangelogInput,
 } from '~gql';
-import { ColonyMetadata, DomainMetadata, Safe } from '~types';
-import { notNull } from '~utils/arrays';
-import { excludeTypenameKey } from '~utils/objects';
+import {
+  type ColonyMetadata,
+  type DomainMetadata,
+  type Safe,
+} from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { excludeTypenameKey } from '~utils/objects/index.ts';
 
 export const getUpdatedDomainMetadataChangelog = (
   transactionHash: string,

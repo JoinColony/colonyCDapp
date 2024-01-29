@@ -1,1 +1,1 @@
-export { default } from './TableWithActionsHeader';
+export { default } from './TableWithActionsHeader.tsx';

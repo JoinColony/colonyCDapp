@@ -1,4 +1,4 @@
-import { MotionState } from '~utils/colonyMotions';
+import { MotionState } from '~utils/colonyMotions.ts';
 
 export const MOTION_STATE_TO_CLASSNAME_MAP: Record<MotionState, string> = {
   [MotionState.Supported]: 'text-purple-400 bg-purple-100',

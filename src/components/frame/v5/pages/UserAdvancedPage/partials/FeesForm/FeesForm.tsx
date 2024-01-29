@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Form } from '~shared/Fields';
-import noop from '~utils/noop';
-import SettingsRow from '~v5/common/SettingsRow';
+import { Form } from '~shared/Fields/index.ts';
+import noop from '~utils/noop.ts';
+import SettingsRow from '~v5/common/SettingsRow/index.ts';
 
-import { METATRANSACTIONS_VALIDATION_SCHEMA } from './consts';
-import { useFeesForm } from './hooks';
+import { METATRANSACTIONS_VALIDATION_SCHEMA } from './consts.ts';
+import { useFeesForm } from './hooks.tsx';
 
 const FeesForm = () => {
   const { metatransactionsDefault, setFormRef, loading } = useFeesForm();

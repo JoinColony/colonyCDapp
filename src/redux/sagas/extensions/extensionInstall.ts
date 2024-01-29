@@ -1,14 +1,14 @@
 import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { call, takeEvery, fork, put } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
   createTransaction,
   getTxChannel,
   waitForTxResult,
-} from '../transactions';
-import { takeFrom, putError, initiateTransaction } from '../utils';
+} from '../transactions/index.ts';
+import { takeFrom, putError, initiateTransaction } from '../utils/index.ts';
 
 export function* extensionInstall({
   meta,

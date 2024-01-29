@@ -1,4 +1,4 @@
-import { MotionStakes } from '~types';
+import { type MotionStakes } from '~types/graphql.ts';
 
 export const compareMotionStakes = (
   oldMotionStakes: MotionStakes,

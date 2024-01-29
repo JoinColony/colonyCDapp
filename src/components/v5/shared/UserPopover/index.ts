@@ -1,1 +1,1 @@
-export { default } from './UserPopover';
+export { default } from './UserPopover.tsx';

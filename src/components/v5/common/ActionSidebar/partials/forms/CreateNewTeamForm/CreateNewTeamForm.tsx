@@ -1,21 +1,24 @@
 import { PaintBucket } from 'phosphor-react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { MAX_COLONY_DISPLAY_NAME, MAX_DOMAIN_PURPOSE_LENGTH } from '~constants';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import TeamColourField from '~v5/common/ActionSidebar/partials/TeamColourField';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase';
+import {
+  MAX_COLONY_DISPLAY_NAME,
+  MAX_DOMAIN_PURPOSE_LENGTH,
+} from '~constants/index.ts';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
-import { useDecisionMethods } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
+import { useDecisionMethods } from '../../../hooks/index.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
 
-import { useCreateNewTeam } from './hooks';
+import { useCreateNewTeam } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 
@@ -85,7 +88,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
       >
-        <TeamColourField name="domainColor" />
+        <TeamColorField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
         icon="scales"

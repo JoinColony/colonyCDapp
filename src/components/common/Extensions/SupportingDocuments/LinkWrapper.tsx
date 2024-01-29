@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import Link from '~v5/shared/Link';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import { links } from './consts';
+import { links } from './consts.ts';
 
 const displayName = 'common.Extensions.SupportingDocuments.LinkWrapper';
 

@@ -1,4 +1,4 @@
-import numbro from 'numbro';
+import type numbro from 'numbro';
 
 const numbroLanguage: numbro.NumbroLanguage = {
   languageTag: 'en-GB',

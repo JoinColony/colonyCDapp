@@ -1,6 +1,6 @@
-import { useEnabledExtensions } from '~hooks';
-import { formatText } from '~utils/intl';
-import { CardSelectOption } from '~v5/common/Fields/CardSelect/types';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import { formatText } from '~utils/intl.ts';
+import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 export enum DecisionMethod {
   Permissions = 'Permissions',

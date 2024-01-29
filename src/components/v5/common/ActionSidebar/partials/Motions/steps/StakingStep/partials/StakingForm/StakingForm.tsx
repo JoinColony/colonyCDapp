@@ -1,26 +1,26 @@
 import { BigNumber } from 'ethers';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import { useAppContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import { ActionForm } from '~shared/Fields';
-import Numeral from '~shared/Numeral';
-import { MotionVote } from '~utils/colonyMotions';
-import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
-import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
-import Button from '~v5/shared/Button';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { ActionForm } from '~shared/Fields/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { MotionVote } from '~utils/colonyMotions.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput.tsx';
+import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons.tsx';
+import Button from '~v5/shared/Button/index.ts';
 
-import { useMotionContext } from '../../../../partials/MotionProvider/hooks';
-import StakingChart from '../StakingChart/StakingChart';
+import { useMotionContext } from '../../../../partials/MotionProvider/hooks.ts';
+import StakingChart from '../StakingChart/StakingChart.tsx';
 
-import { getMaxStakeAmount, getPredictedPercentage } from './helpers';
-import { useStakingForm } from './hooks';
-import { StakingFormProps, StakingFormValues } from './types';
+import { getMaxStakeAmount, getPredictedPercentage } from './helpers.ts';
+import { useStakingForm } from './hooks.ts';
+import { type StakingFormProps, type StakingFormValues } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.StakingForm';

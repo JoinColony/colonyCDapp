@@ -1,24 +1,24 @@
-import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo, useCallback, useEffect } from 'react';
 
-import { useMemberContext } from '~context/MemberContext';
-import useWrapWithRef from '~hooks/useWrapWithRef';
-import Numeral from '~shared/Numeral';
-import TokenIcon from '~shared/TokenIcon';
-import { ColonyContributor, Token } from '~types';
-import { formatText } from '~utils/intl';
+import { useMemberContext } from '~context/MemberContext.tsx';
+import useWrapWithRef from '~hooks/useWrapWithRef.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import { type ColonyContributor, type Token } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
 import {
   DISTRIBUTION_METHOD,
-  DistributionMethod,
-} from '~v5/common/ActionSidebar/partials/consts';
-import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+  type DistributionMethod,
+} from '~v5/common/ActionSidebar/partials/consts.tsx';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import {
-  SplitPaymentRecipientsFieldModel,
-  SplitPaymentRecipientsTableModel,
-} from './types';
+  type SplitPaymentRecipientsFieldModel,
+  type SplitPaymentRecipientsTableModel,
+} from './types.ts';
 
 export const useRecipientsFieldTableColumns = (
   name: string,

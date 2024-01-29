@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import MemberCard from '../MemberCard/MemberCard';
+import MemberCard from '../MemberCard/MemberCard.tsx';
 
-import MemberCardPlaceholder from './partials/MemberCardPlaceholder';
-import { MemberCardListProps } from './types';
+import MemberCardPlaceholder from './partials/MemberCardPlaceholder/index.ts';
+import { type MemberCardListProps } from './types.ts';
 
 const displayName = 'v5.common.MemberCardList';
 

@@ -1,4 +1,4 @@
-import Onboard, { InitOptions } from '@web3-onboard/core';
+import Onboard, { type InitOptions } from '@web3-onboard/core';
 import injectedWallets from '@web3-onboard/injected-wallets';
 
 import {
@@ -7,13 +7,13 @@ import {
   TOKEN_DATA,
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
-} from '~constants';
+} from '~constants/index.ts';
 import colonyIcon from '~images/icons/colony-logo-wallet.svg';
-import { Network } from '~types';
-import { getChainIdAsHex } from '~utils/autoLogin';
-import { intl } from '~utils/intl';
+import { Network } from '~types/network.ts';
+import { getChainIdAsHex } from '~utils/autoLogin.ts';
+import { intl } from '~utils/intl.ts';
 
-import ganacheModule from './ganacheModule';
+import ganacheModule from './ganacheModule.ts';
 
 const { formatMessage } = intl({
   'metadata.name': 'Colony App',

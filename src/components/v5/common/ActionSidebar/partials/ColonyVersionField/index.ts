@@ -1,1 +1,1 @@
-export { default } from './ColonyVersionField';
+export { default } from './ColonyVersionField.tsx';

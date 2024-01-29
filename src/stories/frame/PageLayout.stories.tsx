@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 import React from 'react';
 
-import { ADDRESS_ZERO } from '~constants';
-import NavigationSidebar from '~v5/frame/NavigationSidebar';
-import PageLayout from '~v5/frame/PageLayout';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import NavigationSidebar from '~v5/frame/NavigationSidebar/index.ts';
+import PageLayout from '~v5/frame/PageLayout/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

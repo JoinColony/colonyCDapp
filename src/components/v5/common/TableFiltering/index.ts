@@ -1,1 +1,1 @@
-export { default } from './TableFiltering';
+export { default } from './TableFiltering.tsx';

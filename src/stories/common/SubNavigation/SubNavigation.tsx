@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useMobile } from '~hooks';
+import { useMobile } from '~hooks/index.ts';
 import SubNavigationComponent, {
   SubNavigationMobile,
-} from '~v5/common/SubNavigation';
+} from '~v5/common/SubNavigation/index.ts';
 
 const SubNavigation = () => {
   const isMobile = useMobile();

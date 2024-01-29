@@ -1,4 +1,4 @@
-import { InformationListItemProps } from '~v5/shared/InformationList/types';
+import { type InformationListItemProps } from '~v5/shared/InformationList/types.ts';
 
 export const modalInformations: InformationListItemProps[] = [
   {

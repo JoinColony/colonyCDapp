@@ -1,10 +1,10 @@
 import { startOfDay, subDays } from 'date-fns';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetTotalColonyActionsQuery } from '~gql';
-import { getDomainDatabaseId } from '~utils/databaseId';
+import { getDomainDatabaseId } from '~utils/databaseId.ts';
 
-import { getBaseSearchActionsFilterVariable } from './useActivityFeed/helpers';
-import useColonyContext from './useColonyContext';
+import { getBaseSearchActionsFilterVariable } from './useActivityFeed/helpers.ts';
 
 const getThirtyDaysAgoIso = () => {
   const thirtyDaysAgo = subDays(new Date(), 30);

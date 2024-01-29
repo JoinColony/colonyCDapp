@@ -1,16 +1,16 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context';
-import { Action, ActionTypes, AllActions } from '~redux';
-import { transactionAddParams } from '~redux/actionCreators';
+import { type ColonyManager } from '~context/index.ts';
+import { transactionAddParams } from '~redux/actionCreators/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   getColonyManager,
   putError,
@@ -18,7 +18,7 @@ import {
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
-} from '../utils';
+} from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CREATE>['payload'];

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import NavLink from '~v5/shared/NavLink';
+import NavLink from '~v5/shared/NavLink/index.ts';
 
-import { NavItemProps } from '../../types';
+import { type NavItemProps } from '../../types.ts';
 
 import styles from './NavItem.module.css';
 

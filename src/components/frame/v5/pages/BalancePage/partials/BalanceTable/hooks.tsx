@@ -1,29 +1,29 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useCallback, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
-import { NativeTokenStatus } from '~gql';
-import CurrencyConversion from '~shared/CurrencyConversion';
-import Numeral from '~shared/Numeral';
-import { Token } from '~types';
-import { getBlockExplorerLink } from '~utils/external';
-import { formatText } from '~utils/intl';
+import { ACTION } from '~constants/actions.ts';
+import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { type NativeTokenStatus } from '~gql';
+import CurrencyConversion from '~shared/CurrencyConversion/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { type Token } from '~types/graphql.ts';
+import { getBlockExplorerLink } from '~utils/external/index.ts';
+import { formatText } from '~utils/intl.ts';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
-} from '~utils/tokens';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge';
-import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
-import Link from '~v5/shared/Link';
+} from '~utils/tokens.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge/index.ts';
+import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import TokenAvatar from '../TokenAvatar';
+import TokenAvatar from '../TokenAvatar/index.ts';
 
-import { BalanceTableFieldModel } from './types';
+import { type BalanceTableFieldModel } from './types.ts';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable.hooks';
 

@@ -1,19 +1,22 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { Form } from '~shared/Fields';
-import { formatText } from '~utils/intl';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase';
-import FormTileRadioButtons from '~v5/common/Fields/RadioButtons/TileRadioButtons/FormTileRadioButtons';
-import Button from '~v5/shared/Button';
-import Modal from '~v5/shared/Modal';
+import { Form } from '~shared/Fields/index.ts';
+import { formatText } from '~utils/intl.ts';
+import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import FormTileRadioButtons from '~v5/common/Fields/RadioButtons/TileRadioButtons/FormTileRadioButtons.tsx';
+import Button from '~v5/shared/Button/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
 import {
   LINK_TYPE_RADIO_BUTTONS,
   LINK_TYPE_TO_LABEL_MAP,
   SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA,
-} from './consts';
-import { useResetFormOnLinkTypeChange } from './hooks';
-import { SocialLinkModalFormValues, SocialLinkFormModalProps } from './types';
+} from './consts.tsx';
+import { useResetFormOnLinkTypeChange } from './hooks.ts';
+import {
+  type SocialLinkModalFormValues,
+  type SocialLinkFormModalProps,
+} from './types.ts';
 
 const displayName =
   'v5.common.ActionsContent.partials.SocialLinksTable.partials.SocialLinkFormModal';

@@ -1,20 +1,27 @@
 import clsx from 'clsx';
 import { noop } from 'lodash';
-import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
+import React, {
+  type FC,
+  type PropsWithChildren,
+  useCallback,
+  useState,
+} from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetColonyContributorQuery } from '~gql';
-import { useColonyContext, useContributorBreakdown, useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import { getColonyContributorId } from '~utils/members';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
-import Modal from '~v5/shared/Modal';
-import PopoverBase from '~v5/shared/PopoverBase';
+import { useMobile } from '~hooks/index.ts';
+import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
+import Icon from '~shared/Icon/index.ts';
+import { getColonyContributorId } from '~utils/members.ts';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
+import Modal from '~v5/shared/Modal/index.ts';
+import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import UserPopoverAdditionalContent from '../UserPopoverAdditionalContent';
+import UserPopoverAdditionalContent from '../UserPopoverAdditionalContent/index.ts';
 
-import UserInfo from './partials/UserInfo';
-import { UserPopoverProps } from './types';
+import UserInfo from './partials/UserInfo.tsx';
+import { type UserPopoverProps } from './types.ts';
 
 const displayName = 'v5.UserPopover';
 

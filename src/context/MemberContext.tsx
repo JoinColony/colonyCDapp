@@ -1,8 +1,8 @@
 import { Id } from '@colony/colony-js';
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useMemo,
@@ -15,20 +15,18 @@ import {
   CONTRIBUTORS_MEMBERS_LIST_LIMIT,
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
-} from '~constants';
+} from '~constants/index.ts';
 import { useGetColonyContributorsQuery } from '~gql';
-import {
-  useColonyContext,
-  useMobile,
-  useColonyContributors,
-  useAllMembers,
-} from '~hooks';
-import { COLONY_VERIFIED_ROUTE } from '~routes';
-import { ColonyContributor } from '~types';
-import { notNull } from '~utils/arrays';
+import { useMobile } from '~hooks/index.ts';
+import useAllMembers from '~hooks/members/useAllMembers.ts';
+import useColonyContributors from '~hooks/members/useColonyContributors.ts';
+import { COLONY_VERIFIED_ROUTE } from '~routes/index.ts';
+import { type ColonyContributor } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
-import { FilterContextProvider, useFilterContext } from './FilterContext';
-import { SearchContextProvider } from './SearchContext';
+import { useColonyContext } from './ColonyContext.tsx';
+import { FilterContextProvider, useFilterContext } from './FilterContext.tsx';
+import { SearchContextProvider } from './SearchContext.tsx';
 
 const MemberContext = createContext<
   | {

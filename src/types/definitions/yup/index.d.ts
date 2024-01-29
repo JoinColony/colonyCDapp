@@ -1,4 +1,7 @@
-import { StringSchema as StringSchemaOriginal, TestOptionsMessage } from 'yup';
+import {
+  type StringSchema as StringSchemaOriginal,
+  type TestOptionsMessage,
+} from 'yup';
 
 declare module 'yup' {
   interface StringSchema<T> {

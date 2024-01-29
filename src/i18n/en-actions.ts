@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
-import { ColonyActionType, ExtendedColonyActionType } from '~types';
+import { ExtendedColonyActionType } from '~types/actions.ts';
+import { ColonyActionType } from '~types/graphql.ts';
 
 const safeActionTitle = '{Safe transaction: {safeTransactionTitle}}';
 

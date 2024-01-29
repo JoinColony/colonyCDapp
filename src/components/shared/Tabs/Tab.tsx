@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { type HTMLAttributes } from 'react';
 import { Tab as ReactTab } from 'react-tabs';
 
 import styles from './Tab.css';

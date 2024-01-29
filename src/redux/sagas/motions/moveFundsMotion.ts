@@ -10,13 +10,13 @@ import { AddressZero } from '@ethersproject/constants';
 import { constants } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
@@ -24,7 +24,7 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* moveFundsMotion({
   payload: {

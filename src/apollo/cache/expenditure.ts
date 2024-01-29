@@ -1,4 +1,4 @@
-import { TypePolicies } from '@apollo/client';
+import { type TypePolicies } from '@apollo/client';
 
 const expenditureCache: TypePolicies = {
   ExpenditureSlot: {

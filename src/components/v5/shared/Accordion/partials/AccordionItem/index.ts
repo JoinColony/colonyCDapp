@@ -1,1 +1,1 @@
-export { default } from './AccordionItem';
+export { default } from './AccordionItem.tsx';

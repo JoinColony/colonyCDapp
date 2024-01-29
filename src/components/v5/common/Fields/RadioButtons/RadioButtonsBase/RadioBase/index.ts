@@ -1,1 +1,1 @@
-export { default } from './RadioBase';
+export { default } from './RadioBase.tsx';

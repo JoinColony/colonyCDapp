@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useCalamityBanner } from './hooks';
-import CalamityBannerContent from './partials/CalamityBannerContent';
-import { CalamityBannerProps } from './types';
+import { useCalamityBanner } from './hooks.ts';
+import CalamityBannerContent from './partials/CalamityBannerContent.tsx';
+import { type CalamityBannerProps } from './types.ts';
 
 const displayName = 'v5.CalamityBanner';
 

@@ -1,1 +1,1 @@
-export { default } from './RoleOptionLabel';
+export { default } from './RoleOptionLabel.tsx';

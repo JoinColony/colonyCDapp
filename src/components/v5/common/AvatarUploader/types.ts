@@ -1,13 +1,13 @@
 import {
-  DropEvent,
-  DropzoneInputProps,
-  DropzoneOptions,
-  FileRejection,
+  type DropEvent,
+  type DropzoneInputProps,
+  type DropzoneOptions,
+  type FileRejection,
 } from 'react-dropzone';
 
-import { FileReaderFile } from '~utils/fileReader/types';
+import { type FileReaderFile } from '~utils/fileReader/types.ts';
 
-import { DropzoneErrors } from './utils';
+import { type DropzoneErrors } from './utils.tsx';
 
 export type SuccessContentProps = Pick<
   ErrorContentProps,

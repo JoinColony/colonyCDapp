@@ -1,18 +1,18 @@
 import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ColonyManager } from '~context';
-import { Action, ActionTypes, AllActions } from '~redux';
+import { type ColonyManager } from '~context/index.ts';
 import {
   transactionAddParams,
   transactionPending,
-} from '~redux/actionCreators';
+} from '~redux/actionCreators/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   initiateTransaction,
   putError,
@@ -20,7 +20,7 @@ import {
   uploadAnnotation,
   getColonyManager,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* manageReputationAction({
   payload: {

@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import SupportingDocuments from '~common/Extensions/SupportingDocuments';
-import { AnyExtensionData } from '~types';
+import SupportingDocuments from '~common/Extensions/SupportingDocuments/index.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 
 const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.TabContent';

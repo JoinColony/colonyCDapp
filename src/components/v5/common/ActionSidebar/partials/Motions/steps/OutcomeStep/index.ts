@@ -1,1 +1,1 @@
-export { default } from './OutcomeStep';
+export { default } from './OutcomeStep.tsx';

@@ -1,19 +1,23 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { useColonyContext, useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
-import Button from '~v5/shared/Button/Button';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 
-import { useRecipientsFieldTableColumns, useGetTableMenuProps } from './hooks';
 import {
-  AdvancedPaymentRecipientsTableModel,
-  AdvancedPaymentRecipientsFieldProps,
-  AdvancedPaymentRecipientsFieldModel,
-} from './types';
+  useRecipientsFieldTableColumns,
+  useGetTableMenuProps,
+} from './hooks.tsx';
+import {
+  type AdvancedPaymentRecipientsTableModel,
+  type AdvancedPaymentRecipientsFieldProps,
+  type AdvancedPaymentRecipientsFieldModel,
+} from './types.ts';
 
 const displayName =
   'v5.common.ActionsContent.partials.AdvancedPaymentRecipientsField';

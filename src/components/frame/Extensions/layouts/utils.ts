@@ -1,5 +1,5 @@
-import { NETWORK_DATA } from '~constants';
-import { NavigationSidebarLinksListItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/types';
+import { NETWORK_DATA } from '~constants/index.ts';
+import { type NavigationSidebarLinksListItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/types.ts';
 
 export const getChainIconName = (
   chainId: number | undefined,

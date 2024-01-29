@@ -1,1 +1,1 @@
-export { default } from './ManageMemberModal';
+export { default } from './ManageMemberModal.tsx';

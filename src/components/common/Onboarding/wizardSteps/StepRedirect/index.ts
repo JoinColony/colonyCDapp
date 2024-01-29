@@ -1,1 +1,1 @@
-export { default } from './StepRedirect';
+export { default } from './StepRedirect.tsx';

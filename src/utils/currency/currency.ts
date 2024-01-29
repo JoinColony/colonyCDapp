@@ -2,21 +2,21 @@ import { Tokens } from '@colony/colony-js';
 
 import { Network, SupportedCurrencies } from '~gql';
 
-import { currencyApiConfig, coinGeckoMappings } from './config';
-import { getSavedPrice, savePrice } from './memo';
+import { currencyApiConfig, coinGeckoMappings } from './config.ts';
+import { getSavedPrice, savePrice } from './memo.ts';
 import {
-  CoinGeckoPriceRequestSuccessResponse,
-  FetchCurrentPriceArgs,
-  CoinGeckoSupportedCurrencies,
-  SupportedChains,
-  CoinGeckoPriceRequestResponse,
-} from './types';
+  type CoinGeckoPriceRequestSuccessResponse,
+  type FetchCurrentPriceArgs,
+  type CoinGeckoSupportedCurrencies,
+  type SupportedChains,
+  type CoinGeckoPriceRequestResponse,
+} from './types.ts';
 import {
   buildAPIEndpoint,
   convertTokenToCLNY,
   fetchData,
   mapToAPIFormat,
-} from './utils';
+} from './utils.ts';
 
 // The functions defined in this file assume something about the shape of the api response.
 // If that changes, or if we change the api, these functions will need to be updated.

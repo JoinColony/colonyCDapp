@@ -1,3 +1,3 @@
-export { default } from './Onboarding';
+export { default } from './Onboarding.tsx';
 
-export * from './types';
+export * from './types.ts';

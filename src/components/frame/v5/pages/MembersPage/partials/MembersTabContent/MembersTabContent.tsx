@@ -1,16 +1,17 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import { useAppContext, useColonyContext } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { SpinnerLoader } from '~shared/Preloaders';
-import { formatText } from '~utils/intl';
-import EmptyContent from '~v5/common/EmptyContent';
-import MemberCardList from '~v5/common/MemberCardList';
-import { TextButton } from '~v5/shared/Button';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { formatText } from '~utils/intl.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import MemberCardList from '~v5/common/MemberCardList/index.ts';
+import { TextButton } from '~v5/shared/Button/index.ts';
 
-import { useMembersTabContentItems } from './hooks';
-import { MembersTabContentProps } from './types';
+import { useMembersTabContentItems } from './hooks.tsx';
+import { type MembersTabContentProps } from './types.ts';
 
 const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
   items: itemsProp,

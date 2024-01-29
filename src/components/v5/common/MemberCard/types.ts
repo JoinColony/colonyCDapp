@@ -1,6 +1,6 @@
-import { UserRoleMeta } from '~constants/permissions';
-import { MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types';
-import { UserPopoverProps } from '~v5/shared/UserPopover/types';
+import { type UserRoleMeta } from '~constants/permissions.ts';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
+import { type UserPopoverProps } from '~v5/shared/UserPopover/types.ts';
 
 export interface MemberCardProps {
   userAvatarProps: UserPopoverProps;

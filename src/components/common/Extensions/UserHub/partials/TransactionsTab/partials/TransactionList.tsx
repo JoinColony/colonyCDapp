@@ -1,16 +1,16 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { type FC, useCallback, useState } from 'react';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext';
-import MessageCard from '~frame/MessageCard/MessageCard';
-import { MessageType } from '~redux/immutable';
+import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
+import MessageCard from '~frame/MessageCard/MessageCard.tsx';
+import { type MessageType } from '~redux/immutable/index.ts';
 
 import {
-  TransactionOrMessageGroup,
+  type TransactionOrMessageGroup,
   getGroupId,
   isTxGroup,
-} from '../transactionGroup';
+} from '../transactionGroup.ts';
 
-import GroupedTransaction from './GroupedTransaction';
+import GroupedTransaction from './GroupedTransaction.tsx';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionList';

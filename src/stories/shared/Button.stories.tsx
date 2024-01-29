@@ -1,4 +1,4 @@
-import Button from '~v5/shared/Button';
+import Button from '~v5/shared/Button/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

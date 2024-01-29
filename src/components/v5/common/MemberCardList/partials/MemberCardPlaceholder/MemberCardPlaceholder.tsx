@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import Button from '~v5/shared/Button';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { MemberCardPlaceholderProps } from './types';
+import { type MemberCardPlaceholderProps } from './types.ts';
 
 import styles from './MemberCardPlaceholder.module.css';
 

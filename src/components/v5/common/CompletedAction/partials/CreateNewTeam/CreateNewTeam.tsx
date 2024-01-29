@@ -2,20 +2,24 @@ import { PaintBucket, Rocket, UserList } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import { ColonyAction } from '~types';
-import { formatText } from '~utils/intl';
-import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColourField/partials/TeamColourBadge';
-import UserPopover from '~v5/shared/UserPopover';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { type ColonyAction } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
+import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColorField/partials/TeamColorBadge.tsx';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
-import { ActionDataGrid, ActionSubtitle, ActionTitle } from '../Blocks';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
+import {
+  ActionDataGrid,
+  ActionSubtitle,
+  ActionTitle,
+} from '../Blocks/index.ts';
 import {
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
-} from '../rows';
+} from '../rows/index.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.CreateNewTeam';
 

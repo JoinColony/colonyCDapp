@@ -1,1 +1,1 @@
-export { default } from './MintTokenForm';
+export { default } from './MintTokenForm.tsx';

@@ -1,4 +1,4 @@
-import Avatar from '~v5/shared/Avatar';
+import Avatar from '~v5/shared/Avatar/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

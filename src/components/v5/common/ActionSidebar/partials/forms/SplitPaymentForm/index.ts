@@ -1,1 +1,1 @@
-export { default } from './SplitPaymentForm';
+export { default } from './SplitPaymentForm.tsx';

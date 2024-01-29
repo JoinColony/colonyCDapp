@@ -3,18 +3,18 @@ import {
   FacebookLogo,
   GithubLogo,
   Globe,
-  IconProps,
+  type IconProps,
   InstagramLogo,
   Scroll,
   TelegramLogo,
   TwitterLogo,
   YoutubeLogo,
 } from 'phosphor-react';
-import { ComponentType } from 'react';
+import { type ComponentType } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ExternalLinks } from '~gql';
-import { formatText } from '~utils/intl';
+import { formatText } from '~utils/intl.ts';
 
 const linksPrefix = 'socialLinks';
 const MSG = defineMessages({

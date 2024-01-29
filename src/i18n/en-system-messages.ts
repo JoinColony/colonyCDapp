@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { SystemMessages } from '~types';
+import { SystemMessages } from '~types/actions.ts';
 
 const systemMessagesMessageDescriptors = {
   'systemMessage.title': `{eventName, select,

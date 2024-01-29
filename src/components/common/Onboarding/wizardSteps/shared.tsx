@@ -1,12 +1,19 @@
 import clsx from 'clsx';
 import React from 'react';
-import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
-import { MessageDescriptor } from 'react-intl';
+import {
+  type FieldErrors,
+  type FieldValues,
+  useFormContext,
+} from 'react-hook-form';
+import { type MessageDescriptor } from 'react-intl';
 
-import { PreviousStep } from '~shared/Wizard/types';
-import { AnyMessageValues, SimpleMessageValues } from '~types';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button';
+import { type PreviousStep } from '~shared/Wizard/types.ts';
+import {
+  type AnyMessageValues,
+  type SimpleMessageValues,
+} from '~types/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Button from '~v5/shared/Button/index.ts';
 
 interface HeaderRowProps {
   heading: MessageDescriptor | string;

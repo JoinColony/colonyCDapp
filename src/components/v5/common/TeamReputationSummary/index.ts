@@ -1,1 +1,1 @@
-export { default } from './TeamReputationSummary';
+export { default } from './TeamReputationSummary.tsx';

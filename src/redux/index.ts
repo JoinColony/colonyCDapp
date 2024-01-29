@@ -1,3 +1,3 @@
-export { ActionTypes } from './actionTypes';
+export { ActionTypes } from './actionTypes.ts';
 
-export * from './types';
+export * from './types/index.ts';

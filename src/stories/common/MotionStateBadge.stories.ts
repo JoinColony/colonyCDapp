@@ -1,5 +1,5 @@
-import { MotionState } from '~utils/colonyMotions';
-import MotionStateBadge from '~v5/common/Pills/MotionStateBadge';
+import { MotionState } from '~utils/colonyMotions.ts';
+import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

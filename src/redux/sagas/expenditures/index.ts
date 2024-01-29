@@ -1,17 +1,17 @@
 import { all, call } from 'redux-saga/effects';
 
-import cancelDraftExpenditureSaga from './cancelDraftExpenditure';
-import cancelStakedExpenditureSaga from './cancelStakedExpenditure';
-import claimExpenditureSaga from './claimExpenditure';
-import createExpenditureSaga from './createExpenditure';
-import createStakedExpenditureSaga from './createStakedExpenditure';
-import createStreamingPaymentSaga from './createStreamingPayment';
-import editExpenditureSaga from './editExpenditure';
-import finalizeExpenditureSaga from './finalizeExpenditure';
-import fundExpenditureSaga from './fundExpenditure';
-import lockExpenditureSaga from './lockExpenditure';
-import reclaimExpenditureStakeSaga from './reclaimExpenditureStake';
-import releaseExpenditureStageSaga from './releaseExpenditureStage';
+import cancelDraftExpenditureSaga from './cancelDraftExpenditure.ts';
+import cancelStakedExpenditureSaga from './cancelStakedExpenditure.ts';
+import claimExpenditureSaga from './claimExpenditure.ts';
+import createExpenditureSaga from './createExpenditure.ts';
+import createStakedExpenditureSaga from './createStakedExpenditure.ts';
+import createStreamingPaymentSaga from './createStreamingPayment.ts';
+import editExpenditureSaga from './editExpenditure.ts';
+import finalizeExpenditureSaga from './finalizeExpenditure.ts';
+import fundExpenditureSaga from './fundExpenditure.ts';
+import lockExpenditureSaga from './lockExpenditure.ts';
+import reclaimExpenditureStakeSaga from './reclaimExpenditureStake.ts';
+import releaseExpenditureStageSaga from './releaseExpenditureStage.ts';
 
 export default function* expendituresSagas() {
   yield all([

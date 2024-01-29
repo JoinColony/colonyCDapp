@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.blocks.MenuList';

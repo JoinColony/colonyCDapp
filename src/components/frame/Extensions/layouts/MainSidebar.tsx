@@ -1,11 +1,11 @@
 import React from 'react';
 
 // import { CREATE_COLONY_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
-import NavigationSidebar from '~v5/frame/NavigationSidebar';
+import { formatText } from '~utils/intl.ts';
+import NavigationSidebar from '~v5/frame/NavigationSidebar/index.ts';
 
-import ColonySwitcherContent from './partials/ColonySwitcherContent';
-import UserNavigationWrapper from './partials/UserNavigationWrapper';
+import ColonySwitcherContent from './partials/ColonySwitcherContent/index.ts';
+import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
 
 const displayName = 'frame.Extensions.layouts.MainLayout.MainSidebar';
 

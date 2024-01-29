@@ -1,8 +1,8 @@
 import { Id } from '@colony/colony-js';
 
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useGetUserReputationQuery } from '~gql';
-import { Address } from '~types';
+import { type Address } from '~types/index.ts';
 
 interface UseUserReputationHook {
   userReputation: string | undefined;

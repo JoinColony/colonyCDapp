@@ -1,14 +1,15 @@
 import { BigNumber } from 'ethers';
 import { call, put, select } from 'redux-saga/effects';
 
-import { DEFAULT_NETWORK } from '~constants';
-import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls';
-import { ContextModule, getContext } from '~context';
-import { RpcMethods, Network } from '~types';
+import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls.ts';
+import { DEFAULT_NETWORK } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
+import { Network } from '~types/network.ts';
+import { RpcMethods } from '~types/rpcMethods.ts';
 
-import { updateGasPrices } from '../../actionCreators';
-import { GasPricesProps } from '../../immutable';
-import { gasPrices as gasPricesSelector } from '../../selectors';
+import { updateGasPrices } from '../../actionCreators/index.ts';
+import { type GasPricesProps } from '../../immutable/index.ts';
+import { gasPrices as gasPricesSelector } from '../../selectors/index.ts';
 
 interface EthGasStationAPIResponse {
   average: number;

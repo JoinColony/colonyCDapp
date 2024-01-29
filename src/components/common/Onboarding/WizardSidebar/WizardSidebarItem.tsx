@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { WizardSidebarStep } from './WizardSidebar';
-import WizardSidebarItemFlowLine from './WizardSidebarItemFlowLine';
-import WizardSidebarSubItem from './WizardSidebarSubItem';
+import { type WizardSidebarStep } from './WizardSidebar.tsx';
+import WizardSidebarItemFlowLine from './WizardSidebarItemFlowLine.tsx';
+import WizardSidebarSubItem from './WizardSidebarSubItem.tsx';
 
 const displayName = 'routes.WizardRoute.WizardSidebar.WizardSidebarItem';
 

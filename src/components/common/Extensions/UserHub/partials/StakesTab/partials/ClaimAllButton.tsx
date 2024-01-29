@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useAppContext, useAsyncFunction, useEnabledExtensions } from '~hooks';
-import { ActionTypes } from '~redux';
-import { UserStakeWithStatus } from '~types';
+import { useAppContext } from '~context/AppContext.tsx';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { type UserStakeWithStatus } from '~types/userStake.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 

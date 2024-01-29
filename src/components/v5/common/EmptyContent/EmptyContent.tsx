@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import Button from '~v5/shared/Button';
+import Icon from '~shared/Icon/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { EmptyContentProps } from './types';
+import { type EmptyContentProps } from './types.ts';
 
 import styles from './EmptyContent.module.css';
 

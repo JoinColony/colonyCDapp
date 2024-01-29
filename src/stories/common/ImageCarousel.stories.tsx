@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ImageCarousel from '~common/Extensions/ImageCarousel';
-import { images } from '~common/Extensions/ImageCarousel/consts';
+import { images } from '~common/Extensions/ImageCarousel/consts.ts';
+import ImageCarousel from '~common/Extensions/ImageCarousel/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

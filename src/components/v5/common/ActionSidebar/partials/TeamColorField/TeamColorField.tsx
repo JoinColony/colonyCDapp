@@ -1,20 +1,22 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useColors, useRelativePortalElement, useToggle } from '~hooks';
-import { formatText } from '~utils/intl';
-import MenuContainer from '~v5/shared/MenuContainer';
-import Portal from '~v5/shared/Portal';
-import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import useColors from '~hooks/useColors.ts';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
+import Portal from '~v5/shared/Portal/index.ts';
+import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem.tsx';
 
-import TeamColourBadge from './partials/TeamColourBadge';
-import { TeamColourFieldProps } from './types';
+import TeamColorBadge from './partials/TeamColorBadge.tsx';
+import { type TeamColourFieldProps } from './types.ts';
 
-const displayName = 'v5.common.ActionsContent.partials.TeamColourField';
+const displayName = 'v5.common.ActionsContent.partials.TeamColorField';
 
-const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
+const TeamColorField: FC<TeamColourFieldProps> = ({ name }) => {
   const {
     field,
     fieldState: { error },
@@ -44,7 +46,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
   return (
     <div className="sm:relative w-full">
       {readonly ? (
-        <TeamColourBadge defaultColor={field.value} title={teamNameValue} />
+        <TeamColorBadge defaultColor={field.value} title={teamNameValue} />
       ) : (
         <>
           <button
@@ -61,7 +63,7 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
             onClick={toggleDecisionSelect}
           >
             {field.value ? (
-              <TeamColourBadge
+              <TeamColorBadge
                 defaultColor={field.value}
                 title={
                   teamNameValue || formatText({ id: 'actionSidebar.teamName' })
@@ -99,6 +101,6 @@ const TeamColourField: FC<TeamColourFieldProps> = ({ name }) => {
   );
 };
 
-TeamColourField.displayName = displayName;
+TeamColorField.displayName = displayName;
 
-export default TeamColourField;
+export default TeamColorField;

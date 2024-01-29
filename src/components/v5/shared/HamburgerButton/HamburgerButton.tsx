@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { HamburgerButtonProps } from './types';
+import { type HamburgerButtonProps } from './types.ts';
 
 const HamburgerButton: FC<HamburgerButtonProps> = ({
   isOpen,

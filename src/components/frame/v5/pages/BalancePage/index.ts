@@ -1,1 +1,1 @@
-export { default } from './BalancePage';
+export { default } from './BalancePage.tsx';

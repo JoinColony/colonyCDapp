@@ -1,5 +1,5 @@
-import { ReactNode, ReactElement } from 'react';
-import { MessageDescriptor } from 'react-intl';
+import { type ReactNode, type ReactElement } from 'react';
+import { type MessageDescriptor } from 'react-intl';
 
 export type PopoverAppearanceType = {
   theme?: 'dark' | 'grey';

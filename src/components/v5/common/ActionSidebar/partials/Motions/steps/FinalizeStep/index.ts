@@ -1,1 +1,1 @@
-export { default } from './FinalizeStep';
+export { default } from './FinalizeStep.tsx';

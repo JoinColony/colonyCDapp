@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { TEAM_SEARCH_PARAM } from '~routes';
-import { findDomainByNativeId } from '~utils/domains';
-
-import useColonyContext from './useColonyContext';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { TEAM_SEARCH_PARAM } from '~routes/index.ts';
+import { findDomainByNativeId } from '~utils/domains.ts';
 
 const useGetSelectedDomainFilter = () => {
   const { colony } = useColonyContext();

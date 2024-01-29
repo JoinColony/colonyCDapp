@@ -1,1 +1,1 @@
-export { default } from './EmptyWidgetState';
+export { default } from './EmptyWidgetState.tsx';

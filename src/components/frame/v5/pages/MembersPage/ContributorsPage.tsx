@@ -1,13 +1,13 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
-import { useColonyContext } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { formatText } from '~utils/intl';
-import TeamReputationSummary from '~v5/common/TeamReputationSummary';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { formatText } from '~utils/intl.ts';
+import TeamReputationSummary from '~v5/common/TeamReputationSummary/index.ts';
 
-import { useMembersPage } from './hooks';
-import MembersTabContent from './partials/MembersTabContent';
+import { useMembersPage } from './hooks.ts';
+import MembersTabContent from './partials/MembersTabContent/index.ts';
 
 const ContributorsPage: FC = () => {
   const {

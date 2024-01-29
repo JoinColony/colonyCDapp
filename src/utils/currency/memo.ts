@@ -1,6 +1,6 @@
-import { SupportedCurrencies } from '~gql';
+import { type SupportedCurrencies } from '~gql';
 
-import { SupportedChains } from './types';
+import { type SupportedChains } from './types.ts';
 
 export const savedPrices = new Map<
   SupportedChains,

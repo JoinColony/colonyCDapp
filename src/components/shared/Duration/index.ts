@@ -1,1 +1,1 @@
-export { default } from './Duration';
+export { default } from './Duration.tsx';

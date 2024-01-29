@@ -1,21 +1,20 @@
-import { ApolloQueryResult } from '@apollo/client';
-import { getExtensionHash, Extension } from '@colony/colony-js';
+import { type ApolloQueryResult } from '@apollo/client';
+import { getExtensionHash, type Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 
-import { supportedExtensionsConfig } from '~constants';
+import { supportedExtensionsConfig } from '~constants/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
-  Exact,
-  GetColonyExtensionQuery,
+  type Exact,
+  type GetColonyExtensionQuery,
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
-import { AnyExtensionData } from '~types';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
-} from '~utils/extensions';
-
-import useColonyContext from './useColonyContext';
+} from '~utils/extensions.ts';
 
 export enum ExtensionMethods {
   INSTALL = 'installExtension',

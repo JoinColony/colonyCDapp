@@ -5,24 +5,24 @@ import set from 'lodash/set';
 import React, { useCallback } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { accordionAnimation } from '~constants/accordionAnimation';
-import { useMobile } from '~hooks';
-import useToggle from '~hooks/useToggle';
-import Icon from '~shared/Icon';
-import Checkbox from '~v5/common/Checkbox';
-import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem';
-import FilterButton from '~v5/shared/Filter/FilterButton';
-import Modal from '~v5/shared/Modal';
-import PopoverBase from '~v5/shared/PopoverBase';
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
-import Header from '~v5/shared/SubNavigationItem/partials/Header';
+import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { useMobile } from '~hooks/index.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Checkbox from '~v5/common/Checkbox/index.ts';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
+import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
+import Modal from '~v5/shared/Modal/index.ts';
+import PopoverBase from '~v5/shared/PopoverBase/index.ts';
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
+import Header from '~v5/shared/SubNavigationItem/partials/Header.tsx';
 
 import {
-  RootFilterProps,
-  FilterProps,
-  FilterValue,
-  NestedFilterProps,
-} from './types';
+  type RootFilterProps,
+  type FilterProps,
+  type FilterValue,
+  type NestedFilterProps,
+} from './types.ts';
 
 const displayName = 'v5.pages.FundsPage.partials.Filter';
 
@@ -46,6 +46,7 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
   const isChecked = !!get(value, path);
   const isMobile = useMobile();
   const NestedItems = nestedItems?.map(({ ...nestedItem }) => (
+    // @ts-ignore
     <NestedFilterItem
       key={nestedItem.name}
       onChange={onChange}

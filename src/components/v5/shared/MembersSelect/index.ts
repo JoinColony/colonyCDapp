@@ -1,1 +1,1 @@
-export { default } from './MembersSelect';
+export { default } from './MembersSelect.tsx';

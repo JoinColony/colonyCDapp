@@ -1,8 +1,8 @@
 import { Extension } from '@colony/colony-js';
 
-import { TabItem } from '~shared/Extensions/Tabs/types';
+import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
 
-import LazyConsensusPageSetup from '../LazyConsensusPage/LazyConsensusPageSetup';
+import LazyConsensusPageSetup from '../LazyConsensusPage/LazyConsensusPageSetup.tsx';
 
 export const tabsItems: Partial<{
   [k in Extension]: TabItem[];

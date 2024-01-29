@@ -1,20 +1,20 @@
 import { ClientType } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* tokenUnlockAction({
   meta,

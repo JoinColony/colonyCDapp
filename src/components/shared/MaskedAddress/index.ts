@@ -1,1 +1,1 @@
-export { default } from './MaskedAddress';
+export { default } from './MaskedAddress.tsx';

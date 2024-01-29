@@ -1,1 +1,1 @@
-export { default } from './ColonyActionsTable';
+export { default } from './ColonyActionsTable.tsx';

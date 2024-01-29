@@ -1,16 +1,16 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { Star, Trash } from 'phosphor-react';
 import React, { useMemo } from 'react';
 
-import { ColonyContributorFragment } from '~gql';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { formatText } from '~utils/intl';
-import Checkbox from '~v5/common/Checkbox';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
-import UserStatusComponent from '~v5/shared/CardWithBios/partials/UserStatus';
+import { type ColonyContributorFragment } from '~gql';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { formatText } from '~utils/intl.ts';
+import Checkbox from '~v5/common/Checkbox/index.ts';
+import { ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
+import UserStatusComponent from '~v5/shared/CardWithBios/partials/UserStatus.tsx';
 
-import MemberAvatar from '../MemberAvatar';
-import PermissionRow from '../PermissionRow';
+import MemberAvatar from '../MemberAvatar/index.ts';
+import PermissionRow from '../PermissionRow/index.ts';
 
 export const useVerifiedTableColumns = (): ColumnDef<
   ColonyContributorFragment,

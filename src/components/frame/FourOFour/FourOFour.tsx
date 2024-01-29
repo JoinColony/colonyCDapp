@@ -3,18 +3,18 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { COLONY_DOCS } from '~constants';
-import { MainLayout } from '~frame/Extensions/layouts';
-import { openFeaturesBugs } from '~hooks/useBeamer';
+import { COLONY_DOCS } from '~constants/index.ts';
+import { MainLayout } from '~frame/Extensions/layouts/index.ts';
+import { openFeaturesBugs } from '~hooks/useBeamer.ts';
 import {
   // CREATE_COLONY_ROUTE_BASE,
   LANDING_PAGE_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_HOME_ROUTE,
-} from '~routes';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button';
-import ButtonLink from '~v5/shared/Button/ButtonLink';
+} from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
+import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
+import Button from '~v5/shared/Button/index.ts';
 
 const displayName = 'frame.FourOFour';
 

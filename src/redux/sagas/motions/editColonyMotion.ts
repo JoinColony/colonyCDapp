@@ -1,23 +1,23 @@
 import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO } from '~constants';
-import { ContextModule, getContext } from '~context';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyMetadataDocument,
-  CreateColonyMetadataMutation,
-  CreateColonyMetadataMutationVariables,
+  type CreateColonyMetadataMutation,
+  type CreateColonyMetadataMutationVariables,
 } from '~gql';
-import { ActionTypes } from '~redux/actionTypes';
-import { Action, AllActions } from '~redux/types';
-import { getPendingMetadataDatabaseId } from '~utils/databaseId';
-import { isEqual } from '~utils/lodash';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type Action, type AllActions } from '~redux/types/index.ts';
+import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
+import { isEqual } from '~utils/lodash.ts';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
   getColonyManager,
@@ -25,8 +25,8 @@ import {
   putError,
   takeFrom,
   uploadAnnotation,
-} from '../utils';
-import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens';
+} from '../utils/index.ts';
+import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens.ts';
 
 function* editColonyMotion({
   payload: {

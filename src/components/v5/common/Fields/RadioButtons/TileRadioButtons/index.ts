@@ -1,1 +1,1 @@
-export { default } from './TileRadioButtons';
+export { default } from './TileRadioButtons.tsx';

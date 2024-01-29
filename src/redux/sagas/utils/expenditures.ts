@@ -1,18 +1,19 @@
 import { BigNumber } from 'ethers';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { ContextModule, getContext } from '~context';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
-  CreateExpenditureMetadataMutation,
-  CreateExpenditureMetadataMutationVariables,
+  type CreateExpenditureMetadataMutation,
+  type CreateExpenditureMetadataMutationVariables,
 } from '~gql';
-import { Expenditure, MethodParams } from '~types';
 import {
-  ExpenditurePayoutFieldValue,
-  ExpenditureStageFieldValue,
-} from '~types/expenditures';
-import { getExpenditureDatabaseId } from '~utils/databaseId';
+  type ExpenditurePayoutFieldValue,
+  type ExpenditureStageFieldValue,
+} from '~types/expenditures.ts';
+import { type Expenditure } from '~types/graphql.ts';
+import { type MethodParams } from '~types/transactions.ts';
+import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values

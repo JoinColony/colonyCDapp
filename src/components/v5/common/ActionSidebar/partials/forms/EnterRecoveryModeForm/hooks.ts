@@ -1,15 +1,19 @@
 import { useCallback, useMemo } from 'react';
-import { DeepPartial } from 'utility-types';
+import { type DeepPartial } from 'utility-types';
 
-import { useAppContext, useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import { mapPayload, pipe } from '~utils/actions';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { mapPayload, pipe } from '~utils/actions.ts';
 
-import { useActionFormBaseHook } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { useActionFormBaseHook } from '../../../hooks/index.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 
-import { EnterRecoveryModeFormValues, validationSchema } from './consts';
-import { getRecoveryModePayload } from './utils';
+import {
+  type EnterRecoveryModeFormValues,
+  validationSchema,
+} from './consts.ts';
+import { getRecoveryModePayload } from './utils.tsx';
 
 export const useEnterRecoveryMode = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],

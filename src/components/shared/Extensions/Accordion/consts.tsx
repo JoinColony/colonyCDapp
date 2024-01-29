@@ -1,9 +1,9 @@
 import React from 'react';
 
-import SpecialHourInput from '../ConnectForm/partials/SpecialHourInput';
-import SpecialPercentageInput from '../ConnectForm/partials/SpecialPercentageInput';
+import SpecialHourInput from '../ConnectForm/partials/SpecialHourInput.tsx';
+import SpecialPercentageInput from '../ConnectForm/partials/SpecialPercentageInput.tsx';
 
-import ContentTypeText from './partials/ContentTypeText';
+import ContentTypeText from './partials/ContentTypeText.tsx';
 
 /*
  * @TODO: display data from API, update components

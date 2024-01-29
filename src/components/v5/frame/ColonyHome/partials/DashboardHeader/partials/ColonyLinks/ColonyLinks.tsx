@@ -2,16 +2,16 @@ import { CopySimple, ShareNetwork } from 'phosphor-react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import useColonyContext from '~hooks/useColonyContext';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import ExternalLink from '~shared/Extensions/ExternalLink';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
-import DropdownMenu from '~v5/common/DropdownMenu';
-import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { formatText } from '~utils/intl.ts';
+import DropdownMenu from '~v5/common/DropdownMenu/index.ts';
+import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 
-import { sortExternalLinks } from './helpers';
-import { useHeaderLinks } from './useHeaderLinks';
+import { sortExternalLinks } from './helpers.ts';
+import { useHeaderLinks } from './useHeaderLinks.ts';
 
 const displayName = 'v5.common.ColonyDashboardHeader.partials.ColonyLinks';
 

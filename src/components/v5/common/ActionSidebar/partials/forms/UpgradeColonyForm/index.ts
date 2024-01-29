@@ -1,1 +1,1 @@
-export { default } from './UpgradeColonyForm';
+export { default } from './UpgradeColonyForm.tsx';

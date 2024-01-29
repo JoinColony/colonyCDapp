@@ -11,9 +11,9 @@ import {
   ListBullets,
   Quotes,
 } from 'phosphor-react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { MenuBarProps } from '../types';
+import { type MenuBarProps } from '../types.ts';
 
 import styles from './Menu.module.css';
 

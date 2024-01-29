@@ -1,12 +1,12 @@
-import { ApolloClient as ApolloClientClass } from '@apollo/client';
-import { OnboardAPI } from '@web3-onboard/core';
+import { type ApolloClient as ApolloClientClass } from '@apollo/client';
+import { type OnboardAPI } from '@web3-onboard/core';
 
-import { apolloClient } from '~apollo';
-import { ColonyWallet } from '~types';
+import { apolloClient } from '~apollo/index.ts';
+import { type ColonyWallet } from '~types/wallet.ts';
 
-import ColonyManagerClass from './ColonyManager';
-import { IPFSWithTimeout } from './ipfs/getIpfsWithFallback';
-import ipfsWithFallback from './ipfs/ipfsWithFallbackContext';
+import ColonyManagerClass from './ColonyManager.ts';
+import { type IPFSWithTimeout } from './ipfs/getIpfsWithFallback.ts';
+import ipfsWithFallback from './ipfs/ipfsWithFallbackContext.ts';
 
 export enum ContextModule {
   Wallet = 'wallet',
@@ -52,15 +52,4 @@ export const removeContext = <K extends keyof Context>(contextKey: K) => {
   context[contextKey] = undefined;
 };
 
-export * from './ActionSidebarContext';
-export * from './AppContext';
 export { ColonyManagerClass as ColonyManager };
-export * from './ColonyContext';
-export * from './PageHeadingContext';
-export * from './PageThemeContext';
-export * from './MemberModalContext';
-export * from './ColonyCreatedModalContext';
-export * from './UserTokenBalanceContext';
-export * from './UserTransactionContext';
-export * from './ColonyDecisionContext';
-export * from './TokensModalContext';

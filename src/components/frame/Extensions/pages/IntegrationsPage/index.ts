@@ -1,1 +1,1 @@
-export { default } from './IntegrationsPage';
+export { default } from './IntegrationsPage.tsx';

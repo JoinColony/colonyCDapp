@@ -1,15 +1,15 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import Button from '~v5/shared/Button';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import Button from '~v5/shared/Button/index.ts';
 
-import { ColonyVersionWidgetProps } from './types';
+import { type ColonyVersionWidgetProps } from './types.ts';
 
 import styles from './ColonyVersionWidget.module.css';
 

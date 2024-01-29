@@ -1,4 +1,4 @@
-import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton';
+import CopyWalletAddressButton from '~v5/shared/CopyWalletAddressButton/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

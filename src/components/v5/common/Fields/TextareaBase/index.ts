@@ -1,2 +1,2 @@
-export { default } from './TextareaBase';
-export { default as FormTextareaBase } from './FormTextareaBase';
+export { default } from './TextareaBase.tsx';
+export { default as FormTextareaBase } from './FormTextareaBase.tsx';

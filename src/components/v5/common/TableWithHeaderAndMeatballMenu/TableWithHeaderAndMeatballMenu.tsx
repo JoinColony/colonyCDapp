@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 
-import EmptyContent from '~v5/common/EmptyContent';
-import TableHeader from '~v5/common/TableHeader';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import TableHeader from '~v5/common/TableHeader/index.ts';
 
-import TableWithMeatballMenu from '../TableWithMeatballMenu';
+import TableWithMeatballMenu from '../TableWithMeatballMenu/index.ts';
 
-import { TableWithHeaderAndMeatballMenuProps } from './types';
+import { type TableWithHeaderAndMeatballMenuProps } from './types.ts';
 
 const displayName = 'v5.common.TableWithHeaderAndMeatballMenu';
 

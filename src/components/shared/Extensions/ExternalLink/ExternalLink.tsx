@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { ExternalLinkProps } from './types';
+import { type ExternalLinkProps } from './types.ts';
 
 import styles from './ExternalLink.module.css';
 

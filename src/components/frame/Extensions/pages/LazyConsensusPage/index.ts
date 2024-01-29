@@ -1,1 +1,1 @@
-export { default } from './LazyConsensusPageSetup';
+export { default } from './LazyConsensusPageSetup.tsx';

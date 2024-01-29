@@ -1,16 +1,16 @@
-import React, { FC, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 
-import { useFilterContext } from '~context/FilterContext';
-import { useMobile } from '~hooks';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
+import { useFilterContext } from '~context/FilterContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import PopoverBase from '../PopoverBase';
+import PopoverBase from '../PopoverBase/index.ts';
 
-import { useMembersSubNavigation } from './hooks';
-import NestedOptions from './partials/NestedOptions';
-import { SubNavigationItemProps } from './types';
+import { useMembersSubNavigation } from './hooks.ts';
+import NestedOptions from './partials/NestedOptions.tsx';
+import { type SubNavigationItemProps } from './types.ts';
 
 const displayName = 'v5.SubNavigationItem';
 

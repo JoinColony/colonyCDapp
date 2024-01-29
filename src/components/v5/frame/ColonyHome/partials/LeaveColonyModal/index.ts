@@ -1,1 +1,1 @@
-export { default } from './LeaveColonyModal';
+export { default } from './LeaveColonyModal.tsx';

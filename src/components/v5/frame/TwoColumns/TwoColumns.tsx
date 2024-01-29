@@ -1,6 +1,6 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import { TwoColumnsProps } from './types';
+import { type TwoColumnsProps } from './types.ts';
 
 const displayName = 'v5.frame.TwoColumns';
 

@@ -1,1 +1,1 @@
-export { default } from './TransferFundsForm';
+export { default } from './TransferFundsForm.tsx';

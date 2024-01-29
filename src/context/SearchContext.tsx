@@ -1,13 +1,13 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useContext,
   useMemo,
   useState,
 } from 'react';
 
-import noop from '~utils/noop';
+import noop from '~utils/noop.ts';
 
 export const SearchContext = createContext<{
   searchValue: string;

@@ -1,28 +1,28 @@
 import { getTokenClient } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
-import { Contract, ethers } from 'ethers';
+import { type Contract, ethers } from 'ethers';
 import { FormatTypes } from 'ethers/lib/utils';
 import moveDecimal from 'move-decimal-point';
 
 import {
   GNOSIS_AMB_BRIDGES,
   isDev,
-  NetworkInfo,
+  type NetworkInfo,
   SUPPORTED_SAFE_NETWORKS,
-} from '~constants';
+} from '~constants/index.ts';
 import {
-  Address,
-  ModuleAddress,
-  Safe,
-  SafeTransactionData,
+  type Safe,
+  type SafeTransactionData,
   SafeTransactionType,
-} from '~types';
-import { fetchTokenFromDatabase } from '~utils/queries';
-import { getArrayFromString } from '~utils/safes';
+} from '~types/graphql.ts';
+import { type Address } from '~types/index.ts';
+import { type ModuleAddress } from '~types/safes.ts';
+import { fetchTokenFromDatabase } from '~utils/queries.ts';
+import { getArrayFromString } from '~utils/safes/index.ts';
 
-import RetryProvider from '../wallet/RetryProvider';
+import RetryProvider from '../wallet/RetryProvider.ts';
 
-import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis'; // Temporary
+import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis.ts'; // Temporary
 
 export interface SafeTxData {
   title: string;

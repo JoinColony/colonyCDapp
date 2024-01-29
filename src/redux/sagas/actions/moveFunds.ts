@@ -1,14 +1,17 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
-import { transactionAddParams, transactionPending } from '../../actionCreators';
+import {
+  transactionAddParams,
+  transactionPending,
+} from '../../actionCreators/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
@@ -16,7 +19,7 @@ import {
   getMoveFundsPermissionProofs,
   initiateTransaction,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* createMoveFundsAction({
   payload: {

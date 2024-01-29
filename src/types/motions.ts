@@ -1,4 +1,4 @@
-import { ColonyAction, ColonyMotion } from './graphql';
+import { type ColonyAction, type ColonyMotion } from './graphql.ts';
 
 export enum StakeSide {
   Motion = 'MOTION',

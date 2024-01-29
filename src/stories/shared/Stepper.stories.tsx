@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Stepper from '~v5/shared/Stepper';
+import Stepper from '~v5/shared/Stepper/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

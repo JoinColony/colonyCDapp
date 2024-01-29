@@ -2,7 +2,7 @@ import debounce from 'lodash.debounce';
 import merge from 'lodash/merge';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { BaseFieldProps } from './types';
+import { type BaseFieldProps } from './types.ts';
 
 export const useInput = (maxCharNumber: number, defaultValue?: string) => {
   const [isTyping, setIsTyping] = useState(false);

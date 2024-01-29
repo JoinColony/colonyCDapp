@@ -1,7 +1,7 @@
 import React from 'react';
 
-import StepperButton from '~v5/shared/Stepper/partials/StepperButton';
-import { StepStage } from '~v5/shared/Stepper/partials/StepperButton/consts';
+import { StepStage } from '~v5/shared/Stepper/partials/StepperButton/consts.ts';
+import StepperButton from '~v5/shared/Stepper/partials/StepperButton/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

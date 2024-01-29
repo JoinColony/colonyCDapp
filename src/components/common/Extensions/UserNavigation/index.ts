@@ -1,1 +1,1 @@
-export { default } from './UserNavigation';
+export { default } from './UserNavigation.tsx';

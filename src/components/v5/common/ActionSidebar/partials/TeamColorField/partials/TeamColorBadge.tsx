@@ -1,16 +1,16 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { DomainColor } from '~gql';
-import { useColonyContext } from '~hooks';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { getTeamBadgeStyles, getTeamColor } from '~utils/teams';
-import PillsBase from '~v5/common/Pills/PillsBase';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { getTeamBadgeStyles, getTeamColor } from '~utils/teams.ts';
+import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
-import { TeamColourBadgeProps } from '../types';
+import { type TeamColourBadgeProps } from '../types.ts';
 
 const displayName =
-  'v5.common.ActionsContent.partials.TeamColourField.partials.TeamColourBadge';
+  'v5.common.ActionsContent.partials.TeamColourField.partials.TeamColorBadge';
 
 const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title, defaultColor }) => {
   const { colony } = useColonyContext();

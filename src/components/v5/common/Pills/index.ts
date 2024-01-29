@@ -1,1 +1,1 @@
-export { default } from './PillsBase';
+export { default } from './PillsBase.tsx';

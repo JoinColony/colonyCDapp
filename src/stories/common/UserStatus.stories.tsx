@@ -1,4 +1,4 @@
-import UserStatus from '~v5/common/Pills/UserStatus';
+import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

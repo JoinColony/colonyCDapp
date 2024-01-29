@@ -1,1 +1,1 @@
-export { default } from './StakingChart';
+export { default } from './StakingChart.tsx';

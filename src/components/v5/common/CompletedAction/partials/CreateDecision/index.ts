@@ -1,1 +1,1 @@
-export { default } from './CreateDecision';
+export { default } from './CreateDecision.tsx';

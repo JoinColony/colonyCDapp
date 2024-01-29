@@ -1,1 +1,1 @@
-export { default } from './RolesTooltip';
+export { default } from './RolesTooltip.tsx';

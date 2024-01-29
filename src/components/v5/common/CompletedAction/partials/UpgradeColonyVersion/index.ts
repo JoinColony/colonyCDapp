@@ -1,1 +1,1 @@
-export { default } from './UpgradeColonyVersion';
+export { default } from './UpgradeColonyVersion.tsx';

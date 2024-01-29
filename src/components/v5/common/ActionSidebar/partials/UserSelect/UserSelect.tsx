@@ -1,18 +1,20 @@
 import clsx from 'clsx';
 import { utils } from 'ethers';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
-import UserAvatar from '~v5/shared/UserAvatar';
-import UserPopover from '~v5/shared/UserPopover';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { useUserSelect } from './hooks';
-import { UserSelectProps } from './types';
+import { useUserSelect } from './hooks.ts';
+import { type UserSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 

@@ -1,18 +1,19 @@
-import React, { FC, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { UserHubTabs } from '~common/Extensions/UserHub/types';
-import { useTokensModalContext } from '~context/TokensModalContext';
+import { UserHubTabs } from '~common/Extensions/UserHub/types.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useTokensModalContext } from '~context/TokensModalContext.tsx';
 import { useGetUserTokenBalanceQuery } from '~gql';
-import { useColonyContext, useMobile } from '~hooks';
-import Numeral from '~shared/Numeral';
-import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
-import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts';
-import Button from '~v5/shared/Button';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { useMobile } from '~hooks/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts.ts';
+import Button from '~v5/shared/Button/index.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { BalanceProps, ViewStakedButtonProps } from '../types';
+import { type BalanceProps, type ViewStakedButtonProps } from '../types.ts';
 
 import styles from '../ReputationTab.module.css';
 

@@ -1,26 +1,28 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { ACTION, Action } from '~constants/actions';
+import { ACTION, type Action } from '~constants/actions.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts';
-import AdvancedPaymentForm from '../partials/forms/AdvancedPaymentForm';
-import BatchPaymentForm from '../partials/forms/BatchPaymentForm';
-import CreateDecisionForm from '../partials/forms/CreateDecisionForm';
-import CreateNewTeamForm from '../partials/forms/CreateNewTeamForm';
-import EditColonyDetailsForm from '../partials/forms/EditColonyDetailsForm';
-import EditTeamForm from '../partials/forms/EditTeamForm';
-import EnterRecoveryModeForm from '../partials/forms/EnterRecoveryModeForm';
-import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectivesForm';
-import ManagePermissionsForm from '../partials/forms/ManagePermissionsForm';
-import ManageTokensForm from '../partials/forms/ManageTokensForm';
-import MintTokenForm from '../partials/forms/MintTokenForm';
-import SinglePaymentForm from '../partials/forms/SimplePaymentForm';
-import SplitPaymentForm from '../partials/forms/SplitPaymentForm';
-import TransferFundsForm from '../partials/forms/TransferFundsForm';
-import UnlockTokenForm from '../partials/forms/UnlockTokenForm';
-import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm';
-import { ActionFormBaseProps } from '../types';
+import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
+import AdvancedPaymentForm from '../partials/forms/AdvancedPaymentForm/index.ts';
+import BatchPaymentForm from '../partials/forms/BatchPaymentForm/index.ts';
+import CreateDecisionForm from '../partials/forms/CreateDecisionForm/index.ts';
+import CreateNewTeamForm from '../partials/forms/CreateNewTeamForm/index.ts';
+import EditColonyDetailsForm from '../partials/forms/EditColonyDetailsForm/index.ts';
+import EditTeamForm from '../partials/forms/EditTeamForm/index.ts';
+import EnterRecoveryModeForm from '../partials/forms/EnterRecoveryModeForm/index.ts';
+import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectivesForm/index.ts';
+import ManagePermissionsForm from '../partials/forms/ManagePermissionsForm/index.ts';
+import ManageTokensForm from '../partials/forms/ManageTokensForm/index.ts';
+import MintTokenForm from '../partials/forms/MintTokenForm/index.ts';
+import SinglePaymentForm from '../partials/forms/SimplePaymentForm/index.ts';
+import SplitPaymentForm from '../partials/forms/SplitPaymentForm/index.ts';
+import TransferFundsForm from '../partials/forms/TransferFundsForm/index.ts';
+import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
+import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm/index.ts';
+import { type ActionFormBaseProps } from '../types.ts';
+
+import type React from 'react';
 
 export const useSidebarActionForm = () => {
   const actionFormComponents = useMemo<

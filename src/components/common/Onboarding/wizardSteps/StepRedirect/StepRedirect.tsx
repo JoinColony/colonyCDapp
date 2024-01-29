@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { LANDING_PAGE_ROUTE } from '~routes';
+import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 
 const displayName = 'common.Onboarding.StepRedirect';
 

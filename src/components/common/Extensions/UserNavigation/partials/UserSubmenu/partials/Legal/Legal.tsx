@@ -2,14 +2,14 @@ import { Files, FileText } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { PRIVACY_POLICY, TERMS_AND_CONDITIONS } from '~constants';
-import useMobile from '~hooks/useMobile';
-import ExternalLink from '~shared/ExternalLink';
-import { formatText } from '~utils/intl';
+import { PRIVACY_POLICY, TERMS_AND_CONDITIONS } from '~constants/index.ts';
+import { useMobile } from '~hooks/index.ts';
+import ExternalLink from '~shared/ExternalLink/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts';
-import MenuList from '../MenuList';
-import MenuListItem from '../MenuListItem';
+import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts.ts';
+import MenuList from '../MenuList/index.ts';
+import MenuListItem from '../MenuListItem/index.ts';
 
 import styles from '../Submenu.module.css';
 

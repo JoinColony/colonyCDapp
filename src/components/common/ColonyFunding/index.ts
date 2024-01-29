@@ -1,1 +1,1 @@
-export { default } from './ColonyFunding';
+export { default } from './ColonyFunding.tsx';

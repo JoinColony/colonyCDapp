@@ -1,20 +1,20 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useFilterContext } from '~context/FilterContext';
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import Button from '~v5/shared/Button';
-import FilterButton from '~v5/shared/Filter/FilterButton';
-import Modal from '~v5/shared/Modal';
-import PopoverBase from '~v5/shared/PopoverBase';
+import { useFilterContext } from '~context/FilterContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
+import Modal from '~v5/shared/Modal/index.ts';
+import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import TableFiltering from '../TableFiltering';
+import TableFiltering from '../TableFiltering/index.ts';
 
-import FilterOptions from './partials/FilterOptions';
-import SearchInput from './partials/SearchInput';
-import { FilterProps } from './types';
+import FilterOptions from './partials/FilterOptions.tsx';
+import SearchInput from './partials/SearchInput/index.ts';
+import { type FilterProps } from './types.ts';
 
 const displayName = 'v5.common.Filter';
 

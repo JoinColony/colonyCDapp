@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
 
-import { useColonyContext } from '~hooks';
-import { Address } from '~types';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { type Address } from '~types/index.ts';
 
 const useCurrentSelectedToken = () => {
   const {

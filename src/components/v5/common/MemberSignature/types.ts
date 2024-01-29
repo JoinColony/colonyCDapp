@@ -1,4 +1,4 @@
-import { AvatarUserProps } from '~v5/shared/AvatarUser/types';
+import { type AvatarUserProps } from '~v5/shared/AvatarUser/types.ts';
 
 export interface MemberSignatureProps {
   avatarProps: Omit<AvatarUserProps, 'size'>;

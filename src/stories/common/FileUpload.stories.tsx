@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload';
+import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

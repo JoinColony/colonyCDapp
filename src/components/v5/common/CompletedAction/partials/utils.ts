@@ -1,6 +1,6 @@
-import { getFormattedNumeralValue } from '~shared/Numeral/helpers';
-import { convertToDecimal } from '~utils/convertToDecimal';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { getFormattedNumeralValue } from '~shared/Numeral/helpers.tsx';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 export const getFormattedTokenAmount = (
   amount: string,

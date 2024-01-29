@@ -1,1 +1,1 @@
-export { default } from './RevealStep';
+export { default } from './RevealStep.tsx';

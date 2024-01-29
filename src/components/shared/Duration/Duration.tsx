@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { type HTMLAttributes } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 const MSG = defineMessages({

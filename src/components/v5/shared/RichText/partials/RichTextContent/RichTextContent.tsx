@@ -2,7 +2,7 @@ import { EditorContent } from '@tiptap/react';
 import clsx from 'clsx';
 import React from 'react';
 
-import { RichTextContentProps } from './types';
+import { type RichTextContentProps } from './types.ts';
 
 import styles from './RichTextContent.module.css';
 

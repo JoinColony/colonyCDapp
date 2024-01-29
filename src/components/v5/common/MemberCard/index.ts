@@ -1,1 +1,1 @@
-export { default } from './MemberCard';
+export { default } from './MemberCard.tsx';

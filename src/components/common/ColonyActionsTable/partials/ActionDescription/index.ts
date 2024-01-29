@@ -1,1 +1,1 @@
-export { default } from './ActionDescription';
+export { default } from './ActionDescription.tsx';

@@ -1,20 +1,20 @@
-import withWizard from '~shared/Wizard/withWizard';
-import { User } from '~types';
+import withWizard from '~shared/Wizard/withWizard.tsx';
+import { type User } from '~types/graphql.ts';
 
 import {
   colonySidebarValues,
   completeSideBarValue,
   userInitialValues,
   userSidebarValues,
-  WizardProps,
-} from './consts';
-import { Flow, WizardType } from './types';
+  type WizardProps,
+} from './consts.ts';
+import { type Flow, WizardType } from './types.ts';
 import {
   initialValues as colonyInitialValues,
   stepArray as stepsCreateColony,
-} from './wizardSteps/CreateColony/CreateColonyWizard';
-import { stepsCreateUser } from './wizardSteps/StepCreateUser/consts';
-import WizardTemplate from './WizardTemplate';
+} from './wizardSteps/CreateColony/CreateColonyWizard.ts';
+import { stepsCreateUser } from './wizardSteps/StepCreateUser/consts.ts';
+import WizardTemplate from './WizardTemplate.tsx';
 
 export const createWizard = (
   user: User | null | undefined,

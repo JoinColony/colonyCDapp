@@ -1,1 +1,1 @@
-export { default } from './BetaCautionAlert';
+export { default } from './BetaCautionAlert.tsx';

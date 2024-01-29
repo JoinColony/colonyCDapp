@@ -1,25 +1,25 @@
 import { Id } from '@colony/colony-js';
 import React from 'react';
-import { FieldValues } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { type FieldValues } from 'react-hook-form';
+import { type useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { RefetchColonyFn } from '~context/ColonyContext';
+import { type RefetchColonyFn } from '~context/ColonyContext.tsx';
 import {
   ExtensionMethods,
-  RefetchExtensionDataFn,
-} from '~hooks/useExtensionData';
-import { COLONY_EXTENSIONS_ROUTE } from '~routes';
-import Toast from '~shared/Extensions/Toast/Toast';
-import { OnSuccess } from '~shared/Fields';
+  type RefetchExtensionDataFn,
+} from '~hooks/useExtensionData.ts';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
+import Toast from '~shared/Extensions/Toast/Toast.tsx';
+import { type OnSuccess } from '~shared/Fields/index.ts';
 import {
-  AnyExtensionData,
-  ExtensionInitParam,
-  InstalledExtensionData,
-  SetStateFn,
-} from '~types';
-import { notNull } from '~utils/arrays';
-import { addressHasRoles } from '~utils/checks';
+  type AnyExtensionData,
+  type ExtensionInitParam,
+  type InstalledExtensionData,
+} from '~types/extensions.ts';
+import { type SetStateFn } from '~types/index.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { addressHasRoles } from '~utils/checks/index.ts';
 
 export const waitForColonyPermissions = ({
   refetchColony,

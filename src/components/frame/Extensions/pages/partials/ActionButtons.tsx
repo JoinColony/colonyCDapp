@@ -1,17 +1,19 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useActiveInstalls, useAppContext, useColonyContext } from '~hooks';
-import { addressHasRoles } from '~utils/checks';
-import { isInstalledExtensionData } from '~utils/extensions';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useActiveInstalls from '~hooks/useActiveInstalls.ts';
+import { addressHasRoles } from '~utils/checks/index.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
-import ActiveInstalls from './ActiveInstalls';
-import EnableButton from './EnableButton';
-import HeadingIcon from './HeadingIcon';
-import InstallButton from './InstallButton';
-import { ActionButtonProps } from './types';
-import UpgradeButton from './UpgradeButton';
+import ActiveInstalls from './ActiveInstalls.tsx';
+import EnableButton from './EnableButton.tsx';
+import HeadingIcon from './HeadingIcon.tsx';
+import InstallButton from './InstallButton.tsx';
+import { type ActionButtonProps } from './types.ts';
+import UpgradeButton from './UpgradeButton.tsx';
 
 const displayName = 'frame.Extensions.pages.partials.ActionButtons';
 

@@ -1,5 +1,5 @@
 import { useGetUserByAddressQuery } from '~gql';
-import { Address } from '~types';
+import { type Address } from '~types/index.ts';
 
 const useUserByAddress = (address: Address) => {
   const { data, error, loading, previousData } = useGetUserByAddressQuery({

@@ -1,1 +1,1 @@
-export { default } from './ClickableHeading';
+export { default } from './ClickableHeading.tsx';

@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from '../strings';
+import { capitalizeFirstLetter } from '../strings/index.ts';
 
 /**
  * This function maps an appearance object onto CSS modules classes

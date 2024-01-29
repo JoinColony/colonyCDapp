@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import Tabs from '~shared/Extensions/Tabs';
-import { tabsItems } from '~shared/Extensions/Tabs/consts';
+import { tabsItems } from '~shared/Extensions/Tabs/consts.tsx';
+import Tabs from '~shared/Extensions/Tabs/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

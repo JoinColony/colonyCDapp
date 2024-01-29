@@ -1,6 +1,6 @@
-import { GovernanceOptions } from '../ExtensionsPage/types';
+import { type GovernanceOptions } from '../ExtensionsPage/types.ts';
 
-import { defaultGovernanceOptions } from './consts';
+import { defaultGovernanceOptions } from './consts.tsx';
 
 export const getSelectedFormData = (governanceValue: GovernanceOptions) => {
   return defaultGovernanceOptions[governanceValue];

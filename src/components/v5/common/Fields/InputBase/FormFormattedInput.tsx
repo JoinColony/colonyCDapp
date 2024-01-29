@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { FIELD_STATE } from '../consts';
+import { FIELD_STATE } from '../consts.ts';
 
-import FormattedInput from './FormattedInput';
-import { FormFormattedInputProps } from './types';
+import FormattedInput from './FormattedInput.tsx';
+import { type FormFormattedInputProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.FormFormattedInput';
 

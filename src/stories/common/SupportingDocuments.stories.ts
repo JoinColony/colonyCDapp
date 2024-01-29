@@ -1,4 +1,4 @@
-import SupportingDocuments from '~common/Extensions/SupportingDocuments';
+import SupportingDocuments from '~common/Extensions/SupportingDocuments/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

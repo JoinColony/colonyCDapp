@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { type HTMLAttributes } from 'react';
 import { TabList as ReactTabList } from 'react-tabs';
 
 import styles from './VerticalTabList.css';

@@ -1,26 +1,26 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useTablet } from '~hooks';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
+import { useTablet } from '~hooks/index.ts';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import ColonyLogo from '~images/logo-new.svg';
-import FeedbackButton from '~shared/FeedbackButton';
-import Icon from '~shared/Icon';
-import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import HamburgerButton from '~v5/shared/HamburgerButton';
+import FeedbackButton from '~shared/FeedbackButton/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
+import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
 
 import {
   secondLevelContentAnimation,
   secondLevelWrapperAnimation,
   thirdLevelWrapperAnimation,
-} from './consts';
-import useNavigationSidebarContext from './partials/NavigationSidebarContext/hooks';
-import NavigationSidebarMainMenu from './partials/NavigationSidebarMainMenu';
-import NavigationSidebarMobileContentWrapper from './partials/NavigationSidebarMobileContentWrapper';
-import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel';
-import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel';
-import { NavigationSidebarProps } from './types';
+} from './consts.ts';
+import useNavigationSidebarContext from './partials/NavigationSidebarContext/hooks.ts';
+import NavigationSidebarMainMenu from './partials/NavigationSidebarMainMenu/index.ts';
+import NavigationSidebarMobileContentWrapper from './partials/NavigationSidebarMobileContentWrapper/index.ts';
+import NavigationSidebarSecondLevel from './partials/NavigationSidebarSecondLevel/index.ts';
+import NavigationSidebarThirdLevel from './partials/NavigationSidebarThirdLevel/index.ts';
+import { type NavigationSidebarProps } from './types.ts';
 
 const displayName = 'v5.frame.NavigationSidebarContent';
 

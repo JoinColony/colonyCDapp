@@ -1,19 +1,19 @@
 import {
   getTokenClient,
   ClientType,
-  AnyOneTxPaymentClient,
-  ContractClient,
-  ColonyNetworkClient,
+  type AnyOneTxPaymentClient,
+  type ContractClient,
+  type ColonyNetworkClient,
   Extension,
-  TokenClient,
-  TokenLockingClient,
-  ExtensionClient,
-  AnyColonyClient,
+  type TokenClient,
+  type TokenLockingClient,
+  type ExtensionClient,
+  type AnyColonyClient,
 } from '@colony/colony-js';
-import { Signer, providers } from 'ethers';
+import { type Signer, type providers } from 'ethers';
 
-import { Address } from '~types';
-import { isAddress } from '~utils/web3';
+import { type Address } from '~types/index.ts';
+import { isAddress } from '~utils/web3/index.ts';
 
 export default class ColonyManager {
   private metaColonyClient?: any;

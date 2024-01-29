@@ -1,15 +1,15 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { COLONY_AGREEMENTS_ROUTE } from '~routes';
-import { formatText } from '~utils/intl';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import WidgetBox from '~v5/common/WidgetBox';
-import EmptyWidgetState from '~v5/common/WidgetBox/partials';
-import MessageNumber from '~v5/shared/MessageNumber';
-import TitleWithNumber from '~v5/shared/TitleWithNumber';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { COLONY_AGREEMENTS_ROUTE } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import WidgetBox from '~v5/common/WidgetBox/index.ts';
+import EmptyWidgetState from '~v5/common/WidgetBox/partials/index.ts';
+import MessageNumber from '~v5/shared/MessageNumber/index.ts';
+import TitleWithNumber from '~v5/shared/TitleWithNumber/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.Agreements';
 

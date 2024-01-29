@@ -1,5 +1,5 @@
-import { ActionPattern } from '@redux-saga/types';
-import { Channel } from 'redux-saga';
+import { type ActionPattern } from '@redux-saga/types';
+import { type Channel } from 'redux-saga';
 import {
   all,
   call,
@@ -16,11 +16,15 @@ import {
   transactionReady,
   transactionSend,
   messageSign,
-} from '~redux/actionCreators';
+} from '~redux/actionCreators/index.ts';
 
-import { ErrorActionType, TakeFilter, Action } from '../../types/actions';
+import {
+  type ErrorActionType,
+  type TakeFilter,
+  type Action,
+} from '../../types/actions/index.ts';
 
-import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions';
+import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions.ts';
 
 /*
  * Effect to take a specific action from a channel.

@@ -2,7 +2,7 @@ export {
   PopoverAppearanceType,
   PopoverTriggerType,
   PopoverChildFn,
-} from './types';
+} from './types.ts';
 
-export { default } from './Popover';
-export { default as Tooltip } from './Tooltip';
+export { default } from './Popover.tsx';
+export { default as Tooltip } from './Tooltip.tsx';

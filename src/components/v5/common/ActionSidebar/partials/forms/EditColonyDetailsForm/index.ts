@@ -1,1 +1,1 @@
-export { default } from './EditColonyDetailsForm';
+export { default } from './EditColonyDetailsForm.tsx';

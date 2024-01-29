@@ -1,27 +1,26 @@
-import { ColonyRole } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
-import { RefObject } from 'react';
+import { type ColonyRole } from '@colony/colony-js';
+import { type BigNumber } from 'ethers';
+import { type RefObject } from 'react';
 
-import { NetworkInfo } from '~constants';
-import { ExternalLink } from '~gql';
-import { ActionTypes } from '~redux';
+import { type NetworkInfo } from '~constants/index.ts';
+import { type ExternalLink } from '~gql';
+import { type ActionTypes } from '~redux/index.ts';
 import {
-  Address,
-  WithKey,
-  DomainColor,
-  Domain,
-  Colony,
-  ColonyObjective,
-  Safe,
-  SafeTransactionData,
-} from '~types';
+  type DomainColor,
+  type Domain,
+  type Colony,
+  type ColonyObjective,
+  type Safe,
+  type SafeTransactionData,
+} from '~types/graphql.ts';
+import { type Address, type WithKey } from '~types/index.ts';
 
 import {
-  ErrorActionType,
-  UniqueActionType,
-  ActionTypeWithMeta,
-  MetaWithSetter,
-} from './index';
+  type ErrorActionType,
+  type UniqueActionType,
+  type ActionTypeWithMeta,
+  type MetaWithSetter,
+} from './index.ts';
 
 export type OneTxPaymentPayload = {
   colonyAddress: Address;

@@ -6,13 +6,13 @@ import {
 import clsx from 'clsx';
 import React from 'react';
 
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { TableProps } from './types';
-import { getDefaultRenderCellWrapper } from './utils';
+import { type TableProps } from './types.ts';
+import { getDefaultRenderCellWrapper } from './utils.tsx';
 
 const displayName = 'v5.common.Table';
 

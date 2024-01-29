@@ -1,4 +1,4 @@
-import UserInfoList from '~v5/shared/UserInfoSectionList/partials/UserInfoList';
+import UserInfoList from '~v5/shared/UserInfoSectionList/partials/UserInfoList/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -1,1 +1,1 @@
-export { default } from './ColonyVersionWidget';
+export { default } from './ColonyVersionWidget.tsx';

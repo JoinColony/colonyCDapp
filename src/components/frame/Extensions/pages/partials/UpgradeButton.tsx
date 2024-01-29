@@ -1,22 +1,23 @@
 import {
-  ColonyVersion,
+  type ColonyVersion,
   Extension,
-  ExtensionVersion,
+  type ExtensionVersion,
   isExtensionCompatible,
 } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { useColonyContext, useMobile } from '~hooks';
-import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
-import { ActionTypes } from '~redux';
-import Toast from '~shared/Extensions/Toast/Toast';
-import { AnyExtensionData } from '~types';
-import { mapPayload } from '~utils/actions';
-import { formatText } from '~utils/intl';
-import ActionButton from '~v5/shared/Button/ActionButton';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
+import { ActionTypes } from '~redux/index.ts';
+import Toast from '~shared/Extensions/Toast/Toast.tsx';
+import { type AnyExtensionData } from '~types/extensions.ts';
+import { mapPayload } from '~utils/actions.ts';
+import { formatText } from '~utils/intl.ts';
+import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
-import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
+import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils.tsx';
 
 interface UpgradeButtonProps {
   extensionData: AnyExtensionData;

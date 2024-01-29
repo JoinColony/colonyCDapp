@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import { useMemberContext } from '~context/MemberContext';
-import { useSearchContext } from '~context/SearchContext';
-import { searchMembers } from '~utils/members';
+import { useMemberContext } from '~context/MemberContext.tsx';
+import { useSearchContext } from '~context/SearchContext.tsx';
+import { searchMembers } from '~utils/members.ts';
 
 export const useVerifiedPage = () => {
   const { searchValue } = useSearchContext();

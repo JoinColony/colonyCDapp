@@ -1,1 +1,1 @@
-export { default } from './TokenInfoPopover';
+export { default } from './TokenInfoPopover.tsx';

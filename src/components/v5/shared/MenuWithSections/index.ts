@@ -1,2 +1,2 @@
-export { default } from './MenuWithSections';
-export * from './types';
+export { default } from './MenuWithSections.tsx';
+export * from './types.ts';

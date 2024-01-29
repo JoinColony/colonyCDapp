@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { type HTMLAttributes } from 'react';
 import { TabPanel as ReactTabPanel } from 'react-tabs';
 
 import styles from './TabPanel.css';

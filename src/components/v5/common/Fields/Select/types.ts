@@ -1,4 +1,4 @@
-import { Props as ReactSelectProps } from 'react-select';
+import { type Props as ReactSelectProps } from 'react-select';
 
 export interface SelectBaseOption {
   label: string;

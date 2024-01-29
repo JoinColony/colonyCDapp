@@ -1,1 +1,1 @@
-export { default } from './WalletConnectedTopMenu';
+export { default } from './WalletConnectedTopMenu.tsx';

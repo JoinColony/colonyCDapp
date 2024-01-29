@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import DonutChart from '~v5/shared/DonutChart';
-import { ChartData } from '~v5/shared/DonutChart/types';
+import DonutChart from '~v5/shared/DonutChart/index.ts';
+import { type ChartData } from '~v5/shared/DonutChart/types.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

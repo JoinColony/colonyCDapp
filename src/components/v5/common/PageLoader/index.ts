@@ -1,1 +1,1 @@
-export { default } from './PageLoader';
+export { default } from './PageLoader.tsx';

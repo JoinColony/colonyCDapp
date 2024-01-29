@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { UserMenuItemName } from '../UserMenu/types';
+import { UserMenuItemName } from '../UserMenu/types.ts';
 
-import { Contact, Developers, Legal } from './partials';
-import Currency from './partials/Currency/Currency';
+import Currency from './partials/Currency/Currency.tsx';
+import { Contact, Developers, Legal } from './partials/index.ts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserSubmenu';
 

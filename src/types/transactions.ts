@@ -1,10 +1,10 @@
-import { TransactionReceipt } from '@ethersproject/providers';
-import { BigNumberish, Overrides } from 'ethers';
-import { MessageDescriptor } from 'react-intl';
+import { type TransactionReceipt } from '@ethersproject/providers';
+import { type BigNumberish, type Overrides } from 'ethers';
+import { type MessageDescriptor } from 'react-intl';
 
 import { TransactionErrors } from '~gql';
 
-import { SimpleMessageValues } from './index';
+import { type SimpleMessageValues } from './index.ts';
 
 export type MethodParam = string | BigNumberish | boolean;
 

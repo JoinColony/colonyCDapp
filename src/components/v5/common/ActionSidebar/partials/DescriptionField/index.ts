@@ -1,1 +1,1 @@
-export { default } from './DescriptionField';
+export { default } from './DescriptionField.tsx';

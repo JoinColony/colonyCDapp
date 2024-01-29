@@ -1,2 +1,2 @@
-export { default } from './ColonySwitcherItem';
-export type { ColonySwitcherItemProps } from './types';
+export { default } from './ColonySwitcherItem.tsx';
+export type { ColonySwitcherItemProps } from './types.ts';

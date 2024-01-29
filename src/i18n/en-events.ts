@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-import { ColonyAndExtensionsEvents } from '~types';
+import { ColonyAndExtensionsEvents } from '~types/actions.ts';
 
 const eventsMessageDescriptors = {
   'event.title': `{eventName, select,

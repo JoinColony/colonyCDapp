@@ -3,15 +3,15 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
-import useColonyContext from '~hooks/useColonyContext';
-import Numeral from '~shared/Numeral';
-import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import Numeral from '~shared/Numeral/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { MintTokenFormValues } from '../../forms/MintTokenForm/consts';
+import { type MintTokenFormValues } from '../../forms/MintTokenForm/consts.ts';
 
-import CurrentUser from './CurrentUser';
+import CurrentUser from './CurrentUser.tsx';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.MintTokensDescription';

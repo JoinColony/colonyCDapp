@@ -1,6 +1,6 @@
-import { MotionBadgeProps } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionBadge/types';
+import { type MotionBadgeProps } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionBadge/types.ts';
 
-import { UserInfoListProps } from './partials/UserInfoList/types';
+import { type UserInfoListProps } from './partials/UserInfoList/types.ts';
 
 export interface UserInfoSectionListSection {
   key: string;

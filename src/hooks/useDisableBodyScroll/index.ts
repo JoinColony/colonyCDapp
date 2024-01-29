@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { disableScrollOnBody, enableScrollOnBody } from './utils';
+import { disableScrollOnBody, enableScrollOnBody } from './utils.ts';
 
 let disableCallsCount = 0;
 

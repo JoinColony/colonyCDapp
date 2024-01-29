@@ -3,21 +3,27 @@ import { BigNumber } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { number, object } from 'yup';
 
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetVoterRewardsQuery } from '~gql';
-import { useAppContext, useColonyContext, useExtensionData } from '~hooks';
-import { MotionVotePayload } from '~redux/sagas/motions/voteMotion';
-import { OnSuccess } from '~shared/Fields';
-import Numeral from '~shared/Numeral';
-import { InstalledExtensionData, VoterRecord } from '~types';
-import { MotionAction } from '~types/motions';
-import { mapPayload } from '~utils/actions';
-import { formatText } from '~utils/intl';
-import { getSafePollingInterval } from '~utils/queries';
+import useExtensionData from '~hooks/useExtensionData.ts';
+import { type MotionVotePayload } from '~redux/sagas/motions/voteMotion.ts';
+import { type OnSuccess } from '~shared/Fields/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { type InstalledExtensionData } from '~types/extensions.ts';
+import { type VoterRecord } from '~types/graphql.ts';
+import { type MotionAction } from '~types/motions.ts';
+import { mapPayload } from '~utils/actions.ts';
+import { formatText } from '~utils/intl.ts';
+import { getSafePollingInterval } from '~utils/queries.ts';
 
-import { DescriptionListItem } from './partials/DescriptionList/types';
-import { VotingFormValues, VotingRewardsSections } from './types';
-import { getLocalStorageVoteValue, setLocalStorageVoteValue } from './utils';
+import { type DescriptionListItem } from './partials/DescriptionList/types.ts';
+import { type VotingFormValues, VotingRewardsSections } from './types.ts';
+import {
+  getLocalStorageVoteValue,
+  setLocalStorageVoteValue,
+} from './utils.tsx';
 
 const useVotingWidgetUpdate = (
   voterRecord: VoterRecord[],

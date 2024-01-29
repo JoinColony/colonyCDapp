@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import PillsBase from '../PillsBase';
+import PillsBase from '../PillsBase.tsx';
 
-import { TOKEN_TYPE, TokenTypeBadgeProps } from './types';
+import { TOKEN_TYPE, type TokenTypeBadgeProps } from './types.ts';
 
 const displayName = 'v5.common.Pills.TokenTypeBadge';
 

@@ -1,14 +1,14 @@
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useMemo,
 } from 'react';
 import useLocalStorage from 'use-local-storage';
 
-import noop from '~utils/noop';
+import noop from '~utils/noop.ts';
 
 export const PageThemeContext = createContext<{
   isDarkMode: boolean;

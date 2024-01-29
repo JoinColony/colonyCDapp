@@ -3,7 +3,7 @@ import {
   PINATA_API_SECRET,
   PINATA_ENDPOINT,
   JSON_MIME_TYPE,
-} from './constants';
+} from './constants.ts';
 
 class Pinata {
   hasApiAccess: boolean;

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 
 // @NOTE if you use grid-cols in tailwind, the rows property doesn't get applied, so I had to use CSS
 import styles from './Blocks.module.css';

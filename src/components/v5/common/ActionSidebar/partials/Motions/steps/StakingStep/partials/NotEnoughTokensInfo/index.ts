@@ -1,1 +1,1 @@
-export { default } from './NotEnoughTokensInfo';
+export { default } from './NotEnoughTokensInfo.tsx';

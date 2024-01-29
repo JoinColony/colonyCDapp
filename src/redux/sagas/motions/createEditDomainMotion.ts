@@ -8,22 +8,22 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateDomainMetadataDocument,
-  CreateDomainMetadataMutation,
-  CreateDomainMetadataMutationVariables,
+  type CreateDomainMetadataMutation,
+  type CreateDomainMetadataMutationVariables,
   DomainColor,
 } from '~gql';
-import { getPendingMetadataDatabaseId } from '~utils/databaseId';
+import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { ActionTypes } from '../../actionTypes.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
@@ -33,7 +33,7 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 // import { ipfsUpload } from '../ipfs';
 

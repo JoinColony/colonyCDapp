@@ -1,19 +1,19 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { ActionForm } from '~shared/Fields';
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
-import { SpinnerLoader } from '~shared/Preloaders';
-import TokenIcon from '~shared/TokenIcon';
-import { formatText } from '~utils/intl';
-import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput';
-import Button, { TxButton } from '~v5/shared/Button';
+import { ActionForm } from '~shared/Fields/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import TokenIcon from '~shared/TokenIcon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput.tsx';
+import Button, { TxButton } from '~v5/shared/Button/index.ts';
 
-import Modal from '../../shared/Modal/Modal';
+import Modal from '../../shared/Modal/Modal.tsx';
 
-import { useTokensModal } from './hooks';
-import { TokensModalProps } from './types';
+import { useTokensModal } from './hooks.ts';
+import { type TokensModalProps } from './types.ts';
 
 const displayName = 'v5.Modal.partials.TokensModal';
 

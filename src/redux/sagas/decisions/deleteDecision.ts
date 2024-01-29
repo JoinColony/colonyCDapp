@@ -1,8 +1,8 @@
 import { call, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '~redux/actionTypes';
-import { Action } from '~redux/types';
-import { removeDraftDecisionFromLocalStorage } from '~utils/decisions';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type Action } from '~redux/types/index.ts';
+import { removeDraftDecisionFromLocalStorage } from '~utils/decisions.ts';
 
 function* deleteDecision({
   payload: { walletAddress, colonyAddress },

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
-import { User } from '~types';
+import { type User } from '~types/graphql.ts';
 
 const MemberModalContext = createContext<
   | undefined

@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { formatText } from '~utils/intl';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { formatText } from '~utils/intl.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import LinkWrapper from './LinkWrapper';
+import LinkWrapper from './LinkWrapper.tsx';
 
 const displayName = 'common.Extensions.SupportingDocuments';
 

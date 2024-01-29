@@ -1,1 +1,1 @@
-export { default } from './IncorporationPage';
+export { default } from './IncorporationPage.tsx';

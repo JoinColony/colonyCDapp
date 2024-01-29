@@ -1,7 +1,7 @@
-import { Colony, Domain } from '~types';
+import { type Colony, type Domain } from '~types/graphql.ts';
 
-import { notNull } from './arrays';
-import { sortBy } from './lodash';
+import { notNull } from './arrays/index.ts';
+import { sortBy } from './lodash.ts';
 
 export const findDomainByNativeId = (
   domainNativeId: number | null | undefined,

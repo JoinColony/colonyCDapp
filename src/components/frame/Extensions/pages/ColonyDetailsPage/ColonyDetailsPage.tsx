@@ -1,20 +1,24 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { ADDRESS_ZERO, MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
-import { useColonyContext, useMobile } from '~hooks';
-import { multiLineTextEllipsis } from '~utils/strings';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import NativeTokenPill from '~v5/common/NativeTokenPill';
-import ObjectiveBox from '~v5/common/ObjectiveBox';
-import Button from '~v5/shared/Button';
-import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import CopyableAddress from '~v5/shared/CopyableAddress';
-import SocialLinks from '~v5/shared/SocialLinks';
+import { ACTION } from '~constants/actions.ts';
+import {
+  ADDRESS_ZERO,
+  MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+} from '~constants/index.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
+import { useMobile } from '~hooks/index.ts';
+import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
+import ObjectiveBox from '~v5/common/ObjectiveBox/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
+import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
+import SocialLinks from '~v5/shared/SocialLinks/index.ts';
 
 import styles from './ColonyDetailsPage.module.css';
 

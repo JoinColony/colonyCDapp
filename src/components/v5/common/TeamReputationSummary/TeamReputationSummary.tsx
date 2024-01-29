@@ -1,27 +1,27 @@
 import { Id } from '@colony/colony-js';
 import clsx from 'clsx';
 import Decimal from 'decimal.js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
-import { useColonyContext } from '~hooks';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
-import { notNull } from '~utils/arrays';
-import { formatText } from '~utils/intl';
-import { getTeamColor } from '~utils/teams';
-import TextButton from '~v5/shared/Button/TextButton';
-import MenuContainer from '~v5/shared/MenuContainer';
-import TitleLabel from '~v5/shared/TitleLabel';
+import { ACTION } from '~constants/actions.ts';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTeamColor } from '~utils/teams.ts';
+import TextButton from '~v5/shared/Button/TextButton.tsx';
+import MenuContainer from '~v5/shared/MenuContainer/index.ts';
+import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts';
+import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts.tsx';
 
-import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow';
-import { TeamReputationSummaryProps } from './types';
-import { formatPercentage } from './utils';
+import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow.tsx';
+import { type TeamReputationSummaryProps } from './types.ts';
+import { formatPercentage } from './utils.ts';
 
 const displayName = 'v5.common.TeamReputationSummary';
 

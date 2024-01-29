@@ -1,12 +1,13 @@
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { useBaseUrl, useColonyContext } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import { Heading3 } from '~shared/Heading';
-import Button from '~v5/shared/Button';
-import CardWithCallout from '~v5/shared/CardWithCallout';
-import Modal from '~v5/shared/Modal';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useBaseUrl from '~hooks/useBaseUrl.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { Heading3 } from '~shared/Heading/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
 const displayName = 'v5.common.Modals.InviteMembersModal';
 

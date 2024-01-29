@@ -4,13 +4,13 @@ import {
   ADDRESS_ZERO,
   DEFAULT_NETWORK_TOKEN,
   MAX_COLONY_DISPLAY_NAME,
-} from '~constants';
+} from '~constants/index.ts';
 import { CheckColonyNameExistsDocument } from '~gql';
-import { Token } from '~types';
-import { intl } from '~utils/intl';
-import { createYupTestFromQuery } from '~utils/yup/tests';
+import { type Token } from '~types/graphql.ts';
+import { intl } from '~utils/intl.ts';
+import { createYupTestFromQuery } from '~utils/yup/tests/index.ts';
 
-import { FormValues, TokenChoice } from './types';
+import { type FormValues, TokenChoice } from './types.ts';
 
 export const MAX_TOKEN_NAME = 30;
 export const MAX_TOKEN_SYMBOL = 5;

@@ -1,8 +1,8 @@
-import { Meta, StoryFn } from '@storybook/react';
+import { type Meta, type StoryFn } from '@storybook/react';
 import React from 'react';
 
-import NotificationBanner from './NotificationBanner';
-import { NotificationBannerProps } from './types';
+import NotificationBanner from './NotificationBanner.tsx';
+import { type NotificationBannerProps } from './types.ts';
 
 const meta: Meta<typeof NotificationBanner> = {
   title: 'Common/Notification Banner ',

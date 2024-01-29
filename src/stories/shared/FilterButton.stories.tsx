@@ -1,4 +1,4 @@
-import FilterButton from '~v5/shared/Filter/FilterButton';
+import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

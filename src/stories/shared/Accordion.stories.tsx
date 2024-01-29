@@ -1,4 +1,4 @@
-import Accordion from '~v5/shared/Accordion';
+import Accordion from '~v5/shared/Accordion/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

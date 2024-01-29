@@ -1,7 +1,7 @@
-import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { type FieldValues, type UseFormReturn } from 'react-hook-form';
 
-import { Action } from '~constants/actions';
-import { ActionFormProps } from '~shared/Fields/Form/ActionForm';
+import { type Action } from '~constants/actions.ts';
+import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;

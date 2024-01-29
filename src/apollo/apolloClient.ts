@@ -1,7 +1,7 @@
 import { ApolloClient, from, HttpLink } from '@apollo/client';
 
-import cache from './cache';
-import removeTypenameLink from './removeTypenameLink';
+import cache from './cache/index.ts';
+import removeTypenameLink from './removeTypenameLink.ts';
 
 const httpLink = new HttpLink({
   uri: `${process.env.AUTH_PROXY_ENDPOINT || 'http://localhost:3005'}/graphql`,

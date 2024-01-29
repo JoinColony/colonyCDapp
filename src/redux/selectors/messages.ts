@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { CORE_MESSAGES, CORE_MESSAGES_LIST } from '../constants';
-import { MessageRecord } from '../immutable/Message';
-import { RootStateRecord } from '../state';
-import { MessagesListMap } from '../state/messages';
+import { CORE_MESSAGES, CORE_MESSAGES_LIST } from '../constants.ts';
+import { type MessageRecord } from '../immutable/Message.ts';
+import { type RootStateRecord } from '../state/index.ts';
+import { type MessagesListMap } from '../state/messages.ts';
 
 export const messageById = (
   state: RootStateRecord,

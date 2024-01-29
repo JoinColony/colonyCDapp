@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react';
 
-import { useAppContext, useJoinedColonies } from '~hooks';
-import { Colony, JoinedColony } from '~types';
+import { useAppContext } from '~context/AppContext.tsx';
+import useJoinedColonies from '~hooks/useJoinedColonies.ts';
+import { type Colony, type JoinedColony } from '~types/graphql.ts';
 
-import { getChainIconName } from '../../utils';
-import { ColonySwitcherListItem } from '../ColonySwitcherList/types';
+import { getChainIconName } from '../../utils.ts';
+import { type ColonySwitcherListItem } from '../ColonySwitcherList/types.ts';
 
-import { UseColonySwitcherContentReturnType } from './types';
+import { type UseColonySwitcherContentReturnType } from './types.ts';
 
 const getColonySwitcherListItem = (
   colony: Colony | JoinedColony,

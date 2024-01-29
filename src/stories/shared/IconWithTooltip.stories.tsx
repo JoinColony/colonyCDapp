@@ -1,6 +1,6 @@
 import React from 'react';
 
-import IconWithTooltip from '~v5/shared/IconWithTooltip';
+import IconWithTooltip from '~v5/shared/IconWithTooltip/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import TeamCard from '../TeamCard';
+import TeamCard from '../TeamCard/index.ts';
 
-import { TeamCardListProps } from './types';
+import { type TeamCardListProps } from './types.ts';
 
 const TeamCardList: FC<TeamCardListProps> = ({ items, className }) => (
   <ul className={clsx(className, 'flex flex-wrap gap-6')}>

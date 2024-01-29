@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
 
-import { ICON_NAME_MAP, StepStage } from './consts';
-import { StepperButtonProps } from './types';
+import { ICON_NAME_MAP, StepStage } from './consts.ts';
+import { type StepperButtonProps } from './types.ts';
 
 const displayName = 'v5.Stepper.partials.StepperButton';
 

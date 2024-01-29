@@ -1,1 +1,1 @@
-export { default } from './ExtensionStatusBadge';
+export { default } from './ExtensionStatusBadge.tsx';

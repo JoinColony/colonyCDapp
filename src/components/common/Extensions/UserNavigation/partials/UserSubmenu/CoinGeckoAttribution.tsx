@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { currencyApiConfig } from '~utils/currency';
-import { formatText } from '~utils/intl';
+import { currencyApiConfig } from '~utils/currency/index.ts';
+import { formatText } from '~utils/intl.ts';
 
 const coinGeckoAttributionMessageValues = {
   a: (chunks: string[]) => (

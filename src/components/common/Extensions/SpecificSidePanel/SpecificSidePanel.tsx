@@ -1,16 +1,16 @@
-import React, { FC, Fragment } from 'react';
+import React, { type FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 
-import { getRole } from '~constants/permissions';
-import { formatText } from '~utils/intl';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import RolesTooltip from '~v5/shared/RolesTooltip';
+import { getRole } from '~constants/permissions.ts';
+import { formatText } from '~utils/intl.ts';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
 
-import { useSpecificSidePanel } from './hooks';
-import ContractAddress from './partials/ContractAddress';
-import InstalledBy from './partials/InstalledBy';
-import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
-import { SpecificSidePanelProps } from './types';
+import { useSpecificSidePanel } from './hooks.tsx';
+import ContractAddress from './partials/ContractAddress.tsx';
+import InstalledBy from './partials/InstalledBy.tsx';
+import SpecificSidePanelRow from './partials/SpecificSidePanelRow.tsx';
+import { type SpecificSidePanelProps } from './types.ts';
 
 import styles from './SpecificSidePanel.module.css';
 

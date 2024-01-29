@@ -1,1 +1,1 @@
-export { default } from './RpcForm';
+export { default } from './RpcForm.tsx';

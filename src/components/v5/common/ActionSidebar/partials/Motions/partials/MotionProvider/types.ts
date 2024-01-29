@@ -1,5 +1,5 @@
-import { SetStateFn } from '~types';
-import { MotionAction } from '~types/motions';
+import { type SetStateFn } from '~types/index.ts';
+import { type MotionAction } from '~types/motions.ts';
 
 export interface MotionContextValues {
   motionAction: MotionAction;

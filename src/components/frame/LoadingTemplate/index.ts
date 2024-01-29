@@ -1,1 +1,1 @@
-export { default, failedLoadingDuration } from './LoadingTemplate';
+export { default, failedLoadingDuration } from './LoadingTemplate.tsx';

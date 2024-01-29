@@ -1,2 +1,2 @@
-export { default } from './StepCreateUser';
-export * from './types';
+export { default } from './StepCreateUser.tsx';
+export * from './types.ts';

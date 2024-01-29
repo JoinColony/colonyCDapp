@@ -1,4 +1,4 @@
-import { bool, InferType, object } from 'yup';
+import { bool, type InferType, object } from 'yup';
 
 export const METATRANSACTIONS_VALIDATION_SCHEMA = object({
   metatransactionsEnabled: bool<boolean>(),

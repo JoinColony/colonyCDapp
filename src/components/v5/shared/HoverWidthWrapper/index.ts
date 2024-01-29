@@ -1,1 +1,1 @@
-export { default } from './HoverWidthWrapper';
+export { default } from './HoverWidthWrapper.tsx';

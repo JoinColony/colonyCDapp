@@ -1,10 +1,14 @@
 import { call } from 'redux-saga/effects';
 
-import { getContext, setContext, ContextModule, ColonyManager } from '~context';
+import {
+  getContext,
+  setContext,
+  ContextModule,
+  ColonyManager,
+} from '~context/index.ts';
 
-import { create } from '../utils';
-
-import getNetworkClient from './getNetworkClient';
+import getNetworkClient from './getNetworkClient.ts';
+import { create } from './index.ts';
 
 /*
  * Return an initialized ColonyManager instance.

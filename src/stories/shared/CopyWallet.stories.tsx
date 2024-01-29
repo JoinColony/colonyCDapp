@@ -1,4 +1,4 @@
-import CopyWallet from '~v5/shared/CopyWallet';
+import CopyWallet from '~v5/shared/CopyWallet/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -1,1 +1,1 @@
-export { default } from './Pinata';
+export { default } from './Pinata.ts';

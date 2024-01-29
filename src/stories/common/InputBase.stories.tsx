@@ -1,6 +1,6 @@
 import React from 'react';
 
-import InputBase from '~v5/common/Fields/InputBase';
+import InputBase from '~v5/common/Fields/InputBase/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

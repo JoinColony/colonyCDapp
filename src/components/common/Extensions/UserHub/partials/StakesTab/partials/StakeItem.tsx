@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 
-import { getActionTitleValues } from '~common/ColonyActions';
-import Numeral from '~shared/Numeral';
-import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge';
+import { getActionTitleValues } from '~common/ColonyActions/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge/index.ts';
 
-import { StakeItemProps } from '../types';
+import { type StakeItemProps } from '../types.ts';
 
 import styles from './StakeItem.css';
 

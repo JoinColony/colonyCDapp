@@ -1,4 +1,4 @@
-import { ComponentType, createElement, forwardRef, Ref } from 'react';
+import { type ComponentType, createElement, forwardRef, type Ref } from 'react';
 
 export interface ForwardedRefProps {
   forwardedRef: Ref<any>;
