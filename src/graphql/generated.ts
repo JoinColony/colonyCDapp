@@ -1542,6 +1542,12 @@ export type CreateUserTokensInput = {
   userID: Scalars['ID'];
 };
 
+export type CreateVerifiedMemberInput = {
+  colonyAddress: Scalars['ID'];
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  userAddress: Scalars['ID'];
+};
+
 /**
  * The current inverse of the network fee (in wei)
  * (divide 1 by it and get the actual network fee)
@@ -1719,6 +1725,11 @@ export type DeleteUserStakeInput = {
 
 export type DeleteUserTokensInput = {
   id: Scalars['ID'];
+};
+
+export type DeleteVerifiedMemberInput = {
+  colonyAddress: Scalars['ID'];
+  userAddress: Scalars['ID'];
 };
 
 /** Represents a Domain within the Colony Network */
@@ -3894,6 +3905,14 @@ export type ModelSubscriptionUserTokensFilterInput = {
   userID?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
+export type ModelSubscriptionVerifiedMemberFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionVerifiedMemberFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionVerifiedMemberFilterInput>>>;
+  userAddress?: InputMaybe<ModelSubscriptionIdInput>;
+};
+
 export type ModelSupportedCurrenciesInput = {
   eq?: InputMaybe<SupportedCurrencies>;
   ne?: InputMaybe<SupportedCurrencies>;
@@ -4086,6 +4105,28 @@ export type ModelUserTokensFilterInput = {
   userID?: InputMaybe<ModelIdInput>;
 };
 
+export type ModelVerifiedMemberConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelVerifiedMemberConditionInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelVerifiedMemberConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelVerifiedMemberConditionInput>>>;
+};
+
+export type ModelVerifiedMemberConnection = {
+  __typename?: 'ModelVerifiedMemberConnection';
+  items: Array<Maybe<VerifiedMember>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelVerifiedMemberFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelVerifiedMemberFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelVerifiedMemberFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelVerifiedMemberFilterInput>>>;
+  userAddress?: InputMaybe<ModelIdInput>;
+};
+
 /** A status update message for a motion (will appear in the motion's timeline) */
 export type MotionMessage = {
   __typename?: 'MotionMessage';
@@ -4239,6 +4280,7 @@ export type Mutation = {
   createUser?: Maybe<User>;
   createUserStake?: Maybe<UserStake>;
   createUserTokens?: Maybe<UserTokens>;
+  createVerifiedMember?: Maybe<VerifiedMember>;
   deleteAnnotation?: Maybe<Annotation>;
   deleteColony?: Maybe<Colony>;
   deleteColonyAction?: Maybe<ColonyAction>;
@@ -4277,6 +4319,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
+  deleteVerifiedMember?: Maybe<VerifiedMember>;
   /** Updates the latest available version of a Colony or an extension */
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateAnnotation?: Maybe<Annotation>;
@@ -4319,6 +4362,7 @@ export type Mutation = {
   updateUser?: Maybe<User>;
   updateUserStake?: Maybe<UserStake>;
   updateUserTokens?: Maybe<UserTokens>;
+  updateVerifiedMember?: Maybe<VerifiedMember>;
   /**
    * Validates the user invite code and adds the user to the colony whitelist
    * and as a colony contributor
@@ -4612,6 +4656,13 @@ export type MutationCreateUserTokensArgs = {
 
 
 /** Root mutation type */
+export type MutationCreateVerifiedMemberArgs = {
+  condition?: InputMaybe<ModelVerifiedMemberConditionInput>;
+  input: CreateVerifiedMemberInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteAnnotationArgs = {
   condition?: InputMaybe<ModelAnnotationConditionInput>;
   input: DeleteAnnotationInput;
@@ -4874,6 +4925,13 @@ export type MutationDeleteUserStakeArgs = {
 export type MutationDeleteUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: DeleteUserTokensInput;
+};
+
+
+/** Root mutation type */
+export type MutationDeleteVerifiedMemberArgs = {
+  condition?: InputMaybe<ModelVerifiedMemberConditionInput>;
+  input: DeleteVerifiedMemberInput;
 };
 
 
@@ -5152,6 +5210,13 @@ export type MutationUpdateUserStakeArgs = {
 export type MutationUpdateUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: UpdateUserTokensInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateVerifiedMemberArgs = {
+  condition?: InputMaybe<ModelVerifiedMemberConditionInput>;
+  input: UpdateVerifiedMemberInput;
 };
 
 
@@ -5452,6 +5517,8 @@ export type Query = {
   /** Retrieve a user's token balance for a specific token */
   getUserTokenBalance?: Maybe<GetUserTokenBalanceReturn>;
   getUserTokens?: Maybe<UserTokens>;
+  getVerifiedMember?: Maybe<VerifiedMember>;
+  getVerifiedMembersByColony?: Maybe<ModelVerifiedMemberConnection>;
   /** Get the voting reward for a user and a motion */
   getVoterRewards?: Maybe<VoterRewardsReturn>;
   listAnnotations?: Maybe<ModelAnnotationConnection>;
@@ -5492,6 +5559,7 @@ export type Query = {
   listUserStakes?: Maybe<ModelUserStakeConnection>;
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
+  listVerifiedMembers?: Maybe<ModelVerifiedMemberConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
 };
 
@@ -6087,6 +6155,23 @@ export type QueryGetUserTokensArgs = {
 
 
 /** Root query type */
+export type QueryGetVerifiedMemberArgs = {
+  colonyAddress: Scalars['ID'];
+  userAddress: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetVerifiedMembersByColonyArgs = {
+  colonyAddress: Scalars['ID'];
+  filter?: InputMaybe<ModelVerifiedMemberFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
 export type QueryGetVoterRewardsArgs = {
   input?: InputMaybe<GetVoterRewardsInput>;
 };
@@ -6393,6 +6478,17 @@ export type QueryListUsersArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListVerifiedMembersArgs = {
+  colonyAddress?: InputMaybe<Scalars['ID']>;
+  filter?: InputMaybe<ModelVerifiedMemberFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  userAddress?: InputMaybe<ModelIdKeyConditionInput>;
 };
 
 
@@ -6825,6 +6921,7 @@ export type Subscription = {
   onCreateUser?: Maybe<User>;
   onCreateUserStake?: Maybe<UserStake>;
   onCreateUserTokens?: Maybe<UserTokens>;
+  onCreateVerifiedMember?: Maybe<VerifiedMember>;
   onDeleteAnnotation?: Maybe<Annotation>;
   onDeleteColony?: Maybe<Colony>;
   onDeleteColonyAction?: Maybe<ColonyAction>;
@@ -6863,6 +6960,7 @@ export type Subscription = {
   onDeleteUser?: Maybe<User>;
   onDeleteUserStake?: Maybe<UserStake>;
   onDeleteUserTokens?: Maybe<UserTokens>;
+  onDeleteVerifiedMember?: Maybe<VerifiedMember>;
   onUpdateAnnotation?: Maybe<Annotation>;
   onUpdateColony?: Maybe<Colony>;
   onUpdateColonyAction?: Maybe<ColonyAction>;
@@ -6901,6 +6999,7 @@ export type Subscription = {
   onUpdateUser?: Maybe<User>;
   onUpdateUserStake?: Maybe<UserStake>;
   onUpdateUserTokens?: Maybe<UserTokens>;
+  onUpdateVerifiedMember?: Maybe<VerifiedMember>;
 };
 
 
@@ -7094,6 +7193,11 @@ export type SubscriptionOnCreateUserTokensArgs = {
 };
 
 
+export type SubscriptionOnCreateVerifiedMemberArgs = {
+  filter?: InputMaybe<ModelSubscriptionVerifiedMemberFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteAnnotationArgs = {
   filter?: InputMaybe<ModelSubscriptionAnnotationFilterInput>;
 };
@@ -7284,6 +7388,11 @@ export type SubscriptionOnDeleteUserTokensArgs = {
 };
 
 
+export type SubscriptionOnDeleteVerifiedMemberArgs = {
+  filter?: InputMaybe<ModelSubscriptionVerifiedMemberFilterInput>;
+};
+
+
 export type SubscriptionOnUpdateAnnotationArgs = {
   filter?: InputMaybe<ModelSubscriptionAnnotationFilterInput>;
 };
@@ -7471,6 +7580,11 @@ export type SubscriptionOnUpdateUserStakeArgs = {
 
 export type SubscriptionOnUpdateUserTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionUserTokensFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateVerifiedMemberArgs = {
+  filter?: InputMaybe<ModelSubscriptionVerifiedMemberFilterInput>;
 };
 
 /** Represents the currencies/tokens that users' balances can be converted to (for display purposes) */
@@ -8137,6 +8251,12 @@ export type UpdateUserTokensInput = {
   userID?: InputMaybe<Scalars['ID']>;
 };
 
+export type UpdateVerifiedMemberInput = {
+  colonyAddress: Scalars['ID'];
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  userAddress: Scalars['ID'];
+};
+
 /** Represents a User within the Colony Network */
 export type User = {
   __typename?: 'User';
@@ -8245,6 +8365,16 @@ export type ValidateUserInviteInput = {
   /** The invite code */
   inviteCode: Scalars['ID'];
   /** The user's wallet address */
+  userAddress: Scalars['ID'];
+};
+
+export type VerifiedMember = {
+  __typename?: 'VerifiedMember';
+  /** A colony address - user address pair that tells us if a user is verified. */
+  colonyAddress: Scalars['ID'];
+  createdAt: Scalars['AWSDateTime'];
+  updatedAt: Scalars['AWSDateTime'];
+  user: User;
   userAddress: Scalars['ID'];
 };
 
