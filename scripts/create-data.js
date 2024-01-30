@@ -130,6 +130,15 @@ const createColonyEtherealMetadata = /* GraphQL */ `
   }
 `;
 
+const addVerifiedMember = /* GraphQL */ `
+  mutation AddVerifiedMember($input: CreateVerifiedMemberInput!) {
+    createVerifiedMember(input: $input) {
+      userAddress
+      colonyAddress
+    }
+  }
+`;
+
 /*
  * Queries
  */
@@ -427,7 +436,8 @@ const createColony = async (
 
   const gas = await signerOrWallet.provider.estimateGas(populatedTransaction);
   populatedTransaction.gasLimit = gas;
-  const signedTransaction = await signerOrWallet.signTransaction(populatedTransaction);
+  const signedTransaction =
+    await signerOrWallet.signTransaction(populatedTransaction);
   const hash = utils.keccak256(signedTransaction);
 
   // create the colony
@@ -450,14 +460,18 @@ const createColony = async (
   );
 
   if (colonyQuery?.errors) {
-    console.log('COLONY ETHEREAL DATA COULD NOT BE CREATED.', colonyQuery.errors[0].message);
+    console.log(
+      'COLONY ETHEREAL DATA COULD NOT BE CREATED.',
+      colonyQuery.errors[0].message,
+    );
   } else {
     console.log(
       `Creating colony ethereal data { name: "${colonyName}", creationTransactionHash: "${hash}", version: "${currentNetworkVersion.toString()}" }`,
     );
   }
 
-  const colonyDeployment = await signerOrWallet.provider.sendTransaction(signedTransaction);
+  const colonyDeployment =
+    await signerOrWallet.provider.sendTransaction(signedTransaction);
   const colonyDeploymentTransaction = await colonyDeployment.wait();
 
   await delay();
@@ -1165,20 +1179,20 @@ const createUserAndColonyData = async () => {
     );
 
     // verify users
-    await graphqlRequest(
-      updateColonyMetadata,
-      {
-        input: {
-          id: newColonyAddress,
-          isWhitelistActivated: true,
-          whitelistedAddresses: Object.keys(availableUsers.randomUsers).slice(
-            0,
-            noOfMembers,
-          ),
-        },
-      },
-      GRAPHQL_URI,
-      API_KEY,
+    await Promise.all(
+      Object.keys(availableUsers.walletUsers).map(async (userAddress) => {
+        await graphqlRequest(
+          addVerifiedMember,
+          {
+            input: {
+              colonyAddress: newColonyAddress,
+              userAddress,
+            },
+          },
+          GRAPHQL_URI,
+          API_KEY,
+        );
+      }),
     );
 
     // mint colony tokens
