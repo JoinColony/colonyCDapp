@@ -1,6 +1,6 @@
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useGetContributorsByAddressQuery } from '~gql';
-import { notNull } from '~utils/arrays';
+import { notNull } from '~utils/arrays/index.ts';
 
 const sortByDate = <T extends { createdAt: string }>(a: T, b: T) =>
   new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();

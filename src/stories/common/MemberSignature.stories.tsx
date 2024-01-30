@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MemberSignature from '~v5/common/MemberSignature';
+import MemberSignature from '~v5/common/MemberSignature/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

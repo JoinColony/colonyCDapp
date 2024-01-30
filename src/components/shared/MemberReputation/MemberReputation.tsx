@@ -2,11 +2,11 @@ import Decimal from 'decimal.js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
-import { calculatePercentageReputation, ZeroValue } from '~utils/reputation';
-import { getFormattedTokenValue } from '~utils/tokens';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { calculatePercentageReputation, ZeroValue } from '~utils/reputation.ts';
+import { getFormattedTokenValue } from '~utils/tokens.ts';
 
 import styles from './MemberReputation.css';
 

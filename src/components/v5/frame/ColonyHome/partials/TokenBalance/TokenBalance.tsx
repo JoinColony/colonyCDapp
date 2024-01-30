@@ -1,14 +1,14 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useCurrencyContext } from '~context/CurrencyContext';
-import { COLONY_BALANCES_ROUTE } from '~routes';
-import Numeral from '~shared/Numeral';
-import { currencySymbolMap } from '~utils/currency/config';
-import { formatText } from '~utils/intl';
-import WidgetBox from '~v5/common/WidgetBox';
+import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { COLONY_BALANCES_ROUTE } from '~routes/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { currencySymbolMap } from '~utils/currency/config.ts';
+import { formatText } from '~utils/intl.ts';
+import WidgetBox from '~v5/common/WidgetBox/index.ts';
 
-import { useTotalFunds } from './hooks';
+import { useTotalFunds } from './hooks.ts';
 
 const displayName = 'v5.frame.ColonyHome.TokenBalance';
 

@@ -1,1 +1,1 @@
-export { default } from './SimpleSidebar';
+export { default } from './SimpleSidebar.tsx';

@@ -4,16 +4,16 @@ import {
   CUSTOM_USER_ROLE,
   USER_ROLE,
   USER_ROLES,
-} from '~constants/permissions';
-import { Colony } from '~types';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { formatText } from '~utils/intl';
+} from '~constants/permissions.ts';
+import { type Colony } from '~types/graphql.ts';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { formatText } from '~utils/intl.ts';
 
 import {
   AVAILABLE_ROLES,
-  ManagePermissionsFormValues,
+  type ManagePermissionsFormValues,
   REMOVE_ROLE_OPTION_VALUE,
-} from './consts';
+} from './consts.tsx';
 
 export const getRoleLabel = (role: string | undefined) => {
   return [

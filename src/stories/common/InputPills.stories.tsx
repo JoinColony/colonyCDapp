@@ -1,4 +1,4 @@
-import InputPills from '~v5/common/Fields/Input/partials/InputPills';
+import InputPills from '~v5/common/Fields/Input/partials/InputPills.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

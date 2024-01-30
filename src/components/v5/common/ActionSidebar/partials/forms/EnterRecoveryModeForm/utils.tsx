@@ -1,6 +1,6 @@
-import { Colony, User } from '~types';
+import { type Colony, type User } from '~types/graphql.ts';
 
-import { EnterRecoveryModeFormValues } from './consts';
+import { type EnterRecoveryModeFormValues } from './consts.ts';
 
 export const getRecoveryModePayload = (
   colony: Colony,

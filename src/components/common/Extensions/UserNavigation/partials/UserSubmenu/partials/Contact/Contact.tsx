@@ -2,15 +2,19 @@ import { Bug, DiscordLogo, Lifebuoy, Star, TwitterLogo } from 'phosphor-react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { COLONY_DISCORD, COLONY_DOCS, COLONY_TWITTER } from '~constants';
-import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer';
-import useMobile from '~hooks/useMobile';
-import ExternalLink from '~shared/ExternalLink';
-import { formatText } from '~utils/intl';
+import {
+  COLONY_DISCORD,
+  COLONY_DOCS,
+  COLONY_TWITTER,
+} from '~constants/index.ts';
+import { useMobile } from '~hooks/index.ts';
+import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer.ts';
+import ExternalLink from '~shared/ExternalLink/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts';
-import MenuList from '../MenuList';
-import MenuListItem from '../MenuListItem';
+import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts.ts';
+import MenuList from '../MenuList/index.ts';
+import MenuListItem from '../MenuListItem/index.ts';
 
 import styles from '../Submenu.module.css';
 

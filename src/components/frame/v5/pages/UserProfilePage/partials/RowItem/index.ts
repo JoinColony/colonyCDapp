@@ -1,1 +1,1 @@
-export { default } from './RowItem';
+export { default } from './RowItem.tsx';

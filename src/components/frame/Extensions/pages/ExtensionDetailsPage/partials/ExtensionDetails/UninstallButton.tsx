@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import { AnyExtensionData } from '~types';
-import { formatText } from '~utils/intl';
-import Checkbox from '~v5/common/Checkbox/Checkbox';
-import Button from '~v5/shared/Button/Button';
-import Modal from '~v5/shared/Modal/Modal';
+import { type AnyExtensionData } from '~types/extensions.ts';
+import { formatText } from '~utils/intl.ts';
+import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
+import Button from '~v5/shared/Button/Button.tsx';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 
-import { useUninstall } from './hooks';
+import { useUninstall } from './hooks.tsx';
 
 const displayName = 'pages.ExtensionDetailsPage.UninstallButton';
 

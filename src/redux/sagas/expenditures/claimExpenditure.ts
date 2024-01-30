@@ -1,15 +1,15 @@
 import { ClientType } from '@colony/colony-js';
 import { takeEvery, fork, put, all } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
-import { ExpenditurePayout } from '~types';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { type ExpenditurePayout } from '~types/graphql.ts';
 
 import {
   createTransaction,
   createTransactionChannels,
   waitForTxResult,
-} from '../transactions';
-import { initiateTransaction, putError, takeFrom } from '../utils';
+} from '../transactions/index.ts';
+import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 type PayoutWithSlotId = ExpenditurePayout & {
   slotId: number;

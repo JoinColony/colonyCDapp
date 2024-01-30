@@ -1,18 +1,18 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import UserHubButton from '~common/Extensions/UserHubButton';
-import { UserNavigationWrapper } from '~frame/Extensions/layouts';
-import { useGetTxButtons } from '~frame/Extensions/layouts/hooks';
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import Button, { CloseButton } from '~v5/shared/Button';
+import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
+import { useGetTxButtons } from '~frame/Extensions/layouts/hooks.tsx';
+import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 
-import JoinButton from '../Button/JoinButton';
+import JoinButton from '../Button/JoinButton/index.ts';
 
-import ModalBase from './ModalBase';
-import { ModalProps } from './types';
+import ModalBase from './ModalBase.tsx';
+import { type ModalProps } from './types.ts';
 
 const displayName = 'v5.Modal';
 

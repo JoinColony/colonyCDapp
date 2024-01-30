@@ -1,11 +1,38 @@
-import { ApolloQueryResult } from '@apollo/client';
-import React, { createContext, useMemo, ReactNode } from 'react';
+import { type ApolloQueryResult } from '@apollo/client';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  type ReactNode,
+} from 'react';
 
-import { Exact, GetFullColonyByNameQuery } from '~gql';
-import { useCanInteractWithColony, useColonySubscription } from '~hooks';
-import { Colony } from '~types';
+import {
+  type Exact,
+  type GetFullColonyByNameQuery,
+  useUpdateContributorsWithReputationMutation,
+} from '~gql';
+import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
+import useColonySubscription from '~hooks/useColonySubscription.ts';
+import { type Colony } from '~types/graphql.ts';
 
-import { useUpdateColonyReputation } from './useUpdateColonyReputation';
+const useUpdateColonyReputation = (colonyAddress?: string) => {
+  const [updateContributorsWithReputation] =
+    useUpdateContributorsWithReputationMutation();
+
+  /*
+   * Update colony-wide reputation whenever a user accesses a colony.
+   * Note that this (potentially expensive) calculation will only run if there's new reputation data available,
+   * so as to conserve resources. Since it runs inside a lambda, it is not a blocking operation.
+   */
+  useEffect(() => {
+    if (colonyAddress) {
+      updateContributorsWithReputation({
+        variables: { colonyAddress },
+      });
+    }
+  }, [colonyAddress, updateContributorsWithReputation]);
+};
 
 export type RefetchColonyFn = (
   variables?:
@@ -31,7 +58,7 @@ interface ColonyContextValue {
   };
 }
 
-const ColonyContext = createContext<ColonyContextValue | null>(null);
+export const ColonyContext = createContext<ColonyContextValue | null>(null);
 
 const displayName = 'ColonyContextProvider';
 
@@ -88,4 +115,14 @@ export const ColonyContextProvider = ({
 
 ColonyContext.displayName = displayName;
 
-export { ColonyContext };
+export const useColonyContext = () => {
+  const context = useContext(ColonyContext);
+
+  if (!context) {
+    throw new Error(
+      'This hook must be used within the "ColonyContext" provider',
+    );
+  }
+
+  return context;
+};

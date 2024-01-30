@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import { Portal as LibPortal, PortalProps } from 'react-portal';
+import React, { type FC } from 'react';
+import { Portal as LibPortal, type PortalProps } from 'react-portal';
 
-import { getPortalContainer } from './utils';
+import { getPortalContainer } from './utils.ts';
 
 const displayName = 'v5.Portal';
 

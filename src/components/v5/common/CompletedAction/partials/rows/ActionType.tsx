@@ -2,10 +2,10 @@ import { FilePlus } from 'phosphor-react';
 import React from 'react';
 
 import { ColonyActionType } from '~gql';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.ActionTypeRow';
 
@@ -18,6 +18,7 @@ export const actionTypeTranslations = {
   [ColonyActionType.MoveFunds]: 'actions.transferFunds',
   [ColonyActionType.UnlockToken]: 'actions.unlockToken',
   [ColonyActionType.VersionUpgrade]: 'actions.upgradeColonyVersion',
+  [ColonyActionType.VersionUpgradeMotion]: 'actions.upgradeColonyVersion',
   default: 'Action',
 };
 

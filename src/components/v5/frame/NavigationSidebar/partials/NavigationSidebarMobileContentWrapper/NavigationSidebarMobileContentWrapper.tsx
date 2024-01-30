@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import NavigationFeedbackWidget from '../NavigationFeedbackWidget';
+import NavigationFeedbackWidget from '../NavigationFeedbackWidget/index.ts';
 
-import { mobileWrapperAnimation } from './consts';
-import { NavigationSidebarMobileContentWrapperProps } from './types';
+import { mobileWrapperAnimation } from './consts.ts';
+import { type NavigationSidebarMobileContentWrapperProps } from './types.ts';
 
 const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarMobileContentWrapper';

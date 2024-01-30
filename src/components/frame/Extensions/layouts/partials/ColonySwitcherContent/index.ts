@@ -1,1 +1,1 @@
-export { default } from './ColonySwitcherContent';
+export { default } from './ColonySwitcherContent.tsx';

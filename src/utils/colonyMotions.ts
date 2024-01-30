@@ -2,7 +2,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { Decimal } from 'decimal.js';
 import { BigNumber } from 'ethers';
 
-import { ColonyMotion } from '~types';
+import { type ColonyMotion } from '~types/graphql.ts';
 
 export enum MotionVote {
   Yay = 1,

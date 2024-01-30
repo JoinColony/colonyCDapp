@@ -1,10 +1,10 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
-import useColonyContext from '~hooks/useColonyContext';
 
-import CurrentUser from './CurrentUser';
+import CurrentUser from './CurrentUser.tsx';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.UpgradeColonyDescription';

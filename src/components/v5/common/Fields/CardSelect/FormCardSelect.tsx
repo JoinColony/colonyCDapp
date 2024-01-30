@@ -1,12 +1,12 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 
-import { FIELD_STATE } from '../consts';
+import { FIELD_STATE } from '../consts.ts';
 
-import CardSelect from './CardSelect';
-import { FormCardSelectProps } from './types';
+import CardSelect from './CardSelect.tsx';
+import { type FormCardSelectProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.CardSelect.FormCardSelect';
 

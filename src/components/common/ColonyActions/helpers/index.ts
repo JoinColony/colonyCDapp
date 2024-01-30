@@ -1,2 +1,2 @@
-export { default as getActionTitleValues } from './getActionTitleValues';
-export * from './mapItemToMessageFormat';
+export { default as getActionTitleValues } from './getActionTitleValues.ts';
+export * from './mapItemToMessageFormat.tsx';

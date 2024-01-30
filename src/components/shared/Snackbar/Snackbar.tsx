@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MessageDescriptor, FormattedMessage } from 'react-intl';
+import { type MessageDescriptor, FormattedMessage } from 'react-intl';
 
 import styles from './Snackbar.css';
 

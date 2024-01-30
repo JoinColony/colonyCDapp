@@ -1,1 +1,1 @@
-export { default } from './MotionProvider';
+export { default } from './MotionProvider.tsx';

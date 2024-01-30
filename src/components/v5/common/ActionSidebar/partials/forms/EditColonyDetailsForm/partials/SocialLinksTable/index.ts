@@ -1,1 +1,1 @@
-export { default } from './SocialLinksTable';
+export { default } from './SocialLinksTable.tsx';

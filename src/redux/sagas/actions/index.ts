@@ -1,18 +1,18 @@
 import { all, call } from 'redux-saga/effects';
 
-import createDomainActionSaga from './createDomain';
-import editColonyActionSaga from './editColony';
-import editDomainActionSaga from './editDomain';
-import initiateSafeTransactionSaga from './initiateSafeTransaction';
-import manageExistingSafesActionSaga from './manageExistingSafes';
-import managePermissionsActionSaga from './managePermissions';
-import manageReputationActionSaga from './manageReputation';
-import manageVerifiedRecipientsSaga from './manageVerifiedRecipients';
-import mintTokensActionSaga from './mintTokens';
-import moveFundsActionSaga from './moveFunds';
-import paymentActionSaga from './payment';
-import unlockTokenActionSaga from './unlockToken';
-import versionUpgradeActionSaga from './versionUpgrade';
+import createDomainActionSaga from './createDomain.ts';
+import editColonyActionSaga from './editColony.ts';
+import editDomainActionSaga from './editDomain.ts';
+import initiateSafeTransactionSaga from './initiateSafeTransaction.ts';
+import manageExistingSafesActionSaga from './manageExistingSafes.ts';
+import managePermissionsActionSaga from './managePermissions.ts';
+import manageReputationActionSaga from './manageReputation.ts';
+import manageVerifiedRecipientsSaga from './manageVerifiedRecipients.ts';
+import mintTokensActionSaga from './mintTokens.ts';
+import moveFundsActionSaga from './moveFunds.ts';
+import paymentActionSaga from './payment.ts';
+import unlockTokenActionSaga from './unlockToken.ts';
+import versionUpgradeActionSaga from './versionUpgrade.ts';
 // import enterRecoveryActionSaga from './enterRecovery';
 
 export default function* actionsSagas() {

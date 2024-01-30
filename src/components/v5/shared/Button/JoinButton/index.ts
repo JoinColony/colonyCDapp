@@ -1,1 +1,1 @@
-export { default } from './JoinButton';
+export { default } from './JoinButton.tsx';

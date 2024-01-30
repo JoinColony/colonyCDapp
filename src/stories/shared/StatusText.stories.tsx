@@ -1,6 +1,6 @@
 import React from 'react';
 
-import StatusText from '~v5/shared/StatusText';
+import StatusText from '~v5/shared/StatusText/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

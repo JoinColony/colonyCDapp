@@ -1,22 +1,22 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import { ActionForm } from '~shared/Fields';
-import { MotionVote } from '~utils/colonyMotions';
-import { formatText } from '~utils/intl';
-import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons';
-import Button from '~v5/shared/Button';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
-import ProgressBar from '~v5/shared/ProgressBar';
+import { useAppContext } from '~context/AppContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { ActionForm } from '~shared/Fields/index.ts';
+import { MotionVote } from '~utils/colonyMotions.ts';
+import { formatText } from '~utils/intl.ts';
+import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons.tsx';
+import Button from '~v5/shared/Button/index.ts';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
-import MotionBadge from '../../partials/MotionBadge/MotionBadge';
+import MotionBadge from '../../partials/MotionBadge/MotionBadge.tsx';
 
-import { useVotingStep } from './hooks';
-import DescriptionList from './partials/DescriptionList';
-import { VotingStepProps, VotingStepSections } from './types';
-import { renderVoteRadioButtons } from './utils';
+import { useVotingStep } from './hooks.tsx';
+import DescriptionList from './partials/DescriptionList/index.ts';
+import { type VotingStepProps, VotingStepSections } from './types.ts';
+import { renderVoteRadioButtons } from './utils.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';

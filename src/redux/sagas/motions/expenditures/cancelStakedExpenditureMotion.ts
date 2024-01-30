@@ -7,19 +7,19 @@ import {
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO } from '~constants';
-import { Action, ActionTypes } from '~redux';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { type Action, ActionTypes } from '~redux/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   waitForTxResult,
-} from '~redux/sagas/transactions';
+} from '~redux/sagas/transactions/index.ts';
 import {
   createInvalidParamsError,
   getColonyManager,
   initiateTransaction,
   takeFrom,
-} from '~redux/sagas/utils';
+} from '~redux/sagas/utils/index.ts';
 
 function* cancelStakedExpenditureMotion({
   meta,

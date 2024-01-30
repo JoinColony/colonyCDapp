@@ -1,9 +1,9 @@
-import { Optional } from 'utility-types';
+import { type Optional } from 'utility-types';
 
-import { User } from '~types';
-import { UserStatusMode } from '~v5/common/Pills/types';
+import { type User } from '~types/graphql.ts';
+import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 
-import { AvatarSize } from '../Avatar/types';
+import { type AvatarSize } from '../Avatar/types.ts';
 
 export interface UserAvatarProps {
   avatar?: string | null;

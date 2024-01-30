@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import InvitationBlock from '~common/InvitationBlock';
-import { usePageHeadingContext } from '~context';
-import { useAppContext } from '~hooks';
+import InvitationBlock from '~common/InvitationBlock/index.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { usePageHeadingContext } from '~context/PageHeadingContext/index.ts';
 import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
 import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import {
@@ -14,10 +14,10 @@ import {
   METACOLONY_HOME_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_HOME_ROUTE,
-} from '~routes';
-import Heading from '~shared/Heading';
+} from '~routes/index.ts';
+import Heading from '~shared/Heading/index.ts';
 
-import LandingPageItem from './LandingPageItem';
+import LandingPageItem from './LandingPageItem.tsx';
 
 const displayName = 'frame.LandingPage';
 

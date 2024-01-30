@@ -1,1 +1,1 @@
-export { default } from './PermissionsPage';
+export { default } from './PermissionsPage.tsx';

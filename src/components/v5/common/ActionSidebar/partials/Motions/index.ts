@@ -1,1 +1,1 @@
-export { default } from './Motions';
+export { default } from './Motions.tsx';

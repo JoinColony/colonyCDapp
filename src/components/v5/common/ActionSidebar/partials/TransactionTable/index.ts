@@ -1,1 +1,1 @@
-export { default } from './TransactionTable';
+export { default } from './TransactionTable.tsx';

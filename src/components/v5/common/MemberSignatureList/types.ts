@@ -1,4 +1,4 @@
-import { MemberSignatureProps } from '../MemberSignature/types';
+import { type MemberSignatureProps } from '../MemberSignature/types.ts';
 
 export interface MemberSignatureItem extends MemberSignatureProps {
   key: string;

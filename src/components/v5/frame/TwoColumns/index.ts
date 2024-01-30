@@ -1,1 +1,1 @@
-export { default } from './TwoColumns';
+export { default } from './TwoColumns.tsx';

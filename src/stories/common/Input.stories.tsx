@@ -1,4 +1,4 @@
-import Input from '~v5/common/Fields/Input';
+import Input from '~v5/common/Fields/Input/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

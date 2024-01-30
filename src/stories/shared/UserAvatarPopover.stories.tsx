@@ -1,4 +1,4 @@
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

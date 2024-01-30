@@ -1,23 +1,24 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { object, string } from 'yup';
 
-import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCreateUser/validation';
-import { isFullScreen } from '~constants';
+import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCreateUser/validation.ts';
+import { isFullScreen } from '~constants/index.ts';
+import { useAppContext } from '~context/AppContext.tsx';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext, useMobile } from '~hooks';
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import Toast from '~shared/Extensions/Toast';
-import { formatText } from '~utils/intl';
-import { multiLineTextEllipsis } from '~utils/strings';
-import { Input } from '~v5/common/Fields';
-import Button from '~v5/shared/Button';
+import { useMobile } from '~hooks/index.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import Toast from '~shared/Extensions/Toast/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { Input } from '~v5/common/Fields/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { UserPreferencesFormProps } from './types';
+import { type UserPreferencesFormProps } from './types.ts';
 
 export const useUserPreferencesPage = (truncateLimit = 20) => {
   const { formatMessage } = useIntl();

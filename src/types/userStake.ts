@@ -1,4 +1,4 @@
-import { UserStake } from './graphql';
+import { type UserStake } from './graphql.ts';
 
 export enum UserStakeStatus {
   Staking = 'Staking',

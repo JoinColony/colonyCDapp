@@ -1,13 +1,13 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { DomainColor } from '~gql';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { getTeamBadgeStyles } from '~utils/teams';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { getTeamBadgeStyles } from '~utils/teams.ts';
 
-import PillsBase from '../PillsBase';
+import PillsBase from '../PillsBase.tsx';
 
-import { TeamBadgeProps } from './types';
+import { type TeamBadgeProps } from './types.ts';
 
 const displayName = 'v5.common.Pills.TeamBadge';
 

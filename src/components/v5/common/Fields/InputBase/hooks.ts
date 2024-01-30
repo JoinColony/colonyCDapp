@@ -1,4 +1,4 @@
-import { ReactInstanceWithCleave } from 'cleave.js/react/props';
+import { type ReactInstanceWithCleave } from 'cleave.js/react/props';
 import noop from 'lodash/noop';
 import {
   useEffect,
@@ -8,10 +8,10 @@ import {
   useImperativeHandle,
 } from 'react';
 
-import { getInputTextWidth } from '~utils/elements';
+import { getInputTextWidth } from '~utils/elements.ts';
 
-import { FormattedInputProps } from './types';
-import { addWidthProperty } from './utils';
+import { type FormattedInputProps } from './types.ts';
+import { addWidthProperty } from './utils.ts';
 
 export const useAdjustInputWidth = (
   autoWidth: boolean,

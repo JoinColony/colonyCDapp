@@ -1,16 +1,16 @@
 import { isAddress } from '@ethersproject/address';
 import React, { useMemo } from 'react';
 
-import { getNetworkTokenList } from '~constants/tokens';
+import { getNetworkTokenList } from '~constants/tokens/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetTokenFromEverywhereQuery } from '~gql';
-import { useColonyContext } from '~hooks';
-import { useGetAllTokens } from '~hooks/useGetAllTokens';
-import { SpinnerLoader } from '~shared/Preloaders';
-import TokenIcon from '~shared/TokenIcon/TokenIcon';
-import { formatText } from '~utils/intl';
-import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
+import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import TokenIcon from '~shared/TokenIcon/TokenIcon.tsx';
+import { formatText } from '~utils/intl.ts';
+import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
-import TokenStatus from './partials/TokenStatus/TokenStatus';
+import TokenStatus from './partials/TokenStatus/TokenStatus.tsx';
 
 export const useTokenSelect = (inputValue: string) => {
   // @TODO: `getNetworkTokenList` and `useGetAllTokens` return the same data - no need to use both

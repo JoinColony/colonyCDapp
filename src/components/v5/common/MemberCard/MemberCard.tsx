@@ -1,20 +1,14 @@
-import { ColonyRole } from '@colony/colony-js';
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { USER_ROLE, USER_ROLES } from '~constants/permissions';
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import { AvatarWithStatusBadge } from '~v5/shared/Avatar';
-import Link from '~v5/shared/Link';
-import MeatBallMenu from '~v5/shared/MeatBallMenu';
-import ReputationBadge from '~v5/shared/ReputationBadge';
-import UserPopover from '~v5/shared/UserPopover';
+import Icon from '~shared/Icon/index.ts';
+import { AvatarWithStatusBadge } from '~v5/shared/Avatar/index.ts';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
+import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
+import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import PermissionsBadge from '../Pills/PermissionsBadge';
-
-import { MemberCardProps } from './types';
+import { type MemberCardProps } from './types.ts';
 
 const displayName = 'v5.common.MemberCard';
 
@@ -90,35 +84,7 @@ const MemberCard: FC<MemberCardProps> = ({
           )}
           {role && (
             <div className="ml-auto">
-              <Tooltip
-                tooltipContent={
-                  <>
-                    {formatText(
-                      { id: 'role.description' },
-                      { role: role.name },
-                    )}
-                    <ul className="list-disc font-medium pl-4 mb-4">
-                      {role.permissions.map((permission) => (
-                        <li key={permission}>{ColonyRole[permission]}</li>
-                      ))}
-                    </ul>
-                    <Link to="https://docs.colony.io/learn/advanced-concepts/permissions">
-                      {formatText({ id: 'learn.more' })}
-                    </Link>
-                  </>
-                }
-              >
-                <PermissionsBadge
-                  text={
-                    USER_ROLES.find(
-                      ({ role: roleField }) => roleField === role.role,
-                    )?.name || formatText({ id: 'role.custom' })
-                  }
-                  iconName={
-                    role.role !== USER_ROLE.Custom ? 'user' : 'users-three'
-                  }
-                />
-              </Tooltip>
+              <RolesTooltip role={role} />
             </div>
           )}
         </div>

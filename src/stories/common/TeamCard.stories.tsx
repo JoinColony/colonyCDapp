@@ -1,4 +1,4 @@
-import TeamCard from '~v5/common/TeamCard';
+import TeamCard from '~v5/common/TeamCard/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

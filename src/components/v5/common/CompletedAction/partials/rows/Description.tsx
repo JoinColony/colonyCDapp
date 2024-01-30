@@ -3,10 +3,10 @@ import DOMPurify from 'dompurify';
 import { CaretRight, Pencil } from 'phosphor-react';
 import React, { useState } from 'react';
 
-import { formatText } from '~utils/intl';
-import RichTextDisplay from '~v5/shared/RichTextDisplay';
+import { formatText } from '~utils/intl.ts';
+import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
 
-import { ICON_SIZE } from '../../consts';
+import { ICON_SIZE } from '../../consts.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.DescriptionRow';
 
@@ -60,7 +60,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
       </div>
       <div
         className={clsx('flex flex-1', {
-          'items-end h-10': !isExpanded,
+          'h-10': !isExpanded,
           'flex-col items-start mt-4': isExpanded,
         })}
       >
@@ -74,7 +74,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
         {isExpandButtonVisible && (
           <button
             type="button"
-            className="font-medium text-xs underline text-gray-400 ml-1 hover:text-blue-400"
+            className="font-medium text-xs underline text-gray-400 ml-1 hover:text-blue-400 self-end"
             onClick={() => {
               setIsExpanded(true);
             }}

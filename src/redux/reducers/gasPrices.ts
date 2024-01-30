@@ -1,6 +1,6 @@
-import { ActionTypes } from '../actionTypes';
-import { GasPricesRecord, GasPrices } from '../immutable';
-import { ReducerType } from '../types/reducer';
+import { ActionTypes } from '../actionTypes.ts';
+import { type GasPricesRecord, GasPrices } from '../immutable/index.ts';
+import { type ReducerType } from '../types/reducer.ts';
 
 const coreGasPricesReducer: ReducerType<GasPricesRecord> = (
   state = GasPrices(),

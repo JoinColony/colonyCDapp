@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
-import { CloseButtonProps } from 'react-toastify';
+import { type CloseButtonProps } from 'react-toastify';
 
-import { CloseButton as CloseButtonComponent } from '~v5/shared/Button';
+import { CloseButton as CloseButtonComponent } from '~v5/shared/Button/index.ts';
 
 const displayName = 'Extensions.Toast.partials.CloseButton';
 

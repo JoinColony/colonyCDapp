@@ -1,9 +1,13 @@
 import { Record, Map as ImmutableMap } from 'immutable';
 
-import { DefaultValues, RecordToJS } from '~types';
+import { type DefaultValues, type RecordToJS } from '~types/index.ts';
 
-import { CORE_MESSAGES_LIST } from '../constants';
-import { MessageRecord, MessageType, TransactionId } from '../immutable';
+import { CORE_MESSAGES_LIST } from '../constants.ts';
+import {
+  type MessageRecord,
+  type MessageType,
+  type TransactionId,
+} from '../immutable/index.ts';
 
 type MessagesListObject = { [transactionId: string]: MessageType };
 

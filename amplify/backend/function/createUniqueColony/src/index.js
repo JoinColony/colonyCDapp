@@ -153,7 +153,8 @@ exports.handler = async (event) => {
   } = metadataQuery?.data?.getColonyMetadata?.etherealData || {};
 
   if (
-    utils.getAddress(metadataInitiatorAddress) !== utils.getAddress(initiatorAddress)
+    utils.getAddress(metadataInitiatorAddress) !==
+    utils.getAddress(initiatorAddress)
   ) {
     throw new Error(
       `Colony metadata does not match the colony we are trying to create`,
@@ -198,7 +199,7 @@ exports.handler = async (event) => {
         tokenAddress: checksummedToken,
         avatar: tokenAvatar,
         thumbnail: tokenThumbnail,
-      }
+      },
     },
     graphqlURL,
     apiKey,
@@ -211,8 +212,7 @@ exports.handler = async (event) => {
     );
   }
 
-  const [existingToken] =
-    tokenQuery?.data?.getTokenFromEverywhere?.items || [];
+  const [existingToken] = tokenQuery?.data?.getTokenFromEverywhere?.items || [];
 
   if (!existingToken || !existingToken?.id) {
     throw new Error(
@@ -238,7 +238,7 @@ exports.handler = async (event) => {
         name: colonyName, // above
         type, // default
         chainMetadata: {
-          chainId
+          chainId,
         },
         version: version.toNumber(),
         status: {
@@ -249,7 +249,7 @@ exports.handler = async (event) => {
             // log set authority will be set
             mintable: false,
             unlockable: false,
-          }
+          },
         },
         colonyMemberInviteCode: memberInviteCode, // above
         whitelist: [initiatorAddress], // initiator user
@@ -292,7 +292,7 @@ exports.handler = async (event) => {
     const [error] = colonyMetadataMutation.errors;
     throw new Error(
       error?.message ||
-      `Could not create metadata entry for colony "${name}" with address "${checksummedAddress}"`,
+        `Could not create metadata entry for colony "${name}" with address "${checksummedAddress}"`,
     );
   }
 
@@ -316,7 +316,6 @@ exports.handler = async (event) => {
         id: memberInviteCode,
         colonyId: checksummedAddress,
         invitesRemaining: 100,
-        valid: true,
       },
     },
     graphqlURL,
@@ -354,7 +353,7 @@ exports.handler = async (event) => {
         color: 'LIGHT_PINK',
         name: 'General',
         description: '',
-      }
+      },
     },
     graphqlURL,
     apiKey,

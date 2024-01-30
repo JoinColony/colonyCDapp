@@ -1,1 +1,1 @@
-export { default } from './PendingReputation';
+export { default } from './PendingReputation.tsx';

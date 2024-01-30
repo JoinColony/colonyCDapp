@@ -1,22 +1,29 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext, ColonyManager } from '~context';
+import {
+  ContextModule,
+  getContext,
+  type ColonyManager,
+} from '~context/index.ts';
 import {
   GetFullColonyByNameDocument,
   UpdateDomainMetadataDocument,
-  UpdateDomainMetadataMutation,
-  UpdateDomainMetadataMutationVariables,
+  type UpdateDomainMetadataMutation,
+  type UpdateDomainMetadataMutationVariables,
 } from '~gql';
-import { Action, ActionTypes, AllActions } from '~redux';
-import { getDomainDatabaseId } from '~utils/databaseId';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { getDomainDatabaseId } from '~utils/databaseId.ts';
 
-import { transactionPending, transactionAddParams } from '../../actionCreators';
+import {
+  transactionPending,
+  transactionAddParams,
+} from '../../actionCreators/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
@@ -25,7 +32,7 @@ import {
   initiateTransaction,
   getColonyManager,
   createActionMetadataInDB,
-} from '../utils';
+} from '../utils/index.ts';
 
 function* editDomainAction({
   payload: {

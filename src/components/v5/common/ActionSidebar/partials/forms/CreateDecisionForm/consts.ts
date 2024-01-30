@@ -1,7 +1,7 @@
-import { InferType, object, string, number } from 'yup';
+import { type InferType, object, string, number } from 'yup';
 
-import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
+import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 
 export const validationSchema = object()
   .shape({

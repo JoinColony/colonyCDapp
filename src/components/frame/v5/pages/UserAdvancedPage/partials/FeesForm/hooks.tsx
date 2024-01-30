@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { type UseFormReturn } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import { useAppContext } from '~context/AppContext.tsx';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
-import Toast from '~shared/Extensions/Toast';
-import { notMaybe } from '~utils/arrays';
-import { canUseMetatransactions } from '~utils/checks';
-import { omit } from '~utils/lodash';
+import Toast from '~shared/Extensions/Toast/index.ts';
+import { notMaybe } from '~utils/arrays/index.ts';
+import { canUseMetatransactions } from '~utils/checks/index.ts';
+import { omit } from '~utils/lodash.ts';
 
-import { MetatransactionsFormValues } from './consts';
+import { type MetatransactionsFormValues } from './consts.ts';
 
 export const useFeesForm = () => {
   const [formRef, setFormRef] =

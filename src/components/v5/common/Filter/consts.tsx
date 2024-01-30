@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 
-import { FilterTypes } from '../TableFiltering/types';
+import { FilterTypes } from '../TableFiltering/types.ts';
 
 import {
   contributorFilters,
   permissionsFilters,
   reputationFilters,
   statusFilters,
-} from './partials/consts';
-import { NestedFilterOption, ParentFilterOption } from './types';
+} from './partials/consts.tsx';
+import { type NestedFilterOption, type ParentFilterOption } from './types.ts';
 
 export const followersFilterOptions: ParentFilterOption[] = [
   {

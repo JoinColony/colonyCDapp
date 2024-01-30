@@ -1,4 +1,4 @@
-import { CSSProperties, RefObject } from 'react';
+import { type CSSProperties, type RefObject } from 'react';
 
 export interface ChartData {
   id: string;

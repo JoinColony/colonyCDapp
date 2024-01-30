@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
 import styles from './PageLoader.css';
 

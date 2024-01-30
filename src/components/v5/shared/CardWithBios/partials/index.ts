@@ -1,4 +1,4 @@
-export { default } from './CardPermissions/CardPermissions';
-export { default as CardPermission } from './CardPermissions/CardPermission';
-export { default as UserStatus } from './UserStatus';
-export { default as SubNavigation } from './SubNavigation';
+export { default } from './CardPermissions/CardPermissions.tsx';
+export { default as CardPermission } from './CardPermissions/CardPermission.tsx';
+export { default as UserStatus } from './UserStatus.tsx';
+export { default as SubNavigation } from './SubNavigation.tsx';

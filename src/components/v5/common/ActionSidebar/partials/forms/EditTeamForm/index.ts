@@ -1,1 +1,1 @@
-export { default } from './EditTeamForm';
+export { default } from './EditTeamForm.tsx';

@@ -1,7 +1,7 @@
-import React, { Fragment, ReactElement, isValidElement } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
+import React, { Fragment, type ReactElement, isValidElement } from 'react';
+import { type MessageDescriptor, useIntl } from 'react-intl';
 
-import SingleCrumb from './SingleCrumb';
+import SingleCrumb from './SingleCrumb.tsx';
 
 import styles from './BreadCrumb.css';
 
@@ -39,7 +39,7 @@ const BreadCrumb = ({ elements }: Props) => {
           if (isValidElement(crumb) || typeof crumb === 'string') {
             crumbText = crumb;
           } else {
-            crumbText = formatMessage(crumb);
+            crumbText = formatMessage(crumb as MessageDescriptor);
           }
           crumbLink = '';
         }

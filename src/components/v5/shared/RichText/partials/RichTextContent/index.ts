@@ -1,1 +1,1 @@
-export { default } from './RichTextContent';
+export { default } from './RichTextContent.tsx';

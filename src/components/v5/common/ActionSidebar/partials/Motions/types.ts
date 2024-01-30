@@ -1,4 +1,4 @@
-import { MotionState } from '@colony/colony-js';
+import { type MotionState } from '@colony/colony-js';
 
 export interface MotionsProps {
   transactionId: string;

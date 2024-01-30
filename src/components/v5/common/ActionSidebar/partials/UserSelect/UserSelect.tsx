@@ -1,18 +1,20 @@
 import clsx from 'clsx';
 import { utils } from 'ethers';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useRelativePortalElement, useUserByAddress, useToggle } from '~hooks';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect';
-import UserAvatar from '~v5/shared/UserAvatar';
-import UserPopover from '~v5/shared/UserPopover';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { useUserSelect } from './hooks';
-import { UserSelectProps } from './types';
+import { useUserSelect } from './hooks.ts';
+import { type UserSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
@@ -24,7 +26,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
     name,
   });
   const isError = !!error;
-  const { usersOptions, showVerifiedUsers } = useUserSelect();
+  const { usersOptions } = useUserSelect();
   const [
     isUserSelectVisible,
     {
@@ -57,8 +59,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
       ? {
           profile: {
             displayName: selectedUserOption?.label,
+            thumbnail: selectedUserOption?.thumbnail,
           },
           walletAddress: selectedUserOption?.walletAddress,
+          isVerified: selectedUserOption?.isVerified,
         }
       : undefined;
 
@@ -71,10 +75,10 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
             size="xs"
             showUsername
             className={clsx({
-              'text-warning-400': !showVerifiedUsers,
+              'text-warning-400': !selectedUser?.isVerified,
             })}
           />
-          {showVerifiedUsers && (
+          {selectedUser?.isVerified && (
             <span className="flex ml-2 text-blue-400">
               <Icon name="verified" />
             </span>
@@ -103,11 +107,11 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                   size="xs"
                   showUsername
                   className={clsx({
-                    'text-warning-400': !showVerifiedUsers,
-                    'text-gray-900': showVerifiedUsers,
+                    'text-warning-400': !selectedUser?.isVerified,
+                    'text-gray-900': selectedUser?.isVerified,
                   })}
                 />
-                {showVerifiedUsers && (
+                {selectedUser?.isVerified && (
                   <span className="flex ml-2 text-blue-400">
                     <Icon name="verified" />
                   </span>
@@ -137,7 +141,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               showEmptyContent={false}
             />
           )}
-          {!showVerifiedUsers && field.value && (
+          {!selectedUser?.isVerified && field.value && (
             <UserPopover
               userName={userDisplayName}
               walletAddress={userWalletAddress}

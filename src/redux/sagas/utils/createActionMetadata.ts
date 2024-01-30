@@ -1,7 +1,7 @@
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
-  CreateColonyActionMetadataMutation,
-  CreateColonyActionMetadataMutationVariables,
+  type CreateColonyActionMetadataMutation,
+  type CreateColonyActionMetadataMutationVariables,
   CreateColonyActionMetadataDocument,
 } from '~gql';
 

@@ -1,1 +1,1 @@
-export { default } from './PermissionsTable';
+export { default } from './PermissionsTable.tsx';

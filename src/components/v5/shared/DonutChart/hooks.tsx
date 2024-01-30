@@ -2,13 +2,17 @@ import clsx from 'clsx';
 import React, {
   useState,
   useRef,
-  CSSProperties,
-  TouchEvent,
+  type CSSProperties,
+  type TouchEvent,
   useCallback,
   useMemo,
 } from 'react';
 
-import { ChartData, DonutChartProps, UseDonutChartReturnType } from './types';
+import {
+  type ChartData,
+  type DonutChartProps,
+  type UseDonutChartReturnType,
+} from './types.ts';
 
 export const useDonutChart = ({
   data,

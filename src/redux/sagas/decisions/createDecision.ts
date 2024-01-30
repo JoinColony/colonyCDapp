@@ -1,8 +1,8 @@
 import { call, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '~redux/actionTypes';
-import { Action } from '~redux/types';
-import { setDraftDecisionToLocalStorage } from '~utils/decisions';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type Action } from '~redux/types/index.ts';
+import { setDraftDecisionToLocalStorage } from '~utils/decisions.ts';
 
 function* createDecision({
   payload: decision,

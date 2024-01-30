@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useGetUserReputationQuery } from '~gql';
 
 const useColonyHasReputation = (

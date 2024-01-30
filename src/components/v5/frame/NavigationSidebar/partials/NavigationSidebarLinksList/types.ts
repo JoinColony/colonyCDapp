@@ -1,4 +1,4 @@
-import { NavigationSidebarLinkProps } from '../NavigationSidebarLink/types';
+import { type NavigationSidebarLinkProps } from '../NavigationSidebarLink/types.ts';
 
 export interface NavigationSidebarLinksListItem
   extends Omit<NavigationSidebarLinkProps, 'children'> {

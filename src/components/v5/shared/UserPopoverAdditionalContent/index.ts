@@ -1,1 +1,1 @@
-export { default } from './UserPopoverAdditionalContent';
+export { default } from './UserPopoverAdditionalContent.tsx';

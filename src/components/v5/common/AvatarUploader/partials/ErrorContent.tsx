@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import { TextButton } from '~v5/shared/Button';
+import Icon from '~shared/Icon/index.ts';
+import { TextButton } from '~v5/shared/Button/index.ts';
 
-import { ErrorContentProps } from '../types';
-import { DropzoneErrors, getErrorMessage } from '../utils';
+import { type ErrorContentProps } from '../types.ts';
+import { DropzoneErrors, getErrorMessage } from '../utils.tsx';
 
 const displayName = 'v5.common.AvatarUploader.partials.ErrorContent';
 

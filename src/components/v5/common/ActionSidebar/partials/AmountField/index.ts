@@ -1,1 +1,1 @@
-export { default } from './AmountField';
+export { default } from './AmountField.tsx';

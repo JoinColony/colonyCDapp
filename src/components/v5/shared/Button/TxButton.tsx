@@ -1,9 +1,9 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import { useMobile } from '~hooks';
+import { useMobile } from '~hooks/index.ts';
 
-import IconButton from './IconButton';
-import { IconButtonProps } from './types';
+import IconButton from './IconButton.tsx';
+import { type IconButtonProps } from './types.ts';
 
 const displayName = 'v5.Button.TxButton';
 

@@ -1,1 +1,1 @@
-export { default } from './NavigationSidebarMainMenu';
+export { default } from './NavigationSidebarMainMenu.tsx';

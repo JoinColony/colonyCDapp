@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React from 'react';
-import { FormattedMessage, MessageDescriptor } from 'react-intl';
+import { FormattedMessage, type MessageDescriptor } from 'react-intl';
 
-import Heading from '~shared/Heading';
-import Icon from '~shared/Icon';
-import Button from '~v5/shared/Button';
+import Heading from '~shared/Heading/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
 const displayName = 'frame.LandingPage';
 

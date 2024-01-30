@@ -1,7 +1,7 @@
-import { MessageDescriptor } from 'react-intl';
+import { type MessageDescriptor } from 'react-intl';
 
-import { TokenFragment } from '~gql';
-import { BaseFieldProps } from '~v5/common/Fields/types';
+import { type TokenFragment } from '~gql';
+import { type BaseFieldProps } from '~v5/common/Fields/types.ts';
 
 export interface SearchSelectProps extends BaseFieldProps {
   items: SearchSelectOptionProps[];
@@ -27,6 +27,7 @@ export interface SearchSelectOption {
   value: string | number;
   isDisabled?: boolean;
   avatar?: string;
+  thumbnail?: string;
   showAvatar?: boolean;
   color?: string;
   walletAddress?: string;
@@ -34,4 +35,5 @@ export interface SearchSelectOption {
   missingPermissions?: string;
   token?: TokenFragment;
   isRoot?: boolean;
+  isVerified?: boolean;
 }

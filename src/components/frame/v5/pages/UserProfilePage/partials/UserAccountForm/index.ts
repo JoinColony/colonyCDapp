@@ -1,1 +1,1 @@
-export { default } from './UserAccountForm';
+export { default } from './UserAccountForm.tsx';

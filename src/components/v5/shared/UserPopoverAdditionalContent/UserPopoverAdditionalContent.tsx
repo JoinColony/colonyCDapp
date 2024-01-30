@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { formatText } from '~utils/intl';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import { formatText } from '~utils/intl.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { UserPopoverAdditionalContentProps } from './types';
+import { type UserPopoverAdditionalContentProps } from './types.ts';
 
 const displayName = 'v5.UserPopoverAdditionalContent';
 

@@ -1,11 +1,12 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { type MutableRefObject, useEffect, useRef, useState } from 'react';
 
-import { MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
-import { useAppContext, useColonyContext } from '~hooks';
-import { TimerValueProps } from '~shared/TimerValue/TimerValue';
-import { MotionState } from '~utils/colonyMotions';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { type MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
+import { type TimerValueProps } from '~shared/TimerValue/TimerValue.tsx';
+import { MotionState } from '~utils/colonyMotions.ts';
 
-import { getCurrentStatePeriodInMs, splitTimeLeft } from './helpers';
+import { getCurrentStatePeriodInMs, splitTimeLeft } from './helpers.ts';
 
 const useMotionTimeoutPeriods = (colonyAddress: string, motionId: string) => {
   const { data, loading, refetch } = useGetMotionTimeoutPeriodsQuery({

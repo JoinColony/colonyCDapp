@@ -3,16 +3,20 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { useColonyContext, useExtensionData, useMobile } from '~hooks';
-import { ExtensionMethods } from '~hooks/useExtensionData';
-import { ActionTypes } from '~redux';
-import { COLONY_EXTENSIONS_ROUTE, COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import Toast from '~shared/Extensions/Toast/Toast';
-import { AnyExtensionData } from '~types';
-import { formatText } from '~utils/intl';
-import ActionButton from '~v5/shared/Button/ActionButton';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
+import { ActionTypes } from '~redux/index.ts';
+import {
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_EXTENSION_SETUP_ROUTE,
+} from '~routes/index.ts';
+import Toast from '~shared/Extensions/Toast/Toast.tsx';
+import { type AnyExtensionData } from '~types/extensions.ts';
+import { formatText } from '~utils/intl.ts';
+import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
-import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils';
+import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils.tsx';
 
 interface InstallButtonProps {
   extensionData: AnyExtensionData;

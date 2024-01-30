@@ -1,16 +1,16 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import Icon from '~shared/Icon';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types';
+import Icon from '~shared/Icon/index.ts';
+import { type ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
 
-import BurgerMenu from '../BurgerMenu';
-import PopoverBase from '../PopoverBase';
-import UserAvatarPopover from '../UserAvatarPopover';
+import BurgerMenu from '../BurgerMenu/index.ts';
+import PopoverBase from '../PopoverBase/index.ts';
+import UserAvatarPopover from '../UserAvatarPopover/index.ts';
 
-import { SubNavigation } from './partials';
-import UserStatusComponent from './partials/UserStatus';
-import { CardWithBiosProps } from './types';
+import { SubNavigation } from './partials/index.ts';
+import UserStatusComponent from './partials/UserStatus.tsx';
+import { type CardWithBiosProps } from './types.ts';
 
 const displayName = 'v5.CardWithBios';
 

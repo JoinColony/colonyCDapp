@@ -1,1 +1,1 @@
-export { default } from './useActivityFeed';
+export { default } from './useActivityFeed.ts';

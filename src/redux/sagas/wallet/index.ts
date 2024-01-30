@@ -1,6 +1,6 @@
 // import { eventChannel } from 'redux-saga';
-import { Network } from '@ethersproject/providers';
-import { WalletState } from '@web3-onboard/core';
+import { type Network } from '@ethersproject/providers';
+import { type WalletState } from '@web3-onboard/core';
 import { providers } from 'ethers';
 
 // import ganacheModule from './ganacheModule';
@@ -16,17 +16,17 @@ import { providers } from 'ethers';
 // import { ActionTypes } from '../../actionTypes';
 // import { Action, AllActions } from '../../types/actions';
 
-import { isDev } from '~constants';
-import { ContextModule, getContext } from '~context';
-import { BasicWallet, FullWallet } from '~types';
+import { isDev } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
+import { type BasicWallet, type FullWallet } from '~types/wallet.ts';
 import {
   setLastWallet,
-  LastWallet,
+  type LastWallet,
   clearLastWallet,
   getChainIdAsHex,
-} from '~utils/autoLogin';
+} from '~utils/autoLogin.ts';
 
-import RetryProvider from './RetryProvider';
+import RetryProvider from './RetryProvider.ts';
 
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';

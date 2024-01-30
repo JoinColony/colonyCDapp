@@ -1,2 +1,2 @@
-export { default } from './InvisibleCopyableAddress';
-export { default as InvisibleCopyableMaskedAddress } from './InvisibleCopyableMaskedAddress';
+export { default } from './InvisibleCopyableAddress.tsx';
+export { default as InvisibleCopyableMaskedAddress } from './InvisibleCopyableMaskedAddress.tsx';

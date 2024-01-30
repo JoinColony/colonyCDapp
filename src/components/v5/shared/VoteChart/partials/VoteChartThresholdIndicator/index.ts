@@ -1,1 +1,1 @@
-export { default } from './VoteChartThresholdIndicator';
+export { default } from './VoteChartThresholdIndicator.tsx';

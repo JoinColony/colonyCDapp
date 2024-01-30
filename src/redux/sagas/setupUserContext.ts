@@ -2,28 +2,32 @@ import { all, call, fork, put } from 'redux-saga/effects';
 
 // import AppLoadingState from '~context/appLoadingState';
 
-import { authenticateWallet } from '~auth';
-import { getContext, setContext, ContextModule } from '~context';
-import { ColonyWallet } from '~types';
-import { getLastWallet, LastWallet, setLastWallet } from '~utils/autoLogin';
-import { createAddress } from '~utils/web3';
+import { authenticateWallet } from '~auth/index.ts';
+import { getContext, setContext, ContextModule } from '~context/index.ts';
+import { type ColonyWallet } from '~types/wallet.ts';
+import {
+  getLastWallet,
+  type LastWallet,
+  setLastWallet,
+} from '~utils/autoLogin.ts';
+import { createAddress } from '~utils/web3/index.ts';
 
-import { ActionTypes } from '../actionTypes';
-import { AllActions } from '../types/actions';
+import { ActionTypes } from '../actionTypes.ts';
+import { type AllActions } from '../types/actions/index.ts';
 
-import actionsSagas from './actions';
-import colonySagas, { colonyCreateSaga } from './colony';
-import decisionsSagas from './decisions';
-import expendituresSagas from './expenditures';
-import extensionSagas from './extensions';
-import motionSagas from './motions';
+import actionsSagas from './actions/index.ts';
+import colonySagas, { colonyCreateSaga } from './colony/index.ts';
+import decisionsSagas from './decisions/index.ts';
+import expendituresSagas from './expenditures/index.ts';
+import extensionSagas from './extensions/index.ts';
+import motionSagas from './motions/index.ts';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
-import { setupTransactionSagas } from './transactions';
-import { disconnectWallet, setupUsersSagas } from './users';
-import { getGasPrices, putError } from './utils';
-import { getBasicWallet, getWallet } from './wallet';
+import { setupTransactionSagas } from './transactions/index.ts';
+import { disconnectWallet, setupUsersSagas } from './users/index.ts';
+import { getGasPrices, putError } from './utils/index.ts';
+import { getBasicWallet, getWallet } from './wallet/index.ts';
 // import vestingSagas from './vesting';
-import getOnboard from './wallet/onboard';
+import getOnboard from './wallet/onboard.ts';
 
 const ONBOARD_METAMASK_WALLET_LABEL = 'MetaMask';
 

@@ -6,7 +6,7 @@ import {
   PAYMENTS,
   LAZY_CONSENSUS_EXTENSION,
   STREAMING_PAYMENTS,
-} from '~constants';
+} from '~constants/index.ts';
 
 const supportingDocumentsMessages = defineMessages({
   oneTxPaymentLink: {

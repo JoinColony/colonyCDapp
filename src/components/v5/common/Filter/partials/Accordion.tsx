@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { AccordionProps } from '../types';
+import { type AccordionProps } from '../types.ts';
 
-import AccordionItem from './AccordionItem';
+import AccordionItem from './AccordionItem.tsx';
 
 const displayName = 'v5.common.Filter.partials.Accordion';
 

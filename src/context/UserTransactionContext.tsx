@@ -1,8 +1,8 @@
-import { ApolloQueryResult } from '@apollo/client';
+import { type ApolloQueryResult } from '@apollo/client';
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
+  type FC,
+  type PropsWithChildren,
   useContext,
   useEffect,
   useMemo,
@@ -13,19 +13,19 @@ import { useSelector } from 'react-redux';
 
 import {
   isTxGroup,
-  TransactionOrMessageGroup,
-} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup';
-import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks';
+  type TransactionOrMessageGroup,
+} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
+import { useGroupedTransactionsAndMessages } from '~common/Extensions/UserNavigation/hooks.ts';
+import { useAppContext } from '~context/AppContext.tsx';
 import {
-  GetUserTransactionsQuery,
+  type GetUserTransactionsQuery,
   useGetTransactionsByGroupLazyQuery,
   useUpdateTransactionMutation,
 } from '~gql';
-import { useAppContext } from '~hooks';
-import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '~redux/constants';
-import { TransactionType } from '~redux/immutable';
-import { TransactionStatus } from '~types';
-import { notNull } from '~utils/arrays';
+import { CORE_TRANSACTIONS, CORE_TRANSACTIONS_LIST } from '~redux/constants.ts';
+import { type TransactionType } from '~redux/immutable/index.ts';
+import { TransactionStatus } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
 interface UserTransactionContextValues
   extends Omit<

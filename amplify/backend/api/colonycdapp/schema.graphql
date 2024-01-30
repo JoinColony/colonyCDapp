@@ -1327,11 +1327,13 @@ type Colony @model {
   private: Boolean @default(value: "true")
 
   """
-  Invite code ID associated with the invite
+  ID of the main member invite object
   """
   colonyMemberInviteCode: ID
   """
-  Colony MemberInvite
+  The main member invite object
+  It is possible to create multiple member invites for a given colony
+  but only one of them is considered the `main` one
   """
   colonyMemberInvite: ColonyMemberInvite
     @hasOne(fields: ["colonyMemberInviteCode"])
@@ -1359,7 +1361,7 @@ input ValidateUserInviteInput {
 
 type ColonyMemberInvite @model {
   """
-  The uuid invite code generated automatically by amplify
+  Self-managed id which is used as the invite code
   """
   id: ID!
   """
@@ -1374,10 +1376,6 @@ type ColonyMemberInvite @model {
   Decrementing count of how many times this invite has been used
   """
   invitesRemaining: Int!
-  """
-  Whether the invite is still valid or not
-  """
-  valid: Boolean!
 }
 
 """

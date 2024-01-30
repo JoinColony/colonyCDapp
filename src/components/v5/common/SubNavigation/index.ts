@@ -1,2 +1,2 @@
-export { default } from './SubNavigation';
-export { default as SubNavigationMobile } from './SubNavigationMobile';
+export { default } from './SubNavigation.tsx';
+export { default as SubNavigationMobile } from './SubNavigationMobile.tsx';

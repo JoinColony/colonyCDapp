@@ -1,1 +1,1 @@
-export { default } from './TitleLabel';
+export { default } from './TitleLabel.tsx';

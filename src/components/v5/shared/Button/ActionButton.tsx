@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 
-import { useAsyncFunction, useMounted } from '~hooks';
-import { getFormAction } from '~utils/actions';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useMounted from '~hooks/useMounted.ts';
+import { getFormAction } from '~utils/actions.ts';
 
-import Button from './Button';
-import { ActionButtonProps } from './types';
+import Button from './Button.tsx';
+import { type ActionButtonProps } from './types.ts';
 
 const ActionButton: FC<ActionButtonProps> = ({
   actionType,

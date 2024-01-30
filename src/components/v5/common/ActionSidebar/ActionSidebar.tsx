@@ -1,30 +1,31 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { ArrowLineRight, ArrowsOutSimple, X } from 'phosphor-react';
-import React, { FC, PropsWithChildren, useLayoutEffect } from 'react';
+import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
-import { isFullScreen } from '~constants';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
+import { isFullScreen } from '~constants/index.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
-import { useColonyContext, useMobile } from '~hooks';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import useToggle from '~hooks/useToggle';
-import { SpinnerLoader } from '~shared/Preloaders';
-import { AnyActionType } from '~types';
-import { getExtendedActionType } from '~utils/colonyActions';
-import { formatText } from '~utils/intl';
-import Modal from '~v5/shared/Modal';
+import { useMobile } from '~hooks/index.ts';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import useToggle from '~hooks/useToggle/index.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { type AnyActionType } from '~types/actions.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
+import { formatText } from '~utils/intl.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
-import CompletedAction from '../CompletedAction';
+import CompletedAction from '../CompletedAction/index.ts';
 
-import { actionSidebarAnimation } from './consts';
+import { actionSidebarAnimation } from './consts.tsx';
 import {
   useCloseSidebarClick,
   useGetActionData,
   useRemoveTxParamOnClose,
-} from './hooks';
-import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent';
-import { ActionSidebarProps } from './types';
+} from './hooks/index.ts';
+import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -35,6 +36,7 @@ const SUPPORTED_ACTIONS: AnyActionType[] = [
   ColonyActionType.CreateDomain,
   ColonyActionType.UnlockToken,
   ColonyActionType.VersionUpgrade,
+  ColonyActionType.VersionUpgradeMotion,
   ColonyActionType.CreateDecisionMotion,
   // @TODO uncomment when social links are added to action display
   // ColonyActionType.ColonyEdit,

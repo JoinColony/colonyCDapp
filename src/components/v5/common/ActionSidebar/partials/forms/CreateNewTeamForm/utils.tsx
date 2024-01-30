@@ -1,6 +1,6 @@
-import { Colony } from '~types';
+import { type Colony } from '~types/graphql.ts';
 
-import { CreateNewTeamFormValues } from './consts';
+import { type CreateNewTeamFormValues } from './consts.ts';
 
 export const getCreateNewTeamPayload = (
   colony: Colony,

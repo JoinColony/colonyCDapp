@@ -1,1 +1,1 @@
-export { default } from './TotalActions';
+export { default } from './TotalActions.tsx';

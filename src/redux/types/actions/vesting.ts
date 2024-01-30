@@ -1,6 +1,6 @@
-import { ActionTypes } from '../../actionTypes';
+import { type ActionTypes } from '../../actionTypes.ts';
 
-import { ErrorActionType, UniqueActionType } from './index';
+import { type ErrorActionType, type UniqueActionType } from './index.ts';
 
 export type MetacolonyVestingTypes =
   | UniqueActionType<

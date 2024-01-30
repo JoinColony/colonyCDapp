@@ -1,10 +1,10 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
-import Card from '../Card';
+import Card from '../Card/index.ts';
 
-import { CardWithCalloutProps } from './types';
+import { type CardWithCalloutProps } from './types.ts';
 
 const CardWithCallout: FC<PropsWithChildren<CardWithCalloutProps>> = ({
   button,

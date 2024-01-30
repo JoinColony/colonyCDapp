@@ -1,1 +1,1 @@
-export { default } from './MotionStateBadge';
+export { default } from './MotionStateBadge.tsx';

@@ -1,8 +1,11 @@
-import { InferType, number, object, string } from 'yup';
+import { type InferType, number, object, string } from 'yup';
 
-import { MAX_ANNOTATION_LENGTH, MAX_COLONY_DISPLAY_NAME } from '~constants';
-import { formatText } from '~utils/intl';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts';
+import {
+  MAX_ANNOTATION_LENGTH,
+  MAX_COLONY_DISPLAY_NAME,
+} from '~constants/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 
 export const validationSchema = object()
   .shape({

@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
-import { formatText } from '~utils/intl';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { useVerifiedPage } from './hooks';
-import VerifiedTable from './partials/VerifiedTable';
+import { useVerifiedPage } from './hooks.ts';
+import VerifiedTable from './partials/VerifiedTable/index.ts';
 
 const displayName = 'v5.pages.VerifiedPage';
 

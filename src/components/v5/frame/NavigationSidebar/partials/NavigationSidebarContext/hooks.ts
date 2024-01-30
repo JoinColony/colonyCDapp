@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import { NavigationSidebarContext } from './NavigationSidebarContext';
-import { NavigationSidebarContextValue } from './types';
+import { NavigationSidebarContext } from './NavigationSidebarContext.tsx';
+import { type NavigationSidebarContextValue } from './types.ts';
 
 const useNavigationSidebarContext = (): NavigationSidebarContextValue =>
   useContext(NavigationSidebarContext);

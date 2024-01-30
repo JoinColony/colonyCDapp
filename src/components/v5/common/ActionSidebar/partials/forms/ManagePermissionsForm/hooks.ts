@@ -1,27 +1,28 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { DeepPartial } from 'utility-types';
+import { type DeepPartial } from 'utility-types';
 
-import { UserRole, USER_ROLE, getRole } from '~constants/permissions';
-import { useAppContext, useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import { getUserRolesForDomain } from '~transformers';
-import { mapPayload, pipe } from '~utils/actions';
-import { notMaybe } from '~utils/arrays';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
+import { type UserRole, USER_ROLE, getRole } from '~constants/permissions.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { getUserRolesForDomain } from '~transformers/index.ts';
+import { mapPayload, pipe } from '~utils/actions.ts';
+import { notMaybe } from '~utils/arrays/index.ts';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 
-import { DecisionMethod, useActionFormBaseHook } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
+import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
 
 import {
   AUTHORITY,
   AVAILABLE_ROLES,
-  ManagePermissionsFormValues,
-  REMOVE_ROLE_OPTION_VALUE,
+  type ManagePermissionsFormValues,
+  type REMOVE_ROLE_OPTION_VALUE,
   validationSchema,
-} from './consts';
-import { getManagePermissionsPayload } from './utils';
+} from './consts.tsx';
+import { getManagePermissionsPayload } from './utils.tsx';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],

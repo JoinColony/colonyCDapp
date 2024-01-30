@@ -95,42 +95,6 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
-    'import/extensions': 'off',
-
-    // Disallow TODO but not @todo; these are expected to be handled by the jsdoc plugin
-    'no-warning-comments': [
-      'error',
-      { terms: ['fixme', 'todo', 'xxx', '@fixme'], location: 'start' },
-    ],
-    'jsdoc/check-indentation': 'off',
-    'no-restricted-exports': 'off',
-    'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error', 'nofunc'],
-    'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': ['error'],
-    '@typescript-eslint/ban-ts-comment': 'off',
-    'default-param-last': 'off',
-    'max-len': [
-      'error',
-      {
-        code: 120,
-        // Allow import, export and implements statements. Also long backticks
-        ignorePattern: '^import [^,]+ from |^export | implements | `.{30,}`',
-        ignoreComments: true,
-        tabWidth: 2,
-        ignoreUrls: true,
-        ignoreStrings: true,
-      },
-    ],
-    'react/function-component-definition': 'off',
-    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
-    // Allow for-of loops
-    'no-restricted-syntax': [
-      'error',
-      'ForInStatement',
-      'LabeledStatement',
-      'WithStatement',
-    ],
     'import/order': [
       'error',
       {
@@ -165,6 +129,47 @@ module.exports = {
         ],
         warnOnUnassignedImports: true,
       },
+    ],
+
+    // Disallow TODO but not @todo; these are expected to be handled by the jsdoc plugin
+    'no-warning-comments': [
+      'error',
+      { terms: ['fixme', 'todo', 'xxx', '@fixme'], location: 'start' },
+    ],
+    'jsdoc/check-indentation': 'off',
+    'no-restricted-exports': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error', 'nofunc'],
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        fixStyle: 'inline-type-imports',
+      },
+    ],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'default-param-last': 'off',
+    'max-len': [
+      'error',
+      {
+        code: 120,
+        // Allow import, export and implements statements. Also long backticks
+        ignorePattern: '^import [^,]+ from |^export | implements | `.{30,}`',
+        ignoreComments: true,
+        tabWidth: 2,
+        ignoreUrls: true,
+        ignoreStrings: true,
+      },
+    ],
+    'react/function-component-definition': 'off',
+    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
+    // Allow for-of loops
+    'no-restricted-syntax': [
+      'error',
+      'ForInStatement',
+      'LabeledStatement',
+      'WithStatement',
     ],
     'no-underscore-dangle': ['error', { allow: ['__typename'] }],
   },

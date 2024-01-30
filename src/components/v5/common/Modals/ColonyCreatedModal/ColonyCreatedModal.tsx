@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import InvitationBlock from '~common/InvitationBlock';
-import Icon from '~shared/Icon';
-import Button from '~v5/shared/Button';
-import Modal from '~v5/shared/Modal';
+import InvitationBlock from '~common/InvitationBlock/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
 const displayName = 'v5.common.Modals.ColonyCreatedModal';
 

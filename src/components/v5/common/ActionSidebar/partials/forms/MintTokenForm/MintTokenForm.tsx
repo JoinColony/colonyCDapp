@@ -1,17 +1,17 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useColonyContext } from '~hooks';
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
+import { useDecisionMethods } from '../../../hooks/index.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
 
-import { useMintToken } from './hooks';
+import { useMintToken } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 

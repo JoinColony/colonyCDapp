@@ -1,1 +1,1 @@
-export { default } from './PermissionsBadge';
+export { default } from './PermissionsBadge.tsx';

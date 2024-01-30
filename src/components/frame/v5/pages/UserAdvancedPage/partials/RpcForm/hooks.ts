@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { string, bool, object } from 'yup';
 
+import { useAppContext } from '~context/AppContext.tsx';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
-import { yupDebounce } from '~utils/yup/tests';
+import { yupDebounce } from '~utils/yup/tests/index.ts';
 
-import { isValidURL, validateCustomGnosisRPC } from './helpers';
+import { isValidURL, validateCustomGnosisRPC } from './helpers.ts';
 
 export const useRpcForm = () => {
   const rpcValidationSchema = object({

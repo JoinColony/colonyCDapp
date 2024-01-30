@@ -1,4 +1,4 @@
-import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
+import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget/index.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -14,7 +14,7 @@ export const Success: Story = {
   args: {
     status: 'success',
     currentVersion: 12,
-    lastVersion: 12,
+    latestVersion: 12,
   },
 };
 
@@ -22,6 +22,6 @@ export const Error: Story = {
   args: {
     status: 'error',
     currentVersion: 10,
-    lastVersion: 12,
+    latestVersion: 12,
   },
 };

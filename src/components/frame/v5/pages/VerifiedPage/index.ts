@@ -1,1 +1,1 @@
-export { default } from './VerifiedPage';
+export { default } from './VerifiedPage.tsx';

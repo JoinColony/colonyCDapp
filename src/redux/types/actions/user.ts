@@ -1,14 +1,14 @@
-import { CreateUserFormValues } from '~common/Onboarding/wizardSteps/StepCreateUser/types';
-import { Address } from '~types';
+import { type CreateUserFormValues } from '~common/Onboarding/wizardSteps/StepCreateUser/types.ts';
+import { type Address } from '~types/index.ts';
 
-import { ActionTypes } from '../../actionTypes';
+import { type ActionTypes } from '../../actionTypes.ts';
 
 import {
-  ActionType,
-  ErrorActionType,
-  MetaWithSetter,
-  UniqueActionType,
-} from './index';
+  type ActionType,
+  type ErrorActionType,
+  type MetaWithSetter,
+  type UniqueActionType,
+} from './index.ts';
 
 export type UserActionTypes =
   | UniqueActionType<

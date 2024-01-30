@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ColonyDashboardProvider } from '~context/ColonyDashboardContext';
+import { ColonyDashboardProvider } from '~context/ColonyDashboardContext.tsx';
 
-import ColonyHome from './ColonyHome';
+import ColonyHome from './ColonyHome.tsx';
 
 const ColonyHomePage = () => {
   return (

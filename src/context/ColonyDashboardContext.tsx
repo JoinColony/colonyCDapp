@@ -1,5 +1,5 @@
 import React, {
-  ReactNode,
+  type ReactNode,
   createContext,
   useContext,
   useMemo,

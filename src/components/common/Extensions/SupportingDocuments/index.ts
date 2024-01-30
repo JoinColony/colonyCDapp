@@ -1,1 +1,1 @@
-export { default } from './SupportingDocuments';
+export { default } from './SupportingDocuments.tsx';

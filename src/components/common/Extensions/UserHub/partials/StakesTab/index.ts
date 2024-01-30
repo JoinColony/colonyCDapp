@@ -1,1 +1,1 @@
-export { default } from './StakesTab';
+export { default } from './StakesTab.tsx';

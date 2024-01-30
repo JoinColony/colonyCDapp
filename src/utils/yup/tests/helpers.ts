@@ -1,8 +1,8 @@
-import { TestContext } from 'yup';
+import { type TestContext } from 'yup';
 
-import { intl } from '~utils/intl';
+import { intl } from '~utils/intl.ts';
 
-import { CustomTestConfig } from '../tests';
+import { type CustomTestConfig } from './index.ts';
 
 export const { formatMessage } = intl({
   'error.unknown': 'There was an error with the request. Please try again.',

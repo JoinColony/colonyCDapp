@@ -1,10 +1,10 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
-import { useCopyToClipboard } from '~hooks/useCopyToClipboard';
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { MeatballMenuCopyItemProps } from './types';
+import { type MeatballMenuCopyItemProps } from './types.ts';
 
 const MeatballMenuCopyItem: FC<
   PropsWithChildren<MeatballMenuCopyItemProps>

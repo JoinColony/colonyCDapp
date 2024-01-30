@@ -1,4 +1,4 @@
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

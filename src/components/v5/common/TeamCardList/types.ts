@@ -1,4 +1,4 @@
-import { TeamCardProps } from '../TeamCard/types';
+import { type TeamCardProps } from '../TeamCard/types.ts';
 
 export interface TeamCardListItem extends TeamCardProps {
   key: string;

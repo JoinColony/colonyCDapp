@@ -1,6 +1,9 @@
-import { Permissions, ReputationSort } from '~v5/common/TableFiltering/types';
+import {
+  Permissions,
+  ReputationSort,
+} from '~v5/common/TableFiltering/types.ts';
 
-import { FilterOptionProps } from '../types';
+import { type FilterOptionProps } from '../types.ts';
 
 export const contributorFilters: FilterOptionProps[] = [
   {

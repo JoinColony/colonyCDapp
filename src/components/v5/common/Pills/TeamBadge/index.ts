@@ -1,1 +1,1 @@
-export { default } from './TeamBadge';
+export { default } from './TeamBadge.tsx';

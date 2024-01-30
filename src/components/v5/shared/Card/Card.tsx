@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { CardProps } from './types';
+import { type CardProps } from './types.ts';
 
 const displayName = 'v5.Card';
 

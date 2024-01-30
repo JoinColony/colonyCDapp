@@ -1,5 +1,5 @@
 import React, {
-  FC,
+  type FC,
   // @BETA: Disabled for now
   // useState
 } from 'react';
@@ -12,7 +12,7 @@ import { useIntl } from 'react-intl';
 // import InformationList from '~v5/shared/InformationList';
 // import Modal from '~v5/shared/Modal';
 
-import FeesForm from '../FeesForm';
+import FeesForm from '../FeesForm/index.ts';
 // @BETA: Disabled for now
 // import RpcForm from '../RpcForm/RpcForm';
 // import { modalInformations } from './consts';

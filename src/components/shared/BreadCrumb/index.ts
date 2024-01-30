@@ -1,2 +1,2 @@
-export { default } from './BreadCrumb';
-export { Crumb } from './BreadCrumb';
+export { default } from './BreadCrumb.tsx';
+export { Crumb } from './BreadCrumb.tsx';

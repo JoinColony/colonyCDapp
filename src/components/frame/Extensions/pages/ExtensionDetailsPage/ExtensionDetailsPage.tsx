@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import {
   Route,
   Routes,
@@ -7,26 +7,27 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import ImageCarousel from '~common/Extensions/ImageCarousel';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
-import { useColonyContext, useExtensionData } from '~hooks';
-import { ActionTypes } from '~redux';
-import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
-import NotFoundRoute from '~routes/NotFoundRoute';
-import { ActionForm } from '~shared/Fields';
-import { mapPayload, mergePayload, pipe } from '~utils/actions';
-import { formatText } from '~utils/intl';
+import ImageCarousel from '~common/Extensions/ImageCarousel/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
+import useExtensionData from '~hooks/useExtensionData.ts';
+import { ActionTypes } from '~redux/index.ts';
+import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes/index.ts';
+import NotFoundRoute from '~routes/NotFoundRoute.tsx';
+import { ActionForm } from '~shared/Fields/index.ts';
+import { mapPayload, mergePayload, pipe } from '~utils/actions.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { SetupComponentMap } from './consts';
-import ExtensionInfo from './ExtensionInfo';
-import ExtensionsTopRow from './ExtensionTopRow';
-import ExtensionDetails from './partials/ExtensionDetails';
+import { SetupComponentMap } from './consts.ts';
+import ExtensionInfo from './ExtensionInfo.tsx';
+import ExtensionsTopRow from './ExtensionTopRow.tsx';
+import ExtensionDetails from './partials/ExtensionDetails/index.ts';
 import {
   createExtensionSetupInitialValues,
   getFormSuccessFn,
   mapExtensionActionPayload,
-} from './utils';
-import { getValidationSchema } from './validation';
+} from './utils.tsx';
+import { getValidationSchema } from './validation.ts';
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 

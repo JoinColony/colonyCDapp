@@ -1,6 +1,10 @@
-import { Path, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
+import {
+  type Path,
+  type UseFormGetValues,
+  type UseFormSetValue,
+} from 'react-hook-form';
 
-import { once } from '~utils/lodash';
+import { once } from '~utils/lodash.ts';
 
 export const setFieldTouched = once(
   <V extends Record<string, any>>(

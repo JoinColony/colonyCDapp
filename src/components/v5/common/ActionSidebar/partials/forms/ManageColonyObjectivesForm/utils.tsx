@@ -1,6 +1,6 @@
-import { Colony } from '~types';
+import { type Colony } from '~types/graphql.ts';
 
-import { ManageColonyObjectivesFormValues } from './consts';
+import { type ManageColonyObjectivesFormValues } from './consts.ts';
 
 export const getManageColonyObjectivesPayload = (
   colony: Colony,

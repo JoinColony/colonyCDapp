@@ -1,4 +1,4 @@
-import { DomainColor } from '~gql';
+import { type DomainColor } from '~gql';
 
 export interface SelectedTeamColourPillProps {
   title: string;

@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
-import { formatText } from '~utils/intl';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { useBalancePage } from './hooks';
-import BalanceTable from './partials/BalanceTable';
+import { useBalancePage } from './hooks.ts';
+import BalanceTable from './partials/BalanceTable/index.ts';
 
 const displayName = 'v5.pages.BalancePage';
 

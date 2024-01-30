@@ -1,11 +1,11 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
-import Numeral from '~shared/Numeral';
-import { ColonyClaims } from '~types';
-import { formatText } from '~utils/intl';
+import Numeral from '~shared/Numeral/index.ts';
+import { type ColonyClaims } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
 
-import AcceptButton from '../AcceptButton';
+import AcceptButton from '../AcceptButton/index.ts';
 
 export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
   const columnHelper = useMemo(() => createColumnHelper<ColonyClaims>(), []);

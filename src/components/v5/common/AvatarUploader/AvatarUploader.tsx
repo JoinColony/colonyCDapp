@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useAvatarUploader, UseAvatarUploaderProps } from './hooks';
-import FileUpload from './partials/FileUpload';
-import ProgressContent from './partials/ProgressContent';
-import { AvatarUploaderProps } from './types';
-import { getPlaceholder } from './utils';
+import { useAvatarUploader, type UseAvatarUploaderProps } from './hooks.tsx';
+import FileUpload from './partials/FileUpload.tsx';
+import ProgressContent from './partials/ProgressContent.tsx';
+import { type AvatarUploaderProps } from './types.ts';
+import { getPlaceholder } from './utils.tsx';
 
 const displayName = 'v5.common.AvatarUploader';
 

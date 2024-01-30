@@ -1,21 +1,21 @@
-import { ClientType, AnyVotingReputationClient } from '@colony/colony-js';
+import { ClientType, type AnyVotingReputationClient } from '@colony/colony-js';
 import { utils } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
-import { signMessage } from '../messages';
+import { ActionTypes } from '../../actionTypes.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
+import { signMessage } from '../messages/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+} from '../transactions/index.ts';
 import {
   putError,
   takeFrom,
   getColonyManager,
   initiateTransaction,
-} from '../utils';
+} from '../utils/index.ts';
 
 export type RevealMotionPayload =
   Action<ActionTypes.MOTION_REVEAL_VOTE>['payload'];

@@ -1,12 +1,15 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import Button from '~v5/shared/Button';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import Button from '~v5/shared/Button/index.ts';
 
-import { ColonyVersionWidgetProps } from './types';
+import { type ColonyVersionWidgetProps } from './types.ts';
 
 import styles from './ColonyVersionWidget.module.css';
 
@@ -14,11 +17,21 @@ const displayName = 'v5.ColonyVersionWidget';
 
 const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
   status,
-  lastVersion,
+  latestVersion,
   currentVersion,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
+
+  const handleUpgradeColony = () => {
+    toggleActionSidebarOn({
+      [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
+    });
+  };
 
   return (
     <div
@@ -61,17 +74,18 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
         />
 
         <div className={styles.wrapper}>
-          {formatMessage({ id: 'last.version' })}
+          {formatMessage({ id: 'latest.version' })}
           <div className={styles.text}>
             <span className="text-success-400">
               <Icon appearance={{ size: 'extraTiny' }} name="check-circle" />
             </span>
-            <span className={styles.value}>{lastVersion}</span>
+            <span className={styles.value}>{latestVersion}</span>
           </div>
         </div>
       </div>
       <Button
         type="button"
+        onClick={handleUpgradeColony}
         disabled={status === 'success'}
         mode="primarySolid"
         isFullSize={isMobile}

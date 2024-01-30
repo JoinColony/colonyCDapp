@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import {
   Outlet,
@@ -7,21 +7,21 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
-import { useMemberModalContext } from '~context';
+import { useMemberModalContext } from '~context/MemberModalContext.tsx';
 import {
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_MEMBERS_ROUTE,
-} from '~routes/routeConstants';
-import Tabs from '~shared/Extensions/Tabs';
-import { formatText } from '~utils/intl';
-import Filter from '~v5/common/Filter';
-import { FilterTypes } from '~v5/common/TableFiltering/types';
-import BurgerMenu from '~v5/shared/BurgerMenu';
-import PopoverBase from '~v5/shared/PopoverBase';
+} from '~routes/routeConstants.ts';
+import Tabs from '~shared/Extensions/Tabs/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Filter from '~v5/common/Filter/index.ts';
+import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
+import BurgerMenu from '~v5/shared/BurgerMenu/index.ts';
+import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import { useMembersPage } from './hooks';
-import { MembersTabContentWrapper } from './partials/MembersTabContent';
-import SubNavigation from './partials/SubNavigation';
+import { useMembersPage } from './hooks.ts';
+import { MembersTabContentWrapper } from './partials/MembersTabContent/index.ts';
+import SubNavigation from './partials/SubNavigation/index.ts';
 
 const displayName = 'v5.pages.MembersPage';
 

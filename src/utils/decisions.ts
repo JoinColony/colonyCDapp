@@ -1,6 +1,7 @@
-import { CORE_DECISIONS, CORE_DECISIONS_LIST } from '~redux/constants';
-import { CoreDecisionsRecord } from '~redux/state/decisions';
-import { Address, ColonyDecision } from '~types';
+import { CORE_DECISIONS, CORE_DECISIONS_LIST } from '~redux/constants.ts';
+import { type CoreDecisionsRecord } from '~redux/state/decisions.ts';
+import { type ColonyDecision } from '~types/graphql.ts';
+import { type Address } from '~types/index.ts';
 
 export type DecisionDraft = Omit<
   ColonyDecision,

@@ -1,1 +1,1 @@
-export { default } from './OnboardingPage';
+export { default } from './OnboardingPage.tsx';

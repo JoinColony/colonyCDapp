@@ -1,17 +1,15 @@
 import { useMemo } from 'react';
 
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetUserStakesQuery } from '~gql';
-import {
-  useAppContext,
-  useColonyContext,
-  useNetworkMotionStates,
-} from '~hooks';
-import { UserStakeWithStatus } from '~types';
-import { notNull } from '~utils/arrays';
+import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
+import { type UserStakeWithStatus } from '~types/userStake.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
-import { stakesFilterOptions } from './consts';
-import { getStakeStatus } from './helpers';
-import { StakesFilterType } from './types';
+import { stakesFilterOptions } from './consts.ts';
+import { getStakeStatus } from './helpers.ts';
+import { type StakesFilterType } from './types.ts';
 
 export const useStakesByFilterType = () => {
   const {

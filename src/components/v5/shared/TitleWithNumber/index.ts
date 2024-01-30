@@ -1,1 +1,1 @@
-export { default } from './TitleWithNumber';
+export { default } from './TitleWithNumber.tsx';

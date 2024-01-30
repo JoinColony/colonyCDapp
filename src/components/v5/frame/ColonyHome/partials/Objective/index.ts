@@ -1,1 +1,1 @@
-export { default } from './Objective';
+export { default } from './Objective.tsx';

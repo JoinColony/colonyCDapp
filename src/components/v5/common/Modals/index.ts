@@ -1,2 +1,2 @@
-export { default as ManageMembersModal } from './ManageMemberModal';
-export { default as InviteMembersModal } from './InviteMembersModal';
+export { default as ManageMembersModal } from './ManageMemberModal/index.ts';
+export { default as InviteMembersModal } from './InviteMembersModal/index.ts';

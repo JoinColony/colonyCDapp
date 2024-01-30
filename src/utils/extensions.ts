@@ -1,17 +1,16 @@
 import { Extension, Id } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 
-import { getUserRolesForDomain } from '~transformers';
+import { getUserRolesForDomain } from '~transformers/index.ts';
 import {
-  AnyExtensionData,
-  ExtensionConfig,
-  InstalledExtensionData,
-  ColonyExtension,
-  InstallableExtensionData,
-  Colony,
-} from '~types';
+  type AnyExtensionData,
+  type ExtensionConfig,
+  type InstalledExtensionData,
+  type InstallableExtensionData,
+} from '~types/extensions.ts';
+import { type Colony, type ColonyExtension } from '~types/graphql.ts';
 
-import { userHasRole } from './checks';
+import { userHasRole } from './checks/index.ts';
 
 /**
  * Type guard to distinguish installed extension data from installable extension data

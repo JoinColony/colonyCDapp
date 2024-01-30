@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers';
 import {
   adjustConvertedValue,
   getFormattedNumeralValue,
-} from '~shared/Numeral';
+} from '~shared/Numeral/index.ts';
 
 export enum ZeroValue {
   Zero = '0',

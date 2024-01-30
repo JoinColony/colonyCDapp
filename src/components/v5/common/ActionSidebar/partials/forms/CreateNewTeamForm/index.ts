@@ -1,1 +1,1 @@
-export { default } from './CreateNewTeamForm';
+export { default } from './CreateNewTeamForm.tsx';

@@ -1,1 +1,1 @@
-export { default } from './CustomOption';
+export { default } from './CustomOption.tsx';

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
-import Button from '~v5/shared/Button';
-import Modal from '~v5/shared/Modal';
+import Button from '~v5/shared/Button/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

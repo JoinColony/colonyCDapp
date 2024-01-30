@@ -1,7 +1,10 @@
 import { utils } from 'ethers';
 
-import { ContractRevertErrors, TRANSACTION_METHODS } from '~types';
-import { intl } from '~utils/intl';
+import {
+  ContractRevertErrors,
+  TRANSACTION_METHODS,
+} from '~types/transactions.ts';
+import { intl } from '~utils/intl.ts';
 
 const { formatMessage } = intl({
   'error.unknown': 'Unknown broadcaster error',

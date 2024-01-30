@@ -1,6 +1,6 @@
-import React, { ReactNode, useState, useCallback } from 'react';
+import React, { type ReactNode, useState, useCallback } from 'react';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
 import styles from './Card.css';
 

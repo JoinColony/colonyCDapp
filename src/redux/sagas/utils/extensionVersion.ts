@@ -1,10 +1,10 @@
 import { Extension, getExtensionHash } from '@colony/colony-js';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   GetCurrentExtensionVersionDocument,
-  GetCurrentExtensionVersionQuery,
-  GetCurrentExtensionVersionQueryVariables,
+  type GetCurrentExtensionVersionQuery,
+  type GetCurrentExtensionVersionQueryVariables,
 } from '~gql';
 
 export const getOneTxPaymentVersion = async (): Promise<number> => {

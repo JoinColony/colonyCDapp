@@ -1,5 +1,5 @@
-import { TransactionStatus } from '~gql';
-import { TransactionType } from '~redux/immutable';
+import { type TransactionStatus } from '~gql';
+import { type TransactionType } from '~redux/immutable/index.ts';
 
 export interface TransactionHeaderProps {
   title: string;

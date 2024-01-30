@@ -1,9 +1,9 @@
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetTotalColonyDomainActionsQuery } from '~gql';
-import { notNull } from '~utils/arrays';
+import { notNull } from '~utils/arrays/index.ts';
 
-import useActionsCount from './useActionsCount';
-import useColonyContext from './useColonyContext';
-import useGetSelectedDomainFilter from './useGetSelectedDomainFilter';
+import useActionsCount from './useActionsCount.ts';
+import useGetSelectedDomainFilter from './useGetSelectedDomainFilter.tsx';
 
 export const useActivityData = () => {
   const {

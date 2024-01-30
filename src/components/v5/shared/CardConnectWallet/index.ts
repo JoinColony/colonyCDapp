@@ -1,1 +1,1 @@
-export { default } from './CardConnectWallet';
+export { default } from './CardConnectWallet.tsx';

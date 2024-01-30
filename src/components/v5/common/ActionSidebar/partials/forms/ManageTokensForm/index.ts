@@ -1,1 +1,1 @@
-export { default } from './ManageTokensForm';
+export { default } from './ManageTokensForm.tsx';

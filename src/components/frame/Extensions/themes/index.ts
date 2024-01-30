@@ -1,5 +1,5 @@
-import { light, dark } from './consts';
-import { IThemesList } from './types';
+import { light, dark } from './consts.ts';
+import { type IThemesList } from './types.ts';
 
 export const themeList: IThemesList = {
   light,

@@ -1,13 +1,13 @@
 import { takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '~redux/actionTypes';
+import { ActionTypes } from '~redux/actionTypes.ts';
 
-import { syncTransactionWithDb } from './transactionsToDb';
+import { syncTransactionWithDb } from './transactionsToDb.ts';
 
-export * from './createTransaction';
-export * from './estimateGasCost';
-export * from './sendTransaction';
-export * from './transactionChannel';
+export * from './createTransaction.ts';
+export * from './estimateGasCost.ts';
+export * from './sendTransaction.ts';
+export * from './transactionChannel.ts';
 
 export function* setupTransactionSagas() {
   yield takeEvery(ActionTypes.TRANSACTION_CREATED, syncTransactionWithDb);

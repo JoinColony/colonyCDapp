@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import ReactModal from 'react-modal';
 
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 
-import { ModalBaseProps } from './types';
+import { type ModalBaseProps } from './types.ts';
 
 const displayName = 'v5.ModalBase';
 

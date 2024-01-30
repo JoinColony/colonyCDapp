@@ -1,1 +1,1 @@
-export { default } from './FilterOptions';
+export { default } from './FilterOptions.tsx';

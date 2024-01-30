@@ -3,15 +3,18 @@ import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 import { object, string } from 'yup';
 
-import { useUserTokenBalanceContext } from '~context';
-import { useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux';
-import { pipe, mapPayload } from '~utils/actions';
-import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext.tsx';
+import { ActionTypes } from '~redux/index.ts';
+import { pipe, mapPayload } from '~utils/actions.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { TOKENS_MODAL_TYPES } from './consts';
-import { TokensModalType, UseTokensModalReturnType } from './types';
+import { TOKENS_MODAL_TYPES } from './consts.ts';
+import {
+  type TokensModalType,
+  type UseTokensModalReturnType,
+} from './types.ts';
 
 export const useTokensModal = (
   type: TokensModalType,

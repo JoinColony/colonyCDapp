@@ -1,12 +1,12 @@
 /* eslint-disable react/button-has-type */
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader';
+import Icon from '~shared/Icon/index.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 
-import { TextButtonProps } from './types';
+import { type TextButtonProps } from './types.ts';
 
 import styles from './TextButton.module.css';
 

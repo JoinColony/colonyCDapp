@@ -1,7 +1,7 @@
-import { FieldPath, FieldValues } from 'react-hook-form';
-import { MessageDescriptor } from 'react-intl';
+import { type FieldPath, type FieldValues } from 'react-hook-form';
+import { type MessageDescriptor } from 'react-intl';
 
-import { ButtonMode } from '~v5/shared/Button/types';
+import { type ButtonMode } from '~v5/shared/Button/types.ts';
 
 export interface SettingsRowProps<
   TFieldValues extends FieldValues,

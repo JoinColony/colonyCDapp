@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import { AccordionHeaderProps } from '../types';
+import { type AccordionHeaderProps } from '../types.ts';
 
 const displayName = 'Extensions.Accordion.partials.AccordionHeader';
 

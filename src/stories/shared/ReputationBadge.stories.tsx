@@ -1,4 +1,4 @@
-import ReputationBadge from '~v5/shared/ReputationBadge';
+import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

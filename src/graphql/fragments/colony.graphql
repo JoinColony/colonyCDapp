@@ -54,7 +54,6 @@ fragment Colony on Colony {
   colonyMemberInvite {
     id
     invitesRemaining
-    valid
   }
 }
 

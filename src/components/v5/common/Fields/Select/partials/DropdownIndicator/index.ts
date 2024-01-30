@@ -1,1 +1,1 @@
-export { default } from './DropdownIndicator';
+export { default } from './DropdownIndicator.tsx';

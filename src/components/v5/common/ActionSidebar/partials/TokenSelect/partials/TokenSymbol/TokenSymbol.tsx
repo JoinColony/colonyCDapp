@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useGetAllTokens } from '~hooks/useGetAllTokens';
+import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 
-import { TokenSymbolProps } from './types';
+import { type TokenSymbolProps } from './types.ts';
 
 const displayName =
   'v5.common.ActionsContent.partials.TokenSelect.partials.TokenSymbol';

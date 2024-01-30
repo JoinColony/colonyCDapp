@@ -1,10 +1,10 @@
 /* eslint-disable max-classes-per-file */
 
-import { Block } from '@ethersproject/providers';
+import { type Block } from '@ethersproject/providers';
 import { providers } from 'ethers';
 import { backOff } from 'exponential-backoff';
 
-import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants';
+import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants/index.ts';
 
 type RetryProviderOptions = {
   attempts?: number;

@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { boolean, object } from 'yup';
 
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetUserReputationQuery } from '~gql';
-import { useColonyContext } from '~hooks';
 
-import { DecisionMethod } from './useDecisionMethods';
+import { DecisionMethod } from './useDecisionMethods.ts';
 
 export const REPUTATION_VALIDATION_FIELD_NAME = 'isMissingReputation';
 

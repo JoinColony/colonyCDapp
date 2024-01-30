@@ -1,19 +1,19 @@
-import { ADDRESS_ZERO } from '~constants';
-import { ContextModule, getContext } from '~context';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateColonyTokensDocument,
-  CreateColonyTokensMutation,
-  CreateColonyTokensMutationVariables,
+  type CreateColonyTokensMutation,
+  type CreateColonyTokensMutationVariables,
   DeleteColonyTokensDocument,
-  DeleteColonyTokensMutation,
-  DeleteColonyTokensMutationVariables,
+  type DeleteColonyTokensMutation,
+  type DeleteColonyTokensMutationVariables,
   GetTokenFromEverywhereDocument,
-  GetTokenFromEverywhereQuery,
-  GetTokenFromEverywhereQueryVariables,
+  type GetTokenFromEverywhereQuery,
+  type GetTokenFromEverywhereQueryVariables,
 } from '~gql';
-import { Colony } from '~types';
-import { notNull } from '~utils/arrays';
-import { xor } from '~utils/lodash';
+import { type Colony } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { xor } from '~utils/lodash.ts';
 
 /**
  * Returns an array of the token addresses currently associated with the Colony.

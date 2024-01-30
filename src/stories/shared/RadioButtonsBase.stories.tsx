@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RadioButtonsBase from '~v5/common/Fields/RadioButtons/RadioButtonsBase';
+import RadioButtonsBase from '~v5/common/Fields/RadioButtons/RadioButtonsBase/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

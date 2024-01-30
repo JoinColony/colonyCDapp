@@ -1,4 +1,4 @@
-import { IconSize } from '~shared/Icon/Icon';
+import { type IconSize } from '~shared/Icon/Icon.tsx';
 
 export interface AccordionItemProps {
   title: React.ReactNode;

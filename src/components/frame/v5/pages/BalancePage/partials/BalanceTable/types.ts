@@ -1,4 +1,4 @@
-import { TokenFragment } from '~gql';
+import { type TokenFragment } from '~gql';
 
 export interface BalanceTableProps {
   data: BalanceTableFieldModel[];

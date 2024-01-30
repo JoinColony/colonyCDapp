@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import Icon from '~shared/Icon';
-import { formatText } from '~utils/intl';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
-import { RadioBaseProps, RadioItemProps } from './types';
+import { type RadioBaseProps, type RadioItemProps } from './types.ts';
 
 import styles from './RadioList.module.css';
 

@@ -3,14 +3,12 @@ import { useMemo } from 'react';
 // @BETA: Disabled for now
 // import { ColonyRole } from '@colony/colony-js';
 
-import { ACTION } from '~constants/actions';
-import {
-  useAppContext,
-  useColonyContext,
-  useEnabledExtensions,
-  useUserAccountRegistered,
-} from '~hooks';
-import { getAllUserRoles } from '~transformers';
+import { ACTION } from '~constants/actions.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useUserAccountRegistered } from '~hooks/useCanInteractWithColony.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import { getAllUserRoles } from '~transformers/index.ts';
 import {
   canAdminister,
   canArchitect,
@@ -20,8 +18,8 @@ import {
   hasRoot,
   // @BETA: Disabled for now
   // userHasRole,
-} from '~utils/checks';
-import { SearchSelectOptionProps } from '~v5/shared/SearchSelect/types';
+} from '~utils/checks/index.ts';
+import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
 export const useActionsList = () => {
   const { colony } = useColonyContext();

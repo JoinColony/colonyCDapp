@@ -1,1 +1,1 @@
-export { default } from './DescriptionRow';
+export { default } from './DescriptionRow.tsx';

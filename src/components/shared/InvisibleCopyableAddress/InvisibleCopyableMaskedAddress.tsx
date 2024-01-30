@@ -1,8 +1,8 @@
 import React from 'react';
 
-import MaskedAddress from '~shared/MaskedAddress';
+import MaskedAddress from '~shared/MaskedAddress/index.ts';
 
-import InvisibleCopyableAddress from './InvisibleCopyableAddress';
+import InvisibleCopyableAddress from './InvisibleCopyableAddress.tsx';
 
 const displayName = 'InvisibleCopyableMaskedAddress';
 

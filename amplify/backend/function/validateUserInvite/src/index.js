@@ -26,8 +26,6 @@ exports.handler = async (event) => {
   const { colonyAddress, inviteCode, userAddress } =
     event.arguments?.input || {};
 
-  console.log(event.arguments);
-
   try {
     await setEnvVariables();
   } catch (e) {
@@ -48,34 +46,33 @@ exports.handler = async (event) => {
     );
   }
 
-  const getColonyMemberInviteDetails = await graphqlRequest(
+  const getColonyMemberInviteResponse = await graphqlRequest(
     getColonyMemberInvite,
-    { colonyAddress },
+    { inviteCode },
     graphqlURL,
     apiKey,
   );
 
   if (
-    getColonyMemberInviteDetails.errors ||
-    !getColonyMemberInviteDetails.data
+    getColonyMemberInviteResponse.errors ||
+    !getColonyMemberInviteResponse.data
   ) {
-    const [error] = getColonyMemberInviteDetails.errors;
+    const [error] = getColonyMemberInviteResponse.errors;
     throw new Error(error?.message || 'Could not create private beta invite');
   }
 
-  const { id, invitesRemaining, valid } =
-    getColonyMemberInviteDetails?.data?.getColonyByAddress?.items[0]
-      .colonyMemberInvite;
+  const { colonyId: inviteColonyAddress, invitesRemaining } =
+    getColonyMemberInviteResponse?.data?.getColonyMemberInvite;
 
-  const inviteCodeMatches = inviteCode === id;
-  const invitesStillExist = invitesRemaining > 0;
+  const colonyAddressMatches = inviteColonyAddress === colonyAddress;
+  const hasInvitesRemaining = invitesRemaining > 0;
 
-  if (!(inviteCodeMatches && invitesStillExist && valid)) {
+  if (!(colonyAddressMatches && hasInvitesRemaining)) {
     throw new Error('Invite code is not valid');
   }
 
   const { whitelist } =
-    getColonyMemberInviteDetails?.data?.getColonyByAddress?.items[0];
+    getColonyMemberInviteResponse?.data?.getColonyMemberInvite?.colony;
   const updatedWhitelist = new Set([...whitelist, userAddress]);
 
   const colonyMutation = await graphqlRequest(

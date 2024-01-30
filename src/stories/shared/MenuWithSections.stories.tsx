@@ -1,4 +1,4 @@
-import MenuWithSections from '~v5/shared/MenuWithSections';
+import MenuWithSections from '~v5/shared/MenuWithSections/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

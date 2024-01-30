@@ -1,10 +1,10 @@
 import {
-  AnalyticsEvent,
+  type AnalyticsEvent,
   AnalyticsEventAction,
   AnalyticsEventCategory,
   AnalyticsEventLabel,
   AnalyticsEventType,
-} from '~context/AnalyticsContext';
+} from '~context/AnalyticsContext/index.ts';
 
 export const OPEN_USER_HUB_EVENT: AnalyticsEvent = {
   event: AnalyticsEventType.CUSTOM_EVENT,

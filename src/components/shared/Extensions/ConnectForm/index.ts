@@ -1,1 +1,1 @@
-export { default } from './ConnectForm';
+export { default } from './ConnectForm.tsx';

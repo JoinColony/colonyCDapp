@@ -1,1 +1,1 @@
-export { default } from './IPFSNode';
+export { default } from './IPFSNode.ts';

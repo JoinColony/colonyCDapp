@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { InformationListProps } from './types';
+import { type InformationListProps } from './types.ts';
 
 const displayName = 'v5.InformationList';
 

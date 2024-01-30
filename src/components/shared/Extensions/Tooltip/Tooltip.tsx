@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import Icon from '~shared/Icon';
+import Icon from '~shared/Icon/index.ts';
 
-import { TooltipProps } from './types';
+import { type TooltipProps } from './types.ts';
 
 import styles from './Tooltip.module.css';
 

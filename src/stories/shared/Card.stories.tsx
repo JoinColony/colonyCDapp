@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Card from '~v5/shared/Card';
+import Card from '~v5/shared/Card/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

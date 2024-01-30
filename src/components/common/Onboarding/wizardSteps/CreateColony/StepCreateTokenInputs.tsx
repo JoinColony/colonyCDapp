@@ -2,15 +2,15 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import AvatarUploader from '~v5/common/AvatarUploader';
-import { UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks';
-import Input from '~v5/common/Fields/Input';
-import Avatar from '~v5/shared/Avatar';
+import { type UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks.tsx';
+import AvatarUploader from '~v5/common/AvatarUploader/index.ts';
+import Input from '~v5/common/Fields/Input/index.ts';
+import Avatar from '~v5/shared/Avatar/index.ts';
 
-import { getInputError } from '../shared';
+import { getInputError } from '../shared.tsx';
 
-import IconSuccessContent from './IconSuccessContent';
-import { MAX_TOKEN_NAME, MAX_TOKEN_SYMBOL } from './validation';
+import IconSuccessContent from './IconSuccessContent.tsx';
+import { MAX_TOKEN_NAME, MAX_TOKEN_SYMBOL } from './validation.ts';
 
 const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
 

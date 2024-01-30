@@ -2,18 +2,18 @@ import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { DEFAULT_GAS_LIMIT } from '~constants';
+import { DEFAULT_GAS_LIMIT } from '~constants/index.ts';
 
-import { transactionUpdateGas } from '../../actionCreators';
-import { ActionTypes } from '../../actionTypes';
-import { AllActions, Action } from '../../types/actions';
+import { transactionUpdateGas } from '../../actionCreators/index.ts';
+import { ActionTypes } from '../../actionTypes.ts';
+import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
   waitForTxResult,
-} from '../transactions';
-import { initiateTransaction, putError, takeFrom } from '../utils';
+} from '../transactions/index.ts';
+import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 function* finalizeMotion({
   meta,

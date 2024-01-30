@@ -1,10 +1,10 @@
-import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo, useCallback } from 'react';
 
-import { formatText } from '~utils/intl';
-import { TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types';
+import { formatText } from '~utils/intl.ts';
+import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
-import { SocialLinksTableModel } from './types';
+import { type SocialLinksTableModel } from './types.ts';
 
 export const useSocialLinksTableColumns = (): ColumnDef<
   SocialLinksTableModel,

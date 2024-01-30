@@ -1,14 +1,14 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useMobile } from '~hooks';
-import Icon from '~shared/Icon';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
-import Link from '~v5/shared/Link';
+import { useMobile } from '~hooks/index.ts';
+import Icon from '~shared/Icon/index.ts';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+import Link from '~v5/shared/Link/index.ts';
 
-import { useExtensionItem } from './hooks';
-import ActionButton from './partials/ActionButton';
-import { ExtensionItemProps } from './types';
+import { useExtensionItem } from './hooks.ts';
+import ActionButton from './partials/ActionButton/index.ts';
+import { type ExtensionItemProps } from './types.ts';
 
 const displayName = 'common.Extensions.ExtensionItem';
 

@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { BigNumber, BigNumberish } from 'ethers';
+import { BigNumber, type BigNumberish } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import {
@@ -7,10 +7,15 @@ import {
   COLONY_TOTAL_BALANCE_DOMAIN_ID,
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
-} from '~constants';
-import { Colony, Address, ColonyBalances, Token } from '~types';
+} from '~constants/index.ts';
+import {
+  type Colony,
+  type ColonyBalances,
+  type Token,
+} from '~types/graphql.ts';
+import { type Address } from '~types/index.ts';
 
-import { notNull } from './arrays';
+import { notNull } from './arrays/index.ts';
 
 export const getBalanceForTokenAndDomain = (
   balances: ColonyBalances | null | undefined,

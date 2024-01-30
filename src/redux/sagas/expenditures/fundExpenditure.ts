@@ -1,20 +1,20 @@
 import { ClientType } from '@colony/colony-js';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, ActionTypes, AllActions } from '~redux';
 import {
   transactionAddParams,
   transactionPending,
-} from '~redux/actionCreators';
+} from '~redux/actionCreators/index.ts';
+import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
-  ChannelDefinition,
+  type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,
-} from '../transactions';
-import { initiateTransaction, putError, takeFrom } from '../utils';
-import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures';
+} from '../transactions/index.ts';
+import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
+import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 function* fundExpenditure({
   payload: { colonyAddress, expenditure, fromDomainFundingPotId },

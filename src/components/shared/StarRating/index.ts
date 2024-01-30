@@ -1,1 +1,1 @@
-export { default } from './StarRating';
+export { default } from './StarRating.tsx';

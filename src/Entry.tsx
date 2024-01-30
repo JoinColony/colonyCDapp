@@ -5,16 +5,16 @@ import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { getContext, ContextModule } from '~context';
-import { AnalyticsContextProvider } from '~context/AnalyticsContext';
-import RouteTracker from '~routes/RouteTracker';
+import { AnalyticsContextProvider } from '~context/AnalyticsContext/index.ts';
+import { getContext, ContextModule } from '~context/index.ts';
+import RouteTracker from '~routes/RouteTracker.tsx';
 
-import actionMessages from './i18n/en-actions';
-import eventsMessages from './i18n/en-events';
-import motionStatesMessages from './i18n/en-motion-states';
-import systemMessages from './i18n/en-system-messages';
+import actionMessages from './i18n/en-actions.ts';
+import eventsMessages from './i18n/en-events.ts';
+import motionStatesMessages from './i18n/en-motion-states.ts';
+import systemMessages from './i18n/en-system-messages.ts';
 import messages from './i18n/en.json';
-import Routes from './routes';
+import Routes from './routes/index.ts';
 
 // @ts-ignore
 if (!Intl.RelativeTimeFormat) {

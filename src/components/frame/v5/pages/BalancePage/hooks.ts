@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 
-import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
-import { getFormattedNumeralValue } from '~shared/Numeral';
-import { convertToDecimal } from '~utils/convertToDecimal';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { getFormattedNumeralValue } from '~shared/Numeral/index.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
-} from '~utils/tokens';
+} from '~utils/tokens.ts';
 
-import { UseBalancePageReturnType } from './types';
+import { type UseBalancePageReturnType } from './types.ts';
 
 export const useBalancePage = (): UseBalancePageReturnType => {
   const {

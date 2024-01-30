@@ -90,7 +90,6 @@ query GetColonyMemberInvite($id: ID!) {
     colony {
       ...PublicColony
     }
-    valid
     invitesRemaining
   }
 }

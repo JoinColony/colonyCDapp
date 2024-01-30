@@ -1,15 +1,15 @@
 import { Extension, Id } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import useColonyContext from '~hooks/useColonyContext';
-import { AnyExtensionData } from '~types';
-import { addressHasRoles } from '~utils/checks';
-import { formatText } from '~utils/intl';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { type AnyExtensionData } from '~types/extensions.ts';
+import { addressHasRoles } from '~utils/checks/index.ts';
+import { formatText } from '~utils/intl.ts';
 
-import ActionButtons from '../partials/ActionButtons';
+import ActionButtons from '../partials/ActionButtons.tsx';
 
-import { ExtensionsBadgeMap } from './consts';
-import PermissionsNeededBanner from './PermissionsNeededBanner';
+import { ExtensionsBadgeMap } from './consts.ts';
+import PermissionsNeededBanner from './PermissionsNeededBanner.tsx';
 
 import styles from '../Pages.module.css';
 
@@ -28,14 +28,9 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
 }) => {
   const { colony } = useColonyContext();
 
-  const {
-    neededColonyPermissions,
-    // address will be undefined if the extension hasn't been installed / initialized yet
-    // @ts-expect-error
-    address,
-    isInitialized,
-    isDeprecated,
-  } = extensionData;
+  // @ts-expect-error address will be undefined if the extension hasn't been installed / initialized yet
+  const { neededColonyPermissions, address, isInitialized, isDeprecated } =
+    extensionData;
 
   const isVotingReputationExtension =
     extensionData.extensionId === Extension.VotingReputation;

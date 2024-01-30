@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormattedInput } from '~v5/common/Fields/InputBase';
+import { FormattedInput } from '~v5/common/Fields/InputBase/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

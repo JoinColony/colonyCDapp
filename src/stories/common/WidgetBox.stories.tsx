@@ -1,7 +1,7 @@
 import React from 'react';
 
-import WidgetBox from '~v5/common/WidgetBox';
-import UserAvatars from '~v5/shared/UserAvatars';
+import WidgetBox from '~v5/common/WidgetBox/index.ts';
+import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

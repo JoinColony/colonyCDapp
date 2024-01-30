@@ -1,4 +1,4 @@
-import { ColonyContributorFragment } from '~gql';
+import { type ColonyContributorFragment } from '~gql';
 
 export interface TableProps {
   list: ColonyContributorFragment[];

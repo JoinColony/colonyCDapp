@@ -1,11 +1,11 @@
 import React from 'react';
 
-import useColonyContext from '~hooks/useColonyContext';
-import { formatText } from '~utils/intl';
-import { multiLineTextEllipsis } from '~utils/strings';
-import NativeTokenPill from '~v5/common/NativeTokenPill';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
 
-import ColonyLinks from './partials/ColonyLinks';
+import ColonyLinks from './partials/ColonyLinks/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.DashboardHeader';
 

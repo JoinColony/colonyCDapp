@@ -1,1 +1,1 @@
-export { default } from './TokenTypeBadge';
+export { default } from './TokenTypeBadge.tsx';

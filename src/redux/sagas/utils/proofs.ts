@@ -6,11 +6,11 @@ import {
   getPermissionProofs,
   getChildIndex,
 } from '@colony/colony-js';
-import { BigNumberish } from 'ethers';
+import { type BigNumberish } from 'ethers';
 
-import { ColonyManager } from '~context';
+import { type ColonyManager } from '~context/index.ts';
 
-import getColonyManager from './getColonyManager';
+import getColonyManager from './getColonyManager.ts';
 
 export function* getMoveFundsPermissionProofs(
   colonyAddress: string,

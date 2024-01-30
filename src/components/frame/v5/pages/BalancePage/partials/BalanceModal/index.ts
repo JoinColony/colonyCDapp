@@ -1,1 +1,1 @@
-export { default } from './BalanceModal';
+export { default } from './BalanceModal.tsx';

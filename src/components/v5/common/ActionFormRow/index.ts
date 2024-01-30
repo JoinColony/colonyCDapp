@@ -1,1 +1,1 @@
-export { default } from './ActionFormRow';
+export { default } from './ActionFormRow.tsx';

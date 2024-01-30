@@ -1,1 +1,1 @@
-export { default } from './CountDownTimer';
+export { default } from './CountDownTimer.tsx';

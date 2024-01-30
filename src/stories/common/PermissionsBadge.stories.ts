@@ -1,4 +1,4 @@
-import PermissionsBadge from '~v5/common/Pills/PermissionsBadge';
+import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

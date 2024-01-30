@@ -1,16 +1,16 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { formatText } from '~utils/intl';
-import ActionFormRow from '~v5/common/ActionFormRow';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect';
+import { formatText } from '~utils/intl.ts';
+import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks';
-import { ActionFormBaseProps } from '../../../types';
-import DescriptionRow from '../../DescriptionRow';
-import TokensTable from '../../TokensTable';
+import { useDecisionMethods } from '../../../hooks/index.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
+import DescriptionRow from '../../DescriptionRow/index.ts';
+import TokensTable from '../../TokensTable/index.ts';
 
-import { useManageTokens } from './hooks';
+import { useManageTokens } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManageTokensForm';
 

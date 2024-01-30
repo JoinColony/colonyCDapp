@@ -1,4 +1,4 @@
-import { GNOSIS_AMB_BRIDGES } from '~constants';
+import { GNOSIS_AMB_BRIDGES } from '~constants/index.ts';
 
 export const FEEDBACK = `https://news.colony.io/ideas/en`;
 export const COLONY_DEV_DOCS = `https://docs.colony.io/develop`;

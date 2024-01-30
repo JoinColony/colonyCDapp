@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import {
   Navigate,
@@ -7,22 +7,22 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { useAppContext } from '~context/AppContext.tsx';
 import {
   useGetColonyMemberInviteQuery,
   useGetColonyWhitelistByNameQuery,
   useValidateUserInviteMutation,
   useGetPublicColonyByNameQuery,
 } from '~gql';
-import { useAppContext } from '~hooks';
-import { CREATE_PROFILE_ROUTE } from '~routes';
-import PageLoader from '~v5/common/PageLoader';
-import Button from '~v5/shared/Button';
-import CardConnectWallet from '~v5/shared/CardConnectWallet';
-import CardWithCallout from '~v5/shared/CardWithCallout';
-import ColonyAvatar from '~v5/shared/ColonyAvatar';
-import NotificationBanner from '~v5/shared/NotificationBanner';
-import SocialLinks from '~v5/shared/SocialLinks';
+import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
+import PageLoader from '~v5/common/PageLoader/index.ts';
+import Button from '~v5/shared/Button/index.ts';
+import CardConnectWallet from '~v5/shared/CardConnectWallet/index.ts';
+import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
+import SocialLinks from '~v5/shared/SocialLinks/index.ts';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -114,7 +114,7 @@ const ColonyPreviewPage = () => {
   const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
   const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
 
-  const validateInviteCode = useCallback(async () => {
+  const validateInviteCode = async () => {
     if (!colonyAddress || !inviteCode || !wallet) return;
     const valid = await validate({
       variables: {
@@ -125,7 +125,7 @@ const ColonyPreviewPage = () => {
     if (valid.data?.validateUserInvite) {
       navigate(`/${colonyName}`);
     }
-  }, [colonyName, colonyAddress, wallet, validate, navigate, inviteCode]);
+  };
 
   if (
     userLoading ||
@@ -152,7 +152,7 @@ const ColonyPreviewPage = () => {
   }
 
   const inviteIsValid =
-    !!inviteData?.getColonyMemberInvite?.valid &&
+    inviteData?.getColonyMemberInvite &&
     inviteData.getColonyMemberInvite.invitesRemaining > 0 &&
     inviteData.getColonyMemberInvite.colony.name === colonyName;
   const inviteIsInvalid = inviteCode && !inviteIsValid;

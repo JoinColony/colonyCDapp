@@ -1,13 +1,13 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context';
-import { useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { useMobile } from '~hooks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import Row from '../Row';
+import Row from '../Row/index.ts';
 
-import { useUserProfilePageForm } from './hooks';
+import { useUserProfilePageForm } from './hooks.tsx';
 
 const displayName = 'v5.pages.UserProfilePage.partials.UserAccountForm';
 

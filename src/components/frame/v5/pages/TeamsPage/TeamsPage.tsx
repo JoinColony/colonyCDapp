@@ -1,13 +1,14 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext, useSetPageHeadingTitle } from '~context';
-import { formatText } from '~utils/intl';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import TeamCardList from '~v5/common/TeamCardList';
-import Button from '~v5/shared/Button';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import TeamCardList from '~v5/common/TeamCardList/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { useTeams } from './hooks';
+import { useTeams } from './hooks.tsx';
 
 const TeamsPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'teamsPage.title' }));

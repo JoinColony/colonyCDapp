@@ -1,1 +1,1 @@
-export { default } from './SettingsInputRow';
+export { default } from './SettingsInputRow.tsx';

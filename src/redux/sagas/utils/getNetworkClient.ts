@@ -4,9 +4,10 @@ import {
   Network as ColonyJSNetwork,
 } from '@colony/colony-js';
 
-import { DEFAULT_NETWORK } from '~constants';
-import { ContextModule, getContext } from '~context';
-import { ColonyJSNetworkMapping, Network, isFullWallet } from '~types';
+import { DEFAULT_NETWORK } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
+import { ColonyJSNetworkMapping, Network } from '~types/network.ts';
+import { isFullWallet } from '~types/wallet.ts';
 
 /*
  * Return an initialized ColonyNetworkClient instance.

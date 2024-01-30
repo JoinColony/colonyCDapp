@@ -1,4 +1,4 @@
-import { TabItem } from './types';
+import { type TabItem } from './types.ts';
 
 export const tabsItems: TabItem[] = [
   { id: 0, title: 'Overview', content: 'content 1' },

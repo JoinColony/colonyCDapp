@@ -1,3 +1,3 @@
-export { WizardStepProps, WizardOuterProps } from './types';
+export { WizardStepProps, WizardOuterProps } from './types.ts';
 
-export { default as withWizard } from './withWizard';
+export { default as withWizard } from './withWizard.tsx';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs';
+import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks.ts';
+import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 
 const ColonyMembersRoute = () => {
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();

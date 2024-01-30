@@ -1,6 +1,6 @@
-import { UserFragment } from '~gql';
+import { type UserFragment } from '~gql';
 
-import { AvatarSize } from '../Avatar/types';
+import { type AvatarSize } from '../Avatar/types.ts';
 
 export interface UserAvatarsItem {
   address: string;

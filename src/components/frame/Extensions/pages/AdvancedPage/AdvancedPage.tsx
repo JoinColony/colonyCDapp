@@ -1,20 +1,17 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
 // @BETA: Disabled for now
 // import Button from '~v5/shared/Button';
 // import Link from '~v5/shared/Link';
-import {
-  useColonyContext,
-  useColonyContractVersion,
-  // @BETA: Disabled for now
-  // useMobile
-} from '~hooks';
-import { canColonyBeUpgraded } from '~utils/checks';
-import { formatText } from '~utils/intl';
-import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
+// import { useMobile } from '~hooks';
+import { canColonyBeUpgraded } from '~utils/checks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import ColonyVersionWidget from '~v5/shared/ColonyVersionWidget/index.tsx';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName = 'frame.Extensions.pages.AdvancedPage';
 
@@ -48,8 +45,8 @@ const AdvancedPage: FC = () => {
         )}
       </div>
       <ColonyVersionWidget
-        currentVersion={colonyContractVersion}
-        lastVersion={version || 0}
+        currentVersion={version}
+        latestVersion={colonyContractVersion}
         status={canUpgrade ? 'error' : 'success'}
       />
       {/* @BETA: Recovery logic not implemented yet */}

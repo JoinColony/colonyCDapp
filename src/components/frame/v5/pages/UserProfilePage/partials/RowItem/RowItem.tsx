@@ -1,14 +1,14 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon';
-import AvatarUploader from '~v5/common/AvatarUploader';
-import { Input } from '~v5/common/Fields';
-import Switch from '~v5/common/Fields/Switch';
-import Textarea from '~v5/common/Fields/Textarea';
-import Button from '~v5/shared/Button';
+import Icon from '~shared/Icon/index.ts';
+import AvatarUploader from '~v5/common/AvatarUploader/index.ts';
+import { Input } from '~v5/common/Fields/index.ts';
+import Switch from '~v5/common/Fields/Switch/index.ts';
+import Textarea from '~v5/common/Fields/Textarea/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { RowItemProps } from './types';
+import { type RowItemProps } from './types.ts';
 
 const displayName = 'v5.pages.UserProfilePage.partials.RowItem';
 

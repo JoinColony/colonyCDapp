@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
-import { NavigationSidebarProps } from '~v5/frame/NavigationSidebar/types';
-import type { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types';
+import { type NavigationSidebarProps } from '~v5/frame/NavigationSidebar/types.ts';
+import type { CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts';
 
 export interface UseCalamityBannerInfoReturnType {
   canUpgrade?: boolean;

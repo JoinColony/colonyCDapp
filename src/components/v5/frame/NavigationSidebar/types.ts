@@ -1,9 +1,9 @@
-import React from 'react';
+import { type ColonyAvatarProps } from '~v5/shared/ColonyAvatar/types.ts';
 
-import { ColonyAvatarProps } from '~v5/shared/ColonyAvatar/types';
+import { type NavigationSidebarMainMenuProps } from './partials/NavigationSidebarMainMenu/types.ts';
+import { type NavigationSidebarSecondLevelProps } from './partials/NavigationSidebarSecondLevel/types.ts';
 
-import { NavigationSidebarMainMenuProps } from './partials/NavigationSidebarMainMenu/types';
-import { NavigationSidebarSecondLevelProps } from './partials/NavigationSidebarSecondLevel/types';
+import type React from 'react';
 
 export interface NavigationSidebarColonySwitcherProps {
   avatarProps?: ColonyAvatarProps;

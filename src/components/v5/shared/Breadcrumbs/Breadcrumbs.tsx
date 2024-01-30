@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import Link from '../Link';
+import Link from '../Link/index.ts';
 
-import BreadcrumbsCardSelect from './BreadcrumbsCardSelect';
-import { BreadcrumbsItem, BreadcrumbsProps } from './types';
+import BreadcrumbsCardSelect from './BreadcrumbsCardSelect.tsx';
+import { type BreadcrumbsItem, type BreadcrumbsProps } from './types.ts';
 
 const displayName = 'v5.Breadcrumbs';
 

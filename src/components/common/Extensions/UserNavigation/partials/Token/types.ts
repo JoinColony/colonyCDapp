@@ -1,4 +1,4 @@
-import { NetworkInfo } from '~constants';
+import { type NetworkInfo } from '~constants/index.ts';
 
 export interface TokenProps {
   nativeToken: NetworkInfo;

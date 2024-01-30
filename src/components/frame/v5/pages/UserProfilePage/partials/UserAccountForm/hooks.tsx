@@ -2,24 +2,24 @@ import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import { useAppContext } from '~context/AppContext.tsx';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
-import Toast from '~shared/Extensions/Toast';
-import { formatText } from '~utils/intl';
+import Toast from '~shared/Extensions/Toast/index.ts';
+import { formatText } from '~utils/intl.ts';
 import {
-  UseAvatarUploaderProps,
+  type UseAvatarUploaderProps,
   useGetUploaderText,
-} from '~v5/common/AvatarUploader/hooks';
-import Avatar from '~v5/shared/Avatar';
+} from '~v5/common/AvatarUploader/hooks.tsx';
+import Avatar from '~v5/shared/Avatar/index.ts';
 
 import {
   profileFileOptions,
   MAX_BIO_CHARS,
   MAX_DISPLAYNAME_CHARS,
-} from '../consts';
-import IconSuccessContent from '../IconSuccessContent';
-import { RowGroup } from '../Row/types';
-import { useUserProfile } from '../UserAccountPage/hooks';
+} from '../consts.ts';
+import IconSuccessContent from '../IconSuccessContent.tsx';
+import { type RowGroup } from '../Row/types.ts';
+import { useUserProfile } from '../UserAccountPage/hooks.tsx';
 
 export const useUserProfilePageForm = () => {
   const { user } = useAppContext();

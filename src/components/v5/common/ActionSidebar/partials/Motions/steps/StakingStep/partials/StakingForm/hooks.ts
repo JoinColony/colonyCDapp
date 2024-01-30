@@ -1,18 +1,18 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { defineMessages } from 'react-intl';
-import { number, object, ObjectSchema, string } from 'yup';
+import { number, object, type ObjectSchema, string } from 'yup';
 
-import { useUserTokenBalanceContext } from '~context';
-import { useAppContext } from '~hooks';
-import { MotionVote } from '~utils/colonyMotions';
-import { formatText } from '~utils/intl';
-import { getTokenDecimalsWithFallback } from '~utils/tokens';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext.tsx';
+import { MotionVote } from '~utils/colonyMotions.ts';
+import { formatText } from '~utils/intl.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { useMotionContext } from '../../../../partials/MotionProvider/hooks';
+import { useMotionContext } from '../../../../partials/MotionProvider/hooks.ts';
 
-import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers';
-import { StakingFormValues } from './types';
+import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers.ts';
+import { type StakingFormValues } from './types.ts';
 
 const MSG = defineMessages({
   amountRequired: {

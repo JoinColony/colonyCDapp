@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
 
-import CurrentUser from './CurrentUser';
+import CurrentUser from './CurrentUser.tsx';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.EditColonyDetailsDescription';

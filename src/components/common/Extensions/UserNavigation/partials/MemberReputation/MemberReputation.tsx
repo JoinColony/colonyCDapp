@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { useUserReputation } from '~hooks';
-import Icon from '~shared/Icon';
-import Numeral from '~shared/Numeral';
-import { ZeroValue, calculatePercentageReputation } from '~utils/reputation';
+import useUserReputation from '~hooks/useUserReputation.ts';
+import Icon from '~shared/Icon/index.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { ZeroValue, calculatePercentageReputation } from '~utils/reputation.ts';
 
-import { MemberReputationProps } from './types';
+import { type MemberReputationProps } from './types.ts';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.MemberReputation';

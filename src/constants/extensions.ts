@@ -6,12 +6,12 @@ import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.p
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
 import reputationInterface from '~images/assets/extensions/reputation-interface.png';
-import { ExtensionConfig, ExtensionParamType } from '~types';
+import { type ExtensionConfig, ExtensionParamType } from '~types/extensions.ts';
 import {
   convertFractionToWei,
   convertPeriodToSeconds,
-} from '~utils/extensions';
-import { toFinite } from '~utils/lodash';
+} from '~utils/extensions.ts';
+import { toFinite } from '~utils/lodash.ts';
 
 // @BETA: Disabled for now
 // import advancedHero from '~images/assets/extensions/advanced-hero.png';

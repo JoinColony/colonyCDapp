@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
-import { ColonyActionType, ExtendedColonyActionType } from '~types';
+import { ExtendedColonyActionType } from '~types/actions.ts';
+import { ColonyActionType } from '~types/graphql.ts';
 
 const safeActionTitle = '{Safe transaction: {safeTransactionTitle}}';
 
@@ -20,8 +21,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.MintTokensMotion} {Mint {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.CreateDomain} {Create new team {fromDomain} by {initiator}}
       ${ColonyActionType.CreateDomainMotion} {Create new team {fromDomain} by {initiator}}
-      ${ColonyActionType.VersionUpgrade} {Upgrade Colony version from v{version} to v{newVersion} by {initiator}}
-      ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version from v{version} to v{newVersion} by {initiator}}
+      ${ColonyActionType.VersionUpgrade} {Upgrade Colony version to v{newVersion} by {initiator}}
+      ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
       ${ColonyActionType.ColonyEdit} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.ColonyEditMotion} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.EditDomain} {Change {fromDomain} team details by {initiator}}

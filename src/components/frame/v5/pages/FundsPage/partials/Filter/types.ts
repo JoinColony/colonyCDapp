@@ -1,6 +1,6 @@
-import React from 'react';
+import { type Add, type KeysAtLevel } from '~types/utilities.ts';
 
-import { Add, KeysAtLevel } from '~types/utilities';
+import type React from 'react';
 
 export type FilterValue = {
   [key: string]: boolean | FilterValue;
@@ -9,6 +9,7 @@ export type FilterValue = {
 export interface NestedItem<TValue extends FilterValue, TLevel extends number> {
   label: React.ReactNode;
   name: KeysAtLevel<TValue, TLevel>;
+  // @ts-ignore
   items?: NestedItem<TValue, Add<TLevel, 1>>[];
 }
 

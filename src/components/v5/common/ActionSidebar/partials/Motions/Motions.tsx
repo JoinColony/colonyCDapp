@@ -1,27 +1,27 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { type FC, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useAppContext } from '~hooks';
-import { SpinnerLoader } from '~shared/Preloaders';
-import { MotionAction } from '~types/motions';
-import { getMotionState, MotionState } from '~utils/colonyMotions';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey';
-import { formatText } from '~utils/intl';
-import { getSafePollingInterval } from '~utils/queries';
-import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction';
-import Stepper from '~v5/shared/Stepper';
+import { useAppContext } from '~context/AppContext.tsx';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { type MotionAction } from '~types/motions.ts';
+import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
+import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
+import { formatText } from '~utils/intl.ts';
+import { getSafePollingInterval } from '~utils/queries.ts';
+import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import Stepper from '~v5/shared/Stepper/index.ts';
 
-import MotionCountDownTimer from './partials/MotionCountDownTimer';
-import MotionProvider from './partials/MotionProvider/MotionProvider';
-import FinalizeStep from './steps/FinalizeStep';
-import OutcomeStep from './steps/OutcomeStep';
-import RevealStep from './steps/RevealStep';
-import StakingStep from './steps/StakingStep';
-import VotingStep from './steps/VotingStep';
-import { MotionsProps, Steps, CustomStep } from './types';
+import MotionCountDownTimer from './partials/MotionCountDownTimer/index.ts';
+import MotionProvider from './partials/MotionProvider/MotionProvider.tsx';
+import FinalizeStep from './steps/FinalizeStep/index.ts';
+import OutcomeStep from './steps/OutcomeStep/index.ts';
+import RevealStep from './steps/RevealStep/index.ts';
+import StakingStep from './steps/StakingStep/index.ts';
+import VotingStep from './steps/VotingStep/index.ts';
+import { type MotionsProps, type Steps, CustomStep } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
@@ -70,6 +70,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const networkMotionStateEnum = getEnumValueFromKey(
     NetworkMotionState,
     motionState,
+    0,
   );
 
   const [activeStepKey, setActiveStepKey] = useState<Steps>(

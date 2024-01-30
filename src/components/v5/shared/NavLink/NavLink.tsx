@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 import { NavLink as NavLinkComponent } from 'react-router-dom';
 
-import { NavLinkProps } from './types';
+import { type NavLinkProps } from './types.ts';
 
 const displayName = 'v5.NavLink';
 

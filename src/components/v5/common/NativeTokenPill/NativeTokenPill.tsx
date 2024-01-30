@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import { LockKey } from 'phosphor-react';
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import TokenInfoPopover from '~shared/TokenInfoPopover';
-import { Token } from '~types';
-import { formatText } from '~utils/intl';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import TokenInfoPopover from '~shared/TokenInfoPopover/index.ts';
+import { type Token } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
 
 interface NativeTokenPillProps {
   variant?: 'primary' | 'secondary';

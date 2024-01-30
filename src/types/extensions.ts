@@ -1,11 +1,11 @@
-import { ColonyRole, Extension } from '@colony/colony-js';
-import { CleaveOptions } from 'cleave.js/options';
-import { BigNumberish } from 'ethers';
-import { MessageDescriptor } from 'react-intl';
-import { Schema } from 'yup';
+import { type ColonyRole, type Extension } from '@colony/colony-js';
+import { type CleaveOptions } from 'cleave.js/options';
+import { type BigNumberish } from 'ethers';
+import { type MessageDescriptor } from 'react-intl';
+import { type Schema } from 'yup';
 
-import { ExtensionCategory } from '~constants';
-import { ColonyExtension } from '~types';
+import { type ExtensionCategory } from '~constants/index.ts';
+import { type ColonyExtension } from '~types/graphql.ts';
 
 export enum WhitelistPolicy {
   KycOnly = 0,

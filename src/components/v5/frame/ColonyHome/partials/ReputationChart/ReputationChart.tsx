@@ -3,20 +3,20 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context/ActionSidebarContext';
-import { useColonyContext } from '~hooks';
-import { notNull } from '~utils/arrays';
-import { formatText } from '~utils/intl';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts';
-import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow';
-import WidgetBox from '~v5/common/WidgetBox';
-import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState';
-import DonutChart from '~v5/shared/DonutChart';
-import { ChartData } from '~v5/shared/DonutChart/types';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { notNull } from '~utils/arrays/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import TeamReputationSummaryRow from '~v5/common/TeamReputationSummary/partials/TeamReputationSummaryRow.tsx';
+import WidgetBox from '~v5/common/WidgetBox/index.ts';
+import EmptyWidgetState from '~v5/common/WidgetBox/partials/EmptyWidgetState.tsx';
+import DonutChart from '~v5/shared/DonutChart/index.ts';
+import { type ChartData } from '~v5/shared/DonutChart/types.ts';
 
-import { summaryLegendColor } from './consts';
-import { getTeamReputationChartData } from './utils';
+import { summaryLegendColor } from './consts.ts';
+import { getTeamReputationChartData } from './utils.ts';
 
 const displayName = 'v5.frame.ColonyHome.ReputationChart';
 

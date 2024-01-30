@@ -1,31 +1,31 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
-  CreateSafeTransactionMutation,
+  type CreateSafeTransactionMutation,
   CreateSafeTransactionDocument,
-  CreateSafeTransactionMutationVariables,
-  CreateSafeTransactionDataMutation,
+  type CreateSafeTransactionMutationVariables,
+  type CreateSafeTransactionDataMutation,
   CreateSafeTransactionDataDocument,
-  CreateSafeTransactionDataMutationVariables,
+  type CreateSafeTransactionDataMutationVariables,
 } from '~gql';
-import { ActionTypes } from '~redux/actionTypes';
-import { Action, AllActions } from '~redux/types';
-import { fill, omit } from '~utils/lodash';
-import { putError, takeFrom } from '~utils/saga/effects';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type Action, type AllActions } from '~redux/types/index.ts';
+import { fill, omit } from '~utils/lodash.ts';
+import { putError, takeFrom } from '~utils/saga/effects.ts';
 
-import { transactionReady } from '../../actionCreators';
+import { transactionReady } from '../../actionCreators/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
-import { createActionMetadataInDB, uploadAnnotation } from '../utils';
+} from '../transactions/index.ts';
+import { createActionMetadataInDB, uploadAnnotation } from '../utils/index.ts';
 import {
   getHomeBridgeByChain,
   getTransactionEncodedData,
-} from '../utils/safeHelpers';
+} from '../utils/safeHelpers.ts';
 
 function* initiateSafeTransactionAction({
   payload: {

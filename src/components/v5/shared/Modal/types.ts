@@ -1,7 +1,8 @@
-import React from 'react';
-import { Props as ReactModalProps } from 'react-modal';
+import { type Props as ReactModalProps } from 'react-modal';
 
-import { ButtonMode } from '../Button/types';
+import { type ButtonMode } from '../Button/types.ts';
+
+import type React from 'react';
 
 export interface ModalBaseProps extends ReactModalProps {
   isFullOnMobile?: boolean;

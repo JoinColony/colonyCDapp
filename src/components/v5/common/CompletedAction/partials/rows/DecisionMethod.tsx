@@ -1,11 +1,11 @@
 import { Scales } from 'phosphor-react';
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip';
-import { formatText } from '~utils/intl';
-import { DecisionMethod } from '~v5/common/ActionSidebar/hooks';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { formatText } from '~utils/intl.ts';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts';
+import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.DecisionMethodRow';
 

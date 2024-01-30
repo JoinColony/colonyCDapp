@@ -1,4 +1,4 @@
-import TitleWithNumber from '~v5/shared/TitleWithNumber';
+import TitleWithNumber from '~v5/shared/TitleWithNumber/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

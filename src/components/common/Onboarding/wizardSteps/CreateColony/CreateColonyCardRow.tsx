@@ -1,12 +1,12 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { WizardStepProps } from '~shared/Wizard';
-import { formatText } from '~utils/intl';
-import Avatar from '~v5/shared/Avatar';
-import Button from '~v5/shared/Button';
+import { type WizardStepProps } from '~shared/Wizard/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Avatar from '~v5/shared/Avatar/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 
-import { FormValues } from './types';
+import { type FormValues } from './types.ts';
 
 const displayName = 'common.CreateColonyWizard.CardRow';
 

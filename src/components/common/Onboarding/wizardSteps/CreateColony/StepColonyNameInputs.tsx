@@ -2,12 +2,12 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
-import { MAX_COLONY_DISPLAY_NAME } from '~constants';
-import { HOST } from '~routes';
-import { formatText } from '~utils/intl';
-import Input from '~v5/common/Fields/Input';
+import { MAX_COLONY_DISPLAY_NAME } from '~constants/index.ts';
+import { HOST } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
+import Input from '~v5/common/Fields/Input/index.ts';
 
-import { getInputError } from '../shared';
+import { getInputError } from '../shared.tsx';
 
 const displayName = 'common.CreateColonyWizard.StepColonyNameInputs';
 

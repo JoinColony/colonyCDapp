@@ -1,4 +1,4 @@
-import { NativeTokenStatus, TokenFragment } from '~gql';
+import { type NativeTokenStatus, type TokenFragment } from '~gql';
 
 export interface TokenAvatarProps {
   token: TokenFragment;

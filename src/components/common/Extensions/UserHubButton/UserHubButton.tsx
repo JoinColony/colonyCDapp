@@ -1,26 +1,24 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import UserHub from '~common/Extensions/UserHub';
-import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation';
-import { useAnalyticsContext } from '~context/AnalyticsContext';
-import {
-  useAppContext,
-  useColonyContext,
-  useDetectClickOutside,
-  useMobile,
-} from '~hooks';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll';
-import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks';
-import Button from '~v5/shared/Button';
-import PopoverBase from '~v5/shared/PopoverBase';
-import UserAvatar from '~v5/shared/UserAvatar';
+import UserHub from '~common/Extensions/UserHub/index.ts';
+import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
+import { useAnalyticsContext } from '~context/AnalyticsContext/index.ts';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
+import Button from '~v5/shared/Button/index.ts';
+import PopoverBase from '~v5/shared/PopoverBase/index.ts';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { UserHubTabs } from '../UserHub/types';
+import { UserHubTabs } from '../UserHub/types.ts';
 
-import { OPEN_USER_HUB_EVENT } from './consts';
-import { UserHubButtonProps } from './types';
+import { OPEN_USER_HUB_EVENT } from './consts.ts';
+import { type UserHubButtonProps } from './types.ts';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';

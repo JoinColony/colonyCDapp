@@ -1,13 +1,13 @@
 import { LATEST_TAG } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { type BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib.esm/utils';
 
-import { DEFAULT_NETWORK } from '~constants';
 import {
   NETWORK_RELEASES,
   ETHERSCAN_CONVERSION_RATE,
-} from '~constants/externalUrls';
-import { Network } from '~types';
+} from '~constants/externalUrls.ts';
+import { DEFAULT_NETWORK } from '~constants/index.ts';
+import { Network } from '~types/network.ts';
 
 interface EthUsdResponse {
   status: string;
@@ -31,7 +31,9 @@ interface BlockExplorerLinkProps {
 /*
   Request dollar conversion value from etherScan
 */
-export const getEthToUsd = (ethValue: BigNumber): Promise<number | void> => {
+export const getEthToUsd = async (
+  ethValue: BigNumber,
+): Promise<number | void> => {
   const ETH_USD_KEY = 'ethUsd';
   const ETH_USD_TIMESTAMP_KEY = 'ethUsdTimestamp';
 

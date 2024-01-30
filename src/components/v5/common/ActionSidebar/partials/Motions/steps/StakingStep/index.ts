@@ -1,1 +1,1 @@
-export { default } from './StakingStep';
+export { default } from './StakingStep.tsx';

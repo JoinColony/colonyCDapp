@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 
-import { useFlatFormErrors } from '~hooks';
+import useFlatFormErrors from '~hooks/useFlatFormErrors.ts';
 
-import { REPUTATION_VALIDATION_FIELD_NAME } from '../../hooks/useReputationValidation';
+import { REPUTATION_VALIDATION_FIELD_NAME } from '../../hooks/useReputationValidation.ts';
 
 export const useGetActionErrors = () => {
   const { formState } = useFormContext();

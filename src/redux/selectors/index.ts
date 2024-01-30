@@ -1,3 +1,3 @@
-export * from './gasPrices';
-export * from './transactions';
-export * from './messages';
+export * from './gasPrices.ts';
+export * from './transactions.ts';
+export * from './messages.ts';

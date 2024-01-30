@@ -1,1 +1,1 @@
-export { default } from './CalamityBanner';
+export { default } from './CalamityBanner.tsx';

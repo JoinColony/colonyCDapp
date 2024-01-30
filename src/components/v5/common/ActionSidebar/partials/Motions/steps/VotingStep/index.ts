@@ -1,1 +1,1 @@
-export { default } from './VotingStep';
+export { default } from './VotingStep.tsx';

@@ -1,1 +1,1 @@
-export { default } from './FourOFour';
+export { default } from './FourOFour.tsx';

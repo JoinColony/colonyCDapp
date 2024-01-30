@@ -2,9 +2,9 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { TransactionStatus } from '~gql';
-import Icon from '~shared/Icon';
-import { Tooltip } from '~shared/Popover';
-import { SpinnerLoader } from '~shared/Preloaders';
+import Icon from '~shared/Icon/index.ts';
+import { Tooltip } from '~shared/Popover/index.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 
 import styles from './MessageCardStatus.css';
 

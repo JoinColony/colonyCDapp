@@ -1,16 +1,19 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext';
-import { useMobile } from '~hooks';
-import { formatText } from '~utils/intl';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu';
-import Button from '~v5/shared/Button/Button';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useMobile } from '~hooks/index.ts';
+import { formatText } from '~utils/intl.ts';
+import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 
-import { useTransactionTableColumns, useGetTableMenuProps } from './hooks';
-import { TransactionTableModel, TransactionTableProps } from './types';
+import { useTransactionTableColumns, useGetTableMenuProps } from './hooks.tsx';
+import {
+  type TransactionTableModel,
+  type TransactionTableProps,
+} from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 

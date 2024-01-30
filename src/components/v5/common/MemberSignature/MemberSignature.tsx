@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import AvatarUser from '~v5/shared/AvatarUser';
+import AvatarUser from '~v5/shared/AvatarUser/index.ts';
 
-import { MemberSignatureProps } from './types';
+import { type MemberSignatureProps } from './types.ts';
 
 const displayName = 'v5.common.MemberSignature';
 

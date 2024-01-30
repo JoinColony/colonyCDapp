@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useAppContext } from '~hooks';
-import UserAvatar from '~v5/shared/UserAvatar';
+import { useAppContext } from '~context/AppContext.tsx';
+import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.HeaderAvatar';

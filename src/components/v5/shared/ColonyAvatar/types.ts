@@ -1,6 +1,6 @@
-import { ImgHTMLAttributes } from 'react';
+import { type ImgHTMLAttributes } from 'react';
 
-import { AvatarSize } from '../Avatar/types';
+import { type AvatarSize } from '../Avatar/types.ts';
 
 export interface ColonyAvatarProps {
   colonyAddress: string;

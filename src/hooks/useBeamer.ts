@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { FEATURES_BUGS, WHATS_NEW } from '~constants';
+import { FEATURES_BUGS, WHATS_NEW } from '~constants/index.ts';
 
 export const useBeamer = (): void => {
   useEffect(() => {

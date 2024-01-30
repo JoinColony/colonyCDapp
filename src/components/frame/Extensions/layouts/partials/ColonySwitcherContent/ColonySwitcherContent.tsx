@@ -1,17 +1,17 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { SpinnerLoader } from '~shared/Preloaders';
-import { formatText } from '~utils/intl';
-import EmptyContent from '~v5/common/EmptyContent';
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { formatText } from '~utils/intl.ts';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
 
-import ColonySwitcherItem from '../ColonySwitcherItem';
-import ColonySwitcherList from '../ColonySwitcherList';
+import ColonySwitcherItem from '../ColonySwitcherItem/index.ts';
+import ColonySwitcherList from '../ColonySwitcherList/index.ts';
 
-import { useColonySwitcherContent } from './hooks';
-import { ColonySwitcherContentProps } from './types';
+import { useColonySwitcherContent } from './hooks.ts';
+import { type ColonySwitcherContentProps } from './types.ts';
 
 const displayName = 'frame.Extensions.partials.ColonySwitcherContent';
 

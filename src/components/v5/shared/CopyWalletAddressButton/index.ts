@@ -1,1 +1,1 @@
-export { default } from './CopyWalletAddressButton';
+export { default } from './CopyWalletAddressButton.tsx';

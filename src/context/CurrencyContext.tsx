@@ -1,5 +1,5 @@
 import React, {
-  ReactNode,
+  type ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -8,10 +8,10 @@ import React, {
   useState,
 } from 'react';
 
+import { useAppContext } from '~context/AppContext.tsx';
 import { SupportedCurrencies, useUpdateUserProfileMutation } from '~gql';
-import { useAppContext } from '~hooks';
-import { SetStateFn } from '~types';
-import { getUserCurrencyByLocation } from '~utils/currency';
+import { type SetStateFn } from '~types/index.ts';
+import { getUserCurrencyByLocation } from '~utils/currency/index.ts';
 
 interface CurrencyContextValues {
   currency: SupportedCurrencies;

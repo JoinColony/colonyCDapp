@@ -1,6 +1,6 @@
 import React from 'react';
 
-import EmptyContent from '~v5/common/EmptyContent';
+import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -1,19 +1,19 @@
-import { NavigateFunction } from 'react-router-dom';
+import { type NavigateFunction } from 'react-router-dom';
 
-import { ColonyActionTypes } from './colony';
-import { ColonyActionsActionTypes } from './colonyActions';
-import { DecisionActionTypes } from './decisions';
-import { ExpendituresActionTypes } from './expenditures';
-import { GasPricesActionTypes } from './gasPrices';
-import { IpfsActionTypes } from './ipfs';
-import { MessageActionTypes } from './message';
-import { MotionActionTypes } from './motion';
-import { TransactionActionTypes } from './transaction';
-import { UserActionTypes } from './user';
-import { MetacolonyVestingTypes } from './vesting';
-import { WalletActionTypes } from './wallet';
+import { type ColonyActionTypes } from './colony.ts';
+import { type ColonyActionsActionTypes } from './colonyActions.ts';
+import { type DecisionActionTypes } from './decisions.ts';
+import { type ExpendituresActionTypes } from './expenditures.ts';
+import { type GasPricesActionTypes } from './gasPrices.ts';
+import { type IpfsActionTypes } from './ipfs.ts';
+import { type MessageActionTypes } from './message.ts';
+import { type MotionActionTypes } from './motion.ts';
+import { type TransactionActionTypes } from './transaction.ts';
+import { type UserActionTypes } from './user.ts';
+import { type MetacolonyVestingTypes } from './vesting.ts';
+import { type WalletActionTypes } from './wallet.ts';
 
-export { RootMotionMethodNames } from './motion';
+export { RootMotionMethodNames } from './motion.ts';
 
 /*
  * Type that represents an action (bare minimum).

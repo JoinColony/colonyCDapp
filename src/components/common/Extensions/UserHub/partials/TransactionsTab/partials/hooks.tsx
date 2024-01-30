@@ -7,8 +7,8 @@ import {
   transactionEstimateGas,
   transactionCancel,
   transactionRetry,
-} from '~redux/actionCreators';
-import Toast from '~shared/Extensions/Toast';
+} from '~redux/actionCreators/index.ts';
+import Toast from '~shared/Extensions/Toast/index.ts';
 
 export const useGroupedTransactionContent = (
   id,

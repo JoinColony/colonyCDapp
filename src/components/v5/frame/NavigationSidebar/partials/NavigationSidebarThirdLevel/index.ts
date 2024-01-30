@@ -1,1 +1,1 @@
-export { default } from './NavigationSidebarThirdLevel';
+export { default } from './NavigationSidebarThirdLevel.tsx';

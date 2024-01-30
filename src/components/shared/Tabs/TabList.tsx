@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactNode } from 'react';
+import React, { type HTMLAttributes, type ReactNode } from 'react';
 import { TabList as ReactTabList } from 'react-tabs';
 
 import styles from './TabList.css';

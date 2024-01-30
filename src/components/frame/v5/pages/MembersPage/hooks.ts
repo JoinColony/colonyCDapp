@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 
-import { useMemberContext } from '~context/MemberContext';
-import { useColonyContext, useGetSelectedDomainFilter } from '~hooks';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMemberContext } from '~context/MemberContext.tsx';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 
-import { MembersTabContentListItem } from './partials/MembersTabContent/types';
-import { getMembersList } from './utils';
+import { type MembersTabContentListItem } from './partials/MembersTabContent/types.ts';
+import { getMembersList } from './utils.ts';
 
 export const useMembersPage = () => {
   const {

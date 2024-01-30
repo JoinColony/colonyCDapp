@@ -44,7 +44,7 @@ const TimerValue = ({ splitTime }: TimerValueProps) => {
       {(splitTime.days > 0 || splitTime.hours > 0) && (
         <FormattedMessage {...MSG.hours} values={{ hours: splitTime.hours }} />
       )}
-      {(splitTime.days > 0 || splitTime.hours > 0 || splitTime.minutes) > 0 && (
+      {(splitTime.days > 0 || splitTime.hours > 0 || splitTime.minutes > 0) && (
         <FormattedMessage
           {...MSG.minutes}
           values={{ minutes: splitTime.minutes }}

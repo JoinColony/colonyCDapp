@@ -1,1 +1,1 @@
-export { default } from './RadioButtonsBase';
+export { default } from './RadioButtonsBase.tsx';

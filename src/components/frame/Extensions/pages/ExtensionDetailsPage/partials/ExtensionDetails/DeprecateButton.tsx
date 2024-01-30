@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { AnyExtensionData } from '~types';
-import { formatText } from '~utils/intl';
-import Button from '~v5/shared/Button/Button';
-import Modal from '~v5/shared/Modal/Modal';
+import { type AnyExtensionData } from '~types/extensions.ts';
+import { formatText } from '~utils/intl.ts';
+import Button from '~v5/shared/Button/Button.tsx';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 
-import { useDeprecate } from './hooks';
+import { useDeprecate } from './hooks.tsx';
 
 interface DeprecateButtonProps {
   extensionData: AnyExtensionData;

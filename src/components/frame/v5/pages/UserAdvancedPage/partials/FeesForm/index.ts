@@ -1,1 +1,1 @@
-export { default } from './FeesForm';
+export { default } from './FeesForm.tsx';

@@ -1,4 +1,4 @@
-import TextButton from '~v5/shared/Button/TextButton';
+import TextButton from '~v5/shared/Button/TextButton.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

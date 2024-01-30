@@ -1,15 +1,16 @@
-import React, { FC, Fragment } from 'react';
+import React, { type FC, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 
-import { formatText } from '~utils/intl';
-import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
+import { getRole } from '~constants/permissions.ts';
+import { formatText } from '~utils/intl.ts';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
 
-import { useSpecificSidePanel } from './hooks';
-import ContractAddress from './partials/ContractAddress';
-import InstalledBy from './partials/InstalledBy';
-import Permissions from './partials/Permissions';
-import SpecificSidePanelRow from './partials/SpecificSidePanelRow';
-import { SpecificSidePanelProps } from './types';
+import { useSpecificSidePanel } from './hooks.tsx';
+import ContractAddress from './partials/ContractAddress.tsx';
+import InstalledBy from './partials/InstalledBy.tsx';
+import SpecificSidePanelRow from './partials/SpecificSidePanelRow.tsx';
+import { type SpecificSidePanelProps } from './types.ts';
 
 import styles from './SpecificSidePanel.module.css';
 
@@ -86,11 +87,11 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               title={developer.title}
               description={developer.developer}
             />
-            <div className="flex flex-col justify-between">
-              <div className="font-normal text-sm text-gray-600 pb-[0.875rem]">
-                {formatText({ id: 'extensionsPage.permissions' })}
+            <div className={styles.panelRow}>
+              <div className={styles.panelTitle}>
+                {formatText({ id: 'extensionsPage.permission' })}
               </div>
-              <Permissions roles={permissions} />
+              <RolesTooltip role={getRole(permissions)} />
             </div>
           </Fragment>
         ),

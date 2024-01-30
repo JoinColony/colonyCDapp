@@ -1,1 +1,1 @@
-export { default } from './CopyableAddress';
+export { default } from './CopyableAddress.tsx';

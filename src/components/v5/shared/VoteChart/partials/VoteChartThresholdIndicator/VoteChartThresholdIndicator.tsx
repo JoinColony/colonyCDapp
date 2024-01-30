@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 const displayName = 'v5.VoteChart.partials.VoteChartThresholdIndicator';
 
