@@ -94,7 +94,9 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
           </Tooltip>
         </div>
         <div>
-          <span>{action.fromDomain?.metadata?.description}</span>
+          <span className="break-word">
+            {action.fromDomain?.metadata?.description}
+          </span>
         </div>
 
         <div>
