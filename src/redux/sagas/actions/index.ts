@@ -1,5 +1,6 @@
 import { all, call } from 'redux-saga/effects';
 
+import addVerifiedMembersActionSaga from './addVerifiedMembers.ts';
 import createDomainActionSaga from './createDomain.ts';
 import editColonyActionSaga from './editColony.ts';
 import editDomainActionSaga from './editDomain.ts';
@@ -31,5 +32,6 @@ export default function* actionsSagas() {
     call(manageVerifiedRecipientsSaga),
     call(manageExistingSafesActionSaga),
     call(initiateSafeTransactionSaga),
+    call(addVerifiedMembersActionSaga),
   ]);
 }
