@@ -7,7 +7,7 @@
 }
 
 .rich-text-content :global(.tiptap) > blockquote {
-  @apply pl-4;
+  @apply ml-8;
 }
 
 .rich-text-content :global(.tiptap) > ul {
