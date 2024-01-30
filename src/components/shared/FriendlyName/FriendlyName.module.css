@@ -8,5 +8,7 @@
 }
 
 .name {
-  composes: inlineEllipsis from '~styles/text.css';
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

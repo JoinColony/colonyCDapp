@@ -8,7 +8,7 @@ import { type SimpleMessageValues } from '~types/index.ts';
 
 import SpinnerLoader, { type Appearance } from './SpinnerLoader.tsx';
 
-import styles from './MiniSpinnerLoader.css';
+import styles from './MiniSpinnerLoader.module.css';
 
 interface Props {
   appearance?: Appearance;

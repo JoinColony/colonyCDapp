@@ -4,7 +4,7 @@ import { type MessageDescriptor, defineMessages } from 'react-intl';
 import { formatText } from '~utils/intl.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
 
-import styles from './LoadingTemplate.css';
+import styles from './LoadingTemplate.module.css';
 
 const displayName = 'frame.LoadingTemplate';
 

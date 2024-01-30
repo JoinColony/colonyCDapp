@@ -11,7 +11,7 @@ import numbroLanguage from './numbroLanguage.ts';
 
 import type Decimal from 'decimal.js';
 
-import styles from './Numeral.css';
+import styles from './Numeral.module.css';
 
 // needed for capitalized abbreviations
 numbro.registerLanguage(numbroLanguage);

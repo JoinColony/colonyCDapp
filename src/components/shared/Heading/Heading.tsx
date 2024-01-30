@@ -4,7 +4,7 @@ import { type Message, type UniversalMessageValues } from '~types/index.ts';
 import { getMainClasses } from '~utils/css/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import styles from './Heading.css';
+import styles from './Heading.module.css';
 
 const displayName = 'Heading';
 

@@ -1,6 +1,8 @@
 .main {
-  composes: inlineEllipsis from '~styles/text.css';
   padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .button {
@@ -35,6 +37,8 @@
 }
 
 .description {
-  composes: inlineEllipsis from '~styles/text.css';
   flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -6,7 +6,7 @@ import {
   type PopperOptions,
 } from 'react-popper-tooltip';
 
-import styles from './Tooltip.css';
+import styles from './Tooltip.module.css';
 
 interface Props {
   /** Child element to trigger the popover */

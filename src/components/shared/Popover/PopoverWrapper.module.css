@@ -10,7 +10,7 @@
 @value arrowVerticalStart: calc(var(--radius-small) + arrowBorder);
 
 .main {
-  z-index: calc(var(--z-index-notification) + 1);
+  z-index: 8;
   overflow: hidden;
   border: 1px solid var(--color-gray-200);
   border-radius: 8px;

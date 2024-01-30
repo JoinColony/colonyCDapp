@@ -11,8 +11,6 @@ import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts.ts';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
 
-import styles from '../Submenu.module.css';
-
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.partials.Legal';
 
@@ -34,17 +32,15 @@ const Legal = () => {
   return (
     <MenuList>
       <MenuListItem>
-        <ExternalLink href={PRIVACY_POLICY} className={styles.actionItem}>
+        <ExternalLink href={PRIVACY_POLICY}>
           <FileText size={iconSize} />
-          <p className={styles.actionItemLabel}>
-            {formatText(MSG.privacyPolicy)}
-          </p>
+          <p className="ml-2">{formatText(MSG.privacyPolicy)}</p>
         </ExternalLink>
       </MenuListItem>
       <MenuListItem>
-        <ExternalLink href={TERMS_AND_CONDITIONS} className={styles.actionItem}>
+        <ExternalLink href={TERMS_AND_CONDITIONS}>
           <Files size={iconSize} />
-          <p className={styles.actionItemLabel}>{formatText(MSG.termsOfUse)}</p>
+          <p className="ml-2">{formatText(MSG.termsOfUse)}</p>
         </ExternalLink>
       </MenuListItem>
     </MenuList>

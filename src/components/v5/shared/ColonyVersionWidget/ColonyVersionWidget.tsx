@@ -63,7 +63,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
                 <WarningCircle size={18} />
               )}
             </span>
-            <span className={styles.value}>{currentVersion}</span>
+            <span>{currentVersion}</span>
           </div>
         </div>
 
@@ -80,7 +80,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
             <span className="text-success-400">
               <CheckCircle size={18} />
             </span>
-            <span className={styles.value}>{latestVersion}</span>
+            <span>{latestVersion}</span>
           </div>
         </div>
       </div>
