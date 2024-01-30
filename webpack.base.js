@@ -34,7 +34,7 @@ const config = {
         '~redux': path.resolve(__dirname, 'src/redux'),
         '~routes': path.resolve(__dirname, 'src/routes'),
         '~utils': path.resolve(__dirname, 'src/utils'),
-        '~styles': path.resolve(__dirname, 'src/styles/shared'),
+        '~styles': path.resolve(__dirname, 'src/styles'),
         //   '~testutils': path.resolve(__dirname, 'src/__tests__/utils.ts'),
         '~types': path.resolve(__dirname, 'src/types'),
         //   '~dialogs': path.resolve(__dirname, 'src/modules/dashboard/components/Dialogs')
