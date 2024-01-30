@@ -36,6 +36,19 @@ query GetVerifiedMembers($colonyAddress: ID!) {
   }
 }
 
+query GetNotVerifiedMembers($colonyAddress: ID!) {
+  getContributorsByColony(
+    colonyAddress: $colonyAddress
+    filter: { isVerified: { eq: false } }
+  ) {
+    items {
+      user {
+        ...User
+      }
+    }
+  }
+}
+
 query GetContributorsByAddress(
   $contributorAddress: ID!
   $sortDirection: ModelSortDirection = ASC

@@ -8,18 +8,20 @@ import TokenIcon from '~shared/TokenIcon/index.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
+import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { sortDisabled } from '../../utils.ts';
 
-import { type SearchItemProps } from './types.ts';
+import { type CheckboxSearchItemProps } from './types.ts';
 
-const displayName = 'v5.SearchSelect.partials.SearchItem';
+const displayName = 'v5.SearchSelect.partials.CheckboxSearchItem';
 
-const SearchItem: FC<SearchItemProps> = ({
+const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
   options,
   onChange,
+  checkboxesList,
   isLabelVisible = true,
 }) => {
   const isMobile = useMobile();
@@ -63,8 +65,7 @@ const SearchItem: FC<SearchItemProps> = ({
               })}
               key={value}
             >
-              <button
-                type="button"
+              <label
                 className={clsx(
                   'w-full text-md transition-colors text-left flex items-center py-1.5 rounded px-2',
                   {
@@ -73,14 +74,22 @@ const SearchItem: FC<SearchItemProps> = ({
                     'text-gray-400 pointer-events-none gap-1': isDisabled,
 
                     'justify-center': !isLabelVisible,
+                    'cursor-pointer': !!checkboxesList,
                   },
                 )}
-                name={value.toString()}
-                onClick={() => {
-                  onChange?.(value);
-                }}
+                htmlFor={value.toString()}
               >
                 <div className="relative w-full flex items-center">
+                  {checkboxesList && (
+                    <Checkbox
+                      name={value.toString()}
+                      id={value.toString()}
+                      isChecked={checkboxesList.includes(value.toString())}
+                      onChange={() => {
+                        onChange?.(value);
+                      }}
+                    />
+                  )}
                   {color && !isLabelVisible && (
                     <div
                       className={clsx(teamColor, 'rounded shrink-0', {
@@ -124,7 +133,7 @@ const SearchItem: FC<SearchItemProps> = ({
                     </div>
                   )}
                 </div>
-              </button>
+              </label>
             </li>
           );
         },
@@ -133,6 +142,6 @@ const SearchItem: FC<SearchItemProps> = ({
   );
 };
 
-SearchItem.displayName = displayName;
+CheckboxSearchItem.displayName = displayName;
 
-export default SearchItem;
+export default CheckboxSearchItem;

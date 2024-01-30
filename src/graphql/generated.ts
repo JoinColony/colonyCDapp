@@ -426,7 +426,6 @@ export enum ColonyActionType {
   Recovery = 'RECOVERY',
   /** An action related to removing verified members */
   RemoveVerifiedMembers = 'REMOVE_VERIFIED_MEMBERS',
-  /** An action related to removing verified members via a motion */
   RemoveVerifiedMembersMotion = 'REMOVE_VERIFIED_MEMBERS_MOTION',
   /** An action related to setting user roles within a Colony */
   SetUserRoles = 'SET_USER_ROLES',
@@ -8788,6 +8787,13 @@ export type GetVerifiedMembersQueryVariables = Exact<{
 
 export type GetVerifiedMembersQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', items: Array<{ __typename?: 'ColonyContributor', user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
 
+export type GetNotVerifiedMembersQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+}>;
+
+
+export type GetNotVerifiedMembersQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', items: Array<{ __typename?: 'ColonyContributor', user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
+
 export type GetContributorsByAddressQueryVariables = Exact<{
   contributorAddress: Scalars['ID'];
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -11498,6 +11504,48 @@ export function useGetVerifiedMembersLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetVerifiedMembersQueryHookResult = ReturnType<typeof useGetVerifiedMembersQuery>;
 export type GetVerifiedMembersLazyQueryHookResult = ReturnType<typeof useGetVerifiedMembersLazyQuery>;
 export type GetVerifiedMembersQueryResult = Apollo.QueryResult<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>;
+export const GetNotVerifiedMembersDocument = gql`
+    query GetNotVerifiedMembers($colonyAddress: ID!) {
+  getContributorsByColony(
+    colonyAddress: $colonyAddress
+    filter: {isVerified: {eq: false}}
+  ) {
+    items {
+      user {
+        ...User
+      }
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useGetNotVerifiedMembersQuery__
+ *
+ * To run a query within a React component, call `useGetNotVerifiedMembersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNotVerifiedMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNotVerifiedMembersQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *   },
+ * });
+ */
+export function useGetNotVerifiedMembersQuery(baseOptions: Apollo.QueryHookOptions<GetNotVerifiedMembersQuery, GetNotVerifiedMembersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNotVerifiedMembersQuery, GetNotVerifiedMembersQueryVariables>(GetNotVerifiedMembersDocument, options);
+      }
+export function useGetNotVerifiedMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotVerifiedMembersQuery, GetNotVerifiedMembersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNotVerifiedMembersQuery, GetNotVerifiedMembersQueryVariables>(GetNotVerifiedMembersDocument, options);
+        }
+export type GetNotVerifiedMembersQueryHookResult = ReturnType<typeof useGetNotVerifiedMembersQuery>;
+export type GetNotVerifiedMembersLazyQueryHookResult = ReturnType<typeof useGetNotVerifiedMembersLazyQuery>;
+export type GetNotVerifiedMembersQueryResult = Apollo.QueryResult<GetNotVerifiedMembersQuery, GetNotVerifiedMembersQueryVariables>;
 export const GetContributorsByAddressDocument = gql`
     query GetContributorsByAddress($contributorAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int, $nextToken: String, $isWatching: Boolean) {
   getContributorsByAddress(

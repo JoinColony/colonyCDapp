@@ -21,4 +21,5 @@ export enum Action {
   ManageColonyObjectives = 'manage-colony-objectives',
   UserPermissions = 'user-permissions',
   SimpleDiscussion = 'simple-discussion',
+  ManageVerifiedMembers = 'manage-verified-members',
 }

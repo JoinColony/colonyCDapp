@@ -7,11 +7,15 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
     rightWindowPadding = 20,
     top = 0,
     withAutoTopPlacement = false,
+    withMaxHeight = true,
+    withLeftPosition = true,
   }: {
     bottomWindowPadding?: number;
     rightWindowPadding?: number;
     top?: number;
     withAutoTopPlacement?: boolean;
+    withMaxHeight?: boolean;
+    withLeftPosition?: boolean;
   } = {},
 ) => {
   const relativeElementRef = useRef<T | null>(null);
@@ -43,7 +47,9 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
             rightWindowPadding
           : left;
 
-      portalElementRef.current.style.left = `${leftPosition}px`;
+      if (withLeftPosition) {
+        portalElementRef.current.style.left = `${leftPosition}px`;
+      }
       if (shouldShowOnTop) {
         portalElementRef.current.style.top = `${
           relativeElementTop + window.scrollY - top - dropdownHeight
@@ -52,9 +58,11 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
         portalElementRef.current.style.top = `${
           bottom + window.scrollY + top
         }px`;
-        portalElementRef.current.style.maxHeight = `${
-          window.innerHeight - bottom - bottomWindowPadding
-        }px`;
+        if (withMaxHeight) {
+          portalElementRef.current.style.maxHeight = `${
+            window.innerHeight - bottom - bottomWindowPadding
+          }px`;
+        }
       }
     };
 
