@@ -42,6 +42,7 @@ const Table = <T,>({
   columns,
   renderSubComponent,
   getRowCanExpand,
+  withBorder = true,
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
@@ -138,7 +139,10 @@ const Table = <T,>({
                   headerGroup.headers.map((header, index) => (
                     <tr
                       key={row.id + headerGroup.id + header.id}
-                      className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100"
+                      className={clsx({
+                        '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
+                          withBorder,
+                      })}
                     >
                       <th
                         className={`
@@ -150,6 +154,13 @@ const Table = <T,>({
                           text-sm
                           font-normal
                         `}
+                        style={{
+                          width:
+                            header.column.columnDef.staticSize ||
+                            (header.getSize() !== 150
+                              ? `${header.column.getSize()}${sizeUnit}`
+                              : undefined),
+                        }}
                       >
                         {header.isPlaceholder
                           ? null
@@ -237,7 +248,7 @@ const Table = <T,>({
               {shouldShowEmptyContent ? (
                 <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
                   <td colSpan={totalColumnsCount} className="h-full">
-                    <div className="flex h-full flex-col items-start justify-center p-[1.1rem] text-md text-gray-500">
+                    <div className="text-md text-gray-500 py-4 px-[1.1rem] flex h-full flex-col justify-center items-start">
                       {emptyContent}
                     </div>
                   </td>
@@ -254,7 +265,7 @@ const Table = <T,>({
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
-                            !showExpandableContent,
+                            !showExpandableContent || withBorder,
                           'expanded-below': showExpandableContent,
                         })}
                       >

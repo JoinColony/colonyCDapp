@@ -15,12 +15,12 @@ import { useMobile } from '~hooks/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import Avatar from '~v5/shared/Avatar/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
 import MenuContainer from '../MenuContainer/index.ts';
 
 import { useSearchSelect } from './hooks.ts';
+import CheckboxSearchItem from './partials/CheckboxSearchItem/index.ts';
 import SearchInput from './partials/SearchInput/index.ts';
 import SearchItem from './partials/SearchItem/index.ts';
 import { type SearchSelectProps } from './types.ts';
@@ -36,9 +36,11 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       hideSearchOnMobile,
       onSearch,
       showEmptyContent = true,
-      showSearchValueAsOption = false,
       state,
       message,
+      checkboxesList,
+      additionalButtons,
+      className,
     },
     ref,
   ) => {
@@ -124,15 +126,14 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
         {!isLoading && (
           <div className="max-h-[calc(100vh-12rem)] overflow-y-scroll px-1.5 pr-1 sm:max-h-full sm:w-full">
             <div>
-              {filteredList.length > 0 ? (
-                filteredList.map(({ options, title, isAccordion, key }) =>
-                  isAccordion ? (
-                    <div className="mb-[0.625rem] last:mb-0" key={key}>
-                      <div className="flex items-center justify-between px-2">
-                        <h5 className="mb-2 uppercase text-gray-400 text-4">
-                          {formatText(title)}
-                        </h5>
-                        {isAccordion && (
+              {filteredList.length > 0
+                ? filteredList.map(({ options, title, isAccordion, key }) =>
+                    isAccordion ? (
+                      <div className="mb-[0.625rem] last:mb-0" key={key}>
+                        <div className="flex items-center justify-between px-2">
+                          <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                            {formatText(title)}
+                          </h5>
                           <button
                             type="button"
                             className="flex h-4 w-4 items-end justify-center text-gray-700"
@@ -146,35 +147,53 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                               )}
                             </span>
                           </button>
+                        </div>
+                        <AnimatePresence>
+                          {openedAccordions.includes(key) && (
+                            <motion.div
+                              initial="hidden"
+                              animate="visible"
+                              exit="hidden"
+                              variants={accordionAnimation}
+                              transition={{ duration: 0.4, ease: 'easeOut' }}
+                              className="overflow-hidden"
+                            >
+                              {checkboxesList ? (
+                                <CheckboxSearchItem
+                                  options={options}
+                                  onChange={onSelect}
+                                  checkboxesList={checkboxesList}
+                                />
+                              ) : (
+                                <SearchItem
+                                  options={options}
+                                  onChange={onSelect}
+                                />
+                              )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <div key={key} className="mb-[0.625rem] last:mb-0">
+                        <h5 className="text-4 text-gray-400 mb-2 uppercase pl-2">
+                          {formatText(title)}
+                        </h5>
+                        {checkboxesList ? (
+                          <CheckboxSearchItem
+                            options={options}
+                            onChange={onSelect}
+                            checkboxesList={checkboxesList}
+                          />
+                        ) : (
+                          <SearchItem options={options} onChange={onSelect} />
                         )}
                       </div>
-                      <AnimatePresence>
-                        {openedAccordions.includes(key) && (
-                          <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            exit="hidden"
-                            variants={accordionAnimation}
-                            transition={{ duration: 0.4, ease: 'easeOut' }}
-                            className="overflow-hidden"
-                          >
-                            <SearchItem options={options} onChange={onSelect} />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <div key={key} className="mb-[0.625rem] last:mb-0">
-                      <h5 className="mb-2 pl-2 uppercase text-gray-400 text-4">
-                        {formatText(title)}
-                      </h5>
-                      <SearchItem options={options} onChange={onSelect} />
-                    </div>
-                  ),
-                )
-              ) : (
-                <>
-                  {showSearchValueAsOption && (
+                    ),
+                  )
+                : (
+                  <>
+                                    {showSearchValueAsOption && (
                     <button
                       type="button"
                       className="flex min-h-[3.125rem] items-center justify-center gap-2 text-sm md:hover:text-blue-400"
@@ -193,8 +212,9 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                       description={{ id: 'actionSidebar.emptyDescription' }}
                     />
                   )}
-                </>
-              )}
+
+                  </>
+                )}
             </div>
           </div>
         )}
@@ -204,12 +224,16 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     return (
       <Portal>
         <MenuContainer
-          className="absolute z-[60] max-h-[37.5rem] w-full max-w-[calc(100%-2.25rem)] bg-base-white px-2.5 py-6 sm:max-w-[20.375rem]"
+          className={clsx(
+            className,
+            'py-6 px-2.5 w-full bg-base-white max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]',
+          )}
           hasShadow
           rounded="s"
           ref={ref}
         >
           {content}
+          {additionalButtons}
         </MenuContainer>
       </Portal>
     );

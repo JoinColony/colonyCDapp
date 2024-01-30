@@ -1,4 +1,4 @@
-import { DotsThree } from '@phosphor-icons/react';
+import { DotsThree, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -71,7 +71,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           <MenuContainer
             className={clsx(
               contentWrapperClassName,
-              'absolute z-[1] w-auto overflow-y-auto px-6 py-4',
+              'px-6 py-4 w-full absolute z-[60] overflow-y-auto sm:w-auto max-w-[calc(100%-3.4rem)] -translate-x-3 sm:translate-x-0',
             )}
             hasShadow
             rounded="s"
@@ -80,6 +80,18 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
               portalElementRef.current = ref;
             }}
           >
+            <div className="flex sm:hidden items-center justify-between mb-3">
+              <p className="text-4 text-gray-400 uppercase">
+                {formatText({ id: 'meatballMenu.selectAction' })}
+              </p>
+              <button
+                type="button"
+                className="text-gray-400"
+                onClick={toggleMenuOff}
+              >
+                <X size={18} />
+              </button>
+            </div>
             <ul>
               {items.map(
                 ({

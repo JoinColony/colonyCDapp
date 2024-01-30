@@ -36,7 +36,6 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.SetUserRolesMotion} {{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.AddVerifiedMembers} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.RemoveVerifiedMembers} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
-      ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
       ${ExtendedColonyActionType.UpdateTokens} {Manage approved tokens by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}

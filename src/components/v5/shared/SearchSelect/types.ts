@@ -7,12 +7,13 @@ export interface SearchSelectProps extends BaseFieldProps {
   items: SearchSelectOptionProps[];
   onSelect?: (value: string) => void;
   isLoading?: boolean;
-  showSearchValueAsOption?: boolean;
   className?: string;
   hideSearchOnMobile?: boolean;
   onSearch?: (value: string) => void;
   showEmptyContent?: boolean;
   readonly?: boolean;
+  checkboxesList?: string[];
+  additionalButtons?: React.ReactNode;
 }
 
 export interface SearchSelectOptionProps {

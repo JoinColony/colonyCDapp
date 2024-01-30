@@ -32,6 +32,7 @@ export enum ActionTitleMessageKeys {
   ToDomain = 'toDomain',
   TokenSymbol = 'tokenSymbol',
   ChainName = 'chainName',
+  VerifiedMembers = 'verifiedMembers',
   SafeTransactionTitle = 'safeTransactionTitle',
 }
 

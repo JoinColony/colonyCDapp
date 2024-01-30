@@ -110,6 +110,10 @@ const useActionsList = () => {
             label: { id: 'actions.upgradeColonyVersion' },
             value: Action.UpgradeColonyVersion,
           },
+          {
+            label: { id: 'actions.manageVerifiedMembers' },
+            value: Action.ManageVerifiedMembers,
+          },
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.enterRecoveryMode' },

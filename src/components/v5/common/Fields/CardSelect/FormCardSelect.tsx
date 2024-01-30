@@ -12,11 +12,12 @@ const displayName = 'v5.common.Fields.CardSelect.FormCardSelect';
 
 function FormCardSelect<TValue = string>({
   name,
+  onChange,
   ...rest
 }: FormCardSelectProps<TValue>): JSX.Element {
   const { readonly } = useAdditionalFormOptionsContext();
   const {
-    field: { onChange, value },
+    field: { onChange: onFieldChange, value },
     fieldState: { invalid, error },
   } = useController({
     name,
@@ -27,7 +28,10 @@ function FormCardSelect<TValue = string>({
       {...rest}
       readonly={readonly}
       value={value}
-      onChange={onChange}
+      onChange={(onChangeValue) => {
+        onChange?.(onChangeValue);
+        onFieldChange(onChangeValue);
+      }}
       state={invalid ? FieldState.Error : undefined}
       message={error?.message}
     />

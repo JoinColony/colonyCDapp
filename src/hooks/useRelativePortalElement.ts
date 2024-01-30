@@ -8,12 +8,19 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
     top = 0,
     customLeftPosition = 0,
     withAutoTopPlacement = false,
+    withMaxHeight = true,
+    withLeftPosition = true,
   }: {
     bottomWindowPadding?: number;
     rightWindowPadding?: number;
     top?: number;
     withAutoTopPlacement?: boolean;
+<<<<<<< HEAD
     customLeftPosition?: number;
+=======
+    withMaxHeight?: boolean;
+    withLeftPosition?: boolean;
+>>>>>>> a8c292ff3 (feat: implement verified members form)
   } = {},
 ) => {
   const relativeElementRef = useRef<T | null>(null);
@@ -45,9 +52,15 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
             rightWindowPadding
           : left;
 
+<<<<<<< HEAD
       portalElementRef.current.style.left = `${
         leftPosition + customLeftPosition
       }px`;
+=======
+      if (withLeftPosition) {
+        portalElementRef.current.style.left = `${leftPosition}px`;
+      }
+>>>>>>> a8c292ff3 (feat: implement verified members form)
       if (shouldShowOnTop) {
         portalElementRef.current.style.top = `${
           relativeElementTop + window.scrollY - top - dropdownHeight
@@ -56,9 +69,11 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
         portalElementRef.current.style.top = `${
           bottom + window.scrollY + top
         }px`;
-        portalElementRef.current.style.maxHeight = `${
-          window.innerHeight - bottom - bottomWindowPadding
-        }px`;
+        if (withMaxHeight) {
+          portalElementRef.current.style.maxHeight = `${
+            window.innerHeight - bottom - bottomWindowPadding
+          }px`;
+        }
       }
     };
 
