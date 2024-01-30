@@ -5,9 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { AnalyticsContextProvider } from '~context/AnalyticsContext/index.ts';
 import { getContext, ContextModule } from '~context/index.ts';
-import RouteTracker from '~routes/RouteTracker.tsx';
 
 import actionMessages from './i18n/en-actions.ts';
 import eventsMessages from './i18n/en-events.ts';
@@ -53,12 +51,9 @@ const Entry = ({ store }: Props) => {
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
           <HelmetProvider>
-            <AnalyticsContextProvider>
-              <Router>
-                <RouteTracker />
-                <Routes />
-              </Router>
-            </AnalyticsContextProvider>
+            <Router>
+              <Routes />
+            </Router>
           </HelmetProvider>
         </ReduxProvider>
       </ApolloProvider>

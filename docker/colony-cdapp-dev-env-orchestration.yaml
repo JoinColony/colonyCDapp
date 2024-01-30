@@ -74,14 +74,14 @@ services:
       interval: 5s
       retries: 1000
 
-  auth-proxy:
-    container_name: 'auth'
-    image: colony-cdapp-dev-env/auth-proxy:latest
-    ports:
-      - '3005:3005'
-    depends_on:
-      amplify:
-        condition: service_healthy
+  # auth-proxy:
+  #   container_name: 'auth'
+  #   image: colony-cdapp-dev-env/auth-proxy:latest
+  #   ports:
+  #     - '3005:3005'
+  #   depends_on:
+  #     amplify:
+  #       condition: service_healthy
 
   network-files:
     container_name: 'network-files'

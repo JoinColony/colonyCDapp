@@ -4,7 +4,6 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub/index.ts';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
-import { useAnalyticsContext } from '~context/AnalyticsContext/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMobile } from '~hooks/index.ts';
@@ -17,7 +16,6 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { UserHubTabs } from '../UserHub/types.ts';
 
-import { OPEN_USER_HUB_EVENT } from './consts.ts';
 import { type UserHubButtonProps } from './types.ts';
 
 export const displayName =
@@ -34,7 +32,6 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   const { wallet, user } = useAppContext();
   const [isUserHubOpen, setIsUserHubOpen] = useState(false);
 
-  const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
 
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
@@ -80,7 +77,6 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   useDisableBodyScroll(visible && isMobile);
 
   const handleButtonClick = () => {
-    trackEvent(OPEN_USER_HUB_EVENT);
     setOpenItemIndex(undefined);
     toggleOff();
   };
