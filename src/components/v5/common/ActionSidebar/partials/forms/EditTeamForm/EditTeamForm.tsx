@@ -3,7 +3,10 @@ import { PaintBucket } from 'phosphor-react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { MAX_DOMAIN_PURPOSE_LENGTH } from '~constants/index.ts';
+import {
+  MAX_COLONY_DISPLAY_NAME,
+  MAX_DOMAIN_PURPOSE_LENGTH,
+} from '~constants/index.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
@@ -64,12 +67,14 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         title={formatText({ id: 'actionSidebar.teamName' })}
       >
         <FormInputBase
+          message={false}
           name="teamName"
           placeholder={formatText({
             id: 'actionSidebar.placeholder.teamName',
           })}
           mode="secondary"
           readOnly={readonly}
+          maxLength={MAX_COLONY_DISPLAY_NAME}
         />
       </ActionFormRow>
       <ActionFormRow
