@@ -66,7 +66,7 @@ const SearchItem: FC<SearchItemProps> = ({
               <button
                 type="button"
                 className={clsx(
-                  'w-full text-md relative transition-colors text-left flex items-center py-1.5 rounded px-2',
+                  'w-full text-md transition-colors text-left flex items-center py-1.5 rounded px-2',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
@@ -82,43 +82,45 @@ const SearchItem: FC<SearchItemProps> = ({
                   onChange?.(value);
                 }}
               >
-                {color && !isLabelVisible && (
-                  <div
-                    className={clsx(teamColor, 'rounded shrink-0', {
-                      'w-[1.125rem] h-[1.125rem]': !isMobile,
-                      'w-7 h-7': isMobile,
-                    })}
-                  />
-                )}
-                {token && (
-                  <div className="mr-2">
-                    <TokenIcon token={token} size="xxs" />
-                  </div>
-                )}
-                {color && isLabelVisible && (
-                  <span
-                    className={clsx(teamColor, 'mr-2 w-3.5 h-3.5 rounded')}
-                  />
-                )}
-                {showAvatar && (
-                  <div className="mr-2 items-center justify-center flex">
-                    <UserAvatar
-                      avatar={avatar}
-                      user={walletAddress}
-                      size="xs"
+                <div className="relative w-full flex items-center">
+                  {color && !isLabelVisible && (
+                    <div
+                      className={clsx(teamColor, 'rounded shrink-0', {
+                        'w-[1.125rem] h-[1.125rem]': !isMobile,
+                        'w-7 h-7': isMobile,
+                      })}
                     />
-                  </div>
-                )}
-                {isLabelVisible && labelText}
-                {!label && <span className="truncate">{walletAddress}</span>}
-                {firstDisabledOption?.value === value && (
-                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
-                    <ExtensionsStatusBadge
-                      mode="coming-soon"
-                      text="Coming soon"
+                  )}
+                  {token && (
+                    <div className="mr-2">
+                      <TokenIcon token={token} size="xxs" />
+                    </div>
+                  )}
+                  {color && isLabelVisible && (
+                    <span
+                      className={clsx(teamColor, 'mr-2 w-3.5 h-3.5 rounded')}
                     />
-                  </div>
-                )}
+                  )}
+                  {showAvatar && (
+                    <div className="mr-2 items-center justify-center flex">
+                      <UserAvatar
+                        avatar={avatar}
+                        user={walletAddress}
+                        size="xs"
+                      />
+                    </div>
+                  )}
+                  {isLabelVisible && labelText}
+                  {!label && <span className="truncate">{walletAddress}</span>}
+                  {firstDisabledOption?.value === value && (
+                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+                      <ExtensionsStatusBadge
+                        mode="coming-soon"
+                        text="Coming soon"
+                      />
+                    </div>
+                  )}
+                </div>
                 {missingPermissions && (
                   <IconWithTooltip
                     tooltipContent={formatText({ id: missingPermissions })}
