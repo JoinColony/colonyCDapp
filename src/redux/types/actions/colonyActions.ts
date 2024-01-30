@@ -304,8 +304,9 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName: string;
         members: string[];
+        domainId: number;
         annotationMessage?: string;
-        customActionTitle?: string;
+        customActionTitle: string;
       },
       MetaWithSetter<object>
     >
