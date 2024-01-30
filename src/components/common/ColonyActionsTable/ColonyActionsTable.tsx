@@ -25,7 +25,7 @@ import {
   useColonyActionsTableColumns,
   useRenderRowLink,
 } from './hooks.tsx';
-import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem.tsx';
+import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem/index.ts';
 import { type ColonyActionsTableProps } from './types.ts';
 
 const displayName = 'common.ColonyActionsTable';

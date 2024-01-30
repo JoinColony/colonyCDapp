@@ -21,8 +21,8 @@ import { formatText } from '~utils/intl.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { type RenderCellWrapper } from '~v5/common/Table/types.ts';
-import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/TableWithMeatballMenu/consts.ts';
 
 import ActionDescription from './partials/ActionDescription/index.ts';
 import { makeLoadingRows } from './utils.ts';
