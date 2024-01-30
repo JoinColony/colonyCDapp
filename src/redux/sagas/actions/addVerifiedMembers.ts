@@ -1,7 +1,6 @@
-import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import ColonyManager from '~context/ColonyManager';
 import { Action, AllActions, ActionTypes } from '~redux';
 import { transactionAddParams } from '~redux/actionCreators';
 
@@ -12,7 +11,6 @@ import {
 } from '../transactions';
 import {
   createActionMetadataInDB,
-  getColonyManager,
   initiateTransaction,
   putError,
   takeFrom,
@@ -26,7 +24,6 @@ function* addVerifiedMembersAction({
     colonyName,
     members,
     customActionTitle,
-    domainId,
     annotationMessage,
   },
   meta: { id: metaId, navigate, setTxHash },
@@ -35,9 +32,6 @@ function* addVerifiedMembersAction({
   let txChannel;
 
   try {
-    if (!domainId) {
-      throw new Error('Domain not set for addVerifiedMembers transaction');
-    }
     if (!colonyAddress) {
       throw new Error(
         'No colony address set for addVerifiedMembers transaction',
@@ -48,7 +42,6 @@ function* addVerifiedMembersAction({
     }
 
     txChannel = yield call(getTxChannel, metaId);
-    const colonyManager: ColonyManager = yield getColonyManager();
 
     // setup batch ids and channels
     const batchKey = 'addVerifiedMembers';
@@ -56,12 +49,12 @@ function* addVerifiedMembersAction({
     const { addVerifiedMembers, annotateAddVerifiedMembers } =
       yield createTransactionChannels(metaId, [
         'addVerifiedMembers',
-        'annotateAddVerifiedMembersAction',
+        'annotateAddVerifiedMembers',
       ]);
 
     yield fork(createTransaction, addVerifiedMembers.id, {
       context: ClientType.ColonyClient,
-      methodName: 'metadataDelta',
+      methodName: 'editColonyByDelta',
       identifier: colonyAddress,
       params: [],
       group: {
@@ -95,25 +88,10 @@ function* addVerifiedMembersAction({
       );
     }
 
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      domainId,
-      ColonyRole.Architecture,
-    );
-
     // add params, how to blobify the last JSON??
     yield put(
       transactionAddParams(addVerifiedMembers.id, [
-        permissionDomainId,
-        childSkillIndex,
-        domainId,
-        getAddVerifiedMembersOperation(colonyAddress, members),
+        JSON.stringify(getAddVerifiedMembersOperation(colonyAddress, members)),
       ]),
     );
 
