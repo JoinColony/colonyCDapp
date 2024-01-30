@@ -24,6 +24,7 @@ import Objective from './partials/Objective/index.ts';
 import ReputationChart from './partials/ReputationChart/index.ts';
 import TokenBalance from './partials/TokenBalance/index.ts';
 import TotalActions from './partials/TotalActions/index.ts';
+import { TmpAddVerifiedMembers } from './TmpAddVerifiedMembers.tsx';
 
 const displayName = 'v5.frame.ColonyHome';
 
@@ -38,6 +39,7 @@ const ColonyHome = () => {
     <div className="flex flex-col gap-6 lg:gap-10">
       <div className="flex flex-col gap-9 sm:gap-10">
         <DashboardHeader />
+        <TmpAddVerifiedMembers />
         <div className="flex flex-col sm:flex-row items-center gap-[1.125rem] w-full">
           <TotalActions />
           <Members />
