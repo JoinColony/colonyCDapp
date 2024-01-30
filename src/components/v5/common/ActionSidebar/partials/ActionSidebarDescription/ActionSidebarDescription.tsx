@@ -13,6 +13,7 @@ import EnterRecoveryModeDescription from './partials/EnterRecoveryModeDescriptio
 import ManageColonyObjectiveDescription from './partials/ManageColonyObjectiveDescription.tsx';
 import ManagePermissionsDescription from './partials/ManagePermissionsDescription.tsx';
 import ManageTokensDescription from './partials/ManageTokensDescription.tsx';
+import ManageVerifiedMembersDescription from './partials/ManageVerifiedMembersDescription.tsx';
 import MintTokensDescription from './partials/MintTokensDescription.tsx';
 import SimplePaymentDescription from './partials/SimplePaymentDescription.tsx';
 import TransferFundsDescription from './partials/TransferFundsDescription.tsx';
@@ -54,6 +55,8 @@ const ActionSidebarDescription = () => {
       return <UnlockTokenDescription />;
     case Action.UpgradeColonyVersion:
       return <UpgradeColonyDescription />;
+    case Action.ManageVerifiedMembers:
+      return <ManageVerifiedMembersDescription />;
     default:
       return null;
   }
