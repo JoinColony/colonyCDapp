@@ -38,7 +38,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
     },
   ] = useToggle();
   const selectedOption = teamsOptions.find(
-    (option) => option.value === selectedTeam,
+    (option) => option.value === Number(selectedTeam),
   );
   const { readonly } = useAdditionalFormOptionsContext();
 
