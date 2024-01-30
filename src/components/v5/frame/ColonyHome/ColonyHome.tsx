@@ -24,8 +24,6 @@ import Objective from './partials/Objective/index.ts';
 import ReputationChart from './partials/ReputationChart/index.ts';
 import TokenBalance from './partials/TokenBalance/index.ts';
 import TotalActions from './partials/TotalActions/index.ts';
-import { TmpAddVerifiedMembers } from './TmpAddVerifiedMembers.tsx';
-import { TmpRemoveVerifiedMembers } from './TmpRemoveVerifiedMembers.tsx';
 
 const displayName = 'v5.frame.ColonyHome';
 
@@ -37,16 +35,12 @@ const ColonyHome = () => {
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   return (
-    <div className="flex flex-col gap-6 lg:gap-10">
-      <div className="flex flex-col gap-9 sm:gap-10">
-        <DashboardHeader />
-        <TmpAddVerifiedMembers />
-        <TmpRemoveVerifiedMembers />
-        <div className="flex flex-col sm:flex-row items-center gap-[1.125rem] w-full">
-          <TotalActions />
-          <Members />
-          <TokenBalance />
-        </div>
+    <div className="flex flex-col gap-10">
+      <DashboardHeader />
+      <div className="flex flex-col sm:flex-row items-center gap-[1.125rem] w-full">
+        <TotalActions />
+        <Members />
+        <TokenBalance />
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-[39%_1fr] gap-6 w-full">
         <div className="flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-col gap-6 sm:gap-[1.125rem] lg:gap-[1.125rem] w-full">

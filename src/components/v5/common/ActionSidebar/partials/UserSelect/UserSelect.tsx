@@ -136,7 +136,6 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
               }}
               isLoading={usersOptions.isLoading}
               className="z-[60]"
-              showSearchValueAsOption
               showEmptyContent={false}
             />
           )}
