@@ -3440,3 +3440,14 @@ type UserStake @model {
   """
   isForfeited: Boolean
 }
+
+type VerifiedMember @model {
+  """
+  A colony address - user address pair that tells us if a user is verified.
+  """
+  colonyAddress: ID! @primaryKey(sortKeyFields: ["userAddress"])
+    @index(name: "verifiedMembersByColony", queryField: "getVerifiedMembersByColony")
+  userAddress: ID!
+  user: User! @hasOne(fields: ["userAddress"])
+  createdAt: AWSDateTime!
+}
