@@ -1263,9 +1263,9 @@ type Colony @model {
   # If you have a better idea, on how to merged them, I'll all ears..
   fundsClaims: [ColonyFundsClaim] @hasMany
   """
-  List of native chain token claims (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
+  Native chain token claim (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
+  This is not an array since only a single token type can be returned
   """
-  # This is not an array since only a single token type can be returned
   chainFundsClaim: ColonyChainFundsClaim
     @function(name: "fetchColonyNativeFundsClaim-${env}")
   """

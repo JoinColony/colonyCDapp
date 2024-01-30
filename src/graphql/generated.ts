@@ -109,7 +109,10 @@ export type Colony = {
   actions?: Maybe<ModelColonyActionConnection>;
   /** Returns a list token balances for each domain and each token that the colony has */
   balances?: Maybe<ColonyBalances>;
-  /** List of native chain token claims (e.g., Token 0x0000...0000: ETH, xDAI, etc.) */
+  /**
+   * Native chain token claim (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
+   * This is not an array since only a single token type can be returned
+   */
   chainFundsClaim?: Maybe<ColonyChainFundsClaim>;
   /** Metadata related to the chain of the Colony */
   chainMetadata: ChainMetadata;
