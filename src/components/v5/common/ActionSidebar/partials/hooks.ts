@@ -33,6 +33,7 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.ManageColonyObjectives]: 'button.updateObjective',
   [Action.CreateNewIntegration]: 'button.createIntegration',
   [Action.CreateDecision]: 'button.createDecision',
+  [Action.ManageVerifiedMembers]: 'button.updateVerified',
 };
 
 export const useSubmitButtonText = () => {
