@@ -1,1 +1,1 @@
-export { default, Props as AvatarProps } from './Avatar.tsx';
+export { default, type Props as AvatarProps } from './Avatar.tsx';

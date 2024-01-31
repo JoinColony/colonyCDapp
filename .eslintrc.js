@@ -147,6 +147,12 @@ module.exports = {
         fixStyle: 'inline-type-imports',
       },
     ],
+    '@typescript-eslint/consistent-type-exports': [
+      'error',
+      {
+        fixMixedExportsWithInlineTypeSpecifier: true,
+      },
+    ],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
     '@typescript-eslint/ban-ts-comment': 'off',

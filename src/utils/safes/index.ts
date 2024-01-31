@@ -12,7 +12,7 @@ import { isEmpty } from '~utils/lodash.ts';
 
 export {
   getContractUsefulMethods,
-  AbiItemExtended,
+  type AbiItemExtended,
   fetchContractABI,
   isAbiItem,
   fetchContractName,
