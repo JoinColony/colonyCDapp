@@ -745,6 +745,10 @@ enum ColonyActionType {
   """
   MAKE_ARBITRARY_TRANSACTION
   MAKE_ARBITRARY_TRANSACTIONS_MOTION
+  """
+  An action related to adding verified members
+  """
+  ADD_VERIFIED_MEMBERS
 }
 
 """
@@ -2855,7 +2859,10 @@ type ColonyAction @model @searchable {
   Colony roles that are associated with the action
   """
   roles: ColonyActionRoles
-
+  """
+  Members impacted by the action (used for add/remove verified members)
+  """
+  members: [ID!]
   # Required since some actions might have multiple event entries in the list
   # which need to be iterated over and exposed individually
   #
@@ -3439,15 +3446,4 @@ type UserStake @model {
   Only applicable for expenditure stakes, indicates if the creator's stake was forfeited when expenditure was cancelled
   """
   isForfeited: Boolean
-}
-
-type VerifiedMember @model {
-  """
-  A colony address - user address pair that tells us if a user is verified.
-  """
-  colonyAddress: ID! @primaryKey(sortKeyFields: ["userAddress"])
-    @index(name: "verifiedMembersByColony", queryField: "getVerifiedMembersByColony")
-  userAddress: ID!
-  user: User! @hasOne(fields: ["userAddress"])
-  createdAt: AWSDateTime!
 }
