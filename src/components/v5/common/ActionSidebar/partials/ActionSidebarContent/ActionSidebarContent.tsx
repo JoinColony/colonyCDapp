@@ -36,7 +36,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
   const { readonly } = useAdditionalFormOptionsContext();
-  const { flatFormErrors, hasErrors } = useGetFormActionErrors();
+  const { flatFormErrors } = useGetFormActionErrors();
 
   const {
     formState: {
@@ -72,10 +72,10 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <ActionSidebarDescription />
         </div>
         <SidebarBanner />
+        <NoPermissionsError />
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
-        <NoPermissionsError />
         <NoReputationError />
         {customError && (
           <div className="mt-7">
@@ -84,7 +84,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             </NotificationBanner>
           </div>
         )}
-        {hasErrors || flatFormErrors.length ? (
+        {flatFormErrors.length ? (
           <div className="mt-7">
             <NotificationBanner
               status="error"
