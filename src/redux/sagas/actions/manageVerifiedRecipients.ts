@@ -24,6 +24,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
@@ -139,7 +140,7 @@ function* manageVerifiedRecipients({
 
     setTxHash?.(txHash);
 
-    yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(editColony.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

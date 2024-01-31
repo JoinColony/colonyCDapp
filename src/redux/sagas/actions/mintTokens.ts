@@ -7,6 +7,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
@@ -107,11 +108,11 @@ function* createMintTokensAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(mintTokens.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(mintTokens.channel);
 
     yield initiateTransaction({ id: claimColonyFunds.id });
 
-    yield takeFrom(claimColonyFunds.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(claimColonyFunds.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

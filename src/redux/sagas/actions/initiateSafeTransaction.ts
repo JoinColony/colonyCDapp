@@ -20,6 +20,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import { createActionMetadataInDB, uploadAnnotation } from '../utils/index.ts';
 import {
@@ -118,10 +119,7 @@ function* initiateSafeTransactionAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(
-      initiateSafeTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield waitForTxResult(initiateSafeTransaction.channel);
 
     /**
      * Create parent safe transaction in the database

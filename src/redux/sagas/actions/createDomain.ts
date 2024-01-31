@@ -28,6 +28,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   initiateTransaction,
@@ -129,7 +130,7 @@ function* createDomainAction({
         receipt: { transactionHash: txHash },
         eventData,
       },
-    } = yield takeFrom(createDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    } = yield waitForTxResult(createDomain.channel);
 
     setTxHash?.(txHash);
 

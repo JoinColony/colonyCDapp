@@ -7,6 +7,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
@@ -81,7 +82,7 @@ function* tokenUnlockAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(tokenUnlock.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(tokenUnlock.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

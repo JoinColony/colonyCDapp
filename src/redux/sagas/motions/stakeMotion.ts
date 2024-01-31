@@ -19,6 +19,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   putError,
@@ -161,16 +162,16 @@ function* stakeMotion({
     if (activateTokens) {
       yield initiateTransaction({ id: approve.id });
 
-      yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield waitForTxResult(approve.channel);
 
       yield initiateTransaction({ id: deposit.id });
 
-      yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield waitForTxResult(deposit.channel);
     }
 
     yield initiateTransaction({ id: approveStake.id });
 
-    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(approveStake.channel);
 
     yield put(transactionPending(stakeMotionTransaction.id));
 
@@ -219,10 +220,7 @@ function* stakeMotion({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(
-      stakeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield waitForTxResult(stakeMotionTransaction.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({

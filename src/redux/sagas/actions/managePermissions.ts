@@ -19,6 +19,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   initiateTransaction,
@@ -146,7 +147,7 @@ function* managePermissionsAction({
 
     setTxHash?.(txHash);
 
-    yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(setUserRoles.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

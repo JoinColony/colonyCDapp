@@ -17,6 +17,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
@@ -184,7 +185,7 @@ function* editColonyMotion({
     );
 
     setTxHash?.(txHash);
-    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(createMotion.channel);
 
     const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
       colony,

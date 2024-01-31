@@ -9,6 +9,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   putError,
@@ -128,10 +129,7 @@ function* revealVoteMotion({
       );
 
       yield initiateTransaction({ id: revealVoteMotionTransaction.id });
-      yield takeFrom(
-        revealVoteMotionTransaction.channel,
-        ActionTypes.TRANSACTION_SUCCEEDED,
-      );
+      yield waitForTxResult(revealVoteMotionTransaction.channel);
 
       return yield put<AllActions>({
         type: ActionTypes.MOTION_REVEAL_VOTE_SUCCESS,

@@ -23,6 +23,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   getColonyManager,
@@ -223,13 +224,13 @@ function* userDepositToken({
 
     yield initiateTransaction({ id: approve.id });
 
-    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(approve.channel);
 
     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
 
     yield initiateTransaction({ id: deposit.id });
 
-    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(deposit.channel);
 
     yield put({
       type: ActionTypes.USER_DEPOSIT_TOKEN_SUCCESS,
@@ -268,7 +269,7 @@ function* userWithdrawToken({
 
     yield initiateTransaction({ id: withdraw.id });
 
-    yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(withdraw.channel);
 
     yield put<AllActions>({
       type: ActionTypes.USER_WITHDRAW_TOKEN_SUCCESS,

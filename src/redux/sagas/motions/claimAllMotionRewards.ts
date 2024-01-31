@@ -27,6 +27,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   initiateTransaction,
@@ -152,9 +153,7 @@ function* claimAllMotionRewards({
     );
 
     yield all(
-      Object.keys(channels).map((id) =>
-        takeFrom(channels[id].channel, ActionTypes.TRANSACTION_SUCCEEDED),
-      ),
+      Object.keys(channels).map((id) => waitForTxResult(channels[id].channel)),
     );
 
     yield put<AllActions>({

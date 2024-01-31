@@ -19,6 +19,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
@@ -143,7 +144,7 @@ function* editColonyAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(editColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(editColony.channel);
 
     const existingTokenAddresses = getExistingTokenAddresses(colony);
     const modifiedTokenAddresses = getModifiedTokenAddresses(

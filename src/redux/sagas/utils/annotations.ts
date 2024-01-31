@@ -10,11 +10,13 @@ import {
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators/index.ts';
-import { ActionTypes } from '~redux/actionTypes.ts';
 
-import { type TransactionChannel } from '../transactions/index.ts';
+import {
+  waitForTxResult,
+  type TransactionChannel,
+} from '../transactions/index.ts';
 
-import { initiateTransaction, takeFrom } from './effects.ts';
+import { initiateTransaction } from './effects.ts';
 import { ipfsUploadAnnotation } from './ipfs.ts';
 
 export const uploadAnnotationToDb = async ({
@@ -78,5 +80,5 @@ export function* uploadAnnotation({
 
   yield initiateTransaction({ id: txChannel.id });
 
-  yield takeFrom(txChannel.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+  yield waitForTxResult(txChannel.channel);
 }
