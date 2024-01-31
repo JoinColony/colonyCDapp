@@ -18,6 +18,7 @@ import {
   useActionFormProps,
   useSidebarActionForm,
   useReputationValidation,
+  usePermissionsValidation,
 } from '../../hooks/index.ts';
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
@@ -67,6 +68,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   } = useFormContext();
 
   const { noReputationError } = useReputationValidation();
+  const { noPermissionsError } = usePermissionsValidation();
 
   return (
     <>
@@ -99,6 +101,13 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
+        {noPermissionsError && (
+          <div className="mt-6">
+            <NotificationBanner status="warning" icon="warning-circle">
+              {formatMessage(MSG.noPermissionsErrorTitle)}
+            </NotificationBanner>
+          </div>
+        )}
         {noReputationError && (
           <div className="mt-6">
             <NotificationBanner

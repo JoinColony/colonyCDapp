@@ -106,18 +106,19 @@ export const usePermissionsValidation = () => {
   } = formValues;
 
   const getIsMissingPermissions = useCallback(() => {
-    if (decisionMethod === DecisionMethod.Reputation) {
+    if (!decisionMethod || decisionMethod === DecisionMethod.Reputation) {
       return false;
+    }
+
+    const requiredRoles = getPermissionsNeededForAction(actionType, formValues);
+    if (!requiredRoles) {
+      return true;
     }
 
     const relevantPermissionsDomainId = getRelevantPermissionsDomainId(
       actionType,
       formValues,
     );
-    const requiredRoles = getPermissionsNeededForAction(actionType, formValues);
-    if (!requiredRoles) {
-      return true;
-    }
 
     return !addressHasRoles({
       requiredRoles,
