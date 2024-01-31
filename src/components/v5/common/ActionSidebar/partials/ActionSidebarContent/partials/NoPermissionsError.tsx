@@ -11,7 +11,7 @@ const displayName =
 const MSG = defineMessages({
   noPermissionsErrorTitle: {
     id: `${displayName}.noPermissionsErrorTitle`,
-    defaultMessage: `You don't have the right permissions to create this action type. Choose another action.`,
+    defaultMessage: `You don't have the right permissions to create this action. Try another action type.`,
   },
 });
 
@@ -26,7 +26,7 @@ const NoPermissionsError = () => {
 
   return (
     <div className="mt-6">
-      <NotificationBanner status="warning" icon={WarningCircle}>
+      <NotificationBanner status="error" icon={WarningCircle}>
         {formatMessage(MSG.noPermissionsErrorTitle)}
       </NotificationBanner>
     </div>
