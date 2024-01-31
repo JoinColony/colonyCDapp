@@ -3,28 +3,23 @@ import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { defineMessages, useIntl } from 'react-intl';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
-import Link from '~v5/shared/Link/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import ActionTypeSelect from '../../ActionTypeSelect.tsx';
-import {
-  useActionFormProps,
-  useSidebarActionForm,
-  useReputationValidation,
-  usePermissionsValidation,
-} from '../../hooks/index.ts';
+import { useActionFormProps, useSidebarActionForm } from '../../hooks/index.ts';
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
 import Motions from '../Motions/index.ts';
 
 import { useGetFormActionErrors } from './hooks.ts';
+import NoPermissionsError from './partials/NoPermissionsError.tsx';
+import NoReputationError from './partials/NoReputationError.tsx';
 import PermissionSidebar from './partials/PermissionSidebar.tsx';
 import { SidebarBanner } from './partials/SidebarBanner.tsx';
 import {
@@ -34,28 +29,10 @@ import {
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
-const MSG = defineMessages({
-  noReputationErrorTitle: {
-    id: `${displayName}.noReputationErrorTitle`,
-    defaultMessage: 'There is no reputation in this team yet',
-  },
-  noReputationError: {
-    id: `${displayName}.noReputationError`,
-    defaultMessage:
-      'If you have the necessary permissions you can bypass the governance process.',
-  },
-  noPermissionsErrorTitle: {
-    id: `${displayName}.noPermissionsErrorTitle`,
-    defaultMessage: `You don't have the right permissions to create this action type. Choose another action.`,
-  },
-});
-
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
 }) => {
-  const { formatMessage } = useIntl();
-
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
   const { readonly } = useAdditionalFormOptionsContext();
@@ -66,9 +43,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       errors: { this: customError },
     },
   } = useFormContext();
-
-  const { noReputationError } = useReputationValidation();
-  const { noPermissionsError } = usePermissionsValidation();
 
   return (
     <>
@@ -101,29 +75,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
-        {noPermissionsError && (
-          <div className="mt-6">
-            <NotificationBanner status="warning" icon="warning-circle">
-              {formatMessage(MSG.noPermissionsErrorTitle)}
-            </NotificationBanner>
-          </div>
-        )}
-        {noReputationError && (
-          <div className="mt-6">
-            <NotificationBanner
-              status="warning"
-              icon={WarningCircle}
-              description={formatMessage(MSG.noReputationError)}
-              callToAction={
-                <Link to="https://docs.colony.io/use/reputation">
-                  {formatMessage({ id: 'text.learnMore' })}
-                </Link>
-              }
-            >
-              {formatMessage(MSG.noReputationErrorTitle)}
-            </NotificationBanner>
-          </div>
-        )}
+        <NoPermissionsError />
+        <NoReputationError />
         {customError && (
           <div className="mt-7">
             <NotificationBanner icon={WarningCircle} status="error">
@@ -131,7 +84,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             </NotificationBanner>
           </div>
         )}
-        {hasErrors && flatFormErrors.length ? (
+        {hasErrors || flatFormErrors.length ? (
           <div className="mt-7">
             <NotificationBanner
               status="error"
