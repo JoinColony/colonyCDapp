@@ -3,10 +3,11 @@ import { pipe } from 'lodash/fp';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAsyncFunction, useColonyContext } from '~hooks';
-import { ActionTypes } from '~redux/actionTypes';
-import { mapPayload, withMeta } from '~utils/actions';
-import { setQueryParamOnUrl } from '~utils/urls';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { mapPayload, withMeta } from '~utils/actions.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
 
 export const TmpAddVerifiedMembers = () => {
   const {
