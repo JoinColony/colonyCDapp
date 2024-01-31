@@ -111,7 +111,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               message={message}
               value={searchValue}
               placeholder={formatText({
-                id: 'placeholder.searchOrAddWalletAddress',
+                id: 'placeholder.search',
               })}
             />
           )}
