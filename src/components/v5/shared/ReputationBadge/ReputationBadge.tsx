@@ -11,9 +11,7 @@ const ReputationBadge: FC<ReputationBadgeProps> = ({
   fractionDigits,
   className,
 }) => (
-  <div
-    className={clsx(className, 'flex items-center gap-1 text-gray-900 text-sm')}
-  >
+  <div className={clsx(className, 'flex items-center gap-1 text-sm')}>
     <Star size={14} className="flex-shrink-0" />
     <span className="inline-block">
       {reputation.toFixed(fractionDigits !== undefined ? fractionDigits : 2)}%

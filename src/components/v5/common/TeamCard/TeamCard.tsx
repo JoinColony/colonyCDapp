@@ -40,17 +40,17 @@ const TeamCard: FC<TeamCardProps> = ({
     <Card
       className={clsx(
         className,
-        'bg-gray-25 border-gray-200 pt-6 px-5 pb-5 h-full w-full flex flex-col min-h-[12.25rem] text-gray-600 relative',
+        'bg-gray-25 border-gray-200 pt-6 px-5 pb-5 h-full w-full flex flex-col min-h-[12.5rem] text-gray-600 relative',
       )}
       withPadding={false}
     >
       <div className="w-full flex-grow flex flex-col gap-3">
-        <div className="text-gray-900 flex justify-between items-start gap-2">
+        <div className="flex justify-between items-start gap-2">
           <div className="truncate">
-            <h3 className="text-lg font-medium mb-1 truncate w-full">
+            <h3 className="text-lg font-medium mb-1 truncate w-full text-gray-900">
               {title || teamProps.name}
             </h3>
-            <div className="flex items-center gap-x-4 gap-y-1 flex-shrink-0 flex-wrap">
+            <div className="flex items-center gap-x-4 gap-y-1 flex-shrink-0 flex-wrap text-gray-600">
               <Tooltip
                 placement={isMobile ? 'auto' : 'right'}
                 tooltipContent="Team balance"
@@ -81,9 +81,9 @@ const TeamCard: FC<TeamCardProps> = ({
               {!!members?.length && (
                 <div className="flex-shrink-0 ml-auto">
                   <UserAvatars
-                    maxAvatarsToShow={5}
+                    maxAvatarsToShow={4}
                     className="[&_.placeholder]:bg-gray-200 [&_.placeholder]:text-gray-900"
-                    size="xms"
+                    size="sm"
                     items={members}
                   />
                 </div>
