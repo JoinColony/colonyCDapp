@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import {
   createEIP1193Provider,
   type EIP1193Provider,

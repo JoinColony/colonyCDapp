@@ -43,7 +43,7 @@ export interface SelectedNFT extends SelectedSafe {
   id: string; // id is address + id,
 }
 
-/* eslint-disable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
+/* eslint-disable @typescript-eslint/no-var-requires, global-require */
 const LOCAL_HOME_BRIDGE_ADDRESS =
   // @ts-ignore
   isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
@@ -80,7 +80,7 @@ export const ZODIAC_BRIDGE_MODULE_ADDRESS =
     ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
         .ZODIAC_BRIDGE_MODULE_ADDRESS
     : null;
-/* eslint-enable prefer-destructuring, @typescript-eslint/no-var-requires, global-require, import/no-dynamic-require */
+/* eslint-enable @typescript-eslint/no-var-requires, global-require */
 
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 const LOCAL_TOKEN_ID = 1; // set in start-bridging-environment.js
@@ -233,7 +233,7 @@ export const getTransferNFTData = (
   }
 
   // If this function is called, nftData will be defined.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   const nftData = transaction.nftData!;
   const safeAddress = isDev ? LOCAL_SAFE_ADDRESS : safe.address;
   const tokenId = isDev ? LOCAL_TOKEN_ID : Number(nftData.id);
@@ -249,7 +249,6 @@ export const getTransferNFTData = (
 
   const erc721Contract = getErc721(safe, erc721Address);
 
-  // eslint-disable-next-line max-len
   const safeTransferFromFn = erc721Contract.interface.encodeFunctionData(
     'safeTransferFrom(address,address,uint256)',
     [safeAddress, transaction.recipient.walletAddress, tokenId],
@@ -448,7 +447,7 @@ export function* getTransactionEncodedData(
    * Calls HomeBridge for each Tx, with the Colony as the sender.
    * Loop necessary as yield cannot be called inside of an array iterator (like forEach).
    */
-  /* eslint-disable-next-line no-restricted-syntax */
+
   for (const transaction of transactions) {
     let txDataToBeSentToZodiacModule = '';
     switch (transaction.transactionType) {
@@ -486,7 +485,6 @@ export function* getTransactionEncodedData(
         );
     }
 
-    /* eslint-disable-next-line max-len */
     const txDataToBeSentToAMB = yield homeBridge.interface.encodeFunctionData(
       'requireToPassMessage',
       [zodiacBridgeModule.address, txDataToBeSentToZodiacModule, 1000000],

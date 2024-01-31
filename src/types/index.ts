@@ -14,7 +14,6 @@ import { type MessageDescriptor } from 'react-intl';
 // export * from './userStake';
 
 export type WithKey = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   key: any;
 };
 

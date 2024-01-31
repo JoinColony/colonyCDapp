@@ -28,5 +28,19 @@ interface DataLayerObject {
 
 interface Window {
   dataLayer: DataLayerObject[];
+  ethereum: object | undefined;
   Beamer: any;
+}
+
+interface Navigator {
+  userAgentData?: {
+    platform: string;
+    mobile: boolean;
+    brands: Brand[];
+  };
+}
+
+interface Brand {
+  brand: string;
+  version: string;
 }

@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 import { type Block } from '@ethersproject/providers';
 import { providers } from 'ethers';
 import { backOff } from 'exponential-backoff';

@@ -85,7 +85,6 @@ export function* getMoveFundsPermissionProofs(
       ];
     }
     throw new Error(
-      // eslint-disable-next-line max-len
       'User has to have the funding role in a domain that both associated pots a children of',
     );
   }

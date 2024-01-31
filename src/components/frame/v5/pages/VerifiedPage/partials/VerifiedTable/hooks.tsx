@@ -109,7 +109,7 @@ export const useVerifiedTableColumns = (): ColumnDef<
         size: 60,
       }),
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [columnHelper],
   );
 

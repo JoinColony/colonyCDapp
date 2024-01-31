@@ -1,13 +1,52 @@
 {
-  "extends": "./tsconfig.base",
-  "include": [
-    "globals.d.ts",
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "amplify/backend/functions",
-    "docker",
-    "scripts"
-  ]
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~apollo": ["src/apollo"],
+      "~apollo/*": ["src/apollo/*"],
+      "~auth": ["src/auth"],
+      "~auth/*": ["src/auth/*"]
+      "~common/*": ["src/components/common/*"],
+      "~constants": ["src/constants"],
+      "~constants/*": ["src/constants/*"],
+      "~context": ["src/context"],
+      "~context/*": ["src/context/*"],
+      "~frame/*": ["src/components/frame/*"],
+      "~gql": ["src/graphql/generated.ts"],
+      "~hooks": ["src/hooks"],
+      "~hooks/*": ["src/hooks/*"],
+      "~icons/*": ["src/components/icons/*"],
+      "~images/*": ["src/images/*"],
+      "~redux": ["src/redux"],
+      "~redux/*": ["src/redux/*"],
+      "~routes": ["src/routes"],
+      "~routes/*": ["src/routes/*"],
+      "~shared/*": ["src/components/shared/*"],
+      "~styles/*": ["src/styles/shared/*"],
+      "~transformers": ["src/transformers"],
+      "~transformers/*": ["src/transformers/*"],
+      "~types": ["src/types"],
+      "~types/*": ["src/types/*"],
+      "~utils/*": ["src/utils/*"],
+      "~v5/*": ["src/components/v5/*"],
+    },
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["dom", "es2019"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "target": "es6",
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node", "jest"]
+  },
+  "include": ["src"]
 }

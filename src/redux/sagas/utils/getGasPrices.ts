@@ -14,7 +14,7 @@ import { gasPrices as gasPricesSelector } from '../../selectors/index.ts';
 interface EthGasStationAPIResponse {
   average: number;
   avgWait: number;
-  // eslint-disable-next-line camelcase
+
   block_time: number;
   blockNum: number;
   fast: number;
