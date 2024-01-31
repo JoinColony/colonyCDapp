@@ -1,22 +1,24 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { Action, AllActions, ActionTypes } from '~redux';
-import { transactionAddParams } from '~redux/actionCreators';
+import { ActionTypes } from '~redux';
+import type { Action, AllActions } from '~redux';
+import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-} from '../transactions';
+  waitForTxResult,
+} from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
-} from '../utils';
-import { getAddVerifiedMembersOperation } from '../utils/verifiedMembers';
+} from '../utils/index.ts';
+import { getAddVerifiedMembersOperation } from '../utils/verifiedMembers.ts';
 
 function* addVerifiedMembersAction({
   payload: {
@@ -106,10 +108,7 @@ function* addVerifiedMembersAction({
 
     setTxHash?.(txHash);
 
-    yield takeFrom(
-      addVerifiedMembers.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    waitForTxResult(addVerifiedMembers.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
