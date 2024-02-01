@@ -13,7 +13,7 @@ export const findDomainByNativeId = (
   }
   return domains
     .filter(notNull)
-    .find(({ nativeId }) => nativeId === Number(domainNativeId));
+    .find(({ nativeId }) => nativeId === domainNativeId);
 };
 
 export const getDomainOptions = (colonyDomains: Domain[]) =>
