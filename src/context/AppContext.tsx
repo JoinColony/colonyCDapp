@@ -21,6 +21,8 @@ import { type User } from '~types/graphql.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
 import { getLastWallet } from '~utils/autoLogin.ts';
 
+import { uiEvents } from '../uiEvents/index.ts';
+
 import { getContext, ContextModule } from './index.ts';
 import { TokenActivationProvider } from './TokenActivationContext.tsx';
 
@@ -70,8 +72,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           const [currentUser] = data?.getUserByAddress?.items || [];
           if (currentUser) {
             setUser(currentUser);
+            uiEvents.identify(utils.getAddress(address), {
+              username: currentUser.profile?.displayName,
+            });
           } else {
             setUser(null);
+            uiEvents.identify(utils.getAddress(address));
           }
         } catch (error) {
           console.error(error);
