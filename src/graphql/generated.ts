@@ -369,6 +369,7 @@ export type ColonyActionRolesInput = {
 export enum ColonyActionType {
   /** An action related to adding verified members */
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
+  AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
   /** An action related to a motion to cancel a staked expenditure */
   CancelStakedExpenditureMotion = 'CANCEL_STAKED_EXPENDITURE_MOTION',
   /** An action related to editing a Colony's details */
