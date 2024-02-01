@@ -749,6 +749,10 @@ enum ColonyActionType {
   An action related to adding verified members
   """
   ADD_VERIFIED_MEMBERS
+  """
+  An action related to removing verified members
+  """
+  REMOVE_VERIFIED_MEMBERS
 }
 
 """

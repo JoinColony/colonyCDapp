@@ -26,6 +26,7 @@ import ReputationChart from './partials/ReputationChart/index.ts';
 import TokenBalance from './partials/TokenBalance/index.ts';
 import TotalActions from './partials/TotalActions/index.ts';
 import { TmpAddVerifiedMembers } from './TmpAddVerifiedMembers.tsx';
+import { TmpRemoveVerifiedMembers } from './TmpRemoveVerifiedMembers.tsx';
 
 const displayName = 'v5.frame.ColonyHome';
 
