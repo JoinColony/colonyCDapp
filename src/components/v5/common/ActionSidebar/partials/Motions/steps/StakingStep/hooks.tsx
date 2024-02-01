@@ -2,10 +2,11 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
-import { type ColonyMotionFragment, useGetUserReputationQuery } from '~gql';
+import { useGetUserReputationQuery } from '~gql';
 import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking.ts';
 import useUsersByAddresses from '~hooks/useUsersByAddresses.ts';
 import Numeral from '~shared/Numeral/index.ts';
+import { type ColonyMotion } from '~types/graphql.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { type UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types.ts';
@@ -66,7 +67,7 @@ export const useStakingStep = () => {
 };
 
 export const useStakingInformation = (
-  usersStakes: ColonyMotionFragment['usersStakes'],
+  usersStakes: ColonyMotion['usersStakes'],
   tokenDecimals: number,
   tokenSymbol: string,
 ): {
@@ -89,7 +90,7 @@ export const useStakingInformation = (
     return aStakeNumber.gt(bStakeNumber) ? -1 : 1;
   });
 
-  const getVotesArray = (vote: MotionVote = MotionVote.Yay) =>
+  const getVotesArray = (vote: MotionVote) =>
     sortedUsersStakes?.reduce((result, item) => {
       const voteValue =
         item.stakes?.raw?.[vote === MotionVote.Yay ? 'yay' : 'nay'];
@@ -121,9 +122,7 @@ export const useStakingInformation = (
               ),
             },
           ),
-          userProps: {
-            user,
-          },
+          user,
         },
       ];
     }, []) || [];

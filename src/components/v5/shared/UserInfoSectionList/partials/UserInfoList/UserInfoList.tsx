@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover/UserAvatarPopover.tsx';
 
 import { type UserInfoListProps } from './types.ts';
 
@@ -12,12 +12,12 @@ const UserInfoList: FC<UserInfoListProps> = ({ items, className }) => {
 
   return items.length > 0 ? (
     <ul className={clsx(className, 'w-full flex flex-col gap-3')}>
-      {items.map(({ key: itemKey, info, userProps: { user } }) => (
+      {items.map(({ key: itemKey, info, user }) => (
         <li
           key={itemKey}
           className="w-full flex items-center justify-between gap-4"
         >
-          <UserAvatar avatarSize="xs" user={user} showUsername />
+          <UserAvatarPopover walletAddress={user.walletAddress} />
           {typeof info === 'string' ? (
             <p className={infoClassName}>{info}</p>
           ) : (

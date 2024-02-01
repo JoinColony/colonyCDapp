@@ -1,8 +1,8 @@
-import { type UserAvatarProps } from '~v5/shared/UserAvatar/types.ts';
+import { type User } from '~types/graphql.ts';
 
 export interface UserInfoListItem {
   key: string;
-  userProps: Omit<UserAvatarProps, 'isContributorsList' | 'userStatus'>;
+  user: User;
   info: React.ReactNode;
 }
 
