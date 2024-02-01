@@ -33,9 +33,37 @@ export const TmpAddVerifiedMembers = () => {
       }),
     ),
   });
+  const verifyMembersMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_ADD_VERIFIED_MEMBERS,
+    error: ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_ERROR,
+    success: ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_SUCCESS,
+    transform: pipe(
+      mapPayload((payload) => {
+        return payload;
+      }),
+      withMeta({
+        setTxHash: (txHash: string) => {
+          navigate(setQueryParamOnUrl(window.location.pathname, 'tx', txHash), {
+            replace: true,
+          });
+        },
+      }),
+    ),
+  });
 
-  const handleSubmit = () => {
+  const handleAddMembers = () => {
     verifyMembers({
+      colonyAddress,
+      colonyName: name,
+      members: members.split(','),
+      customActionTitle: 'Verifying members!',
+      domainId: Id.RootDomain,
+      annotationMessage: 'Annotated bruh',
+    });
+  };
+
+  const handleAddMembersMotion = () => {
+    verifyMembersMotion({
       colonyAddress,
       colonyName: name,
       members: members.split(','),
@@ -54,9 +82,14 @@ export const TmpAddVerifiedMembers = () => {
           setMembers(e.target.value);
         }}
       />
-      <button type="button" onClick={handleSubmit}>
-        Verify
-      </button>
+      <div className="flex gap-2">
+        <button type="button" onClick={handleAddMembers}>
+          Verify
+        </button>
+        <button type="button" onClick={handleAddMembersMotion}>
+          Verify via motion
+        </button>
+      </div>
     </>
   );
 };
