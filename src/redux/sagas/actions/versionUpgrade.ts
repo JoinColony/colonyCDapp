@@ -8,6 +8,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
@@ -94,7 +95,7 @@ function* createVersionUpgradeAction({
 
     setTxHash?.(txHash);
 
-    yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(upgrade.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

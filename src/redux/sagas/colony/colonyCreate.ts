@@ -44,6 +44,7 @@ import {
   type ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import { updateTransaction } from '../transactions/transactionsToDb.ts';
 import { getOneTxPaymentVersion } from '../utils/extensionVersion.ts';
@@ -221,7 +222,7 @@ function* colonyCreate({
 
     const {
       payload: { eventData },
-    } = yield takeFrom(createColony.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    } = yield waitForTxResult(createColony.channel);
 
     const colonyAddress = eventData.ColonyAdded?.colonyAddress;
     const tokenAddress =
@@ -293,7 +294,7 @@ function* colonyCreate({
     if (setOwner) {
       yield put(transactionAddParams(setOwner.id, [colonyAddress]));
       yield initiateTransaction({ id: setOwner.id });
-      yield takeFrom(setOwner.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield waitForTxResult(setOwner.channel);
     }
 
     if (deployOneTx) {
@@ -307,7 +308,7 @@ function* colonyCreate({
       );
       yield initiateTransaction({ id: deployOneTx.id });
 
-      yield takeFrom(deployOneTx.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield waitForTxResult(deployOneTx.channel);
 
       /*
        * Set OneTx administration role
@@ -361,7 +362,7 @@ function* colonyCreate({
       );
       yield initiateTransaction({ id: setOneTxRoles.id });
 
-      yield takeFrom(setOneTxRoles.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+      yield waitForTxResult(setOneTxRoles.channel);
     }
 
     /*

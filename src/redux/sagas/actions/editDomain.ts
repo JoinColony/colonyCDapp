@@ -23,6 +23,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   putError,
@@ -133,7 +134,7 @@ function* editDomainAction({
 
     setTxHash?.(txHash);
 
-    yield takeFrom(editDomain.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(editDomain.channel);
 
     /**
      * Save the updated metadata in the database

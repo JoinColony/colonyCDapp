@@ -14,6 +14,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   putError,
@@ -222,7 +223,7 @@ function* createPaymentMotion({
 
     setTxHash?.(txHash);
 
-    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(createMotion.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

@@ -22,6 +22,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   createActionMetadataInDB,
@@ -136,10 +137,7 @@ function* manageExistingSafesAction({
       });
     }
 
-    yield takeFrom(
-      manageExistingSafes.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield waitForTxResult(manageExistingSafes.channel);
 
     /**
      * Update colony metadata in the db

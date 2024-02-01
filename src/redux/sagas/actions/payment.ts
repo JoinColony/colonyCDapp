@@ -15,6 +15,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   initiateTransaction,
@@ -175,7 +176,7 @@ function* createPaymentAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(paymentAction.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

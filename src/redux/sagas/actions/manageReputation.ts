@@ -12,6 +12,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   initiateTransaction,
@@ -138,7 +139,7 @@ function* manageReputationAction({
 
     setTxHash?.(txHash);
 
-    yield takeFrom(manageReputation.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(manageReputation.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

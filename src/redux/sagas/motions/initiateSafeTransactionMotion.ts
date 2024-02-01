@@ -21,6 +21,7 @@ import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   getColonyManager,
@@ -171,7 +172,7 @@ function* initiateSafeTransactionMotion({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    yield waitForTxResult(createMotion.channel);
 
     /**
      * Create parent safe transaction in the database

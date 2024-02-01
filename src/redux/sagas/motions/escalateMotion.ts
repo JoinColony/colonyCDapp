@@ -19,6 +19,7 @@ import {
   createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   putError,
@@ -121,10 +122,7 @@ function* escalateMotion({
 
     yield initiateTransaction({ id: escalateMotionTransaction.id });
 
-    yield takeFrom(
-      escalateMotionTransaction.channel,
-      ActionTypes.TRANSACTION_SUCCEEDED,
-    );
+    yield waitForTxResult(escalateMotionTransaction.channel);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_ESCALATE_SUCCESS,

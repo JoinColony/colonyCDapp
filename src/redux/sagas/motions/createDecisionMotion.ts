@@ -164,7 +164,7 @@ function* createDecisionMotion({
 
     // yield put(transactionReady(annotateMotion.id));
 
-    // yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_SUCCEEDED);
+    // yield waitForTxResult(annotateMotion.channel);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_CREATE_DECISION_SUCCESS,
