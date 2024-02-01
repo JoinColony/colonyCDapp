@@ -4,6 +4,7 @@ import React, { type FC, type PropsWithChildren } from 'react';
 import { Tabs as ReactTabs, Tab, TabScreen } from 'react-tabs-scrollable';
 
 import { formatText } from '~utils/intl.ts';
+import CountBox from '~v5/shared/CountBox/CountBox.tsx';
 
 import { type TabsProps } from './types.ts';
 
@@ -40,11 +41,7 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
           })}
         >
           {formatText({ id: `tabs.${id}`, defaultMessage: `${title}` })}
-          {!!notificationNumber && (
-            <span className="flex items-center justify-center text-blue-400 text-[0.375rem] font-bold bg-blue-100 rounded-sm ml-1 w-[0.75rem] h-[0.75rem] pointer-events-none">
-              <span>{notificationNumber}</span>
-            </span>
-          )}
+          {!!notificationNumber && <CountBox count={notificationNumber} />}
         </Tab>
       ))}
     </ReactTabs>

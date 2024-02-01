@@ -57,6 +57,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
                   size === 'large',
                 '!rounded-[0.1875rem] capitalize text-4 px-2 py-1':
                   size === 'extraSmall',
+                'text-sm min-h-[2.125rem] px-3 py-2': size === 'medium',
                 'text-sm min-h-[2.125rem] px-2.5 py-1.5': size === 'small',
                 [styles.primarySolid]: mode === 'primarySolid',
                 [styles.primarySolidFull]: mode === 'primarySolidFull',

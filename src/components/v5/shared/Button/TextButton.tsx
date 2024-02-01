@@ -49,7 +49,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
             [styles.textButton],
             'font-medium transition-all flex items-center duration-normal',
             {
-              'text-sm text-gray-700': mode === 'default',
+              'text-sm text-gray-900': mode === 'default',
             },
             {
               'text-md': mode === 'medium',
