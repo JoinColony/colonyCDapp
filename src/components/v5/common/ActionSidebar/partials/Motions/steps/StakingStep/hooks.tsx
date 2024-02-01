@@ -1,15 +1,8 @@
 import { BigNumber } from 'ethers';
-import React from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useGetUserReputationQuery } from '~gql';
 import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking.ts';
-import useUsersByAddresses from '~hooks/useUsersByAddresses.ts';
-import Numeral from '~shared/Numeral/index.ts';
-import { type ColonyMotion } from '~types/graphql.ts';
-import { MotionVote } from '~utils/colonyMotions.ts';
-import { formatText } from '~utils/intl.ts';
-import { type UserInfoListItem } from '~v5/shared/UserInfoSectionList/partials/UserInfoList/types.ts';
 
 import { useMotionContext } from '../../partials/MotionProvider/hooks.ts';
 
@@ -63,76 +56,5 @@ export const useStakingStep = () => {
     enoughReputationToStakeMinimum,
     userActivatedTokens,
     userInactivatedTokens,
-  };
-};
-
-export const useStakingInformation = (
-  usersStakes: ColonyMotion['usersStakes'],
-  tokenDecimals: number,
-  tokenSymbol: string,
-): {
-  votesFor: UserInfoListItem[];
-  votesAgainst: UserInfoListItem[];
-  isLoading?: boolean;
-} => {
-  const { users, loading } = useUsersByAddresses(
-    usersStakes.map((user) => user.address),
-  );
-
-  const sortedUsersStakes = [...usersStakes].sort((a, b) => {
-    const aStakeNumber = BigNumber.from(a.stakes.raw.yay);
-    const bStakeNumber = BigNumber.from(b.stakes.raw.yay);
-
-    if (aStakeNumber.eq(bStakeNumber)) {
-      return 0;
-    }
-
-    return aStakeNumber.gt(bStakeNumber) ? -1 : 1;
-  });
-
-  const getVotesArray = (vote: MotionVote) =>
-    sortedUsersStakes?.reduce((result, item) => {
-      const voteValue =
-        item.stakes?.raw?.[vote === MotionVote.Yay ? 'yay' : 'nay'];
-      if (!item || voteValue === '0') {
-        return result;
-      }
-
-      const user = users?.find(
-        (potentialUser) => potentialUser?.walletAddress === item.address,
-      );
-
-      if (!user) {
-        return result;
-      }
-
-      return [
-        ...result,
-        {
-          key: item.address,
-          info: formatText(
-            { id: 'motion.staking.staked' },
-            {
-              value: (
-                <Numeral
-                  value={voteValue}
-                  decimals={tokenDecimals}
-                  suffix={tokenSymbol}
-                />
-              ),
-            },
-          ),
-          user,
-        },
-      ];
-    }, []) || [];
-
-  const votesFor = getVotesArray(MotionVote.Yay);
-  const votesAgainst = getVotesArray(MotionVote.Nay);
-
-  return {
-    votesFor,
-    votesAgainst,
-    isLoading: loading,
   };
 };
