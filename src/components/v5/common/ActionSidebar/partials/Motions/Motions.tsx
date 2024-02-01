@@ -8,7 +8,6 @@ import { useAppContext } from '~context/AppContext.tsx';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
-import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
@@ -67,15 +66,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     motionStateHistory,
   } = motionData || {};
 
-  const networkMotionStateEnum = getEnumValueFromKey(
-    NetworkMotionState,
-    motionState,
-    0,
-  );
-
-  const [activeStepKey, setActiveStepKey] = useState<Steps>(
-    networkMotionStateEnum,
-  );
+  const [activeStepKey, setActiveStepKey] = useState<Steps>(motionState ?? 0);
 
   const motionFinished =
     motionState === NetworkMotionState.Finalizable ||
@@ -84,14 +75,14 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   useEffect(() => {
     startPollingForAction(getSafePollingInterval());
-    setActiveStepKey(networkMotionStateEnum);
+    setActiveStepKey(motionState ?? 0);
     if (motionFinished) {
       setActiveStepKey(CustomStep.Finalize);
     }
     return () => stopPollingForAction();
   }, [
     motionFinished,
-    networkMotionStateEnum,
+    motionState,
     startPollingForAction,
     stopPollingForAction,
   ]);
@@ -128,9 +119,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     }
 
     return motionData
-      ? getMotionState(networkMotionStateEnum, motionData)
+      ? getMotionState(motionState ?? 0, motionData)
       : MotionState.Staking;
-  }, [activeStepKey, motionData, networkMotionStateEnum, requiredStake]);
+  }, [activeStepKey, motionData, motionState, requiredStake]);
 
   const hasVotedMotionPassed = motionStateHistory?.hasPassed;
 
