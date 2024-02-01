@@ -1,10 +1,10 @@
-import { type MotionOutcomeBadgeProps } from '~v5/common/Pills/MotionOutcomeBadge/types.ts';
+import { type MotionVoteBadgeProps } from '~v5/common/Pills/MotionVoteBadge/types.ts';
 
 import { type UserInfoListProps } from './partials/UserInfoList/types.ts';
 
 export interface UserInfoSectionListSection {
   key: string;
-  heading: MotionOutcomeBadgeProps;
+  heading: MotionVoteBadgeProps;
   items: UserInfoListProps['items'];
 }
 

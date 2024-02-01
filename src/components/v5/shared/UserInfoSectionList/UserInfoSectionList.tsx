@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import MotionOutcomeBadge from '~v5/common/Pills/MotionOutcomeBadge/MotionOutcomeBadge.tsx';
+import MotionVoteBadge from '~v5/common/Pills/MotionVoteBadge/MotionVoteBadge.tsx';
 
 import UserInfoList from './partials/UserInfoList/index.ts';
 import { type UserInfoSectionListProps } from './types.ts';
@@ -21,7 +21,7 @@ const UserInfoSectionList: FC<UserInfoSectionListProps> = ({
               'mb-3': !!items.length,
             })}
           >
-            <MotionOutcomeBadge {...heading} />
+            <MotionVoteBadge {...heading} />
           </div>
           <UserInfoList items={items} />
         </li>

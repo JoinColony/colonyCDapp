@@ -1,3 +1,4 @@
+import { MotionVote } from '~utils/colonyMotions.ts';
 import UserInfoSectionList from '~v5/shared/UserInfoSectionList/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -10,7 +11,7 @@ const userInfoSectionListMeta: Meta<typeof UserInfoSectionList> = {
       {
         key: '1',
         heading: {
-          outcome: 'support',
+          vote: MotionVote.Yay,
         },
         items: [
           {
@@ -42,7 +43,7 @@ const userInfoSectionListMeta: Meta<typeof UserInfoSectionList> = {
       {
         key: '2',
         heading: {
-          outcome: 'oppose',
+          vote: MotionVote.Nay,
         },
         items: [
           {

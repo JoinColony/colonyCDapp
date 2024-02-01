@@ -8,7 +8,7 @@ import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
-import MotionOutcomeBadge from '~v5/common/Pills/MotionOutcomeBadge/index.ts';
+import MotionVoteBadge from '~v5/common/Pills/MotionVoteBadge/index.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
@@ -40,7 +40,7 @@ const RevealStep: FC<RevealStepProps> = ({
     userVoteRevealed,
     voterReward,
     voters,
-    isSupportVote,
+    userVote,
     revealProgress,
     totalVoters,
   } = useRevealStep(
@@ -107,9 +107,7 @@ const RevealStep: FC<RevealStepProps> = ({
                       <h4 className="text-2">
                         {formatText({ id: 'motion.revealStep.title' })}
                       </h4>
-                      <MotionOutcomeBadge
-                        outcome={isSupportVote ? 'support' : 'oppose'}
-                      />
+                      <MotionVoteBadge vote={userVote} />
                     </div>
                     <div className="flex items-center justify-between gap-2 text-sm">
                       <p className="text-gray-600">
