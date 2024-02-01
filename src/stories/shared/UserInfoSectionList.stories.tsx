@@ -10,37 +10,31 @@ const userInfoSectionListMeta: Meta<typeof UserInfoSectionList> = {
       {
         key: '1',
         heading: {
-          status: 'support',
+          outcome: 'support',
         },
         items: [
           {
             key: '1',
             info: 'Staked 5.67 CLNY',
-            userProps: {
-              user: {
-                profile: { displayName: 'JohnnyBravo' },
-                walletAddress: '0x0',
-              },
+            user: {
+              profile: { displayName: 'JohnnyBravo' },
+              walletAddress: '0x0',
             },
           },
           {
             key: '2',
             info: 'Staked 4.95 CLNY',
-            userProps: {
-              user: {
-                profile: { displayName: 'ChuckieChukie' },
-                walletAddress: '0x1',
-              },
+            user: {
+              profile: { displayName: 'ChuckieChukie' },
+              walletAddress: '0x1',
             },
           },
           {
             key: '3',
             info: 'Staked 1.23 CLNY',
-            userProps: {
-              user: {
-                profile: { displayName: 'Reallylongusername' },
-                walletAddress: '0x2',
-              },
+            user: {
+              profile: { displayName: 'Reallylongusername' },
+              walletAddress: '0x2',
             },
           },
         ],
@@ -48,37 +42,31 @@ const userInfoSectionListMeta: Meta<typeof UserInfoSectionList> = {
       {
         key: '2',
         heading: {
-          status: 'oppose',
+          outcome: 'oppose',
         },
         items: [
           {
             key: '1',
             info: 'Staked 5.67 CLNY',
-            userProps: {
-              user: {
-                profile: { displayName: 'JohnnyBravo' },
-                walletAddress: '0x0',
-              },
+            user: {
+              profile: { displayName: 'JohnnyBravo' },
+              walletAddress: '0x0',
             },
           },
           {
             key: '2',
             info: 'Staked 4.95 CLNY',
-            userProps: {
-              user: {
-                profile: { displayName: 'ChuckieChukie' },
-                walletAddress: '0x1',
-              },
+            user: {
+              profile: { displayName: 'ChuckieChukie' },
+              walletAddress: '0x1',
             },
           },
           {
             key: '3',
             info: 'Staked 1.23 CLNY',
-            userProps: {
-              user: {
-                profile: { displayName: 'Reallylongusername' },
-                walletAddress: '0x2',
-              },
+            user: {
+              profile: { displayName: 'Reallylongusername' },
+              walletAddress: '0x2',
             },
           },
         ],

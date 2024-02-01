@@ -1,10 +1,10 @@
-import { type MotionBadgeProps } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionBadge/types.ts';
+import { type MotionOutcomeBadgeProps } from '~v5/common/Pills/MotionOutcomeBadge/types.ts';
 
 import { type UserInfoListProps } from './partials/UserInfoList/types.ts';
 
 export interface UserInfoSectionListSection {
   key: string;
-  heading: MotionBadgeProps;
+  heading: MotionOutcomeBadgeProps;
   items: UserInfoListProps['items'];
 }
 

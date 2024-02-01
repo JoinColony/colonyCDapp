@@ -7,11 +7,10 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons.tsx';
+import MotionOutcomeBadge from '~v5/common/Pills/MotionOutcomeBadge/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
-
-import MotionBadge from '../../partials/MotionBadge/MotionBadge.tsx';
 
 import { useVotingStep } from './hooks.tsx';
 import DescriptionList from './partials/DescriptionList/index.ts';
@@ -102,8 +101,8 @@ const VotingStep: FC<VotingStepProps> = ({
                       <h4 className="text-2">
                         {formatText({ id: 'motion.votingStep.voted' })}
                       </h4>
-                      <MotionBadge
-                        status={isSupportVote ? 'support' : 'oppose'}
+                      <MotionOutcomeBadge
+                        outcome={isSupportVote ? 'support' : 'oppose'}
                       />
                     </div>
                     {!actionData.motionData.motionStateHistory
