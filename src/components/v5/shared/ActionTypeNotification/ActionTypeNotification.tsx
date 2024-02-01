@@ -1,16 +1,16 @@
 import { Extension } from '@colony/colony-js';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { ACTION } from '~constants/actions';
-import { useActionSidebarContext } from '~context';
-import { useColonyContext } from '~hooks';
-import { formatText } from '~utils/intl';
-import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks';
-import NotificationBanner from '~v5/shared/NotificationBanner';
+import { ACTION } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { formatText } from '~utils/intl.ts';
+import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { ActionTypeNotificationProps } from './types';
+import { type ActionTypeNotificationProps } from './types.ts';
 
 const displayName = 'v5.ActionTypeNotification';
 
