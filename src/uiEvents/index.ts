@@ -3,6 +3,9 @@ import { AnalyticsBrowser } from '@segment/analytics-next';
 export const uiEvents = new AnalyticsBrowser();
 
 export enum UIEvent {
-  manageAccount = 'Manage Account',
-  createAccount = 'Create Account',
+  manageAccount = 'User Managed Account',
+  createAccount = 'User Created Account',
+  updateAvatar = 'User Updated Avatar',
+  updateProfile = 'User Updated Profile',
+  userJoinedColony = 'User Joined Colony',
 }

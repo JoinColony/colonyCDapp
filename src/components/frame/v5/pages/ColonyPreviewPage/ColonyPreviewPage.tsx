@@ -25,6 +25,8 @@ import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import SocialLinks from '~v5/shared/SocialLinks/index.ts';
 
+import { uiEvents, UIEvent } from '../../../../../uiEvents/index.ts';
+
 const displayName = 'pages.ColonyPreviewPage';
 
 const MSG = defineMessages({
@@ -124,6 +126,12 @@ const ColonyPreviewPage = () => {
     });
 
     if (valid.data?.validateUserInvite) {
+      uiEvents.track(UIEvent.userJoinedColony, {
+        inviteCode,
+        colonyName,
+        colonyDisplayName: colonyMetadata?.displayName,
+        colonyId: colonyAddress,
+      });
       navigate(`/${colonyName}`);
     }
   };
