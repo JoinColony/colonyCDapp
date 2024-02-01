@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useFilterContext } from '~context/FilterContext.tsx';
+import { useSearchContext } from '~context/SearchContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -37,6 +38,7 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
   });
 
   const { selectedFilterCount } = useFilterContext();
+  const { searchValue, setSearchValue } = useSearchContext();
 
   return (
     <>
@@ -74,6 +76,8 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
             <div className="sm:px-3.5 sm:mb-6">
               <SearchInput
                 onSearchButtonClick={() => setIsSearchOpened(false)}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
               />
             </div>
           </Modal>
@@ -103,6 +107,8 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
               <div className="sm:px-3.5 sm:mb-6">
                 <SearchInput
                   onSearchButtonClick={() => setIsSearchOpened(false)}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
                 />
               </div>
               <FilterOptions excludeFilterType={excludeFilterType} />

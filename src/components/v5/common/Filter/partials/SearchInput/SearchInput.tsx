@@ -12,7 +12,6 @@ import React, {
 } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useSearchContext } from '~context/SearchContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
 
@@ -22,9 +21,12 @@ import styles from './SearchInput.module.css';
 
 const displayName = 'v5.common.Filter.partials.SearchInput';
 
-const SearchInput: FC<SearchInputProps> = ({ onSearchButtonClick }) => {
+const SearchInput: FC<SearchInputProps> = ({
+  onSearchButtonClick,
+  setSearchValue,
+  searchValue,
+}) => {
   const { formatMessage } = useIntl();
-  const { setSearchValue, searchValue } = useSearchContext();
   const [value, setValue] = useState('');
   const isMobile = useMobile();
 
