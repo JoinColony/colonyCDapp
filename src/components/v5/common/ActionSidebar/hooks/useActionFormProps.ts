@@ -20,6 +20,7 @@ export const useActionFormProps = (
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
     defaultValues,
     children: undefined,
+    mode: 'onChange',
   });
 
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
