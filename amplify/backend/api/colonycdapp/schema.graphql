@@ -745,6 +745,10 @@ enum ColonyActionType {
   An action related to adding verified members
   """
   ADD_VERIFIED_MEMBERS
+  """
+  An action related to removing verified members
+  """
+  REMOVE_VERIFIED_MEMBERS
 }
 
 """
@@ -3420,8 +3424,12 @@ type VerifiedMember @model {
   """
   A colony address - user address pair that tells us if a user is verified.
   """
-  colonyAddress: ID! @primaryKey(sortKeyFields: ["userAddress"])
-    @index(name: "verifiedMembersByColony", queryField: "getVerifiedMembersByColony")
+  colonyAddress: ID!
+    @primaryKey(sortKeyFields: ["userAddress"])
+    @index(
+      name: "verifiedMembersByColony"
+      queryField: "getVerifiedMembersByColony"
+    )
   userAddress: ID!
   user: User! @hasOne(fields: ["userAddress"])
   createdAt: AWSDateTime!
