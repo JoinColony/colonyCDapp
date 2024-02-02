@@ -49,5 +49,7 @@ export type AccordionItemProps = {
 };
 
 export interface FilterProps extends FilterOptionsProps {
+  searchInputPlaceholder: string;
+  searchInputLabel: string;
   customLabel?: string;
 }

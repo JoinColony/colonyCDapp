@@ -210,6 +210,8 @@ function Filter<TValue extends FilterValue>({
   value,
   onSearch,
   searchValue,
+  searchInputLabel,
+  searchInputPlaceholder,
 }: FilterProps<TValue>) {
   const {
     getTooltipProps,
@@ -270,7 +272,7 @@ function Filter<TValue extends FilterValue>({
           </Button>
         )}
       </div>
-      {isMobile ? (
+      {isMobile && (
         <>
           <Modal
             isOpen={isModalOpen}
@@ -287,19 +289,19 @@ function Filter<TValue extends FilterValue>({
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4">
-              {formatMessage({ id: 'filter.search.title' })}
-            </p>
+            <p className="text-4 text-gray-400 mb-4">{searchInputLabel}</p>
             <div className="sm:px-3.5 sm:mb-6">
               <SearchInputMobile
                 onSearchButtonClick={() => setIsSearchOpened(false)}
                 setSearchValue={onInputChange}
                 searchValue={searchValue}
+                searchInputPlaceholder={searchInputPlaceholder}
               />
             </div>
           </Modal>
         </>
-      ) : (
+      )}
+      {isFiltersOpen && !isMobile && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}

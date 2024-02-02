@@ -19,7 +19,12 @@ import { type FilterProps } from './types.ts';
 
 const displayName = 'v5.common.Filter';
 
-const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
+const Filter: FC<FilterProps> = ({
+  excludeFilterType,
+  customLabel,
+  searchInputLabel,
+  searchInputPlaceholder,
+}) => {
   const { formatMessage } = useIntl();
   const [isOpened, setOpened] = useState(false);
   const [isSearchOpened, setIsSearchOpened] = useState(false);
@@ -70,14 +75,13 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4">
-              {formatMessage({ id: 'filter.search.title' })}
-            </p>
+            <p className="text-4 text-gray-400 mb-4">{searchInputLabel}</p>
             <div className="sm:px-3.5 sm:mb-6">
               <SearchInput
                 onSearchButtonClick={() => setIsSearchOpened(false)}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
+                searchInputPlaceholder={searchInputPlaceholder}
               />
             </div>
           </Modal>
@@ -109,6 +113,7 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
                   onSearchButtonClick={() => setIsSearchOpened(false)}
                   searchValue={searchValue}
                   setSearchValue={setSearchValue}
+                  searchInputPlaceholder={searchInputPlaceholder}
                 />
               </div>
               <FilterOptions excludeFilterType={excludeFilterType} />

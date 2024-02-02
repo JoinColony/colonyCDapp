@@ -25,6 +25,7 @@ const SearchInput: FC<SearchInputProps> = ({
   onSearchButtonClick,
   setSearchValue,
   searchValue,
+  searchInputPlaceholder,
 }) => {
   const { formatMessage } = useIntl();
   const [value, setValue] = useState('');
@@ -86,7 +87,7 @@ const SearchInput: FC<SearchInputProps> = ({
         )}
         type="text"
         onInput={onInput}
-        placeholder={formatMessage({ id: 'filter.input.placeholder' })}
+        placeholder={searchInputPlaceholder}
         defaultValue={searchValue}
       />
       {showClearButton && (

@@ -6,6 +6,7 @@ import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 import { type FilterProps } from '../Filter/types.ts';
 import TokenTable from '../TokenTable/index.ts';
@@ -135,6 +136,12 @@ export const useFundsTable = (): UseFundsTableProps => {
     onSearch: setSearchValue,
     searchValue,
     value,
+    searchInputLabel: formatMessage({
+      id: 'filter.incoming.funds.search.title',
+    }),
+    searchInputPlaceholder: formatMessage({
+      id: 'filter.incoming.funds.input.placeholder',
+    }),
     items: [
       {
         name: 'status',
