@@ -1,15 +1,30 @@
-.rich-text-content :global(.tiptap) > *:not(:first-child) {
-  @apply mt-3.5;
+.rich-text-content :global(.tiptap) > * {
+  @apply mb-1;
+}
+
+.rich-text-content :global(.tiptap) > :is(h1, h2, h3) {
+  @apply mb-2.5;
+}
+
+.rich-text-content :global(.tiptap) > blockquote {
+  @apply ml-8;
 }
 
 .rich-text-content :global(.tiptap) > ul {
-  @apply pl-4;
+  @apply pl-8;
 
   list-style: disc;
 }
 
 .rich-text-content :global(.tiptap) > ol {
-  @apply pl-4;
+  @apply pl-8;
 
   list-style: decimal;
+}
+
+@media screen(md) {
+  .rich-text-content :global(.tiptap) > ul,
+  .rich-text-content :global(.tiptap) > ol {
+    @apply pl-4;
+  }
 }
