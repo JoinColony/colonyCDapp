@@ -128,7 +128,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
                 onClick: () =>
                   toggleActionSidebarOn({
                     [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
-                    team: nativeId.toString(),
+                    team: nativeId,
                   }),
               },
               {
