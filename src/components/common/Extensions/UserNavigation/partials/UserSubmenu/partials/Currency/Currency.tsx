@@ -22,7 +22,7 @@ interface CurrencyProps {
 const Currency = ({ closeSubmenu }: CurrencyProps) => {
   const { updatePreferredCurrency } = useCurrencyContext();
   const isMobile = useMobile();
-  const iconSize = isMobile ? 'small' : 'tiny';
+  const iconSize = isMobile ? 'small' : 'small';
 
   const handleCurrencyClick = (currency: SupportedCurrencies) => {
     updatePreferredCurrency(currency);
