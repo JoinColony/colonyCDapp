@@ -46,7 +46,7 @@ const UserInfo: FC<UserInfoProps> = ({
         <div
           className={clsx({
             'mb-[2.4375rem]': userStatus && userStatus !== 'general',
-            'mb-6': !userStatus || userStatus === 'general',
+            'mb-6': userStatus === 'general',
           })}
         >
           <UserAvatarDetails
