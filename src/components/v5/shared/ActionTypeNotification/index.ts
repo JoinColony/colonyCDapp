@@ -1,1 +1,1 @@
-export { default } from './ActionTypeNotification';
+export { default } from './ActionTypeNotification.tsx';

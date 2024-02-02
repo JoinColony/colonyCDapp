@@ -1,4 +1,4 @@
-import { Action } from '~constants/actions';
+import { type Action } from '~constants/actions.ts';
 
 export interface ActionTypeNotificationProps {
   selectedAction: Action;
