@@ -2,19 +2,22 @@ import { AnimatePresence, motion } from 'framer-motion';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import set from 'lodash/set';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Icon from '~shared/Icon/index.ts';
+import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
+import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
+import SearchInputDesktop from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
 import Header from '~v5/shared/SubNavigationItem/partials/Header.tsx';
 
 import {
@@ -207,6 +210,8 @@ function Filter<TValue extends FilterValue>({
   value,
   onSearch,
   searchValue,
+  searchInputLabel,
+  searchInputPlaceholder,
 }: FilterProps<TValue>) {
   const {
     getTooltipProps,
@@ -245,48 +250,75 @@ function Filter<TValue extends FilterValue>({
     />
   ));
 
+  const [isSearchOpened, setIsSearchOpened] = useState(false);
+
   return (
     <>
       <div className="flex flex-row gap-2">
         <FilterButton
           isOpen={isFiltersOpen}
-          setTriggerRef={setTriggerRef}
           onClick={toggleModalOn}
+          setTriggerRef={setTriggerRef}
         />
+        {isMobile && (
+          <Button
+            mode="tertiary"
+            className="sm:hidden flex"
+            size="small"
+            aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
+            onClick={() => setIsSearchOpened(true)}
+          >
+            <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
+          </Button>
+        )}
       </div>
-      {isFiltersOpen && (
+      {isMobile && (
         <>
-          {isMobile ? (
-            <Modal
-              isOpen={isModalOpen}
-              onClose={toggleModalOff}
-              isFullOnMobile={false}
-            >
-              <>
-                <Header title={{ id: 'filters' }} />
-                {RootItems}
-              </>
-            </Modal>
-          ) : (
-            <PopoverBase
-              setTooltipRef={setTooltipRef}
-              tooltipProps={getTooltipProps}
-              withTooltipStyles={false}
-              cardProps={{
-                rounded: 's',
-                hasShadow: true,
-                className: 'pt-6 pb-4 px-2.5',
-              }}
-              classNames="w-full sm:max-w-[20.375rem]"
-            >
-              <div className="px-3.5 mb-6">
-                <SearchInput onChange={onInputChange} value={searchValue} />
-              </div>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={toggleModalOff}
+            isFullOnMobile={false}
+          >
+            <>
               <Header title={{ id: 'filters' }} />
               {RootItems}
-            </PopoverBase>
-          )}
+            </>
+          </Modal>
+          <Modal
+            isFullOnMobile={false}
+            onClose={() => setIsSearchOpened(false)}
+            isOpen={isSearchOpened}
+          >
+            <p className="text-4 text-gray-400 mb-4">{searchInputLabel}</p>
+            <div className="sm:px-3.5 sm:mb-6">
+              <SearchInputMobile
+                onSearchButtonClick={() => setIsSearchOpened(false)}
+                setSearchValue={onInputChange}
+                searchValue={searchValue}
+                searchInputPlaceholder={searchInputPlaceholder}
+              />
+            </div>
+          </Modal>
         </>
+      )}
+      {isFiltersOpen && !isMobile && (
+        <PopoverBase
+          setTooltipRef={setTooltipRef}
+          tooltipProps={getTooltipProps}
+          withTooltipStyles={false}
+          cardProps={{
+            rounded: 's',
+            hasShadow: true,
+            className: 'pt-6 pb-4 px-2.5',
+          }}
+          classNames="w-full sm:max-w-[20.375rem]"
+        >
+          <div className="px-3.5 mb-6">
+            <SearchInputDesktop onChange={onInputChange} value={searchValue} />
+          </div>
+          <Header title={{ id: 'filters' }} />
+          {RootItems}
+        </PopoverBase>
       )}
     </>
   );

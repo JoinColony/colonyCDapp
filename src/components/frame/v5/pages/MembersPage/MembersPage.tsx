@@ -14,6 +14,7 @@ import {
 } from '~routes/routeConstants.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import Filter from '~v5/common/Filter/index.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
 import BurgerMenu from '~v5/shared/BurgerMenu/index.ts';
@@ -100,7 +101,15 @@ const MembersPage: FC = () => {
                 id: 'membersPage.contributing.description',
               })}
               additionalActions={
-                <Filter excludeFilterType={FilterTypes.Team} />
+                <Filter
+                  excludeFilterType={FilterTypes.Team}
+                  searchInputLabel={formatMessage({
+                    id: 'filter.members.search.title',
+                  })}
+                  searchInputPlaceholder={formatMessage({
+                    id: 'filter.members.input.placeholder',
+                  })}
+                />
               }
               titleAction={titleAction}
             >
@@ -119,7 +128,15 @@ const MembersPage: FC = () => {
                 id: 'membersPage.allMembers.description',
               })}
               additionalActions={
-                <Filter excludeFilterType={FilterTypes.Team} />
+                <Filter
+                  excludeFilterType={FilterTypes.Team}
+                  searchInputLabel={formatMessage({
+                    id: 'filter.members.search.title',
+                  })}
+                  searchInputPlaceholder={formatMessage({
+                    id: 'filter.members.input.placeholder',
+                  })}
+                />
               }
               titleAction={titleAction}
             >

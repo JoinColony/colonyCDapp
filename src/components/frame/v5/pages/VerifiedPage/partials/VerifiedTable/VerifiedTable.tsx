@@ -103,7 +103,15 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
             {formatMessage({ id: 'button.removeMembers' })}
           </Button>
         )}
-        <Filter customLabel={formatMessage({ id: 'allFilters' })} />
+        <Filter
+          customLabel={formatMessage({ id: 'allFilters' })}
+          searchInputLabel={formatMessage({
+            id: 'filter.members.search.title',
+          })}
+          searchInputPlaceholder={formatMessage({
+            id: 'filter.members.input.placeholder',
+          })}
+        />
         <Button
           mode="primarySolid"
           className="ml-2"

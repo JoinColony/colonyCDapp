@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useFilterContext } from '~context/FilterContext.tsx';
+import { useSearchContext } from '~context/SearchContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import Icon from '~shared/Icon/index.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -18,7 +19,12 @@ import { type FilterProps } from './types.ts';
 
 const displayName = 'v5.common.Filter';
 
-const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
+const Filter: FC<FilterProps> = ({
+  excludeFilterType,
+  customLabel,
+  searchInputLabel,
+  searchInputPlaceholder,
+}) => {
   const { formatMessage } = useIntl();
   const [isOpened, setOpened] = useState(false);
   const [isSearchOpened, setIsSearchOpened] = useState(false);
@@ -37,6 +43,7 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
   });
 
   const { selectedFilterCount } = useFilterContext();
+  const { searchValue, setSearchValue } = useSearchContext();
 
   return (
     <>
@@ -68,12 +75,13 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4">
-              {formatMessage({ id: 'filter.search.title' })}
-            </p>
+            <p className="text-4 text-gray-400 mb-4">{searchInputLabel}</p>
             <div className="sm:px-3.5 sm:mb-6">
               <SearchInput
                 onSearchButtonClick={() => setIsSearchOpened(false)}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                searchInputPlaceholder={searchInputPlaceholder}
               />
             </div>
           </Modal>
@@ -103,6 +111,9 @@ const Filter: FC<FilterProps> = ({ excludeFilterType, customLabel }) => {
               <div className="sm:px-3.5 sm:mb-6">
                 <SearchInput
                   onSearchButtonClick={() => setIsSearchOpened(false)}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchInputPlaceholder={searchInputPlaceholder}
                 />
               </div>
               <FilterOptions excludeFilterType={excludeFilterType} />
