@@ -15,6 +15,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   toggleOnDecriptionSelect,
   fieldName,
   maxDescriptionLength,
+  disabled,
 }) => {
   const {
     fieldState: { error },
@@ -39,6 +40,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
           <RichText
             name={fieldName}
             isReadonly={readonly}
+            isDisabled={disabled}
             isDecriptionFieldExpanded={isDecriptionFieldExpanded}
             maxDescriptionLength={maxDescriptionLength}
             toggleOffDecriptionSelect={toggleOffDecriptionSelect}
@@ -68,6 +70,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
                 name={fieldName}
                 isReadonly={readonly}
                 maxDescriptionLength={maxDescriptionLength}
+                isDisabled={disabled}
                 isDecriptionFieldExpanded={isDecriptionFieldExpanded}
                 toggleOffDecriptionSelect={toggleOffDecriptionSelect}
                 toggleOnDecriptionSelect={toggleOnDecriptionSelect}

@@ -4,4 +4,5 @@ export interface TeamSelectProps {
   name: string;
   readonly?: boolean;
   filterOptionsFn?: (option: SearchSelectOption) => boolean;
+  disabled?: boolean;
 }

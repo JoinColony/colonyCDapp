@@ -1,10 +1,13 @@
+import { Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { ACTION, type Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import { canColonyBeUpgraded } from '~utils/checks/index.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
@@ -66,4 +69,21 @@ export const useSubmitButtonDisabled = () => {
     default:
       return false;
   }
+};
+
+export const useIsFieldDisabled = () => {
+  const { extensionData } = useExtensionData(Extension.VotingReputation);
+  const selectedAction: Action | undefined = useWatch({
+    name: ACTION_TYPE_FIELD_NAME,
+  });
+  const isExtensionEnabled =
+    extensionData &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.isEnabled;
+
+  if (selectedAction === ACTION.CREATE_DECISION && !isExtensionEnabled) {
+    return true;
+  }
+
+  return false;
 };

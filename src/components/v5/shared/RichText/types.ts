@@ -10,4 +10,5 @@ export type RichTextProps = Omit<DescriptionFieldProps, 'fieldName'> & {
   name: string;
   isReadonly?: boolean;
   shouldFocus?: boolean;
+  isDisabled?: boolean;
 };

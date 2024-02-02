@@ -4,4 +4,5 @@ export type DescriptionFieldProps = {
   toggleOnDecriptionSelect: () => void;
   fieldName: string;
   maxDescriptionLength?: number;
+  disabled?: boolean;
 };

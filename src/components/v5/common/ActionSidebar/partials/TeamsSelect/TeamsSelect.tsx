@@ -18,6 +18,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
   name,
   readonly: readonlyProp,
   filterOptionsFn,
+  disabled,
 }) => {
   const {
     field,
@@ -63,17 +64,16 @@ const TeamsSelect: FC<TeamSelectProps> = ({
           <button
             type="button"
             ref={relativeElementRef}
-            className={clsx(
-              'flex text-md transition-colors md:hover:text-blue-400',
-              {
-                'text-gray-400': !isError && !isTeamSelectVisible,
-                'text-negative-400': isError,
-                'text-blue-400': isTeamSelectVisible,
-              },
-            )}
+            className={clsx('flex text-md transition-colors', {
+              'text-gray-400': !isError && !isTeamSelectVisible,
+              'text-negative-400': isError,
+              'text-blue-400': isTeamSelectVisible,
+              'md:hover:text-blue-400': !disabled,
+            })}
             onClick={toggleTeamSelect}
+            disabled={disabled}
           >
-            {selectedOption ? (
+            {selectedOption && !disabled ? (
               <TeamBadge
                 name={
                   typeof selectedOption.label === 'object'

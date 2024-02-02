@@ -22,6 +22,7 @@ const RichText: FC<RichTextProps> = ({
   toggleOnDecriptionSelect,
   toggleOffDecriptionSelect,
   shouldFocus,
+  isDisabled,
 }) => {
   const { editor, notFormattedContent, field, characterCount } = useRichText(
     name,
@@ -116,10 +117,12 @@ const RichText: FC<RichTextProps> = ({
               <button
                 type="button"
                 onClick={toggleOnDecriptionSelect}
-                className={clsx('transition sm:hover:text-blue-400 text-left', {
+                className={clsx('transition text-left', {
                   'text-gray-900': characterCount,
                   'text-gray-400': !characterCount,
+                  'sm:hover:text-blue-400': !isDisabled,
                 })}
+                disabled={isDisabled}
               >
                 <span
                   ref={(ref) => {

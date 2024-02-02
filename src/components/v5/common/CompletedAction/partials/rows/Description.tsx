@@ -59,9 +59,9 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
         </button>
       </div>
       <div
-        className={clsx('flex flex-1', {
+        className={clsx('flex flex-1 items-start', {
           'h-10': !isExpanded,
-          'flex-col items-start mt-4': isExpanded,
+          'flex-col mt-4': isExpanded,
         })}
       >
         <RichTextDisplay
