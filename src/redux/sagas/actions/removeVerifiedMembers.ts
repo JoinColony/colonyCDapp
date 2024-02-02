@@ -137,7 +137,11 @@ function* removeVerifiedMembersAction({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
+    return yield putError(
+      ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS_ERROR,
+      error,
+      meta,
+    );
   } finally {
     txChannel.close();
   }
