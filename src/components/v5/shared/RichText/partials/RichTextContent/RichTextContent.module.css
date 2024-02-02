@@ -6,10 +6,6 @@
   @apply mb-2.5;
 }
 
-.rich-text-content :global(.tiptap) > blockquote {
-  @apply ml-8;
-}
-
 .rich-text-content :global(.tiptap) > ul {
   @apply pl-8;
 

@@ -1,6 +1,5 @@
 import { mergeAttributes } from '@tiptap/core';
 import Blockquote from '@tiptap/extension-blockquote';
-import Bold from '@tiptap/extension-bold';
 import CharacterCount from '@tiptap/extension-character-count';
 import Document from '@tiptap/extension-document';
 import Heading from '@tiptap/extension-heading';
@@ -69,14 +68,9 @@ export const useRichText = (
             ];
           },
         }),
-        Bold.configure({
-          HTMLAttributes: {
-            class: 'text-md',
-          },
-        }),
         Blockquote.configure({
           HTMLAttributes: {
-            class: 'border-l border-gray-300 pl-2 ml-4',
+            class: 'border-l border-gray-300 pl-2 ml-8',
           },
         }),
         CharacterCount.configure({
