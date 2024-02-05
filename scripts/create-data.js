@@ -1180,10 +1180,7 @@ const createUserAndColonyData = async () => {
 
     // verify users
     await Promise.all(
-      [
-        leela.address,
-        ...Object.keys(availableUsers.randomUsers).slice(0, 5),
-      ].map(async (userAddress) => {
+      Object.keys(availableUsers.randomUsers).map(async (userAddress) => {
         await graphqlRequest(
           addVerifiedMember,
           {
