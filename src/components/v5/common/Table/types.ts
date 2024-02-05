@@ -35,8 +35,4 @@ export interface TableProps<T>
   getMenuProps?: (row: Row<T>) => MeatBallMenuProps | undefined;
   meatBallMenuSize?: number;
   meatBallMenuStaticSize?: string;
-  title?: React.ReactNode;
-  additionalHeaderContent?: React.ReactNode;
-  headerClassName?: string;
-  tableHeaderChildren?: React.ReactNode;
 }

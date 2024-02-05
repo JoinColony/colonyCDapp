@@ -19,6 +19,7 @@ import { merge } from '~utils/lodash.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
+import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 
 import {
   useActionsTableData,
@@ -114,9 +115,6 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
   const renderRowLink = useRenderRowLink(loading);
   const tableProps: TableProps<ColonyAction> = merge(
     {
-      title: withHeader
-        ? formatText({ id: 'activityFeedTable.table.title' })
-        : null,
       className: clsx(className, {
         '[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
       }),
@@ -170,7 +168,16 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
     rest,
   );
 
-  return <Table<ColonyAction> {...tableProps} />;
+  return (
+    <>
+      {withHeader && (
+        <TableHeader
+          title={formatText({ id: 'activityFeedTable.table.title' })}
+        />
+      )}
+      <Table<ColonyAction> {...tableProps} />
+    </>
+  );
 };
 
 ColonyActionsTable.displayName = displayName;
