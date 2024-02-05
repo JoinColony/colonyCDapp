@@ -9,6 +9,7 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import BatchPaymentsTable from '../../BatchPaymentsTable/index.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 
 const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
 
@@ -52,20 +53,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
+      <CreatedInRow />
       <ActionFormRow
         icon="pencil"
         fieldName="description"

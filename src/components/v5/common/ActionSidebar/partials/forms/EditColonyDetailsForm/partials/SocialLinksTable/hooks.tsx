@@ -1,8 +1,7 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import { type SocialLinksTableModel } from './types.ts';
 
@@ -50,14 +49,10 @@ export const useSocialLinksTableColumns = (): ColumnDef<
   return columns;
 };
 
-export const useGetTableMenuProps = (
-  { remove },
-  setSocialLinkIndex: (index: number) => void,
-) => {
-  return useCallback<
-    TableWithMeatballMenuProps<SocialLinksTableModel>['getMenuProps']
-  >(
-    ({ index }) => ({
+export const getTableMenuProps =
+  ({ remove }, setSocialLinkIndex: (index: number) => void) =>
+  ({ index }) => {
+    return {
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
       items: [
         {
@@ -75,7 +70,5 @@ export const useGetTableMenuProps = (
           icon: 'trash',
         },
       ],
-    }),
-    [setSocialLinkIndex, remove],
-  );
-};
+    };
+  };

@@ -28,6 +28,7 @@ const ColonyDetailsFields: FC = () => (
       }}
     >
       <FormInputBase
+        message={false}
         name="colonyName"
         maxLength={MAX_COLONY_DISPLAY_NAME}
         placeholder={formatText({
@@ -74,11 +75,12 @@ const ColonyDetailsFields: FC = () => (
     >
       <FormTextareaBase
         message={false}
-        minLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
+        maxLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
         name="colonyDescription"
         placeholder={formatText({
           id: 'actionSidebar.colonyDescription.placeholder',
         })}
+        wrapperClassName="w-full"
       />
     </ActionFormRow>
   </>

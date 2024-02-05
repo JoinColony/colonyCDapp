@@ -84,16 +84,19 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
           {...rest}
         />
         {suffix}
-        {state === FIELD_STATE.Error && notMaybe(maxLength) && (
-          <div
-            className={clsx('text-4 flex justify-end absolute right-0', {
-              'text-negative-400': state === FIELD_STATE.Error,
-              'text-gray-500': state !== FIELD_STATE.Error,
-            })}
-          >
-            {typeof value === 'string' && value.length}/{maxLength}
-          </div>
-        )}
+        {state === FIELD_STATE.Error &&
+          notMaybe(maxLength) &&
+          typeof value === 'string' &&
+          value.length > maxLength && (
+            <div
+              className={clsx('text-4 flex justify-end absolute right-0', {
+                'text-negative-400': state === FIELD_STATE.Error,
+                'text-gray-500': state !== FIELD_STATE.Error,
+              })}
+            >
+              {typeof value === 'string' && value.length}/{maxLength}
+            </div>
+          )}
         <span
           className={clsx(
             'border-0 text-md',

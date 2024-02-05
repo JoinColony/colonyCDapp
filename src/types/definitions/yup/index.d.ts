@@ -15,4 +15,11 @@ declare module 'yup' {
       mapper?: (item: TValue) => any,
     ): NotRequiredArraySchema<T, C>;
   }
+
+  interface ObjectSchema<T> {
+    hasValuesChanged<TValue = T>(
+      message: TestOptionsMessage,
+      defaultValues: TValue,
+    ): ObjectSchema<T>;
+  }
 }

@@ -9,6 +9,7 @@ import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts'
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useSplitPayment } from './hooks.ts';
@@ -97,20 +98,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" />
-      </ActionFormRow>
+      <CreatedInRow />
       <DescriptionRow />
       {currentToken && (
         <SplitPaymentRecipientsField

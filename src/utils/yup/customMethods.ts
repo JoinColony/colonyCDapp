@@ -1,8 +1,11 @@
-import { addMethod, string, type TestOptionsMessage, array } from 'yup';
+import { isEqual } from 'lodash';
+import { addMethod, string, type TestOptionsMessage, array, object } from 'yup';
 
 import { isAddress } from '~utils/web3/index.ts';
 
 import en from '../../i18n/en-validation.json';
+
+import { createValidationComparableObject } from './utils.ts';
 
 /*
  * Hex String Regex Test
@@ -51,7 +54,23 @@ function unique(message, mapper = (a) => a) {
   });
 }
 
+function hasValuesChanged(message, defaultValues) {
+  return this.test({
+    name: 'hasValuesChanged',
+    message,
+    test(values) {
+      const valuesToCompare = createValidationComparableObject(
+        defaultValues,
+        values,
+      );
+
+      return !isEqual(defaultValues, valuesToCompare);
+    },
+  });
+}
+
 addMethod(string, 'address', address);
 addMethod(string, 'hexString', hexString);
 addMethod(string, 'hasHexPrefix', hasHexPrefix);
 addMethod(array, 'unique', unique);
+addMethod(object, 'hasValuesChanged', hasValuesChanged);

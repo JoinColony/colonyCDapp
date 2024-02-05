@@ -8,7 +8,5 @@ const AdditionalFormOptionsContext =
 export const useAdditionalFormOptionsContext = () =>
   useContext(AdditionalFormOptionsContext);
 
-const AdditionalFormOptionsContextProvider =
+export const AdditionalFormOptionsContextProvider =
   AdditionalFormOptionsContext.Provider;
-
-export default AdditionalFormOptionsContextProvider;

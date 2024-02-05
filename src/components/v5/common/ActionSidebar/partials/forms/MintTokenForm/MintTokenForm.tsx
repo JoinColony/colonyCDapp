@@ -4,11 +4,11 @@ import { useColonyContext } from '~context/ColonyContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useMintToken } from './hooks.ts';
@@ -64,20 +64,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon="house-line"
-        fieldName="createdIn"
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-      >
-        <TeamsSelect name="createdIn" readonly />
-      </ActionFormRow>
+      <CreatedInRow readonly />
       <DescriptionRow />
     </>
   );

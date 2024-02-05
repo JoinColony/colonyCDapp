@@ -5,11 +5,11 @@ import { useColonyContext } from '~context/ColonyContext.tsx';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
+import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useUnlockToken } from './hooks.ts';
@@ -48,20 +48,7 @@ const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           title={formatText({ id: 'actionSidebar.availableDecisions' })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon="house-line"
-        fieldName="createdIn"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createdIn',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.createdIn' })}
-      >
-        <TeamsSelect name="createdIn" readonly />
-      </ActionFormRow>
+      <CreatedInRow readonly />
       <DescriptionRow />
     </>
   );

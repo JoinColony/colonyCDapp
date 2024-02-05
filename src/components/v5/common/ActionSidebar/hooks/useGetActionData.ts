@@ -45,6 +45,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
     } = action;
 
     const extendedType = getExtendedActionType(action, colony.metadata);
+    const { metadata } = colony;
 
     const repeatableFields = {
       createdIn: isMotion ? motionData?.motionDomain.nativeId : Id.RootDomain,
@@ -160,11 +161,18 @@ export const useGetActionData = (transactionId: string | undefined) => {
 
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
-          colonyName: pendingColonyMetadata?.displayName,
-          colonyAvatar:
-            pendingColonyMetadata?.avatar || pendingColonyMetadata?.thumbnail,
-          colonyDescription: pendingColonyMetadata?.description,
-          externalLinks: pendingColonyMetadata?.externalLinks,
+          colonyName: motionData
+            ? pendingColonyMetadata?.displayName
+            : metadata?.displayName,
+          colonyAvatar: motionData
+            ? pendingColonyMetadata?.avatar || pendingColonyMetadata?.thumbnail
+            : metadata?.avatar || metadata?.thumbnail,
+          colonyDescription: motionData
+            ? pendingColonyMetadata?.description
+            : metadata?.description,
+          externalLinks: motionData
+            ? pendingColonyMetadata?.externalLinks
+            : metadata?.externalLinks,
           ...repeatableFields,
         };
       }

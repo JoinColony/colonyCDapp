@@ -24,7 +24,7 @@ import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarD
 import Motions from '../Motions/index.ts';
 import PopularActions from '../PopularActions.tsx';
 
-import { useGetActionErrors } from './hooks.ts';
+import { useGetFormActionErrors } from './hooks.ts';
 import PermissionSidebar from './partials/PermissionSidebar.tsx';
 import { SidebarBanner } from './partials/SidebarBanner.tsx';
 import {
@@ -59,9 +59,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
   const { readonly } = useAdditionalFormOptionsContext();
-  const { flatFormErrors, hasErrors } = useGetActionErrors();
+  const { flatFormErrors, hasErrors } = useGetFormActionErrors();
 
-  const { setValue } = useFormContext();
+  const {
+    setValue,
+    formState: {
+      errors: { this: customError },
+    },
+  } = useFormContext();
 
   const { noReputationError } = useReputationValidation();
 
@@ -84,8 +89,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <ActionSidebarDescription />
         </div>
         <SidebarBanner />
-        <ActionTypeSelect className="my-3 min-h-[1.875rem] flex flex-col justify-center" />
-
+        <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
         {noReputationError && (
@@ -104,19 +108,24 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             </NotificationBanner>
           </div>
         )}
-        {hasErrors || flatFormErrors.length ? (
+        {customError && (
+          <div className="mt-7">
+            <NotificationBanner icon="warning-circle" status="error">
+              {customError.message?.toString()}
+            </NotificationBanner>
+          </div>
+        )}
+        {hasErrors && flatFormErrors.length ? (
           <div className="mt-7">
             <NotificationBanner
               status="error"
               icon="warning-circle"
               description={
-                flatFormErrors.length ? (
-                  <ul className="list-disc list-inside text-negative-400 capitalize">
-                    {flatFormErrors.map(({ key, message }) => (
-                      <li key={key}>{message}</li>
-                    ))}
-                  </ul>
-                ) : null
+                <ul className="list-disc list-inside text-negative-400">
+                  {flatFormErrors.map(({ key, message }) => (
+                    <li key={key}>{message}</li>
+                  ))}
+                </ul>
               }
             >
               {formatText({ id: 'actionSidebar.fields.error' })}
@@ -179,6 +188,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           <ActionSidebarFormContent
             getFormOptions={getFormOptions}
             isMotion={isMotion}
+            transactionId={transactionId}
           />
         </ActionForm>
       </div>

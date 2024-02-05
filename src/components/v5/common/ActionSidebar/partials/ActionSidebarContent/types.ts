@@ -6,6 +6,7 @@ import { type ActionFormBaseProps } from '../../types.ts';
 
 export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
   isMotion?: boolean;
+  transactionId?: string;
 }
 
 export interface ActionSidebarContentProps {
