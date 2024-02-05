@@ -94,7 +94,10 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
         </div>
         {action.toDomain?.metadata?.name ? (
           <div>
-            <TeamBadge name={action.toDomain?.metadata?.name} />
+            <TeamBadge
+              name={action.toDomain?.metadata?.name}
+              color={action.toDomain?.metadata?.color}
+            />
           </div>
         ) : null}
 
