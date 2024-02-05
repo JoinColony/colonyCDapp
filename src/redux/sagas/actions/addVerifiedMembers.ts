@@ -18,7 +18,7 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils/index.ts';
-import { getAddVerifiedMembersOperation } from '../utils/verifiedMembers.ts';
+import { getAddVerifiedMembersOperation } from '../utils/metadataDelta.ts';
 
 function* addVerifiedMembersAction({
   payload: {
@@ -90,10 +90,9 @@ function* addVerifiedMembersAction({
       );
     }
 
-    // add params, how to blobify the last JSON??
     yield put(
       transactionAddParams(addVerifiedMembers.id, [
-        JSON.stringify(getAddVerifiedMembersOperation(colonyAddress, members)),
+        JSON.stringify(getAddVerifiedMembersOperation(members)),
       ]),
     );
 
