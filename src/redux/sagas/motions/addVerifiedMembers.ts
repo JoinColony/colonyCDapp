@@ -23,7 +23,7 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils/index.ts';
-import { getAddVerifiedMembersOperation } from '../utils/verifiedMembers.ts';
+import { getAddVerifiedMembersOperation } from '../utils/metadataDelta.ts';
 
 function* addVerifiedMembersMotion({
   payload: {
@@ -84,7 +84,7 @@ function* addVerifiedMembersMotion({
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       'editColonyByDelta',
-      [JSON.stringify(getAddVerifiedMembersOperation(colonyAddress, members))],
+      [JSON.stringify(getAddVerifiedMembersOperation(members))],
     );
 
     yield fork(createTransaction, createMotion.id, {
