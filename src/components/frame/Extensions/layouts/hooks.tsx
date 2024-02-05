@@ -39,7 +39,6 @@ import { type CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts
 
 import {
   adminMenu,
-  // @BETA: Disabled for now
   agreementsMenu,
   dashboardMainMenu,
   dashboardMenu,

@@ -1,17 +1,31 @@
 import { useApolloClient } from '@apollo/client';
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { useEffect, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
+import { Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { SearchActionsDocument } from '~gql';
+import useToggle from '~hooks/useToggle/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
+import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import ActionTypeSelect from '../../ActionTypeSelect.tsx';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
+} from '../../consts.tsx';
 import {
   useActionFormProps,
   useHasActionPermissions,
@@ -21,6 +35,7 @@ import {
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
 import Motions from '../Motions/index.ts';
+import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
 import { useGetFormActionErrors } from './hooks.ts';
 import NoPermissionsError from './partials/NoPermissionsError.tsx';
@@ -38,6 +53,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
 }) => {
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
   const { readonly } = useAdditionalFormOptionsContext();
@@ -47,6 +64,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     formState: {
       errors: { this: customError },
     },
+    getValues,
+    reset,
   } = useFormContext();
 
   const hasPermissions = useHasActionPermissions();
@@ -55,11 +74,32 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const isSubmitDisabled =
     !selectedAction || hasPermissions === false || hasNoDecisionMethods;
 
+  const [isModalVisible, { toggleOn: showModal, toggleOff: hideModal }] =
+    useToggle();
+
+  const draftAgreement = useSelector(
+    getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
+  );
+
+  const formValues = getValues();
+
+  useEffect(() => {
+    if (
+      formValues[ACTION_TYPE_FIELD_NAME] === Action.CreateDecision &&
+      draftAgreement &&
+      !formValues[TITLE_FIELD_NAME] &&
+      !formValues[DESCRIPTION_FIELD_NAME] &&
+      !isModalVisible
+    ) {
+      showModal();
+    }
+  }, [draftAgreement, formValues, isModalVisible, showModal]);
+
   return (
     <>
       <div className="flex-grow overflow-y-auto px-6">
         <FormTextareaBase
-          name="title"
+          name={TITLE_FIELD_NAME}
           placeholder={formatText({ id: 'placeholder.title' })}
           className="heading-3 text-gray-900 transition-colors leading-tight"
           message={false}
@@ -124,6 +164,29 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="mt-auto">
           <ActionButtons isActionDisabled={isSubmitDisabled} />
         </div>
+      )}
+      {draftAgreement && (
+        <RemoveDraftModal
+          isOpen={isModalVisible}
+          onCloseClick={() => {
+            reset({
+              [ACTION_TYPE_FIELD_NAME]: '',
+            });
+            hideModal();
+          }}
+          onCreateNewClick={hideModal}
+          onViewDraftClick={() => {
+            reset({
+              [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+              [DECISION_METHOD_FIELD_NAME]: DecisionMethod.Reputation,
+              [CREATED_IN_FIELD_NAME]: draftAgreement.motionDomainId,
+              [TITLE_FIELD_NAME]: draftAgreement.title,
+              [DESCRIPTION_FIELD_NAME]: draftAgreement.description,
+              walletAddress: user?.walletAddress,
+            });
+            hideModal();
+          }}
+        />
       )}
     </>
   );

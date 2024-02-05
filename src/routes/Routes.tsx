@@ -153,13 +153,8 @@ const Routes = () => {
               element={<ReputationPage />}
             />
           )}
-          {/* @ts-ignore */}
-          {!WEBPACK_IS_PRODUCTION && (
-            <Route
-              path={COLONY_AGREEMENTS_ROUTE}
-              element={<AgreementsPage />}
-            />
-          )}
+
+          <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
 
           {/* @ts-ignore */}
           {!WEBPACK_IS_PRODUCTION && (

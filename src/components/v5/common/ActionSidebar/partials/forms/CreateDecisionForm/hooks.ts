@@ -32,7 +32,7 @@ export const useCreateDecision = (
   //   ),
   // );
 
-  const handleSaveDecisionInLocalStorage = useCallback(
+  const handleSaveAgreementInLocalStorage = useCallback(
     (values: DecisionDraft) => {
       dispatch(createDecisionAction({ ...values, colonyAddress }));
     },
@@ -54,7 +54,7 @@ export const useCreateDecision = (
     transform: useCallback(
       pipe(
         mapPayload((payload: CreateDecisionFormValues) => {
-          handleSaveDecisionInLocalStorage({
+          handleSaveAgreementInLocalStorage({
             colonyAddress,
             title: payload.title,
             motionDomainId: Number(payload.createdIn),

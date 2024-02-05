@@ -1,9 +1,11 @@
 import { FilePlus } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
   useSetPageBreadcrumbs,
@@ -16,6 +18,7 @@ import {
 } from '~gql';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
@@ -23,6 +26,7 @@ import Button from '~v5/shared/Button/Button.tsx';
 
 import AgreementCard from './partials/AgreementCard/index.ts';
 import AgreementCardSkeleton from './partials/AgreementCardSkeleton.tsx';
+import DraftSection from './partials/DraftSection/DraftSection.tsx';
 
 const displayName = 'v5.pages.AgreementsPage';
 
@@ -30,6 +34,7 @@ const AgreementsPage: FC = () => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
+  const { user } = useAppContext();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -51,8 +56,13 @@ const AgreementsPage: FC = () => {
 
   const agreements = agreementsData?.getActionsByColony?.items.filter(notNull);
 
+  const draftAgreement = useSelector(
+    getDraftDecisionFromStore(user?.walletAddress || '', colonyAddress),
+  );
+
   return (
     <div>
+      {draftAgreement && <DraftSection className="mb-6" />}
       <div className="sm:flex sm:items-center justify-between sm:flex-row flex-col mb-6">
         <div className="flex items-center gap-2 sm:mb-0 mb-2.5">
           <h4 className="heading-5">

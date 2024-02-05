@@ -6,6 +6,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
+import { DESCRIPTION_FIELD_NAME } from '../../consts.tsx';
 import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import DescriptionField from '../DescriptionField/index.ts';
 
@@ -20,12 +21,12 @@ const Description: FC<DescriptionProps> = ({
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const { readonly } = useAdditionalFormOptionsContext();
   const { watch } = useFormContext();
-  const descriptionValue = watch('description');
+  const descriptionValue = watch(DESCRIPTION_FIELD_NAME);
 
   return !(readonly && !descriptionValue) ? (
     <ActionFormRow
       icon={Pencil}
-      fieldName="description"
+      fieldName={DESCRIPTION_FIELD_NAME}
       // Tooltip disabled to experiment with improving user experience
       // tooltips={{
       //   label: {
@@ -50,7 +51,7 @@ const Description: FC<DescriptionProps> = ({
           toggleOffDecriptionSelect={toggleOffDecriptionSelect}
           toggleOnDecriptionSelect={toggleOnDecriptionSelect}
           maxDescriptionLength={maxDescriptionLength}
-          fieldName="description"
+          fieldName={DESCRIPTION_FIELD_NAME}
           disabled={disabled || hasNoDecisionMethods}
         />
       )}

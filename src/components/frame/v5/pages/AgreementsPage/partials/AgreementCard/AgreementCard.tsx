@@ -22,6 +22,7 @@ import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
 import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
+import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import AgreementCardSkeleton from '../AgreementCardSkeleton.tsx';
@@ -101,7 +102,11 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
             }}
           >
             <h5 className="text-1 mb-2 truncate">{title}</h5>
-            <p className="text-sm text-gray-600 line-clamp-4">{description}</p>
+            <RichTextDisplay
+              content={description}
+              shouldFormat={false}
+              className="!text-sm !text-gray-600 line-clamp-4"
+            />
           </button>
           <div className="flex items-center justify-between gap-2 pt-4 mt-auto border-t border-gray-200">
             <UserPopover
