@@ -1,4 +1,4 @@
-import { CopySimple, ShareNetwork } from 'phosphor-react';
+import { CopySimple, ShareNetwork } from '@phosphor-icons/react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 

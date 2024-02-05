@@ -1,4 +1,10 @@
-import { Bug, DiscordLogo, Lifebuoy, Star, TwitterLogo } from 'phosphor-react';
+import {
+  Bug,
+  DiscordLogo,
+  Lifebuoy,
+  Star,
+  TwitterLogo,
+} from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

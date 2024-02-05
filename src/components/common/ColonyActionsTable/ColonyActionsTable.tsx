@@ -1,5 +1,5 @@
+import { ArrowSquareOut, FilePlus, ShareNetwork } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { ArrowSquareOut, FilePlus, ShareNetwork } from 'phosphor-react';
 import React, { type FC } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 

@@ -1,4 +1,4 @@
-import { PaintBucket } from 'phosphor-react';
+import { PaintBucket } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import {

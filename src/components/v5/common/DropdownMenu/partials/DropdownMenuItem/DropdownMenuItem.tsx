@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CaretRight } from 'phosphor-react';
 import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';

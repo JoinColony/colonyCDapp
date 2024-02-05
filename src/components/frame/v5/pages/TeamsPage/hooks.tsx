@@ -6,7 +6,7 @@ import {
   Pencil,
   PresentationChart,
   Users,
-} from 'phosphor-react';
+} from '@phosphor-icons/react';
 import React, { useCallback } from 'react';
 
 import { ACTION } from '~constants/actions.ts';

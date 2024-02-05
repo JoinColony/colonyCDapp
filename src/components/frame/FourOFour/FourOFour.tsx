@@ -1,4 +1,4 @@
-import { SmileySad } from 'phosphor-react';
+import { SmileySad } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';

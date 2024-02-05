@@ -1,4 +1,4 @@
-import { HouseLine } from 'phosphor-react';
+import { HouseLine } from '@phosphor-icons/react';
 import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';

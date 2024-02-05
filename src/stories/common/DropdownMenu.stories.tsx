@@ -1,4 +1,4 @@
-import { User } from 'phosphor-react';
+import { User } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useMobile } from '~hooks/index.ts';

@@ -1,6 +1,6 @@
+import { CaretRight, Pencil } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import DOMPurify from 'dompurify';
-import { CaretRight, Pencil } from 'phosphor-react';
 import React, { useState } from 'react';
 
 import { formatText } from '~utils/intl.ts';

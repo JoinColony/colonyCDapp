@@ -1,4 +1,4 @@
-import { PaintBucket, Rocket, UserList } from 'phosphor-react';
+import { PaintBucket, Rocket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

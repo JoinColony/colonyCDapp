@@ -1,4 +1,4 @@
-import { Browser, Browsers } from 'phosphor-react';
+import { Browser, Browsers } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

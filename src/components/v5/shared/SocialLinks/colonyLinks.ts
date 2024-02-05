@@ -9,7 +9,7 @@ import {
   TelegramLogo,
   TwitterLogo,
   YoutubeLogo,
-} from 'phosphor-react';
+} from '@phosphor-icons/react';
 import { type ComponentType } from 'react';
 import { defineMessages } from 'react-intl';
 

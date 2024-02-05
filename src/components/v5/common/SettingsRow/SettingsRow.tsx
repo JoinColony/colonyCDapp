@@ -1,5 +1,5 @@
+import { Info } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { Info } from 'phosphor-react';
 import React from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
