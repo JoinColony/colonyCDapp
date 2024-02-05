@@ -20,7 +20,7 @@ import { DecisionMethod } from './useDecisionMethods.ts';
 import { useGetColonyAction } from './useGetColonyAction.ts';
 
 export const useGetActionData = (transactionId: string | undefined) => {
-  const { action, loadingAction, motionState } =
+  const { action, loadingAction, networkMotionState, motionState } =
     useGetColonyAction(transactionId);
 
   const defaultValues = useMemo(() => {
@@ -250,6 +250,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
     defaultValues,
     loadingAction,
     isMotion: !!action?.isMotion,
+    networkMotionState,
     motionState,
   };
 };

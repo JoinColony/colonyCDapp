@@ -1,6 +1,5 @@
-import { type ColonyMotion } from '~types/graphql.ts';
+import { type MotionState } from '~utils/colonyMotions.ts';
 
 export interface MotionOutcomeBadgeProps {
-  motionData?: ColonyMotion | null;
-  motionState?: number;
+  motionState: MotionState;
 }

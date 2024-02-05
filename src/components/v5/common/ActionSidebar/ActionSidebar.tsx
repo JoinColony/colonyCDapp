@@ -171,10 +171,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               )}
             </button>
 
-            <MotionOutcomeBadge
-              motionData={action?.motionData}
-              motionState={motionState}
-            />
+            <MotionOutcomeBadge motionState={motionState} />
           </>
         )}
         <div>{children}</div>

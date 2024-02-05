@@ -1,3 +1,4 @@
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { useEffect, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -8,6 +9,7 @@ import {
   useGetColonyActionQuery,
   useGetMotionStateQuery,
 } from '~gql';
+import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
 import noop from '~utils/noop.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
@@ -104,6 +106,16 @@ export const useGetColonyAction = (transactionHash?: string) => {
     },
   });
 
+  /**
+   * @TODO: Once we properly store motion state in the DB, we need to consolidate
+   * the 2 different motion states
+   */
+  const networkMotionState = (motionStateData?.getMotionState ??
+    NetworkMotionState.Null) as NetworkMotionState;
+  const motionState = action?.motionData
+    ? getMotionState(networkMotionState, action?.motionData)
+    : MotionState.Invalid;
+
   /* Ensures motion state is kept in sync with motion data */
   useEffect(() => {
     if (action?.motionData) {
@@ -119,7 +131,8 @@ export const useGetColonyAction = (transactionHash?: string) => {
     action,
     startPollingForAction,
     stopPollingForAction,
-    motionState: motionStateData?.getMotionState,
+    networkMotionState,
+    motionState,
     refetchMotionState,
     refetchAction,
   };

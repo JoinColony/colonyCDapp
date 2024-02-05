@@ -7,7 +7,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useAppContext } from '~context/AppContext.tsx';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
-import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
@@ -50,6 +50,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const { canInteract } = useAppContext();
   const {
     action,
+    networkMotionState,
     motionState,
     refetchMotionState,
     loadingAction,
@@ -59,30 +60,25 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   } = useGetColonyAction(transactionId);
 
   const { motionData } = action || {};
-  const {
-    motionId = '',
-    motionStakes,
-    requiredStake = '',
-    motionStateHistory,
-  } = motionData || {};
+  const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
 
-  const [activeStepKey, setActiveStepKey] = useState<Steps>(motionState ?? 0);
+  const [activeStepKey, setActiveStepKey] = useState<Steps>(networkMotionState);
 
   const motionFinished =
-    motionState === NetworkMotionState.Finalizable ||
-    motionState === NetworkMotionState.Finalized ||
-    motionState === NetworkMotionState.Failed;
+    networkMotionState === NetworkMotionState.Finalizable ||
+    networkMotionState === NetworkMotionState.Finalized ||
+    networkMotionState === NetworkMotionState.Failed;
 
   useEffect(() => {
     startPollingForAction(getSafePollingInterval());
-    setActiveStepKey(motionState ?? 0);
+    setActiveStepKey(networkMotionState);
     if (motionFinished) {
       setActiveStepKey(CustomStep.Finalize);
     }
     return () => stopPollingForAction();
   }, [
     motionFinished,
-    motionState,
+    networkMotionState,
     startPollingForAction,
     stopPollingForAction,
   ]);
@@ -96,32 +92,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const isFullyStaked =
     objectingStakesPercentageValue === 100 &&
     supportingStakesPercentageValue === 100;
-
-  const motionStateEnum: MotionState | undefined = useMemo(() => {
-    if (!motionData) return undefined;
-    const motionStakesRaw = motionData?.motionStakes?.raw;
-    const revealedVotesPercentage = motionData?.revealedVotes.percentage || '';
-
-    if (
-      activeStepKey === NetworkMotionState.Finalizable &&
-      BigNumber.from(motionStakesRaw?.nay).gte(requiredStake) &&
-      BigNumber.from(motionStakesRaw?.yay).gte(requiredStake)
-    ) {
-      if (
-        BigNumber.from(revealedVotesPercentage?.yay).gt(
-          revealedVotesPercentage?.nay,
-        )
-      ) {
-        return MotionState.Passed;
-      }
-
-      return MotionState.Failed;
-    }
-
-    return motionData
-      ? getMotionState(motionState ?? 0, motionData)
-      : MotionState.Staking;
-  }, [activeStepKey, motionData, motionState, requiredStake]);
 
   const hasVotedMotionPassed = motionStateHistory?.hasPassed;
 
@@ -148,9 +118,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
           decor:
             activeStepKey === NetworkMotionState.Staking &&
             motionStakes &&
-            motionStateEnum ? (
+            motionState ? (
               <MotionCountDownTimer
-                motionState={motionStateEnum}
+                motionState={motionState}
                 motionId={motionId}
                 motionStakes={motionStakes}
                 refetchMotionState={refetchMotionState}
@@ -171,9 +141,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.voting.label' }) || '',
           decor:
-            motionStateEnum === MotionState.Voting && motionStakes ? (
+            motionState === MotionState.Voting && motionStakes ? (
               <MotionCountDownTimer
-                motionState={motionStateEnum}
+                motionState={motionState}
                 motionId={motionId}
                 motionStakes={motionStakes}
                 refetchMotionState={refetchMotionState}
@@ -193,7 +163,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         content: (
           <RevealStep
             motionData={motionData}
-            motionState={motionState}
+            motionState={networkMotionState}
             startPollingAction={startPollingForAction}
             stopPollingAction={stopPollingForAction}
             transactionId={transactionId}
@@ -202,9 +172,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.reveal.label' }) || '',
           decor:
-            motionStateEnum === MotionState.Reveal && motionStakes ? (
+            motionState && motionStakes ? (
               <MotionCountDownTimer
-                motionState={motionStateEnum}
+                motionState={motionState}
                 motionId={motionId}
                 motionStakes={motionStakes}
                 refetchMotionState={refetchMotionState}
@@ -276,13 +246,13 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       },
       {
         key: CustomStep.Finalize,
-        content: (
+        content: motionState && (
           <FinalizeStep
             actionData={action as MotionAction}
             startPollingAction={startPollingForAction}
             stopPollingAction={stopPollingForAction}
             refetchAction={refetchAction}
-            motionState={motionStateEnum}
+            motionState={motionState}
           />
         ),
         heading: {
@@ -300,7 +270,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     loadingAction,
     activeStepKey,
     motionStakes,
-    motionStateEnum,
+    motionState,
     motionId,
     refetchMotionState,
     action,
@@ -310,10 +280,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     isFullyStaked,
     motionStakedAndFinalizable,
     motionData,
-    motionState,
-    motionStateHistory,
-    hasVotedMotionPassed,
+    networkMotionState,
+    motionStateHistory?.hasPassed,
+    motionStateHistory?.hasFailed,
+    motionStateHistory?.hasFailedNotFinalizable,
     motionFinished,
+    hasVotedMotionPassed,
     refetchAction,
     canInteract,
   ]);
