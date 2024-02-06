@@ -73,7 +73,6 @@ EXPOSE 80
 RUN if [ -z "$DEV" ]; then export PROCESS_VAR='[a-z]'; else export PROCESS_VAR='process'; fi && \
         echo "sed -i \"s|${PROCESS_VAR}.env.NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.HOST|\\\"\$HOST\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.ORIGIN|\\\"\$ORIGIN\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.NETWORK|\\\"\$NETWORK\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.AUTH_PROXY_ENDPOINT|\\\"\$AUTH_PROXY_ENDPOINT\\\"|g\" *.js" \
         "&& sed -i \"s|${PROCESS_VAR}.env.METATRANSACTIONS|\\\"\$METATRANSACTIONS\\\"|g\" *.js" \

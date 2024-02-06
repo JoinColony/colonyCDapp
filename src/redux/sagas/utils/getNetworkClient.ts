@@ -25,7 +25,7 @@ const getNetworkClient = async () => {
 
   const reputationOracleUrl = process.env.REPUTATION_ORACLE_ENDPOINT
     ? new URL(process.env.REPUTATION_ORACLE_ENDPOINT)
-    : new URL(`/reputation`, process.env.ORIGIN);
+    : new URL(`/reputation`, window.location.origin);
 
   const ganacheAccountsUrl = new URL(
     process.env.GANACHE_ACCOUNTS_ENDPOINT || 'http://localhost:3006',

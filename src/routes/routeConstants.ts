@@ -55,5 +55,3 @@ export const LANDING_PAGE_ROUTE = '/';
 
 export const TX_SEARCH_PARAM = 'tx';
 export const TEAM_SEARCH_PARAM = 'team';
-
-export const HOST = process.env.HOST || 'localhost:9091';

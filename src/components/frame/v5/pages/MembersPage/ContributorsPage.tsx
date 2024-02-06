@@ -23,7 +23,7 @@ const ContributorsPage: FC = () => {
   } = useColonyContext();
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
-  const colonyURL = `${process.env.ORIGIN}/${colonyName}`;
+  const colonyURL = `${window.location.protocol}//${process.env.HOST}/${colonyName}`;
 
   return (
     <MembersTabContent

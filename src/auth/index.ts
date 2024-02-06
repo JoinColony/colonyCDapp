@@ -4,9 +4,6 @@ import { ContextModule, getContext } from '~context/index.ts';
 import { isFullWallet } from '~types/wallet.ts';
 
 const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
-  const host = process.env.HOST || 'localhost:9091';
-  const origin = process.env.ORIGIN || 'http://localhost:9091';
-
   try {
     const response = await fetch(
       `${process.env.AUTH_PROXY_ENDPOINT}/${urlPartial}`,
@@ -14,8 +11,8 @@ const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Host: host,
-          Origin: origin,
+          Host: String(process.env.HOST),
+          Origin: `${window.location.protocol}//${process.env.HOST}`,
         },
         credentials: 'include',
         ...options,
@@ -58,14 +55,11 @@ export const authenticateWallet = async (): Promise<void> => {
   if (authStatus !== 'authenticated') {
     const { data: nonce } = await authProxyRequest('nonce');
 
-    const host = process.env.HOST || 'localhost:9091';
-    const origin = process.env.ORIGIN || 'http://localhost:9091';
-
     const authMessage = new SiweMessage({
-      domain: host,
+      domain: process.env.HOST,
       address: await signer.getAddress(),
       statement: 'Authentication Session for the Colony CDapp',
-      uri: origin,
+      uri: `${window.location.protocol}//${process.env.HOST}`,
       version: '1',
       chainId: await signer.getChainId(),
       nonce,
