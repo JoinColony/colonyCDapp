@@ -12,7 +12,7 @@ const FeesForm = () => {
 
   return (
     <Form
-      ref={setFormRef}
+      innerRef={setFormRef}
       options={{
         readonly: loading,
       }}

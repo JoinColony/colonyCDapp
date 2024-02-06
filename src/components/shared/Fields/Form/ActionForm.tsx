@@ -46,20 +46,18 @@ export interface ActionFormProps<V extends Record<string, any>>
   transform?: ActionTransformFnType;
 }
 
-const ActionForm = <V extends Record<string, any>>(
-  {
-    onSuccess,
-    onError,
-    onSubmitError,
-    submit,
-    success,
-    error,
-    actionType,
-    transform,
-    ...props
-  }: ActionFormProps<V>,
-  ref: React.ForwardedRef<UseFormReturn<V, any, undefined>>,
-) => {
+const ActionForm = <V extends Record<string, any>>({
+  onSuccess,
+  onError,
+  onSubmitError,
+  submit,
+  success,
+  error,
+  actionType,
+  transform,
+  innerRef,
+  ...props
+}: ActionFormProps<V>) => {
   const asyncFunction = useAsyncFunction({
     submit: submit || actionType,
     error: error || getFormAction(actionType, 'ERROR'),
@@ -81,11 +79,11 @@ const ActionForm = <V extends Record<string, any>>(
       {...props}
       onSubmit={handleSubmit}
       onError={onSubmitError}
-      ref={ref}
+      innerRef={innerRef}
     />
   );
 };
 
 ActionForm.displayName = displayName;
 
-export default React.forwardRef(ActionForm);
+export default ActionForm;
