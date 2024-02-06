@@ -29,8 +29,7 @@ export const useMembersTabContentItems = (
   return useMemo(
     () =>
       items.map(({ userAvatarProps, ...item }) => {
-        const { user } = userAvatarProps;
-        const { walletAddress } = user || {};
+        const { walletAddress } = userAvatarProps;
 
         return {
           ...item,
