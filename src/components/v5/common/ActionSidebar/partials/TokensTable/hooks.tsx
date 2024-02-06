@@ -1,14 +1,13 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
 
 import TokenSelect from '../TokenSelect/index.ts';
 import TokenSymbol from '../TokenSelect/partials/TokenSymbol/index.ts';
 
-import { type TokensTableModel, type TokensTableProps } from './types.ts';
+import { type TokensTableModel } from './types.ts';
 
 export const useTokensTableColumns = (
   name: string,
@@ -40,33 +39,4 @@ export const useTokensTableColumns = (
   );
 
   return columns;
-};
-
-export const useGetTableMenuProps = (
-  { remove },
-  data,
-  shouldShowMenu: Exclude<TokensTableProps['shouldShowMenu'], undefined>,
-) => {
-  return useCallback<
-    TableWithMeatballMenuProps<TokensTableModel>['getMenuProps']
-  >(
-    ({ index }) => {
-      const shouldShow = shouldShowMenu(data[index]?.token);
-
-      return shouldShow
-        ? {
-            cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-            items: [
-              {
-                key: 'remove',
-                onClick: () => remove(index),
-                label: formatText({ id: 'table.row.remove' }),
-                icon: 'trash',
-              },
-            ],
-          }
-        : undefined;
-    },
-    [remove, data, shouldShowMenu],
-  );
 };

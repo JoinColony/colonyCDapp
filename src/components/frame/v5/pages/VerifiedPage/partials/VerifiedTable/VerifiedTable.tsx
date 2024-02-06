@@ -12,7 +12,8 @@ import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Filter from '~v5/common/Filter/index.ts';
-import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
+import Table from '~v5/common/Table/index.ts';
+import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
 import { useVerifiedTableColumns } from './hooks.tsx';
@@ -38,61 +39,15 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
   const [rowSelection, setRowSelection] = useState({});
 
   return (
-    <TableWithActionsHeader<ColonyContributorFragment>
-      title={formatText({ id: 'verifiedPage.membersTitle' })}
-      additionalHeaderContent={
-        <span className="text-sm text-blue-400">
-          {listLength} {formatMessage({ id: 'verifiedPage.members' })}
-        </span>
-      }
-      emptyContent={
-        !listLength && (
-          <div className="border border-1 w-full rounded-b-lg border-gray-200">
-            <EmptyContent
-              icon="binoculars"
-              title={{ id: 'verifiedPage.table.emptyTitle' }}
-              description={{ id: 'verifiedPage.table.emptyDescription' }}
-              buttonText={{ id: 'button.addNewMember' }}
-              onClick={onAddClick}
-              withoutButtonIcon
-            />
-          </div>
-        )
-      }
-      tableProps={{
-        className: 'w-full',
-        verticalOnMobile: false,
-        hasPagination: true,
-        getRowId: ({ contributorAddress }) => contributorAddress,
-        columns,
-        data: list,
-        state: {
-          sorting,
-          rowSelection,
-          columnVisibility: {
-            colonyReputationPercentage: !isMobile,
-            status: !isMobile,
-          },
-        },
-        initialState: {
-          pagination: {
-            pageSize: 10,
-          },
-        },
-        onSortingChange: setSorting,
-        onRowSelectionChange: setRowSelection,
-        getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        enableSortingRemoval: false,
-        enableSorting: true,
-        sortDescFirst: false,
-        sizeUnit: 'px',
-        renderCellWrapper: (classNames, content) => (
-          <div className={clsx(classNames, 'py-3.5')}>{content}</div>
-        ),
-      }}
-    >
-      <>
+    <>
+      <TableHeader
+        title={formatText({ id: 'verifiedPage.membersTitle' })}
+        additionalHeaderContent={
+          <span className="text-sm text-blue-400">
+            {listLength} {formatMessage({ id: 'verifiedPage.members' })}
+          </span>
+        }
+      >
         {!!Object.keys(rowSelection).length && (
           <Button
             mode="quaternary"
@@ -120,8 +75,54 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
         >
           {formatMessage({ id: 'button.addNewMember' })}
         </Button>
-      </>
-    </TableWithActionsHeader>
+      </TableHeader>
+      <Table<ColonyContributorFragment>
+        emptyContent={
+          !listLength && (
+            <div className="border border-1 w-full rounded-b-lg border-gray-200">
+              <EmptyContent
+                icon="binoculars"
+                title={{ id: 'verifiedPage.table.emptyTitle' }}
+                description={{ id: 'verifiedPage.table.emptyDescription' }}
+                buttonText={{ id: 'button.addNewMember' }}
+                onClick={onAddClick}
+                withoutButtonIcon
+              />
+            </div>
+          )
+        }
+        className="w-full"
+        verticalOnMobile={false}
+        hasPagination
+        getRowId={({ contributorAddress }) => contributorAddress}
+        columns={columns}
+        data={list}
+        state={{
+          sorting,
+          rowSelection,
+          columnVisibility: {
+            colonyReputationPercentage: !isMobile,
+            status: !isMobile,
+          },
+        }}
+        initialState={{
+          pagination: {
+            pageSize: 10,
+          },
+        }}
+        onSortingChange={setSorting}
+        onRowSelectionChange={setRowSelection}
+        getSortedRowModel={getSortedRowModel()}
+        getPaginationRowModel={getPaginationRowModel()}
+        enableSortingRemoval={false}
+        enableSorting
+        sortDescFirst={false}
+        sizeUnit="px"
+        renderCellWrapper={(classNames, content) => (
+          <div className={clsx(classNames, 'py-3.5')}>{content}</div>
+        )}
+      />
+    </>
   );
 };
 

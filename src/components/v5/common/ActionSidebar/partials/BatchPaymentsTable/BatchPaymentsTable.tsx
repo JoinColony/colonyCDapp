@@ -4,13 +4,10 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 
-import {
-  useBatchPaymentsTableColumns,
-  useGetTableMenuProps,
-} from './hooks.tsx';
+import { useBatchPaymentsTableColumns } from './hooks.tsx';
 import {
   type BatchPaymentsTableModel,
   type BatchPaymentsTableProps,
@@ -31,7 +28,17 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
   const columns = useBatchPaymentsTableColumns();
-  const getMenuProps = useGetTableMenuProps(fieldArrayMethods);
+  const getMenuProps = ({ index }) => ({
+    cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+    items: [
+      {
+        key: 'remove',
+        onClick: () => fieldArrayMethods.remove(index),
+        label: formatText({ id: 'table.row.remove' }),
+        icon: 'trash',
+      },
+    ],
+  });
 
   return (
     <div>
@@ -40,7 +47,7 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
           <h5 className="text-2 mb-3 mt-6">
             {formatText({ id: 'actionSidebar.payments' })}
           </h5>
-          <TableWithMeatballMenu<BatchPaymentsTableModel>
+          <Table<BatchPaymentsTableModel>
             className={clsx('mb-6', {
               '!border-negative-400': !!fieldState.error,
             })}

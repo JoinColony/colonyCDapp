@@ -48,27 +48,3 @@ export const useSocialLinksTableColumns = (): ColumnDef<
 
   return columns;
 };
-
-export const getTableMenuProps =
-  ({ remove }, setSocialLinkIndex: (index: number) => void) =>
-  ({ index }) => {
-    return {
-      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-      items: [
-        {
-          key: 'edit',
-          onClick: () => {
-            setSocialLinkIndex(index);
-          },
-          label: formatText({ id: 'table.row.edit.link' }),
-          icon: 'edit-pencil',
-        },
-        {
-          key: 'remove',
-          onClick: () => remove(index),
-          label: formatText({ id: 'button.delete' }),
-          icon: 'trash',
-        },
-      ],
-    };
-  };

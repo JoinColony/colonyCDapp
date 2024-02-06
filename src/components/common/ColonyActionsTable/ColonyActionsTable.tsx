@@ -1,22 +1,32 @@
 import clsx from 'clsx';
+import { ArrowSquareOut, FilePlus, ShareNetwork } from 'phosphor-react';
 import React, { type FC } from 'react';
+import { generatePath, useNavigate } from 'react-router-dom';
 
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMobile } from '~hooks/index.ts';
+import {
+  COLONY_ACTIVITY_ROUTE,
+  COLONY_HOME_ROUTE,
+  TX_SEARCH_PARAM,
+} from '~routes';
+import TransactionLink from '~shared/TransactionLink/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { merge } from '~utils/lodash.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import TableWithActionsHeader from '~v5/common/TableWithActionsHeader/index.ts';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
-import { type TableWithMeatballMenuProps } from '~v5/common/TableWithMeatballMenu/types.ts';
+import Table from '~v5/common/Table/index.ts';
+import { type TableProps } from '~v5/common/Table/types.ts';
+import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 
 import {
   useActionsTableData,
   useColonyActionsTableColumns,
-  useGetColonyActionsTableMenuProps,
   useRenderRowLink,
 } from './hooks.tsx';
+import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem/index.ts';
 import { type ColonyActionsTableProps } from './types.ts';
 
 const displayName = 'common.ColonyActionsTable';
@@ -49,10 +59,61 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
-  const getMenuProps = useGetColonyActionsTableMenuProps(loading);
+  const navigate = useNavigate();
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
+  const getMenuProps = ({ original: { transactionHash } }) => ({
+    disabled: loading,
+    items: [
+      {
+        key: '1',
+        label: formatText({ id: 'activityFeedTable.menu.view' }),
+        icon: <FilePlus size={16} />,
+        onClick: () => {
+          navigate(
+            `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
+            {
+              replace: true,
+            },
+          );
+        },
+      },
+      {
+        key: '2',
+        label: (
+          <TransactionLink
+            hash={transactionHash}
+            text={{ id: 'activityFeedTable.menu.viewOnNetwork' }}
+            textValues={{
+              blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
+            }}
+          />
+        ),
+        icon: <ArrowSquareOut size={16} />,
+      },
+      {
+        key: '3',
+        label: formatText({ id: 'activityFeedTable.menu.share' }),
+        renderItemWrapper: (props, children) => (
+          <MeatballMenuCopyItem
+            textToCopy={`${window.location.origin}${generatePath(
+              COLONY_HOME_ROUTE,
+              { colonyName },
+            )}/${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
+            {...props}
+          >
+            {children}
+          </MeatballMenuCopyItem>
+        ),
+        icon: <ShareNetwork size={16} />,
+        onClick: () => false,
+      },
+    ],
+  });
   const isMobile = useMobile();
   const renderRowLink = useRenderRowLink(loading);
-  const tableProps: TableWithMeatballMenuProps<ColonyAction> = merge(
+  const tableProps: TableProps<ColonyAction> = merge(
     {
       className: clsx(className, {
         '[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
@@ -107,17 +168,15 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
     rest,
   );
 
-  return withHeader ? (
-    <TableWithActionsHeader<
-      ColonyAction,
-      TableWithMeatballMenuProps<ColonyAction>
-    >
-      title={formatText({ id: 'activityFeedTable.table.title' })}
-      tableComponent={TableWithMeatballMenu}
-      tableProps={tableProps}
-    />
-  ) : (
-    <TableWithMeatballMenu {...tableProps} />
+  return (
+    <>
+      {withHeader && (
+        <TableHeader
+          title={formatText({ id: 'activityFeedTable.table.title' })}
+        />
+      )}
+      <Table<ColonyAction> {...tableProps} />
+    </>
   );
 };
 

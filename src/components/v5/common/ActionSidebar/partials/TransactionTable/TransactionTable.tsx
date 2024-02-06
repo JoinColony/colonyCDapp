@@ -6,10 +6,10 @@ import { FormattedMessage } from 'react-intl';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import { useTransactionTableColumns, useGetTableMenuProps } from './hooks.tsx';
+import { useTransactionTableColumns } from './hooks.tsx';
 import {
   type TransactionTableModel,
   type TransactionTableProps,
@@ -33,11 +33,30 @@ const TransactionTable: FC<TransactionTableProps> = ({
   const columns = useTransactionTableColumns(name, tokenAddress);
   const isMobile = useMobile();
   const value = useWatch({ name });
-  const getMenuProps = useGetTableMenuProps(
-    fieldArrayMethods,
-    value,
-    !readonly,
-  );
+  const getMenuProps = ({ index }) =>
+    !readonly
+      ? {
+          cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+          items: [
+            {
+              key: 'duplicate',
+              onClick: () =>
+                fieldArrayMethods.insert(index + 1, {
+                  ...value[index],
+                }),
+              label: formatText({ id: 'table.row.duplicate' }),
+              icon: 'copy-simple',
+            },
+            {
+              key: 'remove',
+              onClick: () => fieldArrayMethods.remove(index),
+              label: formatText({ id: 'table.row.remove' }),
+              icon: 'trash',
+            },
+          ],
+        }
+      : undefined;
+
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
@@ -48,7 +67,7 @@ const TransactionTable: FC<TransactionTableProps> = ({
           <h5 className="text-2 mb-3 mt-6">
             {formatText({ id: 'actionSidebar.additionalPayments' })}
           </h5>
-          <TableWithMeatballMenu<TransactionTableModel>
+          <Table<TransactionTableModel>
             className={clsx({
               '!border-negative-400': !!fieldState.error,
             })}

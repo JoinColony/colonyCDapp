@@ -5,14 +5,13 @@ import { FormattedMessage } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import TableWithMeatballMenu from '~v5/common/TableWithMeatballMenu/index.ts';
+import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { DISTRIBUTION_METHOD } from '../../../../consts.tsx';
 
 import {
   useRecipientsFieldTableColumns,
-  useGetTableMenuProps,
   useDistributionMethodUpdate,
 } from './hooks.tsx';
 import {
@@ -45,7 +44,23 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
     fieldArrayMethods,
   );
   const isMobile = useMobile();
-  const getMenuProps = useGetTableMenuProps(fieldArrayMethods, value);
+  const getMenuProps = ({ index }) => ({
+    cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+    items: [
+      {
+        key: 'duplicate',
+        onClick: () => fieldArrayMethods.insert(index + 1, data[index]),
+        label: formatText({ id: 'table.row.duplicate' }),
+        icon: 'copy-simple',
+      },
+      {
+        key: 'remove',
+        onClick: () => fieldArrayMethods.remove(index),
+        label: formatText({ id: 'table.row.remove' }),
+        icon: 'trash',
+      },
+    ],
+  });
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
@@ -62,7 +77,7 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
       {!!data.length && (
-        <TableWithMeatballMenu<SplitPaymentRecipientsTableModel>
+        <Table<SplitPaymentRecipientsTableModel>
           className={clsx({
             '!border-negative-400': !!fieldState.error,
           })}

@@ -1,5 +1,7 @@
 import { type TableOptions, type Row, type Cell } from '@tanstack/react-table';
 
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
+
 import type React from 'react';
 
 export type RenderCellWrapper<T> = (
@@ -30,4 +32,7 @@ export interface TableProps<T>
   renderCellWrapper?: RenderCellWrapper<T>;
   additionalPaginationButtonsContent?: React.ReactNode;
   emptyContent?: React.ReactNode;
+  getMenuProps?: (row: Row<T>) => MeatBallMenuProps | undefined;
+  meatBallMenuSize?: number;
+  meatBallMenuStaticSize?: string;
 }
