@@ -2,7 +2,6 @@ import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
@@ -16,7 +15,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   title,
   description,
   version,
-  icon,
+  icon: Icon,
   extensionId,
 }) => {
   const { formatMessage } = useIntl();
@@ -45,7 +44,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
           className="flex flex-1 flex-row items-start w-full"
         >
           <div className="flex shrink-0">
-            <Icon name={icon} appearance={{ size: 'extraBig' }} />
+            <Icon size={34} />
           </div>
           <div className="flex flex-1 flex-col items-start ml-4">
             <div className="flex items-center justify-start sm:justify-between w-full sm:w-auto">

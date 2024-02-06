@@ -1,6 +1,7 @@
-import Hamburger from '~v5/shared/Button/Hamburger.tsx';
+import { List } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import Hamburger from '~v5/shared/Button/Hamburger.tsx';
 
 const meta: Meta<typeof Hamburger> = {
   title: 'Shared/Buttons/Hamburger',
@@ -12,7 +13,7 @@ const meta: Meta<typeof Hamburger> = {
         type: 'boolean',
       },
     },
-    iconName: {
+    icon: {
       name: 'Icon',
       options: ['list', 'close'],
       control: {
@@ -28,7 +29,7 @@ const meta: Meta<typeof Hamburger> = {
   },
   args: {
     disabled: false,
-    iconName: 'list',
+    icon: List,
     isOpened: false,
   },
 };

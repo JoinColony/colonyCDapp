@@ -1,3 +1,4 @@
+import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
@@ -6,7 +7,6 @@ import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -114,7 +114,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
            */
           // <div className="flex items-center text-4 gap-2">
           //   <span className="flex text-blue-400 mr-2">
-          //     <Icon name="arrows-clockwise" appearance={{ size: 'tiny' }} />
+          //     <ArrowsClockwise size={14} />
           //   </span>
           //   {formatText(
           //     { id: 'motion.finalizeStep.transactions.remaining' },
@@ -122,7 +122,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           //   )}
           // </div>
         ),
-        iconSize: 'extraSmall',
+        iconSize: 16,
       }}
       sections={[
         ...(!hasEnoughFundsToFinalize
@@ -169,11 +169,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       text={{ id: 'button.pending' }}
                       icon={
                         <span className="flex shrink-0 ml-1.5">
-                          <Icon
-                            name="spinner-gap"
-                            className="animate-spin"
-                            appearance={{ size: 'tiny' }}
-                          />
+                          <SpinnerGap size={14} className="animate-spin" />
                         </span>
                       }
                     />

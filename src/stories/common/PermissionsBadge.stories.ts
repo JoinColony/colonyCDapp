@@ -1,6 +1,7 @@
-import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
+import { User, UsersThree } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 
 const meta: Meta<typeof PermissionsBadge> = {
   title: 'Common/Pills/Permissions Badge',
@@ -12,10 +13,10 @@ const meta: Meta<typeof PermissionsBadge> = {
         type: 'text',
       },
     },
-    iconName: {
-      name: 'Icon Name',
+    icon: {
+      name: 'Icon',
       control: {
-        type: 'text',
+        type: 'object',
       },
     },
   },
@@ -27,13 +28,13 @@ type Story = StoryObj<typeof PermissionsBadge>;
 export const Base: Story = {
   args: {
     text: 'Payer',
-    iconName: 'user',
+    icon: User,
   },
 };
 
 export const MultiSig: Story = {
   args: {
     text: 'Custom',
-    iconName: 'user-three',
+    icon: UsersThree,
   },
 };

@@ -1,3 +1,4 @@
+import { Plus, Trash } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -35,7 +36,7 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
         key: 'remove',
         onClick: () => fieldArrayMethods.remove(index),
         label: formatText({ id: 'table.row.remove' }),
-        icon: 'trash',
+        icon: Trash,
       },
     ],
   });
@@ -60,7 +61,7 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
       )}
       <Button
         mode="primaryOutline"
-        iconName="plus"
+        icon={Plus}
         size="small"
         isFullSize={isMobile}
         onClick={() => {

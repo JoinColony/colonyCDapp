@@ -1,9 +1,9 @@
+import { CloudArrowUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { useFormatFormats } from '../hooks.tsx';
 import { type DefaultContentProps } from '../types.ts';
@@ -40,7 +40,7 @@ const DefaultContent: FC<DefaultContentProps> = ({
           className="flex items-center text-gray-600"
           onClick={open}
         >
-          <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
+          <CloudArrowUp size={18} />
           <span className="ml-2 text-3">
             {formatMessage({ id: 'upload' }, { format: fileFormat })}
           </span>
@@ -50,7 +50,7 @@ const DefaultContent: FC<DefaultContentProps> = ({
           <div className="w-9 h-9 mb-2">
             <div className="bg-gray-50 p-[0.25rem] rounded-full flex items-start justify-center">
               <div className="bg-gray-200 text-gray-600 p-[0.25rem] rounded-full flex items-start justify-center">
-                <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
+                <CloudArrowUp size={18} />
               </div>
             </div>
           </div>

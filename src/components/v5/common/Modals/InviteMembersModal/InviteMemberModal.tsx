@@ -1,3 +1,4 @@
+import { CopySimple } from '@phosphor-icons/react';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
@@ -82,7 +83,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           <Button
             text={MSG.buttonText}
             mode={isCopied ? 'completed' : 'quinary'}
-            iconName={isCopied ? undefined : 'copy-simple'}
+            icon={isCopied ? undefined : CopySimple}
             onClick={() => handleClipboardCopy(inviteLink)}
             size="small"
             textValues={{ isCopied }}

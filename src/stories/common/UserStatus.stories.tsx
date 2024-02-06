@@ -1,6 +1,12 @@
-import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
+import {
+  CrownSimple,
+  HandHeart,
+  Medal,
+  ShootingStar,
+} from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 
 const meta: Meta<typeof UserStatus> = {
   title: 'Common/Pills/User Status',
@@ -31,16 +37,10 @@ const meta: Meta<typeof UserStatus> = {
         type: 'select',
       },
     },
-    iconName: {
+    icon: {
       name: 'Icon',
-      options: [
-        'medal-bold',
-        'shooting-star-bold',
-        'hand-heart',
-        'crown-simple',
-      ],
       control: {
-        type: 'select',
+        type: 'object',
       },
     },
     text: {
@@ -58,7 +58,7 @@ type Story = StoryObj<typeof UserStatus>;
 export const Dedicated: Story = {
   args: {
     mode: 'dedicated',
-    iconName: 'medal-bold',
+    icon: Medal,
     text: 'Dedicated',
     pillSize: 'medium',
   },
@@ -67,7 +67,7 @@ export const Dedicated: Story = {
 export const DedicatedFilled: Story = {
   args: {
     mode: 'dedicated-filled',
-    iconName: 'medal-bold',
+    icon: Medal,
     text: 'Dedicated',
     pillSize: 'medium',
   },
@@ -76,7 +76,7 @@ export const DedicatedFilled: Story = {
 export const Active: Story = {
   args: {
     mode: 'active',
-    iconName: 'shooting-star-bold',
+    icon: ShootingStar,
     text: 'Active',
     pillSize: 'medium',
   },
@@ -85,7 +85,7 @@ export const Active: Story = {
 export const ActiveFilled: Story = {
   args: {
     mode: 'active-filled',
-    iconName: 'shooting-star-bold',
+    icon: ShootingStar,
     text: 'Active',
     pillSize: 'medium',
   },
@@ -94,7 +94,7 @@ export const ActiveFilled: Story = {
 export const New: Story = {
   args: {
     mode: 'new',
-    iconName: 'hand-heart',
+    icon: HandHeart,
     text: 'New',
     pillSize: 'medium',
   },
@@ -103,7 +103,7 @@ export const New: Story = {
 export const ActiveNew: Story = {
   args: {
     mode: 'active-new',
-    iconName: 'hand-heart',
+    icon: HandHeart,
     text: 'Active',
     pillSize: 'medium',
   },
@@ -112,7 +112,7 @@ export const ActiveNew: Story = {
 export const Top: Story = {
   args: {
     mode: 'top',
-    iconName: 'crown-simple',
+    icon: CrownSimple,
     text: 'Top',
     pillSize: 'medium',
   },
@@ -121,7 +121,7 @@ export const Top: Story = {
 export const TopFilled: Story = {
   args: {
     mode: 'top-filled',
-    iconName: 'crown-simple',
+    icon: CrownSimple,
     text: 'Top',
     pillSize: 'medium',
   },
@@ -146,7 +146,7 @@ export const Team: Story = {
 export const DedicatedCrown: Story = {
   args: {
     mode: 'top',
-    iconName: 'crown-simple',
+    icon: CrownSimple,
     text: 'Dedicated',
     pillSize: 'medium',
   },

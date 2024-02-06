@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import Avatar from '../Avatar/index.ts';
@@ -12,7 +11,7 @@ const displayName = 'v5.ColonyAvatar';
 
 const ColonyAvatar: FC<ColonyAvatarProps> = ({
   colonyAddress,
-  chainIconName,
+  chainIcon: Icon,
   colonyImageProps,
   size = 'xms',
   className,
@@ -50,11 +49,9 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           <Avatar size={size} seed={colonyAddress.toLowerCase()} />
         )}
       </div>
-      {chainIconName && (
+      {Icon && (
         <figure
           className={`
-          h-[0.5em]
-          w-[0.5em]
           rounded-full
           border
           border-gray-200
@@ -70,11 +67,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           items-center
       `}
         >
-          <Icon
-            name={chainIconName}
-            appearance={{ size: 'tiny' }}
-            className="h-[96%] w-[96%]"
-          />
+          <Icon size={8} />
         </figure>
       )}
     </div>

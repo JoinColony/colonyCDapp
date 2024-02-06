@@ -1,7 +1,7 @@
+import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { CardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -53,15 +53,14 @@ const BreadcrumbsCardSelect = ({ item }: Props) => {
         return (
           <span className="flex items-center">
             {selectedOption || placeholder}{' '}
-            <Icon
-              name="caret-down"
-              appearance={{ size: 'extraExtraTiny' }}
+            <CaretDown
               className={clsx(
                 '!h-[0.75rem] !w-[0.75rem] text-[.625rem] fill-current ml-2 transition-transform',
                 {
                   'rotate-180': isSelectVisible,
                 },
               )}
+              size={10}
             />
           </span>
         );

@@ -1,5 +1,9 @@
+import { type Icon } from '@phosphor-icons/react';
 import { constants as ethersContants } from 'ethers';
 
+import EthereumIcon from '~icons/EthereumIcon.tsx';
+import GanacheIcon from '~icons/GanacheIcon.tsx';
+import GnosisIcon from '~icons/GnosisIcon.tsx';
 import { Network } from '~types/network.ts';
 
 import { version } from '../../package.json';
@@ -36,7 +40,7 @@ export type NetworkInfo = {
    * Used when adding the network to Metamask
    */
   rpcUrl?: string;
-  iconName?: string;
+  icon?: Icon;
   /*
    * These props are used when interacting with the Safe Control dialogs
    */
@@ -89,7 +93,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
   blockExplorerUrl: 'https://gnosis.blockscout.com/',
   tokenExplorerLink: 'https://gnosis.blockscout.com/tokens',
   contractAddressLink: 'https://gnosis.blockscout.com/address',
-  iconName: 'gnosis',
+  icon: GnosisIcon,
   blockTime: 5,
 };
 
@@ -102,7 +106,7 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://etherscan.io/tokens',
   contractAddressLink: 'https://etherscan.io/address',
-  iconName: 'ethereum-icon',
+  icon: EthereumIcon,
   safeTxService: 'https://safe-transaction-mainnet.safe.global/api',
   rpcUrl: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   apiUri: 'https://api.etherscan.io/api',
@@ -132,7 +136,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
-  iconName: 'ganache',
+  icon: GanacheIcon,
   nativeToken: ETHER_TOKEN,
   blockTime: 5,
 };

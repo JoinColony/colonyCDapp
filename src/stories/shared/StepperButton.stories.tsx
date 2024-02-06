@@ -1,3 +1,4 @@
+import { Check } from '@phosphor-icons/react';
 import React from 'react';
 
 import { StepStage } from '~v5/shared/Stepper/partials/StepperButton/consts.ts';
@@ -80,7 +81,7 @@ export const Highlighted: StoryObj<typeof StepperButton> = {
 
 export const WithIcon: StoryObj<typeof StepperButton> = {
   args: {
-    iconName: 'check',
+    icon: Check,
   },
 };
 

@@ -1,7 +1,7 @@
+import { Clock } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { MiniSpinnerLoader } from '~shared/Preloaders/index.ts';
 import TimerValue from '~shared/TimerValue/index.ts';
 
@@ -12,13 +12,7 @@ const displayName = 'common.CountDownTimer';
 const CountDownTimer: FC<CountDownTimerProps> = ({
   countdown,
   isLoading,
-  prefix = (
-    <Icon
-      name="clock"
-      className="text-negative-400"
-      appearance={{ size: 'tiny' }}
-    />
-  ),
+  prefix = <Clock size={14} className="text-negative-400" />,
   className,
   timerClassName,
 }) => {

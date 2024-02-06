@@ -1,3 +1,4 @@
+import { Coins, CopySimple, Plus, Trash } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
@@ -46,7 +47,7 @@ const AdvancedPaymentRecipientsField: FC<
             ...pick(data[index], ['recipient', 'delay']),
           }),
         label: formatText({ id: 'button.addToken' }),
-        icon: 'coins',
+        icon: Coins,
       },
       {
         key: 'duplicate',
@@ -55,13 +56,13 @@ const AdvancedPaymentRecipientsField: FC<
             ...data[index],
           }),
         label: formatText({ id: 'table.row.duplicate' }),
-        icon: 'copy-simple',
+        icon: CopySimple,
       },
       {
         key: 'remove',
         onClick: () => fieldArrayMethods.remove(index),
         label: formatText({ id: 'table.row.remove' }),
-        icon: 'trash',
+        icon: Trash,
       },
     ],
   });
@@ -86,7 +87,7 @@ const AdvancedPaymentRecipientsField: FC<
       )}
       <Button
         mode="primaryOutline"
-        iconName="plus"
+        icon={Plus}
         size="small"
         className="mt-6"
         isFullSize={isMobile}

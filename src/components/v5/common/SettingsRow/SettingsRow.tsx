@@ -61,7 +61,7 @@ const SettingsRow = <
         <Button
           mode={buttonMode}
           onClick={onClick}
-          iconName={buttonIcon}
+          icon={buttonIcon}
           text={buttonLabel}
         />
       )}

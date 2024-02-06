@@ -1,3 +1,6 @@
+import { type Icon } from '@phosphor-icons/react';
+import { type ReactNode } from 'react';
+
 export interface RenderMeatBallItemWrapperProps {
   className?: string;
   onClick?: () => void;
@@ -5,13 +8,13 @@ export interface RenderMeatBallItemWrapperProps {
 
 export type RenderMeatBallItemWrapper = (
   props: RenderMeatBallItemWrapperProps,
-  children: React.ReactNode,
-) => React.ReactNode;
+  children: ReactNode,
+) => ReactNode;
 
 export interface MeatBallMenuItem {
   key: string;
-  label: React.ReactNode;
-  icon?: React.ReactNode;
+  label: ReactNode;
+  icon?: Icon;
   onClick?: () => void | boolean;
   renderItemWrapper?: RenderMeatBallItemWrapper;
   className?: string;

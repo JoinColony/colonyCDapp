@@ -1,3 +1,4 @@
+import { CaretDown } from '@phosphor-icons/react';
 import { getSortedRowModel, type SortingState } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
@@ -72,7 +73,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
         className="text-1 text-gray-900 w-full [&_.accordion-toggler]:px-[1.125rem] sm:hover:[&_.accordion-toggler]:bg-gray-25"
         isOpen={isTableRowOpen}
         onToggle={toggleTableRowAccordion}
-        iconName="chevron-down"
+        icon={CaretDown}
         title={
           <div className="flex items-center justify-between w-full py-4 text-gray-900">
             <button

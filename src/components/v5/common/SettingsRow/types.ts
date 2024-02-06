@@ -1,3 +1,4 @@
+import { type Icon } from '@phosphor-icons/react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 import { type MessageDescriptor } from 'react-intl';
 
@@ -12,7 +13,7 @@ export interface SettingsRowProps<
   tooltipMessage?: MessageDescriptor;
   onClick?: () => void;
   buttonLabel?: MessageDescriptor;
-  buttonIcon?: string;
+  buttonIcon?: Icon;
   buttonMode?: ButtonMode;
   name: TFieldName;
   className?: string;

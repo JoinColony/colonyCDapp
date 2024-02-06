@@ -4,9 +4,9 @@ import React, { type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import ColonyIcon from '~icons/ColonyIcon.tsx';
 import ColonyLogo from '~images/logo-new.svg';
 import FeedbackButton from '~shared/FeedbackButton/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
 
@@ -149,10 +149,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   <ColonyAvatar {...colonySwitcherProps.avatarProps} />
                 ) : (
                   <div className="w-9 h-9">
-                    <Icon
-                      name="colony-icon"
-                      appearance={{ size: 'largeSmall' }}
-                    />
+                    <ColonyIcon size={36} />
                   </div>
                 )}
               </button>

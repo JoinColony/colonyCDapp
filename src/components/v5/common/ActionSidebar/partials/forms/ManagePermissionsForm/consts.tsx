@@ -1,4 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
+import { Sliders, UserCircleMinus } from '@phosphor-icons/react';
 import React from 'react';
 import { type InferType, mixed, object, string, number } from 'yup';
 
@@ -114,7 +115,7 @@ export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
       {
         label: (
           <RoleOptionLabel
-            icon="sliders"
+            icon={Sliders}
             description={formatText({
               id: 'actionSidebar.managePermissions.roleSelect.custom.desc',
             })}
@@ -135,7 +136,7 @@ export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
       {
         label: (
           <RoleOptionLabel
-            icon="user-circle-minus"
+            icon={UserCircleMinus}
             description={formatText({
               id: 'actionSidebar.managePermissions.roleSelect.remove.desc',
             })}

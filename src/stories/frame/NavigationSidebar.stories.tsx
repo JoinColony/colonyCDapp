@@ -1,9 +1,20 @@
+import {
+  Bank,
+  Bird,
+  GearSix,
+  Handshake,
+  Layout,
+  Plus,
+  SealCheck,
+  User,
+  UsersFour,
+  UsersThree,
+} from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import NavigationSidebar from '~v5/frame/NavigationSidebar/index.ts';
-
-import type { Meta, StoryObj } from '@storybook/react';
 
 const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
   title: 'Frame/Navigation Sidebar',
@@ -17,7 +28,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
     hamburgerLabel: 'Menu',
     colonySwitcherProps: {
       avatarProps: {
-        chainIconName: 'gnosis',
+        chainIcon: Bird,
         colonyAddress: ADDRESS_ZERO,
       },
       content: {
@@ -25,14 +36,14 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
         content: <p>colony</p>,
         bottomActionProps: {
           text: 'Create new colony',
-          iconName: 'plus',
+          icon: Plus,
         },
       },
     },
     mainMenuItems: [
       {
         key: '1',
-        iconName: 'layout',
+        icon: Layout,
         label: 'Dashboard',
         secondLevelMenuProps: {
           title: 'Dashboard',
@@ -41,13 +52,13 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
             'The Metacolony is the DAO that will build, maintain, and support the Colony ecosystem, and you can be part of it.',
           bottomActionProps: {
             text: 'Create new action',
-            iconName: 'plus',
+            icon: Plus,
           },
         },
       },
       {
         key: '2',
-        iconName: 'user',
+        icon: User,
         label: 'Members',
         secondLevelMenuProps: {
           title: 'Members',
@@ -56,13 +67,13 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
               key: '1',
               label: 'Members',
               to: '/members',
-              iconName: 'users-three',
+              icon: UsersThree,
             },
             {
               key: '2',
               label: 'Verified members',
               to: '/verified-members',
-              iconName: 'seal-check',
+              icon: SealCheck,
               tagProps: {
                 text: 'New',
                 mode: 'new',
@@ -72,7 +83,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
               key: '3',
               label: 'Teams',
               to: '/teams',
-              iconName: 'users-four',
+              icon: UsersFour,
               disabled: true,
               tagProps: {
                 text: 'Coming soon',
@@ -98,7 +109,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
       },
       {
         key: '3',
-        iconName: 'bank',
+        icon: Bank,
         label: 'Finances',
         secondLevelMenuProps: {
           title: 'Finances',
@@ -122,7 +133,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
       },
       {
         key: '4',
-        iconName: 'handshake',
+        icon: Handshake,
         label: 'Agreements',
         secondLevelMenuProps: {
           title: 'Agreements',
@@ -146,7 +157,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
       },
       {
         key: '5',
-        iconName: 'gear-six',
+        icon: GearSix,
         label: 'Admin',
         secondLevelMenuProps: {
           title: 'Admin',

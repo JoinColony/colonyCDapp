@@ -1,3 +1,4 @@
+import { Pencil } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -21,7 +22,7 @@ const DescriptionRow: FC<DescriptionRowProps> = ({
 
   return !(readonly && !descriptionValue) ? (
     <ActionFormRow
-      icon="pencil"
+      icon={Pencil}
       fieldName="description"
       // Tooltip disabled to experiment with improving user experience
       // tooltips={{

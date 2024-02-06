@@ -1,3 +1,5 @@
+import { type Icon } from '@phosphor-icons/react';
+
 import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 
 export type AvatarSize =
@@ -23,7 +25,7 @@ export interface AvatarProps {
   avatar?: string | null;
   className?: string;
   notSet?: boolean;
-  placeholderIcon?: string;
+  placeholderIcon?: Icon;
   size?: AvatarSize;
   title?: string | null;
   mode?: UserStatusMode;

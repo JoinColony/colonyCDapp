@@ -1,7 +1,7 @@
+import { Image } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
@@ -58,12 +58,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
           />
         ) : (
           <div className="bg-gray-200 text-gray-600 p-2.5 rounded-full flex">
-            <Icon
-              name="image"
-              appearance={{
-                size: 'extraSmall',
-              }}
-            />
+            <Image size={16} />
           </div>
         ),
     },

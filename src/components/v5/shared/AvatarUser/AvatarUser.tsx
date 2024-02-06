@@ -1,3 +1,4 @@
+import { UserCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -31,7 +32,7 @@ const AvatarUser: FC<AvatarUserProps> = ({
         <Avatar
           size={size}
           avatar={avatar}
-          placeholderIcon="circle-person"
+          placeholderIcon={UserCircle}
           {...rest}
         />
       </span>

@@ -1,10 +1,10 @@
+import { CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 import { useController } from 'react-hook-form';
 
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { LABEL_CLASSNAME } from './consts.ts';
 import { type ActionFormRowProps } from './types.ts';
@@ -12,7 +12,7 @@ import { type ActionFormRowProps } from './types.ts';
 const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
   (
     {
-      icon,
+      icon: Icon,
       title,
       children,
       isExpandable = false,
@@ -42,15 +42,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
     const content = (
       <>
-        {typeof icon === 'string' ? (
-          <Icon
-            name={icon}
-            appearance={{ size: 'extraTiny' }}
-            className={clsx('h-3 w-3', textColorClassNames)}
-          />
-        ) : (
-          <i className={clsx(textColorClassNames)}>{icon}</i>
-        )}
+        <Icon size={12} className={clsx('h-3 w-3', textColorClassNames)} />
         <span
           className={clsx(
             LABEL_CLASSNAME,
@@ -70,10 +62,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
                 },
               )}
             >
-              <Icon
-                name="caret-right"
-                appearance={{ size: 'extraExtraTiny' }}
-              />
+              <CaretRight size={10} />
             </span>
           )}
         </span>

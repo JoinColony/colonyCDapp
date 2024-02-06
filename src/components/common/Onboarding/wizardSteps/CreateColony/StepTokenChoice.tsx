@@ -1,10 +1,10 @@
+import { CoinVertical, HandCoins } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type ReactNode } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, type MessageDescriptor } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
@@ -73,7 +73,7 @@ const TokenSelector = ({
       <MenuContainer
         checked={checked}
         className={clsx(
-          'flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:shadow-light-blue md:hover:border-blue-200',
+          'flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:border-blue-200',
         )}
       >
         <input
@@ -109,19 +109,13 @@ const StepTokenChoice = ({
         name="create"
         title={MSG.createOptionTitle}
         description={MSG.createOptionDescription}
-        icon={
-          <Icon
-            style={{ transform: 'rotate(90deg)' }}
-            name="coin-vertical"
-            appearance={{ size: 'mediumSmall' }}
-          />
-        }
+        icon={<CoinVertical className="rotate-90" size={22} />}
       />
       <TokenSelector
         name="select"
         title={MSG.selectOptionTitle}
         description={MSG.selectOptionDescription}
-        icon={<Icon name="hand-coins" appearance={{ size: 'mediumSmall' }} />}
+        icon={<HandCoins size={22} />}
       />
     </div>
     <ButtonRow previousStep={previousStep} />

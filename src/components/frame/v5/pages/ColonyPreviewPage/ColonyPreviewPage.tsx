@@ -1,3 +1,4 @@
+import { HandsClapping, HandWaving } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -172,7 +173,7 @@ const ColonyPreviewPage = () => {
       <hr className="mb-8" />
       {inviteIsValid && (
         <NotificationBanner
-          icon="hands-clapping"
+          icon={HandsClapping}
           status="success"
           className="my-8"
         >
@@ -182,7 +183,7 @@ const ColonyPreviewPage = () => {
         </NotificationBanner>
       )}
       {inviteIsInvalid && (
-        <NotificationBanner icon="hand-waving" status="error" className="my-8">
+        <NotificationBanner icon={HandWaving} status="error" className="my-8">
           {formatMessage(MSG.invalidBannerTitle)}
         </NotificationBanner>
       )}

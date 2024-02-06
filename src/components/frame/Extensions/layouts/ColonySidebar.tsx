@@ -1,3 +1,4 @@
+import { Plus } from '@phosphor-icons/react';
 import React, { type ReactNode } from 'react';
 
 // import { CREATE_COLONY_ROUTE } from '~routes';
@@ -13,7 +14,7 @@ import Button from '~v5/shared/Button/index.ts';
 import { useMainMenuItems } from './hooks.tsx';
 import ColonySwitcherContent from './partials/ColonySwitcherContent/index.ts';
 import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
-import { getChainIconName } from './utils.ts';
+import { getChainIcon } from './utils.ts';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout.ColonySidebar';
 
@@ -34,7 +35,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
   } = useColonyContext();
   const { chainId } = chainMetadata;
 
-  const chainIcon = getChainIconName(chainId);
+  const chainIcon = getChainIcon(chainId);
 
   return (
     <NavigationSidebar
@@ -44,7 +45,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
       mobileBottomContent={
         <div className="w-full flex flex-col gap-6">
           <Button
-            iconName="plus"
+            icon={Plus}
             className="w-full"
             onClick={() => toggleActionSideBar()}
           >
@@ -65,7 +66,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
           colonyImageProps: metadata?.avatar
             ? { src: metadata?.thumbnail || metadata?.avatar }
             : undefined,
-          chainIconName: chainIcon,
+          chainIcon,
           colonyAddress,
         },
         content: {
@@ -73,7 +74,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
           content: <ColonySwitcherContent colony={colony} />,
           // bottomActionProps: {
           //   text: formatText({ id: 'button.createNewColony' }),
-          //   iconName: 'plus',
+          //   icon={Plus}
           //   to: CREATE_COLONY_ROUTE,
           // },
         },

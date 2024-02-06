@@ -1,3 +1,4 @@
+import { ArrowSquareOut, CopySimple, HandCoins } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
@@ -40,7 +41,7 @@ export const useMembersTabContentItems = (
               // @BETA: Disabled for now
               // {
               //   key: '1',
-              //   icon: 'pencil',
+              //   icon: Pencil,
               //   label: formatText({ id: 'membersPage.memberNav.manageMember' }),
               //   onClick: () => {
               //     setUser(userAvatarProps.user);
@@ -49,7 +50,7 @@ export const useMembersTabContentItems = (
               // },
               {
                 key: '2',
-                icon: 'hand-coins',
+                icon: HandCoins,
                 label: formatText({ id: 'membersPage.memberNav.makePayment' }),
                 onClick: () =>
                   toggleActionSidebarOn({
@@ -61,7 +62,7 @@ export const useMembersTabContentItems = (
                 ? [
                     {
                       key: '3',
-                      icon: 'arrow-square-out',
+                      icon: ArrowSquareOut,
                       label: formatText(
                         { id: 'membersPage.memberNav.viewOn' },
                         {
@@ -86,7 +87,7 @@ export const useMembersTabContentItems = (
                     },
                     {
                       key: '4',
-                      icon: 'copy-simple',
+                      icon: CopySimple,
                       label: formatText({
                         id: 'membersPage.memberNav.copyWalletAddress',
                       }),

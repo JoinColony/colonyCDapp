@@ -1,4 +1,5 @@
 import { Extension } from '@colony/colony-js';
+import { WarningCircle } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -85,7 +86,7 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         <div className={className}>
           <NotificationBanner
             status="error"
-            icon="warning-circle"
+            icon={WarningCircle}
             callToAction={
               actionTypeNotificationHref ? (
                 <a

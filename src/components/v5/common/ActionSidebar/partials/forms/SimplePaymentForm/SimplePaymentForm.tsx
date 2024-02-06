@@ -1,3 +1,4 @@
+import { Coins, Scales, UserFocus, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -28,7 +29,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="users-three"
+        icon={UsersThree}
         fieldName="from"
         tooltips={{
           label: {
@@ -42,7 +43,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <ActionFormRow
-        icon="user-focus"
+        icon={UserFocus}
         fieldName="recipient"
         tooltips={{
           label: {
@@ -56,7 +57,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <UserSelect name="recipient" />
       </ActionFormRow>
       <ActionFormRow
-        icon="coins"
+        icon={Coins}
         fieldName="amount"
         tooltips={{
           label: {
@@ -70,7 +71,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

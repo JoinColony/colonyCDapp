@@ -1,3 +1,4 @@
+import { Scales } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
@@ -22,7 +23,7 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

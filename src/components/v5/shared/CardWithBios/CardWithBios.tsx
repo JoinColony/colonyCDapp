@@ -1,7 +1,7 @@
+import { Star } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import Icon from '~shared/Icon/index.ts';
 import { type ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
 
 import BurgerMenu from '../BurgerMenu/index.ts';
@@ -86,7 +86,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         <div className="flex justify-between items-center">
           {!!colonyReputationPercentage && (
             <span className="flex items-center text-gray-600 text-3">
-              <Icon name="star-not-filled" appearance={{ size: 'extraTiny' }} />
+              <Star size={12} />
               <span className="inline-block ml-1 mr-2">
                 {Number.isInteger(colonyReputationPercentage)
                   ? colonyReputationPercentage

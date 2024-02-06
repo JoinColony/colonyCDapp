@@ -1,3 +1,4 @@
+import { Scales } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
@@ -24,7 +25,7 @@ const EditColonyDetailsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ColonyDetailsFields />
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

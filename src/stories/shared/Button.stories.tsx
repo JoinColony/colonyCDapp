@@ -1,6 +1,13 @@
-import Button from '~v5/shared/Button/index.ts';
+import {
+  CaretDown,
+  CopySimple,
+  ShareNetwork,
+  Trash,
+  User,
+} from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import Button from '~v5/shared/Button/index.ts';
 
 const meta: Meta<typeof Button> = {
   title: 'Shared/Buttons/Button',
@@ -43,11 +50,10 @@ const meta: Meta<typeof Button> = {
         type: 'boolean',
       },
     },
-    iconName: {
+    icon: {
       name: 'Icon',
-      options: ['copy-simple', 'trash', 'share-network', 'caret-down', 'user'],
       control: {
-        type: 'select',
+        type: 'object',
       },
     },
     isIconRight: {
@@ -135,7 +141,7 @@ Completed.argTypes = {
 export const primaryOutlineFullWithIcon: Story = {
   args: {
     mode: 'primaryOutlineFull',
-    iconName: 'copy-simple',
+    icon: CopySimple,
     text: 'Copy address',
   },
 };
@@ -143,7 +149,7 @@ export const primaryOutlineFullWithIcon: Story = {
 export const SecondaryOutlineWithIcon: Story = {
   args: {
     mode: 'secondaryOutline',
-    iconName: 'trash',
+    icon: Trash,
     text: 'Delete account',
   },
 };
@@ -151,7 +157,7 @@ export const SecondaryOutlineWithIcon: Story = {
 export const PrimaryOutlineSmallWithIcon: Story = {
   args: {
     mode: 'primaryOutline',
-    iconName: 'share-network',
+    icon: ShareNetwork,
     text: 'Button CTA',
     size: 'small',
   },
@@ -160,7 +166,7 @@ export const PrimaryOutlineSmallWithIcon: Story = {
 export const PrimarySolidSmallWithIcon: Story = {
   args: {
     mode: 'primarySolid',
-    iconName: 'user',
+    icon: User,
     text: 'Button CTA',
     size: 'small',
   },
@@ -169,8 +175,8 @@ export const PrimarySolidSmallWithIcon: Story = {
 export const PrimarySolidSmallWithIconRight: Story = {
   args: {
     mode: 'primarySolid',
-    iconName: 'caret-down',
-    iconSize: 'extraTiny',
+    icon: CaretDown,
+    iconSize: 12,
     text: 'Button CTA',
     size: 'small',
     isIconRight: true,

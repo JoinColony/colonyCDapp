@@ -1,3 +1,4 @@
+import { At, Image } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
@@ -47,7 +48,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
       <div className="flex mr-2 shrink-0">
         <Avatar
           avatar={field.value?.image}
-          placeholderIcon="at-sign-circle"
+          placeholderIcon={At}
           seed={colonyAddress.toLowerCase()}
           title={colonyName}
           size="xs"
@@ -73,7 +74,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
           field.onChange(modalValue);
         }}
         buttonMode="primarySolid"
-        icon="image"
+        icon={Image}
         confirmMessage={formatText({
           id: 'button.changeConfirm',
         })}

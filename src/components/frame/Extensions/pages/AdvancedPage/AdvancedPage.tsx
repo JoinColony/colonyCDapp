@@ -1,3 +1,4 @@
+import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -35,11 +36,11 @@ const AdvancedPage: FC = () => {
       </h3>
       <div className="mb-4">
         {canUpgrade ? (
-          <NotificationBanner icon="warning-circle" status="warning">
+          <NotificationBanner icon={WarningCircle} status="warning">
             <FormattedMessage id="advancedPage.version.warning" />
           </NotificationBanner>
         ) : (
-          <NotificationBanner icon="check-circle" status="success">
+          <NotificationBanner icon={CheckCircle} status="success">
             <FormattedMessage id="advancedPage.version.success" />
           </NotificationBanner>
         )}

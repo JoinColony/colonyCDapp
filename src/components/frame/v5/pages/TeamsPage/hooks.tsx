@@ -123,7 +123,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
             items: [
               {
                 key: '1',
-                icon: <Pencil size={16} />,
+                icon: Pencil,
                 label: formatText({ id: 'teamsPage.menu.editTeam' }),
                 onClick: () =>
                   toggleActionSidebarOn({
@@ -133,7 +133,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
               },
               {
                 key: '2',
-                icon: <Users size={16} />,
+                icon: Users,
                 label: formatText({ id: 'teamsPage.menu.viewTeamMembers' }),
                 renderItemWrapper: (props, children) => (
                   <Link
@@ -149,7 +149,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
               },
               {
                 key: '3',
-                icon: <PresentationChart size={16} />,
+                icon: PresentationChart,
                 label: formatText({ id: 'teamsPage.menu.viewTeamActivity' }),
                 renderItemWrapper: (props, children) => (
                   <Link
@@ -165,7 +165,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
               },
               {
                 key: '4',
-                icon: <ChartLine size={16} />,
+                icon: ChartLine,
                 label: formatText({ id: 'teamsPage.menu.viewTeamFunds' }),
                 renderItemWrapper: (props, children) => (
                   <Link
@@ -182,7 +182,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
               // @todo: uncomment when decisions page will be ready
               // {
               //   key: '5',
-              //   icon: <Handshake size={16} />,
+              //   icon: Handshake,
               //   label: formatText({ id: 'teamsPage.menu.viewTeamDecisions' }),
               //   renderItemWrapper: (props, children) => (
               //     <Link
@@ -198,7 +198,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
               // },
               {
                 key: '6',
-                icon: <Layout size={16} />,
+                icon: Layout,
                 label: formatText({ id: 'teamsPage.menu.viewTeamDashboard' }),
                 renderItemWrapper: (props, children) => (
                   <Link

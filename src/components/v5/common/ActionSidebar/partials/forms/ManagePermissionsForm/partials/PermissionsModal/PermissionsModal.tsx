@@ -1,3 +1,4 @@
+import { Shield } from '@phosphor-icons/react';
 import chunk from 'lodash/chunk';
 import React, { type FC, Fragment } from 'react';
 
@@ -14,7 +15,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
   const [showMore, { toggle: toggleShowMore }] = useToggle();
 
   return (
-    <Modal {...props} isFullOnMobile icon="shield">
+    <Modal {...props} isFullOnMobile icon={Shield}>
       <p className="font-semibold text-gray-900">
         {formatText({
           id: 'actionSidebar.managePermissions.permissionsModal.heading',

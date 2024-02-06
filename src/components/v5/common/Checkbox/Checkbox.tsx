@@ -1,8 +1,7 @@
-/* eslint-disable max-len */
+import { Check } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren, useId } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type CheckboxProps } from './types.ts';
@@ -52,11 +51,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
         >
           {isChecked && (
             <span className="absolute">
-              <Icon
-                name="check"
-                appearance={{ size: 'extraExtraTiny' }}
-                className="text-blue-400"
-              />
+              <Check className="text-blue-400" size={10} />
             </span>
           )}
         </span>

@@ -1,3 +1,4 @@
+import { CheckCircle, SpinnerGap, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
@@ -5,7 +6,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { TransactionStatus } from '~gql';
-import Icon from '~shared/Icon/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type TransactionsItemProps } from '../../types.ts';
@@ -108,22 +108,18 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                             'text-negative-400': TransactionStatus.Failed,
                           })}
                         >
-                          <Icon
-                            name={
-                              statusContent === TransactionStatus.Ready ||
-                              statusContent === TransactionStatus.Succeeded
-                                ? 'check-circle'
-                                : 'warning-circle'
-                            }
-                            appearance={{ size: 'tiny' }}
-                          />
+                          {statusContent === TransactionStatus.Ready ||
+                          statusContent === TransactionStatus.Succeeded ? (
+                            <CheckCircle size={14} />
+                          ) : (
+                            <WarningCircle size={14} />
+                          )}
                         </div>
                       )}
                       {isPending && (
-                        <Icon
-                          name="spinner-gap"
+                        <SpinnerGap
                           className="ml-2.5 w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
-                          appearance={{ size: 'tiny' }}
+                          size={14}
                         />
                       )}
                     </div>

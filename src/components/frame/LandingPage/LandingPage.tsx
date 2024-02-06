@@ -1,3 +1,4 @@
+import { Layout, UserCircle } from '@phosphor-icons/react';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
@@ -6,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import InvitationBlock from '~common/InvitationBlock/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { usePageHeadingContext } from '~context/PageHeadingContext/index.ts';
+import ColonyIcon from '~icons/ColonyIcon.tsx';
 import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
 import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import {
@@ -108,7 +110,7 @@ const LandingPage = () => {
       buttonText: MSG.createColonyButtonText,
       headingText: MSG.createColonyTitle,
       headingDescription: MSG.createColonyDescription,
-      iconName: 'layout',
+      icon: Layout,
       onClick: () => navigate(CREATE_COLONY_ROUTE_BASE),
       imgSrc: CreateAColonyBanner,
       disabled: true,
@@ -119,7 +121,7 @@ const LandingPage = () => {
         : MSG.createUserProfileButtonText,
       headingText: user ? MSG.viewUserProfileTitle : MSG.createUserProfileTitle,
       headingDescription: MSG.viewUserProfileDescription,
-      iconName: 'user-circle',
+      icon: UserCircle,
       onClick: !wallet
         ? () => connectWallet()
         : () =>
@@ -135,7 +137,7 @@ const LandingPage = () => {
       buttonText: MSG.exploreMetacolonyButtonText,
       headingText: MSG.exploreMetacolonyTitle,
       headingDescription: MSG.exploreMetacolonyDescription,
-      iconName: 'colony-icon',
+      icon: ColonyIcon,
       onClick: () => navigate(METACOLONY_HOME_ROUTE),
       disabled: true,
     },

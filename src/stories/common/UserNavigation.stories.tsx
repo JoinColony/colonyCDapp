@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
+import { Cardholder, List, X } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
@@ -9,7 +10,6 @@ import Token from '~common/Extensions/UserNavigation/partials/Token/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
-import Icon from '~shared/Icon/index.ts';
 import Button, { Hamburger } from '~v5/shared/Button/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
@@ -64,7 +64,7 @@ const UserNavigationWithData = () => {
               onClick={() => setIsOpen(false)}
               className="text-gray-400 sm:pr-4"
             >
-              <Icon name="close" appearance={{ size: 'extraTiny' }} />
+              <X size={12} />
             </button>
           </div>
         )}
@@ -85,7 +85,7 @@ const UserNavigationWithData = () => {
               />
             </div>
           </Button>
-          <Button mode="tertiary" isFullRounded iconName="list" />
+          <Button mode="tertiary" isFullRounded icon={List} />
         </div>
         {!isMobile && isOpen && (
           <div
@@ -109,7 +109,7 @@ const UserNavigationNotConnected = () => {
 
   return (
     <div className="flex w-full justify-end gap-1">
-      <Button mode="tertiary" iconName="cardholder" isFullRounded size="small">
+      <Button mode="tertiary" icon={Cardholder} isFullRounded size="small">
         {formatMessage({ id: 'connectWallet' })}
       </Button>
       <Hamburger />

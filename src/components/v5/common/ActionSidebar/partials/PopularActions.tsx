@@ -18,12 +18,12 @@ const PopularActions: FC<PopularActionsProps> = ({ setSelectedAction }) => {
         {formatMessage({ id: 'actionSidebar.popularActions' })}
       </h4>
       <ul>
-        {POPULAR_ACTIONS.map(({ action, text, iconName }) => (
+        {POPULAR_ACTIONS.map(({ action, text, icon }) => (
           <li className="flex items-center mb-4 last:mb-0" key={action}>
             <TextButton
               text={text}
-              iconName={iconName}
-              iconSize="extraSmall"
+              icon={icon}
+              iconSize={16}
               mode="medium"
               className="text-gray-900 font-normal"
               onClick={() => setSelectedAction(action)}

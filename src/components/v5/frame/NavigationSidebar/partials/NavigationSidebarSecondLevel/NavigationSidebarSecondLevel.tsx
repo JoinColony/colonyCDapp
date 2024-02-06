@@ -1,8 +1,8 @@
+import { ArrowLineRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings/index.ts';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Button from '~v5/shared/Button/index.ts';
@@ -43,11 +43,8 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
                 onClick={onArrowClick}
                 className="text-gray-900 transition-colors md:hover:text-blue-500"
               >
-                <Icon
-                  name="arrow-line-right"
-                  appearance={{
-                    size: 'extraSmall',
-                  }}
+                <ArrowLineRight
+                  size={16}
                   className={clsx(
                     'fill-current inline-block transition-transform',
                     {

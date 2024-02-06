@@ -1,3 +1,4 @@
+import { PencilLine, Plus, Trash } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
@@ -34,13 +35,13 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
             setSocialLinkIndex(index);
           },
           label: formatText({ id: 'table.row.edit.link' }),
-          icon: 'edit-pencil',
+          icon: PencilLine,
         },
         {
           key: 'remove',
           onClick: () => fieldArrayMethods.remove(index),
           label: formatText({ id: 'button.delete' }),
-          icon: 'trash',
+          icon: Trash,
         },
       ],
     };
@@ -77,7 +78,7 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
         <>
           <Button
             mode="primaryOutline"
-            iconName="plus"
+            icon={Plus}
             size="small"
             className="mt-6"
             isFullSize={isMobile}

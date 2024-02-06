@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { ICON_NAME_MAP, StepStage } from './consts.ts';
 import { type StepperButtonProps } from './types.ts';
@@ -14,11 +13,11 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   stage,
   isHighlighted,
   className,
-  iconName,
+  icon,
   tooltipProps,
   ...rest
 }) => {
-  const icon = iconName || ICON_NAME_MAP[stage];
+  const Icon = icon || ICON_NAME_MAP[stage];
 
   const content = (
     <button
@@ -49,15 +48,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
       )}
       {...rest}
     >
-      {icon && (
-        <Icon
-          name={icon}
-          appearance={{
-            size: 'extraTiny',
-          }}
-          className="mr-1 flex-shrink-0"
-        />
-      )}
+      {Icon && <Icon size={12} className="mr-1 flex-shrink-0" />}
       {label}
     </button>
   );

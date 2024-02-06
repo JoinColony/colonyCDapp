@@ -32,7 +32,7 @@ export type PillProps = {
   message?: string;
 };
 
-type PillStatusType = 'success' | 'error' | 'warning';
+type PillStatusType = 'success' | 'error' | 'warn';
 
 export type CharacterNumbersProps = Pick<
   InputProps,

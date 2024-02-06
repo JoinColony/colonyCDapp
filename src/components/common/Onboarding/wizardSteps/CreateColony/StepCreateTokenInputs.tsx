@@ -1,8 +1,8 @@
+import { Image } from '@phosphor-icons/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
 import { type UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks.tsx';
 import AvatarUploader from '~v5/common/AvatarUploader/index.ts';
 import Input from '~v5/common/Fields/Input/index.ts';
@@ -119,12 +119,7 @@ const StepCreateTokenInputs = ({
             <Avatar size="m" avatar={tokenAvatarUrl} />
           ) : (
             <div className="bg-gray-200 text-gray-600 p-4 rounded-full flex">
-              <Icon
-                name="image"
-                appearance={{
-                  size: 'medium',
-                }}
-              />
+              <Image size={28} />
             </div>
           )
         }

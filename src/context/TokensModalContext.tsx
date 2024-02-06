@@ -1,3 +1,4 @@
+import { CoinVertical } from '@phosphor-icons/react';
 import React, {
   createContext,
   type FC,
@@ -46,7 +47,7 @@ export const TokensModalContextProvider: FC<PropsWithChildren> = ({
       <TokensModal
         isOpen={isTokensModalOpen}
         onClose={toggleOffTokensModal}
-        icon="coin-vertical"
+        icon={CoinVertical}
         buttonMode="primarySolid"
         type={tokensModalType}
       />

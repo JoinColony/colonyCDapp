@@ -1,9 +1,9 @@
+import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type PropsWithChildren, type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { type SubNavigationItemProps } from './types.ts';
 
@@ -14,7 +14,7 @@ const displayName =
 
 const SubNavigationItemMobile: FC<
   PropsWithChildren<SubNavigationItemProps>
-> = ({ label, content, isOpen, setOpen, icon }) => (
+> = ({ label, content, isOpen, setOpen, icon: Icon }) => (
   <li>
     <button
       type="button"
@@ -25,7 +25,7 @@ const SubNavigationItemMobile: FC<
     >
       <span className="flex items-center">
         <span className="flex shrink-0">
-          <Icon name={icon} appearance={{ size: 'small' }} />
+          <Icon size={18} />
         </span>
         <span className="flex ml-2">{label}</span>
       </span>
@@ -34,7 +34,7 @@ const SubNavigationItemMobile: FC<
           'rotate-180': isOpen,
         })}
       >
-        <Icon name="caret-down" appearance={{ size: 'extraTiny' }} />
+        <CaretDown size={12} />
       </span>
     </button>
     <AnimatePresence>

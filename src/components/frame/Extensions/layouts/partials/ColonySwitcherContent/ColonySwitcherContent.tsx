@@ -1,3 +1,4 @@
+import { Binoculars, Layout } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
@@ -83,14 +84,14 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
           )}
           {filteredListItems.length === 0 && !searchValue && (
             <EmptyContent
-              icon="layout"
+              icon={Layout}
               title={MSG.emptyJoinedStateTitle}
               description={MSG.emptyJoinedStateSubtitle}
             />
           )}
           {filteredListItems.length === 0 && searchValue && (
             <EmptyContent
-              icon="binoculars"
+              icon={Binoculars}
               title={MSG.emptyFilteredStateTitle}
               description={MSG.emptyFilteredStateSubtitle}
             />

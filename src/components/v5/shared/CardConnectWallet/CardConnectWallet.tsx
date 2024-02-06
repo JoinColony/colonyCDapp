@@ -1,3 +1,4 @@
+import { Cardholder, Plugs } from '@phosphor-icons/react';
 import React, { type ReactNode } from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -29,13 +30,13 @@ const CardConnectWallet = ({
       <Button
         className="w-full md:w-auto"
         mode="quinary"
-        iconName="cardholder"
+        icon={Cardholder}
         text={MSG.connectWalletButton}
         onClick={connectWallet}
         size="small"
       />
     }
-    iconName="plugs"
+    icon={Plugs}
     subtitle={title}
   >
     {text}

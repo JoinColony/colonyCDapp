@@ -1,8 +1,8 @@
+import { WarningCircle } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
 import { type Token } from '~types/graphql.ts';
 import { getNetworkByChainId } from '~utils/web3/index.ts';
 
@@ -81,7 +81,7 @@ const TokenSelectorInput = ({
         <div className="mt-14 px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
           <p className="flex self-start items-center gap-2 text-md pb-1">
             <span className="text-warning-400 flex">
-              <Icon name="warning-circle" appearance={{ size: 'small' }} />
+              <WarningCircle size={18} />
             </span>
             <span>{formatMessage(MSG.definitelyCorrectTitle)}</span>
           </p>

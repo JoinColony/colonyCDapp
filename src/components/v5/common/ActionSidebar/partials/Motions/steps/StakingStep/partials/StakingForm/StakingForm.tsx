@@ -1,3 +1,4 @@
+import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
@@ -123,7 +124,7 @@ const StakingForm: FC<StakingFormProps> = ({
                       iconClassName: 'text-negative-400',
                       hoverColorClassName:
                         'md:hover:text-negative-400 md:hover:border-negative-400',
-                      iconName: 'thumbs-down',
+                      icon: ThumbsDown,
                       disabled: isFullyObjected,
                     },
                     {
@@ -135,7 +136,7 @@ const StakingForm: FC<StakingFormProps> = ({
                       iconClassName: 'text-purple-400',
                       hoverColorClassName:
                         'md:hover:text-purple-400 md:hover:border-purple-400',
-                      iconName: 'thumbs-up',
+                      icon: ThumbsUp,
                       disabled: isFullySupported,
                     },
                   ]}

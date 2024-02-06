@@ -1,4 +1,5 @@
 import { type ColonyRole, type Extension } from '@colony/colony-js';
+import { type Icon } from '@phosphor-icons/react';
 import { type CleaveOptions } from 'cleave.js/options';
 import { type BigNumberish } from 'ethers';
 import { type MessageDescriptor } from 'react-intl';
@@ -42,7 +43,7 @@ export interface ExtensionConfig {
   initializationParams?: ExtensionInitParam[];
   uninstallable: boolean;
   createdAt: number;
-  icon: string;
+  icon: Icon;
   imageURLs: string[];
 }
 

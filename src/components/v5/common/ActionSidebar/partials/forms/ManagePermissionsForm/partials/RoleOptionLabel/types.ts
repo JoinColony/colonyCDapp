@@ -1,6 +1,7 @@
-import type React from 'react';
+import { type Icon } from '@phosphor-icons/react';
+import { type ReactNode } from 'react';
 
 export interface RoleOptionLabelProps {
-  description?: React.ReactNode;
-  icon: string;
+  description?: ReactNode;
+  icon: Icon;
 }

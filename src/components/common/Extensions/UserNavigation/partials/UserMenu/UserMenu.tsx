@@ -1,3 +1,12 @@
+import {
+  Cardholder,
+  CaretDown,
+  CaretLeft,
+  CaretRight,
+  CirclesThreePlus,
+  List,
+  Plugs,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 
@@ -7,7 +16,7 @@ import React, { type FC, useState } from 'react';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useCurrencyContext } from '~context/CurrencyContext.tsx';
 import { useTablet } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
+import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -18,7 +27,7 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 import UserSubmenu from '../UserSubmenu/index.ts';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu/index.ts';
 
-import { currencyIconTitles, userMenuItems } from './consts.ts';
+import { currencyIcons, userMenuItems } from './consts.ts';
 import { UserMenuItemName, type UserMenuProps } from './types.ts';
 
 import styles from './UserMenu.module.css';
@@ -37,13 +46,19 @@ const UserMenu: FC<UserMenuProps> = ({
     null,
   );
 
-  const iconName = isTablet ? 'caret-down' : 'caret-right';
-  const iconSize = isTablet ? 'small' : 'extraSmall';
+  const caretIcon = isTablet ? (
+    <CaretDown size={12} />
+  ) : (
+    <CaretRight size={12} />
+  );
+  const iconSize = isTablet ? 18 : 16;
   const { currency } = useCurrencyContext();
 
   const closeSubmenu = () => {
     setActiveSubmenu(null);
   };
+
+  const CurrencyIcon = currencyIcons[currency] || ClnyTokenIcon;
 
   return (
     <PopoverBase
@@ -80,8 +95,8 @@ const UserMenu: FC<UserMenuProps> = ({
                 mode="tertiary"
                 size="small"
                 isFullRounded
-                iconName="cardholder"
-                iconSize="extraTiny"
+                icon={Cardholder}
+                iconSize={12}
               >
                 {formatText({ id: 'connectWallet' })}
               </Button>
@@ -89,8 +104,8 @@ const UserMenu: FC<UserMenuProps> = ({
                 mode="tertiary"
                 size="small"
                 isFullRounded
-                iconName="list"
-                iconSize="extraTiny"
+                icon={List}
+                iconSize={12}
               >
                 {formatText({ id: 'help' })}
               </Button>
@@ -111,16 +126,13 @@ const UserMenu: FC<UserMenuProps> = ({
           <ul className="text-left">
             <li className="mb-2 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
               <Link to="/" className="navigation-link">
-                <Icon
-                  name="circles-three-plus"
-                  appearance={{ size: iconSize }}
-                />
+                <CirclesThreePlus size={iconSize} />
                 <p className="ml-2">
                   {formatText({ id: 'userMenu.getStartedTitle' })}
                 </p>
               </Link>
             </li>
-            {userMenuItems.map(({ id, icon, name: itemName }) => (
+            {userMenuItems.map(({ id, icon: Icon, name: itemName }) => (
               <li
                 key={id}
                 className="mb-2 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
@@ -133,10 +145,10 @@ const UserMenu: FC<UserMenuProps> = ({
                   aria-controls="actionsWithVisibility"
                 >
                   <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
-                    <Icon name={icon} appearance={{ size: iconSize }} />
+                    <Icon size={iconSize} />
                     <p className="ml-2">{formatText({ id: itemName })}</p>
                   </span>
-                  <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+                  {caretIcon}
                 </button>
               </li>
             ))}
@@ -151,13 +163,10 @@ const UserMenu: FC<UserMenuProps> = ({
                   aria-controls="actionsWithVisibility"
                 >
                   <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
-                    <Icon
-                      name={currencyIconTitles[currency]}
-                      appearance={{ size: iconSize }}
-                    />
+                    <CurrencyIcon size={iconSize} />
                     <p className="ml-2">{currency.toUpperCase()}</p>
                   </span>
-                  <Icon name={iconName} appearance={{ size: 'extraTiny' }} />
+                  {caretIcon}
                 </button>
               </li>
             )}
@@ -167,7 +176,7 @@ const UserMenu: FC<UserMenuProps> = ({
           <div className="w-full">
             <TitleLabel text={formatText({ id: 'userMenu.other' })} />
             <div className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
-              <Icon name="plugs" appearance={{ size: iconSize }} />
+              <Plugs size={iconSize} />
               <button type="button" className="ml-2" onClick={disconnectWallet}>
                 {formatText({ id: 'userMenu.disconnectWalletTitle' })}
               </button>
@@ -191,7 +200,7 @@ const UserMenu: FC<UserMenuProps> = ({
               className={clsx(styles.buttonBack, 'group text-4 mb-2')}
               onClick={closeSubmenu}
             >
-              <Icon name="caret-left" appearance={{ size: 'extraExtraTiny' }} />
+              <CaretLeft size={10} />
 
               <TitleLabel
                 className="ml-2"

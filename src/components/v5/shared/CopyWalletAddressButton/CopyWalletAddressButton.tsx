@@ -1,9 +1,9 @@
+import { CopySimple } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 
 import { type CopyWalletAddressButtonProps } from './types.ts';
@@ -54,7 +54,7 @@ const CopyWalletAddressButton: FC<CopyWalletAddressButtonProps> = ({
             : splitWalletAddress(walletAddress || '')}
         </span>
         <span className={clsx('flex shrink-0', isMobile ? 'mr-1.5' : 'ml-1.5')}>
-          <Icon name="copy-simple" appearance={{ size: 'extraTiny' }} />
+          <CopySimple size={12} />
         </span>
       </span>
     </button>

@@ -1,8 +1,7 @@
+import { DotsThree, DotsThreeVertical } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
-
-import Icon from '~shared/Icon/index.ts';
 
 import { type BurgerMenuProps } from './types.ts';
 
@@ -25,10 +24,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
       aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
       ref={setTriggerRef}
     >
-      <Icon
-        name={isVertical ? 'dots-three-vertical' : 'dots-three'}
-        appearance={{ size: 'extraTiny' }}
-      />
+      {isVertical ? <DotsThreeVertical size={12} /> : <DotsThree size={12} />}
     </button>
   );
 };

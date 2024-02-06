@@ -1,8 +1,8 @@
+import { Cardholder, CopySimple } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -23,7 +23,7 @@ const CopyWallet: FC<CopyWalletProps> = ({
   return (
     <div className="bg-gray-50 rounded p-3 flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <Icon name="cardholder" appearance={{ size: 'extraSmall' }} />
+        <Cardholder size={16} />
         <span className="text-md">
           {isMobile ? splitWalletAddress(value) : value}
         </span>
@@ -41,7 +41,7 @@ const CopyWallet: FC<CopyWalletProps> = ({
           disabled={disabled}
           isFullSize
           mode="primaryOutlineFull"
-          iconName="copy-simple"
+          icon={CopySimple}
           className={clsx(
             'flex items-center transition-all duration-normal text-sm !border-gray-300 md:hover:text-blue-400',
             {

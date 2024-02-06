@@ -1,7 +1,7 @@
+import { CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type AccordionHeaderProps } from '../types.ts';
@@ -33,7 +33,7 @@ const AccordionHeader: FC<AccordionHeaderProps> = ({
           },
         )}
       >
-        <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-up" />
+        <CaretUp size={10} />
       </span>
     </button>
   );

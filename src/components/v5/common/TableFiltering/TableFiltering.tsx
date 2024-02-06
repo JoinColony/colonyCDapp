@@ -59,7 +59,6 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
                 aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
                 className="shrink-0 ml-2 text-current !p-0"
                 onClick={(e) => handleClick(e, parentFilterLabel)}
-                iconSize="extraTiny"
               />
             </div>,
           );

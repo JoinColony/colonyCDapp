@@ -1,9 +1,9 @@
+import { CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
@@ -74,7 +74,7 @@ const UserHub: FC<UserHubProps> = ({
                 text={formatText(MSG.titleColonyOverview)}
               />
               <ul className="-ml-4 w-[calc(100%+2rem)] flex flex-col">
-                {tabList.map(({ value, id, icon, label }) => (
+                {tabList.map(({ value, id, icon: Icon, label }) => (
                   <li
                     className="w-full"
                     key={value}
@@ -98,15 +98,12 @@ const UserHub: FC<UserHubProps> = ({
                         })}
                       >
                         <span className="flex shrink-0 mr-2">
-                          <Icon name={icon} appearance={{ size: 'tiny' }} />
+                          <Icon size={14} />
                         </span>
                         {formatText(label)}
                       </div>
                       <span className="flex shrink-0 transition-transform duration-normal">
-                        <Icon
-                          name="caret-right"
-                          appearance={{ size: 'extraTiny' }}
-                        />
+                        <CaretRight size={12} />
                       </span>
                     </button>
                   </li>

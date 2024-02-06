@@ -1,11 +1,10 @@
+import { XCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, {
   type CSSProperties,
   type FC,
   type PropsWithChildren,
 } from 'react';
-
-import Icon from '~shared/Icon/index.ts';
 
 import getIcon from './identicon.ts';
 import { type AvatarProps } from './types.ts';
@@ -20,7 +19,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   children,
   className,
   notSet,
-  placeholderIcon = 'circle-close',
+  placeholderIcon: Icon = XCircle,
   size = 'xs',
   title,
   mode = 'general',
@@ -60,10 +59,9 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
             className={
               notSet ? styles.placeholderIconNotSet : styles.placeholderIcon
             }
-            name={placeholderIcon}
-            title={title ?? undefined}
-            data-test="avatar"
-          />
+          >
+            {title ? <title>{title}</title> : null}
+          </Icon>
         )}
       </div>
     </figure>

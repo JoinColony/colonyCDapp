@@ -1,8 +1,7 @@
+import { Check } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
-
-import Icon from '~shared/Icon/index.ts';
 
 import { type TooltipProps } from './types.ts';
 
@@ -83,7 +82,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
           <div className="max-w-[15.625rem] flex flex-col items-start">
             {isSuccess ? (
               <div className="flex items-center text-base-white gap-2">
-                <Icon name="check" appearance={{ size: 'extraTiny' }} />
+                <Check size={12} />
                 {tooltipContent}
               </div>
             ) : (

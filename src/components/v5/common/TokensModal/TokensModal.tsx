@@ -1,8 +1,8 @@
+import { SpinnerGap } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ActionForm } from '~shared/Fields/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
@@ -115,11 +115,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                   text={{ id: 'button.pending' }}
                   icon={
                     <span className="flex shrink-0 ml-1.5">
-                      <Icon
-                        name="spinner-gap"
-                        className="animate-spin"
-                        appearance={{ size: 'tiny' }}
-                      />
+                      <SpinnerGap className="animate-spin" size={14} />
                     </span>
                   }
                 />

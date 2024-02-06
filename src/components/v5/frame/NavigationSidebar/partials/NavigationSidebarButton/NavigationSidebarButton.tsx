@@ -1,8 +1,8 @@
+import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { type NavigationSidebarButtonProps } from './types.ts';
 
@@ -10,7 +10,7 @@ const displayName =
   'v5.frame.NavigationSidebar.partials.NavigationSidebarButton';
 
 const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
-  iconName,
+  icon: Icon,
   label,
   className,
   hasSecondLevel,
@@ -52,9 +52,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       )}
       {...rest}
     >
-      {!isTablet && (
-        <Icon name={iconName} appearance={{ size: 'mediumSmall' }} />
-      )}
+      {!isTablet && <Icon size={22} />}
       <span
         className={`
           heading-5
@@ -70,12 +68,11 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
         </span>
       </span>
       {isTablet && hasSecondLevel && (
-        <Icon
-          name="caret-down"
-          appearance={{ size: 'extraTiny' }}
+        <CaretDown
           className={clsx('transition-transform', {
             'rotate-180': isActive && isExpanded,
           })}
+          size={12}
         />
       )}
     </button>

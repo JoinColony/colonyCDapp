@@ -1,13 +1,11 @@
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
-
 import { type HeadingIconProps } from './types.ts';
 
 const displayName = 'frame.Extensions.pages.partials.HeadingIcon';
 
-const HeadingIcon: FC<HeadingIconProps> = ({ icon, name }) => {
+const HeadingIcon: FC<HeadingIconProps> = ({ icon: Icon, name }) => {
   const { formatMessage } = useIntl();
 
   const title = typeof name === 'string' ? name : name && formatMessage(name);
@@ -15,7 +13,7 @@ const HeadingIcon: FC<HeadingIconProps> = ({ icon, name }) => {
   return (
     <div className="flex items-center">
       <span className="flex shrink-0">
-        <Icon name={icon} appearance={{ size: 'extraBig' }} />
+        <Icon size={34} />
       </span>
       <h4 className="ml-2 heading-4">{title}</h4>
     </div>

@@ -1,18 +1,13 @@
+import { type Icon } from '@phosphor-icons/react';
+
 import { type ColonyContributor, type User } from '~types/graphql.ts';
 import { type PillSize, type UserStatusMode } from '~v5/common/Pills/types.ts';
 
 export type Permissions = {
   key: string;
   text: string;
-  type: PermissionType;
+  icon: Icon;
 };
-
-export type PermissionType =
-  | 'clipboard-text'
-  | 'scales'
-  | 'clock-counter-clockwise'
-  | 'bank'
-  | 'buildings';
 
 export type CardWithBiosProps = {
   description?: string;
@@ -41,7 +36,7 @@ export type CardPermissionsProps = {
 
 export type CardPermissionProps = {
   text: string;
-  type: PermissionType;
+  icon: Icon;
 };
 
 export type SubNavigationProps = {

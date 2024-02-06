@@ -1,8 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import Icon from '~shared/Icon/index.ts';
-
 import RadioButtonsBase from '../RadioButtonsBase/index.ts';
 import { type RadioItem } from '../RadioButtonsBase/types.ts';
 
@@ -19,7 +17,7 @@ function ButtonRadioButtons<TValue = string>({
   const modifiedItems = items.map<RadioItem<TValue>>(
     ({
       label,
-      iconName,
+      icon: Icon,
       colorClassName,
       checkedColorClassName,
       hoverColorClassName,
@@ -59,18 +57,14 @@ function ButtonRadioButtons<TValue = string>({
               },
             )}
           >
-            {iconName && (
+            {Icon && (
               <Icon
-                className={clsx(
-                  iconClassName,
-                  'h-[1em] w-[1em] text-[1.125rem]',
-                  {
-                    'text-base-white': checked,
-                    'text-current': !checked,
-                    '!text-gray-300': disabledButton || disabled,
-                  },
-                )}
-                name={iconName}
+                size={18}
+                className={clsx(iconClassName, {
+                  'text-base-white': checked,
+                  'text-current': !checked,
+                  '!text-gray-300': disabledButton || disabled,
+                })}
               />
             )}
             <span

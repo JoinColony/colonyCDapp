@@ -1,3 +1,4 @@
+import { Pencil } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
@@ -15,7 +16,7 @@ const EnterRecoveryModeForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   return (
     <ActionFormRow
-      icon="pencil"
+      icon={Pencil}
       fieldName="description"
       // Tooltip disabled to experiment with improving user experience
       // tooltips={{

@@ -1,15 +1,15 @@
+import { type Icon as PhosphorIcon } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage, type MessageDescriptor } from 'react-intl';
 
 import Heading from '~shared/Heading/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 const displayName = 'frame.LandingPage';
 
 interface Props {
-  iconName: string;
+  icon: PhosphorIcon;
   headingText: MessageDescriptor;
   headingDescription: MessageDescriptor;
   buttonText: MessageDescriptor;
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const LandingPageItem = ({
-  iconName,
+  icon: Icon,
   headingText,
   headingDescription,
   buttonText,
@@ -45,8 +45,7 @@ const LandingPageItem = ({
           })}
         >
           <Icon
-            appearance={{ size: 'medium' }}
-            name={iconName}
+            size={28}
             className={clsx(
               '[&>svg]:w-7 [&>svg]:h-7 [&>svg]:group-hover:fill-blue-400',
               {

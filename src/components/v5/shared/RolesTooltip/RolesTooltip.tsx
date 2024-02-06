@@ -1,4 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
+import { User, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { USER_ROLE, USER_ROLES } from '~constants/permissions.ts';
@@ -33,7 +34,7 @@ const RolesTooltip: FC<RolesTooltipProps> = ({
           USER_ROLES.find(({ role: roleField }) => roleField === role.role)
             ?.name || formatText({ id: 'role.custom' })
         }
-        iconName={role.role !== USER_ROLE.Custom ? 'user' : 'users-three'}
+        icon={role.role !== USER_ROLE.Custom ? User : UsersThree}
       />
     </Tooltip>
   );

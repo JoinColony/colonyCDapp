@@ -1,8 +1,8 @@
+import { FolderUser, Info } from '@phosphor-icons/react';
 import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
@@ -40,7 +40,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
         onClose();
         setSelectedAction(undefined);
       }}
-      icon="folder-user"
+      icon={FolderUser}
     >
       <h4 className="heading-5 mb-1.5">
         {formatMessage({ id: 'members.modal.title' })}
@@ -90,7 +90,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
                 }
               >
                 <span className="text-gray-400 flex">
-                  <Icon name="info" appearance={{ size: 'extraTiny' }} />
+                  <Info size={12} />
                 </span>
               </Tooltip>
             </div>

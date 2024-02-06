@@ -1,7 +1,6 @@
+import { ChatCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-
-import Icon from '~shared/Icon/index.ts';
 
 interface Props {
   onClick: () => void;
@@ -20,7 +19,7 @@ const FeedbackButton = ({ onClick }: Props) => (
     className="md:transition-all mt-auto flex items-center text-gray-900 md:hover:bg-gray-900 md:hover:text-base-white rounded-lg py-2 px-2.5 group/feedback-button z-10"
     onClick={onClick}
   >
-    <Icon name="chats-circle" appearance={{ size: 'mediumSmall' }} />
+    <ChatCircle size={22} />
     <span
       className={`
         heading-5

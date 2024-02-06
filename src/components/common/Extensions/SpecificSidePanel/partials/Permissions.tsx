@@ -1,3 +1,11 @@
+import {
+  AppWindow,
+  Bank,
+  Buildings,
+  ClipboardText,
+  ClockCounterClockwise,
+  Scales,
+} from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge/index.ts';
@@ -14,38 +22,38 @@ const permissionIconMap = {
     description: formatText(
       votingReputationMessages.votingReputationPermissionRecoveryDescription,
     ),
-    name: 'clock-counter-clockwise',
+    icon: ClockCounterClockwise,
   },
   1: {
     text: formatText({ id: 'role.1' }),
     description: 'TODO!',
-    name: 'app-window',
+    icon: AppWindow,
   },
   2: {
     text: formatText({ id: 'role.2' }),
     description: formatText(
       votingReputationMessages.votingReputationPermissionArbitrationDescription,
     ),
-    name: 'scales',
+    icon: Scales,
   },
   3: {
     text: formatText({ id: 'role.3' }),
     description: formatText(
       votingReputationMessages.votingReputationPermissionArchitectureDescription,
     ),
-    name: 'buildings',
+    icon: Buildings,
   },
   5: {
     text: formatText({ id: 'role.5' }),
     description: formatText(
       votingReputationMessages.votingReputationPermissionFundingDescription,
     ),
-    name: 'bank',
+    icon: Bank,
   },
   6: {
     text: formatText({ id: 'role.6' }),
     description: 'TODO!',
-    name: 'clipboard-text',
+    icon: ClipboardText,
   },
 };
 
@@ -53,11 +61,11 @@ const Permissions: FC<PermissionsProps> = ({ roles }) => {
   return (
     <div className="flex flex-wrap gap-x-1 gap-y-1">
       {roles?.map((role) => {
-        const { name, text, description } = permissionIconMap[role];
+        const { icon, text, description } = permissionIconMap[role];
         return (
           <span key={text}>
             <UserPermissionsBadge
-              name={name}
+              icon={icon}
               text={text}
               description={description}
             >

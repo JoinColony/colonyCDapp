@@ -1,4 +1,9 @@
-import { ArrowSquareOut, FilePlus, ShareNetwork } from '@phosphor-icons/react';
+import {
+  ArrowSquareOut,
+  Binoculars,
+  FilePlus,
+  ShareNetwork,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
@@ -156,7 +161,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
       emptyContent: (
         <EmptyContent
           className="h-[32.8125rem]"
-          icon="binoculars"
+          icon={Binoculars}
           title={{ id: 'activityFeedTable.table.emptyTitle' }}
           description={{ id: 'activityFeedTable.table.emptyDescription' }}
           buttonText={{ id: 'activityFeedTable.table.emptyButtonLabel' }}

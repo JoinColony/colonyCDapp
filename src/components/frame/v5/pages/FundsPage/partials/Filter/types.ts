@@ -1,13 +1,14 @@
-import { type Add, type KeysAtLevel } from '~types/utilities.ts';
+import { type Icon } from '@phosphor-icons/react';
+import { type ReactNode } from 'react';
 
-import type React from 'react';
+import { type Add, type KeysAtLevel } from '~types/utilities.ts';
 
 export type FilterValue = {
   [key: string]: boolean | FilterValue;
 };
 
 export interface NestedItem<TValue extends FilterValue, TLevel extends number> {
-  label: React.ReactNode;
+  label: ReactNode;
   name: KeysAtLevel<TValue, TLevel>;
   // @ts-ignore
   items?: NestedItem<TValue, Add<TLevel, 1>>[];
@@ -15,10 +16,10 @@ export interface NestedItem<TValue extends FilterValue, TLevel extends number> {
 
 export interface RootItem<TValue extends FilterValue> {
   name: keyof TValue;
-  label: React.ReactNode;
+  label: ReactNode;
   items: NestedItem<TValue, 2>[];
-  iconName: string;
-  title: React.ReactNode;
+  icon: Icon;
+  title: ReactNode;
 }
 
 export interface FilterProps<TValue extends FilterValue> {

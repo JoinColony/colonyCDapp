@@ -1,3 +1,4 @@
+import { CoinVertical, Receipt, User } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
@@ -24,18 +25,18 @@ export const tabList: UserHubTabList = [
     id: UserHubTabs.Balance,
     label: formatText(menuMessages.balance),
     value: UserHubTabs.Balance,
-    icon: 'user',
+    icon: User,
   },
   {
     id: UserHubTabs.Stakes,
     label: formatText(menuMessages.stakes),
     value: UserHubTabs.Stakes,
-    icon: 'coin-vertical',
+    icon: CoinVertical,
   },
   {
     id: UserHubTabs.Transactions,
     label: formatText(menuMessages.transactions),
     value: UserHubTabs.Transactions,
-    icon: 'receipt',
+    icon: Receipt,
   },
 ];

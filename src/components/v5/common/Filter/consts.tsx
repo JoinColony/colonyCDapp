@@ -1,3 +1,4 @@
+import { Flag, LockKey, Star, User } from '@phosphor-icons/react';
 import { useMemo } from 'react';
 
 import { FilterTypes } from '../TableFiltering/types.ts';
@@ -15,7 +16,7 @@ export const followersFilterOptions: ParentFilterOption[] = [
     id: 0,
     title: 'filter.user.status',
     filterType: FilterTypes.Status,
-    iconName: 'flag',
+    icon: Flag,
     content: statusFilters,
   },
 ];
@@ -61,28 +62,28 @@ export const useFilterOptions = (): UseFilterOptionsReturn => {
         id: 0,
         title: 'filter.contributor.type',
         filterType: FilterTypes.Contributor,
-        iconName: 'user',
+        icon: User,
         content: contributorFilters,
       },
       {
         id: 1,
         title: 'filter.user.status',
         filterType: FilterTypes.Status,
-        iconName: 'flag',
+        icon: Flag,
         content: statusFilters,
       },
       {
         id: 2,
         title: 'filter.reputation',
         filterType: FilterTypes.Reputation,
-        iconName: 'star-not-filled',
+        icon: Star,
         content: reputationFilters,
       },
       {
         id: 3,
         title: 'filter.permissions',
         filterType: FilterTypes.Permissions,
-        iconName: 'lock-key',
+        icon: LockKey,
         content: permissionsFilters,
       },
     ],

@@ -1,3 +1,4 @@
+import { type Icon } from '@phosphor-icons/react';
 import { type MessageDescriptor } from 'react-intl';
 
 import { type TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
@@ -9,5 +10,5 @@ export interface UserPermissionsBadgeProps
   textValues?: SimpleMessageValues;
   description: MessageDescriptor | string;
   descriptionValues?: SimpleMessageValues;
-  name: string;
+  icon: Icon;
 }

@@ -1,3 +1,8 @@
+import {
+  CalendarCheck,
+  HourglassMedium,
+  UsersThree,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -37,7 +42,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
         </span>
       ),
       className: tileClassName,
-      iconName: 'hourglass-medium',
+      icon: HourglassMedium,
       contentClassName,
     },
     {
@@ -59,7 +64,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
         </span>
       ),
       className: tileClassName,
-      iconName: 'calendar-check',
+      icon: CalendarCheck,
       contentClassName,
     },
     {
@@ -76,7 +81,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
         </span>
       ),
       className: clsx(tileClassName, '[&_h3]:flex-shrink-0'),
-      iconName: 'users-three',
+      icon: UsersThree,
       contentClassName,
     },
   ];

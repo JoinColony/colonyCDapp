@@ -1,3 +1,4 @@
+import { SmileyMeh } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { type MessageDescriptor, useIntl } from 'react-intl';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -98,7 +99,7 @@ const MembersList: FC<MembersListProps> = ({
       ) : undefined}
       {!isLoading && !list.length ? (
         <EmptyContent
-          icon="smiley-meh"
+          icon={SmileyMeh}
           title={emptyTitle}
           description={emptyDescription}
           withBorder

@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useUserAvatars } from '~hooks/useUserAvatars.ts';
-import Icon from '~shared/Icon/index.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 import UserAvatars from '~v5/shared/UserAvatars/index.ts';
@@ -30,7 +29,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
 
   return (
     <div className="flex flex-col gap-5">
-      {items.map(({ key, iconName, label, progress, status }) => (
+      {items.map(({ key, icon: Icon, label, progress, status }) => (
         <div key={key} className="flex items-center w-full gap-8">
           <div className="flex grow flex-col gap-1 max-w-[182px]">
             <span className="flex items-start gap-[0.375rem]">
@@ -39,7 +38,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
                   'text-purple-400': status === MotionVote.Yay,
                   'text-red-400': status === MotionVote.Nay,
                 })}
-                name={iconName}
+                size={20}
               />
               <span
                 className={clsx('text-3', {

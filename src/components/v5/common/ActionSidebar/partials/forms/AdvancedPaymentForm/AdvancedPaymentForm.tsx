@@ -1,3 +1,4 @@
+import { Scales, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
@@ -23,7 +24,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="users-three"
+        icon={UsersThree}
         fieldName="from"
         tooltips={{
           label: {
@@ -37,7 +38,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

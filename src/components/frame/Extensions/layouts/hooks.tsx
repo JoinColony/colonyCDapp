@@ -1,3 +1,13 @@
+import {
+  Bank,
+  Check,
+  FilePlus,
+  GearSix,
+  Layout,
+  Plus,
+  SpinnerGap,
+  User,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -14,7 +24,6 @@ import { useMobile } from '~hooks/index.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useTransformer from '~hooks/useTransformer.ts';
 import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants.ts';
-import Icon from '~shared/Icon/index.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -116,7 +125,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
   const mainMenuItems: NavigationSidebarItem[] = [
     {
       key: '1',
-      iconName: 'file-plus',
+      icon: FilePlus,
       label: formatText({ id: 'navigation.newAction' }),
       onClick: handleNewActionClick,
       hideMobile: true,
@@ -124,7 +133,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
     },
     {
       key: '2',
-      iconName: 'layout',
+      icon: Layout,
       label: formatText({ id: 'navigation.dashboard' }),
       isActive: checkIfIsActive(nestedColonyPathname, [
         ...dashboardMainMenu,
@@ -136,14 +145,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
         description: metadata?.description || '',
         bottomActionProps: {
           text: formatText({ id: 'button.createNewAction' }),
-          iconName: 'plus',
+          icon: Plus,
           onClick: () => toggleActionSidebarOn(),
         },
       },
     },
     {
       key: '3',
-      iconName: 'user',
+      icon: User,
       label: formatText({ id: 'navigation.members' }),
       isActive:
         checkIfIsActive(nestedColonyPathname, membersMenu) ||
@@ -192,7 +201,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
     },
     {
       key: '4',
-      iconName: 'bank',
+      icon: Bank,
       label: formatText({ id: 'navigation.finances' }),
       isActive: checkIfIsActive(nestedColonyPathname, financesMenu),
       secondLevelMenuProps: {
@@ -284,7 +293,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
     // @BETA: Disabled for now
     // {
     //   key: '5',
-    //   iconName: 'handshake',
+    //   icon: Handshake,
     //   label: formatText({ id: 'navigation.agreements' }),
     //   isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
     //   secondLevelMenuProps: {
@@ -316,7 +325,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
     // },
     {
       key: '6',
-      iconName: 'gear-six',
+      icon: GearSix,
       label: formatText({ id: 'navigation.admin' }),
       isActive: checkIfIsActive(nestedColonyPathname, adminMenu),
       secondLevelMenuProps: {
@@ -386,11 +395,7 @@ export const useGetTxButtons = () => {
                 'ml-1.5': !isMobile,
               })}
             >
-              <Icon
-                name="spinner-gap"
-                className="animate-spin"
-                appearance={{ size: 'tiny' }}
-              />
+              <SpinnerGap className="animate-spin" size={14} />
             </span>
           }
           data-openhubifclicked // see UserReputation for usage
@@ -408,7 +413,7 @@ export const useGetTxButtons = () => {
                 'ml-1.5': !isMobile,
               })}
             >
-              <Icon name="white-tick" appearance={{ size: 'tiny' }} />
+              <Check className="text-base-white" size={14} />
             </span>
           }
           data-openhubifclicked // see UserReputation for usage

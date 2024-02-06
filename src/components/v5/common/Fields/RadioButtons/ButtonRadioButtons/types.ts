@@ -1,3 +1,5 @@
+import { type Icon } from '@phosphor-icons/react';
+
 import {
   type RadioButtonsBaseProps,
   type RadioItem,
@@ -10,7 +12,7 @@ export interface ButtonRadioButtonItem<TValue>
   checkedColorClassName: string;
   iconClassName?: string;
   label: React.ReactNode;
-  iconName?: string;
+  icon?: Icon;
 }
 
 export interface ButtonRadioButtonsProps<TValue>

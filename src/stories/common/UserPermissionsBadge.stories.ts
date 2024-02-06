@@ -1,6 +1,7 @@
-import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge/index.ts';
+import { Buildings } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import UserPermissionsBadge from '~common/Extensions/UserPermissionsBadge/index.ts';
 
 const meta: Meta<typeof UserPermissionsBadge> = {
   title: 'Common/User Permissions Badge',
@@ -15,18 +16,10 @@ const meta: Meta<typeof UserPermissionsBadge> = {
         type: 'text',
       },
     },
-    name: {
-      name: 'Icon Name',
-      options: [
-        'app-window',
-        'bank',
-        'buildings',
-        'clipboard-text',
-        'clock-counter-clockwise',
-        'scales',
-      ],
+    icon: {
+      name: 'Icon',
       control: {
-        type: 'select',
+        type: 'objectk',
       },
     },
     description: {
@@ -64,7 +57,7 @@ type Story = StoryObj<typeof UserPermissionsBadge>;
 export const Base: Story = {
   args: {
     text: 'Architecture',
-    name: 'buildings',
+    icon: Buildings,
     description:
       'This permission allows users to create new domains, and manage permissions within those domains.',
   },

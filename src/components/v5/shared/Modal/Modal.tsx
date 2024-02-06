@@ -6,7 +6,6 @@ import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
 import { useGetTxButtons } from '~frame/Extensions/layouts/hooks.tsx';
 import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 
 import JoinButton from '../Button/JoinButton/index.ts';
@@ -20,7 +19,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   title,
   subTitle,
   children,
-  icon,
+  icon: Icon,
   onClose,
   onConfirm,
   isWarning = false,
@@ -43,7 +42,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       {...{ isFullOnMobile, ...props }}
       isTopSectionWithBackground={isTopSectionWithBackground}
     >
-      {icon && (
+      {Icon && (
         <span
           className={clsx(
             'flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-content mb-4 border-gray-200 flex-shrink-0',
@@ -52,7 +51,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
             },
           )}
         >
-          <Icon className="!w-6 !h-6" name={icon} />
+          <Icon size={24} />
         </span>
       )}
       <CloseButton

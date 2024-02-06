@@ -1,3 +1,4 @@
+import { SmileyMeh } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -43,7 +44,7 @@ const ContributorsPage: FC = () => {
         description: formatText({
           id: 'membersPage.contributors.emptyDescription',
         }),
-        icon: 'smiley-meh',
+        icon: SmileyMeh,
       }}
     >
       <TeamReputationSummary className="sm:max-w-[14.375rem]" />

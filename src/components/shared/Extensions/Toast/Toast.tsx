@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
+import StatusCircle from '~shared/StatusCircle/StatusCircle.tsx';
 import Link from '~v5/shared/Link/index.ts';
 
 import { type ToastProps } from './types.ts';
@@ -33,14 +33,7 @@ const Toast: FC<ToastProps> = ({
           'text-negative-400': type === 'error',
         })}
       >
-        <Icon
-          appearance={{ size: 'normal' }}
-          name={
-            (type === 'error' && 'x-circle') ||
-            (type === 'warn' && 'warning-circle') ||
-            'check-circle'
-          }
-        />
+        <StatusCircle size={20} status={type} />
       </div>
       <div className="flex flex-col ml-[1.125rem] max-w-[90%]">
         {title && <span className="text-2 text-gray-900">{titleText}</span>}

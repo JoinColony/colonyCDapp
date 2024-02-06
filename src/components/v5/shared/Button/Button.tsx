@@ -28,8 +28,8 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
       isFullRounded = false,
       ariaLabel,
       isFullSize,
-      iconName,
-      iconSize = 'tiny',
+      icon,
+      iconSize = 14,
       isIconRight,
       ...rest
     },
@@ -92,7 +92,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
           >
             <ButtonContent
               mode={mode}
-              iconName={iconName}
+              icon={icon}
               iconSize={iconSize}
               isIconRight={isIconRight}
               text={text}

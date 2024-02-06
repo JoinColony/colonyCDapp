@@ -1,8 +1,8 @@
+import { Binoculars, SmileyMeh } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof EmptyContent> = {
   title: 'Common/Empty Content',
@@ -50,7 +50,7 @@ export const Base: Story = {
     title: 'No results available',
     description:
       'There are no users in the Colony that match your search. Try searching again',
-    icon: 'binoculars',
+    icon: Binoculars,
     withBorder: true,
   },
 };
@@ -65,7 +65,7 @@ export const WithButton: Story = {
     title: 'No results available',
     description:
       'There are no users in the Colony that match your search. Try searching again',
-    icon: 'smiley-meh',
+    icon: SmileyMeh,
     withBorder: true,
     buttonText: 'Invite members',
   },
@@ -76,7 +76,7 @@ export const WithoutBorder: Story = {
     title: 'No results available',
     description:
       'There are no users in the Colony that match your search. Try searching again',
-    icon: 'smiley-meh',
+    icon: SmileyMeh,
     withBorder: false,
   },
 };

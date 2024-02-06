@@ -1,4 +1,5 @@
 import { ColonyRole, Id } from '@colony/colony-js';
+import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
@@ -66,7 +67,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
   const getBanner = () => {
     if (isPermissionEnabled) {
       return (
-        <NotificationBanner icon="check-circle" status="success">
+        <NotificationBanner icon={CheckCircle} status="success">
           <FormattedMessage {...MSG.updatedPermission} />
         </NotificationBanner>
       );
@@ -74,7 +75,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
 
     return (
       <NotificationBanner
-        icon="warning-circle"
+        icon={WarningCircle}
         status="warning"
         callToAction={
           userHasRoles && (

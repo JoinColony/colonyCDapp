@@ -1,3 +1,4 @@
+import { Folders, HandCoins, HandsClapping } from '@phosphor-icons/react';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
@@ -31,18 +32,18 @@ export const subNavigationItems: Omit<
     id: 0,
     label: <FormattedMessage {...MSG.pay} />,
     content: <PayDropdown />,
-    icon: 'hand-coins',
+    icon: HandCoins,
   },
   {
     id: 1,
     label: <FormattedMessage {...MSG.decide} />,
     content: <DecideDropdown />,
-    icon: 'hands-clapping',
+    icon: HandsClapping,
   },
   {
     id: 2,
     label: <FormattedMessage {...MSG.manage} />,
     content: <ManageDropdown />,
-    icon: 'folders',
+    icon: Folders,
   },
 ];

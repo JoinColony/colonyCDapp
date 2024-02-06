@@ -1,9 +1,8 @@
-/* eslint-disable react/button-has-type */
+import { List } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 
 import { type HamburgerProps } from './types.ts';
@@ -16,8 +15,8 @@ const Hamburger: FC<HamburgerProps> = ({
   title,
   type = 'button',
   ariaLabel,
-  iconName = 'list',
-  iconSize = 'extraTiny',
+  icon: Icon = List,
+  iconSize = 12,
   setTriggerRef,
   isOpened,
   ...rest
@@ -50,11 +49,13 @@ const Hamburger: FC<HamburgerProps> = ({
           aria-label={ariaLabelText}
           aria-busy={loading}
           title={titleText}
+          /* eslint-disable react/button-has-type */
           type={type}
+          /* eslint-enable react/button-has-type */
           ref={setTriggerRef}
           {...rest}
         >
-          {iconName && <Icon name={iconName} appearance={{ size: iconSize }} />}
+          {Icon && <Icon size={iconSize} />}
         </button>
       )}
     </>

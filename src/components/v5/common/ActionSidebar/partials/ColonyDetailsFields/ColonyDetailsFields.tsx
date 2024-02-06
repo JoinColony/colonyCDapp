@@ -1,3 +1,4 @@
+import { FileText, Image, PencilCircle } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import {
@@ -16,7 +17,7 @@ const displayName = 'v5.common.ActionsContent.partials.ColonyDetailsFields';
 const ColonyDetailsFields: FC = () => (
   <>
     <ActionFormRow
-      icon="pencil-circle"
+      icon={PencilCircle}
       fieldName="colonyName"
       title={formatText({ id: 'actionSidebar.colonyName' })}
       tooltips={{
@@ -38,7 +39,7 @@ const ColonyDetailsFields: FC = () => (
       />
     </ActionFormRow>
     <ActionFormRow
-      icon="image"
+      icon={Image}
       fieldName="avatar"
       title={formatText({ id: 'actionSidebar.colonyLogo' })}
       tooltips={{
@@ -61,7 +62,7 @@ const ColonyDetailsFields: FC = () => (
       </div>
     </ActionFormRow>
     <ActionFormRow
-      icon="file-text"
+      icon={FileText}
       fieldName="colonyDescription"
       title={formatText({ id: 'actionSidebar.colonyDescription' })}
       isMultiLine

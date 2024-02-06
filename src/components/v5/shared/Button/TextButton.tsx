@@ -1,9 +1,7 @@
-/* eslint-disable react/button-has-type */
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 
 import { type TextButtonProps } from './types.ts';
@@ -21,7 +19,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
   text,
   textValues,
   type = 'button',
-  iconName,
+  icon: Icon,
   iconSize,
   ariaLabel,
   setTriggerRef,
@@ -67,16 +65,15 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
           aria-label={ariaLabelText}
           aria-busy={loading}
           title={titleText}
+          /* eslint-disable react/button-has-type */
           type={type}
+          /* eslint-enable react/button-has-type */
           ref={setTriggerRef}
           {...rest}
         >
-          {iconName && (
+          {Icon && (
             <span className="flex shrink-0 mr-2">
-              <Icon
-                name={iconName}
-                appearance={iconSize ? { size: iconSize } : undefined}
-              />
+              <Icon size={iconSize} />
             </span>
           )}
           {buttonText || children}

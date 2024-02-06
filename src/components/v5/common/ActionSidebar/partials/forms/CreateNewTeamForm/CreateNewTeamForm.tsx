@@ -1,4 +1,4 @@
-import { PaintBucket } from '@phosphor-icons/react';
+import { PaintBucket, Rocket, Scales, UserList } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import {
@@ -32,7 +32,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ActionFormRow
         fieldName="teamName"
-        icon="user-list"
+        icon={UserList}
         isMultiLine
         title={formatText({ id: 'actionSidebar.teamName' })}
         tooltips={{
@@ -55,7 +55,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="rocket"
+        icon={Rocket}
         fieldName="domainPurpose"
         title={formatText({ id: 'actionSidebar.teamPurpose' })}
         isMultiLine
@@ -77,7 +77,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon={<PaintBucket size={12} />}
+        icon={PaintBucket}
         fieldName="domainColor"
         title={formatText({ id: 'actionSidebar.teamColour' })}
         tooltips={{
@@ -91,7 +91,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamColorField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

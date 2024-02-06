@@ -1,4 +1,9 @@
-import { ArrowLineRight, ArrowsOutSimple, X } from '@phosphor-icons/react';
+import {
+  ArrowLineRight,
+  ArrowsOutSimple,
+  WarningCircle,
+  X,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
@@ -188,7 +193,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           toggleCancelModalOff();
           toggleActionSidebarOff();
         }}
-        icon="warning-circle"
+        icon={WarningCircle}
         buttonMode="primarySolid"
         confirmMessage={formatText({ id: 'button.cancelAction' })}
         closeMessage={formatText({

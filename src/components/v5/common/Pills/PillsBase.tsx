@@ -1,8 +1,6 @@
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
-
 import { type PillsProps } from './types.ts';
 
 import styles from './PillsBase.module.css';
@@ -13,7 +11,7 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
   className,
   children,
   text,
-  iconName,
+  icon: Icon,
   pillSize = 'medium',
   textClassName,
   ...rest
@@ -25,19 +23,14 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
     })}
     {...rest}
   >
-    {iconName && (
+    {Icon && (
       <span className="flex shrink-0">
-        <Icon
-          name={iconName}
-          appearance={{
-            size: pillSize === 'medium' ? 'tiny' : 'extraTiny',
-          }}
-        />
+        <Icon size={pillSize === 'medium' ? 14 : 12} />
       </span>
     )}
     <span
       className={clsx(textClassName, {
-        'ml-1': iconName,
+        'ml-1': !!Icon,
       })}
     >
       {text || children}

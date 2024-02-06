@@ -1,3 +1,5 @@
+import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
+
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { type ButtonRadioButtonItem } from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/types.ts';
@@ -10,7 +12,7 @@ export const supportOption = {
   checkedColorClassName: 'bg-purple-400 border-purple-400',
   iconClassName: 'text-purple-400',
   hoverColorClassName: 'md:hover:text-purple-400 md:hover:border-purple-400',
-  iconName: 'thumbs-up',
+  icon: ThumbsUp,
 };
 
 export const opposeOption = {
@@ -22,7 +24,7 @@ export const opposeOption = {
   iconClassName: 'text-negative-400',
   hoverColorClassName:
     'md:hover:text-negative-400 md:hover:border-negative-400',
-  iconName: 'thumbs-down',
+  icon: ThumbsDown,
 };
 
 export const STAKING_RADIO_BUTTONS: ButtonRadioButtonItem<MotionVote>[] = [

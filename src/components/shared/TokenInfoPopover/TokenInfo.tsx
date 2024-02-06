@@ -1,9 +1,9 @@
+import { ArrowSquareOut, SealCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
 import { type Token } from '~types/graphql.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
@@ -48,11 +48,7 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
               {name} ({symbol})
             </h4>
             {isTokenNative && (
-              <Icon
-                name="verified"
-                appearance={{ size: 'small' }}
-                className="shrink-0 text-blue-400 ml-1"
-              />
+              <SealCheck size={18} className="shrink-0 text-blue-400 ml-1" />
             )}
           </div>
           <CopyableAddress address={tokenAddress} />
@@ -69,7 +65,7 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
             addressOrHash: tokenAddress,
           })}
         >
-          <Icon name="arrow-square-out" appearance={{ size: 'tiny' }} />
+          <ArrowSquareOut size={14} />
           {formatMessage(MSG.viewOnEtherscan, {
             blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
           })}

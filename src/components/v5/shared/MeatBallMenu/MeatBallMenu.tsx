@@ -1,9 +1,9 @@
+import { DotsThree } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
@@ -56,9 +56,8 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           },
         )}
       >
-        <Icon
-          name="dots-three"
-          appearance={{ size: 'extraTiny' }}
+        <DotsThree
+          size={12}
           className={clsx({
             'rotate-90': withVerticalIcon,
           })}
@@ -84,7 +83,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                   key,
                   label,
                   onClick,
-                  icon,
+                  icon: Icon,
                   renderItemWrapper: itemRenderItemWrapper,
                   className: itemClassName,
                 }) => (
@@ -120,14 +119,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                           },
                         },
                         <>
-                          {typeof icon === 'string' ? (
-                            <Icon
-                              name={icon}
-                              appearance={{ size: 'extraSmall' }}
-                            />
-                          ) : (
-                            icon
-                          )}
+                          {Icon ? <Icon size={16} /> : null}
                           <span>{label}</span>
                         </>,
                       )}

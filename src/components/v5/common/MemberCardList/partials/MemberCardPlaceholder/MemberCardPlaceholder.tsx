@@ -14,7 +14,7 @@ const MemberCardPlaceholder: FC<MemberCardPlaceholderProps> = ({
   buttonTooltipProps,
 }) => {
   const button = (
-    <Button size="small" mode="septenary" iconSize="small" {...buttonProps} />
+    <Button size="small" mode="septenary" iconSize={18} {...buttonProps} />
   );
 
   return (

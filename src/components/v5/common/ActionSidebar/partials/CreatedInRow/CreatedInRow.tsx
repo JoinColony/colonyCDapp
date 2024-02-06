@@ -1,3 +1,4 @@
+import { HouseLine } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useWatch } from 'react-hook-form';
 
@@ -19,7 +20,7 @@ const CreatedInRow: FC<CreatedInRowProps> = ({ filterOptionsFn, readonly }) => {
 
   return decisionMethod === DecisionMethod.Reputation || readonly ? (
     <ActionFormRow
-      icon="house-line"
+      icon={HouseLine}
       fieldName="createdIn"
       tooltips={{
         label: {

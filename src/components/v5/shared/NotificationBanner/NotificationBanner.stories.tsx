@@ -1,3 +1,4 @@
+import { CheckCircle } from '@phosphor-icons/react';
 import { type Meta, type StoryFn } from '@storybook/react';
 import React from 'react';
 
@@ -35,7 +36,7 @@ const meta: Meta<typeof NotificationBanner> = {
   args: {
     status: 'success',
     children: 'This is a test title',
-    icon: 'check-circle',
+    icon: CheckCircle,
     description: 'Lorem ipsum dolor sit amet',
     callToAction: 'Click me!',
   },

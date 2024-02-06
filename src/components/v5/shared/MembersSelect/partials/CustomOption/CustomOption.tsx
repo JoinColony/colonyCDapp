@@ -1,3 +1,4 @@
+import { UserCircle } from '@phosphor-icons/react';
 import React from 'react';
 
 import Avatar from '~v5/shared/Avatar/index.ts';
@@ -9,7 +10,7 @@ const CustomOption: React.FC<MembersSelectOption> = ({ label, avatar }) => (
     <Avatar
       avatar={avatar || undefined}
       seed={label.toLowerCase()}
-      placeholderIcon="circle-person"
+      placeholderIcon={UserCircle}
     />
     {label}
   </span>

@@ -1,4 +1,5 @@
 import { Extension } from '@colony/colony-js';
+import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
@@ -69,7 +70,7 @@ export const SidebarBanner: FC = () => {
       />
       {requiredExtensionsWithoutPermission.map((extension) => (
         <div className="mt-6" key={extension.extensionId}>
-          <NotificationBanner status="warning" icon="warning-circle">
+          <NotificationBanner status="warning" icon={WarningCircle}>
             <FormattedMessage
               {...MSG.extensionPermissionNeeded}
               values={{ extensionName: formatText(extension.name) }}
@@ -79,7 +80,7 @@ export const SidebarBanner: FC = () => {
       ))}
       {showVersionUpToDateNotification && (
         <div className="mt-6">
-          <NotificationBanner icon="check-circle" status="success">
+          <NotificationBanner icon={CheckCircle} status="success">
             <FormattedMessage id="actionSidebar.upToDate" />
           </NotificationBanner>
         </div>

@@ -1,3 +1,4 @@
+import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
@@ -5,7 +6,6 @@ import { useIntl } from 'react-intl';
 import { ACTION } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -57,10 +57,11 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
                 'text-warning-400': status === 'error',
               })}
             >
-              <Icon
-                appearance={{ size: 'extraTiny' }}
-                name={status === 'success' ? 'check-circle' : 'warning-circle'}
-              />
+              {status === 'success' ? (
+                <CheckCircle size={12} />
+              ) : (
+                <WarningCircle size={12} />
+              )}
             </span>
             <span className={styles.value}>{currentVersion}</span>
           </div>
@@ -77,7 +78,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
           {formatMessage({ id: 'latest.version' })}
           <div className={styles.text}>
             <span className="text-success-400">
-              <Icon appearance={{ size: 'extraTiny' }} name="check-circle" />
+              <CheckCircle size={12} />
             </span>
             <span className={styles.value}>{latestVersion}</span>
           </div>

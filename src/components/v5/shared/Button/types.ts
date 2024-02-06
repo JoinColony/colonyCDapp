@@ -1,4 +1,10 @@
-import { type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { type Icon } from '@phosphor-icons/react';
+import {
+  type ReactNode,
+  type ButtonHTMLAttributes,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 import { type MessageDescriptor } from 'react-intl';
 
 import { type ActionTypes } from '~redux/index.ts';
@@ -6,8 +12,6 @@ import { type SimpleMessageValues } from '~types/index.ts';
 import { type ActionTransformFnType } from '~utils/actions.ts';
 
 import { type LinkProps } from '../Link/types.ts';
-
-import type React from 'react';
 
 export type ButtonMode =
   | 'primarySolid'
@@ -30,8 +34,8 @@ export type ButtonSize = 'default' | 'extraSmall' | 'small' | 'large';
 export type TextButtonMode = 'default' | 'medium' | 'underlined';
 
 export interface ButtonContentProps {
-  iconName?: ReactNode;
-  iconSize?: IconSize;
+  icon?: Icon;
+  iconSize?: number;
   mode?: ButtonMode;
   isIconRight?: boolean;
   text?: MessageDescriptor | string;
@@ -46,7 +50,7 @@ export interface CommonButtonProps
   loading?: boolean;
   title?: MessageDescriptor | string;
   ariaLabel?: MessageDescriptor | string;
-  setTriggerRef?: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  setTriggerRef?: Dispatch<SetStateAction<HTMLElement | null>>;
 }
 
 export interface ButtonAppearanceCommonProps extends ButtonContentProps {
@@ -56,8 +60,6 @@ export interface ButtonAppearanceCommonProps extends ButtonContentProps {
   className?: string;
 }
 
-export type IconSize = 'extraTiny' | 'tiny' | 'small' | 'extraSmall';
-
 export type ButtonProps = Omit<CommonButtonProps, 'setTriggerRef'> &
   ButtonAppearanceCommonProps;
 
@@ -66,8 +68,8 @@ export interface TextButtonProps extends CommonButtonProps {
   text?: MessageDescriptor | string;
   textValues?: SimpleMessageValues;
   isErrorColor?: boolean;
-  iconName?: string;
-  iconSize?: IconSize;
+  icon?: Icon;
+  iconSize?: number;
 }
 
 export interface IconButtonProps extends CommonButtonProps {
@@ -75,18 +77,17 @@ export interface IconButtonProps extends CommonButtonProps {
   textValues?: SimpleMessageValues;
   rounded?: 's' | 'm' | 'l';
   isFullSize?: boolean;
-  icon: React.ReactNode;
+  icon: ReactNode;
   className?: string;
 }
 
 export interface HamburgerProps extends CommonButtonProps {
-  iconName?: string;
-  iconSize?: IconSize;
+  icon?: Icon;
+  iconSize?: number;
   isOpened?: boolean;
 }
 
 export interface CloseButtonProps extends CommonButtonProps {
-  iconSize?: IconSize;
   className?: string;
 }
 

@@ -1,3 +1,4 @@
+import { Binoculars, CaretDown, CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import debounce from 'lodash/debounce';
@@ -11,7 +12,6 @@ import React, {
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
@@ -139,14 +139,11 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                             onClick={() => handleAccordionClick(key)}
                           >
                             <span className="text-gray-700 md:hover:text-blue-400">
-                              <Icon
-                                name={
-                                  openedAccordions.includes(key)
-                                    ? 'caret-up'
-                                    : 'caret-down'
-                                }
-                                appearance={{ size: 'extraTiny' }}
-                              />
+                              {openedAccordions.includes(key) ? (
+                                <CaretUp size={12} />
+                              ) : (
+                                <CaretDown size={12} />
+                              )}
                             </span>
                           </button>
                         )}
@@ -191,7 +188,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                   )}
                   {showEmptyContent && (
                     <EmptyContent
-                      icon="binoculars"
+                      icon={Binoculars}
                       title={{ id: 'actionSidebar.emptyTitle' }}
                       description={{ id: 'actionSidebar.emptyDescription' }}
                     />

@@ -1,8 +1,8 @@
+import { WarningCircle } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 import IconWithTooltip from '~v5/shared/IconWithTooltip/index.ts';
-
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof IconWithTooltip> = {
   title: 'Shared/Icon With Tooltip',
@@ -21,7 +21,7 @@ const meta: Meta<typeof IconWithTooltip> = {
         type: 'text',
       },
     },
-    iconProps: {
+    icon: {
       name: 'icon props',
       control: {
         type: 'object',
@@ -32,9 +32,7 @@ const meta: Meta<typeof IconWithTooltip> = {
     children: 'User',
     tooltipContent: 'content',
     className: 'ml-2 text-warning-400',
-    iconProps: {
-      name: 'warning-circle',
-    },
+    icon: WarningCircle,
   },
 };
 

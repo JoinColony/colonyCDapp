@@ -1,6 +1,6 @@
+import { XCircle, type Icon as PhosphorIcon } from '@phosphor-icons/react';
 import React, { type CSSProperties, type ReactNode } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { type AvatarSize } from '~v5/shared/Avatar/types.ts';
 
 import getIcon from './identicon.ts';
@@ -24,7 +24,7 @@ export interface Props {
   notSet?: boolean;
 
   /** Icon name to use for placeholder */
-  placeholderIcon?: string;
+  placeholderIcon?: PhosphorIcon;
 
   /** Avatar size (default is between `s` and `m`) */
   size?: AvatarSize;
@@ -41,7 +41,7 @@ const Avatar = ({
   children,
   className,
   notSet,
-  placeholderIcon = 'circle-close',
+  placeholderIcon: Icon = XCircle,
   size,
   title,
 }: Props) => {
@@ -77,10 +77,9 @@ const Avatar = ({
           className={
             notSet ? styles.placeholderIconNotSet : styles.placeholderIcon
           }
-          name={placeholderIcon}
-          title={title}
-          data-test="avatar"
-        />
+        >
+          <title>{title}</title>
+        </Icon>
       )}
     </figure>
   );

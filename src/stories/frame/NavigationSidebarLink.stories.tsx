@@ -1,6 +1,7 @@
-import NavigationSidebarLink from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLink/index.ts';
+import { User } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import NavigationSidebarLink from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLink/index.ts';
 
 const navigationSidebarLinkMeta: Meta<typeof NavigationSidebarLink> = {
   title: 'Frame/Navigation Sidebar/Link',
@@ -9,7 +10,7 @@ const navigationSidebarLinkMeta: Meta<typeof NavigationSidebarLink> = {
     layout: 'padded',
   },
   args: {
-    iconName: 'user',
+    icon: User,
     to: '/test',
     children: 'Label',
   },

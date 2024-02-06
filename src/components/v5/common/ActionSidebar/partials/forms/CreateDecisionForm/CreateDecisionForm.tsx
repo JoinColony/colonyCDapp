@@ -1,3 +1,4 @@
+import { Scales } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useWatch } from 'react-hook-form';
 
@@ -36,7 +37,7 @@ const CreateDecisionForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

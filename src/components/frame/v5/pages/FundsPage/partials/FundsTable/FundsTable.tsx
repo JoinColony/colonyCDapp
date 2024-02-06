@@ -1,3 +1,4 @@
+import { Binoculars } from '@phosphor-icons/react';
 import {
   getFilteredRowModel,
   getPaginationRowModel,
@@ -60,7 +61,7 @@ const FundsTable: FC = () => {
               <EmptyContent
                 title={{ id: 'incomingFundsPage.table.emptyTitle' }}
                 description={{ id: 'incomingFundsPage.table.emptyDescription' }}
-                icon="binoculars"
+                icon={Binoculars}
                 className="py-[4.25rem]"
               />
             </div>

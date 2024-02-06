@@ -1,7 +1,7 @@
+import { SealCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
@@ -73,7 +73,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           <p className="heading-4 truncate">{userName || walletAddress}</p>
           {isVerified && (
             <span className="flex shrink-0 text-blue-400">
-              <Icon name="verified" appearance={{ size: 'tiny' }} />
+              <SealCheck size={14} />
             </span>
           )}
         </div>

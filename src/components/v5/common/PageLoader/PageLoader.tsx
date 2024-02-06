@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type ReactNode } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
+import ColonyIcon from '~icons/ColonyIcon.tsx';
 
 import styles from './PageLoader.css';
 
@@ -41,9 +41,9 @@ const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
             strokeWidth={STROKE_WIDTH}
           />
         </svg>
-        <Icon
-          className="!h-12 !w-12 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          name="colony-icon"
+        <ColonyIcon
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          size={48}
         />
       </div>
       {loadingText && (

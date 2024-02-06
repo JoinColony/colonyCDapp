@@ -1,3 +1,4 @@
+import { Trash } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -37,7 +38,7 @@ const UninstallButton = ({
 
       <Modal
         isOpen={isUninstallModalOpen}
-        icon="trash"
+        icon={Trash}
         isWarning
         onClose={() => {
           setIsCheckboxChecked(false);

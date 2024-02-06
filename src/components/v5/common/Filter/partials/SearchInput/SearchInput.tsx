@@ -1,3 +1,4 @@
+import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import debounce from 'lodash.debounce';
 import React, {
@@ -13,7 +14,6 @@ import React, {
 import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { type SearchInputProps } from './types.ts';
 
@@ -76,7 +76,7 @@ const SearchInput: FC<SearchInputProps> = ({
       )}
     >
       <span className={styles.icon}>
-        <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
+        <MagnifyingGlass size={12} />
       </span>
       <input
         ref={ref}
@@ -99,7 +99,7 @@ const SearchInput: FC<SearchInputProps> = ({
           onClick={handleClearSearchInput}
           type="button"
         >
-          <Icon name="close" appearance={{ size: 'extraExtraTiny' }} />
+          <X size={10} />
         </button>
       )}
       {isMobile && value && (
@@ -112,7 +112,7 @@ const SearchInput: FC<SearchInputProps> = ({
             onSearchButtonClick();
           }}
         >
-          <Icon name="magnifying-glass" appearance={{ size: 'small' }} />
+          <MagnifyingGlass size={18} />
         </button>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -125,10 +126,8 @@ const SearchItem: FC<SearchItemProps> = ({
                   <IconWithTooltip
                     tooltipContent={formatText({ id: missingPermissions })}
                     className="text-warning-400 h-4 w-4 justify-center items-center"
-                    iconProps={{
-                      name: 'warning-circle',
-                      appearance: { size: 'tiny' },
-                    }}
+                    icon={WarningCircle}
+                    size={14}
                   />
                 )}
               </button>

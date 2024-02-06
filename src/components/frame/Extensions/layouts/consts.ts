@@ -1,4 +1,27 @@
 import {
+  ArrowDownRight,
+  Buildings,
+  ChartBar,
+  ChatsCircle,
+  HandHeart,
+  Layout,
+  PresentationChart,
+  PuzzlePiece,
+  UsersFour,
+  UsersThree,
+  Wrench,
+  // @BETA: Disabled for now
+  // SealCheck,
+  // Signature,
+  // ChartPieSlice,
+  // ListChecks,
+  // ChartLine,
+  // Intersect,
+  // Briefcase,
+  // BookOpenText,
+} from '@phosphor-icons/react';
+
+import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
@@ -24,32 +47,32 @@ export const membersMenu: NavigationSidebarLinksListProps['items'] = [
     key: '1',
     label: formatText({ id: 'navigation.members.members' }),
     to: COLONY_MEMBERS_ROUTE,
-    iconName: 'users-three',
+    icon: UsersThree,
   },
   {
     key: '2',
     label: formatText({ id: 'navigation.members.contributors' }) || '',
     to: COLONY_CONTRIBUTORS_ROUTE,
-    iconName: 'hand-heart',
+    icon: HandHeart,
   },
   // @BETA: Disabled for now
   // {
   //   key: '3',
   //   label: formatText({ id: 'navigation.members.verifiedMembers' }),
   //   to: COLONY_VERIFIED_ROUTE,
-  //   iconName: 'seal-check',
+  //   icon: SealCheck,
   // },
   // {
   //   key: '4',
   //   label: formatText({ id: 'navigation.members.permissions' }),
   //   to: COLONY_PERMISSIONS_ROUTE,
-  //   iconName: 'signature',
+  //   icon: Signature,
   // },
   {
     key: '5',
     label: formatText({ id: 'navigation.members.teams' }),
     to: COLONY_TEAMS_ROUTE,
-    iconName: 'users-four',
+    icon: UsersFour,
   },
 ];
 
@@ -60,7 +83,7 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
   //   key: '1',
   //   label: formatText({ id: 'navigation.finances.overview' }),
   //   to: '/overview',
-  //   iconName: 'pie-chart',
+  //   icon: ChartPieSlice,
   //   tagProps: {
   //     text: 'New',
   //     mode: 'new',
@@ -70,20 +93,20 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
     key: '2',
     label: formatText({ id: 'navigation.finances.balance' }),
     to: COLONY_BALANCES_ROUTE,
-    iconName: 'chart-bar',
+    icon: ChartBar,
   },
   {
     key: '3',
     label: formatText({ id: 'navigation.finances.incomingFunds' }),
     to: COLONY_INCOMING_ROUTE,
-    iconName: 'arrow-down-right',
+    icon: ArrowDownRight,
   },
   // @BETA: Disabled for now
   // {
   //   key: '4',
   //   label: formatText({ id: 'navigation.finances.transactions' }),
   //   to: '/transactions',
-  //   iconName: 'list-checks',
+  //   icon: ListChecks,
   //   disabled: true,
   //   tagProps: {
   //     text: 'Coming soon',
@@ -93,7 +116,7 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
   //   key: '5',
   //   label: formatText({ id: 'navigation.finances.streamingPayments' }),
   //   to: '/streaming-payments',
-  //   iconName: 'chart-line',
+  //   icon: ChartLine
   // },
 ];
 
@@ -103,7 +126,7 @@ export const agreementsMenu: NavigationSidebarLinksListProps['items'] = [
     key: '1',
     label: formatText({ id: 'navigation.agreements.allAgreements' }),
     to: COLONY_AGREEMENTS_ROUTE,
-    iconName: 'chats-circle',
+    icon: ChatsCircle,
     tagProps: {
       text: formatText({ id: 'status.new' }),
       mode: 'new',
@@ -116,33 +139,33 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
     key: '1',
     label: formatText({ id: 'navigation.admin.colonyDetails' }),
     to: COLONY_DETAILS_ROUTE,
-    iconName: 'buildings',
+    icon: Buildings,
   },
   // @BETA: Disabled for now
   // {
   //   key: '2',
   //   label: formatText({ id: 'navigation.admin.reputation' }),
   //   to: COLONY_REPUTATION_ROUTE,
-  //   iconName: 'star',
+  //   icon: Star,
   // },
   {
     key: '3',
     label: formatText({ id: 'navigation.admin.extensions' }),
     to: COLONY_EXTENSIONS_ROUTE,
-    iconName: 'puzzle-piece',
+    icon: PuzzlePiece,
   },
   // @BETA: Disabled for now
   // {
   //   key: '4',
   //   label: formatText({ id: 'navigation.admin.integrations' }),
   //   to: COLONY_INTEGRATIONS_ROUTE,
-  //   iconName: 'intersect',
+  //   icon: Intersect,
   // },
   // {
   //   key: '5',
   //   label: formatText({ id: 'navigation.admin.incorporation' }),
   //   to: COLONY_INCORPORATION_ROUTE,
-  //   iconName: 'briefcase',
+  //   icon: Briefcase,
   //   disabled: true,
   //   tagProps: {
   //     text: formatText({ id: 'status.comingSoon' }),
@@ -152,7 +175,7 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
     key: '6',
     label: formatText({ id: 'navigation.admin.advancedSettings' }),
     to: COLONY_ADVANCED_ROUTE,
-    iconName: 'wrench',
+    icon: Wrench,
   },
 ];
 
@@ -162,7 +185,7 @@ export const dashboardMainMenu: NavigationSidebarLinksListProps['items'] = [
     key: '1',
     label: formatText({ id: 'navigation.dashboard.dashboard' }),
     to: '',
-    iconName: 'layout',
+    icon: Layout,
   },
 ];
 
@@ -172,13 +195,13 @@ export const dashboardMenu: NavigationSidebarLinksListProps['items'] = [
     key: '1',
     label: formatText({ id: 'navigation.dashboard.activityFeed' }),
     to: COLONY_ACTIVITY_ROUTE,
-    iconName: 'presentation-chart',
+    icon: PresentationChart,
   },
   // Disabled for now
   // {
   //   key: '2',
   //   label: formatText({ id: 'navigation.dashboard.about' }),
   //   to: COLONY_DETAILS_ROUTE,
-  //   iconName: 'book-open-text',
+  //   icon: BookOpenText,
   // },
 ];

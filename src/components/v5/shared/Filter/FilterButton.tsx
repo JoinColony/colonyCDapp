@@ -1,3 +1,4 @@
+import { FunnelSimple } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
@@ -27,8 +28,8 @@ const FilterButton: FC<FilterButtonProps> = ({
         'border border-gray-900 text-gray-900': isOpen,
       })}
       mode="tertiary"
-      iconName="funnel-simple"
-      iconSize="tiny"
+      icon={FunnelSimple}
+      iconSize={14}
       size="small"
     >
       {customLabel || formatMessage({ id: 'filter' })}
