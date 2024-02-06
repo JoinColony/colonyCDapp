@@ -1,8 +1,0 @@
-.main {
-  height: 100%;
-  border-right: 1px solid var(--light-grey);
-}
-
-.main li {
-  border-bottom: none;
-}
