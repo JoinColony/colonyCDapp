@@ -131,7 +131,6 @@ module.exports = {
           ],
           use: [
             'style-loader',
-            '@teamsupercell/typings-for-css-modules-loader',
             {
               loader: 'css-loader',
               options: {
@@ -149,7 +148,6 @@ module.exports = {
           ],
           use: [
             'style-loader',
-            '@teamsupercell/typings-for-css-modules-loader',
             {
               loader: 'css-loader',
               options: {

@@ -76,7 +76,6 @@ const config = {
             ],
             use: [
               'style-loader',
-              '@teamsupercell/typings-for-css-modules-loader',
               {
                 loader: 'css-loader',
                 options: {
@@ -94,7 +93,6 @@ const config = {
             ],
             use: [
               'style-loader',
-              '@teamsupercell/typings-for-css-modules-loader',
               {
                 loader: 'css-loader',
                 options: {
