@@ -4,7 +4,9 @@ import { ContextModule, getContext } from '~context/index.ts';
 import { isFullWallet } from '~types/wallet.ts';
 
 const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
-  const { host, origin } = window.location;
+  const host = process.env.HOST || 'localhost:9091';
+  const origin = process.env.ORIGIN || 'http://localhost:9091';
+
   try {
     const response = await fetch(
       `${process.env.AUTH_PROXY_ENDPOINT}/${urlPartial}`,
@@ -56,7 +58,8 @@ export const authenticateWallet = async (): Promise<void> => {
   if (authStatus !== 'authenticated') {
     const { data: nonce } = await authProxyRequest('nonce');
 
-    const { host, origin } = window.location;
+    const host = process.env.HOST || 'localhost:9091';
+    const origin = process.env.ORIGIN || 'http://localhost:9091';
 
     const authMessage = new SiweMessage({
       domain: host,

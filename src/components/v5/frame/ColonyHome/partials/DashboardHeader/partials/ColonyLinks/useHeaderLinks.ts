@@ -38,7 +38,7 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     isCopied: isColonyAddressItemCopied,
   } = useCopyToClipboard(5000);
 
-  const colonyUrl = `${window.location.host}${pathname}`;
+  const colonyUrl = `${process.env.HOST}${pathname}`;
   const { isWatching } = colonySubscription;
   const { colonyAddress, metadata } = colony || {};
 

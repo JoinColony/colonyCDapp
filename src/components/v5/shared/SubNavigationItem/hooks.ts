@@ -7,7 +7,7 @@ export const useMembersSubNavigation = () => {
   const {
     colony: { name: colonyName },
   } = useColonyContext();
-  const colonyURL = `${window.location.origin}/${colonyName}`;
+  const colonyURL = `${process.env.ORIGIN}/${colonyName}`;
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 

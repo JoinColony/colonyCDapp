@@ -24,7 +24,7 @@ const AllMembersPage: FC = () => {
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
 
-  const colonyURL = `${window.location.origin}/${colonyName}`;
+  const colonyURL = `${process.env.ORIGIN}/${colonyName}`;
 
   // clear filters and searches when unmounting
   useEffect(

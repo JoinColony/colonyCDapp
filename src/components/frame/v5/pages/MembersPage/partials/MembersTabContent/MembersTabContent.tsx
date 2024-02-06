@@ -33,7 +33,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
 
   const showPlaceholderCard =
     user && !withSimpleCards && canInteractWithColony && items.length < 12;
-  const colonyURL = `${window.location.origin}/${colonyName}`;
+  const colonyURL = `${process.env.ORIGIN}/${colonyName}`;
 
   return (
     <div

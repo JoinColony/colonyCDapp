@@ -29,7 +29,7 @@ const ColonyLinks = () => {
     isCopied: isColonyAddressCopied,
   } = useCopyToClipboard(5000);
 
-  const colonyUrl = `${window.location.host}${pathname}`;
+  const colonyUrl = `${process.env.HOST}${pathname}`;
   const topLinks = metadata?.externalLinks
     ? sortExternalLinks(metadata.externalLinks).slice(0, 3)
     : [];
