@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, { type FC, useEffect, useState } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -21,6 +22,13 @@ import { type FinalizeStepProps, FinalizeStepSections } from './types.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
 
+const MSG = defineMessages({
+  finalizeError: {
+    id: `${displayName}.finalizeError`,
+    defaultMessage: `There are not enough funds in the team to finalize. Ensure there are enough funds in the team before trying again.`,
+  },
+});
+
 const FinalizeStep: FC<FinalizeStepProps> = ({
   actionData,
   startPollingAction,
@@ -31,8 +39,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const { refetchColony } = useColonyContext();
-  const { isFinalizable, transform: finalizePayload } =
-    useFinalizeStep(actionData);
+  const {
+    isFinalizable,
+    transform: finalizePayload,
+    hasEnoughFundsToFinalize,
+  } = useFinalizeStep(actionData);
   const {
     items,
     isClaimed,
@@ -114,6 +125,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         iconSize: 'extraSmall',
       }}
       sections={[
+        ...(!hasEnoughFundsToFinalize
+          ? [
+              {
+                key: `${actionData.motionData.transactionHash}-not-enough-balance`,
+                content: (
+                  <p className="text-sm">{formatText(MSG.finalizeError)}</p>
+                ),
+                className: 'bg-negative-100 text-negative-400',
+              },
+            ]
+          : []),
         {
           key: FinalizeStepSections.Finalize,
           content: (
@@ -133,7 +155,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   items={items}
                   className={clsx({
                     'mb-6':
-                      (!actionData.motionData.isFinalized && isFinalizable) ||
+                      !actionData.motionData.isFinalized ||
                       (!isClaimed && canClaimStakes),
                   })}
                 />
@@ -156,17 +178,15 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       }
                     />
                   )}
-                  {!isPolling &&
-                    !actionData.motionData.isFinalized &&
-                    isFinalizable && (
-                      <Button
-                        mode="primarySolid"
-                        disabled={!isFinalizable || wrongMotionState}
-                        isFullSize
-                        text={formatText({ id: 'motion.finalizeStep.submit' })}
-                        type="submit"
-                      />
-                    )}
+                  {!isPolling && !actionData.motionData.isFinalized && (
+                    <Button
+                      mode="primarySolid"
+                      disabled={!isFinalizable || wrongMotionState}
+                      isFullSize
+                      text={formatText({ id: 'motion.finalizeStep.submit' })}
+                      type="submit"
+                    />
+                  )}
                   {!isPolling &&
                     (actionData.motionData.isFinalized ||
                       actionData.motionData.motionStateHistory

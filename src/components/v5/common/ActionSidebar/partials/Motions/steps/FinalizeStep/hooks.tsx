@@ -1,4 +1,4 @@
-import { Extension } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -26,12 +26,7 @@ import { WinningsItems } from './types.ts';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
-    motionData: {
-      nativeMotionDomainId,
-      motionId,
-      gasEstimate,
-      motionStateHistory,
-    },
+    motionData: { motionId, gasEstimate, motionStateHistory },
     type,
     amount,
     fromDomain,
@@ -45,7 +40,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   const domainBalance = getBalanceForTokenAndDomain(
     balances,
     tokenAddress ?? '',
-    Number(nativeMotionDomainId),
+    fromDomain?.nativeId || Id.RootDomain,
   );
 
   const requiresDomainFunds: boolean =
@@ -53,13 +48,16 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     !!amount &&
     type !== ColonyActionType.MintTokensMotion &&
     type !== ColonyActionType.EmitDomainReputationPenaltyMotion &&
-    type !== ColonyActionType.EmitDomainReputationRewardMotion;
+    type !== ColonyActionType.EmitDomainReputationRewardMotion &&
+    motionStateHistory.hasPassed;
+
+  const hasEnoughFundsToFinalize =
+    !requiresDomainFunds ||
+    // Safe casting since if requiresDomainFunds is true, we know amount is a string
+    BigNumber.from(domainBalance ?? '0').gte(amount as string);
 
   const isFinalizable =
-    (!requiresDomainFunds ||
-      // Safe casting since if requiresDomainFunds is true, we know amount is a string
-      BigNumber.from(domainBalance ?? '0').gte(amount as string)) &&
-    !motionStateHistory.hasFailedNotFinalizable;
+    hasEnoughFundsToFinalize && !motionStateHistory.hasFailedNotFinalizable;
 
   const transform = mapPayload(
     (): MotionFinalizePayload => ({
@@ -73,6 +71,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   return {
     transform,
     isFinalizable,
+    hasEnoughFundsToFinalize,
   };
 };
 
