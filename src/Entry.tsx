@@ -16,14 +16,6 @@ import systemMessages from './i18n/en-system-messages.ts';
 import messages from './i18n/en.json';
 import Routes from './routes/index.ts';
 
-// @ts-ignore
-if (!Intl.RelativeTimeFormat) {
-  /* eslint-disable global-require */
-  require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/locale-data/en');
-  /* eslint-enable global-require */
-}
-
 interface Props {
   store: any;
 }
