@@ -1431,7 +1431,7 @@
     "colonyAvatar.colonyImage.alt": "Colony logo",
     "colonyAvatar.chainImage.alt": "Chain logo",
     "colonyName": "Colony name",
-    "errors.title.maxLength": "Exceeded max character limit {currentLength}/{maxLength}.",
+    "errors.title.maxLength": "Title must not exceed {maxLength} characters",
     "errors.colonyObjective.title": "Colony objective title is required",
     "errors.colonyObjective.description": "Colony objective description is required",
     "errors.colonyObjective.progress": "Colony objective progress is required",

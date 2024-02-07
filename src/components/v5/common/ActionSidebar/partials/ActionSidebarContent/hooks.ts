@@ -6,7 +6,7 @@ import { REPUTATION_VALIDATION_FIELD_NAME } from '../../hooks/useReputationValid
 
 export const useGetFormActionErrors = () => {
   const { formState } = useFormContext();
-  const hasErrors = !formState.isValid && formState.isSubmitted;
+  const hasErrors = !formState.isValid;
   const flatFormErrors = useFlatFormErrors(formState.errors).filter(
     ({ key }) =>
       !['this', REPUTATION_VALIDATION_FIELD_NAME].includes(String(key)),
