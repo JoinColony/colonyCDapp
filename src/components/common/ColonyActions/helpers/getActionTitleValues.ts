@@ -116,6 +116,8 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [ActionTitleMessageKeys.SafeTransactionTitle];
     case actionType.includes(ColonyActionType.AddVerifiedMembers):
       return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
+    case actionType.includes(ColonyActionType.RemoveVerifiedMembers):
+      return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
     default:
       return [];
   }

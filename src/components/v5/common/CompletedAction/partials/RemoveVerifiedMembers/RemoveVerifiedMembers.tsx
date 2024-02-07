@@ -26,6 +26,7 @@ interface RemoveVerifiedMembersProps {
 }
 
 const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
+  const numberOfMembers = action.members?.length || 0;
   const {
     customTitle = formatText(
       {
@@ -48,7 +49,7 @@ const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
           },
           {
             actionType: ColonyActionType.RemoveVerifiedMembers,
-            members: 2,
+            members: numberOfMembers,
             initiator: initiatorUser ? (
               <UserPopover
                 userName={initiatorUser.profile?.displayName}
