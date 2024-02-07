@@ -10,7 +10,7 @@ const displayName = 'v5.common.ButtonRadioButtons';
 
 function ButtonRadioButtons<TValue = string>({
   items,
-  className,
+  className: baseClassName,
   disabled,
   ...rest
 }: ButtonRadioButtonsProps<TValue>): JSX.Element {
@@ -18,9 +18,9 @@ function ButtonRadioButtons<TValue = string>({
     ({
       label,
       icon: Icon,
-      colorClassName,
-      checkedColorClassName,
-      hoverColorClassName,
+      className,
+      checkedClassName,
+      checkedIconClassName,
       iconClassName,
       disabled: disabledButton,
       ...item
@@ -32,8 +32,6 @@ function ButtonRadioButtons<TValue = string>({
         children: ({ checked }) => (
           <span
             className={clsx(
-              colorClassName,
-              hoverColorClassName,
               `
                 flex
                 group/wrapper
@@ -50,33 +48,32 @@ function ButtonRadioButtons<TValue = string>({
                 rounded-lg
               `,
               {
-                [checkedColorClassName]:
-                  checked && (!disabledButton || !disabled),
-                [colorClassName]: !disabledButton || !disabled,
-                'text-gray-300 border-gray-300': disabledButton || disabled,
+                [className]: !checked && !disabledButton && !disabled,
+                [checkedClassName]: checked && !disabledButton && !disabled,
+                'text-base-white bg-gray-300 border-gray-300':
+                  disabledButton || disabled,
               },
             )}
           >
             {Icon && (
               <Icon
                 size={18}
-                className={clsx(iconClassName, {
-                  'text-base-white': checked,
-                  'text-current': !checked,
-                  '!text-gray-300': disabledButton || disabled,
-                })}
+                className={clsx(
+                  [
+                    checked && !disabledButton && !disabled
+                      ? checkedIconClassName
+                      : '',
+                    !checked && !disabledButton && !disabled
+                      ? iconClassName
+                      : '',
+                  ],
+                  {
+                    'text-base-white': disabledButton || disabled,
+                  },
+                )}
               />
             )}
-            <span
-              className={clsx('text-3', {
-                'text-gray-900 md:group-hover/wrapper:text-current':
-                  !checked && (!disabled || !disabledButton),
-                '!text-gray-300': disabledButton || disabled,
-                'text-base-white': checked && (!disabled || !disabledButton),
-              })}
-            >
-              {label}
-            </span>
+            <span className="text-3">{label}</span>
           </span>
         ),
       };
@@ -86,7 +83,7 @@ function ButtonRadioButtons<TValue = string>({
   return (
     <RadioButtonsBase
       {...rest}
-      className={clsx(className, 'flex w-full gap-2 [&>li]:flex-1')}
+      className={clsx(baseClassName, 'flex w-full gap-2 [&>li]:flex-1')}
       items={modifiedItems}
       disabled={disabled}
     />
