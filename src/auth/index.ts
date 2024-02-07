@@ -1,5 +1,6 @@
 import { SiweMessage } from 'siwe';
 
+import { APP_URL } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import { isFullWallet } from '~types/wallet.ts';
 
@@ -11,8 +12,8 @@ const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Host: String(process.env.HOST),
-          Origin: `${window.location.protocol}//${process.env.HOST}`,
+          Host: APP_URL.host,
+          Origin: APP_URL.origin,
         },
         credentials: 'include',
         ...options,
@@ -56,10 +57,10 @@ export const authenticateWallet = async (): Promise<void> => {
     const { data: nonce } = await authProxyRequest('nonce');
 
     const authMessage = new SiweMessage({
-      domain: process.env.HOST,
+      domain: APP_URL.host,
       address: await signer.getAddress(),
       statement: 'Authentication Session for the Colony CDapp',
-      uri: `${window.location.protocol}//${process.env.HOST}`,
+      uri: APP_URL.origin,
       version: '1',
       chainId: await signer.getChainId(),
       nonce,

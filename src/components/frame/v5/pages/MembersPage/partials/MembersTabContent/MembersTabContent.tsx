@@ -2,6 +2,7 @@ import { UserPlus } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
+import { APP_URL } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
@@ -33,7 +34,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
 
   const showPlaceholderCard =
     user && !withSimpleCards && canInteractWithColony && items.length < 12;
-  const colonyURL = `${window.location.protocol}//${process.env.HOST}/${colonyName}`;
+  const colonyURL = `${APP_URL.origin}/${colonyName}`;
 
   return (
     <div

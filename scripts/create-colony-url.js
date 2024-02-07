@@ -31,7 +31,7 @@ const generateCreateColonyUrl = async () => {
   );
 
   console.log(
-    `http://${process.env.HOST}/${inviteMutation.data.createPrivateBetaInviteCode.id}`,
+    `http://localhost:9091/create-colony/${inviteMutation.data.createPrivateBetaInviteCode.id}`,
   );
 };
 

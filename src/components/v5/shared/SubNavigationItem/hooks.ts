@@ -1,5 +1,6 @@
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 
@@ -7,7 +8,7 @@ export const useMembersSubNavigation = () => {
   const {
     colony: { name: colonyName },
   } = useColonyContext();
-  const colonyURL = `${window.location.protocol}//${process.env.HOST}/${colonyName}`;
+  const colonyURL = `${APP_URL.origin}/${colonyName}`;
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 

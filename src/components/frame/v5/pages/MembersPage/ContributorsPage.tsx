@@ -1,6 +1,7 @@
 import { SmileyMeh } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
@@ -23,7 +24,7 @@ const ContributorsPage: FC = () => {
   } = useColonyContext();
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
-  const colonyURL = `${window.location.protocol}//${process.env.HOST}/${colonyName}`;
+  const colonyURL = `${APP_URL.origin}/${colonyName}`;
 
   return (
     <MembersTabContent

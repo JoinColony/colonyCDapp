@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
-import { MAX_COLONY_DISPLAY_NAME } from '~constants/index.ts';
+import { APP_URL, MAX_COLONY_DISPLAY_NAME } from '~constants/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Input from '~v5/common/Fields/Input/index.ts';
 
@@ -74,7 +74,7 @@ const StepColonyNameInputs = ({
         </label>
         <div className="flex">
           <div className="text-gray-500 border rounded-s border-gray-300 border-e-0 text-md p-3">
-            {process.env.HOST}/
+            {APP_URL.host}/
           </div>
           <div className="grow">
             <Input

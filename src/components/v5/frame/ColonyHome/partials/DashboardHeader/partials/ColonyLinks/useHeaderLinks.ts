@@ -7,6 +7,7 @@ import {
 } from '@phosphor-icons/react';
 import { useLocation } from 'react-router-dom';
 
+import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext.tsx';
 import { useMobile } from '~hooks/index.ts';
@@ -38,7 +39,7 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     isCopied: isColonyAddressItemCopied,
   } = useCopyToClipboard(5000);
 
-  const colonyUrl = `${process.env.HOST}${pathname}`;
+  const colonyUrl = `${APP_URL.host}${pathname}`;
   const { isWatching } = colonySubscription;
   const { colonyAddress, metadata } = colony || {};
 
