@@ -6,8 +6,6 @@ import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
-
 const getPermissionsNeededForAction = (
   actionType: Action,
   formValues: Record<string, any>,
@@ -65,7 +63,7 @@ const getPermissionsDomainIdForAction = (
       return formValues.from;
     case ACTION.MANAGE_REPUTATION:
     case ACTION.MANAGE_PERMISSIONS:
-      return formValues.CREATE_NEW_TEAM;
+      return formValues.team;
     default:
       return Id.RootDomain;
   }
@@ -74,13 +72,9 @@ const getPermissionsDomainIdForAction = (
 export const getHasActionPermissions = (
   colony: Colony,
   userAddress: Address,
+  actionType: Action,
   formValues: Record<string, any>,
 ) => {
-  const actionType = formValues[ACTION_TYPE_FIELD_NAME];
-  if (!actionType) {
-    return undefined;
-  }
-
   const allUserRoles = getAllUserRoles(colony, userAddress);
   if (allUserRoles.length === 0) {
     return false;

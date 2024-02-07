@@ -1,14 +1,14 @@
 import { Id } from '@colony/colony-js';
-import { ArrowDownRight, Coins, UsersThree } from '@phosphor-icons/react';
+import { ArrowDownRight, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
+import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
@@ -53,10 +53,8 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="to" />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Coins}
-        fieldName="amount"
-        title={formatText({ id: 'actionSidebar.amount' })}
+      <AmountRow
+        domainId={selectedTeam}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -64,9 +62,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
-      >
-        <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
-      </ActionFormRow>
+      />
 
       <DecisionMethodField />
       <CreatedInRow

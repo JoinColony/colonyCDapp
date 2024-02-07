@@ -38,7 +38,7 @@ export const useTransactionTableColumns = (
             key={row.id}
             name={`${name}.${row.index}.amount`}
             tokenAddress={tokenAddress}
-            teamId={selectedTeam}
+            domainId={selectedTeam}
           />
         ),
       }),

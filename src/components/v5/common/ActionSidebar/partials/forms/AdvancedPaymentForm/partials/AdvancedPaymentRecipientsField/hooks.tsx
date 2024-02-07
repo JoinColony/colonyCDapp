@@ -53,7 +53,7 @@ export const useRecipientsFieldTableColumns = (
             <AmountField
               key={row.id}
               name={`${name}.${row.index}.amount`}
-              teamId={selectedTeam}
+              domainId={selectedTeam}
             />
           ),
         }),

@@ -28,7 +28,8 @@ const AmountField: FC<AmountFieldProps> = ({
   name,
   tokenAddress,
   maxWidth,
-  teamId,
+  domainId,
+  isDisabled,
 }) => {
   const {
     field,
@@ -78,7 +79,11 @@ const AmountField: FC<AmountFieldProps> = ({
   const selectedTokenContent = (
     <>
       <TokenIcon token={selectedToken || colonyTokens[0]} size="xxs" />
-      <span className="text-md">
+      <span
+        className={clsx('text-md', {
+          'text-gray-400': isDisabled,
+        })}
+      >
         {selectedToken?.symbol || colonyTokens[0].symbol}
       </span>
     </>
@@ -94,7 +99,7 @@ const AmountField: FC<AmountFieldProps> = ({
           inputRef.current = ref;
           adjustInputWidth();
         }}
-        readOnly={readonly}
+        readOnly={readonly || isDisabled}
         name={name}
         key={dynamicCleaveOptionKey}
         options={formattingOptions}
@@ -124,8 +129,9 @@ const AmountField: FC<AmountFieldProps> = ({
                 'md:hover:text-blue-400': !readonly,
               },
             )}
-            onClick={readonly ? undefined : toggleTokenSelect}
+            onClick={toggleTokenSelect}
             aria-label={formatText({ id: 'ariaLabel.selectToken' })}
+            disabled={readonly || isDisabled}
           >
             {selectedTokenContent}
           </button>
@@ -148,7 +154,7 @@ const AmountField: FC<AmountFieldProps> = ({
                     const tokenBalance = getBalanceForTokenAndDomain(
                       colony.balances,
                       colonyToken.tokenAddress,
-                      Number(teamId) || Id.RootDomain,
+                      domainId ?? Id.RootDomain,
                     );
 
                     return (
