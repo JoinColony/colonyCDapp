@@ -2,7 +2,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { usePermissionsValidation } from '~v5/common/ActionSidebar/hooks/index.ts';
+import { useHasActionPermissions } from '~v5/common/ActionSidebar/hooks/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName =
@@ -18,9 +18,9 @@ const MSG = defineMessages({
 const NoPermissionsError = () => {
   const { formatMessage } = useIntl();
 
-  const { noPermissionsError } = usePermissionsValidation();
+  const hasPermissions = useHasActionPermissions();
 
-  if (!noPermissionsError) {
+  if (hasPermissions !== false) {
     return null;
   }
 

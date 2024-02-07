@@ -7,7 +7,6 @@ import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { stripHTMLFromText } from '~utils/elements.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { permissionsValidationSchema } from './hooks/usePermissionsValidation.ts';
 import { reputationValidationSchema } from './hooks/useReputationValidation.ts';
 
 export const ACTION_TYPE_FIELD_NAME = 'actionType';
@@ -51,5 +50,4 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
       .notRequired(),
   })
   .defined()
-  .concat(reputationValidationSchema)
-  .concat(permissionsValidationSchema);
+  .concat(reputationValidationSchema);

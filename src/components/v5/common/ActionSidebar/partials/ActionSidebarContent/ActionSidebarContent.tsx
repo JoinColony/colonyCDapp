@@ -12,7 +12,11 @@ import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.ts
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import ActionTypeSelect from '../../ActionTypeSelect.tsx';
-import { useActionFormProps, useSidebarActionForm } from '../../hooks/index.ts';
+import {
+  useActionFormProps,
+  useHasActionPermissions,
+  useSidebarActionForm,
+} from '../../hooks/index.ts';
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
 import Motions from '../Motions/index.ts';
@@ -43,6 +47,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       errors: { this: customError },
     },
   } = useFormContext();
+
+  const hasPermissions = useHasActionPermissions();
 
   return (
     <>
@@ -104,7 +110,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       </div>
       {!isMotion && !readonly && (
         <div className="mt-auto">
-          <ActionButtons isActionDisabled={!selectedAction} />
+          <ActionButtons
+            isActionDisabled={!selectedAction || hasPermissions === false}
+          />
         </div>
       )}
     </>

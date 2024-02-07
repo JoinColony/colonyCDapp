@@ -7,6 +7,6 @@ export * from './useGetActionData.ts';
 export * from './useGetColonyAction.ts';
 export * from './useRemoveTxParamOnClose.ts';
 export * from './useSidebarActionForm.ts';
-export * from './usePermissionsValidation.ts';
 export * from './useReputationValidation.ts';
 export * from './useDecisionMethods.ts';
+export * from './useHasActionPermissions/index.ts';
