@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
+import Icon from '~shared/Icon/index.ts';
 import { type UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks.tsx';
 import AvatarUploader from '~v5/common/AvatarUploader/index.ts';
 import Input from '~v5/common/Fields/Input/index.ts';
@@ -35,7 +36,7 @@ const MSG = defineMessages({
   tokenDescription: {
     id: `${displayName}.tokenDescription`,
     defaultMessage:
-      'The token logo will only exist on Colony and can be changed at anytime.',
+      'The logo will only exist on Colony. A blockie will be generated if no logo is added in this step.',
   },
 });
 
@@ -113,7 +114,20 @@ const StepCreateTokenInputs = ({
         {formatMessage(MSG.tokenDescription)}
       </p>
       <AvatarUploader
-        avatarPlaceholder={<Avatar size="xm" avatar={tokenAvatarUrl} />}
+        avatarPlaceholder={
+          tokenAvatarUrl ? (
+            <Avatar size="m" avatar={tokenAvatarUrl} />
+          ) : (
+            <div className="bg-gray-200 text-gray-600 p-4 rounded-full flex">
+              <Icon
+                name="image"
+                appearance={{
+                  size: 'medium',
+                }}
+              />
+            </div>
+          )
+        }
         fileOptions={{
           fileFormat: ['.PNG', '.JPG', '.SVG'],
           fileDimension: '250x250px',

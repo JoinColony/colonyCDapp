@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import Icon from '~shared/Icon/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
@@ -48,13 +49,19 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       text: tokenName,
       subText: tokenSymbol,
       step: 2,
-      icon: (
-        <Avatar
-          avatar={tokenAvatar}
-          seed={tokenAddress || tokenName}
-          size="s"
-        />
-      ),
+      icon:
+        tokenAvatar || tokenAddress ? (
+          <Avatar avatar={tokenAvatar} seed={tokenAddress} size="s" />
+        ) : (
+          <div className="bg-gray-200 text-gray-600 p-2.5 rounded-full flex">
+            <Icon
+              name="image"
+              appearance={{
+                size: 'extraSmall',
+              }}
+            />
+          </div>
+        ),
     },
     /* Not yet implemented
      * {
