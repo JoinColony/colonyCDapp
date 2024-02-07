@@ -26,6 +26,7 @@ interface AddVerifiedMembersProps {
 }
 
 const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
+  const numberOfMembers = action.members?.length || 0;
   const {
     customTitle = formatText(
       {
@@ -48,7 +49,7 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
           },
           {
             actionType: ColonyActionType.AddVerifiedMembers,
-            members: 2,
+            members: numberOfMembers,
             initiator: initiatorUser ? (
               <UserPopover
                 userName={initiatorUser.profile?.displayName}
