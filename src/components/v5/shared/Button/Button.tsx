@@ -29,7 +29,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
       ariaLabel,
       isFullSize,
       icon,
-      iconSize = 14,
+      iconSize = 18,
       isIconRight,
       ...rest
     },

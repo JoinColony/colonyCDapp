@@ -51,6 +51,6 @@ export const POPULAR_ACTIONS = [
   {
     action: ACTION.ADVANCED_PAYMENT,
     text: { id: 'actionSidebar.advancedPayments' },
-    iconName: Coins,
+    icon: Coins,
   },
 ];

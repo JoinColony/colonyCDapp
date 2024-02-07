@@ -36,7 +36,6 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
             'text-warning-400': status === 'warning',
             'text-negative-400': status === 'error',
             'text-gray-900': status === 'info',
-            hidden: true,
           })}
         />
       ) : null}

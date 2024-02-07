@@ -106,7 +106,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                   className="ml-1"
                   text={MSG.inviteMembers}
                   mode="quinary"
-                  iconName={<PaperPlaneTilt />}
+                  icon={PaperPlaneTilt}
                   size="small"
                   onClick={() => setIsInviteMembersModalOpen(true)}
                 />

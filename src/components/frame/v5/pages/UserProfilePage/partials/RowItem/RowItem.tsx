@@ -101,7 +101,9 @@ const RowItem: FC<RowItemProps> = (props): JSX.Element => {
         {copyAddressProps && (
           <div className="flex md:flex-row flex-col items-center justify-between p-3 bg-gray-50 rounded-lg w-full">
             <div className="flex items-center mb-3 md:mb-0">
-              <copyAddressProps.icon size={18} />
+              {copyAddressProps.icon ? (
+                <copyAddressProps.icon size={18} />
+              ) : null}
               <span className="text-md ml-2 truncate block w-full">
                 {copyAddressProps.walletAddress}
               </span>

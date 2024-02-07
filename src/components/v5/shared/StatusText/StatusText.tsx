@@ -16,16 +16,16 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   withIcon = true,
   textClassName = 'text-md',
   iconAlignment = 'center',
-  iconSize = 'tiny',
+  iconSize = 14,
 }) => {
-  const iconName = {
+  const statusIcons = {
     [STATUS_TYPES.SUCCESS]: CheckCircle,
     [STATUS_TYPES.WARNING]: WarningCircle,
     [STATUS_TYPES.ERROR]: WarningCircle,
     [STATUS_TYPES.INFO]: Info,
   };
 
-  const Icon = icon || iconName[status];
+  const Icon = icon || statusIcons[status];
 
   return (
     <div

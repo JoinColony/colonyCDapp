@@ -203,11 +203,11 @@ const Table = <T,>({
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
-                      {header.column.getCanSort() && (
+                      {header.column.getCanSort() ? (
                         <ArrowDown
                           size={12}
                           className={clsx(
-                            'ml-1 mb-0.5 transition-[transform,opacity] align-middle',
+                            'inline-block ml-1 mb-0.5 transition-[transform,opacity] align-middle',
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc' &&
@@ -221,7 +221,7 @@ const Table = <T,>({
                             },
                           )}
                         />
-                      )}
+                      ) : null}
                     </th>
                   ))}
                 </tr>

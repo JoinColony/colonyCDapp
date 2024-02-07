@@ -58,9 +58,9 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
               })}
             >
               {status === 'success' ? (
-                <CheckCircle size={12} />
+                <CheckCircle size={18} />
               ) : (
-                <WarningCircle size={12} />
+                <WarningCircle size={18} />
               )}
             </span>
             <span className={styles.value}>{currentVersion}</span>
@@ -78,7 +78,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
           {formatMessage({ id: 'latest.version' })}
           <div className={styles.text}>
             <span className="text-success-400">
-              <CheckCircle size={12} />
+              <CheckCircle size={18} />
             </span>
             <span className={styles.value}>{latestVersion}</span>
           </div>

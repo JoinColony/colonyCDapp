@@ -57,7 +57,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
         )}
       >
         <DotsThree
-          size={12}
+          size={16}
           className={clsx({
             'rotate-90': withVerticalIcon,
           })}

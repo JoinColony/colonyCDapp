@@ -31,22 +31,28 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
     const [isExpanded, { toggle }] = rowToggle;
     const isError = !!error;
     const { label, content: contentTooltip } = tooltips;
-    const textColorClassNames = {
-      'text-negative-400': isError,
-      'text-gray-900': !isError,
-      'text-gray-400': isDisabled && !isError,
-    };
 
     const rowContent =
       typeof children === 'function' ? children(rowToggle) : children;
 
     const content = (
       <>
-        <Icon size={12} className={clsx('h-3 w-3', textColorClassNames)} />
+        <Icon
+          size={14}
+          className={clsx({
+            'text-negative-400': isError,
+            'text-gray-900': !isError,
+            'text-gray-400': isDisabled && !isError,
+          })}
+        />
         <span
           className={clsx(
             LABEL_CLASSNAME,
-            textColorClassNames,
+            {
+              'text-negative-400': isError,
+              'text-gray-900': !isError,
+              'text-gray-400': isDisabled && !isError,
+            },
             'text-md ml-2 flex gap-2 items-center',
           )}
         >

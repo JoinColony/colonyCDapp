@@ -32,9 +32,9 @@ const CopyableAddress = ({ address, full }: Props) => {
       2px system padding is still there at the bottom, we offset this by
       translating the icon 1px higher here so it looks more centered */}
       {isCopied ? (
-        <Check className="translate-y-[-1px]" size={12} />
+        <Check className="translate-y-[-1px]" size={16} />
       ) : (
-        <CopySimple className="translate-y-[-1px]" size={12} />
+        <CopySimple className="translate-y-[-1px]" size={16} />
       )}
     </button>
   );

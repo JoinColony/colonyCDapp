@@ -74,7 +74,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
       {
         key: '1',
         label: formatText({ id: 'activityFeedTable.menu.view' }),
-        icon: <FilePlus size={16} />,
+        icon: FilePlus,
         onClick: () => {
           navigate(
             `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
@@ -95,7 +95,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
             }}
           />
         ),
-        icon: <ArrowSquareOut size={16} />,
+        icon: ArrowSquareOut,
       },
       {
         key: '3',
@@ -111,7 +111,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
             {children}
           </MeatballMenuCopyItem>
         ),
-        icon: <ShareNetwork size={16} />,
+        icon: ShareNetwork,
         onClick: () => false,
       },
     ],

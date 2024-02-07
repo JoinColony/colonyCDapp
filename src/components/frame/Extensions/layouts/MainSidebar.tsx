@@ -19,7 +19,7 @@ const MainSidebar = () => (
         // @NOTE: Disabling for beta
         // bottomActionProps: {
         //   text: formatText({ id: 'button.createNewColony' }),
-        //   iconName: 'plus',
+        //   icon: Plus,
         //   to: CREATE_COLONY_ROUTE,
         // },
       },

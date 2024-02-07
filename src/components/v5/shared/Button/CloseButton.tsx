@@ -50,7 +50,7 @@ const CloseButton: FC<CloseButtonProps> = ({
           {...rest}
         >
           <span className="flex text-sm">
-            <X size={12} />
+            <X size={18} />
           </span>
         </button>
       )}
