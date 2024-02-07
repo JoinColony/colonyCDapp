@@ -33,7 +33,7 @@ const LandingPageItem = ({
     <div
       className={clsx(
         'group flex items-center justify-between px-6 py-5 rounded-lg border border-gray-200',
-        { 'hover:border-blue-400': !disabled },
+        { 'hover:border-blue-400': !disabled, 'text-gray-300': disabled },
       )}
       onMouseEnter={() => onHover(disabled ? 0 : itemIndex)}
       onMouseLeave={() => onHover(0)}
@@ -46,29 +46,14 @@ const LandingPageItem = ({
         >
           <Icon
             size={28}
-            className={clsx(
-              '[&>svg]:w-7 [&>svg]:h-7 [&>svg]:group-hover:fill-blue-400',
-              {
-                '[&>svg]:fill-gray-300 [&>svg]:group-hover:fill-gray-300':
-                  disabled,
-              },
-            )}
+            className={clsx({
+              'group-hover:text-blue-400': !disabled,
+            })}
           />
         </div>
         <div>
-          <Heading
-            text={headingText}
-            className={clsx('text-md font-semibold', {
-              'text-gray-900': !disabled,
-              'text-gray-300': disabled,
-            })}
-          />
-          <p
-            className={clsx('text-sm mt-1', {
-              'text-gray-700': !disabled,
-              'text-gray-300': disabled,
-            })}
-          >
+          <Heading text={headingText} className="text-md font-semibold" />
+          <p className="text-sm mt-1">
             <FormattedMessage {...headingDescription} />
           </p>
         </div>
