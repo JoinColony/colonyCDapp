@@ -2,11 +2,10 @@ import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
 import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
-
-import { DecisionMethod } from '../../hooks/index.ts';
 
 import { type DecisionMethodFieldProps } from './types.ts';
 

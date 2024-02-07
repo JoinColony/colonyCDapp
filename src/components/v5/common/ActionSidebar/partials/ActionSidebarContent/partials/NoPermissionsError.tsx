@@ -18,7 +18,7 @@ const MSG = defineMessages({
 const NoPermissionsError = () => {
   const { formatMessage } = useIntl();
 
-  const hasPermissions = useHasActionPermissions(true);
+  const hasPermissions = useHasActionPermissions();
 
   if (hasPermissions !== false) {
     return null;

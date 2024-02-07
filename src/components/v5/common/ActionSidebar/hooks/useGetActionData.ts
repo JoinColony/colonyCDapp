@@ -6,7 +6,7 @@ import { ACTION } from '~constants/actions.ts';
 import { getRole, USER_ROLE } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
-import { ExtendedColonyActionType } from '~types/actions.ts';
+import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
@@ -16,7 +16,6 @@ import {
   AVAILABLE_ROLES,
 } from '../partials/forms/ManagePermissionsForm/consts.tsx';
 
-import { DecisionMethod } from './useDecisionMethods.ts';
 import { useGetColonyAction } from './useGetColonyAction.ts';
 
 export const useGetActionData = (transactionId: string | undefined) => {
