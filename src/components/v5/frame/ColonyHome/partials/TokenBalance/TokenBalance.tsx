@@ -31,6 +31,7 @@ const TokenBalance = () => {
       }
       href={COLONY_BALANCES_ROUTE}
       searchParams={search}
+      className="bg-base-bg border-base-bg"
     />
   );
 };

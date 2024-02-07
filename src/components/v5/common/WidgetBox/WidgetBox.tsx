@@ -51,16 +51,12 @@ const WidgetBox: FC<WidgetBoxProps> = ({
     </>
   );
 
-  const hoverStyles = 'transition-all sm:hover:border-gray-900';
+  const hoverStyles =
+    'transition-all sm:hover:border-gray-900 sm:hover:text-gray-900 sm:hover:bg-base-white';
 
   return href ? (
     <Link
-      className={clsx(
-        className,
-        wrapperClassName,
-        hoverStyles,
-        'sm:hover:text-gray-900 sm:hover:bg-base-white',
-      )}
+      className={clsx(className, wrapperClassName, hoverStyles)}
       to={{ pathname: href, search: searchParams || '' }}
     >
       {content}
