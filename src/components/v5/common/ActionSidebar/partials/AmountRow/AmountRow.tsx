@@ -4,7 +4,7 @@ import React from 'react';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
-import { useHasActionPermissions } from '../../hooks/index.ts';
+import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import AmountField from '../AmountField/index.ts';
 
 import { type AmountRowProps } from './types.ts';
@@ -17,7 +17,7 @@ const AmountRow = ({
   title,
   tooltips,
 }: AmountRowProps) => {
-  const hasPermissions = useHasActionPermissions();
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   return (
     <ActionFormRow
@@ -25,14 +25,14 @@ const AmountRow = ({
       fieldName="amount"
       title={title ?? formatText({ id: 'actionSidebar.amount' })}
       tooltips={tooltips}
-      isDisabled={hasPermissions === false}
+      isDisabled={hasNoDecisionMethods}
     >
       <AmountField
         name="amount"
         maxWidth={270}
         tokenAddress={tokenAddress}
         domainId={domainId}
-        isDisabled={hasPermissions === false}
+        isDisabled={hasNoDecisionMethods}
       />
     </ActionFormRow>
   );
