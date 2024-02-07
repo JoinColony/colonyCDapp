@@ -9,10 +9,12 @@ import { getExtendedActionType } from '~utils/colonyActions.ts';
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
+import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
 import CreateDecision from './partials/CreateDecision/index.ts';
 import CreateNewTeam from './partials/CreateNewTeam/index.ts';
 // import EditColonyDetails from './partials/EditColonyDetails';
 import MintTokens from './partials/MintTokens/index.ts';
+import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
@@ -46,6 +48,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;
+      case ColonyActionType.AddVerifiedMembers:
+        return <AddVerifiedMembers action={action} />;
+      case ColonyActionType.RemoveVerifiedMembers:
+        return <RemoveVerifiedMembers action={action} />;
       /* @TODO uncomment when social links are added to action display
       case ColonyActionType.ColonyEdit:
         return <EditColonyDetails action={action} />;
