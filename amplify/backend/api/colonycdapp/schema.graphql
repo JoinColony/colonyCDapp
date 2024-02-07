@@ -3448,6 +3448,6 @@ type VerifiedMember @model {
       queryField: "getVerifiedMembersByColony"
     )
   userAddress: ID!
-  user: User! @hasOne(fields: ["userAddress"])
+  user: User @hasOne(fields: ["userAddress"])
   createdAt: AWSDateTime!
 }
