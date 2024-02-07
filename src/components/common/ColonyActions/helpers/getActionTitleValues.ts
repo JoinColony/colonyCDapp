@@ -22,6 +22,7 @@ export enum ActionTitleMessageKeys {
   Direction = 'direction',
   FromDomain = 'fromDomain',
   Initiator = 'initiator',
+  Members = 'members',
   NewVersion = 'newVersion',
   Version = 'version',
   Recipient = 'recipient',
@@ -113,6 +114,8 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [ActionTitleMessageKeys.Initiator];
     case safeActionTypes.some((type) => actionType.includes(type)):
       return [ActionTitleMessageKeys.SafeTransactionTitle];
+    case actionType.includes(ColonyActionType.AddVerifiedMembers):
+      return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
     default:
       return [];
   }
@@ -123,8 +126,6 @@ const getActionTitleValues = (
   actionData: ColonyAction,
   colony: Colony,
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>,
-  // @TODO a temporary hack until we fix this properly via https://github.com/JoinColony/colonyCDapp/issues/1669
-  actionTypeOverride?: AnyActionType,
 ) => {
   const { isMotion, pendingColonyMetadata } = actionData;
 
@@ -133,12 +134,10 @@ const getActionTitleValues = (
     colony,
     keyFallbackValues,
   );
-  const actionType =
-    actionTypeOverride ??
-    getExtendedActionType(
-      actionData,
-      isMotion ? pendingColonyMetadata : colony.metadata,
-    );
+  const actionType = getExtendedActionType(
+    actionData,
+    isMotion ? pendingColonyMetadata : colony.metadata,
+  );
   const keys = getMessageDescriptorKeys(actionType);
 
   return generateMessageValues(updatedItem, keys, {
