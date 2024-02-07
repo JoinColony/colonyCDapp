@@ -235,5 +235,7 @@ export const mapColonyActionToExpectedFormat = (
         ActionTitleMessageKeys.SafeTransactionTitle,
         notMaybe(actionData.metadata?.customTitle),
       ),
+    // @TODO get codegen to work so actionData.members is defined
+    [ActionTitleMessageKeys.Members]: 2,
   };
 };
