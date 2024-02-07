@@ -8412,7 +8412,7 @@ export type VerifiedMember = {
   colonyAddress: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   updatedAt: Scalars['AWSDateTime'];
-  user: User;
+  user?: Maybe<User>;
   userAddress: Scalars['ID'];
 };
 
