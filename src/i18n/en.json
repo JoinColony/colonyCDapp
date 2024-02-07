@@ -897,6 +897,7 @@
     "actions.manageReputation": "Manage reputation",
     "actions.createAgreement": "Create an Agreement",
     "actions.simpleDiscussion": "Simple Discussion",
+    "actions.manageVerifiedMembers": "Manage verified members",
     "connectWallet": "Connect wallet",
     "copyWalletAddress": "Copy wallet address",
     "copy.address": "Copy address",
