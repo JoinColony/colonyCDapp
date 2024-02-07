@@ -3,11 +3,11 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { type BurgerMenuProps } from './types.ts';
+import { type KebapMenuProps } from './types.ts';
 
-const displayName = 'v5.BurgerMenu';
+const displayName = 'v5.KebapMenu';
 
-const BurgerMenu: FC<BurgerMenuProps> = ({
+const KebapMenu: FC<KebapMenuProps> = ({
   className,
   isVertical,
   setTriggerRef,
@@ -24,11 +24,11 @@ const BurgerMenu: FC<BurgerMenuProps> = ({
       aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
       ref={setTriggerRef}
     >
-      {isVertical ? <DotsThreeVertical size={12} /> : <DotsThree size={12} />}
+      {isVertical ? <DotsThreeVertical size={16} /> : <DotsThree size={16} />}
     </button>
   );
 };
 
-BurgerMenu.displayName = displayName;
+KebapMenu.displayName = displayName;
 
-export default BurgerMenu;
+export default KebapMenu;

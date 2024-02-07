@@ -4,7 +4,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { type ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
 
-import BurgerMenu from '../BurgerMenu/index.ts';
+import KebapMenu from '../KebapMenu/index.ts';
 import PopoverBase from '../PopoverBase/index.ts';
 import UserAvatarPopover from '../UserAvatarPopover/index.ts';
 
@@ -58,7 +58,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
             )}
             {shouldBeMenuVisible && (
               <>
-                <BurgerMenu isVertical setTriggerRef={setTriggerRef} />
+                <KebapMenu isVertical setTriggerRef={setTriggerRef} />
                 {isUserDetailsOpen && (
                   <PopoverBase
                     setTooltipRef={setTooltipRef}
