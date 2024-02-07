@@ -1,4 +1,4 @@
 export interface DecisionMethodFieldProps {
-  permissionsOnly?: boolean;
+  reputationOnly?: boolean;
   disabled?: boolean;
 }
