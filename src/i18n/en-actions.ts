@@ -34,6 +34,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
       ${ColonyActionType.SetUserRoles} {{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.SetUserRolesMotion} {{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}}
+      ${ColonyActionType.AddVerifiedMembers} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
       ${ExtendedColonyActionType.UpdateTokens} {Manage approved tokens by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
