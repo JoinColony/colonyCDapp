@@ -1,5 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useCallback, useEffect, useImperativeHandle } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  type Ref,
+} from 'react';
 import {
   useForm,
   type UseFormProps,
@@ -39,22 +44,21 @@ export interface FormProps<FormData extends FieldValues> {
   /** Pass true to reset the default values to latest values on form submission. This will reset the isDirty prop. */
   resetOnSubmit?: boolean;
   className?: string;
+  innerRef?: Ref<UseFormReturn<FormData>>;
 }
 
-const Form = <FormData extends FieldValues>(
-  {
-    children,
-    defaultValues,
-    mode = 'onTouched',
-    onSubmit,
-    onError,
-    options,
-    resetOnSubmit = false,
-    validationSchema,
-    className,
-  }: FormProps<FormData>,
-  ref: React.ForwardedRef<UseFormReturn<FormData, any, undefined>>,
-) => {
+const Form = <FormData extends FieldValues>({
+  children,
+  defaultValues,
+  mode = 'onTouched',
+  onSubmit,
+  onError,
+  options,
+  resetOnSubmit = false,
+  validationSchema,
+  className,
+  innerRef,
+}: FormProps<FormData>) => {
   const { readonly, ...formOptions } = options || {};
   const formHelpers = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
@@ -63,7 +67,7 @@ const Form = <FormData extends FieldValues>(
     ...formOptions,
   });
 
-  useImperativeHandle(ref, () => formHelpers);
+  useImperativeHandle(innerRef, () => formHelpers);
 
   const {
     handleSubmit,
@@ -113,4 +117,4 @@ const Form = <FormData extends FieldValues>(
 
 Form.displayName = displayName;
 
-export default React.forwardRef(Form);
+export default Form;

@@ -36,7 +36,7 @@ const SocialLinkFormModal: FC<SocialLinkFormModalProps> = ({
   return (
     <Modal buttonMode="primarySolid" icon="smile" isFullOnMobile {...rest}>
       <Form<SocialLinkModalFormValues>
-        ref={(ref) => setFormRef(ref)}
+        innerRef={(ref) => setFormRef(ref)}
         onSubmit={onSubmit}
         validationSchema={SOCIAL_LINK_FORM_MODAL_VALIDATION_SCHEMA}
       >
