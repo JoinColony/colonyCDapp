@@ -21,10 +21,6 @@ const MSG = defineMessages({
     id: `${displayName}.nativeToken`,
     defaultMessage: 'Native token',
   },
-  existingToken: {
-    id: `${displayName}.existingToken`,
-    defaultMessage: 'Existing token',
-  },
   blockchain: {
     id: `${displayName}.blockchain`,
     defaultMessage: 'Blockchain',
@@ -49,7 +45,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       step: 0,
     },
     {
-      title: existingToken ? MSG.existingToken : MSG.nativeToken,
+      title: MSG.nativeToken,
       text: existingToken ? existingToken.name : tokenName,
       subText: existingToken ? existingToken.symbol : tokenSymbol,
       step: 2,
