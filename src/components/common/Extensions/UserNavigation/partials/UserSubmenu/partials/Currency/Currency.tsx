@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useCurrencyContext } from '~context/CurrencyContext.tsx';
 import { SupportedCurrencies } from '~gql';
-import { useMobile } from '~hooks/index.ts';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 
 import { currencyIcons } from '../../../UserMenu/consts.ts';
@@ -21,8 +20,7 @@ interface CurrencyProps {
 
 const Currency = ({ closeSubmenu }: CurrencyProps) => {
   const { updatePreferredCurrency } = useCurrencyContext();
-  const isMobile = useMobile();
-  const iconSize = isMobile ? 18 : 14;
+  const iconSize = 18;
 
   const handleCurrencyClick = (currency: SupportedCurrencies) => {
     updatePreferredCurrency(currency);

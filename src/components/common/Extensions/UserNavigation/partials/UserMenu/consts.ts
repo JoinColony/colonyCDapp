@@ -2,7 +2,7 @@ import { type Icon, Lifebuoy, Code, Briefcase } from '@phosphor-icons/react';
 
 import { SupportedCurrencies } from '~gql';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
-import EtherIcon from '~icons/EtherIcon.tsx';
+import EthereumIcon from '~icons/EthereumIcon.tsx';
 import FlagBrazilIcon from '~icons/FlagBrazilIcon.tsx';
 import FlagCanadaIcon from '~icons/FlagCanadaIcon.tsx';
 import FlagEuIcon from '~icons/FlagEuIcon.tsx';
@@ -23,7 +23,7 @@ export const currencyIcons = {
   [SupportedCurrencies.Krw]: FlagSouthKoreaIcon,
   [SupportedCurrencies.Inr]: FlagIndiaIcon,
   [SupportedCurrencies.Brl]: FlagBrazilIcon,
-  [SupportedCurrencies.Eth]: EtherIcon,
+  [SupportedCurrencies.Eth]: EthereumIcon,
   [SupportedCurrencies.Clny]: ClnyTokenIcon,
 };
 

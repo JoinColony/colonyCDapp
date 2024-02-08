@@ -52,6 +52,8 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
       {Icon && (
         <figure
           className={`
+          h-[0.5em]
+          w-[0.5em]
           rounded-full
           border
           border-gray-200
@@ -67,7 +69,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           items-center
       `}
         >
-          <Icon size={8} />
+          <Icon size={14} />
         </figure>
       )}
     </div>
