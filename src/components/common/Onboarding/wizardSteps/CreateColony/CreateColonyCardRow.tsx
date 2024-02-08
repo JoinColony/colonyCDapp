@@ -21,6 +21,10 @@ const MSG = defineMessages({
     id: `${displayName}.nativeToken`,
     defaultMessage: 'Native token',
   },
+  existingToken: {
+    id: `${displayName}.existingToken`,
+    defaultMessage: 'Existing token',
+  },
   blockchain: {
     id: `${displayName}.blockchain`,
     defaultMessage: 'Blockchain',
@@ -30,10 +34,10 @@ const MSG = defineMessages({
 const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
   const {
     displayName: colonyDisplayName,
+    token: existingToken,
     tokenName,
     tokenSymbol,
     tokenAvatar,
-    tokenAddress,
     colonyName,
   } = updatedWizardValues;
 
@@ -45,13 +49,17 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       step: 0,
     },
     {
-      title: MSG.nativeToken,
-      text: tokenName,
-      subText: tokenSymbol,
+      title: existingToken ? MSG.existingToken : MSG.nativeToken,
+      text: existingToken ? existingToken.name : tokenName,
+      subText: existingToken ? existingToken.symbol : tokenSymbol,
       step: 2,
       icon:
-        tokenAvatar || tokenAddress ? (
-          <Avatar avatar={tokenAvatar} seed={tokenAddress} size="s" />
+        tokenAvatar || existingToken ? (
+          <Avatar
+            avatar={tokenAvatar || existingToken?.avatar}
+            seed={existingToken?.tokenAddress}
+            size="s"
+          />
         ) : (
           <div className="bg-gray-200 text-gray-600 p-2.5 rounded-full flex">
             <Icon
