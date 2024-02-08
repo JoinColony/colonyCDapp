@@ -15,6 +15,7 @@ import ActionTypeSelect from '../../ActionTypeSelect.tsx';
 import {
   useActionFormProps,
   useHasActionPermissions,
+  useHasNoDecisionMethods,
   useSidebarActionForm,
 } from '../../hooks/index.ts';
 import ActionButtons from '../ActionButtons.tsx';
@@ -49,6 +50,10 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   } = useFormContext();
 
   const hasPermissions = useHasActionPermissions();
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
+  const isSubmitDisabled =
+    !selectedAction || hasPermissions === false || hasNoDecisionMethods;
 
   return (
     <>
@@ -78,7 +83,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <ActionSidebarDescription />
         </div>
         <SidebarBanner />
-        <NoPermissionsError />
+        {!readonly && <NoPermissionsError />}
         <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
@@ -110,9 +115,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       </div>
       {!isMotion && !readonly && (
         <div className="mt-auto">
-          <ActionButtons
-            isActionDisabled={!selectedAction || hasPermissions === false}
-          />
+          <ActionButtons isActionDisabled={isSubmitDisabled} />
         </div>
       )}
     </>

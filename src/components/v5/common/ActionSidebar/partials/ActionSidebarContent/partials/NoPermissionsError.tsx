@@ -3,8 +3,8 @@ import React from 'react';
 import { useWatch } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { type DecisionMethod } from '~types/actions.ts';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { type Action } from '~constants/actions.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import {
   useHasActionPermissions,
   useHasNoDecisionMethods,
@@ -24,24 +24,24 @@ const MSG = defineMessages({
 const NoPermissionsError = () => {
   const { formatMessage } = useIntl();
 
-  const decisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
+  const actionType: Action | undefined = useWatch({
+    name: ACTION_TYPE_FIELD_NAME,
   });
 
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-  // Hide the banner if user has permissions, or if the decision method is not set
-  if (hasPermissions !== false || (!decisionMethod && !hasNoDecisionMethods)) {
-    return null;
+
+  if (actionType && (hasNoDecisionMethods || hasPermissions === false)) {
+    return (
+      <div className="mt-6">
+        <NotificationBanner status="error" icon={WarningCircle}>
+          {formatMessage(MSG.noPermissionsErrorTitle)}
+        </NotificationBanner>
+      </div>
+    );
   }
 
-  return (
-    <div className="mt-6">
-      <NotificationBanner status="error" icon={WarningCircle}>
-        {formatMessage(MSG.noPermissionsErrorTitle)}
-      </NotificationBanner>
-    </div>
-  );
+  return null;
 };
 
 NoPermissionsError.displayName = displayName;

@@ -1,7 +1,10 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
+import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import { getAllUserRoles } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
@@ -17,12 +20,18 @@ const DecisionMethodField = ({
   reputationOnly,
   disabled,
 }: DecisionMethodFieldProps) => {
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
+  const userRoles = getAllUserRoles(colony, user?.walletAddress);
+
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
+  const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
+
   const decisionMethods = [
-    ...(!reputationOnly
+    ...(shouldShowPermissions
       ? [
           {
             label: formatText({ id: 'actionSidebar.method.permissions' }),
