@@ -1,6 +1,9 @@
 import { MotionState } from '~utils/colonyMotions.ts';
 
-export const MOTION_STATE_TO_CLASSNAME_MAP: Record<MotionState, string> = {
+export const MOTION_STATE_TO_CLASSNAME_MAP: Record<
+  MotionState | 'Unknown',
+  string
+> = {
   [MotionState.Supported]: 'text-purple-400 bg-purple-100',
   [MotionState.Staking]: 'text-purple-400 bg-purple-100',
   [MotionState.Voting]: 'text-teams-teal-500 bg-teams-teal-50',
@@ -15,4 +18,5 @@ export const MOTION_STATE_TO_CLASSNAME_MAP: Record<MotionState, string> = {
   [MotionState.Escalated]: 'text-blue-400 bg-blue-100',
   [MotionState.Forced]: 'text-teams-blue-400 bg-teams-blue-50',
   [MotionState.Draft]: 'text-teams-grey-500 bg-teams-grey-50',
+  [MotionState.Unknown]: 'text-teams-grey-500 bg-teams-grey-50',
 };
