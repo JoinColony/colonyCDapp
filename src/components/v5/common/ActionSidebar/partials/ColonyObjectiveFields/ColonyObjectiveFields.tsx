@@ -7,6 +7,8 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 
+import { useHasNoDecisionMethods } from '../../hooks/index.ts';
+
 const displayName = 'v5.common.ActionsContent.partials.ColonyObjectiveFields';
 
 const MSG = defineMessages({
@@ -36,12 +38,15 @@ const ColonyObjectiveFields: FC = () => {
   const { colony } = useColonyContext();
   const { objective } = colony.metadata || {};
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   return (
     <>
       <ActionFormRow
         icon={Article}
         title={formatText(MSG.title)}
         fieldName="colonyObjectiveTitle"
+        isDisabled={hasNoDecisionMethods}
       >
         <FormInputBase
           name="colonyObjectiveTitle"
@@ -49,12 +54,14 @@ const ColonyObjectiveFields: FC = () => {
           mode="secondary"
           message={undefined}
           defaultValue={objective?.title}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
         icon={FileText}
         title={formatText(MSG.description)}
         fieldName="colonyObjectiveDescription"
+        isDisabled={hasNoDecisionMethods}
       >
         <FormInputBase
           name="colonyObjectiveDescription"
@@ -62,12 +69,14 @@ const ColonyObjectiveFields: FC = () => {
           mode="secondary"
           message={undefined}
           defaultValue={objective?.description}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
         icon={Percent}
         title={formatText(MSG.progress)}
         fieldName="colonyObjectiveProgress"
+        isDisabled={hasNoDecisionMethods}
       >
         <FormInputBase
           type="number"
@@ -79,6 +88,7 @@ const ColonyObjectiveFields: FC = () => {
           autoWidth
           message={undefined}
           defaultValue={objective?.progress}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
     </>

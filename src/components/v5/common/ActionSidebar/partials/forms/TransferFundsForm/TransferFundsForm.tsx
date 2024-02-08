@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -23,6 +24,8 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   return (
     <>
       <ActionFormRow
@@ -36,8 +39,9 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.from' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamsSelect name="from" />
+        <TeamsSelect name="from" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
         icon={ArrowDownRight}
@@ -50,8 +54,9 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamsSelect name="to" />
+        <TeamsSelect name="to" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <AmountRow
         domainId={selectedTeam}

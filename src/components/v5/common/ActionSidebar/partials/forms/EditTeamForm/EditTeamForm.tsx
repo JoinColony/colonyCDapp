@@ -15,6 +15,7 @@ import {
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
@@ -35,6 +36,8 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   useEditTeam(getFormOptions);
   const selectedTeam = watch('team');
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   return (
     <>
       <ActionFormRow
@@ -48,12 +51,14 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
         <TeamsSelect
           name="team"
           filterOptionsFn={(option) =>
             option.value !== Id.RootDomain.toString()
           }
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -67,6 +72,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.teamName' })}
+        isDisabled={hasNoDecisionMethods}
       >
         <FormInputBase
           message={false}
@@ -77,6 +83,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           mode="secondary"
           readOnly={readonly}
           maxLength={MAX_COLONY_DISPLAY_NAME}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -91,6 +98,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
         <FormTextareaBase
           message={false}
@@ -99,6 +107,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             id: 'actionSidebar.placeholder.purpose',
           })}
           maxLength={MAX_DOMAIN_PURPOSE_LENGTH}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -112,8 +121,9 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamColorField name="domainColor" />
+        <TeamColorField name="domainColor" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
 
       <DecisionMethodField />

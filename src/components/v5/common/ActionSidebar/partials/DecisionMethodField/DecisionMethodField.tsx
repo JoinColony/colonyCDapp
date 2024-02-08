@@ -7,6 +7,8 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
+import { useHasNoDecisionMethods } from '../../hooks/index.ts';
+
 import { type DecisionMethodFieldProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DecisionMethodField';
@@ -15,6 +17,8 @@ const DecisionMethodField = ({
   reputationOnly,
   disabled,
 }: DecisionMethodFieldProps) => {
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const decisionMethods = [
@@ -48,7 +52,7 @@ const DecisionMethodField = ({
         },
       }}
       title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      isDisabled={disabled}
+      isDisabled={disabled || hasNoDecisionMethods}
     >
       <FormCardSelect
         name="decisionMethod"
@@ -57,6 +61,7 @@ const DecisionMethodField = ({
         placeholder={formatText({
           id: 'actionSidebar.decisionMethod.placeholder',
         })}
+        disabled={disabled || hasNoDecisionMethods}
       />
     </ActionFormRow>
   );

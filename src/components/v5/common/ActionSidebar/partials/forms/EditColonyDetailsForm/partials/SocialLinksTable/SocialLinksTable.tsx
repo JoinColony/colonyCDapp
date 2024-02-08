@@ -6,6 +6,7 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -25,6 +26,8 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
   const fieldArrayMethods = useFieldArray({ name });
   const value = useWatch({ name });
   const { readonly } = useAdditionalFormOptionsContext();
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   const getMenuProps = ({ index }) => {
     return {
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
@@ -70,7 +73,9 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
             getRowId={({ key }) => key}
             columns={columns}
             data={data}
-            getMenuProps={readonly ? undefined : getMenuProps}
+            getMenuProps={
+              readonly || hasNoDecisionMethods ? undefined : getMenuProps
+            }
           />
         </>
       )}
@@ -83,6 +88,7 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
             className="mt-6"
             isFullSize={isMobile}
             onClick={() => setSocialLinkIndex(-1)}
+            disabled={hasNoDecisionMethods}
           >
             {formatText({ id: 'button.addSocialLinks' })}
           </Button>

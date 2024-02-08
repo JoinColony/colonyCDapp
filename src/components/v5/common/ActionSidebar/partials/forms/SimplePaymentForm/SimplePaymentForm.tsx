@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 
@@ -23,6 +24,8 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   return (
     <>
       <ActionFormRow
@@ -36,8 +39,9 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.from' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamsSelect name="from" />
+        <TeamsSelect name="from" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
         icon={UserFocus}
@@ -50,8 +54,9 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.recipient' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <UserSelect name="recipient" />
+        <UserSelect name="recipient" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <AmountRow
         domainId={selectedTeam}

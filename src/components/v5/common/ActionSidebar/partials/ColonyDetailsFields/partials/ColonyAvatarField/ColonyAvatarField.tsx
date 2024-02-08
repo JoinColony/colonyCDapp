@@ -1,4 +1,5 @@
 import { At, Image } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
@@ -22,6 +23,7 @@ const displayName =
 const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
   fileOptions,
   name,
+  disabled,
 }) => {
   const { field } = useController({ name });
   const {
@@ -57,11 +59,14 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
       {!readonly && (
         <button
           type="button"
-          className="text-3 underline text-gray-700 hover:text-blue-400"
+          className={clsx('text-3 underline text-gray-700', {
+            'md:hover:text-blue-400': !disabled,
+          })}
           onClick={() => {
             toggleAvatarModalOn();
             setModalValue(field.value);
           }}
+          disabled={disabled}
         >
           Change logo
         </button>

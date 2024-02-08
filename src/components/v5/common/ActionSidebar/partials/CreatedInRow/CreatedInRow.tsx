@@ -7,6 +7,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
 import { DECISION_METHOD_FIELD_NAME } from '../../consts.tsx';
+import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import TeamsSelect from '../TeamsSelect/index.ts';
 
 import { type CreatedInRowProps } from './types.ts';
@@ -14,6 +15,7 @@ import { type CreatedInRowProps } from './types.ts';
 const displayName = 'v5.common.ActionSidebar.partials.CreatedInRow';
 
 const CreatedInRow: FC<CreatedInRowProps> = ({ filterOptionsFn, readonly }) => {
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
@@ -30,6 +32,7 @@ const CreatedInRow: FC<CreatedInRowProps> = ({ filterOptionsFn, readonly }) => {
         },
       }}
       title={formatText({ id: 'actionSidebar.createdIn' })}
+      isDisabled={hasNoDecisionMethods}
     >
       <TeamsSelect
         name="createdIn"

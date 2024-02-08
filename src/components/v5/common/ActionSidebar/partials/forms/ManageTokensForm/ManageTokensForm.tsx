@@ -1,5 +1,7 @@
 import React, { type FC } from 'react';
 
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
+
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
@@ -13,6 +15,8 @@ const displayName = 'v5.common.ActionSidebar.partials.ManageTokensForm';
 const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { shouldShowMenu } = useManageTokens(getFormOptions);
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   return (
     <>
       <DecisionMethodField />
@@ -21,6 +25,7 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <TokensTable
         name="selectedTokenAddresses"
         shouldShowMenu={shouldShowMenu}
+        isDisabled={hasNoDecisionMethods}
       />
     </>
   );

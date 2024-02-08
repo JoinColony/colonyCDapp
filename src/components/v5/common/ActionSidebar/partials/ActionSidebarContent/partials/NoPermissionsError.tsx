@@ -1,8 +1,14 @@
 import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
+import { useWatch } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useHasActionPermissions } from '~v5/common/ActionSidebar/hooks/index.ts';
+import { type DecisionMethod } from '~types/actions.ts';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import {
+  useHasActionPermissions,
+  useHasNoDecisionMethods,
+} from '~v5/common/ActionSidebar/hooks/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName =
@@ -18,9 +24,14 @@ const MSG = defineMessages({
 const NoPermissionsError = () => {
   const { formatMessage } = useIntl();
 
-  const hasPermissions = useHasActionPermissions();
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
 
-  if (hasPermissions !== false) {
+  const hasPermissions = useHasActionPermissions();
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+  // Hide the banner if user has permissions, or if the decision method is not set
+  if (hasPermissions !== false || (!decisionMethod && !hasNoDecisionMethods)) {
     return null;
   }
 
