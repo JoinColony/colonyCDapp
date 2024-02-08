@@ -19,7 +19,7 @@ const MotionOutcomeBadge = ({ motionState }: MotionOutcomeBadgeProps) => {
   }
 
   return (
-    <div className="ml-auto mr-2">
+    <div className="ml-2 mr-auto">
       <MotionStateBadge state={motionState} />
     </div>
   );
