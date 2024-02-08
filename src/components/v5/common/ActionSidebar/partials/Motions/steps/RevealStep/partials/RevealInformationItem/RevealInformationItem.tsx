@@ -1,8 +1,7 @@
 import React, { type FC } from 'react';
 
-import useUserByAddress from '~hooks/useUserByAddress.ts';
 import Icon from '~shared/Icon/index.ts';
-import AvatarUser from '~v5/shared/AvatarUser/index.ts';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 
 import { type RevealInformationListItem } from './types.ts';
 
@@ -13,13 +12,9 @@ const RevealInformationItem: FC<RevealInformationListItem> = ({
   address,
   hasRevealed,
 }) => {
-  const { user } = useUserByAddress(address);
-  const { profile } = user || {};
-  const { avatar, displayName: userName } = profile || {};
-
   return (
     <div className="flex items-center justify-between gap-2 text-gray-900">
-      <AvatarUser avatar={avatar} userName={userName || ''} size="xs" />
+      <UserAvatarPopover walletAddress={address} />
       <div className="flex items-center gap-2 text-gray-900">
         <Icon
           name={hasRevealed ? 'eye' : 'eye-closed'}
