@@ -129,6 +129,18 @@ fragment MotionStakeValues on MotionStakeValues {
   nay
 }
 
+fragment UserMotionStakes on UserMotionStakes {
+  address
+  stakes {
+    raw {
+      ...MotionStakeValues
+    }
+    percentage {
+      ...MotionStakeValues
+    }
+  }
+}
+
 fragment ColonyMotion on ColonyMotion {
   databaseMotionId: id
   motionId: nativeMotionId
@@ -136,15 +148,7 @@ fragment ColonyMotion on ColonyMotion {
     ...MotionStakes
   }
   usersStakes {
-    address
-    stakes {
-      raw {
-        ...MotionStakeValues
-      }
-      percentage {
-        ...MotionStakeValues
-      }
-    }
+    ...UserMotionStakes
   }
   remainingStakes
   userMinStake

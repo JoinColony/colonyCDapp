@@ -35,7 +35,7 @@ export const getMotionDatabaseId = (
 ): string => `${chainId}-${votingRepExtnAddress}_${nativeMotionId}`;
 
 export const getMotionState = (
-  motionState: NetworkMotionState,
+  motionState: NetworkMotionState | number,
   {
     motionStakes: {
       raw: { yay: yayStakes, nay: nayStakes },
@@ -63,7 +63,6 @@ export const getMotionState = (
       return MotionState.Escalated;
     }
     case NetworkMotionState.Finalizable:
-      return MotionState.Finalizable;
     case NetworkMotionState.Finalized: {
       /*
        * Both sides staked fully, we go to a vote
@@ -131,27 +130,3 @@ export const shouldDisplayMotionInActionsList = (
 export interface MotionValue {
   motionId: number;
 }
-
-// export const getUpdatedDecodedMotionRoles = (
-//   recipient: User,
-//   fromDomain: number,
-//   currentRoles: ColonyRoles = [],
-//   setRoles: ActionUserRoles[],
-// ) => {
-//   const currentUserRoles = getRolesForUserAndDomain(
-//     currentRoles,
-//     recipient.walletAddress,
-//     fromDomain,
-//   );
-//   const updatedRoles = setRoles.filter((role) => {
-//     const foundCurrentRole = currentUserRoles.find(
-//       (currentRole) => currentRole === role.id,
-//     );
-//     if (!isNil(foundCurrentRole)) {
-//       return !role.setTo;
-//     }
-//     return role.setTo;
-//   });
-
-//   return updatedRoles;
-// };

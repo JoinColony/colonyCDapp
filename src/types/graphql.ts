@@ -41,6 +41,7 @@ import {
   type UserStakeFragment,
   SearchableSortDirection,
   type JoinedColonyFragment,
+  type UserMotionStakesFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -144,3 +145,5 @@ export type ColonyObjective = ColonyObjectiveFragment;
 export type UserStake = UserStakeFragment;
 
 export type JoinedColony = JoinedColonyFragment;
+
+export type UserMotionStakes = UserMotionStakesFragment;

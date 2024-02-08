@@ -25,6 +25,7 @@ import {
   useRemoveTxParamOnClose,
 } from './hooks/index.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
@@ -48,7 +49,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   transactionId,
 }) => {
   const { colony } = useColonyContext();
-  const { action, defaultValues, loadingAction, isMotion } =
+  const { action, defaultValues, loadingAction, isMotion, motionState } =
     useGetActionData(transactionId);
 
   const {
@@ -85,7 +86,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       );
     }
 
-    if (action !== undefined && action !== null) {
+    if (action) {
       const actionType = getExtendedActionType(action, colony.metadata);
 
       if (SUPPORTED_ACTIONS.includes(actionType)) {
@@ -156,20 +157,24 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <X size={18} />
           </button>
         ) : (
-          <button
-            type="button"
-            className="py-2.5 flex items-center justify-center text-gray-400 transition sm:hover:text-blue-400"
-            onClick={toggleIsSidebarFullscreen}
-            aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
-          >
-            {isSidebarFullscreen ? (
-              <ArrowLineRight size={18} />
-            ) : (
-              <ArrowsOutSimple size={18} />
-            )}
-          </button>
+          <>
+            <button
+              type="button"
+              className="py-2.5 flex items-center justify-center text-gray-400 transition sm:hover:text-blue-400"
+              onClick={toggleIsSidebarFullscreen}
+              aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
+            >
+              {isSidebarFullscreen ? (
+                <ArrowLineRight size={18} />
+              ) : (
+                <ArrowsOutSimple size={18} />
+              )}
+            </button>
+
+            <MotionOutcomeBadge motionState={motionState} />
+          </>
         )}
-        {children}
+        <div>{children}</div>
       </div>
       {getSidebarContent()}
       <Modal

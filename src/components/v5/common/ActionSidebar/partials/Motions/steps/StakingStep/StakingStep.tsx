@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
-import React, { type FC, useState } from 'react';
+import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -10,13 +10,13 @@ import { formatText } from '~utils/intl.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
-import UserInfoSectionList from '~v5/shared/UserInfoSectionList/index.ts';
 
 import { useMotionContext } from '../../partials/MotionProvider/hooks.ts';
 
-import { useStakingInformation, useStakingStep } from './hooks.tsx';
+import { useStakingStep } from './hooks.tsx';
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo/index.ts';
-import StakingChart from './partials/StakingChart/StakingChart.tsx';
+import StakesList from './partials/StakesList/index.ts';
+import StakingChart from './partials/StakingChart/index.ts';
 import StakingForm from './partials/StakingForm/index.ts';
 import { type StakingStepProps } from './types.ts';
 
@@ -27,7 +27,6 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const { canInteract } = useAppContext();
   const { motionAction } = useMotionContext();
   const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
-  const [showMoreUsers, setShowMoreUsers] = useState(false);
   const {
     enoughReputationToStakeMinimum,
     enoughTokensToStakeMinimum,
@@ -52,16 +51,6 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const isFullyStaked =
     objectingStakesPercentageValue === 100 &&
     supportingStakesPercentageValue === 100;
-
-  const {
-    votesAgainst,
-    votesFor,
-    isLoading: isVotingLoading,
-  } = useStakingInformation(
-    usersStakes,
-    decimals || nativeTokenDecimals,
-    symbol || nativeTokenSymbol,
-  );
 
   const showFullySupportedPassInfo =
     objectingStakesPercentageValue !== 100 &&
@@ -201,61 +190,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                       iconName="caret-down"
                       iconSize="extraSmall"
                     >
-                      {isVotingLoading ? (
-                        <SpinnerLoader />
-                      ) : (
-                        <>
-                          <UserInfoSectionList
-                            className="pt-6"
-                            sections={[
-                              ...(votesFor?.length
-                                ? [
-                                    {
-                                      key: '1',
-                                      heading: {
-                                        status: 'support' as const,
-                                      },
-                                      items: showMoreUsers
-                                        ? votesFor
-                                        : votesFor.slice(0, 3),
-                                    },
-                                  ]
-                                : []),
-                              ...(votesAgainst?.length
-                                ? [
-                                    {
-                                      key: '2',
-                                      heading: {
-                                        status: 'oppose' as const,
-                                      },
-                                      items: showMoreUsers
-                                        ? votesAgainst
-                                        : votesAgainst.slice(0, 3),
-                                    },
-                                  ]
-                                : []),
-                            ]}
-                          />
-                          {(votesAgainst?.length > 3 ||
-                            votesFor?.length > 3) && (
-                            <button
-                              type="button"
-                              onClick={() => setShowMoreUsers(true)}
-                              className={`
-                                text-gray-500
-                                text-sm
-                                w-full
-                                text-center
-                                mt-6
-                                transition-colors
-                                md:hover:text-blue-500
-                              `}
-                            >
-                              {formatText({ id: 'button.loadMore' })}
-                            </button>
-                          )}
-                        </>
-                      )}
+                      <StakesList userStakes={usersStakes} />
                     </AccordionItem>
                   ),
                 },

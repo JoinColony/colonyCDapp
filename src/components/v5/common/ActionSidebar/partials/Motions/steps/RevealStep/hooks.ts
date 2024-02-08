@@ -7,7 +7,6 @@ import { useGetVoterRewardsQuery } from '~gql';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import { type ColonyMotion, type VoterRecord } from '~types/graphql.ts';
 import { mapPayload } from '~utils/actions.ts';
-import { MotionVote } from '~utils/colonyMotions.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 
 import { getLocalStorageVoteValue } from '../VotingStep/utils.tsx';
@@ -91,7 +90,6 @@ export const useRevealStep = (
   }));
   const userVote =
     hasUserVoted && (vote || getLocalStorageVoteValue(transactionId));
-  const isSupportVote = userVote === MotionVote.Yay;
   const revealProgress = useMemo(
     () =>
       (voterRecord || []).reduce(
@@ -110,7 +108,7 @@ export const useRevealStep = (
     voters,
     transform,
     handleSuccess,
-    isSupportVote,
+    userVote,
     revealProgress,
     totalVoters,
   };
