@@ -19,6 +19,7 @@ export const actionTypeTranslations = {
   [ColonyActionType.UnlockToken]: 'actions.unlockToken',
   [ColonyActionType.VersionUpgrade]: 'actions.upgradeColonyVersion',
   [ColonyActionType.VersionUpgradeMotion]: 'actions.upgradeColonyVersion',
+  [ColonyActionType.SetUserRoles]: 'actions.managePermissions',
   default: 'Action',
 };
 

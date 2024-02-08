@@ -13,6 +13,7 @@ import CreateDecision from './partials/CreateDecision/index.ts';
 import CreateNewTeam from './partials/CreateNewTeam/index.ts';
 // import EditColonyDetails from './partials/EditColonyDetails';
 import MintTokens from './partials/MintTokens/index.ts';
+import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
@@ -38,6 +39,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.MoveFunds:
         return <TransferFunds action={action} />;
       case ColonyActionType.CreateDomain:
+      case ColonyActionType.EditDomain:
         return <CreateNewTeam action={action} />;
       case ColonyActionType.UnlockToken:
         return <UnlockToken action={action} />;
@@ -46,6 +48,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;
+      case ColonyActionType.SetUserRoles:
+        return <SetUserRoles action={action} />;
       /* @TODO uncomment when social links are added to action display
       case ColonyActionType.ColonyEdit:
         return <EditColonyDetails action={action} />;

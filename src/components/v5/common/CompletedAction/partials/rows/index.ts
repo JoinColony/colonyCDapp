@@ -4,3 +4,6 @@ export { default as CreatedInRow } from './CreatedIn.tsx';
 export { default as DecisionMethodRow } from './DecisionMethod.tsx';
 export { default as DescriptionRow } from './Description.tsx';
 export { default as TeamFromRow } from './TeamFrom.tsx';
+export { default as AuthorityRow } from './Authority.tsx';
+export { default as PermissionsRow } from './Permissions.tsx';
+export { default as PermissionsTableRow } from './PermissionsTable.tsx';
