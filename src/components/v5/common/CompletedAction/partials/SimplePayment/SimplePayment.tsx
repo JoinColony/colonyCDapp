@@ -87,7 +87,10 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         <ActionTypeRow actionType={action.type} />
 
         {action.fromDomain?.metadata && (
-          <TeamFromRow teamMetadata={action.fromDomain.metadata} />
+          <TeamFromRow
+            teamMetadata={action.fromDomain.metadata}
+            actionType={action.type}
+          />
         )}
 
         <div>
