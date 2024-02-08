@@ -1,4 +1,4 @@
-import noop from 'lodash/noop';
+import { noop } from 'lodash';
 import { useEffect, useImperativeHandle, useRef } from 'react';
 
 const useAutosizeTextArea = (
@@ -21,9 +21,11 @@ const useAutosizeTextArea = (
     }
 
     const textArea = textAreaRef.current;
-    textArea.style.height = '0px';
-    const { scrollHeight } = textArea;
 
+    // Reset the height to auto to get the correct scrollHeight for content
+    textArea.style.height = 'auto';
+
+    const { scrollHeight } = textArea;
     textArea.style.height = `${scrollHeight}px`;
 
     return () => {
