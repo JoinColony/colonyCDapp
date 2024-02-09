@@ -1,4 +1,4 @@
-export interface DescriptionRowProps {
+export interface DescriptionProps {
   maxDescriptionLength?: number;
   disabled?: boolean;
 }

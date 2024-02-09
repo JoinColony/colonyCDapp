@@ -6,9 +6,9 @@ import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useAdvancedPayment } from './hooks.ts';
 import AdvancedPaymentRecipientsField from './partials/AdvancedPaymentRecipientsField/index.ts';
@@ -35,8 +35,8 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedInRow />
-      <DescriptionRow />
+      <CreatedIn />
+      <Description />
       <AdvancedPaymentRecipientsField name="payments" />
     </>
   );

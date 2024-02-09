@@ -3,9 +3,9 @@ import React, { type FC } from 'react';
 import ColonyVersionField from '~v5/common/ActionSidebar/partials/ColonyVersionField/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useUpgradeColony } from './hooks.ts';
 
@@ -18,8 +18,8 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ColonyVersionField />
       <DecisionMethodField />
-      <CreatedInRow />
-      <DescriptionRow />
+      <CreatedIn />
+      <Description />
     </>
   );
 };

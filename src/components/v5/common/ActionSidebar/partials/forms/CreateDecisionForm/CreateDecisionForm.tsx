@@ -1,9 +1,9 @@
 import React, { type FC } from 'react';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 import { useIsFieldDisabled } from '../../hooks.ts';
 
 import { useCreateDecision } from './hooks.ts';
@@ -18,8 +18,8 @@ const CreateDecisionForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <DecisionMethodField disabled={isFieldDisabled} reputationOnly />
-      <CreatedInRow disabled={isFieldDisabled} />
-      <DescriptionRow disabled={isFieldDisabled} />
+      <CreatedIn />
+      <Description />
     </>
   );
 };

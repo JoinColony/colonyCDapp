@@ -10,9 +10,9 @@ import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts'
 
 import { type ActionFormBaseProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useTransferFunds } from './hooks.ts';
 
@@ -70,14 +70,14 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       />
 
       <DecisionMethodField />
-      <CreatedInRow
+      <CreatedIn
         filterOptionsFn={(option) =>
           (option.value === Id.RootDomain.toString() ||
             option.value === selectedTeam) &&
           !!option.isRoot
         }
       />
-      <DescriptionRow />
+      <Description />
     </>
   );
 };
