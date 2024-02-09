@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import Icon from '~shared/Icon/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
@@ -29,10 +30,10 @@ const MSG = defineMessages({
 const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
   const {
     displayName: colonyDisplayName,
+    token: existingToken,
     tokenName,
     tokenSymbol,
     tokenAvatar,
-    tokenAddress,
     colonyName,
   } = updatedWizardValues;
 
@@ -45,16 +46,26 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
     },
     {
       title: MSG.nativeToken,
-      text: tokenName,
-      subText: tokenSymbol,
+      text: existingToken ? existingToken.name : tokenName,
+      subText: existingToken ? existingToken.symbol : tokenSymbol,
       step: 2,
-      icon: (
-        <Avatar
-          avatar={tokenAvatar}
-          seed={tokenAddress || tokenName}
-          size="s"
-        />
-      ),
+      icon:
+        tokenAvatar || existingToken ? (
+          <Avatar
+            avatar={tokenAvatar || existingToken?.avatar}
+            seed={existingToken?.tokenAddress}
+            size="s"
+          />
+        ) : (
+          <div className="bg-gray-200 text-gray-600 p-2.5 rounded-full flex">
+            <Icon
+              name="image"
+              appearance={{
+                size: 'extraSmall',
+              }}
+            />
+          </div>
+        ),
     },
     /* Not yet implemented
      * {

@@ -22,6 +22,7 @@ module.exports = {
           type
           createdAt
           updatedAt
+          avatar
         }
         nextToken
       }
