@@ -26,12 +26,11 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
   .shape({
     title: string()
       .required(formatText({ id: 'errors.title.required' }))
-      .max(60, ({ max, value }) =>
+      .max(60, ({ max }) =>
         formatText(
           { id: 'errors.title.maxLength' },
           {
             maxLength: max,
-            currentLength: value?.length || 0,
           },
         ),
       ),

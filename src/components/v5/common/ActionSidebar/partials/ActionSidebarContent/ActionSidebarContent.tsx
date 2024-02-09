@@ -8,7 +8,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import Link from '~v5/shared/Link/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
@@ -73,17 +73,26 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   return (
     <>
       <div className="flex-grow overflow-y-auto px-6">
-        <FormInputBase
+        <FormTextareaBase
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
           className={`
             heading-3 mb-2
             text-gray-900
             transition-colors
+            leading-tight
           `}
           message={false}
           shouldFocus
-          mode="secondary"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.stopPropagation();
+              e.preventDefault();
+            }
+          }}
+          onChange={(e) => {
+            e.target.value = e.target.value.replace(/[\r\n\v]+/g, '');
+          }}
         />
         <div className="text-gray-900 text-md flex gap-1 break-all">
           <ActionSidebarDescription />

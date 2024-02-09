@@ -7,7 +7,10 @@ import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { mapPayload, pipe, withMeta } from '~utils/actions.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
+import {
+  ACTION_BASE_VALIDATION_SCHEMA,
+  ACTION_TYPE_FIELD_NAME,
+} from '../consts.tsx';
 import { type ActionFormBaseProps } from '../types.ts';
 
 export const useActionFormProps = (
@@ -21,6 +24,7 @@ export const useActionFormProps = (
     defaultValues,
     children: undefined,
     mode: 'onChange',
+    validationSchema: ACTION_BASE_VALIDATION_SCHEMA,
   });
 
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
@@ -86,6 +90,7 @@ export const useActionFormProps = (
           keepDirtyValues: true,
         },
       );
+      form.trigger();
     },
     [isReadonly, defaultValues, navigate],
   );

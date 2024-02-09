@@ -19,12 +19,17 @@ const FormTextareaBase: FC<FormTextareaBaseProps> = ({ name, ...rest }) => {
   });
   const { readonly } = useAdditionalFormOptionsContext();
 
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    rest.onChange?.(e);
+    field.onChange(e);
+  };
+
   return (
     <TextareaBase
       readOnly={readonly}
       message={error?.message}
       state={invalid ? FIELD_STATE.Error : undefined}
-      {...{ ...rest, ...field }}
+      {...{ ...rest, ...field, onChange }}
     />
   );
 };
