@@ -1,9 +1,6 @@
 import { MotionState } from '~utils/colonyMotions.ts';
 
-export const MOTION_STATE_TO_CLASSNAME_MAP: Record<
-  MotionState | 'Unknown',
-  string
-> = {
+export const MOTION_STATE_TO_CLASSNAME_MAP: Record<MotionState, string> = {
   [MotionState.Supported]: 'text-purple-400 bg-purple-100',
   [MotionState.Staking]: 'text-purple-400 bg-purple-100',
   [MotionState.Voting]: 'text-teams-teal-500 bg-teams-teal-50',
