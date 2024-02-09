@@ -6,7 +6,7 @@ import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 
-const getPermissionsNeededForAction = (
+export const getPermissionsNeededForAction = (
   actionType: Action,
   formValues: Record<string, any>,
 ): ColonyRole[] | undefined => {
@@ -33,9 +33,6 @@ const getPermissionsNeededForAction = (
        */
       return undefined;
     case ACTION.MANAGE_PERMISSIONS: {
-      if (!formValues.team) {
-        return undefined;
-      }
       return formValues.team === Id.RootDomain
         ? [ColonyRole.Root, ColonyRole.Architecture]
         : [ColonyRole.Architecture];

@@ -22,7 +22,7 @@ export const useHasActionPermissions = () => {
     [ACTION_TYPE_FIELD_NAME]: actionType,
     [DECISION_METHOD_FIELD_NAME]: decisionMethod,
   } = formValues;
-  if (!actionType || decisionMethod === DecisionMethod.Reputation) {
+  if (!actionType || decisionMethod !== DecisionMethod.Permissions) {
     return undefined;
   }
 

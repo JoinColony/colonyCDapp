@@ -3,10 +3,11 @@ import { useFormContext } from 'react-hook-form';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import { getAllUserRoles } from '~transformers';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
 
-import { getHasActionPermissions } from './helpers.ts';
+import { getPermissionsNeededForAction } from './helpers.ts';
 
 /**
  * Hook determining if the user has no decision methods available for the currently selected action type
@@ -27,14 +28,14 @@ export const useHasNoDecisionMethods = () => {
     return false;
   }
 
-  const hasPermissions = getHasActionPermissions(
-    colony,
-    user?.walletAddress ?? '',
-    actionType,
-    {},
-  );
+  const requiredPermissions = getPermissionsNeededForAction(actionType, {});
+  if (!requiredPermissions) {
+    return false;
+  }
 
-  if (hasPermissions === false) {
+  // Check if the user has the required permissions in any domain
+  const userRoles = getAllUserRoles(colony, user.walletAddress);
+  if (!requiredPermissions.every((role) => userRoles.includes(role))) {
     return true;
   }
 
