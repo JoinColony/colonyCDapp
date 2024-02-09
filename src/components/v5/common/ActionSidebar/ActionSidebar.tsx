@@ -39,6 +39,7 @@ const SUPPORTED_ACTIONS: AnyActionType[] = [
   ColonyActionType.VersionUpgradeMotion,
   ColonyActionType.CreateDecisionMotion,
   ColonyActionType.AddVerifiedMembers,
+  ColonyActionType.AddVerifiedMembersMotion,
   ColonyActionType.RemoveVerifiedMembers,
   // @TODO uncomment when social links are added to action display
   // ColonyActionType.ColonyEdit,

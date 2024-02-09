@@ -49,6 +49,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;
       case ColonyActionType.AddVerifiedMembers:
+      case ColonyActionType.AddVerifiedMembersMotion:
         return <AddVerifiedMembers action={action} />;
       case ColonyActionType.RemoveVerifiedMembers:
         return <RemoveVerifiedMembers action={action} />;
