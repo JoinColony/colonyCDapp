@@ -6,7 +6,7 @@ import {
 } from '@web3-onboard/common';
 import { providers, Wallet, utils } from 'ethers';
 
-import walletIcon from '~images/wallet.svg';
+import walletIcon from '~images/icons/wallet.svg';
 import { RpcMethods } from '~types/rpcMethods.ts';
 
 type CustomJsonRpcProvider = providers.JsonRpcProvider & {

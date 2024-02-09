@@ -8,7 +8,7 @@ import {
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
 } from '~constants/index.ts';
-import colonyIcon from '~images/colony-logo-wallet.svg';
+import colonyIcon from '~images/icons/colony-logo-wallet.svg';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/autoLogin.ts';
 import { intl } from '~utils/intl.ts';
