@@ -18,6 +18,7 @@ import {
   DecisionMethodRow,
   DescriptionRow,
 } from '../rows/index.ts';
+import SelectedMembers from '../SelectedMembers/SelectedMembers.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.AddVerifiedMembers';
 
@@ -95,6 +96,9 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
+      )}
+      {action.members !== undefined && action.members !== null && (
+        <SelectedMembers members={action.members} />
       )}
     </>
   );
