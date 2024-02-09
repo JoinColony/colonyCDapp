@@ -21,7 +21,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
   const { statuses, sidePanelData } = useSpecificSidePanel(extensionData);
 
   return (
-    <div className="flex gap-4 flex-col">
+    <div className="flex gap-2 flex-col">
       <h3 className="heading-5 -mb-0.5">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
