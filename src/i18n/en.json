@@ -1061,6 +1061,8 @@
     "actionSidebar.externalLinks": "External links",
     "actionSidebar.approvedTokens": "Approved tokens",
     "actionSidebar.advancedPayments": "Advanced Payments",
+    "actionSidebar.manageVerifiedMembers.table.title": "Selected members",
+    "actionSidebar.manageVerifiedMembers.table.column.members": "Members",
     "actionSidebar.emptyTitle": "No results to display",
     "actionSidebar.emptyDescription": "Try a different keyword search",
     "actionSidebar.cancelModal.title": "Do you wish to cancel the action creation?",
