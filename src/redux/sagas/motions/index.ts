@@ -1,5 +1,6 @@
 import { all, call } from 'redux-saga/effects';
 
+import addVerifiedMembersMotionSaga from './addVerifiedMembers.ts';
 import claimAllMotionRewardsSaga from './claimAllMotionRewards.ts';
 import claimMotionRewardsSaga from './claimMotionRewards.ts';
 // import escalateMotionSaga from './escalateMotion';
@@ -41,5 +42,6 @@ export default function* actionsSagas() {
     // call(escalateMotionSaga),
     call(manageReputationMotionSaga),
     call(initiateSafeTransactionMotionSaga),
+    call(addVerifiedMembersMotionSaga),
   ]);
 }
