@@ -42,15 +42,10 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
     description: string()
       .test(
         'isValidDescriptionLength',
-        ({ value }) =>
-          formatText(
-            { id: 'errors.title.maxLength' },
-            {
-              maxLength: MAX_ANNOTATION_LENGTH,
-              currentLength:
-                value !== undefined ? stripHTMLFromText(value).length : 0,
-            },
-          ),
+        formatText(
+          { id: 'errors.description.maxLength' },
+          { maxLength: MAX_ANNOTATION_LENGTH },
+        ),
         isValidDescriptionLength,
       )
       .notRequired(),
