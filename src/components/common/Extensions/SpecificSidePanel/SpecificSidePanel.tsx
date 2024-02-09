@@ -42,11 +42,15 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
               <div className="flex justify-start flex-col gap-y-2 md:flex-row md:flex-wrap">
-                {statuses.map((status) => (
-                  <div key={status} className="flex flex-wrap gap-2">
-                    <ExtensionStatusBadge mode={status} text={status} />
-                  </div>
-                ))}
+                <div className="flex flex-wrap gap-1">
+                  {statuses.map((status) => (
+                    <ExtensionStatusBadge
+                      key={status}
+                      mode={status}
+                      text={status}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
             {!statuses?.includes('not-installed') && (
