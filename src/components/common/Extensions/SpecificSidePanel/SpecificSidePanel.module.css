@@ -1,5 +1,5 @@
 .panelRow {
-  @apply flex items-center min-h-[1.875rem] gap-x-4;
+  @apply flex items-center min-h-[1.875rem] gap-x-2;
 }
 
 .panelTitle {

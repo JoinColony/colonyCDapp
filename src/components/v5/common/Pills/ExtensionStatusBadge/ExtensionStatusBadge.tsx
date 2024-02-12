@@ -20,7 +20,7 @@ const ExtensionStatusBadge: FC<PropsWithChildren<PillsProps>> = ({
         mode === 'not-installed' ||
         mode === 'finalizable' ||
         mode === 'extension',
-      'text-negative-400 bg-red-100': mode === 'disabled',
+      'text-negative-400 bg-negative-100': mode === 'disabled',
       'text-purple-400 bg-purple-100': mode === 'deprecated',
       'text-gray-900 bg-base-white border border-gray-200':
         mode === 'governance' || mode === 'payments',
