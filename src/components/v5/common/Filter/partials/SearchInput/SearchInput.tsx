@@ -76,7 +76,7 @@ const SearchInput: FC<SearchInputProps> = ({
       )}
     >
       <span className={styles.icon}>
-        <MagnifyingGlass size={12} />
+        <MagnifyingGlass size={14} />
       </span>
       <input
         ref={ref}

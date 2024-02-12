@@ -19,7 +19,7 @@ const DropdownMenuItem: FC<DropdownMenuItemProps> = (props) => {
     'py-2 px-3.5 rounded-s rounded-e !text-md md:hover:font-medium md:hover:bg-gray-50 md:hover:text-gray-900 flex items-center !duration-0 gap-3 w-full';
   const content = (
     <>
-      {Icon && <Icon size={18} className="flex-shrink-0" />}
+      {Icon && <Icon size={16} className="flex-shrink-0" />}
       {props.label}
     </>
   );

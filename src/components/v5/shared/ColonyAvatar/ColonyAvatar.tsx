@@ -27,6 +27,8 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           'text-4xl': size === 'xms',
           'text-3xl': size === 'smx',
           'text-2xl': size === 'xxsm',
+          // @TODO: This is getting out of hand, maybe let's just use pixel values (as with the icons)
+          'text-xl': size === 'xxsx',
           'text-lg': size === 'xxs',
         },
       )}

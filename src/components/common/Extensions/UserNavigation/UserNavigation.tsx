@@ -76,7 +76,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
       <Hamburger
         isOpened={visible}
         icon={isMobile ? GearSix : List}
-        iconSize={isMobile ? 18 : 12}
+        iconSize={isMobile ? 18 : 16}
         setTriggerRef={setTriggerRef}
         onClick={() => {
           setOpenItemIndex(undefined);

@@ -30,7 +30,7 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
       {...rest}
     >
       <div className="flex items-center gap-2 truncate">
-        <ColonyAvatar size="xxs" {...restAvatarProps} />
+        <ColonyAvatar size="xxsx" {...restAvatarProps} />
         <p className="text-2 truncate max-w-[13.313rem]">{name}</p>
       </div>
       {Icon && <Icon size={18} />}
