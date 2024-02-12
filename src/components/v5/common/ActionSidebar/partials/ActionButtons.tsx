@@ -66,7 +66,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
           text={{ id: 'button.pending' }}
           icon={
             <span className="flex shrink-0 ml-2">
-              <SpinnerGap size={14} className="animate-spin" />
+              <SpinnerGap size={18} className="animate-spin" />
             </span>
           }
           className="!px-4 !text-md"
