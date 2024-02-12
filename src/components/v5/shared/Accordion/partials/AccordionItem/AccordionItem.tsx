@@ -40,7 +40,7 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
       {title}
       <span
         className={clsx(
-          'flex items-center flex-shrink-0 transition-transform duration-[400ms] ease-out',
+          'accordion-icon flex items-center flex-shrink-0 transition-transform duration-[400ms] ease-out',
           {
             'rotate-180 text-blue-500': isOpen,
           },

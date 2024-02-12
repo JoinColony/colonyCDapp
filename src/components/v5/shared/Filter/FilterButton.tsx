@@ -29,8 +29,8 @@ const FilterButton: FC<FilterButtonProps> = ({
       })}
       mode="tertiary"
       icon={FunnelSimple}
-      iconSize={14}
-      size="small"
+      iconSize={18}
+      size="medium"
     >
       {customLabel || formatMessage({ id: 'filter' })}
       {!!numberSelectedFilters && (

@@ -1,4 +1,5 @@
 import { Check } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -35,7 +36,12 @@ const ButtonContent: FC<PropsWithChildren<ButtonContentProps>> = ({
       {(buttonText || children) && (
         <>
           {Icon ? (
-            <span className={isIconRight ? 'mr-2' : 'ml-2'}>
+            <span
+              className={clsx('flex items-center', {
+                'mr-2': isIconRight,
+                'ml-2': !isIconRight,
+              })}
+            >
               {buttonText || children}
             </span>
           ) : (

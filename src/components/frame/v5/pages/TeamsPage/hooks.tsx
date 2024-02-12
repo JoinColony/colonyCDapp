@@ -3,16 +3,20 @@ import {
   // @todo: uncomment when decisions page will be ready
   // Handshake,
   Layout,
+  Star,
   Pencil,
   PresentationChart,
   Users,
+  Cardholder,
 } from '@phosphor-icons/react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMemberContext } from '~context/MemberContext.tsx';
+import { ModelSortDirection } from '~gql';
+import { useMobile } from '~hooks';
 import { useActivityData } from '~hooks/useActivityData.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import {
@@ -24,18 +28,20 @@ import {
   TEAM_SEARCH_PARAM,
 } from '~routes/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
-import {
-  type TeamCardListItem,
-  type TeamCardListProps,
-} from '~v5/common/TeamCardList/types.ts';
+import { type TeamCardListItem } from '~v5/common/TeamCardList/types.ts';
 import Link from '~v5/shared/Link/index.ts';
 
 import { getMembersList } from '../MembersPage/utils.ts';
 
-export const useTeams = (): TeamCardListProps['items'] => {
+import { type TeamsPageFilterProps } from './partials/TeamsPageFilter/types.ts';
+import { TeamsPageFiltersField, type TeamsPageFilters } from './types.ts';
+
+export const useTeams = () => {
+  const isMobile = useMobile();
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const { domains, balances, nativeToken, name: colonyName } = colony || {};
@@ -106,6 +112,14 @@ export const useTeams = (): TeamCardListProps['items'] => {
           members: getDomainMembers(nativeId),
           isMembersListLoading: membersLoading,
           reputation: reputationPercentage ? Number(reputationPercentage) : 0,
+          balanceValue: convertToDecimal(
+            getBalanceForTokenAndDomain(
+              balances,
+              nativeToken?.tokenAddress || '',
+              nativeId,
+            ) || 0,
+            nativeToken?.decimals || 0,
+          )?.toNumber(),
           balance: (
             <Numeral
               value={
@@ -238,5 +252,89 @@ export const useTeams = (): TeamCardListProps['items'] => {
       ];
     }, []) || [];
 
-  return teams.sort((a, b) => (a.reputation > b.reputation ? -1 : 1));
+  const [searchValue, setSearchValue] = useState('');
+
+  const defaultFilterValue: TeamsPageFilters = {
+    field: TeamsPageFiltersField.FUNDS,
+    direction: ModelSortDirection.Desc,
+  };
+  const [hasFilterChanged, setHasFilterChanged] = useState(false);
+  const [filterValue, setFilterValue] =
+    useState<TeamsPageFilters>(defaultFilterValue);
+
+  const sortedTeams = [...teams].sort((a, b) => {
+    if (filterValue.direction === ModelSortDirection.Asc) {
+      return a[filterValue.field] - b[filterValue.field];
+    }
+
+    return b[filterValue.field] - a[filterValue.field];
+  });
+  const searchedTeams = sortedTeams.filter(({ title }) =>
+    title?.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
+  const filters: TeamsPageFilterProps = {
+    onChange: (value) => {
+      setFilterValue(value);
+      const { field, direction } = value as TeamsPageFilters;
+      if (field !== filterValue.field || direction !== filterValue.direction) {
+        setHasFilterChanged(true);
+      }
+    },
+    onSearch: setSearchValue,
+    searchValue,
+    hasFilterChanged,
+    filterValue,
+    items: [
+      {
+        name: TeamsPageFiltersField.FUNDS,
+        filterName: 'Funds',
+        label: formatText({ id: 'teamsPage.filter.funds' }),
+        icon: Cardholder,
+        title: formatText({
+          id: isMobile
+            ? 'teamsPage.filter.sortByFunds'
+            : 'teamsPage.filter.funds',
+        }),
+        items: [
+          {
+            label: formatText({ id: 'teamsPage.filter.descending' }),
+            value: ModelSortDirection.Desc,
+          },
+          {
+            label: formatText({ id: 'teamsPage.filter.ascending' }),
+            value: ModelSortDirection.Asc,
+          },
+        ],
+      },
+      {
+        name: TeamsPageFiltersField.REPUTATION,
+        filterName: 'Reputation',
+        label: formatText({ id: 'teamsPage.filter.reputation' }),
+        title: formatText({
+          id: isMobile
+            ? 'teamsPage.filter.sortbyReputation'
+            : 'teamsPage.filter.reputation',
+        }),
+        icon: Star,
+        items: [
+          {
+            label: formatText({ id: 'teamsPage.filter.descending' }),
+            value: ModelSortDirection.Desc,
+          },
+          {
+            label: formatText({ id: 'teamsPage.filter.ascending' }),
+            value: ModelSortDirection.Asc,
+          },
+        ],
+      },
+    ],
+  };
+
+  return {
+    searchedTeams,
+    defaultFilterValue,
+    filters,
+    hasFilterChanged,
+  };
 };

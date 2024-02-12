@@ -18,6 +18,7 @@ const CloseButton: FC<CloseButtonProps> = ({
   type = 'button',
   ariaLabel,
   setTriggerRef,
+  iconSize = 18,
   className = 'text-gray-400 hover:text-gray-600',
   ...rest
 }) => {
@@ -50,7 +51,7 @@ const CloseButton: FC<CloseButtonProps> = ({
           {...rest}
         >
           <span className="flex text-sm">
-            <X size={18} />
+            <X size={iconSize} />
           </span>
         </button>
       )}
