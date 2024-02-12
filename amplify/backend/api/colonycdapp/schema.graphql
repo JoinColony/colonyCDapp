@@ -750,6 +750,7 @@ enum ColonyActionType {
   An action related to removing verified members
   """
   REMOVE_VERIFIED_MEMBERS
+  REMOVE_VERIFIED_MEMBERS_MOTION
 }
 
 """
