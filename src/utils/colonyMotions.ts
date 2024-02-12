@@ -26,6 +26,7 @@ export enum MotionState {
   Escalated = 'Escalated',
   Forced = 'Forced',
   Draft = 'Draft',
+  Unknown = 'Unknown',
 }
 
 export const getMotionDatabaseId = (

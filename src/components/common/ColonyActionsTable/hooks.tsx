@@ -116,7 +116,7 @@ export const useColonyActionsTableColumns = (
 
           return (
             <MotionStateBadge
-              state={motionState || MotionState.Forced}
+              state={motionState || MotionState.Unknown}
               className={clsx({ skeleton: loading || loadingMotionStates })}
             />
           );
