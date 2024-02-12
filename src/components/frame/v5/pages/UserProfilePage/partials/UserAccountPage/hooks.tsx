@@ -6,6 +6,7 @@ import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
 
+import { uiEvents, UIEvent } from '../../../../../../../uiEvents/index.ts';
 import { type UserProfileFormProps } from '../types.ts';
 
 const USERNAME_CHANGE_LIMIT = 90; // username can be changed once every 90 days
@@ -53,6 +54,8 @@ export const useUserProfile = () => {
       });
 
       updateUser(user?.walletAddress, true);
+
+      uiEvents.track(UIEvent.updateProfile, updatedProfile);
 
       toast.success(
         <Toast
