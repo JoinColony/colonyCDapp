@@ -1,4 +1,4 @@
-import { Signature } from '@phosphor-icons/react';
+import { Signature, Binoculars } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect } from 'react';
 
 import { useMobile } from '~hooks';
@@ -79,7 +79,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
           title={formatText({ id: 'permissionsPage.empty.title' })}
           description={formatText({ id: 'permissionsPage.empty.description' })}
           className="px-4 py-[1.375rem]"
-          icon="binoculars"
+          icon={Binoculars}
         />
       )}
     </div>

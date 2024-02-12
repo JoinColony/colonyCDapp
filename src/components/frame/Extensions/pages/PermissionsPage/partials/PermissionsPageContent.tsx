@@ -38,7 +38,7 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
             items={[
               {
                 key: '1',
-                icon: <ShieldStar size={16} />,
+                icon: ShieldStar,
                 label: formatText({
                   id: 'permissionsPage.viewPermissionTypes',
                 }),
@@ -63,7 +63,7 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
               // },
               {
                 key: '3',
-                icon: <Pencil size={16} />,
+                icon: Pencil,
                 label: formatText({
                   id: 'permissionsPage.managePermissions',
                 }),
