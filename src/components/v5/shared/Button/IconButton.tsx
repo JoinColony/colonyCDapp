@@ -38,7 +38,6 @@ const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
       ) : (
         <button
           className={clsx(
-            className,
             styles.pending,
             'flex items-center justify-center font-medium transition-all duration-normal',
             {
