@@ -302,11 +302,8 @@ done
 # Seed database (pass --yes to skip confirmation)
 node ./scripts/create-data.js --yes
 
-# Disable webpack's hot reload
-export WEBPACK_DISABLE_HOT_RELOAD=true
-
 # Start frontend
-npm run webpack &
+npm run vite &
 
 # Wait for frontend service to come up
 while ! nc -zv localhost 9091; do
