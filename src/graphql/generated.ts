@@ -428,6 +428,8 @@ export enum ColonyActionType {
   SetExpenditureStateMotion = 'SET_EXPENDITURE_STATE_MOTION',
   /** An action related to removing verified members */
   RemoveVerifiedMembers = 'REMOVE_VERIFIED_MEMBERS',
+  /** An action related to removing verified members via a motion */
+  RemoveVerifiedMembersMotion = 'REMOVE_VERIFIED_MEMBERS_MOTION',
   /** An action related to setting user roles within a Colony */
   SetUserRoles = 'SET_USER_ROLES',
   /** An action related to setting user roles within a Colony via a motion */

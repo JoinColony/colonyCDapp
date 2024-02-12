@@ -320,7 +320,6 @@ export type ColonyActionsActionTypes =
         colonyAddress: Address;
         colonyName: string;
         members: string[];
-        domainId: number;
         annotationMessage?: string;
         customActionTitle: string;
       },
@@ -347,6 +346,24 @@ export type ColonyActionsActionTypes =
   | ErrorActionType<ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_ERROR, object>
   | UniqueActionType<
       ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS,
+      {
+        colonyAddress: Address;
+        colonyName: string;
+        members: string[];
+        domainId: number;
+        annotationMessage?: string;
+        customActionTitle: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_SUCCESS,
       object,
       object
     >
