@@ -4,7 +4,7 @@ import {
 } from '@web3-onboard/common';
 import { providers, Wallet, utils } from 'ethers';
 
-import walletIcon from '~images/icons/wallet.svg';
+import WalletIcon from '~images/icons/wallet.svg';
 import { RpcMethods } from '~types/rpcMethods.ts';
 
 type CustomJsonRpcProvider = providers.JsonRpcProvider & {
@@ -19,7 +19,7 @@ const ganacheWalletModule = (privateKey: string, optionalAccountIndex = 1) => {
   const initWallet = () => {
     return {
       label: `Dev Wallet ${optionalAccountIndex}`,
-      getIcon: async () => walletIcon.content.replace('symbol', 'svg'),
+      getIcon: async () => WalletIcon,
       getInterface: async ({ EventEmitter, chains }) => {
         const [currentChain] = chains;
         const ganacheProvider = new providers.JsonRpcProvider(

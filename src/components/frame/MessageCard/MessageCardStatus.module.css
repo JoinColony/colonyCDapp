@@ -1,4 +1,4 @@
-@value query700 from '~styles/queries.css';
+@value query700 from '~styles/queries.module.css';
 
 .main {
   flex: 0 1 auto;

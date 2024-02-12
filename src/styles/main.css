@@ -1,4 +1,5 @@
 @import 'variables.css';
+@import 'fonts.css';
 @import 'react-popper-tooltip/dist/styles.css';
 @import 'react-tabs/style/react-tabs.css';
 @import 'react-tabs-scrollable/dist/rts.css';
@@ -7,8 +8,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@value query850 from '~styles/queries.css';
-@value query1024 from '~styles/queries.css';
 
 @keyframes shine {
   to {

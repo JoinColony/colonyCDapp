@@ -58,9 +58,6 @@ module.exports = () => ({
     new Dotenv({
       systemvars: !!process.env.CI || !!process.env.DEV,
     }),
-    new webpack.WatchIgnorePlugin({
-      paths: [/css\.d\.ts$/],
-    }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,

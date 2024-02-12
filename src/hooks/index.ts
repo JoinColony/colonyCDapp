@@ -1,6 +1,6 @@
 import { useMediaQuery } from 'react-responsive';
 
-import queries from '~styles/queries.css';
+import queries from '~styles/queries.module.css';
 
 export const useMobile = () => {
   const { query850: query } = queries;

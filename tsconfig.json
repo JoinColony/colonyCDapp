@@ -5,7 +5,7 @@
       "~apollo": ["src/apollo"],
       "~apollo/*": ["src/apollo/*"],
       "~auth": ["src/auth"],
-      "~auth/*": ["src/auth/*"]
+      "~auth/*": ["src/auth/*"],
       "~common/*": ["src/components/common/*"],
       "~constants": ["src/constants"],
       "~constants/*": ["src/constants/*"],
@@ -28,14 +28,14 @@
       "~types": ["src/types"],
       "~types/*": ["src/types/*"],
       "~utils/*": ["src/utils/*"],
-      "~v5/*": ["src/components/v5/*"],
+      "~v5/*": ["src/components/v5/*"]
     },
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "lib": ["dom", "es2019"],
-    "module": "commonjs",
+    "lib": ["dom", "es2020"],
+    "module": "es2020",
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "noEmit": true,
@@ -44,9 +44,8 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "target": "es6",
-    "typeRoots": ["node_modules/@types"],
-    "types": ["node", "jest"]
+    "target": "es2020",
+    "types": ["vite/client"]
   },
   "include": ["src"]
 }
