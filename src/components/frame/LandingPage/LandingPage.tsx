@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import InvitationBlock from '~common/InvitationBlock/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { usePageHeadingContext } from '~context/PageHeadingContext/index.ts';
+import { MainLayout, MainSidebar } from '~frame/Extensions/layouts/index.ts';
+import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
 import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
@@ -18,6 +20,7 @@ import {
   USER_HOME_ROUTE,
 } from '~routes/index.ts';
 import Heading from '~shared/Heading/index.ts';
+import SimpleSidebar from '~v5/shared/SimpleSidebar/index.ts';
 
 import LandingPageItem from './LandingPageItem.tsx';
 
@@ -93,7 +96,8 @@ const MSG = defineMessages({
 const LandingPage = () => {
   const [, setHoveredItem] = useState<number>(1);
   const navigate = useNavigate();
-  const { user, connectWallet, wallet, userLoading } = useAppContext();
+  const { user, connectWallet, wallet, walletConnecting, userLoading } =
+    useAppContext();
   const { setBreadcrumbs } = usePageHeadingContext();
 
   useEffect(() => {
@@ -104,6 +108,10 @@ const LandingPage = () => {
       },
     ]);
   }, [setBreadcrumbs]);
+
+  if (userLoading || walletConnecting) {
+    return <LoadingTemplate />;
+  }
 
   const landingPageItems = [
     {
@@ -146,40 +154,42 @@ const LandingPage = () => {
     !!user?.privateBetaInviteCode?.shareableInvites;
 
   return (
-    <div className="w-full">
-      <div className="mb-8">
-        <div className="flex items-center mb-4">
-          <Heading
-            text={{ id: 'colonyWelcome' }}
-            className="font-semibold text-gray-900 text-3xl"
-          />
-          <span className="font-medium text-blue-400 text-sm px-3 py-1 bg-blue-100 rounded-3xl ml-3">
-            <FormattedMessage {...MSG.privateBetaLabel} />
-          </span>
-        </div>
-        <p className="text-md text-gray-600">
-          <FormattedMessage {...MSG.headerDescription} />
-        </p>
-      </div>
-      <div className="w-full flex justify-center gap-4">
-        <div className="w-1/2 flex flex-col justify-between">
-          {landingPageItems.map((item, index) => (
-            <LandingPageItem
-              key={nanoid()}
-              {...item}
-              itemIndex={index}
-              onHover={setHoveredItem}
+    <MainLayout sidebar={user ? <MainSidebar /> : <SimpleSidebar />}>
+      <div className="w-full">
+        <div className="mb-8">
+          <div className="flex items-center mb-4">
+            <Heading
+              text={{ id: 'colonyWelcome' }}
+              className="font-semibold text-gray-900 text-3xl"
             />
-          ))}
+            <span className="font-medium text-blue-400 text-sm px-3 py-1 bg-blue-100 rounded-3xl ml-3">
+              <FormattedMessage {...MSG.privateBetaLabel} />
+            </span>
+          </div>
+          <p className="text-md text-gray-600">
+            <FormattedMessage {...MSG.headerDescription} />
+          </p>
         </div>
-        <img
-          src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
-          alt=""
-          className="w-1/2 border border-gray-200 rounded-lg shadow-sm object-cover"
-        />
+        <div className="w-full flex justify-center gap-4">
+          <div className="w-1/2 flex flex-col justify-between">
+            {landingPageItems.map((item, index) => (
+              <LandingPageItem
+                key={nanoid()}
+                {...item}
+                itemIndex={index}
+                onHover={setHoveredItem}
+              />
+            ))}
+          </div>
+          <img
+            src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
+            alt=""
+            className="w-1/2 border border-gray-200 rounded-lg shadow-sm object-cover"
+          />
+        </div>
+        {hasShareableInvitationCode && <InvitationBlock />}
       </div>
-      {hasShareableInvitationCode && <InvitationBlock />}
-    </div>
+    </MainLayout>
   );
 };
 

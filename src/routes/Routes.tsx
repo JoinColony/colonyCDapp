@@ -36,7 +36,6 @@ import ColonyHomePage from '~v5/frame/ColonyHome/index.ts';
 
 import ColonyMembersRoute from './ColonyMembersRoute.tsx';
 import ColonyRoute from './ColonyRoute.tsx';
-import LandingPageRoute from './LandingPageRoute/index.ts';
 import MainRoute from './MainRoute.tsx';
 import NotFoundRoute from './NotFoundRoute.tsx';
 import RootRoute from './RootRoute.tsx';
@@ -85,9 +84,7 @@ const Routes = () => {
   return (
     <RoutesSwitch>
       <Route path="/" element={<RootRoute />}>
-        <Route element={<LandingPageRoute />}>
-          <Route index element={<LandingPage />} />
-        </Route>
+        <Route index element={<LandingPage />} />
 
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
