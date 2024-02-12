@@ -21,7 +21,7 @@ import {
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Filter from '~v5/common/Filter/index.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';

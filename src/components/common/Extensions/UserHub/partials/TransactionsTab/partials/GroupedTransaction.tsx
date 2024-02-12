@@ -41,13 +41,14 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     }transaction.${groupKey}.title`,
   };
   const defaultTransactionGroupMessageDescriptorDescriptionId = {
-    id: process.env.DEBUG
-      ? `${
-          transactionGroup[0].metatransaction ? 'meta' : ''
-        }transaction.debug.description`
-      : `${
-          transactionGroup[0].metatransaction ? 'meta' : ''
-        }transaction.${groupKey}.description`,
+    id:
+      import.meta.env.VITE_DEBUG === 'true'
+        ? `${
+            transactionGroup[0].metatransaction ? 'meta' : ''
+          }transaction.debug.description`
+        : `${
+            transactionGroup[0].metatransaction ? 'meta' : ''
+          }transaction.${groupKey}.description`,
   };
 
   const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;

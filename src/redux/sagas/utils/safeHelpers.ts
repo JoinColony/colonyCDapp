@@ -24,6 +24,19 @@ import RetryProvider from '../wallet/RetryProvider.ts';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis.ts'; // Temporary
 
+const safeAddressesUrl = new URL(
+  import.meta.env.VITE_NETWORK_FILES_ENDPOINT || 'http://localhost:3006',
+);
+
+interface SafeAddresses {
+  LOCAL_FOREIGN_BRIDGE_ADDRESS?: string;
+  LOCAL_HOME_BRIDGE_ADDRESS?: string;
+  LOCAL_SAFE_ADDRESS?: string;
+  LOCAL_ERC721_ADDRESS?: string;
+  LOCAL_SAFE_TOKEN_ADDRESS?: string;
+  ZODIAC_BRIDGE_MODULE_ADDRESS?: string;
+}
+
 export interface SafeTxData {
   title: string;
   transactions: SafeTransactionData[];
@@ -43,47 +56,19 @@ export interface SelectedNFT extends SelectedSafe {
   id: string; // id is address + id,
 }
 
-/* eslint-disable @typescript-eslint/no-var-requires, global-require */
-const LOCAL_HOME_BRIDGE_ADDRESS =
-  // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
-    ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-        .LOCAL_HOME_BRIDGE_ADDRESS
-    : null;
-const LOCAL_FOREIGN_BRIDGE_ADDRESS =
-  // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
-    ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-        .LOCAL_FOREIGN_BRIDGE_ADDRESS
-    : null;
-const LOCAL_ERC721_ADDRESS =
-  // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
-    ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-        .LOCAL_ERC721_ADDRESS
-    : null;
-const LOCAL_SAFE_ADDRESS =
-  // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
-    ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-        .LOCAL_SAFE_ADDRESS
-    : null;
-const LOCAL_SAFE_TOKEN_ADDRESS =
-  // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
-    ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-        .LOCAL_SAFE_TOKEN_ADDRESS
-    : null;
-export const ZODIAC_BRIDGE_MODULE_ADDRESS =
-  // @ts-ignore
-  isDev && !WEBPACK_IS_PRODUCTION && SAFE_ENABLED_LOCALLY === 'true'
-    ? require('../../../../amplify/mock-data/colonyNetworkArtifacts/safe-addresses.json')
-        .ZODIAC_BRIDGE_MODULE_ADDRESS
-    : null;
-/* eslint-enable @typescript-eslint/no-var-requires, global-require */
-
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 const LOCAL_TOKEN_ID = 1; // set in start-bridging-environment.js
+
+let SAFE_ADDRESSES: SafeAddresses | null = null;
+
+export const getSafeAddresses = async (): Promise<SafeAddresses> => {
+  if (!isDev || !(import.meta.env.VITE_SAFE_ENABLED === 'true'))
+    return {} as SafeAddresses;
+  if (SAFE_ADDRESSES) return SAFE_ADDRESSES;
+  const addresses = await fetch(`${safeAddressesUrl.href}safe-addresses.json`);
+  SAFE_ADDRESSES = await addresses.json();
+  return SAFE_ADDRESSES as SafeAddresses;
+};
 
 export const getHomeProvider = () => new RetryProvider();
 
@@ -103,7 +88,9 @@ export const getForeignProvider = (safeChainId: number) => {
   );
 };
 
-export const getForeignBridgeByChain = (safeChainId: number) => {
+export const getForeignBridgeByChain = async (safeChainId: number) => {
+  const { LOCAL_FOREIGN_BRIDGE_ADDRESS } = await getSafeAddresses();
+
   const foreignProvider = getForeignProvider(safeChainId);
   const foreignSigner = foreignProvider.getSigner();
   const foreignBridgeAddress: string | undefined = isDev
@@ -119,7 +106,8 @@ export const getForeignBridgeByChain = (safeChainId: number) => {
   return new ethers.Contract(foreignBridgeAddress, ForeignAMB, foreignSigner);
 };
 
-export const getHomeBridgeByChain = (safeChainId: number) => {
+export const getHomeBridgeByChain = async (safeChainId: number) => {
+  const { LOCAL_HOME_BRIDGE_ADDRESS } = await getSafeAddresses();
   const homeProvider = getHomeProvider();
   const homeSigner = homeProvider.getSigner();
   const homeBridgeAddress: string | undefined = isDev
@@ -219,7 +207,7 @@ export const getRawTransactionData = (
   ]);
 };
 
-export const getTransferNFTData = (
+export const getTransferNFTData = async (
   zodiacBridgeModule: Contract,
   safe: Safe,
   transaction: SafeTransactionData,
@@ -231,6 +219,8 @@ export const getTransferNFTData = (
   if (!transaction.recipient) {
     throw new Error('Transaction does not contain a recipient.');
   }
+
+  const { LOCAL_SAFE_ADDRESS, LOCAL_ERC721_ADDRESS } = await getSafeAddresses();
 
   // If this function is called, nftData will be defined.
 
@@ -275,6 +265,9 @@ export const getTransferFundsData = async (
   if (!transaction.recipient) {
     throw new Error('Transaction does not contain a recipient.');
   }
+
+  const { LOCAL_SAFE_ADDRESS, LOCAL_SAFE_TOKEN_ADDRESS } =
+    await getSafeAddresses();
 
   const safeAddress = isDev ? LOCAL_SAFE_ADDRESS : safe.address;
   const tokenAddress = isDev
@@ -366,6 +359,9 @@ export const getContractInteractionData = async (
     throw new Error('Transaction does not contain a contract function.');
   }
 
+  const { LOCAL_SAFE_ADDRESS, LOCAL_SAFE_TOKEN_ADDRESS } =
+    await getSafeAddresses();
+
   const safeAddress = isDev ? LOCAL_SAFE_ADDRESS : safe.address;
   const contractAddress = isDev
     ? LOCAL_SAFE_TOKEN_ADDRESS
@@ -431,6 +427,7 @@ export function* getTransactionEncodedData(
   network: NetworkInfo,
   homeBridge: Contract,
 ) {
+  const { ZODIAC_BRIDGE_MODULE_ADDRESS } = yield getSafeAddresses();
   const zodiacBridgeModuleAddress = isDev
     ? ZODIAC_BRIDGE_MODULE_ADDRESS
     : safe.moduleContractAddress;
@@ -458,7 +455,7 @@ export function* getTransactionEncodedData(
         );
         break;
       case SafeTransactionType.TransferNft:
-        txDataToBeSentToZodiacModule = getTransferNFTData(
+        txDataToBeSentToZodiacModule = yield getTransferNFTData(
           zodiacBridgeModule,
           safe,
           transaction,

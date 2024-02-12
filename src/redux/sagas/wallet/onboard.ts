@@ -22,14 +22,12 @@ const { formatMessage } = intl({
 });
 
 const ganacheAccountsUrl = new URL(
-  process.env.GANACHE_ACCOUNTS_ENDPOINT || 'http://localhost:3006',
+  import.meta.env.VITE_NETWORK_FILES_ENDPOINT || 'http://localhost:3006',
 );
 
 const getDevelopmentWallets = async () => {
-  // variable injected by webpack
-  // @ts-ignore
   // if we're using the webpack.dev config, include dev wallets
-  if (!WEBPACK_IS_PRODUCTION) {
+  if (import.meta.env.DEV) {
     const fetchRes = await fetch(
       `${ganacheAccountsUrl.href}ganache-accounts.json`,
     );

@@ -23,16 +23,18 @@ const getNetworkClient = async () => {
 
   const signer = wallet.ethersProvider.getSigner();
 
-  const reputationOracleUrl = process.env.REPUTATION_ORACLE_ENDPOINT
-    ? new URL(process.env.REPUTATION_ORACLE_ENDPOINT)
+  const reputationOracleUrl = import.meta.env.VITE_REPUTATION_ORACLE_ENDPOINT
+    ? new URL(import.meta.env.VITE_REPUTATION_ORACLE_ENDPOINT)
     : new URL(`/reputation`, window.location.origin);
 
   const ganacheAccountsUrl = new URL(
-    process.env.GANACHE_ACCOUNTS_ENDPOINT || 'http://localhost:3006',
+    import.meta.env.VITE_NETWORK_FILES_ENDPOINT || 'http://localhost:3006',
   );
 
-  // @ts-ignore
-  if (!WEBPACK_IS_PRODUCTION && process.env.NETWORK === Network.Ganache) {
+  if (
+    import.meta.env.PROD &&
+    import.meta.env.VITE_NETWORK === Network.Ganache
+  ) {
     const fetchRes = await fetch(
       `${ganacheAccountsUrl.href}etherrouter-address.json`,
     );
@@ -54,7 +56,8 @@ const getNetworkClient = async () => {
        * and we want to be able to differentiate between them
        */
       networkAddress:
-        process.env.NETWORK_CONTRACT_ADDRESS || ColonyNetworkAddress[network],
+        import.meta.env.VITE_NETWORK_CONTRACT_ADDRESS ||
+        ColonyNetworkAddress[network],
       reputationOracleEndpoint: reputationOracleUrl.href,
     },
   );

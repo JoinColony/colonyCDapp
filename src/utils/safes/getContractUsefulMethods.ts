@@ -17,9 +17,9 @@ const getCurrentNetworkData = (chainId: number) => {
 
 export const getApiKey = (chainId: number) => {
   if (chainId === BINANCE_NETWORK.chainId) {
-    return process.env.BSCSCAN_API_KEY;
+    return import.meta.env.VITE_BSCSCAN_API_KEY;
   }
-  return process.env.ETHERSCAN_API_KEY;
+  return import.meta.env.VITE_ETHERSCAN_API_KEY;
 };
 
 export const fetchContractName = async (

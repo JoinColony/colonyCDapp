@@ -30,7 +30,7 @@ export const AnalyticsContext = createContext<AnalyticsContextValue>(
 export const AnalyticsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const gtmId = process.env.GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
+  const gtmId = import.meta.env.VITE_GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
   useBeamer();
 
   const contextValue = useMemo(() => {

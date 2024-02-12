@@ -26,7 +26,7 @@ import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 
-import { useFiltersContext } from '../FiltersContext/FiltersContext.tsx';
+import { useFiltersContext } from '../FiltersContext/FiltersContext.ts';
 import MeatballMenuCopyItem from '../partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { type ColonyActionsTableProps } from '../types.ts';
 

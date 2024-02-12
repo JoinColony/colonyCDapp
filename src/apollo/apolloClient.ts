@@ -4,7 +4,9 @@ import cache from './cache/index.ts';
 import removeTypenameLink from './removeTypenameLink.ts';
 
 const httpLink = new HttpLink({
-  uri: `${process.env.AUTH_PROXY_ENDPOINT || 'http://localhost:3005'}/graphql`,
+  uri: `${
+    import.meta.env.VITE_AUTH_PROXY_ENDPOINT || 'http://localhost:3005'
+  }/graphql`,
   credentials: 'include',
 });
 

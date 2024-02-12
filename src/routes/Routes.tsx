@@ -167,18 +167,17 @@ const Routes = () => {
           {/* Colony settings routes */}
           <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
 
-          {/* Enable the following routes in dev mode */}
+          <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
 
-          {/* @ts-ignore */}
-          {!WEBPACK_IS_PRODUCTION && (
+          {/* Enable the following routes in dev mode */}
+          {import.meta.env.DEV && (
             <Route
               path={COLONY_INTEGRATIONS_ROUTE}
               element={<IntegrationsPage />}
             />
           )}
 
-          {/* @ts-ignore */}
-          {!WEBPACK_IS_PRODUCTION && (
+          {import.meta.env.DEV && (
             <Route
               path={COLONY_INCORPORATION_ROUTE}
               element={<IncorporationPage />}
