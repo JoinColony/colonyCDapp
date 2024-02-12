@@ -33,9 +33,37 @@ export const TmpRemoveVerifiedMembers = () => {
       }),
     ),
   });
+  const unverifyMembersMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS,
+    error: ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_ERROR,
+    success: ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_SUCCESS,
+    transform: pipe(
+      mapPayload((payload) => {
+        return payload;
+      }),
+      withMeta({
+        setTxHash: (txHash: string) => {
+          navigate(setQueryParamOnUrl(window.location.pathname, 'tx', txHash), {
+            replace: true,
+          });
+        },
+      }),
+    ),
+  });
 
-  const handleSubmit = () => {
+  const handleRemoveMembers = () => {
     unverifyMembers({
+      colonyAddress,
+      colonyName: name,
+      members: members.split(','),
+      customActionTitle: 'Unverifying members!',
+      domainId: Id.RootDomain,
+      annotationMessage: 'Annotated bruh',
+    });
+  };
+
+  const handleRemoveMembersMotion = () => {
+    unverifyMembersMotion({
       colonyAddress,
       colonyName: name,
       members: members.split(','),
@@ -54,9 +82,14 @@ export const TmpRemoveVerifiedMembers = () => {
           setMembers(e.target.value);
         }}
       />
-      <button type="button" onClick={handleSubmit}>
-        Unverify
-      </button>
+      <div className="flex gap-2">
+        <button type="button" onClick={handleRemoveMembers}>
+          Unverify
+        </button>
+        <button type="button" onClick={handleRemoveMembersMotion}>
+          Unverify via motion
+        </button>
+      </div>
     </>
   );
 };
