@@ -1,3 +1,4 @@
+import { ArrowDown } from '@phosphor-icons/react';
 import {
   flexRender,
   useReactTable,
@@ -8,7 +9,6 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -203,12 +203,11 @@ const Table = <T,>({
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
-                      {header.column.getCanSort() && (
-                        <Icon
-                          name="arrow-down"
-                          appearance={{ size: 'extraTiny' }}
+                      {header.column.getCanSort() ? (
+                        <ArrowDown
+                          size={12}
                           className={clsx(
-                            'ml-1 mb-0.5 transition-[transform,opacity] align-middle',
+                            'inline-block ml-1 mb-0.5 transition-[transform,opacity] align-middle',
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc' &&
@@ -222,7 +221,7 @@ const Table = <T,>({
                             },
                           )}
                         />
-                      )}
+                      ) : null}
                     </th>
                   ))}
                 </tr>

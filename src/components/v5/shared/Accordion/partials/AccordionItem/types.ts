@@ -1,10 +1,10 @@
-import { type IconSize } from '~shared/Icon/Icon.tsx';
+import { type Icon } from '@phosphor-icons/react';
 
 export interface AccordionItemProps {
   title: React.ReactNode;
   isOpen: boolean;
   onToggle: VoidFunction;
-  iconName?: string;
+  icon?: Icon;
   className?: string;
-  iconSize?: IconSize;
+  iconSize?: number;
 }

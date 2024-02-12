@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import { getIconName } from '~v5/shared/CardWithBios/partials/consts.ts';
+import { getIcon } from '~v5/shared/CardWithBios/partials/consts.ts';
 
 import PillsBase from '../PillsBase.tsx';
 
@@ -36,7 +36,7 @@ const UserStatus: FC<PropsWithChildren<UserStatusProps>> = ({
       'text-negative-400 bg-negative-100': mode === 'banned',
       'max-w-[4.5rem] w-full justify-center truncate': mode === 'team',
     })}
-    iconName={getIconName(mode)}
+    icon={getIcon(mode)}
     pillSize="small"
     {...rest}
   >

@@ -4,7 +4,7 @@ import { useAppContext } from '~context/AppContext.tsx';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 import { type Colony, type JoinedColony } from '~types/graphql.ts';
 
-import { getChainIconName } from '../../utils.ts';
+import { getChainIcon } from '../../utils.ts';
 import { type ColonySwitcherListItem } from '../ColonySwitcherList/types.ts';
 
 import { type UseColonySwitcherContentReturnType } from './types.ts';
@@ -16,7 +16,7 @@ const getColonySwitcherListItem = (
   name: colony.metadata?.displayName || colony.name,
   to: `/${colony.name}`,
   avatarProps: {
-    chainIconName: getChainIconName(colony.chainMetadata.chainId),
+    chainIcon: getChainIcon(colony.chainMetadata.chainId),
     colonyImageProps: colony.metadata?.avatar
       ? {
           src: colony.metadata?.thumbnail || colony.metadata?.avatar,

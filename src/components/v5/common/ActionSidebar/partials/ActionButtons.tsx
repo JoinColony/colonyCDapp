@@ -1,10 +1,10 @@
+import { SpinnerGap } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils.ts';
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Button, { TxButton } from '~v5/shared/Button/index.ts';
 
 import { useCloseSidebarClick } from '../hooks/index.ts';
@@ -66,11 +66,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
           text={{ id: 'button.pending' }}
           icon={
             <span className="flex shrink-0 ml-1.5">
-              <Icon
-                name="spinner-gap"
-                className="animate-spin"
-                appearance={{ size: 'tiny' }}
-              />
+              <SpinnerGap size={14} className="animate-spin" />
             </span>
           }
         />

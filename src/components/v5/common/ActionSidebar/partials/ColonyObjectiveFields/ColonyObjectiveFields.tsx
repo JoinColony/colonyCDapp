@@ -1,3 +1,4 @@
+import { Article, FileText, Percent } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -38,7 +39,7 @@ const ColonyObjectiveFields: FC = () => {
   return (
     <>
       <ActionFormRow
-        icon="article"
+        icon={Article}
         title={formatText(MSG.title)}
         fieldName="colonyObjectiveTitle"
       >
@@ -51,7 +52,7 @@ const ColonyObjectiveFields: FC = () => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="file-text"
+        icon={FileText}
         title={formatText(MSG.description)}
         fieldName="colonyObjectiveDescription"
       >
@@ -64,7 +65,7 @@ const ColonyObjectiveFields: FC = () => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="percent"
+        icon={Percent}
         title={formatText(MSG.progress)}
         fieldName="colonyObjectiveProgress"
       >

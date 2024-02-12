@@ -1,8 +1,9 @@
+import { type Icon } from '@phosphor-icons/react';
 import { type ButtonHTMLAttributes } from 'react';
 
 export interface NavigationSidebarButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  iconName: string;
+  icon: Icon;
   label: string;
   isActive?: boolean;
   isExpanded?: boolean;

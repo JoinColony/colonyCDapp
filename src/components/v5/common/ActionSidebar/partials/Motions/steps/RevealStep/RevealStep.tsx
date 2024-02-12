@@ -1,4 +1,5 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -153,8 +154,8 @@ const RevealStep: FC<RevealStepProps> = ({
               ? 'motion.revealStep.buttonHide'
               : 'motion.revealStep.buttonShow',
           })}
-          iconName="caret-down"
-          iconSize="extraSmall"
+          icon={CaretDown}
+          iconSize={16}
         >
           <RevealInformationList items={voters} />
         </AccordionItem>

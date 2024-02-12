@@ -1,4 +1,4 @@
-import { FilePlus } from 'phosphor-react';
+import { FilePlus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { ColonyActionType } from '~gql';

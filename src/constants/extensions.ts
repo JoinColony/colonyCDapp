@@ -2,6 +2,8 @@ import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { number } from 'yup';
 
+import ExtensionLazyConsensusIcon from '~icons/ExtensionLazyConsensusIcon.tsx';
+import ExtensionOneTransactionPaymentIcon from '~icons/ExtensionOneTransactionPaymentIcon.tsx';
 import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
@@ -311,7 +313,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.oneTxPaymentName,
     descriptionShort: MSG.oneTxPaymentDescriptionShort,
     descriptionLong: MSG.oneTxPaymentDescriptionLong,
-    icon: 'extension-one-transaction-payment',
+    icon: ExtensionOneTransactionPaymentIcon,
     neededColonyPermissions: [
       ColonyRole.Administration,
       ColonyRole.Funding,
@@ -327,7 +329,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.votingReputationName,
     descriptionShort: MSG.votingReputationDescriptionShort,
     descriptionLong: MSG.votingReputationDescriptionLong,
-    icon: 'extension-lazy-consensus',
+    icon: ExtensionLazyConsensusIcon,
     imageURLs: [reputationHero, reputationInterface],
     neededColonyPermissions: [
       ColonyRole.Root,

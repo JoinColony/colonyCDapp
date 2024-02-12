@@ -1,3 +1,8 @@
+import {
+  ArrowCircleDownRight,
+  ArrowCircleUpRight,
+  Eye,
+} from '@phosphor-icons/react';
 import React, { type FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -34,8 +39,8 @@ const ViewStakedButton: FC<ViewStakedButtonProps> = ({
   <Button
     mode="primaryOutline"
     size="extraSmall"
-    iconName="eye"
-    iconSize="extraTiny"
+    icon={Eye}
+    iconSize={12}
     isFullSize={isFullSize}
     text={formatText({ id: 'button.viewStaked' })}
     onClick={onClick}
@@ -96,8 +101,8 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                   <Button
                     mode="primaryOutline"
                     size="extraSmall"
-                    iconName="arrow-circle-down-right"
-                    iconSize="extraTiny"
+                    icon={ArrowCircleDownRight}
+                    iconSize={12}
                     text={formatText({ id: 'button.activate' })}
                     onClick={() => {
                       toggleOnTokensModal();
@@ -107,8 +112,8 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                   <Button
                     mode="primaryOutline"
                     size="extraSmall"
-                    iconName="arrow-circle-up-right"
-                    iconSize="extraTiny"
+                    icon={ArrowCircleUpRight}
+                    iconSize={12}
                     text={formatText({ id: 'button.deactivate' })}
                     onClick={() => {
                       toggleOnTokensModal();
@@ -131,8 +136,8 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               <Button
                 mode="primaryOutline"
                 size="extraSmall"
-                iconName="arrow-circle-down-right"
-                iconSize="extraTiny"
+                icon={ArrowCircleDownRight}
+                iconSize={12}
                 text={formatText({ id: 'button.activate' })}
                 isFullSize
                 onClick={() => {
@@ -143,8 +148,8 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               <Button
                 mode="primaryOutline"
                 size="extraSmall"
-                iconName="arrow-circle-up-right"
-                iconSize="extraTiny"
+                icon={ArrowCircleUpRight}
+                iconSize={12}
                 text={formatText({ id: 'button.deactivate' })}
                 isFullSize
                 onClick={() => {

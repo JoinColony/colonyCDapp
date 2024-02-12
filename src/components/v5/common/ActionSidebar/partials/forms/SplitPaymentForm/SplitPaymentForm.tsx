@@ -1,3 +1,9 @@
+import {
+  ChartPieSlice,
+  Coins,
+  Scales,
+  UsersThree,
+} from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -29,7 +35,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="pie-chart"
+        icon={ChartPieSlice}
         fieldName="distributionMethod"
         tooltips={{
           label: {
@@ -50,7 +56,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="coins"
+        icon={Coins}
         fieldName="amount"
         tooltips={{
           label: {
@@ -64,7 +70,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
-        icon="users-three"
+        icon={UsersThree}
         fieldName="team"
         tooltips={{
           label: {
@@ -78,7 +84,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

@@ -1,3 +1,4 @@
+import { FilePlus, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
@@ -45,7 +46,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
     <div className={className}>
       <ActionFormRow
         fieldName={ACTION_TYPE_FIELD_NAME}
-        icon="file-plus"
+        icon={FilePlus}
         title={formatText({ id: 'actionSidebar.actionType' })}
         // Disabled to improve user experience
         // tooltips={{
@@ -126,7 +127,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
           setValue(ACTION_TYPE_FIELD_NAME, nextActionType);
           setNextActionType(undefined);
         }}
-        icon="warning-circle"
+        icon={WarningCircle}
         buttonMode="primarySolid"
         confirmMessage={formatText({ id: 'button.changeAction' })}
         closeMessage={formatText({

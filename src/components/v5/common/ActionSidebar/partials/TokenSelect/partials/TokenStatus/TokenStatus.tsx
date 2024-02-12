@@ -1,9 +1,7 @@
+import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
-
-import { ICON_NAME } from './consts.ts';
 import { type TokenStatusProps } from './types.ts';
 
 const displayName =
@@ -19,7 +17,11 @@ const TokenStatus: FC<PropsWithChildren<TokenStatusProps>> = ({
       'text-negative-400': status === 'error',
     })}
   >
-    <Icon name={ICON_NAME[status]} appearance={{ size: 'extraTiny' }} />
+    {status === 'success' ? (
+      <CheckCircle size={12} />
+    ) : (
+      <WarningCircle size={12} />
+    )}
     {children}
   </div>
 );

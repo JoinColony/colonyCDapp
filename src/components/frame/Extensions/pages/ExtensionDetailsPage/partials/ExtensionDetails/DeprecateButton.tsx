@@ -1,3 +1,4 @@
+import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -37,7 +38,7 @@ const DeprecateButton = ({
       </div>
       <Modal
         isOpen={isDeprecateModalOpen}
-        icon="question"
+        icon={Question}
         onClose={() => setIsDeprecateModalOpen(false)}
         title={formatText({ id: 'extensionDetailsPage.deprecate' })}
         subTitle={formatText({

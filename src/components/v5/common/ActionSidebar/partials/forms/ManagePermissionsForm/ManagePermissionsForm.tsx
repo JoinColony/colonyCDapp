@@ -1,10 +1,17 @@
 import { Id } from '@colony/colony-js';
+import {
+  Question,
+  Scales,
+  Shield,
+  Signature,
+  UserFocus,
+  UsersThree,
+} from '@phosphor-icons/react';
 import React, { type FC, useCallback } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { USER_ROLE } from '~constants/permissions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
@@ -52,7 +59,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           toggleOff();
         }}
       >
-        <Icon name="question" appearance={{ size: 'tiny' }} />
+        <Question size={14} />
         <span className="font-semibold text-sm underline ml-[.375rem]">
           {formatText({
             id: 'actionSidebar.managePermissions.roleSelect.footerCta',
@@ -79,7 +86,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         isOpen={isPermissionsModalOpen}
       />
       <ActionFormRow
-        icon="user-focus"
+        icon={UserFocus}
         fieldName="member"
         tooltips={{
           label: {
@@ -93,7 +100,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <UserSelect name="member" />
       </ActionFormRow>
       <ActionFormRow
-        icon="users-three"
+        icon={UsersThree}
         fieldName="team"
         tooltips={{
           label: {
@@ -107,7 +114,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" />
       </ActionFormRow>
       <ActionFormRow
-        icon="shield"
+        icon={Shield}
         fieldName="role"
         tooltips={{
           label: {
@@ -134,7 +141,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="signature"
+        icon={Signature}
         fieldName="authority"
         tooltips={{
           label: {
@@ -170,7 +177,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

@@ -1,3 +1,4 @@
+import { Pencil, Scales, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
@@ -19,7 +20,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
   return (
     <>
       <ActionFormRow
-        icon="users-three"
+        icon={UsersThree}
         fieldName="from"
         tooltips={{
           label: {
@@ -33,7 +34,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {
@@ -55,7 +56,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
       </ActionFormRow>
       <CreatedInRow />
       <ActionFormRow
-        icon="pencil"
+        icon={Pencil}
         fieldName="description"
         // Tooltip disabled to experiment with improving user experience
         // tooltips={{

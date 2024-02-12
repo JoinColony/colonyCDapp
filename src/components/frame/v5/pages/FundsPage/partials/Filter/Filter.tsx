@@ -1,3 +1,4 @@
+import { CaretDown, MagnifyingGlass } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
@@ -8,7 +9,6 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
@@ -127,7 +127,7 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
 function RootFilter<TValue extends FilterValue>({
   items,
   label,
-  iconName,
+  icon: Icon,
   onChange,
   path,
   value,
@@ -163,7 +163,7 @@ function RootFilter<TValue extends FilterValue>({
           isOpen={isAccordionOpen}
           onToggle={toggleAccordion}
           title={title}
-          iconName="chevron-down"
+          icon={CaretDown}
           className="[&_.accordion-toggler]:text-gray-400 [&_.accordion-toggler]:text-4 [&_.accordion-toggler]:uppercase sm:[&_.accordion-toggler]:px-3.5 mb-4 last:mb-0"
         >
           {RootItems}
@@ -175,7 +175,7 @@ function RootFilter<TValue extends FilterValue>({
             className="subnav-button gap-3 px-0 sm:px-3.5"
             ref={setTriggerRef}
           >
-            <Icon name={iconName} appearance={{ size: 'tiny' }} />
+            <Icon size={14} />
             {label}
           </button>
           {visible && (
@@ -236,11 +236,11 @@ function Filter<TValue extends FilterValue>({
     [onSearch],
   );
 
-  const RootItems = rootItems.map(({ iconName, items, label, name, title }) => (
+  const RootItems = rootItems.map(({ icon, items, label, name, title }) => (
     <RootFilter
       key={name.toString()}
       label={label}
-      iconName={iconName}
+      icon={icon}
       title={title}
       name={name}
       items={items}
@@ -268,7 +268,7 @@ function Filter<TValue extends FilterValue>({
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
           >
-            <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
+            <MagnifyingGlass size={14} />
           </Button>
         )}
       </div>

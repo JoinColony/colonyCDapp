@@ -2,8 +2,6 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { Link } from 'react-router-dom';
 
-import Icon from '~shared/Icon/index.ts';
-
 import { type WidgetBoxProps } from './types.ts';
 
 const displayName = 'v5.common.WidgetBox';
@@ -15,7 +13,7 @@ const WidgetBox: FC<WidgetBoxProps> = ({
   href,
   searchParams,
   className = 'bg-base-white border-gray-200 text-gray-900',
-  iconName,
+  icon: Icon,
   iconClassName = 'text-blue-400',
   contentClassName = 'block w-full',
   titleClassName,
@@ -34,15 +32,9 @@ const WidgetBox: FC<WidgetBoxProps> = ({
 
   const content = (
     <>
-      {iconName ? (
+      {Icon ? (
         <span className="w-full flex gap-4 items-center justify-between sm:items-start sm:justify-start">
-          <Icon
-            name={iconName}
-            className={clsx(
-              iconClassName,
-              '!h-[1.5rem] !w-[1.5rem] flex-shrink-0',
-            )}
-          />
+          <Icon className={iconClassName} size={24} />
           {baseContent}
         </span>
       ) : (

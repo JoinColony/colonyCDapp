@@ -1,3 +1,4 @@
+import { Scales } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -28,7 +29,7 @@ const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return isNativeTokenUnlocked && !transactionId ? null : (
     <>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

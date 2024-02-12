@@ -1,8 +1,8 @@
+import { Star } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import useUserReputation from '~hooks/useUserReputation.ts';
-import Icon from '~shared/Icon/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { ZeroValue, calculatePercentageReputation } from '~utils/reputation.ts';
 
@@ -37,7 +37,7 @@ const MemberReputation: FC<MemberReputationProps> = ({
         'flex items-center': !hideOnMobile,
       })}
     >
-      <Icon name="star" appearance={{ size: 'tiny' }} />
+      <Star size={14} />
       <span className={clsx(textClassName, 'ml-1')}>
         {!percentageReputation && '— %'}
         {percentageReputation === ZeroValue.NearZero && percentageReputation}

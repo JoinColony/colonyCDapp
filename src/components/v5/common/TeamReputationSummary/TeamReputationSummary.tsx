@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { UsersThree } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
@@ -8,7 +9,6 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -59,7 +59,7 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
   return (
     <MenuContainer className={clsx(className, 'w-full')}>
       <span className="flex text-blue-400 mb-2">
-        <Icon name="users-three" appearance={{ size: 'big' }} />
+        <UsersThree size={32} />
       </span>
       <span className="heading-4 mb-1">
         <Numeral

@@ -1,3 +1,4 @@
+import { Scales } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
@@ -28,7 +29,7 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
       <ColonyObjectiveFields />
       <CreatedInRow />
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

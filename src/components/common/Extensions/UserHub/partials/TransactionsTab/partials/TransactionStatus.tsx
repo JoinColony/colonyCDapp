@@ -1,9 +1,9 @@
+import { SpinnerGap, CheckCircle, XCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { type FC } from 'react';
 
 import { TransactionStatus as TransactionStatusEnum } from '~gql';
-import Icon from '~shared/Icon/index.ts';
 
 import { type TransactionStatusProps } from '../types.ts';
 
@@ -25,14 +25,13 @@ const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
       })}
     >
       {pending && (
-        <Icon
-          name="spinner-gap"
+        <SpinnerGap
           className="ml-2.5 w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
-          appearance={{ size: 'tiny' }}
+          size={14}
         />
       )}
-      {succeeded && <Icon name="check-circle" appearance={{ size: 'tiny' }} />}
-      {failed && <Icon name="x-circle" appearance={{ size: 'tiny' }} />}
+      {succeeded && <CheckCircle size={14} />}
+      {failed && <XCircle size={14} />}
       {createdAt && (
         <span className="text-gray-400 text-xs block mt-1">{createdAt}</span>
       )}

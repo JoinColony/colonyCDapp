@@ -1,3 +1,4 @@
+import { UserPlus } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
@@ -52,7 +53,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
                   }),
                   buttonProps: {
                     text: formatText({ id: 'members.subnav.invite' }),
-                    iconName: 'user-plus',
+                    icon: UserPlus,
                     onClick: () => handleClipboardCopy(colonyURL),
                   },
                   buttonTooltipProps: {

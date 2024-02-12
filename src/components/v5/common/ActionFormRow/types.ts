@@ -1,18 +1,17 @@
+import { type Icon } from '@phosphor-icons/react';
+import { type ReactNode } from 'react';
+
 import { type UseToggleReturnType } from '~hooks/useToggle/types.ts';
 import { type TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
 
-import type React from 'react';
-
 export interface ActionFormRowProps {
-  icon: React.ReactNode;
-  title: React.ReactNode;
+  icon: Icon;
+  title: ReactNode;
   isExpandable?: boolean;
   isMultiLine?: boolean;
   fieldName?: string;
   className?: string;
-  children?:
-    | ((props: UseToggleReturnType) => React.ReactNode)
-    | React.ReactNode;
+  children?: ((props: UseToggleReturnType) => ReactNode) | ReactNode;
   tooltips?: {
     label?: TooltipProps;
     content?: TooltipProps;

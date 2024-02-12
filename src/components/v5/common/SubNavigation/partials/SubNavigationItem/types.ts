@@ -1,3 +1,4 @@
+import { type Icon } from '@phosphor-icons/react';
 import { type ReactNode } from 'react';
 
 export interface SubNavigationItemProps {
@@ -6,5 +7,5 @@ export interface SubNavigationItemProps {
   isOpen: boolean;
   setOpen: () => void;
   id: number;
-  icon: string;
+  icon: Icon;
 }

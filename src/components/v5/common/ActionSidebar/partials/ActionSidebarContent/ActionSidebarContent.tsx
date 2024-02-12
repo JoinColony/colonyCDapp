@@ -1,4 +1,5 @@
 import { useApolloClient } from '@apollo/client';
+import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -105,7 +106,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <div className="mt-6">
             <NotificationBanner
               status="warning"
-              icon="warning-circle"
+              icon={WarningCircle}
               description={formatMessage(MSG.noReputationError)}
               callToAction={
                 <Link to="https://docs.colony.io/use/reputation">
@@ -119,7 +120,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         )}
         {customError && (
           <div className="mt-7">
-            <NotificationBanner icon="warning-circle" status="error">
+            <NotificationBanner icon={WarningCircle} status="error">
               {customError.message?.toString()}
             </NotificationBanner>
           </div>
@@ -128,7 +129,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <div className="mt-7">
             <NotificationBanner
               status="error"
-              icon="warning-circle"
+              icon={WarningCircle}
               description={
                 <ul className="list-disc list-inside text-negative-400">
                   {flatFormErrors.map(({ key, message }) => (

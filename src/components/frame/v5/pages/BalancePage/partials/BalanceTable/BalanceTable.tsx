@@ -1,4 +1,12 @@
 import {
+  ArrowSquareOut,
+  Bank,
+  Binoculars,
+  HandCoins,
+  PlusCircle,
+  Share,
+} from '@phosphor-icons/react';
+import {
   getPaginationRowModel,
   getSortedRowModel,
   type SortingState,
@@ -100,7 +108,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
                   toggleAddFundsModalOn();
                 },
                 label: formatMessage(MSG.labelAddFunds),
-                icon: 'add',
+                icon: PlusCircle,
               },
             ]
           : []),
@@ -123,7 +131,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
               networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
             },
           ),
-          icon: 'arrow-square-out',
+          icon: ArrowSquareOut,
         },
         ...(isTokenNative
           ? [
@@ -135,7 +143,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
                   });
                 },
                 label: formatMessage(MSG.labelMintToken),
-                icon: 'bank',
+                icon: Bank,
               },
             ]
           : []),
@@ -150,7 +158,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
             });
           },
           label: formatMessage(MSG.labelTransferFunds),
-          icon: 'transfer',
+          icon: Share,
         },
         {
           key: 'make_payment',
@@ -163,7 +171,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
             });
           },
           label: formatMessage(MSG.labelMakePayment),
-          icon: 'hand-coins',
+          icon: HandCoins,
         },
       ],
     };
@@ -215,7 +223,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           !tokensDataLength && (
             <div className="border border-1 w-full rounded-b-lg border-gray-200">
               <EmptyContent
-                icon="binoculars"
+                icon={Binoculars}
                 title={{ id: 'balancePage.table.emptyTitle' }}
                 description={{ id: 'balancePage.table.emptyDescription' }}
                 withoutButtonIcon

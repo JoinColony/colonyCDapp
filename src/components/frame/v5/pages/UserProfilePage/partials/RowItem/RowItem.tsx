@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import AvatarUploader from '~v5/common/AvatarUploader/index.ts';
 import { Input } from '~v5/common/Fields/index.ts';
 import Switch from '~v5/common/Fields/Switch/index.ts';
@@ -102,10 +101,9 @@ const RowItem: FC<RowItemProps> = (props): JSX.Element => {
         {copyAddressProps && (
           <div className="flex md:flex-row flex-col items-center justify-between p-3 bg-gray-50 rounded-lg w-full">
             <div className="flex items-center mb-3 md:mb-0">
-              <Icon
-                name={copyAddressProps.iconName}
-                appearance={{ size: 'small' }}
-              />
+              {copyAddressProps.icon ? (
+                <copyAddressProps.icon size={18} />
+              ) : null}
               <span className="text-md ml-2 truncate block w-full">
                 {copyAddressProps.walletAddress}
               </span>

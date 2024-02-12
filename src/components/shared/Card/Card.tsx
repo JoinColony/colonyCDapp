@@ -1,6 +1,7 @@
+import { X } from '@phosphor-icons/react';
 import React, { type ReactNode, useState, useCallback } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
+import { formatText } from '~utils/intl.ts';
 
 import styles from './Card.css';
 
@@ -47,13 +48,10 @@ const Card = ({
         <button
           className={styles.closeButton}
           onClick={handleClose}
+          title={formatText({ id: 'button.close' })}
           type="button"
         >
-          <Icon
-            appearance={{ size: 'normal' }}
-            name="close"
-            title={{ id: 'button.close' }}
-          />
+          <X size={20} />
         </button>
       )}
       {children}

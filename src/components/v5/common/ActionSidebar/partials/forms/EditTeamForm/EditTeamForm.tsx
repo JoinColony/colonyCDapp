@@ -1,5 +1,11 @@
 import { Id } from '@colony/colony-js';
-import { PaintBucket } from 'phosphor-react';
+import {
+  HouseLine,
+  PaintBucket,
+  Rocket,
+  Scales,
+  UserList,
+} from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -36,7 +42,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="house-line"
+        icon={HouseLine}
         fieldName="team"
         title={formatText({ id: 'actionSidebar.team' })}
         tooltips={{
@@ -56,7 +62,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <ActionFormRow
         fieldName="teamName"
-        icon="user-list"
+        icon={UserList}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -78,7 +84,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="rocket"
+        icon={Rocket}
         fieldName="domainPurpose"
         title={formatText({ id: 'actionSidebar.teamPurpose' })}
         isMultiLine
@@ -100,7 +106,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon={<PaintBucket size={12} />}
+        icon={PaintBucket}
         fieldName="domainColor"
         title={formatText({ id: 'actionSidebar.teamColour' })}
         tooltips={{
@@ -114,7 +120,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamColorField name="domainColor" />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

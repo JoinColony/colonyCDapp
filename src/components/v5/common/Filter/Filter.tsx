@@ -1,3 +1,4 @@
+import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
@@ -5,7 +6,6 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { useFilterContext } from '~context/FilterContext.tsx';
 import { useSearchContext } from '~context/SearchContext.tsx';
 import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -61,7 +61,7 @@ const Filter: FC<FilterProps> = ({
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
           >
-            <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
+            <MagnifyingGlass size={14} />
           </Button>
           <Modal
             isFullOnMobile={false}

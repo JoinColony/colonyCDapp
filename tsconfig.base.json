@@ -9,6 +9,7 @@
       "~shared/*": ["src/components/shared/*"],
       "~v5/*": ["src/components/v5/*"],
       "~common/*": ["src/components/common/*"],
+      "~icons/*": ["src/components/icons/*"],
       "~frame/*": ["src/components/frame/*"],
       "~gql": ["src/graphql/generated.ts"],
       "~hooks": ["src/hooks"],

@@ -1,3 +1,4 @@
+import { PiggyBank } from '@phosphor-icons/react/dist/ssr/PiggyBank';
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import { ActionTypes } from '~redux/index.ts';
@@ -13,7 +14,7 @@ const BalanceModal: FC<PropsWithChildren<BalanceModalProps>> = ({
   children,
   ...props
 }) => (
-  <Modal icon="piggy-bank" {...props} onClose={onClose}>
+  <Modal icon={PiggyBank} {...props} onClose={onClose}>
     <ActionForm
       actionType={ActionTypes.USER_DEPOSIT_TOKEN} // @TODO: add correct action
       onSuccess={(_, { reset }) => {

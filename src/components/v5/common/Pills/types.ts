@@ -1,3 +1,5 @@
+import { type Icon } from '@phosphor-icons/react';
+
 import { type UserStakeStatus } from '~types/userStake.ts';
 
 import { type ContributorType } from '../TableFiltering/types.ts';
@@ -33,7 +35,7 @@ export type PillSize = 'medium' | 'small';
 export interface PillsProps {
   mode?: ExtensionStatusBadgeMode | UserStatusMode;
   text?: React.ReactNode;
-  iconName?: string;
+  icon?: Icon;
   iconSize?: IconSize;
   pillSize?: PillSize;
   className?: string;

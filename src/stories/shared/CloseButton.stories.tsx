@@ -12,17 +12,9 @@ const meta: Meta<typeof CloseButton> = {
         type: 'boolean',
       },
     },
-    iconSize: {
-      name: 'Icon',
-      options: ['extraTiny', 'tiny'],
-      control: {
-        type: 'select',
-      },
-    },
   },
   args: {
     disabled: false,
-    iconSize: 'tiny',
   },
 };
 

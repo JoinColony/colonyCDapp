@@ -59,77 +59,80 @@ const NestedOptions: FC<NestedOptionsProps> = ({
           'mt-1': isMobile,
         })}
       >
-        {(nestedFilters || []).map(({ id, title, icon, nestedOptions }) => {
-          const hasNestedOptions = !!nestedOptions && nestedOptions?.length > 0;
-          const isChecked = hasNestedOptions
-            ? checkedParent === id
-            : isFilterChecked(id);
+        {(nestedFilters || []).map(
+          ({ id, title, icon: Icon, nestedOptions }) => {
+            const hasNestedOptions =
+              !!nestedOptions && nestedOptions?.length > 0;
+            const isChecked = hasNestedOptions
+              ? checkedParent === id
+              : isFilterChecked(id);
 
-          return (
-            <li key={id}>
-              <div
-                className={clsx('subnav-button', {
-                  'px-0': isMobile,
-                })}
-                aria-label={formatText({ id: 'checkbox.select.filter' })}
-                ref={setTriggerRef}
-              >
-                <Checkbox
-                  id={id}
-                  name={formatText(title)}
-                  label={title}
-                  onChange={(event) =>
-                    onChange(hasNestedOptions, id, isChecked, event)
-                  }
-                  isChecked={isChecked}
-                  classNames="w-full"
+            return (
+              <li key={id}>
+                <div
+                  className={clsx('subnav-button', {
+                    'px-0': isMobile,
+                  })}
+                  aria-label={formatText({ id: 'checkbox.select.filter' })}
+                  ref={setTriggerRef}
                 >
-                  {icon}
-                </Checkbox>
-              </div>
-              <AnimatePresence>
-                {nestedOptions &&
-                  nestedOptions.length > 0 &&
-                  isChecked &&
-                  (isMobile ? (
-                    <motion.div
-                      key="accordion-content"
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden"
-                      variants={accordionAnimation}
-                      transition={{ duration: 0.4, ease: 'easeOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="ml-5">
+                  <Checkbox
+                    id={id}
+                    name={formatText(title)}
+                    label={title}
+                    onChange={(event) =>
+                      onChange(hasNestedOptions, id, isChecked, event)
+                    }
+                    isChecked={isChecked}
+                    classNames="w-full"
+                  >
+                    {Icon ? <Icon size={14} /> : null}
+                  </Checkbox>
+                </div>
+                <AnimatePresence>
+                  {nestedOptions &&
+                    nestedOptions.length > 0 &&
+                    isChecked &&
+                    (isMobile ? (
+                      <motion.div
+                        key="accordion-content"
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={accordionAnimation}
+                        transition={{ duration: 0.4, ease: 'easeOut' }}
+                        className="overflow-hidden"
+                      >
+                        <div className="ml-5">
+                          <NestedOptions
+                            parentOption={`custom.${parentOption}`}
+                            nestedFilters={nestedFilters}
+                          />
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <PopoverBase
+                        setTooltipRef={setTooltipRef}
+                        tooltipProps={getTooltipProps}
+                        withTooltipStyles={false}
+                        cardProps={{
+                          rounded: 's',
+                          hasShadow: true,
+                          className: 'py-4 px-2',
+                        }}
+                        classNames="w-full sm:max-w-[17.375rem]"
+                      >
                         <NestedOptions
                           parentOption={`custom.${parentOption}`}
-                          nestedFilters={nestedFilters}
+                          nestedFilters={nestedOptions}
                         />
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <PopoverBase
-                      setTooltipRef={setTooltipRef}
-                      tooltipProps={getTooltipProps}
-                      withTooltipStyles={false}
-                      cardProps={{
-                        rounded: 's',
-                        hasShadow: true,
-                        className: 'py-4 px-2',
-                      }}
-                      classNames="w-full sm:max-w-[17.375rem]"
-                    >
-                      <NestedOptions
-                        parentOption={`custom.${parentOption}`}
-                        nestedFilters={nestedOptions}
-                      />
-                    </PopoverBase>
-                  ))}
-              </AnimatePresence>
-            </li>
-          );
-        })}
+                      </PopoverBase>
+                    ))}
+                </AnimatePresence>
+              </li>
+            );
+          },
+        )}
       </ul>
     </>
   );

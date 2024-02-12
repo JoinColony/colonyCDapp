@@ -1,6 +1,7 @@
-import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/index.ts';
+import { SealCheck, UsersFour, UsersThree } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/index.ts';
 
 const navigationSidebarLinksListMeta: Meta<typeof NavigationSidebarLinksList> =
   {
@@ -15,13 +16,13 @@ const navigationSidebarLinksListMeta: Meta<typeof NavigationSidebarLinksList> =
           key: '1',
           label: 'Members',
           to: '/members',
-          iconName: 'users-three',
+          icon: UsersThree,
         },
         {
           key: '2',
           label: 'Verified members',
           to: '/verified-members',
-          iconName: 'seal-check',
+          icon: SealCheck,
           tagProps: {
             text: 'New',
             mode: 'new',
@@ -31,7 +32,7 @@ const navigationSidebarLinksListMeta: Meta<typeof NavigationSidebarLinksList> =
           key: '3',
           label: 'Teams',
           to: '/teams',
-          iconName: 'users-four',
+          icon: UsersFour,
           disabled: true,
           tagProps: {
             text: 'Coming soon',

@@ -1,6 +1,7 @@
-import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
+import { Bird } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 
 const colonyAvatarMeta: Meta<typeof ColonyAvatar> = {
   title: 'Shared/Colony Avatar',
@@ -24,6 +25,6 @@ export const WithChainImage: StoryObj<typeof ColonyAvatar> = {
     colonyImageProps: {
       src: 'https://placekitten.com/200/200',
     },
-    chainIconName: 'gnosis',
+    chainIcon: Bird,
   },
 };

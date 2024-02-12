@@ -1,3 +1,4 @@
+import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
@@ -5,7 +6,6 @@ import React, { type FC } from 'react';
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useTablet } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
 import { thirdLevelContentAnimation } from '../../consts.ts';
@@ -85,11 +85,8 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
           onClick={toggle}
         >
           {title}
-          <Icon
-            name="caret-down"
-            appearance={{
-              size: 'extraTiny',
-            }}
+          <CaretDown
+            size={12}
             className={clsx('transition-transform', {
               'rotate-180': isOpen,
             })}

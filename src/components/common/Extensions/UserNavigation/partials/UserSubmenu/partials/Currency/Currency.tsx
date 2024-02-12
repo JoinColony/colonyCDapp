@@ -2,10 +2,9 @@ import React from 'react';
 
 import { useCurrencyContext } from '~context/CurrencyContext.tsx';
 import { SupportedCurrencies } from '~gql';
-import { useMobile } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
+import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 
-import { currencyIconTitles } from '../../../UserMenu/consts.ts';
+import { currencyIcons } from '../../../UserMenu/consts.ts';
 import CoinGeckoAttribution from '../../CoinGeckoAttribution.tsx';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
@@ -21,8 +20,7 @@ interface CurrencyProps {
 
 const Currency = ({ closeSubmenu }: CurrencyProps) => {
   const { updatePreferredCurrency } = useCurrencyContext();
-  const isMobile = useMobile();
-  const iconSize = isMobile ? 'small' : 'tiny';
+  const iconSize = 18;
 
   const handleCurrencyClick = (currency: SupportedCurrencies) => {
     updatePreferredCurrency(currency);
@@ -34,25 +32,25 @@ const Currency = ({ closeSubmenu }: CurrencyProps) => {
       <MenuList className="columns-2">
         {Object.values(SupportedCurrencies)
           .reverse()
-          .map((currency) => (
-            <MenuListItem key={currency}>
-              <button
-                type="button"
-                className={styles.actionItem}
-                onClick={() => {
-                  handleCurrencyClick(currency);
-                }}
-              >
-                <Icon
-                  name={currencyIconTitles[currency]}
-                  appearance={{ size: iconSize }}
-                />
-                <p className={styles.actionItemLabel}>
-                  {currency.toUpperCase()}
-                </p>
-              </button>
-            </MenuListItem>
-          ))}
+          .map((currency) => {
+            const CurrencyIcon = currencyIcons[currency] || ClnyTokenIcon;
+            return (
+              <MenuListItem key={currency}>
+                <button
+                  type="button"
+                  className={styles.actionItem}
+                  onClick={() => {
+                    handleCurrencyClick(currency);
+                  }}
+                >
+                  <CurrencyIcon size={iconSize} />
+                  <p className={styles.actionItemLabel}>
+                    {currency.toUpperCase()}
+                  </p>
+                </button>
+              </MenuListItem>
+            );
+          })}
       </MenuList>
 
       {/* Can be removed if/when upgrading to paid plan */}

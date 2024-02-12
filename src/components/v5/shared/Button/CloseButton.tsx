@@ -1,9 +1,8 @@
-/* eslint-disable react/button-has-type */
+import { X } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 
 import { type CloseButtonProps } from './types.ts';
@@ -18,7 +17,6 @@ const CloseButton: FC<CloseButtonProps> = ({
   title,
   type = 'button',
   ariaLabel,
-  iconSize = 'extraTiny',
   setTriggerRef,
   className = 'text-gray-400 hover:text-gray-600',
   ...rest
@@ -45,12 +43,14 @@ const CloseButton: FC<CloseButtonProps> = ({
           aria-label={ariaLabelText}
           aria-busy={loading}
           title={titleText}
+          /* eslint-disable react/button-has-type */
           type={type}
+          /* eslint-enable react/button-has-type */
           ref={setTriggerRef}
           {...rest}
         >
           <span className="flex text-sm">
-            <Icon name="close" appearance={{ size: iconSize }} />
+            <X size={18} />
           </span>
         </button>
       )}

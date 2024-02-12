@@ -1,4 +1,4 @@
-import { PencilCircle } from 'phosphor-react';
+import { PencilCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

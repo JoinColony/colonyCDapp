@@ -2,7 +2,6 @@ import React, { type FC, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 
@@ -12,7 +11,7 @@ import {
   ACTIVE_CONTRIBUTOR_PERCENT,
   DEDICATED_CONTRIBUTOR_PERCENT,
   TOP_CONTRIBUTOR_PERCENT,
-  getIconName,
+  getIcon,
 } from './consts.ts';
 
 const displayName = 'v5.CardWithBios.partials.UserStatusComponent';
@@ -31,6 +30,8 @@ const UserStatusComponent: FC<UserStatusComponentProps> = ({
     [userStatus],
   );
 
+  const Icon = getIcon(userStatus);
+
   return (
     <Tooltip
       interactive
@@ -38,13 +39,10 @@ const UserStatusComponent: FC<UserStatusComponentProps> = ({
         <>
           <span className="mb-2.5">
             <span
-              className="flex items-center text-center text-sm px-3 py-1.5 
+              className="flex items-center text-center text-sm px-3 py-1.5
             rounded-3xl border border-base-white h-[1.875rem] shrink-0 capitalize"
             >
-              <Icon
-                name={getIconName(userStatus)}
-                appearance={{ size: 'extraTiny' }}
-              />
+              <Icon size={12} />
               <span className="ml-1.5 text-sm">{userStatus}</span>
             </span>
           </span>

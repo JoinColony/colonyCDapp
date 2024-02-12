@@ -1,9 +1,9 @@
-import { type IconProps } from '~shared/Icon/Icon.tsx';
-
-import type React from 'react';
+import { type Icon } from '@phosphor-icons/react';
+import { type ReactNode } from 'react';
 
 export interface IconWithTooltipProps {
-  tooltipContent: React.ReactNode;
-  iconProps: IconProps;
+  tooltipContent: ReactNode;
+  icon: Icon;
+  size: number;
   className?: string;
 }

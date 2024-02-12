@@ -1,10 +1,10 @@
+import { Star } from '@phosphor-icons/react';
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
-import Icon from '~shared/Icon/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation.ts';
 import { getFormattedTokenValue } from '~utils/tokens.ts';
@@ -56,12 +56,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
             {formatMessage({ id: 'total.balance' })}
           </span>
           <div className="flex items-center">
-            <Icon
-              className={styles.icon}
-              name="star"
-              appearance={{ size: 'extraTiny' }}
-              titleValues={{ reputation: percentageReputation }}
-            />
+            <Star className={styles.icon} size={12} />
             {percentageReputation === ZeroValue.NearZero && (
               <span className={styles.reputationValue}>
                 {percentageReputation}

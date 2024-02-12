@@ -1,10 +1,10 @@
 import { ColonyRole, Id } from '@colony/colony-js';
+import { Star, User } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
-import Icon from '~shared/Icon/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings/index.ts';
@@ -151,7 +151,7 @@ const UserInfo: FC<UserInfoProps> = ({
                       {permissionRole && (
                         <PermissionsBadge
                           text={permissionRole.name}
-                          iconName="user" // @TODO: add user-tree icon for multiSig
+                          icon={User} // @TODO: add UserTree icon for multiSig
                         />
                       )}
 
@@ -161,7 +161,7 @@ const UserInfo: FC<UserInfoProps> = ({
                           <Numeral value={reputationRaw} suffix="pts" />
                         }
                       >
-                        <Icon name="star" appearance={{ size: 'extraTiny' }} />
+                        <Star size={12} />
                         <span className="inline-block ml-1">
                           {reputationPercentage.toFixed(2)}%
                         </span>

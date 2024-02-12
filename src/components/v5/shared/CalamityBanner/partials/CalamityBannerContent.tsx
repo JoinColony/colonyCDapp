@@ -1,8 +1,8 @@
+import { CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 import Link from '~v5/shared/Link/index.ts';
@@ -74,7 +74,7 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
               })}
               onClick={onCaretClick}
             >
-              <Icon name="caret-right" appearance={{ size: 'tiny' }} />
+              <CaretRight size={14} />
             </button>
           )}
         </div>

@@ -1,4 +1,4 @@
-import { UserFocus } from 'phosphor-react';
+import { UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

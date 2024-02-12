@@ -1,3 +1,4 @@
+import { SealCheck, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { utils } from 'ethers';
 import React, { type FC } from 'react';
@@ -7,7 +8,6 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
@@ -80,7 +80,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           />
           {selectedUser?.isVerified && (
             <span className="flex ml-2 text-blue-400">
-              <Icon name="verified" />
+              <SealCheck size={20} />
             </span>
           )}
         </>
@@ -113,7 +113,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
                 />
                 {selectedUser?.isVerified && (
                   <span className="flex ml-2 text-blue-400">
-                    <Icon name="verified" />
+                    <SealCheck size={20} />
                   </span>
                 )}
               </>
@@ -151,7 +151,7 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
               size="m"
             >
               <span className="flex ml-2 text-warning-400">
-                <Icon name="warning-circle" />
+                <WarningCircle size={20} />
               </span>
             </UserPopover>
           )}

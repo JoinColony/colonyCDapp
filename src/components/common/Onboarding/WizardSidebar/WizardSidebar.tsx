@@ -1,3 +1,4 @@
+import { Question } from '@phosphor-icons/react';
 import React from 'react';
 import {
   FormattedMessage,
@@ -6,10 +7,10 @@ import {
 } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import ColonyIcon from '~icons/ColonyIcon.tsx';
 import { LANDING_PAGE_ROUTE } from '~routes/routeConstants.ts';
 import ExternalLink from '~shared/ExternalLink/index.ts';
 import { Heading3 } from '~shared/Heading/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { type UniversalMessageValues } from '~types/index.ts';
 
 import WizardSidebarItem from './WizardSidebarItem.tsx';
@@ -49,7 +50,7 @@ const WizardSidebar = ({
 }: Props) => (
   <nav className="flex flex-col border border-gray-200 rounded-lg p-6 h-full">
     <Link to={LANDING_PAGE_ROUTE} className="w-fit h-fit mb-10">
-      <Icon name="colony-icon" appearance={{ size: 'largeSmall' }} />
+      <ColonyIcon size={36} />
     </Link>
     <Heading3
       appearance={{ theme: 'dark' }}
@@ -86,11 +87,7 @@ const WizardSidebar = ({
         </div>
       </div>
       <div className="text-sm text-gray-400">
-        <Icon
-          name="question"
-          className="mb-1.5 [&>svg]:fill-gray-900"
-          appearance={{ size: 'small' }}
-        />
+        <Question size={18} className="mb-1.5 [&>svg]:fill-gray-900" />
         <div className="text-gray-900 text-xs">
           <FormattedMessage {...MSG.guidance} />
         </div>

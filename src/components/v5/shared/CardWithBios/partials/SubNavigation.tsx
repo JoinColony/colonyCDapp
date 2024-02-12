@@ -1,3 +1,11 @@
+import {
+  ArrowSquareOut,
+  CopySimple,
+  Eye,
+  HandCoins,
+  LockKey,
+  Pencil,
+} from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useMemberModalContext } from '~context/MemberModalContext.tsx';
@@ -20,36 +28,33 @@ const SubNavigation: FC<SubNavigationProps> = ({
     <>
       <ul>
         <SubNavigationItem
-          iconName="pencil"
+          icon={Pencil}
           title="members.subnav.manage"
           onClick={() => {
             setIsMemberModalOpen(true);
             setUser(user);
           }}
         />
-        <SubNavigationItem
-          iconName="eye"
-          title="members.subnav.members.profile"
-        />
+        <SubNavigationItem icon={Eye} title="members.subnav.members.profile" />
         {shouldPermissionsCanBeChanged && (
           <SubNavigationItem
-            iconName="lock-key"
+            icon={LockKey}
             title="members.subnav.members.permissions"
           />
         )}
         <SubNavigationItem
-          iconName="hand-coins"
+          icon={HandCoins}
           title="members.subnav.make.payment"
         />
         <SubNavigationItem
-          iconName="arrow-square-out"
+          icon={ArrowSquareOut}
           title="members.subnav.gnosis.scan"
         />
       </ul>
       <span className="divider my-3 mx-3.5 w-[calc(100%-1.75rem)]" />
       <ul>
         <SubNavigationItem
-          iconName="copy-simple"
+          icon={CopySimple}
           title="members.subnav.copy.wallet.address"
           shouldBeTooltipVisible
           tooltipText={formatText({ id: 'copied' })}

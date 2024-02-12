@@ -1,3 +1,5 @@
+import { type Icon } from '@phosphor-icons/react';
+
 import { type Message } from '~types/index.ts';
 
 import {
@@ -19,7 +21,7 @@ export type ParentFilterOption = {
   id: number;
   title: string;
   filterType: FilterType;
-  iconName: string;
+  icon: Icon;
   content: FilterOptionProps[];
 };
 
@@ -38,7 +40,7 @@ export type NestedFilterOption =
 export type FilterOptionProps = {
   id: NestedFilterOption;
   title: Message;
-  icon?: JSX.Element;
+  icon?: Icon;
   nestedOptions?: FilterOptionProps[];
 };
 

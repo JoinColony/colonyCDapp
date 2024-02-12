@@ -1,3 +1,4 @@
+import { CoinVertical, ShieldCheck } from '@phosphor-icons/react';
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 
@@ -146,7 +147,7 @@ export const useFundsTable = (): UseFundsTableProps => {
       {
         name: 'status',
         label: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
-        iconName: 'shield-check',
+        icon: ShieldCheck,
         title: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
         items: [
           {
@@ -163,7 +164,7 @@ export const useFundsTable = (): UseFundsTableProps => {
         name: 'type',
         label: formatText({ id: 'incomingFundsPage.filter.tokenType' }),
         title: formatText({ id: 'incomingFundsPage.filter.approvedTokens' }),
-        iconName: 'coin-vertical',
+        icon: CoinVertical,
         items: tokenTypeFilters,
       },
     ],

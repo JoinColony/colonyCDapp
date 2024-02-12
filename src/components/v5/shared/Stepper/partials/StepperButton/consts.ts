@@ -1,3 +1,5 @@
+import { Check, type Icon } from '@phosphor-icons/react';
+
 export enum StepStage {
   Completed = 'completed',
   Current = 'current',
@@ -5,6 +7,6 @@ export enum StepStage {
   Skipped = 'skipped',
 }
 
-export const ICON_NAME_MAP: Partial<Record<StepStage, string | undefined>> = {
-  [StepStage.Completed]: 'check-mark',
+export const ICON_NAME_MAP: Partial<Record<StepStage, Icon | undefined>> = {
+  [StepStage.Completed]: Check,
 };

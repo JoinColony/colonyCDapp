@@ -1,3 +1,4 @@
+import { SealCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { noop } from 'lodash';
 import React, {
@@ -12,7 +13,6 @@ import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetColonyContributorQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
-import Icon from '~shared/Icon/index.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -97,13 +97,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   const button = withVerifiedBadge ? (
     <div className={clsx(wrapperClassName, 'items-center flex flex-shrink-0')}>
       {buttonComponent}
-      {isVerified && (
-        <Icon
-          name="verified"
-          appearance={{ size: 'tiny' }}
-          className="text-blue-400 ml-1"
-        />
-      )}
+      {isVerified && <SealCheck size={14} className="text-blue-400 ml-1" />}
     </div>
   ) : (
     buttonComponent

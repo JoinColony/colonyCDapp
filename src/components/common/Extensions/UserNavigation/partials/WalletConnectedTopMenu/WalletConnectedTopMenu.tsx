@@ -1,3 +1,4 @@
+import { UserCircleGear } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -8,7 +9,6 @@ import {
   USER_EDIT_PROFILE_ROUTE,
   CREATE_PROFILE_ROUTE,
 } from '~routes/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails/index.ts';
 import { type UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types.ts';
@@ -26,7 +26,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
   const { user } = useAppContext();
   const isMobile = useMobile();
 
-  const iconSize = isMobile ? 'small' : 'extraSmall';
+  const iconSize = isMobile ? 18 : 16;
 
   return (
     <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3 sm:mb-5">
@@ -43,7 +43,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
           to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
           className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
         >
-          <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
+          <UserCircleGear size={iconSize} />
           <p className="ml-2">
             {formatMessage({ id: 'userMenu.manageTitle' })}
           </p>
@@ -53,7 +53,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
           to={CREATE_PROFILE_ROUTE}
           className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
         >
-          <Icon name="user-circle-gear" appearance={{ size: iconSize }} />
+          <UserCircleGear size={iconSize} />
           <p className="ml-2">
             {formatMessage({ id: 'userMenu.createTitle' })}
           </p>

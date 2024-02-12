@@ -1,3 +1,4 @@
+import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
@@ -117,25 +118,24 @@ const StakingForm: FC<StakingFormProps> = ({
                       label: formatText({ id: 'motion.oppose' }),
                       id: 'oppose',
                       value: MotionVote.Nay,
-                      colorClassName: 'text-negative-300',
-                      checkedColorClassName:
-                        'bg-negative-400 border-negative-400',
+                      className:
+                        'text-gray-900 hover:text-negative-400 border-negative-400',
+                      checkedClassName: 'text-base-white bg-negative-400',
                       iconClassName: 'text-negative-400',
-                      hoverColorClassName:
-                        'md:hover:text-negative-400 md:hover:border-negative-400',
-                      iconName: 'thumbs-down',
+                      checkedIconClassName: 'text-base-white',
+                      icon: ThumbsDown,
                       disabled: isFullyObjected,
                     },
                     {
                       label: formatText({ id: 'motion.support' }),
                       id: 'support',
                       value: MotionVote.Yay,
-                      colorClassName: 'text-purple-200',
-                      checkedColorClassName: 'bg-purple-400 border-purple-400',
+                      className:
+                        'text-gray-900 hover:text-purple-400 border-purple-400',
+                      checkedClassName: 'text-base-white bg-purple-400',
                       iconClassName: 'text-purple-400',
-                      hoverColorClassName:
-                        'md:hover:text-purple-400 md:hover:border-purple-400',
-                      iconName: 'thumbs-up',
+                      checkedIconClassName: 'text-base-white',
+                      icon: ThumbsUp,
                       disabled: isFullySupported,
                     },
                   ]}

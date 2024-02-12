@@ -1,3 +1,4 @@
+import { Trash } from '@phosphor-icons/react';
 import React, { useCallback, useState } from 'react';
 
 import Button from '~v5/shared/Button/index.ts';
@@ -89,7 +90,7 @@ const ModalWithState = (args) => {
 
 export const Base: Story = {
   args: {
-    icon: 'trash',
+    icon: Trash,
     isFullOnMobile: true,
   },
   render: (args) => <ModalWithState {...args} />,
@@ -97,7 +98,7 @@ export const Base: Story = {
 
 export const WithWarning: Story = {
   args: {
-    icon: 'trash',
+    icon: Trash,
     isWarning: true,
     isFullOnMobile: true,
   },

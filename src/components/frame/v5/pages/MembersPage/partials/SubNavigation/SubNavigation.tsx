@@ -1,3 +1,4 @@
+import { LockKey, ShareNetwork } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { ACTION } from '~constants/actions.ts';
@@ -23,7 +24,7 @@ const SubNavigation: FC<SubNavigationProps> = () =>
     return (
       <ul>
         <SubNavigationItem
-          iconName="share-network"
+          icon={ShareNetwork}
           title="members.subnav.invite"
           shouldBeTooltipVisible
           tooltipText={formatText({ id: 'linkCopied' })}
@@ -31,7 +32,7 @@ const SubNavigation: FC<SubNavigationProps> = () =>
           isCopyTriggered={isCopyTriggered}
         />
         <SubNavigationItem
-          iconName="lock-key"
+          icon={LockKey}
           title="members.subnav.permissions"
           onClick={() =>
             toggleActionSidebarOn({
@@ -41,13 +42,13 @@ const SubNavigation: FC<SubNavigationProps> = () =>
         />
         {/* @BETA: Hide for now */}
         {/* <SubNavigationItem */}
-        {/*   iconName="pencil" */}
+        {/*   icon={Pencil} */}
         {/*   title="members.subnav.manage" */}
         {/*   onClick={onManageMembersClick} */}
         {/* /> */}
         {/* @BETA: Action not ready yet */}
         {/* <SubNavigationItem
-        iconName="address-book"
+        icon={AddressBook}
         title="members.subnav.verified"
       /> */}
       </ul>

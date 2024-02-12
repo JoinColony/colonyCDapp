@@ -1,6 +1,6 @@
+import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import React, { type FC, useLayoutEffect, useRef } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import InputBase from '~v5/common/Fields/InputBase/index.ts';
 
@@ -36,7 +36,7 @@ const SearchInput: FC<SearchInputProps> = ({
         ref={searchInputRef}
         suffix={
           <span className="absolute top-[.6875rem] left-3 flex text-gray-400 peer-focus:text-gray-900">
-            <Icon name="magnifying-glass" appearance={{ size: 'tiny' }} />
+            <MagnifyingGlass size={14} />
           </span>
         }
         prefix={
@@ -52,7 +52,7 @@ const SearchInput: FC<SearchInputProps> = ({
               }}
               type="button"
             >
-              <Icon name="close" appearance={{ size: 'extraExtraTiny' }} />
+              <X size={10} />
             </button>
           ) : undefined
         }

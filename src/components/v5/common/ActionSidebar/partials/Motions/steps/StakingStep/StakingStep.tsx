@@ -1,3 +1,4 @@
+import { CaretDown, CheckCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
 import React, { type FC } from 'react';
@@ -93,16 +94,16 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
             },
           ),
           iconAlignment: 'top',
-          iconSize: 'extraSmall',
+          iconSize: 16,
           content: showFullySupportedPassInfo ? (
             <StatusText
               status="info"
               className="mt-2"
-              iconName="check-circle"
+              icon={CheckCircle}
               iconClassName="text-blue-400"
               textClassName="text-4 text-gray-900"
               iconAlignment="top"
-              iconSize="extraSmall"
+              iconSize={16}
             >
               {formatText({ id: 'motion.staking.passIfNotOpposed' })}
             </StatusText>
@@ -187,8 +188,8 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                             isAccordionOpen,
                         },
                       )}
-                      iconName="caret-down"
-                      iconSize="extraSmall"
+                      icon={CaretDown}
+                      iconSize={16}
                     >
                       <StakesList userStakes={usersStakes} />
                     </AccordionItem>

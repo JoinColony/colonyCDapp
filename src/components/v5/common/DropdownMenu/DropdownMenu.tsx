@@ -1,9 +1,9 @@
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { CaretLeft, CaretRight } from 'phosphor-react';
 import React, { type FC, useEffect, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import BurgerMenu from '~v5/shared/BurgerMenu/index.ts';
+import KebapMenu from '~v5/shared/KebapMenu/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
 import DropdownMenuItem from './partials/DropdownMenuItem/index.ts';
@@ -45,7 +45,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   const popoverSubMenuItems = popoverSubMenu?.items;
   return (
     <div className={className}>
-      <BurgerMenu
+      <KebapMenu
         isVertical
         setTriggerRef={setTriggerRef}
         className={clsx('!duration-0', {

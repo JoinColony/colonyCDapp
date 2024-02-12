@@ -1,9 +1,9 @@
+import { ArrowDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { type AccordionItemProps } from './types.ts';
 
@@ -11,8 +11,8 @@ const displayName = 'v5.Accordion.partials.AccordionItem';
 
 const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
   title,
-  iconName = 'arrow-down',
-  iconSize = 'extraTiny',
+  icon: Icon = ArrowDown,
+  iconSize = 12,
   isOpen,
   onToggle,
   className,
@@ -46,7 +46,7 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
           },
         )}
       >
-        <Icon name={iconName} appearance={{ size: iconSize }} />
+        <Icon size={iconSize} />
       </span>
     </button>
     <AnimatePresence>

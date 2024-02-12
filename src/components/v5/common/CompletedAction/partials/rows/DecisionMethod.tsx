@@ -1,4 +1,4 @@
-import { Scales } from 'phosphor-react';
+import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';

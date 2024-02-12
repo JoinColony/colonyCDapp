@@ -1,3 +1,4 @@
+import { CopySimple, Ticket } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
@@ -40,7 +41,7 @@ const InvitationBlock = () => {
   return (
     <div className="mt-6">
       <CardWithCallout
-        iconName="ticket"
+        icon={Ticket}
         subtitle={
           <FormattedMessage
             {...MSG.inviteBlockTitle}
@@ -51,7 +52,7 @@ const InvitationBlock = () => {
           <Button
             text={MSG.buttonText}
             mode={isCopied ? 'completed' : 'quinary'}
-            iconName={isCopied ? undefined : 'copy-simple'}
+            icon={isCopied ? undefined : CopySimple}
             onClick={() => handleClipboardCopy(inviteLink)}
             textValues={{ isCopied }}
             size="small"

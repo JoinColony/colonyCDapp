@@ -1,7 +1,6 @@
+import { CheckCircle, WarningCircle, Info } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
-
-import Icon from '~shared/Icon/index.ts';
 
 import { STATUS_TYPES } from './consts.ts';
 import { type StatusTextProps } from './types.ts';
@@ -12,19 +11,21 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   children,
   status,
   className,
-  iconName: iconNameProp,
+  icon,
   iconClassName,
   withIcon = true,
   textClassName = 'text-md',
   iconAlignment = 'center',
-  iconSize = 'tiny',
+  iconSize = 14,
 }) => {
-  const iconName = {
-    [STATUS_TYPES.SUCCESS]: 'check-circle',
-    [STATUS_TYPES.WARNING]: 'warning-circle',
-    [STATUS_TYPES.ERROR]: 'warning-circle',
-    [STATUS_TYPES.INFO]: 'info',
+  const statusIcons = {
+    [STATUS_TYPES.SUCCESS]: CheckCircle,
+    [STATUS_TYPES.WARNING]: WarningCircle,
+    [STATUS_TYPES.ERROR]: WarningCircle,
+    [STATUS_TYPES.INFO]: Info,
   };
+
+  const Icon = icon || statusIcons[status];
 
   return (
     <div
@@ -40,8 +41,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
     >
       {withIcon && (
         <Icon
-          name={iconNameProp || iconName[status]}
-          appearance={{ size: iconSize }}
+          size={iconSize}
           className={clsx(iconClassName, 'flex-shrink-0')}
         />
       )}

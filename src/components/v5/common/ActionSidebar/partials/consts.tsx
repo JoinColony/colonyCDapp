@@ -1,3 +1,4 @@
+import { Coins, Money, UserSwitch, Wrench } from '@phosphor-icons/react';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -35,21 +36,21 @@ export const POPULAR_ACTIONS = [
   {
     action: ACTION.SIMPLE_PAYMENT,
     text: { id: 'actionSidebar.simplePayment' },
-    iconName: 'money',
+    icon: Money,
   },
   {
     action: ACTION.USER_PERMISSIONS,
     text: { id: 'actionSidebar.userPermission' },
-    iconName: 'wrench',
+    icon: Wrench,
   },
   {
     action: ACTION.TRANSFER_FUNDS,
     text: { id: 'actionSidebar.transferFunds' },
-    iconName: 'user-switch',
+    icon: UserSwitch,
   },
   {
     action: ACTION.ADVANCED_PAYMENT,
     text: { id: 'actionSidebar.advancedPayments' },
-    iconName: 'coins',
+    icon: Coins,
   },
 ];

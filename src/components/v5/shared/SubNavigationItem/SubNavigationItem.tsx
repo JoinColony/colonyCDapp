@@ -3,7 +3,6 @@ import React, { type FC, useMemo } from 'react';
 import { useFilterContext } from '~context/FilterContext.tsx';
 import { useMobile } from '~hooks/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import PopoverBase from '../PopoverBase/index.ts';
@@ -15,7 +14,7 @@ import { type SubNavigationItemProps } from './types.ts';
 const displayName = 'v5.SubNavigationItem';
 
 const SubNavigationItem: FC<SubNavigationItemProps> = ({
-  iconName,
+  icon: Icon,
   title,
   option,
   shouldBeTooltipVisible = false,
@@ -23,7 +22,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
   isCopyTriggered,
   nestedFilters,
   onClick,
-  iconSize = 'extraSmall',
+  iconSize = 16,
 }) => {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     useMembersSubNavigation();
@@ -32,7 +31,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
 
   const tooltipContent = (
     <>
-      <Icon name={iconName} appearance={{ size: iconSize }} />
+      <Icon size={iconSize} />
       <span className="ml-2">{formatText({ id: title })}</span>
     </>
   );

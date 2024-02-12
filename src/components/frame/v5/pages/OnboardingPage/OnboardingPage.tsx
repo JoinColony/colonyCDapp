@@ -1,3 +1,4 @@
+import { HandWaving, HandsClapping } from '@phosphor-icons/react';
 import React, { type PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
 import { useParams, Navigate } from 'react-router-dom';
@@ -87,7 +88,7 @@ const OnboardingPage = ({ flow }: Props) => {
       <SplashLayout>
         {flow === Flow.Colony && !valid ? (
           <NotificationBanner
-            icon={valid ? 'hands-clapping' : 'hand-waving'}
+            icon={valid ? HandsClapping : HandWaving}
             status={valid ? 'success' : 'error'}
             className="my-8"
           >

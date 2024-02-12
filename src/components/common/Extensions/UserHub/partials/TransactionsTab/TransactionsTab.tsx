@@ -1,3 +1,4 @@
+import { Binoculars } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
@@ -63,7 +64,7 @@ const TransactionsTab: FC<TransactionsProps> = () =>
             <EmptyContent
               title={{ id: 'empty.content.title.transactions' }}
               description={{ id: 'empty.content.subtitle.transactions' }}
-              icon="binoculars"
+              icon={Binoculars}
             />
           ) : (
             <TransactionList />

@@ -1,3 +1,4 @@
+import { Smiley } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { Form } from '~shared/Fields/index.ts';
@@ -34,7 +35,7 @@ const SocialLinkFormModal: FC<SocialLinkFormModalProps> = ({
   );
 
   return (
-    <Modal buttonMode="primarySolid" icon="smile" isFullOnMobile {...rest}>
+    <Modal buttonMode="primarySolid" icon={Smiley} isFullOnMobile {...rest}>
       <Form<SocialLinkModalFormValues>
         innerRef={(ref) => setFormRef(ref)}
         onSubmit={onSubmit}

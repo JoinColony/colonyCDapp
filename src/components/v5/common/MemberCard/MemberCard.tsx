@@ -1,7 +1,7 @@
+import { SealCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { AvatarWithStatusBadge } from '~v5/shared/Avatar/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
@@ -57,9 +57,8 @@ const MemberCard: FC<MemberCardProps> = ({
           >
             <span className="truncate inline-block w-full">{userName}</span>
             {isVerified && (
-              <Icon
-                name="verified"
-                appearance={{ size: 'tiny' }}
+              <SealCheck
+                size={14}
                 className="text-blue-400 ml-1 flex-shrink-0"
               />
             )}

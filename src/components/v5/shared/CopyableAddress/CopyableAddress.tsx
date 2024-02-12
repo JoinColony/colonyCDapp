@@ -1,8 +1,8 @@
+import { Check, CopySimple } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import Icon from '~shared/Icon/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
 import { type Address } from '~types/index.ts';
 
@@ -28,16 +28,14 @@ const CopyableAddress = ({ address, full }: Props) => {
       onClick={() => handleClipboardCopy(address)}
     >
       <MaskedAddress address={address} full={full} />
-      {/*
-        Note: hexadecimal address has no dangling letters like y,j,g...
-        but the 2px system padding is still there at the bottom,
-        we offset this by translating the icon 1px higher here so it looks more centered
-        */}
-      <Icon
-        name={isCopied ? 'check-mark' : 'copy-simple'}
-        appearance={{ size: 'extraTiny' }}
-        className="translate-y-[-1px]"
-      />
+      {/* Note: hexadecimal address has no dangling letters like y,j,g... but the
+      2px system padding is still there at the bottom, we offset this by
+      translating the icon 1px higher here so it looks more centered */}
+      {isCopied ? (
+        <Check className="translate-y-[-1px]" size={16} />
+      ) : (
+        <CopySimple className="translate-y-[-1px]" size={16} />
+      )}
     </button>
   );
 };

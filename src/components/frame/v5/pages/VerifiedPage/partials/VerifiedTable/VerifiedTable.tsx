@@ -1,3 +1,4 @@
+import { Binoculars, Trash } from '@phosphor-icons/react';
 import {
   getPaginationRowModel,
   getSortedRowModel,
@@ -49,12 +50,7 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
         }
       >
         {!!Object.keys(rowSelection).length && (
-          <Button
-            mode="quaternary"
-            iconName="trash"
-            size="small"
-            className="mr-2"
-          >
+          <Button mode="quaternary" icon={Trash} size="small" className="mr-2">
             {formatMessage({ id: 'button.removeMembers' })}
           </Button>
         )}
@@ -81,7 +77,7 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
           !listLength && (
             <div className="border border-1 w-full rounded-b-lg border-gray-200">
               <EmptyContent
-                icon="binoculars"
+                icon={Binoculars}
                 title={{ id: 'verifiedPage.table.emptyTitle' }}
                 description={{ id: 'verifiedPage.table.emptyDescription' }}
                 buttonText={{ id: 'button.addNewMember' }}

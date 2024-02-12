@@ -1,6 +1,6 @@
+import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import TxButton from '~v5/shared/Button/TxButton.tsx';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -27,11 +27,7 @@ const meta: Meta<typeof TxButton> = {
     disabled: false,
     icon: (
       <span className="flex shrink-0 ml-1.5">
-        <Icon
-          name="spinner-gap"
-          className="animate-spin"
-          appearance={{ size: 'tiny' }}
-        />
+        <SpinnerGap className="animate-spin" size={14} />
       </span>
     ),
   },

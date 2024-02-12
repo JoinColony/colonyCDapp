@@ -1,10 +1,10 @@
+import { CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import Icon from '~shared/Icon/index.ts';
 import NestedOptions from '~v5/shared/SubNavigationItem/partials/NestedOptions.tsx';
 
 import { type AccordionItemProps } from '../types.ts';
@@ -40,7 +40,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
             },
           )}
         >
-          <Icon appearance={{ size: 'extraExtraTiny' }} name="caret-up" />
+          <CaretUp size={10} />
         </span>
       </button>
 

@@ -1,8 +1,8 @@
+import { CheckCircle, XCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { TransactionStatus } from '~gql';
-import Icon from '~shared/Icon/index.ts';
 
 import { type TransactionHeaderProps } from '../types.ts';
 
@@ -31,10 +31,7 @@ const TransactionsHeader: FC<TransactionHeaderProps> = ({
           'text-negative-400': failed,
         })}
       >
-        <Icon
-          name={succeeded || ready ? 'check-circle' : 'x-circle'}
-          appearance={{ size: 'tiny' }}
-        />
+        {succeeded || ready ? <CheckCircle size={14} /> : <XCircle size={14} />}
         <span className="text-gray-400 text-xs block mt-1">{date}</span>
       </div>
     </>

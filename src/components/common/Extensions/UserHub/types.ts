@@ -1,8 +1,10 @@
+import { type Icon } from '@phosphor-icons/react';
+
 export type UserHubTabList = {
   id: UserHubTabs;
   label: string;
   value: UserHubTabs;
-  icon: string;
+  icon: Icon;
 }[];
 
 export enum UserHubTabs {

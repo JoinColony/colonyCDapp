@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import Avatar from '../Avatar/index.ts';
@@ -12,7 +11,7 @@ const displayName = 'v5.ColonyAvatar';
 
 const ColonyAvatar: FC<ColonyAvatarProps> = ({
   colonyAddress,
-  chainIconName,
+  chainIcon: Icon,
   colonyImageProps,
   size = 'xms',
   className,
@@ -28,6 +27,8 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           'text-4xl': size === 'xms',
           'text-3xl': size === 'smx',
           'text-2xl': size === 'xxsm',
+          // @TODO: This is getting out of hand, maybe let's just use pixel values (as with the icons)
+          'text-xl': size === 'xxsx',
           'text-lg': size === 'xxs',
         },
       )}
@@ -50,7 +51,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           <Avatar size={size} seed={colonyAddress.toLowerCase()} />
         )}
       </div>
-      {chainIconName && (
+      {Icon && (
         <figure
           className={`
           h-[0.5em]
@@ -70,11 +71,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
           items-center
       `}
         >
-          <Icon
-            name={chainIconName}
-            appearance={{ size: 'tiny' }}
-            className="h-[96%] w-[96%]"
-          />
+          <Icon size={14} />
         </figure>
       )}
     </div>

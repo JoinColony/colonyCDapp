@@ -1,4 +1,4 @@
-import { ArrowDownRight } from 'phosphor-react';
+import { ArrowDownRight } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 

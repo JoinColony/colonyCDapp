@@ -10,7 +10,7 @@ import React, {
 import { useLocation, useSearchParams } from 'react-router-dom';
 //* Hide Initially */
 // import { defineMessages } from 'react-intl';
-// import { PaperPlaneTilt } from 'phosphor-react';
+// import { PaperPlaneTilt } from '@phosphor-icons/react';
 
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
@@ -106,7 +106,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                   className="ml-1"
                   text={MSG.inviteMembers}
                   mode="quinary"
-                  iconName={<PaperPlaneTilt />}
+                  icon={PaperPlaneTilt}
                   size="small"
                   onClick={() => setIsInviteMembersModalOpen(true)}
                 />

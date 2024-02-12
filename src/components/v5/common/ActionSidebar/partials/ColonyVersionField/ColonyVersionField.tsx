@@ -1,3 +1,4 @@
+import { Browsers } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -15,7 +16,7 @@ const ColonyVersionField: FC = () => {
   return (
     <>
       <ActionFormRow
-        icon="browser"
+        icon={Browsers}
         title={formatText({ id: 'actionSidebar.currentVersion' })}
         tooltips={{
           label: {
@@ -28,7 +29,7 @@ const ColonyVersionField: FC = () => {
         <span className="text-md">{currentVersion}</span>
       </ActionFormRow>
       <ActionFormRow
-        icon="browsers"
+        icon={Browsers}
         title={formatText({ id: 'actionSidebar.newVersion' })}
         tooltips={{
           label: {

@@ -1,7 +1,5 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
-
 import Card from '../Card/index.ts';
 
 import { type CardWithCalloutProps } from './types.ts';
@@ -9,7 +7,7 @@ import { type CardWithCalloutProps } from './types.ts';
 const CardWithCallout: FC<PropsWithChildren<CardWithCalloutProps>> = ({
   button,
   className = 'border-base-black',
-  iconName,
+  icon: Icon,
   title = null,
   subtitle,
   children,
@@ -24,14 +22,7 @@ const CardWithCallout: FC<PropsWithChildren<CardWithCalloutProps>> = ({
   return (
     <Card className={className}>
       <div className="flex items-center gap-x-2 mb-1.5">
-        {iconName && (
-          <Icon
-            name={iconName}
-            appearance={{
-              size: 'mediumSmallMediumLargeSmallTinyBigMediumLargeSmall',
-            }}
-          />
-        )}
+        {Icon && <Icon size={24} />}
         {titleComponent}
       </div>
       <div className="flex items-center justify-between gap-y-3 gap-x-4 flex-wrap md:flex-nowrap md:gap-y-0">

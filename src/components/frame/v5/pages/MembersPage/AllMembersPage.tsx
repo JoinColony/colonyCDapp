@@ -1,3 +1,4 @@
+import { SmileyMeh } from '@phosphor-icons/react';
 import React, { type FC, useEffect } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -58,7 +59,7 @@ const AllMembersPage: FC = () => {
         description: formatText({
           id: 'membersPage.followers.emptyDescription',
         }),
-        icon: 'smiley-meh',
+        icon: SmileyMeh,
       }}
     />
   );

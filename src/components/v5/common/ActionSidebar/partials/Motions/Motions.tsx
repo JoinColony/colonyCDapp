@@ -1,4 +1,5 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
@@ -190,11 +191,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         key: CustomStep.StakedMotionOutcome,
         content: <div />,
         heading: {
-          iconName:
-            (motionStateHistory?.hasPassed && 'thumbs-up') ||
-            (motionStateHistory?.hasFailed && 'thumbs-down') ||
-            (motionStateHistory?.hasFailedNotFinalizable && 'thumbs-down') ||
-            '',
+          icon:
+            (motionStateHistory?.hasPassed && ThumbsUp) ||
+            (motionStateHistory?.hasFailed && ThumbsDown) ||
+            (motionStateHistory?.hasFailedNotFinalizable && ThumbsDown) ||
+            undefined,
           label:
             (motionStateHistory?.hasPassed &&
               formatText({ id: 'motion.passed.label' })) ||
@@ -219,9 +220,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         key: CustomStep.VotedMotionOutcome,
         content: <OutcomeStep motionData={motionData} />,
         heading: {
-          iconName: motionFinished
-            ? (hasVotedMotionPassed && 'thumbs-up') || 'thumbs-down'
-            : '',
+          icon: motionFinished
+            ? (hasVotedMotionPassed && ThumbsUp) || ThumbsDown
+            : undefined,
           label: motionFinished
             ? (hasVotedMotionPassed &&
                 formatText({ id: 'motion.support.wins.label' })) ||

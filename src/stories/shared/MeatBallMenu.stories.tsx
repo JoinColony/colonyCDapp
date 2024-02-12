@@ -1,3 +1,4 @@
+import { CoinVertical, CopySimple } from '@phosphor-icons/react';
 import React from 'react';
 
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
@@ -27,12 +28,12 @@ export const Base: StoryObj<typeof MeatBallMenu> = {
       {
         key: '1',
         label: 'Add token',
-        icon: 'coin-vertical',
+        icon: CoinVertical,
       },
       {
         key: '2',
         label: 'Duplicate row',
-        icon: 'copy-simple',
+        icon: CopySimple,
       },
     ],
   },

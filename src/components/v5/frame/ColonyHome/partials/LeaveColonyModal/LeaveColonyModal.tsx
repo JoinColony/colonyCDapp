@@ -1,3 +1,4 @@
+import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -37,7 +38,7 @@ const LeaveColonyModal = () => {
         closeLeaveColonyModal();
         handleUnwatch();
       }}
-      icon="warning-circle"
+      icon={WarningCircle}
       buttonMode="primarySolid"
       confirmMessage={formatText(MSG.leaveConfirmModalConfirmButton)}
       closeMessage={formatText({

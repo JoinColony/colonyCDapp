@@ -1,7 +1,7 @@
+import { FileText } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Link from '~v5/shared/Link/index.ts';
 
@@ -21,12 +21,11 @@ const LinkWrapper: FC = () => {
             to={url}
             className="flex items-center text-md text-gray-600"
           >
-            <span className="flex items-center shrink-0 mr-1">
-              <Icon
-                appearance={{ size: 'tiny' }}
-                name="file-text"
-                title={{ id: 'file-text' }}
-              />
+            <span
+              className="flex items-center shrink-0 mr-1"
+              title={formatText({ id: 'file-text' })}
+            >
+              <FileText size={14} />
             </span>
             {formatText(message)}
           </Link>

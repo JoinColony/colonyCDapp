@@ -2,8 +2,6 @@ import clsx from 'clsx';
 import React, { type PropsWithChildren, type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import Icon from '~shared/Icon/index.ts';
-
 import { type SubNavigationItemProps } from './types.ts';
 
 import styles from './SubNavigationItem.module.css';
@@ -15,7 +13,7 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
   content,
   isOpen,
   setOpen,
-  icon,
+  icon: Icon,
 }) => {
   const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
     {
@@ -51,7 +49,7 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
           [styles.activeButton]: isOpen,
         })}
       >
-        <Icon name={icon} appearance={{ size: 'small' }} />
+        <Icon size={18} />
         <span className="flex ml-2" ref={setTriggerRef}>
           {label}
         </span>

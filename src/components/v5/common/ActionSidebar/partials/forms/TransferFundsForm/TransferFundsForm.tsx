@@ -1,4 +1,10 @@
 import { Id } from '@colony/colony-js';
+import {
+  ArrowDownRight,
+  Coins,
+  Scales,
+  UsersThree,
+} from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -28,7 +34,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="users-three"
+        icon={UsersThree}
         fieldName="from"
         tooltips={{
           label: {
@@ -42,7 +48,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <ActionFormRow
-        icon="arrow-down-right"
+        icon={ArrowDownRight}
         fieldName="to"
         title={formatText({ id: 'actionSidebar.to' })}
         tooltips={{
@@ -56,7 +62,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="to" />
       </ActionFormRow>
       <ActionFormRow
-        icon="coins"
+        icon={Coins}
         fieldName="amount"
         title={formatText({ id: 'actionSidebar.amount' })}
         tooltips={{
@@ -70,7 +76,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

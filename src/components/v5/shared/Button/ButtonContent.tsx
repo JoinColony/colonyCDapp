@@ -1,14 +1,13 @@
+import { Check } from '@phosphor-icons/react';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
-
-import Icon from '~shared/Icon/index.ts';
 
 import { type ButtonContentProps } from './types.ts';
 
 const displayName = 'v5.ButtonContent';
 
 const ButtonContent: FC<PropsWithChildren<ButtonContentProps>> = ({
-  iconName,
+  icon: Icon,
   iconSize,
   isIconRight,
   mode = ' primarySolid',
@@ -25,17 +24,17 @@ const ButtonContent: FC<PropsWithChildren<ButtonContentProps>> = ({
     <>
       {mode === 'completed' && (
         <span className="flex shrink-0 mr-2">
-          <Icon name="check" appearance={{ size: 'extraTiny' }} />
+          <Check size={12} />
         </span>
       )}
-      {iconName && !isIconRight && (
+      {Icon && !isIconRight && (
         <span className="flex shrink-0">
-          <Icon name={iconName} appearance={{ size: iconSize }} />
+          <Icon size={iconSize} />
         </span>
       )}
       {(buttonText || children) && (
         <>
-          {iconName ? (
+          {Icon ? (
             <span className={isIconRight ? 'mr-2' : 'ml-2'}>
               {buttonText || children}
             </span>
@@ -44,9 +43,9 @@ const ButtonContent: FC<PropsWithChildren<ButtonContentProps>> = ({
           )}
         </>
       )}
-      {iconName && isIconRight && (
+      {Icon && isIconRight && (
         <span className="flex shrink-0">
-          <Icon name={iconName} appearance={{ size: iconSize }} />
+          <Icon size={iconSize} />
         </span>
       )}
     </>

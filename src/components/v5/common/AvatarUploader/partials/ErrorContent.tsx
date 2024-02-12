@@ -1,7 +1,7 @@
+import { CloudArrowUp, Trash } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import Icon from '~shared/Icon/index.ts';
 import { TextButton } from '~v5/shared/Button/index.ts';
 
 import { type ErrorContentProps } from '../types.ts';
@@ -25,7 +25,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
       <div className="w-10 mb-2">
         <div className="bg-negative-100 p-[0.25rem] rounded-full flex items-start justify-center">
           <div className="bg-negative-200 text-negative-400 p-[0.25rem] rounded-full flex items-start justify-center">
-            <Icon name="cloud-arrow-up" appearance={{ size: 'small' }} />
+            <CloudArrowUp size={18} />
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
             className="flex text-negative-400"
             onClick={handleFileRemove}
           >
-            <Icon name="trash" appearance={{ size: 'small' }} />
+            <Trash size={18} />
           </button>
         </div>
         <span className="text-gray-600 text-sm">{fileRejections}</span>

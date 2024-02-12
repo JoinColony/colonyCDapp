@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type UserPermissionsBadgeProps } from './types.ts';
@@ -19,7 +18,7 @@ const UserPermissionsBadge: FC<
   textValues,
   description,
   descriptionValues,
-  name,
+  icon: Icon,
   ...rest
 }) => {
   const userPermissionsBadgeText = formatText(text, textValues);
@@ -31,7 +30,7 @@ const UserPermissionsBadge: FC<
   const content = (
     <>
       <span className="flex items-center shrink-0">
-        <Icon name={name} appearance={{ size: 'extraTiny' }} />
+        <Icon size={12} />
       </span>
       <span className="ml-1.5">{userPermissionsBadgeText || children}</span>
     </>

@@ -1,8 +1,8 @@
+import { Check } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { TransactionStatus } from '~gql';
-import Icon from '~shared/Icon/index.ts';
 import { Tooltip } from '~shared/Popover/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 
@@ -60,15 +60,7 @@ const MessageCardStatus = ({ status }: Props) => (
             className={styles.completed}
             data-test="gasStationTransactionSucceeded"
           >
-            <Icon
-              appearance={{ size: 'tiny' }}
-              name="check-mark"
-              /*
-               * @NOTE We disable the title since we already
-               * have a tooltip around it
-               */
-              title=""
-            />
+            <Check size={14} />
           </span>
         )}
         {status === TransactionStatus.Failed && (

@@ -28,7 +28,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
         (
           {
             key,
-            iconName,
+            icon,
             label,
             secondLevelMenuProps,
             relatedActionsProps,
@@ -62,7 +62,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 isActive={isActive || isActiveProp}
                 isExpanded={isActive}
                 label={label}
-                iconName={iconName}
+                icon={icon}
                 hasSecondLevel={!!secondLevelMenuProps}
                 className={className}
                 isHighlighted={isHighlighted}

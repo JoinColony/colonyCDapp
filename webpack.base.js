@@ -24,6 +24,7 @@ const config = {
         '~shared': path.resolve(__dirname, 'src/components/shared'),
         '~common': path.resolve(__dirname, 'src/components/common'),
         '~frame': path.resolve(__dirname, 'src/components/frame'),
+        '~icons': path.resolve(__dirname, 'src/components/icons'),
         '~gql': path.resolve(__dirname, 'src/graphql/generated.ts'),
         '~constants': path.resolve(__dirname, 'src/constants'),
         '~context': path.resolve(__dirname, 'src/context'),

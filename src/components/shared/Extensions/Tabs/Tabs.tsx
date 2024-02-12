@@ -1,8 +1,8 @@
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import { clsx } from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { Tabs as ReactTabs, Tab, TabScreen } from 'react-tabs-scrollable';
 
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type TabsProps } from './types.ts';
@@ -25,13 +25,9 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
       leftNavBtnClassName="absolute top-[50%] translate-y-[-50%] left-0 z-10"
       rightNavBtnClassName="z-10"
       // @ts-ignore - react-tabs-scrollable has invalid type for this prop
-      leftBtnIcon={
-        <Icon name="caret-left" appearance={{ size: 'extraTiny' }} />
-      }
+      leftBtnIcon={<CaretLeft size={12} />}
       // @ts-ignore - react-tabs-scrollable has invalid type for this prop
-      rightBtnIcon={
-        <Icon name="caret-right" appearance={{ size: 'extraTiny' }} />
-      }
+      rightBtnIcon={<CaretRight size={12} />}
       navBtnClassName="transition-colors duration-normal border-none bg-gray-200 w-[1.375rem] h-[1.375rem] rounded flex items-center justify-center shrink-0 sm:hover:bg-gray-300 [&_i]:w-[0.625em] [&_i]:h-[0.625em]"
       hideNavBtnsOnMobile={false}
     >

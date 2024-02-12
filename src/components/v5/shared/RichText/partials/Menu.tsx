@@ -1,5 +1,3 @@
-import { BubbleMenu } from '@tiptap/react';
-import clsx from 'clsx';
 import {
   TextHOne,
   TextBolder,
@@ -10,7 +8,9 @@ import {
   ListNumbers,
   ListBullets,
   Quotes,
-} from 'phosphor-react';
+} from '@phosphor-icons/react';
+import { BubbleMenu } from '@tiptap/react';
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { type MenuBarProps } from '../types.ts';

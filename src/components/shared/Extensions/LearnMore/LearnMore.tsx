@@ -1,8 +1,8 @@
+import { Question } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import { type LearnMoreProps } from './types.ts';
 
@@ -16,7 +16,7 @@ const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({
 
   return (
     <div className="text-sm flex justify-center items-center font-normal">
-      <Icon name="question" appearance={{ size: 'tiny' }} />
+      <Question size={14} />
       <span className="block ml-2">
         <FormattedMessage
           id={id}

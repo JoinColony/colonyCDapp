@@ -1,8 +1,6 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
-
 import { type NotificationBannerProps } from './types.ts';
 
 const displayName = 'v5.NotificationBanner';
@@ -10,7 +8,7 @@ const displayName = 'v5.NotificationBanner';
 const NotificationBanner: FC<NotificationBannerProps> = ({
   className,
   status,
-  icon,
+  icon: Icon,
   children,
   description,
   callToAction,
@@ -29,17 +27,15 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
         className,
       )}
     >
-      {icon ? (
+      {Icon ? (
         <Icon
-          appearance={{ size: 'extraSmall' }}
-          name={icon}
+          size={16}
           className={clsx('flex-shrink-0 translate-y-0.5', {
             // due to line height, the text has top padding, then this doesn't look centered, hence the 2px translate down the y axis
             'text-success-400': status === 'success',
             'text-warning-400': status === 'warning',
             'text-negative-400': status === 'error',
             'text-gray-900': status === 'info',
-            hidden: true,
           })}
         />
       ) : null}

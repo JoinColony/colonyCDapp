@@ -1,8 +1,8 @@
+import { Info } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
@@ -58,12 +58,7 @@ const RadioBase: FC<RadioBaseProps> = ({
               {tooltip && (
                 <div className="flex items-center ml-2 text-gray-400">
                   <Tooltip {...tooltip}>
-                    <Icon
-                      name="info"
-                      appearance={{
-                        size: 'extraTiny',
-                      }}
-                    />
+                    <Info size={12} />
                   </Tooltip>
                 </div>
               )}

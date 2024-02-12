@@ -1,4 +1,12 @@
 import { ColonyRole } from '@colony/colony-js';
+import {
+  Gear,
+  HandCoins,
+  HandHeart,
+  Sliders,
+  Sparkle,
+  UserCircleMinus,
+} from '@phosphor-icons/react';
 import React from 'react';
 import { type InferType, mixed, object, string, number } from 'yup';
 
@@ -70,25 +78,25 @@ const ROLE_SELECT_META: Record<
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.mod.desc',
     }),
-    icon: 'hand-heart',
+    icon: HandHeart,
   },
   [USER_ROLE.Payer]: {
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.payer.desc',
     }),
-    icon: 'hand-coins',
+    icon: HandCoins,
   },
   [USER_ROLE.Admin]: {
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.admin.desc',
     }),
-    icon: 'gear',
+    icon: Gear,
   },
   [USER_ROLE.Owner]: {
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.owner.desc',
     }),
-    icon: 'sparkle',
+    icon: Sparkle,
   },
 };
 
@@ -114,7 +122,7 @@ export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
       {
         label: (
           <RoleOptionLabel
-            icon="sliders"
+            icon={Sliders}
             description={formatText({
               id: 'actionSidebar.managePermissions.roleSelect.custom.desc',
             })}
@@ -135,7 +143,7 @@ export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
       {
         label: (
           <RoleOptionLabel
-            icon="user-circle-minus"
+            icon={UserCircleMinus}
             description={formatText({
               id: 'actionSidebar.managePermissions.roleSelect.remove.desc',
             })}

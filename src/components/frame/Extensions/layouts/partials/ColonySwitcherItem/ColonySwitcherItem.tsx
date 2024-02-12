@@ -3,7 +3,6 @@ import React, { type FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import Icon from '~shared/Icon/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 
 import { type ColonySwitcherItemProps } from './types.ts';
@@ -15,7 +14,7 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
   avatarProps,
   ...rest
 }) => {
-  const { chainIconName, ...restAvatarProps } = avatarProps || {
+  const { chainIcon: Icon, ...restAvatarProps } = avatarProps || {
     colonyAddress: ADDRESS_ZERO,
   };
 
@@ -25,23 +24,16 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
       className={clsx(
         'flex items-center gap-4 text-2 px-2 rounded-lg transition-all bg-base-white md:hover:bg-gray-900 md:hover:text-base-white min-h-[2.25rem] -mx-2',
         {
-          'justify-between': chainIconName,
+          'justify-between': !!Icon,
         },
       )}
       {...rest}
     >
       <div className="flex items-center gap-2 truncate">
-        <ColonyAvatar size="xxs" {...restAvatarProps} />
+        <ColonyAvatar size="xxsx" {...restAvatarProps} />
         <p className="text-2 truncate max-w-[13.313rem]">{name}</p>
       </div>
-      {chainIconName && (
-        <Icon
-          name={chainIconName}
-          appearance={{
-            size: 'small',
-          }}
-        />
-      )}
+      {Icon && <Icon size={18} />}
     </NavLink>
   );
 };

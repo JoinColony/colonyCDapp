@@ -1,3 +1,4 @@
+import { Cardholder, GearSix, List, X } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -66,7 +67,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
           mode="tertiary"
           isFullRounded
           onClick={connectWallet}
-          iconName={visible && isMobile ? 'close' : 'cardholder'}
+          icon={visible && isMobile ? X : Cardholder}
           size="small"
         >
           {formatText({ id: 'connectWallet' })}
@@ -74,8 +75,8 @@ const UserNavigation: FC<UserNavigationProps> = ({
       )}
       <Hamburger
         isOpened={visible}
-        iconName={isMobile ? 'gear-six' : 'list'}
-        iconSize={isMobile ? 'small' : 'extraTiny'}
+        icon={isMobile ? GearSix : List}
+        iconSize={isMobile ? 18 : 16}
         setTriggerRef={setTriggerRef}
         onClick={() => {
           setOpenItemIndex(undefined);

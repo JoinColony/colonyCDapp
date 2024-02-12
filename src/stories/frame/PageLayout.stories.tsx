@@ -1,11 +1,19 @@
-/* eslint-disable max-len */
+import {
+  Bank,
+  Bird,
+  FilePlus,
+  GearSix,
+  Handshake,
+  Layout,
+  Plus,
+  User,
+} from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import NavigationSidebar from '~v5/frame/NavigationSidebar/index.ts';
 import PageLayout from '~v5/frame/PageLayout/index.ts';
-
-import type { Meta, StoryObj } from '@storybook/react';
 
 const SideBar = () => (
   <NavigationSidebar
@@ -14,7 +22,7 @@ const SideBar = () => (
     hamburgerLabel="Menu"
     colonySwitcherProps={{
       avatarProps: {
-        chainIconName: 'gnosis',
+        chainIcon: Bird,
         colonyAddress: ADDRESS_ZERO,
       },
       content: {
@@ -22,21 +30,21 @@ const SideBar = () => (
         content: <p>colony</p>,
         bottomActionProps: {
           text: 'Create new colony',
-          iconName: 'plus',
+          icon: Plus,
         },
       },
     }}
     mainMenuItems={[
       {
         key: '0',
-        iconName: 'file-plus',
+        icon: FilePlus,
         label: 'New action',
         className: 'md:bg-base-bg',
         hideMobile: true,
       },
       {
         key: '1',
-        iconName: 'layout',
+        icon: Layout,
         label: 'Dashboard',
         secondLevelMenuProps: {
           title: 'Dashboard',
@@ -45,13 +53,13 @@ const SideBar = () => (
             'The Metacolony is the DAO that will build, maintain, and support the Colony ecosystem, and you can be part of it.',
           bottomActionProps: {
             text: 'Create new action',
-            iconName: 'plus',
+            icon: Plus,
           },
         },
       },
       {
         key: '2',
-        iconName: 'user',
+        icon: User,
         label: 'Members',
         secondLevelMenuProps: {
           title: 'Members',
@@ -75,7 +83,7 @@ const SideBar = () => (
       },
       {
         key: '3',
-        iconName: 'bank',
+        icon: Bank,
         label: 'Finances',
         secondLevelMenuProps: {
           title: 'Finances',
@@ -99,7 +107,7 @@ const SideBar = () => (
       },
       {
         key: '4',
-        iconName: 'handshake',
+        icon: Handshake,
         label: 'Agreements',
         secondLevelMenuProps: {
           title: 'Agreements',
@@ -123,7 +131,7 @@ const SideBar = () => (
       },
       {
         key: '5',
-        iconName: 'gear-six',
+        icon: GearSix,
         label: 'Admin',
         secondLevelMenuProps: {
           title: 'Admin',

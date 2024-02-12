@@ -1,6 +1,6 @@
-import InputPills from '~v5/common/Fields/Input/partials/InputPills.tsx';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import InputPills from '~v5/common/Fields/Input/partials/InputPills.tsx';
 
 const meta: Meta<typeof InputPills> = {
   title: 'Common/Pills/Input pills',
@@ -8,7 +8,7 @@ const meta: Meta<typeof InputPills> = {
   argTypes: {
     status: {
       name: 'status',
-      options: ['success', 'error', 'warning'],
+      options: ['success', 'error', 'warn'],
       control: {
         type: 'select',
       },
@@ -41,7 +41,7 @@ export const Error: Story = {
 
 export const Warning: Story = {
   args: {
-    status: 'warning',
+    status: 'warn',
     message: 'Response timed out',
   },
 };

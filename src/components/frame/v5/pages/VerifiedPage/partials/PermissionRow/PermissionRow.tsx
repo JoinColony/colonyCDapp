@@ -1,4 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
+import { User } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
@@ -42,7 +43,7 @@ const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
         }
       >
         <PermissionsBadge
-          iconName="user"
+          icon={User}
           text={permissionRole.name}
           className="!py-1.5 text-gray-900"
         />

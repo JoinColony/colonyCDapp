@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import Icon from '~shared/Icon/index.ts';
+import StatusCircle from '~shared/StatusCircle/StatusCircle.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import { type PillProps } from '../types.ts';
@@ -9,11 +9,6 @@ import { type PillProps } from '../types.ts';
 const displayName = 'v5.common.Fields.Input.partials.InputPills';
 
 const InputPills: FC<PillProps> = ({ message, status }) => {
-  const iconType =
-    (status === 'success' && 'check-circle') ||
-    (status === 'error' && 'x-circle') ||
-    ((status === 'warning' && 'warning-circle') as string);
-
   return (
     <div
       className={clsx(
@@ -21,11 +16,11 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
         {
           'text-negative-400': status === 'error',
           'text-success-400': status === 'success',
-          'text-warning-400': status === 'warning',
+          'text-warning-400': status === 'warn',
         },
       )}
     >
-      <Icon name={iconType} appearance={{ size: 'tiny' }} />
+      <StatusCircle size={14} status={status} />
       {message && <span className="ml-1">{formatText(message)}</span>}
     </div>
   );

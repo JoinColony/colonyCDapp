@@ -1,3 +1,4 @@
+import { type Icon } from '@phosphor-icons/react';
 import { type ButtonHTMLAttributes } from 'react';
 
 import { type TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
@@ -10,6 +11,6 @@ export interface StepperButtonProps
   stage: StepStage;
   isHighlighted?: boolean;
   className?: string;
-  iconName?: string;
+  icon?: Icon;
   tooltipProps?: TooltipProps;
 }

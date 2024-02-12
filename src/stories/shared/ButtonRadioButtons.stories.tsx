@@ -1,8 +1,8 @@
+import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 import ButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/index.ts';
-
-import type { Meta, StoryObj } from '@storybook/react';
 
 const ButtonRadioButtonsMeta: Meta<typeof ButtonRadioButtons> = {
   title: 'Common/Fields/Radio Buttons/Button',
@@ -25,21 +25,22 @@ const ButtonRadioButtonsWithHooks = () => {
           label: 'Oppose',
           id: 'oppose',
           value: 'oppose',
-          colorClassName: 'text-negative-300',
-          checkedColorClassName: 'text-negative-400',
+          className:
+            'text-gray-900 hover:text-negative-400 border-negative-400',
+          checkedClassName: 'text-base-white bg-negative-400',
           iconClassName: 'text-negative-400',
-          hoverColorClassName: 'md:hover:text-negative-400',
-          iconName: 'thumbs-down',
+          checkedIconClassName: 'text-base-white',
+          icon: ThumbsDown,
         },
         {
           label: 'Support',
           id: 'support',
           value: 'support',
-          colorClassName: 'text-purple-200',
-          checkedColorClassName: 'text-purple-400',
+          className: 'text-gray-900 hover:text-purple-400 border-purple-400',
+          checkedClassName: 'text-base-white bg-purple-400',
           iconClassName: 'text-purple-400',
-          hoverColorClassName: 'md:hover:text-purple-400',
-          iconName: 'thumbs-up',
+          checkedIconClassName: 'text-base-white',
+          icon: ThumbsUp,
         },
       ]}
       value={value}

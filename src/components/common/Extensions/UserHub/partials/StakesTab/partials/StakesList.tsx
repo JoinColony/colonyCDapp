@@ -1,3 +1,4 @@
+import { Binoculars } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -27,7 +28,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
       <EmptyContent
         title={{ id: 'empty.content.title.stakes' }}
         description={{ id: 'empty.content.subtitle.stakes' }}
-        icon="binoculars"
+        icon={Binoculars}
       />
     );
   }

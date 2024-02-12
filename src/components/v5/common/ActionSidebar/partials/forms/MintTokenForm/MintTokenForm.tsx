@@ -1,3 +1,4 @@
+import { Coins, Scales } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -26,7 +27,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <ActionFormRow
-        icon="coins"
+        icon={Coins}
         fieldName="amount"
         title={formatText({ id: 'actionSidebar.value' })}
         tooltips={{
@@ -44,7 +45,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <ActionFormRow
-        icon="scales"
+        icon={Scales}
         fieldName="decisionMethod"
         tooltips={{
           label: {

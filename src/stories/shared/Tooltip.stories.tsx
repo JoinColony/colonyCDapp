@@ -1,7 +1,7 @@
+import { CrownSimple } from '@phosphor-icons/react';
 import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import Icon from '~shared/Icon/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -78,7 +78,7 @@ export const Top: Story = {
         <>
           <span className="mb-2.5 flex items-center px-3 py-1 rounded-3xl border border-base-white">
             <span className="flex items-center shrink-0">
-              <Icon name="crown-simple" appearance={{ size: 'extraTiny' }} />
+              <CrownSimple size={12} />
               <span className="ml-1 text-xs">Top </span>
             </span>
           </span>

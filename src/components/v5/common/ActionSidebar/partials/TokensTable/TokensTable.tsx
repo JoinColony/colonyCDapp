@@ -1,3 +1,4 @@
+import { Plus, Trash } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
@@ -39,7 +40,7 @@ const TokensTable: FC<TokensTableProps> = ({
               key: 'remove',
               onClick: () => fieldArrayMethods.remove(index),
               label: formatText({ id: 'table.row.remove' }),
-              icon: 'trash',
+              icon: Trash,
             },
           ],
         }
@@ -67,7 +68,7 @@ const TokensTable: FC<TokensTableProps> = ({
       {!readonly && (
         <Button
           mode="primaryOutline"
-          iconName="plus"
+          icon={Plus}
           size="small"
           isFullSize={isMobile}
           onClick={() => {

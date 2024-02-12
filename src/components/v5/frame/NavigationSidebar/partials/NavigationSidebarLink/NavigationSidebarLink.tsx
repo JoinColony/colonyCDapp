@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import Icon from '~shared/Icon/index.ts';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
 import { type NavigationSidebarLinkProps } from './types.ts';
@@ -11,7 +10,7 @@ const displayName = 'v5.frame.NavigationSidebar.partials.NavigationSidebarLink';
 
 const NavigationSidebarLink: FC<
   PropsWithChildren<NavigationSidebarLinkProps>
-> = ({ iconName, tagProps, children, className, disabled, ...rest }) => (
+> = ({ icon: Icon, tagProps, children, className, disabled, ...rest }) => (
   <NavLink
     end
     {...rest}
@@ -29,11 +28,7 @@ const NavigationSidebarLink: FC<
     }
   >
     <span className="flex items-center gap-2">
-      <Icon
-        appearance={{ size: 'extraSmall' }}
-        name={iconName}
-        className="text-current flex-shrink-0"
-      />
+      <Icon className="text-current flex-shrink-0" size={16} />
       {children}
     </span>
     {tagProps && (

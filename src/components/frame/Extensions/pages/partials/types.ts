@@ -1,3 +1,4 @@
+import { type Icon } from '@phosphor-icons/react';
 import { type MessageDescriptor } from 'react-intl';
 
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -16,6 +17,6 @@ export interface ActiveInstallsProps {
 }
 
 export interface HeadingIconProps {
-  icon: string;
+  icon: Icon;
   name: string | MessageDescriptor;
 }

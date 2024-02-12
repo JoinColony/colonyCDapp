@@ -24,8 +24,8 @@ const ButtonLink: FC<PropsWithChildren<ButtonLinkProps>> = ({
   className,
   isFullRounded = false,
   isFullSize,
-  iconName,
-  iconSize = 'tiny',
+  icon,
+  iconSize = 12,
   isIconRight,
   ...rest
 }) => (
@@ -68,7 +68,7 @@ const ButtonLink: FC<PropsWithChildren<ButtonLinkProps>> = ({
       >
         <ButtonContent
           mode={mode}
-          iconName={iconName}
+          icon={icon}
           iconSize={iconSize}
           isIconRight={isIconRight}
           textValues={textValues}

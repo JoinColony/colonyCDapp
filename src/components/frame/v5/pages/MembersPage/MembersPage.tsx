@@ -17,7 +17,7 @@ import { formatText } from '~utils/intl.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import Filter from '~v5/common/Filter/index.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
-import BurgerMenu from '~v5/shared/BurgerMenu/index.ts';
+import KebapMenu from '~v5/shared/KebapMenu/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
 import { useMembersPage } from './hooks.ts';
@@ -50,7 +50,7 @@ const MembersPage: FC = () => {
 
   const titleAction = (
     <>
-      <BurgerMenu isVertical setTriggerRef={setTriggerRef} />
+      <KebapMenu isVertical setTriggerRef={setTriggerRef} />
       {isSubNavigationOpen && (
         <PopoverBase
           setTooltipRef={setTooltipRef}

@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Cardholder, CopySimple } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -156,7 +157,7 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
         }),
       },
       copyAddressProps: {
-        iconName: 'cardholder',
+        icon: Cardholder,
         walletAddress: isMobile
           ? multiLineTextEllipsis(user?.walletAddress || '', truncateLimit)
           : user?.walletAddress,
@@ -164,7 +165,7 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
       className: rowStyles,
       buttonProps: {
         mode: isCopied ? 'completed' : 'septenary',
-        iconName: isCopied ? '' : 'copy-simple',
+        icon: isCopied ? undefined : CopySimple,
         isFullSize: isMobile,
         onClick: () => handleClipboardCopy(user?.walletAddress || ''),
         text: formatText({
@@ -187,8 +188,8 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
     //       className: rowStyles,
     //       buttonProps: {
     //         mode: 'tertiary',
-    //         iconName: 'discord-logo',
-    //         iconSize: 'small',
+    //         icon: DiscordLogo,
+    //         iconSize: 18,
     //         text: formatText({ id: 'button.connectDiscord' }),
     //       },
     //     },
@@ -262,8 +263,8 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
     //   className: rowStyles,
     //   buttonProps: {
     //     mode: 'tertiary',
-    //     iconName: 'user-switch',
-    //     iconSize: 'small',
+    //     icon: UserSwitch
+    //     iconSize: 18,
     //     text: formatText({ id: 'button.switchAccount' }),
     //   },
     // },

@@ -1,5 +1,10 @@
+import {
+  ArrowSquareOut,
+  Binoculars,
+  FilePlus,
+  ShareNetwork,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { ArrowSquareOut, FilePlus, ShareNetwork } from 'phosphor-react';
 import React, { type FC } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
@@ -69,7 +74,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
       {
         key: '1',
         label: formatText({ id: 'activityFeedTable.menu.view' }),
-        icon: <FilePlus size={16} />,
+        icon: FilePlus,
         onClick: () => {
           navigate(
             `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
@@ -90,7 +95,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
             }}
           />
         ),
-        icon: <ArrowSquareOut size={16} />,
+        icon: ArrowSquareOut,
       },
       {
         key: '3',
@@ -106,7 +111,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
             {children}
           </MeatballMenuCopyItem>
         ),
-        icon: <ShareNetwork size={16} />,
+        icon: ShareNetwork,
         onClick: () => false,
       },
     ],
@@ -156,7 +161,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
       emptyContent: (
         <EmptyContent
           className="h-[32.8125rem]"
-          icon="binoculars"
+          icon={Binoculars}
           title={{ id: 'activityFeedTable.table.emptyTitle' }}
           description={{ id: 'activityFeedTable.table.emptyDescription' }}
           buttonText={{ id: 'activityFeedTable.table.emptyButtonLabel' }}
