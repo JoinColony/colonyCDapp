@@ -1,4 +1,4 @@
-FROM node:16.16
+FROM node:20.11
 
 ARG DEV
 
@@ -40,9 +40,7 @@ RUN npm i
 # Copy colonyCDapp
 COPY . .
 
-# If the DEV build arg was set, then build the bundle in development mode
-# Otherwise, build the normal production bundle
-RUN if [ -z "$DEV" ]; then npm run webpack:prod; else npm run webpack:build; fi
+RUN npm run vite:prod
 
 # Copy the production bundle
 RUN mkdir ../colonyCDappProd
