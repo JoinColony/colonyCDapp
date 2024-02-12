@@ -2,6 +2,10 @@
   @apply mb-1;
 }
 
+.rich-text-content > p {
+  @apply min-h-[1.25rem];
+}
+
 .rich-text-content > :is(h1, h2, h3) {
   @apply mb-2.5;
 }
