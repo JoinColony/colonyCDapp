@@ -14,7 +14,6 @@ import Link from '~v5/shared/Link/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import ActionTypeSelect from '../../ActionTypeSelect.tsx';
-import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
 import {
   useActionFormProps,
   useSidebarActionForm,
@@ -23,7 +22,6 @@ import {
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
 import Motions from '../Motions/index.ts';
-import PopularActions from '../PopularActions.tsx';
 
 import { useGetFormActionErrors } from './hooks.ts';
 import PermissionSidebar from './partials/PermissionSidebar.tsx';
@@ -63,7 +61,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const { flatFormErrors, hasErrors } = useGetFormActionErrors();
 
   const {
-    setValue,
     formState: {
       errors: { this: customError },
     },
@@ -145,13 +142,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       </div>
       {!isMotion && !readonly && (
         <div className="mt-auto">
-          {!selectedAction && (
-            <PopularActions
-              setSelectedAction={(action) =>
-                setValue(ACTION_TYPE_FIELD_NAME, action)
-              }
-            />
-          )}
           <ActionButtons isActionDisabled={!selectedAction} />
         </div>
       )}
