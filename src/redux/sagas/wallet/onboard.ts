@@ -26,7 +26,7 @@ const ganacheAccountsUrl = new URL(
 );
 
 const getDevelopmentWallets = async () => {
-  // if we're using the webpack.dev config, include dev wallets
+  // if we're using the dev config, include dev wallets
   if (import.meta.env.DEV) {
     const fetchRes = await fetch(
       `${ganacheAccountsUrl.href}ganache-accounts.json`,

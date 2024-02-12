@@ -4,8 +4,8 @@ An iteration of the Colony Dapp sporting both a fully decentralized operating mo
 
 ## Prerequisites
 
-- `node` `v16.16.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
-- `npm` `v8.11.x` _(At least. The newer, the better)_
+- `node` `v20.11.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
+- `npm` `v10.x` _(At least. The newer, the better)_
 - `docker` `v19.03.0+` (See [install instructions](https://docs.docker.com/engine/install/))
 
 ## Installation
@@ -52,10 +52,10 @@ On the next start, assuming no key cache files changed, it will skip the image b
 
 ## Running the dev web server
 
-Once the above dev environment is up and running, you need to start your dev web server, running through webpack:
+Once the above dev environment is up and running, you need to start your dev web server, running through vite:
 
 ```bash
-npm run webpack
+npm run vite
 ```
 
 You can access it at `http://localhost:9091` _(notice the different port, as to not cause a local storage and cache conflict with the Dapp)_
@@ -84,12 +84,12 @@ npm run truffle
 
 _NOTE: This only works while the environment is running_
 
-## Building the bundle locally
+## Building the bundle
 
-If you want to build the bundle locally for inspection, you can do it via:
+If you want to build the bundle locally for production, you can do it via:
 
 ```bash
-npm run webpack:build
+npm run vite:prod
 ```
 
 _Note: It's a straight-up dev build. Just bundled, no code optimizations whatsoever._
