@@ -30,7 +30,9 @@ declare const PROD_COMMIT_HASH: string | undefined;
 
 if (PROD_COMMIT_HASH) {
   // eslint-disable-next-line no-console
-  console.log(`Running on ${PROD_COMMIT_HASH}`);
+  console.log(
+    `Running on experimental-${PROD_COMMIT_HASH} (based from 40d3dcc1e43159b938e44e946ef36b4535a6113c)`,
+  );
 }
 
 const Entry = ({ store }: Props) => {
