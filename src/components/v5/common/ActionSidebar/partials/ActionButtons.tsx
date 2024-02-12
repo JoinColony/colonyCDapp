@@ -65,10 +65,11 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
           isFullSize={isMobile}
           text={{ id: 'button.pending' }}
           icon={
-            <span className="flex shrink-0 ml-1.5">
+            <span className="flex shrink-0 ml-2">
               <SpinnerGap size={14} className="animate-spin" />
             </span>
           }
+          className="!px-4 !text-md"
         />
       ) : (
         <Button
