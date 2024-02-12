@@ -52,9 +52,6 @@ export const useUserProfilePageForm = () => {
     formData.append('file', avatar || '');
     setProgress(0);
 
-    /* Axios upload currently has no destination */
-    /* axiosUpload(avatar, thumbnail, setProgress); */
-
     await updateAvatar({
       variables: {
         input: {

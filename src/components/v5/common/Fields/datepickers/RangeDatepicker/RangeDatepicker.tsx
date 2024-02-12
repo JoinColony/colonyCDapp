@@ -18,7 +18,7 @@ import DatepickerCustomHeader from './partials/DatepickerCustomHeader/index.ts';
 import DatepickerCustomRangeInput from './partials/DatepickerCustomRangeInput/index.ts';
 import { type RangeDatepickerProps } from './types.ts';
 
-import styles from '../common/Datepicker.css';
+import styles from '../common/Datepicker.module.css';
 
 const RangeDatepicker: FC<RangeDatepickerProps> = ({
   cancelButtonProps,
