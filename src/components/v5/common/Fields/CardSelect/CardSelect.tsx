@@ -8,6 +8,7 @@ import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
+import { uiEvents, UIEvent } from '../../../../../uiEvents/index.ts';
 import { FIELD_STATE } from '../consts.ts';
 
 import { OPTION_LIST_ITEM_CLASSES } from './consts.ts';
@@ -122,7 +123,10 @@ function CardSelect<TValue = string>({
                 'text-blue-400': isSelectVisible,
               },
             )}
-            onClick={toggleSelect}
+            onClick={() => {
+              toggleSelect();
+              uiEvents.track(UIEvent.openTeamsMenu);
+            }}
           >
             {renderSelectedValue
               ? renderSelectedValue(
@@ -170,6 +174,21 @@ function CardSelect<TValue = string>({
                                       onClick: () => {
                                         onChange(optionValue);
                                         toggleSelectOff();
+
+                                        // These types are a mess!
+                                        // React components that are supposed to be strings
+                                        // And strings that are supposed to be something else
+                                        uiEvents.track(UIEvent.selectTeam, {
+                                          name:
+                                            // @ts-ignore
+                                            label?.props?.children?.[1] ||
+                                            'Unnamed Team',
+                                          // @ts-ignore
+                                          teamId: optionValue.slice(
+                                            // @ts-ignore
+                                            optionValue.indexOf('=') + 1,
+                                          ),
+                                        });
                                       },
                                     },
                                     label,

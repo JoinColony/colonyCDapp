@@ -15,4 +15,6 @@ export enum UIEvent {
   openAdminMenu = 'User Opened Admin Menu',
   relatedAction = 'User Clicked Related Action',
   giveFeedback = 'User Gave Feedback',
+  openTeamsMenu = 'User Opened Teams Menu',
+  selectTeam = 'User Selected Team',
 }
