@@ -1,4 +1,4 @@
-import { Coins, Scales, UserFocus, UsersThree } from '@phosphor-icons/react';
+import { Coins, UserFocus, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -7,11 +7,10 @@ import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useSimplePayment } from './hooks.ts';
@@ -19,8 +18,6 @@ import { useSimplePayment } from './hooks.ts';
 const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { decisionMethods } = useDecisionMethods();
-
   useSimplePayment(getFormOptions);
 
   const { watch } = useFormContext();
@@ -70,27 +67,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Scales}
-        fieldName="decisionMethod"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      >
-        <FormCardSelect
-          name="decisionMethod"
-          options={decisionMethods}
-          placeholder={formatText({
-            id: 'actionSidebar.decisionMethod.placeholder',
-          })}
-          title={formatText({ id: 'actionSidebar.availableDecisions' })}
-        />
-      </ActionFormRow>
+      <DecisionMethodField />
       <CreatedInRow />
       <DescriptionRow />
       {/* Disabled for now */}

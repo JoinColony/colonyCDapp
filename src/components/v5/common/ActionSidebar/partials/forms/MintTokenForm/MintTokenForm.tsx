@@ -1,15 +1,14 @@
-import { Coins, Scales } from '@phosphor-icons/react';
+import { Coins } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useMintToken } from './hooks.ts';
@@ -17,7 +16,6 @@ import { useMintToken } from './hooks.ts';
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
 const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { decisionMethods } = useDecisionMethods();
   const {
     colony: { nativeToken },
   } = useColonyContext();
@@ -44,27 +42,7 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           tokenAddress={nativeToken.tokenAddress}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Scales}
-        fieldName="decisionMethod"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      >
-        <FormCardSelect
-          name="decisionMethod"
-          options={decisionMethods}
-          title={formatText({ id: 'actionSidebar.availableDecisions' })}
-          placeholder={formatText({
-            id: 'actionSidebar.decisionMethod.placeholder',
-          })}
-        />
-      </ActionFormRow>
+      <DecisionMethodField />
       <CreatedInRow readonly />
       <DescriptionRow />
     </>
