@@ -69,7 +69,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
     motionState !== MotionState.Passed;
 
   return (
-    <div className="w-full h-full flex flex-col pt-6 pb-5 px-5 rounded-lg border border-gray-200">
+    <div className="w-full h-full flex flex-col pt-6 pb-5 px-5 rounded-lg border border-gray-200 sm:min-h-[15.5rem]">
       {loadingAction ? (
         <AgreementCardSkeleton />
       ) : (
