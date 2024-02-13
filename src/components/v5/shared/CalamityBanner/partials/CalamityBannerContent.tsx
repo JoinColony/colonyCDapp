@@ -55,7 +55,7 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
           <div className="flex items-center">
             <Link
               {...linkProps}
-              className="text-2 text-gray-900 underline !hover:text-base-white sm:hover:no-underline"
+              className="text-sm font-semibold text-gray-900 underline !hover:text-base-white sm:hover:no-underline"
             />
             <Button
               {...buttonProps}
