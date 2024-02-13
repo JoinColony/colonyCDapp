@@ -139,6 +139,14 @@ const addVerifiedMember = /* GraphQL */ `
   }
 `;
 
+const updateColonyContributor = /* GraphQL */ `
+  mutation UpdateColonyContributor($input: UpdateColonyContributorInput!) {
+    updateColonyContributor(input: $input) {
+      id
+    }
+  }
+`;
+
 /*
  * Queries
  */
@@ -232,7 +240,7 @@ const subscribeUserToColony = async (userAddress, colonyAddress) => {
         colonyAddress,
         colonyReputationPercentage: 0,
         contributorAddress: userAddress,
-        isVerified: true, // !!
+        isVerified: false,
         id: `${colonyAddress}_${userAddress}`,
         isWatching: true,
       },
@@ -436,8 +444,9 @@ const createColony = async (
 
   const gas = await signerOrWallet.provider.estimateGas(populatedTransaction);
   populatedTransaction.gasLimit = gas;
-  const signedTransaction =
-    await signerOrWallet.signTransaction(populatedTransaction);
+  const signedTransaction = await signerOrWallet.signTransaction(
+    populatedTransaction,
+  );
   const hash = utils.keccak256(signedTransaction);
 
   // create the colony
@@ -470,8 +479,9 @@ const createColony = async (
     );
   }
 
-  const colonyDeployment =
-    await signerOrWallet.provider.sendTransaction(signedTransaction);
+  const colonyDeployment = await signerOrWallet.provider.sendTransaction(
+    signedTransaction,
+  );
   const colonyDeploymentTransaction = await colonyDeployment.wait();
 
   await delay();
@@ -1187,6 +1197,18 @@ const createUserAndColonyData = async () => {
             input: {
               colonyAddress: newColonyAddress,
               userAddress,
+            },
+          },
+          GRAPHQL_URI,
+          API_KEY,
+        );
+
+        await graphqlRequest(
+          updateColonyContributor,
+          {
+            input: {
+              id: `${newColonyAddress}_${userAddress}`,
+              isVerified: true,
             },
           },
           GRAPHQL_URI,
