@@ -728,6 +728,7 @@
     "agreementsPage.noResults": "No results to display",
     "agreementsPage.empty.description": "There are no agreements to display.",
     "agreementsPage.empty.button": "Create a new agreement",
+    "agreementsPage.viewAgreement": "View agreement",
     "table.pageNumberWithTotal": "Page {actualPage} of {pageNumber}",
     "table.pageNumber": "Page {actualPage}",
     "table.next": "Next",

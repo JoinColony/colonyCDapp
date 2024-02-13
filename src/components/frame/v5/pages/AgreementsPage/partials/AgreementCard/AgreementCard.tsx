@@ -88,10 +88,21 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
               />
             )}
           </div>
-          <h5 className="text-1 mb-2 truncate">{title}</h5>
-          <p className="text-sm text-gray-600 mb-4 line-clamp-4">
-            {description}
-          </p>
+          <button
+            type="button"
+            className="text-left mb-4 sm:hover:text-blue-400 transition-colors"
+            onClick={() => {
+              navigate(
+                `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionId}`,
+                {
+                  replace: true,
+                },
+              );
+            }}
+          >
+            <h5 className="text-1 mb-2 truncate">{title}</h5>
+            <p className="text-sm text-gray-600 line-clamp-4">{description}</p>
+          </button>
           <div className="flex items-center justify-between gap-2 pt-4 mt-auto border-t border-gray-200">
             <UserPopover
               user={user}
@@ -150,7 +161,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
                 items={[
                   {
                     key: '1',
-                    label: formatText({ id: 'activityFeedTable.menu.view' }),
+                    label: formatText({ id: 'agreementsPage.viewAgreement' }),
                     icon: FilePlus,
                     onClick: () => {
                       navigate(
