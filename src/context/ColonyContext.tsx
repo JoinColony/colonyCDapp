@@ -18,6 +18,8 @@ import { type Colony } from '~types/graphql.ts';
 
 import { uiEvents } from '../uiEvents/index.ts';
 
+let uiEventGroupSet = false;
+
 const useUpdateColonyReputation = (colonyAddress?: string) => {
   const [updateContributorsWithReputation] =
     useUpdateContributorsWithReputationMutation();
@@ -87,7 +89,7 @@ export const ColonyContextProvider = ({
 
   const colonySubscription = useColonySubscription(colony);
 
-  if (canInteractWithColony) {
+  if (canInteractWithColony && !uiEventGroupSet) {
     uiEvents.group(colony.colonyAddress, {
       name: colony.name,
       displayName: colony.metadata?.displayName,
@@ -100,6 +102,7 @@ export const ColonyContextProvider = ({
       version: colony.version,
       teamsCount: colony.domains?.items?.length,
     });
+    uiEventGroupSet = true;
   }
 
   const colonyContext = useMemo<ColonyContextValue>(
