@@ -30,10 +30,18 @@ declare const PROD_COMMIT_HASH: string | undefined;
 if (PROD_COMMIT_HASH) {
   // eslint-disable-next-line no-console
   console.log(
-    `Running on experimental-${PROD_COMMIT_HASH} (based from 40d3dcc1e43159b938e44e946ef36b4535a6113c)`,
+    `Running on experimental-${PROD_COMMIT_HASH} (based from 5ab06d7ed1201d402f82ac64a3c0f9002811d80a)`,
   );
 }
 
+/*
+ * @NOTE This can be called regardless, as no direct keys or settings required
+ * Everything goes through the auth proxy, so it's responsible for ensuring
+ * this service is correctly connected to it's host
+ *
+ * But even it that's not true, the app will still run, you'll just get an 404
+ * from the auth proxy informing you that the service is not available
+ */
 uiEvents.load();
 
 const Entry = ({ store }: Props) => {
