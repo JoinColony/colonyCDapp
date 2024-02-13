@@ -7,6 +7,7 @@ import {
   Plus,
   SpinnerGap,
   User,
+  Buildings,
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
@@ -23,7 +24,10 @@ import {
 import { useMobile } from '~hooks/index.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useTransformer from '~hooks/useTransformer.ts';
-import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants.ts';
+import {
+  COLONY_MEMBERS_ROUTE,
+  COLONY_MULTISIG_ROUTE,
+} from '~routes/routeConstants.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -327,7 +331,15 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
       key: '6',
       icon: GearSix,
       label: formatText({ id: 'navigation.admin' }),
-      isActive: checkIfIsActive(nestedColonyPathname, adminMenu),
+      isActive: checkIfIsActive(nestedColonyPathname, [
+        ...adminMenu,
+        {
+          key: '7',
+          label: 'MultiSig',
+          to: COLONY_MULTISIG_ROUTE,
+          icon: Buildings,
+        },
+      ]),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.admin.title' }),
         content: adminMenu,

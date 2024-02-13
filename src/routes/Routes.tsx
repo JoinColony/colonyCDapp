@@ -10,6 +10,8 @@ import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage/index.ts';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage/index.ts';
+import IndividualPermissionsPage from '~frame/Extensions/pages/PermissionsPage/IndividualPermissionsPage.tsx';
+import MultisigPermissionsPage from '~frame/Extensions/pages/PermissionsPage/MultisigPermissionsPage.tsx';
 import ReputationPage from '~frame/Extensions/pages/ReputationPage/index.ts';
 import FourOFour from '~frame/FourOFour/index.ts';
 import LandingPage from '~frame/LandingPage/index.ts';
@@ -64,6 +66,7 @@ import {
   COLONY_INCOMING_ROUTE,
   COLONY_SPLASH_ROUTE,
   CREATE_PROFILE_ROUTE,
+  COLONY_MULTISIG_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -151,10 +154,16 @@ const Routes = () => {
 
           {/* @ts-ignore */}
           {!WEBPACK_IS_PRODUCTION && (
-            <Route
-              path={COLONY_PERMISSIONS_ROUTE}
-              element={<PermissionsPage />}
-            />
+            <Route element={<PermissionsPage />}>
+              <Route
+                path={COLONY_PERMISSIONS_ROUTE}
+                element={<IndividualPermissionsPage />}
+              />
+              <Route
+                path={COLONY_MULTISIG_ROUTE}
+                element={<MultisigPermissionsPage />}
+              />
+            </Route>
           )}
 
           {/* @ts-ignore */}

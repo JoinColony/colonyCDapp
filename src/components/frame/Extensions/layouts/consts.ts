@@ -10,9 +10,9 @@ import {
   UsersFour,
   UsersThree,
   Wrench,
+  Signature,
   // @BETA: Disabled for now
   // SealCheck,
-  // Signature,
   // ChartPieSlice,
   // ListChecks,
   // ChartLine,
@@ -34,7 +34,7 @@ import {
   // @BETA: Disabled for now
   // COLONY_INCORPORATION_ROUTE,
   // COLONY_INTEGRATIONS_ROUTE,
-  // COLONY_PERMISSIONS_ROUTE,
+  COLONY_PERMISSIONS_ROUTE,
   // COLONY_REPUTATION_ROUTE,
   COLONY_TEAMS_ROUTE,
   // COLONY_VERIFIED_ROUTE,
@@ -61,12 +61,6 @@ export const membersMenu: NavigationSidebarLinksListProps['items'] = [
   //   label: formatText({ id: 'navigation.members.verifiedMembers' }),
   //   to: COLONY_VERIFIED_ROUTE,
   //   icon: SealCheck,
-  // },
-  // {
-  //   key: '4',
-  //   label: formatText({ id: 'navigation.members.permissions' }),
-  //   to: COLONY_PERMISSIONS_ROUTE,
-  //   icon: Signature,
   // },
   {
     key: '5',
@@ -153,6 +147,12 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
     label: formatText({ id: 'navigation.admin.extensions' }),
     to: COLONY_EXTENSIONS_ROUTE,
     icon: PuzzlePiece,
+  },
+  {
+    key: '4',
+    label: formatText({ id: 'navigation.members.permissions' }),
+    to: COLONY_PERMISSIONS_ROUTE,
+    icon: Signature,
   },
   // @BETA: Disabled for now
   // {

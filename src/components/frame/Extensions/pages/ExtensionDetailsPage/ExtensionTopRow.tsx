@@ -43,7 +43,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
       requiredRolesDomains: [Id.RootDomain],
       colony,
       requiredRoles: neededColonyPermissions,
-      address,
+      address: address || '',
     });
 
   return (

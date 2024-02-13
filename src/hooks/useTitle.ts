@@ -36,6 +36,7 @@ import {
   COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_BALANCES_ROUTE,
+  COLONY_MULTISIG_ROUTE,
 } from '~routes/routeConstants.ts';
 import { type SimpleMessageValues } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -225,6 +226,7 @@ const routeMessages: Record<string, MessageDescriptor> = {
   [`${COLONY_HOME_ROUTE}${COLONY_DETAILS_ROUTE}`]: MSG.colonyDetails,
   [`${COLONY_HOME_ROUTE}${COLONY_REPUTATION_ROUTE}`]: MSG.colonyReputation,
   [`${COLONY_HOME_ROUTE}${COLONY_PERMISSIONS_ROUTE}`]: MSG.colonyPermissions,
+  [`${COLONY_HOME_ROUTE}${COLONY_MULTISIG_ROUTE}`]: MSG.colonyPermissions,
   [`${COLONY_HOME_ROUTE}${COLONY_INTEGRATIONS_ROUTE}`]: MSG.colonyIntegrations,
   [`${COLONY_HOME_ROUTE}${COLONY_INCORPORATION_ROUTE}`]:
     MSG.colonyIncorporation,

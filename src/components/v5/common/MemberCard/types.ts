@@ -8,4 +8,5 @@ export interface MemberCardProps {
   role?: UserRoleMeta;
   reputation?: number;
   isSimple?: boolean;
+  isExtension?: boolean;
 }

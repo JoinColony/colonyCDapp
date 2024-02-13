@@ -29,7 +29,12 @@ export type ButtonMode =
   | 'filled'
   | 'notFilled';
 
-export type ButtonSize = 'default' | 'extraSmall' | 'small' | 'large';
+export type ButtonSize =
+  | 'default'
+  | 'extraSmall'
+  | 'small'
+  | 'medium'
+  | 'large';
 
 export type TextButtonMode = 'default' | 'medium' | 'underlined';
 

@@ -2,6 +2,7 @@ import { Shield } from '@phosphor-icons/react';
 import chunk from 'lodash/chunk';
 import React, { type FC, Fragment } from 'react';
 
+import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -13,15 +14,22 @@ const displayName = 'v5.common.ActionSidebar.partials.PermissionsModal';
 
 const PermissionsModal: FC<PermissionsModalProps> = (props) => {
   const [showMore, { toggle: toggleShowMore }] = useToggle();
+  const isMobile = useMobile();
 
   return (
-    <Modal {...props} isFullOnMobile icon={Shield}>
+    <Modal
+      {...props}
+      isFullOnMobile
+      icon={Shield}
+      confirmMessage={isMobile ? 'Close' : undefined}
+      buttonMode="primarySolid"
+    >
       <p className="font-semibold text-gray-900">
         {formatText({
           id: 'actionSidebar.managePermissions.permissionsModal.heading',
         })}
       </p>
-      <p className="text-sm text-gray-600 mt-1">
+      <div className="text-sm text-gray-600 mt-1">
         {showMore ? (
           <>
             <p>
@@ -29,7 +37,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
                 id: 'actionSidebar.managePermissions.permissionsModal.description1',
               })}
             </p>
-            <p className="mt-6">
+            <p className="mt-4">
               {formatText({
                 id: 'actionSidebar.managePermissions.permissionsModal.description2',
               })}
@@ -42,7 +50,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
         )}{' '}
         <button
           type="button"
-          className=" inline text-blue-400 cursor-pointer"
+          className="inline text-blue-900 sm:hover:text-blue-400 underline transition-colors cursor-pointer"
           onClick={toggleShowMore}
         >
           {showMore
@@ -53,7 +61,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
                 id: 'actionSidebar.managePermissions.permissionsModal.description.expand',
               })}
         </button>
-      </p>
+      </div>
       {PERMISSIONS_MODAL_CONTENT.map(
         ({ title, heading, actions, key }, index) => {
           const isLast = index === PERMISSIONS_MODAL_CONTENT.length - 1;

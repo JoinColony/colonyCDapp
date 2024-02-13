@@ -33,7 +33,7 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
 
       const shouldShowOnTop =
         withAutoTopPlacement &&
-        window.innerHeight - window.scrollY - bottom - dropdownHeight < 0;
+        window.innerHeight - bottom - dropdownHeight < 0;
 
       const leftPosition =
         portalElementRef.current.clientWidth + left + rightWindowPadding >

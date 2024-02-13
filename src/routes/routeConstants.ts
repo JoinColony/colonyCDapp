@@ -14,6 +14,7 @@ export const COLONY_DETAILS_ROUTE = `details`;
 export const COLONY_ADMIN_ROUTE = `admin`;
 export const COLONY_REPUTATION_ROUTE = `reputation`;
 export const COLONY_PERMISSIONS_ROUTE = `permissions`;
+export const COLONY_MULTISIG_ROUTE = `permissions/multisig`;
 export const COLONY_EXTENSIONS_ROUTE = `extensions`;
 export const COLONY_INTEGRATIONS_ROUTE = `integrations`;
 export const COLONY_INCORPORATION_ROUTE = `incorporation`;
