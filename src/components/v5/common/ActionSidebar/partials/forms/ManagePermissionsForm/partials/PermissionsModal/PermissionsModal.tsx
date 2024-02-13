@@ -29,7 +29,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
           id: 'actionSidebar.managePermissions.permissionsModal.heading',
         })}
       </p>
-      <p className="text-sm text-gray-600 mt-1">
+      <div className="text-sm text-gray-600 mt-1">
         {showMore ? (
           <>
             <p>
@@ -61,7 +61,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
                 id: 'actionSidebar.managePermissions.permissionsModal.description.expand',
               })}
         </button>
-      </p>
+      </div>
       {PERMISSIONS_MODAL_CONTENT.map(
         ({ title, heading, actions, key }, index) => {
           const isLast = index === PERMISSIONS_MODAL_CONTENT.length - 1;
