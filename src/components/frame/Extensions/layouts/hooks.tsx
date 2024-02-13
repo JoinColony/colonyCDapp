@@ -37,6 +37,8 @@ import { type NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials
 import { TxButton } from '~v5/shared/Button/index.ts';
 import { type CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts';
 
+import { uiEvents, UIEvent } from '../../../../uiEvents/index.ts';
+
 import {
   adminMenu,
   // @BETA: Disabled for now
@@ -220,10 +222,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           {
             key: '1',
             label: formatText({ id: 'actions.simplePayment' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
-              }),
+              });
+              uiEvents.track(UIEvent.relatedAction, {
+                action: ACTION.SIMPLE_PAYMENT,
+              });
+            },
           },
           // {
           //   key: '2',
@@ -271,26 +277,38 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           {
             key: '7',
             label: formatText({ id: 'actions.transferFunds' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
-              }),
+              });
+              uiEvents.track(UIEvent.relatedAction, {
+                action: ACTION.TRANSFER_FUNDS,
+              });
+            },
           },
           {
             key: '8',
             label: formatText({ id: 'actions.manageTokens' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
-              }),
+              });
+              uiEvents.track(UIEvent.relatedAction, {
+                action: ACTION.MANAGE_TOKENS,
+              });
+            },
           },
           {
             key: '9',
             label: formatText({ id: 'actions.mintTokens' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
-              }),
+              });
+              uiEvents.track(UIEvent.relatedAction, {
+                action: ACTION.MINT_TOKENS,
+              });
+            },
           },
         ],
       },
