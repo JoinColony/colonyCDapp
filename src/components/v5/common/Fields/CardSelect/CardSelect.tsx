@@ -3,12 +3,12 @@ import React, { useCallback, useId, useMemo, useState } from 'react';
 
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { formatText } from '~utils/intl.ts';
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
-import { uiEvents, UIEvent } from '../../../../../uiEvents/index.ts';
 import { FIELD_STATE } from '../consts.ts';
 
 import { OPTION_LIST_ITEM_CLASSES } from './consts.ts';

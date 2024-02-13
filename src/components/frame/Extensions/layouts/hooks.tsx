@@ -30,14 +30,13 @@ import {
   COLONY_MULTISIG_ROUTE,
 } from '~routes/routeConstants.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import { type NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types.ts';
 import { TxButton } from '~v5/shared/Button/index.ts';
 import { type CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts';
-
-import { uiEvents, UIEvent } from '../../../../uiEvents/index.ts';
 
 import {
   adminMenu,

@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 
 import { FEATURES_BUGS, WHATS_NEW } from '~constants/index.ts';
-
-import { uiEvents, UIEvent } from '../uiEvents/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 
 export const useBeamer = (): void => {
   useEffect(() => {

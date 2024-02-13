@@ -6,6 +6,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { getContext, ContextModule } from '~context/index.ts';
+import { uiEvents } from '~uiEvents/index.ts';
 
 import actionMessages from './i18n/en-actions.ts';
 import eventsMessages from './i18n/en-events.ts';
@@ -13,7 +14,6 @@ import motionStatesMessages from './i18n/en-motion-states.ts';
 import systemMessages from './i18n/en-system-messages.ts';
 import messages from './i18n/en.json';
 import Routes from './routes/index.ts';
-import { uiEvents } from './uiEvents/index.ts';
 
 interface Props {
   store: any;

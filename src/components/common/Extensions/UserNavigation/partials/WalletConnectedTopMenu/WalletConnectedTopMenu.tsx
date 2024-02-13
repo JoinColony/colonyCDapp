@@ -9,11 +9,10 @@ import {
   USER_EDIT_PROFILE_ROUTE,
   CREATE_PROFILE_ROUTE,
 } from '~routes/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 import UserAvatarDetails from '~v5/shared/UserAvatarDetails/index.ts';
 import { type UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types.ts';
-
-import { uiEvents, UIEvent } from '../../../../../../uiEvents/index.ts';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';

@@ -7,10 +7,9 @@ import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import ColonyLogo from '~images/logo-new.svg';
 import FeedbackButton from '~shared/FeedbackButton/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
-
-import { uiEvents, UIEvent } from '../../../../uiEvents/index.ts';
 
 import {
   secondLevelContentAnimation,

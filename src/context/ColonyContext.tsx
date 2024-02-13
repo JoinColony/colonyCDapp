@@ -15,8 +15,7 @@ import {
 import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
 import { type Colony } from '~types/graphql.ts';
-
-import { uiEvents } from '../uiEvents/index.ts';
+import { uiEvents } from '~uiEvents/index.ts';
 
 let uiEventGroupSet = false;
 

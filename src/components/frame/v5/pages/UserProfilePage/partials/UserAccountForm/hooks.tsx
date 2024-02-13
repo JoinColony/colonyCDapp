@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   type UseAvatarUploaderProps,
@@ -12,7 +13,6 @@ import {
 } from '~v5/common/AvatarUploader/hooks.tsx';
 import Avatar from '~v5/shared/Avatar/index.ts';
 
-import { uiEvents, UIEvent } from '../../../../../../../uiEvents/index.ts';
 import {
   profileFileOptions,
   MAX_BIO_CHARS,

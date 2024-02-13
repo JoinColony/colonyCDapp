@@ -19,9 +19,8 @@ import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type User } from '~types/graphql.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
+import { uiEvents } from '~uiEvents/index.ts';
 import { getLastWallet } from '~utils/autoLogin.ts';
-
-import { uiEvents } from '../uiEvents/index.ts';
 
 import { getContext, ContextModule } from './index.ts';
 import { TokenActivationProvider } from './TokenActivationContext.tsx';

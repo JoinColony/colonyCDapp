@@ -7,11 +7,11 @@ import { useFormContext, useFormState } from 'react-hook-form';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { uiEvents, UIEvent } from '../../../../../../uiEvents/index.ts';
 import ActionTypeSelect from '../../ActionTypeSelect.tsx';
 import {
   useActionFormProps,

@@ -17,6 +17,7 @@ import {
   useGetPublicColonyByNameQuery,
 } from '~gql';
 import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import CardConnectWallet from '~v5/shared/CardConnectWallet/index.ts';
@@ -24,8 +25,6 @@ import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import SocialLinks from '~v5/shared/SocialLinks/index.ts';
-
-import { uiEvents, UIEvent } from '../../../../../uiEvents/index.ts';
 
 const displayName = 'pages.ColonyPreviewPage';
 
