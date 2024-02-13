@@ -8,4 +8,5 @@ export enum UIEvent {
   updateAvatar = 'User Updated Avatar',
   updateProfile = 'User Updated Profile',
   userJoinedColony = 'User Joined Colony',
+  colonySwitcher = 'User Opened Colony Switcher',
 }

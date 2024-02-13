@@ -10,6 +10,8 @@ import FeedbackButton from '~shared/FeedbackButton/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
 
+import { uiEvents, UIEvent } from '../../../../uiEvents/index.ts';
+
 import {
   secondLevelContentAnimation,
   secondLevelWrapperAnimation,
@@ -131,6 +133,8 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   if (isTablet) {
                     toggleOffMenu();
                   }
+
+                  uiEvents.track(UIEvent.colonySwitcher);
 
                   toggleOffThirdLevelMenu();
                 }}
