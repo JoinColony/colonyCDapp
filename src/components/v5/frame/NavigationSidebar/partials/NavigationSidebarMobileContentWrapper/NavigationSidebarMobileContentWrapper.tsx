@@ -36,8 +36,10 @@ const NavigationSidebarMobileContentWrapper: FC<
       },
     )}
   >
-    <div className="inner pt-4 pb-6 !px-4 h-full flex flex-col gap-6">
-      <div className="flex-grow overflow-auto">{children}</div>
+    <div className="inner !p-6 h-full flex flex-col gap-6">
+      <div className="flex-grow overflow-y-auto overflow-x-hidden">
+        {children}
+      </div>
       <NavigationFeedbackWidget />
       {mobileBottomContent && (
         <div className="flex-shrink-0 pt-6 border-t border-t-gray-200">
