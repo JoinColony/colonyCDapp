@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { type FC } from 'react';
+import React, { useLayoutEffect, useState, type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
@@ -51,6 +51,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     isThirdLevelMenuOpen,
     { toggleOn: toggleOnThirdLevelMenu, toggleOff: toggleOffThirdLevelMenu },
   ] = thirdLevelMenuToggle;
+  const [trackedIndex, setTrackedIndex] = useState<number>(-1);
 
   useDisableBodyScroll((isMenuOpen || openItemIndex === 0) && isTablet);
 
@@ -78,25 +79,34 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     }
   };
 
-  switch (openItemIndex) {
-    case 2: {
-      // dashboard
-      uiEvents.track(UIEvent.openDashboardMenu);
-      break;
+  useLayoutEffect(() => {
+    switch (openItemIndex) {
+      case 2: {
+        if (trackedIndex !== openItemIndex) {
+          uiEvents.track(UIEvent.openMenu, { menu: 'dashboard' });
+          setTrackedIndex(openItemIndex);
+        }
+        break;
+      }
+      case 4: {
+        if (trackedIndex !== openItemIndex) {
+          uiEvents.track(UIEvent.openMenu, { menu: 'finance' });
+          setTrackedIndex(openItemIndex);
+        }
+        break;
+      }
+      case 5: {
+        if (trackedIndex !== openItemIndex) {
+          uiEvents.track(UIEvent.openMenu, { menu: 'admin' });
+          setTrackedIndex(openItemIndex);
+        }
+        break;
+      }
+      default:
+        setTrackedIndex(-1);
+        break;
     }
-    case 4: {
-      // finance
-      uiEvents.track(UIEvent.openFinanceMenu);
-      break;
-    }
-    case 5: {
-      // admin
-      uiEvents.track(UIEvent.openAdminMenu);
-      break;
-    }
-    default:
-      break;
-  }
+  }, [openItemIndex, trackedIndex]);
 
   return (
     <nav
