@@ -14,4 +14,5 @@ export enum UIEvent {
   openFinanceMenu = 'User Opened Finance Menu',
   openAdminMenu = 'User Opened Admin Menu',
   relatedAction = 'User Clicked Related Action',
+  giveFeedback = 'User Gave Feedback',
 }
