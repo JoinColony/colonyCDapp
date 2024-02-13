@@ -44,7 +44,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
         <Link
           to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
           className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
-          onClick={() => uiEvents.track(UIEvent.manageAccount)}
+          onClick={() => uiEvents.emit(UIEvent.manageAccount)}
         >
           <UserCircleGear size={iconSize} />
           <p className="ml-2">
@@ -55,7 +55,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
         <Link
           to={CREATE_PROFILE_ROUTE}
           className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
-          onClick={() => uiEvents.track(UIEvent.createAccount)}
+          onClick={() => uiEvents.emit(UIEvent.createAccount)}
         >
           <UserCircleGear size={iconSize} />
           <p className="ml-2">

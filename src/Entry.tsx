@@ -34,10 +34,10 @@ if (PROD_COMMIT_HASH) {
   );
 }
 
+uiEvents.load();
+
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
-
-  uiEvents.load({ writeKey: '' }, { disableClientPersistence: true });
 
   return (
     <IntlProvider

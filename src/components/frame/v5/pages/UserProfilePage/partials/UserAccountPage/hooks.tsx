@@ -55,7 +55,7 @@ export const useUserProfile = () => {
 
       updateUser(user?.walletAddress, true);
 
-      uiEvents.track(UIEvent.updateProfile, updatedProfile);
+      uiEvents.emit(UIEvent.updateProfile, updatedProfile);
 
       toast.success(
         <Toast

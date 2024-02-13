@@ -69,7 +69,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     useToggle();
 
   useLayoutEffect(() => {
-    uiEvents.track(UIEvent.actionSidebarOpened);
+    uiEvents.emit(UIEvent.actionSidebarOpened);
     if (localStorage.getItem(isFullScreen) === 'true') {
       toggleOn();
     }

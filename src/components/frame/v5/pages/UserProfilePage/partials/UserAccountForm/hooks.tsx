@@ -68,7 +68,7 @@ export const useUserProfilePageForm = () => {
 
     await updateUser(user?.walletAddress, true);
 
-    uiEvents.track(UIEvent.updateAvatar);
+    uiEvents.emit(UIEvent.updateAvatar);
 
     toast.success(
       <Toast

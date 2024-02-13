@@ -55,7 +55,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   useLayoutEffect(() => {
     if (isSubmitting && !formSubmitted) {
-      uiEvents.track(UIEvent.actionCreated, rest.getValues());
+      uiEvents.emit(UIEvent.actionCreated, rest.getValues());
       setFormSubmitted(true);
     }
   }, [isSubmitting, formSubmitted, rest]);
@@ -167,7 +167,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             client.refetchQueries({
               include: [SearchActionsDocument],
             });
-            uiEvents.track(UIEvent.actionCreationSucceeded, values);
+            uiEvents.emit(UIEvent.actionCreationSucceeded, values);
           }}
         >
           <ActionSidebarFormContent

@@ -125,7 +125,7 @@ function CardSelect<TValue = string>({
             )}
             onClick={() => {
               toggleSelect();
-              uiEvents.track(UIEvent.openTeamsMenu);
+              uiEvents.emit(UIEvent.openTeamsMenu);
             }}
           >
             {renderSelectedValue
@@ -178,7 +178,7 @@ function CardSelect<TValue = string>({
                                         // These types are a mess!
                                         // React components that are supposed to be strings
                                         // And strings that are supposed to be something else
-                                        uiEvents.track(UIEvent.selectTeam, {
+                                        uiEvents.emit(UIEvent.selectTeam, {
                                           name:
                                             // @ts-ignore
                                             label?.props?.children?.[1] ||

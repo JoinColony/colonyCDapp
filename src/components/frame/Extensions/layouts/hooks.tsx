@@ -226,7 +226,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
               });
-              uiEvents.track(UIEvent.relatedAction, {
+              uiEvents.emit(UIEvent.relatedAction, {
                 action: ACTION.SIMPLE_PAYMENT,
               });
             },
@@ -281,7 +281,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
               });
-              uiEvents.track(UIEvent.relatedAction, {
+              uiEvents.emit(UIEvent.relatedAction, {
                 action: ACTION.TRANSFER_FUNDS,
               });
             },
@@ -293,7 +293,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
               });
-              uiEvents.track(UIEvent.relatedAction, {
+              uiEvents.emit(UIEvent.relatedAction, {
                 action: ACTION.MANAGE_TOKENS,
               });
             },
@@ -305,7 +305,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
               });
-              uiEvents.track(UIEvent.relatedAction, {
+              uiEvents.emit(UIEvent.relatedAction, {
                 action: ACTION.MINT_TOKENS,
               });
             },

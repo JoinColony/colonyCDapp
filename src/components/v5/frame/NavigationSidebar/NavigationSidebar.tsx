@@ -83,21 +83,21 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     switch (openItemIndex) {
       case 2: {
         if (trackedIndex !== openItemIndex) {
-          uiEvents.track(UIEvent.openMenu, { menu: 'dashboard' });
+          uiEvents.emit(UIEvent.openMenu, { menu: 'dashboard' });
           setTrackedIndex(openItemIndex);
         }
         break;
       }
       case 4: {
         if (trackedIndex !== openItemIndex) {
-          uiEvents.track(UIEvent.openMenu, { menu: 'finance' });
+          uiEvents.emit(UIEvent.openMenu, { menu: 'finance' });
           setTrackedIndex(openItemIndex);
         }
         break;
       }
       case 5: {
         if (trackedIndex !== openItemIndex) {
-          uiEvents.track(UIEvent.openMenu, { menu: 'admin' });
+          uiEvents.emit(UIEvent.openMenu, { menu: 'admin' });
           setTrackedIndex(openItemIndex);
         }
         break;
@@ -164,7 +164,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                     toggleOffMenu();
                   }
 
-                  uiEvents.track(UIEvent.colonySwitcher);
+                  uiEvents.emit(UIEvent.colonySwitcher);
 
                   toggleOffThirdLevelMenu();
                 }}

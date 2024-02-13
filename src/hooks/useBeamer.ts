@@ -26,7 +26,7 @@ export const openWhatsNew = (e): void => {
 };
 
 export const openFeaturesBugs = (e): void => {
-  uiEvents.track(UIEvent.giveFeedback);
+  uiEvents.emit(UIEvent.giveFeedback);
   if (typeof window.Beamer !== 'undefined') {
     e.preventDefault();
     window.Beamer.showIdeas(true);

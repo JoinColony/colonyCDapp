@@ -72,12 +72,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           const [currentUser] = data?.getUserByAddress?.items || [];
           if (currentUser) {
             setUser(currentUser);
-            uiEvents.identify(utils.getAddress(address), {
+            uiEvents.user(utils.getAddress(address), {
               username: currentUser.profile?.displayName,
             });
           } else {
             setUser(null);
-            uiEvents.identify(utils.getAddress(address));
+            uiEvents.user(utils.getAddress(address));
           }
         } catch (error) {
           console.error(error);

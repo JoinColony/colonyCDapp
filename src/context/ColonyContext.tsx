@@ -90,7 +90,7 @@ export const ColonyContextProvider = ({
   const colonySubscription = useColonySubscription(colony);
 
   if (canInteractWithColony && !uiEventGroupSet) {
-    uiEvents.group(colony.colonyAddress, {
+    uiEvents.colony(colony.colonyAddress, {
       name: colony.name,
       displayName: colony.metadata?.displayName,
       description: colony.metadata?.description,

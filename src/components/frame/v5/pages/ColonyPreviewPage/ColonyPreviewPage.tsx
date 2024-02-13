@@ -126,7 +126,7 @@ const ColonyPreviewPage = () => {
     });
 
     if (valid.data?.validateUserInvite) {
-      uiEvents.track(UIEvent.userJoinedColony, {
+      uiEvents.emit(UIEvent.userJoinedColony, {
         inviteCode,
         colonyName,
         colonyDisplayName: colonyMetadata?.displayName,

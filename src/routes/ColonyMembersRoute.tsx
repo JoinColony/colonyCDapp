@@ -10,7 +10,7 @@ const ColonyMembersRoute = () => {
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
-  uiEvents.track(UIEvent.viewPage);
+  uiEvents.emit(UIEvent.viewPage);
 
   return <Outlet />;
 };
