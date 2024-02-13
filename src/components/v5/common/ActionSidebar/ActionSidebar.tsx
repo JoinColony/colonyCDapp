@@ -21,6 +21,7 @@ import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
+import { uiEvents, UIEvent } from '../../../../uiEvents/index.ts';
 import CompletedAction from '../CompletedAction/index.ts';
 
 import { actionSidebarAnimation } from './consts.tsx';
@@ -68,6 +69,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     useToggle();
 
   useLayoutEffect(() => {
+    uiEvents.track(UIEvent.actionSidebarOpened);
     if (localStorage.getItem(isFullScreen) === 'true') {
       toggleOn();
     }

@@ -1,8 +1,8 @@
 import { useApolloClient } from '@apollo/client';
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import React, { useLayoutEffect, useState, type FC } from 'react';
+import { useFormContext, useFormState } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { SearchActionsDocument } from '~gql';
@@ -11,6 +11,7 @@ import { formatText } from '~utils/intl.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
+import { uiEvents, UIEvent } from '../../../../../../uiEvents/index.ts';
 import ActionTypeSelect from '../../ActionTypeSelect.tsx';
 import {
   useActionFormProps,
@@ -47,7 +48,17 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     formState: {
       errors: { this: customError },
     },
+    ...rest
   } = useFormContext();
+
+  const { isSubmitting } = useFormState();
+
+  useLayoutEffect(() => {
+    if (isSubmitting && !formSubmitted) {
+      uiEvents.track(UIEvent.actionCreated, rest.getValues());
+      setFormSubmitted(true);
+    }
+  }, [isSubmitting, formSubmitted, rest]);
 
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
@@ -152,10 +163,11 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           {...actionFormProps}
           className="flex flex-col h-full"
           innerRef={formRef}
-          onSuccess={() => {
+          onSuccess={(values) => {
             client.refetchQueries({
               include: [SearchActionsDocument],
             });
+            uiEvents.track(UIEvent.actionCreationSucceeded, values);
           }}
         >
           <ActionSidebarFormContent

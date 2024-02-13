@@ -17,4 +17,7 @@ export enum UIEvent {
   giveFeedback = 'User Gave Feedback',
   openTeamsMenu = 'User Opened Teams Menu',
   selectTeam = 'User Selected Team',
+  actionSidebarOpened = 'User Openeded Action Sidebar',
+  actionCreated = 'User Created Action',
+  actionCreationSucceeded = 'User Action Creation Succeeded',
 }
