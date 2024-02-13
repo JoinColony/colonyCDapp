@@ -9,4 +9,5 @@ export enum UIEvent {
   updateProfile = 'User Updated Profile',
   userJoinedColony = 'User Joined Colony',
   colonySwitcher = 'User Opened Colony Switcher',
+  openDashboardMenu = 'User Opened Dashboard Menu',
 }
