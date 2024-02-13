@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import DOMPurify from 'dompurify';
 import React from 'react';
 
+import styles from './RichTextDisplay.module.css';
+
 const displayName = 'v5.RichTextDisplay';
 
 interface RichTextDisplayProps {
@@ -23,7 +25,7 @@ const RichTextDisplay = ({
 
   return (
     <div
-      className={clsx('prose text-gray-900 text-md', className)}
+      className={clsx(styles.richTextContent, className)}
       dangerouslySetInnerHTML={{ __html: cleanContent }}
     />
   );

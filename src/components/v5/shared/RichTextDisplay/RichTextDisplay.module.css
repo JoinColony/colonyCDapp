@@ -1,0 +1,30 @@
+.rich-text-content > * {
+  @apply mb-1;
+}
+
+.rich-text-content > p {
+  @apply min-h-[1.25rem];
+}
+
+.rich-text-content > :is(h1, h2, h3) {
+  @apply mb-2.5;
+}
+
+.rich-text-content > ul {
+  @apply pl-8;
+
+  list-style: disc;
+}
+
+.rich-text-content > ol {
+  @apply pl-8;
+
+  list-style: decimal;
+}
+
+@media screen(md) {
+  .rich-text-content > ul,
+  .rich-text-content > ol {
+    @apply pl-4;
+  }
+}

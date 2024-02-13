@@ -22,6 +22,11 @@ export const actionSidebarAnimation: Variants = {
   },
 };
 
+function isValidDescriptionLength(description: string) {
+  const strippedDescription = stripHTMLFromText(description);
+  return strippedDescription.length <= MAX_ANNOTATION_LENGTH;
+}
+
 export const ACTION_BASE_VALIDATION_SCHEMA = object()
   .shape({
     title: string()
@@ -35,12 +40,14 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
         ),
       ),
     description: string()
-      .transform((description: string | undefined) =>
-        typeof description === 'string'
-          ? stripHTMLFromText(description)
-          : description,
+      .test(
+        'isValidDescriptionLength',
+        formatText(
+          { id: 'errors.description.maxLength' },
+          { maxLength: MAX_ANNOTATION_LENGTH },
+        ),
+        isValidDescriptionLength,
       )
-      .max(MAX_ANNOTATION_LENGTH)
       .notRequired(),
   })
   .defined()
