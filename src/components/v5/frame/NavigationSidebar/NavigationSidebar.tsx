@@ -78,6 +78,26 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     }
   };
 
+  switch (openItemIndex) {
+    case 2: {
+      // dashboard
+      uiEvents.track(UIEvent.openDashboardMenu);
+      break;
+    }
+    case 4: {
+      // finance
+      uiEvents.track(UIEvent.openFinanceMenu);
+      break;
+    }
+    case 5: {
+      // admin
+      uiEvents.track(UIEvent.openAdminMenu);
+      break;
+    }
+    default:
+      break;
+  }
+
   return (
     <nav
       className={clsx(

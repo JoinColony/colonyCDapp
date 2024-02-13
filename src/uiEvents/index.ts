@@ -11,4 +11,6 @@ export enum UIEvent {
   colonySwitcher = 'User Opened Colony Switcher',
   openDashboardMenu = 'User Opened Dashboard Menu',
   viewPage = 'User Viewed Page',
+  openFinanceMenu = 'User Opened Finance Menu',
+  openAdminMenu = 'User Opened Admin Menu',
 }

@@ -5,14 +5,11 @@ import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/index.ts';
 
-import { uiEvents, UIEvent } from '../../../../../../uiEvents/index.ts';
 import { dashboardMainMenu, dashboardMenu } from '../../consts.ts';
 
 const DashboardContent: FC = () => {
   const { totalContributorCount, totalMemberCount, loading } =
     useMemberContext();
-
-  uiEvents.track(UIEvent.openDashboardMenu);
 
   return (
     <div className="w-full pt-2 md:pt-4">
