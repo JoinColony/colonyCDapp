@@ -1,11 +1,13 @@
+import messages_en from '../src/i18n/en.json';
+
 const locales = ['en'];
 
 const messages = locales.reduce(
-  (acc, lang) => ({
+  (acc) => ({
     ...acc,
-    [lang]: require(`../src/i18n/${lang}.json`), // whatever the relative path to your messages json is
+    en: messages_en,
   }),
-  {}
+  {},
 );
 
 const formats = {}; // optional, if you have any formats

@@ -4,9 +4,9 @@ import { MockedProvider } from '@apollo/client/testing';
 import type { Preview } from '@storybook/react';
 
 import '~utils/yup/customMethods';
-import '../src/styles/main.global.css';
+import '../src/styles/main.css';
 import { reactIntl } from './reactIntl.js';
-import { applyTheme } from "../src/components/frame/Extensions/themes/utils";
+import { applyTheme } from '../src/components/frame/Extensions/themes/utils';
 
 const preview: Preview = {
   parameters: {
