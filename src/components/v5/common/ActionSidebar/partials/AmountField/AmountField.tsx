@@ -104,8 +104,9 @@ const AmountField: FC<AmountFieldProps> = ({
         key={dynamicCleaveOptionKey}
         options={formattingOptions}
         className={clsx('flex-shrink text-gray-900 outline-0 outline-none', {
-          'placeholder:text-gray-400': !isError,
-          'text-negative-400 placeholder:text-negative-400': isError,
+          'placeholder:text-gray-400': !isError || isDisabled,
+          'text-negative-400 placeholder:text-negative-400':
+            !isDisabled && isError,
         })}
         placeholder={formatText({
           id: 'actionSidebar.enterAmount',
