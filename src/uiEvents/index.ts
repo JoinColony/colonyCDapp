@@ -24,6 +24,10 @@ export enum UIEvent {
 
 class UIEvents extends Segment {
   load() {
+    // Disable ui events in dev mode
+    if (process.env.NODE_ENV === 'development') {
+      return null as unknown as Segment;
+    }
     return super.load(
       {
         writeKey: '',
