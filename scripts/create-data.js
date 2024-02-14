@@ -130,11 +130,10 @@ const createColonyEtherealMetadata = /* GraphQL */ `
   }
 `;
 
-const addVerifiedMember = /* GraphQL */ `
-  mutation AddVerifiedMember($input: CreateVerifiedMemberInput!) {
-    createVerifiedMember(input: $input) {
-      userAddress
-      colonyAddress
+const updateColonyContributor = /* GraphQL */ `
+  mutation UpdateColonyContributor($input: UpdateColonyContributorInput!) {
+    updateColonyContributor(input: $input) {
+      id
     }
   }
 `;
@@ -1184,11 +1183,11 @@ const createUserAndColonyData = async () => {
     await Promise.all(
       Object.keys(availableUsers.walletUsers).map(async (userAddress) => {
         await graphqlRequest(
-          addVerifiedMember,
+          updateColonyContributor,
           {
             input: {
-              colonyAddress: newColonyAddress,
-              userAddress,
+              id: `${newColonyAddress}_${userAddress}`,
+              isVerified: true,
             },
           },
           GRAPHQL_URI,
