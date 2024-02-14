@@ -48,17 +48,17 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     formState: {
       errors: { this: customError },
     },
-    ...rest
+    getValues,
   } = useFormContext();
 
   const { isSubmitting } = useFormState();
 
   useLayoutEffect(() => {
     if (isSubmitting && !formSubmitted) {
-      uiEvents.emit(UIEvent.actionCreated, rest.getValues());
+      uiEvents.emit(UIEvent.actionCreated, getValues());
       setFormSubmitted(true);
     }
-  }, [isSubmitting, formSubmitted, rest]);
+  }, [isSubmitting, formSubmitted, getValues]);
 
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
