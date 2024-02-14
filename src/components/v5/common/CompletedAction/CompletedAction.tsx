@@ -12,7 +12,7 @@ import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
 import CreateDecision from './partials/CreateDecision/index.ts';
 import CreateNewTeam from './partials/CreateNewTeam/index.ts';
-// import EditColonyDetails from './partials/EditColonyDetails';
+import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
@@ -48,6 +48,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.EditDomain:
         return <CreateNewTeam action={action} />;
       case ColonyActionType.UnlockToken:
+      case ColonyActionType.UnlockTokenMotion:
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
       case ColonyActionType.VersionUpgradeMotion:
@@ -55,11 +56,11 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;
       case ColonyActionType.SetUserRoles:
+      case ColonyActionType.SetUserRolesMotion:
         return <SetUserRoles action={action} />;
-      /* @TODO uncomment when social links are added to action display
       case ColonyActionType.ColonyEdit:
+      case ColonyActionType.ColonyEditMotion:
         return <EditColonyDetails action={action} />;
-        */
       case ExtendedColonyActionType.UpdateColonyObjective:
         return <UpgradeColonyObjective action={action} />;
       default:

@@ -1,10 +1,11 @@
-import { PencilCircle } from '@phosphor-icons/react';
+import { PencilCircle, Image, FileText } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
@@ -19,6 +20,7 @@ import {
   DecisionMethodRow,
   DescriptionRow,
 } from '../rows/index.ts';
+import SocialLinksTable from '../rows/SocialLinksTable/SocialLinksTable.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.EditColonyDetails';
 
@@ -40,6 +42,8 @@ const MSG = defineMessages({
 const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
+  const actionColonyMetadata =
+    action.pendingColonyMetadata || action.colony.metadata;
 
   return (
     <>
@@ -75,7 +79,47 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
           </Tooltip>
         </div>
         <div>
-          <span>{action.colony.metadata?.displayName}</span>
+          <span>{actionColonyMetadata?.displayName}</span>
+        </div>
+
+        <div>
+          <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
+            tooltipContent={formatText({
+              id: 'actionSidebar.tooltip.editColony.colonyLogo',
+            })}
+          >
+            <div className="flex items-center gap-2">
+              <Image size={ICON_SIZE} />
+              <span>{formatText({ id: 'actionSidebar.colonyLogo' })}</span>
+            </div>
+          </Tooltip>
+        </div>
+        <Avatar
+          avatar={actionColonyMetadata?.avatar}
+          seed={action.colonyAddress.toLowerCase()}
+          title={actionColonyMetadata?.displayName}
+          size="xs"
+        />
+
+        <div>
+          <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
+            tooltipContent={formatText({
+              id: 'actionSidebar.tooltip.editColony.colonyDescription',
+            })}
+          >
+            <div className="flex items-center gap-2">
+              <FileText size={ICON_SIZE} />
+              <span>
+                {formatText({ id: 'actionSidebar.colonyDescription' })}
+              </span>
+            </div>
+          </Tooltip>
+        </div>
+
+        <div>
+          <span>{actionColonyMetadata?.description}</span>
         </div>
 
         <DecisionMethodRow isMotion={action.isMotion || false} />
@@ -90,6 +134,7 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
+      <SocialLinksTable socialLinks={actionColonyMetadata?.externalLinks} />
     </>
   );
 };
