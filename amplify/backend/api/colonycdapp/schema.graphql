@@ -3229,7 +3229,15 @@ type ExpenditureSlot {
 
 type ExpenditurePayout {
   tokenAddress: ID!
+  """
+  Payout amount, excluding network fee
+  """
   amount: String!
+  """
+  Network fee amount
+  @TODO: Make this a non-nullable field once existing data is updated
+  """
+  networkFee: String
   isClaimed: Boolean!
 }
 
