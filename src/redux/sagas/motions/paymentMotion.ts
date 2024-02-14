@@ -60,11 +60,6 @@ function* createPaymentMotion({
       if (!payments.every(({ tokenAddress }) => !!tokenAddress)) {
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
-      if (!payments.every(({ decimals }) => !!decimals)) {
-        throw new Error(
-          'Payment token decimals not set for OneTxPayment transaction',
-        );
-      }
       if (!payments.every(({ recipient }) => !!recipient)) {
         throw new Error('Recipient not assigned for OneTxPayment transaction');
       }
