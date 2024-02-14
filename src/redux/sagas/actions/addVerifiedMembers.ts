@@ -1,6 +1,7 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { apolloClient } from '~apollo';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
@@ -124,6 +125,8 @@ function* addVerifiedMembersAction({
       payload: {},
       meta,
     });
+
+    apolloClient.cache.evict({ fieldName: 'getContributorsByColony' });
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
