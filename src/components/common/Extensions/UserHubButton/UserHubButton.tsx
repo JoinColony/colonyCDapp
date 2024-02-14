@@ -107,7 +107,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
               <UserAvatar
                 user={user || walletAddress}
                 showUsername={!(hideUserNameOnMobile && isMobile)}
-                size="xxs"
+                size={isMobile ? 'xss' : 'xxs'}
               />
               <MemberReputation
                 colonyAddress={colonyAddress}
