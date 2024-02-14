@@ -7,6 +7,7 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { apolloClient } from '~apollo';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 
@@ -161,6 +162,8 @@ function* addVerifiedMembersMotion({
       payload: {},
       meta,
     });
+
+    apolloClient.cache.evict({ fieldName: 'getContributorsByColony' });
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
