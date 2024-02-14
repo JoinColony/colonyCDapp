@@ -3,6 +3,7 @@ import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
+import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
@@ -17,6 +18,7 @@ import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
+import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
@@ -54,6 +56,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEdit:
         return <EditColonyDetails action={action} />;
         */
+      case ExtendedColonyActionType.UpdateColonyObjective:
+        return <UpgradeColonyObjective action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
