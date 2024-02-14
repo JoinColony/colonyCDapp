@@ -14,6 +14,7 @@ import {
 import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
+import { calculateFee } from '~utils/tokens.ts';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values
@@ -37,9 +38,24 @@ const groupExpenditurePayoutsByTokenAddresses = (
   return payoutsByTokenAddresses;
 };
 
+const getPayoutAmount = (
+  payout: ExpenditurePayoutFieldValue,
+  networkInverseFee: string,
+) => {
+  // @TODO: This should get the token decimals of the selected token
+  const { totalToPay } = calculateFee(
+    payout.amount,
+    networkInverseFee,
+    DEFAULT_TOKEN_DECIMALS,
+  );
+
+  return totalToPay;
+};
+
 export const getSetExpenditureValuesFunctionParams = (
   nativeExpenditureId: number,
   payouts: ExpenditurePayoutFieldValue[],
+  networkInverseFee: string,
 ): MethodParams => {
   // Group payouts by token addresses
   const payoutsByTokenAddresses =
@@ -72,10 +88,7 @@ export const getSetExpenditureValuesFunctionParams = (
     // 2-dimensional array mapping token addresses to amounts
     [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
       payoutsByTokenAddress.map((payout) =>
-        BigNumber.from(payout.amount).mul(
-          // @TODO: This should get the token decimals of the selected token
-          BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS),
-        ),
+        getPayoutAmount(payout, networkInverseFee),
       ),
     ),
   ];

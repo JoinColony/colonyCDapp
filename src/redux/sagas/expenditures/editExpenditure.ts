@@ -17,7 +17,7 @@ import {
 } from '../utils/index.ts';
 
 function* editExpenditure({
-  payload: { colonyAddress, expenditure, payouts },
+  payload: { colonyAddress, expenditure, payouts, networkInverseFee },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -81,6 +81,7 @@ function* editExpenditure({
       params: getSetExpenditureValuesFunctionParams(
         expenditure.nativeId,
         resolvedPayouts,
+        networkInverseFee,
       ),
     });
 
