@@ -20,9 +20,11 @@ const EmptyContent: FC<EmptyContentProps> = ({
   withBorder,
   className,
   withoutButtonIcon = false,
+  buttonIcon: ButtonIcon = ShareNetwork,
 }) => {
   const { formatMessage } = useIntl();
-  const titleText = typeof title === 'string' ? title : formatMessage(title);
+  const titleText =
+    typeof title === 'string' ? title : title && formatMessage(title);
   const buttonTextFormatted =
     typeof buttonText === 'string'
       ? buttonText
@@ -41,17 +43,19 @@ const EmptyContent: FC<EmptyContentProps> = ({
       )}
     >
       <div className="flex flex-col items-center justify-center">
-        <div className={styles.emptyContent}>
-          <Icon className="[&>svg]:fill-gray-600" size={20} />
-        </div>
-        <h5 className="text-1 mt-3 text-gray-900">{titleText}</h5>
+        {Icon && (
+          <div className={styles.emptyContent}>
+            <Icon className="[&>svg]:fill-gray-600" size={20} />
+          </div>
+        )}
+        {titleText && <h5 className="text-1 mt-3">{titleText}</h5>}
         <p className="mt-3 text-sm text-gray-600">{descriptionText}</p>
         {onClick && (
           <Button
             mode="primaryOutline"
             className="mt-4"
             size="small"
-            icon={withoutButtonIcon ? undefined : ShareNetwork}
+            icon={withoutButtonIcon ? undefined : ButtonIcon}
             onClick={onClick}
           >
             {buttonTextFormatted}

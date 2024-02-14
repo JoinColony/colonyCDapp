@@ -8,6 +8,7 @@ import {
   SpinnerGap,
   User,
   Buildings,
+  Handshake,
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
@@ -39,7 +40,7 @@ import { type CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts
 import {
   adminMenu,
   // @BETA: Disabled for now
-  // agreementsMenu,
+  agreementsMenu,
   dashboardMainMenu,
   dashboardMenu,
   financesMenu,
@@ -294,39 +295,38 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
         ],
       },
     },
-    // @BETA: Disabled for now
-    // {
-    //   key: '5',
-    //   icon: Handshake,
-    //   label: formatText({ id: 'navigation.agreements' }),
-    //   isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
-    //   secondLevelMenuProps: {
-    //     title: formatText({ id: 'navigation.agreements.title' }),
-    //     content: agreementsMenu,
-    //     description: formatText({ id: 'navigation.agreements.description' }),
-    //   },
-    //   relatedActionsProps: {
-    //     title: formatText({ id: 'navigation.relatedActions' }),
-    //     items: [
-    //       {
-    //         key: '1',
-    //         label: formatText({ id: 'actions.createAgreement' }),
-    //         onClick: () =>
-    //           toggleActionSidebarOn({
-    //             [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
-    //           }),
-    //       },
-    //       {
-    //         key: '2',
-    //         label: formatText({ id: 'actions.simpleDiscussion' }),
-    //         onClick: () =>
-    //           toggleActionSidebarOn({
-    //             [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
-    //           }),
-    //       },
-    //     ],
-    //   },
-    // },
+    {
+      key: '5',
+      icon: Handshake,
+      label: formatText({ id: 'navigation.agreements' }),
+      isActive: checkIfIsActive(nestedColonyPathname, agreementsMenu),
+      secondLevelMenuProps: {
+        title: formatText({ id: 'navigation.agreements.title' }),
+        content: agreementsMenu,
+        description: formatText({ id: 'navigation.agreements.description' }),
+      },
+      relatedActionsProps: {
+        title: formatText({ id: 'navigation.relatedActions' }),
+        items: [
+          {
+            key: '1',
+            label: formatText({ id: 'actions.createAgreement' }),
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+              }),
+          },
+          // {
+          //   key: '2',
+          //   label: formatText({ id: 'actions.simpleDiscussion' }),
+          //   onClick: () =>
+          //     toggleActionSidebarOn({
+          //       [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
+          //     }),
+          // },
+        ],
+      },
+    },
     {
       key: '6',
       icon: GearSix,

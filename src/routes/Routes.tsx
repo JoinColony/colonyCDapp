@@ -16,6 +16,7 @@ import ReputationPage from '~frame/Extensions/pages/ReputationPage/index.ts';
 import FourOFour from '~frame/FourOFour/index.ts';
 import LandingPage from '~frame/LandingPage/index.ts';
 import ActivityPage from '~frame/v5/pages/ActivityPage/index.ts';
+import AgreementsPage from '~frame/v5/pages/AgreementsPage/index.ts';
 import BalancePage from '~frame/v5/pages/BalancePage/index.ts';
 import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage/index.ts';
 import MembersPage, {
@@ -67,6 +68,7 @@ import {
   COLONY_SPLASH_ROUTE,
   CREATE_PROFILE_ROUTE,
   COLONY_MULTISIG_ROUTE,
+  COLONY_AGREEMENTS_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -149,6 +151,13 @@ const Routes = () => {
             <Route
               path={COLONY_REPUTATION_ROUTE}
               element={<ReputationPage />}
+            />
+          )}
+          {/* @ts-ignore */}
+          {!WEBPACK_IS_PRODUCTION && (
+            <Route
+              path={COLONY_AGREEMENTS_ROUTE}
+              element={<AgreementsPage />}
             />
           )}
 
