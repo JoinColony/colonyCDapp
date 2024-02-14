@@ -7,8 +7,8 @@ import React, { type FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { UserHubTabs } from '~common/Extensions/UserHub/types.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useTokensModalContext } from '~context/TokensModalContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { useGetUserTokenBalanceQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import Numeral from '~shared/Numeral/index.ts';

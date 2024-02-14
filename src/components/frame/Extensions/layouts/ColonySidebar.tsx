@@ -4,8 +4,8 @@ import React, { type ReactNode } from 'react';
 // import { CREATE_COLONY_ROUTE } from '~routes';
 
 import { LEARN_MORE_PAYMENTS } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import LearnMore from '~shared/Extensions/LearnMore/index.ts';
 import { formatText } from '~utils/intl.ts';
 import NavigationSidebar from '~v5/frame/NavigationSidebar/index.ts';

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { getNetworkTokenList } from '~constants/tokens/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
 export const useGetAllTokens = () => {

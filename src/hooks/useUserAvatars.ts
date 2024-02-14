@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { type UserFragment } from '~gql';
 import useUsersByAddresses from '~hooks/useUsersByAddresses.ts';
 import { notNull } from '~utils/arrays/index.ts';

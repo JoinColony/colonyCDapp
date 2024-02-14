@@ -3,8 +3,8 @@ import React, { type FC, useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import { createDecisionAction } from '~redux/actionCreators/index.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';

@@ -2,7 +2,7 @@ import { CopySimple, Ticket } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useBaseUrl from '~hooks/useBaseUrl.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { CREATE_COLONY_ROUTE_BASE } from '~routes/index.ts';

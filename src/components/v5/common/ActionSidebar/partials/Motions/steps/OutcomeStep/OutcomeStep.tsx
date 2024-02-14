@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuWithSections from '~v5/shared/MenuWithSections/index.ts';

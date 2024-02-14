@@ -1,11 +1,11 @@
 import { useFormContext } from 'react-hook-form';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
 import { getAllUserRoles } from '~transformers';
 
-import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
 
 import { getPermissionsNeededForAction } from './helpers.ts';
 

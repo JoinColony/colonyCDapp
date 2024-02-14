@@ -2,8 +2,8 @@ import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { type UserRole } from '~constants/permissions.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useSearchContext } from '~context/SearchContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type ColonyContributor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';

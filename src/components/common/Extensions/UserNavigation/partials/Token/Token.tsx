@@ -4,7 +4,7 @@ import GanacheIcon from '~icons/GanacheIcon.tsx';
 
 import { type TokenProps } from './types.ts';
 
-export const displayName = 'common.Extensions.UserNavigation.partials.Token';
+const displayName = 'common.Extensions.UserNavigation.partials.Token';
 
 const Token: FC<TokenProps> = ({ nativeToken, size = 14 }) => {
   const Icon = nativeToken.icon || GanacheIcon;

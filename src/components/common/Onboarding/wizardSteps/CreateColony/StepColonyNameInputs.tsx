@@ -6,7 +6,7 @@ import { APP_URL, MAX_COLONY_DISPLAY_NAME } from '~constants/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Input from '~v5/common/Fields/Input/index.ts';
 
-import { getInputError } from '../shared.tsx';
+import { getInputError } from '../shared.ts';
 
 const displayName = 'common.CreateColonyWizard.StepColonyNameInputs';
 

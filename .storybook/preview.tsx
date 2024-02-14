@@ -4,7 +4,6 @@ import { MockedProvider } from '@apollo/client/testing';
 import type { Preview } from '@storybook/react';
 
 import '~utils/yup/customMethods';
-import '../src/styles/main.css';
 import { reactIntl } from './reactIntl.js';
 import { applyTheme } from '../src/components/frame/Extensions/themes/utils';
 

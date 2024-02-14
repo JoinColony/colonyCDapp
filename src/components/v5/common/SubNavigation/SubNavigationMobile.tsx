@@ -2,7 +2,7 @@ import React, { type PropsWithChildren, useState, type FC } from 'react';
 
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 
-import { subNavigationItems } from './consts.tsx';
+import { SubNavigationItems } from './partials/SubNavigationItem/index.ts';
 import SubNavigationItemMobile from './partials/SubNavigationItem/SubNavigationItemMobile.tsx';
 
 import styles from './SubNavigationMobile.module.css';
@@ -18,7 +18,7 @@ const SubNavigationMobile: FC<PropsWithChildren> = () => {
 
   return (
     <ul className={styles.listWrapper} ref={ref}>
-      {subNavigationItems.map(({ id, label, content, icon }) => (
+      {SubNavigationItems.map(({ id, label, content, icon }) => (
         <SubNavigationItemMobile
           key={id}
           id={id}

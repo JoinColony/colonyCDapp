@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom';
 
 import ImageCarousel from '~common/Extensions/ImageCarousel/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes/index.ts';

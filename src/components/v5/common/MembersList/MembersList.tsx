@@ -4,8 +4,8 @@ import { type MessageDescriptor, useIntl } from 'react-intl';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import { APP_URL } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';

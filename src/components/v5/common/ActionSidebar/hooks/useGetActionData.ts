@@ -10,11 +10,11 @@ import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import {
   Authority,
   AVAILABLE_ROLES,
-} from '../partials/forms/ManagePermissionsForm/consts.tsx';
+} from '../partials/forms/ManagePermissionsForm/consts.ts';
 
 import { useGetColonyAction } from './useGetColonyAction.ts';
 

@@ -1,1 +1,2 @@
-export { default, failedLoadingDuration } from './LoadingTemplate.tsx';
+export { default } from './LoadingTemplate.tsx';
+export { DELAYED_LOADING_DURATION, FAILED_LOADING_DURATION } from './consts.ts';

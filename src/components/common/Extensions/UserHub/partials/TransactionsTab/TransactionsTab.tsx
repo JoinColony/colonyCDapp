@@ -1,7 +1,7 @@
 import { Binoculars } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
+import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
@@ -9,7 +9,7 @@ import { useTransactionsListObserver } from './hooks.ts';
 import TransactionList from './partials/TransactionList.tsx';
 import { type TransactionsProps } from './types.ts';
 
-export const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
+const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 
 const TransactionsTab: FC<TransactionsProps> = () =>
   // {

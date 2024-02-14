@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -19,7 +19,7 @@ import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
 
-import { actionSidebarAnimation } from './consts.tsx';
+import { actionSidebarAnimation } from './consts.ts';
 import {
   useCloseSidebarClick,
   useGetActionData,

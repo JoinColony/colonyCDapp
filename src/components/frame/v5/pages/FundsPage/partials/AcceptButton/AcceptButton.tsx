@@ -1,6 +1,6 @@
 import React, { type FC, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mergePayload } from '~utils/actions.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';

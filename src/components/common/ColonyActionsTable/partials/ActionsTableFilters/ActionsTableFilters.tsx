@@ -2,7 +2,7 @@ import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/index.ts';
+import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchInput from '~v5/common/Filter/partials/SearchInput/index.ts';

@@ -1,11 +1,11 @@
 import React, { type FC } from 'react';
 
-import { FiltersContextProvider } from '~common/ColonyActionsTable/FiltersContext/index.ts';
+import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
 import {
   useSetPageBreadcrumbs,
   useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/index.ts';
+} from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import { formatText } from '~utils/intl.ts';
 import WidgetBoxList from '~v5/common/WidgetBoxList/index.ts';

@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ColonyActionType,
   ModelSortDirection,
@@ -13,7 +13,7 @@ import { COLONY_AGREEMENTS_ROUTE } from '~routes/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetBox from '~v5/common/WidgetBox/index.ts';
 import EmptyWidgetState from '~v5/common/WidgetBox/partials/index.ts';
 import MessageNumber from '~v5/shared/MessageNumber/index.ts';

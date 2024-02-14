@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { TEAM_SEARCH_PARAM } from '~routes/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 

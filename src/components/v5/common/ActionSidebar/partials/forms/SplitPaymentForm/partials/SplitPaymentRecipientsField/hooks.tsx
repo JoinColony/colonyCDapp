@@ -1,7 +1,7 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo, useCallback, useEffect } from 'react';
 
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';

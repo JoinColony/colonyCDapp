@@ -19,7 +19,14 @@ module.exports = {
     '@colony/eslint-config-colony',
     'prettier',
   ],
-  plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jsdoc', 'react-hooks'],
+  plugins: [
+    '@typescript-eslint',
+    'react',
+    'jsx-a11y',
+    'jsdoc',
+    'react-hooks',
+    'react-refresh',
+  ],
   overrides: [
     {
       files: [
@@ -91,6 +98,8 @@ module.exports = {
     'react/static-property-placement': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+
+    'react-refresh/only-export-components': 'error',
 
     // import plugin (resolvers disabled in favour of using typescript)
     'import/no-unresolved': 'off',

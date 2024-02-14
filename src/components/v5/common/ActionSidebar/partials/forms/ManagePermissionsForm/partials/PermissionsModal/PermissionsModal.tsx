@@ -2,7 +2,7 @@ import { ShieldStar } from '@phosphor-icons/react';
 import chunk from 'lodash/chunk';
 import React, { type FC, Fragment } from 'react';
 
-import { useMobile } from '~hooks';
+import { useMobile } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';

@@ -3,12 +3,12 @@ import { isEqual } from 'lodash';
 import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { ModelSortDirection } from '~gql';
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import TeamCardList from '~v5/common/TeamCardList/index.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';

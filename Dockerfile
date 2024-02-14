@@ -69,17 +69,17 @@ EXPOSE 80
 # This is necessary since we aren't in a actual node process, they're just files served by nginx
 # Doing it like this allows us to use the same image for different deployments
 RUN if [ -z "$DEV" ]; then export PROCESS_VAR='[a-z]'; else export PROCESS_VAR='process'; fi && \
-        echo "sed -i \"s|${PROCESS_VAR}.env.NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.BASE_URL|\\\"\$URL\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.NETWORK|\\\"\$NETWORK\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.AUTH_PROXY_ENDPOINT|\\\"\$AUTH_PROXY_ENDPOINT\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.METATRANSACTIONS|\\\"\$METATRANSACTIONS\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.BROADCASTER_ENDPOINT|\\\"\$BROADCASTER_ENDPOINT\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.REPUTATION_ORACLE_ENDPOINT|\\\"\$REPUTATION_ORACLE_ENDPOINT\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.GOOGLE_TAG_MANAGER_ID|\\\"\$GOOGLE_TAG_MANAGER_ID\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_KEY|\\\"\$PINATA_API_KEY\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_SECRET|\\\"\$PINATA_API_SECRET\\\"|g\" *.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.COINGECKO_API_KEY|\\\"\$COINGECKO_API_KEY\\\"|g\" *.js" \
+        echo "sed -i \"s|${PROCESS_VAR}.env.NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.BASE_URL|\\\"\$URL\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.NETWORK|\\\"\$NETWORK\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.AUTH_PROXY_ENDPOINT|\\\"\$AUTH_PROXY_ENDPOINT\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.METATRANSACTIONS|\\\"\$METATRANSACTIONS\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.BROADCASTER_ENDPOINT|\\\"\$BROADCASTER_ENDPOINT\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.REPUTATION_ORACLE_ENDPOINT|\\\"\$REPUTATION_ORACLE_ENDPOINT\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.GOOGLE_TAG_MANAGER_ID|\\\"\$GOOGLE_TAG_MANAGER_ID\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_KEY|\\\"\$PINATA_API_KEY\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_SECRET|\\\"\$PINATA_API_SECRET\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|${PROCESS_VAR}.env.COINGECKO_API_KEY|\\\"\$COINGECKO_API_KEY\\\"|g\" ./assets/*.js" \
         " && nginx -g 'daemon off;'" > ./run.sh
 RUN chmod +x ./run.sh
 

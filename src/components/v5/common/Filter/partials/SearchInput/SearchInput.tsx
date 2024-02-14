@@ -69,7 +69,12 @@ const SearchInput: FC<SearchInputProps> = ({
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={clsx(
+        styles.wrapper,
+        'group focus-within:border-blue-100 hover:after:border-blue-100 w-full relative',
+      )}
+    >
       <span className={styles.icon}>
         <MagnifyingGlass size={14} />
       </span>

@@ -11,7 +11,7 @@ import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import { useFiltersContext } from '../../FiltersContext/FiltersContext.tsx';
+import { useFiltersContext } from '../../FiltersContext/FiltersContext.ts';
 import ActiveFiltersList from '../ActiveFiltersList/ActiveFiltersList.tsx';
 import AgreementsPageFiltersItem from '../AgreementsPageFiltersItem/index.ts';
 

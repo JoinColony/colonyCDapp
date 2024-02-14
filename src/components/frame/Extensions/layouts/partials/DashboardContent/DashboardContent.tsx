@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import NavigationSidebarLinksList from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/index.ts';

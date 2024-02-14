@@ -19,7 +19,7 @@ import { type UserHubProps, UserHubTabs } from './types.ts';
 // @BETA: Disabled for now
 // import ButtonLink from '~v5/shared/Button/ButtonLink';
 
-export const displayName = 'common.Extensions.UserHub.partials.UserHub';
+const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
 const MSG = defineMessages({
   buttonYourDashboard: {

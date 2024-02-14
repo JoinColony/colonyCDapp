@@ -4,7 +4,7 @@ import React, { type FC, useState } from 'react';
 import { useController } from 'react-hook-form';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import RichText from '~v5/shared/RichText/index.ts';
 
 import { type DescriptionFieldProps } from './types.ts';

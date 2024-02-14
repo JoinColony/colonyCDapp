@@ -4,21 +4,21 @@ import React, { type FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   useSetPageBreadcrumbs,
   useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/hooks.ts';
+} from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import { useFiltersContext } from './FiltersContext/FiltersContext.tsx';
+import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 import { useGetAgreements } from './hooks.ts';
 import AgreementCard from './partials/AgreementCard/index.ts';
 import AgreementCardSkeleton from './partials/AgreementCardSkeleton.tsx';

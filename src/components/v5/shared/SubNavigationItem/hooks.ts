@@ -1,7 +1,7 @@
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { APP_URL } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 
 export const useMembersSubNavigation = () => {

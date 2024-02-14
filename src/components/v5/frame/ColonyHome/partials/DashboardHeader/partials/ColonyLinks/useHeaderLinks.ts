@@ -8,8 +8,8 @@ import {
 import { useLocation } from 'react-router-dom';
 
 import { APP_URL } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useColonyDashboardContext } from '~context/ColonyDashboardContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useColonyDashboardContext } from '~context/ColonyDashboardContext/ColonyDashboardContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';

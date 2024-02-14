@@ -2,8 +2,11 @@ import React, { type PropsWithChildren, useState, type FC } from 'react';
 
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 
-import { displayName, subNavigationItems } from './consts.tsx';
-import SubNavigationItem from './partials/SubNavigationItem/index.ts';
+import SubNavigationItem, {
+  SubNavigationItems,
+} from './partials/SubNavigationItem/index.ts';
+
+const displayName = 'v5.common.SubNavigation';
 
 const SubNavigation: FC<PropsWithChildren> = () => {
   const [openIndex, setOpenIndex] = useState<number>();
@@ -14,7 +17,7 @@ const SubNavigation: FC<PropsWithChildren> = () => {
 
   return (
     <ul className="flex gap-8 heading-5 text-gray-700" ref={ref}>
-      {subNavigationItems.map(({ id, label, content, icon }) => (
+      {SubNavigationItems.map(({ id, label, content, icon }) => (
         <SubNavigationItem
           key={id}
           id={id}

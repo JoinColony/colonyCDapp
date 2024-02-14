@@ -5,8 +5,8 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import InvitationBlock from '~common/InvitationBlock/index.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { usePageHeadingContext } from '~context/PageHeadingContext/index.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { MainLayout, MainSidebar } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';

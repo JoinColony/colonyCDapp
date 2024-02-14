@@ -10,24 +10,24 @@ import {
 import clsx from 'clsx';
 import React, { useMemo, useState } from 'react';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
 import { Action } from '~constants/actions.ts';
+import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { UserRole, getRole } from '~constants/permissions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { type MembersTabContentListItem } from '~frame/v5/pages/MembersPage/partials/MembersTabContent/types.ts';
 import { getMembersList } from '~frame/v5/pages/MembersPage/utils.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { COLONY_EXTENSIONS_ROUTE } from '~routes';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Link from '~v5/shared/Link/index.ts';
 
 import {

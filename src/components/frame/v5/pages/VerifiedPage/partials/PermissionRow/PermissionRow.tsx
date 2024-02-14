@@ -3,7 +3,7 @@ import { User } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { formatText } from '~utils/intl.ts';

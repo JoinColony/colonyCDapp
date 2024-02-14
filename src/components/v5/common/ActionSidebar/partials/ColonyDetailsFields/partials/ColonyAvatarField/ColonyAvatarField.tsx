@@ -3,18 +3,18 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
-import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks.tsx';
+import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks.ts';
 import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload.tsx';
-import { getPlaceholder } from '~v5/common/AvatarUploader/utils.tsx';
 import Avatar from '~v5/shared/Avatar/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
-import { useChangeColonyAvatar } from './hooks.tsx';
+import { useChangeColonyAvatar } from './hooks.ts';
 import { type ColonyAvatarFieldProps } from './types.ts';
 
 const displayName =
@@ -94,15 +94,16 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
         <div className="flex sm:flex-row flex-col gap-4 sm:gap-2">
           <div className="flex items-center gap-4 sm:items-start mr-4">
             <div className="flex-shrink-0">
-              {getPlaceholder(
-                isLoading,
+              {isLoading ? (
+                <SpinnerLoader appearance={{ size: 'medium' }} />
+              ) : (
                 <ColonyAvatar
                   size="m"
                   colonyImageProps={{
                     src: modalValue?.image,
                   }}
                   colonyAddress={colonyAddress}
-                />,
+                />
               )}
             </div>
             <p className="sm:hidden text-gray-600 text-sm">{uploaderText}</p>

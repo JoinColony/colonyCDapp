@@ -1,5 +1,5 @@
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   type ColonyClaims,
   type ColonyChainClaimWithToken,

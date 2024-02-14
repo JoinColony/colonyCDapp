@@ -8,7 +8,7 @@ import {
 } from '~constants/index.ts';
 import { ExternalLinks } from '~gql';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
 import { type EditColonyDetailsFormValues } from './types.ts';
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { Form } from '~shared/Fields/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 
-import { ButtonRow, HeaderRow } from '../shared.tsx';
+import ButtonRow from '../ButtonRow.tsx';
+import HeaderRow from '../HeaderRow.tsx';
 
 import NameInputs from './StepColonyNameInputs.tsx';
 import { type FormValues, type Step1 } from './types.ts';

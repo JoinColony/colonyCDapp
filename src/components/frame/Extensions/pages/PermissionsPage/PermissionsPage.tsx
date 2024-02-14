@@ -9,9 +9,12 @@ import {
 import {
   useSetPageBreadcrumbs,
   useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/hooks.ts';
+} from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
-import { COLONY_MULTISIG_ROUTE, COLONY_PERMISSIONS_ROUTE } from '~routes';
+import {
+  COLONY_MULTISIG_ROUTE,
+  COLONY_PERMISSIONS_ROUTE,
+} from '~routes/index.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
 

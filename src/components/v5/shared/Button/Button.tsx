@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import clsx from 'clsx';
 import React, { forwardRef, type PropsWithChildren } from 'react';
 
@@ -87,7 +86,9 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
             aria-label={ariaLabelText}
             aria-busy={loading}
             title={titleText}
+            /* eslint-disable react/button-has-type */
             type={type}
+            /* eslint-enable react/button-has-type */
             ref={ref}
             {...rest}
           >
@@ -108,4 +109,6 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
   },
 );
 
-export default Object.assign(Button, { displayName });
+Button.displayName = displayName;
+
+export default Button;

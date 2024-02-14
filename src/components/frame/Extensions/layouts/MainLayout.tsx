@@ -1,7 +1,7 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { usePageHeadingContext } from '~context/PageHeadingContext/index.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import PageLayout from '~v5/frame/PageLayout/index.ts';
 
 import MainSidebar from './MainSidebar.tsx';

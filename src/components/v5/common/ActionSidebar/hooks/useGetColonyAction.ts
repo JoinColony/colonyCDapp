@@ -1,9 +1,9 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { useEffect, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext.tsx';
-import { failedLoadingDuration as pollingTimeout } from '~frame/LoadingTemplate/index.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
+import { FAILED_LOADING_DURATION as POLLING_TIMEOUT } from '~frame/LoadingTemplate/index.ts';
 import {
   ColonyActionType,
   useGetColonyActionQuery,
@@ -67,7 +67,10 @@ export const useGetColonyAction = (transactionHash?: string) => {
       return noop;
     }
 
-    const cancelPollingTimer = setTimeout(stopPollingForAction, pollingTimeout);
+    const cancelPollingTimer = setTimeout(
+      stopPollingForAction,
+      POLLING_TIMEOUT,
+    );
 
     startPollingForAction(pollInterval);
 

@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { profileFileOptions } from '~frame/v5/pages/UserProfilePage/partials/consts.ts';
-import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks.tsx';
+import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks.ts';
 import { type SuccessContentProps } from '~v5/common/AvatarUploader/types.ts';
 import Button from '~v5/shared/Button/index.ts';
 

@@ -2,11 +2,11 @@ import { Pencil } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
-import { DESCRIPTION_FIELD_NAME } from '../../consts.tsx';
+import { DESCRIPTION_FIELD_NAME } from '../../consts.ts';
 import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import DescriptionField from '../DescriptionField/index.ts';
 

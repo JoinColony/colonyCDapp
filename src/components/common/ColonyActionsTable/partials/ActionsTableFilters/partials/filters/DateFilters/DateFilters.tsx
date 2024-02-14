@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/index.ts';
+import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';

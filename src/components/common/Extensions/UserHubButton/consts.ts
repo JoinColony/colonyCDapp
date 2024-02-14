@@ -4,7 +4,7 @@ import {
   AnalyticsEventCategory,
   AnalyticsEventLabel,
   AnalyticsEventType,
-} from '~context/AnalyticsContext/index.ts';
+} from '~context/AnalyticsContext/AnalyticsContext.ts';
 
 export const OPEN_USER_HUB_EVENT: AnalyticsEvent = {
   event: AnalyticsEventType.CUSTOM_EVENT,

@@ -1,5 +1,5 @@
 import { CaretDown } from '@phosphor-icons/react';
-import { type Row, createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useMemo } from 'react';
@@ -12,11 +12,11 @@ import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
-import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import ActionDescription from '../partials/ActionDescription/index.ts';
-import ActionMobileDescription from '../partials/ActionMobileDescription/index.ts';
 
+// NOTE: No idea why this is being picked up as an export
+// eslint-disable-next-line react-refresh/only-export-components
 const MSG = defineMessages({
   tableHeaderLatestActivity: {
     id: 'common.ColonyActionsTable',
@@ -24,7 +24,7 @@ const MSG = defineMessages({
   },
 });
 
-export const useColonyActionsTableColumns = (
+const useColonyActionsTableColumns = (
   loading: boolean,
   loadingMotionStates: boolean,
   refetchMotionStates: RefetchMotionStates,
@@ -144,19 +144,4 @@ export const useColonyActionsTableColumns = (
   }, [isMobile, loading, loadingMotionStates, refetchMotionStates]);
 };
 
-export const useRenderSubComponent = (
-  loadingMotionStates: boolean,
-  refetchMotionStates: RefetchMotionStates,
-  getMenuProps: (
-    row: Row<ActivityFeedColonyAction>,
-  ) => MeatBallMenuProps | undefined,
-) => {
-  return ({ row }: { row: Row<ActivityFeedColonyAction> }) => (
-    <ActionMobileDescription
-      actionRow={row}
-      loadingMotionStates={loadingMotionStates}
-      refetchMotionStates={refetchMotionStates}
-      getMenuProps={getMenuProps}
-    />
-  );
-};
+export default useColonyActionsTableColumns;

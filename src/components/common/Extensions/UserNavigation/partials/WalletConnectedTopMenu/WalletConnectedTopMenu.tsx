@@ -2,7 +2,7 @@ import { UserCircleGear } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import {
   USER_HOME_ROUTE,

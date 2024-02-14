@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
-import { useFiltersContext } from '../../FilterContext/index.ts';
-import { FiltersValues } from '../../FilterContext/types.ts';
+import { useFiltersContext } from '../../FiltersContext/index.ts';
+import { FiltersValues } from '../../FiltersContext/types.ts';
 import { ATTRIBUTE_FILTERS } from '../filters/AttributeFilters/consts.ts';
 import { useGetTokenTypeFilters } from '../filters/TokenFilters/hooks.ts';
 

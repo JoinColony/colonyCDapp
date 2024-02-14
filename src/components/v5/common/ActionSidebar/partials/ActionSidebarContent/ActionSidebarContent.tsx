@@ -6,9 +6,9 @@ import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { SearchActionsDocument } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
@@ -25,7 +25,7 @@ import {
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
-} from '../../consts.tsx';
+} from '../../consts.ts';
 import {
   useActionFormProps,
   useHasActionPermissions,

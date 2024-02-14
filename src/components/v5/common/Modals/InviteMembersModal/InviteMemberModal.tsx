@@ -2,7 +2,7 @@ import { CopySimple } from '@phosphor-icons/react';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useBaseUrl from '~hooks/useBaseUrl.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { Heading3 } from '~shared/Heading/index.ts';

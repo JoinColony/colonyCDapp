@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { useAvatarUploader, type UseAvatarUploaderProps } from './hooks.tsx';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+
+import { useAvatarUploader, type UseAvatarUploaderProps } from './hooks.ts';
 import FileUpload from './partials/FileUpload.tsx';
 import ProgressContent from './partials/ProgressContent.tsx';
 import { type AvatarUploaderProps } from './types.ts';
-import { getPlaceholder } from './utils.tsx';
-
-const displayName = 'v5.common.AvatarUploader';
+import { displayName } from './utils.ts';
 
 const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   avatarPlaceholder,
@@ -39,7 +39,11 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
         })}
       >
         <div className="flex-shrink-0">
-          {getPlaceholder(isLoading, avatarPlaceholder)}
+          {isLoading ? (
+            <SpinnerLoader appearance={{ size: 'medium' }} />
+          ) : (
+            avatarPlaceholder
+          )}
         </div>
         {uploaderText && (
           <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>

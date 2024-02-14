@@ -1,7 +1,7 @@
 import React, { type FC, useMemo } from 'react';
 
 import ExtensionItem from '~common/Extensions/ExtensionItem/index.ts';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';

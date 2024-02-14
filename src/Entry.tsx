@@ -5,7 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { AnalyticsContextProvider } from '~context/AnalyticsContext/index.ts';
+import AnalyticsContextProvider from '~context/AnalyticsContext/AnalyticsContextProvider.tsx';
 import { getContext, ContextModule } from '~context/index.ts';
 import RouteTracker from '~routes/RouteTracker.tsx';
 

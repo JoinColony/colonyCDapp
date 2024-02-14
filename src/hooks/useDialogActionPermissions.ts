@@ -1,7 +1,7 @@
 import { type ColonyRole } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { type Colony } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 

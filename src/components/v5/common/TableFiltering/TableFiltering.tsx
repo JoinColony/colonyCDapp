@@ -1,7 +1,7 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useFilterContext } from '~context/FilterContext.tsx';
+import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 

@@ -1,6 +1,6 @@
 import React, { type FC, useCallback, useState } from 'react';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
+import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import MessageCard from '~frame/MessageCard/MessageCard.tsx';
 import { type MessageType } from '~redux/immutable/index.ts';
 

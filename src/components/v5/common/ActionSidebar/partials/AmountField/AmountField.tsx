@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import React, { useState, type ChangeEvent, type FC, useEffect } from 'react';
 import { useController } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Numeral from '~shared/Numeral/index.ts';

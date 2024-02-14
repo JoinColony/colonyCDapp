@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { type UserMotionStakes } from '~types/graphql.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';

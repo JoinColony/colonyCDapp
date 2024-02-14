@@ -1,7 +1,7 @@
 import { Extension, Id } from '@colony/colony-js';
 import React, { type FC } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';

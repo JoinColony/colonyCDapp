@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useActionsCount from '~hooks/useActionsCount.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_ACTIVITY_ROUTE } from '~routes/index.ts';

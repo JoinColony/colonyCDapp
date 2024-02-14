@@ -3,8 +3,8 @@ import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 import { object, string } from 'yup';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { pipe, mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';

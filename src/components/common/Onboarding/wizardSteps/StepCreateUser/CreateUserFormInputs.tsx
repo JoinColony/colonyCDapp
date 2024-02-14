@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { formatText } from '~utils/intl.ts';
 import { Input } from '~v5/common/Fields/index.ts';
 
-import { getInputError } from '../shared.tsx';
+import { getInputError } from '../shared.ts';
 
 import { MAX_USERNAME_LENGTH } from './validation.ts';
 

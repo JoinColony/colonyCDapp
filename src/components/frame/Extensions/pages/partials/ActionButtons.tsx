@@ -1,8 +1,8 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import React, { type FC } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useActiveInstalls from '~hooks/useActiveInstalls.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';

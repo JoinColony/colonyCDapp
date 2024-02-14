@@ -4,6 +4,8 @@ import { type MessageDescriptor, defineMessages } from 'react-intl';
 import { formatText } from '~utils/intl.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
 
+import { DELAYED_LOADING_DURATION, FAILED_LOADING_DURATION } from './consts.ts';
+
 import styles from './LoadingTemplate.module.css';
 
 const displayName = 'frame.LoadingTemplate';
@@ -34,9 +36,6 @@ const MSG = defineMessages({
   },
 });
 
-const delayedLoadingDuration = 15 * 1000; // 15 seconds
-export const failedLoadingDuration = 30 * 1000; // 30 seconds
-
 enum LoadingState {
   DEFAULT = 'default',
   DELAYED = 'delayed',
@@ -51,14 +50,14 @@ const LoadingTemplate = ({ loadingText }: Props) => {
   useEffect(() => {
     const delayTimer = setTimeout(() => {
       setLoadingState(LoadingState.DELAYED);
-    }, delayedLoadingDuration);
+    }, DELAYED_LOADING_DURATION);
     return () => clearTimeout(delayTimer);
   }, []);
 
   useEffect(() => {
     const failedTimer = setTimeout(() => {
       setLoadingState(LoadingState.FAILED);
-    }, failedLoadingDuration);
+    }, FAILED_LOADING_DURATION);
     return () => clearTimeout(failedTimer);
   }, []);
 

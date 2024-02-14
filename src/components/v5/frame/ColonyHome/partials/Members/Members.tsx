@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';

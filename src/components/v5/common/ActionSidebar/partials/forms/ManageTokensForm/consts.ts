@@ -1,6 +1,6 @@
 import { array, type InferType, object, string, number } from 'yup';
 
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
 export const validationSchema = object()
   .shape({

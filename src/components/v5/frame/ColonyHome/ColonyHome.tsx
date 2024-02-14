@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { FiltersContextProvider } from '~common/ColonyActionsTable/FiltersContext/index.ts';
+import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
-import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks.ts';
+import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';

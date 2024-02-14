@@ -2,10 +2,10 @@ import { SmileyMeh } from '@phosphor-icons/react';
 import React, { type FC, useEffect } from 'react';
 
 import { APP_URL } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useFilterContext } from '~context/FilterContext.tsx';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
-import { useSearchContext } from '~context/SearchContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { formatText } from '~utils/intl.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';

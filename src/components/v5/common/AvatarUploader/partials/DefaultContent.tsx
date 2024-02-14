@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
 
-import { useFormatFormats } from '../hooks.tsx';
+import { useFormatFormats } from '../hooks.ts';
 import { type DefaultContentProps } from '../types.ts';
 
 const displayName = 'v5.common.AvatarUploader.partials.DefaultContent';

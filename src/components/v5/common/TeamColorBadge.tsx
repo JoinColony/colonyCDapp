@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { DomainColor } from '~gql';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { getTeamBadgeStyles, getTeamColor } from '~utils/teams.ts';

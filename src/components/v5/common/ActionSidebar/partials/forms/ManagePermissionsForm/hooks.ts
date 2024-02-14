@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
 import { UserRole, getRole } from '~constants/permissions.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { getUserRolesForDomain } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import { useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -23,8 +23,8 @@ import {
   type ManagePermissionsFormValues,
   type RemoveRoleOptionValue,
   validationSchema,
-} from './consts.tsx';
-import { getManagePermissionsPayload } from './utils.tsx';
+} from './consts.ts';
+import { getManagePermissionsPayload } from './utils.ts';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],

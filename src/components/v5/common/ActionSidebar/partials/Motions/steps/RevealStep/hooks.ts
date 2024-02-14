@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetVoterRewardsQuery } from '~gql';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import { type ColonyMotion, type VoterRecord } from '~types/graphql.ts';

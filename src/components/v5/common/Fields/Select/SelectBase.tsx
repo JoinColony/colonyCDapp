@@ -38,6 +38,6 @@ const SelectBase = <T extends SelectBaseOption>({
   );
 };
 
-Object.assign(SelectBase, { displayName });
+SelectBase.displayName = displayName;
 
 export default SelectBase;

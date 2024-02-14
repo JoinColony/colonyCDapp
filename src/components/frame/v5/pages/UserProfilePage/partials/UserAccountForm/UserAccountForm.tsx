@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';

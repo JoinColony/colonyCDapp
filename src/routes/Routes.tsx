@@ -16,7 +16,7 @@ import ReputationPage from '~frame/Extensions/pages/ReputationPage/index.ts';
 import FourOFour from '~frame/FourOFour/index.ts';
 import LandingPage from '~frame/LandingPage/index.ts';
 import ActivityPage from '~frame/v5/pages/ActivityPage/index.ts';
-import { FiltersContextProvider } from '~frame/v5/pages/AgreementsPage/FiltersContext/FiltersContext.tsx';
+import FiltersContextProvider from '~frame/v5/pages/AgreementsPage/FiltersContext/FiltersContextProvider.tsx';
 import AgreementsPage from '~frame/v5/pages/AgreementsPage/index.ts';
 import BalancePage from '~frame/v5/pages/BalancePage/index.ts';
 import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage/index.ts';

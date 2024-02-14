@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { SupportedCurrencies } from '~gql';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 

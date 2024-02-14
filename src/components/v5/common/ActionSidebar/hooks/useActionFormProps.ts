@@ -10,7 +10,7 @@ import { setQueryParamOnUrl } from '~utils/urls.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
   ACTION_TYPE_FIELD_NAME,
-} from '../consts.tsx';
+} from '../consts.ts';
 import { type ActionFormBaseProps } from '../types.ts';
 
 export const useActionFormProps = (
