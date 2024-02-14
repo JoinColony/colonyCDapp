@@ -35,12 +35,16 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   const getActionContent = () => {
     switch (actionType) {
       case ColonyActionType.Payment:
+      case ColonyActionType.PaymentMotion:
         return <SimplePayment action={action} />;
       case ColonyActionType.MintTokens:
+      case ColonyActionType.MintTokensMotion:
         return <MintTokens action={action} />;
       case ColonyActionType.MoveFunds:
+      case ColonyActionType.MoveFundsMotion:
         return <TransferFunds action={action} />;
       case ColonyActionType.CreateDomain:
+      case ColonyActionType.CreateDomainMotion:
       case ColonyActionType.EditDomain:
         return <CreateNewTeam action={action} />;
       case ColonyActionType.UnlockToken:

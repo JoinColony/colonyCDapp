@@ -42,12 +42,14 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
 
+  const actionDomainMetadata =
+    action.pendingDomainMetadata || action.fromDomain?.metadata;
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          team: action.fromDomain?.metadata?.name,
+          team: actionDomainMetadata?.name,
           user: initiatorUser ? (
             <UserPopover
               userName={initiatorUser.profile?.displayName}
@@ -77,7 +79,7 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
           </Tooltip>
         </div>
         <div>
-          <span>{action.fromDomain?.metadata?.name}</span>
+          <span>{actionDomainMetadata?.name}</span>
         </div>
 
         <div>
@@ -95,7 +97,7 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
         </div>
         <div>
           <span className="break-word">
-            {action.fromDomain?.metadata?.description}
+            {actionDomainMetadata?.description}
           </span>
         </div>
 
@@ -114,8 +116,8 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
         </div>
         <div>
           <TeamColourBadge
-            defaultColor={action.fromDomain?.metadata?.color}
-            title={action.fromDomain?.metadata?.name || 'Team'}
+            defaultColor={actionDomainMetadata?.color}
+            title={actionDomainMetadata?.name || 'Team'}
           />
         </div>
 
