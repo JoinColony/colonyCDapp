@@ -29,9 +29,7 @@ declare const PROD_COMMIT_HASH: string | undefined;
 
 if (PROD_COMMIT_HASH) {
   // eslint-disable-next-line no-console
-  console.log(
-    `Running on experimental-${PROD_COMMIT_HASH} (based from 5ab06d7ed1201d402f82ac64a3c0f9002811d80a)`,
-  );
+  console.log(`Running on ${PROD_COMMIT_HASH}`);
 }
 
 /*
