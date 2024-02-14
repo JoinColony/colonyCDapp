@@ -33,6 +33,7 @@ function* createExpenditure({
     fundFromDomainId,
     isStaged,
     stages,
+    networkInverseFee,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -129,6 +130,7 @@ function* createExpenditure({
         getSetExpenditureValuesFunctionParams(
           expenditureId,
           payoutsWithSlotIds,
+          networkInverseFee,
         ),
       ),
     );

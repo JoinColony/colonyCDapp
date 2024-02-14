@@ -43,6 +43,7 @@ export type ExpendituresActionTypes =
         fundFromDomainId: number;
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
+        networkInverseFee: string;
       },
       MetaWithSetter<object>
     >
@@ -83,6 +84,7 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
+        networkInverseFee: string;
       },
       object
     >
@@ -127,6 +129,7 @@ export type ExpendituresActionTypes =
         stakedExpenditureAddress: Address;
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
+        networkInverseFee: string;
       },
       MetaWithSetter<object>
     >
