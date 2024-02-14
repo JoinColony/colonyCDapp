@@ -1,6 +1,7 @@
 import { SmileyMeh } from '@phosphor-icons/react';
 import React, { type FC, useEffect } from 'react';
 
+import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useFilterContext } from '~context/FilterContext.tsx';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
@@ -24,7 +25,7 @@ const AllMembersPage: FC = () => {
 
   useSetPageHeadingTitle(formatText({ id: 'membersPage.title' }));
 
-  const colonyURL = `${window.location.origin}/${colonyName}`;
+  const colonyURL = `${APP_URL.origin}/${colonyName}`;
 
   // clear filters and searches when unmounting
   useEffect(

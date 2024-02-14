@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 import { type MessageDescriptor, useIntl } from 'react-intl';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
+import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMemberContext } from '~context/MemberContext.tsx';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
@@ -41,7 +42,7 @@ const MembersList: FC<MembersListProps> = ({
   const {
     colony: { name: colonyName },
   } = useColonyContext();
-  const colonyURL = `${window.location.origin}/${colonyName}`;
+  const colonyURL = `${APP_URL.origin}/${colonyName}`;
 
   const { handleClipboardCopy } = useCopyToClipboard();
 

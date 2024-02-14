@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
+import { APP_URL, DEFAULT_NETWORK_INFO } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMobile } from '~hooks/index.ts';
@@ -102,10 +102,9 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
         label: formatText({ id: 'activityFeedTable.menu.share' }),
         renderItemWrapper: (props, children) => (
           <MeatballMenuCopyItem
-            textToCopy={`${window.location.origin}${generatePath(
-              COLONY_HOME_ROUTE,
-              { colonyName },
-            )}/${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
+            textToCopy={`${APP_URL.origin}${generatePath(COLONY_HOME_ROUTE, {
+              colonyName,
+            })}/${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
             {...props}
           >
             {children}

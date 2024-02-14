@@ -292,3 +292,5 @@ export const GNOSIS_AMB_BRIDGES: { [x: number]: AmbBridge } = {
 export const FETCH_ABORTED = 'fetchAborted';
 
 export const isFullScreen = 'isFullScreen';
+
+export const APP_URL = new URL(process.env.URL || 'http://localhost:9091');

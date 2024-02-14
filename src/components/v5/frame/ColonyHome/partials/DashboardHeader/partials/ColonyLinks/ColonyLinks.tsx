@@ -2,6 +2,7 @@ import { CopySimple, ShareNetwork } from '@phosphor-icons/react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
@@ -29,7 +30,7 @@ const ColonyLinks = () => {
     isCopied: isColonyAddressCopied,
   } = useCopyToClipboard(5000);
 
-  const colonyUrl = `${window.location.host}${pathname}`;
+  const colonyUrl = `${APP_URL.host}${pathname}`;
   const topLinks = metadata?.externalLinks
     ? sortExternalLinks(metadata.externalLinks).slice(0, 3)
     : [];
