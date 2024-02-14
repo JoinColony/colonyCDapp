@@ -1,7 +1,6 @@
 import { type OperationVariables } from '@apollo/client';
 import { BigNumber } from 'ethers';
 import { type DocumentNode, type OperationDefinitionNode } from 'graphql';
-import moveDecimal from 'move-decimal-point';
 import { type TestContext, ValidationError, type TestFunction } from 'yup';
 
 import { ContextModule, getContext } from '~context/index.ts';
@@ -281,10 +280,8 @@ export const getHasEnoughBalanceTestFn = (
           .totalToPay
       : value;
 
-    const convertedAmount = BigNumber.from(
-      moveDecimal(amountWithFeesIncluded, tokenDecimals),
+    return BigNumber.from(amountWithFeesIncluded).lte(
+      selectedDomainBalance.balance,
     );
-
-    return convertedAmount.lte(selectedDomainBalance.balance);
   };
 };

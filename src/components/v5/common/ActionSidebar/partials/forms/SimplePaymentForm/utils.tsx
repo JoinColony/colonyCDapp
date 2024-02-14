@@ -37,7 +37,6 @@ const getPaymentPayload = ({
     recipient: recipientAddress,
     tokenAddress,
     amount: amountWithFees, // @NOTE: Only the contract sees this amount
-    decimals,
   };
 };
 
