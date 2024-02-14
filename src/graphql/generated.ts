@@ -1929,14 +1929,21 @@ export type ExpenditureMetadata = {
 
 export type ExpenditurePayout = {
   __typename?: 'ExpenditurePayout';
+  /** Payout amount, excluding network fee */
   amount: Scalars['String'];
   isClaimed: Scalars['Boolean'];
+  /**
+   * Network fee amount
+   * @TODO: Make this a non-nullable field once existing data is updated
+   */
+  networkFee?: Maybe<Scalars['String']>;
   tokenAddress: Scalars['ID'];
 };
 
 export type ExpenditurePayoutInput = {
   amount: Scalars['String'];
   isClaimed: Scalars['Boolean'];
+  networkFee?: InputMaybe<Scalars['String']>;
   tokenAddress: Scalars['ID'];
 };
 
