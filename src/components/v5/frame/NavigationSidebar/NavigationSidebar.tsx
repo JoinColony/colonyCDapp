@@ -78,6 +78,10 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     }
   };
 
+  /*
+   * @NOTE I have to use numeric indexes, and can't convert them to enums since
+   * they are manipulated via arithmetic operations.
+   */
   useLayoutEffect(() => {
     switch (openItemIndex) {
       case 2: {

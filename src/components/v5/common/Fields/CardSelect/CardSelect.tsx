@@ -3,7 +3,6 @@ import React, { useCallback, useId, useMemo, useState } from 'react';
 
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { formatText } from '~utils/intl.ts';
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
@@ -23,6 +22,8 @@ function CardSelect<TValue = string>({
   // message,
   options,
   onChange: onChangeProp,
+  onClickItem: onClickItemCallback,
+  onOpenMenu: onOpenMenuCallback,
   value: valueProp,
   title,
   keyExtractor = (v) => String(v),
@@ -123,9 +124,11 @@ function CardSelect<TValue = string>({
                 'text-blue-400': isSelectVisible,
               },
             )}
-            onClick={() => {
+            onClick={(event) => {
               toggleSelect();
-              uiEvents.emit(UIEvent.openTeamsMenu);
+              if (onOpenMenuCallback) {
+                onOpenMenuCallback(event);
+              }
             }}
           >
             {renderSelectedValue
@@ -175,20 +178,9 @@ function CardSelect<TValue = string>({
                                         onChange(optionValue);
                                         toggleSelectOff();
 
-                                        // These types are a mess!
-                                        // React components that are supposed to be strings
-                                        // And strings that are supposed to be something else
-                                        uiEvents.emit(UIEvent.selectTeam, {
-                                          name:
-                                            // @ts-ignore
-                                            label?.props?.children?.[1] ||
-                                            'Unnamed Team',
-                                          // @ts-ignore
-                                          teamId: optionValue.slice(
-                                            // @ts-ignore
-                                            optionValue.indexOf('=') + 1,
-                                          ),
-                                        });
+                                        if (onClickItemCallback) {
+                                          onClickItemCallback(optionValue);
+                                        }
                                       },
                                     },
                                     label,

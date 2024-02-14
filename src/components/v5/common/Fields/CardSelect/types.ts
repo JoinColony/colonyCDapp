@@ -3,6 +3,7 @@ import { type UseToggleReturnType } from '~hooks/useToggle/types.ts';
 import { type BaseFieldProps } from '../types.ts';
 
 import type React from 'react';
+import type { SyntheticEvent } from 'react';
 
 export interface CardSelectOption<TValue> {
   value: TValue;
@@ -23,6 +24,8 @@ export interface CardSelectProps<TValue> extends BaseFieldProps {
   value?: TValue;
   options: CardSelectOptionsGroup<TValue>[] | CardSelectOption<TValue>[];
   onChange?: (value: TValue) => void;
+  onClickItem?: (value: TValue) => void;
+  onOpenMenu?: (event: SyntheticEvent) => void;
   valueComparator?: (a: TValue, b: TValue) => boolean;
   keyExtractor?: (value: TValue) => React.Key;
   placeholder?: React.ReactNode;
