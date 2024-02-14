@@ -1,8 +1,5 @@
-import { Coins, Money, UserSwitch, Wrench } from '@phosphor-icons/react';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-
-import { ACTION } from '~constants/actions.ts';
 
 import { type CardSelectOption } from '../../Fields/CardSelect/types.ts';
 
@@ -29,28 +26,5 @@ export const DISTRIBUTION_METHOD_OPTIONS: CardSelectOption<string>[] = [
       <FormattedMessage id="actionSidebar.distributionTypes.reputationPercentage" />
     ),
     value: DISTRIBUTION_METHOD.ReputationPercentage,
-  },
-];
-
-export const POPULAR_ACTIONS = [
-  {
-    action: ACTION.SIMPLE_PAYMENT,
-    text: { id: 'actionSidebar.simplePayment' },
-    icon: Money,
-  },
-  {
-    action: ACTION.USER_PERMISSIONS,
-    text: { id: 'actionSidebar.userPermission' },
-    icon: Wrench,
-  },
-  {
-    action: ACTION.TRANSFER_FUNDS,
-    text: { id: 'actionSidebar.transferFunds' },
-    icon: UserSwitch,
-  },
-  {
-    action: ACTION.ADVANCED_PAYMENT,
-    text: { id: 'actionSidebar.advancedPayments' },
-    icon: Coins,
   },
 ];
