@@ -141,7 +141,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           placeholder={formatText({
             id: 'actionSidebar.managePermissions.roleSelect.placeholder',
           })}
-          itemClassName="group flex text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded p-2 w-full cursor-pointer"
+          itemClassName="group flex text-md md:transition-colors md:[&_.role-title]:hover:font-medium md:hover:bg-gray-50 rounded-lg p-2 w-full cursor-pointer"
           footer={permissionSelectFooter}
           disabled={hasNoDecisionMethods}
         />
@@ -177,7 +177,9 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           disabled={isModeRoleSelected || hasNoDecisionMethods}
           name="authority"
           options={AUTHORITY_OPTIONS}
-          title={formatText({ id: 'actionSidebar.authority' })}
+          title={formatText({
+            id: 'actionSidebar.managePermissions.authoritySelect.title',
+          })}
           placeholder={formatText({
             id: 'actionSidebar.managePermissions.authoritySelect.placeholder',
           })}

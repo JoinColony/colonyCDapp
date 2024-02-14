@@ -15,7 +15,7 @@ const RoleOptionLabel: FC<PropsWithChildren<RoleOptionLabelProps>> = ({
         <Icon size={14} />
       </span>
       <div className="flex flex-col text-left">
-        <span className="text-gray-900">{children}</span>
+        <span className="text-gray-900 role-title">{children}</span>
         {description && (
           <span className="text-gray-600 text-sm">{description}</span>
         )}

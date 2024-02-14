@@ -1424,6 +1424,7 @@
     "permissions.custom.arbitration.overview": "Resolve disputes, make state changes and punish bad behavior.",
     "actionSidebar.managePermissions.tableDescriptionHeading": "Allows the member to take the following actions in this Colony:",
     "actionSidebar.managePermissions.roleSelect.placeholder": "Select permission type",
+    "actionSidebar.managePermissions.authoritySelect.title": "Allow the member to",
     "actionSidebar.managePermissions.authoritySelect.placeholder": "Select authority type",
     "actionSidebar.managePermissions.roleSelect.mod.desc": "Authority to perform general moderation tasks.",
     "actionSidebar.managePermissions.roleSelect.payer.desc": "All Mod authorities as well as creating and executing any type of payment action.",
