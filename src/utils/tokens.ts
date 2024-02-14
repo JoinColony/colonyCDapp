@@ -88,7 +88,7 @@ export const calculateFee = (
   const feesInWei = totalToPayInWei.sub(amountInWei);
   return {
     feesInWei: feesInWei.toString(),
-    totalToPay: moveDecimal(totalToPayInWei, -1 * decimals),
+    totalToPay: totalToPayInWei.toString(),
   }; // NOTE: seems like moveDecimal does not have strict typing
 };
 
