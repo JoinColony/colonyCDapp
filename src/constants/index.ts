@@ -294,5 +294,7 @@ export const FETCH_ABORTED = 'fetchAborted';
 export const isFullScreen = 'isFullScreen';
 
 export const APP_URL = new URL(
-  import.meta.env.VITE_BASE_URL || 'http://localhost:9091',
+  import.meta.env.BASE_URL === '/'
+    ? 'http://localhost:5173/'
+    : import.meta.env.BASE_URL,
 );

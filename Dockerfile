@@ -1,10 +1,8 @@
 FROM node:20.11
 
-ARG DEV
-
 # @FIX Allow the nginx service to start at build time, so that the installation will work
 # See: https://askubuntu.com/questions/365911/why-the-services-do-not-start-at-installation
-RUN sed -i "s|exit 101|exit 0|g" /usr/sbin/policy-rc.d
+# RUN sed -i "s|exit 101|exit 0|g" /usr/sbin/policy-rc.d
 
 # Update the apt cache
 RUN apt-get clean
@@ -24,9 +22,6 @@ RUN apt-get install -y \
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN locale-gen
 
-# Install new version of NPM
-RUN npm i -g npm@8.2 --registry=https://registry.npmjs.org
-
 # Create the app directory
 WORKDIR /colonyCDapp
 
@@ -35,10 +30,17 @@ COPY package*.json .
 COPY scripts/ ./scripts/
 
 # Install node_modules
-RUN npm i
+RUN npm ci
 
 # Copy colonyCDapp
 COPY . .
+
+RUN echo "Building commit hash: $(git rev-parse --short HEAD)"
+
+RUN echo "\n\
+VITE_PROD_COMMIT_HASH$(git rev-parse --short HEAD)\n\
+VITE_SAFE_ENABLED=false\n\
+" > .env.production
 
 RUN npm run vite:prod
 
@@ -68,19 +70,19 @@ EXPOSE 80
 # We replace the environment variables in the built bundle with the ones declared in the kubernetes config
 # This is necessary since we aren't in a actual node process, they're just files served by nginx
 # Doing it like this allows us to use the same image for different deployments
-RUN if [ -z "$DEV" ]; then export PROCESS_VAR='[a-z]'; else export PROCESS_VAR='process'; fi && \
-        echo "sed -i \"s|${PROCESS_VAR}.env.NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.BASE_URL|\\\"\$URL\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.NETWORK|\\\"\$NETWORK\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.AUTH_PROXY_ENDPOINT|\\\"\$AUTH_PROXY_ENDPOINT\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.METATRANSACTIONS|\\\"\$METATRANSACTIONS\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.BROADCASTER_ENDPOINT|\\\"\$BROADCASTER_ENDPOINT\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.REPUTATION_ORACLE_ENDPOINT|\\\"\$REPUTATION_ORACLE_ENDPOINT\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.GOOGLE_TAG_MANAGER_ID|\\\"\$GOOGLE_TAG_MANAGER_ID\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_KEY|\\\"\$PINATA_API_KEY\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.PINATA_API_SECRET|\\\"\$PINATA_API_SECRET\\\"|g\" ./assets/*.js" \
-        "&& sed -i \"s|${PROCESS_VAR}.env.COINGECKO_API_KEY|\\\"\$COINGECKO_API_KEY\\\"|g\" ./assets/*.js" \
+RUN echo "sed -i \"s|import.meta.env.VITE_NETWORK_CONTRACT_ADDRESS|\\\"\$NETWORK_CONTRACT_ADDRESS\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_URL|\\\"\$URL\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_NETWORK|\\\"\$NETWORK\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_AUTH_PROXY_ENDPOINT|\\\"\$AUTH_PROXY_ENDPOINT\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_METATX_ENABLED|\\\"\$METATX_ENABLED\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_METATX_BROADCASTER_ENDPOINT|\\\"\$BROADCASTER_ENDPOINT\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_REPUTATION_ORACLE_ENDPOINT|\\\"\$REPUTATION_ORACLE_ENDPOINT\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_GOOGLE_TAG_MANAGER_ID|\\\"\$GOOGLE_TAG_MANAGER_ID\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_PINATA_API_KEY|\\\"\$PINATA_API_KEY\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_PINATA_API_SECRET|\\\"\$PINATA_API_SECRET\\\"|g\" ./assets/*.js" \
+        "&& sed -i \"s|import.meta.env.VITE_COINGECKO_API_KEY|\\\"\$COINGECKO_API_KEY\\\"|g\" ./assets/*.js" \
         " && nginx -g 'daemon off;'" > ./run.sh
+
 RUN chmod +x ./run.sh
 
 # @NOTE Run the actual command, rather then the service

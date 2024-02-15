@@ -5,6 +5,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
+  base: 'https://app.colony.io/',
   plugins: [
     // NOTE: This is only here because of IPFS. When moving to Helia, this can be removed
     nodePolyfills({

@@ -47,7 +47,6 @@ interface Brand {
 
 interface ImportMetaEnv {
   readonly VITE_AUTH_PROXY_ENDPOINT: string;
-  readonly VITE_BASE_URL: string;
   readonly VITE_BSCSCAN_API_KEY: string | undefined;
   readonly VITE_COINGECKO_API_KEY: string;
   readonly VITE_DEBUG: string;

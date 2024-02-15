@@ -1,6 +1,5 @@
 node_modules
-.env*
-!.env.example
+.env.production
 *.log
 reports
 ganache-accounts.json
