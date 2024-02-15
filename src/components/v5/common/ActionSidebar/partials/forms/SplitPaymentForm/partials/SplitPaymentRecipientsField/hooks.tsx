@@ -7,10 +7,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
 import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import {
-  DISTRIBUTION_METHOD,
-  type DistributionMethod,
-} from '~v5/common/ActionSidebar/partials/consts.tsx';
+import { DistributionMethod } from '~v5/common/ActionSidebar/partials/consts.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 
@@ -86,7 +83,7 @@ export const useRecipientsFieldTableColumns = (
           id: 'percent',
           header: () => formatText({ id: 'table.row.percent' }),
           cell: ({ row }) =>
-            distributionMethod === DISTRIBUTION_METHOD.Unequal ? (
+            distributionMethod === DistributionMethod.Unequal ? (
               <FormInputBase
                 autoWidth
                 onBlur={() => {
@@ -156,7 +153,7 @@ export const useDistributionMethodUpdate = (
   useEffect(() => {
     (async () => {
       switch (distributionMethod) {
-        case DISTRIBUTION_METHOD.Equal: {
+        case DistributionMethod.Equal: {
           const percentPerRecipient = 100 / (data?.length || 1);
 
           data?.forEach((_, index) => {
@@ -168,7 +165,7 @@ export const useDistributionMethodUpdate = (
 
           break;
         }
-        case DISTRIBUTION_METHOD.ReputationPercentage: {
+        case DistributionMethod.ReputationPercentage: {
           const selectedColonyMembers =
             data?.reduce<Record<string, ColonyContributor>>(
               (acc, { recipient }) => {
