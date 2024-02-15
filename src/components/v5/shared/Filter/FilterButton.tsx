@@ -29,15 +29,17 @@ const FilterButton: FC<FilterButtonProps> = ({
       })}
       mode="tertiary"
       icon={FunnelSimple}
-      iconSize={14}
-      size="small"
+      iconSize={18}
+      size="medium"
     >
-      {customLabel || formatMessage({ id: 'filter' })}
-      {!!numberSelectedFilters && (
-        <span className="bg-blue-100 py-1 px-1 min-w-[.75rem] rounded-sm text-blue-400 h-3 inline-flex items-center ml-2 text-[.5rem] leading-none font-bold">
-          {numberSelectedFilters}
-        </span>
-      )}
+      <span className="flex items-center">
+        {customLabel || formatMessage({ id: 'filter' })}
+        {!!numberSelectedFilters && (
+          <span className="bg-blue-100 py-1 px-1 min-w-[.75rem] rounded-sm text-blue-400 h-3 inline-flex items-center ml-2 text-[.5rem] leading-none font-bold">
+            {numberSelectedFilters}
+          </span>
+        )}
+      </span>
     </Button>
   );
 };

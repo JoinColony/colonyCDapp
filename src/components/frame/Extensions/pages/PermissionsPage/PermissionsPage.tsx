@@ -16,7 +16,6 @@ import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { useGetMembersForPermissions } from './hooks.tsx';
-import PermissionsPageContent from './partials/PermissionsPageContent.tsx';
 import { PermissionType } from './types.ts';
 
 const displayName = 'frame.Extensions.pages.PermissionsPage';
@@ -63,11 +62,7 @@ const PermissionsPage: FC = () => {
         {
           id: PermissionType.Individual,
           title: formatText({ id: 'permissionsPage.individual' }),
-          content: (
-            <PermissionsPageContent>
-              <Outlet />
-            </PermissionsPageContent>
-          ),
+          content: <Outlet />,
           notificationNumber: isLoading ? undefined : individualMembersCount,
         },
         // {

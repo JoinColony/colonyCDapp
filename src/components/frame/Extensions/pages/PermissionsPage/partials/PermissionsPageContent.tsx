@@ -1,8 +1,9 @@
-import { Pencil, ShieldStar } from '@phosphor-icons/react';
+import { Pencil, ShieldStar, X } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
@@ -10,10 +11,18 @@ import PermissionsModal from '~v5/common/ActionSidebar/partials/forms/ManagePerm
 import Button from '~v5/shared/Button/Button.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 
+import { defaultPermissionsPageFilterValue } from '../hooks.tsx';
+
+import PermissionsPageFilter from './PermissionsPageFilter.tsx';
+import { type PermissionsPageFilterProps } from './types.ts';
+
 const displayName =
   'frame.Extensions.pages.PermissionsPage.partials.PermissionsPageContent';
 
-const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
+const PermissionsPageContent: FC<
+  PropsWithChildren<PermissionsPageFilterProps>
+> = ({ children, filterValue, items, onChange, ...filters }) => {
+  const isMobile = useMobile();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
@@ -24,6 +33,46 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
+
+  const getActiveFilters = (filterItems, activeFilters) => {
+    return filterItems
+      .reduce((acc, item) => {
+        let activeItem = {};
+
+        if (activeFilters[item.value]) {
+          activeItem = { label: item.label, value: item.value };
+        }
+
+        if (item.items) {
+          const nestedResult = getActiveFilters(item.items, activeFilters);
+          if (nestedResult.length > 0) {
+            acc.push(...nestedResult);
+            if (!acc.label) {
+              acc.label = item.name;
+            }
+          }
+        }
+
+        if (Object.keys(activeItem).length > 0) {
+          acc.push(activeItem);
+          if (!acc.label) {
+            acc.label = item.name;
+          }
+        }
+
+        return acc;
+      }, [])
+      .filter((item) => Object.keys(item).length > 0);
+  };
+
+  const activeFilters = items.map((item) => ({
+    label: item.label,
+    activeFilters: getActiveFilters(item.items, filterValue),
+  }));
+  const activeFiltersNumber = activeFilters.reduce(
+    (acc, item) => acc + item.activeFilters.length,
+    0,
+  );
 
   return (
     <div>
@@ -80,18 +129,62 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
             isOpen={isPermissionsModalOpen}
           />
         </div>
-        <Button
-          mode="primarySolid"
-          size="medium"
-          isFullSize={false}
-          onClick={() => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
-            });
-          }}
-        >
-          {formatText({ id: 'permissionsPage.managePermissions' })}
-        </Button>
+        <div className="flex items-center gap-2">
+          {!isMobile &&
+            activeFilters.map((filter) =>
+              filter.activeFilters.length ? (
+                <div
+                  key={filter.label?.toString()}
+                  className="bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400"
+                >
+                  <div className="text-sm font-semibold capitalize container">
+                    {filter.label}:
+                  </div>
+                  {filter.activeFilters.map((activeFilter) => (
+                    <p
+                      key={activeFilter.value}
+                      className="text-sm capitalize min-w-fit"
+                    >
+                      {activeFilter.label}
+                      {filter.activeFilters.length > 1 &&
+                      filter.activeFilters.indexOf(activeFilter) !==
+                        filter.activeFilters.length - 1
+                        ? ','
+                        : ''}
+                    </p>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange(defaultPermissionsPageFilterValue);
+                    }}
+                    className="flex-shrink-0 ml-1"
+                  >
+                    <X size={12} className="text-inherit" />
+                  </button>
+                </div>
+              ) : null,
+            )}
+          <PermissionsPageFilter
+            activeFiltersNumber={isMobile && activeFiltersNumber}
+            filterValue={filterValue}
+            onChange={onChange}
+            items={items}
+            {...filters}
+          />
+          <Button
+            mode="primarySolid"
+            size="medium"
+            isFullSize={false}
+            onClick={() => {
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+              });
+            }}
+          >
+            {formatText({ id: 'permissionsPage.managePermissions' })}
+          </Button>
+        </div>
       </div>
       {children}
     </div>
