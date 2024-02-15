@@ -19,8 +19,8 @@ import {
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
+  SocialLinksTable,
 } from '../rows/index.ts';
-import SocialLinksTable from '../rows/SocialLinksTable/SocialLinksTable.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.EditColonyDetails';
 
