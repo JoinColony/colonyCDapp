@@ -14,7 +14,7 @@ import { useMobile } from '~hooks/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts.ts';
+import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
@@ -106,7 +106,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                     text={formatText({ id: 'button.activate' })}
                     onClick={() => {
                       toggleOnTokensModal();
-                      setTokensModalType(TOKENS_MODAL_TYPES.activate);
+                      setTokensModalType(TokensModalType.Activate);
                     }}
                   />
                   <Button
@@ -117,7 +117,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                     text={formatText({ id: 'button.deactivate' })}
                     onClick={() => {
                       toggleOnTokensModal();
-                      setTokensModalType(TOKENS_MODAL_TYPES.deactivate);
+                      setTokensModalType(TokensModalType.Deactivate);
                     }}
                   />
                 </div>
@@ -142,7 +142,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                 isFullSize
                 onClick={() => {
                   toggleOnTokensModal();
-                  setTokensModalType(TOKENS_MODAL_TYPES.activate);
+                  setTokensModalType(TokensModalType.Activate);
                 }}
               />
               <Button
@@ -154,7 +154,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                 isFullSize
                 onClick={() => {
                   toggleOnTokensModal();
-                  setTokensModalType(TOKENS_MODAL_TYPES.deactivate);
+                  setTokensModalType(TokensModalType.Deactivate);
                 }}
               />
             </div>

@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { useTokensModalContext } from '~context/TokensModalContext.tsx';
 import { formatText } from '~utils/intl.ts';
-import { TOKENS_MODAL_TYPES } from '~v5/common/TokensModal/consts.ts';
+import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep.partials.NotEnoughTokensInfo';
@@ -30,7 +30,7 @@ const NotEnoughTokensInfo: FC = () => {
         className="text-4 underline transition-all md:hover:opacity-80"
         onClick={() => {
           toggleOnTokensModal();
-          setTokensModalType(TOKENS_MODAL_TYPES.activate);
+          setTokensModalType(TokensModalType.Activate);
         }}
       >
         {formatText(MSG.activateTokens)}
