@@ -10,6 +10,9 @@ import {
 } from '../transactions/index.ts';
 import { initiateTransaction, putError } from '../utils/index.ts';
 
+export type LockExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_LOCK>['payload'];
+
 function* lockExpenditure({
   payload: { colonyAddress, nativeExpenditureId },
   meta,
