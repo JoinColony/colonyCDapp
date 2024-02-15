@@ -3,15 +3,13 @@ import isEqual from 'lodash/isEqual';
 
 import { formatText } from '~utils/intl.ts';
 
-export const USER_ROLE = {
-  Mod: 'mod',
-  Payer: 'payer',
-  Admin: 'admin',
-  Owner: 'owner',
-  Custom: 'custom',
-} as const;
-
-export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
+export enum UserRole {
+  Mod = 'mod',
+  Payer = 'payer',
+  Admin = 'admin',
+  Owner = 'owner',
+  Custom = 'custom',
+}
 
 export interface UserRoleMeta {
   name: string;
@@ -21,12 +19,12 @@ export interface UserRoleMeta {
 
 export const USER_ROLES: UserRoleMeta[] = [
   {
-    role: USER_ROLE.Mod,
+    role: UserRole.Mod,
     name: formatText({ id: 'role.mod' }),
     permissions: [ColonyRole.Administration],
   },
   {
-    role: USER_ROLE.Payer,
+    role: UserRole.Payer,
     name: formatText({ id: 'role.payer' }),
     permissions: [
       ColonyRole.Administration,
@@ -35,7 +33,7 @@ export const USER_ROLES: UserRoleMeta[] = [
     ],
   },
   {
-    role: USER_ROLE.Admin,
+    role: UserRole.Admin,
     name: formatText({ id: 'role.admin' }),
     permissions: [
       ColonyRole.Administration,
@@ -45,7 +43,7 @@ export const USER_ROLES: UserRoleMeta[] = [
     ],
   },
   {
-    role: USER_ROLE.Owner,
+    role: UserRole.Owner,
     name: formatText({ id: 'role.owner' }),
     permissions: [
       ColonyRole.Administration,
@@ -59,7 +57,7 @@ export const USER_ROLES: UserRoleMeta[] = [
 ];
 
 export const CUSTOM_USER_ROLE: UserRoleMeta = {
-  role: USER_ROLE.Custom,
+  role: UserRole.Custom,
   name: formatText({ id: 'role.custom' }),
   permissions: [],
 };

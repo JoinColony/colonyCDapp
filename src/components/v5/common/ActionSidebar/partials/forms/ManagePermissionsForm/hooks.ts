@@ -3,7 +3,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
-import { type UserRole, USER_ROLE, getRole } from '~constants/permissions.ts';
+import { UserRole, getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ActionTypes } from '~redux/index.ts';
@@ -17,10 +17,10 @@ import { useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import {
-  AUTHORITY,
+  Authority,
   AVAILABLE_ROLES,
   type ManagePermissionsFormValues,
-  type REMOVE_ROLE_OPTION_VALUE,
+  type RemoveRoleOptionValue,
   validationSchema,
 } from './consts.tsx';
 import { getManagePermissionsPayload } from './utils.tsx';
@@ -36,16 +36,14 @@ export const useManagePermissions = (
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
-  const role: UserRole | typeof REMOVE_ROLE_OPTION_VALUE | undefined = useWatch(
-    {
-      name: 'role',
-    },
-  );
-  const isModeRoleSelected = role === USER_ROLE.Mod;
+  const role: UserRole | typeof RemoveRoleOptionValue | undefined = useWatch({
+    name: 'role',
+  });
+  const isModeRoleSelected = role === UserRole.Mod;
 
   useEffect(() => {
     if (isModeRoleSelected) {
-      setValue('authority', AUTHORITY.Own);
+      setValue('authority', Authority.Own);
     }
   }, [isModeRoleSelected, setValue]);
 
@@ -69,7 +67,7 @@ export const useManagePermissions = (
 
       setValue('role', userRole.permissions.length ? userRole.role : undefined);
 
-      if (userRole.role !== USER_ROLE.Custom) {
+      if (userRole.role !== UserRole.Custom) {
         return;
       }
 

@@ -10,7 +10,7 @@ import React, { useMemo } from 'react';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { ACTION } from '~constants/actions.ts';
-import { USER_ROLE, getRole } from '~constants/permissions.ts';
+import { UserRole, getRole } from '~constants/permissions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMemberContext } from '~context/MemberContext.tsx';
@@ -108,7 +108,7 @@ export const useGetMembersForPermissions = () => {
   const defaultOrganizedObject = useMemo(() => {
     const organizedObject = {} as GroupedByPermissionMembersProps;
 
-    Object.values(USER_ROLE).forEach((role) => {
+    Object.values(UserRole).forEach((role) => {
       organizedObject[role] = [];
     });
 
@@ -119,7 +119,7 @@ export const useGetMembersForPermissions = () => {
     const updatedOrganizedObject = { ...defaultOrganizedObject };
 
     mappedExtensions.forEach((extension) => {
-      const roleName = USER_ROLE[extension.role.name];
+      const roleName = UserRole[extension.role.name];
 
       if (roleName) {
         updatedOrganizedObject[roleName] = [
@@ -131,7 +131,7 @@ export const useGetMembersForPermissions = () => {
 
     membersList.forEach((member) => {
       if (member.role) {
-        const roleName = USER_ROLE[member.role.name];
+        const roleName = UserRole[member.role.name];
         const { walletAddress } = member.userAvatarProps;
 
         if (roleName) {

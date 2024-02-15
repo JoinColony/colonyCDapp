@@ -2,7 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 
 import {
   CUSTOM_USER_ROLE,
-  USER_ROLE,
+  UserRole,
   USER_ROLES,
 } from '~constants/permissions.ts';
 import { type Colony } from '~types/graphql.ts';
@@ -11,8 +11,8 @@ import { formatText } from '~utils/intl.ts';
 
 import {
   AVAILABLE_ROLES,
+  RemoveRoleOptionValue,
   type ManagePermissionsFormValues,
-  REMOVE_ROLE_OPTION_VALUE,
 } from './consts.tsx';
 
 export const getRoleLabel = (role: string | undefined) => {
@@ -20,7 +20,7 @@ export const getRoleLabel = (role: string | undefined) => {
     ...USER_ROLES,
     CUSTOM_USER_ROLE,
     {
-      role: REMOVE_ROLE_OPTION_VALUE,
+      role: RemoveRoleOptionValue,
       name: formatText({
         id: 'actionSidebar.managePermissions.roleSelect.remove.title',
       }),
@@ -34,7 +34,7 @@ export const getPermissionsMap = (
 ) => {
   const permissionsList = (() => {
     switch (role) {
-      case USER_ROLE.Custom: {
+      case UserRole.Custom: {
         return Object.entries(permissions).reduce<ColonyRole[]>(
           (result, [key, value]) => {
             if (!value) {
@@ -55,7 +55,7 @@ export const getPermissionsMap = (
           [],
         );
       }
-      case REMOVE_ROLE_OPTION_VALUE: {
+      case RemoveRoleOptionValue.remove: {
         return [];
       }
       default: {

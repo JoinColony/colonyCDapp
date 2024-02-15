@@ -3,7 +3,7 @@ import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
 import { ACTION } from '~constants/actions.ts';
-import { getRole, USER_ROLE } from '~constants/permissions.ts';
+import { getRole, UserRole } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
@@ -12,7 +12,7 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
 import {
-  AUTHORITY,
+  Authority,
   AVAILABLE_ROLES,
 } from '../partials/forms/ManagePermissionsForm/consts.tsx';
 
@@ -234,11 +234,11 @@ export const useGetActionData = (transactionId: string | undefined) => {
         return {
           [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
           member: recipientAddress,
-          authority: AUTHORITY.Own,
+          authority: Authority.Own,
           role,
           team: fromDomain?.nativeId,
           permissions:
-            role === USER_ROLE.Custom
+            role === UserRole.Custom
               ? AVAILABLE_ROLES.reduce(
                   (result, currentRole) => ({
                     ...result,
