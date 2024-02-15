@@ -3,7 +3,7 @@ import React, { useId, useLayoutEffect } from 'react';
 
 import { notMaybe } from '~utils/arrays/index.ts';
 
-import { FIELD_STATE } from '../consts.ts';
+import { FieldState } from '../consts.ts';
 import { useStateClassNames } from '../hooks.ts';
 
 import { useAdjustInputWidth } from './hooks.ts';
@@ -37,7 +37,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
     const defaultId = useId();
     const stateClassNames = useStateClassNames(
       {
-        [FIELD_STATE.Error]:
+        [FieldState.Error]:
           'border-negative-400 text-negative-400 focus:border-negative-400 placeholder:!text-negative-400',
       },
       stateClassNamesProp,
@@ -84,14 +84,14 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
           {...rest}
         />
         {suffix}
-        {state === FIELD_STATE.Error &&
+        {state === FieldState.Error &&
           notMaybe(maxLength) &&
           typeof value === 'string' &&
           value.length > maxLength && (
             <div
               className={clsx('text-4 flex justify-end absolute right-0', {
-                'text-negative-400': state === FIELD_STATE.Error,
-                'text-gray-500': state !== FIELD_STATE.Error,
+                'text-negative-400': state === FieldState.Error,
+                'text-gray-500': state !== FieldState.Error,
               })}
             >
               {typeof value === 'string' && value.length}/{maxLength}

@@ -7,7 +7,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { FIELD_STATE } from '~v5/common/Fields/consts.ts';
+import { FieldState } from '~v5/common/Fields/consts.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
 import { useTokenSelect } from './hooks.tsx';
@@ -81,7 +81,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
                   ? { ...tokenOptions, options: [] }
                   : tokenOptions,
               ]}
-              state={searchError ? FIELD_STATE.Error : undefined}
+              state={searchError ? FieldState.Error : undefined}
               message={
                 searchError ? (
                   <span className="text-sm text-negative-400">

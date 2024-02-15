@@ -2,7 +2,7 @@ import Cleave from 'cleave.js/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { FIELD_STATE } from '../consts.ts';
+import { FieldState } from '../consts.ts';
 import { useStateClassNames } from '../hooks.ts';
 
 import { useFormattedInput } from './hooks.ts';
@@ -37,7 +37,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
 
   const stateClassNames = useStateClassNames(
     {
-      [FIELD_STATE.Error]:
+      [FieldState.Error]:
         'border-negative-400 text-negative-400 focus:border-negative-400',
     },
     stateClassNamesProp,
@@ -68,8 +68,8 @@ const FormattedInput: FC<FormattedInputProps> = ({
               md:hover:opacity-80
             `,
               {
-                'text-negative-400': state === FIELD_STATE.Error,
-                'text-blue-400': state !== FIELD_STATE.Error,
+                'text-negative-400': state === FieldState.Error,
+                'text-blue-400': state !== FieldState.Error,
               },
             )}
             type="button"
