@@ -5,11 +5,12 @@ import { type DeepPartial } from 'utility-types';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ActionTypes } from '~redux/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 
-import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
+import { useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { validationSchema, type EditTeamFormValues } from './consts.ts';

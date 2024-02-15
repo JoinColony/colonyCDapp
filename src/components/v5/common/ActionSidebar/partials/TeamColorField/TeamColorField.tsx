@@ -16,7 +16,7 @@ import { type TeamColourFieldProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColorField';
 
-const TeamColorField: FC<TeamColourFieldProps> = ({ name }) => {
+const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
   const {
     field,
     fieldState: { error },
@@ -52,15 +52,14 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name }) => {
           <button
             ref={relativeElementRef}
             type="button"
-            className={clsx(
-              'flex text-md transition-colors md:hover:text-blue-400',
-              {
-                'text-gray-400': !isError && !isTeamColourSelectVisible,
-                'text-negative-400': isError,
-                'text-blue-400': isTeamColourSelectVisible,
-              },
-            )}
+            className={clsx('flex text-md transition-colors', {
+              'text-gray-400': !isError && !isTeamColourSelectVisible,
+              'text-negative-400': isError,
+              'text-blue-400': isTeamColourSelectVisible,
+              'md:hover:text-blue-400': !disabled,
+            })}
             onClick={toggleDecisionSelect}
+            disabled={disabled}
           >
             {field.value ? (
               <TeamColorBadge

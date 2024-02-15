@@ -18,7 +18,7 @@ import { type UserSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<UserSelectProps> = ({ name }) => {
+const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
   const {
     field,
     fieldState: { error },
@@ -89,16 +89,15 @@ const UserSelect: FC<UserSelectProps> = ({ name }) => {
           <button
             type="button"
             ref={relativeElementRef}
-            className={clsx(
-              'flex text-md transition-colors md:hover:text-blue-400',
-              {
-                'text-gray-400': !isError && !isUserSelectVisible,
-                'text-negative-400': isError,
-                'text-blue-400': isUserSelectVisible,
-              },
-            )}
+            className={clsx('flex text-md transition-colors', {
+              'text-gray-400': !isError && !isUserSelectVisible,
+              'text-negative-400': isError,
+              'text-blue-400': isUserSelectVisible,
+              'md:hover:text-blue-400': !disabled,
+            })}
             onClick={toggleUserSelect}
             aria-label={formatText({ id: 'ariaLabel.selectUser' })}
+            disabled={disabled}
           >
             {selectedUser || field.value ? (
               <>

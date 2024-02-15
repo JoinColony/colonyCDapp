@@ -1,21 +1,16 @@
-import {
-  ChartPieSlice,
-  Coins,
-  Scales,
-  UsersThree,
-} from '@phosphor-icons/react';
+import { ChartPieSlice, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import { useDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
+import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useSplitPayment } from './hooks.ts';
@@ -24,8 +19,6 @@ import SplitPaymentRecipientsField from './partials/SplitPaymentRecipientsField/
 const displayName = 'v5.common.ActionSidebar.partials.SplitPaymentForm';
 
 const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { decisionMethods } = useDecisionMethods();
-
   const { currentToken, distributionMethod, amount } =
     useSplitPayment(getFormOptions);
 
@@ -48,16 +41,15 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           name="distributionMethod"
-          options={decisionMethods}
+          options={[]}
           placeholder={formatText({
             id: 'actionSidebar.distributionPlaceholder',
           })}
           title={formatText({ id: 'actionSidebar.distributionTypes' })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Coins}
-        fieldName="amount"
+      <AmountRow
+        domainId={selectedTeam}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -65,10 +57,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
-        title={formatText({ id: 'actionSidebar.amount' })}
-      >
-        <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
-      </ActionFormRow>
+      />
       <ActionFormRow
         icon={UsersThree}
         fieldName="team"
@@ -83,27 +72,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="team" />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Scales}
-        fieldName="decisionMethod"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      >
-        <FormCardSelect
-          name="decisionMethod"
-          options={decisionMethods}
-          placeholder={formatText({
-            id: 'actionSidebar.decisionMethod.placeholder',
-          })}
-          title={formatText({ id: 'actionSidebar.availableDecisions' })}
-        />
-      </ActionFormRow>
+      <DecisionMethodField />
       <CreatedInRow />
       <DescriptionRow />
       {currentToken && (

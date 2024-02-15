@@ -3,7 +3,6 @@ import {
   HouseLine,
   PaintBucket,
   Rocket,
-  Scales,
   UserList,
 } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
@@ -16,16 +15,15 @@ import {
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
-import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import DecisionMethodField from '../../DecisionMethodField/index.ts';
 
 import { useEditTeam } from './hooks.ts';
 
@@ -33,11 +31,12 @@ const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
 const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
-  const { decisionMethods } = useDecisionMethods();
   const { watch } = useFormContext();
 
   useEditTeam(getFormOptions);
   const selectedTeam = watch('team');
+
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   return (
     <>
@@ -52,12 +51,14 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
         <TeamsSelect
           name="team"
           filterOptionsFn={(option) =>
             option.value !== Id.RootDomain.toString()
           }
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -71,6 +72,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.teamName' })}
+        isDisabled={hasNoDecisionMethods}
       >
         <FormInputBase
           message={false}
@@ -81,6 +83,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           mode="secondary"
           readOnly={readonly}
           maxLength={MAX_COLONY_DISPLAY_NAME}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -95,6 +98,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
         <FormTextareaBase
           message={false}
@@ -103,6 +107,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             id: 'actionSidebar.placeholder.purpose',
           })}
           maxLength={MAX_DOMAIN_PURPOSE_LENGTH}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -116,30 +121,12 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamColorField name="domainColor" />
+        <TeamColorField name="domainColor" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Scales}
-        fieldName="decisionMethod"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      >
-        <FormCardSelect
-          name="decisionMethod"
-          options={decisionMethods}
-          placeholder={formatText({
-            id: 'actionSidebar.decisionMethod.placeholder',
-          })}
-          title={formatText({ id: 'actionSidebar.availableDecisions' })}
-        />
-      </ActionFormRow>
+
+      <DecisionMethodField />
 
       <CreatedInRow
         filterOptionsFn={(option) =>
@@ -147,7 +134,6 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           option.value === selectedTeam
         }
       />
-      <DescriptionRow />
     </>
   );
 };

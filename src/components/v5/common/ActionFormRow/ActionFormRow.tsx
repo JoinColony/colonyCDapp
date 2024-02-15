@@ -40,18 +40,18 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
         <Icon
           size={14}
           className={clsx({
-            'text-negative-400': isError,
-            'text-gray-900': !isError,
-            'text-gray-400': isDisabled && !isError,
+            'text-negative-400': !isDisabled && isError,
+            'text-gray-900': !isDisabled && !isError,
+            'text-gray-400': isDisabled,
           })}
         />
         <span
           className={clsx(
             LABEL_CLASSNAME,
             {
-              'text-negative-400': isError,
-              'text-gray-900': !isError,
-              'text-gray-400': isDisabled && !isError,
+              'text-negative-400': !isDisabled && isError,
+              'text-gray-900': !isDisabled && !isError,
+              'text-gray-400': isDisabled,
             },
             'text-md ml-2 flex gap-2 items-center',
           )}

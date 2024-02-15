@@ -8,5 +8,6 @@ export interface AmountFieldProps {
   defaultToken?: string;
   tokenAddress?: string;
   maxWidth?: number;
-  teamId?: string;
+  domainId?: number;
+  isDisabled?: boolean;
 }

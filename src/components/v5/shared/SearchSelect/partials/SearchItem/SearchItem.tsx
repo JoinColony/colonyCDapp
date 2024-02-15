@@ -1,4 +1,3 @@
-import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -9,7 +8,6 @@ import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
-import IconWithTooltip from '~v5/shared/IconWithTooltip/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { sortDisabled } from '../../utils.ts';
@@ -42,7 +40,6 @@ const SearchItem: FC<SearchItemProps> = ({
           avatar,
           showAvatar,
           color,
-          missingPermissions,
           walletAddress = '',
           token,
         }) => {
@@ -72,14 +69,11 @@ const SearchItem: FC<SearchItemProps> = ({
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
                     'text-gray-400 pointer-events-none gap-1': isDisabled,
-                    'md:hover:bg-gray-50 md:hover:font-medium':
-                      !missingPermissions,
+
                     'justify-center': !isLabelVisible,
                   },
                 )}
                 onClick={() => {
-                  if (missingPermissions) return;
-
                   onChange?.(value);
                 }}
               >
@@ -122,14 +116,6 @@ const SearchItem: FC<SearchItemProps> = ({
                     </div>
                   )}
                 </div>
-                {missingPermissions && (
-                  <IconWithTooltip
-                    tooltipContent={formatText({ id: missingPermissions })}
-                    className="text-warning-400 h-4 w-4 justify-center items-center"
-                    icon={WarningCircle}
-                    size={14}
-                  />
-                )}
               </button>
             </li>
           );

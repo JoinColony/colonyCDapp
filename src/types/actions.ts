@@ -165,3 +165,8 @@ export enum SystemMessages {
   MotionRevealResultMotionWon = 'MotionRevealResultMotionWon',
   MotionCanBeEscalated = 'MotionCanBeEscalated',
 }
+
+export enum DecisionMethod {
+  Permissions = 'Permissions',
+  Reputation = 'Reputation',
+}

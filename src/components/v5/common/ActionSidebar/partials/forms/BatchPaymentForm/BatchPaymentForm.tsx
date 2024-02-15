@@ -1,22 +1,19 @@
-import { Pencil, Scales, UsersThree } from '@phosphor-icons/react';
+import { Pencil, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import BatchPaymentsTable from '../../BatchPaymentsTable/index.ts';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import DecisionMethodField from '../../DecisionMethodField/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
 
 const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
-  const { decisionMethods } = useDecisionMethods();
-
   return (
     <>
       <ActionFormRow
@@ -33,27 +30,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
       >
         <TeamsSelect name="from" />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Scales}
-        fieldName="decisionMethod"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      >
-        <FormCardSelect
-          name="decisionMethod"
-          placeholder={formatText({
-            id: 'actionSidebar.decisionMethod.placeholder',
-          })}
-          options={decisionMethods}
-          title={formatText({ id: 'actionSidebar.availableDecisions' })}
-        />
-      </ActionFormRow>
+      <DecisionMethodField />
       <CreatedInRow />
       <ActionFormRow
         icon={Pencil}

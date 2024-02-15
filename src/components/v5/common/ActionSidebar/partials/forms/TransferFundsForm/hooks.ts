@@ -6,6 +6,7 @@ import { type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ActionTypes } from '~redux/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { toFinite } from '~utils/lodash.ts';
@@ -15,7 +16,7 @@ import {
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.tsx';
 
-import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
+import { useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { getTransferFundsPayload } from './utils.tsx';

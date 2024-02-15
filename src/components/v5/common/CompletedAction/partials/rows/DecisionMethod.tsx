@@ -2,8 +2,8 @@ import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
-import { DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
 
 import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 

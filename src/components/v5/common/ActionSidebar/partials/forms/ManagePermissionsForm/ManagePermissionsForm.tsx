@@ -1,7 +1,6 @@
 import { Id } from '@colony/colony-js';
 import {
   Question,
-  Scales,
   Shield,
   Signature,
   UserFocus,
@@ -14,12 +13,13 @@ import { USER_ROLE } from '~constants/permissions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
-import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
@@ -37,7 +37,6 @@ import { getRoleLabel } from './utils.tsx';
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { decisionMethods } = useDecisionMethods();
   const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
   const [
     isPermissionsModalOpen,
@@ -47,6 +46,9 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     },
   ] = useToggle();
   const team: string | undefined = useWatch({ name: 'team' });
+
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   const permissionSelectFooter = useCallback<
     Exclude<CardSelectProps<string>['footer'], React.ReactNode>
   >(
@@ -96,8 +98,9 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.member' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <UserSelect name="member" />
+        <UserSelect name="member" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
         icon={UsersThree}
@@ -110,8 +113,9 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.managePermissions.team' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamsSelect name="team" />
+        <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
         icon={Shield}
@@ -124,6 +128,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.permissions' })}
+        isDisabled={hasNoDecisionMethods}
       >
         <FormCardSelect
           name="role"
@@ -138,6 +143,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           })}
           itemClassName="group flex text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded p-2 w-full cursor-pointer"
           footer={permissionSelectFooter}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <ActionFormRow
@@ -165,9 +171,10 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             : undefined,
         }}
         title={formatText({ id: 'actionSidebar.authority' })}
+        isDisabled={hasNoDecisionMethods}
       >
         <FormCardSelect
-          disabled={isModeRoleSelected}
+          disabled={isModeRoleSelected || hasNoDecisionMethods}
           name="authority"
           options={AUTHORITY_OPTIONS}
           title={formatText({ id: 'actionSidebar.authority' })}
@@ -176,27 +183,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           })}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Scales}
-        fieldName="decisionMethod"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      >
-        <FormCardSelect
-          name="decisionMethod"
-          options={decisionMethods}
-          placeholder={formatText({
-            id: 'actionSidebar.decisionMethod.placeholder',
-          })}
-          title={formatText({ id: 'actionSidebar.availableDecisions' })}
-        />
-      </ActionFormRow>
+      <DecisionMethodField />
       <CreatedInRow />
       <DescriptionRow />
       {role !== REMOVE_ROLE_OPTION_VALUE && (

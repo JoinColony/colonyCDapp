@@ -1,17 +1,17 @@
-import { Coins, Scales, UserFocus, UsersThree } from '@phosphor-icons/react';
+import { UserFocus, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
+import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { useDecisionMethods } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
+import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import DescriptionRow from '../../DescriptionRow/index.ts';
 
 import { useSimplePayment } from './hooks.ts';
@@ -19,12 +19,12 @@ import { useSimplePayment } from './hooks.ts';
 const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { decisionMethods } = useDecisionMethods();
-
   useSimplePayment(getFormOptions);
 
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
+
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   return (
     <>
@@ -39,8 +39,9 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.from' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamsSelect name="from" />
+        <TeamsSelect name="from" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
         icon={UserFocus}
@@ -53,12 +54,12 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.recipient' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <UserSelect name="recipient" />
+        <UserSelect name="recipient" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Coins}
-        fieldName="amount"
+      <AmountRow
+        domainId={selectedTeam}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -66,31 +67,8 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             }),
           },
         }}
-        title={formatText({ id: 'actionSidebar.amount' })}
-      >
-        <AmountField name="amount" maxWidth={270} teamId={selectedTeam} />
-      </ActionFormRow>
-      <ActionFormRow
-        icon={Scales}
-        fieldName="decisionMethod"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.decisionMethod',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.decisionMethod' })}
-      >
-        <FormCardSelect
-          name="decisionMethod"
-          options={decisionMethods}
-          placeholder={formatText({
-            id: 'actionSidebar.decisionMethod.placeholder',
-          })}
-          title={formatText({ id: 'actionSidebar.availableDecisions' })}
-        />
-      </ActionFormRow>
+      />
+      <DecisionMethodField />
       <CreatedInRow />
       <DescriptionRow />
       {/* Disabled for now */}

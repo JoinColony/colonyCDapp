@@ -7,8 +7,7 @@ import { boolean, object } from 'yup';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useGetUserReputationQuery } from '~gql';
-
-import { DecisionMethod } from './useDecisionMethods.ts';
+import { DecisionMethod } from '~types/actions.ts';
 
 export const REPUTATION_VALIDATION_FIELD_NAME = 'isMissingReputation';
 

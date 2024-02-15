@@ -9,4 +9,5 @@ export type TeamColourBadgeProps = SelectedTeamColourPillProps;
 
 export interface TeamColourFieldProps {
   name: string;
+  disabled?: boolean;
 }

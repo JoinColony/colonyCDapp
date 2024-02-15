@@ -6,6 +6,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
+import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import DescriptionField from '../DescriptionField/index.ts';
 
 import { type DescriptionRowProps } from './types.ts';
@@ -16,6 +17,7 @@ const DescriptionRow: FC<DescriptionRowProps> = ({
   disabled,
   maxDescriptionLength,
 }) => {
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
   const { readonly } = useAdditionalFormOptionsContext();
   const { watch } = useFormContext();
   const descriptionValue = watch('description');
@@ -33,8 +35,8 @@ const DescriptionRow: FC<DescriptionRowProps> = ({
       //   },
       // }}
       title={formatText({ id: 'actionSidebar.description' })}
-      isExpandable={!disabled}
-      isDisabled={disabled}
+      isExpandable={!(disabled || hasNoDecisionMethods)}
+      isDisabled={disabled || hasNoDecisionMethods}
     >
       {([
         isDecriptionFieldExpanded,
@@ -49,7 +51,7 @@ const DescriptionRow: FC<DescriptionRowProps> = ({
           toggleOnDecriptionSelect={toggleOnDecriptionSelect}
           maxDescriptionLength={maxDescriptionLength}
           fieldName="description"
-          disabled={disabled}
+          disabled={disabled || hasNoDecisionMethods}
         />
       )}
     </ActionFormRow>

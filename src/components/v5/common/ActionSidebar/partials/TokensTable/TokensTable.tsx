@@ -17,6 +17,7 @@ const displayName = 'v5.common.ActionsContent.partials.TokensTable';
 const TokensTable: FC<TokensTableProps> = ({
   name,
   shouldShowMenu = () => true,
+  isDisabled,
 }) => {
   const isMobile = useMobile();
   const fieldArrayMethods = useFieldArray({
@@ -74,6 +75,7 @@ const TokensTable: FC<TokensTableProps> = ({
           onClick={() => {
             fieldArrayMethods.append({});
           }}
+          disabled={isDisabled}
         >
           {formatText({ id: 'button.addToken' })}
         </Button>

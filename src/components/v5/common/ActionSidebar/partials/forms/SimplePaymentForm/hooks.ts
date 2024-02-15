@@ -7,6 +7,7 @@ import { array, type InferType, number, object, string } from 'yup';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
@@ -17,7 +18,7 @@ import {
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.tsx';
 
-import { DecisionMethod, useActionFormBaseHook } from '../../../hooks/index.ts';
+import { useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { getSimplePaymentPayload } from './utils.tsx';

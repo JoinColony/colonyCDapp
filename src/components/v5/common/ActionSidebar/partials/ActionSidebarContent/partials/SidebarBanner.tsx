@@ -8,9 +8,9 @@ import { ACTION } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { canColonyBeUpgraded } from '~utils/checks/canColonyBeUpgraded.ts';
 import { formatText } from '~utils/intl.ts';
-import { DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
 import ActionTypeNotification from '~v5/shared/ActionTypeNotification/ActionTypeNotification.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
