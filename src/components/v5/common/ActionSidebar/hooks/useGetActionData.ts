@@ -164,9 +164,15 @@ export const useGetActionData = (transactionId: string | undefined) => {
           colonyName: motionData
             ? pendingColonyMetadata?.displayName
             : metadata?.displayName,
-          colonyAvatar: motionData
-            ? pendingColonyMetadata?.avatar || pendingColonyMetadata?.thumbnail
-            : metadata?.avatar || metadata?.thumbnail,
+          avatar: motionData
+            ? {
+                image: pendingColonyMetadata?.avatar,
+                thumbnail: pendingColonyMetadata?.thumbnail,
+              }
+            : {
+                image: metadata?.avatar,
+                thumbnail: metadata?.thumbnail,
+              },
           colonyDescription: motionData
             ? pendingColonyMetadata?.description
             : metadata?.description,
