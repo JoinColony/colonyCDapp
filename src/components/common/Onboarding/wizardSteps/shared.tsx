@@ -56,7 +56,7 @@ export const ButtonRow = ({
 }: ButtonRowProps) => {
   const {
     getValues,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid },
   } = useFormContext();
 
   const values = getValues();
@@ -84,6 +84,7 @@ export const ButtonRow = ({
         type="submit"
         loading={loading}
         mode="primarySolid"
+        disabled={!isValid}
       />
     </div>
   );

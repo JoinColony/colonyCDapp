@@ -6,6 +6,7 @@ import {
   MAX_COLONY_DISPLAY_NAME,
 } from '~constants/index.ts';
 import { CheckColonyNameExistsDocument } from '~gql';
+import { RESERVED_ROUTES } from '~routes/routeConstants.ts';
 import { type Token } from '~types/graphql.ts';
 import { intl } from '~utils/intl.ts';
 import { createYupTestFromQuery } from '~utils/yup/tests/index.ts';
@@ -127,7 +128,11 @@ export const tokenValidationSchema = object({
   .concat(createTokenValidationSchema);
 
 function isValidName(name: string) {
-  return name ? new RegExp(COLONY_NAME_REGEX).test(name) : true;
+  return name
+    ? new RegExp(COLONY_NAME_REGEX).test(name) &&
+        // disallow names that conflict with base routes
+        !RESERVED_ROUTES.has(`/${name.toLowerCase()}`)
+    : true;
 }
 
 function isValidTokenSymbol(symbol: string) {
