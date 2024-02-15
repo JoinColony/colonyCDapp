@@ -2,7 +2,7 @@ import { FilePlus } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
@@ -65,7 +65,7 @@ const AgreementsPage: FC = () => {
           isFullSize={false}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+              [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
             });
           }}
         >
@@ -99,7 +99,7 @@ const AgreementsPage: FC = () => {
           buttonText={{ id: 'agreementsPage.empty.button' }}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+              [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
             });
           }}
           buttonIcon={FilePlus}

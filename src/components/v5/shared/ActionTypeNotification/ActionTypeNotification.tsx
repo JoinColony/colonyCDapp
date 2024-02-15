@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { formatText } from '~utils/intl.ts';
@@ -57,19 +57,19 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
   } = useActionSidebarContext();
 
   const actionTypeNotificationHref =
-    (selectedAction === ACTION.UNLOCK_TOKEN &&
+    (selectedAction === Action.UNLOCK_TOKEN &&
       'https://docs.colony.io/use/managing-funds/unlock-token/') ||
     undefined;
 
   const getNotificationTitle = (): string | undefined => {
     switch (selectedAction) {
-      case ACTION.UNLOCK_TOKEN:
+      case Action.UNLOCK_TOKEN:
         return formatText(
           isNativeTokenUnlocked ? MSG.unlockedToken : MSG.unlockedTokenError,
         );
-      case ACTION.ENTER_RECOVERY_MODE:
+      case Action.ENTER_RECOVERY_MODE:
         return formatText(MSG.enterRecoveryModeError);
-      case ACTION.CREATE_DECISION:
+      case Action.CREATE_DECISION:
         return isFieldDisabled
           ? formatText(MSG.createDecisionError)
           : undefined;
@@ -97,7 +97,7 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
                   {formatText(MSG.learnMore)}
                 </a>
               ) : (
-                selectedAction === ACTION.CREATE_DECISION && (
+                selectedAction === Action.CREATE_DECISION && (
                   <button
                     type="button"
                     onClick={() => {

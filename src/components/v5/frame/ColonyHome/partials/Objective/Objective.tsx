@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
@@ -34,7 +34,7 @@ const Objective = () => {
 
   const openManageObjectives = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
+      [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_COLONY_OBJECTIVES,
     });
   };
 

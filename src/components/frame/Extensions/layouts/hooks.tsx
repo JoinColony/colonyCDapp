@@ -14,7 +14,7 @@ import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -69,7 +69,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const handleUpgradeColony = useCallback(
     () =>
       toggleActionSidebarOn({
-        [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
+        [ACTION_TYPE_FIELD_NAME]: Action.UPGRADE_COLONY_VERSION,
       }),
     [toggleActionSidebarOn],
   );
@@ -175,7 +175,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.managePermissions' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+                [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
               }),
           },
           // @BETA: Disabled for now
@@ -190,7 +190,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.editExistingTeam' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
+                [ACTION_TYPE_FIELD_NAME]: Action.EDIT_EXISTING_TEAM,
               }),
           },
           {
@@ -198,7 +198,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.createNewTeam' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+                [ACTION_TYPE_FIELD_NAME]: Action.CREATE_NEW_TEAM,
               }),
           },
         ],
@@ -222,7 +222,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.simplePayment' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+                [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
               }),
           },
           // {
@@ -230,7 +230,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.advancedPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: ACTION.ADVANCED_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.ADVANCED_PAYMENT,
           //     }),
           // },
           // {
@@ -238,7 +238,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.streamingPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: ACTION.STREAMING_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.STREAMING_PAYMENT,
           //     }),
           //   disabled: true,
           // },
@@ -247,7 +247,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.splitPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: ACTION.SPLIT_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.SPLIT_PAYMENT,
           //     }),
           // },
           // {
@@ -255,7 +255,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.batchPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: ACTION.BATCH_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.BATCH_PAYMENT,
           //     }),
           //   disabled: true,
           // },
@@ -264,7 +264,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.stagedPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: ACTION.STAGED_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.STAGED_PAYMENT,
           //     }),
           //   disabled: true,
           // },
@@ -273,7 +273,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.transferFunds' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
+                [ACTION_TYPE_FIELD_NAME]: Action.TRANSFER_FUNDS,
               }),
           },
           {
@@ -281,7 +281,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.manageTokens' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
+                [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_TOKENS,
               }),
           },
           {
@@ -289,7 +289,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.mintTokens' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
+                [ACTION_TYPE_FIELD_NAME]: Action.MINT_TOKENS,
               }),
           },
         ],
@@ -313,7 +313,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.createAgreement' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+                [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
               }),
           },
           // {
@@ -321,7 +321,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.simpleDiscussion' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_DISCUSSION,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_DISCUSSION,
           //     }),
           // },
         ],
@@ -353,7 +353,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.editColonyDetails' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
+                [ACTION_TYPE_FIELD_NAME]: Action.EDIT_COLONY_DETAILS,
               }),
           },
           {
@@ -361,7 +361,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.upgradeColonyVersion' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
+                [ACTION_TYPE_FIELD_NAME]: Action.UPGRADE_COLONY_VERSION,
               }),
           },
           // @BETA: Disabled for now
@@ -370,7 +370,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.enterRecoveryMode' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: ACTION.ENTER_RECOVERY_MODE,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.ENTER_RECOVERY_MODE,
           //     }),
           // },
           {
@@ -378,7 +378,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.unlockToken' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.UNLOCK_TOKEN,
+                [ACTION_TYPE_FIELD_NAME]: Action.UNLOCK_TOKEN,
               }),
           },
         ],

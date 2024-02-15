@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
@@ -42,7 +42,7 @@ export const SidebarBanner: FC = () => {
   const requiredExtensionsWithoutPermission = installedExtensionsData.filter(
     (extension) => {
       const isOneTxPaymentExtensionAction =
-        selectedAction === ACTION.SIMPLE_PAYMENT &&
+        selectedAction === Action.SIMPLE_PAYMENT &&
         extension.extensionId === Extension.OneTxPayment;
       const isVotingReputationExtensionAction =
         decisionMethod === DecisionMethod.Reputation &&
@@ -60,7 +60,7 @@ export const SidebarBanner: FC = () => {
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 
   const showVersionUpToDateNotification =
-    selectedAction === ACTION.UPGRADE_COLONY_VERSION && !canUpgrade;
+    selectedAction === Action.UPGRADE_COLONY_VERSION && !canUpgrade;
 
   return (
     <>

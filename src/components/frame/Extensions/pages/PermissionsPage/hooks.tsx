@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { UserRole, getRole } from '~constants/permissions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -94,7 +94,7 @@ export const useGetMembersForPermissions = () => {
             //   label: formatText({ id: 'permissionsPage.managePermissions' }),
             //   onClick: () => {
             //     toggleActionSidebarOn({
-            //       [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+            //       [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
             //       member: extension.address,
             //     });
             //   },
@@ -165,7 +165,7 @@ export const useGetMembersForPermissions = () => {
                   }),
                   onClick: () =>
                     toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+                      [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
                       recipient: walletAddress,
                     }),
                 },
@@ -177,7 +177,7 @@ export const useGetMembersForPermissions = () => {
                   }),
                   onClick: () => {
                     toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+                      [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
                       member: walletAddress,
                     });
                   },

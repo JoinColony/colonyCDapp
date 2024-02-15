@@ -1,7 +1,7 @@
 import React from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { ACTION, type Action } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
 
@@ -28,31 +28,31 @@ const ActionSidebarDescription = () => {
   });
 
   switch (selectedAction) {
-    case ACTION.MINT_TOKENS:
+    case Action.MINT_TOKENS:
       return <MintTokensDescription />;
-    case ACTION.SIMPLE_PAYMENT:
+    case Action.SIMPLE_PAYMENT:
       return <SimplePaymentDescription />;
-    case ACTION.CREATE_DECISION:
+    case Action.CREATE_DECISION:
       return <CreateDecisionDescription />;
-    case ACTION.CREATE_NEW_TEAM:
+    case Action.CREATE_NEW_TEAM:
       return <CreateNewDomainDescription />;
-    case ACTION.EDIT_COLONY_DETAILS:
+    case Action.EDIT_COLONY_DETAILS:
       return <EditColonyDetailsDescription />;
-    case ACTION.EDIT_EXISTING_TEAM:
+    case Action.EDIT_EXISTING_TEAM:
       return <EditDomainDescription />;
-    case ACTION.ENTER_RECOVERY_MODE:
+    case Action.ENTER_RECOVERY_MODE:
       return <EnterRecoveryModeDescription />;
-    case ACTION.MANAGE_COLONY_OBJECTIVES:
+    case Action.MANAGE_COLONY_OBJECTIVES:
       return <ManageColonyObjectiveDescription />;
-    case ACTION.MANAGE_PERMISSIONS:
+    case Action.MANAGE_PERMISSIONS:
       return <ManagePermissionsDescription />;
-    case ACTION.MANAGE_TOKENS:
+    case Action.MANAGE_TOKENS:
       return <ManageTokensDescription />;
-    case ACTION.TRANSFER_FUNDS:
+    case Action.TRANSFER_FUNDS:
       return <TransferFundsDescription />;
-    case ACTION.UNLOCK_TOKEN:
+    case Action.UNLOCK_TOKEN:
       return <UnlockTokenDescription />;
-    case ACTION.UPGRADE_COLONY_VERSION:
+    case Action.UPGRADE_COLONY_VERSION:
       return <UpgradeColonyDescription />;
     default:
       return null;

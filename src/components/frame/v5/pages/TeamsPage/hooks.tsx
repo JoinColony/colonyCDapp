@@ -9,7 +9,7 @@ import {
 } from '@phosphor-icons/react';
 import React, { useCallback } from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useMemberContext } from '~context/MemberContext.tsx';
@@ -127,7 +127,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
                 label: formatText({ id: 'teamsPage.menu.editTeam' }),
                 onClick: () =>
                   toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_EXISTING_TEAM,
+                    [ACTION_TYPE_FIELD_NAME]: Action.EDIT_EXISTING_TEAM,
                     team: nativeId,
                   }),
               },
