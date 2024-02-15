@@ -24,9 +24,9 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils/index.ts';
-import { getAddVerifiedMembersOperation } from '../utils/metadataDelta.ts';
+import { getRemoveVerifiedMembersOperation } from '../utils/metadataDelta.ts';
 
-function* addVerifiedMembersMotion({
+function* removeVerifiedMembersMotion({
   payload: {
     colonyAddress,
     colonyName,
@@ -37,7 +37,7 @@ function* addVerifiedMembersMotion({
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
-}: Action<ActionTypes.MOTION_ADD_VERIFIED_MEMBERS>) {
+}: Action<ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS>) {
   const txChannel = yield call(getTxChannel, metaId);
   try {
     if (!colonyAddress) {
@@ -46,7 +46,7 @@ function* addVerifiedMembersMotion({
       );
     }
     if (!Array.isArray(members) || members.length === 0) {
-      throw new Error('No members set for addVerifiedMembers transaction');
+      throw new Error('No members set for removeVerifiedMembers transaction');
     }
 
     const colonyManager = yield call(getColonyManager);
@@ -77,15 +77,15 @@ function* addVerifiedMembersMotion({
 
     const batchKey = 'createMotion';
 
-    const { createMotion, annotateAddVerifiedMembersMotion } =
+    const { createMotion, annotateRemoveVerifiedMembersMotion } =
       yield createTransactionChannels(metaId, [
         'createMotion',
-        'annotateAddVerifiedMembersMotion',
+        'annotateRemoveVerifiedMembersMotion',
       ]);
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       'editColonyByDelta',
-      [JSON.stringify(getAddVerifiedMembersOperation(members))],
+      [JSON.stringify(getRemoveVerifiedMembersOperation(members))],
     );
 
     yield fork(createTransaction, createMotion.id, {
@@ -111,7 +111,7 @@ function* addVerifiedMembersMotion({
     });
 
     if (annotationMessage) {
-      yield fork(createTransaction, annotateAddVerifiedMembersMotion.id, {
+      yield fork(createTransaction, annotateRemoveVerifiedMembersMotion.id, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -128,7 +128,7 @@ function* addVerifiedMembersMotion({
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
       yield takeFrom(
-        annotateAddVerifiedMembersMotion.channel,
+        annotateRemoveVerifiedMembersMotion.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
     }
@@ -150,14 +150,14 @@ function* addVerifiedMembersMotion({
 
     if (annotationMessage) {
       yield uploadAnnotation({
-        txChannel: annotateAddVerifiedMembersMotion,
+        txChannel: annotateRemoveVerifiedMembersMotion,
         message: annotationMessage,
         txHash,
       });
     }
 
     yield put<AllActions>({
-      type: ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_SUCCESS,
+      type: ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_SUCCESS,
       payload: {},
       meta,
     });
@@ -169,7 +169,7 @@ function* addVerifiedMembersMotion({
     }
   } catch (error) {
     return yield putError(
-      ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_ERROR,
+      ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_ERROR,
       error,
       meta,
     );
@@ -179,9 +179,9 @@ function* addVerifiedMembersMotion({
   return null;
 }
 
-export default function* addVerifiedMembersMotionSaga() {
+export default function* removeVerifiedMembersMotionSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_ADD_VERIFIED_MEMBERS,
-    addVerifiedMembersMotion,
+    ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS,
+    removeVerifiedMembersMotion,
   );
 }
