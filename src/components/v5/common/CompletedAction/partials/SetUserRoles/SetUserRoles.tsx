@@ -7,6 +7,7 @@ import { getRole } from '~constants/permissions.ts';
 import { type ColonyActionRoles } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
+import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
@@ -27,7 +28,6 @@ import {
   PermissionsTableRow,
   TeamFromRow,
 } from '../rows/index.ts';
-import { getFormattedTokenAmount } from '../utils.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.SetUserRoles';
 
@@ -42,7 +42,8 @@ const MSG = defineMessages({
   },
   subtitle: {
     id: `${displayName}.subtitle`,
-    defaultMessage: 'Pay {recipient} {amount} {token} by {user}',
+    defaultMessage:
+      '{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}',
   },
 });
 
@@ -70,21 +71,29 @@ const transformActionRolesToColonyRoles = (
 
 const SetUserRoles = ({ action }: Props) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action.metadata || {};
-  const { amount, initiatorUser, recipientUser, token, roles } = action;
+  const { initiatorUser, recipientUser, roles } = action;
   const userColonyRoles = transformActionRolesToColonyRoles(roles);
   const { name: roleName, role } = getRole(userColonyRoles);
-  const formattedAmount = getFormattedTokenAmount(
-    amount || '1',
-    token?.decimals,
-  );
+  const rolesTitle = formatRolesTitle(roles);
 
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          amount: formattedAmount,
-          token: action.token?.symbol,
+          direction: rolesTitle.direction,
+          rolesChanged: rolesTitle.roleTitle,
+          fromDomain: action.fromDomain?.metadata?.name,
+          initiator: initiatorUser ? (
+            <UserPopover
+              userName={initiatorUser.profile?.displayName}
+              walletAddress={initiatorUser.walletAddress}
+              user={initiatorUser}
+              withVerifiedBadge={false}
+            >
+              {initiatorUser.profile?.displayName}
+            </UserPopover>
+          ) : null,
           recipient: recipientUser ? (
             <UserPopover
               userName={recipientUser.profile?.displayName}
@@ -93,16 +102,6 @@ const SetUserRoles = ({ action }: Props) => {
               withVerifiedBadge={false}
             >
               {recipientUser.profile?.displayName}
-            </UserPopover>
-          ) : null,
-          user: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
-              walletAddress={initiatorUser.walletAddress}
-              user={initiatorUser}
-              withVerifiedBadge={false}
-            >
-              {initiatorUser.profile?.displayName}
             </UserPopover>
           ) : null,
         })}

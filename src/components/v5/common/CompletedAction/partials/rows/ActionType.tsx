@@ -26,6 +26,7 @@ export const actionTypeTranslations = {
   [ColonyActionType.VersionUpgrade]: 'actions.upgradeColonyVersion',
   [ColonyActionType.VersionUpgradeMotion]: 'actions.upgradeColonyVersion',
   [ColonyActionType.SetUserRoles]: 'actions.managePermissions',
+  [ColonyActionType.SetUserRolesMotion]: 'actions.managePermissions',
   default: 'Action',
 };
 
