@@ -2,7 +2,7 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExternalLink } from '~gql';
+import { type ColonyActionType, type ExternalLink } from '~gql';
 import {
   type Colony,
   type ColonyObjective,
@@ -55,6 +55,7 @@ export type MotionFinalizePayload = {
   colonyAddress: Address;
   motionId: string;
   gasEstimate: string;
+  type: ColonyActionType;
 };
 
 export type MotionActionTypes =
