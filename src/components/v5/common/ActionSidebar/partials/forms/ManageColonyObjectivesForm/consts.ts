@@ -1,7 +1,7 @@
 import { type InferType, number, object, string } from 'yup';
 
 import {
-  MAX_ANNOTATION_LENGTH,
+  MAX_COLONY_DISPLAY_NAME,
   MAX_OBJECTIVE_DESCRIPTION_LENGTH,
 } from '~constants/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -11,7 +11,7 @@ export const validationSchema = object()
   .shape({
     colonyObjectiveTitle: string()
       .trim()
-      .max(MAX_ANNOTATION_LENGTH)
+      .max(MAX_COLONY_DISPLAY_NAME)
       .required(() => formatText({ id: 'errors.colonyObjective.title' })),
     colonyObjectiveDescription: string()
       .trim()

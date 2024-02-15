@@ -23,14 +23,12 @@ const RichText: FC<RichTextProps> = ({
   toggleOffDecriptionSelect,
   shouldFocus,
   isDisabled,
-  placeholder,
 }) => {
   const { editor, notFormattedContent, field, characterCount } = useRichText(
     name,
     isDecriptionFieldExpanded,
     isReadonly,
     maxDescriptionLength,
-    placeholder,
   );
 
   useLayoutEffect(() => {

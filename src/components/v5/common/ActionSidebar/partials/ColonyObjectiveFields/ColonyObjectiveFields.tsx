@@ -2,10 +2,12 @@ import { Article, FileText, Percent } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
 import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 
@@ -61,12 +63,14 @@ const ColonyObjectiveFields: FC = () => {
         icon={FileText}
         title={formatText(MSG.description)}
         fieldName="colonyObjectiveDescription"
+        isMultiLine
         isDisabled={hasNoDecisionMethods}
       >
-        <FormInputBase
+        <FormTextareaBase
           name="colonyObjectiveDescription"
           placeholder={formatText(MSG.descriptionPlaceholder)}
-          mode="secondary"
+          maxLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
+          wrapperClassName="w-full"
           message={undefined}
           defaultValue={objective?.description}
           disabled={hasNoDecisionMethods}

@@ -18,7 +18,6 @@ export const useRichText = (
   isDecriptionFieldExpanded: boolean,
   isReadonly?: boolean,
   maxDescriptionLength?: number,
-  placeholder = formatText({ id: 'placeholder.enterDescription' }),
 ) => {
   const [notFormattedContent, setNotFormattedContent] = useState<string>('');
   const { field } = useController({
@@ -38,8 +37,10 @@ export const useRichText = (
         }),
         Placeholder.configure({
           placeholder: () => {
-            setNotFormattedContent(placeholder);
-            return placeholder;
+            setNotFormattedContent(
+              formatText({ id: 'placeholder.enterDescription' }),
+            );
+            return formatText({ id: 'placeholder.enterDescription' });
           },
           showOnlyWhenEditable: false,
           emptyEditorClass: `text-gray-500 before:content-[attr(data-placeholder)] before:float-left before:h-0 before:pointer-events-none`,
@@ -95,13 +96,15 @@ export const useRichText = (
   useEffect(() => {
     if (field.value && editor && !isDecriptionFieldExpanded) {
       editor?.setEditable(false);
-      setNotFormattedContent(editor?.getText() || placeholder);
+      setNotFormattedContent(
+        editor?.getText() || formatText({ id: 'placeholder.enterDescription' }),
+      );
     }
-  }, [editor, isDecriptionFieldExpanded, field.value, placeholder]);
+  }, [editor, isDecriptionFieldExpanded, field.value]);
 
   useEffect(() => {
     const handleUpdate = ({ editor: textEditor }: { editor }) => {
-      field.onChange(textEditor?.getHTML());
+      field.onChange(textEditor.getHTML());
     };
 
     editor?.on('selectionUpdate', handleUpdate);
