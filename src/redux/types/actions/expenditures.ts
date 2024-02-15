@@ -58,7 +58,7 @@ export type ExpendituresActionTypes =
       {
         colonyName: string;
         colonyAddress: Address;
-        nativeExpenditureId: string;
+        nativeExpenditureId: number;
       },
       object
     >
@@ -148,7 +148,7 @@ export type ExpendituresActionTypes =
       ActionTypes.RECLAIM_EXPENDITURE_STAKE,
       {
         colonyAddress: Address;
-        nativeExpenditureId: string;
+        nativeExpenditureId: number;
       },
       MetaWithSetter<object>
     >
