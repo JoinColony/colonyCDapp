@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { VOTE_CHART_BAR_DIRECTION, type VoteChartBarProps } from './types.ts';
+import { VoteChartBarDirection, type VoteChartBarProps } from './types.ts';
 
 const displayName = 'v5.VoteChart.partials.VoteChartBar';
 
@@ -31,9 +31,9 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
         `,
         {
           'rounded-r-3xl after:rounded-r-3xl -ml-[1px]':
-            direction === VOTE_CHART_BAR_DIRECTION.Right,
+            direction === VoteChartBarDirection.Right,
           'rounded-l-3xl after:rounded-l-3xl -mr-[1px] justify-end':
-            direction === VOTE_CHART_BAR_DIRECTION.Left,
+            direction === VoteChartBarDirection.Left,
         },
       )}
     >
@@ -55,14 +55,13 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
             predictionBarClassName,
             'absolute top-0 bottom-0 border h-full block transition-all z-[1]',
             {
-              'left-0': direction === VOTE_CHART_BAR_DIRECTION.Right,
-              'right-0': direction === VOTE_CHART_BAR_DIRECTION.Left,
+              'left-0': direction === VoteChartBarDirection.Right,
+              'right-0': direction === VoteChartBarDirection.Left,
               'rounded-r-3xl':
-                direction === VOTE_CHART_BAR_DIRECTION.Right &&
+                direction === VoteChartBarDirection.Right &&
                 predictedValue > 90,
               'rounded-l-3xl':
-                direction === VOTE_CHART_BAR_DIRECTION.Left &&
-                predictedValue > 90,
+                direction === VoteChartBarDirection.Left && predictedValue > 90,
             },
           )}
         />

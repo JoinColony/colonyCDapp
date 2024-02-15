@@ -1,10 +1,7 @@
-export const VOTE_CHART_BAR_DIRECTION = {
-  Left: 'left',
-  Right: 'right',
-} as const;
-
-export type VoteChartBarDirection =
-  (typeof VOTE_CHART_BAR_DIRECTION)[keyof typeof VOTE_CHART_BAR_DIRECTION];
+export enum VoteChartBarDirection {
+  Left = 'left',
+  Right = 'right',
+}
 
 export interface VoteChartBarProps {
   value: number;
