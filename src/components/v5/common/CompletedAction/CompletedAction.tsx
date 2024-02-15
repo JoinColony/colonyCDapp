@@ -11,8 +11,8 @@ import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/pa
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
 import CreateDecision from './partials/CreateDecision/index.ts';
-import CreateNewTeam from './partials/CreateNewTeam/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
+import ManageTeam from './partials/ManageTeam/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
@@ -46,7 +46,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateDomain:
       case ColonyActionType.CreateDomainMotion:
       case ColonyActionType.EditDomain:
-        return <CreateNewTeam action={action} />;
+      case ColonyActionType.EditDomainMotion:
+        return <ManageTeam action={action} />;
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:
         return <UnlockToken action={action} />;

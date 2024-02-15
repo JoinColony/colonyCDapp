@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColorField/partials/TeamColorBadge.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
@@ -21,25 +21,35 @@ import {
   DescriptionRow,
 } from '../rows/index.ts';
 
-const displayName = 'v5.common.CompletedAction.partials.CreateNewTeam';
+const displayName = 'v5.common.CompletedAction.partials.ManageTeam';
 
 interface CreateNewTeamProps {
   action: ColonyAction;
 }
 
 const MSG = defineMessages({
-  defaultTitle: {
+  newTeamTitle: {
     id: `${displayName}.defaultTitle`,
     defaultMessage: 'Create a new team',
   },
+  editTeamTitle: {
+    id: `${displayName}.editTitle`,
+    defaultMessage: 'Edit a team',
+  },
   subtitle: {
     id: `${displayName}.subtitle`,
-    defaultMessage: 'New team {team} by {user}',
+    defaultMessage:
+      '{isAddingNewTeam, select, true {New team {team} by {user}} other {Change {team} team details by {user}}}',
   },
 });
 
-const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
-  const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
+const ManageTeam = ({ action }: CreateNewTeamProps) => {
+  const isAddingNewTeam = action.type.includes(ColonyActionType.CreateDomain);
+  const {
+    customTitle = formatText(
+      isAddingNewTeam ? MSG.newTeamTitle : MSG.editTeamTitle,
+    ),
+  } = action?.metadata || {};
   const { initiatorUser } = action;
 
   const actionDomainMetadata =
@@ -49,7 +59,7 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          team: actionDomainMetadata?.name,
+          team: action.fromDomain?.metadata?.name,
           user: initiatorUser ? (
             <UserPopover
               userName={initiatorUser.profile?.displayName}
@@ -60,6 +70,7 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
               {initiatorUser.profile?.displayName}
             </UserPopover>
           ) : null,
+          isAddingNewTeam,
         })}
       </ActionSubtitle>
       <ActionDataGrid>
@@ -136,5 +147,5 @@ const CreateNewTeam = ({ action }: CreateNewTeamProps) => {
   );
 };
 
-CreateNewTeam.displayName = displayName;
-export default CreateNewTeam;
+ManageTeam.displayName = displayName;
+export default ManageTeam;

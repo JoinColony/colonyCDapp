@@ -13,6 +13,8 @@ export const actionTypeTranslations = {
   [ColonyActionType.CreateDecisionMotion]: 'actions.createDecision',
   [ColonyActionType.CreateDomain]: 'actions.createNewTeam',
   [ColonyActionType.CreateDomainMotion]: 'actions.createNewTeam',
+  [ColonyActionType.EditDomain]: 'actions.editExistingTeam',
+  [ColonyActionType.EditDomainMotion]: 'actions.editExistingTeam',
   [ColonyActionType.ColonyEdit]: 'actions.editColonyDetails',
   [ColonyActionType.MintTokens]: 'actions.mintTokens',
   [ColonyActionType.MintTokensMotion]: 'actions.mintTokens',
