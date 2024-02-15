@@ -16,6 +16,9 @@ import {
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
+export type FundExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_FUND>['payload'];
+
 function* fundExpenditure({
   payload: { colonyAddress, expenditure, fromDomainFundingPotId },
   meta,
