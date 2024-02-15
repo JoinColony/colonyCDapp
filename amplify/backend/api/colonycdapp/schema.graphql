@@ -3166,15 +3166,14 @@ type Expenditure @model {
   """
   nativeDomainId: Int!
   """
+  Array containing balances of tokens in the expenditure
+  """
+  balances: [ExpenditureBalance!]
+  """
   Optional metadata linked to the expenditure
   It contains client-side data that is not stored on chain
   """
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
-  """
-  Array containing expenditure balances
-  """
-  balances: [ExpenditureBalance!]
-    @function(name: "fetchExpenditureBalances-${env}")
   """
   The timestamp at which the expenditure was finalized
   """
@@ -3240,7 +3239,6 @@ type ExpenditureMetadata @model {
 type ExpenditureBalance {
   tokenAddress: ID!
   amount: String!
-  requiredAmount: String! # Total amount required to cover all payouts for the given token
 }
 
 type ExpenditureStage {

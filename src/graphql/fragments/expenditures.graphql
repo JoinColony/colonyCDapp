@@ -15,11 +15,6 @@ fragment Expenditure on Expenditure {
     }
     stakeAmount
   }
-  balances {
-    tokenAddress
-    amount
-    requiredAmount
-  }
   finalizedAt
   hasReclaimedStake
   motions {
