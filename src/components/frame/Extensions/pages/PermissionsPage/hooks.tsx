@@ -1,4 +1,10 @@
-import { Pencil } from '@phosphor-icons/react';
+import {
+  Pencil,
+  PuzzlePiece,
+  HandCoins,
+  ArrowSquareOut,
+  CopySimple,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
@@ -69,7 +75,7 @@ export const useGetMembersForPermissions = () => {
           items: [
             {
               key: '1',
-              icon: 'puzzle-piece',
+              icon: PuzzlePiece,
               label: formatText({ id: 'permissionsPage.viewExtension' }),
               renderItemWrapper: (props, children) => (
                 <Link
@@ -153,7 +159,7 @@ export const useGetMembersForPermissions = () => {
                 // },
                 {
                   key: '2',
-                  icon: 'hand-coins',
+                  icon: HandCoins,
                   label: formatText({
                     id: 'membersPage.memberNav.makePayment',
                   }),
@@ -165,7 +171,7 @@ export const useGetMembersForPermissions = () => {
                 },
                 {
                   key: '5',
-                  icon: <Pencil size={16} />,
+                  icon: Pencil,
                   label: formatText({
                     id: 'permissionsPage.managePermissions',
                   }),
@@ -180,7 +186,7 @@ export const useGetMembersForPermissions = () => {
                   ? [
                       {
                         key: '3',
-                        icon: 'arrow-square-out',
+                        icon: ArrowSquareOut,
                         label: formatText(
                           { id: 'membersPage.memberNav.viewOn' },
                           {
@@ -205,7 +211,7 @@ export const useGetMembersForPermissions = () => {
                       },
                       {
                         key: '4',
-                        icon: 'copy-simple',
+                        icon: CopySimple,
                         label: formatText({
                           id: 'membersPage.memberNav.copyWalletAddress',
                         }),

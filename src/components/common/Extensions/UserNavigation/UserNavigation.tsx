@@ -59,7 +59,9 @@ const UserNavigation: FC<UserNavigationProps> = ({
       {txButtons}
       {isWalletConnected ? (
         <div className="flex gap-1">
-          {nativeToken && <Token nativeToken={nativeToken} />}
+          {nativeToken && (
+            <Token size={isMobile ? 18 : 16} nativeToken={nativeToken} />
+          )}
           {userHub}
         </div>
       ) : (

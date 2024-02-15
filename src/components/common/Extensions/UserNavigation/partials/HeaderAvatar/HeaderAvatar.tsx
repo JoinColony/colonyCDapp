@@ -16,7 +16,7 @@ const HeaderAvatar = () => {
 
   return (
     <div className="flex items-center justify-center min-w-[2.625rem] min-h-[2.5rem] px-[0.875rem] py-[0.625rem] bg-base-white border rounded-full border-gray-200">
-      <UserAvatar user={user || wallet?.address} showUsername size="xxs" />
+      <UserAvatar user={user || wallet?.address} showUsername size="xss" />
     </div>
   );
 };
