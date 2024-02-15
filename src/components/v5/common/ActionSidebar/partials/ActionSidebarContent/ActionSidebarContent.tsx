@@ -43,6 +43,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     useSidebarActionForm();
   const { readonly } = useAdditionalFormOptionsContext();
   const { flatFormErrors } = useGetFormActionErrors();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const {
     formState: {
