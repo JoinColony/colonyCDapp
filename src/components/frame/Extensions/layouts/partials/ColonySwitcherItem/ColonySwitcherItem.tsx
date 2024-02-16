@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
+import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 
 import { type ColonySwitcherItemProps } from './types.ts';
@@ -14,6 +15,8 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
   avatarProps,
   ...rest
 }) => {
+  const { setOpenItemIndex } = useNavigationSidebarContext();
+
   const { chainIcon: Icon, ...restAvatarProps } = avatarProps || {
     colonyAddress: ADDRESS_ZERO,
   };
@@ -27,6 +30,11 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
           'justify-between': !!Icon,
         },
       )}
+      onClick={
+        rest.to === window.location.pathname
+          ? () => setOpenItemIndex(undefined)
+          : undefined
+      }
       {...rest}
     >
       <div className="flex items-center gap-2 truncate">

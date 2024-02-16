@@ -48,7 +48,7 @@ const ExtensionDetailsPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'extensionsPage.title' }));
 
   if (!extensionData) {
-    return null;
+    return <NotFoundRoute />;
   }
 
   if (!extensionData) {
