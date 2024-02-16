@@ -139,7 +139,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
                 key: 'mint_tokens',
                 onClick: () => {
                   toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.MINT_TOKENS,
+                    [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
                   });
                 },
                 label: formatMessage(MSG.labelMintToken),
@@ -151,7 +151,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           key: 'transfer_funds',
           onClick: () => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.TRANSFER_FUNDS,
+              [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
               amount: {
                 tokenAddress: selectedTokenData?.tokenAddress,
               },
@@ -164,7 +164,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           key: 'make_payment',
           onClick: () => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
+              [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
               amount: {
                 tokenAddress: selectedTokenData?.tokenAddress,
               },

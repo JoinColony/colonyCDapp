@@ -44,7 +44,7 @@ const Agreements = () => {
 
   const openCreateDecision = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
+      [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
     });
   };
 

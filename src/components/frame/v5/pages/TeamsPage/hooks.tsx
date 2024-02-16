@@ -127,7 +127,7 @@ export const useTeams = (): TeamCardListProps['items'] => {
                 label: formatText({ id: 'teamsPage.menu.editTeam' }),
                 onClick: () =>
                   toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.EDIT_EXISTING_TEAM,
+                    [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
                     team: nativeId,
                   }),
               },

@@ -13,28 +13,28 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.simplePayment' },
-            value: Action.SIMPLE_PAYMENT,
+            value: Action.SimplePayment,
           },
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.advancedPayment' },
-          //   value: Action.ADVANCED_PAYMENT,
+          //   value: Action.AdvancedPayment,
           // },
           // {
           //   label: { id: 'actions.batchPayment' },
-          //   value: Action.BATCH_PAYMENT,
+          //   value: Action.BatchPayment,
           // },
           // {
           //   label: { id: 'actions.splitPayment' },
-          //   value: Action.SPLIT_PAYMENT,
+          //   value: Action.SplitPayment,
           // },
           // {
           //   label: { id: 'actions.stagedPayment' },
-          //   value: Action.STAGED_PAYMENT,
+          //   value: Action.StagedPayment,
           // },
           // {
           //   label: { id: 'actions.streamingPayment' },
-          //   value: Action.STREAMING_PAYMENT,
+          //   value: Action.StreamingPayment,
           // },
         ],
       },
@@ -45,7 +45,7 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.createDecision' },
-            value: Action.CREATE_DECISION,
+            value: Action.CreateDecision,
             isDisabled: false,
           },
         ],
@@ -57,19 +57,19 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.transferFunds' },
-            value: Action.TRANSFER_FUNDS,
+            value: Action.TransferFunds,
           },
           {
             label: { id: 'actions.mintTokens' },
-            value: Action.MINT_TOKENS,
+            value: Action.MintTokens,
           },
           {
             label: { id: 'actions.unlockToken' },
-            value: Action.UNLOCK_TOKEN,
+            value: Action.UnlockToken,
           },
           {
             label: { id: 'actions.manageTokens' },
-            value: Action.MANAGE_TOKENS,
+            value: Action.ManageTokens,
           },
         ],
       },
@@ -80,11 +80,11 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.createNewTeam' },
-            value: Action.CREATE_NEW_TEAM,
+            value: Action.CreateNewTeam,
           },
           {
             label: { id: 'actions.editExistingTeam' },
-            value: Action.EDIT_EXISTING_TEAM,
+            value: Action.EditExistingTeam,
           },
         ],
       },
@@ -96,32 +96,32 @@ export const useActionsList = () => {
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.manageReputation' },
-          //   value: Action.MANAGE_REPUTATION,
+          //   value: Action.ManageReputation,
           // },
           {
             label: { id: 'actions.managePermissions' },
-            value: Action.MANAGE_PERMISSIONS,
+            value: Action.ManagePermissions,
           },
           {
             label: { id: 'actions.editColonyDetails' },
-            value: Action.EDIT_COLONY_DETAILS,
+            value: Action.EditColonyDetails,
           },
           {
             label: { id: 'actions.upgradeColonyVersion' },
-            value: Action.UPGRADE_COLONY_VERSION,
+            value: Action.UpgradeColonyVersion,
           },
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.enterRecoveryMode' },
-          //   value: Action.ENTER_RECOVERY_MODE,
+          //   value: Action.EnterRecoveryMode,
           // },
           {
             label: { id: 'actions.manageColonyObjectives' },
-            value: Action.MANAGE_COLONY_OBJECTIVES,
+            value: Action.ManageColonyObjectives,
           },
           // {
           //   label: { id: 'actions.createNewIntegration' },
-          //   value: Action.CREATE_NEW_INTEGRATION,
+          //   value: Action.CreateNewIntegration,
           //   isDisabled: true,
           // },
         ],

@@ -29,7 +29,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
 
   const handleUpgradeColony = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.UPGRADE_COLONY_VERSION,
+      [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
     });
   };
 

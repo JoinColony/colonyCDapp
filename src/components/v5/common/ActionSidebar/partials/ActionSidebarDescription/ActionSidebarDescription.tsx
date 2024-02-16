@@ -28,31 +28,31 @@ const ActionSidebarDescription = () => {
   });
 
   switch (selectedAction) {
-    case Action.MINT_TOKENS:
+    case Action.MintTokens:
       return <MintTokensDescription />;
-    case Action.SIMPLE_PAYMENT:
+    case Action.SimplePayment:
       return <SimplePaymentDescription />;
-    case Action.CREATE_DECISION:
+    case Action.CreateDecision:
       return <CreateDecisionDescription />;
-    case Action.CREATE_NEW_TEAM:
+    case Action.CreateNewTeam:
       return <CreateNewDomainDescription />;
-    case Action.EDIT_COLONY_DETAILS:
+    case Action.EditColonyDetails:
       return <EditColonyDetailsDescription />;
-    case Action.EDIT_EXISTING_TEAM:
+    case Action.EditExistingTeam:
       return <EditDomainDescription />;
-    case Action.ENTER_RECOVERY_MODE:
+    case Action.EnterRecoveryMode:
       return <EnterRecoveryModeDescription />;
-    case Action.MANAGE_COLONY_OBJECTIVES:
+    case Action.ManageColonyObjectives:
       return <ManageColonyObjectiveDescription />;
-    case Action.MANAGE_PERMISSIONS:
+    case Action.ManagePermissions:
       return <ManagePermissionsDescription />;
-    case Action.MANAGE_TOKENS:
+    case Action.ManageTokens:
       return <ManageTokensDescription />;
-    case Action.TRANSFER_FUNDS:
+    case Action.TransferFunds:
       return <TransferFundsDescription />;
-    case Action.UNLOCK_TOKEN:
+    case Action.UnlockToken:
       return <UnlockTokenDescription />;
-    case Action.UPGRADE_COLONY_VERSION:
+    case Action.UpgradeColonyVersion:
       return <UpgradeColonyDescription />;
     default:
       return null;

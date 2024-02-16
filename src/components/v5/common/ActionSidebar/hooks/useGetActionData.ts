@@ -60,7 +60,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.MintTokens:
       case ColonyActionType.MintTokensMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.MINT_TOKENS,
+          [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
           amount: {
             amount,
             tokenAddress: token?.tokenAddress,
@@ -70,7 +70,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
+          [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
           amount: {
             amount: moveDecimal(
               amount,
@@ -88,7 +88,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
         const [firstPayment, ...additionalPayments] = payments || [];
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
+          [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
           from: fromDomain?.nativeId,
           amount: {
             amount: moveDecimal(
@@ -116,7 +116,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.MoveFunds:
       case ColonyActionType.MoveFundsMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.TRANSFER_FUNDS,
+          [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
           from: fromDomain?.nativeId,
           to: toDomain?.nativeId,
           amount: {
@@ -128,7 +128,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
         };
       case ExtendedColonyActionType.UpdateColonyObjective:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_COLONY_OBJECTIVES,
+          [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
           colonyName: colony?.metadata?.displayName,
           colonyAvatar: colony.metadata?.avatar || colony.metadata?.thumbnail,
           colonyObjectiveTitle: colony.metadata?.objective?.title,
@@ -153,14 +153,14 @@ export const useGetActionData = (transactionId: string | undefined) => {
 
         if (modifiedTokens && modifiedTokens?.length > 0) {
           return {
-            [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_TOKENS,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManageTokens,
             selectedTokenAddresses: allTokens,
             ...repeatableFields,
           };
         }
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.EDIT_COLONY_DETAILS,
+          [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
           colonyName: motionData
             ? pendingColonyMetadata?.displayName
             : metadata?.displayName,
@@ -185,7 +185,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.CreateDomain:
       case ColonyActionType.CreateDomainMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.CREATE_NEW_TEAM,
+          [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
           teamName: action.isMotion
             ? pendingDomainMetadata?.name
             : fromDomain?.metadata?.name,
@@ -204,7 +204,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
         );
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.EDIT_EXISTING_TEAM,
+          [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
           team: fromDomain?.nativeId,
           teamName: isMotion ? pendingDomainMetadata?.name : changelog?.newName,
           domainColor: isMotion
@@ -218,7 +218,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       }
       case ColonyActionType.CreateDecisionMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
+          [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
           createdIn: decisionData?.motionDomainId,
           title: decisionData?.title,
           description: decisionData?.description,
@@ -229,7 +229,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.UNLOCK_TOKEN,
+          [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
           ...repeatableFields,
         };
       case ColonyActionType.SetUserRoles:
@@ -238,7 +238,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
         const { role } = getRole(rolesList);
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
+          [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
           member: recipientAddress,
           authority: Authority.Own,
           role,

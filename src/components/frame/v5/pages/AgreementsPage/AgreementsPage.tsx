@@ -65,7 +65,7 @@ const AgreementsPage: FC = () => {
           isFullSize={false}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
+              [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
             });
           }}
         >
@@ -99,7 +99,7 @@ const AgreementsPage: FC = () => {
           buttonText={{ id: 'agreementsPage.empty.button' }}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
+              [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
             });
           }}
           buttonIcon={FilePlus}

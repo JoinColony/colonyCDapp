@@ -69,7 +69,7 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
                 }),
                 onClick: () => {
                   toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
+                    [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
                   });
                 },
               },
@@ -86,7 +86,7 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
           isFullSize={false}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
+              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             });
           }}
         >

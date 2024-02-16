@@ -34,7 +34,7 @@ const Objective = () => {
 
   const openManageObjectives = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_COLONY_OBJECTIVES,
+      [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
     });
   };
 

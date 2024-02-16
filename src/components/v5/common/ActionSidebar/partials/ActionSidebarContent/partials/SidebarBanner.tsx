@@ -42,7 +42,7 @@ export const SidebarBanner: FC = () => {
   const requiredExtensionsWithoutPermission = installedExtensionsData.filter(
     (extension) => {
       const isOneTxPaymentExtensionAction =
-        selectedAction === Action.SIMPLE_PAYMENT &&
+        selectedAction === Action.SimplePayment &&
         extension.extensionId === Extension.OneTxPayment;
       const isVotingReputationExtensionAction =
         decisionMethod === DecisionMethod.Reputation &&
@@ -60,7 +60,7 @@ export const SidebarBanner: FC = () => {
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 
   const showVersionUpToDateNotification =
-    selectedAction === Action.UPGRADE_COLONY_VERSION && !canUpgrade;
+    selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
 
   return (
     <>

@@ -54,7 +54,7 @@ export const useMembersTabContentItems = (
                 label: formatText({ id: 'membersPage.memberNav.makePayment' }),
                 onClick: () =>
                   toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
+                    [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
                     recipient: walletAddress,
                   }),
               },

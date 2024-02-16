@@ -36,7 +36,7 @@ const SubNavigation: FC<SubNavigationProps> = () =>
           title="members.subnav.permissions"
           onClick={() =>
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
+              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             })
           }
         />

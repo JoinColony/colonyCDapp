@@ -69,7 +69,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const handleUpgradeColony = useCallback(
     () =>
       toggleActionSidebarOn({
-        [ACTION_TYPE_FIELD_NAME]: Action.UPGRADE_COLONY_VERSION,
+        [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
       }),
     [toggleActionSidebarOn],
   );
@@ -175,7 +175,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.managePermissions' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
+                [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
               }),
           },
           // @BETA: Disabled for now
@@ -190,7 +190,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.editExistingTeam' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.EDIT_EXISTING_TEAM,
+                [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
               }),
           },
           {
@@ -198,7 +198,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.createNewTeam' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CREATE_NEW_TEAM,
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
               }),
           },
         ],
@@ -222,7 +222,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.simplePayment' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
+                [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
               }),
           },
           // {
@@ -230,7 +230,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.advancedPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.ADVANCED_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.AdvancedPayment,
           //     }),
           // },
           // {
@@ -238,7 +238,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.streamingPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.STREAMING_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.StreamingPayment,
           //     }),
           //   disabled: true,
           // },
@@ -247,7 +247,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.splitPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.SPLIT_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
           //     }),
           // },
           // {
@@ -255,7 +255,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.batchPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.BATCH_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.BatchPayment,
           //     }),
           //   disabled: true,
           // },
@@ -264,7 +264,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.stagedPayment' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.STAGED_PAYMENT,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
           //     }),
           //   disabled: true,
           // },
@@ -273,7 +273,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.transferFunds' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.TRANSFER_FUNDS,
+                [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
               }),
           },
           {
@@ -281,7 +281,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.manageTokens' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_TOKENS,
+                [ACTION_TYPE_FIELD_NAME]: Action.ManageTokens,
               }),
           },
           {
@@ -289,7 +289,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.mintTokens' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.MINT_TOKENS,
+                [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
               }),
           },
         ],
@@ -313,7 +313,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.createAgreement' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CREATE_DECISION,
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
               }),
           },
           // {
@@ -321,7 +321,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.simpleDiscussion' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_DISCUSSION,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.SimpleDiscussion,
           //     }),
           // },
         ],
@@ -353,7 +353,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.editColonyDetails' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.EDIT_COLONY_DETAILS,
+                [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
               }),
           },
           {
@@ -361,7 +361,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.upgradeColonyVersion' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.UPGRADE_COLONY_VERSION,
+                [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
               }),
           },
           // @BETA: Disabled for now
@@ -370,7 +370,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //   label: formatText({ id: 'actions.enterRecoveryMode' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.ENTER_RECOVERY_MODE,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.EnterRecoveryMode,
           //     }),
           // },
           {
@@ -378,7 +378,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.unlockToken' }),
             onClick: () =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.UNLOCK_TOKEN,
+                [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
               }),
           },
         ],

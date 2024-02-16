@@ -57,19 +57,19 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
   } = useActionSidebarContext();
 
   const actionTypeNotificationHref =
-    (selectedAction === Action.UNLOCK_TOKEN &&
+    (selectedAction === Action.UnlockToken &&
       'https://docs.colony.io/use/managing-funds/unlock-token/') ||
     undefined;
 
   const getNotificationTitle = (): string | undefined => {
     switch (selectedAction) {
-      case Action.UNLOCK_TOKEN:
+      case Action.UnlockToken:
         return formatText(
           isNativeTokenUnlocked ? MSG.unlockedToken : MSG.unlockedTokenError,
         );
-      case Action.ENTER_RECOVERY_MODE:
+      case Action.EnterRecoveryMode:
         return formatText(MSG.enterRecoveryModeError);
-      case Action.CREATE_DECISION:
+      case Action.CreateDecision:
         return isFieldDisabled
           ? formatText(MSG.createDecisionError)
           : undefined;
@@ -97,7 +97,7 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
                   {formatText(MSG.learnMore)}
                 </a>
               ) : (
-                selectedAction === Action.CREATE_DECISION && (
+                selectedAction === Action.CreateDecision && (
                   <button
                     type="button"
                     onClick={() => {

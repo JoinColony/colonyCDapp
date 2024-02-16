@@ -121,7 +121,7 @@ const ColonyDetailsPage: FC = () => {
           isFullSize={isMobile}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.EDIT_COLONY_DETAILS,
+              [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
             });
           }}
         />
@@ -147,7 +147,7 @@ const ColonyDetailsPage: FC = () => {
               textValues={{ existing: !!objective?.title }}
               onClick={() => {
                 toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_COLONY_OBJECTIVES,
+                  [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
                 });
               }}
             />
@@ -169,7 +169,7 @@ const ColonyDetailsPage: FC = () => {
             isFullSize
             onClick={() => {
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_COLONY_OBJECTIVES,
+                [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
               });
             }}
           />

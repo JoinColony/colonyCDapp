@@ -50,7 +50,7 @@ const ReputationChart = () => {
 
   const openCreateNewTeam = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CREATE_NEW_TEAM,
+      [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
     });
   };
 

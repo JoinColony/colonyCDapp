@@ -28,7 +28,7 @@ const TeamsPage: FC = () => {
           <Button
             onClick={() =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CREATE_NEW_TEAM,
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
               })
             }
             text={formatText({ id: 'teamsPage.createNewTeam' })}

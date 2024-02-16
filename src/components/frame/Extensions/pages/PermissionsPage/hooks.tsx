@@ -94,7 +94,7 @@ export const useGetMembersForPermissions = () => {
             //   label: formatText({ id: 'permissionsPage.managePermissions' }),
             //   onClick: () => {
             //     toggleActionSidebarOn({
-            //       [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
+            //       [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             //       member: extension.address,
             //     });
             //   },
@@ -165,7 +165,7 @@ export const useGetMembersForPermissions = () => {
                   }),
                   onClick: () =>
                     toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: Action.SIMPLE_PAYMENT,
+                      [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
                       recipient: walletAddress,
                     }),
                 },
@@ -177,7 +177,7 @@ export const useGetMembersForPermissions = () => {
                   }),
                   onClick: () => {
                     toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: Action.MANAGE_PERMISSIONS,
+                      [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
                       member: walletAddress,
                     });
                   },
