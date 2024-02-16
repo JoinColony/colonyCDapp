@@ -2,9 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { apolloClient } from '~apollo';
 import { DEFAULT_GAS_LIMIT } from '~constants/index.ts';
-import { ColonyActionType } from '~gql';
 
 import { transactionUpdateGas } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
@@ -19,7 +17,7 @@ import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 function* finalizeMotion({
   meta,
-  payload: { colonyAddress, motionId, gasEstimate, type: motionType },
+  payload: { colonyAddress, motionId, gasEstimate },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
@@ -62,17 +60,6 @@ function* finalizeMotion({
         type: ActionTypes.MOTION_FINALIZE_SUCCESS,
         meta,
       });
-
-      switch (motionType) {
-        case ColonyActionType.AddVerifiedMembersMotion:
-        case ColonyActionType.RemoveVerifiedMembersMotion: {
-          apolloClient.cache.evict({ fieldName: 'getContributorsByColony' });
-          break;
-        }
-        default: {
-          break;
-        }
-      }
     }
   } catch (error) {
     return yield putError(ActionTypes.MOTION_FINALIZE_ERROR, error, meta);
