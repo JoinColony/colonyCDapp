@@ -3241,12 +3241,17 @@ type ExpenditurePayout {
   isClaimed: Boolean!
 }
 
+enum DecisionMethod {
+  PERMISSIONS
+  REPUPTATION
+}
+
 type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   fundFromDomainNativeId: Int!
   stages: [ExpenditureStage!]
   stakeAmount: String
-  decisionMethod: String
+  decisionMethod: DecisionMethod!
 }
 
 type ExpenditureBalance {

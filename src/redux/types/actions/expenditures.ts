@@ -1,4 +1,4 @@
-import { type StreamingPaymentEndCondition } from '~gql';
+import { type DecisionMethod, type StreamingPaymentEndCondition } from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   type ExpenditurePayoutFieldValue,
@@ -11,7 +11,6 @@ import {
   type ExpenditureSlot,
 } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
-import { type DecisionMethod } from '~v5/common/ActionSidebar/hooks/useDecisionMethods.ts';
 
 import {
   type UniqueActionType,
