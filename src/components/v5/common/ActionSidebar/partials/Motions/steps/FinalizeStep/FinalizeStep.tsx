@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { type FC, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { apolloClient } from '~apollo';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
@@ -83,8 +84,19 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     if (isMotionFinalized) {
       refetchColony();
       setIsPolling(false);
+
+      switch (actionData.type) {
+        case ColonyActionType.AddVerifiedMembersMotion:
+        case ColonyActionType.RemoveVerifiedMembersMotion: {
+          apolloClient.cache.evict({ fieldName: 'getContributorsByColony' });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     }
-  }, [isMotionFinalized, refetchColony]);
+  }, [isMotionFinalized, actionData.type, refetchColony]);
 
   let action = {
     actionType: ActionTypes.MOTION_FINALIZE,
