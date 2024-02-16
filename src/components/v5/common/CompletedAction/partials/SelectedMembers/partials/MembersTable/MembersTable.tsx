@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 
-import { type User } from '~types/graphql.ts';
 import Table from '~v5/common/Table/Table.tsx';
+
+import { type SelectedMember } from '../../types.ts';
 
 import { type MembersTableModel, membersColumns } from './tableFixtures.tsx';
 
 interface MembersTableProps {
-  members: User[];
+  members: SelectedMember[];
 }
 
 const displayName =

@@ -98,7 +98,7 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
         <DescriptionRow description={action.annotation.message} />
       )}
       {action.members !== undefined && action.members !== null && (
-        <SelectedMembers members={action.members} />
+        <SelectedMembers memberAddresses={action.members} />
       )}
     </>
   );
