@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -23,7 +24,7 @@ const statusTextMeta: Meta<typeof StatusText> = {
     },
   },
   args: {
-    status: 'success',
+    status: StatusTypes.SUCCESS,
     children:
       'The required permissions have been updated. You can now enable the extension.',
     withIcon: true,

@@ -10,6 +10,7 @@ import { SystemMessages } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
 
 import { useMotionContext } from '../../partials/MotionProvider/hooks.ts';
@@ -97,7 +98,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           iconSize: 16,
           content: showFullySupportedPassInfo ? (
             <StatusText
-              status="info"
+              status={StatusTypes.INFO}
               className="mt-2"
               icon={CheckCircle}
               iconClassName="text-blue-400"
@@ -111,8 +112,8 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           status:
             objectingStakesPercentageValue === 100 ||
             supportingStakesPercentageValue === 100
-              ? 'warning'
-              : 'info',
+              ? StatusTypes.WARNING
+              : StatusTypes.INFO,
         }}
         sections={[
           ...(!enoughReputationToStakeMinimum && canInteract
