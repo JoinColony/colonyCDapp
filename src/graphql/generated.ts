@@ -8748,6 +8748,7 @@ export type GetContributorsByAddressQueryVariables = Exact<{
   sortDirection?: InputMaybe<ModelSortDirection>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
+  isWatching?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -11421,12 +11422,13 @@ export type GetVerifiedMembersQueryHookResult = ReturnType<typeof useGetVerified
 export type GetVerifiedMembersLazyQueryHookResult = ReturnType<typeof useGetVerifiedMembersLazyQuery>;
 export type GetVerifiedMembersQueryResult = Apollo.QueryResult<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>;
 export const GetContributorsByAddressDocument = gql`
-    query GetContributorsByAddress($contributorAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int, $nextToken: String) {
+    query GetContributorsByAddress($contributorAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int, $nextToken: String, $isWatching: Boolean) {
   getContributorsByAddress(
     contributorAddress: $contributorAddress
     sortDirection: $sortDirection
     limit: $limit
     nextToken: $nextToken
+    filter: {isWatching: {eq: $isWatching}}
   ) {
     items {
       id
@@ -11456,6 +11458,7 @@ export const GetContributorsByAddressDocument = gql`
  *      sortDirection: // value for 'sortDirection'
  *      limit: // value for 'limit'
  *      nextToken: // value for 'nextToken'
+ *      isWatching: // value for 'isWatching'
  *   },
  * });
  */

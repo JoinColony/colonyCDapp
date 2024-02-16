@@ -2,6 +2,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { apolloClient } from '~apollo';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext.tsx';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
@@ -39,6 +40,7 @@ const LeaveColonyModal = () => {
       onConfirm={() => {
         closeLeaveColonyModal();
         handleUnwatch();
+        apolloClient.cache.evict({ fieldName: 'getContributorsByAddress' });
       }}
       icon={WarningCircle}
       buttonMode="primarySolid"

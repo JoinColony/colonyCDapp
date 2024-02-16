@@ -41,12 +41,14 @@ query GetContributorsByAddress(
   $sortDirection: ModelSortDirection = ASC
   $limit: Int
   $nextToken: String
+  $isWatching: Boolean
 ) {
   getContributorsByAddress(
     contributorAddress: $contributorAddress
     sortDirection: $sortDirection
     limit: $limit
     nextToken: $nextToken
+    filter: { isWatching: { eq: $isWatching } }
   ) {
     items {
       id
