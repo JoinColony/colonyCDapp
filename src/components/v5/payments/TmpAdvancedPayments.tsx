@@ -7,6 +7,7 @@ import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
 import { ActionButton } from '~v5/shared/Button/index.ts';
 
 const TmpAdvancedPayments = () => {
@@ -33,6 +34,7 @@ const TmpAdvancedPayments = () => {
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
     networkInverseFee: networkInverseFee ?? '0',
+    decisionMethod: DecisionMethod.Permissions,
   };
 
   return (
