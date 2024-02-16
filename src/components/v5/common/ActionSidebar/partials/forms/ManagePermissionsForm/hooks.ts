@@ -36,7 +36,7 @@ export const useManagePermissions = (
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
-  const role: UserRole | typeof RemoveRoleOptionValue | undefined = useWatch({
+  const role: UserRole | RemoveRoleOptionValue | undefined = useWatch({
     name: 'role',
   });
   const isModeRoleSelected = role === UserRole.Mod;

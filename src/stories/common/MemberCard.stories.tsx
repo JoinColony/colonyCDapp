@@ -1,3 +1,4 @@
+import { UserRole } from '~constants/permissions.tsx';
 import MemberCard from '~v5/common/MemberCard/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -38,7 +39,7 @@ export const WithBadge: StoryObj<typeof MemberCard> = {
     },
     role: {
       name: 'admin',
-      role: 'admin',
+      role: UserRole.Admin,
       permissions: [],
     },
   },
@@ -55,7 +56,7 @@ export const WithReputationAndBadge: StoryObj<typeof MemberCard> = {
     reputation: 59,
     role: {
       name: 'admin',
-      role: 'admin',
+      role: UserRole.Admin,
       permissions: [],
     },
   },

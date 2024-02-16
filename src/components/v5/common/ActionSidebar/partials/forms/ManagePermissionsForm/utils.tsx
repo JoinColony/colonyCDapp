@@ -20,7 +20,7 @@ export const getRoleLabel = (role: string | undefined) => {
     ...USER_ROLES,
     CUSTOM_USER_ROLE,
     {
-      role: RemoveRoleOptionValue,
+      role: RemoveRoleOptionValue.remove,
       name: formatText({
         id: 'actionSidebar.managePermissions.roleSelect.remove.title',
       }),

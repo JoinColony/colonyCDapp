@@ -1,3 +1,4 @@
+import { UserRole } from '~constants/permissions.tsx';
 import MemberCardList from '~v5/common/MemberCardList/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -19,7 +20,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
         reputation: 42,
         role: {
           name: 'admin',
-          role: 'admin',
+          role: UserRole.Admin,
           permissions: [],
         },
         meatBallMenuProps: {
@@ -44,7 +45,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
         reputation: 37,
         role: {
           name: 'admin',
-          role: 'admin',
+          role: UserRole.Admin,
           permissions: [],
         },
         meatBallMenuProps: {
@@ -68,7 +69,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
         reputation: 22,
         role: {
           name: 'admin',
-          role: 'admin',
+          role: UserRole.Admin,
           permissions: [],
         },
         meatBallMenuProps: {
@@ -92,7 +93,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
         reputation: 13,
         role: {
           name: 'payer',
-          role: 'payer',
+          role: UserRole.Payer,
           permissions: [],
         },
         meatBallMenuProps: {
@@ -116,7 +117,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
         reputation: 9,
         role: {
           name: 'payer',
-          role: 'payer',
+          role: UserRole.Payer,
           permissions: [],
         },
         meatBallMenuProps: {
@@ -140,7 +141,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
         reputation: 6,
         role: {
           name: 'payer',
-          role: 'payer',
+          role: UserRole.Payer,
           permissions: [],
         },
         meatBallMenuProps: {
