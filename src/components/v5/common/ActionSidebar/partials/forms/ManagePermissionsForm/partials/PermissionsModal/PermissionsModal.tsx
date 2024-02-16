@@ -1,4 +1,4 @@
-import { Shield } from '@phosphor-icons/react';
+import { ShieldStar } from '@phosphor-icons/react';
 import chunk from 'lodash/chunk';
 import React, { type FC, Fragment } from 'react';
 
@@ -20,7 +20,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
     <Modal
       {...props}
       isFullOnMobile
-      icon={Shield}
+      icon={ShieldStar}
       confirmMessage={isMobile ? 'Close' : undefined}
       buttonMode="primarySolid"
     >
@@ -50,7 +50,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
         )}{' '}
         <button
           type="button"
-          className="inline text-blue-900 sm:hover:text-blue-400 underline transition-colors cursor-pointer"
+          className="inline text-gray-900 sm:hover:text-blue-400 underline transition-colors cursor-pointer"
           onClick={toggleShowMore}
         >
           {showMore
