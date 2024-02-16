@@ -1,7 +1,6 @@
 import Lottie from 'lottie-react';
 import React, { type FC, useState } from 'react';
 
-import { apolloClient } from '~apollo';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import joinButtonAnimation from '~utils/animations/joinButtonAnimation.json';
@@ -24,7 +23,6 @@ const JoinButton: FC = () => {
 
   const onClick = () => {
     handleWatch();
-    apolloClient.cache.evict({ fieldName: 'getContributorsByAddress' });
 
     if (!showJoinButton) {
       return;

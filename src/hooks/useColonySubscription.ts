@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { apolloClient } from '~apollo';
 import { useAppContext } from '~context/AppContext.tsx';
 import {
   useCreateColonyContributorMutation,
@@ -56,6 +57,11 @@ const useColonySubscription = (colony?: Colony) => {
   /* Update a Colony Contributor */
   const [updateContributor] = useUpdateColonyContributorMutation();
 
+  const clearContributorCaches = () => {
+    apolloClient.cache.evict({ fieldName: 'getContributorsByAddress' });
+    apolloClient.cache.evict({ fieldName: 'getColonyContributor' });
+  };
+
   const handleWatch = () => {
     if (user) {
       if (!isAlreadyContributor) {
@@ -75,6 +81,7 @@ const useColonySubscription = (colony?: Colony) => {
     } else {
       connectWallet();
     }
+    clearContributorCaches();
   };
 
   const handleUnwatch = () => {
@@ -84,6 +91,7 @@ const useColonySubscription = (colony?: Colony) => {
         setIsWatching(Boolean(data?.updateColonyContributor?.isWatching));
       },
     });
+    clearContributorCaches();
   };
 
   const canWatch = useCanJoinColony(isWatching, colony) && !loading;
