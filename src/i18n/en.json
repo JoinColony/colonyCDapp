@@ -176,6 +176,7 @@
     "button.changeConfirm": "Change confirm",
     "button.addBatchPayments": "Add batch payments",
     "button.addFunds": "Add funds",
+    "button.apply": "Apply",
     "input.resetText": "Cancel",
     "label.amount": "Amount",
     "label.username": "Username",
@@ -1573,5 +1574,8 @@
     "teamsPage.menu.viewTeamDashboard": "View team dashboard",
     "teamsPage.links.agreements": "Agreements",
     "teamsPage.links.activity": "Activity",
-    "view.extension": "View extension"
+    "view.extension": "View extension",
+    "calendar.from": "From",
+    "calendar.to": "To",
+    "calendar.selectDate": "Select date"
 }
