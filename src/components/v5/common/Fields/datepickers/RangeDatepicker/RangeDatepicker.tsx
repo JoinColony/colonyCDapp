@@ -1,5 +1,7 @@
 import clsx from 'clsx';
+import addDays from 'date-fns/addDays';
 import isAfter from 'date-fns/isAfter';
+import subSeconds from 'date-fns/subSeconds';
 import React, { type FC, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -112,8 +114,10 @@ const RangeDatepicker: FC<RangeDatepickerProps> = ({
         }
 
         const [start, end] = dates;
+
+        const formattedEndDate = end ? addDays(subSeconds(end, 1), 1) : null;
         setStartDate(start);
-        setEndDate(end);
+        setEndDate(formattedEndDate);
       }}
       startDate={startDate}
       endDate={endDate}
