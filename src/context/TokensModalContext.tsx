@@ -10,8 +10,8 @@ import React, {
 
 import useToggle from '~hooks/useToggle/index.ts';
 import noop from '~utils/noop.ts';
+import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import TokensModal from '~v5/common/TokensModal/index.ts';
-import { type TokensModalType } from '~v5/common/TokensModal/types.ts';
 
 export const TokensModalContext = createContext<{
   toggleOnTokensModal: () => void;
@@ -26,8 +26,9 @@ export const TokensModalContext = createContext<{
 export const TokensModalContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [tokensModalType, setTokensModalType] =
-    useState<TokensModalType>('activate');
+  const [tokensModalType, setTokensModalType] = useState<TokensModalType>(
+    TokensModalType.Activate,
+  );
   const [
     isTokensModalOpen,
     { toggleOn: toggleOnTokensModal, toggleOff: toggleOffTokensModal },

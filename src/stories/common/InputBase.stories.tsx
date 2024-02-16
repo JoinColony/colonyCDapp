@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { FieldState } from '~v5/common/Fields/consts.ts';
 import InputBase from '~v5/common/Fields/InputBase/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -40,7 +41,7 @@ export const Base: StoryObj<typeof InputBase> = {
 export const WithError: StoryObj<typeof InputBase> = {
   args: {
     mode: 'primary',
-    state: 'error',
+    state: FieldState.Error,
     defaultValue: 'Default value',
   },
 };
