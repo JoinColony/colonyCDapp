@@ -26,8 +26,7 @@ const MSG = defineMessages({
   },
   description: {
     id: `${displayName}.description`,
-    defaultMessage:
-      'Let’s set up your Colony. Enter a name for your Colony and a short description about your Colony’s mission and purpose.',
+    defaultMessage: 'Let’s set up your Colony. Enter a name and custom URL.',
   },
 });
 
