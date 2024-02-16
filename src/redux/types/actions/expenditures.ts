@@ -11,6 +11,7 @@ import {
   type ExpenditureSlot,
 } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
+import { type DecisionMethod } from '~v5/common/ActionSidebar/hooks/useDecisionMethods.ts';
 
 import {
   type UniqueActionType,
@@ -44,6 +45,7 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
+        decisionMethod: DecisionMethod;
       },
       MetaWithSetter<object>
     >
@@ -130,6 +132,7 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
+        decisionMethod: DecisionMethod;
       },
       MetaWithSetter<object>
     >
