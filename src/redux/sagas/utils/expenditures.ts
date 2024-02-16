@@ -4,6 +4,7 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
+  type DecisionMethod,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
 } from '~gql';
@@ -15,7 +16,6 @@ import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee } from '~utils/tokens.ts';
-import { type DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values
