@@ -67,7 +67,6 @@ export const useFinalizeStep = (actionData: MotionAction) => {
       userAddress: user?.walletAddress || '',
       motionId,
       gasEstimate,
-      type,
     }),
   );
 
