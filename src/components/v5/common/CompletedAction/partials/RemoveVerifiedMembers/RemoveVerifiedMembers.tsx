@@ -98,7 +98,7 @@ const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
         <DescriptionRow description={action.annotation.message} />
       )}
       {action.members !== undefined && action.members !== null && (
-        <SelectedMembers members={action.members} />
+        <SelectedMembers memberAddresses={action.members} />
       )}
     </>
   );

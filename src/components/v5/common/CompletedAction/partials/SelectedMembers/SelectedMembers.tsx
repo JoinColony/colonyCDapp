@@ -1,20 +1,20 @@
 import React from 'react';
 
 import useUsersByAddresses from '~hooks/useUsersByAddresses.ts';
-import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import MembersLoadingTable from './partials/MembersLoadingTable/MembersLoadingTable.tsx';
 import MembersTable from './partials/MembersTable/MembersTable.tsx';
+import { SelectedMemberType, type SelectedMember } from './types.ts';
 
 interface SelectedMembersProps {
-  members: string[];
+  memberAddresses: string[];
 }
 
 const displayName = 'v5.common.CompletedAction.partials.SelectedMembers';
 
-const SelectedMembers = ({ members }: SelectedMembersProps) => {
-  const { error, loading, users } = useUsersByAddresses(members);
+const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
+  const { error, loading, users } = useUsersByAddresses(memberAddresses);
 
   if (error) {
     console.warn('Error while loading users', error);
@@ -25,8 +25,36 @@ const SelectedMembers = ({ members }: SelectedMembersProps) => {
     if (loading || !users) {
       return <MembersLoadingTable />;
     }
+    const members = memberAddresses.reduce<SelectedMember[]>(
+      (selectedMembers, address) => {
+        const existingUser = users.find(
+          (user) => user?.walletAddress === address,
+        );
 
-    return <MembersTable members={users.filter(notNull)} />;
+        if (existingUser) {
+          return [
+            ...selectedMembers,
+            {
+              type: SelectedMemberType.USER,
+              data: existingUser,
+            },
+          ];
+        }
+
+        return [
+          ...selectedMembers,
+          {
+            type: SelectedMemberType.ADDRESS,
+            data: {
+              walletAddress: address,
+            },
+          },
+        ];
+      },
+      [],
+    );
+
+    return <MembersTable members={members} />;
   };
 
   return (
