@@ -55,7 +55,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     ([, { toggleOff }]) => (
       <button
         type="button"
-        className="w-full flex justify-center items-center py-2"
+        className="w-full flex justify-center items-center py-2 hover:text-blue-400 transition-colors duration-200 focus:outline-none"
         onClick={() => {
           togglePermissionsModalOn();
           toggleOff();
