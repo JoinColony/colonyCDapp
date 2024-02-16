@@ -17,7 +17,7 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: StatusTypes.INFO,
+        status: StatusTypes.Info,
         children: formatText({
           id: 'action.executed.permissions.description',
         }),

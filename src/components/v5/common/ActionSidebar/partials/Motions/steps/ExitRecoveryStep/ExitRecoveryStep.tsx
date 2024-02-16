@@ -21,7 +21,7 @@ const ExitRecoveryStep: FC = () => {
     <div className="flex flex-col gap-4">
       <MenuWithStatusText
         statusTextSectionProps={{
-          status: StatusTypes.INFO,
+          status: StatusTypes.Info,
           children: formatText(
             { id: 'motion.exitRecovery.statusText' },
             { signatures: 2 },
@@ -67,7 +67,7 @@ const ExitRecoveryStep: FC = () => {
       />
       <MenuWithStatusText
         statusTextSectionProps={{
-          status: StatusTypes.INFO,
+          status: StatusTypes.Info,
           children: formatText({
             id: 'motion.exitRecovery.storageSlots.statusText',
           }),

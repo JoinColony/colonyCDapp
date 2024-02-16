@@ -64,7 +64,7 @@ const RevealStep: FC<RevealStepProps> = ({
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: StatusTypes.INFO,
+        status: StatusTypes.Info,
         children: formatText({ id: 'motion.revealStep.statusText' }),
         textClassName: 'text-4',
         content: (
@@ -83,7 +83,7 @@ const RevealStep: FC<RevealStepProps> = ({
             />
             {!revealPhaseEnded && canInteract && (
               <StatusText
-                status={StatusTypes.WARNING}
+                status={StatusTypes.Warning}
                 textClassName="text-4 text-gray-900"
                 iconAlignment="top"
               >

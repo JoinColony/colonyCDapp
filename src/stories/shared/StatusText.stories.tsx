@@ -24,7 +24,7 @@ const statusTextMeta: Meta<typeof StatusText> = {
     },
   },
   args: {
-    status: StatusTypes.SUCCESS,
+    status: StatusTypes.Success,
     children:
       'The required permissions have been updated. You can now enable the extension.',
     withIcon: true,

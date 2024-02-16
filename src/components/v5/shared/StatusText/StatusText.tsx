@@ -19,10 +19,10 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   iconSize = 14,
 }) => {
   const statusIcons = {
-    [StatusTypes.SUCCESS]: CheckCircle,
-    [StatusTypes.WARNING]: WarningCircle,
-    [StatusTypes.ERROR]: WarningCircle,
-    [StatusTypes.INFO]: Info,
+    [StatusTypes.Success]: CheckCircle,
+    [StatusTypes.Warning]: WarningCircle,
+    [StatusTypes.Error]: WarningCircle,
+    [StatusTypes.Info]: Info,
   };
 
   const Icon = icon || statusIcons[status];
@@ -30,10 +30,10 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   return (
     <div
       className={clsx(className, 'flex', {
-        'text-gray-900': status === StatusTypes.INFO,
-        'text-success-400': status === StatusTypes.SUCCESS,
-        'text-warning-400': status === StatusTypes.WARNING,
-        'text-negative-400': status === StatusTypes.ERROR,
+        'text-gray-900': status === StatusTypes.Info,
+        'text-success-400': status === StatusTypes.Success,
+        'text-warning-400': status === StatusTypes.Warning,
+        'text-negative-400': status === StatusTypes.Error,
         'gap-2': withIcon,
         'items-center': iconAlignment === 'center',
         'items-start': iconAlignment === 'top',

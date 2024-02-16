@@ -98,7 +98,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           iconSize: 16,
           content: showFullySupportedPassInfo ? (
             <StatusText
-              status={StatusTypes.INFO}
+              status={StatusTypes.Info}
               className="mt-2"
               icon={CheckCircle}
               iconClassName="text-blue-400"
@@ -112,8 +112,8 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           status:
             objectingStakesPercentageValue === 100 ||
             supportingStakesPercentageValue === 100
-              ? StatusTypes.WARNING
-              : StatusTypes.INFO,
+              ? StatusTypes.Warning
+              : StatusTypes.Info,
         }}
         sections={[
           ...(!enoughReputationToStakeMinimum && canInteract

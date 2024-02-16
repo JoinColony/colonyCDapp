@@ -66,7 +66,7 @@ const VotingStep: FC<VotingStepProps> = ({
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: StatusTypes.INFO,
+        status: StatusTypes.Info,
         children: formatText(
           { id: 'motion.votingStep.statusText' },
           { thresholdPercent },

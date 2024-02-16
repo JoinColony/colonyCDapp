@@ -8,7 +8,7 @@ const cardWithStatusTextMeta: Meta<typeof MenuWithStatusText> = {
   component: MenuWithStatusText,
   args: {
     statusTextSectionProps: {
-      status: StatusTypes.INFO,
+      status: StatusTypes.Info,
       children: 'This is a status text.',
       content: 'This is an additional content.',
     },

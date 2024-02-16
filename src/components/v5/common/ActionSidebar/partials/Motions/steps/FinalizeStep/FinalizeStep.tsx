@@ -103,7 +103,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: StatusTypes.INFO,
+        status: StatusTypes.Info,
         children: formatText({ id: 'motion.finalizeStep.statusText' }),
         textClassName: 'text-4',
         iconAlignment: 'top',
