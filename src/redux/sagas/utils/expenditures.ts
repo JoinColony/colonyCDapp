@@ -15,6 +15,7 @@ import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee } from '~utils/tokens.ts';
+import { type DecisionMethod } from '~v5/common/ActionSidebar/hooks/index.ts';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values
@@ -121,6 +122,7 @@ interface SaveExpenditureMetadataParams {
   colonyAddress: string;
   expenditureId: number;
   fundFromDomainId: number;
+  decisionMethod: DecisionMethod;
   stages?: ExpenditureStageFieldValue[];
   stakeAmount?: string;
 }
@@ -129,6 +131,7 @@ export function* saveExpenditureMetadata({
   colonyAddress,
   expenditureId,
   fundFromDomainId,
+  decisionMethod,
   stages,
   stakeAmount,
 }: SaveExpenditureMetadataParams) {
@@ -143,6 +146,7 @@ export function* saveExpenditureMetadata({
       input: {
         id: getExpenditureDatabaseId(colonyAddress, expenditureId),
         fundFromDomainNativeId: fundFromDomainId,
+        decisionMethod,
         stages: stages?.map((stage, index) => ({
           name: stage.name,
           slotId: index + 1,
