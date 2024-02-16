@@ -1,6 +1,5 @@
 import { ClientType, ColonyRole } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
@@ -58,11 +57,6 @@ function* createPaymentAction({
       }
       if (!payments.every(({ tokenAddress }) => !!tokenAddress)) {
         throw new Error('Payment token not set for OneTxPayment transaction');
-      }
-      if (!payments.every(({ decimals }) => !!decimals)) {
-        throw new Error(
-          'Payment token decimals not set for OneTxPayment transaction',
-        );
       }
       if (!payments.every(({ recipient }) => !!recipient)) {
         throw new Error('Recipient not assigned for OneTxPayment transaction');
@@ -248,12 +242,11 @@ export function sortAndCombinePayments(
   recipient: string;
   amount: BigNumber;
   tokenAddress: string;
-  decimals: number;
 }[] {
   return payments.sort(sortPayments).reduce(
     (acc, payment) => {
-      const { recipient, tokenAddress, amount, decimals } = payment;
-      const convertedAmount = BigNumber.from(moveDecimal(amount, decimals));
+      const { recipient, tokenAddress, amount } = payment;
+      const convertedAmount = BigNumber.from(amount);
 
       const {
         recipient: prevRecipient,

@@ -30,7 +30,6 @@ export type OneTxPaymentPayload = {
     recipient: string;
     amount: string;
     tokenAddress: Address;
-    decimals: number;
   }[];
   annotationMessage?: string;
   motionDomainId?: number;
