@@ -41,6 +41,7 @@ fragment ExpenditurePayout on ExpenditurePayout {
   tokenAddress
   amount
   isClaimed
+  networkFee
 }
 
 fragment ExpenditureStage on ExpenditureStage {
