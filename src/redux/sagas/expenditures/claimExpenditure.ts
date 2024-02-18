@@ -11,6 +11,9 @@ import {
 } from '../transactions/index.ts';
 import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
+export type ClaimExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_CLAIM>['payload'];
+
 type PayoutWithSlotId = ExpenditurePayout & {
   slotId: number;
 };

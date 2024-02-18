@@ -8,6 +8,7 @@ import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
@@ -34,6 +35,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.EXPENDITURE_FUND,
     error: ActionTypes.EXPENDITURE_FUND_ERROR,
     success: ActionTypes.EXPENDITURE_FUND_SUCCESS,
+  });
+  const finalizeExpenditure = useAsyncFunction({
+    submit: ActionTypes.EXPENDITURE_FINALIZE,
+    error: ActionTypes.EXPENDITURE_FINALIZE_ERROR,
+    success: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
   });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
@@ -91,6 +97,16 @@ const TmpAdvancedPayments = () => {
     fundExpenditure(payload);
   };
 
+  const handleFinalizeExpenditure = async () => {
+    const finalizePayload: FinalizeExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      colonyName: colony.name,
+      nativeExpenditureId: Number(expenditureId),
+    };
+
+    await finalizeExpenditure(finalizePayload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -110,6 +126,9 @@ const TmpAdvancedPayments = () => {
         />
         <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
         <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
+        <Button onClick={handleFinalizeExpenditure}>
+          Finalize expenditure
+        </Button>
       </div>
     </div>
   );
