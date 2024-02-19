@@ -242,7 +242,9 @@ function* createStakedExpenditure({
       stakeAmount,
     });
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
