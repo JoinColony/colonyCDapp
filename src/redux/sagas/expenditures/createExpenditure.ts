@@ -34,6 +34,7 @@ function* createExpenditure({
     isStaged,
     stages,
     networkInverseFee,
+    decisionMethod,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -153,6 +154,7 @@ function* createExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
+      decisionMethod,
       stages: isStaged ? stages : undefined,
     });
 
