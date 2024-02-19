@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyExpenditureBalances } from '~hooks/useColonyExpenditureBalances.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { notNull } from '~utils/arrays/index.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
@@ -12,22 +13,25 @@ export const useBalancePage = (): UseBalancePageReturnType => {
     colony: { tokens: colonyTokens, balances },
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
+  const { balancesByToken: expenditureBalances } =
+    useColonyExpenditureBalances();
 
   const tokensData = useMemo(
     () =>
       colonyTokens?.items.filter(notNull).map((item) => {
+        // Add balance currently held in expenditures for the current token
         const currentTokenBalance = getBalanceForTokenAndDomain(
           balances,
           item?.token?.tokenAddress || '',
           selectedDomain ? Number(selectedDomain.nativeId) : undefined,
-        );
+        ).add(expenditureBalances[item?.token?.tokenAddress] ?? 0);
 
         return {
           ...item,
           balance: currentTokenBalance,
         };
       }),
-    [colonyTokens?.items, balances, selectedDomain],
+    [colonyTokens?.items, balances, selectedDomain, expenditureBalances],
   );
 
   const sortedTokens = useMemo(

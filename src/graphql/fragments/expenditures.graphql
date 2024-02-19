@@ -25,6 +25,9 @@ fragment Expenditure on Expenditure {
   type
   isStaked
   isStakeForfeited
+  balances {
+    ...ExpenditureBalance
+  }
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
@@ -48,4 +51,9 @@ fragment ExpenditureStage on ExpenditureStage {
   slotId
   name
   isReleased
+}
+
+fragment ExpenditureBalance on ExpenditureBalance {
+  tokenAddress
+  amount
 }
