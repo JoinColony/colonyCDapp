@@ -87,12 +87,14 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_EDIT,
       {
-        colonyAddress: Address;
+        colony: Colony;
         expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
+        customActionTitle?: string;
+        annotationMessage?: string;
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_EDIT_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>
