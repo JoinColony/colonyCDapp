@@ -48,6 +48,8 @@ export type ExpendituresActionTypes =
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         decisionMethod: ExpenditureDecisionMethod;
+        customActionTitle: string;
+        annotationMessage?: string;
       },
       MetaWithSetter<object>
     >
@@ -115,6 +117,8 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
+        customActionTitle: string;
+        annotationMessage?: string;
       },
       object
     >
