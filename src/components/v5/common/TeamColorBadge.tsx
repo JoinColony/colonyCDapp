@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { DomainColor } from '~gql';
@@ -7,12 +7,15 @@ import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { getTeamBadgeStyles, getTeamColor } from '~utils/teams.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
-import { type TeamColourBadgeProps } from '../types.ts';
+interface Props {
+  title: string;
+  defaultColor?: DomainColor;
+}
 
 const displayName =
   'v5.common.ActionsContent.partials.TeamColourField.partials.TeamColorBadge';
 
-const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title, defaultColor }) => {
+const TeamColorBadge = ({ title, defaultColor }: Props) => {
   const { colony } = useColonyContext();
 
   const selectedTeam = colony.domains?.items.find(
@@ -45,6 +48,6 @@ const TeamColourBadge: FC<TeamColourBadgeProps> = ({ title, defaultColor }) => {
   );
 };
 
-TeamColourBadge.displayName = displayName;
+TeamColorBadge.displayName = displayName;
 
-export default TeamColourBadge;
+export default TeamColorBadge;

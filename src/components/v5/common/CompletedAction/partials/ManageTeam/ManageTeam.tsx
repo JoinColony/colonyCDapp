@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColorField/partials/TeamColorBadge.tsx';
+import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import {
@@ -97,7 +97,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.teamColour' })}
           rowContent={
-            <TeamColourBadge
+            <TeamColorBadge
               defaultColor={actionDomainMetadata?.color}
               title={actionDomainMetadata?.name || 'Team'}
             />
