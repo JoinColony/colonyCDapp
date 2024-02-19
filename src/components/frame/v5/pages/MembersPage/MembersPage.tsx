@@ -1,5 +1,6 @@
+import { LockKey, ShareNetwork } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React, { type FC, useEffect, useState } from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
 import {
   Outlet,
   useLocation,
@@ -7,7 +8,12 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
-import { useMemberModalContext } from '~context/MemberModalContext.tsx';
+import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
+import { APP_URL } from '~constants';
+import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks';
 import {
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_MEMBERS_ROUTE,
@@ -15,14 +21,13 @@ import {
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import Filter from '~v5/common/Filter/index.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
-import KebapMenu from '~v5/shared/KebapMenu/index.ts';
-import PopoverBase from '~v5/shared/PopoverBase/index.ts';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 
 import { useMembersPage } from './hooks.ts';
 import { MembersTabContentWrapper } from './partials/MembersTabContent/index.ts';
-import SubNavigation from './partials/SubNavigation/index.ts';
 
 const displayName = 'v5.pages.MembersPage';
 
@@ -34,41 +39,50 @@ const MembersPage: FC = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { sortedContributorCount, sortedMemberCount } = useMembersPage();
   const {
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible: isSubNavigationOpen,
-  } = usePopperTooltip({
-    delayShow: 200,
-    delayHide: 200,
-    placement: 'bottom-start',
-    trigger: 'click',
-    interactive: true,
-    closeOnOutsideClick: true,
-  });
-  const { setIsMemberModalOpen } = useMemberModalContext();
+    colony: { name: colonyName },
+  } = useColonyContext();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
+  const isMobile = useMobile();
 
   const titleAction = (
-    <>
-      <KebapMenu isVertical setTriggerRef={setTriggerRef} />
-      {isSubNavigationOpen && (
-        <PopoverBase
-          setTooltipRef={setTooltipRef}
-          tooltipProps={getTooltipProps}
-          withTooltipStyles={false}
-          cardProps={{
-            rounded: 's',
-            hasShadow: true,
-            className: 'py-4 px-2.5',
-          }}
-          classNames="w-full sm:max-w-[17.375rem]"
-        >
-          <SubNavigation
-            onManageMembersClick={() => setIsMemberModalOpen(true)}
-          />
-        </PopoverBase>
-      )}
-    </>
+    <MeatBallMenu
+      withVerticalIcon
+      contentWrapperClassName={clsx('sm:min-w-[17.375rem]', {
+        '!left-6 right-6': isMobile,
+      })}
+      items={[
+        {
+          key: '1',
+          icon: ShareNetwork,
+          label: formatText({
+            id: 'members.subnav.invite',
+          }),
+          renderItemWrapper: (props, children) => (
+            <MeatballMenuCopyItem
+              textToCopy={`${APP_URL.origin}/${colonyName}`}
+              {...props}
+            >
+              {children}
+            </MeatballMenuCopyItem>
+          ),
+          onClick: () => false,
+        },
+        {
+          key: '2',
+          icon: LockKey,
+          label: formatText({
+            id: 'members.subnav.permissions',
+          }),
+          onClick: () => {
+            toggleActionSidebarOn({
+              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+            });
+          },
+        },
+      ]}
+    />
   );
 
   useEffect(() => {
@@ -109,6 +123,7 @@ const MembersPage: FC = () => {
                   searchInputPlaceholder={formatMessage({
                     id: 'filter.members.input.placeholder',
                   })}
+                  customLabel={formatMessage({ id: 'allFilters' })}
                 />
               }
               titleAction={titleAction}
@@ -136,6 +151,7 @@ const MembersPage: FC = () => {
                   searchInputPlaceholder={formatMessage({
                     id: 'filter.members.input.placeholder',
                   })}
+                  customLabel={formatMessage({ id: 'allFilters' })}
                 />
               }
               titleAction={titleAction}

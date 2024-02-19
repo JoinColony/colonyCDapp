@@ -66,6 +66,9 @@ const NestedOptions: FC<NestedOptionsProps> = ({
             const isChecked = hasNestedOptions
               ? checkedParent === id
               : isFilterChecked(id);
+            const isNestedOptionsChecked = hasNestedOptions
+              ? nestedOptions?.some((option) => isFilterChecked(option.id))
+              : false;
 
             return (
               <li key={id}>
@@ -83,7 +86,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                     onChange={(event) =>
                       onChange(hasNestedOptions, id, isChecked, event)
                     }
-                    isChecked={isChecked}
+                    isChecked={isChecked || isNestedOptionsChecked}
                     classNames="w-full"
                   >
                     {Icon ? <Icon size={14} /> : null}
@@ -92,7 +95,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                 <AnimatePresence>
                   {nestedOptions &&
                     nestedOptions.length > 0 &&
-                    isChecked &&
+                    (isChecked || isNestedOptionsChecked) &&
                     (isMobile ? (
                       <motion.div
                         key="accordion-content"
@@ -106,7 +109,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                         <div className="ml-5">
                           <NestedOptions
                             parentOption={`custom.${parentOption}`}
-                            nestedFilters={nestedFilters}
+                            nestedFilters={nestedOptions}
                           />
                         </div>
                       </motion.div>

@@ -43,31 +43,29 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
 
   return (
     <>
-      <li>
-        <button
-          type="button"
-          aria-label={formatText({ id: 'select.filter.menu.item' })}
-          className="subnav-button"
-          ref={setTriggerRef}
-          onClick={onClick}
-        >
-          {shouldBeTooltipVisible ? (
-            <Tooltip
-              tooltipContent={
-                <span className="text-3 w-full">{tooltipText}</span>
-              }
-              isOpen={isCopyTriggered}
-              isSuccess={isCopyTriggered}
-              placement={isMobile ? 'auto' : 'right'}
-              className="w-full flex items-center"
-            >
-              {tooltipContent}
-            </Tooltip>
-          ) : (
-            tooltipContent
-          )}
-        </button>
-      </li>
+      <button
+        type="button"
+        aria-label={formatText({ id: 'select.filter.menu.item' })}
+        className="subnav-button"
+        ref={setTriggerRef}
+        onClick={onClick}
+      >
+        {shouldBeTooltipVisible ? (
+          <Tooltip
+            tooltipContent={
+              <span className="text-3 w-full">{tooltipText}</span>
+            }
+            isOpen={isCopyTriggered}
+            isSuccess={isCopyTriggered}
+            placement={isMobile ? 'auto' : 'right'}
+            className="w-full flex items-center"
+          >
+            {tooltipContent}
+          </Tooltip>
+        ) : (
+          tooltipContent
+        )}
+      </button>
       {visible && isOptionSelected && (
         <PopoverBase
           setTooltipRef={setTooltipRef}

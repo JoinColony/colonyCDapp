@@ -7,7 +7,11 @@ import { type TitleLabelProps } from './types.ts';
 
 const displayName = 'v5.TitleLabel';
 
-const TitleLabel: FC<TitleLabelProps> = ({ text, className }) => {
+const TitleLabel: FC<TitleLabelProps> = ({
+  text,
+  className,
+  textSizeClassName = 'text-4',
+}) => {
   if (!text) {
     return null;
   }
@@ -18,7 +22,8 @@ const TitleLabel: FC<TitleLabelProps> = ({ text, className }) => {
     <span
       className={clsx(
         className,
-        'block text-gray-400 text-4 uppercase group-hover:text-blue-400 transition-all duration-normal',
+        textSizeClassName,
+        'block text-gray-400 uppercase group-hover:text-blue-400 transition-all duration-normal',
       )}
     >
       {textLabel}

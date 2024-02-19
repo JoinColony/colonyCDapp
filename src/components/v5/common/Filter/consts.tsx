@@ -1,6 +1,8 @@
 import { Flag, LockKey, Star, User } from '@phosphor-icons/react';
 import { useMemo } from 'react';
 
+import { useMobile } from '~hooks';
+
 import { FilterTypes } from '../TableFiltering/types.ts';
 
 import {
@@ -56,6 +58,8 @@ type UseFilterOptionsReturn = {
 };
 
 export const useFilterOptions = (): UseFilterOptionsReturn => {
+  const isMobile = useMobile();
+
   const filterOptions = useMemo(
     () => [
       {
@@ -74,20 +78,21 @@ export const useFilterOptions = (): UseFilterOptionsReturn => {
       },
       {
         id: 2,
-        title: 'filter.reputation',
-        filterType: FilterTypes.Reputation,
-        icon: Star,
-        content: reputationFilters,
-      },
-      {
-        id: 3,
         title: 'filter.permissions',
         filterType: FilterTypes.Permissions,
         icon: LockKey,
         content: permissionsFilters,
       },
+      {
+        id: 3,
+        title: isMobile ? 'filter.sortByReputation' : 'filter.reputation',
+        filterType: FilterTypes.Reputation,
+        icon: Star,
+        content: reputationFilters,
+        header: 'filter.sortBy',
+      },
     ],
-    [],
+    [isMobile],
   );
 
   const childParentFilterMap = useMemo(

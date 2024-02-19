@@ -25,4 +25,5 @@ export type NestedOptionsProps = {
 export type HeaderProps = {
   title: MessageDescriptor;
   className?: string;
+  textSizeClassName?: string;
 };

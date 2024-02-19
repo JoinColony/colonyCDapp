@@ -8,7 +8,7 @@ import { type HeaderProps } from '../types.ts';
 
 const displayName = 'v5.SubNavigationItem.partials.Header';
 
-const Header: FC<HeaderProps> = ({ title, className }) => {
+const Header: FC<HeaderProps> = ({ title, className, textSizeClassName }) => {
   const isMobile = useMobile();
 
   return (
@@ -17,6 +17,7 @@ const Header: FC<HeaderProps> = ({ title, className }) => {
         'ml-3.5': !isMobile,
         'mb-4': isMobile,
       })}
+      textSizeClassName={textSizeClassName}
       text={title}
     />
   );

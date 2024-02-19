@@ -37,7 +37,7 @@ const Filter: FC<FilterProps> = ({
   } = usePopperTooltip({
     delayShow: 200,
     delayHide: 200,
-    placement: 'bottom-start',
+    placement: 'bottom-end',
     trigger: 'click',
     interactive: true,
   });
@@ -53,6 +53,7 @@ const Filter: FC<FilterProps> = ({
             isOpen={isOpened}
             onClick={() => setOpened(!isOpened)}
             numberSelectedFilters={selectedFilterCount}
+            customLabel={customLabel}
           />
           <Button
             mode="tertiary"

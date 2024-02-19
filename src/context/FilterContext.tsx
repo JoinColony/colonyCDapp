@@ -68,7 +68,6 @@ const getInitialFiltersRecord = (filterOptions: ParentFilterOption[]) => {
 export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { pathname } = useLocation();
   const { filterOptions, childParentFilterMap } = useFilterOptions();
-  const [selectedFilterCount, setSelectedFilterCount] = useState<number>(0);
   const [selectedFilters, setSelectedFilters] = useState<SelectedFiltersMap>(
     () => getInitialFiltersRecord(filterOptions),
   );
@@ -107,7 +106,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
             prevState[parentFilter].size
           ) {
             parentFilterMap.clear();
-            setSelectedFilterCount((prevCount) => prevCount - 1);
           }
 
           parentFilterMap.set(nestedFilter, {
@@ -135,11 +133,18 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
             [parentFilter]: new Map(parentFilterMap),
           };
         });
-
-        setSelectedFilterCount((prevState) => prevState - 1);
       }
     },
     [childParentFilterMap],
+  );
+
+  const selectedFilterCount = useMemo(
+    () =>
+      Object.values(selectedFilters).reduce(
+        (acc, filter) => acc + filter.size,
+        0,
+      ),
+    [selectedFilters],
   );
 
   const isFilterChecked = useCallback(
@@ -152,12 +157,10 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const handleClearFilters = useCallback((parents: FilterType[]) => {
-    let removedFilters = 0;
     setSelectedFilters((prevState) => {
       const updatedFilters = parents.reduce((acc, parent) => {
         const nestedFilter = prevState[parent];
         const updatedFilter = new Map(nestedFilter);
-        removedFilters += updatedFilter.size;
         updatedFilter.clear();
 
         return {
@@ -171,7 +174,6 @@ export const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
         ...updatedFilters,
       };
     });
-    setSelectedFilterCount((prevState) => prevState - removedFilters);
   }, []);
 
   const getFilterPermissions = useCallback(() => {

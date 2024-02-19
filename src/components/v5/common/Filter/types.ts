@@ -23,6 +23,7 @@ export type ParentFilterOption = {
   filterType: FilterType;
   icon: Icon;
   content: FilterOptionProps[];
+  header?: string;
 };
 
 export type FilterPopoverProps = {
