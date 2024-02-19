@@ -88,7 +88,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       switch (actionData.type) {
         case ColonyActionType.AddVerifiedMembersMotion:
         case ColonyActionType.RemoveVerifiedMembersMotion: {
-          apolloClient.cache.evict({ fieldName: 'getContributorsByColony' });
+          apolloClient.refetchQueries({ include: ['GetColonyContributors'] });
           break;
         }
         default: {
