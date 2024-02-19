@@ -59,6 +59,8 @@ jobs:
           tags: |
             ${{ env.ECR_REPOSITORY }}:run-${{ github.run_number }}-dev
             ${{ env.ECR_REPOSITORY }}:${{ env.COMMIT_HASH }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,image-manifest=true
 
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
         if: always()
