@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { type ExternalLink } from '~gql';
+import { useSocialLinksTableColumns } from '~hooks/useSocialLinksTableColumns.tsx';
+import { type SocialLinksTableModel } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
-import { useSocialLinksTableColumns } from '~v5/common/ActionSidebar/partials/forms/EditColonyDetailsForm/partials/SocialLinksTable/hooks.tsx';
-import { type SocialLinksTableModel } from '~v5/common/ActionSidebar/partials/forms/EditColonyDetailsForm/partials/SocialLinksTable/types.ts';
 import Table from '~v5/common/Table/index.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';

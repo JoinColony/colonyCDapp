@@ -5,17 +5,17 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { useMobile } from '~hooks/index.ts';
+import { useSocialLinksTableColumns } from '~hooks/useSocialLinksTableColumns.tsx';
+import {
+  type SocialLinksTableModel,
+  type SocialLinksTableProps,
+} from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
 import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import { useSocialLinksTableColumns } from './hooks.tsx';
 import SocialLinkModal from './partials/SocialLinkModal/index.ts';
-import {
-  type SocialLinksTableModel,
-  type SocialLinksTableProps,
-} from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';
 
