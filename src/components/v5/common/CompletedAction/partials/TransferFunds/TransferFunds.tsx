@@ -2,19 +2,18 @@ import { ArrowDownRight } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
 import {
+  ActionData,
   ActionTypeRow,
   AmountRow,
   CreatedInRow,
@@ -81,28 +80,21 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
             actionType={action.type}
           />
         )}
-
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.transferFunds.to',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <ArrowDownRight size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.to' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        {action.toDomain?.metadata?.name ? (
-          <div>
-            <TeamBadge
-              name={action.toDomain?.metadata?.name}
-              color={action.toDomain?.metadata?.color}
-            />
-          </div>
-        ) : null}
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.to' })}
+          rowContent={
+            action.toDomain?.metadata?.name ? (
+              <TeamBadge
+                name={action.toDomain?.metadata?.name}
+                color={action.toDomain?.metadata?.color}
+              />
+            ) : null
+          }
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.transferFunds.to',
+          })}
+          RowIcon={ArrowDownRight}
+        />
 
         <AmountRow
           amount={action.amount || '1'}

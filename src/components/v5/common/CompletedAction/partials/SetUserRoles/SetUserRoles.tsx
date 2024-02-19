@@ -1,30 +1,28 @@
 import { ColonyRole } from '@colony/colony-js';
-import { UserFocus } from '@phosphor-icons/react';
+import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyActionRoles } from '~gql';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
+import { AUTHORITY_OPTIONS } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
 import {
+  ActionData,
   ActionTypeRow,
-  AuthorityRow,
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
-  PermissionsRow,
   PermissionsTableRow,
   TeamFromRow,
 } from '../rows/index.ts';
@@ -108,37 +106,45 @@ const SetUserRoles = ({ action }: Props) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.managePermissions.member',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <UserFocus size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.member' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          <UserAvatar
-            user={{
-              profile: action.recipientUser?.profile,
-              walletAddress: action.recipientAddress || '',
-            }}
-            size="xs"
-            showUsername
-          />
-        </div>
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.member' })}
+          rowContent={
+            <UserAvatar
+              user={{
+                profile: action.recipientUser?.profile,
+                walletAddress: action.recipientAddress || '',
+              }}
+              size="xs"
+              showUsername
+            />
+          }
+          RowIcon={UserFocus}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.managePermissions.member',
+          })}
+        />
         {action.fromDomain?.metadata && (
           <TeamFromRow
             teamMetadata={action.fromDomain.metadata}
             actionType={action.type}
           />
         )}
-        <PermissionsRow roleName={roleName} />
-        <AuthorityRow />
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.permissions' })}
+          rowContent={roleName}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.managePermissions.permissions',
+          })}
+          RowIcon={ShieldStar}
+        />
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.authority' })}
+          rowContent={AUTHORITY_OPTIONS[0].label}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.authority',
+          })}
+          RowIcon={Signature}
+        />
         <DecisionMethodRow isMotion={action.isMotion || false} />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

@@ -2,19 +2,18 @@ import { PaintBucket, Rocket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamColourBadge from '~v5/common/ActionSidebar/partials/TeamColorField/partials/TeamColorBadge.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
 import {
+  ActionData,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -75,63 +74,39 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
-
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.createNewTeam.team.name',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <UserList size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.teamName' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          <span>{actionDomainMetadata?.name}</span>
-        </div>
-
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.createNewTeam.team.purpose',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <Rocket size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.teamPurpose' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          <span className="break-word">
-            {actionDomainMetadata?.description}
-          </span>
-        </div>
-
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.createNewTeam.team.colour',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <PaintBucket size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.teamColour' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          <TeamColourBadge
-            defaultColor={actionDomainMetadata?.color}
-            title={actionDomainMetadata?.name || 'Team'}
-          />
-        </div>
-
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.teamName' })}
+          rowContent={actionDomainMetadata?.name}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.createNewTeam.team.name',
+          })}
+          RowIcon={UserList}
+        />
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.teamPurpose' })}
+          rowContent={
+            <span className="break-word">
+              {actionDomainMetadata?.description}
+            </span>
+          }
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.createNewTeam.team.purpose',
+          })}
+          RowIcon={Rocket}
+        />
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.teamColour' })}
+          rowContent={
+            <TeamColourBadge
+              defaultColor={actionDomainMetadata?.color}
+              title={actionDomainMetadata?.name || 'Team'}
+            />
+          }
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.createNewTeam.team.colour',
+          })}
+          RowIcon={PaintBucket}
+        />
         <DecisionMethodRow isMotion={action.isMotion || false} />
 
         {action.motionData?.motionDomain.metadata && (

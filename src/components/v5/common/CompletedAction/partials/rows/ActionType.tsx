@@ -2,10 +2,9 @@ import { FilePlus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { ColonyActionType } from '~gql';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
+import ActionData from './ActionData.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.ActionTypeRow';
 
@@ -34,32 +33,20 @@ interface ActionTypeRowProps {
   actionType: ColonyActionType;
 }
 
-const ActionTypeRow = ({ actionType }: ActionTypeRowProps) => {
-  return (
-    <>
-      <div>
-        <Tooltip
-          placement={DEFAULT_TOOLTIP_POSITION}
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.actionType',
-          })}
-        >
-          <div className="flex items-center gap-2">
-            <FilePlus size={ICON_SIZE} />
-            <span>{formatText({ id: 'actionSidebar.actionType' })}</span>
-          </div>
-        </Tooltip>
-      </div>
-      <div>
-        {formatText({
-          id:
-            actionTypeTranslations[actionType] ||
-            actionTypeTranslations.default,
-        })}
-      </div>
-    </>
-  );
-};
+const ActionTypeRow = ({ actionType }: ActionTypeRowProps) => (
+  <ActionData
+    rowLabel={{
+      id: 'actionSidebar.actionType',
+    }}
+    tooltipContent={{
+      id: 'actionSidebar.tooltip.actionType',
+    }}
+    rowContent={formatText({
+      id: actionTypeTranslations[actionType] || actionTypeTranslations.default,
+    })}
+    RowIcon={FilePlus}
+  />
+);
 
 ActionTypeRow.displayName = displayName;
 export default ActionTypeRow;
