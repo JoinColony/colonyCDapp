@@ -48,7 +48,7 @@ export type ExpendituresActionTypes =
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         decisionMethod: ExpenditureDecisionMethod;
-        customActionTitle: string;
+        customActionTitle?: string;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
@@ -117,7 +117,7 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
-        customActionTitle: string;
+        customActionTitle?: string;
         annotationMessage?: string;
       },
       object
@@ -138,7 +138,7 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
-        customActionTitle: string;
+        customActionTitle?: string;
         annotationMessage?: string;
         decisionMethod: ExpenditureDecisionMethod;
       },
@@ -195,7 +195,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_CREATE,
       {
-        colonyAddress: Address;
+        colony: Colony;
         createdInDomain: Domain;
         recipientAddress: Address;
         tokenAddress: Address;
@@ -205,6 +205,8 @@ export type ExpendituresActionTypes =
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
+        customActionTitle?: string;
+        annotationMessage?: string;
       },
       MetaWithSetter<object>
     >
