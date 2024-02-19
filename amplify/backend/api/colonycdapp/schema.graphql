@@ -3241,9 +3241,9 @@ type ExpenditurePayout {
   isClaimed: Boolean!
 }
 
-enum DecisionMethod {
+enum ExpenditureDecisionMethod {
   PERMISSIONS
-  REPUPTATION
+  REPUTATION
 }
 
 type ExpenditureMetadata @model {
@@ -3251,7 +3251,7 @@ type ExpenditureMetadata @model {
   fundFromDomainNativeId: Int!
   stages: [ExpenditureStage!]
   stakeAmount: String
-  decisionMethod: DecisionMethod!
+  decisionMethod: ExpenditureDecisionMethod!
 }
 
 type ExpenditureBalance {
