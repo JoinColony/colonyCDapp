@@ -31,10 +31,7 @@ const getNetworkClient = async () => {
     import.meta.env.VITE_NETWORK_FILES_ENDPOINT || 'http://localhost:3006',
   );
 
-  if (
-    import.meta.env.PROD &&
-    import.meta.env.VITE_NETWORK === Network.Ganache
-  ) {
+  if (import.meta.env.DEV && import.meta.env.VITE_NETWORK === Network.Ganache) {
     const fetchRes = await fetch(
       `${ganacheAccountsUrl.href}etherrouter-address.json`,
     );
