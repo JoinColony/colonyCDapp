@@ -19,6 +19,8 @@ import {
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
+  uploadAnnotation,
+  createActionMetadataInDB,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -38,6 +40,8 @@ function* createStakedExpenditure({
     stages,
     networkInverseFee,
     decisionMethod,
+    customActionTitle,
+    annotationMessage,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -58,6 +62,7 @@ function* createStakedExpenditure({
     makeExpenditure,
     setExpenditureValues,
     setExpenditureStaged,
+    annotateMakeStagedExpenditure,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
     [
@@ -65,6 +70,7 @@ function* createStakedExpenditure({
       'makeExpenditure',
       'setExpenditureValues',
       'setExpenditureStaged',
+      'annotateMakeStagedExpenditure',
     ],
   );
 
@@ -120,6 +126,20 @@ function* createStakedExpenditure({
       });
     }
 
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateMakeStagedExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 3,
+        },
+        ready: false,
+      });
+    }
+
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction({ id: approveStake.id });
     yield waitForTxResult(approveStake.channel);
@@ -156,6 +176,13 @@ function* createStakedExpenditure({
         siblings,
       ]),
     );
+
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateMakeStagedExpenditure.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
     yield initiateTransaction({ id: makeExpenditure.id });
     const {
       payload: { hash: txHash },
@@ -198,6 +225,14 @@ function* createStakedExpenditure({
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMakeStagedExpenditure,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     yield saveExpenditureMetadata({
       colonyAddress,
       expenditureId,
@@ -206,6 +241,8 @@ function* createStakedExpenditure({
       stages: isStaged ? stages : undefined,
       stakeAmount,
     });
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,

@@ -138,6 +138,8 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
+        customActionTitle: string;
+        annotationMessage?: string;
         decisionMethod: ExpenditureDecisionMethod;
       },
       MetaWithSetter<object>
