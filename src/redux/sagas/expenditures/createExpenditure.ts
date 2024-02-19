@@ -18,6 +18,8 @@ import {
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
+  createActionMetadataInDB,
+  uploadAnnotation,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -35,6 +37,8 @@ function* createExpenditure({
     stages,
     networkInverseFee,
     decisionMethod,
+    annotationMessage,
+    customActionTitle,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -54,9 +58,15 @@ function* createExpenditure({
     makeExpenditure,
     setExpenditureValues,
     setExpenditureStaged,
+    annotateMakeExpenditure,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['makeExpenditure', 'setExpenditureValues', 'setExpenditureStaged'],
+    [
+      'makeExpenditure',
+      'setExpenditureValues',
+      'setExpenditureStaged',
+      'annotateMakeExpenditure',
+    ],
   );
 
   try {
@@ -106,7 +116,28 @@ function* createExpenditure({
       });
     }
 
+    if (annotationMessage) {
+      yield createTransaction(annotateMakeExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 3,
+        },
+        ready: false,
+      });
+    }
+
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateMakeExpenditure.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
     yield initiateTransaction({ id: makeExpenditure.id });
     const {
       payload: { hash: txHash },
@@ -150,6 +181,14 @@ function* createExpenditure({
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMakeExpenditure,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     yield saveExpenditureMetadata({
       colonyAddress,
       expenditureId,
@@ -157,6 +196,8 @@ function* createExpenditure({
       decisionMethod,
       stages: isStaged ? stages : undefined,
     });
+
+    yield createActionMetadataInDB(txHash, customActionTitle);
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
