@@ -77,7 +77,6 @@ function* createExpenditure({
       ColonyRole.Administration,
     );
 
-    // Move these to createGroupTransaction
     yield fork(createTransaction, makeExpenditure.id, {
       context: ClientType.ColonyClient,
       methodName: 'makeExpenditure',
@@ -198,7 +197,9 @@ function* createExpenditure({
       stages: isStaged ? stages : undefined,
     });
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
