@@ -147,7 +147,7 @@ function* createStreamingPaymentAction({
       );
     }
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction({ id: createStreamingPayment.id });
     const {
       payload: { hash: txHash },
     } = yield takeFrom(
