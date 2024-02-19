@@ -15,6 +15,7 @@ export const actionTypeTranslations = {
   [ColonyActionType.EditDomain]: 'actions.editExistingTeam',
   [ColonyActionType.EditDomainMotion]: 'actions.editExistingTeam',
   [ColonyActionType.ColonyEdit]: 'actions.editColonyDetails',
+  [ColonyActionType.ColonyEditMotion]: 'actions.editColonyDetails',
   [ColonyActionType.MintTokens]: 'actions.mintTokens',
   [ColonyActionType.MintTokensMotion]: 'actions.mintTokens',
   [ColonyActionType.Payment]: 'actions.simplePayment',
