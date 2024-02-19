@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import Table from '~v5/common/Table/Table.tsx';
 
@@ -14,12 +14,10 @@ const displayName =
   'v5.common.CompletedAction.partials.SelectedMembers.partials.MembersTable';
 
 const MembersTable = ({ members }: MembersTableProps) => {
-  const columns = useMemo(() => membersColumns, []);
-
   return (
     <Table<MembersTableModel>
       data={members}
-      columns={columns}
+      columns={membersColumns}
       verticalOnMobile
     />
   );
