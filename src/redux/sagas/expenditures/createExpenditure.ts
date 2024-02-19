@@ -77,6 +77,7 @@ function* createExpenditure({
       ColonyRole.Administration,
     );
 
+    // Move these to createGroupTransaction
     yield fork(createTransaction, makeExpenditure.id, {
       context: ClientType.ColonyClient,
       methodName: 'makeExpenditure',
@@ -117,7 +118,7 @@ function* createExpenditure({
     }
 
     if (annotationMessage) {
-      yield createTransaction(annotateMakeExpenditure.id, {
+      yield fork(createTransaction, annotateMakeExpenditure.id, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
