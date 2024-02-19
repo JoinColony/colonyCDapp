@@ -2,12 +2,8 @@ import { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { getFormattedNumeralValue } from '~shared/Numeral/index.ts';
-import { convertToDecimal } from '~utils/convertToDecimal.ts';
-import {
-  getBalanceForTokenAndDomain,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
 
 import { type UseBalancePageReturnType } from './types.ts';
 
@@ -19,37 +15,27 @@ export const useBalancePage = (): UseBalancePageReturnType => {
 
   const tokensData = useMemo(
     () =>
-      colonyTokens?.items.map((item) => {
-        const currentTokenBalance =
-          getBalanceForTokenAndDomain(
-            balances,
-            item?.token?.tokenAddress || '',
-            selectedDomain ? Number(selectedDomain.nativeId) : undefined,
-          ) || 0;
-        const decimals = getTokenDecimalsWithFallback(item?.token.decimals);
-        const convertedValue = convertToDecimal(
-          currentTokenBalance,
-          decimals || 0,
-        );
-
-        const formattedValue = getFormattedNumeralValue(
-          convertedValue,
-          currentTokenBalance,
+      colonyTokens?.items.filter(notNull).map((item) => {
+        const currentTokenBalance = getBalanceForTokenAndDomain(
+          balances,
+          item?.token?.tokenAddress || '',
+          selectedDomain ? Number(selectedDomain.nativeId) : undefined,
         );
 
         return {
           ...item,
-          balance: typeof formattedValue === 'string' ? formattedValue : '',
+          balance: currentTokenBalance,
         };
       }),
-    [colonyTokens, balances, selectedDomain],
+    [colonyTokens?.items, balances, selectedDomain],
   );
 
   const sortedTokens = useMemo(
     () =>
       tokensData?.sort((a, b) => {
-        if (!a.balance || !b.balance) return 0;
-        return parseInt(b.balance, 10) - parseInt(a.balance, 10);
+        if (!a.balance || !b.balance || a.balance.eq(b.balance)) return 0;
+
+        return a.balance.gt(b.balance) ? -1 : 1;
       }),
     [tokensData],
   );
