@@ -7,6 +7,7 @@ import { ExpenditureDecisionMethod, useGetExpenditureLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
+import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
@@ -41,6 +42,11 @@ const TmpAdvancedPayments = () => {
     error: ActionTypes.EXPENDITURE_FINALIZE_ERROR,
     success: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
   });
+  const claimExpenditure = useAsyncFunction({
+    submit: ActionTypes.EXPENDITURE_CLAIM,
+    error: ActionTypes.EXPENDITURE_CLAIM_ERROR,
+    success: ActionTypes.EXPENDITURE_CLAIM_SUCCESS,
+  });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   if (!rootDomain) {
@@ -70,7 +76,7 @@ const TmpAdvancedPayments = () => {
       nativeExpenditureId: Number(expenditureId),
     };
 
-    lockExpenditure(payload);
+    await lockExpenditure(payload);
   };
 
   const handleFundExpenditure = async () => {
@@ -94,7 +100,7 @@ const TmpAdvancedPayments = () => {
       fromDomainFundingPotId: 1,
     };
 
-    fundExpenditure(payload);
+    await fundExpenditure(payload);
   };
 
   const handleFinalizeExpenditure = async () => {
@@ -105,6 +111,27 @@ const TmpAdvancedPayments = () => {
     };
 
     await finalizeExpenditure(finalizePayload);
+
+    const response = await getExpenditure({
+      variables: {
+        expenditureId: getExpenditureDatabaseId(
+          colony.colonyAddress,
+          Number(expenditureId),
+        ),
+      },
+    });
+    const expenditure = response.data?.getExpenditure;
+
+    if (!expenditure) {
+      return;
+    }
+
+    const claimPayload: ClaimExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      claimableSlots: expenditure.slots,
+      nativeExpenditureId: Number(expenditureId),
+    };
+    await claimExpenditure(claimPayload);
   };
 
   return (
