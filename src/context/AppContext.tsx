@@ -19,6 +19,7 @@ import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type User } from '~types/graphql.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
+import { uiEvents } from '~uiEvents/index.ts';
 import { getLastWallet } from '~utils/autoLogin.ts';
 
 import { getContext, ContextModule } from './index.ts';
@@ -70,8 +71,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           const [currentUser] = data?.getUserByAddress?.items || [];
           if (currentUser) {
             setUser(currentUser);
+            uiEvents.user(utils.getAddress(address), {
+              username: currentUser.profile?.displayName,
+            });
           } else {
             setUser(null);
+            uiEvents.user(utils.getAddress(address));
           }
         } catch (error) {
           console.error(error);

@@ -17,6 +17,7 @@ import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type AnyActionType } from '~types/actions.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -68,6 +69,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     useToggle();
 
   useLayoutEffect(() => {
+    uiEvents.emit(UIEvent.actionSidebarOpened);
     if (localStorage.getItem(isFullScreen) === 'true') {
       toggleOn();
     }

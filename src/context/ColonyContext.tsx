@@ -15,6 +15,9 @@ import {
 import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
 import { type Colony } from '~types/graphql.ts';
+import { uiEvents } from '~uiEvents/index.ts';
+
+let uiEventGroupSet = false;
 
 const useUpdateColonyReputation = (colonyAddress?: string) => {
   const [updateContributorsWithReputation] =
@@ -84,6 +87,22 @@ export const ColonyContextProvider = ({
     (colony?.version ?? 0) >= MIN_SUPPORTED_COLONY_VERSION;
 
   const colonySubscription = useColonySubscription(colony);
+
+  if (canInteractWithColony && !uiEventGroupSet) {
+    uiEvents.colony(colony.colonyAddress, {
+      name: colony.name,
+      displayName: colony.metadata?.displayName,
+      description: colony.metadata?.description,
+      token: {
+        address: colony.nativeToken?.tokenAddress,
+        symbol: colony.nativeToken?.symbol,
+        name: colony.nativeToken?.name,
+      },
+      version: colony.version,
+      teamsCount: colony.domains?.items?.length,
+    });
+    uiEventGroupSet = true;
+  }
 
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({

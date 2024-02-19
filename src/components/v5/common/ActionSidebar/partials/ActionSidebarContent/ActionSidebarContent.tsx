@@ -1,12 +1,13 @@
 import { useApolloClient } from '@apollo/client';
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import React, { useLayoutEffect, useState, type FC } from 'react';
+import { useFormContext, useFormState } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 import { SearchActionsDocument } from '~gql';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
@@ -42,12 +43,23 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     useSidebarActionForm();
   const { readonly } = useAdditionalFormOptionsContext();
   const { flatFormErrors } = useGetFormActionErrors();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const {
     formState: {
       errors: { this: customError },
     },
+    getValues,
   } = useFormContext();
+
+  const { isSubmitting } = useFormState();
+
+  useLayoutEffect(() => {
+    if (isSubmitting && !formSubmitted) {
+      uiEvents.emit(UIEvent.actionCreated, getValues());
+      setFormSubmitted(true);
+    }
+  }, [isSubmitting, formSubmitted, getValues]);
 
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
@@ -152,10 +164,11 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           {...actionFormProps}
           className="flex flex-col h-full"
           innerRef={formRef}
-          onSuccess={() => {
+          onSuccess={(values) => {
             client.refetchQueries({
               include: [SearchActionsDocument],
             });
+            uiEvents.emit(UIEvent.actionCreationSucceeded, values);
           }}
         >
           <ActionSidebarFormContent

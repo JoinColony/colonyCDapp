@@ -42,6 +42,7 @@ const config = {
         '~transformers': path.resolve(__dirname, 'src/transformers'),
         '~v5': path.resolve(__dirname, 'src/components/v5'),
         '~auth': path.resolve(__dirname, 'src/auth'),
+        '~uiEvents': path.resolve(__dirname, 'src/uiEvents'),
         assert: 'assert',
         buffer: 'buffer',
         crypto: 'crypto-browserify',

@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { type FC } from 'react';
+import React, { useLayoutEffect, useState, type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import ColonyLogo from '~images/logo-new.svg';
 import FeedbackButton from '~shared/FeedbackButton/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
 
@@ -49,6 +50,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     isThirdLevelMenuOpen,
     { toggleOn: toggleOnThirdLevelMenu, toggleOff: toggleOffThirdLevelMenu },
   ] = thirdLevelMenuToggle;
+  const [trackedIndex, setTrackedIndex] = useState<number>(-1);
 
   useDisableBodyScroll((isMenuOpen || openItemIndex === 0) && isTablet);
 
@@ -75,6 +77,39 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
       setShouldShowThirdLevel(true);
     }
   };
+
+  /*
+   * @NOTE I have to use numeric indexes, and can't convert them to enums since
+   * they are manipulated via arithmetic operations.
+   */
+  useLayoutEffect(() => {
+    switch (openItemIndex) {
+      case 2: {
+        if (trackedIndex !== openItemIndex) {
+          uiEvents.emit(UIEvent.openMenu, { menu: 'dashboard' });
+          setTrackedIndex(openItemIndex);
+        }
+        break;
+      }
+      case 4: {
+        if (trackedIndex !== openItemIndex) {
+          uiEvents.emit(UIEvent.openMenu, { menu: 'finance' });
+          setTrackedIndex(openItemIndex);
+        }
+        break;
+      }
+      case 5: {
+        if (trackedIndex !== openItemIndex) {
+          uiEvents.emit(UIEvent.openMenu, { menu: 'admin' });
+          setTrackedIndex(openItemIndex);
+        }
+        break;
+      }
+      default:
+        setTrackedIndex(-1);
+        break;
+    }
+  }, [openItemIndex, trackedIndex]);
 
   return (
     <nav
@@ -131,6 +166,8 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                   if (isTablet) {
                     toggleOffMenu();
                   }
+
+                  uiEvents.emit(UIEvent.colonySwitcher);
 
                   toggleOffThirdLevelMenu();
                 }}

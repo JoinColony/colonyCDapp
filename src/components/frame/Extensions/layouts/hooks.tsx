@@ -30,6 +30,7 @@ import {
   COLONY_MULTISIG_ROUTE,
 } from '~routes/routeConstants.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
@@ -220,10 +221,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           {
             key: '1',
             label: formatText({ id: 'actions.simplePayment' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
-              }),
+              });
+              uiEvents.emit(UIEvent.relatedAction, {
+                action: ACTION.SIMPLE_PAYMENT,
+              });
+            },
           },
           // {
           //   key: '2',
@@ -271,26 +276,38 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           {
             key: '7',
             label: formatText({ id: 'actions.transferFunds' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
-              }),
+              });
+              uiEvents.emit(UIEvent.relatedAction, {
+                action: ACTION.TRANSFER_FUNDS,
+              });
+            },
           },
           {
             key: '8',
             label: formatText({ id: 'actions.manageTokens' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_TOKENS,
-              }),
+              });
+              uiEvents.emit(UIEvent.relatedAction, {
+                action: ACTION.MANAGE_TOKENS,
+              });
+            },
           },
           {
             key: '9',
             label: formatText({ id: 'actions.mintTokens' }),
-            onClick: () =>
+            onClick: () => {
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
-              }),
+              });
+              uiEvents.emit(UIEvent.relatedAction, {
+                action: ACTION.MINT_TOKENS,
+              });
+            },
           },
         ],
       },

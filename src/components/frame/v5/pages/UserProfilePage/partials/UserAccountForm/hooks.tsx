@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   type UseAvatarUploaderProps,
@@ -66,6 +67,8 @@ export const useUserProfilePageForm = () => {
     });
 
     await updateUser(user?.walletAddress, true);
+
+    uiEvents.emit(UIEvent.updateAvatar);
 
     toast.success(
       <Toast

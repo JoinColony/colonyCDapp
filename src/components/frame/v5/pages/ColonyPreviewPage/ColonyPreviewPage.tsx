@@ -17,6 +17,7 @@ import {
   useGetPublicColonyByNameQuery,
 } from '~gql';
 import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import CardConnectWallet from '~v5/shared/CardConnectWallet/index.ts';
@@ -124,6 +125,12 @@ const ColonyPreviewPage = () => {
     });
 
     if (valid.data?.validateUserInvite) {
+      uiEvents.emit(UIEvent.userJoinedColony, {
+        inviteCode,
+        colonyName,
+        colonyDisplayName: colonyMetadata?.displayName,
+        colonyId: colonyAddress,
+      });
       navigate(`/${colonyName}`);
     }
   };

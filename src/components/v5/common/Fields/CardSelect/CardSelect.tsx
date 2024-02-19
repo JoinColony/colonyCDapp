@@ -22,6 +22,8 @@ function CardSelect<TValue = string>({
   // message,
   options,
   onChange: onChangeProp,
+  onClickItem: onClickItemCallback,
+  onOpenMenu: onOpenMenuCallback,
   value: valueProp,
   title,
   keyExtractor = (v) => String(v),
@@ -122,7 +124,12 @@ function CardSelect<TValue = string>({
                 'text-blue-400': isSelectVisible,
               },
             )}
-            onClick={toggleSelect}
+            onClick={(event) => {
+              toggleSelect();
+              if (onOpenMenuCallback) {
+                onOpenMenuCallback(event);
+              }
+            }}
           >
             {renderSelectedValue
               ? renderSelectedValue(
@@ -170,6 +177,10 @@ function CardSelect<TValue = string>({
                                       onClick: () => {
                                         onChange(optionValue);
                                         toggleSelectOff();
+
+                                        if (onClickItemCallback) {
+                                          onClickItemCallback(optionValue);
+                                        }
                                       },
                                     },
                                     label,

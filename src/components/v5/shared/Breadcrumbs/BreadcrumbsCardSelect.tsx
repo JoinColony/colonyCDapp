@@ -2,6 +2,7 @@ import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { CardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -16,6 +17,22 @@ interface Props {
 }
 
 const BreadcrumbsCardSelect = ({ item }: Props) => {
+  const handleUIEventIndividual = (domainHref: string) => {
+    const currentDomainSelection = item.dropdownOptions?.find(
+      (option) => option.href === domainHref,
+    );
+    if (currentDomainSelection) {
+      const nativeDomainId = currentDomainSelection.href.slice(
+        currentDomainSelection.href.indexOf('=') + 1,
+      );
+      uiEvents.emit(UIEvent.selectTeam, {
+        name: currentDomainSelection.label,
+        nativeDomainId,
+      });
+    }
+  };
+  const handleUIEventOpenMenu = () => uiEvents.emit(UIEvent.openTeamsMenu);
+
   const options =
     'dropdownOptions' in item
       ? item.dropdownOptions.map(({ href, label, color, ...option }) => ({
@@ -65,6 +82,8 @@ const BreadcrumbsCardSelect = ({ item }: Props) => {
           </span>
         );
       }}
+      onClickItem={handleUIEventIndividual}
+      onOpenMenu={handleUIEventOpenMenu}
     />
   );
 };

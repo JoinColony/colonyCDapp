@@ -34,7 +34,9 @@
       "~transformers": ["src/transformers"],
       "~transformers/*": ["src/transformers/*"],
       "~auth": ["src/auth"],
-      "~auth/*": ["src/auth/*"]
+      "~auth/*": ["src/auth/*"],
+      "~uiEvents": ["src/uiEvents"],
+      "~uiEvents/*": ["src/uiEvents/*"]
 
     },
     "allowSyntheticDefaultImports": true,

@@ -5,9 +5,8 @@ import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { AnalyticsContextProvider } from '~context/AnalyticsContext/index.ts';
 import { getContext, ContextModule } from '~context/index.ts';
-import RouteTracker from '~routes/RouteTracker.tsx';
+import { uiEvents } from '~uiEvents/index.ts';
 
 import actionMessages from './i18n/en-actions.ts';
 import eventsMessages from './i18n/en-events.ts';
@@ -33,6 +32,16 @@ if (PROD_COMMIT_HASH) {
   console.log(`Running on ${PROD_COMMIT_HASH}`);
 }
 
+/*
+ * @NOTE This can be called regardless, as no direct keys or settings required
+ * Everything goes through the auth proxy, so it's responsible for ensuring
+ * this service is correctly connected to it's host
+ *
+ * But even it that's not true, the app will still run, you'll just get an 404
+ * from the auth proxy informing you that the service is not available
+ */
+uiEvents.load();
+
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -51,12 +60,9 @@ const Entry = ({ store }: Props) => {
       <ApolloProvider client={apolloClient}>
         <ReduxProvider store={store}>
           <HelmetProvider>
-            <AnalyticsContextProvider>
-              <Router>
-                <RouteTracker />
-                <Routes />
-              </Router>
-            </AnalyticsContextProvider>
+            <Router>
+              <Routes />
+            </Router>
           </HelmetProvider>
         </ReduxProvider>
       </ApolloProvider>

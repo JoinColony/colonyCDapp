@@ -17,15 +17,6 @@ import {
   type UseToggleReturnType,
 } from '~hooks/useToggle/types.ts';
 
-import {
-  useAnalyticsContext,
-  AnalyticsEventType,
-  AnalyticsEventCategory,
-  AnalyticsEventAction,
-  AnalyticsEventLabel,
-  type AnalyticsEvent,
-} from '../AnalyticsContext/index.ts';
-
 import { isElementInsideModalOrPortal } from './utils.ts';
 
 type ActionSidebarToggle = [
@@ -50,13 +41,6 @@ export const ActionSidebarContext = createContext<ActionSidebarContextValue>({
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
 });
 
-const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
-  event: AnalyticsEventType.CUSTOM_EVENT,
-  category: AnalyticsEventCategory.ACTION_PANEL,
-  action: AnalyticsEventAction.TRIGGER,
-  label: AnalyticsEventLabel.OPEN_ACTION_PANEL,
-};
-
 export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
@@ -74,7 +58,6 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
       registerContainerRef: actionSidebarRegisterContainerRef,
     },
   ] = useToggle();
-  const { trackEvent } = useAnalyticsContext();
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
@@ -96,10 +79,9 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
     (initialValues) => {
       setActionSidebarInitialValues(initialValues);
       // Track the event when the action panel is opened
-      trackEvent(OPEN_ACTION_PANEL_EVENT);
       return toggleActionSidebarOn();
     },
-    [toggleActionSidebarOn, trackEvent],
+    [toggleActionSidebarOn],
   );
 
   const toggleOff = useCallback(() => {

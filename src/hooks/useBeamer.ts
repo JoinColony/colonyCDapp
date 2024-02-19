@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { FEATURES_BUGS, WHATS_NEW } from '~constants/index.ts';
+import { uiEvents, UIEvent } from '~uiEvents/index.ts';
 
 export const useBeamer = (): void => {
   useEffect(() => {
@@ -24,6 +25,7 @@ export const openWhatsNew = (e): void => {
 };
 
 export const openFeaturesBugs = (e): void => {
+  uiEvents.emit(UIEvent.giveFeedback);
   if (typeof window.Beamer !== 'undefined') {
     e.preventDefault();
     window.Beamer.showIdeas(true);
