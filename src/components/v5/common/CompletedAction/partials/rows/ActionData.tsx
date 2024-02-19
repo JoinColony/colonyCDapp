@@ -35,7 +35,7 @@ const ActionData = ({
           </div>
         </Tooltip>
       </div>
-      <span>{rowContent}</span>
+      <div>{rowContent}</div>
     </>
   );
 };

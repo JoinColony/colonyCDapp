@@ -27,7 +27,7 @@ const AmountRow = ({ amount, token }: AmountRowProps) => {
       })}
       RowIcon={Coins}
       rowContent={
-        <>
+        <div className="flex items-center gap-1">
           {formattedAmount}
           {token && (
             <>
@@ -35,7 +35,7 @@ const AmountRow = ({ amount, token }: AmountRowProps) => {
               <span className="text-md">{token.symbol}</span>
             </>
           )}
-        </>
+        </div>
       }
     />
   );
