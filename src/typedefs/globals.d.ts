@@ -63,6 +63,7 @@ interface ImportMetaEnv {
   readonly VITE_REPUTATION_ORACLE_ENDPOINT: string;
   readonly VITE_PROD_COMMIT_HASH: string | undefined;
   readonly VITE_SAFE_ENABLED: string | undefined;
+  readonly VITE_URL: string | undefined;
 }
 
 interface ImportMeta {

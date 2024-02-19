@@ -40,6 +40,7 @@ RUN echo "Building commit hash: $(git rev-parse --short HEAD)"
 RUN echo "\n\
 VITE_PROD_COMMIT_HASH$(git rev-parse --short HEAD)\n\
 VITE_SAFE_ENABLED=false\n\
+VITE_URL=$URL\n\
 " > .env.production
 
 RUN npm run vite:prod
