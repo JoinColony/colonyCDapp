@@ -2,8 +2,8 @@ import { type ColonyRole } from '@colony/colony-js';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
+import { type CustomPermissionTableModel } from '~types/permissions.ts';
 import { formatText } from '~utils/intl.ts';
-import { type CustomPermissionTableModel } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/partials/PermissionsTable/types.ts';
 import Switch from '~v5/common/Fields/Switch/index.ts';
 
 const customPermissionsColumnHelper =

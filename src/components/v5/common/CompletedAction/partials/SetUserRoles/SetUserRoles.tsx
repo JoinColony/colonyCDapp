@@ -6,9 +6,8 @@ import { defineMessages } from 'react-intl';
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyActionRoles } from '~gql';
 import { type ColonyAction } from '~types/graphql.ts';
-import { formatRolesTitle } from '~utils/colonyActions.ts';
+import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
-import { AUTHORITY_OPTIONS } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 

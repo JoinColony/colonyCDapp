@@ -1,3 +1,4 @@
+import { ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 import { type ReactNode } from 'react';
 
@@ -15,7 +16,9 @@ import {
   type ColonyAction,
 } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
+import { type CustomPermissionTableModel } from '~types/permissions.ts';
 import { isEmpty, isEqual } from '~utils/lodash.ts';
+import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 import { type MotionVote } from './colonyMotions.ts';
 import { formatText } from './intl.ts';
@@ -653,3 +656,59 @@ export const getColonyRoleSetTitleValues = (
     roleSetDirection: '',
   };
 };
+
+export const AUTHORITY = {
+  ViaMultiSig: 'via-multi-sig',
+  Own: 'own',
+} as const;
+
+export const AUTHORITY_OPTIONS: CardSelectOption<string>[] = [
+  // @TODO: Uncomment when multi-sig is ready
+  // {
+  //   label: formatText({ id: 'actionSidebar.authority.viaMultiSig' }),
+  //   value: AUTHORITY.ViaMultiSig,
+  // },
+  {
+    label: formatText({ id: 'actionSidebar.authority.own' }),
+    value: AUTHORITY.Own,
+  },
+];
+
+export const CUSTOM_PERMISSION_TABLE_CONTENT: CustomPermissionTableModel[] = [
+  {
+    key: ColonyRole.Root,
+    name: ColonyRole.Root,
+    overview: formatText({ id: 'permissions.custom.root.overview' }),
+    type: formatText({ id: 'role.1' }),
+  },
+  {
+    key: ColonyRole.Administration,
+    name: ColonyRole.Administration,
+    overview: formatText({ id: 'permissions.custom.administration.overview' }),
+    type: formatText({ id: 'role.6' }),
+  },
+  {
+    key: ColonyRole.Architecture,
+    name: ColonyRole.Architecture,
+    overview: formatText({ id: 'permissions.custom.architecture.overview' }),
+    type: formatText({ id: 'role.3' }),
+  },
+  {
+    key: ColonyRole.Funding,
+    name: ColonyRole.Funding,
+    overview: formatText({ id: 'permissions.custom.funding.overview' }),
+    type: formatText({ id: 'role.5' }),
+  },
+  {
+    key: ColonyRole.Recovery,
+    name: ColonyRole.Recovery,
+    overview: formatText({ id: 'permissions.custom.recovery.overview' }),
+    type: formatText({ id: 'role.0' }),
+  },
+  {
+    key: ColonyRole.Arbitration,
+    name: ColonyRole.Arbitration,
+    overview: formatText({ id: 'permissions.custom.arbitration.overview' }),
+    type: formatText({ id: 'role.2' }),
+  },
+];

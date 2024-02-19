@@ -4,18 +4,16 @@ import React, { type FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
+import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
+import {
+  type PermissionsTableModel,
+  type CustomPermissionTableModel,
+  type PermissionsTableProps,
+} from '~types/permissions.ts';
+import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
 import Table from '~v5/common/Table/index.ts';
 
-import { CUSTOM_PERMISSION_TABLE_CONTENT } from './consts.tsx';
-import {
-  useCustomPermissionsTableColumns,
-  usePermissionsTableProps,
-} from './hooks.tsx';
-import {
-  type CustomPermissionTableModel,
-  type PermissionsTableModel,
-  type PermissionsTableProps,
-} from './types.ts';
+import { useCustomPermissionsTableColumns } from './hooks.tsx';
 
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 

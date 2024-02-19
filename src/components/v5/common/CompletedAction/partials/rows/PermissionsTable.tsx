@@ -2,13 +2,13 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import clsx from 'clsx';
 import React from 'react';
 
-import { USER_ROLE, type UserRole } from '~constants/permissions.ts';
-import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/partials/PermissionsTable/consts.tsx';
-import { usePermissionsTableProps } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/partials/PermissionsTable/hooks.tsx';
+import { UserRole } from '~constants/permissions.ts';
+import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
 import {
   type CustomPermissionTableModel,
   type PermissionsTableModel,
-} from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/partials/PermissionsTable/types.ts';
+} from '~types/permissions.ts';
+import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import { getCustomPermissionsTableColumns } from './hooks.tsx';
@@ -39,7 +39,7 @@ const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
 
   return (
     <div className="mt-7">
-      {role !== USER_ROLE.Custom ? (
+      {role !== UserRole.Custom ? (
         <Table<PermissionsTableModel>
           verticalOnMobile={false}
           {...permissionsTableProps}
