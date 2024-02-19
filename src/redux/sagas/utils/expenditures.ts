@@ -4,7 +4,7 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
-  type DecisionMethod,
+  type ExpenditureDecisionMethod,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
 } from '~gql';
@@ -122,7 +122,7 @@ interface SaveExpenditureMetadataParams {
   colonyAddress: string;
   expenditureId: number;
   fundFromDomainId: number;
-  decisionMethod: DecisionMethod;
+  decisionMethod: ExpenditureDecisionMethod;
   stages?: ExpenditureStageFieldValue[];
   stakeAmount?: string;
 }

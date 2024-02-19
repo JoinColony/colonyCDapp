@@ -1360,7 +1360,7 @@ export type CreateExpenditureInput = {
 };
 
 export type CreateExpenditureMetadataInput = {
-  decisionMethod: DecisionMethod;
+  decisionMethod: ExpenditureDecisionMethod;
   fundFromDomainNativeId: Scalars['Int'];
   id?: InputMaybe<Scalars['ID']>;
   stages?: InputMaybe<Array<ExpenditureStageInput>>;
@@ -1569,11 +1569,6 @@ export type CurrentVersion = {
   /** The current version number */
   version: Scalars['Int'];
 };
-
-export enum DecisionMethod {
-  Permissions = 'PERMISSIONS',
-  Repuptation = 'REPUPTATION'
-}
 
 export type DeleteAnnotationInput = {
   id: Scalars['ID'];
@@ -1923,10 +1918,15 @@ export type ExpenditureBalanceInput = {
   tokenAddress: Scalars['ID'];
 };
 
+export enum ExpenditureDecisionMethod {
+  Permissions = 'PERMISSIONS',
+  Reputation = 'REPUTATION'
+}
+
 export type ExpenditureMetadata = {
   __typename?: 'ExpenditureMetadata';
   createdAt: Scalars['AWSDateTime'];
-  decisionMethod: DecisionMethod;
+  decisionMethod: ExpenditureDecisionMethod;
   fundFromDomainNativeId: Scalars['Int'];
   id: Scalars['ID'];
   stages?: Maybe<Array<ExpenditureStage>>;
@@ -2857,11 +2857,6 @@ export type ModelCurrentVersionFilterInput = {
   version?: InputMaybe<ModelIntInput>;
 };
 
-export type ModelDecisionMethodInput = {
-  eq?: InputMaybe<DecisionMethod>;
-  ne?: InputMaybe<DecisionMethod>;
-};
-
 export type ModelDomainColorInput = {
   eq?: InputMaybe<DomainColor>;
   ne?: InputMaybe<DomainColor>;
@@ -2949,6 +2944,11 @@ export type ModelExpenditureConnection = {
   nextToken?: Maybe<Scalars['String']>;
 };
 
+export type ModelExpenditureDecisionMethodInput = {
+  eq?: InputMaybe<ExpenditureDecisionMethod>;
+  ne?: InputMaybe<ExpenditureDecisionMethod>;
+};
+
 export type ModelExpenditureFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
   colonyId?: InputMaybe<ModelIdInput>;
@@ -2970,7 +2970,7 @@ export type ModelExpenditureFilterInput = {
 
 export type ModelExpenditureMetadataConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataConditionInput>>>;
-  decisionMethod?: InputMaybe<ModelDecisionMethodInput>;
+  decisionMethod?: InputMaybe<ModelExpenditureDecisionMethodInput>;
   fundFromDomainNativeId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelExpenditureMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataConditionInput>>>;
@@ -2985,7 +2985,7 @@ export type ModelExpenditureMetadataConnection = {
 
 export type ModelExpenditureMetadataFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataFilterInput>>>;
-  decisionMethod?: InputMaybe<ModelDecisionMethodInput>;
+  decisionMethod?: InputMaybe<ModelExpenditureDecisionMethodInput>;
   fundFromDomainNativeId?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelExpenditureMetadataFilterInput>;
@@ -7976,7 +7976,7 @@ export type UpdateExpenditureInput = {
 };
 
 export type UpdateExpenditureMetadataInput = {
-  decisionMethod?: InputMaybe<DecisionMethod>;
+  decisionMethod?: InputMaybe<ExpenditureDecisionMethod>;
   fundFromDomainNativeId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   stages?: InputMaybe<Array<ExpenditureStageInput>>;
