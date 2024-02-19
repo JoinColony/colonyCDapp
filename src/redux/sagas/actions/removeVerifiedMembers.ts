@@ -129,7 +129,7 @@ function* removeVerifiedMembersAction({
       meta,
     });
 
-    apolloClient.cache.evict({ fieldName: 'getContributorsByColony' });
+    apolloClient.refetchQueries({ include: ['GetColonyContributors'] });
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
