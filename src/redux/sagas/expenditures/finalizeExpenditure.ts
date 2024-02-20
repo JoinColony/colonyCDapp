@@ -37,7 +37,7 @@ function* finalizeExpenditureAction({
     annotateFinalizeExpenditure,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['makeExpenditure', 'annotateFinalizeExpenditure'],
+    ['finalizeExpenditure', 'annotateFinalizeExpenditure'],
   );
 
   try {
