@@ -34,6 +34,7 @@ function* createStakedExpenditure({
     isStaged,
     stages,
     networkInverseFee,
+    tokenDecimals,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -176,6 +177,7 @@ function* createStakedExpenditure({
           expenditureId,
           payoutsWithSlotIds,
           networkInverseFee,
+          tokenDecimals,
         ),
       ),
     );
