@@ -1,3 +1,5 @@
+import { type BigNumber } from 'ethers';
+
 import { type TokenFragment } from '~gql';
 
 export interface BalanceTableProps {
@@ -5,6 +7,6 @@ export interface BalanceTableProps {
 }
 
 export interface BalanceTableFieldModel {
-  balance: string | JSX.Element;
+  balance: BigNumber;
   token?: TokenFragment;
 }

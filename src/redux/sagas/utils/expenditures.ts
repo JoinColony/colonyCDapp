@@ -108,11 +108,11 @@ export const getExpenditureBalancesByTokenAddress = (
 
       const currentBalance =
         balancesByTokenAddresses.get(payout.tokenAddress) ?? '0';
+      const updatedBalance = BigNumber.from(currentBalance)
+        .add(payout.amount)
+        .add(payout.networkFee ?? '0');
 
-      balancesByTokenAddresses.set(
-        payout.tokenAddress,
-        BigNumber.from(payout.amount).add(currentBalance),
-      );
+      balancesByTokenAddresses.set(payout.tokenAddress, updatedBalance);
     });
   });
 

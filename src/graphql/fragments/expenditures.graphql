@@ -15,11 +15,6 @@ fragment Expenditure on Expenditure {
     }
     stakeAmount
   }
-  balances {
-    tokenAddress
-    amount
-    requiredAmount
-  }
   finalizedAt
   hasReclaimedStake
   motions {
@@ -30,6 +25,9 @@ fragment Expenditure on Expenditure {
   type
   isStaked
   isStakeForfeited
+  balances {
+    ...ExpenditureBalance
+  }
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
@@ -46,10 +44,16 @@ fragment ExpenditurePayout on ExpenditurePayout {
   tokenAddress
   amount
   isClaimed
+  networkFee
 }
 
 fragment ExpenditureStage on ExpenditureStage {
   slotId
   name
   isReleased
+}
+
+fragment ExpenditureBalance on ExpenditureBalance {
+  tokenAddress
+  amount
 }
