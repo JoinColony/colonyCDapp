@@ -44,10 +44,6 @@
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
           "s3Key": "amplify-builds/fetchColonyNativeFundsClaim-356a7630713169767432-build.zip"
         },
-        "fetchExpenditureBalances": {
-          "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
-          "s3Key": "amplify-builds/fetchExpenditureBalances-4b6f4d41452b5745716f-build.zip"
-        },
         "fetchMotionState": {
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
           "s3Key": "amplify-builds/fetchMotionState-46584258344e4f755941-build.zip"

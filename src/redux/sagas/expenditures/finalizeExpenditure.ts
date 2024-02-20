@@ -10,6 +10,9 @@ import {
 } from '../transactions/index.ts';
 import { initiateTransaction, putError } from '../utils/index.ts';
 
+export type FinalizeExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_FINALIZE>['payload'];
+
 function* finalizeExpenditure({
   payload: { colonyAddress, nativeExpenditureId },
   meta,

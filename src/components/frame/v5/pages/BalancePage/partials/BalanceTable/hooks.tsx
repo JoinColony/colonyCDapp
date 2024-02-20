@@ -1,13 +1,12 @@
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
+import { type NativeTokenStatusInput } from '~gql';
 import CurrencyConversion from '~shared/CurrencyConversion/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
+import { type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import {
-  getBalanceForTokenAndDomain,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge/index.ts';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
 
@@ -16,10 +15,8 @@ import TokenAvatar from '../TokenAvatar/index.ts';
 import { type BalanceTableFieldModel } from './types.ts';
 
 export const useBalanceTableColumns = (
-  nativeToken,
-  balances,
-  nativeTokenStatus,
-  domainId = 1,
+  nativeToken: Token,
+  nativeTokenStatus?: NativeTokenStatusInput | null,
 ): ColumnDef<BalanceTableFieldModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<BalanceTableFieldModel>(),
@@ -32,7 +29,7 @@ export const useBalanceTableColumns = (
         id: 'asset',
         header: () => formatText({ id: 'table.row.asset' }),
         cell: ({ row }) => {
-          if (!row.original.token) return [];
+          if (!row.original.token || !nativeTokenStatus) return [];
 
           return (
             <TokenAvatar
@@ -73,17 +70,10 @@ export const useBalanceTableColumns = (
         header: () => formatText({ id: 'table.row.balance' }),
         size: 165,
         cell: ({ row }) => {
-          const currentTokenBalance =
-            getBalanceForTokenAndDomain(
-              balances,
-              row.original.token?.tokenAddress || '',
-              domainId,
-            ) || 0;
-
           return (
             <div className="flex flex-col justify-center">
               <Numeral
-                value={currentTokenBalance}
+                value={row.original.balance}
                 decimals={getTokenDecimalsWithFallback(
                   row.original.token?.decimals,
                 )}
@@ -91,7 +81,7 @@ export const useBalanceTableColumns = (
                 suffix={row.original.token?.symbol}
               />
               <CurrencyConversion
-                tokenBalance={currentTokenBalance}
+                tokenBalance={row.original.balance}
                 contractAddress={row.original.token?.tokenAddress ?? ''}
                 className="text-gray-600 !text-sm"
               />
@@ -100,13 +90,7 @@ export const useBalanceTableColumns = (
         },
       }),
     ],
-    [
-      columnHelper,
-      balances,
-      domainId,
-      nativeToken.tokenAddress,
-      nativeTokenStatus,
-    ],
+    [columnHelper, nativeToken.tokenAddress, nativeTokenStatus],
   );
 
   return columns;

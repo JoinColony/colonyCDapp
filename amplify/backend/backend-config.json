@@ -106,12 +106,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "fetchExpenditureBalances": {
-      "build": true,
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "fetchMotionState": {
       "build": true,
       "dependsOn": [
