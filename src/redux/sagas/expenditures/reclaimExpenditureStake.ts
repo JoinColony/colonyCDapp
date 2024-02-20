@@ -10,6 +10,9 @@ import {
 } from '../transactions/index.ts';
 import { initiateTransaction, putError } from '../utils/index.ts';
 
+export type ReclaimExpenditureStakePayload =
+  Action<ActionTypes.RECLAIM_EXPENDITURE_STAKE>['payload'];
+
 function* reclaimExpenditureStake({
   payload: { colonyAddress, nativeExpenditureId },
   meta,
