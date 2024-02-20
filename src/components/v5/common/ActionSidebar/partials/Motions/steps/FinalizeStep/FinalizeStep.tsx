@@ -6,7 +6,7 @@ import { defineMessages } from 'react-intl';
 import { apolloClient } from '~apollo';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ColonyActionType } from '~gql';
+import { ColonyActionType, GetColonyContributorsDocument } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -88,7 +88,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       switch (actionData.type) {
         case ColonyActionType.AddVerifiedMembersMotion:
         case ColonyActionType.RemoveVerifiedMembersMotion: {
-          apolloClient.refetchQueries({ include: ['GetColonyContributors'] });
+          apolloClient.refetchQueries({
+            include: [GetColonyContributorsDocument],
+          });
           break;
         }
         default: {
