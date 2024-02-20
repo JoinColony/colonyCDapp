@@ -108,6 +108,8 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         expenditure: Expenditure;
         stakedExpenditureAddress?: Address;
+        customActionTitle?: string;
+        annotationMessage?: string;
       },
       object
     >
