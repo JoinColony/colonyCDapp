@@ -50,6 +50,7 @@ export type ExpendituresActionTypes =
         networkInverseFee: string;
         decisionMethod: ExpenditureDecisionMethod;
         annotationMessage?: string;
+        tokenDecimals: number;
       },
       MetaWithSetter<object>
     >
@@ -91,7 +92,7 @@ export type ExpendituresActionTypes =
         expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
-
+        tokenDecimals: number;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
@@ -142,6 +143,7 @@ export type ExpendituresActionTypes =
         networkInverseFee: string;
         annotationMessage?: string;
         decisionMethod: ExpenditureDecisionMethod;
+        tokenDecimals: number;
       },
       MetaWithSetter<object>
     >
