@@ -40,7 +40,7 @@ const TIMESTAMP_IN_FUTURE = 2_000_000_000;
 
 function* createStreamingPaymentAction({
   payload: {
-    colony: { name: colonyName, colonyAddress },
+    colonyAddress,
     createdInDomain,
     recipientAddress,
     tokenAddress,
@@ -54,7 +54,6 @@ function* createStreamingPaymentAction({
     customActionTitle,
   },
   meta,
-  meta: { navigate, setTxHash },
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -155,8 +154,6 @@ function* createStreamingPaymentAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield waitForTxResult(createStreamingPayment.channel);
 
     if (annotationMessage) {
@@ -197,12 +194,6 @@ function* createStreamingPaymentAction({
       payload: {},
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,

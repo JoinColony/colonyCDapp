@@ -22,13 +22,12 @@ export type FinalizeExpenditurePayload =
 
 function* finalizeExpenditureAction({
   payload: {
-    colony: { colonyAddress, name: colonyName },
+    colonyAddress,
     nativeExpenditureId,
     customActionTitle,
     annotationMessage,
   },
   meta,
-  meta: { navigate, setTxHash },
 }: Action<ActionTypes.EXPENDITURE_FINALIZE>) {
   const batchKey = 'finalizeExpenditure';
 
@@ -86,8 +85,6 @@ function* finalizeExpenditureAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     yield waitForTxResult(finalizeExpenditure.channel);
 
     if (annotationMessage) {
@@ -107,12 +104,6 @@ function* finalizeExpenditureAction({
       payload: {},
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
   }

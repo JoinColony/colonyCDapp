@@ -8,7 +8,6 @@ import {
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
 import {
-  type Colony,
   type Domain,
   type Expenditure,
   type ExpenditureSlot,
@@ -42,7 +41,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CREATE,
       {
-        colony: Colony;
+        colonyAddress: Address;
         payouts: ExpenditurePayoutFieldValue[];
         // the domain to create the expenditure in
         createdInDomain: Domain;
@@ -74,7 +73,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_FINALIZE,
       {
-        colony: Colony;
+        colonyAddress: Address;
         nativeExpenditureId: number;
         customActionTitle?: string;
         annotationMessage?: string;
@@ -93,7 +92,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_EDIT,
       {
-        colony: Colony;
+        colonyAddress: Address;
         expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
@@ -137,7 +136,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CREATE,
       {
-        colony: Colony;
+        colonyAddress: Address;
         payouts: ExpenditurePayoutFieldValue[];
         // the domain to create the expenditure in
         createdInDomain: Domain;
@@ -207,7 +206,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_CREATE,
       {
-        colony: Colony;
+        colonyAddress: Address;
         createdInDomain: Domain;
         recipientAddress: Address;
         tokenAddress: Address;
