@@ -21,6 +21,9 @@ import {
   initiateTransaction,
 } from '../utils/index.ts';
 
+export type CreateStakedExpenditurePayload =
+  Action<ActionTypes.STAKED_EXPENDITURE_CREATE>['payload'];
+
 function* createStakedExpenditure({
   meta: { navigate, setTxHash },
   meta,
