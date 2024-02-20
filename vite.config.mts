@@ -40,4 +40,7 @@ export default defineConfig({
       '~v5': path.resolve(__dirname, 'src/components/v5'),
     },
   },
+  server: {
+    port: 9091,
+  },
 });
