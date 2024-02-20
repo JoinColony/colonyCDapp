@@ -14,6 +14,7 @@ import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/c
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
@@ -56,6 +57,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.EXPENDITURE_CLAIM,
     error: ActionTypes.EXPENDITURE_CLAIM_ERROR,
     success: ActionTypes.EXPENDITURE_CLAIM_SUCCESS,
+  });
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
   });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
@@ -165,6 +171,15 @@ const TmpAdvancedPayments = () => {
     await createStakedExpenditure(payload);
   };
 
+  const handleReclaimStake = async () => {
+    const payload: ReclaimExpenditureStakePayload = {
+      colonyAddress: colony.colonyAddress,
+      nativeExpenditureId: Number(expenditureId),
+    };
+
+    await reclaimExpenditureStake(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -190,6 +205,7 @@ const TmpAdvancedPayments = () => {
         <Button onClick={handleFinalizeExpenditure}>
           Finalize expenditure
         </Button>
+        <Button onClick={handleReclaimStake}>Reclaim stake</Button>
       </div>
     </div>
   );
