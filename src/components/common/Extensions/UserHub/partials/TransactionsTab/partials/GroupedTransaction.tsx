@@ -53,12 +53,18 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
 
+  const { methodName, context } = values;
+  const titleValues = { methodName, context };
+
   const value = formatText(
     {
       ...defaultTransactionGroupMessageDescriptorTitleId,
       ...values.group?.title,
     },
-    values.group?.titleValues || arrayToObject(values.params),
+    values.group?.titleValues || {
+      ...arrayToObject(values.params),
+      ...titleValues,
+    },
   );
 
   return (
@@ -82,8 +88,10 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                   {...defaultTransactionGroupMessageDescriptorDescriptionId}
                   {...values.group?.description}
                   values={
-                    values.group?.descriptionValues ||
-                    arrayToObject(values.params)
+                    values.group?.descriptionValues || {
+                      ...arrayToObject(values.params),
+                      ...titleValues,
+                    }
                   }
                 />
               </p>
