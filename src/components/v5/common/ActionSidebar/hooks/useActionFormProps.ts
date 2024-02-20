@@ -90,7 +90,6 @@ export const useActionFormProps = (
           keepDirtyValues: true,
         },
       );
-      form.trigger();
     },
     [isReadonly, defaultValues, navigate],
   );
