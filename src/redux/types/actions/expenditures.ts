@@ -25,6 +25,8 @@ export type ExpenditureFundPayload = {
   colonyAddress: Address;
   fromDomainFundingPotId: number;
   expenditure: Expenditure;
+  customActionTitle?: string;
+  annotationMessage?: string;
 };
 
 export type CancelStakedExpenditurePayload = {
