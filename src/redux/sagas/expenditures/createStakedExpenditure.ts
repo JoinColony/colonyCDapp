@@ -27,10 +27,9 @@ export type CreateStakedExpenditurePayload =
   Action<ActionTypes.STAKED_EXPENDITURE_CREATE>['payload'];
 
 function* createStakedExpenditure({
-  meta: { navigate, setTxHash },
   meta,
   payload: {
-    colony: { name: colonyName, colonyAddress },
+    colonyAddress,
     payouts,
     createdInDomain,
     fundFromDomainId,
@@ -191,7 +190,6 @@ function* createStakedExpenditure({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
     yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
@@ -255,12 +253,6 @@ function* createStakedExpenditure({
     // @TODO: Remove during advanced payments UI wiring
     // eslint-disable-next-line no-console
     console.log('Created expenditure ID:', expenditureId.toString());
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {
