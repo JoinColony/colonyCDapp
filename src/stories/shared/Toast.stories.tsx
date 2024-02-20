@@ -3,7 +3,6 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import Toast from '~shared/Extensions/Toast/index.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
-import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -25,7 +24,6 @@ const ToastWithHooks = (args) => {
         Notify!
       </button>
       <ToastContainer
-        className={styles.toastNotification}
         autoClose={3000}
         hideProgressBar
         closeOnClick
