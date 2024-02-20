@@ -1,52 +1,125 @@
 import { ClientType } from '@colony/colony-js';
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
+  type ChannelDefinition,
   createTransaction,
-  getTxChannel,
+  createTransactionChannels,
   waitForTxResult,
 } from '../transactions/index.ts';
-import { initiateTransaction, putError } from '../utils/index.ts';
+import {
+  createActionMetadataInDB,
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils/index.ts';
 
 export type FinalizeExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_FINALIZE>['payload'];
 
-function* finalizeExpenditure({
-  payload: { colonyAddress, nativeExpenditureId },
+function* finalizeExpenditureAction({
+  payload: {
+    colony: { colonyAddress, name: colonyName },
+    nativeExpenditureId,
+    customActionTitle,
+    annotationMessage,
+  },
   meta,
+  meta: { navigate, setTxHash },
 }: Action<ActionTypes.EXPENDITURE_FINALIZE>) {
-  const txChannel = yield call(getTxChannel, meta.id);
+  const batchKey = 'finalizeExpenditure';
+
+  const {
+    finalizeExpenditure,
+    annotateFinalizeExpenditure,
+  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
+    meta.id,
+    ['makeExpenditure', 'annotateFinalizeExpenditure'],
+  );
 
   try {
-    yield fork(createTransaction, meta.id, {
+    yield fork(createTransaction, finalizeExpenditure.id, {
       context: ClientType.ColonyClient,
       methodName: 'finalizeExpenditure',
       identifier: colonyAddress,
       params: [nativeExpenditureId],
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
     });
 
-    yield initiateTransaction({ id: meta.id });
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateFinalizeExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
 
-    const { type } = yield waitForTxResult(txChannel);
+    yield takeFrom(
+      finalizeExpenditure.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateFinalizeExpenditure.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<AllActions>({
-        type: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
-        payload: {},
-        meta,
+    yield initiateTransaction({ id: finalizeExpenditure.id });
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      finalizeExpenditure.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    setTxHash?.(txHash);
+
+    yield waitForTxResult(finalizeExpenditure.channel);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateFinalizeExpenditure,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
+
+    yield put<AllActions>({
+      type: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
+      payload: {},
+      meta,
+    });
+
+    if (colonyName && navigate) {
+      navigate(`/${colonyName}?tx=${txHash}`, {
+        state: { isRedirect: true },
       });
     }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
   }
 
-  txChannel.close();
-
   return null;
 }
 
 export default function* finalizeExpenditureSaga() {
-  yield takeEvery(ActionTypes.EXPENDITURE_FINALIZE, finalizeExpenditure);
+  yield takeEvery(ActionTypes.EXPENDITURE_FINALIZE, finalizeExpenditureAction);
 }
