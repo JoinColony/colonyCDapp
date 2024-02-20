@@ -5,10 +5,12 @@ import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ExpenditureDecisionMethod, useGetExpenditureLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
@@ -21,12 +23,20 @@ import { ActionButton } from '~v5/shared/Button/index.ts';
 const TmpAdvancedPayments = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { networkInverseFee } = useNetworkInverseFee();
+  const { networkInverseFee = '0' } = useNetworkInverseFee();
 
   const [getExpenditure] = useGetExpenditureLazyQuery();
 
+  const { stakeAmount = '0', stakedExpenditureAddress = '' } =
+    useExpenditureStaking();
+
   const [expenditureId, setExpenditureId] = useState('');
 
+  const createStakedExpenditure = useAsyncFunction({
+    submit: ActionTypes.STAKED_EXPENDITURE_CREATE,
+    error: ActionTypes.STAKED_EXPENDITURE_CREATE_ERROR,
+    success: ActionTypes.STAKED_EXPENDITURE_CREATE_SUCCESS,
+  });
   const lockExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_LOCK,
     error: ActionTypes.EXPENDITURE_LOCK_ERROR,
@@ -53,19 +63,21 @@ const TmpAdvancedPayments = () => {
     return null;
   }
 
+  const payouts = [
+    {
+      amount: '10',
+      tokenAddress: colony.nativeToken.tokenAddress,
+      recipientAddress: user?.walletAddress ?? '',
+      claimDelay: 0,
+    },
+  ];
+
   const createExpenditurePayload: CreateExpenditurePayload = {
-    payouts: [
-      {
-        amount: '10',
-        tokenAddress: colony.nativeToken.tokenAddress,
-        recipientAddress: user?.walletAddress ?? '',
-        claimDelay: 0,
-      },
-    ],
+    payouts,
     colony,
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
-    networkInverseFee: networkInverseFee ?? '0',
+    networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
   };
 
@@ -134,15 +146,37 @@ const TmpAdvancedPayments = () => {
     await claimExpenditure(claimPayload);
   };
 
+  const handleCreateStakedExpenditure = async () => {
+    if (!stakeAmount || !stakedExpenditureAddress) {
+      return;
+    }
+
+    const payload: CreateStakedExpenditurePayload = {
+      payouts,
+      colony,
+      createdInDomain: rootDomain,
+      fundFromDomainId: 1,
+      stakeAmount,
+      stakedExpenditureAddress,
+      networkInverseFee,
+      decisionMethod: ExpenditureDecisionMethod.Permissions,
+    };
+
+    await createStakedExpenditure(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
-      <div>
+      <div className="flex gap-4">
         <ActionButton
           actionType={ActionTypes.EXPENDITURE_CREATE}
           values={createExpenditurePayload}
         >
           Create expenditure
         </ActionButton>
+        <Button onClick={handleCreateStakedExpenditure}>
+          Create staked expenditure
+        </Button>
       </div>
 
       <div className="flex gap-4">
