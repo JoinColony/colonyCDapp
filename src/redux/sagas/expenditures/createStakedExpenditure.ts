@@ -133,7 +133,7 @@ function* createStakedExpenditure({
         group: {
           key: batchKey,
           id: meta.id,
-          index: 3,
+          index: isStaged ? 4 : 3,
         },
         ready: false,
       });
