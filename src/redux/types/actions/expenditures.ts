@@ -176,6 +176,8 @@ export type ExpendituresActionTypes =
         slotId: number;
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
+        customActionTitle?: string;
+        annotationMessage?: string;
       },
       MetaWithSetter<object>
     >
