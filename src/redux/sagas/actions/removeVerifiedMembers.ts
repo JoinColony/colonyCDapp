@@ -2,6 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { apolloClient } from '~apollo';
+import { GetColonyContributorsDocument } from '~gql';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
@@ -129,7 +130,7 @@ function* removeVerifiedMembersAction({
       meta,
     });
 
-    apolloClient.refetchQueries({ include: ['GetColonyContributors'] });
+    apolloClient.refetchQueries({ include: [GetColonyContributorsDocument] });
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
