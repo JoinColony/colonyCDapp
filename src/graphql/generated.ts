@@ -5,7 +5,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-enum DefaultOptions {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -8405,13 +8405,15 @@ export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: numb
 
 export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null };
 
-export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null };
+export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string }> | null };
 
 export type ExpenditureSlotFragment = { __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null };
 
 export type ExpenditurePayoutFragment = { __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null };
 
 export type ExpenditureStageFragment = { __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean };
+
+export type ExpenditureBalanceFragment = { __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string };
 
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null };
 
@@ -8790,14 +8792,14 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null } | null };
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string }> | null } | null> } | null } | null };
 
 export type GetExpenditureQueryVariables = Exact<{
   expenditureId: Scalars['ID'];
 }>;
 
 
-export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null } | null };
+export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string }> | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -9300,6 +9302,12 @@ ${DomainFragmentDoc}
 ${VoterRecordFragmentDoc}
 ${MotionMessageFragmentDoc}
 ${AnnotationFragmentDoc}`;
+export const ExpenditureBalanceFragmentDoc = gql`
+    fragment ExpenditureBalance on ExpenditureBalance {
+  tokenAddress
+  amount
+}
+    `;
 export const ExpenditureFragmentDoc = gql`
     fragment Expenditure on Expenditure {
   id
@@ -9328,10 +9336,14 @@ export const ExpenditureFragmentDoc = gql`
   type
   isStaked
   isStakeForfeited
+  balances {
+    ...ExpenditureBalance
+  }
 }
     ${ExpenditureSlotFragmentDoc}
 ${ExpenditureStageFragmentDoc}
-${ColonyMotionFragmentDoc}`;
+${ColonyMotionFragmentDoc}
+${ExpenditureBalanceFragmentDoc}`;
 export const UserDisplayFragmentDoc = gql`
     fragment UserDisplay on User {
   walletAddress: id
@@ -9845,7 +9857,7 @@ export type CreateColonyActionMetadataMutationFn = Apollo.MutationFunction<Creat
  * });
  */
 export function useCreateColonyActionMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyActionMetadataMutation, CreateColonyActionMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateColonyActionMetadataMutation, CreateColonyActionMetadataMutationVariables>(CreateColonyActionMetadataDocument, options);
       }
 export type CreateColonyActionMetadataMutationHookResult = ReturnType<typeof useCreateColonyActionMetadataMutation>;
@@ -9878,7 +9890,7 @@ export type CreateAnnotationMutationFn = Apollo.MutationFunction<CreateAnnotatio
  * });
  */
 export function useCreateAnnotationMutation(baseOptions?: Apollo.MutationHookOptions<CreateAnnotationMutation, CreateAnnotationMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateAnnotationMutation, CreateAnnotationMutationVariables>(CreateAnnotationDocument, options);
       }
 export type CreateAnnotationMutationHookResult = ReturnType<typeof useCreateAnnotationMutation>;
@@ -9911,7 +9923,7 @@ export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<CreateUniqueC
  * });
  */
 export function useCreateUniqueColonyMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>(CreateUniqueColonyDocument, options);
       }
 export type CreateUniqueColonyMutationHookResult = ReturnType<typeof useCreateUniqueColonyMutation>;
@@ -9944,7 +9956,7 @@ export type CreateColonyEtherealMetadataMutationFn = Apollo.MutationFunction<Cre
  * });
  */
 export function useCreateColonyEtherealMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyEtherealMetadataMutation, CreateColonyEtherealMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateColonyEtherealMetadataMutation, CreateColonyEtherealMetadataMutationVariables>(CreateColonyEtherealMetadataDocument, options);
       }
 export type CreateColonyEtherealMetadataMutationHookResult = ReturnType<typeof useCreateColonyEtherealMetadataMutation>;
@@ -9977,7 +9989,7 @@ export type CreateColonyMetadataMutationFn = Apollo.MutationFunction<CreateColon
  * });
  */
 export function useCreateColonyMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateColonyMetadataMutation, CreateColonyMetadataMutationVariables>(CreateColonyMetadataDocument, options);
       }
 export type CreateColonyMetadataMutationHookResult = ReturnType<typeof useCreateColonyMetadataMutation>;
@@ -10010,7 +10022,7 @@ export type UpdateColonyMetadataMutationFn = Apollo.MutationFunction<UpdateColon
  * });
  */
 export function useUpdateColonyMetadataMutation(baseOptions?: Apollo.MutationHookOptions<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<UpdateColonyMetadataMutation, UpdateColonyMetadataMutationVariables>(UpdateColonyMetadataDocument, options);
       }
 export type UpdateColonyMetadataMutationHookResult = ReturnType<typeof useUpdateColonyMetadataMutation>;
@@ -10041,7 +10053,7 @@ export type ValidateUserInviteMutationFn = Apollo.MutationFunction<ValidateUserI
  * });
  */
 export function useValidateUserInviteMutation(baseOptions?: Apollo.MutationHookOptions<ValidateUserInviteMutation, ValidateUserInviteMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<ValidateUserInviteMutation, ValidateUserInviteMutationVariables>(ValidateUserInviteDocument, options);
       }
 export type ValidateUserInviteMutationHookResult = ReturnType<typeof useValidateUserInviteMutation>;
@@ -10072,7 +10084,7 @@ export type UpdateContributorsWithReputationMutationFn = Apollo.MutationFunction
  * });
  */
 export function useUpdateContributorsWithReputationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateContributorsWithReputationMutation, UpdateContributorsWithReputationMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<UpdateContributorsWithReputationMutation, UpdateContributorsWithReputationMutationVariables>(UpdateContributorsWithReputationDocument, options);
       }
 export type UpdateContributorsWithReputationMutationHookResult = ReturnType<typeof useUpdateContributorsWithReputationMutation>;
@@ -10106,7 +10118,7 @@ export type CreateColonyContributorMutationFn = Apollo.MutationFunction<CreateCo
  * });
  */
 export function useCreateColonyContributorMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyContributorMutation, CreateColonyContributorMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateColonyContributorMutation, CreateColonyContributorMutationVariables>(CreateColonyContributorDocument, options);
       }
 export type CreateColonyContributorMutationHookResult = ReturnType<typeof useCreateColonyContributorMutation>;
@@ -10140,7 +10152,7 @@ export type UpdateColonyContributorMutationFn = Apollo.MutationFunction<UpdateCo
  * });
  */
 export function useUpdateColonyContributorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateColonyContributorMutation, UpdateColonyContributorMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<UpdateColonyContributorMutation, UpdateColonyContributorMutationVariables>(UpdateColonyContributorDocument, options);
       }
 export type UpdateColonyContributorMutationHookResult = ReturnType<typeof useUpdateColonyContributorMutation>;
@@ -10173,7 +10185,7 @@ export type CreateColonyDecisionMutationFn = Apollo.MutationFunction<CreateColon
  * });
  */
 export function useCreateColonyDecisionMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyDecisionMutation, CreateColonyDecisionMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateColonyDecisionMutation, CreateColonyDecisionMutationVariables>(CreateColonyDecisionDocument, options);
       }
 export type CreateColonyDecisionMutationHookResult = ReturnType<typeof useCreateColonyDecisionMutation>;
@@ -10206,7 +10218,7 @@ export type CreateDomainMetadataMutationFn = Apollo.MutationFunction<CreateDomai
  * });
  */
 export function useCreateDomainMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateDomainMetadataMutation, CreateDomainMetadataMutationVariables>(CreateDomainMetadataDocument, options);
       }
 export type CreateDomainMetadataMutationHookResult = ReturnType<typeof useCreateDomainMetadataMutation>;
@@ -10239,7 +10251,7 @@ export type UpdateDomainMetadataMutationFn = Apollo.MutationFunction<UpdateDomai
  * });
  */
 export function useUpdateDomainMetadataMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<UpdateDomainMetadataMutation, UpdateDomainMetadataMutationVariables>(UpdateDomainMetadataDocument, options);
       }
 export type UpdateDomainMetadataMutationHookResult = ReturnType<typeof useUpdateDomainMetadataMutation>;
@@ -10272,7 +10284,7 @@ export type CreateExpenditureMetadataMutationFn = Apollo.MutationFunction<Create
  * });
  */
 export function useCreateExpenditureMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateExpenditureMetadataMutation, CreateExpenditureMetadataMutationVariables>(CreateExpenditureMetadataDocument, options);
       }
 export type CreateExpenditureMetadataMutationHookResult = ReturnType<typeof useCreateExpenditureMetadataMutation>;
@@ -10305,7 +10317,7 @@ export type CreateStreamingPaymentMetadataMutationFn = Apollo.MutationFunction<C
  * });
  */
 export function useCreateStreamingPaymentMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreateStreamingPaymentMetadataMutation, CreateStreamingPaymentMetadataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateStreamingPaymentMetadataMutation, CreateStreamingPaymentMetadataMutationVariables>(CreateStreamingPaymentMetadataDocument, options);
       }
 export type CreateStreamingPaymentMetadataMutationHookResult = ReturnType<typeof useCreateStreamingPaymentMetadataMutation>;
@@ -10338,7 +10350,7 @@ export type CreateSafeTransactionMutationFn = Apollo.MutationFunction<CreateSafe
  * });
  */
 export function useCreateSafeTransactionMutation(baseOptions?: Apollo.MutationHookOptions<CreateSafeTransactionMutation, CreateSafeTransactionMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateSafeTransactionMutation, CreateSafeTransactionMutationVariables>(CreateSafeTransactionDocument, options);
       }
 export type CreateSafeTransactionMutationHookResult = ReturnType<typeof useCreateSafeTransactionMutation>;
@@ -10371,7 +10383,7 @@ export type CreateSafeTransactionDataMutationFn = Apollo.MutationFunction<Create
  * });
  */
 export function useCreateSafeTransactionDataMutation(baseOptions?: Apollo.MutationHookOptions<CreateSafeTransactionDataMutation, CreateSafeTransactionDataMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateSafeTransactionDataMutation, CreateSafeTransactionDataMutationVariables>(CreateSafeTransactionDataDocument, options);
       }
 export type CreateSafeTransactionDataMutationHookResult = ReturnType<typeof useCreateSafeTransactionDataMutation>;
@@ -10404,7 +10416,7 @@ export type CreateColonyTokensMutationFn = Apollo.MutationFunction<CreateColonyT
  * });
  */
 export function useCreateColonyTokensMutation(baseOptions?: Apollo.MutationHookOptions<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateColonyTokensMutation, CreateColonyTokensMutationVariables>(CreateColonyTokensDocument, options);
       }
 export type CreateColonyTokensMutationHookResult = ReturnType<typeof useCreateColonyTokensMutation>;
@@ -10437,7 +10449,7 @@ export type DeleteColonyTokensMutationFn = Apollo.MutationFunction<DeleteColonyT
  * });
  */
 export function useDeleteColonyTokensMutation(baseOptions?: Apollo.MutationHookOptions<DeleteColonyTokensMutation, DeleteColonyTokensMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<DeleteColonyTokensMutation, DeleteColonyTokensMutationVariables>(DeleteColonyTokensDocument, options);
       }
 export type DeleteColonyTokensMutationHookResult = ReturnType<typeof useDeleteColonyTokensMutation>;
@@ -10470,7 +10482,7 @@ export type CreateTransactionMutationFn = Apollo.MutationFunction<CreateTransact
  * });
  */
 export function useCreateTransactionMutation(baseOptions?: Apollo.MutationHookOptions<CreateTransactionMutation, CreateTransactionMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, options);
       }
 export type CreateTransactionMutationHookResult = ReturnType<typeof useCreateTransactionMutation>;
@@ -10503,7 +10515,7 @@ export type UpdateTransactionMutationFn = Apollo.MutationFunction<UpdateTransact
  * });
  */
 export function useUpdateTransactionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTransactionMutation, UpdateTransactionMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<UpdateTransactionMutation, UpdateTransactionMutationVariables>(UpdateTransactionDocument, options);
       }
 export type UpdateTransactionMutationHookResult = ReturnType<typeof useUpdateTransactionMutation>;
@@ -10536,7 +10548,7 @@ export type CreateUniqueUserMutationFn = Apollo.MutationFunction<CreateUniqueUse
  * });
  */
 export function useCreateUniqueUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<CreateUniqueUserMutation, CreateUniqueUserMutationVariables>(CreateUniqueUserDocument, options);
       }
 export type CreateUniqueUserMutationHookResult = ReturnType<typeof useCreateUniqueUserMutation>;
@@ -10575,7 +10587,7 @@ export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProf
  * });
  */
 export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument, options);
       }
 export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
@@ -10619,11 +10631,11 @@ export const GetColonyActionsDocument = gql`
  * });
  */
 export function useGetColonyActionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyActionsQuery, GetColonyActionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyActionsQuery, GetColonyActionsQueryVariables>(GetColonyActionsDocument, options);
       }
 export function useGetColonyActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyActionsQuery, GetColonyActionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyActionsQuery, GetColonyActionsQueryVariables>(GetColonyActionsDocument, options);
         }
 export type GetColonyActionsQueryHookResult = ReturnType<typeof useGetColonyActionsQuery>;
@@ -10654,11 +10666,11 @@ export const GetColonyActionDocument = gql`
  * });
  */
 export function useGetColonyActionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyActionQuery, GetColonyActionQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyActionQuery, GetColonyActionQueryVariables>(GetColonyActionDocument, options);
       }
 export function useGetColonyActionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyActionQuery, GetColonyActionQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyActionQuery, GetColonyActionQueryVariables>(GetColonyActionDocument, options);
         }
 export type GetColonyActionQueryHookResult = ReturnType<typeof useGetColonyActionQuery>;
@@ -10689,11 +10701,11 @@ export const GetColonyMotionDocument = gql`
  * });
  */
 export function useGetColonyMotionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyMotionQuery, GetColonyMotionQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyMotionQuery, GetColonyMotionQueryVariables>(GetColonyMotionDocument, options);
       }
 export function useGetColonyMotionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyMotionQuery, GetColonyMotionQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyMotionQuery, GetColonyMotionQueryVariables>(GetColonyMotionDocument, options);
         }
 export type GetColonyMotionQueryHookResult = ReturnType<typeof useGetColonyMotionQuery>;
@@ -10726,11 +10738,11 @@ export const GetMotionTransactionHashDocument = gql`
  * });
  */
 export function useGetMotionTransactionHashQuery(baseOptions: Apollo.QueryHookOptions<GetMotionTransactionHashQuery, GetMotionTransactionHashQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetMotionTransactionHashQuery, GetMotionTransactionHashQueryVariables>(GetMotionTransactionHashDocument, options);
       }
 export function useGetMotionTransactionHashLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMotionTransactionHashQuery, GetMotionTransactionHashQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMotionTransactionHashQuery, GetMotionTransactionHashQueryVariables>(GetMotionTransactionHashDocument, options);
         }
 export type GetMotionTransactionHashQueryHookResult = ReturnType<typeof useGetMotionTransactionHashQuery>;
@@ -10759,11 +10771,11 @@ export const GetSafeTransactionStatusDocument = gql`
  * });
  */
 export function useGetSafeTransactionStatusQuery(baseOptions: Apollo.QueryHookOptions<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>(GetSafeTransactionStatusDocument, options);
       }
 export function useGetSafeTransactionStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetSafeTransactionStatusQuery, GetSafeTransactionStatusQueryVariables>(GetSafeTransactionStatusDocument, options);
         }
 export type GetSafeTransactionStatusQueryHookResult = ReturnType<typeof useGetSafeTransactionStatusQuery>;
@@ -10794,11 +10806,11 @@ export const GetTotalColonyActionsDocument = gql`
  * });
  */
 export function useGetTotalColonyActionsQuery(baseOptions?: Apollo.QueryHookOptions<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>(GetTotalColonyActionsDocument, options);
       }
 export function useGetTotalColonyActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTotalColonyActionsQuery, GetTotalColonyActionsQueryVariables>(GetTotalColonyActionsDocument, options);
         }
 export type GetTotalColonyActionsQueryHookResult = ReturnType<typeof useGetTotalColonyActionsQuery>;
@@ -10842,11 +10854,11 @@ export const GetTotalColonyDomainActionsDocument = gql`
  * });
  */
 export function useGetTotalColonyDomainActionsQuery(baseOptions: Apollo.QueryHookOptions<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>(GetTotalColonyDomainActionsDocument, options);
       }
 export function useGetTotalColonyDomainActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTotalColonyDomainActionsQuery, GetTotalColonyDomainActionsQueryVariables>(GetTotalColonyDomainActionsDocument, options);
         }
 export type GetTotalColonyDomainActionsQueryHookResult = ReturnType<typeof useGetTotalColonyDomainActionsQuery>;
@@ -10889,11 +10901,11 @@ export const SearchActionsDocument = gql`
  * });
  */
 export function useSearchActionsQuery(baseOptions?: Apollo.QueryHookOptions<SearchActionsQuery, SearchActionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<SearchActionsQuery, SearchActionsQueryVariables>(SearchActionsDocument, options);
       }
 export function useSearchActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchActionsQuery, SearchActionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<SearchActionsQuery, SearchActionsQueryVariables>(SearchActionsDocument, options);
         }
 export type SearchActionsQueryHookResult = ReturnType<typeof useSearchActionsQuery>;
@@ -10926,11 +10938,11 @@ export const GetFullColonyByAddressDocument = gql`
  * });
  */
 export function useGetFullColonyByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>(GetFullColonyByAddressDocument, options);
       }
 export function useGetFullColonyByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetFullColonyByAddressQuery, GetFullColonyByAddressQueryVariables>(GetFullColonyByAddressDocument, options);
         }
 export type GetFullColonyByAddressQueryHookResult = ReturnType<typeof useGetFullColonyByAddressQuery>;
@@ -10963,11 +10975,11 @@ export const GetFullColonyByNameDocument = gql`
  * });
  */
 export function useGetFullColonyByNameQuery(baseOptions: Apollo.QueryHookOptions<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>(GetFullColonyByNameDocument, options);
       }
 export function useGetFullColonyByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetFullColonyByNameQuery, GetFullColonyByNameQueryVariables>(GetFullColonyByNameDocument, options);
         }
 export type GetFullColonyByNameQueryHookResult = ReturnType<typeof useGetFullColonyByNameQuery>;
@@ -11002,11 +11014,11 @@ export const GetDisplayNameByColonyNameDocument = gql`
  * });
  */
 export function useGetDisplayNameByColonyNameQuery(baseOptions: Apollo.QueryHookOptions<GetDisplayNameByColonyNameQuery, GetDisplayNameByColonyNameQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetDisplayNameByColonyNameQuery, GetDisplayNameByColonyNameQueryVariables>(GetDisplayNameByColonyNameDocument, options);
       }
 export function useGetDisplayNameByColonyNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDisplayNameByColonyNameQuery, GetDisplayNameByColonyNameQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetDisplayNameByColonyNameQuery, GetDisplayNameByColonyNameQueryVariables>(GetDisplayNameByColonyNameDocument, options);
         }
 export type GetDisplayNameByColonyNameQueryHookResult = ReturnType<typeof useGetDisplayNameByColonyNameQuery>;
@@ -11038,11 +11050,11 @@ export const GetMetacolonyDocument = gql`
  * });
  */
 export function useGetMetacolonyQuery(baseOptions?: Apollo.QueryHookOptions<GetMetacolonyQuery, GetMetacolonyQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(GetMetacolonyDocument, options);
       }
 export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMetacolonyQuery, GetMetacolonyQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMetacolonyQuery, GetMetacolonyQueryVariables>(GetMetacolonyDocument, options);
         }
 export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
@@ -11078,11 +11090,11 @@ export const GetColonyExtensionsDocument = gql`
  * });
  */
 export function useGetColonyExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
       }
 export function useGetColonyExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyExtensionsQuery, GetColonyExtensionsQueryVariables>(GetColonyExtensionsDocument, options);
         }
 export type GetColonyExtensionsQueryHookResult = ReturnType<typeof useGetColonyExtensionsQuery>;
@@ -11120,11 +11132,11 @@ export const GetColonyExtensionDocument = gql`
  * });
  */
 export function useGetColonyExtensionQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
       }
 export function useGetColonyExtensionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyExtensionQuery, GetColonyExtensionQueryVariables>(GetColonyExtensionDocument, options);
         }
 export type GetColonyExtensionQueryHookResult = ReturnType<typeof useGetColonyExtensionQuery>;
@@ -11155,11 +11167,11 @@ export const GetPrivateBetaCodeInviteValidityDocument = gql`
  * });
  */
 export function useGetPrivateBetaCodeInviteValidityQuery(baseOptions: Apollo.QueryHookOptions<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>(GetPrivateBetaCodeInviteValidityDocument, options);
       }
 export function useGetPrivateBetaCodeInviteValidityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetPrivateBetaCodeInviteValidityQuery, GetPrivateBetaCodeInviteValidityQueryVariables>(GetPrivateBetaCodeInviteValidityDocument, options);
         }
 export type GetPrivateBetaCodeInviteValidityQueryHookResult = ReturnType<typeof useGetPrivateBetaCodeInviteValidityQuery>;
@@ -11192,11 +11204,11 @@ export const CheckColonyNameExistsDocument = gql`
  * });
  */
 export function useCheckColonyNameExistsQuery(baseOptions: Apollo.QueryHookOptions<CheckColonyNameExistsQuery, CheckColonyNameExistsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<CheckColonyNameExistsQuery, CheckColonyNameExistsQueryVariables>(CheckColonyNameExistsDocument, options);
       }
 export function useCheckColonyNameExistsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckColonyNameExistsQuery, CheckColonyNameExistsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<CheckColonyNameExistsQuery, CheckColonyNameExistsQueryVariables>(CheckColonyNameExistsDocument, options);
         }
 export type CheckColonyNameExistsQueryHookResult = ReturnType<typeof useCheckColonyNameExistsQuery>;
@@ -11229,11 +11241,11 @@ export const GetPublicColonyByNameDocument = gql`
  * });
  */
 export function useGetPublicColonyByNameQuery(baseOptions: Apollo.QueryHookOptions<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>(GetPublicColonyByNameDocument, options);
       }
 export function useGetPublicColonyByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>(GetPublicColonyByNameDocument, options);
         }
 export type GetPublicColonyByNameQueryHookResult = ReturnType<typeof useGetPublicColonyByNameQuery>;
@@ -11266,11 +11278,11 @@ export const GetColonyWhitelistByNameDocument = gql`
  * });
  */
 export function useGetColonyWhitelistByNameQuery(baseOptions: Apollo.QueryHookOptions<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>(GetColonyWhitelistByNameDocument, options);
       }
 export function useGetColonyWhitelistByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>(GetColonyWhitelistByNameDocument, options);
         }
 export type GetColonyWhitelistByNameQueryHookResult = ReturnType<typeof useGetColonyWhitelistByNameQuery>;
@@ -11304,11 +11316,11 @@ export const GetColonyMemberInviteDocument = gql`
  * });
  */
 export function useGetColonyMemberInviteQuery(baseOptions: Apollo.QueryHookOptions<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>(GetColonyMemberInviteDocument, options);
       }
 export function useGetColonyMemberInviteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>(GetColonyMemberInviteDocument, options);
         }
 export type GetColonyMemberInviteQueryHookResult = ReturnType<typeof useGetColonyMemberInviteQuery>;
@@ -11340,11 +11352,11 @@ export const GetColonyContributorDocument = gql`
  * });
  */
 export function useGetColonyContributorQuery(baseOptions: Apollo.QueryHookOptions<GetColonyContributorQuery, GetColonyContributorQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyContributorQuery, GetColonyContributorQueryVariables>(GetColonyContributorDocument, options);
       }
 export function useGetColonyContributorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyContributorQuery, GetColonyContributorQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyContributorQuery, GetColonyContributorQueryVariables>(GetColonyContributorDocument, options);
         }
 export type GetColonyContributorQueryHookResult = ReturnType<typeof useGetColonyContributorQuery>;
@@ -11386,11 +11398,11 @@ export const GetColonyContributorsDocument = gql`
  * });
  */
 export function useGetColonyContributorsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>(GetColonyContributorsDocument, options);
       }
 export function useGetColonyContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>(GetColonyContributorsDocument, options);
         }
 export type GetColonyContributorsQueryHookResult = ReturnType<typeof useGetColonyContributorsQuery>;
@@ -11428,11 +11440,11 @@ export const GetVerifiedMembersDocument = gql`
  * });
  */
 export function useGetVerifiedMembersQuery(baseOptions: Apollo.QueryHookOptions<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>(GetVerifiedMembersDocument, options);
       }
 export function useGetVerifiedMembersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetVerifiedMembersQuery, GetVerifiedMembersQueryVariables>(GetVerifiedMembersDocument, options);
         }
 export type GetVerifiedMembersQueryHookResult = ReturnType<typeof useGetVerifiedMembersQuery>;
@@ -11480,11 +11492,11 @@ export const GetContributorsByAddressDocument = gql`
  * });
  */
 export function useGetContributorsByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetContributorsByAddressQuery, GetContributorsByAddressQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetContributorsByAddressQuery, GetContributorsByAddressQueryVariables>(GetContributorsByAddressDocument, options);
       }
 export function useGetContributorsByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContributorsByAddressQuery, GetContributorsByAddressQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetContributorsByAddressQuery, GetContributorsByAddressQueryVariables>(GetContributorsByAddressDocument, options);
         }
 export type GetContributorsByAddressQueryHookResult = ReturnType<typeof useGetContributorsByAddressQuery>;
@@ -11526,11 +11538,11 @@ export const GetColonyDecisionsDocument = gql`
  * });
  */
 export function useGetColonyDecisionsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyDecisionsQuery, GetColonyDecisionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyDecisionsQuery, GetColonyDecisionsQueryVariables>(GetColonyDecisionsDocument, options);
       }
 export function useGetColonyDecisionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyDecisionsQuery, GetColonyDecisionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyDecisionsQuery, GetColonyDecisionsQueryVariables>(GetColonyDecisionsDocument, options);
         }
 export type GetColonyDecisionsQueryHookResult = ReturnType<typeof useGetColonyDecisionsQuery>;
@@ -11542,13 +11554,12 @@ export const GetColonyExpendituresDocument = gql`
     id
     expenditures {
       items {
-        id
-        nativeId
+        ...Expenditure
       }
     }
   }
 }
-    `;
+    ${ExpenditureFragmentDoc}`;
 
 /**
  * __useGetColonyExpendituresQuery__
@@ -11567,11 +11578,11 @@ export const GetColonyExpendituresDocument = gql`
  * });
  */
 export function useGetColonyExpendituresQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>(GetColonyExpendituresDocument, options);
       }
 export function useGetColonyExpendituresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyExpendituresQuery, GetColonyExpendituresQueryVariables>(GetColonyExpendituresDocument, options);
         }
 export type GetColonyExpendituresQueryHookResult = ReturnType<typeof useGetColonyExpendituresQuery>;
@@ -11602,11 +11613,11 @@ export const GetExpenditureDocument = gql`
  * });
  */
 export function useGetExpenditureQuery(baseOptions: Apollo.QueryHookOptions<GetExpenditureQuery, GetExpenditureQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetExpenditureQuery, GetExpenditureQueryVariables>(GetExpenditureDocument, options);
       }
 export function useGetExpenditureLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExpenditureQuery, GetExpenditureQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetExpenditureQuery, GetExpenditureQueryVariables>(GetExpenditureDocument, options);
         }
 export type GetExpenditureQueryHookResult = ReturnType<typeof useGetExpenditureQuery>;
@@ -11639,11 +11650,11 @@ export const GetColonyExtensionsByColonyAddressDocument = gql`
  * });
  */
 export function useGetColonyExtensionsByColonyAddressQuery(baseOptions: Apollo.QueryHookOptions<GetColonyExtensionsByColonyAddressQuery, GetColonyExtensionsByColonyAddressQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetColonyExtensionsByColonyAddressQuery, GetColonyExtensionsByColonyAddressQueryVariables>(GetColonyExtensionsByColonyAddressDocument, options);
       }
 export function useGetColonyExtensionsByColonyAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyExtensionsByColonyAddressQuery, GetColonyExtensionsByColonyAddressQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetColonyExtensionsByColonyAddressQuery, GetColonyExtensionsByColonyAddressQueryVariables>(GetColonyExtensionsByColonyAddressDocument, options);
         }
 export type GetColonyExtensionsByColonyAddressQueryHookResult = ReturnType<typeof useGetColonyExtensionsByColonyAddressQuery>;
@@ -11678,11 +11689,11 @@ export const GetExtensionInstallationsCountDocument = gql`
  * });
  */
 export function useGetExtensionInstallationsCountQuery(baseOptions: Apollo.QueryHookOptions<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>(GetExtensionInstallationsCountDocument, options);
       }
 export function useGetExtensionInstallationsCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>(GetExtensionInstallationsCountDocument, options);
         }
 export type GetExtensionInstallationsCountQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountQuery>;
@@ -11712,11 +11723,11 @@ export const GetReputationMiningCycleMetadataDocument = gql`
  * });
  */
 export function useGetReputationMiningCycleMetadataQuery(baseOptions?: Apollo.QueryHookOptions<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>(GetReputationMiningCycleMetadataDocument, options);
       }
 export function useGetReputationMiningCycleMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetReputationMiningCycleMetadataQuery, GetReputationMiningCycleMetadataQueryVariables>(GetReputationMiningCycleMetadataDocument, options);
         }
 export type GetReputationMiningCycleMetadataQueryHookResult = ReturnType<typeof useGetReputationMiningCycleMetadataQuery>;
@@ -11745,11 +11756,11 @@ export const GetMotionStateDocument = gql`
  * });
  */
 export function useGetMotionStateQuery(baseOptions: Apollo.QueryHookOptions<GetMotionStateQuery, GetMotionStateQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetMotionStateQuery, GetMotionStateQueryVariables>(GetMotionStateDocument, options);
       }
 export function useGetMotionStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMotionStateQuery, GetMotionStateQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMotionStateQuery, GetMotionStateQueryVariables>(GetMotionStateDocument, options);
         }
 export type GetMotionStateQueryHookResult = ReturnType<typeof useGetMotionStateQuery>;
@@ -11782,11 +11793,11 @@ export const GetVoterRewardsDocument = gql`
  * });
  */
 export function useGetVoterRewardsQuery(baseOptions: Apollo.QueryHookOptions<GetVoterRewardsQuery, GetVoterRewardsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetVoterRewardsQuery, GetVoterRewardsQueryVariables>(GetVoterRewardsDocument, options);
       }
 export function useGetVoterRewardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVoterRewardsQuery, GetVoterRewardsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetVoterRewardsQuery, GetVoterRewardsQueryVariables>(GetVoterRewardsDocument, options);
         }
 export type GetVoterRewardsQueryHookResult = ReturnType<typeof useGetVoterRewardsQuery>;
@@ -11819,11 +11830,11 @@ export const GetMotionByTransactionHashDocument = gql`
  * });
  */
 export function useGetMotionByTransactionHashQuery(baseOptions: Apollo.QueryHookOptions<GetMotionByTransactionHashQuery, GetMotionByTransactionHashQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetMotionByTransactionHashQuery, GetMotionByTransactionHashQueryVariables>(GetMotionByTransactionHashDocument, options);
       }
 export function useGetMotionByTransactionHashLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMotionByTransactionHashQuery, GetMotionByTransactionHashQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMotionByTransactionHashQuery, GetMotionByTransactionHashQueryVariables>(GetMotionByTransactionHashDocument, options);
         }
 export type GetMotionByTransactionHashQueryHookResult = ReturnType<typeof useGetMotionByTransactionHashQuery>;
@@ -11857,11 +11868,11 @@ export const GetMotionTimeoutPeriodsDocument = gql`
  * });
  */
 export function useGetMotionTimeoutPeriodsQuery(baseOptions: Apollo.QueryHookOptions<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>(GetMotionTimeoutPeriodsDocument, options);
       }
 export function useGetMotionTimeoutPeriodsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>(GetMotionTimeoutPeriodsDocument, options);
         }
 export type GetMotionTimeoutPeriodsQueryHookResult = ReturnType<typeof useGetMotionTimeoutPeriodsQuery>;
@@ -11893,11 +11904,11 @@ export const GetCurrentNetworkInverseFeeDocument = gql`
  * });
  */
 export function useGetCurrentNetworkInverseFeeQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentNetworkInverseFeeQuery, GetCurrentNetworkInverseFeeQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetCurrentNetworkInverseFeeQuery, GetCurrentNetworkInverseFeeQueryVariables>(GetCurrentNetworkInverseFeeDocument, options);
       }
 export function useGetCurrentNetworkInverseFeeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentNetworkInverseFeeQuery, GetCurrentNetworkInverseFeeQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCurrentNetworkInverseFeeQuery, GetCurrentNetworkInverseFeeQueryVariables>(GetCurrentNetworkInverseFeeDocument, options);
         }
 export type GetCurrentNetworkInverseFeeQueryHookResult = ReturnType<typeof useGetCurrentNetworkInverseFeeQuery>;
@@ -11930,11 +11941,11 @@ export const GetProfileByEmailDocument = gql`
  * });
  */
 export function useGetProfileByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
       }
 export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>(GetProfileByEmailDocument, options);
         }
 export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
@@ -11973,11 +11984,11 @@ export const GetUserStakesDocument = gql`
  * });
  */
 export function useGetUserStakesQuery(baseOptions: Apollo.QueryHookOptions<GetUserStakesQuery, GetUserStakesQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetUserStakesQuery, GetUserStakesQueryVariables>(GetUserStakesDocument, options);
       }
 export function useGetUserStakesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserStakesQuery, GetUserStakesQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetUserStakesQuery, GetUserStakesQueryVariables>(GetUserStakesDocument, options);
         }
 export type GetUserStakesQueryHookResult = ReturnType<typeof useGetUserStakesQuery>;
@@ -12010,11 +12021,11 @@ export const GetTokenByAddressDocument = gql`
  * });
  */
 export function useGetTokenByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
       }
 export function useGetTokenByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTokenByAddressQuery, GetTokenByAddressQueryVariables>(GetTokenByAddressDocument, options);
         }
 export type GetTokenByAddressQueryHookResult = ReturnType<typeof useGetTokenByAddressQuery>;
@@ -12047,11 +12058,11 @@ export const GetTokenFromEverywhereDocument = gql`
  * });
  */
 export function useGetTokenFromEverywhereQuery(baseOptions: Apollo.QueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
       }
 export function useGetTokenFromEverywhereLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTokenFromEverywhereQuery, GetTokenFromEverywhereQueryVariables>(GetTokenFromEverywhereDocument, options);
         }
 export type GetTokenFromEverywhereQueryHookResult = ReturnType<typeof useGetTokenFromEverywhereQuery>;
@@ -12082,11 +12093,11 @@ export const GetUserTokenBalanceDocument = gql`
  * });
  */
 export function useGetUserTokenBalanceQuery(baseOptions: Apollo.QueryHookOptions<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>(GetUserTokenBalanceDocument, options);
       }
 export function useGetUserTokenBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>(GetUserTokenBalanceDocument, options);
         }
 export type GetUserTokenBalanceQueryHookResult = ReturnType<typeof useGetUserTokenBalanceQuery>;
@@ -12130,11 +12141,11 @@ export const GetUserTransactionsDocument = gql`
  * });
  */
 export function useGetUserTransactionsQuery(baseOptions: Apollo.QueryHookOptions<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>(GetUserTransactionsDocument, options);
       }
 export function useGetUserTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>(GetUserTransactionsDocument, options);
         }
 export type GetUserTransactionsQueryHookResult = ReturnType<typeof useGetUserTransactionsQuery>;
@@ -12168,11 +12179,11 @@ export const GetTransactionsByGroupDocument = gql`
  * });
  */
 export function useGetTransactionsByGroupQuery(baseOptions: Apollo.QueryHookOptions<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>(GetTransactionsByGroupDocument, options);
       }
 export function useGetTransactionsByGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTransactionsByGroupQuery, GetTransactionsByGroupQueryVariables>(GetTransactionsByGroupDocument, options);
         }
 export type GetTransactionsByGroupQueryHookResult = ReturnType<typeof useGetTransactionsByGroupQuery>;
@@ -12203,11 +12214,11 @@ export const GetTransactionDocument = gql`
  * });
  */
 export function useGetTransactionQuery(baseOptions: Apollo.QueryHookOptions<GetTransactionQuery, GetTransactionQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetTransactionQuery, GetTransactionQueryVariables>(GetTransactionDocument, options);
       }
 export function useGetTransactionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionQuery, GetTransactionQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetTransactionQuery, GetTransactionQueryVariables>(GetTransactionDocument, options);
         }
 export type GetTransactionQueryHookResult = ReturnType<typeof useGetTransactionQuery>;
@@ -12240,11 +12251,11 @@ export const GetUserByAddressDocument = gql`
  * });
  */
 export function useGetUserByAddressQuery(baseOptions: Apollo.QueryHookOptions<GetUserByAddressQuery, GetUserByAddressQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetUserByAddressQuery, GetUserByAddressQueryVariables>(GetUserByAddressDocument, options);
       }
 export function useGetUserByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByAddressQuery, GetUserByAddressQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetUserByAddressQuery, GetUserByAddressQueryVariables>(GetUserByAddressDocument, options);
         }
 export type GetUserByAddressQueryHookResult = ReturnType<typeof useGetUserByAddressQuery>;
@@ -12273,11 +12284,11 @@ export const GetUserReputationDocument = gql`
  * });
  */
 export function useGetUserReputationQuery(baseOptions: Apollo.QueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
       }
 export function useGetUserReputationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserReputationQuery, GetUserReputationQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetUserReputationQuery, GetUserReputationQueryVariables>(GetUserReputationDocument, options);
         }
 export type GetUserReputationQueryHookResult = ReturnType<typeof useGetUserReputationQuery>;
@@ -12312,11 +12323,11 @@ export const GetUserByNameDocument = gql`
  * });
  */
 export function useGetUserByNameQuery(baseOptions: Apollo.QueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
       }
 export function useGetUserByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByNameQuery, GetUserByNameQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetUserByNameQuery, GetUserByNameQueryVariables>(GetUserByNameDocument, options);
         }
 export type GetUserByNameQueryHookResult = ReturnType<typeof useGetUserByNameQuery>;
@@ -12350,11 +12361,11 @@ export const GetUsersDocument = gql`
  * });
  */
 export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
       }
 export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
         }
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
@@ -12387,11 +12398,11 @@ export const GetCurrentExtensionsVersionsDocument = gql`
  * });
  */
 export function useGetCurrentExtensionsVersionsQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
       }
 export function useGetCurrentExtensionsVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCurrentExtensionsVersionsQuery, GetCurrentExtensionsVersionsQueryVariables>(GetCurrentExtensionsVersionsDocument, options);
         }
 export type GetCurrentExtensionsVersionsQueryHookResult = ReturnType<typeof useGetCurrentExtensionsVersionsQuery>;
@@ -12425,11 +12436,11 @@ export const GetCurrentExtensionVersionDocument = gql`
  * });
  */
 export function useGetCurrentExtensionVersionQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
       }
 export function useGetCurrentExtensionVersionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCurrentExtensionVersionQuery, GetCurrentExtensionVersionQueryVariables>(GetCurrentExtensionVersionDocument, options);
         }
 export type GetCurrentExtensionVersionQueryHookResult = ReturnType<typeof useGetCurrentExtensionVersionQuery>;
@@ -12461,11 +12472,11 @@ export const GetCurrentColonyVersionDocument = gql`
  * });
  */
 export function useGetCurrentColonyVersionQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>) {
-        const options = {...DefaultOptions, ...baseOptions}
+        const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>(GetCurrentColonyVersionDocument, options);
       }
 export function useGetCurrentColonyVersionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>) {
-          const options = {...DefaultOptions, ...baseOptions}
+          const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>(GetCurrentColonyVersionDocument, options);
         }
 export type GetCurrentColonyVersionQueryHookResult = ReturnType<typeof useGetCurrentColonyVersionQuery>;
