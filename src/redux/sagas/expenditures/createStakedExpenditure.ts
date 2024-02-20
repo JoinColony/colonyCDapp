@@ -35,6 +35,7 @@ function* createStakedExpenditure({
     stages,
     networkInverseFee,
     tokenDecimals,
+    decisionMethod,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -200,6 +201,7 @@ function* createStakedExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
+      decisionMethod,
       stages: isStaged ? stages : undefined,
       stakeAmount,
     });

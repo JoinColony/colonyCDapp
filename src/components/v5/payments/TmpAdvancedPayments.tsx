@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
+import { ExpenditureDecisionMethod } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
@@ -41,6 +42,7 @@ const TmpAdvancedPayments = () => {
     fundFromDomainId: 1,
     networkInverseFee: networkInverseFee ?? '0',
     tokenDecimals: tokenDecimalAmount,
+    decisionMethod: ExpenditureDecisionMethod.Permissions,
   };
 
   return (
