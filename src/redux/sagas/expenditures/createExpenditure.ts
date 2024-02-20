@@ -123,7 +123,7 @@ function* createExpenditure({
         group: {
           key: batchKey,
           id: meta.id,
-          index: 3,
+          index: isStaged ? 3 : 2,
         },
         ready: false,
       });
