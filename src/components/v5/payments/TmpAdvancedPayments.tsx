@@ -100,8 +100,8 @@ const TmpAdvancedPayments = () => {
     fundFromDomainId: 1,
     networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
-    customActionTitle: 'Custom advanced payments title!',
-    annotationMessage: 'my custom annotation',
+    customActionTitle: 'Custom create expenditure title!',
+    annotationMessage: 'expenditure annotation',
   };
 
   const handleLockExpenditure = async () => {

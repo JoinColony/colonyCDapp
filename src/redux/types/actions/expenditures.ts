@@ -69,11 +69,12 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_FINALIZE,
       {
-        colonyName: string;
-        colonyAddress: Address;
+        colony: Colony;
         nativeExpenditureId: number;
+        customActionTitle?: string;
+        annotationMessage?: string;
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_FINALIZE_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_FINALIZE_SUCCESS, object, object>
