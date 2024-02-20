@@ -15,7 +15,7 @@ export const useCloseSidebarClick = () => {
     closeSidebarClick: () => {
       const { dirtyFields } = (formContext || formRef.current)?.formState || {};
 
-      if (Object.keys(dirtyFields).length > 0) {
+      if (dirtyFields && Object.keys(dirtyFields).length > 0) {
         toggleCancelModal();
       } else {
         toggleActionSidebarOff();
