@@ -7,7 +7,9 @@ import { ExpenditureDecisionMethod, useGetExpenditureLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
+import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
@@ -34,6 +36,16 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.EXPENDITURE_FUND,
     error: ActionTypes.EXPENDITURE_FUND_ERROR,
     success: ActionTypes.EXPENDITURE_FUND_SUCCESS,
+  });
+  const finalizeExpenditure = useAsyncFunction({
+    submit: ActionTypes.EXPENDITURE_FINALIZE,
+    error: ActionTypes.EXPENDITURE_FINALIZE_ERROR,
+    success: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
+  });
+  const claimExpenditure = useAsyncFunction({
+    submit: ActionTypes.EXPENDITURE_CLAIM,
+    error: ActionTypes.EXPENDITURE_CLAIM_ERROR,
+    success: ActionTypes.EXPENDITURE_CLAIM_SUCCESS,
   });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
@@ -64,7 +76,7 @@ const TmpAdvancedPayments = () => {
       nativeExpenditureId: Number(expenditureId),
     };
 
-    lockExpenditure(payload);
+    await lockExpenditure(payload);
   };
 
   const handleFundExpenditure = async () => {
@@ -88,7 +100,38 @@ const TmpAdvancedPayments = () => {
       fromDomainFundingPotId: 1,
     };
 
-    fundExpenditure(payload);
+    await fundExpenditure(payload);
+  };
+
+  const handleFinalizeExpenditure = async () => {
+    const finalizePayload: FinalizeExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      colonyName: colony.name,
+      nativeExpenditureId: Number(expenditureId),
+    };
+
+    await finalizeExpenditure(finalizePayload);
+
+    const response = await getExpenditure({
+      variables: {
+        expenditureId: getExpenditureDatabaseId(
+          colony.colonyAddress,
+          Number(expenditureId),
+        ),
+      },
+    });
+    const expenditure = response.data?.getExpenditure;
+
+    if (!expenditure) {
+      return;
+    }
+
+    const claimPayload: ClaimExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      claimableSlots: expenditure.slots,
+      nativeExpenditureId: Number(expenditureId),
+    };
+    await claimExpenditure(claimPayload);
   };
 
   return (
@@ -110,6 +153,9 @@ const TmpAdvancedPayments = () => {
         />
         <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
         <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
+        <Button onClick={handleFinalizeExpenditure}>
+          Finalize expenditure
+        </Button>
       </div>
     </div>
   );

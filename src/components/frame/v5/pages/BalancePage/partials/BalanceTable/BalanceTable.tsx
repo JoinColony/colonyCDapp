@@ -22,7 +22,6 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -32,7 +31,6 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import Table from '~v5/common/Table/index.ts';
-import { type TableProps } from '~v5/common/Table/types.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import CopyWallet from '~v5/shared/CopyWallet/index.ts';
@@ -67,9 +65,8 @@ const MSG = defineMessages({
 
 const BalanceTable: FC = () => {
   const data = useBalancesData();
-  const selectedDomain = useGetSelectedDomainFilter();
   const {
-    colony: { balances, nativeToken, status, colonyAddress },
+    colony: { nativeToken, status, colonyAddress },
   } = useColonyContext();
   const { nativeToken: nativeTokenStatus } = status || {};
   const isMobile = useMobile();
@@ -87,15 +84,9 @@ const BalanceTable: FC = () => {
   ] = useToggle();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
-  const columns = useBalanceTableColumns(
-    nativeToken,
-    balances,
-    nativeTokenStatus,
-    Number(selectedDomain?.nativeId) || undefined,
-  );
-  const getMenuProps: TableProps<BalanceTableFieldModel>['getMenuProps'] = ({
-    original: { token: selectedTokenData },
-  }) => {
+  const columns = useBalanceTableColumns(nativeToken, nativeTokenStatus);
+  const getMenuProps = ({ index }) => {
+    const selectedTokenData = data[index]?.token;
     const isTokenNative =
       selectedTokenData?.tokenAddress === nativeToken?.tokenAddress;
 
