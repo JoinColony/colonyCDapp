@@ -35,4 +35,6 @@ export interface TableProps<T>
   getMenuProps?: (row: Row<T>) => MeatBallMenuProps | undefined;
   meatBallMenuSize?: number;
   meatBallMenuStaticSize?: string;
+  renderSubComponent?: (props: { row: Row<T> }) => React.ReactElement;
+  getRowCanExpand?: (row: Row<T>) => boolean;
 }

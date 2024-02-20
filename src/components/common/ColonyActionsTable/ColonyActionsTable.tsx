@@ -22,6 +22,7 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { merge } from '~utils/lodash.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import Table from '~v5/common/Table/index.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
@@ -30,6 +31,7 @@ import {
   useActionsTableData,
   useColonyActionsTableColumns,
   useRenderRowLink,
+  useRenderSubComponent,
 } from './hooks.tsx';
 import MeatballMenuCopyItem from './partials/MeatballMenuCopyItem/index.ts';
 import { type ColonyActionsTableProps } from './types.ts';
@@ -102,9 +104,9 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
         label: formatText({ id: 'activityFeedTable.menu.share' }),
         renderItemWrapper: (props, children) => (
           <MeatballMenuCopyItem
-            textToCopy={`${APP_URL.origin}${generatePath(COLONY_HOME_ROUTE, {
+            textToCopy={`${APP_URL.origin}/${generatePath(COLONY_HOME_ROUTE, {
               colonyName,
-            })}/${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
+            })}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
             {...props}
           >
             {children}
@@ -117,13 +119,18 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
   });
   const isMobile = useMobile();
   const renderRowLink = useRenderRowLink(loading);
+  const renderSubComponent = useRenderSubComponent(
+    loadingMotionStates,
+    refetchMotionStates,
+    getMenuProps,
+  );
   const tableProps: TableProps<ColonyAction> = merge(
     {
       className: clsx(className, {
-        '[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
+        'sm:[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
       }),
       enableSortingRemoval: false,
-      renderCellWrapper: renderRowLink,
+      renderCellWrapper: isMobile ? undefined : renderRowLink,
       verticalOnMobile: false,
       state: {
         columnVisibility: isMobile
@@ -132,8 +139,11 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
               motionState: true,
               team: false,
               createdAt: false,
+              [MEATBALL_MENU_COLUMN_ID]: false,
             }
-          : undefined,
+          : {
+              expander: false,
+            },
         sorting,
         pagination: {
           pageIndex: pageNumber - 1,
@@ -157,6 +167,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
       nextPage: goToNextPage,
       previousPage: goToPreviousPage,
       paginationDisabled: loading,
+      getRowCanExpand: () => isMobile,
       emptyContent: (
         <EmptyContent
           className="h-[32.8125rem]"
@@ -179,7 +190,10 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
           title={formatText({ id: 'activityFeedTable.table.title' })}
         />
       )}
-      <Table<ColonyAction> {...tableProps} />
+      <Table<ColonyAction>
+        {...tableProps}
+        renderSubComponent={renderSubComponent}
+      />
     </>
   );
 };

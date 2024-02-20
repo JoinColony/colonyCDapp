@@ -1,4 +1,9 @@
-import { createColumnHelper, type SortingState } from '@tanstack/react-table';
+import { CaretDown } from '@phosphor-icons/react';
+import {
+  createColumnHelper,
+  type Row,
+  type SortingState,
+} from '@tanstack/react-table';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { useMemo, useState } from 'react';
@@ -10,6 +15,7 @@ import {
   type SearchableColonyActionSortInput,
   SearchableSortDirection,
 } from '~gql';
+import { useMobile } from '~hooks';
 import useActivityFeed from '~hooks/useActivityFeed/index.ts';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
@@ -23,8 +29,10 @@ import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { type RenderCellWrapper } from '~v5/common/Table/types.ts';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import ActionDescription from './partials/ActionDescription/index.ts';
+import ActionMobileDescription from './partials/ActionMobileDescription/index.ts';
 import { makeLoadingRows } from './utils.ts';
 
 const MSG = defineMessages({
@@ -38,8 +46,10 @@ export const useColonyActionsTableColumns = (
   loading: boolean,
   loadingMotionStates: boolean,
   refetchMotionStates: RefetchMotionStates,
-) =>
-  useMemo(() => {
+) => {
+  const isMobile = useMobile();
+
+  return useMemo(() => {
     const helper = createColumnHelper<ActivityFeedColonyAction>();
 
     return [
@@ -48,13 +58,16 @@ export const useColonyActionsTableColumns = (
         staticSize: '100%',
         header: formatText(MSG.tableHeaderLatestActivity),
         enableSorting: false,
-        cell: ({ row: { original } }) => (
+        cell: ({ row: { original, getIsExpanded } }) => (
           <ActionDescription
             action={original}
             loading={loading}
             refetchMotionStates={refetchMotionStates}
+            hideDetails={getIsExpanded()}
           />
         ),
+        colSpan: (isExpanded) => (isExpanded ? 2 : undefined),
+        cellContentWrapperClassName: 'pr-0',
       }),
       helper.display({
         id: 'team',
@@ -106,24 +119,48 @@ export const useColonyActionsTableColumns = (
         },
       }),
       helper.accessor('motionState', {
-        staticSize: '6.25rem',
+        staticSize: isMobile ? '7.4375rem' : '6.25rem',
         header: formatText({
           id: 'activityFeedTable.table.header.status',
         }),
         enableSorting: false,
-        cell: ({ getValue }) => {
+        cell: ({ getValue, row: { getIsExpanded } }) => {
           const motionState = getValue();
 
-          return (
+          return getIsExpanded() ? null : (
             <MotionStateBadge
               state={motionState || MotionState.Unknown}
-              className={clsx({ skeleton: loading || loadingMotionStates })}
+              className={clsx({
+                skeleton: loading || loadingMotionStates,
+                '!hidden': getIsExpanded(),
+              })}
             />
           );
         },
+        colSpan: (isExpanded) => (isExpanded ? 0 : undefined),
+      }),
+      helper.display({
+        id: 'expander',
+        staticSize: '2.25rem',
+        header: () => null,
+        enableSorting: false,
+        cell: ({ row: { getIsExpanded, toggleExpanded } }) => {
+          return (
+            <button type="button" onClick={() => toggleExpanded()}>
+              <CaretDown
+                size={18}
+                className={clsx('transition', {
+                  'rotate-180': getIsExpanded(),
+                })}
+              />
+            </button>
+          );
+        },
+        cellContentWrapperClassName: 'pl-0',
       }),
     ];
-  }, [loading, loadingMotionStates, refetchMotionStates]);
+  }, [isMobile, loading, loadingMotionStates, refetchMotionStates]);
+};
 
 export const useActionsTableData = (pageSize: number) => {
   const selectedDomain = useGetSelectedDomainFilter();
@@ -222,4 +259,21 @@ export const useRenderRowLink = (
         {content}
       </Link>
     );
+};
+
+export const useRenderSubComponent = (
+  loadingMotionStates: boolean,
+  refetchMotionStates: RefetchMotionStates,
+  getMenuProps: (
+    row: Row<ActivityFeedColonyAction>,
+  ) => MeatBallMenuProps | undefined,
+) => {
+  return ({ row }: { row: Row<ActivityFeedColonyAction> }) => (
+    <ActionMobileDescription
+      actionRow={row}
+      loadingMotionStates={loadingMotionStates}
+      refetchMotionStates={refetchMotionStates}
+      getMenuProps={getMenuProps}
+    />
+  );
 };

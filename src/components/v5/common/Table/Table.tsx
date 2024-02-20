@@ -4,6 +4,7 @@ import {
   useReactTable,
   getCoreRowModel as libGetCoreRowModel,
   createColumnHelper,
+  getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
@@ -39,6 +40,8 @@ const Table = <T,>({
   meatBallMenuSize,
   meatBallMenuStaticSize,
   columns,
+  renderSubComponent,
+  getRowCanExpand,
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
@@ -73,6 +76,8 @@ const Table = <T,>({
     getCoreRowModel: getCoreRowModel || libGetCoreRowModel<T>(),
     data,
     columns: columnsWithMenu,
+    getRowCanExpand,
+    getExpandedRowModel: getExpandedRowModel<T>(),
     ...rest,
   });
   const { rows } = table.getRowModel();
@@ -237,43 +242,76 @@ const Table = <T,>({
                   </td>
                 </tr>
               ) : (
-                rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className={clsx(
-                      getRowClassName(row),
-                      '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100',
-                      {
-                        'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
-                          getMenuProps,
-                      },
-                    )}
-                  >
-                    {row.getVisibleCells().map((cell) => {
-                      const renderCellWrapperCommonArgs = [
-                        'text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start',
-                        flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        ),
-                      ] as const;
+                rows.map((row) => {
+                  const showExpandableContent =
+                    row.getIsExpanded() && renderSubComponent;
 
-                      return (
-                        <td key={cell?.id} className="h-full">
-                          {renderCellWrapper(...renderCellWrapperCommonArgs, {
-                            cell,
-                            row,
-                            renderDefault: () =>
-                              getDefaultRenderCellWrapper<T>()(
+                  return (
+                    <React.Fragment key={row.id}>
+                      <tr
+                        className={clsx(getRowClassName(row), {
+                          'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
+                            getMenuProps,
+                          '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
+                            !showExpandableContent,
+                          'expanded-below': showExpandableContent,
+                        })}
+                      >
+                        {row.getVisibleCells().map((cell) => {
+                          const renderCellWrapperCommonArgs = [
+                            clsx(
+                              'text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start',
+                              cell.column.columnDef.cellContentWrapperClassName,
+                            ),
+                            flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            ),
+                          ] as const;
+
+                          const colSpan =
+                            typeof cell.column.columnDef.colSpan === 'number'
+                              ? cell.column.columnDef.colSpan
+                              : cell.column.columnDef.colSpan?.(
+                                  row.getIsExpanded(),
+                                );
+
+                          const hideCell = colSpan === 0;
+
+                          return (
+                            <td
+                              key={cell?.id}
+                              className={clsx('h-full', {
+                                hidden: hideCell,
+                              })}
+                              colSpan={colSpan}
+                            >
+                              {renderCellWrapper(
                                 ...renderCellWrapperCommonArgs,
-                                { cell, row, renderDefault: () => null },
-                              ),
-                          })}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))
+                                {
+                                  cell,
+                                  row,
+                                  renderDefault: () =>
+                                    getDefaultRenderCellWrapper<T>()(
+                                      ...renderCellWrapperCommonArgs,
+                                      { cell, row, renderDefault: () => null },
+                                    ),
+                                },
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                      {showExpandableContent && (
+                        <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
+                          <td colSpan={row.getVisibleCells().length}>
+                            {renderSubComponent({ row })}
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })
               )}
             </tbody>
           </>
@@ -303,7 +341,7 @@ const Table = <T,>({
         (canGoToPreviousPage || canGoToNextPage) && (
           <div
             className={clsx(
-              'grid grid-cols-3 gap-2 items-center pt-2 pb-[1.4375rem] px-[1.125rem]',
+              'grid grid-cols-[1fr_auto_1fr] gap-2 items-center pt-2 pb-[1.4375rem] px-[1.125rem]',
               {
                 'sm:grid-cols-[1fr_auto_auto]':
                   canGoToNextPage ||

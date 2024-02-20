@@ -5,4 +5,5 @@ export interface ActionDescriptionProps {
   action: ActivityFeedColonyAction;
   refetchMotionStates: RefetchMotionStates;
   loading: boolean;
+  hideDetails?: boolean;
 }
