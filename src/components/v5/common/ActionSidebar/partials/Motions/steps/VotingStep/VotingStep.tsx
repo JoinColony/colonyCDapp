@@ -11,6 +11,7 @@ import MotionVoteBadge from '~v5/common/Pills/MotionVoteBadge/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import { useVotingStep } from './hooks.tsx';
 import DescriptionList from './partials/DescriptionList/index.ts';
@@ -65,7 +66,7 @@ const VotingStep: FC<VotingStepProps> = ({
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: 'info',
+        status: StatusTypes.Info,
         children: formatText(
           { id: 'motion.votingStep.statusText' },
           { thresholdPercent },

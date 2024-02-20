@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 
-import { FIELD_STATE } from '../consts.ts';
+import { FieldState } from '../consts.ts';
 
 import CardSelect from './CardSelect.tsx';
 import { type FormCardSelectProps } from './types.ts';
@@ -28,7 +28,7 @@ function FormCardSelect<TValue = string>({
       readonly={readonly}
       value={value}
       onChange={onChange}
-      state={invalid ? FIELD_STATE.Error : undefined}
+      state={invalid ? FieldState.Error : undefined}
       message={error?.message}
     />
   );

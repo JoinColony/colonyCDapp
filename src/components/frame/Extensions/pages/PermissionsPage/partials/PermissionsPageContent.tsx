@@ -1,7 +1,7 @@
 import { Pencil, ShieldStar } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -69,7 +69,7 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
                 }),
                 onClick: () => {
                   toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+                    [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
                   });
                 },
               },
@@ -86,7 +86,7 @@ const PermissionsPageContent: FC<PropsWithChildren> = ({ children }) => {
           isFullSize={false}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             });
           }}
         >

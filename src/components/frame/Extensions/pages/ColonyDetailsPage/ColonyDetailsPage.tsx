@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import {
   ADDRESS_ZERO,
   MAX_OBJECTIVE_DESCRIPTION_LENGTH,
@@ -121,7 +121,7 @@ const ColonyDetailsPage: FC = () => {
           isFullSize={isMobile}
           onClick={() => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: ACTION.EDIT_COLONY_DETAILS,
+              [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
             });
           }}
         />
@@ -147,7 +147,7 @@ const ColonyDetailsPage: FC = () => {
               textValues={{ existing: !!objective?.title }}
               onClick={() => {
                 toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
+                  [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
                 });
               }}
             />
@@ -169,7 +169,7 @@ const ColonyDetailsPage: FC = () => {
             isFullSize
             onClick={() => {
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_COLONY_OBJECTIVES,
+                [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
               });
             }}
           />

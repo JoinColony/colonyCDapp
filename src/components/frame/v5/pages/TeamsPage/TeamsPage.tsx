@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -28,7 +28,7 @@ const TeamsPage: FC = () => {
           <Button
             onClick={() =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
               })
             }
             text={formatText({ id: 'teamsPage.createNewTeam' })}

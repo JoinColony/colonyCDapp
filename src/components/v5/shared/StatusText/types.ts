@@ -1,9 +1,9 @@
 import { type Icon } from '@phosphor-icons/react';
 
-import { type STATUS_TYPES } from './consts.ts';
+import { type StatusTypes } from './consts.ts';
 
 export interface StatusTextProps {
-  status: (typeof STATUS_TYPES)[keyof typeof STATUS_TYPES];
+  status: StatusTypes;
   className?: string;
   icon?: Icon;
   iconSize?: number;

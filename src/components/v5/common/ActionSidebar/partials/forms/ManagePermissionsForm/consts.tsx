@@ -12,8 +12,7 @@ import { type InferType, mixed, object, string, number } from 'yup';
 
 import {
   CUSTOM_USER_ROLE,
-  type UserRole,
-  USER_ROLE,
+  UserRole,
   USER_ROLES,
 } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -51,22 +50,20 @@ export const validationSchema = object()
 
 export type ManagePermissionsFormValues = InferType<typeof validationSchema>;
 
-export const AUTHORITY = {
-  ViaMultiSig: 'via-multi-sig',
-  Own: 'own',
-} as const;
+export enum Authority {
+  ViaMultiSig = 'via-multi-sig',
+  Own = 'own',
+}
 
-export type Authority = (typeof AUTHORITY)[keyof typeof AUTHORITY];
-
-export const AUTHORITY_OPTIONS: CardSelectOption<string>[] = [
+export const AuthorityOptions: CardSelectOption<string>[] = [
   // @TODO: Uncomment when multi-sig is ready
   // {
   //   label: formatText({ id: 'actionSidebar.authority.viaMultiSig' }),
-  //   value: AUTHORITY.ViaMultiSig,
+  //   value: Authority.ViaMultiSig,
   // },
   {
     label: formatText({ id: 'actionSidebar.authority.own' }),
-    value: AUTHORITY.Own,
+    value: Authority.Own,
   },
 ];
 
@@ -74,25 +71,25 @@ const ROLE_SELECT_META: Record<
   Exclude<UserRole, 'custom'>,
   UserRoleSelectMeta
 > = {
-  [USER_ROLE.Mod]: {
+  [UserRole.Mod]: {
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.mod.desc',
     }),
     icon: HandHeart,
   },
-  [USER_ROLE.Payer]: {
+  [UserRole.Payer]: {
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.payer.desc',
     }),
     icon: HandCoins,
   },
-  [USER_ROLE.Admin]: {
+  [UserRole.Admin]: {
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.admin.desc',
     }),
     icon: Gear,
   },
-  [USER_ROLE.Owner]: {
+  [UserRole.Owner]: {
     description: formatText({
       id: 'actionSidebar.managePermissions.roleSelect.owner.desc',
     }),
@@ -100,7 +97,9 @@ const ROLE_SELECT_META: Record<
   },
 };
 
-export const REMOVE_ROLE_OPTION_VALUE = 'remove' as const;
+export enum RemoveRoleOptionValue {
+  remove = 'remove',
+}
 
 export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
   {
@@ -153,7 +152,7 @@ export const PERMISSIONS_OPTIONS: CardSelectOptionsGroup<string>[] = [
             })}
           </RoleOptionLabel>
         ),
-        value: REMOVE_ROLE_OPTION_VALUE,
+        value: RemoveRoleOptionValue.remove,
       },
     ],
   },

@@ -4,6 +4,7 @@ import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/i
 import { formatText } from '~utils/intl.ts';
 import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 
 import { type PermissionSidebarProps } from '../types.ts';
@@ -16,7 +17,7 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: 'info',
+        status: StatusTypes.Info,
         children: formatText({
           id: 'action.executed.permissions.description',
         }),

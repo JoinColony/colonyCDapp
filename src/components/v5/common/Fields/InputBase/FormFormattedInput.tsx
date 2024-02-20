@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
-import { FIELD_STATE } from '../consts.ts';
+import { FieldState } from '../consts.ts';
 
 import FormattedInput from './FormattedInput.tsx';
 import { type FormFormattedInputProps } from './types.ts';
@@ -31,7 +31,7 @@ const FormFormattedInput: FC<FormFormattedInputProps> = ({
 
         onChange(rawValue);
       }}
-      state={invalid ? FIELD_STATE.Error : undefined}
+      state={invalid ? FieldState.Error : undefined}
     />
   );
 };

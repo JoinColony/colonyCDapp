@@ -2,7 +2,7 @@
 // import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 // @BETA: DISABLED
 // import { formatText } from '~utils/intl';
 // import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
@@ -108,12 +108,12 @@ export const MSG = defineMessages({
 
 export const DECIDE_DROPDOWN_ITEMS = [
   {
-    action: ACTION.CREATE_DECISION,
+    action: Action.CreateDecision,
     title: MSG.createDecision,
     description: MSG.createDecisionDescription,
   },
   {
-    action: ACTION.SIMPLE_DISCUSSION,
+    action: Action.SimpleDiscussion,
     title: MSG.simpleDiscussion,
     description: MSG.simpleDiscussionDescription,
   },
@@ -123,46 +123,46 @@ export const PAY_DROPDOWN_ITEMS = [
   {
     title: MSG.singlePayments,
     description: MSG.singlePaymentsDescription,
-    action: ACTION.SIMPLE_PAYMENT,
+    action: Action.SimplePayment,
   },
   // @BETA: DISABLED
   // {
   //   title: MSG.advancedPayments,
   //   description: MSG.advancedPaymentsDescription,
-  //   action: ACTION.ADVANCED_PAYMENT,
+  //   action: Action.AdvancedPayment,
   //   statusBadge: <ExtensionStatusBadge text={formatText(MSG.comingSoon)} />,
   // },
   // {
   //   title: MSG.streamingPayments,
   //   description: MSG.streamingPaymentsDescription,
-  //   action: ACTION.STREAMING_PAYMENT,
+  //   action: Action.StreamingPayment,
   // },
   // {
   //   title: MSG.moveFunds,
   //   description: MSG.moveFundsDescription,
-  //   action: ACTION.TRANSFER_FUNDS,
+  //   action: Action.TransferFunds,
   // },
 ];
 
 export const MANAGE_DROPDOWN_ITEMS = [
   {
-    action: ACTION.EDIT_EXISTING_TEAM,
+    action: Action.EditExistingTeam,
     title: MSG.manageTeams,
     description: MSG.manageTeamsDescription,
   },
   // @BETA: DISABLED
   // {
-  //   action: ACTION.MANAGE_REPUTATION,
+  //   action: Action.ManageReputation,
   //   title: MSG.manageReputation,
   //   description: MSG.manageReputationDescription,
   // },
   {
-    action: ACTION.MANAGE_PERMISSIONS,
+    action: Action.ManagePermissions,
     title: MSG.managePermissions,
     description: MSG.managePermissionsDescription,
   },
   {
-    action: ACTION.EDIT_COLONY_DETAILS,
+    action: Action.EditColonyDetails,
     title: MSG.organizationDetails,
     description: MSG.organizationDetailsDescription,
   },

@@ -2,7 +2,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import chunk from 'lodash/chunk';
 import React, { useMemo } from 'react';
 
-import { type UserRole, USER_ROLE } from '~constants/permissions.ts';
+import { UserRole } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 import { FormSwitch } from '~v5/common/Fields/Switch/index.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
@@ -54,7 +54,7 @@ export const usePermissionsTableProps = (
 ): TableProps<PermissionsTableModel> => {
   return useMemo(
     () =>
-      selectedRole && selectedRole !== USER_ROLE.Custom
+      selectedRole && selectedRole !== UserRole.Custom
         ? {
             data: [
               {

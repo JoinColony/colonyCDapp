@@ -13,6 +13,7 @@ import { getSafePollingInterval } from '~utils/queries.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 import Button, { TxButton } from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
@@ -102,7 +103,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: 'info',
+        status: StatusTypes.Info,
         children: formatText({ id: 'motion.finalizeStep.statusText' }),
         textClassName: 'text-4',
         iconAlignment: 'top',

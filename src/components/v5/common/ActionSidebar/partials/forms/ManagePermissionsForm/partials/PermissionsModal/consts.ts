@@ -1,9 +1,9 @@
-import { USER_ROLE } from '~constants/permissions.ts';
+import { UserRole } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 
 export const PERMISSIONS_MODAL_CONTENT = [
   {
-    key: USER_ROLE.Mod,
+    key: UserRole.Mod,
     title: formatText({ id: 'role.mod' }),
     heading: formatText({
       id: 'actionSidebar.managePermissions.permissionsModal.mod.heading',
@@ -11,7 +11,7 @@ export const PERMISSIONS_MODAL_CONTENT = [
     actions: [formatText({ id: 'permissions.moderation' })],
   },
   {
-    key: USER_ROLE.Payer,
+    key: UserRole.Payer,
     title: formatText({ id: 'role.payer' }),
     heading: formatText({
       id: 'actionSidebar.managePermissions.permissionsModal.payer.heading',
@@ -27,7 +27,7 @@ export const PERMISSIONS_MODAL_CONTENT = [
     ],
   },
   {
-    key: USER_ROLE.Admin,
+    key: UserRole.Admin,
     title: formatText({ id: 'role.admin' }),
     heading: formatText({
       id: 'actionSidebar.managePermissions.permissionsModal.admin.heading',
@@ -41,7 +41,7 @@ export const PERMISSIONS_MODAL_CONTENT = [
     ],
   },
   {
-    key: USER_ROLE.Owner,
+    key: UserRole.Owner,
     title: formatText({ id: 'role.owner' }),
     heading: formatText({
       id: 'actionSidebar.managePermissions.permissionsModal.owner.heading',
@@ -56,7 +56,7 @@ export const PERMISSIONS_MODAL_CONTENT = [
     ],
   },
   {
-    key: USER_ROLE.Custom,
+    key: UserRole.Custom,
     title: formatText({
       id: 'actionSidebar.managePermissions.permissionsModal.custom.title',
     }),

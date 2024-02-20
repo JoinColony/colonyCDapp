@@ -5,10 +5,7 @@ import { type Token } from '~types/graphql.ts';
 
 import { type ModalProps } from '../../shared/Modal/types.ts';
 
-import { type TOKENS_MODAL_TYPES } from './consts.ts';
-
-export type TokensModalType =
-  (typeof TOKENS_MODAL_TYPES)[keyof typeof TOKENS_MODAL_TYPES];
+import { type TokensModalType } from './consts.ts';
 
 export interface TokensModalProps extends ModalProps {
   type: TokensModalType;

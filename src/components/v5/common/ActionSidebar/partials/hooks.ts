@@ -2,7 +2,7 @@ import { Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { ACTION, type Action } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
@@ -13,26 +13,26 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
 
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
-  [ACTION.ADVANCED_PAYMENT]: 'button.createPayment',
-  [ACTION.SIMPLE_PAYMENT]: 'button.createPayment',
-  [ACTION.BATCH_PAYMENT]: 'button.createPayment',
-  [ACTION.SPLIT_PAYMENT]: 'button.createPayment',
-  [ACTION.STAGED_PAYMENT]: 'button.createPayment',
-  [ACTION.STREAMING_PAYMENT]: 'button.createStream',
-  [ACTION.TRANSFER_FUNDS]: 'button.createTransfer',
-  [ACTION.MINT_TOKENS]: 'button.createTokens',
-  [ACTION.UNLOCK_TOKEN]: 'button.unlockToken',
-  [ACTION.MANAGE_TOKENS]: 'button.updateTokens',
-  [ACTION.EDIT_COLONY_DETAILS]: 'button.editDetails',
-  [ACTION.EDIT_EXISTING_TEAM]: 'button.editTeam',
-  [ACTION.CREATE_NEW_TEAM]: 'button.createTeam',
-  [ACTION.MANAGE_REPUTATION]: 'button.changeReputation',
-  [ACTION.MANAGE_PERMISSIONS]: 'button.changePermissions',
-  [ACTION.UPGRADE_COLONY_VERSION]: 'button.upgradeVersion',
-  [ACTION.ENTER_RECOVERY_MODE]: 'button.enterRecovery',
-  [ACTION.MANAGE_COLONY_OBJECTIVES]: 'button.updateObjective',
-  [ACTION.CREATE_NEW_INTEGRATION]: 'button.createIntegration',
-  [ACTION.CREATE_DECISION]: 'button.createDecision',
+  [Action.AdvancedPayment]: 'button.createPayment',
+  [Action.SimplePayment]: 'button.createPayment',
+  [Action.BatchPayment]: 'button.createPayment',
+  [Action.SplitPayment]: 'button.createPayment',
+  [Action.StagedPayment]: 'button.createPayment',
+  [Action.StreamingPayment]: 'button.createStream',
+  [Action.TransferFunds]: 'button.createTransfer',
+  [Action.MintTokens]: 'button.createTokens',
+  [Action.UnlockToken]: 'button.unlockToken',
+  [Action.ManageTokens]: 'button.updateTokens',
+  [Action.EditColonyDetails]: 'button.editDetails',
+  [Action.EditExistingTeam]: 'button.editTeam',
+  [Action.CreateNewTeam]: 'button.createTeam',
+  [Action.ManageReputation]: 'button.changeReputation',
+  [Action.ManagePermissions]: 'button.changePermissions',
+  [Action.UpgradeColonyVersion]: 'button.upgradeVersion',
+  [Action.EnterRecoveryMode]: 'button.enterRecovery',
+  [Action.ManageColonyObjectives]: 'button.updateObjective',
+  [Action.CreateNewIntegration]: 'button.createIntegration',
+  [Action.CreateDecision]: 'button.createDecision',
 };
 
 export const useSubmitButtonText = () => {
@@ -62,9 +62,9 @@ export const useSubmitButtonDisabled = () => {
   });
 
   switch (selectedAction) {
-    case ACTION.UNLOCK_TOKEN:
+    case Action.UnlockToken:
       return isNativeTokenUnlocked;
-    case ACTION.UPGRADE_COLONY_VERSION:
+    case Action.UpgradeColonyVersion:
       return !canUpgrade;
     default:
       return false;
@@ -81,7 +81,7 @@ export const useIsFieldDisabled = () => {
     isInstalledExtensionData(extensionData) &&
     extensionData.isEnabled;
 
-  if (selectedAction === ACTION.CREATE_DECISION && !isExtensionEnabled) {
+  if (selectedAction === Action.CreateDecision && !isExtensionEnabled) {
     return true;
   }
 

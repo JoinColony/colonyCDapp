@@ -9,7 +9,7 @@ import { formatText } from '~utils/intl.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import { DISTRIBUTION_METHOD } from '../../../../consts.tsx';
+import { DistributionMethod } from '../../../../consts.tsx';
 
 import {
   useRecipientsFieldTableColumns,
@@ -23,7 +23,7 @@ import {
 
 const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   name,
-  distributionMethod = DISTRIBUTION_METHOD.Equal,
+  distributionMethod = DistributionMethod.Equal,
   token,
   amount,
 }) => {

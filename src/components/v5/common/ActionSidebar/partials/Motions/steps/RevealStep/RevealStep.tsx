@@ -14,6 +14,7 @@ import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts'
 import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
 
 import { useRevealStep } from './hooks.ts';
@@ -63,7 +64,7 @@ const RevealStep: FC<RevealStepProps> = ({
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
-        status: 'info',
+        status: StatusTypes.Info,
         children: formatText({ id: 'motion.revealStep.statusText' }),
         textClassName: 'text-4',
         content: (
@@ -82,7 +83,7 @@ const RevealStep: FC<RevealStepProps> = ({
             />
             {!revealPhaseEnded && canInteract && (
               <StatusText
-                status="warning"
+                status={StatusTypes.Warning}
                 textClassName="text-4 text-gray-900"
                 iconAlignment="top"
               >

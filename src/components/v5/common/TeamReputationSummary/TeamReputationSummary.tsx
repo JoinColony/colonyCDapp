@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -132,7 +132,7 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
             mode="underlined"
             onClick={() =>
               toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
               })
             }
           >

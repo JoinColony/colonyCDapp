@@ -9,6 +9,7 @@ import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import { membersList } from './consts.ts';
 
@@ -20,7 +21,7 @@ const ExitRecoveryStep: FC = () => {
     <div className="flex flex-col gap-4">
       <MenuWithStatusText
         statusTextSectionProps={{
-          status: 'info',
+          status: StatusTypes.Info,
           children: formatText(
             { id: 'motion.exitRecovery.statusText' },
             { signatures: 2 },
@@ -66,7 +67,7 @@ const ExitRecoveryStep: FC = () => {
       />
       <MenuWithStatusText
         statusTextSectionProps={{
-          status: 'info',
+          status: StatusTypes.Info,
           children: formatText({
             id: 'motion.exitRecovery.storageSlots.statusText',
           }),

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
@@ -29,7 +29,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
 
   const handleUpgradeColony = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: ACTION.UPGRADE_COLONY_VERSION,
+      [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
     });
   };
 

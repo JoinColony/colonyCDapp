@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
 export const useActionsList = () => {
@@ -13,28 +13,28 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.simplePayment' },
-            value: ACTION.SIMPLE_PAYMENT,
+            value: Action.SimplePayment,
           },
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.advancedPayment' },
-          //   value: ACTION.ADVANCED_PAYMENT,
+          //   value: Action.AdvancedPayment,
           // },
           // {
           //   label: { id: 'actions.batchPayment' },
-          //   value: ACTION.BATCH_PAYMENT,
+          //   value: Action.BatchPayment,
           // },
           // {
           //   label: { id: 'actions.splitPayment' },
-          //   value: ACTION.SPLIT_PAYMENT,
+          //   value: Action.SplitPayment,
           // },
           // {
           //   label: { id: 'actions.stagedPayment' },
-          //   value: ACTION.STAGED_PAYMENT,
+          //   value: Action.StagedPayment,
           // },
           // {
           //   label: { id: 'actions.streamingPayment' },
-          //   value: ACTION.STREAMING_PAYMENT,
+          //   value: Action.StreamingPayment,
           // },
         ],
       },
@@ -45,7 +45,7 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.createDecision' },
-            value: ACTION.CREATE_DECISION,
+            value: Action.CreateDecision,
             isDisabled: false,
           },
         ],
@@ -57,19 +57,19 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.transferFunds' },
-            value: ACTION.TRANSFER_FUNDS,
+            value: Action.TransferFunds,
           },
           {
             label: { id: 'actions.mintTokens' },
-            value: ACTION.MINT_TOKENS,
+            value: Action.MintTokens,
           },
           {
             label: { id: 'actions.unlockToken' },
-            value: ACTION.UNLOCK_TOKEN,
+            value: Action.UnlockToken,
           },
           {
             label: { id: 'actions.manageTokens' },
-            value: ACTION.MANAGE_TOKENS,
+            value: Action.ManageTokens,
           },
         ],
       },
@@ -80,11 +80,11 @@ export const useActionsList = () => {
         options: [
           {
             label: { id: 'actions.createNewTeam' },
-            value: ACTION.CREATE_NEW_TEAM,
+            value: Action.CreateNewTeam,
           },
           {
             label: { id: 'actions.editExistingTeam' },
-            value: ACTION.EDIT_EXISTING_TEAM,
+            value: Action.EditExistingTeam,
           },
         ],
       },
@@ -96,32 +96,32 @@ export const useActionsList = () => {
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.manageReputation' },
-          //   value: ACTION.MANAGE_REPUTATION,
+          //   value: Action.ManageReputation,
           // },
           {
             label: { id: 'actions.managePermissions' },
-            value: ACTION.MANAGE_PERMISSIONS,
+            value: Action.ManagePermissions,
           },
           {
             label: { id: 'actions.editColonyDetails' },
-            value: ACTION.EDIT_COLONY_DETAILS,
+            value: Action.EditColonyDetails,
           },
           {
             label: { id: 'actions.upgradeColonyVersion' },
-            value: ACTION.UPGRADE_COLONY_VERSION,
+            value: Action.UpgradeColonyVersion,
           },
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.enterRecoveryMode' },
-          //   value: ACTION.ENTER_RECOVERY_MODE,
+          //   value: Action.EnterRecoveryMode,
           // },
           {
             label: { id: 'actions.manageColonyObjectives' },
-            value: ACTION.MANAGE_COLONY_OBJECTIVES,
+            value: Action.ManageColonyObjectives,
           },
           // {
           //   label: { id: 'actions.createNewIntegration' },
-          //   value: ACTION.CREATE_NEW_INTEGRATION,
+          //   value: Action.CreateNewIntegration,
           //   isDisabled: true,
           // },
         ],

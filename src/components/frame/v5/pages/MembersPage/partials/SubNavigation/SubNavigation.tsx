@@ -1,7 +1,7 @@
 import { LockKey, ShareNetwork } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
@@ -36,7 +36,7 @@ const SubNavigation: FC<SubNavigationProps> = () =>
           title="members.subnav.permissions"
           onClick={() =>
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: ACTION.MANAGE_PERMISSIONS,
+              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             })
           }
         />

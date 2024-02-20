@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import {
@@ -44,7 +44,7 @@ const Agreements = () => {
 
   const openCreateDecision = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_DECISION,
+      [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
     });
   };
 

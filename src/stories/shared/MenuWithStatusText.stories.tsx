@@ -1,4 +1,5 @@
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -7,7 +8,7 @@ const cardWithStatusTextMeta: Meta<typeof MenuWithStatusText> = {
   component: MenuWithStatusText,
   args: {
     statusTextSectionProps: {
-      status: 'info',
+      status: StatusTypes.Info,
       children: 'This is a status text.',
       content: 'This is an additional content.',
     },

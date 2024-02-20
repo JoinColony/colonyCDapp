@@ -8,7 +8,7 @@ import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
-import { FIELD_STATE } from '../consts.ts';
+import { FieldState } from '../consts.ts';
 
 import { OPTION_LIST_ITEM_CLASSES } from './consts.ts';
 import { type CardSelectOptionsGroup, type CardSelectProps } from './types.ts';
@@ -118,7 +118,7 @@ function CardSelect<TValue = string>({
               {
                 'text-gray-400': !state && !isSelectVisible,
                 'text-gray-900': value && !isSelectVisible,
-                'text-negative-400': state === FIELD_STATE.Error,
+                'text-negative-400': state === FieldState.Error,
                 'text-blue-400': isSelectVisible,
               },
             )}

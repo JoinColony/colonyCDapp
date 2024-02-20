@@ -16,7 +16,7 @@ import { uniqueId } from 'lodash';
 import React, { type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -139,7 +139,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
                 key: 'mint_tokens',
                 onClick: () => {
                   toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: ACTION.MINT_TOKENS,
+                    [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
                   });
                 },
                 label: formatMessage(MSG.labelMintToken),
@@ -151,7 +151,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           key: 'transfer_funds',
           onClick: () => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: ACTION.TRANSFER_FUNDS,
+              [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
               amount: {
                 tokenAddress: selectedTokenData?.tokenAddress,
               },
@@ -164,7 +164,7 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           key: 'make_payment',
           onClick: () => {
             toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: ACTION.SIMPLE_PAYMENT,
+              [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
               amount: {
                 tokenAddress: selectedTokenData?.tokenAddress,
               },

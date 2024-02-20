@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 
-import { FIELD_STATE } from '../consts.ts';
+import { FieldState } from '../consts.ts';
 
 import TextareaBase from './TextareaBase.tsx';
 import { type FormTextareaBaseProps } from './types.ts';
@@ -28,7 +28,7 @@ const FormTextareaBase: FC<FormTextareaBaseProps> = ({ name, ...rest }) => {
     <TextareaBase
       readOnly={readonly}
       message={error?.message}
-      state={invalid ? FIELD_STATE.Error : undefined}
+      state={invalid ? FieldState.Error : undefined}
       {...{ ...rest, ...field, onChange }}
     />
   );

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ACTION } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { notNull } from '~utils/arrays/index.ts';
@@ -50,7 +50,7 @@ const ReputationChart = () => {
 
   const openCreateNewTeam = () => {
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: ACTION.CREATE_NEW_TEAM,
+      [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
     });
   };
 

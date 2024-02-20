@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
 
-import { FIELD_STATE } from '../consts.ts';
+import { FieldState } from '../consts.ts';
 
 import InputBase from './InputBase.tsx';
 import { type FormInputBaseProps } from './types.ts';
@@ -42,7 +42,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({
           onChange(inputValue);
         }
       }}
-      state={invalid ? FIELD_STATE.Error : undefined}
+      state={invalid ? FieldState.Error : undefined}
     />
   );
 };

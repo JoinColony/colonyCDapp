@@ -10,11 +10,8 @@ import { pipe, mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import { TOKENS_MODAL_TYPES } from './consts.ts';
-import {
-  type TokensModalType,
-  type UseTokensModalReturnType,
-} from './types.ts';
+import { TokensModalType } from './consts.ts';
+import { type UseTokensModalReturnType } from './types.ts';
 
 export const useTokensModal = (
   type: TokensModalType,
@@ -29,7 +26,7 @@ export const useTokensModal = (
     loading,
   } = useUserTokenBalanceContext();
   const { inactiveBalance, activeBalance } = tokenData || {};
-  const isActivate = type === TOKENS_MODAL_TYPES.activate;
+  const isActivate = type === TokensModalType.Activate;
 
   const tokenDecimals = useMemo(
     () => getTokenDecimalsWithFallback(nativeToken?.decimals),

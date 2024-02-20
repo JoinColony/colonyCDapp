@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { ACTION, type Action } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
 import AdvancedPaymentForm from '../partials/forms/AdvancedPaymentForm/index.ts';
@@ -29,22 +29,22 @@ export const useSidebarActionForm = () => {
     Partial<Record<Action, React.FC<ActionFormBaseProps>>>
   >(
     () => ({
-      [ACTION.SIMPLE_PAYMENT]: SinglePaymentForm,
-      [ACTION.MINT_TOKENS]: MintTokenForm,
-      [ACTION.TRANSFER_FUNDS]: TransferFundsForm,
-      [ACTION.CREATE_NEW_TEAM]: CreateNewTeamForm,
-      [ACTION.UNLOCK_TOKEN]: UnlockTokenForm,
-      [ACTION.UPGRADE_COLONY_VERSION]: UpgradeColonyForm,
-      [ACTION.CREATE_DECISION]: CreateDecisionForm,
-      [ACTION.EDIT_EXISTING_TEAM]: EditTeamForm,
-      [ACTION.ENTER_RECOVERY_MODE]: EnterRecoveryModeForm,
-      [ACTION.EDIT_COLONY_DETAILS]: EditColonyDetailsForm,
-      [ACTION.MANAGE_COLONY_OBJECTIVES]: ManageColonyObjectivesForm,
-      [ACTION.SPLIT_PAYMENT]: SplitPaymentForm,
-      [ACTION.MANAGE_TOKENS]: ManageTokensForm,
-      [ACTION.ADVANCED_PAYMENT]: AdvancedPaymentForm,
-      [ACTION.BATCH_PAYMENT]: BatchPaymentForm,
-      [ACTION.MANAGE_PERMISSIONS]: ManagePermissionsForm,
+      [Action.SimplePayment]: SinglePaymentForm,
+      [Action.MintTokens]: MintTokenForm,
+      [Action.TransferFunds]: TransferFundsForm,
+      [Action.CreateNewTeam]: CreateNewTeamForm,
+      [Action.UnlockToken]: UnlockTokenForm,
+      [Action.UpgradeColonyVersion]: UpgradeColonyForm,
+      [Action.CreateDecision]: CreateDecisionForm,
+      [Action.EditExistingTeam]: EditTeamForm,
+      [Action.EnterRecoveryMode]: EnterRecoveryModeForm,
+      [Action.EditColonyDetails]: EditColonyDetailsForm,
+      [Action.ManageColonyObjectives]: ManageColonyObjectivesForm,
+      [Action.SplitPayment]: SplitPaymentForm,
+      [Action.ManageTokens]: ManageTokensForm,
+      [Action.AdvancedPayment]: AdvancedPaymentForm,
+      [Action.BatchPayment]: BatchPaymentForm,
+      [Action.ManagePermissions]: ManagePermissionsForm,
     }),
     [],
   );

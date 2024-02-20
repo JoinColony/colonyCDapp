@@ -1,6 +1,6 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 
-import { ACTION, type Action } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
@@ -11,38 +11,38 @@ export const getPermissionsNeededForAction = (
   formValues: Record<string, any>,
 ): ColonyRole[] | undefined => {
   switch (actionType) {
-    case ACTION.SIMPLE_PAYMENT:
+    case Action.SimplePayment:
       return [ColonyRole.Funding, ColonyRole.Administration];
-    case ACTION.MINT_TOKENS:
+    case Action.MintTokens:
       return [ColonyRole.Root];
-    case ACTION.TRANSFER_FUNDS:
+    case Action.TransferFunds:
       return [ColonyRole.Funding];
-    case ACTION.UNLOCK_TOKEN:
+    case Action.UnlockToken:
       return [ColonyRole.Root];
-    case ACTION.MANAGE_TOKENS:
+    case Action.ManageTokens:
       return [ColonyRole.Root];
-    case ACTION.CREATE_NEW_TEAM:
+    case Action.CreateNewTeam:
       return [ColonyRole.Architecture];
-    case ACTION.EDIT_EXISTING_TEAM:
+    case Action.EditExistingTeam:
       return [ColonyRole.Architecture];
-    case ACTION.MANAGE_REPUTATION:
+    case Action.ManageReputation:
       /**
        * @TODO: Once this action is wired, we'll need to tell if
        * it's a smite or award action (most likely from `formValues`)
        * If smite: Arbitration, else: Root
        */
       return undefined;
-    case ACTION.MANAGE_PERMISSIONS: {
+    case Action.ManagePermissions: {
       return formValues.team === Id.RootDomain
         ? [ColonyRole.Root, ColonyRole.Architecture]
         : [ColonyRole.Architecture];
     }
-    case ACTION.EDIT_COLONY_DETAILS:
-    case ACTION.MANAGE_COLONY_OBJECTIVES:
+    case Action.EditColonyDetails:
+    case Action.ManageColonyObjectives:
       return [ColonyRole.Root];
-    case ACTION.UPGRADE_COLONY_VERSION:
+    case Action.UpgradeColonyVersion:
       return [ColonyRole.Root];
-    case ACTION.ENTER_RECOVERY_MODE:
+    case Action.EnterRecoveryMode:
       return [ColonyRole.Recovery];
     default:
       return undefined;
@@ -55,11 +55,11 @@ const getPermissionsDomainIdForAction = (
   formValues: Record<string, any>,
 ) => {
   switch (actionType) {
-    case ACTION.SIMPLE_PAYMENT:
-    case ACTION.TRANSFER_FUNDS:
+    case Action.SimplePayment:
+    case Action.TransferFunds:
       return formValues.from;
-    case ACTION.MANAGE_REPUTATION:
-    case ACTION.MANAGE_PERMISSIONS:
+    case Action.ManageReputation:
+    case Action.ManagePermissions:
       return formValues.team;
     default:
       return Id.RootDomain;

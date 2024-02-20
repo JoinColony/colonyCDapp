@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 import { formatText } from '~utils/intl.ts';
 
 import VoteChartBar from './partials/VoteChartBar/index.ts';
-import { VOTE_CHART_BAR_DIRECTION } from './partials/VoteChartBar/types.ts';
+import { VoteChartBarDirection } from './partials/VoteChartBar/types.ts';
 import VoteChartThresholdIndicator from './partials/VoteChartThresholdIndicator/index.ts';
 import { type VoteChartProps } from './types.ts';
 
@@ -76,7 +76,7 @@ const VoteChart: FC<VoteChartProps> = ({
             barBackgroundClassName="bg-negative-300"
             predictionBarClassName="border-negative-300 bg-negative-300"
             predictedValue={predictedAgainstValue}
-            direction={VOTE_CHART_BAR_DIRECTION.Left}
+            direction={VoteChartBarDirection.Left}
           />
           <span
             className={clsx('text-xs text-center transition-[color]', {
@@ -105,7 +105,7 @@ const VoteChart: FC<VoteChartProps> = ({
               predictedValue={predictedForValue}
               barBackgroundClassName="bg-purple-200"
               predictionBarClassName="border-purple-200 bg-purple-200"
-              direction={VOTE_CHART_BAR_DIRECTION.Right}
+              direction={VoteChartBarDirection.Right}
             />
           </div>
           <span

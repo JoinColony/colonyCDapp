@@ -9,7 +9,7 @@ import {
 import React, { type FC, useCallback } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { USER_ROLE } from '~constants/permissions.ts';
+import { UserRole } from '~constants/permissions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
@@ -25,9 +25,9 @@ import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
 
 import {
-  AUTHORITY_OPTIONS,
+  AuthorityOptions,
   PERMISSIONS_OPTIONS,
-  REMOVE_ROLE_OPTION_VALUE,
+  RemoveRoleOptionValue,
 } from './consts.tsx';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
@@ -76,7 +76,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     ({ options, ...rest }) => ({
       ...rest,
       options: options.filter(({ value }) =>
-        value === USER_ROLE.Owner ? Number(team) === Id.RootDomain : true,
+        value === UserRole.Owner ? Number(team) === Id.RootDomain : true,
       ),
     }),
   );
@@ -176,7 +176,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <FormCardSelect
           disabled={isModeRoleSelected || hasNoDecisionMethods}
           name="authority"
-          options={AUTHORITY_OPTIONS}
+          options={AuthorityOptions}
           title={formatText({
             id: 'actionSidebar.managePermissions.authoritySelect.title',
           })}
@@ -188,7 +188,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedInRow />
       <DescriptionRow />
-      {role !== REMOVE_ROLE_OPTION_VALUE && (
+      {role !== RemoveRoleOptionValue.remove && (
         <PermissionsTable name="permissions" role={role} className="mt-7" />
       )}
     </>

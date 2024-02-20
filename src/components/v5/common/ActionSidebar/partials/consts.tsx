@@ -3,28 +3,25 @@ import { FormattedMessage } from 'react-intl';
 
 import { type CardSelectOption } from '../../Fields/CardSelect/types.ts';
 
-export const DISTRIBUTION_METHOD = {
-  Equal: 'equal',
-  Unequal: 'unequal',
-  ReputationPercentage: 'reputation-percentage',
-} as const;
+export enum DistributionMethod {
+  Equal = 'equal',
+  Unequal = 'unequal',
+  ReputationPercentage = 'reputation-percentage',
+}
 
-export type DistributionMethod =
-  (typeof DISTRIBUTION_METHOD)[keyof typeof DISTRIBUTION_METHOD];
-
-export const DISTRIBUTION_METHOD_OPTIONS: CardSelectOption<string>[] = [
+export const DistributionMethodOptions: CardSelectOption<string>[] = [
   {
     label: <FormattedMessage id="actionSidebar.distributionTypes.equal" />,
-    value: DISTRIBUTION_METHOD.Equal,
+    value: DistributionMethod.Equal,
   },
   {
     label: <FormattedMessage id="actionSidebar.distributionTypes.unequal" />,
-    value: DISTRIBUTION_METHOD.Unequal,
+    value: DistributionMethod.Unequal,
   },
   {
     label: (
       <FormattedMessage id="actionSidebar.distributionTypes.reputationPercentage" />
     ),
-    value: DISTRIBUTION_METHOD.ReputationPercentage,
+    value: DistributionMethod.ReputationPercentage,
   },
 ];

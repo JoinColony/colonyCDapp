@@ -1,6 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { type UserRole, USER_ROLE } from '~constants/permissions.ts';
+import { UserRole } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type CustomPermissionTableModel } from './types.ts';
@@ -11,7 +11,7 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
   Exclude<UserRole, 'custom'>,
   { heading: string; permissions: React.ReactNode[] }
 > = {
-  [USER_ROLE.Owner]: {
+  [UserRole.Owner]: {
     heading: 'Owner permissions',
     permissions: [
       formatText({ id: 'permissions.moderation' }),
@@ -34,7 +34,7 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
       formatText({ id: 'permissions.upgradeColonyVersion' }),
     ],
   },
-  [USER_ROLE.Admin]: {
+  [UserRole.Admin]: {
     heading: 'Admin permissions',
     permissions: [
       formatText({ id: 'permissions.moderation' }),
@@ -51,7 +51,7 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
       formatText({ id: 'permissions.addToVerifiedMembers' }),
     ],
   },
-  [USER_ROLE.Payer]: {
+  [UserRole.Payer]: {
     heading: 'Payer permissions',
     permissions: [
       formatText({ id: 'permissions.moderation' }),
@@ -64,7 +64,7 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
       formatText({ id: 'permissions.penaliseReputation' }),
     ],
   },
-  [USER_ROLE.Mod]: {
+  [UserRole.Mod]: {
     heading: 'Mod permissions',
     permissions: [formatText({ id: 'permissions.moderation' })],
   },
