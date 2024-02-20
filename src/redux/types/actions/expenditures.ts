@@ -58,9 +58,10 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_LOCK,
       {
-        colonyName: string;
         colonyAddress: Address;
         nativeExpenditureId: number;
+        customActionTitle?: string;
+        annotationMessage?: string;
       },
       object
     >
