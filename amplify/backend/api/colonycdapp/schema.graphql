@@ -3195,6 +3195,10 @@ type Expenditure @model {
   """
   hasReclaimedStake: Boolean
   type: ExpenditureType!
+  """
+  Hash of the `ExpenditureMadeViaStake` event transaction, if applicable
+  """
+  stakedTransactionHash: ID
 }
 
 """
