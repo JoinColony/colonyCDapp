@@ -32,6 +32,8 @@ export type CancelStakedExpenditurePayload = {
   stakedExpenditureAddress: string;
   shouldPunish: boolean;
   expenditure: Expenditure;
+  customActionTitle?: string;
+  annotationMessage?: string;
 };
 
 export type ExpendituresActionTypes =
