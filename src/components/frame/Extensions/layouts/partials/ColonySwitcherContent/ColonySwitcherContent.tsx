@@ -60,7 +60,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
   return loading ? (
     <SpinnerLoader />
   ) : (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4 md:pt-6">
       {currentColonyItem && (
         <div>
           <h3 className={titleClassName}>
