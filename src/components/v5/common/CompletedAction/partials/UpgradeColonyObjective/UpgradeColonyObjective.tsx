@@ -19,7 +19,7 @@ import {
   DescriptionRow,
 } from '../rows/index.ts';
 
-const displayName = 'v5.common.CompletedAction.partials.EditColonyDetails';
+const displayName = 'v5.common.CompletedAction.partials.UpgradeColonyObjective';
 
 interface Props {
   action: ColonyAction;
@@ -34,21 +34,21 @@ const MSG = defineMessages({
     id: `${displayName}.subtitle`,
     defaultMessage: 'Manage Colony Objective by {user}',
   },
-  colonyTitle: {
-    id: `${displayName}.colonyTitle`,
+  objectiveTitle: {
+    id: `${displayName}.objectiveTitle`,
     defaultMessage: 'Objective title',
   },
-  colonyDescription: {
-    id: `${displayName}.colonyDescription`,
+  objectiveDescription: {
+    id: `${displayName}.objectiveDescription`,
     defaultMessage: 'Objective description',
   },
-  colonyProgress: {
-    id: `${displayName}.colonyProgress`,
+  objectiveProgress: {
+    id: `${displayName}.objectiveProgress`,
     defaultMessage: 'Progress percentage',
   },
 });
 
-const EditColonyDetails = ({ action }: Props) => {
+const UpgradeColonyObjective = ({ action }: Props) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
 
@@ -73,14 +73,14 @@ const EditColonyDetails = ({ action }: Props) => {
         <ActionTypeRow actionType={action.type} />
         <div className="flex items-center gap-2">
           <Article size={ICON_SIZE} />
-          <span>{formatText(MSG.colonyTitle)}</span>
+          <span>{formatText(MSG.objectiveTitle)}</span>
         </div>
         <div>
           <span>{action.colony.metadata?.objective?.title}</span>
         </div>
         <div className="flex items-center gap-2">
           <FileText size={ICON_SIZE} />
-          <span>{formatText(MSG.colonyDescription)}</span>
+          <span>{formatText(MSG.objectiveDescription)}</span>
         </div>
         <div>
           <span>{action.colony.metadata?.objective?.description}</span>
@@ -88,7 +88,7 @@ const EditColonyDetails = ({ action }: Props) => {
 
         <div className="flex items-center gap-2">
           <Percent size={ICON_SIZE} />
-          <span>{formatText(MSG.colonyProgress)}</span>
+          <span>{formatText(MSG.objectiveProgress)}</span>
         </div>
         <div>
           <span>{action.colony.metadata?.objective?.progress}</span>
@@ -108,6 +108,6 @@ const EditColonyDetails = ({ action }: Props) => {
   );
 };
 
-EditColonyDetails.displayName = displayName;
+UpgradeColonyObjective.displayName = displayName;
 
-export default EditColonyDetails;
+export default UpgradeColonyObjective;

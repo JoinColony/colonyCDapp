@@ -26,10 +26,6 @@ const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
     getCustomPermissionsTableColumns(userColonyRoles);
   const permissionsTableProps = usePermissionsTableProps(role);
 
-  if (!role) {
-    return null;
-  }
-
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>
       key === ColonyRole.Root || key === ColonyRole.Recovery
