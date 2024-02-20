@@ -113,7 +113,7 @@ export type ExpendituresActionTypes =
       ActionTypes.EXPENDITURE_CLAIM,
       {
         colonyAddress: Address;
-        expenditureId: number;
+        nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
       },
       object
