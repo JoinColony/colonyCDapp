@@ -22,7 +22,7 @@ import {
 
 function* editExpenditureAction({
   payload: {
-    colony: { colonyAddress, name: colonyName },
+    colonyAddress,
     expenditure,
     payouts,
     networkInverseFee,
@@ -30,7 +30,6 @@ function* editExpenditureAction({
     annotationMessage,
   },
   meta,
-  meta: { navigate, setTxHash },
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
   const batchKey = 'createExpenditure';
 
@@ -140,8 +139,6 @@ function* editExpenditureAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
-
     const { type } = yield waitForTxResult(editExpenditure.channel);
 
     if (annotationMessage) {
@@ -162,12 +159,6 @@ function* editExpenditureAction({
         payload: {},
         meta,
       });
-
-      if (colonyName && navigate) {
-        navigate(`/${colonyName}?tx=${txHash}`, {
-          state: { isRedirect: true },
-        });
-      }
     }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_EDIT_ERROR, error, meta);
