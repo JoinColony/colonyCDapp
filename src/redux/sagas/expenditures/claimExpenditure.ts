@@ -81,7 +81,7 @@ function* claimExpenditure({
         group: {
           key: batchKey,
           id: meta.id,
-          index: payoutsWithSlotIds.length - 1,
+          index: payoutsWithSlotIds.length,
         },
         ready: false,
       });
