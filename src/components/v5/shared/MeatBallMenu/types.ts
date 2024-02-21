@@ -23,11 +23,12 @@ export interface MeatBallMenuItem {
 export interface MeatBallMenuProps {
   disabled?: boolean;
   items: MeatBallMenuItem[];
-  buttonClassName?: string;
+  buttonClassName?: ((isMenuOpen: boolean) => string) | string;
   contentWrapperClassName?: string;
   className?: string;
   renderItemWrapper?: RenderMeatBallItemWrapper;
   withVerticalIcon?: boolean;
+  iconSize?: number;
   dropdownPlacementProps?: {
     top?: number;
     withAutoTopPlacement?: boolean;

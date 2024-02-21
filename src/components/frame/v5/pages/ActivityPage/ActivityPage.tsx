@@ -25,7 +25,7 @@ const ActivityPage: FC = () => {
     <div className="flex flex-col gap-4 sm:gap-6 w-full">
       <WidgetBoxList items={widgets} />
       <div>
-        <ColonyActionsTable />
+        <ColonyActionsTable className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2" />
       </div>
     </div>
   );

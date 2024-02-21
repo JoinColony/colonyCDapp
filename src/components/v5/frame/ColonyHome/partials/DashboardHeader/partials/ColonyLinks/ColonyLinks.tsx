@@ -45,45 +45,52 @@ const ColonyLinks = () => {
         }
 
         return (
-          <li key={name} className="md:hover:text-blue-400">
-            <ExternalLink href={link} className="text-gray-900">
+          <li key={name}>
+            <ExternalLink
+              href={link}
+              className="text-gray-900 md:hover:text-blue-400"
+            >
               <LinkIcon size={16} />
             </ExternalLink>
           </li>
         );
       })}
-      <Tooltip
-        isOpen={isColonyAddressCopied}
-        isSuccess
-        placement="right"
-        tooltipContent={formatText({
-          id: 'colony.tooltip.url.copied',
-        })}
-      >
-        <button
-          type="button"
-          className="md:hover:text-blue-400"
-          onClick={() => handleColonyAddressCopy(colonyAddress ?? '')}
+      <li>
+        <Tooltip
+          isOpen={isColonyAddressCopied}
+          isSuccess
+          placement="right"
+          tooltipContent={formatText({
+            id: 'colony.tooltip.url.copied',
+          })}
         >
-          <CopySimple size={16} />
-        </button>
-      </Tooltip>
-      <Tooltip
-        isOpen={isShareUrlCopied}
-        isSuccess
-        placement="right"
-        tooltipContent={formatText({
-          id: 'colony.tooltip.url.copied',
-        })}
-      >
-        <button
-          type="button"
-          className="md:hover:text-blue-400"
-          onClick={() => handleShareUrlCopy(colonyUrl)}
+          <button
+            type="button"
+            className="md:hover:text-blue-400"
+            onClick={() => handleColonyAddressCopy(colonyAddress ?? '')}
+          >
+            <CopySimple size={16} />
+          </button>
+        </Tooltip>
+      </li>
+      <li>
+        <Tooltip
+          isOpen={isShareUrlCopied}
+          isSuccess
+          placement="right"
+          tooltipContent={formatText({
+            id: 'colony.tooltip.url.copied',
+          })}
         >
-          <ShareNetwork size={16} />
-        </button>
-      </Tooltip>
+          <button
+            type="button"
+            className="md:hover:text-blue-400"
+            onClick={() => handleShareUrlCopy(colonyUrl)}
+          >
+            <ShareNetwork size={16} />
+          </button>
+        </Tooltip>
+      </li>
       <li>
         <DropdownMenu {...dropdownMenuProps} />
       </li>

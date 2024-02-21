@@ -136,9 +136,9 @@ module.exports = {
         fast: '175ms',
       },
       screens: {
-        sm: '53.125rem',
+        sm: '48rem',
         md: '64rem',
-        lg: '90rem',
+        lg: '80rem',
       },
       zIndex: {
         1: '1',

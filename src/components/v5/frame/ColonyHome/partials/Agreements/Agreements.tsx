@@ -93,7 +93,7 @@ const Agreements = () => {
         </>
       }
       contentClassName="w-full"
-      className="flex-col p-6 bg-base-white min-h-[11.25rem]"
+      className="flex-col p-6 bg-base-white min-h-[11.25rem] col-span-2 lg:col-span-1"
       href={agreements ? COLONY_AGREEMENTS_ROUTE : undefined}
     />
   );

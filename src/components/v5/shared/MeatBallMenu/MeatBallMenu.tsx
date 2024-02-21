@@ -24,6 +24,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
   withVerticalIcon,
   contentWrapperClassName,
   dropdownPlacementProps,
+  iconSize = 16,
 }) => {
   const [
     isMenuOpen,
@@ -46,7 +47,9 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
         onClick={disabled ? undefined : toggleMenu}
         aria-label={formatText({ id: 'ariaLabel.openMenu' })}
         className={clsx(
-          buttonClassName,
+          typeof buttonClassName === 'function'
+            ? buttonClassName(isMenuOpen)
+            : buttonClassName,
           'p-[0.1875rem] transition-all duration-normal flex justify-center items-center',
           {
             'md:hover:text-blue-400 cursor-pointer': !disabled,
@@ -57,7 +60,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
         )}
       >
         <DotsThree
-          size={16}
+          size={iconSize}
           className={clsx({
             'rotate-90': withVerticalIcon,
           })}
@@ -68,7 +71,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           <MenuContainer
             className={clsx(
               contentWrapperClassName,
-              'px-6 py-4 absolute z-[60] overflow-y-auto w-auto',
+              'px-6 py-4 absolute z-[1] overflow-y-auto w-auto',
             )}
             hasShadow
             rounded="s"

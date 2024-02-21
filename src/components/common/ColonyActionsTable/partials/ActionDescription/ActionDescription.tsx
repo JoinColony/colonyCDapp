@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import { formatText } from '~utils/intl.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
@@ -15,7 +16,9 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   action,
   loading,
   refetchMotionStates,
+  hideDetails,
 }) => {
+  const isMobile = useMobile();
   const {
     initiatorUser: user,
     initiatorAddress,
@@ -44,7 +47,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   );
 
   return (
-    <div className="flex gap-4 items-center w-full">
+    <div className="flex gap-2 sm:gap-4 items-center w-full">
       <Avatar
         className={clsx('flex-shrink-0 flex-grow-0', {
           'overflow-hidden rounded-full skeleton': loading,
@@ -59,7 +62,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
         <div>
           <p
             className={clsx(
-              'font-medium text-md text-gray-900 line-clamp-2 md:line-clamp-1 break-all',
+              'font-medium text-md text-gray-900 line-clamp-2 md:line-clamp-1',
               {
                 skeleton: loading,
               },
@@ -70,29 +73,39 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
           {colony && (
             <p
               className={clsx(
-                'font-normal mt-0.5 text-sm text-gray-600 line-clamp-2 md:line-clamp-1 break-all',
+                'font-normal mt-0.5 text-sm text-gray-600 line-clamp-2 md:line-clamp-1',
                 {
                   skeleton: loading,
+                  hidden: hideDetails,
                 },
               )}
             >
-              {loading ? ''.padEnd(40, '-') : actionMetadataDescription}
+              {loading ? '-' : actionMetadataDescription}
             </p>
           )}
         </div>
-        {shouldShowCounter && isMotion && motionData && motionState && (
-          <MotionCountDownTimer
-            className="text-negative-400 font-medium text-xs flex-shrink-0"
-            timerClassName="text-negative-400 font-medium text-xs"
-            prefix={formatText({
-              id: 'activityFeedTable.table.motionCountDown.prefix',
-            })}
-            motionId={motionData.motionId}
-            motionStakes={motionData.motionStakes}
-            motionState={motionState}
-            refetchMotionState={refetchMotionState}
-          />
-        )}
+        {shouldShowCounter &&
+          isMotion &&
+          motionData &&
+          motionState &&
+          !isMobile && (
+            <MotionCountDownTimer
+              className={clsx(
+                'text-negative-400 font-medium text-xs flex-shrink-0',
+                {
+                  hidden: hideDetails,
+                },
+              )}
+              timerClassName="text-negative-400 font-medium text-xs"
+              prefix={formatText({
+                id: 'activityFeedTable.table.motionCountDown.prefix',
+              })}
+              motionId={motionData.motionId}
+              motionStakes={motionData.motionStakes}
+              motionState={motionState}
+              refetchMotionState={refetchMotionState}
+            />
+          )}
       </div>
     </div>
   );

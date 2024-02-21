@@ -4,5 +4,7 @@ import React from 'react';
 declare module '@tanstack/react-table' {
   export interface ColumnSizingColumnDef {
     staticSize?: string;
+    colSpan?: ((isExpanded: boolean) => number | undefined) | number;
+    cellContentWrapperClassName?: string;
   }
 }
