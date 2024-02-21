@@ -4,6 +4,7 @@ export interface ExpenditurePayoutFieldValue {
   tokenAddress: string;
   amount: string;
   claimDelay: number;
+  tokenDecimals: number;
 }
 
 export interface ExpenditureStageFieldValue {

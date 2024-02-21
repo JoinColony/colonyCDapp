@@ -34,7 +34,6 @@ function* createStakedExpenditure({
     isStaged,
     stages,
     networkInverseFee,
-    tokenDecimals,
     decisionMethod,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
@@ -178,7 +177,6 @@ function* createStakedExpenditure({
           expenditureId,
           payoutsWithSlotIds,
           networkInverseFee,
-          tokenDecimals,
         ),
       ),
     );

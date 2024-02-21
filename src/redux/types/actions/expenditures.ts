@@ -47,7 +47,6 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
-        tokenDecimals: number;
         decisionMethod: ExpenditureDecisionMethod;
       },
       MetaWithSetter<object>
@@ -136,7 +135,6 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
-        tokenDecimals: number;
         decisionMethod: ExpenditureDecisionMethod;
       },
       MetaWithSetter<object>

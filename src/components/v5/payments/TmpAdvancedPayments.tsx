@@ -23,9 +23,9 @@ const TmpAdvancedPayments = () => {
   const { user } = useAppContext();
   const { networkInverseFee } = useNetworkInverseFee();
 
-  const [tokenId, settokenId] = useState('');
-  const [decimalAmount, setdecimalAmount] = useState('');
-  const [transactionAmount, settransactionAmount] = useState('');
+  const [tokenId, setTokenId] = useState('');
+  const [decimalAmount, setDecimalAmount] = useState('');
+  const [transactionAmount, setTransactionAmount] = useState('');
 
   const tokenDecimalAmount = parseFloat(decimalAmount);
   const [getExpenditure] = useGetExpenditureLazyQuery();
@@ -65,13 +65,13 @@ const TmpAdvancedPayments = () => {
         tokenAddress: tokenId,
         recipientAddress: user?.walletAddress ?? '',
         claimDelay: 0,
+        tokenDecimals: tokenDecimalAmount,
       },
     ],
     colony,
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
     networkInverseFee: networkInverseFee ?? '0',
-    tokenDecimals: tokenDecimalAmount,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
   };
 
@@ -143,39 +143,36 @@ const TmpAdvancedPayments = () => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
-      <div>
         <ActionButton
           actionType={ActionTypes.EXPENDITURE_CREATE}
           values={createExpenditurePayload}
         >
           Create expenditure
         </ActionButton>
-      </div>
-      <div className="flex gap-4">
-        <InputBase
-          onChange={(e) => settokenId(e.currentTarget.value)}
-          placeholder="Token Address"
-        />
-        <InputBase
-          onChange={(e) => setdecimalAmount(e.currentTarget.value)}
-          placeholder="Token Decimals"
-        />
-        <InputBase
-          onChange={(e) => settransactionAmount(e.currentTarget.value)}
-          placeholder="Transaction Amount"
-        />
-
-      <div className="flex gap-4">
-        <InputBase
-          value={expenditureId}
-          onChange={(e) => setExpenditureId(e.currentTarget.value)}
-          placeholder="Expenditure ID"
-        />
         <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
         <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
         <Button onClick={handleFinalizeExpenditure}>
           Finalize expenditure
         </Button>
+      </div>
+      <div className="flex gap-4">
+        <InputBase
+          onChange={(e) => setTokenId(e.currentTarget.value)}
+          placeholder="Token Address"
+        />
+        <InputBase
+          onChange={(e) => setDecimalAmount(e.currentTarget.value)}
+          placeholder="Token Decimals"
+        />
+        <InputBase
+          onChange={(e) => setTransactionAmount(e.currentTarget.value)}
+          placeholder="Transaction Amount"
+        />
+        <InputBase
+          value={expenditureId}
+          onChange={(e) => setExpenditureId(e.currentTarget.value)}
+          placeholder="Expenditure ID"
+        />
       </div>
     </div>
   );
