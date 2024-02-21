@@ -16,7 +16,6 @@ fragment Expenditure on Expenditure {
     stakeAmount
   }
   finalizedAt
-  hasReclaimedStake
   motions {
     items {
       ...ColonyMotion
@@ -24,7 +23,6 @@ fragment Expenditure on Expenditure {
   }
   type
   isStaked
-  isStakeForfeited
   balances {
     ...ExpenditureBalance
   }
