@@ -3,6 +3,7 @@ import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
 import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
+import { isDev } from '~constants/index.ts';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/index.ts';
@@ -27,6 +28,7 @@ import OnboardingPage from '~frame/v5/pages/OnboardingPage/index.ts';
 import TeamsPage from '~frame/v5/pages/TeamsPage/index.ts';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage/index.ts';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage/index.ts';
+import UserProfileExperimentalPage from '~frame/v5/pages/UserProfileExperimentalPage/index.ts';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage/index.ts';
 import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage/index.ts';
 import VerifiedPage from '~frame/v5/pages/VerifiedPage/index.ts';
@@ -62,6 +64,7 @@ import {
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
+  USER_PROFILE_EXPERIMENTAL_ROUTE,
   USER_HOME_ROUTE,
   COLONY_ACTIVITY_ROUTE,
   COLONY_INCOMING_ROUTE,
@@ -106,6 +109,12 @@ const Routes = () => {
               element={<UserPreferencesPage />}
             />
             <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
+            {isDev && (
+              <Route
+                path={USER_PROFILE_EXPERIMENTAL_ROUTE}
+                element={<UserProfileExperimentalPage />}
+              />
+            )}
           </Route>
         </Route>
 
