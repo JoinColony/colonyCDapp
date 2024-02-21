@@ -3441,4 +3441,8 @@ type UserStake @model {
   actionId: ID!
   action: ColonyAction @hasOne(fields: ["actionId"])
   createdAt: AWSDateTime!
+  """
+  Only applicable for expenditure stakes, indicates if the creator's stake was forfeited when expenditure was cancelled
+  """
+  isForfeited: Boolean
 }
