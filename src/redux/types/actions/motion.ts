@@ -18,7 +18,7 @@ import { type ActionTypes } from '../../actionTypes.ts';
 import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
   type ExpenditureFundPayload,
-  type StakedExpenditureCancelPayload,
+  type CancelStakedExpenditurePayload,
 } from './expenditures.ts';
 import {
   type ErrorActionType,
@@ -47,7 +47,7 @@ export type ExpenditureFundMotionPayload = Omit<
   };
 
 export type StakedExpenditureCancelMotionPayload =
-  StakedExpenditureCancelPayload &
+  CancelStakedExpenditurePayload &
     MotionExpenditureBase & { colonyName: string };
 
 export type MotionFinalizePayload = {

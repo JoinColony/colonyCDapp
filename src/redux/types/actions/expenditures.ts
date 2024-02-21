@@ -27,7 +27,7 @@ export type ExpenditureFundPayload = {
   expenditure: Expenditure;
 };
 
-export type StakedExpenditureCancelPayload = {
+export type CancelStakedExpenditurePayload = {
   colonyAddress: Address;
   stakedExpenditureAddress: string;
   shouldPunish: boolean;
@@ -177,7 +177,7 @@ export type ExpendituresActionTypes =
     >
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CANCEL,
-      StakedExpenditureCancelPayload,
+      CancelStakedExpenditurePayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR, object>
