@@ -1535,6 +1535,7 @@ export type CreateUserStakeInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
   isClaimed: Scalars['Boolean'];
+  isForfeited?: InputMaybe<Scalars['Boolean']>;
   userAddress: Scalars['ID'];
 };
 
@@ -3908,6 +3909,7 @@ export type ModelSubscriptionUserStakeFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isClaimed?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isForfeited?: InputMaybe<ModelSubscriptionBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserStakeFilterInput>>>;
   userAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
@@ -4065,6 +4067,7 @@ export type ModelUserStakeConditionInput = {
   colonyAddress?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   isClaimed?: InputMaybe<ModelBooleanInput>;
+  isForfeited?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelUserStakeConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserStakeConditionInput>>>;
   userAddress?: InputMaybe<ModelIdInput>;
@@ -4084,6 +4087,7 @@ export type ModelUserStakeFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   isClaimed?: InputMaybe<ModelBooleanInput>;
+  isForfeited?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelUserStakeFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserStakeFilterInput>>>;
   userAddress?: InputMaybe<ModelIdInput>;
@@ -8174,6 +8178,7 @@ export type UpdateUserStakeInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
   isClaimed?: InputMaybe<Scalars['Boolean']>;
+  isForfeited?: InputMaybe<Scalars['Boolean']>;
   userAddress?: InputMaybe<Scalars['ID']>;
 };
 
@@ -8269,6 +8274,8 @@ export type UserStake = {
   /** Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for */
   id: Scalars['ID'];
   isClaimed: Scalars['Boolean'];
+  /** Only applicable for expenditure stakes, indicates if the creator's stake was forfeited when expenditure was cancelled */
+  isForfeited?: Maybe<Scalars['Boolean']>;
   updatedAt: Scalars['AWSDateTime'];
   user: User;
   userAddress: Scalars['ID'];
