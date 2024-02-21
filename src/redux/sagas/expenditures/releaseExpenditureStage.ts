@@ -11,7 +11,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  createActionMetadataInDB,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -27,7 +26,6 @@ function* releaseExpenditureStage({
     tokenAddresses,
     stagedExpenditureAddress,
     annotationMessage,
-    customActionTitle,
   },
   meta,
 }: Action<ActionTypes.RELEASE_EXPENDITURE_STAGE>) {
@@ -112,10 +110,6 @@ function* releaseExpenditureStage({
         message: annotationMessage,
         txHash,
       });
-    }
-
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
     }
 
     yield put<AllActions>({
