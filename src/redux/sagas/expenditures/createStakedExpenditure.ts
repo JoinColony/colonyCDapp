@@ -213,6 +213,10 @@ function* createStakedExpenditure({
       meta,
     });
 
+    // @TODO: Remove during advanced payments UI wiring
+    // eslint-disable-next-line no-console
+    console.log('Created expenditure ID:', expenditureId.toString());
+
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
         state: { isRedirect: true },
