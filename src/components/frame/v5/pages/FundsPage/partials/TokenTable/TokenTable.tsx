@@ -95,7 +95,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
               </span>
             </button>
             <div>
-              <Numeral value={claimsAmount} decimals={nativeToken.decimals} />{' '}
+              <Numeral value={claimsAmount} decimals={token.decimals} />{' '}
               {token?.symbol}
             </div>
           </div>
