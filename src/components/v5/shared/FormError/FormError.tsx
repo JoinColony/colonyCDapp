@@ -14,7 +14,7 @@ const FormError: FC<PropsWithChildren<FormErrorProps>> = ({
   <div
     className={clsx(
       `flex w-[8.75rem]`,
-      allowLayoutShift ? 'mt-1' : 'absolute',
+      allowLayoutShift ? 'pt-1' : 'absolute pt-1',
       {
         'w-full': isFullSize,
         'text-right justify-end': alignment === 'right',
