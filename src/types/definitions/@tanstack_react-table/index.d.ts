@@ -6,5 +6,6 @@ declare module '@tanstack/react-table' {
     staticSize?: string;
     colSpan?: ((isExpanded: boolean) => number | undefined) | number;
     cellContentWrapperClassName?: string;
+    headCellClassName?: string;
   }
 }

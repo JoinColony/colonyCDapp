@@ -30,7 +30,9 @@ import { formatText } from '~utils/intl.ts';
 // import Filter from '~v5/common/Filter';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import Table from '~v5/common/Table/index.ts';
+import { type TableProps } from '~v5/common/Table/types.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import CopyWallet from '~v5/shared/CopyWallet/index.ts';
@@ -38,11 +40,8 @@ import Link from '~v5/shared/Link/index.ts';
 
 import BalanceModal from '../BalanceModal/index.ts';
 
-import { useBalanceTableColumns } from './hooks.tsx';
-import {
-  type BalanceTableFieldModel,
-  type BalanceTableProps,
-} from './types.ts';
+import { useBalanceTableColumns, useBalancesData } from './hooks.tsx';
+import { type BalanceTableFieldModel } from './types.ts';
 
 const displayName = 'v5.pages.BalancePage.partials.BalaceTable';
 
@@ -65,7 +64,8 @@ const MSG = defineMessages({
   },
 });
 
-const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
+const BalanceTable: FC = () => {
+  const data = useBalancesData();
   const selectedDomain = useGetSelectedDomainFilter();
   const {
     colony: { balances, nativeToken, status, colonyAddress },
@@ -92,13 +92,15 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
     nativeTokenStatus,
     Number(selectedDomain?.nativeId) || undefined,
   );
-  const getMenuProps = ({ index }) => {
-    const selectedTokenData = data[index]?.token;
+  const getMenuProps: TableProps<BalanceTableFieldModel>['getMenuProps'] = ({
+    original: { token: selectedTokenData },
+  }) => {
     const isTokenNative =
       selectedTokenData?.tokenAddress === nativeToken?.tokenAddress;
 
     return {
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+      contentWrapperClassName: isMobile ? '!left-6 right-6' : undefined,
       items: [
         ...(!isTokenNative && !nativeTokenStatus?.unlocked
           ? [
@@ -180,20 +182,17 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
   return (
     <>
       <TableHeader title={formatText({ id: 'balancePage.table.title' })}>
-        <>
-          {
-            // # TODO Enable correct filtering
-            /** (!!tokensDataLength || !!searchValue) && <Filter />} */
-          }
-          <Button
-            mode="primarySolid"
-            className="ml-2"
-            onClick={toggleAddFundsModalOn}
-            size="small"
-          >
-            {formatText({ id: 'balancePage.table.addFunds' })}
-          </Button>
-        </>
+        {
+          // # TODO Enable correct filtering
+          /** (!!tokensDataLength || !!searchValue) && <Filter />} */
+        }
+        <Button
+          mode="primarySolid"
+          onClick={toggleAddFundsModalOn}
+          size="small"
+        >
+          {formatText({ id: 'balancePage.table.addFunds' })}
+        </Button>
       </TableHeader>
       <Table<BalanceTableFieldModel>
         verticalOnMobile={false}
@@ -205,7 +204,6 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           sorting,
           rowSelection,
           columnVisibility: {
-            symbol: !isMobile,
             type: !isMobile,
           },
         }}
@@ -232,11 +230,26 @@ const BalanceTable: FC<BalanceTableProps> = ({ data }) => {
           )
         }
         getMenuProps={getMenuProps}
-        renderCellWrapper={(className, content) => (
-          <div className={clsx(className, 'min-h-[3.625rem] !py-[0.1rem]')}>
+        renderCellWrapper={(className, content, { cell }) => (
+          <div
+            className={clsx(
+              className,
+              'min-h-[4.25rem] md:min-h-[3.625rem] !py-[0.1rem]',
+              {
+                'pl-0 md:pl-[1.1rem]':
+                  cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID,
+                'pl-0 pr-2':
+                  cell.column.columnDef.id &&
+                  ['balance', 'symbol'].includes(cell.column.columnDef.id) &&
+                  isMobile,
+                'pr-2': cell.column.columnDef.id === 'asset' && isMobile,
+              },
+            )}
+          >
             {content}
           </div>
         )}
+        meatBallMenuStaticSize={isMobile ? '2.25rem' : undefined}
       />
       <BalanceModal
         isOpen={isAddFundsModalOpened}

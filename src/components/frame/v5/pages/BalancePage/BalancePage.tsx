@@ -3,19 +3,16 @@ import React, { type FC } from 'react';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { useBalancePage } from './hooks.ts';
 import BalanceTable from './partials/BalanceTable/index.ts';
 
 const displayName = 'v5.pages.BalancePage';
 
 const BalancePage: FC = () => {
-  const { data } = useBalancePage();
-
   useSetPageHeadingTitle(formatText({ id: 'navigation.finances.balance' }));
 
   return (
     <div className="w-full">
-      <BalanceTable data={data} />
+      <BalanceTable />
     </div>
   );
 };
