@@ -9,17 +9,16 @@ import Table from '~v5/common/Table/index.ts';
 const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';
 
 interface Props {
-  socialLinks: ExternalLink[] | undefined | null;
+  socialLinks: ExternalLink[];
 }
 
 const SocialLinksTable = ({ socialLinks }: Props) => {
   const columns = useSocialLinksTableColumns();
-  const data: SocialLinksTableModel[] =
-    socialLinks?.map(({ name, link }) => ({
-      key: `${name}-${link}`,
-      name,
-      link,
-    })) || [];
+  const data: SocialLinksTableModel[] = socialLinks.map(({ name, link }) => ({
+    key: `${name}-${link}`,
+    name,
+    link,
+  }));
 
   return (
     <>

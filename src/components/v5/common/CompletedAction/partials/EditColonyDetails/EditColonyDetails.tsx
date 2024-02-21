@@ -107,7 +107,9 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      <SocialLinksTable socialLinks={actionColonyMetadata?.externalLinks} />
+      {actionColonyMetadata?.externalLinks && (
+        <SocialLinksTable socialLinks={actionColonyMetadata.externalLinks} />
+      )}
     </>
   );
 };
