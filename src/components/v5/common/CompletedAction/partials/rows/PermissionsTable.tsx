@@ -11,7 +11,7 @@ import {
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
 import Table from '~v5/common/Table/index.ts';
 
-import { getCustomPermissionsTableColumns } from './hooks.tsx';
+import { getCustomPermissionsTableColumns } from './utils.tsx';
 
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 
