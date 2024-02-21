@@ -24,7 +24,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  createActionMetadataInDB,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -51,7 +50,6 @@ function* createStreamingPaymentAction({
     endCondition,
     limitAmount,
     annotationMessage,
-    customActionTitle,
   },
   meta,
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
@@ -184,10 +182,6 @@ function* createStreamingPaymentAction({
         },
       },
     });
-
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
-    }
 
     yield put<AllActions>({
       type: ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,

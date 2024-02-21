@@ -100,7 +100,6 @@ const TmpAdvancedPayments = () => {
     fundFromDomainId: 1,
     networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
-    customActionTitle: 'Custom create expenditure title!',
     annotationMessage: 'expenditure annotation',
   };
 
