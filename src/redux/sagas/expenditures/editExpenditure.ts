@@ -17,7 +17,6 @@ import {
   initiateTransaction,
   takeFrom,
   uploadAnnotation,
-  createActionMetadataInDB,
 } from '../utils/index.ts';
 
 function* editExpenditureAction({
@@ -26,7 +25,6 @@ function* editExpenditureAction({
     expenditure,
     payouts,
     networkInverseFee,
-    customActionTitle,
     annotationMessage,
   },
   meta,
@@ -139,7 +137,7 @@ function* editExpenditureAction({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    const { type } = yield waitForTxResult(editExpenditure.channel);
+    yield waitForTxResult(editExpenditure.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({
@@ -149,17 +147,11 @@ function* editExpenditureAction({
       });
     }
 
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      if (customActionTitle) {
-        yield createActionMetadataInDB(txHash, customActionTitle);
-      }
-
-      yield put<AllActions>({
-        type: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
-        payload: {},
-        meta,
-      });
-    }
+    yield put<AllActions>({
+      type: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
+      payload: {},
+      meta,
+    });
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_EDIT_ERROR, error, meta);
   }

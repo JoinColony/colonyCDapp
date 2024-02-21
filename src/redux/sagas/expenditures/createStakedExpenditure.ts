@@ -20,7 +20,6 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
-  createActionMetadataInDB,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -39,7 +38,6 @@ function* createStakedExpenditure({
     stages,
     networkInverseFee,
     decisionMethod,
-    customActionTitle,
     annotationMessage,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
@@ -239,10 +237,6 @@ function* createStakedExpenditure({
       stages: isStaged ? stages : undefined,
       stakeAmount,
     });
-
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
-    }
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,

@@ -18,7 +18,6 @@ import {
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
-  createActionMetadataInDB,
   uploadAnnotation,
 } from '../utils/index.ts';
 
@@ -37,7 +36,6 @@ function* createExpenditure({
     networkInverseFee,
     decisionMethod,
     annotationMessage,
-    customActionTitle,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -193,10 +191,6 @@ function* createExpenditure({
       decisionMethod,
       stages: isStaged ? stages : undefined,
     });
-
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
-    }
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,

@@ -10,7 +10,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
@@ -21,12 +20,7 @@ export type LockExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_LOCK>['payload'];
 
 function* lockExpenditureAction({
-  payload: {
-    colonyAddress,
-    nativeExpenditureId,
-    annotationMessage,
-    customActionTitle,
-  },
+  payload: { colonyAddress, nativeExpenditureId, annotationMessage },
   meta,
 }: Action<ActionTypes.EXPENDITURE_LOCK>) {
   const batchKey = 'lockExpenditure';
@@ -76,10 +70,6 @@ function* lockExpenditureAction({
         message: annotationMessage,
         txHash,
       });
-    }
-
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
     }
 
     yield put<AllActions>({

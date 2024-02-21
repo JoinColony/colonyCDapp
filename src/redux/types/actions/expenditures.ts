@@ -24,7 +24,6 @@ export type ExpenditureFundPayload = {
   colonyAddress: Address;
   fromDomainFundingPotId: number;
   expenditure: Expenditure;
-  customActionTitle?: string;
   annotationMessage?: string;
 };
 
@@ -33,7 +32,6 @@ export type CancelStakedExpenditurePayload = {
   stakedExpenditureAddress: string;
   shouldPunish: boolean;
   expenditure: Expenditure;
-  customActionTitle?: string;
   annotationMessage?: string;
 };
 
@@ -51,7 +49,6 @@ export type ExpendituresActionTypes =
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         decisionMethod: ExpenditureDecisionMethod;
-        customActionTitle?: string;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
@@ -63,7 +60,6 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
-        customActionTitle?: string;
         annotationMessage?: string;
       },
       object
@@ -75,7 +71,6 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
-        customActionTitle?: string;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
@@ -96,7 +91,7 @@ export type ExpendituresActionTypes =
         expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
-        customActionTitle?: string;
+
         annotationMessage?: string;
       },
       MetaWithSetter<object>
@@ -109,7 +104,6 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         expenditure: Expenditure;
         stakedExpenditureAddress?: Address;
-        customActionTitle?: string;
         annotationMessage?: string;
       },
       object
@@ -126,7 +120,6 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
-        customActionTitle?: string;
         annotationMessage?: string;
       },
       object
@@ -147,7 +140,6 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
-        customActionTitle?: string;
         annotationMessage?: string;
         decisionMethod: ExpenditureDecisionMethod;
       },
@@ -181,7 +173,6 @@ export type ExpendituresActionTypes =
         slotId: number;
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
-        customActionTitle?: string;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
@@ -216,7 +207,6 @@ export type ExpendituresActionTypes =
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
-        customActionTitle?: string;
         annotationMessage?: string;
       },
       MetaWithSetter<object>

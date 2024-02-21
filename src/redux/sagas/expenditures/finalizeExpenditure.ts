@@ -10,7 +10,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
@@ -21,12 +20,7 @@ export type FinalizeExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_FINALIZE>['payload'];
 
 function* finalizeExpenditureAction({
-  payload: {
-    colonyAddress,
-    nativeExpenditureId,
-    customActionTitle,
-    annotationMessage,
-  },
+  payload: { colonyAddress, nativeExpenditureId, annotationMessage },
   meta,
 }: Action<ActionTypes.EXPENDITURE_FINALIZE>) {
   const batchKey = 'finalizeExpenditure';
@@ -93,10 +87,6 @@ function* finalizeExpenditureAction({
         message: annotationMessage,
         txHash,
       });
-    }
-
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
     }
 
     yield put<AllActions>({
