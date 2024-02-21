@@ -3186,14 +3186,6 @@ type Expenditure @model {
   Indicates whether the expenditure was staked for
   """
   isStaked: Boolean!
-  """
-  Indicates if the creator's stake was forfeited when staked expenditure was cancelled
-  """
-  isStakeForfeited: Boolean
-  """
-  Indicates whether the expenditure stake has been reclaimed
-  """
-  hasReclaimedStake: Boolean
   type: ExpenditureType!
   """
   Hash of the `ExpenditureMadeViaStake` event transaction, if applicable
