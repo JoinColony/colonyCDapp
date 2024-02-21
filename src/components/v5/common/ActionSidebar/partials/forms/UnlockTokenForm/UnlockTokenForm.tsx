@@ -5,9 +5,9 @@ import { useColonyContext } from '~context/ColonyContext.tsx';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useUnlockToken } from './hooks.ts';
 
@@ -24,8 +24,8 @@ const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return isNativeTokenUnlocked && !transactionId ? null : (
     <>
       <DecisionMethodField />
-      <CreatedInRow readonly />
-      <DescriptionRow />
+      <CreatedIn readonly />
+      <Description />
     </>
   );
 };

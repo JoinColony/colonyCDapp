@@ -35,12 +35,12 @@ const MSG = defineMessages({
 });
 
 const CreateDecision = ({ action }: CreateDecisionProps) => {
-  const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
+  const { title = formatText(MSG.defaultTitle) } = action?.decisionData || {};
   const { initiatorUser } = action;
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <ActionTitle>{title}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (

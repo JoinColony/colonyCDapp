@@ -10,11 +10,11 @@ import { DECISION_METHOD_FIELD_NAME } from '../../consts.tsx';
 import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import TeamsSelect from '../TeamsSelect/index.ts';
 
-import { type CreatedInRowProps } from './types.ts';
+import { type CreatedInProps } from './types.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.CreatedInRow';
+const displayName = 'v5.common.ActionSidebar.partials.CreatedIn';
 
-const CreatedInRow: FC<CreatedInRowProps> = ({ filterOptionsFn, readonly }) => {
+const CreatedIn: FC<CreatedInProps> = ({ filterOptionsFn, readonly }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
@@ -43,6 +43,6 @@ const CreatedInRow: FC<CreatedInRowProps> = ({ filterOptionsFn, readonly }) => {
   ) : null;
 };
 
-CreatedInRow.displayName = displayName;
+CreatedIn.displayName = displayName;
 
-export default CreatedInRow;
+export default CreatedIn;

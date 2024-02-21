@@ -5,9 +5,9 @@ import { formatText } from '~utils/intl.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useMintToken } from './hooks.ts';
 
@@ -34,8 +34,8 @@ const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
       />
       <DecisionMethodField />
-      <CreatedInRow readonly />
-      <DescriptionRow />
+      <CreatedIn readonly />
+      <Description />
     </>
   );
 };

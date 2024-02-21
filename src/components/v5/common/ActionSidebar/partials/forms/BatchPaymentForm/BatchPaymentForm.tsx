@@ -8,7 +8,7 @@ import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts'
 
 import { type ActionFormBaseProps } from '../../../types.ts';
 import BatchPaymentsTable from '../../BatchPaymentsTable/index.ts';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
@@ -31,7 +31,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedInRow />
+      <CreatedIn />
       <ActionFormRow
         icon={Pencil}
         fieldName="description"

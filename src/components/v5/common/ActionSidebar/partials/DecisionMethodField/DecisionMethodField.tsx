@@ -71,6 +71,7 @@ const DecisionMethodField = ({
           id: 'actionSidebar.decisionMethod.placeholder',
         })}
         disabled={disabled || hasNoDecisionMethods}
+        cardClassName="sm:min-w-[12.875rem]"
       />
     </ActionFormRow>
   );

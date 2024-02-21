@@ -61,12 +61,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <FormTextareaBase
           name="title"
           placeholder={formatText({ id: 'placeholder.title' })}
-          className={`
-            heading-3 mb-2
-            text-gray-900
-            transition-colors
-            leading-tight
-          `}
+          className="heading-3 text-gray-900 transition-colors leading-tight"
           message={false}
           shouldFocus
           onKeyDown={(e) => {
@@ -78,13 +73,25 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           onChange={(e) => {
             e.target.value = e.target.value.replace(/[\r\n\v]+/g, '');
           }}
+          wrapperClassName={clsx('flex flex-col', {
+            'mb-2': selectedAction,
+          })}
         />
-        <div className="text-gray-900 text-md flex gap-1 break-all">
-          <ActionSidebarDescription />
-        </div>
+        {selectedAction && (
+          <div className="text-gray-900 text-md flex gap-1 break-all">
+            <ActionSidebarDescription />
+          </div>
+        )}
         <SidebarBanner />
         {!readonly && <NoPermissionsError />}
-        <ActionTypeSelect className="mt-7 mb-3 min-h-[1.875rem] flex flex-col justify-center" />
+        <ActionTypeSelect
+          className={clsx(
+            'mt-7 min-h-[1.875rem] flex flex-col justify-center',
+            {
+              'mb-3': FormComponent,
+            },
+          )}
+        />
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
         <NoReputationError />

@@ -14,9 +14,9 @@ import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useCreateNewTeam } from './hooks.ts';
 
@@ -97,8 +97,8 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamColorField name="domainColor" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedInRow />
-      <DescriptionRow />
+      <CreatedIn />
+      <Description />
     </>
   );
 };

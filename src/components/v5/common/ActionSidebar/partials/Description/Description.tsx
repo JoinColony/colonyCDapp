@@ -9,11 +9,11 @@ import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import DescriptionField from '../DescriptionField/index.ts';
 
-import { type DescriptionRowProps } from './types.ts';
+import { type DescriptionProps } from './types.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.DescriptionRow';
+const displayName = 'v5.common.ActionSidebar.partials.Description';
 
-const DescriptionRow: FC<DescriptionRowProps> = ({
+const Description: FC<DescriptionProps> = ({
   disabled,
   maxDescriptionLength,
 }) => {
@@ -58,6 +58,6 @@ const DescriptionRow: FC<DescriptionRowProps> = ({
   ) : null;
 };
 
-DescriptionRow.displayName = displayName;
+Description.displayName = displayName;
 
-export default DescriptionRow;
+export default Description;

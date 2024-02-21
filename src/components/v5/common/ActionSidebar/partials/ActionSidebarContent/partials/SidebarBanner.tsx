@@ -64,10 +64,12 @@ export const SidebarBanner: FC = () => {
 
   return (
     <>
-      <ActionTypeNotification
-        selectedAction={selectedAction}
-        className="mt-7"
-      />
+      {selectedAction && (
+        <ActionTypeNotification
+          selectedAction={selectedAction}
+          className="mt-7"
+        />
+      )}
       {requiredExtensionsWithoutPermission.map((extension) => (
         <div className="mt-6" key={extension.extensionId}>
           <NotificationBanner status="warning" icon={WarningCircle}>

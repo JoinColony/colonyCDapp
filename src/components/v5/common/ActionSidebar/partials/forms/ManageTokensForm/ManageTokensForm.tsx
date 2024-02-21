@@ -3,9 +3,9 @@ import React, { type FC } from 'react';
 import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 import TokensTable from '../../TokensTable/index.ts';
 
 import { useManageTokens } from './hooks.ts';
@@ -20,8 +20,8 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <DecisionMethodField />
-      <CreatedInRow />
-      <DescriptionRow />
+      <CreatedIn />
+      <Description />
       <TokensTable
         name="selectedTokenAddresses"
         shouldShowMenu={shouldShowMenu}

@@ -9,9 +9,9 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useSplitPayment } from './hooks.ts';
 import SplitPaymentRecipientsField from './partials/SplitPaymentRecipientsField/index.ts';
@@ -73,8 +73,8 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedInRow />
-      <DescriptionRow />
+      <CreatedIn />
+      <Description />
       {currentToken && (
         <SplitPaymentRecipientsField
           amount={amount}

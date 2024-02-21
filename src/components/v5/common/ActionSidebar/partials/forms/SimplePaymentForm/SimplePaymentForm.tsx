@@ -10,9 +10,9 @@ import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
-import CreatedInRow from '../../CreatedInRow/CreatedInRow.tsx';
+import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import DescriptionRow from '../../DescriptionRow/index.ts';
+import Description from '../../Description/index.ts';
 
 import { useSimplePayment } from './hooks.ts';
 
@@ -69,8 +69,8 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
       />
       <DecisionMethodField />
-      <CreatedInRow />
-      <DescriptionRow />
+      <CreatedIn />
+      <Description />
       {/* Disabled for now */}
       {/* <TransactionTable name="payments" tokenAddress={tokenAddress} /> */}
     </>
