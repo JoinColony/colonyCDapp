@@ -1,4 +1,4 @@
-import { PlusMinus } from 'phosphor-react';
+import { PlusMinus } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
