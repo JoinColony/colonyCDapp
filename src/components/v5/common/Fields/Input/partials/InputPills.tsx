@@ -21,7 +21,7 @@ const InputPills: FC<PillProps> = ({ message, status }) => {
       )}
     >
       <StatusCircle size={14} status={status} />
-      {message && <span className="ml-1">{formatText(message)}</span>}
+      {message && <span>{formatText(message)}</span>}
     </div>
   );
 };
