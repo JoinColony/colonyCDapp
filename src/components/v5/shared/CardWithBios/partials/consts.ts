@@ -2,7 +2,6 @@ import {
   CrownSimple,
   HandHeart,
   Medal,
-  Question,
   ShootingStar,
 } from '@phosphor-icons/react';
 
@@ -30,5 +29,5 @@ export const getIcon = (
   if (userStatus === 'active' || userStatus === 'active-filled') {
     return ShootingStar;
   }
-  return Question;
+  return undefined;
 };

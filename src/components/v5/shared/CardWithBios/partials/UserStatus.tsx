@@ -42,7 +42,7 @@ const UserStatusComponent: FC<UserStatusComponentProps> = ({
               className="flex items-center text-center text-sm px-3 py-1.5
             rounded-3xl border border-base-white h-[1.875rem] shrink-0 capitalize"
             >
-              <Icon size={12} />
+              {Icon ? <Icon size={12} /> : null}
               <span className="ml-1.5 text-sm">{userStatus}</span>
             </span>
           </span>
