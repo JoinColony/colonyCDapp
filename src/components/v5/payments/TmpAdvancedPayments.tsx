@@ -107,7 +107,6 @@ const TmpAdvancedPayments = () => {
     fundFromDomainId: 1,
     networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
-    tokenDecimals: tokenDecimalAmount,
   };
 
   const handleLockExpenditure = async () => {
@@ -220,9 +219,6 @@ const TmpAdvancedPayments = () => {
         >
           Create expenditure
         </ActionButton>
-        <Button onClick={handleCreateStakedExpenditure}>
-          Create staked expenditure
-        </Button>
       </div>
       <div className="flex gap-4">
         <InputBase
@@ -240,6 +236,9 @@ const TmpAdvancedPayments = () => {
         <Button onClick={handleReclaimStake}>Reclaim stake</Button>
         <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
           Cancel and punish
+        </Button>
+        <Button onClick={handleCreateStakedExpenditure}>
+          Create staked expenditure
         </Button>
       </div>
     </div>

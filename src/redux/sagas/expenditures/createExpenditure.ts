@@ -35,7 +35,6 @@ function* createExpenditure({
     stages,
     networkInverseFee,
     decisionMethod,
-    tokenDecimals,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -133,7 +132,6 @@ function* createExpenditure({
           expenditureId,
           payoutsWithSlotIds,
           networkInverseFee,
-          tokenDecimals,
         ),
       ),
     );
