@@ -2,6 +2,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext.tsx';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
 import { formatText } from '~utils/intl.ts';
@@ -24,7 +25,8 @@ const MSG = defineMessages({
 });
 
 const LeaveColonyModal = () => {
-  const { handleUnwatch } = useColonySubscription();
+  const { colony } = useColonyContext();
+  const { handleUnwatch } = useColonySubscription(colony);
   const { isLeaveColonyModalOpen, closeLeaveColonyModal } =
     useColonyDashboardContext();
 

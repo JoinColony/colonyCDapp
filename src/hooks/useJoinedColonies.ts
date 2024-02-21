@@ -9,6 +9,7 @@ const useJoinedColonies = (userAddress?: string) => {
   const { data, loading } = useGetContributorsByAddressQuery({
     variables: {
       contributorAddress: userAddress ?? ADDRESS_ZERO,
+      isWatching: true,
     },
     skip: !userAddress,
   });
