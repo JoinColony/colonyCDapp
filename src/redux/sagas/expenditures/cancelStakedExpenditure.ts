@@ -11,7 +11,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  createActionMetadataInDB,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -27,7 +26,6 @@ function* cancelStakedExpenditureAction({
     shouldPunish,
     expenditure,
     annotationMessage,
-    customActionTitle,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CANCEL>) {
   const batchKey = 'cancelStakedExpenditure';
@@ -125,10 +123,6 @@ function* cancelStakedExpenditureAction({
         message: annotationMessage,
         txHash,
       });
-    }
-
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
     }
 
     yield put<AllActions>({

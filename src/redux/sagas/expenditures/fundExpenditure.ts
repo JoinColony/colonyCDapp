@@ -15,7 +15,6 @@ import {
 } from '../transactions/index.ts';
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import {
-  createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
@@ -31,7 +30,6 @@ function* fundExpenditure({
     expenditure,
     fromDomainFundingPotId,
     annotationMessage,
-    customActionTitle,
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_FUND>) {
@@ -124,10 +122,6 @@ function* fundExpenditure({
           message: annotationMessage,
           txHash,
         });
-      }
-
-      if (customActionTitle) {
-        yield createActionMetadataInDB(txHash, customActionTitle);
       }
     }
 

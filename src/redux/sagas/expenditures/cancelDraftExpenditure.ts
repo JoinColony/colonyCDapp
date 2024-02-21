@@ -11,7 +11,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  createActionMetadataInDB,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -26,7 +25,6 @@ function* cancelDraftExpenditure({
     expenditure,
     stakedExpenditureAddress,
     annotationMessage,
-    customActionTitle,
   },
 }: Action<ActionTypes.EXPENDITURE_DRAFT_CANCEL>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -109,10 +107,6 @@ function* cancelDraftExpenditure({
           txHash,
         });
       }
-
-      if (customActionTitle) {
-        yield createActionMetadataInDB(txHash, customActionTitle);
-      }
     } else {
       yield fork(createTransaction, cancelExpenditure.id, {
         context: ClientType.ColonyClient,
@@ -166,10 +160,6 @@ function* cancelDraftExpenditure({
           message: annotationMessage,
           txHash,
         });
-      }
-
-      if (customActionTitle) {
-        yield createActionMetadataInDB(txHash, customActionTitle);
       }
     }
 

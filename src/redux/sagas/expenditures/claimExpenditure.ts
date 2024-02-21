@@ -10,7 +10,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  createActionMetadataInDB,
   initiateTransaction,
   putError,
   takeFrom,
@@ -34,7 +33,6 @@ function* claimExpenditure({
     nativeExpenditureId,
     claimableSlots,
     annotationMessage,
-    customActionTitle,
   },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
   const batchKey = 'claimExpenditure';
@@ -117,10 +115,6 @@ function* claimExpenditure({
           message: annotationMessage,
           txHash,
         });
-      }
-
-      if (customActionTitle) {
-        yield createActionMetadataInDB(txHash, customActionTitle);
       }
     }
 
