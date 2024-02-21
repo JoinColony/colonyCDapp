@@ -47,7 +47,11 @@ const ExtensionsPage: FC = () => {
                 <ExtensionItem
                   title={extension.name}
                   description={extension.descriptionShort}
-                  version={extension.availableVersion}
+                  version={
+                    'currentVersion' in extension
+                      ? extension.currentVersion
+                      : extension.availableVersion
+                  }
                   icon={extension.icon}
                   extensionId={extension.extensionId}
                 />
