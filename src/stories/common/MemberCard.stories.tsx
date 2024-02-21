@@ -1,4 +1,4 @@
-import { UserRole } from '~constants/permissions.tsx';
+import { UserRole } from '~constants/permissions.ts';
 import MemberCard from '~v5/common/MemberCard/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
