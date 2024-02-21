@@ -41,13 +41,12 @@ const groupExpenditurePayoutsByTokenAddresses = (
 const getPayoutAmount = (
   payout: ExpenditurePayoutFieldValue,
   networkInverseFee: string,
-  tokenDecimals: number,
 ) => {
   // @TODO: This should get the token decimals of the selected token
   const { totalToPay } = calculateFee(
     payout.amount,
     networkInverseFee,
-    getTokenDecimalsWithFallback(tokenDecimals),
+    getTokenDecimalsWithFallback(payout.tokenDecimals),
   );
 
   return totalToPay;
@@ -57,7 +56,6 @@ export const getSetExpenditureValuesFunctionParams = (
   nativeExpenditureId: number,
   payouts: ExpenditurePayoutFieldValue[],
   networkInverseFee: string,
-  tokenDecimals: number,
 ): MethodParams => {
   // Group payouts by token addresses
   const payoutsByTokenAddresses =
@@ -90,7 +88,7 @@ export const getSetExpenditureValuesFunctionParams = (
     // 2-dimensional array mapping token addresses to amounts
     [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
       payoutsByTokenAddress.map((payout) =>
-        getPayoutAmount(payout, networkInverseFee, tokenDecimals),
+        getPayoutAmount(payout, networkInverseFee),
       ),
     ),
   ];

@@ -26,7 +26,6 @@ function* editExpenditureAction({
     payouts,
     networkInverseFee,
     annotationMessage,
-    tokenDecimals,
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
@@ -105,7 +104,6 @@ function* editExpenditureAction({
         expenditure.nativeId,
         resolvedPayouts,
         networkInverseFee,
-        tokenDecimals,
       ),
     });
 
