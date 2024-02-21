@@ -1,8 +1,10 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React from 'react';
 
+import MaskedAddress from '~shared/MaskedAddress/MaskedAddress.tsx';
 import { formatText } from '~utils/intl.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { SelectedMemberType, type SelectedMember } from '../../types.ts';
 
@@ -19,28 +21,41 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
       }),
     cell: ({ row }) => {
       if (row.original.type === SelectedMemberType.USER) {
+        const user = row.original.data;
+
         return (
-          <div className="flex items-center gap-2">
+          <UserPopover
+            className="flex items-center gap-2 text-md font-medium text-gray-900"
+            userName={user.profile?.displayName ?? user.walletAddress}
+            walletAddress={user.walletAddress}
+            user={user}
+            withVerifiedBadge={false}
+          >
             <Avatar
               size="xs"
-              avatar={row.original.data.profile?.avatar ?? undefined}
-              seed={row.original.data.walletAddress}
+              avatar={user.profile?.avatar ?? undefined}
+              seed={user.walletAddress.toLowerCase()}
             />
-            <p className="text-md font-medium text-gray-900">
-              {row.original.data.profile?.displayName ??
-                row.original.data.walletAddress}
-            </p>
-          </div>
+            {user.profile?.displayName ?? user.walletAddress}
+          </UserPopover>
         );
       }
 
+      const { walletAddress } = row.original.data;
+
       return (
-        <div className="flex items-center gap-2">
-          <Avatar size="xs" seed={row.original.data.walletAddress} />
-          <p className="text-md font-medium text-gray-900">
-            {row.original.data.walletAddress}
-          </p>
-        </div>
+        <UserPopover
+          className="flex items-center gap-2"
+          userName={walletAddress}
+          walletAddress={walletAddress}
+          withVerifiedBadge={false}
+        >
+          <Avatar size="xs" seed={walletAddress.toLowerCase()} />
+          <MaskedAddress
+            address={walletAddress}
+            className="!text-md !font-medium text-gray-900 hover:text-blue-400"
+          />
+        </UserPopover>
       );
     },
   }),
