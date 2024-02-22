@@ -7,14 +7,25 @@ export type CoinGeckoSupportedCurrencies =
 
 export type SupportedChains = keyof typeof coinGeckoMappings.chains;
 
-export interface CoinGeckoPriceRequestSuccessResponse {
+export interface TokenContractPriceSuccessResponse {
   [contractAddress: string]: {
     [currency: string]: number;
   };
 }
 
-export type CoinGeckoPriceRequestResponse =
-  | CoinGeckoPriceRequestSuccessResponse
+export type TokenContractPriceResponse =
+  | TokenContractPriceSuccessResponse
+  // A contract address without a market cap will return an empty object {}
+  | Record<string, never>;
+
+export interface TokenNamePriceSuccessResponse {
+  [token: string]: {
+    [currency: string]: number;
+  };
+}
+
+export type TokenNamePriceResponse =
+  | TokenNamePriceSuccessResponse
   // A contract address without a market cap will return an empty object {}
   | Record<string, never>;
 

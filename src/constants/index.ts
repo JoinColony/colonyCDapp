@@ -161,7 +161,7 @@ export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
   [Network.Mainnet]: ETHEREUM_NETWORK,
 };
 
-export const TOKEN_DATA = {
+export const TOKEN_DATA: { [key: string]: TokenInfo } = {
   [Network.Ganache]: ETHER_TOKEN,
   [Network.Gnosis]: XDAI_TOKEN,
   [Network.GnosisFork]: XDAI_TOKEN,
