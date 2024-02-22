@@ -91,7 +91,7 @@ const UpgradeColonyObjective = ({ action }: Props) => {
           <span>{formatText(MSG.objectiveProgress)}</span>
         </div>
         <div>
-          <span>{action.colony.metadata?.objective?.progress}</span>
+          <span>{action.colony.metadata?.objective?.progress}%</span>
         </div>
         <DecisionMethodRow isMotion={action.isMotion || false} />
         {action.motionData?.motionDomain.metadata && (
