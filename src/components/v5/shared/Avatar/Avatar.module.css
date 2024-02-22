@@ -14,6 +14,10 @@
   @apply inline-block relative w-[1.25rem] h-[1.25rem];
 }
 
+.xxsx {
+  @apply inline-block relative w-[1.375rem] h-[1.375rem];
+}
+
 .xxsm {
   @apply inline-block relative w-[1.5rem] h-[1.5rem];
 }
