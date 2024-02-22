@@ -143,19 +143,6 @@ const TmpAdvancedPayments = () => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
-        <ActionButton
-          actionType={ActionTypes.EXPENDITURE_CREATE}
-          values={createExpenditurePayload}
-        >
-          Create expenditure
-        </ActionButton>
-        <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
-        <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
-        <Button onClick={handleFinalizeExpenditure}>
-          Finalize expenditure
-        </Button>
-      </div>
-      <div className="flex gap-4">
         <InputBase
           onChange={(e) => setTokenId(e.currentTarget.value)}
           placeholder="Token Address"
@@ -168,11 +155,24 @@ const TmpAdvancedPayments = () => {
           onChange={(e) => setTransactionAmount(e.currentTarget.value)}
           placeholder="Transaction Amount"
         />
+        <ActionButton
+          actionType={ActionTypes.EXPENDITURE_CREATE}
+          values={createExpenditurePayload}
+        >
+          Create expenditure
+        </ActionButton>
+      </div>
+      <div className="flex gap-4">
         <InputBase
           value={expenditureId}
           onChange={(e) => setExpenditureId(e.currentTarget.value)}
           placeholder="Expenditure ID"
         />
+        <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
+        <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
+        <Button onClick={handleFinalizeExpenditure}>
+          Finalize expenditure
+        </Button>
       </div>
     </div>
   );
