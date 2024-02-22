@@ -84,8 +84,8 @@ export const useRichText = (
       },
       content: field.value,
       onUpdate: (props) => {
-        const json = props.editor.getHTML();
-        field.onChange(json);
+        const html = props.editor.isEmpty ? '' : props.editor.getHTML();
+        field.onChange(html);
       },
     },
     [],
