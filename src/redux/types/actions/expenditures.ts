@@ -89,7 +89,6 @@ export type ExpendituresActionTypes =
         expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
-        tokenDecimals: number;
       },
       object
     >
