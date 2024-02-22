@@ -33,7 +33,7 @@ const Textarea: FC<TextareaProps> = ({
   const isErrorStatus = isCharLenghtError || isError;
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col">
       {textareaTitle && (
         <label htmlFor="message" className="text-gray-700 text-1">
           {label}
