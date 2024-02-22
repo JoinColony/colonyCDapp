@@ -117,5 +117,16 @@ export const useRichText = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, field.value, name]);
 
+  useEffect(() => {
+    if (editor?.getHTML() === field.value) {
+      return;
+    }
+
+    editor?.commands.setContent(field.value);
+    setNotFormattedContent(
+      editor?.getText() || formatText({ id: 'placeholder.enterDescription' }),
+    );
+  }, [editor, field.value]);
+
   return { editor, notFormattedContent, field, characterCount };
 };

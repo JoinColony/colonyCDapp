@@ -13,6 +13,7 @@ const displayName = 'v5.common.Pills.MotionStateBadge';
 const MotionStateBadge: FC<MotionStateBadgeProps> = ({
   state,
   className,
+  icon: Icon,
   ...rest
 }) => {
   return (
@@ -26,7 +27,9 @@ const MotionStateBadge: FC<MotionStateBadgeProps> = ({
           'text-gray-500 bg-gray-100': !MOTION_STATE_TO_CLASSNAME_MAP[state],
         },
       )}
+      textClassName={clsx({ 'flex items-center gap-1': Icon })}
     >
+      {Icon && <Icon className="text-inherit" size={12} />}
       {formatText({ id: 'motion.state' }, { state })}
     </PillsBase>
   );

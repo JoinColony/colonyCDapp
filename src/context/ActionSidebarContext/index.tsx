@@ -78,7 +78,6 @@ export const ActionSidebarContextProvider: FC<PropsWithChildren> = ({
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
-
     if (!isClickedInside) {
       return false;
     }

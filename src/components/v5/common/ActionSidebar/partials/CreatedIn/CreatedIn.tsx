@@ -6,7 +6,10 @@ import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
-import { DECISION_METHOD_FIELD_NAME } from '../../consts.tsx';
+import {
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+} from '../../consts.tsx';
 import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import TeamsSelect from '../TeamsSelect/index.ts';
 
@@ -23,7 +26,7 @@ const CreatedIn: FC<CreatedInProps> = ({ filterOptionsFn, readonly }) => {
   return decisionMethod === DecisionMethod.Reputation || readonly ? (
     <ActionFormRow
       icon={HouseLine}
-      fieldName="createdIn"
+      fieldName={CREATED_IN_FIELD_NAME}
       tooltips={{
         label: {
           tooltipContent: formatText({
@@ -35,7 +38,7 @@ const CreatedIn: FC<CreatedInProps> = ({ filterOptionsFn, readonly }) => {
       isDisabled={hasNoDecisionMethods}
     >
       <TeamsSelect
-        name="createdIn"
+        name={CREATED_IN_FIELD_NAME}
         filterOptionsFn={filterOptionsFn}
         readonly={readonly}
       />
