@@ -3,15 +3,19 @@ import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
-import { ExpenditureDecisionMethod, useGetExpenditureLazyQuery } from '~gql';
+import { ExpenditureDecisionMethod, useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
@@ -21,12 +25,29 @@ import { ActionButton } from '~v5/shared/Button/index.ts';
 const TmpAdvancedPayments = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { networkInverseFee } = useNetworkInverseFee();
+  const { networkInverseFee = '0' } = useNetworkInverseFee();
 
-  const [getExpenditure] = useGetExpenditureLazyQuery();
+  const { stakeAmount = '0', stakedExpenditureAddress = '' } =
+    useExpenditureStaking();
 
   const [expenditureId, setExpenditureId] = useState('');
+  const { data } = useGetExpenditureQuery({
+    variables: {
+      expenditureId: getExpenditureDatabaseId(
+        colony.colonyAddress,
+        Number(expenditureId),
+      ),
+    },
+    skip: Number.isNaN(expenditureId),
+    fetchPolicy: 'network-only',
+  });
+  const expenditure = data?.getExpenditure;
 
+  const createStakedExpenditure = useAsyncFunction({
+    submit: ActionTypes.STAKED_EXPENDITURE_CREATE,
+    error: ActionTypes.STAKED_EXPENDITURE_CREATE_ERROR,
+    success: ActionTypes.STAKED_EXPENDITURE_CREATE_SUCCESS,
+  });
   const lockExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_LOCK,
     error: ActionTypes.EXPENDITURE_LOCK_ERROR,
@@ -47,25 +68,37 @@ const TmpAdvancedPayments = () => {
     error: ActionTypes.EXPENDITURE_CLAIM_ERROR,
     success: ActionTypes.EXPENDITURE_CLAIM_SUCCESS,
   });
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+  });
+  const cancelStakedExpenditure = useAsyncFunction({
+    submit: ActionTypes.STAKED_EXPENDITURE_CANCEL,
+    error: ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR,
+    success: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
+  });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   if (!rootDomain) {
     return null;
   }
 
+  const payouts = [
+    {
+      amount: '10',
+      tokenAddress: colony.nativeToken.tokenAddress,
+      recipientAddress: user?.walletAddress ?? '',
+      claimDelay: 0,
+    },
+  ];
+
   const createExpenditurePayload: CreateExpenditurePayload = {
-    payouts: [
-      {
-        amount: '10',
-        tokenAddress: colony.nativeToken.tokenAddress,
-        recipientAddress: user?.walletAddress ?? '',
-        claimDelay: 0,
-      },
-    ],
+    payouts,
     colony,
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
-    networkInverseFee: networkInverseFee ?? '0',
+    networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
   };
 
@@ -80,16 +113,6 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleFundExpenditure = async () => {
-    const response = await getExpenditure({
-      variables: {
-        expenditureId: getExpenditureDatabaseId(
-          colony.colonyAddress,
-          Number(expenditureId),
-        ),
-      },
-    });
-    const expenditure = response.data?.getExpenditure;
-
     if (!expenditure) {
       return;
     }
@@ -112,16 +135,6 @@ const TmpAdvancedPayments = () => {
 
     await finalizeExpenditure(finalizePayload);
 
-    const response = await getExpenditure({
-      variables: {
-        expenditureId: getExpenditureDatabaseId(
-          colony.colonyAddress,
-          Number(expenditureId),
-        ),
-      },
-    });
-    const expenditure = response.data?.getExpenditure;
-
     if (!expenditure) {
       return;
     }
@@ -134,15 +147,61 @@ const TmpAdvancedPayments = () => {
     await claimExpenditure(claimPayload);
   };
 
+  const handleCreateStakedExpenditure = async () => {
+    if (!stakeAmount || !stakedExpenditureAddress) {
+      return;
+    }
+
+    const payload: CreateStakedExpenditurePayload = {
+      payouts,
+      colony,
+      createdInDomain: rootDomain,
+      fundFromDomainId: 1,
+      stakeAmount,
+      stakedExpenditureAddress,
+      networkInverseFee,
+      decisionMethod: ExpenditureDecisionMethod.Permissions,
+    };
+
+    await createStakedExpenditure(payload);
+  };
+
+  const handleReclaimStake = async () => {
+    const payload: ReclaimExpenditureStakePayload = {
+      colonyAddress: colony.colonyAddress,
+      nativeExpenditureId: Number(expenditureId),
+    };
+
+    await reclaimExpenditureStake(payload);
+  };
+
+  const handleCancelAndPunish = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: CancelStakedExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      stakedExpenditureAddress,
+      shouldPunish: true,
+    };
+
+    await cancelStakedExpenditure(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
-      <div>
+      <div className="flex gap-4">
         <ActionButton
           actionType={ActionTypes.EXPENDITURE_CREATE}
           values={createExpenditurePayload}
         >
           Create expenditure
         </ActionButton>
+        <Button onClick={handleCreateStakedExpenditure}>
+          Create staked expenditure
+        </Button>
       </div>
 
       <div className="flex gap-4">
@@ -152,9 +211,15 @@ const TmpAdvancedPayments = () => {
           placeholder="Expenditure ID"
         />
         <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
-        <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
+        <Button onClick={handleFundExpenditure} disabled={!expenditure}>
+          Fund expenditure
+        </Button>
         <Button onClick={handleFinalizeExpenditure}>
           Finalize expenditure
+        </Button>
+        <Button onClick={handleReclaimStake}>Reclaim stake</Button>
+        <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
+          Cancel and punish
         </Button>
       </div>
     </div>

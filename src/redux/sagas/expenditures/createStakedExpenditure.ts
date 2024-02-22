@@ -21,6 +21,9 @@ import {
   initiateTransaction,
 } from '../utils/index.ts';
 
+export type CreateStakedExpenditurePayload =
+  Action<ActionTypes.STAKED_EXPENDITURE_CREATE>['payload'];
+
 function* createStakedExpenditure({
   meta: { navigate, setTxHash },
   meta,
@@ -209,6 +212,10 @@ function* createStakedExpenditure({
       payload: {},
       meta,
     });
+
+    // @TODO: Remove during advanced payments UI wiring
+    // eslint-disable-next-line no-console
+    console.log('Created expenditure ID:', expenditureId.toString());
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
