@@ -21,7 +21,12 @@ const CreatedInRow = ({ motionDomainMetadata }: CreatedInRowProps) => {
         id: 'actionSidebar.tooltip.createdIn',
       })}
       RowIcon={HouseLine}
-      rowContent={<TeamBadge name={motionDomainMetadata.name} />}
+      rowContent={
+        <TeamBadge
+          name={motionDomainMetadata.name}
+          color={motionDomainMetadata.color}
+        />
+      }
     />
   );
 };
