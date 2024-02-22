@@ -57,11 +57,11 @@ const useExpenditureStaking = (createdInDomainId = Id.RootDomain) => {
 
     const requiredAmount = BigNumber.from(stakeFraction)
       .mul(totalDomainReputation)
-      .div(BigNumber.from(10).pow(18))
+      .div(BigNumber.from(10).pow(colony.nativeToken.decimals))
       .toString();
 
     setStakeAmount(requiredAmount);
-  }, [extensionData, totalDomainReputation]);
+  }, [colony.nativeToken.decimals, extensionData, totalDomainReputation]);
 
   const getStakedExpenditureAddress = () => {
     if (!extensionData || !isInstalledExtensionData(extensionData)) {
