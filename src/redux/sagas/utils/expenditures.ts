@@ -42,7 +42,6 @@ const getPayoutAmount = (
   payout: ExpenditurePayoutFieldValue,
   networkInverseFee: string,
 ) => {
-  // @TODO: This should get the token decimals of the selected token
   const { totalToPay } = calculateFee(
     payout.amount,
     networkInverseFee,
