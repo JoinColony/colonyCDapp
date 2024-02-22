@@ -237,6 +237,7 @@ const TmpAdvancedPayments = () => {
         <Button onClick={handleCreateStakedExpenditure}>
           Create staked expenditure
         </Button>
+        <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
       </div>
     </div>
   );
