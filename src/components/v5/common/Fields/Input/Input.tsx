@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { type FC, useEffect, useLayoutEffect } from 'react';
 import { useIntl } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
@@ -51,20 +51,16 @@ const Input: FC<InputProps> = ({
     }
   }, [isTyping, setIsTyping]);
 
-  const ref = useRef<HTMLInputElement | null>(null);
-
   useLayoutEffect(() => {
-    if (ref.current) {
-      if (shouldFocus) {
-        ref.current.focus();
+    if (shouldFocus) {
+      const inputElement = document.querySelector(
+        `#id-${name}`,
+      ) as HTMLElement | null;
+      if (inputElement) {
+        inputElement.focus();
       }
-
-      // Forward the ref to hook-form
-      registerField?.ref(ref.current);
     }
-    // @NOTE: Including registerField would cause an infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldFocus]);
+  }, [shouldFocus, name]);
 
   const input = (
     <div className="w-full relative">
@@ -91,7 +87,6 @@ const Input: FC<InputProps> = ({
         }}
         disabled={isDisabled}
         id={`id-${name}`}
-        ref={ref}
       />
     </div>
   );
