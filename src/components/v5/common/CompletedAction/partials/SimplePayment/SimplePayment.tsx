@@ -7,7 +7,7 @@ import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
@@ -104,12 +104,9 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           </Tooltip>
         </div>
         <div>
-          <UserAvatar
-            user={
-              action.recipientUser || action.recipientAddress || ADDRESS_ZERO
-            }
+          <UserAvatarPopover
+            walletAddress={action.recipientAddress || ADDRESS_ZERO}
             size="xs"
-            showUsername
           />
         </div>
 
