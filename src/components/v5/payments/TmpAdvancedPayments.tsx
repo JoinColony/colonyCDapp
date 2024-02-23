@@ -30,10 +30,9 @@ const TmpAdvancedPayments = () => {
   const [tokenId, setTokenId] = useState('');
   const [decimalAmount, setDecimalAmount] = useState('');
   const [transactionAmount, setTransactionAmount] = useState('');
-    const [expenditureId, setExpenditureId] = useState('');
+  const [expenditureId, setExpenditureId] = useState('');
 
   const tokenDecimalAmount = parseFloat(decimalAmount);
-  const [getExpenditure] = useGetExpenditureLazyQuery();
 
   const { stakeAmount = '0', stakedExpenditureAddress = '' } =
     useExpenditureStaking();
@@ -93,11 +92,11 @@ const TmpAdvancedPayments = () => {
 
   const payouts = [
     {
-        amount: transactionAmount,
-        tokenAddress: tokenId,
-        recipientAddress: user?.walletAddress ?? '',
-        claimDelay: 0,
-        tokenDecimals: tokenDecimalAmount,
+      amount: transactionAmount,
+      tokenAddress: tokenId,
+      recipientAddress: user?.walletAddress ?? '',
+      claimDelay: 0,
+      tokenDecimals: tokenDecimalAmount,
     },
   ];
 
