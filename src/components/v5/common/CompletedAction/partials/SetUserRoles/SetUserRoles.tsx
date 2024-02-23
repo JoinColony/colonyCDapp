@@ -3,12 +3,13 @@ import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { ADDRESS_ZERO } from '~constants';
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyActionRoles } from '~gql';
 import { type ColonyAction } from '~types/graphql.ts';
 import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
-import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import {
@@ -108,13 +109,9 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.member' })}
           rowContent={
-            <UserAvatar
-              user={{
-                profile: action.recipientUser?.profile,
-                walletAddress: action.recipientAddress || '',
-              }}
+            <UserAvatarPopover
+              walletAddress={action.recipientAddress || ADDRESS_ZERO}
               size="xs"
-              showUsername
             />
           }
           RowIcon={UserFocus}
