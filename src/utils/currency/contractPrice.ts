@@ -54,8 +54,8 @@ const isContractPriceSuccessResponse = (
 ): data is TokenContractPriceSuccessResponse => {
   if (
     typeof data === 'undefined' || // undefined
-    data == null || // null
-    (typeof data == 'object' && Object.keys(data).length === 0) // empty object
+    data === null || // null
+    (typeof data === 'object' && Object.keys(data).length === 0) // empty object
   ) {
     return false;
   }

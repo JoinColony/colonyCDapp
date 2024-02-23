@@ -19,7 +19,7 @@ const tokensFieldCache = {
           token: {
             __typename: 'Token',
             ...DEFAULT_NETWORK_TOKEN,
-            tokenAddress: ADDRESS_ZERO,
+            id: ADDRESS_ZERO,
             avatar: null,
             thumbnail: null,
             type: TokenType.Colony,
