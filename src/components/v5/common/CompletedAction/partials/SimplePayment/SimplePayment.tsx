@@ -2,10 +2,12 @@ import { UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { ADDRESS_ZERO } from '~constants';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
@@ -43,7 +45,8 @@ const MSG = defineMessages({
 
 const SimplePayment = ({ action }: SimplePaymentProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { amount, initiatorUser, recipientUser, token } = action;
+  const { amount, initiatorUser, recipientAddress, recipientUser, token } =
+    action;
 
   const formattedAmount = getFormattedTokenAmount(
     amount || '1',
@@ -57,14 +60,15 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         {formatText(MSG.subtitle, {
           amount: formattedAmount,
           token: action.token?.symbol,
-          recipient: recipientUser ? (
+          recipient: recipientAddress ? (
             <UserPopover
-              userName={recipientUser.profile?.displayName}
-              walletAddress={recipientUser.walletAddress}
+              userName={recipientUser?.profile?.displayName}
+              walletAddress={recipientAddress}
               user={recipientUser}
               withVerifiedBadge={false}
             >
-              {recipientUser.profile?.displayName}
+              {recipientUser?.profile?.displayName ||
+                splitWalletAddress(recipientAddress)}
             </UserPopover>
           ) : null,
           user: initiatorUser ? (
@@ -100,13 +104,9 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           </Tooltip>
         </div>
         <div>
-          <UserAvatar
-            user={{
-              profile: action.recipientUser?.profile,
-              walletAddress: action.recipientAddress || '',
-            }}
+          <UserAvatarPopover
+            walletAddress={action.recipientAddress || ADDRESS_ZERO}
             size="xs"
-            showUsername
           />
         </div>
 
