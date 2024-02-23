@@ -15,7 +15,7 @@
     "docker:build:all": "npm run docker:build:base && npm run docker:build:network && npm run docker:build:monitor && npm run docker:build:ingestor && npm run docker:build:amplify && npm run docker:build:safe && npm run docker:build:auth",
     "docker:compose:core": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
     "docker:compose:all": "docker compose --file docker/colony-cdapp-dev-env-orchestration-all.yaml",
-    "dev": "npm run docker:build:core && npm run docker:compose:core up -- --force-recreate -V",
+    "dev": "npm run watch-amplify & npm run docker:build:core && npm run docker:compose:core up -- --force-recreate -V",
     "dev:all": "npm run docker:build:all && npm run docker:compose:all up -- --force-recreate -V",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "lint:ci": "eslint 'src/**/*.{ts,tsx}'",
@@ -33,7 +33,8 @@
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=f08326e25dbf",
     "postinstall": "./scripts/lambda-functions-dependencies.sh && scripts/generate-amplify-local-config.sh",
-    "upgrade-colony-js": "./scripts/upgrade-colony-js.sh"
+    "upgrade-colony-js": "./scripts/upgrade-colony-js.sh",
+    "watch-amplify": "ts-node scripts/watchAmplifyFiles"
   },
   "repository": {
     "type": "git",
