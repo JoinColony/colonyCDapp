@@ -8,7 +8,6 @@ export type AvatarSize =
   | 'xss'
   | 'xs'
   | 'xxsm'
-  | 'xxsx'
   | 'sm'
   | 'xsm'
   | 'smx'
