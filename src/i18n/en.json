@@ -954,6 +954,7 @@
     "filter": "Filter",
     "allFilters": "All filters",
     "filters": "Filters",
+    "filterAndSort": "Filter & Sort",
     "filter.teams": "All teams",
     "filter.contributor.type": "Contributor type",
     "filter.user.status": "User status",

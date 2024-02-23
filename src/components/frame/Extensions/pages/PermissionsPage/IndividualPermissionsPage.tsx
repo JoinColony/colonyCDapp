@@ -22,8 +22,9 @@ const IndividualPermissionsPage = () => {
         <EmptyContent
           title={formatText({ id: 'permissionsPage.empty.title' })}
           description={formatText({ id: 'permissionsPage.empty.description' })}
-          className="px-4 py-[1.375rem]"
+          className="pt-10 pb-9 px-6 mt-6"
           icon={Binoculars}
+          withBorder
         />
       )}
       {Object.keys(individualMembers).map((role) => (
