@@ -195,6 +195,10 @@ function* createStreamingPaymentAction({
       meta,
     );
   }
+  [createStreamingPayment, annotateCreateStreamingPayment].forEach((channel) =>
+    channel.channel.close(),
+  );
+
   return null;
 }
 

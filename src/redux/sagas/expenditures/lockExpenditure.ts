@@ -80,6 +80,9 @@ function* lockExpenditureAction({
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_LOCK_ERROR, error, meta);
   }
+  [lockExpenditure, annotateLockExpenditure].forEach((channel) =>
+    channel.channel.close(),
+  );
 
   return null;
 }

@@ -136,6 +136,7 @@ function* fundExpenditure({
     [...balancesByTokenAddresses.keys()].forEach((tokenAddress) =>
       channels[tokenAddress].channel.close(),
     );
+    annotateFundExpenditure.channel.close();
   }
 
   return null;
