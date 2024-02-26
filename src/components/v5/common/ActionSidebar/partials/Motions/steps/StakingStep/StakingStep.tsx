@@ -4,6 +4,7 @@ import { formatRelative } from 'date-fns';
 import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
+import { useColonyContext } from '~context/ColonyContext.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { SystemMessages } from '~types/actions.ts';
@@ -27,6 +28,9 @@ const displayName =
 
 const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const { canInteract } = useAppContext();
+  const {
+    colony: { domains },
+  } = useColonyContext();
   const { motionAction } = useMotionContext();
   const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
   const {
@@ -61,6 +65,9 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const votingPhaseStartedMessage = motionData.messages?.items.find(
     (message) => message?.name === SystemMessages.MotionVotingPhase,
   );
+
+  const teamName = domains?.items.find((domain) => domain?.metadata?.name)
+    ?.metadata?.name;
 
   const cardTitleMessageId = (() => {
     if (isFullyStaked) {
@@ -122,9 +129,12 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                   key: '1',
                   content: (
                     <p className="text-sm">
-                      {formatText({
-                        id: 'motion.staking.notEnoughReputation',
-                      })}
+                      {formatText(
+                        {
+                          id: 'motion.staking.notEnoughReputation',
+                        },
+                        { teamName },
+                      )}
                     </p>
                   ),
                   className: 'bg-negative-100 text-negative-400',
