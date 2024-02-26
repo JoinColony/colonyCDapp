@@ -61,10 +61,29 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
               <Checkbox
                 isChecked={filterValue[value]}
                 onChange={() => {
-                  onChange({
+                  const updatedFilterValue = {
                     ...filterValue,
                     [value]: !filterValue[value],
-                  });
+                  };
+
+                  if (filterValue[value] && nestedItems) {
+                    const nestedItemsValues = nestedItems.reduce(
+                      (acc, { value: nestedValue }) => ({
+                        ...acc,
+                        [nestedValue]: false,
+                      }),
+                      {},
+                    );
+
+                    onChange({
+                      ...updatedFilterValue,
+                      ...nestedItemsValues,
+                    });
+
+                    return;
+                  }
+
+                  onChange(updatedFilterValue);
                 }}
                 classNames="subnav-button px-0 sm:px-3.5"
               >
