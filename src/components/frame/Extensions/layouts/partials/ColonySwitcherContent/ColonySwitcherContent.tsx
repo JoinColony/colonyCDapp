@@ -8,8 +8,8 @@ import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
 
+import { getChainIcon } from '../../utils.ts';
 import ColonySwitcherItem from '../ColonySwitcherItem/index.ts';
-import ColonySwitcherList from '../ColonySwitcherList/index.ts';
 
 import { useColonySwitcherContent } from './hooks.ts';
 import { type ColonySwitcherContentProps } from './types.ts';
@@ -45,28 +45,35 @@ const MSG = defineMessages({
 });
 
 // There's just a base logic added here, so that we can see other colonies and navigate between them.
-// The rest of the functionality will be added in the next PRs.
+
 const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
-  const {
-    currentColonyItem,
-    searchValue,
-    onSearchValueChange,
-    filteredListItems,
-    loading,
-  } = useColonySwitcherContent(colony);
+  const { searchValue, onSearchValueChange, filteredColonies, loading } =
+    useColonySwitcherContent();
 
   const titleClassName = 'uppercase text-4 text-gray-400 mb-1';
 
-  return loading ? (
-    <SpinnerLoader />
-  ) : (
+  if (loading) {
+    return <SpinnerLoader />;
+  }
+
+  return (
     <div className="w-full flex flex-col gap-4 md:pt-6">
-      {currentColonyItem && (
+      {colony && (
         <div>
           <h3 className={titleClassName}>
             {formatText(MSG.currentColonytitle)}
           </h3>
-          <ColonySwitcherItem {...currentColonyItem} />
+          <ColonySwitcherItem
+            colonyAddress={colony.colonyAddress}
+            link={`/${colony.name}`}
+            name={colony.metadata?.displayName || colony.name}
+            ChainIcon={getChainIcon(colony.chainMetadata.chainId)}
+            avatarSrc={
+              colony.metadata?.avatar
+                ? colony.metadata?.thumbnail || colony.metadata?.avatar
+                : undefined
+            }
+          />
         </div>
       )}
       <div
@@ -79,17 +86,41 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
           <h3 className={titleClassName}>
             {formatText(MSG.joinedColonyTitle)}
           </h3>
-          {!!filteredListItems.length && (
-            <ColonySwitcherList items={filteredListItems} />
+          {!!filteredColonies.length && (
+            <ul className="w-full flex flex-col gap-2">
+              {filteredColonies.map((filteredColony) => {
+                return (
+                  <li key={filteredColony.colonyAddress}>
+                    <ColonySwitcherItem
+                      colonyAddress={filteredColony.colonyAddress}
+                      link={`/${filteredColony.name}`}
+                      name={
+                        filteredColony.metadata?.displayName ||
+                        filteredColony.name
+                      }
+                      ChainIcon={getChainIcon(
+                        filteredColony.chainMetadata.chainId,
+                      )}
+                      avatarSrc={
+                        filteredColony.metadata?.avatar
+                          ? filteredColony.metadata?.thumbnail ||
+                            filteredColony.metadata?.avatar
+                          : undefined
+                      }
+                    />
+                  </li>
+                );
+              })}
+            </ul>
           )}
-          {filteredListItems.length === 0 && !searchValue && (
+          {filteredColonies.length === 0 && !searchValue && (
             <EmptyContent
               icon={Layout}
               title={MSG.emptyJoinedStateTitle}
               description={MSG.emptyJoinedStateSubtitle}
             />
           )}
-          {filteredListItems.length === 0 && searchValue && (
+          {filteredColonies.length === 0 && searchValue && (
             <EmptyContent
               icon={Binoculars}
               title={MSG.emptyFilteredStateTitle}

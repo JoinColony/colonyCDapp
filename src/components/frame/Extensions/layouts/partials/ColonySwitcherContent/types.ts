@@ -1,6 +1,4 @@
-import { type Colony } from '~types/graphql.ts';
-
-import { type ColonySwitcherListItem } from '../ColonySwitcherList/types.ts';
+import { type JoinedColony, type Colony } from '~types/graphql.ts';
 
 export interface ColonySwitcherContentProps {
   colony?: Colony;
@@ -8,8 +6,7 @@ export interface ColonySwitcherContentProps {
 
 export interface UseColonySwitcherContentReturnType {
   loading: boolean;
-  filteredListItems: ColonySwitcherListItem[];
+  filteredColonies: JoinedColony[];
   searchValue: string;
   onSearchValueChange: (value: string) => void;
-  currentColonyItem?: ColonySwitcherListItem;
 }
