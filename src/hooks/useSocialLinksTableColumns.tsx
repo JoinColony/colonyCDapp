@@ -1,9 +1,8 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
+import { type SocialLinksTableModel } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
-
-import { type SocialLinksTableModel } from './types.ts';
 
 export const useSocialLinksTableColumns = (): ColumnDef<
   SocialLinksTableModel,

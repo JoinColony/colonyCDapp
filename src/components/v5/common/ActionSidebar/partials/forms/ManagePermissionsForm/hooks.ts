@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -90,7 +91,9 @@ export const useManagePermissions = (
         ? ActionTypes.ACTION_USER_ROLES_SET
         : ActionTypes.MOTION_USER_ROLES_SET,
     defaultValues: useMemo<DeepPartial<ManagePermissionsFormValues>>(
-      () => ({}),
+      () => ({
+        createdIn: Id.RootDomain,
+      }),
       [],
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -9,8 +9,3 @@ export interface SocialLinksTableModel {
   name: ExternalLinks;
   link: string;
 }
-
-export interface SocialLinksButtonsProps {
-  type: ExternalLinks;
-  icon: JSX.Element;
-}

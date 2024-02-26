@@ -3,6 +3,7 @@ import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
+import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
@@ -10,12 +11,14 @@ import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/pa
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
 import CreateDecision from './partials/CreateDecision/index.ts';
-import CreateNewTeam from './partials/CreateNewTeam/index.ts';
-// import EditColonyDetails from './partials/EditColonyDetails';
+import EditColonyDetails from './partials/EditColonyDetails/index.ts';
+import ManageTeam from './partials/ManageTeam/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
+import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
+import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
@@ -32,24 +35,35 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   const getActionContent = () => {
     switch (actionType) {
       case ColonyActionType.Payment:
+      case ColonyActionType.PaymentMotion:
         return <SimplePayment action={action} />;
       case ColonyActionType.MintTokens:
+      case ColonyActionType.MintTokensMotion:
         return <MintTokens action={action} />;
       case ColonyActionType.MoveFunds:
+      case ColonyActionType.MoveFundsMotion:
         return <TransferFunds action={action} />;
       case ColonyActionType.CreateDomain:
-        return <CreateNewTeam action={action} />;
+      case ColonyActionType.CreateDomainMotion:
+      case ColonyActionType.EditDomain:
+      case ColonyActionType.EditDomainMotion:
+        return <ManageTeam action={action} />;
       case ColonyActionType.UnlockToken:
+      case ColonyActionType.UnlockTokenMotion:
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
       case ColonyActionType.VersionUpgradeMotion:
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;
-      /* @TODO uncomment when social links are added to action display
+      case ColonyActionType.SetUserRoles:
+      case ColonyActionType.SetUserRolesMotion:
+        return <SetUserRoles action={action} />;
       case ColonyActionType.ColonyEdit:
+      case ColonyActionType.ColonyEditMotion:
         return <EditColonyDetails action={action} />;
-        */
+      case ExtendedColonyActionType.UpdateColonyObjective:
+        return <UpgradeColonyObjective action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;

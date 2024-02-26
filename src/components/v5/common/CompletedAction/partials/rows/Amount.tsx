@@ -1,13 +1,13 @@
 import { Coins } from '@phosphor-icons/react';
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
 import { type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import { getFormattedTokenAmount } from '../utils.ts';
+
+import ActionData from './ActionData.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.AmountRow';
 
@@ -20,31 +20,24 @@ const AmountRow = ({ amount, token }: AmountRowProps) => {
   const formattedAmount = getFormattedTokenAmount(amount, token?.decimals);
 
   return (
-    <>
-      <div>
-        <Tooltip
-          placement={DEFAULT_TOOLTIP_POSITION}
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.simplePayment.amount',
-          })}
-        >
-          <div className="flex items-center gap-2">
-            <Coins size={ICON_SIZE} />
-            <span>{formatText({ id: 'actionSidebar.amount' })}</span>
-          </div>
-        </Tooltip>
-      </div>
-
-      <div className="flex items-center gap-1">
-        {formattedAmount}
-        {token && (
-          <>
-            <TokenIcon token={token} size="xxs" />
-            <span className="text-md">{token.symbol}</span>
-          </>
-        )}
-      </div>
-    </>
+    <ActionData
+      rowLabel={formatText({ id: 'actionSidebar.amount' })}
+      tooltipContent={formatText({
+        id: 'actionSidebar.tooltip.simplePayment.amount',
+      })}
+      RowIcon={Coins}
+      rowContent={
+        <div className="flex items-center gap-1">
+          {formattedAmount}
+          {token && (
+            <>
+              <TokenIcon token={token} size="xxs" />
+              <span className="text-md">{token.symbol}</span>
+            </>
+          )}
+        </div>
+      }
+    />
   );
 };
 

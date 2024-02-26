@@ -7,11 +7,11 @@ import useColors from '~hooks/useColors.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
+import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem.tsx';
 
-import TeamColorBadge from './partials/TeamColorBadge.tsx';
 import { type TeamColourFieldProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TeamColorField';

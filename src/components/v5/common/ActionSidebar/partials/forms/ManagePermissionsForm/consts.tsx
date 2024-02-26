@@ -29,7 +29,7 @@ export const validationSchema = object()
   .shape({
     member: string().required(),
     team: number().required(),
-    createdIn: number(),
+    createdIn: number().defined(),
     role: string().required(),
     authority: string().required(),
     permissions: mixed<Partial<Record<string, boolean>>>().test(

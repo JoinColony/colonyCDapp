@@ -10,14 +10,10 @@ import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { ColonyActionType } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import { type AnyActionType } from '~types/actions.ts';
-import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -35,25 +31,11 @@ import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 
-const SUPPORTED_ACTIONS: AnyActionType[] = [
-  ColonyActionType.Payment,
-  ColonyActionType.MintTokens,
-  ColonyActionType.MoveFunds,
-  ColonyActionType.CreateDomain,
-  ColonyActionType.UnlockToken,
-  ColonyActionType.VersionUpgrade,
-  ColonyActionType.VersionUpgradeMotion,
-  ColonyActionType.CreateDecisionMotion,
-  // @TODO uncomment when social links are added to action display
-  // ColonyActionType.ColonyEdit,
-];
-
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   initialValues,
   transactionId,
 }) => {
-  const { colony } = useColonyContext();
   const { action, defaultValues, loadingAction, isMotion, motionState } =
     useGetActionData(transactionId);
 
@@ -92,11 +74,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     }
 
     if (action) {
-      const actionType = getExtendedActionType(action, colony.metadata);
-
-      if (SUPPORTED_ACTIONS.includes(actionType)) {
-        return <CompletedAction action={action} />;
-      }
+      return <CompletedAction action={action} />;
     }
 
     return (

@@ -1,13 +1,12 @@
-import { PencilCircle } from '@phosphor-icons/react';
+import { PencilCircle, Image, FileText } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -18,6 +17,8 @@ import {
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
+  SocialLinksTable,
+  ActionData,
 } from '../rows/index.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.EditColonyDetails';
@@ -40,6 +41,8 @@ const MSG = defineMessages({
 const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
+  const actionColonyMetadata =
+    action.pendingColonyMetadata || action.colony.metadata;
 
   return (
     <>
@@ -60,23 +63,37 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
-
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.editColony.colonyName',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <PencilCircle size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.colonyName' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          <span>{action.colony.metadata?.displayName}</span>
-        </div>
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.colonyName' })}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.editColony.colonyName',
+          })}
+          rowContent={actionColonyMetadata?.displayName}
+          RowIcon={PencilCircle}
+        />
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.colonyLogo' })}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.editColony.colonyLogo',
+          })}
+          rowContent={
+            <Avatar
+              avatar={actionColonyMetadata?.avatar}
+              seed={action.colonyAddress.toLowerCase()}
+              title={actionColonyMetadata?.displayName}
+              size="xs"
+            />
+          }
+          RowIcon={Image}
+        />
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.colonyDescription' })}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.editColony.colonyDescription',
+          })}
+          rowContent={actionColonyMetadata?.description}
+          RowIcon={FileText}
+        />
 
         <DecisionMethodRow isMotion={action.isMotion || false} />
 
@@ -89,6 +106,9 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
+      )}
+      {actionColonyMetadata?.externalLinks && (
+        <SocialLinksTable socialLinks={actionColonyMetadata.externalLinks} />
       )}
     </>
   );

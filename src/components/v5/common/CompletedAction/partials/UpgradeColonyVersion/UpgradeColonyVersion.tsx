@@ -2,18 +2,17 @@ import { Browser, Browsers } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
 import {
+  ActionData,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -64,43 +63,22 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
 
         {action.newColonyVersion && (
           <>
-            <div>
-              <Tooltip
-                placement={DEFAULT_TOOLTIP_POSITION}
-                tooltipContent={formatText({
-                  id: 'actionSidebar.tooltip.upgradeColonyVersion.currentVersion',
-                })}
-              >
-                <div className="flex items-center gap-2">
-                  <Browser size={ICON_SIZE} />
-                  <span>
-                    {formatText({ id: 'actionSidebar.currentVersion' })}
-                  </span>
-                </div>
-              </Tooltip>
-            </div>
-
-            <div className="flex items-center gap-1">
-              {action.newColonyVersion - 1}
-            </div>
-
-            <div>
-              <Tooltip
-                placement={DEFAULT_TOOLTIP_POSITION}
-                tooltipContent={formatText({
-                  id: 'actionSidebar.tooltip.upgradeColonyVersion.newVersion',
-                })}
-              >
-                <div className="flex items-center gap-2">
-                  <Browsers size={ICON_SIZE} />
-                  <span>{formatText({ id: 'actionSidebar.newVersion' })}</span>
-                </div>
-              </Tooltip>
-            </div>
-
-            <div className="flex items-center gap-1">
-              {action.newColonyVersion}
-            </div>
+            <ActionData
+              tooltipContent={formatText({
+                id: 'actionSidebar.tooltip.upgradeColonyVersion.currentVersion',
+              })}
+              rowLabel={formatText({ id: 'actionSidebar.currentVersion' })}
+              rowContent={action.newColonyVersion - 1}
+              RowIcon={Browser}
+            />
+            <ActionData
+              tooltipContent={formatText({
+                id: 'actionSidebar.tooltip.upgradeColonyVersion.newVersion',
+              })}
+              rowLabel={formatText({ id: 'actionSidebar.newVersion' })}
+              rowContent={action.newColonyVersion}
+              RowIcon={Browsers}
+            />
           </>
         )}
 

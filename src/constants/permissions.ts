@@ -69,3 +69,66 @@ export const getRole = (permissionsList: ColonyRole[]): UserRoleMeta =>
     ...CUSTOM_USER_ROLE,
     permissions: permissionsList,
   };
+
+export const PERMISSIONS_TABLE_CONTENT: Record<
+  Exclude<UserRole, 'custom'>,
+  { heading: string; permissions: React.ReactNode[] }
+> = {
+  [UserRole.Owner]: {
+    heading: 'Owner permissions',
+    permissions: [
+      formatText({ id: 'permissions.moderation' }),
+      formatText({ id: 'permissions.simplePayments' }),
+      formatText({ id: 'permissions.advancedPayments' }),
+      formatText({ id: 'permissions.batchPayments' }),
+      formatText({ id: 'permissions.splitPayments' }),
+      formatText({ id: 'permissions.stagedPayments' }),
+      formatText({ id: 'permissions.streamingPayments' }),
+      formatText({ id: 'permissions.penaliseReputation' }),
+      formatText({ id: 'permissions.awardReputation' }),
+      formatText({ id: 'permissions.createATeam' }),
+      formatText({ id: 'permissions.editTeam' }),
+      formatText({ id: 'permissions.managePermissions' }),
+      formatText({ id: 'permissions.banMember' }),
+      formatText({ id: 'permissions.manageVerifiedMembers' }),
+      formatText({ id: 'permissions.mintTokens' }),
+      formatText({ id: 'permissions.unlockToken' }),
+      formatText({ id: 'permissions.manageTokens' }),
+      formatText({ id: 'permissions.upgradeColonyVersion' }),
+    ],
+  },
+  [UserRole.Admin]: {
+    heading: 'Admin permissions',
+    permissions: [
+      formatText({ id: 'permissions.moderation' }),
+      formatText({ id: 'permissions.simplePayments' }),
+      formatText({ id: 'permissions.advancedPayments' }),
+      formatText({ id: 'permissions.batchPayments' }),
+      formatText({ id: 'permissions.splitPayments' }),
+      formatText({ id: 'permissions.stagedPayments' }),
+      formatText({ id: 'permissions.streamingPayments' }),
+      formatText({ id: 'permissions.penaliseReputation' }),
+      formatText({ id: 'permissions.createTeams' }),
+      formatText({ id: 'permissions.editTeams' }),
+      formatText({ id: 'permissions.manageChildPermissions' }),
+      formatText({ id: 'permissions.addToVerifiedMembers' }),
+    ],
+  },
+  [UserRole.Payer]: {
+    heading: 'Payer permissions',
+    permissions: [
+      formatText({ id: 'permissions.moderation' }),
+      formatText({ id: 'permissions.simplePayments' }),
+      formatText({ id: 'permissions.advancedPayments' }),
+      formatText({ id: 'permissions.batchPayments' }),
+      formatText({ id: 'permissions.splitPayments' }),
+      formatText({ id: 'permissions.stagedPayments' }),
+      formatText({ id: 'permissions.streamingPayments' }),
+      formatText({ id: 'permissions.penaliseReputation' }),
+    ],
+  },
+  [UserRole.Mod]: {
+    heading: 'Mod permissions',
+    permissions: [formatText({ id: 'permissions.moderation' })],
+  },
+};

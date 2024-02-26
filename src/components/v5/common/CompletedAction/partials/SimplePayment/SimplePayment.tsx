@@ -3,20 +3,19 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
 import {
+  ActionData,
   ActionTypeRow,
   AmountRow,
   CreatedInRow,
@@ -87,29 +86,24 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         <ActionTypeRow actionType={action.type} />
 
         {action.fromDomain?.metadata && (
-          <TeamFromRow teamMetadata={action.fromDomain.metadata} />
-        )}
-
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.simplePayment.recipient',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <UserFocus size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.recipient' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          <UserAvatarPopover
-            walletAddress={action.recipientAddress || ADDRESS_ZERO}
-            size="xs"
+          <TeamFromRow
+            teamMetadata={action.fromDomain.metadata}
+            actionType={action.type}
           />
-        </div>
-
+        )}
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.recipient' })}
+          rowContent={
+            <UserAvatarPopover
+              walletAddress={action.recipientAddress || ADDRESS_ZERO}
+              size="xs"
+            />
+          }
+          RowIcon={UserFocus}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.simplePayment.recipient',
+          })}
+        />
         <AmountRow
           amount={action.amount || '1'}
           token={action.token || undefined}
