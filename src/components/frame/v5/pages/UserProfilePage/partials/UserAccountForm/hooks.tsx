@@ -16,6 +16,7 @@ import {
   profileFileOptions,
   MAX_BIO_CHARS,
   MAX_DISPLAYNAME_CHARS,
+  MAX_LOCATION_CHARS,
 } from '../consts.ts';
 import IconSuccessContent from '../IconSuccessContent.tsx';
 import { type RowGroup } from '../Row/types.ts';
@@ -199,6 +200,8 @@ export const useUserProfilePageForm = () => {
       inputProps: {
         name: 'location',
         register,
+        maxCharNumber: MAX_LOCATION_CHARS,
+        isError: !!formState?.errors.location?.message,
       },
     },
   ];
