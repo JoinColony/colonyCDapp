@@ -97,6 +97,9 @@ function* finalizeExpenditureAction({
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
   }
+  [finalizeExpenditure, annotateFinalizeExpenditure].forEach((channel) =>
+    channel.channel.close(),
+  );
 
   return null;
 }

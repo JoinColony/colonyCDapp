@@ -130,6 +130,7 @@ function* claimExpenditure({
       const payoutChannelId = getPayoutChannelId(payout);
       channels[payoutChannelId].channel.close();
     }
+    annotatePayoutChannel.channel.close();
   }
 
   return null;
