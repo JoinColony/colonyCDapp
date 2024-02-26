@@ -124,6 +124,9 @@ function* releaseExpenditureStage({
       meta,
     );
   }
+  [releaseExpenditure, annotateReleaseExpenditure].forEach((channel) =>
+    channel.channel.close(),
+  );
 
   return null;
 }

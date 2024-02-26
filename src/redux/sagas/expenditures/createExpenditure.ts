@@ -205,9 +205,12 @@ function* createExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [makeExpenditure, setExpenditureValues, setExpenditureStaged].forEach(
-    (channel) => channel.channel.close(),
-  );
+  [
+    makeExpenditure,
+    setExpenditureValues,
+    setExpenditureStaged,
+    annotateMakeExpenditure,
+  ].forEach((channel) => channel.channel.close());
 
   return null;
 }

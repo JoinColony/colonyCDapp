@@ -255,6 +255,7 @@ function* createStakedExpenditure({
       makeExpenditure,
       setExpenditureValues,
       setExpenditureStaged,
+      annotateMakeStagedExpenditure,
     ].forEach(({ channel }) => channel.close());
   }
   return null;

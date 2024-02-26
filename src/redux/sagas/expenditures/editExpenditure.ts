@@ -155,6 +155,9 @@ function* editExpenditureAction({
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_EDIT_ERROR, error, meta);
   }
+  [editExpenditure, annotateEditExpenditure].forEach((channel) =>
+    channel.channel.close(),
+  );
 
   return null;
 }
