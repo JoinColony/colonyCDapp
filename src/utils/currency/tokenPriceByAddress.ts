@@ -5,8 +5,8 @@ import {
   type FetchCurrentPriceArgs,
   type CoinGeckoSupportedCurrencies,
   type SupportedChains,
-  type TokenContractPriceSuccessResponse,
-  type TokenContractPriceResponse,
+  type TokenAddressPriceSuccessResponse,
+  type TokenAddressPriceResponse,
 } from './types.ts';
 import { buildAPIEndpoint, fetchData, mapToAPIFormat } from './utils.ts';
 
@@ -14,15 +14,14 @@ import { buildAPIEndpoint, fetchData, mapToAPIFormat } from './utils.ts';
 // If that changes, or if we change the api, these functions will need to be updated.
 
 const { chains, currencies } = coinGeckoMappings;
-const buildTokenContractCoinGeckoURL = (
+const buildTokenAddressCoinGeckoURL = (
   contractAddress: string,
   chainId: SupportedChains = Network.Gnosis,
   conversionDenomination: CoinGeckoSupportedCurrencies = SupportedCurrencies.Usd,
 ) => {
   const chain = mapToAPIFormat(chains, chainId);
   const denomination = mapToAPIFormat(currencies, conversionDenomination);
-  const { url, searchParams } =
-    currencyApiConfig.endpoints.tokenPriceByContract;
+  const { url, searchParams } = currencyApiConfig.endpoints.tokenPriceByAddress;
 
   return buildAPIEndpoint(new URL(`${url}/${chain}`), {
     [searchParams.from]: contractAddress,
@@ -31,8 +30,8 @@ const buildTokenContractCoinGeckoURL = (
   });
 };
 
-const extractContractPriceFromResponse = (
-  data: TokenContractPriceSuccessResponse,
+const extractAddressPriceFromResponse = (
+  data: TokenAddressPriceSuccessResponse,
   contractAddress: string,
   conversionDenomination: CoinGeckoSupportedCurrencies,
 ) => {
@@ -49,13 +48,13 @@ const extractContractPriceFromResponse = (
   }
 };
 
-const isContractPriceSuccessResponse = (
-  data: TokenContractPriceResponse,
-): data is TokenContractPriceSuccessResponse => {
+const isAddressPriceSuccessResponse = (
+  data: TokenAddressPriceResponse,
+): data is TokenAddressPriceSuccessResponse => {
   if (
-    typeof data === 'undefined' || // undefined
-    data === null || // null
-    (typeof data === 'object' && Object.keys(data).length === 0) // empty object
+    typeof data === 'undefined' ||
+    data === null ||
+    (typeof data === 'object' && Object.keys(data).length === 0)
   ) {
     return false;
   }
@@ -63,24 +62,24 @@ const isContractPriceSuccessResponse = (
   return true;
 };
 
-export const fetchContractPrice = async ({
+export const fetchTokenPriceByAddress = async ({
   contractAddress,
   chainId = Network.Gnosis,
   conversionDenomination = SupportedCurrencies.Usd,
 }: Pick<FetchCurrentPriceArgs, 'chainId' | 'contractAddress'> & {
   conversionDenomination: CoinGeckoSupportedCurrencies;
 }) => {
-  const url = buildTokenContractCoinGeckoURL(
+  const url = buildTokenAddressCoinGeckoURL(
     contractAddress,
     chainId,
     conversionDenomination,
   );
 
-  const price = await fetchData<TokenContractPriceResponse, number>(
+  const price = await fetchData<TokenAddressPriceResponse, number>(
     url,
     (data) => {
-      if (isContractPriceSuccessResponse(data)) {
-        return extractContractPriceFromResponse(
+      if (isAddressPriceSuccessResponse(data)) {
+        return extractAddressPriceFromResponse(
           data,
           contractAddress,
           conversionDenomination,

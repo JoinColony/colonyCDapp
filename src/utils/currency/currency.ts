@@ -4,17 +4,14 @@ import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
 import { Network, SupportedCurrencies } from '~gql';
 
 import { coinGeckoMappings } from './config.ts';
-import { fetchContractPrice } from './contractPrice.ts';
 import { getSavedPrice, savePrice } from './memo.ts';
-import { fetchTokenPrice } from './tokenPrice.ts';
+import { fetchTokenPriceByAddress } from './tokenPriceByAddress.ts';
+import { fetchTokenPriceByName } from './tokenPriceByName.ts';
 import {
   type FetchCurrentPriceArgs,
   type CoinGeckoSupportedCurrencies,
 } from './types.ts';
 import { convertTokenToCLNY } from './utils.ts';
-
-// The functions defined in this file assume something about the shape of the api response.
-// If that changes, or if we change the api, these functions will need to be updated.
 
 const fetchPriceFromCoinGecko = async ({
   contractAddress,
@@ -33,13 +30,13 @@ const fetchPriceFromCoinGecko = async ({
       return 0;
     }
 
-    return fetchTokenPrice({
+    return fetchTokenPriceByName({
       tokenName: networkToken,
       conversionDenomination,
     });
   }
 
-  return fetchContractPrice({
+  return fetchTokenPriceByAddress({
     contractAddress,
     chainId,
     conversionDenomination,
@@ -48,7 +45,7 @@ const fetchPriceFromCoinGecko = async ({
 
 const getCLNYPriceInUSD = async () => {
   // Returns 1 CLNY in terms of USD, 1 CLNY : x USD
-  return fetchContractPrice({
+  return fetchTokenPriceByAddress({
     contractAddress: Tokens.Mainnet.Mainnet,
     chainId: Network.Mainnet,
     conversionDenomination: SupportedCurrencies.Usd,

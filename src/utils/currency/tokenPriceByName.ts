@@ -48,9 +48,9 @@ const isTokenPriceSuccessResponse = (
   data: TokenNamePriceResponse,
 ): data is TokenNamePriceSuccessResponse => {
   if (
-    typeof data === 'undefined' || // undefined
-    data === null || // null
-    (typeof data === 'object' && Object.keys(data).length === 0) // empty object
+    typeof data === 'undefined' ||
+    data === null ||
+    (typeof data === 'object' && Object.keys(data).length === 0)
   ) {
     return false;
   }
@@ -58,7 +58,7 @@ const isTokenPriceSuccessResponse = (
   return true;
 };
 
-export const fetchTokenPrice = async ({
+export const fetchTokenPriceByName = async ({
   tokenName,
   conversionDenomination = SupportedCurrencies.Usd,
 }: {

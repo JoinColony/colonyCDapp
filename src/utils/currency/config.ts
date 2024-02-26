@@ -4,7 +4,7 @@ import { Network, SupportedCurrencies } from '~gql';
 // For walkthrough, see: https://apiguide.coingecko.com/getting-started/10-min-tutorial-guide/1-get-data-by-id-or-address
 export const currencyApiConfig = {
   endpoints: {
-    tokenPriceByContract: {
+    tokenPriceByAddress: {
       url: 'https://api.coingecko.com/api/v3/simple/token_price',
       searchParams: {
         from: 'contract_addresses',
