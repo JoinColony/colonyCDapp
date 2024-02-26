@@ -1,11 +1,16 @@
-import { Id } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
-import { ExpenditureDecisionMethod, useGetExpenditureQuery } from '~gql';
+import {
+  type Expenditure,
+  ExpenditureDecisionMethod,
+  useGetExpenditureQuery,
+} from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
@@ -15,9 +20,11 @@ import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/final
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import { ActionButton } from '~v5/shared/Button/index.ts';
@@ -25,12 +32,14 @@ import { ActionButton } from '~v5/shared/Button/index.ts';
 const TmpAdvancedPayments = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
+  const { extensionData } = useExtensionData(Extension.StagedExpenditure);
   const { networkInverseFee = '0' } = useNetworkInverseFee();
 
   const [tokenId, setTokenId] = useState('');
   const [decimalAmount, setDecimalAmount] = useState('');
   const [transactionAmount, setTransactionAmount] = useState('');
   const [expenditureId, setExpenditureId] = useState('');
+  const [releaseStage, setReleaseStage] = useState('');
 
   const tokenDecimalAmount = parseFloat(decimalAmount);
 
@@ -84,6 +93,11 @@ const TmpAdvancedPayments = () => {
     error: ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR,
     success: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
   });
+  const releaseExpenditureStageMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
+    error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
+    success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+  });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   if (!rootDomain) {
@@ -108,6 +122,28 @@ const TmpAdvancedPayments = () => {
     networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
     annotationMessage: 'expenditure annotation',
+  };
+
+  const createStagedExpenditurePayload: CreateExpenditurePayload = {
+    payouts,
+    colonyAddress: colony.colonyAddress,
+    createdInDomain: rootDomain,
+    fundFromDomainId: 1,
+    networkInverseFee,
+    decisionMethod: ExpenditureDecisionMethod.Permissions,
+    isStaged: true,
+    stages: [
+      {
+        name: 'stage one',
+        amount: '1',
+        tokenAddress: colony.nativeToken.tokenAddress,
+      },
+      {
+        name: 'stage two',
+        amount: '1',
+        tokenAddress: colony.nativeToken.tokenAddress,
+      },
+    ],
   };
 
   const handleLockExpenditure = async () => {
@@ -196,6 +232,33 @@ const TmpAdvancedPayments = () => {
     await cancelStakedExpenditure(payload);
   };
 
+  const handleReleaseExpenditureStageMotion = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    if (!releaseStage) {
+      return;
+    }
+
+    const stagedExpenditureAddress =
+      extensionData && isInstalledExtensionData(extensionData)
+        ? extensionData.address
+        : undefined;
+
+    const payload: ReleaseExpenditureStageMotionPayload = {
+      colonyAddress: colony.colonyAddress,
+      colonyName: colony.name,
+      expenditure: expenditure as Expenditure,
+      slotId: Number(releaseStage),
+      motionDomainId: expenditure.nativeDomainId,
+      tokenAddresses: [colony.nativeToken.tokenAddress],
+      stagedExpenditureAddress: stagedExpenditureAddress || '',
+    };
+
+    await releaseExpenditureStageMotion(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -217,6 +280,15 @@ const TmpAdvancedPayments = () => {
         >
           Create expenditure
         </ActionButton>
+        <Button onClick={handleCreateStakedExpenditure}>
+          Create staked expenditure
+        </Button>
+        <ActionButton
+          actionType={ActionTypes.EXPENDITURE_CREATE}
+          values={createStagedExpenditurePayload}
+        >
+          Create staged expenditure
+        </ActionButton>
       </div>
       <div className="flex gap-4">
         <InputBase
@@ -235,10 +307,20 @@ const TmpAdvancedPayments = () => {
         <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
           Cancel and punish
         </Button>
-        <Button onClick={handleCreateStakedExpenditure}>
-          Create staked expenditure
-        </Button>
         <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
+      </div>
+      <div className="flex gap-4">
+        <InputBase
+          value={releaseStage}
+          onChange={(e) => setReleaseStage(e.currentTarget.value)}
+          placeholder="Stage to release"
+        />
+        <Button
+          onClick={handleReleaseExpenditureStageMotion}
+          disabled={!expenditure}
+        >
+          Release Expenditure Stage Motion
+        </Button>
       </div>
     </div>
   );
