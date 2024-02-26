@@ -175,6 +175,9 @@ function* cancelDraftExpenditure({
       meta,
     );
   }
+  [cancelExpenditure, cancelAndReclaimStake, annotateCancelExpenditure].forEach(
+    (channel) => channel.channel.close(),
+  );
 
   return null;
 }

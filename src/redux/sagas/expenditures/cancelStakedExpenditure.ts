@@ -137,6 +137,9 @@ function* cancelStakedExpenditureAction({
       meta,
     );
   }
+  [cancelStakedExpenditure, annotateCancelStakedExpenditure].forEach(
+    (channel) => channel.channel.close(),
+  );
 
   return null;
 }
