@@ -737,7 +737,10 @@ enum ColonyActionType {
   """
   CANCEL_STAKED_EXPENDITURE_MOTION
   """
-  "
+  An action related to creating a motion to release an expenditure stage
+  """
+  SET_EXPENDITURE_STATE_MOTION
+  """
   An action related to the creation of safe transactions via Safe Control
   """
   MAKE_ARBITRARY_TRANSACTION
@@ -2449,6 +2452,11 @@ type ColonyMotion @model {
   """
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
+
+  """
+  Id of the expenditure stage payment to be released if the motion pass, if any
+  """
+  expenditureSlotId: Int
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
 }
