@@ -72,6 +72,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <EditColonyDetails action={action} />;
       case ExtendedColonyActionType.UpdateColonyObjective:
         return <UpgradeColonyObjective action={action} />;
+      // @TODO: Connect this to the reputation actions
+      /* case ColonyActionType.EmitDomainReputationReward:
+         case ColonyActionType.EmitDomainReputationPenalty:
+          return <ManageReputation action={action} />; */
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
