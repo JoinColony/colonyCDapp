@@ -11,6 +11,7 @@ export * from './metadataChangelog.ts';
 export * from './ipfs.ts';
 export * from './annotations.ts';
 export * from './proofs.ts';
+export * from './expenditureMulticallData.ts';
 export * from './expenditures.ts';
 
 // export * from './updateColonyDisplayCache';
