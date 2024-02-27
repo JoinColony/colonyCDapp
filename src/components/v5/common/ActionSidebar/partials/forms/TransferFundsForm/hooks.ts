@@ -33,7 +33,7 @@ export const useValidationSchema = () => {
           amount: object()
             .shape({
               amount: number()
-                .required(() => formatText({ id: 'validation.required' }))
+                .required(() => formatText({ id: 'errors.amount' }))
                 .transform((value) => toFinite(value))
                 .moreThan(0, () =>
                   formatText({ id: 'errors.amount.greaterThanZero' }),
@@ -51,7 +51,8 @@ export const useValidationSchema = () => {
                 ),
               tokenAddress: string().address().required(),
             })
-            .required(),
+            .required()
+            .defined(),
           createdIn: number().defined(),
           from: number().required(),
           to: number()

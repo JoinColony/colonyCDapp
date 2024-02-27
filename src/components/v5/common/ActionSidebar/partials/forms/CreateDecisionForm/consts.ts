@@ -1,6 +1,6 @@
 import { type InferType, object, string, number } from 'yup';
 
-import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
+import { MAX_ANNOTATION_LENGTH } from '~constants/index.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
 
 export const validationSchema = object()
@@ -9,7 +9,7 @@ export const validationSchema = object()
       .trim()
       .required(() => 'Please enter a title.'),
     createdIn: number().defined(),
-    description: string().max(MAX_OBJECTIVE_DESCRIPTION_LENGTH).notRequired(),
+    description: string().max(MAX_ANNOTATION_LENGTH).required(),
     decisionMethod: string().defined(),
     walletAddress: string().address().required(),
   })

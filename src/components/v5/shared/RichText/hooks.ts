@@ -84,8 +84,13 @@ export const useRichText = (
       },
       content: field.value,
       onUpdate: (props) => {
-        const json = props.editor.getHTML();
-        field.onChange(json);
+        const trimmedText = props.editor.getText().trim();
+        const html =
+          props.editor.isEmpty || trimmedText.length === 0
+            ? ''
+            : props.editor.getHTML();
+
+        field.onChange(html);
       },
     },
     [],
@@ -104,7 +109,13 @@ export const useRichText = (
 
   useEffect(() => {
     const handleUpdate = ({ editor: textEditor }: { editor }) => {
-      field.onChange(textEditor.getHTML());
+      const trimmedText = textEditor.getText().trim();
+      const html =
+        textEditor.isEmpty || trimmedText.length === 0
+          ? ''
+          : textEditor.getHTML();
+
+      field.onChange(html);
     };
 
     editor?.on('selectionUpdate', handleUpdate);
