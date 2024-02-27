@@ -88,6 +88,7 @@ export type ExpendituresActionTypes =
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
+        userAddress: Address;
       },
       MetaWithSetter<object>
     >
