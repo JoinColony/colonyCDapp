@@ -1,5 +1,5 @@
 import { ClientType } from '@colony/colony-js';
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { apolloClient } from '~apollo';
 import { GetColonyContributorsDocument } from '~gql';
@@ -10,7 +10,6 @@ import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
 import {
   createTransaction,
   createTransactionChannels,
-  getTxChannel,
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
@@ -33,7 +32,13 @@ function* removeVerifiedMembersAction({
   meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS>) {
-  let txChannel;
+  const batchKey = 'removeVerifiedMembers';
+
+  const { removeVerifiedMembers, annotateRemoveVerifiedMembers } =
+    yield createTransactionChannels(metaId, [
+      'removeVerifiedMembers',
+      'annotateRemoveVerifiedMembers',
+    ]);
 
   try {
     if (!colonyAddress) {
@@ -44,17 +49,6 @@ function* removeVerifiedMembersAction({
     if (!Array.isArray(members) || members.length === 0) {
       throw new Error('No members set for removeVerifiedMembers transaction');
     }
-
-    txChannel = yield call(getTxChannel, metaId);
-
-    // setup batch ids and channels
-    const batchKey = 'removeVerifiedMembers';
-
-    const { removeVerifiedMembers, annotateRemoveVerifiedMembers } =
-      yield createTransactionChannels(metaId, [
-        'removeVerifiedMembers',
-        'annotateRemoveVerifiedMembers',
-      ]);
 
     yield fork(createTransaction, removeVerifiedMembers.id, {
       context: ClientType.ColonyClient,
@@ -144,7 +138,9 @@ function* removeVerifiedMembersAction({
       meta,
     );
   } finally {
-    txChannel.close();
+    [removeVerifiedMembers, annotateRemoveVerifiedMembers].forEach((channel) =>
+      channel.channel.close(),
+    );
   }
   return null;
 }
