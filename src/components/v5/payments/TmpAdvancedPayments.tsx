@@ -46,7 +46,7 @@ const TmpAdvancedPayments = () => {
   const { stakeAmount = '0', stakedExpenditureAddress = '' } =
     useExpenditureStaking();
 
-  const { data } = useGetExpenditureQuery({
+  const { data, refetch } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(
         colony.colonyAddress,
@@ -246,6 +246,10 @@ const TmpAdvancedPayments = () => {
         ? extensionData.address
         : undefined;
 
+    if (!stagedExpenditureAddress) {
+      return;
+    }
+
     const payload: ReleaseExpenditureStageMotionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyName: colony.name,
@@ -315,6 +319,7 @@ const TmpAdvancedPayments = () => {
           onChange={(e) => setReleaseStage(e.currentTarget.value)}
           placeholder="Stage to release"
         />
+        <Button onClick={() => refetch()}>Refetch expenditure</Button>
         <Button
           onClick={handleReleaseExpenditureStageMotion}
           disabled={!expenditure}
