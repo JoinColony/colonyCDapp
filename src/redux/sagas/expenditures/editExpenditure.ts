@@ -1,7 +1,8 @@
-import { ClientType } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import { BigNumber, ethers } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
+import { type ColonyManager } from '~context';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 
@@ -17,7 +18,16 @@ import {
   initiateTransaction,
   takeFrom,
   uploadAnnotation,
+  getColonyManager,
 } from '../utils/index.ts';
+
+export type EditExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_EDIT>['payload'];
+
+function toB32(input) {
+  return ethers.utils.hexZeroPad(ethers.utils.hexlify(input), 32);
+}
+const EXPENDITURE_OWNER = toB32(ethers.BigNumber.from(0));
 
 function* editExpenditureAction({
   payload: {
@@ -26,9 +36,16 @@ function* editExpenditureAction({
     payouts,
     networkInverseFee,
     annotationMessage,
+    userAddress,
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
+  const colonyManager: ColonyManager = yield getColonyManager();
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
+
   const batchKey = 'createExpenditure';
 
   const payoutsWithSlotIds = payouts.map((payout, index) => ({
@@ -91,21 +108,50 @@ function* editExpenditureAction({
   );
 
   try {
-    yield fork(createTransaction, editExpenditure.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'setExpenditureValues',
-      identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 0,
-      },
-      params: getSetExpenditureValuesFunctionParams(
-        expenditure.nativeId,
-        resolvedPayouts,
-        networkInverseFee,
-      ),
-    });
+    if (expenditure.ownerAddress === userAddress) {
+      yield fork(createTransaction, editExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'setExpenditureValues',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
+        params: getSetExpenditureValuesFunctionParams(
+          expenditure.nativeId,
+          resolvedPayouts,
+          networkInverseFee,
+        ),
+      });
+    } else {
+      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditure.nativeDomainId,
+        ColonyRole.Administration,
+      );
+
+      yield fork(createTransaction, editExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'setExpenditureState',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
+        params: [
+          permissionDomainId,
+          childSkillIndex,
+          expenditure.nativeId,
+          EXPENDITURE_OWNER,
+          [],
+          [],
+          toB32(userAddress),
+        ],
+      });
+    }
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateEditExpenditure.id, {
@@ -155,6 +201,7 @@ function* editExpenditureAction({
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_EDIT_ERROR, error, meta);
   }
+
   [editExpenditure, annotateEditExpenditure].forEach((channel) =>
     channel.channel.close(),
   );
