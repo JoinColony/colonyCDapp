@@ -9,7 +9,12 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '../transactions/index.ts';
-import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils/index.ts';
 
 export type ClaimExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CLAIM>['payload'];
@@ -23,7 +28,12 @@ const getPayoutChannelId = (payout: PayoutWithSlotId) =>
 
 function* claimExpenditure({
   meta,
-  payload: { colonyAddress, nativeExpenditureId, claimableSlots },
+  payload: {
+    colonyAddress,
+    nativeExpenditureId,
+    claimableSlots,
+    annotationMessage,
+  },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
   const batchKey = 'claimExpenditure';
 
@@ -37,9 +47,11 @@ function* claimExpenditure({
         })) ?? [],
   );
 
-  const channels = yield createTransactionChannels(meta.id, [
-    ...payoutsWithSlotIds.map(getPayoutChannelId),
-  ]);
+  const { annotatePayoutChannel, ...channels } =
+    yield createTransactionChannels(meta.id, [
+      ...payoutsWithSlotIds.map(getPayoutChannelId),
+      'annotatePayoutChannel',
+    ]);
 
   try {
     // Create one claim transaction for each slot
@@ -59,15 +71,51 @@ function* claimExpenditure({
         }),
       ),
     );
+    if (annotationMessage) {
+      yield fork(createTransaction, annotatePayoutChannel.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: payoutsWithSlotIds.length,
+        },
+        ready: false,
+      });
+    }
 
     for (const payout of payoutsWithSlotIds) {
       const payoutChannelId = getPayoutChannelId(payout);
+
       yield takeFrom(
         channels[payoutChannelId].channel,
         ActionTypes.TRANSACTION_CREATED,
       );
+      if (annotationMessage) {
+        yield takeFrom(
+          annotatePayoutChannel.channel,
+          ActionTypes.TRANSACTION_CREATED,
+        );
+      }
+
+      const {
+        payload: { hash: txHash },
+      } = yield takeFrom(
+        channels[getPayoutChannelId(payout)].channel,
+        ActionTypes.TRANSACTION_HASH_RECEIVED,
+      );
+
       yield initiateTransaction({ id: channels[payoutChannelId].id });
       yield waitForTxResult(channels[payoutChannelId].channel);
+
+      if (annotationMessage) {
+        yield uploadAnnotation({
+          txChannel: annotatePayoutChannel,
+          message: annotationMessage,
+          txHash,
+        });
+      }
     }
 
     yield put<AllActions>({
@@ -82,6 +130,7 @@ function* claimExpenditure({
       const payoutChannelId = getPayoutChannelId(payout);
       channels[payoutChannelId].channel.close();
     }
+    annotatePayoutChannel.channel.close();
   }
 
   return null;

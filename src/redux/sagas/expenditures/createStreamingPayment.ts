@@ -4,7 +4,7 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
-import { call, fork, takeEvery } from 'redux-saga/effects';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -13,13 +13,14 @@ import {
   type CreateStreamingPaymentMetadataMutationVariables,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { type Action } from '~redux/types/index.ts';
+import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 
 import {
+  type ChannelDefinition,
   createTransaction,
-  getTxChannel,
+  createTransactionChannels,
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
@@ -27,6 +28,7 @@ import {
   initiateTransaction,
   putError,
   takeFrom,
+  uploadAnnotation,
 } from '../utils/index.ts';
 
 export type CreateStreamingPaymentPayload =
@@ -35,7 +37,7 @@ export type CreateStreamingPaymentPayload =
 // @TODO: Figure out a more appropriate way of getting this
 const TIMESTAMP_IN_FUTURE = 2_000_000_000;
 
-function* createStreamingPayment({
+function* createStreamingPaymentAction({
   payload: {
     colonyAddress,
     createdInDomain,
@@ -47,13 +49,21 @@ function* createStreamingPayment({
     interval,
     endCondition,
     limitAmount,
+    annotationMessage,
   },
   meta,
-  meta: { setTxHash },
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  const txChannel = yield getTxChannel(meta.id);
+  const batchKey = 'createStreamingPayment';
+
+  const {
+    createStreamingPayment,
+    annotateCreateStreamingPayment,
+  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
+    meta.id,
+    ['createStreamingPayment', 'annotateCreateStreamingPayment'],
+  );
 
   try {
     const colonyManager = yield getColonyManager();
@@ -85,10 +95,15 @@ function* createStreamingPayment({
         ColonyRole.Arbitration,
       );
 
-    yield fork(createTransaction, meta.id, {
+    yield fork(createTransaction, createStreamingPayment.id, {
       context: ClientType.StreamingPaymentsClient,
       methodName: 'create',
       identifier: colonyAddress,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
       params: [
         fundingPermissionDomainId,
         fundingChildSkillIndex,
@@ -104,15 +119,48 @@ function* createStreamingPayment({
       ],
     });
 
-    yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
-    yield initiateTransaction({ id: meta.id });
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateCreateStreamingPayment.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
+
+    yield takeFrom(
+      createStreamingPayment.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateCreateStreamingPayment.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
+    yield initiateTransaction({ id: createStreamingPayment.id });
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(txChannel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+    } = yield takeFrom(
+      createStreamingPayment.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
 
-    setTxHash?.(txHash);
+    yield waitForTxResult(createStreamingPayment.channel);
 
-    yield waitForTxResult(txChannel);
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateCreateStreamingPayment,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     const streamingPaymentId = yield call(
       streamingPaymentsClient.getNumStreamingPayments,
@@ -134,6 +182,12 @@ function* createStreamingPayment({
         },
       },
     });
+
+    yield put<AllActions>({
+      type: ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
+      payload: {},
+      meta,
+    });
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,
@@ -141,9 +195,16 @@ function* createStreamingPayment({
       meta,
     );
   }
+  [createStreamingPayment, annotateCreateStreamingPayment].forEach((channel) =>
+    channel.channel.close(),
+  );
+
   return null;
 }
 
 export default function* createStreamingPaymentSaga() {
-  yield takeEvery(ActionTypes.STREAMING_PAYMENT_CREATE, createStreamingPayment);
+  yield takeEvery(
+    ActionTypes.STREAMING_PAYMENT_CREATE,
+    createStreamingPaymentAction,
+  );
 }

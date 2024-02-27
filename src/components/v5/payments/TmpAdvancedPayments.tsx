@@ -95,17 +95,17 @@ const TmpAdvancedPayments = () => {
 
   const createExpenditurePayload: CreateExpenditurePayload = {
     payouts,
-    colony,
+    colonyAddress: colony.colonyAddress,
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
     networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
+    annotationMessage: 'expenditure annotation',
   };
 
   const handleLockExpenditure = async () => {
     const payload: LockExpenditurePayload = {
       colonyAddress: colony.colonyAddress,
-      colonyName: colony.name,
       nativeExpenditureId: Number(expenditureId),
     };
 
@@ -129,7 +129,6 @@ const TmpAdvancedPayments = () => {
   const handleFinalizeExpenditure = async () => {
     const finalizePayload: FinalizeExpenditurePayload = {
       colonyAddress: colony.colonyAddress,
-      colonyName: colony.name,
       nativeExpenditureId: Number(expenditureId),
     };
 
@@ -154,7 +153,7 @@ const TmpAdvancedPayments = () => {
 
     const payload: CreateStakedExpenditurePayload = {
       payouts,
-      colony,
+      colonyAddress: colony.colonyAddress,
       createdInDomain: rootDomain,
       fundFromDomainId: 1,
       stakeAmount,

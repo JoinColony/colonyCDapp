@@ -19,16 +19,16 @@ import {
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
+  uploadAnnotation,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
   Action<ActionTypes.STAKED_EXPENDITURE_CREATE>['payload'];
 
 function* createStakedExpenditure({
-  meta: { navigate, setTxHash },
   meta,
   payload: {
-    colony: { name: colonyName, colonyAddress },
+    colonyAddress,
     payouts,
     createdInDomain,
     fundFromDomainId,
@@ -38,6 +38,7 @@ function* createStakedExpenditure({
     stages,
     networkInverseFee,
     decisionMethod,
+    annotationMessage,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -58,6 +59,7 @@ function* createStakedExpenditure({
     makeExpenditure,
     setExpenditureValues,
     setExpenditureStaged,
+    annotateMakeStagedExpenditure,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
     [
@@ -65,6 +67,7 @@ function* createStakedExpenditure({
       'makeExpenditure',
       'setExpenditureValues',
       'setExpenditureStaged',
+      'annotateMakeStagedExpenditure',
     ],
   );
 
@@ -120,6 +123,20 @@ function* createStakedExpenditure({
       });
     }
 
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateMakeStagedExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: isStaged ? 4 : 3,
+        },
+        ready: false,
+      });
+    }
+
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction({ id: approveStake.id });
     yield waitForTxResult(approveStake.channel);
@@ -156,6 +173,13 @@ function* createStakedExpenditure({
         siblings,
       ]),
     );
+
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateMakeStagedExpenditure.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
     yield initiateTransaction({ id: makeExpenditure.id });
     const {
       payload: { hash: txHash },
@@ -164,7 +188,6 @@ function* createStakedExpenditure({
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
 
-    setTxHash?.(txHash);
     yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
@@ -198,6 +221,14 @@ function* createStakedExpenditure({
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMakeStagedExpenditure,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     yield saveExpenditureMetadata({
       colonyAddress,
       expenditureId,
@@ -216,12 +247,6 @@ function* createStakedExpenditure({
     // @TODO: Remove during advanced payments UI wiring
     // eslint-disable-next-line no-console
     console.log('Created expenditure ID:', expenditureId.toString());
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {
@@ -230,6 +255,7 @@ function* createStakedExpenditure({
       makeExpenditure,
       setExpenditureValues,
       setExpenditureStaged,
+      annotateMakeStagedExpenditure,
     ].forEach(({ channel }) => channel.close());
   }
   return null;

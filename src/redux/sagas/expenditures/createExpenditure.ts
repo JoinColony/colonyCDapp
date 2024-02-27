@@ -18,16 +18,16 @@ import {
   getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
+  uploadAnnotation,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CREATE>['payload'];
 
 function* createExpenditure({
-  meta: { navigate, setTxHash },
   meta,
   payload: {
-    colony: { name: colonyName, colonyAddress },
+    colonyAddress,
     payouts,
     createdInDomain,
     fundFromDomainId,
@@ -35,6 +35,7 @@ function* createExpenditure({
     stages,
     networkInverseFee,
     decisionMethod,
+    annotationMessage,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -54,9 +55,15 @@ function* createExpenditure({
     makeExpenditure,
     setExpenditureValues,
     setExpenditureStaged,
+    annotateMakeExpenditure,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['makeExpenditure', 'setExpenditureValues', 'setExpenditureStaged'],
+    [
+      'makeExpenditure',
+      'setExpenditureValues',
+      'setExpenditureStaged',
+      'annotateMakeExpenditure',
+    ],
   );
 
   try {
@@ -106,7 +113,28 @@ function* createExpenditure({
       });
     }
 
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateMakeExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: isStaged ? 3 : 2,
+        },
+        ready: false,
+      });
+    }
+
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateMakeExpenditure.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
     yield initiateTransaction({ id: makeExpenditure.id });
     const {
       payload: { hash: txHash },
@@ -114,8 +142,6 @@ function* createExpenditure({
       makeExpenditure.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
-
-    setTxHash?.(txHash);
 
     yield waitForTxResult(makeExpenditure.channel);
 
@@ -150,6 +176,14 @@ function* createExpenditure({
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMakeExpenditure,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     yield saveExpenditureMetadata({
       colonyAddress,
       expenditureId,
@@ -167,19 +201,16 @@ function* createExpenditure({
     // @TODO: Remove during advanced payments UI wiring
     // eslint-disable-next-line no-console
     console.log('Created expenditure ID:', expenditureId.toString());
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [makeExpenditure, setExpenditureValues, setExpenditureStaged].forEach(
-    (channel) => channel.channel.close(),
-  );
+  [
+    makeExpenditure,
+    setExpenditureValues,
+    setExpenditureStaged,
+    annotateMakeExpenditure,
+  ].forEach((channel) => channel.channel.close());
 
   return null;
 }
