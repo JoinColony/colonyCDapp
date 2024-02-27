@@ -7,7 +7,7 @@
 }
 
 .searchButton {
-  @apply z-[1] text-base-white sm:text-gray-500 flex items-center transition-all duration-normal justify-center h-full absolute top-0 right-0 px-4 bg-blue-400 rounded-lg;
+  @apply z-[1] text-base-white sm:text-gray-500 flex items-center transition-all duration-normal justify-center h-full absolute top-0 right-0 px-3.5 bg-blue-400 rounded-lg;
 }
 
 .icon {
@@ -15,5 +15,5 @@
 }
 
 .clearSearchButton {
-  @apply z-[1] absolute top-0 right-0 flex h-[2.25rem] w-[2.25rem] justify-center items-center;
+  @apply z-[1] absolute top-0 right-0 flex h-[2.25rem] w-[2.375rem] justify-center items-center text-gray-900;
 }

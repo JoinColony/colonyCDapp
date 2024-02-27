@@ -94,7 +94,7 @@ const SearchInput: FC<SearchInputProps> = ({
         <button
           className={clsx(
             styles.clearSearchButton,
-            isMobile && value && '!right-[3.25rem]',
+            isMobile && value && '!right-[2.875rem]',
           )}
           onClick={handleClearSearchInput}
           type="button"

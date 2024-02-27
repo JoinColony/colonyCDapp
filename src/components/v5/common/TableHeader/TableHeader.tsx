@@ -10,8 +10,8 @@ const TableHeader = ({
   children,
 }: PropsWithChildren<TableHeaderProps>) => (
   <div className="pb-3.5">
-    <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col">
-      <div className="flex items-center">
+    <div className="flex sm:justify-between sm:items-start sm:flex-row flex-col">
+      <div className="flex items-center flex-shrink-0 sm:min-h-[2.125rem]">
         <h4 className="heading-5 mr-3">{title}</h4>
         {additionalHeaderContent}
       </div>

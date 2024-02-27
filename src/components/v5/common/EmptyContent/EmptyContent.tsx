@@ -48,8 +48,10 @@ const EmptyContent: FC<EmptyContentProps> = ({
             <Icon className="fill-gray-600" size={20} />
           </div>
         )}
-        {titleText && <h5 className="text-1 mt-3">{titleText}</h5>}
-        <p className="mt-3 text-sm text-gray-600">{descriptionText}</p>
+        {titleText && (
+          <h5 className="text-1 mt-3 text-gray-900">{titleText}</h5>
+        )}
+        <p className="mt-2 sm:mt-3 text-sm text-gray-600">{descriptionText}</p>
         {onClick && (
           <Button
             mode="primaryOutline"
