@@ -17,6 +17,7 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
 import WidgetBox from '~v5/common/WidgetBox/index.ts';
 import EmptyWidgetState from '~v5/common/WidgetBox/partials/index.ts';
 import MessageNumber from '~v5/shared/MessageNumber/index.ts';
+import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
 import TitleWithNumber from '~v5/shared/TitleWithNumber/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.Agreements';
@@ -73,9 +74,13 @@ const Agreements = () => {
                 </span>
                 <MessageNumber message={1} />
               </div>
-              <p className="text-sm text-gray-600 line-clamp-3">
-                {newestAgreement.decisionData?.description}
-              </p>
+              {newestAgreement.decisionData?.description && (
+                <RichTextDisplay
+                  content={newestAgreement.decisionData?.description}
+                  className="!text-sm !text-gray-600 line-clamp-3"
+                  shouldFormat={false}
+                />
+              )}
             </div>
           )}
           {!newestAgreement && !loading && (
