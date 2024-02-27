@@ -8,6 +8,7 @@ import {
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO, APP_URL } from '~constants';
+import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createGroupTransaction,
@@ -50,6 +51,12 @@ function* releaseExpenditureStageMotion({
   );
 
   try {
+    if (expenditure.status !== ExpenditureStatus.Finalized) {
+      throw new Error(
+        'Expenditure must be finalized in order to release expenditure stage',
+      );
+    }
+
     const votingReputationClient: AnyVotingReputationClient = yield call(
       [colonyManager, colonyManager.getClient],
       ClientType.VotingReputationClient,

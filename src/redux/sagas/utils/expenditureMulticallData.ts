@@ -22,11 +22,6 @@ export const getMulticallDataForStageRelease = (
 ) => {
   const keys = [toB32(slotId), EXPENDITURESLOT_CLAIMDELAY];
 
-  // @TODO: Confirm if an isSupportColonyClient check is needed anymore as AnyColonyClient only includes v10 onwards and colony-js does not export V1 - 9
-  // if (!isSupportedColonyClient(colonyClient)) {
-  //   throw new Error('Colony client not supported');
-  // }
-
   const encodedMulticallData: string[] = [];
 
   encodedMulticallData.push(
