@@ -4,6 +4,7 @@ import ExtensionItem from '~common/Extensions/ExtensionItem/index.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
 const displayName = 'frame.Extensions.pages.ExtensionsPage';
@@ -47,7 +48,11 @@ const ExtensionsPage: FC = () => {
                 <ExtensionItem
                   title={extension.name}
                   description={extension.descriptionShort}
-                  version={extension.availableVersion}
+                  version={
+                    isInstalledExtensionData(extension)
+                      ? extension.currentVersion
+                      : extension.availableVersion
+                  }
                   icon={extension.icon}
                   extensionId={extension.extensionId}
                 />

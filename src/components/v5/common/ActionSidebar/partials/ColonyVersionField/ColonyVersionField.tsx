@@ -2,6 +2,7 @@ import { Browsers } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
+import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
@@ -11,7 +12,7 @@ const ColonyVersionField: FC = () => {
   const {
     colony: { version: currentVersion },
   } = useColonyContext();
-  const nextVersion = currentVersion + 1;
+  const { colonyContractVersion: newVersion } = useColonyContractVersion();
 
   return (
     <>
@@ -39,7 +40,7 @@ const ColonyVersionField: FC = () => {
           },
         }}
       >
-        <span className="text-md">{nextVersion}</span>
+        <span className="text-md">{newVersion}</span>
       </ActionFormRow>
     </>
   );

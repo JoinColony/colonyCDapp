@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { ColonyActionType } from '~gql';
+import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 
@@ -13,6 +14,7 @@ export const UpgradeColonyDescription = () => {
   const {
     colony: { version },
   } = useColonyContext();
+  const { colonyContractVersion: newVersion } = useColonyContractVersion();
 
   return (
     <FormattedMessage
@@ -20,7 +22,7 @@ export const UpgradeColonyDescription = () => {
       values={{
         actionType: ColonyActionType.VersionUpgrade,
         version,
-        newVersion: version + 1,
+        newVersion,
         initiator: <CurrentUser />,
       }}
     />
