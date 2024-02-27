@@ -168,7 +168,6 @@ const TmpAdvancedPayments = () => {
       stakedExpenditureAddress,
       networkInverseFee,
       decisionMethod: ExpenditureDecisionMethod.Permissions,
-      tokenDecimals: tokenDecimalAmount,
     };
 
     await createStakedExpenditure(payload);
