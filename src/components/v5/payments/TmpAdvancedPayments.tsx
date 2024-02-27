@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type Expenditure, useGetExpenditureQuery } from '~gql';
+import { useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
@@ -12,6 +12,7 @@ import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
+import { type EditExpenditurePayload } from '~redux/sagas/expenditures/editExpenditure.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
@@ -93,6 +94,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
     error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
     success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+  });
+  const editExpenditure = useAsyncFunction({
+    submit: ActionTypes.EXPENDITURE_EDIT,
+    error: ActionTypes.EXPENDITURE_EDIT_ERROR,
+    success: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
   });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
@@ -226,11 +232,7 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleReleaseExpenditureStageMotion = async () => {
-    if (!expenditure) {
-      return;
-    }
-
-    if (!releaseStage) {
+    if (!expenditure || !releaseStage) {
       return;
     }
 
@@ -246,7 +248,7 @@ const TmpAdvancedPayments = () => {
     const payload: ReleaseExpenditureStageMotionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyName: colony.name,
-      expenditure: expenditure as Expenditure,
+      expenditure,
       slotId: Number(releaseStage),
       motionDomainId: expenditure.nativeDomainId,
       tokenAddresses: [colony.nativeToken.tokenAddress],
@@ -254,6 +256,22 @@ const TmpAdvancedPayments = () => {
     };
 
     await releaseExpenditureStageMotion(payload);
+  };
+
+  const handleEdit = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: EditExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      networkInverseFee,
+      payouts: [],
+      userAddress: user?.walletAddress ?? '',
+    };
+
+    await editExpenditure(payload);
   };
 
   return (
@@ -293,17 +311,18 @@ const TmpAdvancedPayments = () => {
           onChange={(e) => setExpenditureId(e.currentTarget.value)}
           placeholder="Expenditure ID"
         />
-        <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
-        <Button onClick={handleFundExpenditure} disabled={!expenditure}>
-          Fund expenditure
-        </Button>
-        <Button onClick={handleFinalizeExpenditure}>
-          Finalize expenditure
-        </Button>
-        <Button onClick={handleReclaimStake}>Reclaim stake</Button>
-        <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
-          Cancel and punish
-        </Button>
+        <div className="flex flex-wrap gap-4">
+          <Button onClick={handleLockExpenditure}>Lock</Button>
+          <Button onClick={handleFundExpenditure} disabled={!expenditure}>
+            Fund
+          </Button>
+          <Button onClick={handleFinalizeExpenditure}>Finalize</Button>
+          <Button onClick={handleReclaimStake}>Reclaim stake</Button>
+          <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
+            Cancel and punish
+          </Button>
+          <Button onClick={handleEdit}>Edit</Button>
+        </div>
       </div>
       <div className="flex gap-4">
         <InputBase

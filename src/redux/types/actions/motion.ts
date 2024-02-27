@@ -2,8 +2,9 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type Expenditure, type ExternalLink } from '~gql';
+import { type ExternalLink } from '~gql';
 import {
+  type Expenditure,
   type Colony,
   type ColonyObjective,
   type Domain,
