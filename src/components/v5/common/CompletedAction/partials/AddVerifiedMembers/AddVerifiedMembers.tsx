@@ -1,12 +1,9 @@
-import { FilePlus } from '@phosphor-icons/react';
 import React from 'react';
 
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -14,6 +11,7 @@ import {
 } from '../Blocks/index.ts';
 import AddRemoveRow from '../rows/AddRemove.tsx';
 import {
+  ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
@@ -65,26 +63,7 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
         )}
       </ActionSubtitle>
       <ActionDataGrid>
-        {/* @NOTE UI doesn't separate add and remove members, so we just smash in Manage here */}
-        <div>
-          <Tooltip
-            placement={DEFAULT_TOOLTIP_POSITION}
-            tooltipContent={formatText({
-              id: 'actionSidebar.tooltip.actionType',
-            })}
-          >
-            <div className="flex items-center gap-2">
-              <FilePlus size={ICON_SIZE} />
-              <span>{formatText({ id: 'actionSidebar.actionType' })}</span>
-            </div>
-          </Tooltip>
-        </div>
-        <div>
-          {formatText({
-            id: 'actions.manageVerifiedMembers',
-          })}
-        </div>
-
+        <ActionTypeRow actionType={action.type} />
         <AddRemoveRow actionType={action.type} />
         <DecisionMethodRow isMotion={action.isMotion || false} />
 
