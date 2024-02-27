@@ -42,8 +42,8 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
   } = useGetColonyAction(transactionId);
   const { decisionData, motionData } = action || {};
   const {
-    createdAt = '',
-    description = '',
+    createdAt,
+    description,
     title,
     motionDomainId,
     walletAddress = '',
@@ -102,11 +102,13 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
             }}
           >
             <h5 className="text-1 mb-2 truncate">{title}</h5>
-            <RichTextDisplay
-              content={description}
-              shouldFormat={false}
-              className="!text-sm !text-gray-600 line-clamp-4"
-            />
+            {description && (
+              <RichTextDisplay
+                content={description}
+                shouldFormat={false}
+                className="!text-sm !text-gray-600 line-clamp-4"
+              />
+            )}
           </button>
           <div className="flex items-center justify-between gap-2 pt-4 mt-auto border-t border-gray-200">
             <UserPopover
@@ -151,9 +153,11 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
                   color={currentTeam.metadata?.color}
                 />
               )}
-              <p className="text-sm text-gray-600">
-                {format(new Date(createdAt), 'd MMMM yyyy')}
-              </p>
+              {createdAt && (
+                <p className="text-sm text-gray-600">
+                  {format(new Date(createdAt), 'd MMMM yyyy')}
+                </p>
+              )}
               <MeatBallMenu
                 withVerticalIcon
                 contentWrapperClassName={clsx('sm:min-w-[17.375rem]', {

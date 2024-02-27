@@ -82,41 +82,7 @@ const AgreementsPage: FC = () => {
           {formatText({ id: 'agreementsPage.createAgreement' })}
         </Button>
       </div>
-      {agreements && agreements?.length > 0 && (
-        <ul className="grid auto-rows-fr sm:auto-rows-auto grid-cols-1 sm:grid-cols-2 gap-6">
-          {agreements.map(({ transactionHash }) => (
-            <motion.li
-              initial={{ opacity: 0 }}
-              whileInView={{
-                opacity: 1,
-                transition: {
-                  duration: 0.75,
-                },
-              }}
-              viewport={{ once: true }}
-              key={transactionHash}
-              className="w-full"
-            >
-              <AgreementCard transactionId={transactionHash} />
-            </motion.li>
-          ))}
-        </ul>
-      )}
-      {agreements?.length === 0 && !loading && (
-        <EmptyContent
-          description={{ id: 'agreementsPage.empty.description' }}
-          className="px-5 py-[5.75rem] border-dashed"
-          buttonText={{ id: 'agreementsPage.empty.button' }}
-          onClick={() => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
-            });
-          }}
-          buttonIcon={FilePlus}
-          withBorder
-        />
-      )}
-      {loading && (
+      {loading ? (
         <ul className="grid sm:grid-cols-2 gap-6">
           {[...Array(4).keys()].map((key) => (
             <li
@@ -127,6 +93,42 @@ const AgreementsPage: FC = () => {
             </li>
           ))}
         </ul>
+      ) : (
+        <>
+          {agreements?.length ? (
+            <ul className="grid auto-rows-fr sm:auto-rows-auto grid-cols-1 sm:grid-cols-2 gap-6">
+              {agreements.map(({ transactionHash }) => (
+                <motion.li
+                  initial={{ opacity: 0 }}
+                  whileInView={{
+                    opacity: 1,
+                    transition: {
+                      duration: 0.75,
+                    },
+                  }}
+                  viewport={{ once: true }}
+                  key={transactionHash}
+                  className="w-full"
+                >
+                  <AgreementCard transactionId={transactionHash} />
+                </motion.li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyContent
+              description={{ id: 'agreementsPage.empty.description' }}
+              className="px-5 py-[5.75rem] border-dashed"
+              buttonText={{ id: 'agreementsPage.empty.button' }}
+              onClick={() => {
+                toggleActionSidebarOn({
+                  [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+                });
+              }}
+              buttonIcon={FilePlus}
+              withBorder
+            />
+          )}
+        </>
       )}
     </div>
   );
