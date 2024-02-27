@@ -1,4 +1,5 @@
 import { type Colony, type User } from '~types/graphql.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 
 import { type EnterRecoveryModeFormValues } from './consts.ts';
 
@@ -10,6 +11,8 @@ export const getRecoveryModePayload = (
   colonyName: colony.name,
   colonyAddress: colony.colonyAddress,
   walletAddress: user?.walletAddress,
-  annotationMessage: values.description,
+  annotationMessage: values.description
+    ? sanitizeHTML(values.description)
+    : undefined,
   customActionTitle: '',
 });

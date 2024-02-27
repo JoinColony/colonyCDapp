@@ -1,5 +1,6 @@
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type Colony } from '~types/graphql.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
 import { type ManageTokensFormValues } from './consts.ts';
@@ -30,7 +31,9 @@ export const getManageTokensPayload = (
   return {
     colony,
     tokenAddresses,
-    annotationMessage,
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
     customActionTitle: title,
   };
 };

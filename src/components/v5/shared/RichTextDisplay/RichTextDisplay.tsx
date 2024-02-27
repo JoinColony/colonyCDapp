@@ -1,6 +1,7 @@
 import clsx from 'clsx';
-import DOMPurify from 'dompurify';
 import React from 'react';
+
+import { sanitizeHTML, stripHTML } from '~utils/strings/index.ts';
 
 import styles from './RichTextDisplay.module.css';
 
@@ -20,8 +21,8 @@ const RichTextDisplay = ({
   shouldFormat = true,
 }: RichTextDisplayProps) => {
   const cleanContent = shouldFormat
-    ? DOMPurify.sanitize(content)
-    : DOMPurify.sanitize(content, { ALLOWED_TAGS: [], KEEP_CONTENT: true });
+    ? sanitizeHTML(content)
+    : stripHTML(content);
 
   return (
     <div

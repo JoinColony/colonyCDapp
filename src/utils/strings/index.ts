@@ -1,4 +1,5 @@
 // import { addressNormalizer, addressValidator } from '@purser/core';
+import DOMPurify from 'dompurify';
 import { customAlphabet, urlAlphabet } from 'nanoid';
 
 import { type Address } from '~types/index.ts';
@@ -175,3 +176,8 @@ export const ensureHexPrefix = (value: string): string => {
  * Given a bool, returns 'Yes' or 'No'
  */
 export const boolToYesNo = (value: boolean) => (value ? 'Yes' : 'No');
+
+export const sanitizeHTML = (content: string) => DOMPurify.sanitize(content);
+
+export const stripHTML = (content: string) =>
+  DOMPurify.sanitize(content, { ALLOWED_TAGS: [], KEEP_CONTENT: true });

@@ -3,6 +3,7 @@ import moveDecimal from 'move-decimal-point';
 
 import { type Colony } from '~types/graphql.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { type TransferFundsFormValues } from './hooks.ts';
@@ -36,7 +37,9 @@ export const getTransferFundsPayload = (
     fromDomain,
     toDomain,
     amount,
-    annotationMessage,
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
     customActionTitle: title,
   };
 };

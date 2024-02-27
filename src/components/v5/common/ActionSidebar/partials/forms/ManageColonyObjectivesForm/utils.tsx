@@ -1,4 +1,5 @@
 import { type Colony } from '~types/graphql.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 
 import { type ManageColonyObjectivesFormValues } from './consts.ts';
 
@@ -13,5 +14,7 @@ export const getManageColonyObjectivesPayload = (
     progress: values.colonyObjectiveProgress,
   },
   motionDomainId: values.createdIn,
-  annotationMessage: values.description,
+  annotationMessage: values.description
+    ? sanitizeHTML(values.description)
+    : undefined,
 });

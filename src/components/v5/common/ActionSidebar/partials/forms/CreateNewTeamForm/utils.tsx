@@ -1,4 +1,5 @@
 import { type Colony } from '~types/graphql.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 
 import { type CreateNewTeamFormValues } from './consts.ts';
 
@@ -13,5 +14,7 @@ export const getCreateNewTeamPayload = (
   colonyName: colony.name,
   customActionTitle: values.title,
   motionDomainId: values.createdIn,
-  annotationMessage: values.description,
+  annotationMessage: values.description
+    ? sanitizeHTML(values.description)
+    : undefined,
 });
