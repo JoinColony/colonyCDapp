@@ -1081,6 +1081,7 @@
     "actionSidebar.fields.error": "Oops! Something went wrong. Please check highlighted fields and try again.",
     "actionSidebar.tooltip.actionType": "Identifies the type of action.",
     "actionSidebar.tooltip.decisionMethod": "Mechanism behind the decision-making process.",
+    "actionSidebar.tooltip.manageMembers": "Whether members are being added or removed.",
     "actionSidebar.tooltip.createdIn": "Team responsible for decision-making and action execution.",
     "actionSidebar.tooltip.description": "Rationale and context behind the action.",
     "actionSidebar.tooltip.simplePayment.from": "Team source of the funds.",

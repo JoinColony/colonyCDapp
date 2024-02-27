@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { ColonyActionType } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
-import { ICON_SIZE } from '../../consts.ts';
+import ActionData from './ActionData.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.AddRemoveRow';
 
@@ -31,22 +31,18 @@ const MSG = defineMessages({
 
 const AddRemoveRow = ({ actionType }: AddRemoveRowProps) => {
   return (
-    <>
-      <div>
-        <div className="flex items-center gap-2">
-          <PlusMinus size={ICON_SIZE} />
-          <span>{formatText(MSG.addOrRemoveMembers)}</span>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-1">
-        {formatText(
-          actionType === ColonyActionType.AddVerifiedMembers
-            ? MSG.addMembers
-            : MSG.removeMembers,
-        )}
-      </div>
-    </>
+    <ActionData
+      rowLabel={formatText(MSG.addOrRemoveMembers)}
+      RowIcon={PlusMinus}
+      tooltipContent={formatText({
+        id: 'actionSidebar.tooltip.manageMembers',
+      })}
+      rowContent={formatText(
+        actionType === ColonyActionType.AddVerifiedMembers
+          ? MSG.addMembers
+          : MSG.removeMembers,
+      )}
+    />
   );
 };
 
