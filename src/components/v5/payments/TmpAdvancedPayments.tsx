@@ -107,6 +107,7 @@ const TmpAdvancedPayments = () => {
     fundFromDomainId: 1,
     networkInverseFee,
     decisionMethod: ExpenditureDecisionMethod.Permissions,
+    annotationMessage: 'expenditure annotation',
   };
 
   const handleLockExpenditure = async () => {
