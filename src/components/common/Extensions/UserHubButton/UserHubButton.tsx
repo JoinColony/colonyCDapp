@@ -40,9 +40,6 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   const [prevGroupStatus, setPrevGroupStatus] = useState<
     TransactionStatus | undefined
   >();
-  const [groupStatus, setGroupStatus] = useState<
-    TransactionStatus | undefined
-  >();
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
@@ -95,6 +92,10 @@ const UserHubButton: FC<UserHubButtonProps> = ({
     toggleOff();
   };
 
+  const groupStatus = getGroupStatus(
+    findNewestGroup(transactionAndMessageGroups),
+  );
+
   useEffect(() => {
     if (
       groupStatus === TransactionStatus.Failed &&
@@ -111,14 +112,6 @@ const UserHubButton: FC<UserHubButtonProps> = ({
     }
   }, [groupStatus, prevGroupStatus]);
 
-  useEffect(() => {
-    if (transactionAndMessageGroups.length > 0) {
-      setGroupStatus(
-        getGroupStatus(findNewestGroup(transactionAndMessageGroups)),
-      );
-    }
-  }, [transactionAndMessageGroups]);
-
   return (
     <div ref={ref}>
       <Button
@@ -128,7 +121,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
         ref={setTriggerRef}
         className={clsx(
           {
-            '!border-blue-400': visible,
+            '!border-blue-400': visible || isUserHubOpen,
           },
           'md:hover:!border-blue-400',
         )}
