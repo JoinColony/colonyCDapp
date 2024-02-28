@@ -13,9 +13,14 @@ export const getGroupStatus = (
 
   if (txGroup?.some((tx) => tx.status === TransactionStatus.Pending))
     return TransactionStatus.Pending;
+
   if (txGroup?.every((tx) => tx.status === TransactionStatus.Succeeded))
     return TransactionStatus.Succeeded;
-  return TransactionStatus.Ready;
+
+  if (txGroup?.some((tx) => tx.status === TransactionStatus.Ready))
+    return TransactionStatus.Ready;
+
+  return null;
 };
 
 export const findNewestGroup = (

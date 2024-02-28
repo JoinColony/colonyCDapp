@@ -107,7 +107,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   }, [groupStatus, prevGroupStatus]);
 
   useEffect(() => {
-    if (groupStatus !== prevGroupStatus) {
+    if (groupStatus && groupStatus !== prevGroupStatus) {
       setPrevGroupStatus(groupStatus);
     }
   }, [groupStatus, prevGroupStatus]);
