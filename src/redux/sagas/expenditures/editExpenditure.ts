@@ -1,4 +1,9 @@
-import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import {
+  type AnyColonyClient,
+  ClientType,
+  ColonyRole,
+  getPermissionProofs,
+} from '@colony/colony-js';
 import { BigNumber, ethers } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
@@ -19,6 +24,7 @@ import {
   takeFrom,
   uploadAnnotation,
   getColonyManager,
+  getPayoutAmount,
 } from '../utils/index.ts';
 
 export type EditExpenditurePayload =
@@ -27,7 +33,6 @@ export type EditExpenditurePayload =
 function toB32(input) {
   return ethers.utils.hexZeroPad(ethers.utils.hexlify(input), 32);
 }
-const EXPENDITURE_OWNER = toB32(ethers.BigNumber.from(0));
 
 function* editExpenditureAction({
   payload: {
@@ -41,17 +46,12 @@ function* editExpenditureAction({
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
   const colonyManager: ColonyManager = yield getColonyManager();
-  const colonyClient = yield colonyManager.getClient(
+  const colonyClient: AnyColonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
   );
 
   const batchKey = 'createExpenditure';
-
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
 
   /**
    * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
@@ -59,13 +59,11 @@ function* editExpenditureAction({
    */
   const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
 
-  payoutsWithSlotIds.forEach((payout) => {
+  payouts.forEach((payout, index) => {
     // Add payout as specified in the form
     resolvedPayouts.push(payout);
 
-    const existingSlot = expenditure.slots.find(
-      (slot) => slot.id === payout.slotId,
-    );
+    const existingSlot = expenditure.slots.find((slot) => slot.id === index);
 
     // Set the amounts for any existing payouts in different tokens to 0
     resolvedPayouts.push(
@@ -76,7 +74,7 @@ function* editExpenditureAction({
             BigNumber.from(slotPayout.amount).gt(0),
         )
         .map((slotPayout) => ({
-          slotId: payout.slotId,
+          slotId: index,
           recipientAddress: payout.recipientAddress,
           tokenAddress: slotPayout.tokenAddress,
           amount: '0',
@@ -132,24 +130,69 @@ function* editExpenditureAction({
         ColonyRole.Administration,
       );
 
+      const multicallData: string[] = [];
+      resolvedPayouts.forEach((payout) => {
+        const existingSlot = expenditure.slots.find(
+          (slot) => slot.id === payout.slotId,
+        );
+
+        const hasRecipientChanged =
+          existingSlot?.recipientAddress !== payout.recipientAddress;
+        if (hasRecipientChanged) {
+          multicallData.push(
+            colonyClient.interface.encodeFunctionData('setExpenditureState', [
+              permissionDomainId,
+              childSkillIndex,
+              expenditure.nativeId,
+              toB32(BigNumber.from(26)),
+              [false, true],
+              [toB32(payout.slotId), toB32(BigNumber.from(0))],
+              toB32(payout.recipientAddress),
+            ]),
+          );
+        }
+
+        const hasClaimDelayChanged =
+          existingSlot?.claimDelay !== payout.claimDelay;
+        if (hasClaimDelayChanged) {
+          multicallData.push(
+            colonyClient.interface.encodeFunctionData('setExpenditureState', [
+              permissionDomainId,
+              childSkillIndex,
+              expenditure.nativeId,
+              toB32(BigNumber.from(26)),
+              [false, true],
+              [toB32(payout.slotId), toB32(BigNumber.from(1))],
+              toB32(payout.claimDelay),
+            ]),
+          );
+        }
+
+        multicallData.push(
+          colonyClient.interface.encodeFunctionData(
+            'setExpenditurePayout(uint256,uint256,uint256,uint256,address,uint256)',
+            [
+              permissionDomainId,
+              childSkillIndex,
+              expenditure.nativeId,
+              payout.slotId ?? '',
+              payout.tokenAddress,
+              getPayoutAmount(payout, networkInverseFee),
+            ],
+          ),
+        );
+      });
+
       yield fork(createTransaction, editExpenditure.id, {
         context: ClientType.ColonyClient,
-        methodName: 'setExpenditureState',
+        methodName: 'multicall',
         identifier: colonyAddress,
         group: {
           key: batchKey,
           id: meta.id,
           index: 0,
         },
-        params: [
-          permissionDomainId,
-          childSkillIndex,
-          expenditure.nativeId,
-          EXPENDITURE_OWNER,
-          [],
-          [],
-          toB32(userAddress),
-        ],
+        params: [multicallData],
       });
     }
 
