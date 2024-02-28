@@ -182,6 +182,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       className={clsx(
+                        header.column.columnDef.headCellClassName,
                         'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.125rem] empty:p-0 py-2.5 border-b border-b-gray-200',
                         {
                           'cursor-pointer':
@@ -220,7 +221,7 @@ const Table = <T,>({
                               'rotate-0':
                                 header.column.getIsSorted() === 'desc' &&
                                 !shouldShowEmptyContent,
-                              'opacity-0':
+                              hidden:
                                 header.column.getIsSorted() === false ||
                                 shouldShowEmptyContent,
                             },

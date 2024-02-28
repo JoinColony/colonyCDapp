@@ -1,8 +1,13 @@
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useMobile } from '~hooks';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import CurrencyConversion from '~shared/CurrencyConversion/index.ts';
-import Numeral from '~shared/Numeral/index.ts';
+import Numeral, { getFormattedNumeralValue } from '~shared/Numeral/index.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   getBalanceForTokenAndDomain,
@@ -15,22 +20,69 @@ import TokenAvatar from '../TokenAvatar/index.ts';
 
 import { type BalanceTableFieldModel } from './types.ts';
 
+export const useBalancesData = (): BalanceTableFieldModel[] => {
+  const {
+    colony: { tokens: colonyTokens, balances },
+  } = useColonyContext();
+  const selectedDomain = useGetSelectedDomainFilter();
+
+  const tokensData = useMemo(
+    () =>
+      colonyTokens?.items.map((item) => {
+        const currentTokenBalance =
+          getBalanceForTokenAndDomain(
+            balances,
+            item?.token?.tokenAddress || '',
+            selectedDomain ? Number(selectedDomain.nativeId) : undefined,
+          ) || 0;
+        const decimals = getTokenDecimalsWithFallback(item?.token.decimals);
+        const convertedValue = convertToDecimal(
+          currentTokenBalance,
+          decimals || 0,
+        );
+
+        const formattedValue = getFormattedNumeralValue(
+          convertedValue,
+          currentTokenBalance,
+        );
+
+        return {
+          ...item,
+          balance: typeof formattedValue === 'string' ? formattedValue : '',
+        };
+      }),
+    [colonyTokens, balances, selectedDomain],
+  );
+
+  const sortedTokens =
+    useMemo(
+      () =>
+        tokensData?.sort((a, b) => {
+          if (!a.balance || !b.balance) return 0;
+          return parseInt(b.balance, 10) - parseInt(a.balance, 10);
+        }),
+      [tokensData],
+    ) || [];
+
+  return sortedTokens;
+};
+
 export const useBalanceTableColumns = (
   nativeToken,
   balances,
   nativeTokenStatus,
   domainId = 1,
 ): ColumnDef<BalanceTableFieldModel, string>[] => {
-  const columnHelper = useMemo(
-    () => createColumnHelper<BalanceTableFieldModel>(),
-    [],
-  );
+  const isMobile = useMobile();
 
-  const columns: ColumnDef<BalanceTableFieldModel, string>[] = useMemo(
-    () => [
+  const columns: ColumnDef<BalanceTableFieldModel, string>[] = useMemo(() => {
+    const columnHelper = createColumnHelper<BalanceTableFieldModel>();
+
+    return [
       columnHelper.display({
         id: 'asset',
         header: () => formatText({ id: 'table.row.asset' }),
+        headCellClassName: isMobile ? 'pr-2' : undefined,
         cell: ({ row }) => {
           if (!row.original.token) return [];
 
@@ -45,8 +97,9 @@ export const useBalanceTableColumns = (
       }),
       columnHelper.display({
         id: 'symbol',
-        size: 100,
+        size: isMobile ? 60 : 100,
         header: () => formatText({ id: 'table.row.symbol' }),
+        headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
         cell: ({ row }) => (
           <span className="text-gray-600">{row.original.token?.symbol}</span>
         ),
@@ -58,6 +111,7 @@ export const useBalanceTableColumns = (
         cell: ({ row }) => {
           const isTokenNative =
             row.original.token?.tokenAddress === nativeToken.tokenAddress;
+
           return (
             <span className="hidden sm:flex">
               {isTokenNative && (
@@ -71,7 +125,10 @@ export const useBalanceTableColumns = (
       }),
       columnHelper.accessor('balance', {
         header: () => formatText({ id: 'table.row.balance' }),
-        size: 165,
+        size: isMobile ? 110 : 165,
+        headCellClassName: clsx('text-right', {
+          'pr-2 pl-0': isMobile,
+        }),
         cell: ({ row }) => {
           const currentTokenBalance =
             getBalanceForTokenAndDomain(
@@ -81,33 +138,32 @@ export const useBalanceTableColumns = (
             ) || 0;
 
           return (
-            <div className="flex flex-col justify-center">
+            <div className="text-right ml-auto">
               <Numeral
                 value={currentTokenBalance}
                 decimals={getTokenDecimalsWithFallback(
                   row.original.token?.decimals,
                 )}
-                className="text-1 text-gray-900"
+                className="text-1 text-gray-900 block"
                 suffix={row.original.token?.symbol}
               />
               <CurrencyConversion
                 tokenBalance={currentTokenBalance}
                 contractAddress={row.original.token?.tokenAddress ?? ''}
-                className="text-gray-600 !text-sm"
+                className="text-gray-600 !text-sm block"
               />
             </div>
           );
         },
       }),
-    ],
-    [
-      columnHelper,
-      balances,
-      domainId,
-      nativeToken.tokenAddress,
-      nativeTokenStatus,
-    ],
-  );
+    ];
+  }, [
+    balances,
+    domainId,
+    isMobile,
+    nativeToken.tokenAddress,
+    nativeTokenStatus,
+  ]);
 
   return columns;
 };
