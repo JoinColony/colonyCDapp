@@ -13,15 +13,7 @@ export * from './annotations.ts';
 export * from './proofs.ts';
 export * from './expenditureMulticallData.ts';
 export * from './expenditures.ts';
+export * from './expendituresMulticall.ts';
 
-// export * from './updateColonyDisplayCache';
-// export { updateMotionValues } from './updateMotionValues';
-// export { uploadIfpsAnnotation } from './uploadIfpsAnnotation';
-// export {
-//   modifyParams,
-//   removeOldExtensionClients,
-//   setupEnablingGroupTransactions,
-//   Channel,
-// } from './enableExtensionHelpers';
 export { updateDomainReputation } from './updateDomainReputation.ts';
 export { createActionMetadataInDB } from './createActionMetadata.ts';
