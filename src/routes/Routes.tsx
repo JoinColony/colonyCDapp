@@ -145,24 +145,21 @@ const Routes = () => {
           <Route path={COLONY_REPUTATION_ROUTE} element={<ReputationPage />} />
           <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
 
+          <Route element={<PermissionsPage />}>
+            <Route
+              path={COLONY_PERMISSIONS_ROUTE}
+              element={<IndividualPermissionsPage />}
+            />
+            <Route
+              path={COLONY_MULTISIG_ROUTE}
+              element={<MultisigPermissionsPage />}
+            />
+          </Route>
+
           {/* Colony settings routes */}
           <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
 
           {/* Enable the following routes in dev mode */}
-
-          {/* @ts-ignore */}
-          {!WEBPACK_IS_PRODUCTION && (
-            <Route element={<PermissionsPage />}>
-              <Route
-                path={COLONY_PERMISSIONS_ROUTE}
-                element={<IndividualPermissionsPage />}
-              />
-              <Route
-                path={COLONY_MULTISIG_ROUTE}
-                element={<MultisigPermissionsPage />}
-              />
-            </Route>
-          )}
 
           {/* @ts-ignore */}
           {!WEBPACK_IS_PRODUCTION && (
