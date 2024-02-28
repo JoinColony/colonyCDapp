@@ -63,10 +63,9 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
       </span>
       <span className="heading-4 mb-1">
         <Numeral
-          value={new Decimal(colonyReputation).abs().toString()}
+          value={new Decimal(colonyReputation).abs()}
           decimals={nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
         />
-        {colonyReputation !== '0' && 'M'}
       </span>
       <span className="text-gray-600 text-sm border-b border-gray-200 pb-6 mb-6">
         {formatText({ id: 'teamReputation.reputationPoints.label' })}
