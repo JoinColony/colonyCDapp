@@ -8,6 +8,7 @@ import {
 import { type Colony } from '~types/graphql.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 
 import {
   AVAILABLE_ROLES,
@@ -80,7 +81,9 @@ export const getManagePermissionsPayload = (
   colony: Colony,
   values: ManagePermissionsFormValues,
 ) => ({
-  annotationMessage: values.description,
+  annotationMessage: values.description
+    ? sanitizeHTML(values.description)
+    : undefined,
   domainId: Number(values.team),
   userAddress: values.member,
   colonyName: colony.name,

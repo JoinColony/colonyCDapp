@@ -8,6 +8,7 @@ import { createDecisionAction } from '~redux/actionCreators/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 
 import { useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -54,11 +55,13 @@ export const useCreateDecision = (
     transform: useCallback(
       pipe(
         mapPayload((payload: CreateDecisionFormValues) => {
+          const safeDescription = sanitizeHTML(payload.description || '');
+
           handleSaveAgreementInLocalStorage({
             colonyAddress,
             title: payload.title,
             motionDomainId: Number(payload.createdIn),
-            description: payload.description || '',
+            description: safeDescription,
             walletAddress,
           });
 
@@ -70,7 +73,7 @@ export const useCreateDecision = (
             draftDecision: {
               motionDomainId: Number(payload.createdIn),
               title: payload.title,
-              description: payload.description,
+              description: safeDescription,
               walletAddress,
             },
           };

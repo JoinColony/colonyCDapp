@@ -1,5 +1,6 @@
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 import {
   calculateFee,
   getSelectedToken,
@@ -47,7 +48,7 @@ export const getSimplePaymentPayload = (
 ) => {
   const {
     from,
-    description,
+    description: annotationMessage,
     createdIn,
     title,
     amount,
@@ -79,7 +80,9 @@ export const getSimplePaymentPayload = (
         }),
       ),
     ],
-    annotationMessage: description,
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
     motionDomainId: createdInDomainId,
     customActionTitle: title,
   };

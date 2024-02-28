@@ -3,6 +3,7 @@ import moveDecimal from 'move-decimal-point';
 
 import { RootMotionMethodNames } from '~redux/index.ts';
 import { type Colony } from '~types/graphql.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { type MintTokenFormValues } from './consts.ts';
@@ -31,7 +32,9 @@ export const getMintTokenPayload = (
     nativeTokenAddress: colony.nativeToken.tokenAddress,
     motionParams: [amount],
     amount,
-    annotationMessage,
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
     customActionTitle: title,
   };
 };

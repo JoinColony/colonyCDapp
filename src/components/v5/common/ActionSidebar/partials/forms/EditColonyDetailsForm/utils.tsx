@@ -1,4 +1,5 @@
 import { type Colony } from '~types/graphql.ts';
+import { sanitizeHTML } from '~utils/strings/index.ts';
 
 import { type EditColonyDetailsFormValues } from './types.ts';
 
@@ -29,7 +30,9 @@ export const getEditColonyDetailsPayload = (
         ? colonyThumbnail
         : colony.metadata?.thumbnail,
     colonyExternalLinks: externalLinks || [],
-    annotationMessage,
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
     customActionTitle: title,
   };
 };
