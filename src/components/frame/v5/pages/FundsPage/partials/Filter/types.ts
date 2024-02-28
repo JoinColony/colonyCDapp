@@ -30,6 +30,8 @@ export interface FilterProps<TValue extends FilterValue> {
   onSearch: (value: string) => void;
   searchInputLabel: string;
   searchInputPlaceholder: string;
+  filtersHeader?: string;
+  buttonText?: string;
 }
 
 export interface NestedFilterProps<

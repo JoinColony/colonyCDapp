@@ -141,7 +141,9 @@ function RootFilter<TValue extends FilterValue>({
       interactive: true,
     });
   const isMobile = useMobile();
-  const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
+  const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle({
+    defaultToggleState: true,
+  });
   const RootItems = items.map(
     ({ label: nestedFilterItemLabel, name, items: nestedFilterItems }) => (
       <NestedFilterItem<TValue, 2>
@@ -164,7 +166,8 @@ function RootFilter<TValue extends FilterValue>({
           onToggle={toggleAccordion}
           title={title}
           icon={CaretDown}
-          className="[&_.accordion-toggler]:text-gray-400 [&_.accordion-toggler]:text-4 [&_.accordion-toggler]:uppercase sm:[&_.accordion-toggler]:px-3.5 mb-4 last:mb-0"
+          iconSize={16}
+          className="[&_.accordion-toggler]:text-gray-400 [&_.accordion-toggler]:mb-2 sm:[&_.accordion-toggler]:mb-0 [&_.accordion-toggler]:text-4 [&_.accordion-toggler]:uppercase sm:[&_.accordion-toggler]:px-3.5 [&_.accordion-icon]:text-gray-700 mb-4 last:mb-0"
         >
           {RootItems}
         </AccordionItem>
@@ -212,6 +215,8 @@ function Filter<TValue extends FilterValue>({
   searchValue,
   searchInputLabel,
   searchInputPlaceholder,
+  filtersHeader = 'filters',
+  buttonText,
 }: FilterProps<TValue>) {
   const {
     getTooltipProps,
@@ -259,6 +264,7 @@ function Filter<TValue extends FilterValue>({
           isOpen={isFiltersOpen}
           onClick={toggleModalOn}
           setTriggerRef={setTriggerRef}
+          customLabel={buttonText}
         />
         {isMobile && (
           <Button
@@ -289,7 +295,9 @@ function Filter<TValue extends FilterValue>({
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4">{searchInputLabel}</p>
+            <p className="text-4 text-gray-400 mb-4 uppercase">
+              {searchInputLabel}
+            </p>
             <div className="sm:px-3.5 sm:mb-6">
               <SearchInputMobile
                 onSearchButtonClick={() => setIsSearchOpened(false)}
@@ -314,9 +322,13 @@ function Filter<TValue extends FilterValue>({
           classNames="w-full sm:max-w-[20.375rem]"
         >
           <div className="px-3.5 mb-6">
-            <SearchInputDesktop onChange={onInputChange} value={searchValue} />
+            <SearchInputDesktop
+              onChange={onInputChange}
+              placeholder={searchInputPlaceholder}
+              value={searchValue}
+            />
           </div>
-          <Header title={{ id: 'filters' }} />
+          <Header title={{ id: filtersHeader }} />
           {RootItems}
         </PopoverBase>
       )}

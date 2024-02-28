@@ -1593,5 +1593,16 @@
     "removeDraftModal.title": "Remove draft and create a new agreement?",
     "removeDraftModal.subtitle": "You have an existing draft agreement already saved. Creating a new agreement will remove your existing draft.",
     "removeDraftModal.button.viewDraft": "View draft",
-    "removeDraftModal.button.createNew": "Create new"
+    "removeDraftModal.button.createNew": "Create new",
+    "teamsPage.filter.funds": "Team funds",
+    "teamsPage.filter.sortByFunds": "Sort by: team funds",
+    "teamsPage.filter.reputation": "Reputation percentage",
+    "teamsPage.filter.sortbyReputation": "Sort by: reputation percentage",
+    "teamsPage.filter.descending": "Highest to lowest",
+    "teamsPage.filter.ascending": "Lowest to highest",
+    "teamsPage.filter.sortBy": "Sort by:",
+    "teamsPage.filter.search": "Search teams",
+    "teamsPage.filter.filterButton": "All filters",
+    "teamsPage.empty.title": "No results to display",
+    "teamsPage.empty.description": "There are teams in the Colony that match your search. Try searching again"
 }

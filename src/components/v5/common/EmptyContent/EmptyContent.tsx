@@ -45,7 +45,7 @@ const EmptyContent: FC<EmptyContentProps> = ({
       <div className="flex flex-col items-center justify-center">
         {Icon && (
           <div className={styles.emptyContent}>
-            <Icon className="[&>svg]:fill-gray-600" size={20} />
+            <Icon className="fill-gray-600" size={20} />
           </div>
         )}
         {titleText && <h5 className="text-1 mt-3">{titleText}</h5>}

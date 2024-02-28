@@ -94,6 +94,7 @@ export interface HamburgerProps extends CommonButtonProps {
 
 export interface CloseButtonProps extends CommonButtonProps {
   className?: string;
+  iconSize?: number;
 }
 
 export interface ActionButtonProps extends ButtonProps {
