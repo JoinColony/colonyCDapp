@@ -31,8 +31,6 @@ const FilterButton: FC<FilterButtonProps> = ({
       })}
       mode="tertiary"
       size={size}
-      icon={FunnelSimple}
-      iconSize={14}
     >
       <FunnelSimple size={18} className="flex-shrink-0 mr-2" />
       {customLabel || formatMessage({ id: 'filter' })}
