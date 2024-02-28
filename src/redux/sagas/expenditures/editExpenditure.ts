@@ -1,13 +1,9 @@
-import {
-  type AnyColonyClient,
-  ClientType,
-  ColonyRole,
-  getPermissionProofs,
-} from '@colony/colony-js';
-import { BigNumber, ethers } from 'ethers';
+import { type AnyColonyClient, ClientType } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context';
+import { ExpenditureStatus } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 
@@ -24,15 +20,11 @@ import {
   takeFrom,
   uploadAnnotation,
   getColonyManager,
-  getPayoutAmount,
+  getMulticallDataForPayouts,
 } from '../utils/index.ts';
 
 export type EditExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_EDIT>['payload'];
-
-function toB32(input) {
-  return ethers.utils.hexZeroPad(ethers.utils.hexlify(input), 32);
-}
 
 function* editExpenditureAction({
   payload: {
@@ -106,7 +98,11 @@ function* editExpenditureAction({
   );
 
   try {
-    if (expenditure.ownerAddress === userAddress) {
+    if (
+      expenditure.ownerAddress === userAddress &&
+      expenditure.status === ExpenditureStatus.Draft
+    ) {
+      // `setExpenditureValues` can only be used if the user is the owner and the expenditure is draft
       yield fork(createTransaction, editExpenditure.id, {
         context: ClientType.ColonyClient,
         methodName: 'setExpenditureValues',
@@ -123,65 +119,12 @@ function* editExpenditureAction({
         ),
       });
     } else {
-      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-        colonyClient.networkClient,
+      const multicallData = yield getMulticallDataForPayouts(
+        expenditure,
+        resolvedPayouts,
         colonyClient,
-        expenditure.nativeDomainId,
-        ColonyRole.Administration,
+        networkInverseFee,
       );
-
-      const multicallData: string[] = [];
-      resolvedPayouts.forEach((payout) => {
-        const existingSlot = expenditure.slots.find(
-          (slot) => slot.id === payout.slotId,
-        );
-
-        const hasRecipientChanged =
-          existingSlot?.recipientAddress !== payout.recipientAddress;
-        if (hasRecipientChanged) {
-          multicallData.push(
-            colonyClient.interface.encodeFunctionData('setExpenditureState', [
-              permissionDomainId,
-              childSkillIndex,
-              expenditure.nativeId,
-              toB32(BigNumber.from(26)),
-              [false, true],
-              [toB32(payout.slotId), toB32(BigNumber.from(0))],
-              toB32(payout.recipientAddress),
-            ]),
-          );
-        }
-
-        const hasClaimDelayChanged =
-          existingSlot?.claimDelay !== payout.claimDelay;
-        if (hasClaimDelayChanged) {
-          multicallData.push(
-            colonyClient.interface.encodeFunctionData('setExpenditureState', [
-              permissionDomainId,
-              childSkillIndex,
-              expenditure.nativeId,
-              toB32(BigNumber.from(26)),
-              [false, true],
-              [toB32(payout.slotId), toB32(BigNumber.from(1))],
-              toB32(payout.claimDelay),
-            ]),
-          );
-        }
-
-        multicallData.push(
-          colonyClient.interface.encodeFunctionData(
-            'setExpenditurePayout(uint256,uint256,uint256,uint256,address,uint256)',
-            [
-              permissionDomainId,
-              childSkillIndex,
-              expenditure.nativeId,
-              payout.slotId ?? '',
-              payout.tokenAddress,
-              getPayoutAmount(payout, networkInverseFee),
-            ],
-          ),
-        );
-      });
 
       yield fork(createTransaction, editExpenditure.id, {
         context: ClientType.ColonyClient,
