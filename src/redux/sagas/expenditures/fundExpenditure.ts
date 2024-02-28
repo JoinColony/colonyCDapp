@@ -106,6 +106,8 @@ function* fundExpenditure({
         ]),
       );
 
+      yield initiateTransaction({ id: channels[tokenAddress].id });
+
       const {
         payload: { hash: txHash },
       } = yield takeFrom(
@@ -113,7 +115,6 @@ function* fundExpenditure({
         ActionTypes.TRANSACTION_HASH_RECEIVED,
       );
 
-      yield initiateTransaction({ id: channels[tokenAddress].id });
       yield waitForTxResult(channels[tokenAddress].channel);
 
       if (annotationMessage) {
