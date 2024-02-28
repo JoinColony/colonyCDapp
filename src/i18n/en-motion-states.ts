@@ -2,11 +2,11 @@ import { MotionState } from '~utils/colonyMotions.ts';
 
 const motionStatesMessageDescriptors = {
   'motion.state': `{state, select,
-      ${MotionState.Supported} {Supported}
+      ${MotionState.Supported} {Staked}
       ${MotionState.Staking} {Staking}
       ${MotionState.Voting} {Voting}
       ${MotionState.Reveal} {Reveal}
-      ${MotionState.Opposed} {Opposed}
+      ${MotionState.Opposed} {Objected}
       ${MotionState.Motion} {Motion}
       ${MotionState.Failed} {Failed}
       ${MotionState.Finalizable} {Finalizable}

@@ -1,5 +1,6 @@
 import React, { type FC } from 'react';
 
+import { FiltersContextProvider } from '~common/ColonyActionsTable/FiltersContext/index.ts';
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
 import {
   useSetPageBreadcrumbs,
@@ -25,7 +26,9 @@ const ActivityPage: FC = () => {
     <div className="flex flex-col gap-4 sm:gap-6 w-full">
       <WidgetBoxList items={widgets} />
       <div>
-        <ColonyActionsTable className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2" />
+        <FiltersContextProvider>
+          <ColonyActionsTable className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2" />
+        </FiltersContextProvider>
       </div>
     </div>
   );

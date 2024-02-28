@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { FiltersContextProvider } from '~common/ColonyActionsTable/FiltersContext/index.ts';
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -50,38 +51,40 @@ const ColonyHome = () => {
           <Agreements />
         </div>
         <div className="w-full">
-          <ColonyActionsTable
-            className="w-full [&_tr:last-child_td>*:not(.expandable)]:!py-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[.875rem] [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2"
-            pageSize={7}
-            withHeader={false}
-            state={{
-              columnVisibility: isMobile
-                ? {
-                    description: true,
-                    motionState: true,
-                    team: false,
-                    createdAt: false,
-                  }
-                : {
-                    description: true,
-                    motionState: true,
-                    team: false,
-                    createdAt: true,
-                  },
-            }}
-            additionalPaginationButtonsContent={
-              <Link
-                className="text-sm text-gray-700 underline"
-                to={setQueryParamOnUrl(
-                  COLONY_ACTIVITY_ROUTE,
-                  TEAM_SEARCH_PARAM,
-                  selectedDomain?.nativeId.toString(),
-                )}
-              >
-                {formatText({ id: 'view.all' })}
-              </Link>
-            }
-          />
+          <FiltersContextProvider>
+            <ColonyActionsTable
+              className="w-full [&_tr:last-child_td>*:not(.expandable)]:!py-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[.875rem] [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2"
+              pageSize={7}
+              withHeader={false}
+              state={{
+                columnVisibility: isMobile
+                  ? {
+                      description: true,
+                      motionState: true,
+                      team: false,
+                      createdAt: false,
+                    }
+                  : {
+                      description: true,
+                      motionState: true,
+                      team: false,
+                      createdAt: true,
+                    },
+              }}
+              additionalPaginationButtonsContent={
+                <Link
+                  className="text-sm text-gray-700 underline"
+                  to={setQueryParamOnUrl(
+                    COLONY_ACTIVITY_ROUTE,
+                    TEAM_SEARCH_PARAM,
+                    selectedDomain?.nativeId.toString(),
+                  )}
+                >
+                  {formatText({ id: 'view.all' })}
+                </Link>
+              }
+            />
+          </FiltersContextProvider>
         </div>
       </div>
       <LeaveColonyModal />

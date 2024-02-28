@@ -9,7 +9,10 @@ import { type DatepickerCustomRangeInputProps } from './types.ts';
 const DatepickerCustomRangeInput = React.forwardRef<
   HTMLInputElement,
   DatepickerCustomRangeInputProps
->(({ onClick, onFocus, startDate, endDate, dateFormat }) => {
+  // ref has to be there to avoid a warning in a console:
+  // Warning: forwardRef render functions accept exactly two parameters: props and ref. Did you forget to use the ref parameter?
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+>(({ onClick, onFocus, startDate, endDate, dateFormat }, ref) => {
   return (
     <div className="w-full flex items-center justify-between gap-2">
       <InputBase

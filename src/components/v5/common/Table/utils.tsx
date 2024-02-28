@@ -36,7 +36,13 @@ export const makeMenuColumn = <T,>(
             'absolute top-1/2 right-4 -translate-y-1/2': verticalOnMobile,
           })}
         >
-          <MeatBallMenu {...props} />
+          <MeatBallMenu
+            {...props}
+            contentWrapperClassName={clsx(
+              props.contentWrapperClassName,
+              '!z-[60]',
+            )}
+          />
         </div>
       ) : undefined;
     },

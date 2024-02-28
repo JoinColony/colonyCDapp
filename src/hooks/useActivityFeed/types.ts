@@ -1,8 +1,8 @@
 import { type SearchActionsQueryVariables } from '~gql';
 import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
+import { type AnyActionType } from '~types/actions.ts';
 import {
   type ColonyAction,
-  type ColonyActionType,
   type SearchableSortDirection,
 } from '~types/graphql.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
@@ -14,11 +14,12 @@ export enum ActivityDecisionMethod {
 
 export interface ActivityFeedFilters {
   teamId?: string;
-  actionTypes?: ColonyActionType[];
+  actionTypes?: AnyActionType[];
   motionStates?: MotionState[];
   dateFrom?: Date;
   dateTo?: Date;
   decisionMethod?: ActivityDecisionMethod;
+  search?: string;
 }
 
 export type ActivityFeedSort = SearchActionsQueryVariables['sort'];
