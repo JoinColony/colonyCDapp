@@ -1,6 +1,5 @@
 import { BigNumber } from 'ethers';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
@@ -15,7 +14,7 @@ import {
 import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
-import { calculateFee } from '~utils/tokens.ts';
+import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 /**
  * Util returning a map between token addresses and arrays of payouts field values
@@ -43,11 +42,10 @@ const getPayoutAmount = (
   payout: ExpenditurePayoutFieldValue,
   networkInverseFee: string,
 ) => {
-  // @TODO: This should get the token decimals of the selected token
   const { totalToPay } = calculateFee(
     payout.amount,
     networkInverseFee,
-    DEFAULT_TOKEN_DECIMALS,
+    getTokenDecimalsWithFallback(payout.tokenDecimals),
   );
 
   return totalToPay;

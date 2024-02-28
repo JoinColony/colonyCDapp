@@ -27,10 +27,16 @@ const TmpAdvancedPayments = () => {
   const { user } = useAppContext();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
 
+  const [tokenId, setTokenId] = useState('');
+  const [decimalAmount, setDecimalAmount] = useState('');
+  const [transactionAmount, setTransactionAmount] = useState('');
+  const [expenditureId, setExpenditureId] = useState('');
+
+  const tokenDecimalAmount = parseFloat(decimalAmount);
+
   const { stakeAmount = '0', stakedExpenditureAddress = '' } =
     useExpenditureStaking();
 
-  const [expenditureId, setExpenditureId] = useState('');
   const { data } = useGetExpenditureQuery({
     variables: {
       expenditureId: getExpenditureDatabaseId(
@@ -86,10 +92,11 @@ const TmpAdvancedPayments = () => {
 
   const payouts = [
     {
-      amount: '10',
-      tokenAddress: colony.nativeToken.tokenAddress,
+      amount: transactionAmount,
+      tokenAddress: tokenId,
       recipientAddress: user?.walletAddress ?? '',
       claimDelay: 0,
+      tokenDecimals: tokenDecimalAmount,
     },
   ];
 
@@ -192,17 +199,25 @@ const TmpAdvancedPayments = () => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
+        <InputBase
+          onChange={(e) => setTokenId(e.currentTarget.value)}
+          placeholder="Token Address"
+        />
+        <InputBase
+          onChange={(e) => setDecimalAmount(e.currentTarget.value)}
+          placeholder="Token Decimals"
+        />
+        <InputBase
+          onChange={(e) => setTransactionAmount(e.currentTarget.value)}
+          placeholder="Transaction Amount"
+        />
         <ActionButton
           actionType={ActionTypes.EXPENDITURE_CREATE}
           values={createExpenditurePayload}
         >
           Create expenditure
         </ActionButton>
-        <Button onClick={handleCreateStakedExpenditure}>
-          Create staked expenditure
-        </Button>
       </div>
-
       <div className="flex gap-4">
         <InputBase
           value={expenditureId}
@@ -220,6 +235,10 @@ const TmpAdvancedPayments = () => {
         <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
           Cancel and punish
         </Button>
+        <Button onClick={handleCreateStakedExpenditure}>
+          Create staked expenditure
+        </Button>
+        <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
       </div>
     </div>
   );
