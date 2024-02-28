@@ -37,7 +37,7 @@ const groupExpenditurePayoutsByTokenAddresses = (
   return payoutsByTokenAddresses;
 };
 
-const getPayoutAmount = (
+export const getPayoutAmount = (
   payout: ExpenditurePayoutFieldValue,
   networkInverseFee: string,
 ) => {
