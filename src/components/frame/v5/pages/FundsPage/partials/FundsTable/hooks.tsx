@@ -1,5 +1,6 @@
 import { CoinVertical, ShieldCheck } from '@phosphor-icons/react';
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { isEqual } from 'lodash';
 import React, { useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -93,25 +94,29 @@ export const useFundsTable = (): UseFundsTableProps => {
     ),
   }));
 
-  const [searchValue, setSearchValue] = useState('');
+  const defaultStatusFilter = {
+    approved: true,
+    unapproved: false,
+  };
 
-  const [value, setValue] = useState<Partial<FundsTableFilters>>({
+  const [searchValue, setSearchValue] = useState('');
+  const [isStatusChanged, setIsStatusChanged] = useState(false);
+  const [filterValue, setFilterValue] = useState<Partial<FundsTableFilters>>({
     status: {
-      approved: true,
-      unapproved: false,
+      ...defaultStatusFilter,
     },
     type: {},
   });
 
   const visibleTokens = allClaims.filter((visibleToken) => {
-    const { type = {}, status } = value;
+    const { type = {}, status } = filterValue;
 
     if (Object.values(type).some((tokenTypeFilter) => tokenTypeFilter)) {
       return type[visibleToken?.token?.tokenAddress || 0];
     }
 
     return (
-      ((!status || status.approved) && visibleToken.isApproved) ||
+      (status && status.approved && visibleToken.isApproved) ||
       (status && status.unapproved && !visibleToken.isApproved)
     );
   });
@@ -124,6 +129,7 @@ export const useFundsTable = (): UseFundsTableProps => {
 
   const tokenTypeFilters = colonyTokens.map(({ token }) => ({
     name: token.tokenAddress,
+    symbol: token.symbol,
     label: (
       <div className="flex items-center gap-2">
         <TokenIcon token={token} size="xxxs" />
@@ -133,10 +139,16 @@ export const useFundsTable = (): UseFundsTableProps => {
   }));
 
   const filters: FilterProps<FundsTableFilters> = {
-    onChange: setValue,
+    onChange: (value) => {
+      if (!isEqual(value.status, defaultStatusFilter)) {
+        setIsStatusChanged(true);
+      }
+
+      setFilterValue(value);
+    },
     onSearch: setSearchValue,
     searchValue,
-    value,
+    value: filterValue,
     searchInputLabel: formatMessage({
       id: 'filter.incoming.funds.search.title',
     }),
@@ -146,6 +158,7 @@ export const useFundsTable = (): UseFundsTableProps => {
     items: [
       {
         name: 'status',
+        filterName: formatText({ id: 'incomingFundsPage.filter.status' }),
         label: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
         icon: ShieldCheck,
         title: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
@@ -162,6 +175,7 @@ export const useFundsTable = (): UseFundsTableProps => {
       },
       {
         name: 'type',
+        filterName: formatText({ id: 'incomingFundsPage.filter.type' }),
         label: formatText({ id: 'incomingFundsPage.filter.tokenType' }),
         title: formatText({ id: 'incomingFundsPage.filter.approvedTokens' }),
         icon: CoinVertical,
@@ -173,5 +187,7 @@ export const useFundsTable = (): UseFundsTableProps => {
   return {
     filters,
     searchedTokens,
+    isStatusChanged,
+    defaultStatusFilter,
   };
 };

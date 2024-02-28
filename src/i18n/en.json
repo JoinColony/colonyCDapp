@@ -1393,6 +1393,8 @@
     "incomingFundsPage.filter.approvedTokens": "approved token types",
     "incomingFundsPage.filter.approved": "Approved",
     "incomingFundsPage.filter.unapproved": "Unapproved",
+    "incomingFundsPage.filter.status": "Status",
+    "incomingFundsPage.filter.type": "Type",
     "incomingFundsPage.table.emptyTitle": "No results to display",
     "incomingFundsPage.table.emptyDescription": "There are no incoming funds in the Colony yet. Any funds sent to the Colony will show here",
     "actionSidebar.member": "Member",

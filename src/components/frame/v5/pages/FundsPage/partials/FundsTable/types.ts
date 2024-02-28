@@ -21,6 +21,11 @@ export type FundsTableFilters = {
 
 export interface UseFundsTableProps {
   filters: FilterProps<FundsTableFilters>;
+  isStatusChanged: boolean;
+  defaultStatusFilter: {
+    approved: boolean;
+    unapproved: boolean;
+  };
   searchedTokens: {
     isApproved: boolean;
     token?: {
