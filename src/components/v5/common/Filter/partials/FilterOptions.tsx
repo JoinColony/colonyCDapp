@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -27,21 +28,31 @@ const FilterOptions: FC<FilterOptionsProps> = ({ excludeFilterType }) => {
 
   return (
     <div>
-      <Header title={{ id: 'filters' }} />
+      <Header
+        title={{ id: isMobile ? 'filterAndSort' : 'filterBy' }}
+        className={clsx({
+          'text-gray-900 capitalize mb-6': isMobile,
+        })}
+        textSizeClassName={isMobile ? 'heading-5' : 'text-4'}
+      />
       {isMobile ? (
         <Accordion items={filteredOptions} />
       ) : (
         <ul className="flex flex-col">
-          {filteredOptions?.map(({ id, icon, title, filterType, content }) => (
-            <SubNavigationItem
-              key={id}
-              icon={icon}
-              title={title}
-              option={filterType}
-              nestedFilters={content}
-              iconSize={14}
-            />
-          ))}
+          {filteredOptions?.map(
+            ({ id, icon, title, filterType, content, header }) => (
+              <li key={id}>
+                {header && <Header title={{ id: header }} className="mt-2" />}
+                <SubNavigationItem
+                  icon={icon}
+                  title={title}
+                  option={filterType}
+                  nestedFilters={content}
+                  iconSize={14}
+                />
+              </li>
+            ),
+          )}
         </ul>
       )}
     </div>

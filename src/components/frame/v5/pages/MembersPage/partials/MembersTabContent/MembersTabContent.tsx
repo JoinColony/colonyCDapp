@@ -5,6 +5,8 @@ import React, { type FC, type PropsWithChildren } from 'react';
 import { APP_URL } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useFilterContext } from '~context/FilterContext.tsx';
+import { useSearchContext } from '~context/SearchContext.tsx';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -31,6 +33,8 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
   } = useColonyContext();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
   const { user } = useAppContext();
+  const { selectedFilterCount } = useFilterContext();
+  const { searchValue } = useSearchContext();
 
   const showPlaceholderCard =
     user && !withSimpleCards && canInteractWithColony && items.length < 12;
@@ -47,7 +51,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
           items={items}
           isSimple={withSimpleCards}
           placeholderCardProps={
-            showPlaceholderCard
+            showPlaceholderCard && items.length > 0
               ? {
                   description: formatText({
                     id: 'membersPage.inviteMembers.description',
@@ -71,7 +75,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
         {!isLoading &&
           !items.length &&
           emptyContentProps &&
-          !showPlaceholderCard && (
+          (selectedFilterCount > 0 || searchValue) && (
             <EmptyContent {...emptyContentProps} withBorder />
           )}
         {isLoading && (

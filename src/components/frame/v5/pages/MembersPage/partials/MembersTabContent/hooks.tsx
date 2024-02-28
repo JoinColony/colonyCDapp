@@ -7,6 +7,7 @@ import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 // @BETA: Disabled for now
 // import { useMemberModalContext } from '~context/MemberModalContext';
+import { useMobile } from '~hooks';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
@@ -21,7 +22,7 @@ export const useMembersTabContentItems = (
 ) => {
   // @BETA: Disabled for now
   // const { setIsMemberModalOpen, setUser } = useMemberModalContext();
-
+  const isMobile = useMobile();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -36,7 +37,9 @@ export const useMembersTabContentItems = (
           ...item,
           userAvatarProps,
           meatBallMenuProps: {
-            contentWrapperClassName: 'sm:min-w-[17.375rem]',
+            contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
+              '!left-6 right-6': isMobile,
+            }),
             items: [
               // @BETA: Disabled for now
               // {
@@ -123,6 +126,7 @@ export const useMembersTabContentItems = (
       handleClipboardCopy,
       isCopied,
       items,
+      isMobile,
       // @BETA: Disabled for now
       // setIsMemberModalOpen,
       // setUser,

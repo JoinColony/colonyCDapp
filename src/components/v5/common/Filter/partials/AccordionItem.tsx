@@ -16,7 +16,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
   option,
   nestedFilters,
 }) => {
-  const [isOpened, setOpen] = useState(false);
+  const [isOpened, setOpen] = useState(true);
   const { formatMessage } = useIntl();
 
   const handleToggle = () => {
@@ -34,13 +34,13 @@ const AccordionItem: FC<AccordionItemProps> = ({
         {formatMessage({ id: title })}
         <span
           className={clsx(
-            'flex shrink-0 text-gray-400 transition-all duration-normal group-hover:text-blue-400',
+            'flex shrink-0 text-gray-700 transition-all duration-normal group-hover:text-blue-400',
             {
               'rotate-180': isOpened,
             },
           )}
         >
-          <CaretUp size={10} />
+          <CaretUp size={16} />
         </span>
       </button>
 
