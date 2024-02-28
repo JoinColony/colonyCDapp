@@ -99,7 +99,7 @@ const SearchInput: FC<SearchInputProps> = ({
           onClick={handleClearSearchInput}
           type="button"
         >
-          <X size={10} />
+          <X size={14} />
         </button>
       )}
       {isMobile && value && (

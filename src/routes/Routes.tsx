@@ -142,19 +142,13 @@ const Routes = () => {
             <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
           </Route>
 
+          <Route path={COLONY_REPUTATION_ROUTE} element={<ReputationPage />} />
+          <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
+
           {/* Colony settings routes */}
           <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
 
           {/* Enable the following routes in dev mode */}
-          {/* @ts-ignore */}
-          {!WEBPACK_IS_PRODUCTION && (
-            <Route
-              path={COLONY_REPUTATION_ROUTE}
-              element={<ReputationPage />}
-            />
-          )}
-
-          <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
 
           {/* @ts-ignore */}
           {!WEBPACK_IS_PRODUCTION && (
