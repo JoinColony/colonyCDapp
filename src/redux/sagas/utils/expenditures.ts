@@ -3,7 +3,6 @@ import { BigNumber } from 'ethers';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
-  type ExpenditureDecisionMethod,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
 } from '~gql';
@@ -120,7 +119,6 @@ interface SaveExpenditureMetadataParams {
   colonyAddress: string;
   expenditureId: number;
   fundFromDomainId: number;
-  decisionMethod: ExpenditureDecisionMethod;
   stages?: ExpenditureStageFieldValue[];
   stakeAmount?: string;
 }
@@ -129,7 +127,6 @@ export function* saveExpenditureMetadata({
   colonyAddress,
   expenditureId,
   fundFromDomainId,
-  decisionMethod,
   stages,
   stakeAmount,
 }: SaveExpenditureMetadataParams) {
@@ -144,7 +141,6 @@ export function* saveExpenditureMetadata({
       input: {
         id: getExpenditureDatabaseId(colonyAddress, expenditureId),
         fundFromDomainNativeId: fundFromDomainId,
-        decisionMethod,
         stages: stages?.map((stage, index) => ({
           name: stage.name,
           slotId: index + 1,
