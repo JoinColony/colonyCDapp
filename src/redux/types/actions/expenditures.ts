@@ -95,21 +95,18 @@ export type ExpendituresActionTypes =
   | ErrorActionType<ActionTypes.EXPENDITURE_EDIT_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>
   | UniqueActionType<
-      ActionTypes.EXPENDITURE_DRAFT_CANCEL,
+      ActionTypes.EXPENDITURE_CANCEL,
       {
         colonyAddress: Address;
         expenditure: Expenditure;
         stakedExpenditureAddress?: Address;
         annotationMessage?: string;
+        userAddress: Address;
       },
       object
     >
-  | ErrorActionType<ActionTypes.EXPENDITURE_DRAFT_CANCEL_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.EXPENDITURE_DRAFT_CANCEL_SUCCESS,
-      object,
-      object
-    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_CANCEL_ERROR, object>
+  | UniqueActionType<ActionTypes.EXPENDITURE_CANCEL_SUCCESS, object, object>
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CLAIM,
       {
