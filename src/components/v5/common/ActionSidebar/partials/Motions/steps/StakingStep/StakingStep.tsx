@@ -62,6 +62,8 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     (message) => message?.name === SystemMessages.MotionVotingPhase,
   );
 
+  const teamName = motionAction.motionData.motionDomain.metadata?.name;
+
   const cardTitleMessageId = (() => {
     if (isFullyStaked) {
       return 'motion.staking.status.text.locked';
@@ -122,9 +124,12 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                   key: '1',
                   content: (
                     <p className="text-sm">
-                      {formatText({
-                        id: 'motion.staking.notEnoughReputation',
-                      })}
+                      {formatText(
+                        {
+                          id: 'motion.staking.notEnoughReputation',
+                        },
+                        { teamName },
+                      )}
                     </p>
                   ),
                   className: 'bg-negative-100 text-negative-400',
