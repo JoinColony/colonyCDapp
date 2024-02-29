@@ -3,15 +3,13 @@ import {
   type AnyColonyClient,
   ColonyRole,
 } from '@colony/colony-js';
-import { BigNumber, type BigNumberish, utils } from 'ethers';
+import { BigNumber } from 'ethers';
 
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
+import { toB32 } from '~utils/solidity.ts';
 
 import { getPayoutAmount } from './expenditures.ts';
-
-const toB32 = (input: BigNumberish) =>
-  utils.hexZeroPad(utils.hexlify(input), 32);
 
 const EXPENDITURESLOTS_SLOT = BigNumber.from(26);
 
