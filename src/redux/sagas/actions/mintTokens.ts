@@ -102,13 +102,12 @@ function* createMintTokensAction({
     yield initiateTransaction({ id: mintTokens.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      mintTokens.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(mintTokens.channel);
 
-    yield waitForTxResult(mintTokens.channel);
+    setTxHash?.(txHash);
 
     yield initiateTransaction({ id: claimColonyFunds.id });
 
@@ -129,8 +128,6 @@ function* createMintTokensAction({
       meta,
     });
 
-    setTxHash?.(txHash);
-
     // Redirect to actions page
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
@@ -138,7 +135,7 @@ function* createMintTokensAction({
       });
     }
   } catch (caughtError) {
-    putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);
+    yield putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }

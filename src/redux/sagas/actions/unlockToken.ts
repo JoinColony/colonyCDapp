@@ -76,13 +76,12 @@ function* tokenUnlockAction({
     yield initiateTransaction({ id: tokenUnlock.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      tokenUnlock.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(tokenUnlock.channel);
 
-    yield waitForTxResult(tokenUnlock.channel);
+    setTxHash?.(txHash);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -99,15 +98,13 @@ function* tokenUnlockAction({
       meta,
     });
 
-    setTxHash?.(txHash);
-
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
         state: { isRedirect: true },
       });
     }
   } catch (error) {
-    putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);
+    yield putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);
   } finally {
     txChannel.close();
   }

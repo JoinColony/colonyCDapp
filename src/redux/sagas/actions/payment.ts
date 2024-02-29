@@ -170,13 +170,12 @@ function* createPaymentAction({
     yield initiateTransaction({ id: paymentAction.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      paymentAction.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(paymentAction.channel);
 
-    yield waitForTxResult(paymentAction.channel);
+    setTxHash?.(txHash);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -193,8 +192,6 @@ function* createPaymentAction({
       meta,
     });
 
-    setTxHash?.(txHash);
-
     // @TODO: In new UI, confirm that the navigate function isn't being passed into the saga
     // and if not, remove these conditional (and do so for all actions/motions sagas)
     if (colonyName && navigate) {
@@ -203,7 +200,7 @@ function* createPaymentAction({
       });
     }
   } catch (error) {
-    putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);
+    yield putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);
   } finally {
     txChannel?.close();
   }

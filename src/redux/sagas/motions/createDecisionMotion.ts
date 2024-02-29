@@ -127,10 +127,10 @@ function* createDecisionMotion({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
+    } = yield takeFrom(createMotion.channel, [
       ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      ActionTypes.TRANSACTION_ERROR,
+    ]);
 
     setTxHash?.(txHash);
 
@@ -182,7 +182,8 @@ function* createDecisionMotion({
       payload: { walletAddress, colonyAddress },
     });
   } catch (caughtError) {
-    putError(ActionTypes.MOTION_CREATE_DECISION_ERROR, caughtError, meta);
+    console.error('the kot error', caughtError);
+    yield putError(ActionTypes.MOTION_CREATE_DECISION_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }

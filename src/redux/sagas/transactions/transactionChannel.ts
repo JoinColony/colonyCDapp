@@ -152,7 +152,15 @@ const channelStart = async (
 ) => {
   try {
     const sentTx = await channelSendTransaction(tx, txPromise, emit);
-    if (!sentTx) return null;
+    if (!sentTx) {
+      emit(
+        transactionUnsuccessfulError(
+          tx.id,
+          new Error('The transaction was unsuccessful'),
+        ),
+      );
+      return null;
+    }
 
     const receipt = await channelGetTransactionReceipt(
       tx,

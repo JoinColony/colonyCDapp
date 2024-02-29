@@ -176,11 +176,10 @@ function* createDomainAction({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
+    yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* createDomainActionSaga() {

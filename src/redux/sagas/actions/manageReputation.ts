@@ -131,15 +131,12 @@ function* manageReputationAction({
     yield initiateTransaction({ id: manageReputation.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      manageReputation.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(manageReputation.channel);
 
     setTxHash?.(txHash);
-
-    yield waitForTxResult(manageReputation.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -162,15 +159,10 @@ function* manageReputationAction({
       });
     }
   } catch (error) {
-    return yield putError(
-      ActionTypes.ACTION_MANAGE_REPUTATION_ERROR,
-      error,
-      meta,
-    );
+    yield putError(ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* manageReputationActionSaga() {

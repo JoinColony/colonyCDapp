@@ -188,15 +188,12 @@ function* createEditDomainMotion({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createMotion.channel);
 
     setTxHash?.(txHash);
-
-    yield waitForTxResult(createMotion.channel);
 
     if (isCreateDomain) {
       /**
@@ -261,7 +258,11 @@ function* createEditDomainMotion({
       });
     }
   } catch (caughtError) {
-    putError(ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, caughtError, meta);
+    yield putError(
+      ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR,
+      caughtError,
+      meta,
+    );
   } finally {
     txChannel.close();
   }

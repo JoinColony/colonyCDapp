@@ -113,13 +113,10 @@ function* initiateSafeTransactionAction({
     yield put(transactionReady(initiateSafeTransaction.id));
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      initiateSafeTransaction.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    yield waitForTxResult(initiateSafeTransaction.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(initiateSafeTransaction.channel);
 
     /**
      * Create parent safe transaction in the database
@@ -177,7 +174,7 @@ function* initiateSafeTransactionAction({
       },
     });
   } catch (error) {
-    return yield putError(
+    yield putError(
       ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_ERROR,
       error,
       meta,
@@ -185,7 +182,6 @@ function* initiateSafeTransactionAction({
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* initiateSafeTransactionSaga() {

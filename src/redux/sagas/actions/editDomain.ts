@@ -126,15 +126,12 @@ function* editDomainAction({
     yield initiateTransaction({ id: editDomain.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      editDomain.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(editDomain.channel);
 
     setTxHash?.(txHash);
-
-    yield waitForTxResult(editDomain.channel);
 
     /**
      * Save the updated metadata in the database
@@ -185,11 +182,10 @@ function* editDomainAction({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);
+    yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* editDomainActionSaga() {

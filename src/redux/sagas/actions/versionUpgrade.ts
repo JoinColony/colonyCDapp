@@ -90,12 +90,12 @@ function* createVersionUpgradeAction({
     yield initiateTransaction({ id: upgrade.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(upgrade.channel, ActionTypes.TRANSACTION_HASH_RECEIVED);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(upgrade.channel);
 
     setTxHash?.(txHash);
-
-    yield waitForTxResult(upgrade.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -120,7 +120,7 @@ function* createVersionUpgradeAction({
       });
     }
   } catch (caughtError) {
-    putError(ActionTypes.ACTION_VERSION_UPGRADE_ERROR, caughtError, meta);
+    yield putError(ActionTypes.ACTION_VERSION_UPGRADE_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }

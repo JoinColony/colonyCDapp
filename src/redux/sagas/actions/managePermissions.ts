@@ -139,15 +139,12 @@ function* managePermissionsAction({
     yield initiateTransaction({ id: setUserRoles.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      setUserRoles.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(setUserRoles.channel);
 
     setTxHash?.(txHash);
-
-    yield waitForTxResult(setUserRoles.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -170,11 +167,10 @@ function* managePermissionsAction({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);
+    yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* managePermissionsActionSaga() {

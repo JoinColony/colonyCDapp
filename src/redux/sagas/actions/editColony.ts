@@ -138,13 +138,10 @@ function* editColonyAction({
     yield initiateTransaction({ id: editColony.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      editColony.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    yield waitForTxResult(editColony.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(editColony.channel);
 
     const existingTokenAddresses = getExistingTokenAddresses(colony);
     const modifiedTokenAddresses = getModifiedTokenAddresses(
@@ -225,11 +222,10 @@ function* editColonyAction({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);
+    yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* editColonyActionSaga() {

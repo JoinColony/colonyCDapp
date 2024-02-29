@@ -130,13 +130,12 @@ function* createRootMotionSaga({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createMotion.channel);
 
-    yield waitForTxResult(createMotion.channel);
+    setTxHash?.(txHash);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -153,15 +152,13 @@ function* createRootMotionSaga({
       meta,
     });
 
-    setTxHash?.(txHash);
-
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
         state: { isRedirect: true },
       });
     }
   } catch (caughtError) {
-    putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);
+    yield putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }

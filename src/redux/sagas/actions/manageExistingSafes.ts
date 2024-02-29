@@ -121,11 +121,10 @@ function* manageExistingSafesAction({
     yield put(transactionReady(manageExistingSafes.id));
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      manageExistingSafes.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(manageExistingSafes.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -136,8 +135,6 @@ function* manageExistingSafesAction({
         txHash,
       });
     }
-
-    yield waitForTxResult(manageExistingSafes.channel);
 
     /**
      * Update colony metadata in the db
@@ -182,15 +179,10 @@ function* manageExistingSafesAction({
       },
     });
   } catch (error) {
-    return yield putError(
-      ActionTypes.ACTION_MANAGE_EXISTING_SAFES_ERROR,
-      error,
-      meta,
-    );
+    yield putError(ActionTypes.ACTION_MANAGE_EXISTING_SAFES_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* manageExistingSafeSaga() {
