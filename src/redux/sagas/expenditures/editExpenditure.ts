@@ -53,7 +53,7 @@ function* editExpenditureAction({
 
   payouts.forEach((payout, index) => {
     // Add payout as specified in the form
-    resolvedPayouts.push(payout);
+    resolvedPayouts.push({ ...payout, slotId: index + 1 });
 
     const existingSlot = expenditure.slots.find((slot) => slot.id === index);
 
@@ -66,7 +66,7 @@ function* editExpenditureAction({
             BigNumber.from(slotPayout.amount).gt(0),
         )
         .map((slotPayout) => ({
-          slotId: index,
+          slotId: index + 1,
           recipientAddress: payout.recipientAddress,
           tokenAddress: slotPayout.tokenAddress,
           amount: '0',
