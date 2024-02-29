@@ -81,8 +81,6 @@ function* tokenUnlockAction({
       },
     } = yield waitForTxResult(tokenUnlock.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -92,6 +90,8 @@ function* tokenUnlockAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,

@@ -107,8 +107,6 @@ function* createMintTokensAction({
       },
     } = yield waitForTxResult(mintTokens.channel);
 
-    setTxHash?.(txHash);
-
     yield initiateTransaction({ id: claimColonyFunds.id });
 
     yield waitForTxResult(claimColonyFunds.channel);
@@ -122,6 +120,8 @@ function* createMintTokensAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,

@@ -168,8 +168,6 @@ function* managePermissionsMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -179,6 +177,8 @@ function* managePermissionsMotion({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,

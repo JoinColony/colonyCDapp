@@ -132,8 +132,6 @@ function* createDomainAction({
       },
     } = yield waitForTxResult(createDomain.channel);
 
-    setTxHash?.(txHash);
-
     const { domainId } = eventData?.DomainAdded || {};
     const nativeDomainId = toNumber(domainId);
 
@@ -164,6 +162,8 @@ function* createDomainAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,

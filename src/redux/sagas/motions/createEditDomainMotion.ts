@@ -193,8 +193,6 @@ function* createEditDomainMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
     if (isCreateDomain) {
       /**
        * Save domain metadata in the database
@@ -246,6 +244,8 @@ function* createEditDomainMotion({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,

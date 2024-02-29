@@ -220,8 +220,6 @@ function* createPaymentMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -231,6 +229,8 @@ function* createPaymentMotion({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
     yield put<AllActions>({
       type: ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,

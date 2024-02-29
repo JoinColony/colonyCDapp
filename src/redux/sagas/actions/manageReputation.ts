@@ -136,8 +136,6 @@ function* manageReputationAction({
       },
     } = yield waitForTxResult(manageReputation.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -147,6 +145,8 @@ function* manageReputationAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,

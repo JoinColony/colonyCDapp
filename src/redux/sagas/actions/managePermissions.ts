@@ -144,8 +144,6 @@ function* managePermissionsAction({
       },
     } = yield waitForTxResult(setUserRoles.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -155,6 +153,8 @@ function* managePermissionsAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_USER_ROLES_SET_SUCCESS,

@@ -138,8 +138,6 @@ function* createMoveFundsAction({
       },
     } = yield waitForTxResult(moveFunds.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -149,6 +147,8 @@ function* createMoveFundsAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,

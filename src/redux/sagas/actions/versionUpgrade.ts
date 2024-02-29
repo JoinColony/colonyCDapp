@@ -95,8 +95,6 @@ function* createVersionUpgradeAction({
       },
     } = yield waitForTxResult(upgrade.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (supportAnnotation) {
@@ -107,6 +105,7 @@ function* createVersionUpgradeAction({
       });
     }
 
+    setTxHash?.(txHash);
     yield colonyManager.setColonyClient(colonyAddress);
 
     yield put<AllActions>({

@@ -135,8 +135,6 @@ function* createRootMotionSaga({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -147,6 +145,7 @@ function* createRootMotionSaga({
       });
     }
 
+    setTxHash?.(txHash);
     yield put<AllActions>({
       type: ActionTypes.ROOT_MOTION_SUCCESS,
       meta,

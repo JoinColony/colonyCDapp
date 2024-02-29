@@ -183,8 +183,6 @@ function* manageReputationMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -195,6 +193,7 @@ function* manageReputationMotion({
       });
     }
 
+    setTxHash?.(txHash);
     /*
      * Refesh the user & colony reputation
      */

@@ -183,8 +183,6 @@ function* editColonyMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
     const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
       colony,
       tokenAddresses,
@@ -258,6 +256,8 @@ function* editColonyMotion({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_EDIT_COLONY_SUCCESS,

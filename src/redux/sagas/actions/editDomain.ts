@@ -131,8 +131,6 @@ function* editDomainAction({
       },
     } = yield waitForTxResult(editDomain.channel);
 
-    setTxHash?.(txHash);
-
     /**
      * Save the updated metadata in the database
      */
@@ -170,6 +168,8 @@ function* editDomainAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,

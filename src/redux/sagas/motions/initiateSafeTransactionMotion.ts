@@ -171,8 +171,6 @@ function* initiateSafeTransactionMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
     /**
      * Create parent safe transaction in the database
      */
@@ -207,6 +205,8 @@ function* initiateSafeTransactionMotion({
         },
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,

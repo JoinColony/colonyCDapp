@@ -175,8 +175,6 @@ function* createPaymentAction({
       },
     } = yield waitForTxResult(paymentAction.channel);
 
-    setTxHash?.(txHash);
-
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
@@ -186,6 +184,8 @@ function* createPaymentAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
