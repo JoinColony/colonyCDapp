@@ -94,5 +94,12 @@
         }
       }
     }
+  },
+  "dev": {
+    "categories": {
+      "function": {
+        "removeMemberFromColonyWhitelist": {}
+      }
+    }
   }
 }

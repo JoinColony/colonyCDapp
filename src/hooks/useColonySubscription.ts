@@ -6,6 +6,7 @@ import { useAppContext } from '~context/AppContext.tsx';
 import {
   useCreateColonyContributorMutation,
   useGetColonyContributorQuery,
+  useRemoveMemberFromColonyWhitelistMutation,
   useUpdateColonyContributorMutation,
 } from '~gql';
 import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
@@ -19,6 +20,9 @@ const useColonySubscription = (colony?: Colony) => {
   const { colonyAddress = '' } = colony ?? {};
   const { user, wallet, connectWallet } = useAppContext();
   const { walletAddress = '' } = user || {};
+
+  const [removeMemberFromColonyWhitelist] =
+    useRemoveMemberFromColonyWhitelistMutation();
 
   const [isWatching, setIsWatching] = useState(false);
 
@@ -84,14 +88,25 @@ const useColonySubscription = (colony?: Colony) => {
     clearContributorCaches();
   };
 
-  const handleUnwatch = () => {
-    updateContributor({
+  const handleUnwatch = async () => {
+    await updateContributor({
       variables: { input: { id: colonyContributorId, isWatching: false } },
       onCompleted(data) {
         setIsWatching(Boolean(data?.updateColonyContributor?.isWatching));
       },
     });
     clearContributorCaches();
+
+    // @BETA: Remove once beta ends
+    await removeMemberFromColonyWhitelist({
+      variables: {
+        input: {
+          colonyAddress,
+          userAddress: walletAddress,
+        },
+      },
+    });
+    navigate('/');
   };
 
   const canWatch = useCanJoinColony(isWatching, colony) && !loading;
