@@ -40,6 +40,7 @@ import Link from '~v5/shared/Link/index.ts';
 
 import BalanceModal from '../BalanceModal/index.ts';
 
+import BalanceFilters from './Filters/BalanceFilters/BalanceFilters.tsx';
 import { useBalanceTableColumns, useBalancesData } from './hooks.tsx';
 import { type BalanceTableFieldModel } from './types.ts';
 
@@ -182,10 +183,7 @@ const BalanceTable: FC = () => {
   return (
     <>
       <TableHeader title={formatText({ id: 'balancePage.table.title' })}>
-        {
-          // # TODO Enable correct filtering
-          /** (!!tokensDataLength || !!searchValue) && <Filter />} */
-        }
+        <BalanceFilters />
         <Button
           mode="primarySolid"
           onClick={toggleAddFundsModalOn}
