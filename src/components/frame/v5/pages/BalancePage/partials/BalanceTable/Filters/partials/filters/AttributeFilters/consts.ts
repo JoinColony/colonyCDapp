@@ -7,8 +7,8 @@ export const ATTRIBUTE_FILTERS = [
     }),
     name: 'native',
   },
-  {
-    label: formatText({ id: 'balancePage.filter.attributes.reputation' }),
-    name: 'reputation',
-  },
+  // {
+  //   label: formatText({ id: 'balancePage.filter.attributes.reputation' }),
+  //   name: 'reputation',
+  // },
 ];
