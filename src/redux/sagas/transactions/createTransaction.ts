@@ -145,20 +145,6 @@ export function* waitForTxResult(channel: Channel<any>) {
   }
 }
 
-export function* waitForTxHash(channel: Channel<any>) {
-  const result = yield takeFrom(channel, [
-    ActionTypes.TRANSACTION_ERROR,
-    ActionTypes.TRANSACTION_HASH_RECEIVED,
-  ]);
-
-  switch (result.type) {
-    case ActionTypes.TRANSACTION_ERROR:
-      throw new Error('Transaction failed');
-    default:
-      return result;
-  }
-}
-
 export const createGroupTransaction = (
   { id, index }: { id: string; index: number },
   key: string,
