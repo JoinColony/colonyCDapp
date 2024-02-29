@@ -37,7 +37,6 @@ function* createStakedExpenditure({
     isStaged,
     stages,
     networkInverseFee,
-    decisionMethod,
     annotationMessage,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
@@ -233,7 +232,6 @@ function* createStakedExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      decisionMethod,
       stages: isStaged ? stages : undefined,
       stakeAmount,
     });
