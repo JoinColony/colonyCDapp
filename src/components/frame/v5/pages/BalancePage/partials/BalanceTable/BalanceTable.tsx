@@ -217,14 +217,13 @@ const BalanceTable: FC = () => {
         getPaginationRowModel={getPaginationRowModel()}
         emptyContent={
           !tokensDataLength && (
-            <div className="border border-1 w-full rounded-b-lg border-gray-200">
-              <EmptyContent
-                icon={Binoculars}
-                title={{ id: 'balancePage.table.emptyTitle' }}
-                description={{ id: 'balancePage.table.emptyDescription' }}
-                withoutButtonIcon
-              />
-            </div>
+            <EmptyContent
+              icon={Binoculars}
+              title={{ id: 'balancePage.table.emptyTitle' }}
+              description={{ id: 'balancePage.table.emptyDescription' }}
+              withoutButtonIcon
+              className="pt-10 pb-9 px-6"
+            />
           )
         }
         getMenuProps={getMenuProps}
