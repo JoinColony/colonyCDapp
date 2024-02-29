@@ -20,6 +20,7 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
+  getPayoutsWithSlotIds,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -47,11 +48,7 @@ function* createStakedExpenditure({
   );
   const batchKey = 'createExpenditure';
 
-  // Add slot id to each payout
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   const {
     approveStake,

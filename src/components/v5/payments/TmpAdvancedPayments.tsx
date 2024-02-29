@@ -124,7 +124,6 @@ const TmpAdvancedPayments = () => {
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
     networkInverseFee,
-    annotationMessage: 'expenditure annotation',
   };
 
   const createStagedExpenditurePayload: CreateExpenditurePayload = {
@@ -340,6 +339,7 @@ const TmpAdvancedPayments = () => {
             Cancel and punish
           </Button>
           <Button onClick={handleEdit}>Edit</Button>
+          <Button onClick={() => refetch()}>Refetch</Button>
         </div>
       </div>
       <div className="flex gap-4">
@@ -348,7 +348,6 @@ const TmpAdvancedPayments = () => {
           onChange={(e) => setReleaseStage(e.currentTarget.value)}
           placeholder="Stage to release"
         />
-        <Button onClick={() => refetch()}>Refetch expenditure</Button>
         <Button
           onClick={handleReleaseExpenditureStageMotion}
           disabled={!expenditure}
