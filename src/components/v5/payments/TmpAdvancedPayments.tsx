@@ -311,7 +311,6 @@ const TmpAdvancedPayments = () => {
         <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
           Cancel and punish
         </Button>
-        <Button onClick={handleFundExpenditure}>Fund expenditure</Button>
       </div>
       <div className="flex gap-4">
         <InputBase
