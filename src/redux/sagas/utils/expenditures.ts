@@ -20,7 +20,7 @@ import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
  */
 const groupExpenditurePayoutsByTokenAddresses = (
   payouts: ExpenditurePayoutFieldValue[],
-) => {
+): Map<string, ExpenditurePayoutFieldValue[]> => {
   const payoutsByTokenAddresses = new Map<
     string,
     ExpenditurePayoutFieldValue[]
@@ -151,3 +151,12 @@ export function* saveExpenditureMetadata({
     },
   });
 }
+
+export const getPayoutsWithSlotIds = (
+  payouts: ExpenditurePayoutFieldValue[],
+) => {
+  return payouts.map((payout, index) => ({
+    ...payout,
+    slotId: index + 1,
+  }));
+};
