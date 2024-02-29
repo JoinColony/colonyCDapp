@@ -32,9 +32,11 @@ const TmpAdvancedPayments = () => {
   const { extensionData } = useExtensionData(Extension.StagedExpenditure);
   const { networkInverseFee = '0' } = useNetworkInverseFee();
 
-  const [tokenId, setTokenId] = useState('');
-  const [decimalAmount, setDecimalAmount] = useState('');
-  const [transactionAmount, setTransactionAmount] = useState('');
+  const [tokenAddress, setTokenAddress] = useState(
+    colony.nativeToken.tokenAddress,
+  );
+  const [decimalAmount, setDecimalAmount] = useState('18');
+  const [transactionAmount, setTransactionAmount] = useState('0');
   const [expenditureId, setExpenditureId] = useState('');
   const [releaseStage, setReleaseStage] = useState('');
 
@@ -109,7 +111,7 @@ const TmpAdvancedPayments = () => {
   const payouts = [
     {
       amount: transactionAmount,
-      tokenAddress: tokenId,
+      tokenAddress,
       recipientAddress: user?.walletAddress ?? '',
       claimDelay: 0,
       tokenDecimals: tokenDecimalAmount,
@@ -267,7 +269,20 @@ const TmpAdvancedPayments = () => {
       colonyAddress: colony.colonyAddress,
       expenditure,
       networkInverseFee,
-      payouts: [],
+      payouts: [
+        {
+          amount: '23.45',
+          tokenAddress: colony.nativeToken.tokenAddress,
+          recipientAddress: colony.colonyAddress,
+          claimDelay: 0,
+        },
+        {
+          amount: '67.89',
+          tokenAddress: colony.nativeToken.tokenAddress,
+          recipientAddress: user?.walletAddress ?? '',
+          claimDelay: 300,
+        },
+      ],
       userAddress: user?.walletAddress ?? '',
     };
 
@@ -278,16 +293,19 @@ const TmpAdvancedPayments = () => {
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
         <InputBase
-          onChange={(e) => setTokenId(e.currentTarget.value)}
-          placeholder="Token Address"
+          onChange={(e) => setTokenAddress(e.currentTarget.value)}
+          value={tokenAddress}
+          label="Token Address"
         />
         <InputBase
           onChange={(e) => setDecimalAmount(e.currentTarget.value)}
-          placeholder="Token Decimals"
+          value={decimalAmount}
+          label="Token Decimals"
         />
         <InputBase
           onChange={(e) => setTransactionAmount(e.currentTarget.value)}
-          placeholder="Transaction Amount"
+          value={transactionAmount}
+          label="Transaction Amount"
         />
         <ActionButton
           actionType={ActionTypes.EXPENDITURE_CREATE}
