@@ -1,115 +1,54 @@
 import { Tokens } from '@colony/colony-js';
 
+import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
 import { Network, SupportedCurrencies } from '~gql';
 
-import { currencyApiConfig, coinGeckoMappings } from './config.ts';
+import { coinGeckoMappings } from './config.ts';
 import { getSavedPrice, savePrice } from './memo.ts';
+import { fetchTokenPriceByAddress } from './tokenPriceByAddress.ts';
+import { fetchTokenPriceByName } from './tokenPriceByName.ts';
 import {
-  type CoinGeckoPriceRequestSuccessResponse,
   type FetchCurrentPriceArgs,
   type CoinGeckoSupportedCurrencies,
-  type SupportedChains,
-  type CoinGeckoPriceRequestResponse,
 } from './types.ts';
-import {
-  buildAPIEndpoint,
-  convertTokenToCLNY,
-  fetchData,
-  mapToAPIFormat,
-} from './utils.ts';
-
-// The functions defined in this file assume something about the shape of the api response.
-// If that changes, or if we change the api, these functions will need to be updated.
-
-const { chains, currencies } = coinGeckoMappings;
-
-const buildCoinGeckoURL = (
-  contractAddress: string,
-  chainId: SupportedChains = Network.Gnosis,
-  conversionDenomination: CoinGeckoSupportedCurrencies = SupportedCurrencies.Usd,
-) => {
-  const chain = mapToAPIFormat(chains, chainId);
-  const denomination = mapToAPIFormat(currencies, conversionDenomination);
-
-  return buildAPIEndpoint(new URL(`${currencyApiConfig.endpoint}${chain}`), {
-    [currencyApiConfig.searchParams.from]: contractAddress,
-    [currencyApiConfig.searchParams.to]: denomination,
-    [currencyApiConfig.searchParams.api]: process.env.COINGECKO_API_KEY ?? '',
-  });
-};
-
-const extractPriceFromCoinGeckoResponse = (
-  data: CoinGeckoPriceRequestSuccessResponse,
-  contractAddress: string,
-  conversionDenomination: CoinGeckoSupportedCurrencies,
-) => {
-  try {
-    return data[contractAddress.toLowerCase()][
-      mapToAPIFormat(currencies, conversionDenomination)
-    ];
-  } catch (e) {
-    console.error(
-      'Could not get price from CoinGecko response. Response shape might have changed.',
-      e,
-    );
-    return 0;
-  }
-};
-
-const isCoinGeckoSuccessResponse = (
-  data: CoinGeckoPriceRequestResponse,
-): data is CoinGeckoPriceRequestSuccessResponse => {
-  if (
-    typeof data === 'undefined' || // undefined
-    data == null || // null
-    (typeof data == 'object' && Object.keys(data).length === 0) // empty object
-  ) {
-    return false;
-  }
-
-  return true;
-};
+import { convertTokenToCLNY } from './utils.ts';
 
 const fetchPriceFromCoinGecko = async ({
   contractAddress,
   chainId = Network.Gnosis,
-  conversionDenomination = SupportedCurrencies.Usd,
+  conversionDenomination,
 }: Pick<FetchCurrentPriceArgs, 'chainId' | 'contractAddress'> & {
-  conversionDenomination?: CoinGeckoSupportedCurrencies;
+  conversionDenomination: CoinGeckoSupportedCurrencies;
 }) => {
-  const url = buildCoinGeckoURL(
+  // If it's a network token we can't fetch it by contract address
+  if (contractAddress === ADDRESS_ZERO) {
+    const networkToken =
+      coinGeckoMappings.networkTokens[DEFAULT_NETWORK_TOKEN.symbol];
+
+    if (!networkToken) {
+      console.error('Unable to get default network token.');
+      return 0;
+    }
+
+    return fetchTokenPriceByName({
+      tokenName: networkToken,
+      conversionDenomination,
+    });
+  }
+
+  return fetchTokenPriceByAddress({
     contractAddress,
     chainId,
     conversionDenomination,
-  );
-
-  const price = await fetchData<CoinGeckoPriceRequestResponse, number>(
-    url,
-    (data) => {
-      if (isCoinGeckoSuccessResponse(data)) {
-        return extractPriceFromCoinGeckoResponse(
-          data,
-          contractAddress,
-          conversionDenomination,
-        );
-      }
-
-      console.error(
-        `Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
-      );
-      return 0;
-    },
-    `Api called failed at ${url}.`,
-  );
-
-  return price;
+  });
 };
 
 const getCLNYPriceInUSD = async () => {
   // Returns 1 CLNY in terms of USD, 1 CLNY : x USD
-  return fetchPriceFromCoinGecko({
+  return fetchTokenPriceByAddress({
     contractAddress: Tokens.Mainnet.Mainnet,
     chainId: Network.Mainnet,
+    conversionDenomination: SupportedCurrencies.Usd,
   });
 };
 
@@ -141,6 +80,7 @@ export const fetchCurrentPrice = async ({
     const tokenPriceinUSD = await fetchPriceFromCoinGecko({
       contractAddress,
       chainId,
+      conversionDenomination: SupportedCurrencies.Usd,
     });
 
     const clnyInUSD = await getCLNYPriceInUSD();

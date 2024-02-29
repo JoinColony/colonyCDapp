@@ -1,12 +1,25 @@
+import { ETHER_TOKEN, XDAI_TOKEN } from '~constants';
 import { Network, SupportedCurrencies } from '~gql';
 
 // For walkthrough, see: https://apiguide.coingecko.com/getting-started/10-min-tutorial-guide/1-get-data-by-id-or-address
 export const currencyApiConfig = {
-  endpoint: 'https://api.coingecko.com/api/v3/simple/token_price/',
-  searchParams: {
-    from: 'contract_addresses',
-    to: 'vs_currencies',
-    api: 'x_cg_demo_api_key',
+  endpoints: {
+    tokenPriceByAddress: {
+      url: 'https://api.coingecko.com/api/v3/simple/token_price',
+      searchParams: {
+        from: 'contract_addresses',
+        to: 'vs_currencies',
+        api: 'x_cg_demo_api_key',
+      },
+    },
+    tokenPriceByName: {
+      url: 'https://api.coingecko.com/api/v3/simple/price',
+      searchParams: {
+        from: 'ids',
+        to: 'vs_currencies',
+        api: 'x_cg_demo_api_key',
+      },
+    },
   },
   attribution: 'https://www.coingecko.com/',
 };
@@ -28,6 +41,10 @@ export const coinGeckoMappings = {
   chains: {
     [Network.Gnosis]: 'xdai',
     [Network.Mainnet]: 'ethereum',
+  },
+  networkTokens: {
+    [ETHER_TOKEN.symbol]: 'ethereum',
+    [XDAI_TOKEN.symbol]: 'xdai',
   },
 };
 

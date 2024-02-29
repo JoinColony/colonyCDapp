@@ -149,6 +149,11 @@ export const useBalanceTableColumns = (
               />
               <CurrencyConversion
                 tokenBalance={currentTokenBalance}
+                tokenDecimals={
+                  row.original.token
+                    ? getTokenDecimalsWithFallback(row.original.token.decimals)
+                    : 0
+                }
                 contractAddress={row.original.token?.tokenAddress ?? ''}
                 className="text-gray-600 !text-sm block"
               />

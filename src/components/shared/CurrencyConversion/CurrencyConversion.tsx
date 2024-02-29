@@ -1,5 +1,6 @@
 import Decimal from 'decimal.js';
 import { type BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import React from 'react';
 
 import { useCurrencyContext } from '~context/CurrencyContext.tsx';
@@ -32,6 +33,9 @@ interface Props extends Omit<NumeralProps, 'value'> {
 
   /** Balance of token to be converted */
   tokenBalance: BigNumber;
+
+  /** Decimals of the token */
+  tokenDecimals: number;
 }
 
 const CurrencyConversion = ({
@@ -39,6 +43,7 @@ const CurrencyConversion = ({
   showSuffix = true,
   placeholder = '-',
   tokenBalance,
+  tokenDecimals,
   contractAddress,
   chainId,
   className,
@@ -59,7 +64,9 @@ const CurrencyConversion = ({
       value={
         conversionRate == null
           ? placeholder
-          : new Decimal(tokenBalance.toString()).mul(conversionRate)
+          : new Decimal(
+              moveDecimal(tokenBalance.toString(), -tokenDecimals),
+            ).mul(conversionRate)
       }
       {...rest}
     />
