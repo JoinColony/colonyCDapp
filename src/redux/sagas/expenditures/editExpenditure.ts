@@ -21,6 +21,7 @@ import {
   uploadAnnotation,
   getColonyManager,
   getMulticallDataForPayouts,
+  getPayoutsWithSlotIds,
 } from '../utils/index.ts';
 
 export type EditExpenditurePayload =
@@ -51,11 +52,15 @@ function* editExpenditureAction({
    */
   const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
 
-  payouts.forEach((payout, index) => {
-    // Add payout as specified in the form
-    resolvedPayouts.push({ ...payout, slotId: index + 1 });
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
-    const existingSlot = expenditure.slots.find((slot) => slot.id === index);
+  payoutsWithSlotIds.forEach((payout) => {
+    // Add payout as specified in the form
+    resolvedPayouts.push(payout);
+
+    const existingSlot = expenditure.slots.find(
+      (slot) => slot.id === payout.slotId,
+    );
 
     // Set the amounts for any existing payouts in different tokens to 0
     resolvedPayouts.push(
@@ -66,7 +71,7 @@ function* editExpenditureAction({
             BigNumber.from(slotPayout.amount).gt(0),
         )
         .map((slotPayout) => ({
-          slotId: index + 1,
+          slotId: payout.slotId,
           recipientAddress: payout.recipientAddress,
           tokenAddress: slotPayout.tokenAddress,
           amount: '0',
