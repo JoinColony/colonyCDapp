@@ -9,6 +9,7 @@ import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
+import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelExpenditure.ts';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
@@ -101,6 +102,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.EXPENDITURE_EDIT,
     error: ActionTypes.EXPENDITURE_EDIT_ERROR,
     success: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
+  });
+  const cancelExpenditure = useAsyncFunction({
+    submit: ActionTypes.EXPENDITURE_CANCEL,
+    error: ActionTypes.EXPENDITURE_CANCEL_ERROR,
+    success: ActionTypes.EXPENDITURE_CANCEL_SUCCESS,
   });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
@@ -288,6 +294,21 @@ const TmpAdvancedPayments = () => {
     await editExpenditure(payload);
   };
 
+  const handleCancel = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: CancelExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      stakedExpenditureAddress,
+      userAddress: user?.walletAddress ?? '',
+    };
+
+    await cancelExpenditure(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -339,6 +360,7 @@ const TmpAdvancedPayments = () => {
             Cancel and punish
           </Button>
           <Button onClick={handleEdit}>Edit</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
           <Button onClick={() => refetch()}>Refetch</Button>
         </div>
       </div>
