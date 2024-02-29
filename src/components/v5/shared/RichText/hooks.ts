@@ -1,10 +1,8 @@
 import { mergeAttributes } from '@tiptap/core';
 import Blockquote from '@tiptap/extension-blockquote';
 import CharacterCount from '@tiptap/extension-character-count';
-import Document from '@tiptap/extension-document';
 import Heading from '@tiptap/extension-heading';
 import Placeholder from '@tiptap/extension-placeholder';
-import Text from '@tiptap/extension-text';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -28,13 +26,11 @@ export const useRichText = (
     {
       editable: !isReadonly,
       extensions: [
-        Document,
-        Text,
-        CharacterCount,
-        Underline,
         StarterKit.configure({
           heading: false,
+          blockquote: false,
         }),
+        Underline,
         Placeholder.configure({
           placeholder: () => {
             setNotFormattedContent(
