@@ -34,7 +34,6 @@ function* createExpenditure({
     isStaged,
     stages,
     networkInverseFee,
-    decisionMethod,
     annotationMessage,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
@@ -188,7 +187,6 @@ function* createExpenditure({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
-      decisionMethod,
       stages: isStaged ? stages : undefined,
     });
 

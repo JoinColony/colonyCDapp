@@ -3,11 +3,7 @@ import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
-import {
-  type Expenditure,
-  ExpenditureDecisionMethod,
-  useGetExpenditureQuery,
-} from '~gql';
+import { type Expenditure, useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
@@ -120,7 +116,6 @@ const TmpAdvancedPayments = () => {
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
     networkInverseFee,
-    decisionMethod: ExpenditureDecisionMethod.Permissions,
     annotationMessage: 'expenditure annotation',
   };
 
@@ -130,7 +125,6 @@ const TmpAdvancedPayments = () => {
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
     networkInverseFee,
-    decisionMethod: ExpenditureDecisionMethod.Permissions,
     isStaged: true,
     stages: [
       {
@@ -202,7 +196,6 @@ const TmpAdvancedPayments = () => {
       stakeAmount,
       stakedExpenditureAddress,
       networkInverseFee,
-      decisionMethod: ExpenditureDecisionMethod.Permissions,
     };
 
     await createStakedExpenditure(payload);

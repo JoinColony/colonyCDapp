@@ -1,7 +1,4 @@
-import {
-  type ExpenditureDecisionMethod,
-  type StreamingPaymentEndCondition,
-} from '~gql';
+import { type StreamingPaymentEndCondition } from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   type ExpenditurePayoutFieldValue,
@@ -48,7 +45,6 @@ export type ExpendituresActionTypes =
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
-        decisionMethod: ExpenditureDecisionMethod;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
@@ -140,7 +136,6 @@ export type ExpendituresActionTypes =
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
-        decisionMethod: ExpenditureDecisionMethod;
       },
       MetaWithSetter<object>
     >
