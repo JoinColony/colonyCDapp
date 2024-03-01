@@ -1,7 +1,11 @@
-import { ClientType } from '@colony/colony-js';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
+import type ColonyManager from '~context/ColonyManager.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { type Address } from '~types';
+import { type Expenditure } from '~types/graphql.ts';
 
 import {
   type ChannelDefinition,
@@ -10,6 +14,7 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  getColonyManager,
   initiateTransaction,
   putError,
   takeFrom,
@@ -20,10 +25,41 @@ export type FinalizeExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_FINALIZE>['payload'];
 
 function* finalizeExpenditureAction({
-  payload: { colonyAddress, nativeExpenditureId, annotationMessage },
+  payload: { colonyAddress, expenditure, userAddress, annotationMessage },
   meta,
 }: Action<ActionTypes.EXPENDITURE_FINALIZE>) {
+  if (expenditure.ownerAddress === userAddress) {
+    yield finalizeExpenditureAsOwner({
+      colonyAddress,
+      expenditure,
+      annotationMessage,
+      meta,
+    });
+  } else {
+    yield finalizeExpenditureWithPermissions({
+      colonyAddress,
+      expenditure,
+      annotationMessage,
+      meta,
+    });
+  }
+}
+
+type FinalizeExpenditureAsOwnerParams = {
+  colonyAddress: Address;
+  expenditure: Expenditure;
+  meta: Action<ActionTypes.EXPENDITURE_FINALIZE>['meta'];
+  annotationMessage?: string;
+};
+
+function* finalizeExpenditureAsOwner({
+  colonyAddress,
+  expenditure,
+  meta,
+  annotationMessage,
+}: FinalizeExpenditureAsOwnerParams) {
   const batchKey = 'finalizeExpenditure';
+  const { nativeId } = expenditure;
 
   const {
     finalizeExpenditure,
@@ -38,7 +74,7 @@ function* finalizeExpenditureAction({
       context: ClientType.ColonyClient,
       methodName: 'finalizeExpenditure',
       identifier: colonyAddress,
-      params: [nativeExpenditureId],
+      params: [nativeId],
       group: {
         key: batchKey,
         id: meta.id,
@@ -95,13 +131,49 @@ function* finalizeExpenditureAction({
       meta,
     });
   } catch (error) {
-    return yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
+    yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
   }
   [finalizeExpenditure, annotateFinalizeExpenditure].forEach((channel) =>
     channel.channel.close(),
   );
+}
 
-  return null;
+type FinalizeExpenditureWithPermissions = {
+  colonyAddress: Address;
+  expenditure: Expenditure;
+  meta: Action<ActionTypes.EXPENDITURE_FINALIZE>['meta'];
+  annotationMessage?: string;
+};
+
+function* finalizeExpenditureWithPermissions({
+  colonyAddress,
+  expenditure,
+  meta,
+  annotationMessage,
+}: FinalizeExpenditureWithPermissions) {
+  const batchKey = 'finalizeExpenditure';
+  const { nativeId } = expenditure;
+  const colonyManager: ColonyManager = yield getColonyManager();
+
+  const {
+    finalizeExpenditure,
+    annotateFinalizeExpenditure,
+  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
+    meta.id,
+    ['finalizeExpenditure', 'annotateFinalizeExpenditure'],
+  );
+
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
+
+  const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+    colonyClient.networkClient,
+    colonyClient,
+    expenditure.nativeDomainId,
+    ColonyRole.Arbitration,
+  );
 }
 
 export default function* finalizeExpenditureSaga() {
