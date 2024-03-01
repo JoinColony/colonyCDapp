@@ -66,8 +66,9 @@ export type ExpendituresActionTypes =
       ActionTypes.EXPENDITURE_FINALIZE,
       {
         colonyAddress: Address;
-        nativeExpenditureId: number;
+        expenditure: Expenditure;
         annotationMessage?: string;
+        userAddress: Address;
       },
       MetaWithSetter<object>
     >

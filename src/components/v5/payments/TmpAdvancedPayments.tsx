@@ -183,16 +183,17 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleFinalizeExpenditure = async () => {
-    const finalizePayload: FinalizeExpenditurePayload = {
-      colonyAddress: colony.colonyAddress,
-      nativeExpenditureId: Number(expenditureId),
-    };
-
-    await finalizeExpenditure(finalizePayload);
-
     if (!expenditure) {
       return;
     }
+
+    const finalizePayload: FinalizeExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      userAddress: user?.walletAddress ?? '',
+    };
+
+    await finalizeExpenditure(finalizePayload);
 
     const claimPayload: ClaimExpenditurePayload = {
       colonyAddress: colony.colonyAddress,
