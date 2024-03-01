@@ -127,12 +127,10 @@ function* createDecisionMotion({
 
     const {
       payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
+    } = yield takeFrom(createMotion.channel, [
       ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    setTxHash?.(txHash);
+      ActionTypes.TRANSACTION_ERROR,
+    ]);
 
     yield apolloClient.mutate<
       CreateColonyDecisionMutation,
@@ -165,6 +163,8 @@ function* createDecisionMotion({
     // yield put(transactionReady(annotateMotion.id));
 
     // yield waitForTxResult(annotateMotion.channel);
+    //
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_CREATE_DECISION_SUCCESS,
@@ -182,7 +182,8 @@ function* createDecisionMotion({
       payload: { walletAddress, colonyAddress },
     });
   } catch (caughtError) {
-    putError(ActionTypes.MOTION_CREATE_DECISION_ERROR, caughtError, meta);
+    console.error('the kot error', caughtError);
+    yield putError(ActionTypes.MOTION_CREATE_DECISION_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }

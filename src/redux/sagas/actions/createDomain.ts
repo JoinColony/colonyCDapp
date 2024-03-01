@@ -132,8 +132,6 @@ function* createDomainAction({
       },
     } = yield waitForTxResult(createDomain.channel);
 
-    setTxHash?.(txHash);
-
     const { domainId } = eventData?.DomainAdded || {};
     const nativeDomainId = toNumber(domainId);
 
@@ -165,6 +163,8 @@ function* createDomainAction({
       });
     }
 
+    setTxHash?.(txHash);
+
     yield put<AllActions>({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
       meta,
@@ -176,11 +176,10 @@ function* createDomainAction({
       });
     }
   } catch (error) {
-    return yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
+    yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
-  return null;
 }
 
 export default function* createDomainActionSaga() {

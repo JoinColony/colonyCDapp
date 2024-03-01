@@ -133,15 +133,10 @@ function* createMoveFundsAction({
     yield initiateTransaction({ id: moveFunds.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      moveFunds.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    setTxHash?.(txHash);
-
-    yield waitForTxResult(moveFunds.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(moveFunds.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -152,6 +147,8 @@ function* createMoveFundsAction({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
@@ -164,7 +161,7 @@ function* createMoveFundsAction({
       });
     }
   } catch (caughtError) {
-    putError(ActionTypes.ACTION_MOVE_FUNDS_ERROR, caughtError, meta);
+    yield putError(ActionTypes.ACTION_MOVE_FUNDS_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }

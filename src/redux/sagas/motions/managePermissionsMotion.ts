@@ -163,14 +163,10 @@ function* managePermissionsMotion({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    setTxHash?.(txHash);
-    yield waitForTxResult(createMotion.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createMotion.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -181,6 +177,8 @@ function* managePermissionsMotion({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,
@@ -193,7 +191,7 @@ function* managePermissionsMotion({
       });
     }
   } catch (caughtError) {
-    putError(ActionTypes.MOTION_USER_ROLES_SET_ERROR, caughtError, meta);
+    yield putError(ActionTypes.MOTION_USER_ROLES_SET_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
   }

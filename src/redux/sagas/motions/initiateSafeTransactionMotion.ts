@@ -45,7 +45,7 @@ function* initiateSafeTransactionMotion({
     network,
     customActionTitle,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION>) {
   let txChannel;
@@ -166,13 +166,10 @@ function* initiateSafeTransactionMotion({
     yield put(transactionReady(createMotion.id));
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    yield waitForTxResult(createMotion.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createMotion.channel);
 
     /**
      * Create parent safe transaction in the database
@@ -208,6 +205,8 @@ function* initiateSafeTransactionMotion({
         },
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_INITIATE_SAFE_TRANSACTION_SUCCESS,

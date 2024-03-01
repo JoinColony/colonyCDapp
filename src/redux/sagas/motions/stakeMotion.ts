@@ -214,13 +214,10 @@ function* stakeMotion({
     yield initiateTransaction({ id: stakeMotionTransaction.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      stakeMotionTransaction.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    yield waitForTxResult(stakeMotionTransaction.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(stakeMotionTransaction.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({

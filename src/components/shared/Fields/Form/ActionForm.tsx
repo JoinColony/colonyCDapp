@@ -69,7 +69,7 @@ const ActionForm = <V extends Record<string, any>>({
       const res = await asyncFunction(values);
       onSuccess?.(values, formHelpers, res);
     } catch (e) {
-      console.error(e);
+      console.error('Error while submitting form', e);
       onError?.(e, formHelpers);
     }
   };

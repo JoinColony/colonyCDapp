@@ -178,15 +178,10 @@ function* manageReputationMotion({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    setTxHash?.(txHash);
-
-    yield waitForTxResult(createMotion.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createMotion.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -198,6 +193,7 @@ function* manageReputationMotion({
       });
     }
 
+    setTxHash?.(txHash);
     /*
      * Refesh the user & colony reputation
      */
@@ -214,7 +210,7 @@ function* manageReputationMotion({
       });
     }
   } catch (error) {
-    putError(ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, error, meta);
+    yield putError(ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, error, meta);
   } finally {
     txChannel.close();
   }
