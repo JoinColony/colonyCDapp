@@ -61,19 +61,21 @@ const AgreementsPage: FC = () => {
             {formatText({ id: 'agreementsPage.subtitle' })}
           </h4>
         </div>
-        <AgreementsPageFilters />
-        <Button
-          mode="primarySolid"
-          size="medium"
-          isFullSize={false}
-          onClick={() => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
-            });
-          }}
-        >
-          {formatText({ id: 'agreementsPage.createAgreement' })}
-        </Button>
+        <div className="flex items-center gap-2">
+          <AgreementsPageFilters />
+          <Button
+            mode="primarySolid"
+            size="small"
+            isFullSize={false}
+            onClick={() => {
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+              });
+            }}
+          >
+            {formatText({ id: 'agreementsPage.createAgreement' })}
+          </Button>
+        </div>
       </div>
       {loading || loadingMotionStateFilter ? (
         <ul className="grid sm:grid-cols-2 gap-6">
