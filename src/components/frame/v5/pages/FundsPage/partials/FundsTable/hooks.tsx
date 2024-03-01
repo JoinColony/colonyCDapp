@@ -98,13 +98,10 @@ export const useFundsTable = (): UseFundsTableProps => {
     approved: true,
     unapproved: false,
   };
-
   const [searchValue, setSearchValue] = useState('');
   const [isStatusChanged, setIsStatusChanged] = useState(false);
   const [filterValue, setFilterValue] = useState<Partial<FundsTableFilters>>({
-    status: {
-      ...defaultStatusFilter,
-    },
+    status: defaultStatusFilter,
     type: {},
   });
 
@@ -115,10 +112,14 @@ export const useFundsTable = (): UseFundsTableProps => {
       return type[visibleToken?.token?.tokenAddress || 0];
     }
 
-    return (
-      (status && status.approved && visibleToken.isApproved) ||
-      (status && status.unapproved && !visibleToken.isApproved)
-    );
+    if (status && status.approved) {
+      return visibleToken.isApproved;
+    }
+    if (status && status.unapproved) {
+      return !visibleToken.isApproved;
+    }
+
+    return true;
   });
 
   const searchedTokens = visibleTokens.filter(
@@ -184,10 +185,36 @@ export const useFundsTable = (): UseFundsTableProps => {
     ],
   };
 
+  const activeFilters = filters.items
+    .map((item) => {
+      const activeItem = filters.value[item.name];
+
+      if (item.name === 'status' && !isStatusChanged) {
+        return undefined;
+      }
+
+      if (activeItem) {
+        const activeFilter = Object.keys(activeItem).filter(
+          (key) => activeItem[key],
+        );
+        const activeFiltersForItem = activeFilter.map((filterKey) => {
+          const filter = item.items.find((f) => f.name === filterKey);
+
+          return filter?.symbol || filter?.label;
+        });
+
+        return activeFiltersForItem.length > 0
+          ? { filterName: item.filterName, filters: activeFiltersForItem }
+          : null;
+      }
+
+      return undefined;
+    })
+    .filter(Boolean);
+
   return {
     filters,
     searchedTokens,
-    isStatusChanged,
-    defaultStatusFilter,
+    activeFilters,
   };
 };

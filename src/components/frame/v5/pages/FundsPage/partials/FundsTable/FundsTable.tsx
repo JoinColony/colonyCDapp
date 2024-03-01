@@ -24,39 +24,11 @@ const displayName = 'pages.FundsPage.partials.FundsTable';
 const FundsTable: FC = () => {
   const columns = useFundsTableColumns();
   const isMobile = useMobile();
-  const { filters, searchedTokens, isStatusChanged, defaultStatusFilter } =
-    useFundsTable();
+  const { filters, searchedTokens, activeFilters } = useFundsTable();
   const claims = useColonyFundsClaims();
   const allClaims = Array.from(
     new Set(claims.map((claim) => claim.token?.tokenAddress || '')),
   );
-
-  const activeFilters = filters.items
-    .map((item) => {
-      const activeItem = filters.value[item.name];
-
-      if (item.name === 'status' && !isStatusChanged) {
-        return undefined;
-      }
-
-      if (activeItem) {
-        const activeFilter = Object.keys(activeItem).filter(
-          (key) => activeItem[key],
-        );
-        const activeFiltersForItem = activeFilter.map((filterKey) => {
-          const filter = item.items.find((f) => f.name === filterKey);
-
-          return filter?.symbol || filter?.label;
-        });
-
-        return activeFiltersForItem.length > 0
-          ? { filterName: item.filterName, filters: activeFiltersForItem }
-          : null;
-      }
-
-      return undefined;
-    })
-    .filter(Boolean);
 
   return (
     <>
@@ -90,15 +62,6 @@ const FundsTable: FC = () => {
                       const filterToRemove = filters.items.find(
                         (item) => item.filterName === activeFilter.filterName,
                       )?.name;
-
-                      if (filterToRemove === 'status') {
-                        filters.onChange({
-                          ...filters.value,
-                          status: defaultStatusFilter,
-                        });
-
-                        return;
-                      }
 
                       if (filterToRemove) {
                         const updatedFilters = { ...filters.value };
