@@ -5,7 +5,7 @@ import { formatText } from '~utils/intl.ts';
 import { useFiltersContext } from '../../FilterContext/index.ts';
 import { FiltersValues } from '../../FilterContext/types.ts';
 import { ATTRIBUTE_FILTERS } from '../filters/AttributeFilters/consts.ts';
-import { useGetTokenTypeFilters } from '../filters/TokenFilters/consts.tsx';
+import { useGetTokenTypeFilters } from '../filters/TokenFilters/hooks.ts';
 
 export const useActiveFilters = () => {
   const { attributeFilters, tokenTypes, handleResetFilters } =

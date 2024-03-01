@@ -7,6 +7,7 @@ export const ATTRIBUTE_FILTERS = [
     }),
     name: 'native',
   },
+  // @TODO: Uncomment when token will have reputation attribute
   // {
   //   label: formatText({ id: 'balancePage.filter.attributes.reputation' }),
   //   name: 'reputation',
