@@ -12,6 +12,10 @@ export const useActiveFilters = () => {
     useFiltersContext();
 
   const tokenTypesFilters = useGetTokenTypeFilters();
+  const tokenItems = tokenTypesFilters.map(({ token }) => ({
+    symbol: token.symbol,
+    name: token?.tokenAddress || '',
+  }));
 
   const activeFiltersToDisplay = useMemo(() => {
     return [
@@ -22,7 +26,7 @@ export const useActiveFilters = () => {
               category: formatText({
                 id: 'balancePage.filter.type',
               }),
-              items: tokenTypesFilters
+              items: tokenItems
                 .filter(({ name }) => tokenTypes[name])
                 .map(({ symbol }) => symbol),
             },
@@ -42,7 +46,7 @@ export const useActiveFilters = () => {
           ]
         : []),
     ];
-  }, [attributeFilters, tokenTypes, tokenTypesFilters]);
+  }, [attributeFilters, tokenTypes, tokenItems]);
 
   return { activeFiltersToDisplay, handleResetFilters };
 };
