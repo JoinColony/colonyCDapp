@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 arch="$(uname -m)";
 case "$arch" in
