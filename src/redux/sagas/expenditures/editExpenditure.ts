@@ -20,7 +20,7 @@ import {
   takeFrom,
   uploadAnnotation,
   getColonyManager,
-  getMulticallDataForPayouts,
+  getMulticallDataForUpdatedPayouts,
   getPayoutsWithSlotIds,
 } from '../utils/index.ts';
 
@@ -124,7 +124,7 @@ function* editExpenditureAction({
         ),
       });
     } else {
-      const multicallData = yield getMulticallDataForPayouts(
+      const multicallData = yield getMulticallDataForUpdatedPayouts(
         expenditure,
         resolvedPayouts,
         colonyClient,
