@@ -4,14 +4,12 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { ExpenditureStatus } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type Expenditure } from '~types/graphql.ts';
-import { toB32 } from '~utils/solidity.ts';
 
 import {
   createTransaction,
@@ -20,6 +18,7 @@ import {
 } from '../transactions/index.ts';
 import {
   getColonyManager,
+  getDataForCancelLockedExpenditure,
   initiateTransaction,
   putError,
 } from '../utils/index.ts';
@@ -133,29 +132,21 @@ function* cancelLockedExpenditure({
   expenditure,
   userAddress,
 }: CancelExpenditureHelperParam) {
-  const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-    colonyClient.networkClient,
+  if (!userAddress) {
+    return;
+  }
+
+  const params = yield getDataForCancelLockedExpenditure(
+    expenditure,
     colonyClient,
-    expenditure.nativeDomainId,
-    ColonyRole.Arbitration,
     userAddress,
   );
-
-  const value = toB32(`${expenditure.ownerAddress}01`);
 
   yield fork(createTransaction, meta.id, {
     context: ClientType.ColonyClient,
     methodName: 'setExpenditureState',
     identifier: colonyAddress,
-    params: [
-      permissionDomainId,
-      childSkillIndex,
-      expenditure.nativeId,
-      BigNumber.from(26),
-      [true],
-      [BigNumber.from(0)],
-      value,
-    ],
+    params,
   });
 
   yield initiateTransaction({ id: meta.id });
