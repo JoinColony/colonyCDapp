@@ -65,6 +65,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.AddVerifiedMembersMotion:
         return <AddVerifiedMembers action={action} />;
       case ColonyActionType.RemoveVerifiedMembers:
+      case ColonyActionType.RemoveVerifiedMembersMotion:
         return <RemoveVerifiedMembers action={action} />;
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
