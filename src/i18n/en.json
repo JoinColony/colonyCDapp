@@ -34,7 +34,7 @@
     "navigation.members.teams": "Teams",
     "navigation.finances": "Finances",
     "navigation.finances.title": "Finances",
-    "navigation.finances.description": "Latest activity in the Colony, including motions & actions.",
+    "navigation.finances.description": "The financial overview, asset balances, revenue, and expenses of the colony.",
     "navigation.finances.overview": "Overview",
     "navigation.finances.balance": "Balance",
     "navigation.finances.incomingFunds": "Incoming funds",
