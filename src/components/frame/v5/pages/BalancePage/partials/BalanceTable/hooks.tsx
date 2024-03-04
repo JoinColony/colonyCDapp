@@ -57,16 +57,20 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
   );
 
   const filteredTokens = tokensData?.filter((token) => {
-    if (
-      Object.values(attributeFilters).some((attributeFilter) => attributeFilter)
-    ) {
-      return attributeFilters.native
-        ? token.token?.tokenAddress === nativeToken.tokenAddress
-        : token.token?.tokenAddress !== nativeToken.tokenAddress;
+    if (attributeFilters.native) {
+      if (
+        Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)
+      ) {
+        return (
+          token.token?.tokenAddress === nativeToken.tokenAddress &&
+          tokenTypes[token.token?.tokenAddress || 0]
+        );
+      }
+      return token.token?.tokenAddress === nativeToken.tokenAddress;
     }
 
     if (Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)) {
-      return tokenTypes[token?.token?.tokenAddress || 0];
+      return tokenTypes[token.token?.tokenAddress || 0];
     }
 
     return true;
