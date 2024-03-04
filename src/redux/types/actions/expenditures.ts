@@ -115,7 +115,6 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
-        annotationMessage?: string;
       },
       object
     >
