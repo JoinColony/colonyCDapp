@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, useState } from 'react';
+import React, { type FC, useState, useEffect } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub/index.ts';
@@ -7,6 +7,8 @@ import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberR
 import { useAnalyticsContext } from '~context/AnalyticsContext/index.ts';
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
+import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
@@ -19,6 +21,7 @@ import { UserHubTabs } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
 import { type UserHubButtonProps } from './types.ts';
+import { findNewestGroup, getGroupStatus } from './utils.ts';
 
 export const displayName =
   'common.Extensions.UserNavigation.partials.UserHubButton';
@@ -33,6 +36,10 @@ const UserHubButton: FC<UserHubButtonProps> = ({
   } = useColonyContext();
   const { wallet, user } = useAppContext();
   const [isUserHubOpen, setIsUserHubOpen] = useState(false);
+  const { transactionAndMessageGroups } = useUserTransactionContext();
+  const [prevGroupStatus, setPrevGroupStatus] = useState<
+    TransactionStatus | undefined
+  >();
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
@@ -85,6 +92,26 @@ const UserHubButton: FC<UserHubButtonProps> = ({
     toggleOff();
   };
 
+  const groupStatus = getGroupStatus(
+    findNewestGroup(transactionAndMessageGroups),
+  );
+
+  useEffect(() => {
+    if (
+      groupStatus === TransactionStatus.Failed &&
+      (prevGroupStatus === TransactionStatus.Pending ||
+        prevGroupStatus === TransactionStatus.Ready)
+    ) {
+      setIsUserHubOpen(true);
+    }
+  }, [groupStatus, prevGroupStatus]);
+
+  useEffect(() => {
+    if (groupStatus && groupStatus !== prevGroupStatus) {
+      setPrevGroupStatus(groupStatus);
+    }
+  }, [groupStatus, prevGroupStatus]);
+
   return (
     <div ref={ref}>
       <Button
@@ -94,7 +121,7 @@ const UserHubButton: FC<UserHubButtonProps> = ({
         ref={setTriggerRef}
         className={clsx(
           {
-            '!border-blue-400': visible,
+            '!border-blue-400': visible || isUserHubOpen,
           },
           'md:hover:!border-blue-400',
         )}
