@@ -1,28 +1,73 @@
 import {
-  getPermissionProofs,
   type AnyColonyClient,
   ColonyRole,
+  getPermissionProofs,
 } from '@colony/colony-js';
-import { BigNumber, type BigNumberish, utils } from 'ethers';
+import { type BigNumberish, utils, BigNumber } from 'ethers';
 
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
 
 import { getPayoutAmount } from './expenditures.ts';
 
-const toB32 = (input: BigNumberish) =>
+export const toB32 = (input: BigNumberish) =>
   utils.hexZeroPad(utils.hexlify(input), 32);
 
-const EXPENDITURESLOTS_SLOT = BigNumber.from(26);
+/**
+ * Indexes of relevant data slots in network contracts
+ * See: https://github.com/JoinColony/colonyNetwork/blob/develop/contracts/colony/ColonyStorage.sol
+ */
+const EXPENDITURES_SLOT = toB32(BigNumber.from(25));
+const EXPENDITURESLOTS_SLOT = toB32(BigNumber.from(26));
+
+const EXPENDITURE_OWNER_AND_STATUS = toB32(BigNumber.from(0));
 
 const EXPENDITURESLOT_RECIPIENT = toB32(BigNumber.from(0));
-const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
+const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(0));
+
+const MAPPING = false;
+const ARRAY = true;
+
+export const getMulticallDataForStageRelease = (
+  expenditure: Expenditure,
+  slotId: number,
+  colonyClient: AnyColonyClient,
+  permissionDomainId: BigNumber,
+  childSkillIndex: BigNumber,
+  tokenAddresses: string[],
+) => {
+  const encodedMulticallData: string[] = [];
+
+  encodedMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setExpenditureState', [
+      permissionDomainId,
+      childSkillIndex,
+      expenditure.nativeId,
+      EXPENDITURESLOTS_SLOT,
+      [MAPPING, ARRAY],
+      [toB32(slotId), EXPENDITURESLOT_CLAIMDELAY],
+      toB32(0),
+    ]),
+  );
+
+  for (const tokenAddress of tokenAddresses) {
+    encodedMulticallData.push(
+      colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
+        expenditure.nativeId,
+        slotId,
+        tokenAddress,
+      ]),
+    );
+  }
+
+  return encodedMulticallData;
+};
 
 /**
  * Helper function returning an array of encoded multicall data containing transactions
- * needed to update an expenditure payout
+ * needed to update expenditure payouts
  */
-export const getMulticallDataForPayouts = async (
+export const getMulticallDataForUpdatedPayouts = async (
   expenditure: Expenditure,
   payouts: ExpenditurePayoutFieldValue[],
   colonyClient: AnyColonyClient,
@@ -101,4 +146,34 @@ export const getMulticallDataForPayouts = async (
   });
 
   return encodedMulticallData;
+};
+
+export const getDataForCancelLockedExpenditure = async (
+  expenditure: Expenditure,
+  colonyClient: AnyColonyClient,
+  userAddress: string,
+) => {
+  const [permissionDomainId, childSkillIndex] = await getPermissionProofs(
+    colonyClient.networkClient,
+    colonyClient,
+    expenditure.nativeDomainId,
+    ColonyRole.Arbitration,
+    userAddress,
+  );
+
+  /**
+   * @NOTE: Owner address and status share the same slot, so we need to combine the
+   * current owner address with cancelled state (01)
+   */
+  const value = toB32(`${expenditure.ownerAddress}01`);
+
+  return [
+    permissionDomainId,
+    childSkillIndex,
+    expenditure.nativeId,
+    EXPENDITURES_SLOT,
+    [ARRAY],
+    [EXPENDITURE_OWNER_AND_STATUS],
+    value,
+  ];
 };
