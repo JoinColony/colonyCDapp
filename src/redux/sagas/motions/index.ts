@@ -10,6 +10,7 @@ import {
   fundExpenditureMotionSaga,
   cancelStakedExpenditureMotionSaga,
   releaseExpenditureStageMotionSaga,
+  createExpenditureMotionSaga,
 } from './expenditures/index.ts';
 import finalizeMotionSaga from './finalizeMotion.ts';
 import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion.ts';
@@ -36,6 +37,7 @@ export default function* actionsSagas() {
     call(managePermissionsMotionSaga),
     call(editColonyMotionSaga),
     call(createDecisionMotionSaga),
+    call(createExpenditureMotionSaga),
     call(fundExpenditureMotionSaga),
     call(cancelStakedExpenditureMotionSaga),
     call(releaseExpenditureStageMotionSaga),

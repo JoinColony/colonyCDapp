@@ -4,6 +4,10 @@ import { type BigNumber } from 'ethers';
 import { type NetworkInfo } from '~constants/index.ts';
 import { type Expenditure, type ExternalLink } from '~gql';
 import {
+  type ExpenditurePayoutFieldValue,
+  type ExpenditureStageFieldValue,
+} from '~types/expenditures.ts';
+import {
   type Colony,
   type ColonyObjective,
   type Domain,
@@ -320,5 +324,28 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_CREATE,
+      {
+        colonyName: string;
+        colonyAddress: Address;
+        payouts: ExpenditurePayoutFieldValue[];
+        // the domain to create the expenditure in
+        createdInDomain: Domain;
+        // id of the domain to fund the expenditure from
+        fundFromDomainId: number;
+        motionDomainId: number;
+        networkInverseFee: string;
+        isStaged?: boolean;
+        stages?: ExpenditureStageFieldValue[];
+        annotationMessage?: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_CREATE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_CREATE_SUCCESS,
       MetaWithSetter<object>
     >;
