@@ -1,7 +1,7 @@
 import { type AnyColonyClient } from '@colony/colony-js';
 import { BigNumber, type BigNumberish, utils } from 'ethers';
 
-import { type Expenditure } from '~gql';
+import { type Expenditure } from '~types/graphql.ts';
 
 const toB32 = (input: BigNumberish) =>
   utils.hexZeroPad(utils.hexlify(input), 32);

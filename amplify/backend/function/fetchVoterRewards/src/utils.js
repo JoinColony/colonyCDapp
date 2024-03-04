@@ -88,7 +88,7 @@ const getVoterReward = async (colonyAddress, motionId, userReputation) => {
       BigNumber.from(userReputation),
     );
     return reward;
-  } catch {
+  } catch (e) {
     console.error('Error getting voter reward', e);
     return undefined;
   }

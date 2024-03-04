@@ -1,7 +1,9 @@
-import { ClientType } from '@colony/colony-js';
+import { type AnyColonyClient, ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
+import { type ColonyManager } from '~context';
+import { ExpenditureStatus } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 
@@ -17,7 +19,13 @@ import {
   initiateTransaction,
   takeFrom,
   uploadAnnotation,
+  getColonyManager,
+  getMulticallDataForPayouts,
+  getPayoutsWithSlotIds,
 } from '../utils/index.ts';
+
+export type EditExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_EDIT>['payload'];
 
 function* editExpenditureAction({
   payload: {
@@ -26,21 +34,25 @@ function* editExpenditureAction({
     payouts,
     networkInverseFee,
     annotationMessage,
+    userAddress,
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
-  const batchKey = 'createExpenditure';
+  const colonyManager: ColonyManager = yield getColonyManager();
+  const colonyClient: AnyColonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
 
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
+  const batchKey = 'createExpenditure';
 
   /**
    * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
    * This is to meet the UI requirement that there should be one payout per row.
    */
   const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
+
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   payoutsWithSlotIds.forEach((payout) => {
     // Add payout as specified in the form
@@ -91,21 +103,46 @@ function* editExpenditureAction({
   );
 
   try {
-    yield fork(createTransaction, editExpenditure.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'setExpenditureValues',
-      identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 0,
-      },
-      params: getSetExpenditureValuesFunctionParams(
-        expenditure.nativeId,
+    if (
+      expenditure.ownerAddress === userAddress &&
+      expenditure.status === ExpenditureStatus.Draft
+    ) {
+      // `setExpenditureValues` can only be used if the user is the owner and the expenditure is draft
+      yield fork(createTransaction, editExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'setExpenditureValues',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
+        params: getSetExpenditureValuesFunctionParams(
+          expenditure.nativeId,
+          resolvedPayouts,
+          networkInverseFee,
+        ),
+      });
+    } else {
+      const multicallData = yield getMulticallDataForPayouts(
+        expenditure,
         resolvedPayouts,
+        colonyClient,
         networkInverseFee,
-      ),
-    });
+      );
+
+      yield fork(createTransaction, editExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'multicall',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
+        params: [multicallData],
+      });
+    }
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateEditExpenditure.id, {
@@ -155,6 +192,7 @@ function* editExpenditureAction({
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_EDIT_ERROR, error, meta);
   }
+
   [editExpenditure, annotateEditExpenditure].forEach((channel) =>
     channel.channel.close(),
   );

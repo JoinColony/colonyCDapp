@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
-import { type Expenditure, useGetExpenditureQuery } from '~gql';
+import { useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
@@ -12,6 +12,7 @@ import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
+import { type EditExpenditurePayload } from '~redux/sagas/expenditures/editExpenditure.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
@@ -31,9 +32,11 @@ const TmpAdvancedPayments = () => {
   const { extensionData } = useExtensionData(Extension.StagedExpenditure);
   const { networkInverseFee = '0' } = useNetworkInverseFee();
 
-  const [tokenId, setTokenId] = useState('');
-  const [decimalAmount, setDecimalAmount] = useState('');
-  const [transactionAmount, setTransactionAmount] = useState('');
+  const [tokenAddress, setTokenAddress] = useState(
+    colony.nativeToken.tokenAddress,
+  );
+  const [decimalAmount, setDecimalAmount] = useState('18');
+  const [transactionAmount, setTransactionAmount] = useState('0');
   const [expenditureId, setExpenditureId] = useState('');
   const [releaseStage, setReleaseStage] = useState('');
 
@@ -94,6 +97,11 @@ const TmpAdvancedPayments = () => {
     error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
     success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
   });
+  const editExpenditure = useAsyncFunction({
+    submit: ActionTypes.EXPENDITURE_EDIT,
+    error: ActionTypes.EXPENDITURE_EDIT_ERROR,
+    success: ActionTypes.EXPENDITURE_EDIT_SUCCESS,
+  });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   if (!rootDomain) {
@@ -103,7 +111,7 @@ const TmpAdvancedPayments = () => {
   const payouts = [
     {
       amount: transactionAmount,
-      tokenAddress: tokenId,
+      tokenAddress,
       recipientAddress: user?.walletAddress ?? '',
       claimDelay: 0,
       tokenDecimals: tokenDecimalAmount,
@@ -116,7 +124,6 @@ const TmpAdvancedPayments = () => {
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
     networkInverseFee,
-    annotationMessage: 'expenditure annotation',
   };
 
   const createStagedExpenditurePayload: CreateExpenditurePayload = {
@@ -226,11 +233,7 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleReleaseExpenditureStageMotion = async () => {
-    if (!expenditure) {
-      return;
-    }
-
-    if (!releaseStage) {
+    if (!expenditure || !releaseStage) {
       return;
     }
 
@@ -246,7 +249,7 @@ const TmpAdvancedPayments = () => {
     const payload: ReleaseExpenditureStageMotionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyName: colony.name,
-      expenditure: expenditure as Expenditure,
+      expenditure,
       slotId: Number(releaseStage),
       motionDomainId: expenditure.nativeDomainId,
       tokenAddresses: [colony.nativeToken.tokenAddress],
@@ -256,20 +259,52 @@ const TmpAdvancedPayments = () => {
     await releaseExpenditureStageMotion(payload);
   };
 
+  const handleEdit = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: EditExpenditurePayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      networkInverseFee,
+      payouts: [
+        {
+          amount: '23.45',
+          tokenAddress: colony.nativeToken.tokenAddress,
+          recipientAddress: colony.colonyAddress,
+          claimDelay: 0,
+        },
+        {
+          amount: '67.89',
+          tokenAddress: colony.nativeToken.tokenAddress,
+          recipientAddress: user?.walletAddress ?? '',
+          claimDelay: 300,
+        },
+      ],
+      userAddress: user?.walletAddress ?? '',
+    };
+
+    await editExpenditure(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
         <InputBase
-          onChange={(e) => setTokenId(e.currentTarget.value)}
-          placeholder="Token Address"
+          onChange={(e) => setTokenAddress(e.currentTarget.value)}
+          value={tokenAddress}
+          label="Token Address"
         />
         <InputBase
           onChange={(e) => setDecimalAmount(e.currentTarget.value)}
-          placeholder="Token Decimals"
+          value={decimalAmount}
+          label="Token Decimals"
         />
         <InputBase
           onChange={(e) => setTransactionAmount(e.currentTarget.value)}
-          placeholder="Transaction Amount"
+          value={transactionAmount}
+          label="Transaction Amount"
         />
         <ActionButton
           actionType={ActionTypes.EXPENDITURE_CREATE}
@@ -293,17 +328,19 @@ const TmpAdvancedPayments = () => {
           onChange={(e) => setExpenditureId(e.currentTarget.value)}
           placeholder="Expenditure ID"
         />
-        <Button onClick={handleLockExpenditure}>Lock expenditure</Button>
-        <Button onClick={handleFundExpenditure} disabled={!expenditure}>
-          Fund expenditure
-        </Button>
-        <Button onClick={handleFinalizeExpenditure}>
-          Finalize expenditure
-        </Button>
-        <Button onClick={handleReclaimStake}>Reclaim stake</Button>
-        <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
-          Cancel and punish
-        </Button>
+        <div className="flex gap-4 flex-wrap">
+          <Button onClick={handleLockExpenditure}>Lock</Button>
+          <Button onClick={handleFundExpenditure} disabled={!expenditure}>
+            Fund
+          </Button>
+          <Button onClick={handleFinalizeExpenditure}>Finalize</Button>
+          <Button onClick={handleReclaimStake}>Reclaim stake</Button>
+          <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
+            Cancel and punish
+          </Button>
+          <Button onClick={handleEdit}>Edit</Button>
+          <Button onClick={() => refetch()}>Refetch</Button>
+        </div>
       </div>
       <div className="flex gap-4">
         <InputBase
@@ -311,7 +348,6 @@ const TmpAdvancedPayments = () => {
           onChange={(e) => setReleaseStage(e.currentTarget.value)}
           placeholder="Stage to release"
         />
-        <Button onClick={() => refetch()}>Refetch expenditure</Button>
         <Button
           onClick={handleReleaseExpenditureStageMotion}
           disabled={!expenditure}
