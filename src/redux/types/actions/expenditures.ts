@@ -115,7 +115,7 @@ export type ExpendituresActionTypes =
         nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CLAIM_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>
