@@ -154,6 +154,7 @@ function* createExpenditure({
           expenditureId,
           payoutsWithSlotIds,
           networkInverseFee,
+          isStaged,
         ),
       ),
     );
