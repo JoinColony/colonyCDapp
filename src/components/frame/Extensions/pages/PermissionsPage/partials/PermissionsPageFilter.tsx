@@ -92,7 +92,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             isFullOnMobile={false}
           >
             <h4 className="sm:px-4 mb-6 sm:mb-0 heading-5 text-gray-900 capitalize">
-              {formatText({ id: isMobile ? 'filterAndSort' : 'filters' })}
+              {formatText({ id: 'filterAndSort' })}
             </h4>
             {RootItems}
           </Modal>

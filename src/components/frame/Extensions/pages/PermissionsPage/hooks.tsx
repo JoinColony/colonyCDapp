@@ -56,6 +56,7 @@ export const defaultPermissionsPageFilterValue:
 };
 
 export const useGetPermissionPageFilters = () => {
+  const isMobile = useMobile();
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState<
     PermissionsPageFilters | RolePermissionFilters
@@ -72,7 +73,9 @@ export const useGetPermissionPageFilters = () => {
         label: formatText({ id: 'permissionsPage.filter.permissions' }),
         icon: LockKey,
         title: formatText({
-          id: 'permissionsPage.filter.filterBy',
+          id: isMobile
+            ? 'permissionsPage.filter.permissions'
+            : 'permissionsPage.filter.filterBy',
         }),
         items: [
           {

@@ -63,6 +63,12 @@ export const membersMenu: NavigationSidebarLinksListProps['items'] = [
   //   icon: SealCheck,
   // },
   {
+    key: '4',
+    label: formatText({ id: 'navigation.members.permissions' }),
+    to: COLONY_PERMISSIONS_ROUTE,
+    icon: Signature,
+  },
+  {
     key: '5',
     label: formatText({ id: 'navigation.members.teams' }),
     to: COLONY_TEAMS_ROUTE,
@@ -147,12 +153,6 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
     label: formatText({ id: 'navigation.admin.extensions' }),
     to: COLONY_EXTENSIONS_ROUTE,
     icon: PuzzlePiece,
-  },
-  {
-    key: '4',
-    label: formatText({ id: 'navigation.members.permissions' }),
-    to: COLONY_PERMISSIONS_ROUTE,
-    icon: Signature,
   },
   // @BETA: Disabled for now
   // {

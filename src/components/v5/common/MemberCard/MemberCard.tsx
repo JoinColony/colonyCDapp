@@ -49,6 +49,9 @@ const MemberCard: FC<MemberCardProps> = ({
             {...userAvatarProps}
             withVerifiedBadge={false}
             isContributorsList={!isSimple}
+            popperOptions={{
+              placement: 'bottom-start',
+            }}
             className={clsx('flex items-center text-gray-900', {
               'gap-2.5 w-[calc(100%-18px-24px)]': isSimple,
               'flex-col items-center justify-between flex-grow gap-2 w-full':

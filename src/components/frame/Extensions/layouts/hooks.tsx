@@ -159,8 +159,15 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
       icon: User,
       label: formatText({ id: 'navigation.members' }),
       isActive:
-        checkIfIsActive(nestedColonyPathname, membersMenu) ||
-        nestedColonyPathname === COLONY_MEMBERS_ROUTE,
+        checkIfIsActive(nestedColonyPathname, [
+          ...membersMenu,
+          {
+            key: '7',
+            label: 'MultiSig',
+            to: COLONY_MULTISIG_ROUTE,
+            icon: Buildings,
+          },
+        ]) || nestedColonyPathname === COLONY_MEMBERS_ROUTE,
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.members.title' }),
         content: membersMenu,
@@ -330,15 +337,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
       key: '6',
       icon: GearSix,
       label: formatText({ id: 'navigation.admin' }),
-      isActive: checkIfIsActive(nestedColonyPathname, [
-        ...adminMenu,
-        {
-          key: '7',
-          label: 'MultiSig',
-          to: COLONY_MULTISIG_ROUTE,
-          icon: Buildings,
-        },
-      ]),
+      isActive: checkIfIsActive(nestedColonyPathname, adminMenu),
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.admin.title' }),
         content: adminMenu,
