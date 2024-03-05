@@ -15,6 +15,8 @@ import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
+const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
+
 /**
  * Util returning a map between token addresses and arrays of payouts field values
  */
@@ -54,6 +56,7 @@ export const getSetExpenditureValuesFunctionParams = (
   nativeExpenditureId: number,
   payouts: ExpenditurePayoutFieldValue[],
   networkInverseFee: string,
+  isStaged?: boolean,
 ): MethodParams => {
   // Group payouts by token addresses
   const payoutsByTokenAddresses =
@@ -72,7 +75,9 @@ export const getSetExpenditureValuesFunctionParams = (
     // slot ids for claim delays
     payouts.map((payout) => payout.slotId ?? 0),
     // claim delays
-    payouts.map((payout) => payout.claimDelay),
+    payouts.map((payout) =>
+      isStaged ? MAX_CLAIM_DELAY_VALUE : payout.claimDelay,
+    ),
     // slot ids for payout modifiers
     [],
     // payout modifiers
