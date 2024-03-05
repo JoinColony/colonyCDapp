@@ -201,6 +201,7 @@ function* createStakedExpenditure({
           expenditureId,
           payoutsWithSlotIds,
           networkInverseFee,
+          isStaged,
         ),
       ),
     );
