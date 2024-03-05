@@ -1,12 +1,7 @@
-import {
-  type AnyColonyClient,
-  ClientType,
-  Id,
-  getChildIndex,
-} from '@colony/colony-js';
+import { type AnyColonyClient, ClientType, Id } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ADDRESS_ZERO, APP_URL } from '~constants/index.ts';
 import { type Action, ActionTypes } from '~redux/index.ts';
 import {
   createGroupTransaction,
@@ -14,55 +9,41 @@ import {
   waitForTxResult,
 } from '~redux/sagas/transactions/index.ts';
 import {
-  createInvalidParamsError,
   getColonyManager,
-  getDataForCancelExpenditureViaPermissions,
+  getDataForCancelExpenditure,
   initiateTransaction,
   putError,
   takeFrom,
 } from '~redux/sagas/utils/index.ts';
+import { findDomainByNativeId } from '~utils/domains.ts';
 
 function* cancelExpenditureMotion({
   meta,
   meta: { setTxHash },
-  payload: {
-    colonyAddress,
-    votingReputationAddress,
-    expenditure,
-    motionDomainId,
-  },
+  payload: { colony, votingReputationAddress, expenditure, motionDomainId },
 }: Action<ActionTypes.MOTION_EXPENDITURE_CANCEL>) {
-  const batchId = 'motion-cancel-expenditure';
-  const { createMotion } = yield call(createTransactionChannels, batchId, [
+  const { createMotion } = yield call(createTransactionChannels, meta.id, [
     'createMotion',
   ]);
 
   try {
-    const sagaName = cancelExpenditureMotion.name;
-
     if (
-      !colonyAddress ||
+      !colony ||
       !expenditure ||
       !votingReputationAddress ||
       !motionDomainId
     ) {
-      const paramDescription =
-        (!colonyAddress && 'Colony address') ||
-        (!expenditure && 'The expenditure being cancelled') ||
-        (!votingReputationAddress && 'The address of the staked expenditure') ||
-        (!motionDomainId &&
-          'The id of the domain the motion is taking place in');
-      throw createInvalidParamsError(sagaName, paramDescription as string);
+      throw new Error('Invalid payload');
     }
 
     const colonyManager = yield call(getColonyManager);
     const colonyClient: AnyColonyClient = yield call(
       [colonyManager, colonyManager.getClient],
       ClientType.ColonyClient,
-      colonyAddress,
+      colony.colonyAddress,
     );
 
-    const params = yield getDataForCancelExpenditureViaPermissions(
+    const params = yield getDataForCancelExpenditure(
       expenditure,
       colonyClient,
       votingReputationAddress,
@@ -73,10 +54,15 @@ function* cancelExpenditureMotion({
       params,
     );
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
-    );
+    // Child skill index is the second param of `setExpenditureState`
+    const childSkillIndex = params[1];
+
+    const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
+    if (!rootDomain) {
+      throw new Error('Root domain not found');
+    }
+
+    const skillId = rootDomain.nativeSkillId;
 
     const { key, value, branchMask, siblings } = yield call(
       [colonyClient, colonyClient.getReputation],
@@ -84,22 +70,16 @@ function* cancelExpenditureMotion({
       ADDRESS_ZERO,
     );
 
-    const childSkillIndex = yield call(
-      getChildIndex,
-      colonyClient.networkClient,
-      colonyClient,
-      motionDomainId,
-      expenditure.nativeDomainId,
-    );
+    const batchKey = 'createMotion';
 
-    yield createGroupTransaction(createMotion, batchId, meta, {
+    yield createGroupTransaction(createMotion, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
-      identifier: colonyAddress,
+      identifier: colony.colonyAddress,
       params: [
         motionDomainId,
         childSkillIndex,
-        votingReputationAddress,
+        ADDRESS_ZERO,
         encodedAction,
         key,
         value,
@@ -107,10 +87,9 @@ function* cancelExpenditureMotion({
         siblings,
       ],
       group: {
-        title: { id: 'transaction.group.createMotion.title' },
-        description: {
-          id: 'transaction.group.createMotion.description',
-        },
+        key: batchKey,
+        id: meta.id,
+        index: 1,
       },
     });
 
@@ -132,6 +111,10 @@ function* cancelExpenditureMotion({
         type: ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
         meta,
       });
+
+      // @TODO: Remove during advanced payments UI wiring
+      // eslint-disable-next-line no-console
+      console.log(`Motion URL: ${APP_URL}${colony.name}?tx=${txHash}`);
     }
   } catch (e) {
     console.error(e);

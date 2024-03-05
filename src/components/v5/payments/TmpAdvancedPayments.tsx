@@ -1,12 +1,12 @@
-import { Extension, Id } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
-import useExtensionData from '~hooks/useExtensionData.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelExpenditure.ts';
@@ -21,9 +21,9 @@ import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/r
 import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
 import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
+import { type ExpenditureCancelMotionPayload } from '~redux/types/actions/motion.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import { ActionButton } from '~v5/shared/Button/index.ts';
@@ -31,7 +31,8 @@ import { ActionButton } from '~v5/shared/Button/index.ts';
 const TmpAdvancedPayments = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { extensionData } = useExtensionData(Extension.StagedExpenditure);
+  const { votingReputationAddress, stagedExpenditureAddress } =
+    useEnabledExtensions();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
 
   const [tokenAddress, setTokenAddress] = useState(
@@ -113,6 +114,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE,
     error: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR,
     success: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
+  });
+  const cancelExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_CANCEL,
+    error: ActionTypes.MOTION_EXPENDITURE_CANCEL_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
   });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
@@ -245,16 +251,7 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleReleaseExpenditureStageMotion = async () => {
-    if (!expenditure || !releaseStage) {
-      return;
-    }
-
-    const stagedExpenditureAddress =
-      extensionData && isInstalledExtensionData(extensionData)
-        ? extensionData.address
-        : undefined;
-
-    if (!stagedExpenditureAddress) {
+    if (!expenditure || !releaseStage || !stagedExpenditureAddress) {
       return;
     }
 
@@ -265,7 +262,7 @@ const TmpAdvancedPayments = () => {
       slotId: Number(releaseStage),
       motionDomainId: expenditure.nativeDomainId,
       tokenAddresses: [colony.nativeToken.tokenAddress],
-      stagedExpenditureAddress: stagedExpenditureAddress || '',
+      stagedExpenditureAddress,
     };
 
     await releaseExpenditureStageMotion(payload);
@@ -344,6 +341,22 @@ const TmpAdvancedPayments = () => {
     await editLockedExpenditureMotion(payload);
   };
 
+  const handleCancelViaMotion = async () => {
+    if (!expenditure || !votingReputationAddress) {
+      return;
+    }
+
+    const payload: ExpenditureCancelMotionPayload = {
+      colony,
+      expenditure,
+      userAddress: user?.walletAddress ?? '',
+      motionDomainId: Id.RootDomain,
+      votingReputationAddress,
+    };
+
+    await cancelExpenditureViaMotion(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -396,6 +409,7 @@ const TmpAdvancedPayments = () => {
           </Button>
           <Button onClick={handleEdit}>Edit</Button>
           <Button onClick={handleCancel}>Cancel</Button>
+          <Button onClick={handleCancelViaMotion}>Cancel using motion</Button>
           <Button onClick={() => refetch()}>Refetch</Button>
           <Button onClick={handleEditViaMotion}>Edit via motion</Button>
         </div>
