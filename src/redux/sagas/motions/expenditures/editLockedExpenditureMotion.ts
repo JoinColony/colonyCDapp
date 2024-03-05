@@ -19,7 +19,7 @@ import {
 import {
   getColonyManager,
   initiateTransaction,
-  getMulticallDataForPayouts,
+  getMulticallDataForUpdatedPayouts,
   uploadAnnotation,
   getPayoutsWithSlotIds,
 } from '~redux/sagas/utils/index.ts';
@@ -130,12 +130,13 @@ function* editLockedExpenditureMotion({
       ADDRESS_ZERO,
     );
 
-    const encodedMulticallData: string[] = yield getMulticallDataForPayouts(
-      expenditure,
-      resolvedPayouts,
-      colonyClient,
-      networkInverseFee,
-    );
+    const encodedMulticallData: string[] =
+      yield getMulticallDataForUpdatedPayouts(
+        expenditure,
+        resolvedPayouts,
+        colonyClient,
+        networkInverseFee,
+      );
 
     const encodedEditExpenditureAction =
       yield colonyClient.interface.encodeFunctionData(
