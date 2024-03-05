@@ -31,20 +31,17 @@ function* cancelStakedExpenditureMotion({
     shouldPunish,
     expenditure,
     motionDomainId,
-    fromDomainId,
   },
 }: Action<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL>) {
   const sagaName = cancelStakedExpenditureMotion.name;
 
   if (
-    !fromDomainId ||
     !colonyAddress ||
     !expenditure ||
     !stakedExpenditureAddress ||
     !motionDomainId
   ) {
     const paramDescription =
-      (!fromDomainId && 'The domain id the expenditure is being funded from') ||
       (!colonyAddress && 'Colony address') ||
       (!expenditure && 'The expenditure being funded') ||
       (!stakedExpenditureAddress && 'The address of the staked expenditure') ||
@@ -120,7 +117,7 @@ function* cancelStakedExpenditureMotion({
       colonyClient.networkClient,
       colonyClient,
       motionDomainId,
-      fromDomainId,
+      expenditure.nativeDomainId,
     );
 
     yield createGroupTransaction(createMotion, batchId, meta, {
