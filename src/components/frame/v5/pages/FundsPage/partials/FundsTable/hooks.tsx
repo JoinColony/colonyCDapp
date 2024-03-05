@@ -108,15 +108,30 @@ export const useFundsTable = (): UseFundsTableProps => {
   const visibleTokens = allClaims.filter((visibleToken) => {
     const { type = {}, status } = filterValue;
 
-    if (Object.values(type).some((tokenTypeFilter) => tokenTypeFilter)) {
-      return type[visibleToken?.token?.tokenAddress || 0];
+    if (status && status.approved && status.unapproved) {
+      return (
+        visibleToken &&
+        (!Object.values(type).some((tokenTypeFilter) => tokenTypeFilter) ||
+          type[visibleToken?.token?.tokenAddress || 0])
+      );
     }
-
     if (status && status.approved) {
-      return visibleToken.isApproved;
+      return (
+        visibleToken.isApproved &&
+        (!Object.values(type).some((tokenTypeFilter) => tokenTypeFilter) ||
+          type[visibleToken?.token?.tokenAddress || 0])
+      );
     }
     if (status && status.unapproved) {
-      return !visibleToken.isApproved;
+      return (
+        !visibleToken.isApproved &&
+        (!Object.values(type).some((tokenTypeFilter) => tokenTypeFilter) ||
+          type[visibleToken?.token?.tokenAddress || 0])
+      );
+    }
+
+    if (Object.values(type).some((tokenTypeFilter) => tokenTypeFilter)) {
+      return type[visibleToken?.token?.tokenAddress || 0];
     }
 
     return true;
