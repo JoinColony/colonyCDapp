@@ -66,6 +66,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
     networkMotionState &&
     motionData &&
     motionState &&
+    motionState !== MotionState.Failed &&
     motionState !== MotionState.FailedNotFinalizable &&
     motionState !== MotionState.Passed;
 
