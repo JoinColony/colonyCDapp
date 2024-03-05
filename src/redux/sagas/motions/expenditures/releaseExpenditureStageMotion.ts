@@ -38,7 +38,6 @@ function* releaseExpenditureStageMotion({
   meta,
   meta: { setTxHash, id },
 }: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>) {
-  const batchId = 'motion-release-expenditure-stage';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
     id,
@@ -96,7 +95,9 @@ function* releaseExpenditureStageMotion({
         encodedMulticallData,
       ]);
 
-    yield createGroupTransaction(createMotion, batchId, meta, {
+    const batchKey = 'motion-release-expenditure-stage';
+
+    yield createGroupTransaction(createMotion, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
