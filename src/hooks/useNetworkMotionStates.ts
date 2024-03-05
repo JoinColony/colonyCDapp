@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 
-import useEnabledExtensions from './useEnabledExtensions.tsx';
+import useEnabledExtensions from './useEnabledExtensions.ts';
 
 export type MotionStatesMap = Map<string, MotionState | null>;
 
