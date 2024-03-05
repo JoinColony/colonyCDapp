@@ -37,7 +37,6 @@ function* fundExpenditureMotion({
   meta: { setTxHash, id },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_FUND>) {
-  const batchId = 'motion-fund-expenditures';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
     id,
@@ -151,7 +150,9 @@ function* fundExpenditureMotion({
       [encodedFundingPotActions],
     );
 
-    yield createGroupTransaction(createMotion, batchId, meta, {
+    const batchKey = 'createMotion';
+
+    yield createGroupTransaction(createMotion, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
@@ -166,10 +167,9 @@ function* fundExpenditureMotion({
         siblings,
       ],
       group: {
-        title: { id: 'transaction.group.createMotion.title' },
-        description: {
-          id: 'transaction.group.createMotion.description',
-        },
+        key: batchKey,
+        id: meta.id,
+        index: 1,
       },
     });
 

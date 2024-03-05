@@ -49,10 +49,9 @@ function* cancelStakedExpenditureMotion({
     throw createInvalidParamsError(sagaName, paramDescription as string);
   }
 
-  const batchId = 'motion-cancel-staked-expenditure';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
-    batchId,
+    meta.id,
     ['createMotion', 'annotateMotion'],
   );
 
@@ -120,7 +119,9 @@ function* cancelStakedExpenditureMotion({
       expenditure.nativeDomainId,
     );
 
-    yield createGroupTransaction(createMotion, batchId, meta, {
+    const batchKey = 'createMotion';
+
+    yield createGroupTransaction(createMotion, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
@@ -135,10 +136,9 @@ function* cancelStakedExpenditureMotion({
         siblings,
       ],
       group: {
-        title: { id: 'transaction.group.createMotion.title' },
-        description: {
-          id: 'transaction.group.createMotion.description',
-        },
+        key: batchKey,
+        id: meta.id,
+        index: 1,
       },
     });
 
