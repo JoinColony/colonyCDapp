@@ -59,7 +59,6 @@ function* cancelExpenditure({
         expenditure,
         colonyAddress,
         colonyClient,
-        userAddress,
         meta,
       });
     }
@@ -87,7 +86,6 @@ type CancelExpenditureHelperParam = {
   colonyClient: AnyColonyClient;
   meta: Action<ActionTypes.EXPENDITURE_CANCEL>['meta'];
   stakedExpenditureAddress?: string;
-  userAddress?: string;
 };
 
 function* cancelDraftExpenditure({
@@ -129,12 +127,7 @@ function* cancelLockedExpenditure({
   colonyAddress,
   colonyClient,
   expenditure,
-  userAddress,
 }: CancelExpenditureHelperParam) {
-  if (!userAddress) {
-    return;
-  }
-
   const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
     colonyClient.networkClient,
     colonyClient,
