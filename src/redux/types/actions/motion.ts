@@ -36,21 +36,20 @@ export enum RootMotionMethodNames {
   UnlockToken = 'unlockToken',
 }
 
-type MotionExpenditureBase = {
-  fromDomainId: number;
-  motionDomainId: number;
-};
 export type ExpenditureFundMotionPayload = Omit<
   ExpenditureFundPayload,
   'colonyAddress'
-> &
-  MotionExpenditureBase & {
-    colony: Colony;
-  };
+> & {
+  fromDomainId: number;
+  motionDomainId: number;
+  colony: Colony;
+};
 
 export type StakedExpenditureCancelMotionPayload =
-  CancelStakedExpenditurePayload &
-    MotionExpenditureBase & { colonyName: string };
+  CancelStakedExpenditurePayload & {
+    colonyName: string;
+    motionDomainId: number;
+  };
 
 export type MotionFinalizePayload = {
   userAddress: Address;
@@ -275,6 +274,16 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_CANCEL,
+      StakedExpenditureCancelMotionPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
       MetaWithSetter<object>
     >
   | UniqueActionType<
