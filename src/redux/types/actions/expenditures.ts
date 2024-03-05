@@ -32,6 +32,14 @@ export type CancelStakedExpenditurePayload = {
   annotationMessage?: string;
 };
 
+export type CancelExpenditurePayload = {
+  colonyAddress: Address;
+  expenditure: Expenditure;
+  stakedExpenditureAddress?: Address;
+  annotationMessage?: string;
+  userAddress: Address;
+};
+
 export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CREATE,
@@ -96,13 +104,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CANCEL,
-      {
-        colonyAddress: Address;
-        expenditure: Expenditure;
-        stakedExpenditureAddress?: Address;
-        annotationMessage?: string;
-        userAddress: Address;
-      },
+      CancelExpenditurePayload,
       object
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CANCEL_ERROR, object>
