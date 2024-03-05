@@ -6,7 +6,7 @@ import { noMotionsVotingReputationVersion } from '~utils/colonyMotions.ts';
 
 import useColonyHasReputation from './useColonyHasReputation.ts';
 import useDialogActionPermissions from './useDialogActionPermissions.ts';
-import { type EnabledExtensionData } from './useEnabledExtensions.tsx';
+import { type EnabledExtensionData } from './useEnabledExtensions.ts';
 
 const useActionDialogStatus = (
   colony: Colony,
