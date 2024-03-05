@@ -21,6 +21,7 @@ import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
   type ExpenditureFundPayload,
   type CancelStakedExpenditurePayload,
+  type CancelExpenditurePayload,
 } from './expenditures.ts';
 import {
   type ErrorActionType,
@@ -50,6 +51,11 @@ export type StakedExpenditureCancelMotionPayload =
     colonyName: string;
     motionDomainId: number;
   };
+
+export type ExpenditureCancelMotionPayload = CancelExpenditurePayload & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+};
 
 export type MotionFinalizePayload = {
   userAddress: Address;
@@ -314,12 +320,12 @@ export type MotionActionTypes =
     >
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_CANCEL,
-      StakedExpenditureCancelMotionPayload,
+      ExpenditureCancelMotionPayload,
       MetaWithSetter<object>
     >
-  | ErrorActionType<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, object>
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_CANCEL_ERROR, object>
   | ActionTypeWithMeta<
-      ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
       MetaWithSetter<object>
     >
   | UniqueActionType<
