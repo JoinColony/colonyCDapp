@@ -52,9 +52,13 @@ export type StakedExpenditureCancelMotionPayload =
     motionDomainId: number;
   };
 
-export type ExpenditureCancelMotionPayload = CancelExpenditurePayload & {
+export type ExpenditureCancelMotionPayload = Omit<
+  CancelExpenditurePayload,
+  'colonyAddress'
+> & {
   motionDomainId: number;
   votingReputationAddress: Address;
+  colony: Colony;
 };
 
 export type MotionFinalizePayload = {
