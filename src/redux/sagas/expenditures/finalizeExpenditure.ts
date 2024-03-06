@@ -10,6 +10,7 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  claimExpenditureSlots,
   initiateTransaction,
   putError,
   takeFrom,
@@ -20,7 +21,7 @@ export type FinalizeExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_FINALIZE>['payload'];
 
 function* finalizeExpenditureAction({
-  payload: { colonyAddress, nativeExpenditureId, annotationMessage },
+  payload: { colonyAddress, expenditure, annotationMessage },
   meta,
 }: Action<ActionTypes.EXPENDITURE_FINALIZE>) {
   const batchKey = 'finalizeExpenditure';
@@ -38,7 +39,7 @@ function* finalizeExpenditureAction({
       context: ClientType.ColonyClient,
       methodName: 'finalizeExpenditure',
       identifier: colonyAddress,
-      params: [nativeExpenditureId],
+      params: [expenditure.nativeId],
       group: {
         key: batchKey,
         id: meta.id,
@@ -88,6 +89,19 @@ function* finalizeExpenditureAction({
         txHash,
       });
     }
+
+    yield claimExpenditureSlots({
+      colonyAddress,
+      claimableSlots: expenditure.slots.filter(
+        (slot) =>
+          slot.claimDelay !== null &&
+          slot.claimDelay !== undefined &&
+          slot.claimDelay === 0,
+      ),
+      metaId: meta.id,
+      nativeExpenditureId: expenditure.nativeId,
+      annotationMessage,
+    });
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,

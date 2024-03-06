@@ -177,13 +177,19 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleFinalizeExpenditure = async () => {
+    if (!expenditure) {
+      return;
+    }
+
     const finalizePayload: FinalizeExpenditurePayload = {
       colonyAddress: colony.colonyAddress,
-      nativeExpenditureId: Number(expenditureId),
+      expenditure,
     };
 
     await finalizeExpenditure(finalizePayload);
+  };
 
+  const handleClaimExpenditure = async () => {
     if (!expenditure) {
       return;
     }
@@ -355,6 +361,7 @@ const TmpAdvancedPayments = () => {
             Fund
           </Button>
           <Button onClick={handleFinalizeExpenditure}>Finalize</Button>
+          <Button onClick={handleClaimExpenditure}>Claim</Button>
           <Button onClick={handleReclaimStake}>Reclaim stake</Button>
           <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
             Cancel and punish

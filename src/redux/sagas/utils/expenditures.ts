@@ -1,11 +1,17 @@
+import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { all, fork } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
+  type ExpenditureSlot,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
+  type ExpenditurePayout,
 } from '~gql';
+import { ActionTypes } from '~redux/index.ts';
+import { type Address } from '~types';
 import {
   type ExpenditurePayoutFieldValue,
   type ExpenditureStageFieldValue,
@@ -14,6 +20,15 @@ import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+
+import {
+  createTransaction,
+  createTransactionChannels,
+  waitForTxResult,
+} from '../transactions/index.ts';
+
+import { uploadAnnotation } from './annotations.ts';
+import { initiateTransaction, takeFrom } from './effects.ts';
 
 const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
 
@@ -165,3 +180,110 @@ export const getPayoutsWithSlotIds = (
     slotId: index + 1,
   }));
 };
+
+interface ClaimExpendituresParams {
+  colonyAddress: Address;
+  nativeExpenditureId: number;
+  claimableSlots: ExpenditureSlot[];
+  annotationMessage?: string;
+  metaId: string;
+}
+
+type PayoutWithSlotId = ExpenditurePayout & {
+  slotId: number;
+};
+
+const getPayoutChannelId = (payout: PayoutWithSlotId) =>
+  `${payout.slotId}-${payout.tokenAddress}`;
+
+// NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
+export function* claimExpenditureSlots({
+  colonyAddress,
+  claimableSlots,
+  nativeExpenditureId,
+  annotationMessage,
+  metaId,
+}: ClaimExpendituresParams) {
+  const batchKey = 'claimExpenditure';
+
+  const payoutsWithSlotIds = claimableSlots.flatMap(
+    (slot) =>
+      slot.payouts
+        ?.filter((payout) => payout.amount !== '0')
+        .map((payout) => ({
+          ...payout,
+          slotId: slot.id,
+        })) ?? [],
+  );
+
+  const { annotatePayoutChannel, ...channels } =
+    yield createTransactionChannels(metaId, [
+      ...payoutsWithSlotIds.map(getPayoutChannelId),
+      'annotatePayoutChannel',
+    ]);
+
+  // Create one claim transaction for each slot
+  yield all(
+    payoutsWithSlotIds.map((payout, index) =>
+      fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
+        context: ClientType.ColonyClient,
+        methodName: 'claimExpenditurePayout',
+        identifier: colonyAddress,
+        params: [nativeExpenditureId, payout.slotId, payout.tokenAddress],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index,
+        },
+        ready: false,
+      }),
+    ),
+  );
+  if (annotationMessage) {
+    yield fork(createTransaction, annotatePayoutChannel.id, {
+      context: ClientType.ColonyClient,
+      methodName: 'annotateTransaction',
+      identifier: colonyAddress,
+      group: {
+        key: batchKey,
+        id: metaId,
+        index: payoutsWithSlotIds.length,
+      },
+      ready: false,
+    });
+  }
+
+  for (const payout of payoutsWithSlotIds) {
+    const payoutChannelId = getPayoutChannelId(payout);
+
+    yield takeFrom(
+      channels[payoutChannelId].channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+    if (annotationMessage) {
+      yield takeFrom(
+        annotatePayoutChannel.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
+    yield initiateTransaction({ id: channels[payoutChannelId].id });
+    const {
+      payload: { hash: txHash },
+    } = yield waitForTxResult(channels[payoutChannelId].channel);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotatePayoutChannel,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+  }
+
+  for (const payout of payoutsWithSlotIds) {
+    const payoutChannelId = getPayoutChannelId(payout);
+    channels[payoutChannelId].channel.close();
+  }
+  annotatePayoutChannel.channel.close();
+}

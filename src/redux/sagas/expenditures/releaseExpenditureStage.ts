@@ -11,6 +11,7 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  claimExpenditureSlots,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -111,6 +112,19 @@ function* releaseExpenditureStage({
         txHash,
       });
     }
+
+    yield claimExpenditureSlots({
+      colonyAddress,
+      claimableSlots: expenditure.slots.filter(
+        (slot) =>
+          slot.claimDelay !== null &&
+          slot.claimDelay !== undefined &&
+          slot.claimDelay === 0,
+      ),
+      metaId: meta.id,
+      nativeExpenditureId: expenditure.nativeId,
+      annotationMessage,
+    });
 
     yield put<AllActions>({
       type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
