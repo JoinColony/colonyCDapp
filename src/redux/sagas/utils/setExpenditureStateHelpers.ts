@@ -23,7 +23,7 @@ const EXPENDITURESLOTS_SLOT = toB32(BigNumber.from(26));
 const EXPENDITURE_OWNER_AND_STATUS = toB32(BigNumber.from(0));
 
 const EXPENDITURESLOT_RECIPIENT = toB32(BigNumber.from(0));
-const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(0));
+const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
 
 const MAPPING = false;
 const ARRAY = true;
