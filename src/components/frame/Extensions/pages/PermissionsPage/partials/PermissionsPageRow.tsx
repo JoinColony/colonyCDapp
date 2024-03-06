@@ -58,7 +58,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
               key={key}
             >
               <div className="flex items-center gap-2.5">
-                <div className="skeleton w-12 h-12 rounded-full overflow-hidden bg-gray-300" />
+                <div className="skeleton w-[1.875rem] h-[1.875rem] rounded-full overflow-hidden bg-gray-300" />
                 <div className="skeleton w-2/3 h-4 bg-gray-300 overflow-hidden rounded" />
               </div>
             </div>
