@@ -1328,7 +1328,10 @@ type Colony @model {
   reputation: String
 
   expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
-  expendituresGlobalClaimDelay: Int
+  """
+  Global claim delay for expenditures (in seconds)
+  """
+  expendituresGlobalClaimDelay: String
 
   """
   A flag to indicate whether the colony is private
@@ -3225,7 +3228,10 @@ Each expenditure can have multiple slots, with a single recipients and multiple 
 type ExpenditureSlot {
   id: Int!
   recipientAddress: String
-  claimDelay: Int
+  """
+  Slot claim delay (in seconds)
+  """
+  claimDelay: String
   payoutModifier: Int
   payouts: [ExpenditurePayout!]
 }
