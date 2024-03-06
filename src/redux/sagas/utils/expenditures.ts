@@ -6,7 +6,6 @@ import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
   type ExpenditureSlot,
-  type ExpenditureFragment,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
   type ExpenditurePayout,
@@ -181,62 +180,46 @@ export const getPayoutsWithSlotIds = (
   }));
 };
 
-type PayoutWithSlotId = ExpenditurePayout & {
-  slotId: number;
-};
-
-export const getImmediatelyClaimableSlots = (slots: ExpenditureSlot[]) => {
-  return slots.filter(
-    (slot) =>
-      slot.claimDelay !== undefined &&
-      BigNumber.from(0).eq(BigNumber.from(slot.claimDelay)),
-  );
-};
-
-const getPayoutsWithSlotIdsFromSlots = (
-  claimableSlots: ExpenditureSlot[],
-): PayoutWithSlotId[] => {
-  return claimableSlots.flatMap((slot) =>
-    (slot.payouts || []).map((payout) => ({
-      ...payout,
-      slotId: slot.id,
-    })),
-  );
-};
-
-interface ClaimExpendituresPayoutsParams {
+interface ClaimExpendituresParams {
   colonyAddress: Address;
   nativeExpenditureId: number;
   claimableSlots: ExpenditureSlot[];
   metaId: string;
 }
 
+type PayoutWithSlotId = ExpenditurePayout & {
+  slotId: number;
+};
+
 const getPayoutChannelId = (payout: PayoutWithSlotId) =>
   `${payout.slotId}-${payout.tokenAddress}`;
 
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
-export function* claimExpenditurePayouts({
+export function* claimExpenditureSlots({
   colonyAddress,
   claimableSlots,
   nativeExpenditureId,
   metaId,
-}: ClaimExpendituresPayoutsParams) {
-  const claimablePayouts = getPayoutsWithSlotIdsFromSlots(claimableSlots);
+}: ClaimExpendituresParams) {
+  const batchKey = 'claimExpenditure';
 
-  if (claimablePayouts.length === 0) {
-    return;
-  }
-
-  const batchKey = 'claimExpenditurePayouts';
-
-  const channels = yield createTransactionChannels(
-    metaId,
-    claimablePayouts.map(getPayoutChannelId),
+  const payoutsWithSlotIds = claimableSlots.flatMap(
+    (slot) =>
+      slot.payouts
+        ?.filter((payout) => payout.amount !== '0')
+        .map((payout) => ({
+          ...payout,
+          slotId: slot.id,
+        })) ?? [],
   );
+
+  const channels = yield createTransactionChannels(metaId, [
+    ...payoutsWithSlotIds.map(getPayoutChannelId),
+  ]);
 
   // Create one claim transaction for each slot
   yield all(
-    claimablePayouts.map((payout, index) =>
+    payoutsWithSlotIds.map((payout, index) =>
       fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
         context: ClientType.ColonyClient,
         methodName: 'claimExpenditurePayout',
@@ -252,7 +235,7 @@ export function* claimExpenditurePayouts({
     ),
   );
 
-  for (const payout of claimablePayouts) {
+  for (const payout of payoutsWithSlotIds) {
     const payoutChannelId = getPayoutChannelId(payout);
 
     yield takeFrom(
@@ -264,7 +247,7 @@ export function* claimExpenditurePayouts({
     yield waitForTxResult(channels[payoutChannelId].channel);
   }
 
-  for (const payout of claimablePayouts) {
+  for (const payout of payoutsWithSlotIds) {
     const payoutChannelId = getPayoutChannelId(payout);
     channels[payoutChannelId].channel.close();
   }
@@ -276,7 +259,7 @@ export function* claimExpenditurePayouts({
  */
 export const getResolvedPayouts = (
   payouts: ExpenditurePayoutFieldValue[],
-  expenditure: ExpenditureFragment,
+  expenditure: Expenditure,
 ) => {
   const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
 

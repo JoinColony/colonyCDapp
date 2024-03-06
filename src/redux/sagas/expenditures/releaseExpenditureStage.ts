@@ -1,4 +1,5 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ExpenditureStatus } from '~gql';
@@ -12,6 +13,7 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  claimExpenditureSlots,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -118,6 +120,16 @@ function* releaseExpenditureStage({
         txHash,
       });
     }
+
+    // @TODO: claimableSlots are wrong, needs fixing
+    yield claimExpenditureSlots({
+      colonyAddress,
+      claimableSlots: expenditure.slots.filter(
+        (slot) => !slot.claimDelay || BigNumber.from(slot.claimDelay).eq(0),
+      ),
+      metaId: meta.id,
+      nativeExpenditureId: expenditure.nativeId,
+    });
 
     yield put<AllActions>({
       type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
