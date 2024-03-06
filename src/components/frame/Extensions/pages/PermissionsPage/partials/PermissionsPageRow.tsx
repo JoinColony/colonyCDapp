@@ -50,7 +50,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
         )}
       </div>
       <p className="text-md text-gray-600 mb-6">{description}</p>
-      {isLoading && (
+      {isLoading ? (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))] md:grid-cols-4 gap-6">
           {[...Array(4).keys()].map((key) => (
             <div
@@ -58,30 +58,38 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
               key={key}
             >
               <div className="flex items-center gap-2.5">
-                <div className="skeleton w-12 h-12 rounded-full overflow-hidden bg-gray-300" />
+                <div className="skeleton w-[1.875rem] h-[1.875rem] rounded-full overflow-hidden bg-gray-300" />
                 <div className="skeleton w-2/3 h-4 bg-gray-300 overflow-hidden rounded" />
               </div>
             </div>
           ))}
         </div>
-      )}
-      {!isLoading && <MemberCardList items={currentMembers} isSimple />}
-      {(membersCount > 0 || extensionsCount > 0) &&
-        currentMembers.length < membersCount + extensionsCount && (
-          <div className="flex justify-center mt-6">
-            <TextButton onClick={loadMore}>
-              {formatText({ id: 'loadMore' })}
-            </TextButton>
-          </div>
-        )}
-      {membersCount === 0 && extensionsCount === 0 && !isLoading && (
-        <EmptyContent
-          title={formatText({ id: 'permissionsPage.empty.title' })}
-          description={formatText({ id: 'permissionsPage.empty.description' })}
-          className="pt-10 pb-9 px-6 mt-6"
-          icon={Binoculars}
-          withBorder
-        />
+      ) : (
+        <>
+          {membersCount === 0 && extensionsCount === 0 ? (
+            <EmptyContent
+              title={formatText({ id: 'permissionsPage.empty.title' })}
+              description={formatText({
+                id: 'permissionsPage.empty.description',
+              })}
+              className="pt-10 pb-9 px-6 mt-6"
+              icon={Binoculars}
+              withBorder
+            />
+          ) : (
+            <>
+              <MemberCardList items={currentMembers} isSimple />
+              {(membersCount > 0 || extensionsCount > 0) &&
+                currentMembers.length < membersCount + extensionsCount && (
+                  <div className="flex justify-center mt-6">
+                    <TextButton onClick={loadMore}>
+                      {formatText({ id: 'loadMore' })}
+                    </TextButton>
+                  </div>
+                )}
+            </>
+          )}
+        </>
       )}
     </div>
   );

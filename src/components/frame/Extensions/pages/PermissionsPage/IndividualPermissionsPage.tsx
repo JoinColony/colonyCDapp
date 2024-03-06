@@ -2,6 +2,7 @@ import { Binoculars } from '@phosphor-icons/react';
 import { capitalize } from 'lodash';
 import React from 'react';
 
+import { UserRole } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 
@@ -18,7 +19,7 @@ const IndividualPermissionsPage = () => {
 
   return (
     <PermissionsPageContent {...filters}>
-      {emptyMembers && (
+      {emptyMembers && !isLoading && (
         <EmptyContent
           title={formatText({ id: 'permissionsPage.empty.title' })}
           description={formatText({ id: 'permissionsPage.empty.description' })}
@@ -27,15 +28,28 @@ const IndividualPermissionsPage = () => {
           withBorder
         />
       )}
-      {Object.keys(individualMembers).map((role) => (
-        <PermissionsPageRow
-          key={role}
-          title={capitalize(role)}
-          description={formatText({ id: `permissionsPage.${role}` })}
-          members={individualMembers[role]}
-          isLoading={isLoading}
-        />
-      ))}
+      {isLoading &&
+        Object.keys(UserRole).map((role) => (
+          <PermissionsPageRow
+            key={role}
+            title={capitalize(role)}
+            description={formatText({
+              id: `permissionsPage.${role.toLowerCase()}`,
+            })}
+            members={[]}
+            isLoading={isLoading}
+          />
+        ))}
+      {!isLoading &&
+        Object.keys(individualMembers).map((role) => (
+          <PermissionsPageRow
+            key={role}
+            title={capitalize(role)}
+            description={formatText({ id: `permissionsPage.${role}` })}
+            members={individualMembers[role]}
+            isLoading={isLoading}
+          />
+        ))}
     </PermissionsPageContent>
   );
 };
