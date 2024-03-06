@@ -3,7 +3,7 @@ export interface ExpenditurePayoutFieldValue {
   recipientAddress: string;
   tokenAddress: string;
   amount: string;
-  claimDelay: number;
+  claimDelay: string;
   tokenDecimals?: number;
 }
 

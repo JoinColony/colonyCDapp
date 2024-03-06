@@ -89,7 +89,7 @@ function* editExpenditureAction({
         recipientAddress: slot.recipientAddress ?? '',
         tokenAddress: payout.tokenAddress,
         amount: '0',
-        claimDelay: slot.claimDelay ?? 0,
+        claimDelay: slot.claimDelay ?? '0',
       });
     });
   });
