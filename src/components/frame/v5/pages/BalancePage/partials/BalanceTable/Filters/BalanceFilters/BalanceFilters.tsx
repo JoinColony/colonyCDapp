@@ -92,7 +92,7 @@ const BalanceFilters: FC = () => {
             isOpen={isSearchOpened}
           >
             <p className="text-4 text-gray-400 mb-4 uppercase">
-              {formatText({ id: 'activityFeedTable.filters.searchModalTitle' })}
+              {formatText({ id: 'balancePage.filter.searchModalTitle' })}
             </p>
             <div className="sm:px-3.5 sm:mb-6">{searchInput}</div>
           </Modal>

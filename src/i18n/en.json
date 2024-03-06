@@ -1501,6 +1501,7 @@
     "balancePage.table.addFunds": "Add funds to the Colony",
     "balancePage.table.emptyTitle": "No results to display",
     "balancePage.table.emptyDescription": "There are no tokens in the Colony that match your search. Try searching again",
+    "balancePage.filter.searchModalTitle": "Search balance activity",
     "balancePage.filter.search": "Search tokens",
     "balancePage.filter.tokenType": "Token type",
     "balancePage.filter.approvedTokenTypes": "Approved token types",
