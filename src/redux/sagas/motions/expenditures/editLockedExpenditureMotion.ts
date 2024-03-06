@@ -38,7 +38,7 @@ function* editLockedExpenditureMotion({
     motionDomainId,
   },
   meta,
-  meta: { setTxHash, id },
+  meta: { setTxHash },
 }: Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE>) {
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
@@ -46,13 +46,11 @@ function* editLockedExpenditureMotion({
     colonyAddress,
   );
 
-  const batchId = 'motion-edit-locked-expenditure';
-
   const resolvedPayouts = getResolvedPayouts(payouts, expenditure);
 
   const { createMotion, annotateEditLockedExpenditure } = yield call(
     createTransactionChannels,
-    id,
+    meta.id,
     ['createMotion', 'annotateEditLockedExpenditure'],
   );
 
@@ -96,7 +94,9 @@ function* editLockedExpenditureMotion({
         [encodedMulticallData],
       );
 
-    yield createGroupTransaction(createMotion, batchId, meta, {
+    const batchKey = 'createMotion';
+
+    yield createGroupTransaction(createMotion, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
@@ -111,10 +111,9 @@ function* editLockedExpenditureMotion({
         siblings,
       ],
       group: {
-        title: { id: 'transaction.group.createMotion.title' },
-        description: {
-          id: 'transaction.group.createMotion.description',
-        },
+        key: batchKey,
+        id: meta.id,
+        index: 1,
       },
     });
 
@@ -126,7 +125,7 @@ function* editLockedExpenditureMotion({
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
         group: {
-          key: batchId,
+          key: batchKey,
           id: meta.id,
           index: 1,
         },
