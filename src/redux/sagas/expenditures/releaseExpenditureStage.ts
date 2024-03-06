@@ -122,20 +122,24 @@ function* releaseExpenditureStage({
         txHash,
       });
     }
-    const claimableSlots = getImmediatelyClaimableSlots(expenditure.slots);
+    const slotToClaim = expenditure.slots.find((slot) => slot.id === slotId);
+    // Should never be undefined, but still
+    if (slotToClaim) {
+      const claimableSlots = getImmediatelyClaimableSlots([slotToClaim]);
 
-    yield claimExpenditurePayouts({
-      colonyAddress,
-      claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
-      metaId: meta.id,
-      nativeExpenditureId: expenditure.nativeId,
-    });
+      yield claimExpenditurePayouts({
+        colonyAddress,
+        claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
+        metaId: meta.id,
+        nativeExpenditureId: expenditure.nativeId,
+      });
 
-    yield put<AllActions>({
-      type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
-      payload: {},
-      meta,
-    });
+      yield put<AllActions>({
+        type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
+        payload: {},
+        meta,
+      });
+    }
   } catch (error) {
     return yield putError(
       ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR,
