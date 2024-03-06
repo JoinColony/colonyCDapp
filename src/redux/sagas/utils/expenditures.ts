@@ -224,6 +224,10 @@ export function* claimExpenditurePayouts({
   annotationMessage,
   metaId,
 }: ClaimExpendituresPayoutsParams) {
+  if (claimablePayouts.length === 0) {
+    return;
+  }
+
   const batchKey = 'claimExpenditurePayouts';
 
   const { annotatePayoutChannel, ...channels } =
