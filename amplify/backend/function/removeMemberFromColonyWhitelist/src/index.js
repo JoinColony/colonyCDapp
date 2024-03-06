@@ -73,7 +73,7 @@ exports.handler = async (event) => {
     {
       input: {
         id: colonyAddress,
-        whitelist: [...updatedWhitelist],
+        whitelist: updatedWhitelist,
       },
     },
     graphqlURL,
