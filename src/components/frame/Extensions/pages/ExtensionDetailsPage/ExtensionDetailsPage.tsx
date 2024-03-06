@@ -39,7 +39,7 @@ const ExtensionDetailsPage: FC = () => {
     refetchColony,
   } = useColonyContext();
   const navigate = useNavigate();
-  const { extensionData, refetchExtensionData } = useExtensionData(
+  const { extensionData, loading, refetchExtensionData } = useExtensionData(
     extensionId ?? '',
   );
   const [waitingForEnableConfirmation, setWaitingForEnableConfirmation] =
@@ -47,7 +47,7 @@ const ExtensionDetailsPage: FC = () => {
 
   useSetPageHeadingTitle(formatText({ id: 'extensionsPage.title' }));
 
-  if (!extensionData) {
+  if (!extensionData && !loading) {
     return <NotFoundRoute />;
   }
 
