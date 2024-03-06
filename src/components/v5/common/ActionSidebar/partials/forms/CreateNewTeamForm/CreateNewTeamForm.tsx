@@ -97,7 +97,7 @@ const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamColorField name="domainColor" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn readonly />
       <Description />
     </>
   );

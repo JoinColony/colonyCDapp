@@ -22,7 +22,7 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
     <>
       <ColonyObjectiveFields />
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn readonly />
       <Description maxDescriptionLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH} />
     </>
   );

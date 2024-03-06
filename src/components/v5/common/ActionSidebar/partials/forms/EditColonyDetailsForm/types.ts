@@ -6,7 +6,7 @@ export interface EditColonyDetailsFormValues {
     thumbnail?: string | null;
   };
   colonyName: string;
-  createdIn: string;
+  createdIn: number;
   decisionMethod: string;
   description?: string;
   colonyDescription: string;
