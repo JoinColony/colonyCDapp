@@ -18,13 +18,15 @@ import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
 
 import TokenAvatar from '../TokenAvatar/index.ts';
 
+import { useFiltersContext } from './Filters/FilterContext/FiltersContext.tsx';
 import { type BalanceTableFieldModel } from './types.ts';
 
 export const useBalancesData = (): BalanceTableFieldModel[] => {
   const {
-    colony: { tokens: colonyTokens, balances },
+    colony: { tokens: colonyTokens, balances, nativeToken },
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
+  const { attributeFilters, tokenTypes, searchFilter } = useFiltersContext();
 
   const tokensData = useMemo(
     () =>
@@ -54,14 +56,40 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
     [colonyTokens, balances, selectedDomain],
   );
 
+  const filteredTokens = tokensData?.filter((token) => {
+    if (attributeFilters.native) {
+      if (
+        Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)
+      ) {
+        return (
+          token.token?.tokenAddress === nativeToken.tokenAddress &&
+          tokenTypes[token.token?.tokenAddress || 0]
+        );
+      }
+      return token.token?.tokenAddress === nativeToken.tokenAddress;
+    }
+
+    if (Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)) {
+      return tokenTypes[token.token?.tokenAddress || 0];
+    }
+
+    return true;
+  });
+
+  const searchedTokens = filteredTokens?.filter(
+    ({ token }) =>
+      token?.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+      token?.symbol.toLowerCase().includes(searchFilter.toLowerCase()),
+  );
+
   const sortedTokens =
     useMemo(
       () =>
-        tokensData?.sort((a, b) => {
+        searchedTokens?.sort((a, b) => {
           if (!a.balance || !b.balance) return 0;
           return parseInt(b.balance, 10) - parseInt(a.balance, 10);
         }),
-      [tokensData],
+      [searchedTokens],
     ) || [];
 
   return sortedTokens;
