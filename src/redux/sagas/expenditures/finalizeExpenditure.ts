@@ -10,7 +10,9 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  claimExpenditureSlots,
+  claimExpenditurePayouts,
+  getImmediatelyClaimableSlots,
+  getPayoutsWithSlotIdsFromSlots,
   initiateTransaction,
   putError,
   takeFrom,
@@ -89,15 +91,11 @@ function* finalizeExpenditureAction({
         txHash,
       });
     }
+    const claimableSlots = getImmediatelyClaimableSlots(expenditure.slots);
 
-    yield claimExpenditureSlots({
+    yield claimExpenditurePayouts({
       colonyAddress,
-      claimableSlots: expenditure.slots.filter(
-        (slot) =>
-          slot.claimDelay !== null &&
-          slot.claimDelay !== undefined &&
-          slot.claimDelay === 0,
-      ),
+      claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
       annotationMessage,

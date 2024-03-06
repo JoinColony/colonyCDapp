@@ -181,50 +181,60 @@ export const getPayoutsWithSlotIds = (
   }));
 };
 
-interface ClaimExpendituresParams {
-  colonyAddress: Address;
-  nativeExpenditureId: number;
-  claimableSlots: ExpenditureSlot[];
-  annotationMessage?: string;
-  metaId: string;
-}
-
 type PayoutWithSlotId = ExpenditurePayout & {
   slotId: number;
 };
+
+export const getImmediatelyClaimableSlots = (slots: ExpenditureSlot[]) => {
+  return slots.filter(
+    (slot) =>
+      slot.claimDelay !== null &&
+      slot.claimDelay !== undefined &&
+      slot.claimDelay === 0,
+  );
+};
+
+export const getPayoutsWithSlotIdsFromSlots = (
+  claimableSlots: ExpenditureSlot[],
+): PayoutWithSlotId[] => {
+  return claimableSlots.flatMap((slot) =>
+    (slot.payouts || []).map((payout) => ({
+      ...payout,
+      slotId: slot.id,
+    })),
+  );
+};
+
+interface ClaimExpendituresPayoutsParams {
+  colonyAddress: Address;
+  nativeExpenditureId: number;
+  claimablePayouts: PayoutWithSlotId[];
+  annotationMessage?: string;
+  metaId: string;
+}
 
 const getPayoutChannelId = (payout: PayoutWithSlotId) =>
   `${payout.slotId}-${payout.tokenAddress}`;
 
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
-export function* claimExpenditureSlots({
+export function* claimExpenditurePayouts({
   colonyAddress,
-  claimableSlots,
+  claimablePayouts,
   nativeExpenditureId,
   annotationMessage,
   metaId,
-}: ClaimExpendituresParams) {
-  const batchKey = 'claimExpenditure';
-
-  const payoutsWithSlotIds = claimableSlots.flatMap(
-    (slot) =>
-      slot.payouts
-        ?.filter((payout) => payout.amount !== '0')
-        .map((payout) => ({
-          ...payout,
-          slotId: slot.id,
-        })) ?? [],
-  );
+}: ClaimExpendituresPayoutsParams) {
+  const batchKey = 'claimExpenditurePayouts';
 
   const { annotatePayoutChannel, ...channels } =
     yield createTransactionChannels(metaId, [
-      ...payoutsWithSlotIds.map(getPayoutChannelId),
+      ...claimablePayouts.map(getPayoutChannelId),
       'annotatePayoutChannel',
     ]);
 
   // Create one claim transaction for each slot
   yield all(
-    payoutsWithSlotIds.map((payout, index) =>
+    claimablePayouts.map((payout, index) =>
       fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
         context: ClientType.ColonyClient,
         methodName: 'claimExpenditurePayout',
@@ -247,13 +257,13 @@ export function* claimExpenditureSlots({
       group: {
         key: batchKey,
         id: metaId,
-        index: payoutsWithSlotIds.length,
+        index: claimablePayouts.length,
       },
       ready: false,
     });
   }
 
-  for (const payout of payoutsWithSlotIds) {
+  for (const payout of claimablePayouts) {
     const payoutChannelId = getPayoutChannelId(payout);
 
     yield takeFrom(
@@ -281,7 +291,7 @@ export function* claimExpenditureSlots({
     }
   }
 
-  for (const payout of payoutsWithSlotIds) {
+  for (const payout of claimablePayouts) {
     const payoutChannelId = getPayoutChannelId(payout);
     channels[payoutChannelId].channel.close();
   }
