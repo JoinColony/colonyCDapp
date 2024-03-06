@@ -20,7 +20,7 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   return (
     <>
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn readonly />
       <Description />
       <TokensTable
         name="selectedTokenAddresses"
