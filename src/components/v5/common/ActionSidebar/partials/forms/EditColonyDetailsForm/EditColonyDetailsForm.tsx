@@ -19,7 +19,7 @@ const EditColonyDetailsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ColonyDetailsFields />
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn readonly />
       <Description />
       <SocialLinksTable name="externalLinks" />
     </>

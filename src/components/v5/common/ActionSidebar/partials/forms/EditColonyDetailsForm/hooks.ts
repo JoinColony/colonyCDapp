@@ -33,7 +33,7 @@ export const useEditColonyDetails = (
         thumbnail: metadata?.thumbnail,
       },
       colonyDescription: metadata?.description || '',
-      createdIn: Id.RootDomain.toString(),
+      createdIn: Id.RootDomain,
       externalLinks: metadata?.externalLinks ?? [],
     }),
     [
