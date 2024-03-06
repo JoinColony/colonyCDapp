@@ -223,6 +223,10 @@ export function* claimExpenditurePayouts({
   nativeExpenditureId,
   metaId,
 }: ClaimExpendituresPayoutsParams) {
+  if (claimablePayouts.length === 0) {
+    return;
+  }
+
   const batchKey = 'claimExpenditurePayouts';
 
   const channels = yield createTransactionChannels(metaId, [
