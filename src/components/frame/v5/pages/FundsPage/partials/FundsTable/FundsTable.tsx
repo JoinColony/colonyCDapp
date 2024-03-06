@@ -5,11 +5,13 @@ import {
 } from '@tanstack/react-table';
 import React, { type FC } from 'react';
 
+import { useMobile } from '~hooks';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
+import CloseButton from '~v5/shared/Button/CloseButton.tsx';
 
 import AcceptButton from '../AcceptButton/index.ts';
 import Filter from '../Filter/index.ts';
@@ -21,7 +23,8 @@ const displayName = 'pages.FundsPage.partials.FundsTable';
 
 const FundsTable: FC = () => {
   const columns = useFundsTableColumns();
-  const { filters, searchedTokens } = useFundsTable();
+  const isMobile = useMobile();
+  const { filters, searchedTokens, activeFilters } = useFundsTable();
   const claims = useColonyFundsClaims();
   const allClaims = Array.from(
     new Set(claims.map((claim) => claim.token?.tokenAddress || '')),
@@ -31,6 +34,43 @@ const FundsTable: FC = () => {
     <>
       <TableHeader title={formatText({ id: 'incomingFundsPage.table.title' })}>
         <div className="flex items-center gap-2">
+          {!isMobile &&
+            activeFilters.map((activeFilter) =>
+              activeFilter ? (
+                <div
+                  className="bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400"
+                  key={activeFilter.filterName}
+                >
+                  <div className="text-sm font-semibold capitalize container">
+                    {activeFilter.filterName}:
+                  </div>
+                  {activeFilter.filters.map((filter, index) => (
+                    <p className="text-sm min-w-fit" key={filter?.toString()}>
+                      {filter}
+                      {index < activeFilter.filters.length - 1 && ','}
+                    </p>
+                  ))}
+                  <CloseButton
+                    iconSize={12}
+                    aria-label={formatText({ id: 'ariaLabel.closeFilter' })}
+                    className="shrink-0 text-current ml-1 !p-0"
+                    onClick={() => {
+                      const filterToRemove = filters.items.find(
+                        (item) => item.filterName === activeFilter.filterName,
+                      )?.name;
+
+                      if (filterToRemove) {
+                        const updatedFilters = { ...filters.value };
+
+                        delete updatedFilters[filterToRemove];
+
+                        filters.onChange(updatedFilters);
+                      }
+                    }}
+                  />
+                </div>
+              ) : null,
+            )}
           <Filter {...filters} />
           {claims.length > 0 && (
             <AcceptButton

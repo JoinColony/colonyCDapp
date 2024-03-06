@@ -1,5 +1,6 @@
 import { CoinVertical, ShieldCheck } from '@phosphor-icons/react';
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { isEqual } from 'lodash';
 import React, { useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
@@ -93,27 +94,47 @@ export const useFundsTable = (): UseFundsTableProps => {
     ),
   }));
 
+  const defaultStatusFilter = {
+    approved: true,
+    unapproved: false,
+  };
   const [searchValue, setSearchValue] = useState('');
-
-  const [value, setValue] = useState<Partial<FundsTableFilters>>({
-    status: {
-      approved: true,
-      unapproved: false,
-    },
+  const [isStatusChanged, setIsStatusChanged] = useState(false);
+  const [filterValue, setFilterValue] = useState<Partial<FundsTableFilters>>({
+    status: defaultStatusFilter,
     type: {},
   });
 
   const visibleTokens = allClaims.filter((visibleToken) => {
-    const { type = {}, status } = value;
+    const { type = {}, status } = filterValue;
+
+    if (status && status.approved && status.unapproved) {
+      return (
+        visibleToken &&
+        (!Object.values(type).some((tokenTypeFilter) => tokenTypeFilter) ||
+          type[visibleToken?.token?.tokenAddress || 0])
+      );
+    }
+    if (status && status.approved) {
+      return (
+        visibleToken.isApproved &&
+        (!Object.values(type).some((tokenTypeFilter) => tokenTypeFilter) ||
+          type[visibleToken?.token?.tokenAddress || 0])
+      );
+    }
+    if (status && status.unapproved) {
+      return (
+        !visibleToken.isApproved &&
+        (!Object.values(type).some((tokenTypeFilter) => tokenTypeFilter) ||
+          type[visibleToken?.token?.tokenAddress || 0])
+      );
+    }
 
     if (Object.values(type).some((tokenTypeFilter) => tokenTypeFilter)) {
       return type[visibleToken?.token?.tokenAddress || 0];
     }
 
-    return (
-      ((!status || status.approved) && visibleToken.isApproved) ||
-      (status && status.unapproved && !visibleToken.isApproved)
-    );
+    return true;
   });
 
   const searchedTokens = visibleTokens.filter(
@@ -124,6 +145,7 @@ export const useFundsTable = (): UseFundsTableProps => {
 
   const tokenTypeFilters = colonyTokens.map(({ token }) => ({
     name: token.tokenAddress,
+    symbol: token.symbol,
     label: (
       <div className="flex items-center gap-2">
         <TokenIcon token={token} size="xxxs" />
@@ -133,10 +155,16 @@ export const useFundsTable = (): UseFundsTableProps => {
   }));
 
   const filters: FilterProps<FundsTableFilters> = {
-    onChange: setValue,
+    onChange: (value) => {
+      if (!isEqual(value.status, defaultStatusFilter)) {
+        setIsStatusChanged(true);
+      }
+
+      setFilterValue(value);
+    },
     onSearch: setSearchValue,
     searchValue,
-    value,
+    value: filterValue,
     searchInputLabel: formatMessage({
       id: 'filter.incoming.funds.search.title',
     }),
@@ -145,7 +173,16 @@ export const useFundsTable = (): UseFundsTableProps => {
     }),
     items: [
       {
+        name: 'type',
+        filterName: formatText({ id: 'incomingFundsPage.filter.type' }),
+        label: formatText({ id: 'incomingFundsPage.filter.tokenType' }),
+        title: formatText({ id: 'incomingFundsPage.filter.approvedTokens' }),
+        icon: CoinVertical,
+        items: tokenTypeFilters,
+      },
+      {
         name: 'status',
+        filterName: formatText({ id: 'incomingFundsPage.filter.status' }),
         label: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
         icon: ShieldCheck,
         title: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
@@ -160,18 +197,39 @@ export const useFundsTable = (): UseFundsTableProps => {
           },
         ],
       },
-      {
-        name: 'type',
-        label: formatText({ id: 'incomingFundsPage.filter.tokenType' }),
-        title: formatText({ id: 'incomingFundsPage.filter.approvedTokens' }),
-        icon: CoinVertical,
-        items: tokenTypeFilters,
-      },
     ],
   };
+
+  const activeFilters = filters.items
+    .map((item) => {
+      const activeItem = filters.value[item.name];
+
+      if (item.name === 'status' && !isStatusChanged) {
+        return undefined;
+      }
+
+      if (activeItem) {
+        const activeFilter = Object.keys(activeItem).filter(
+          (key) => activeItem[key],
+        );
+        const activeFiltersForItem = activeFilter.map((filterKey) => {
+          const filter = item.items.find((f) => f.name === filterKey);
+
+          return filter?.symbol || filter?.label;
+        });
+
+        return activeFiltersForItem.length > 0
+          ? { filterName: item.filterName, filters: activeFiltersForItem }
+          : null;
+      }
+
+      return undefined;
+    })
+    .filter(Boolean);
 
   return {
     filters,
     searchedTokens,
+    activeFilters,
   };
 };

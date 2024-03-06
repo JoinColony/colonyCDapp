@@ -21,6 +21,14 @@ export type FundsTableFilters = {
 
 export interface UseFundsTableProps {
   filters: FilterProps<FundsTableFilters>;
+  activeFilters: (
+    | {
+        filterName: string;
+        filters: React.ReactNode[];
+      }
+    | null
+    | undefined
+  )[];
   searchedTokens: {
     isApproved: boolean;
     token?: {
