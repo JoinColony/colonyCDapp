@@ -19,7 +19,7 @@ const IndividualPermissionsPage = () => {
 
   return (
     <PermissionsPageContent {...filters}>
-      {emptyMembers && (
+      {emptyMembers && !isLoading && (
         <EmptyContent
           title={formatText({ id: 'permissionsPage.empty.title' })}
           description={formatText({ id: 'permissionsPage.empty.description' })}

@@ -50,7 +50,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
         )}
       </div>
       <p className="text-md text-gray-600 mb-6">{description}</p>
-      {isLoading && (
+      {isLoading ? (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))] md:grid-cols-4 gap-6">
           {[...Array(4).keys()].map((key) => (
             <div
@@ -64,24 +64,32 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
             </div>
           ))}
         </div>
-      )}
-      {!isLoading && <MemberCardList items={currentMembers} isSimple />}
-      {(membersCount > 0 || extensionsCount > 0) &&
-        currentMembers.length < membersCount + extensionsCount && (
-          <div className="flex justify-center mt-6">
-            <TextButton onClick={loadMore}>
-              {formatText({ id: 'loadMore' })}
-            </TextButton>
-          </div>
-        )}
-      {membersCount === 0 && extensionsCount === 0 && !isLoading && (
-        <EmptyContent
-          title={formatText({ id: 'permissionsPage.empty.title' })}
-          description={formatText({ id: 'permissionsPage.empty.description' })}
-          className="pt-10 pb-9 px-6 mt-6"
-          icon={Binoculars}
-          withBorder
-        />
+      ) : (
+        <>
+          {membersCount === 0 && extensionsCount === 0 ? (
+            <EmptyContent
+              title={formatText({ id: 'permissionsPage.empty.title' })}
+              description={formatText({
+                id: 'permissionsPage.empty.description',
+              })}
+              className="pt-10 pb-9 px-6 mt-6"
+              icon={Binoculars}
+              withBorder
+            />
+          ) : (
+            <>
+              <MemberCardList items={currentMembers} isSimple />
+              {(membersCount > 0 || extensionsCount > 0) &&
+                currentMembers.length < membersCount + extensionsCount && (
+                  <div className="flex justify-center mt-6">
+                    <TextButton onClick={loadMore}>
+                      {formatText({ id: 'loadMore' })}
+                    </TextButton>
+                  </div>
+                )}
+            </>
+          )}
+        </>
       )}
     </div>
   );
