@@ -14,7 +14,7 @@ const FormFormattedInput: FC<FormFormattedInputProps> = ({
   ...rest
 }) => {
   const {
-    field: { onChange, value },
+    field: { value },
     fieldState: { invalid, error },
   } = useController({
     name,
@@ -26,11 +26,6 @@ const FormFormattedInput: FC<FormFormattedInputProps> = ({
       {...rest}
       type={type}
       value={value}
-      onChange={(event) => {
-        const { rawValue } = event.target;
-
-        onChange(rawValue);
-      }}
       state={invalid ? FieldState.Error : undefined}
     />
   );

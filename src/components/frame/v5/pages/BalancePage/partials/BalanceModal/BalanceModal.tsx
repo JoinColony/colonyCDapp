@@ -40,7 +40,6 @@ const BalanceModal: FC<PropsWithChildren<BalanceModalProps>> = ({
               name="amount"
               placeholder="0"
               options={{
-                numeral: true,
                 numeralDecimalScale: undefined,
                 numeralPositiveOnly: true,
                 rawValueTrimPrefix: true,

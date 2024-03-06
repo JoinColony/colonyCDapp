@@ -22,7 +22,7 @@ export const TransferFundsDescription = () => {
   } = useColonyContext();
   const formValues = useFormContext<TransferFundsFormValues>().getValues();
 
-  const { amount: { amount, tokenAddress } = {}, from, to } = formValues;
+  const { amount, tokenAddress, from, to } = formValues;
 
   const fromDomain = domains?.items.find((domain) => domain?.nativeId === from);
   const toDomain = domains?.items.find((domain) => domain?.nativeId === to);

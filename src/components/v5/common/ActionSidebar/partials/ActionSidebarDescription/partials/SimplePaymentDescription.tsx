@@ -20,7 +20,7 @@ const displayName =
 export const SimplePaymentDescription = () => {
   const formValues = useFormContext<SimplePaymentFormValues>().getValues();
   const { colony } = useColonyContext();
-  const { amount: { amount, tokenAddress } = {}, recipient } = formValues;
+  const { amount, tokenAddress, recipient } = formValues;
 
   const { nativeToken } = colony;
   const matchingColonyToken = colony.tokens?.items.find(

@@ -1,4 +1,3 @@
-import Cleave from 'cleave.js/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -11,10 +10,8 @@ import { type FormattedInputProps } from './types.ts';
 const displayName = 'v5.common.Fields.FormattedInput';
 
 const FormattedInput: FC<FormattedInputProps> = ({
-  options,
   onChange,
   disabled,
-  value,
   placeholder,
   className,
   state,
@@ -27,13 +24,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
   message,
   ...rest
 }) => {
-  const {
-    dynamicCleaveOptionKey,
-    setCleave,
-    buttonRef,
-    wrapperRef,
-    customPrefixRef,
-  } = useFormattedInput(value, options);
+  const { buttonRef, wrapperRef, customPrefixRef } = useFormattedInput();
 
   const stateClassNames = useStateClassNames(
     {
@@ -86,17 +77,10 @@ const FormattedInput: FC<FormattedInputProps> = ({
             {customPrefix}
           </div>
         )}
-        <Cleave
+        <input
           {...rest}
           disabled={disabled}
-          key={dynamicCleaveOptionKey}
           placeholder={placeholder || ''}
-          /*
-           * @NOTE: If formattingOptions is not either memoized or defined outside of the ancestor Input component,
-           * it will cause Cleave to be re-mounted and thus lose its state and focus.
-           */
-          options={options}
-          onInit={(cleaveInstance) => setCleave(cleaveInstance)}
           onChange={onChange}
           className={clsx(
             className,

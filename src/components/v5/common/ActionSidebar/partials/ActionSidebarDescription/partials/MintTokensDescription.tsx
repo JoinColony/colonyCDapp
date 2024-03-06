@@ -18,7 +18,7 @@ const displayName =
 
 export const MintTokensDescription = () => {
   const formValues = useFormContext<MintTokenFormValues>().getValues();
-  const { amount: { amount } = {} } = formValues;
+  const { amount } = formValues;
   const {
     colony: { nativeToken },
   } = useColonyContext();

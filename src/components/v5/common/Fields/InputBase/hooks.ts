@@ -1,16 +1,8 @@
-import { type ReactInstanceWithCleave } from 'cleave.js/react/props';
 import noop from 'lodash/noop';
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useImperativeHandle,
-} from 'react';
+import { useEffect, useLayoutEffect, useRef, useImperativeHandle } from 'react';
 
 import { getInputTextWidth } from '~utils/elements.ts';
 
-import { type FormattedInputProps } from './types.ts';
 import { addWidthProperty } from './utils.ts';
 
 export const useAdjustInputWidth = (
@@ -49,32 +41,10 @@ export const useAdjustInputWidth = (
   return inputRef;
 };
 
-export const useFormattedInput = (
-  value: FormattedInputProps['value'],
-  options?: FormattedInputProps['options'],
-) => {
-  const [cleave, setCleave] = useState<ReactInstanceWithCleave | null>(null);
+export const useFormattedInput = () => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const customPrefixRef = useRef<HTMLDivElement | null>(null);
-
-  const { prefix, tailPrefix } = options || {};
-
-  /**
-   * Sync the cleave raw value with value prop
-   * This is necessary for correctly setting the initial value
-   */
-  useEffect(() => {
-    if (typeof value !== 'string') {
-      return;
-    }
-
-    cleave?.setRawValue(
-      `${prefix && !tailPrefix ? prefix : ''}${value}${
-        prefix && tailPrefix ? ` ${prefix}` : ''
-      }`,
-    );
-  }, [cleave, prefix, tailPrefix, value]);
 
   useEffect(() => {
     addWidthProperty(buttonRef.current, wrapperRef.current, 'button');
@@ -85,17 +55,7 @@ export const useFormattedInput = (
     );
   }, []);
 
-  // /*
-  //  * @NOTE Coerce cleave into handling dynamically changing options
-  //  * See here for why this isn't yet supported "officially":
-  //  * https://github.com/nosir/cleave.js/issues/352#issuecomment-447640572
-  //  */
-
-  const dynamicCleaveOptionKey = JSON.stringify(options);
-
   return {
-    dynamicCleaveOptionKey,
-    setCleave,
     wrapperRef,
     buttonRef,
     customPrefixRef,

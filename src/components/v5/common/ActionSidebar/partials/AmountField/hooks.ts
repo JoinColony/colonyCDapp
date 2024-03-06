@@ -1,4 +1,5 @@
-import { useMemo, useRef } from 'react';
+import { type FormatNumeralOptions } from 'cleave-zen';
+import { useRef } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { notNull } from '~utils/arrays/index.ts';
@@ -9,32 +10,30 @@ import {
 } from '~utils/tokens.ts';
 
 export const useAmountField = (
-  selectedTokenAddress: string,
-  name: string,
+  selectedTokenAddress: string | undefined,
   maxWidth: number | undefined,
 ) => {
   const inputRef = useRef<HTMLInputElement>();
-  const { colony } = useColonyContext();
+  const {
+    colony,
+    colony: { nativeToken },
+  } = useColonyContext();
 
   const colonyTokens =
     colony.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
 
-  const selectedToken = getSelectedToken(colony, selectedTokenAddress);
-
-  const formattingOptions = useMemo(
-    () => ({
-      name,
-      delimiter: ',',
-      numeral: true,
-      numeralPositiveOnly: true,
-      numeralDecimalScale: getTokenDecimalsWithFallback(
-        selectedToken?.decimals,
-      ),
-    }),
-    [selectedToken, name],
+  const selectedToken = getSelectedToken(
+    colony,
+    selectedTokenAddress || nativeToken.tokenAddress,
   );
+
+  const formattingOptions: FormatNumeralOptions = {
+    delimiter: ',',
+    numeralPositiveOnly: true,
+    numeralDecimalScale: getTokenDecimalsWithFallback(selectedToken?.decimals),
+  };
 
   const adjustInputWidth = () => {
     if (!inputRef.current) {
@@ -47,13 +46,10 @@ export const useAmountField = (
     )}px`;
   };
 
-  const dynamicCleaveOptionKey = JSON.stringify(formattingOptions);
-
   return {
     inputRef,
     colonyTokens,
     adjustInputWidth,
-    dynamicCleaveOptionKey,
     formattingOptions,
     selectedToken,
   };

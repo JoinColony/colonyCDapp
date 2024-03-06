@@ -11,12 +11,7 @@ import { type AmountRowProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.AmountRow';
 
-const AmountRow = ({
-  tokenAddress,
-  domainId,
-  title,
-  tooltips,
-}: AmountRowProps) => {
+const AmountRow = ({ domainId, title, tooltips }: AmountRowProps) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   return (
@@ -30,7 +25,6 @@ const AmountRow = ({
       <AmountField
         name="amount"
         maxWidth={270}
-        tokenAddress={tokenAddress}
         domainId={domainId}
         isDisabled={hasNoDecisionMethods}
       />

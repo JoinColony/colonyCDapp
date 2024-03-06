@@ -83,10 +83,8 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                 ) : undefined
               }
               options={{
-                numeral: true,
                 numeralDecimalScale: tokenDecimals,
                 numeralPositiveOnly: true,
-                rawValueTrimPrefix: true,
                 tailPrefix: true,
               }}
               buttonProps={{

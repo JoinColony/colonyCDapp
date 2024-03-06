@@ -12,15 +12,11 @@ export const getMintTokenPayload = (
   colony: Colony,
   values: MintTokenFormValues,
 ) => {
-  const {
-    amount: { amount: inputAmount },
-    description: annotationMessage,
-    title,
-  } = values;
+  const { amount, description: annotationMessage, title } = values;
 
-  const amount = BigNumber.from(
+  const WEIAmount = BigNumber.from(
     moveDecimal(
-      inputAmount,
+      amount,
       getTokenDecimalsWithFallback(colony?.nativeToken?.decimals),
     ),
   );
@@ -30,8 +26,8 @@ export const getMintTokenPayload = (
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
     nativeTokenAddress: colony.nativeToken.tokenAddress,
-    motionParams: [amount],
-    amount,
+    motionParams: [WEIAmount],
+    amount: WEIAmount,
     annotationMessage: annotationMessage
       ? sanitizeHTML(annotationMessage)
       : undefined,

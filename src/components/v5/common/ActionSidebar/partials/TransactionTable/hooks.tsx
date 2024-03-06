@@ -11,7 +11,6 @@ import { type TransactionTableModel } from './types.ts';
 
 export const useTransactionTableColumns = (
   name: string,
-  tokenAddress?: string,
 ): ColumnDef<TransactionTableModel, string>[] => {
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
@@ -37,13 +36,12 @@ export const useTransactionTableColumns = (
           <AmountField
             key={row.id}
             name={`${name}.${row.index}.amount`}
-            tokenAddress={tokenAddress}
             domainId={selectedTeam}
           />
         ),
       }),
     ],
-    [columnHelper, name, selectedTeam, tokenAddress],
+    [columnHelper, name, selectedTeam],
   );
 
   return columns;
