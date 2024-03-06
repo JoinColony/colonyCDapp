@@ -1,5 +1,4 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import type ColonyManager from '~context/ColonyManager.ts';
@@ -14,7 +13,9 @@ import {
 } from '../transactions/index.ts';
 import {
   getColonyManager,
-  claimExpenditureSlots,
+  claimExpenditurePayouts,
+  getImmediatelyClaimableSlots,
+  getPayoutsWithSlotIdsFromSlots,
   initiateTransaction,
   putError,
   takeFrom,
@@ -58,13 +59,11 @@ function* finalizeExpenditureAction({
         metaId: meta.id,
       });
     }
+    const claimableSlots = getImmediatelyClaimableSlots(expenditure.slots);
 
-    // @TODO: claimableSlots are wrong, needs fixing
-    yield claimExpenditureSlots({
+    yield claimExpenditurePayouts({
       colonyAddress,
-      claimableSlots: expenditure.slots.filter(
-        (slot) => !slot.claimDelay || BigNumber.from(slot.claimDelay).eq(0),
-      ),
+      claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
     });
