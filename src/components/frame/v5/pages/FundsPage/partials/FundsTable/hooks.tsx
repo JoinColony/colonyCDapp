@@ -173,6 +173,14 @@ export const useFundsTable = (): UseFundsTableProps => {
     }),
     items: [
       {
+        name: 'type',
+        filterName: formatText({ id: 'incomingFundsPage.filter.type' }),
+        label: formatText({ id: 'incomingFundsPage.filter.tokenType' }),
+        title: formatText({ id: 'incomingFundsPage.filter.approvedTokens' }),
+        icon: CoinVertical,
+        items: tokenTypeFilters,
+      },
+      {
         name: 'status',
         filterName: formatText({ id: 'incomingFundsPage.filter.status' }),
         label: formatText({ id: 'incomingFundsPage.filter.tokenStatus' }),
@@ -188,14 +196,6 @@ export const useFundsTable = (): UseFundsTableProps => {
             label: formatText({ id: 'incomingFundsPage.filter.unapproved' }),
           },
         ],
-      },
-      {
-        name: 'type',
-        filterName: formatText({ id: 'incomingFundsPage.filter.type' }),
-        label: formatText({ id: 'incomingFundsPage.filter.tokenType' }),
-        title: formatText({ id: 'incomingFundsPage.filter.approvedTokens' }),
-        icon: CoinVertical,
-        items: tokenTypeFilters,
       },
     ],
   };

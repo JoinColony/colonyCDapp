@@ -44,14 +44,10 @@ const FundsTable: FC = () => {
                   <div className="text-sm font-semibold capitalize container">
                     {activeFilter.filterName}:
                   </div>
-                  {activeFilter.filters.map((filter) => (
+                  {activeFilter.filters.map((filter, index) => (
                     <p className="text-sm min-w-fit" key={filter?.toString()}>
                       {filter}
-                      {activeFilter.filters.length > 1 &&
-                      activeFilter.filters.indexOf(filter) !==
-                        activeFilter.filters.length - 1
-                        ? ','
-                        : ''}
+                      {index < activeFilter.filters.length - 1 && ','}
                     </p>
                   ))}
                   <CloseButton
