@@ -102,6 +102,7 @@ const BalanceTable: FC = () => {
     return {
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
       contentWrapperClassName: isMobile ? '!left-6 right-6' : undefined,
+      dropdownPlacementProps: { withAutoTopPlacement: isMobile },
       items: [
         ...(!isTokenNative && !nativeTokenStatus?.unlocked
           ? [

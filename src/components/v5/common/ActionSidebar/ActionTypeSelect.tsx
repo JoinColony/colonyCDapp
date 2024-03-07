@@ -12,7 +12,10 @@ import SearchSelect from '~v5/shared/SearchSelect/index.ts';
 
 import ActionFormRow from '../ActionFormRow/index.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from './consts.tsx';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+} from './consts.tsx';
 import { useActionsList } from './hooks/index.ts';
 import { translateAction } from './utils.ts';
 
@@ -109,6 +112,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                     return;
                   }
 
+                  setValue(DECISION_METHOD_FIELD_NAME, undefined);
                   onChange(action);
                 }}
               />
@@ -125,6 +129,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         onClose={() => setNextActionType(undefined)}
         onConfirm={() => {
           setValue(ACTION_TYPE_FIELD_NAME, nextActionType);
+          setValue(DECISION_METHOD_FIELD_NAME, undefined);
           setNextActionType(undefined);
         }}
         icon={WarningCircle}

@@ -9,7 +9,17 @@ export const validationSchema = object()
       .trim()
       .required(() => 'Please enter a title.'),
     createdIn: number().defined(),
-    description: string().max(MAX_ANNOTATION_LENGTH).required(),
+    description: string()
+      .test(
+        'descriptionLength',
+        `Description must be at most ${MAX_ANNOTATION_LENGTH} characters`,
+        (value) => {
+          if (!value) return true;
+          // This is added to remove HTML tags from the text to count the length
+          return value.replace(/<[^>]*>/g, '').length <= MAX_ANNOTATION_LENGTH;
+        },
+      )
+      .required(),
     decisionMethod: string().defined(),
     walletAddress: string().address().required(),
   })
