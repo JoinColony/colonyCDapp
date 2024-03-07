@@ -194,7 +194,7 @@ export const getImmediatelyClaimableSlots = (slots: ExpenditureSlot[]) => {
   );
 };
 
-export const getPayoutsWithSlotIdsFromSlots = (
+const getPayoutsWithSlotIdsFromSlots = (
   claimableSlots: ExpenditureSlot[],
 ): PayoutWithSlotId[] => {
   return claimableSlots.flatMap((slot) =>
@@ -208,8 +208,7 @@ export const getPayoutsWithSlotIdsFromSlots = (
 interface ClaimExpendituresPayoutsParams {
   colonyAddress: Address;
   nativeExpenditureId: number;
-  claimablePayouts: PayoutWithSlotId[];
-  annotationMessage?: string;
+  claimableSlots: ExpenditureSlot[];
   metaId: string;
 }
 
@@ -219,10 +218,12 @@ const getPayoutChannelId = (payout: PayoutWithSlotId) =>
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
 export function* claimExpenditurePayouts({
   colonyAddress,
-  claimablePayouts,
+  claimableSlots,
   nativeExpenditureId,
   metaId,
 }: ClaimExpendituresPayoutsParams) {
+  const claimablePayouts = getPayoutsWithSlotIdsFromSlots(claimableSlots);
+
   if (claimablePayouts.length === 0) {
     return;
   }

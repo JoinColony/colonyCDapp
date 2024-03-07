@@ -15,7 +15,6 @@ import {
   getColonyManager,
   claimExpenditurePayouts,
   getImmediatelyClaimableSlots,
-  getPayoutsWithSlotIdsFromSlots,
   initiateTransaction,
   putError,
   takeFrom,
@@ -63,7 +62,7 @@ function* finalizeExpenditureAction({
 
     yield claimExpenditurePayouts({
       colonyAddress,
-      claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
+      claimableSlots,
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
     });
