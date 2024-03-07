@@ -299,6 +299,16 @@ while true; do
     fi
 done
 
+# Wait for auth proxy to come up
+while ! nc -z localhost 3001; do
+  sleep 5
+done
+
+# Wait for block ingestor to come up
+while ! nc -z localhost 10001; do
+  sleep 5
+done
+
 # Seed database (pass --yes to skip confirmation)
 node ./scripts/create-data.js --yes
 
