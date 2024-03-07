@@ -224,6 +224,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "removeMemberFromColonyWhitelist": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "setCurrentVersion": {
       "build": true,
       "dependsOn": [
@@ -457,22 +471,6 @@
         {
           "category": "function",
           "resourceName": "fetchVoterRewards"
-        }
-      ]
-    },
-    "AMPLIFY_function_getReputationForTopDomains_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "getReputationForTopDomains"
-        }
-      ]
-    },
-    "AMPLIFY_function_getReputationForTopDomains_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "getReputationForTopDomains"
         }
       ]
     },
