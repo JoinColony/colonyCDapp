@@ -45,27 +45,5 @@ interface Brand {
   version: string;
 }
 
-interface ImportMetaEnv {
-  readonly VITE_AUTH_PROXY_ENDPOINT: string;
-  readonly VITE_BSCSCAN_API_KEY: string | undefined;
-  readonly VITE_COINGECKO_API_KEY: string;
-  readonly VITE_DEBUG: string;
-  readonly VITE_ETHERSCAN_API_KEY: string | undefined;
-  readonly VITE_NETWORK_FILES_ENDPOINT: string;
-  readonly VITE_GANACHE_RPC_URL: string | undefined;
-  readonly VITE_GOOGLE_TAG_MANAGER_ID: string | undefined;
-  readonly VITE_METATX_ENABLED: string;
-  readonly VITE_METATX_BROADCASTER_ENDPOINT: string;
-  readonly VITE_NETWORK: string;
-  readonly VITE_NETWORK_CONTRACT_ADDRESS: string;
-  readonly VITE_PINATA_API_KEY: string | undefined;
-  readonly VITE_PINATA_API_SECRET: string | undefined;
-  readonly VITE_REPUTATION_ORACLE_ENDPOINT: string;
-  readonly VITE_PROD_COMMIT_HASH: string | undefined;
-  readonly VITE_SAFE_ENABLED: string | undefined;
-  readonly VITE_URL: string | undefined;
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
+// eslint-disable-next-line no-underscore-dangle
+declare const __COMMIT_HASH__: string | undefined;

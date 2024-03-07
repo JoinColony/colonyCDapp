@@ -1,10 +1,14 @@
+import { execSync } from 'node:child_process';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgr from 'vite-plugin-svgr';
+import importMetaEnv from '@import-meta-env/unplugin';
 
-export default defineConfig({
+const __COMMIT_HASH__ = execSync('git rev-parse HEAD').toString().trim();
+
+export default defineConfig(({ mode }) => ({
   plugins: [
     // NOTE: This is only here because of IPFS. When moving to Helia, this can be removed
     nodePolyfills({
@@ -17,6 +21,10 @@ export default defineConfig({
     }),
     react(),
     svgr(),
+    importMetaEnv.vite({
+      example: '.env.example',
+      env: '.env.local',
+    })
   ],
   resolve: {
     alias: {
@@ -40,7 +48,11 @@ export default defineConfig({
       '~v5': path.resolve(__dirname, 'src/components/v5'),
     },
   },
+  // NOTE: Do not define environment variables here. Instead, use .env files (__COMMIT_HASH__ is an exception)
+  define: {
+    __COMMIT_HASH__: mode === 'production' ? JSON.stringify(__COMMIT_HASH__) : undefined,
+  },
   server: {
     port: 9091,
   },
-});
+}));

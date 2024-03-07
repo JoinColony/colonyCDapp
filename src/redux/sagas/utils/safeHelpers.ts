@@ -62,7 +62,7 @@ const LOCAL_TOKEN_ID = 1; // set in start-bridging-environment.js
 let SAFE_ADDRESSES: SafeAddresses | null = null;
 
 export const getSafeAddresses = async (): Promise<SafeAddresses> => {
-  if (!isDev || !(import.meta.env.VITE_SAFE_ENABLED === 'true'))
+  if (!isDev || !(import.meta.env.SAFE_ENABLED === 'true'))
     return {} as SafeAddresses;
   if (SAFE_ADDRESSES) return SAFE_ADDRESSES;
   const addresses = await fetch(`${safeAddressesUrl.href}safe-addresses.json`);

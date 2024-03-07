@@ -28,10 +28,6 @@ npm install
 
 _Note: at the end of the install there's a post-install script that will recursively install dependencies for all the currently declared lambda functions_
 
-### Create `.env` file
-
-Copy `.env.example` and rename it to `.env`. You should not need to change any of the values to get CDapp running.
-
 ### (Linux only) Increase the limit of watched files
 
 On Linux, you'll need to run the following commands to increase the default limit of watched files. Otherwise, the `watchAmplifyFiles` script will not work properly.
@@ -52,10 +48,10 @@ On the next start, assuming no key cache files changed, it will skip the image b
 
 ## Running the dev web server
 
-Once the above dev environment is up and running, you need to start your dev web server, running through vite:
+Once the above dev environment is up and running, you need to start your dev web server:
 
 ```bash
-npm run vite
+npm run frontend
 ```
 
 You can access it at `http://localhost:9091` _(notice the different port, as to not cause a local storage and cache conflict with the Dapp)_
@@ -89,7 +85,7 @@ _NOTE: This only works while the environment is running_
 If you want to build the bundle locally for production, you can do it via:
 
 ```bash
-npm run vite:prod
+npm run build
 ```
 
 _Note: It's a straight-up dev build. Just bundled, no code optimizations whatsoever._

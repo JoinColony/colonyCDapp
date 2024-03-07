@@ -12,7 +12,7 @@ const defaultAnalyticsContext = {
 
 // AnalyticsContextProvider
 const AnalyticsContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const gtmId = import.meta.env.VITE_GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
+  const gtmId = import.meta.env.GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
   useBeamer();
 
   const contextValue = useMemo(() => {

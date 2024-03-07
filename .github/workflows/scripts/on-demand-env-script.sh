@@ -313,7 +313,7 @@ done
 node ./scripts/create-data.js --yes
 
 # Start frontend
-npm run vite &
+npm run frontend &
 
 # Wait for frontend service to come up
 while ! nc -zv localhost 9091; do

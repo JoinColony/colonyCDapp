@@ -50,7 +50,7 @@ export type NetworkInfo = {
   blockTime?: number;
 };
 
-export const DEFAULT_NETWORK = import.meta.env.VITE_NETWORK || Network.Ganache;
+export const DEFAULT_NETWORK = import.meta.env.NETWORK_ID || Network.Ganache;
 export const COLONY_TOTAL_BALANCE_DOMAIN_ID = 0;
 export const DEFAULT_TOKEN_DECIMALS = 18;
 
@@ -206,7 +206,7 @@ export const ADDRESS_ZERO = ethersContants.AddressZero;
 export const GANACHE_LOCAL_RPC_URL =
   import.meta.env.VITE_GANACHE_RPC_URL || 'http://localhost:8545/';
 
-export const isDev = import.meta.env.VITE_NETWORK === 'ganache';
+export const isDev = import.meta.env.NETWORK_ID === 'ganache';
 
 export const CDAPP_VERSION = version;
 
@@ -293,6 +293,4 @@ export const FETCH_ABORTED = 'fetchAborted';
 
 export const isFullScreen = 'isFullScreen';
 
-export const APP_URL = new URL(
-  import.meta.env.VITE_URL || 'http://localhost:9091/',
-);
+export const APP_URL = new URL(import.meta.env.URL || 'http://localhost:9091/');

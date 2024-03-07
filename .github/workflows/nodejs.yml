@@ -38,4 +38,4 @@ jobs:
       - run: npm run stylelint:ci
       # Tests are disabled for now
       # - run: npm run test:ci
-      - run: npm run vite:prod
+      - run: npm run build

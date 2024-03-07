@@ -5,7 +5,7 @@ import removeTypenameLink from './removeTypenameLink.ts';
 
 const httpLink = new HttpLink({
   uri: `${
-    import.meta.env.VITE_AUTH_PROXY_ENDPOINT || 'http://localhost:3005'
+    import.meta.env.AUTH_PROXY_ENDPOINT || 'http://localhost:3005'
   }/graphql`,
   credentials: 'include',
 });

@@ -16,7 +16,6 @@ export const canUseMetatransactions = (): boolean => {
   const networkSupportsMetatransactions = NETWORKS_WITH_METATRANSACTIONS.find(
     (network) => network === DEFAULT_NETWORK,
   );
-  const areMetaTransactionsEnabled =
-    import.meta.env.VITE_METATX_ENABLED === 'true';
+  const areMetaTransactionsEnabled = import.meta.env.METATX_ENABLED === 'true';
   return !!networkSupportsMetatransactions && areMetaTransactionsEnabled;
 };
