@@ -13,7 +13,6 @@ import {
 import {
   getImmediatelyClaimableSlots,
   claimExpenditurePayouts,
-  getPayoutsWithSlotIdsFromSlots,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -121,10 +120,9 @@ function* releaseExpenditureStage({
 
       yield claimExpenditurePayouts({
         colonyAddress,
-        claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
+        claimableSlots,
         metaId: meta.id,
         nativeExpenditureId: expenditure.nativeId,
-        annotationMessage,
       });
     }
 

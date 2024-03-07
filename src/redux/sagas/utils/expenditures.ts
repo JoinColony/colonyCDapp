@@ -27,7 +27,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 
-import { uploadAnnotation } from './annotations.ts';
 import { initiateTransaction, takeFrom } from './effects.ts';
 
 const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
@@ -186,15 +185,10 @@ type PayoutWithSlotId = ExpenditurePayout & {
 };
 
 export const getImmediatelyClaimableSlots = (slots: ExpenditureSlot[]) => {
-  return slots.filter(
-    (slot) =>
-      slot.claimDelay !== null &&
-      slot.claimDelay !== undefined &&
-      slot.claimDelay === 0,
-  );
+  return slots.filter((slot) => slot.claimDelay === 0);
 };
 
-export const getPayoutsWithSlotIdsFromSlots = (
+const getPayoutsWithSlotIdsFromSlots = (
   claimableSlots: ExpenditureSlot[],
 ): PayoutWithSlotId[] => {
   return claimableSlots.flatMap((slot) =>
@@ -208,8 +202,7 @@ export const getPayoutsWithSlotIdsFromSlots = (
 interface ClaimExpendituresPayoutsParams {
   colonyAddress: Address;
   nativeExpenditureId: number;
-  claimablePayouts: PayoutWithSlotId[];
-  annotationMessage?: string;
+  claimableSlots: ExpenditureSlot[];
   metaId: string;
 }
 
@@ -219,11 +212,12 @@ const getPayoutChannelId = (payout: PayoutWithSlotId) =>
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
 export function* claimExpenditurePayouts({
   colonyAddress,
-  claimablePayouts,
+  claimableSlots,
   nativeExpenditureId,
-  annotationMessage,
   metaId,
 }: ClaimExpendituresPayoutsParams) {
+  const claimablePayouts = getPayoutsWithSlotIdsFromSlots(claimableSlots);
+
   if (claimablePayouts.length === 0) {
     return;
   }
@@ -253,19 +247,6 @@ export function* claimExpenditurePayouts({
       }),
     ),
   );
-  if (annotationMessage) {
-    yield fork(createTransaction, annotatePayoutChannel.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'annotateTransaction',
-      identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: claimablePayouts.length,
-      },
-      ready: false,
-    });
-  }
 
   for (const payout of claimablePayouts) {
     const payoutChannelId = getPayoutChannelId(payout);
@@ -274,25 +255,9 @@ export function* claimExpenditurePayouts({
       channels[payoutChannelId].channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    if (annotationMessage) {
-      yield takeFrom(
-        annotatePayoutChannel.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
 
     yield initiateTransaction({ id: channels[payoutChannelId].id });
-    const {
-      payload: { hash: txHash },
-    } = yield waitForTxResult(channels[payoutChannelId].channel);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotatePayoutChannel,
-        message: annotationMessage,
-        txHash,
-      });
-    }
+    yield waitForTxResult(channels[payoutChannelId].channel);
   }
 
   for (const payout of claimablePayouts) {
