@@ -55,7 +55,7 @@ const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
         />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn readonly />
       <Description />
       {manageMembers !== undefined && <VerifiedMembersTable name="members" />}
     </>
