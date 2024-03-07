@@ -224,11 +224,10 @@ export function* claimExpenditurePayouts({
 
   const batchKey = 'claimExpenditurePayouts';
 
-  const { annotatePayoutChannel, ...channels } =
-    yield createTransactionChannels(metaId, [
-      ...claimablePayouts.map(getPayoutChannelId),
-      'annotatePayoutChannel',
-    ]);
+  const channels = yield createTransactionChannels(metaId, [
+    ...claimablePayouts.map(getPayoutChannelId),
+    'annotatePayoutChannel',
+  ]);
 
   // Create one claim transaction for each slot
   yield all(
@@ -264,5 +263,4 @@ export function* claimExpenditurePayouts({
     const payoutChannelId = getPayoutChannelId(payout);
     channels[payoutChannelId].channel.close();
   }
-  annotatePayoutChannel.channel.close();
 }
