@@ -2,16 +2,17 @@
 FROM node:20.11-alpine3.19 as build-stage
 RUN apk add git
 WORKDIR /app
-# To get the git commit hash later
-COPY .git ./.git
-COPY package.json package-lock.json index.html vite.config.mts .env.example ./
-COPY src ./src
-RUN SKIP_POSTINSTALL=true npm ci
+COPY package.json package-lock.json ./
+RUN SKIP_HOOKS=true npm ci
 
 # Package the import-meta-env as single binary as we don't have node on the production container
 RUN npx @yao-pkg/pkg ./node_modules/@import-meta-env/cli/bin/import-meta-env.js \
   -t node20-alpine-x64 \
   -o import-meta-env-alpine
+# To get the git commit hash later
+COPY .git ./.git
+COPY src ./src
+COPY index.html .env.example vite.config.mts postcss.config.js tailwind.config.js ./
 RUN npm run build
 
 FROM nginx:1.24.0-alpine as production-stage
