@@ -14,7 +14,6 @@ import {
 import {
   getImmediatelyClaimableSlots,
   claimExpenditurePayouts,
-  getPayoutsWithSlotIdsFromSlots,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -128,17 +127,17 @@ function* releaseExpenditureStage({
 
       yield claimExpenditurePayouts({
         colonyAddress,
-        claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
+        claimableSlots,
         metaId: meta.id,
         nativeExpenditureId: expenditure.nativeId,
       });
-
-      yield put<AllActions>({
-        type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
-        payload: {},
-        meta,
-      });
     }
+
+    yield put<AllActions>({
+      type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      payload: {},
+      meta,
+    });
   } catch (error) {
     return yield putError(
       ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR,

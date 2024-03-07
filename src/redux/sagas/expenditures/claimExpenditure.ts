@@ -2,11 +2,7 @@ import { takeEvery, put } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
-import {
-  claimExpenditurePayouts,
-  getPayoutsWithSlotIdsFromSlots,
-  putError,
-} from '../utils/index.ts';
+import { claimExpenditurePayouts, putError } from '../utils/index.ts';
 
 export type ClaimExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CLAIM>['payload'];
@@ -18,7 +14,7 @@ export function* claimExpenditure({
   try {
     yield claimExpenditurePayouts({
       colonyAddress,
-      claimablePayouts: getPayoutsWithSlotIdsFromSlots(claimableSlots),
+      claimableSlots,
       metaId: meta.id,
       nativeExpenditureId,
     });
