@@ -1,4 +1,5 @@
 import { Binoculars } from '@phosphor-icons/react';
+import { isEqual } from 'lodash';
 import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
@@ -39,22 +40,24 @@ const TeamsPage: FC = () => {
           {formatText({ id: 'teamsPage.allTeams' })}
         </h2>
         <div className="sm:ml-auto flex sm:justify-end items-center gap-2">
-          {hasFilterChanged && !isMobile && (
-            <div className="bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400">
-              <div className="text-sm font-semibold capitalize container">
-                {currentFilters.label}:
+          {hasFilterChanged &&
+            !isEqual(defaultFilterValue, filters.filterValue) &&
+            !isMobile && (
+              <div className="bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400">
+                <div className="text-sm font-semibold capitalize container">
+                  {currentFilters.label}:
+                </div>
+                <p className="text-sm min-w-fit">{currentFilters.direction}</p>
+                <CloseButton
+                  iconSize={12}
+                  aria-label={formatText({ id: 'ariaLabel.closeFilter' })}
+                  className="shrink-0 text-current ml-1 !p-0"
+                  onClick={() => {
+                    filters.onChange(defaultFilterValue);
+                  }}
+                />
               </div>
-              <p className="text-sm min-w-fit">{currentFilters.direction}</p>
-              <CloseButton
-                iconSize={12}
-                aria-label={formatText({ id: 'ariaLabel.closeFilter' })}
-                className="shrink-0 text-current ml-1 !p-0"
-                onClick={() => {
-                  filters.onChange(defaultFilterValue);
-                }}
-              />
-            </div>
-          )}
+            )}
           <TeamsPageFilter {...filters} />
           <Button
             onClick={() =>
