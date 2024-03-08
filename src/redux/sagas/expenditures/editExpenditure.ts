@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context';
-import { ExpenditureStatus } from '~gql';
+import { ExpenditureStatus, ExpenditureType } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 
@@ -89,7 +89,7 @@ function* editExpenditureAction({
         recipientAddress: slot.recipientAddress ?? '',
         tokenAddress: payout.tokenAddress,
         amount: '0',
-        claimDelay: slot.claimDelay ?? 0,
+        claimDelay: slot.claimDelay ?? '0',
       });
     });
   });
@@ -121,6 +121,7 @@ function* editExpenditureAction({
           expenditure.nativeId,
           resolvedPayouts,
           networkInverseFee,
+          expenditure.type === ExpenditureType.Staged,
         ),
       });
     } else {
