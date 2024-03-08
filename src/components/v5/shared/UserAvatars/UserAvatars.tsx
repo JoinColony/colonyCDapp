@@ -44,7 +44,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
       ))}
       {!!(remainingAvatarsCountProp || remainingAvatarsCount) &&
         showRemainingAvatars && (
-          <li className="flex items-center justify-center -ml-3 z-10">
+          <li className="flex items-center justify-center -ml-3">
             <div className="relative">
               <UserAvatar
                 user={{

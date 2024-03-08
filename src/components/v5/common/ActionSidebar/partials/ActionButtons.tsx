@@ -87,7 +87,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
     >
       {createDecisionActionSelected && <SaveDraftButton />}
       <div
-        className="flex items-center flex-col-reverse sm:flex-row
+        className="flex w-full flex-col-reverse items-center sm:flex-row
         ml-auto gap-2"
       >
         <Button
