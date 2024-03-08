@@ -4,6 +4,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
+import { invalidateMemberQueries } from '~utils/members.ts';
 
 import {
   createTransaction,
@@ -18,7 +19,6 @@ import {
   uploadAnnotation,
 } from '../utils/index.ts';
 import { getRemoveVerifiedMembersOperation } from '../utils/metadataDelta.ts';
-import { invalidateMemberQueries } from '../utils/verifiedMembers.ts';
 
 function* removeVerifiedMembersAction({
   payload: {
