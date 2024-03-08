@@ -8,6 +8,7 @@ import {
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO, APP_URL } from '~constants';
+import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createGroupTransaction,
@@ -55,6 +56,12 @@ function* editLockedExpenditureMotion({
   );
 
   try {
+    if (expenditure.status !== ExpenditureStatus.Locked) {
+      throw new Error(
+        'Expenditure must be locked in order to edit expenditure via motion',
+      );
+    }
+
     const votingReputationClient: AnyVotingReputationClient = yield call(
       [colonyManager, colonyManager.getClient],
       ClientType.VotingReputationClient,
