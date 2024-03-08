@@ -269,8 +269,10 @@ export const useTeams = () => {
 
     return b[filterValue.field] - a[filterValue.field];
   });
-  const searchedTeams = sortedTeams.filter(({ title }) =>
-    title?.toLowerCase().includes(searchValue.toLowerCase()),
+  const searchedTeams = sortedTeams.filter(
+    ({ title, description }) =>
+      title?.toLowerCase().includes(searchValue.toLowerCase()) ||
+      description?.toLowerCase().includes(searchValue.toLowerCase()),
   );
 
   const filters: TeamsPageFilterProps = {

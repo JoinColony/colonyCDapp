@@ -28,13 +28,6 @@ const TeamCard: FC<TeamCardProps> = ({
   className,
 }) => {
   const isMobile = useMobile();
-  const descriptionClassName = 'text-sm text-gray-600 sm:line-clamp-3';
-  const descriptionContent =
-    typeof description === 'string' ? (
-      <p className={descriptionClassName}>{description}</p>
-    ) : (
-      <div className={descriptionClassName}>{description}</div>
-    );
 
   return (
     <Card
@@ -91,7 +84,11 @@ const TeamCard: FC<TeamCardProps> = ({
             </>
           )}
         </div>
-        {description ? descriptionContent : null}
+        {description ? (
+          <p className="text-sm text-gray-600 break-word sm:line-clamp-3">
+            {description}
+          </p>
+        ) : null}
       </div>
       <div className="w-full border-t border-t-gray-200 mt-4 pt-4 flex items-center justify-between gap-4">
         <div className="truncate">

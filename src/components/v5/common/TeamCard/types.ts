@@ -12,7 +12,7 @@ export interface TeamCardProps {
   meatBallMenuProps: MeatBallMenuProps;
   balance: React.ReactNode;
   title?: string;
-  description?: React.ReactNode;
+  description?: string;
   links?: (LinkProps & {
     key: string;
   })[];
