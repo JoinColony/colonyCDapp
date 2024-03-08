@@ -136,15 +136,10 @@ function* addVerifiedMembersMotion({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    setTxHash?.(txHash);
-
-    yield waitForTxResult(createMotion.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createMotion.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
@@ -155,6 +150,8 @@ function* addVerifiedMembersMotion({
         txHash,
       });
     }
+
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_SUCCESS,
