@@ -20,6 +20,7 @@ const CurrentUser = () => {
       aboutDescription={user.profile?.bio || ''}
       user={user}
       wrapperClassName="!inline-flex"
+      withVerifiedBadge={false}
     >
       <span className="text-gray-900">
         {user.profile ? (

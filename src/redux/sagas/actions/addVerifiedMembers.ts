@@ -1,8 +1,6 @@
 import { ClientType } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
-import { apolloClient } from '~apollo';
-import { GetColonyContributorsDocument } from '~gql';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
@@ -20,6 +18,7 @@ import {
   uploadAnnotation,
 } from '../utils/index.ts';
 import { getAddVerifiedMembersOperation } from '../utils/metadataDelta.ts';
+import { invalidateMemberQueries } from '../utils/verifiedMembers.ts';
 
 function* addVerifiedMembersAction({
   payload: {
@@ -121,7 +120,8 @@ function* addVerifiedMembersAction({
       meta,
     });
 
-    apolloClient.refetchQueries({ include: [GetColonyContributorsDocument] });
+    // we deliberately don't wait for this
+    invalidateMemberQueries(members, colonyAddress);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
