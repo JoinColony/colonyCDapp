@@ -22,3 +22,7 @@ export const getColonyContributorId = (
   colonyAddress: string,
   walletAddress: string,
 ) => `${colonyAddress}_${walletAddress}`;
+
+export const getColonyContributorAddressFromId = (
+  colonyContributorId: string,
+) => colonyContributorId.split('_')[1];

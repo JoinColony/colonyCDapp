@@ -19,6 +19,7 @@ const CurrentUser = () => {
       walletAddress={user.walletAddress}
       aboutDescription={user.profile?.bio || ''}
       user={user}
+      withVerifiedBadge={false}
     >
       <span className="text-gray-900">
         {user.profile ? (
