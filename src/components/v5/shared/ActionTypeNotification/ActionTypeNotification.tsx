@@ -8,7 +8,6 @@ import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { formatText } from '~utils/intl.ts';
-import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type ActionTypeNotificationProps } from './types.ts';
@@ -47,10 +46,10 @@ const MSG = defineMessages({
 export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
   selectedAction,
   className,
+  isFieldDisabled,
 }) => {
   const { colony } = useColonyContext();
   const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
-  const isFieldDisabled = useIsFieldDisabled();
   const navigate = useNavigate();
   const {
     actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],

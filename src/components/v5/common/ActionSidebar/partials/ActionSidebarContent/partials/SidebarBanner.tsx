@@ -18,6 +18,7 @@ import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
 } from '../../../consts.tsx';
+import { useIsFieldDisabled } from '../../hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';
@@ -58,6 +59,7 @@ export const SidebarBanner: FC = () => {
   const { colony } = useColonyContext();
   const { colonyContractVersion } = useColonyContractVersion();
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
+  const isFieldDisabled = useIsFieldDisabled();
 
   const showVersionUpToDateNotification =
     selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
@@ -66,6 +68,7 @@ export const SidebarBanner: FC = () => {
     <>
       {selectedAction && (
         <ActionTypeNotification
+          isFieldDisabled={isFieldDisabled}
           selectedAction={selectedAction}
           className="mt-7"
         />
