@@ -3,14 +3,14 @@ import clsx from 'clsx';
 import React, { type FC, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { apolloClient } from '~apollo';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ColonyActionType, GetColonyContributorsDocument } from '~gql';
+import { ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
+import { invalidateMemberQueries } from '~utils/members.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 import Button, { TxButton } from '~v5/shared/Button/index.ts';
@@ -80,9 +80,12 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       switch (actionData.type) {
         case ColonyActionType.AddVerifiedMembersMotion:
         case ColonyActionType.RemoveVerifiedMembersMotion: {
-          apolloClient.refetchQueries({
-            include: [GetColonyContributorsDocument],
-          });
+          if (actionData.members) {
+            invalidateMemberQueries(
+              actionData.members,
+              actionData.colonyAddress,
+            );
+          }
           break;
         }
         default: {
@@ -90,7 +93,13 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         }
       }
     }
-  }, [actionData.motionData.isFinalized, actionData.type, refetchColony]);
+  }, [
+    actionData.colonyAddress,
+    actionData.members,
+    actionData.motionData.isFinalized,
+    actionData.type,
+    refetchColony,
+  ]);
 
   let action = {
     actionType: ActionTypes.MOTION_FINALIZE,
