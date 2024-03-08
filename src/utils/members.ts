@@ -64,9 +64,7 @@ export const invalidateMemberQueries = async (
 
       const contributorAddress =
         getColonyContributorAddressFromId(colonyContributorId);
-      const isUserAffected = userAddresses.some(
-        (address) => address === contributorAddress,
-      );
+      const isUserAffected = userAddresses.indexOf(contributorAddress) !== -1;
 
       // refetch only if user's verified status was changed
       return isUserAffected;
