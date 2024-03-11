@@ -90,13 +90,14 @@ function* cancelDraftExpenditure({
         );
       }
 
+      yield initiateTransaction({ id: cancelAndReclaimStake.id });
+
       const {
         payload: { hash: txHash },
       } = yield takeFrom(
         cancelAndReclaimStake.channel,
         ActionTypes.TRANSACTION_HASH_RECEIVED,
       );
-      yield initiateTransaction({ id: cancelAndReclaimStake.id });
 
       yield waitForTxResult(cancelAndReclaimStake.channel);
 

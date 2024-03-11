@@ -106,14 +106,14 @@ function* cancelStakedExpenditureAction({
       );
     }
 
+    yield initiateTransaction({ id: cancelStakedExpenditure.id });
+
     const {
       payload: { hash: txHash },
     } = yield takeFrom(
       cancelStakedExpenditure.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
-
-    yield initiateTransaction({ id: cancelStakedExpenditure.id });
 
     yield waitForTxResult(cancelStakedExpenditure.channel);
 
