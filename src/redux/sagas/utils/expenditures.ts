@@ -185,7 +185,11 @@ type PayoutWithSlotId = ExpenditurePayout & {
 };
 
 export const getImmediatelyClaimableSlots = (slots: ExpenditureSlot[]) => {
-  return slots.filter((slot) => slot.claimDelay === 0);
+  return slots.filter(
+    (slot) =>
+      slot.claimDelay !== undefined &&
+      BigNumber.from(0).eq(BigNumber.from(slot.claimDelay)),
+  );
 };
 
 const getPayoutsWithSlotIdsFromSlots = (
