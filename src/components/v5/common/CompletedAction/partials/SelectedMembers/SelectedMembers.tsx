@@ -14,7 +14,7 @@ interface SelectedMembersProps {
 const displayName = 'v5.common.CompletedAction.partials.SelectedMembers';
 
 const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
-  const { error, loading, users } = useUsersByAddresses(memberAddresses);
+  const { error, users } = useUsersByAddresses(memberAddresses);
 
   if (error) {
     console.warn('Error while loading users', error);
@@ -22,39 +22,42 @@ const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
   }
 
   const getContent = () => {
-    if (loading || !users) {
-      return <MembersLoadingTable />;
-    }
-    const members = memberAddresses.reduce<SelectedMember[]>(
-      (selectedMembers, address) => {
-        const existingUser = users.find(
-          (user) => user?.walletAddress === address,
-        );
+    // We display users when we have them, so when we refetch queries in the background,
+    // the table doesn't go into loading state
+    if (users) {
+      const members = memberAddresses.reduce<SelectedMember[]>(
+        (selectedMembers, address) => {
+          const existingUser = users.find(
+            (user) => user?.walletAddress === address,
+          );
 
-        if (existingUser) {
+          if (existingUser) {
+            return [
+              ...selectedMembers,
+              {
+                type: SelectedMemberType.USER,
+                data: existingUser,
+              },
+            ];
+          }
+
           return [
             ...selectedMembers,
             {
-              type: SelectedMemberType.USER,
-              data: existingUser,
+              type: SelectedMemberType.ADDRESS,
+              data: {
+                walletAddress: address,
+              },
             },
           ];
-        }
+        },
+        [],
+      );
 
-        return [
-          ...selectedMembers,
-          {
-            type: SelectedMemberType.ADDRESS,
-            data: {
-              walletAddress: address,
-            },
-          },
-        ];
-      },
-      [],
-    );
+      return <MembersTable members={members} />;
+    }
 
-    return <MembersTable members={members} />;
+    return <MembersLoadingTable />;
   };
 
   return (
