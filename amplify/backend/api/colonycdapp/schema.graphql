@@ -2476,6 +2476,11 @@ type ColonyMotion @model {
   expenditureSlotId: Int
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
+
+  """
+  Edited expenditure slots associated with the motion, if any
+  """
+  editedExpenditureSlots: [ExpenditureSlot!]
 }
 
 """
