@@ -1,16 +1,14 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState, useRef } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import { invalidateMemberQueries } from '~utils/members.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 import Button, { TxButton } from '~v5/shared/Button/index.ts';
@@ -21,6 +19,8 @@ import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
 import { useClaimConfig, useFinalizeStep } from './hooks.tsx';
 import { type FinalizeStepProps, FinalizeStepSections } from './types.ts';
+import { handleMotionFinalized } from './utils.ts';
+import { ColonyActionType } from '~gql';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -41,6 +41,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 }) => {
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
+  const hasFinalizedHandlerRun = useRef(false);
   const { refetchColony } = useColonyContext();
   const {
     isFinalizable,
@@ -84,22 +85,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     if (isMotionFinalized) {
       refetchColony();
       setIsPolling(false);
-
-      switch (actionData.type) {
-        case ColonyActionType.AddVerifiedMembersMotion:
-        case ColonyActionType.RemoveVerifiedMembersMotion: {
-          if (actionData.members) {
-            invalidateMemberQueries(
-              actionData.members,
-              actionData.colonyAddress,
-            );
-          }
-          break;
-        }
-        default: {
-          break;
-        }
-      }
     }
   }, [
     isMotionFinalized,
@@ -108,6 +93,13 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     actionData.type,
     refetchColony,
   ]);
+
+  useEffect(() => {
+    if (actionData.motionData.isFinalized && !hasFinalizedHandlerRun.current) {
+      handleMotionFinalized(actionData);
+      hasFinalizedHandlerRun.current = true;
+    }
+  }, [actionData]);
 
   let action = {
     actionType: ActionTypes.MOTION_FINALIZE,
