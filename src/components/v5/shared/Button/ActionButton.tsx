@@ -16,6 +16,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   onError,
   transform,
   values,
+  isLoading,
   ...props
 }) => {
   const submitAction = submit || actionType;
@@ -45,7 +46,9 @@ const ActionButton: FC<ActionButtonProps> = ({
     }
   };
 
-  return <Button onClick={handleClick} loading={loading} {...props} />;
+  return (
+    <Button onClick={handleClick} loading={loading || isLoading} {...props} />
+  );
 };
 
 export default ActionButton;
