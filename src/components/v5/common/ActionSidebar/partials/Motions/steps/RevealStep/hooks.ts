@@ -47,9 +47,9 @@ export const useRevealStep = (
   startPollingAction: (pollingInterval: number) => void,
   stopPollingAction: () => void,
   transactionId: string,
+  rootHash: string | undefined,
 ) => {
-  const { nativeMotionDomainId, voterRecord, rootHash, motionId } =
-    motionData || {};
+  const { nativeMotionDomainId, voterRecord, motionId } = motionData || {};
   const { user } = useAppContext();
   const {
     colony: { colonyAddress, nativeToken },

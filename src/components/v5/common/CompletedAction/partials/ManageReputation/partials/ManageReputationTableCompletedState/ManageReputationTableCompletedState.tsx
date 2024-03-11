@@ -1,11 +1,14 @@
 import clsx from 'clsx';
+import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import useUserReputation from '~hooks/useUserReputation.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { calculatePercentageReputation } from '~utils/reputation.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 
@@ -13,25 +16,37 @@ import { type ManageReputationTableCompletedStateProps } from './types.ts';
 
 const ManageReputationTableCompletedState: FC<
   ManageReputationTableCompletedStateProps
-> = ({ amount, isSmite, className }) => {
+> = ({ amount, isSmite, className, domainId, recipientAddress, rootHash }) => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
 
-  const amountContent = (
-    <p className="text-md font-normal text-gray-900">
-      <Numeral
-        value={amount}
-        decimals={getTokenDecimalsWithFallback(
-          nativeToken.decimals,
-          DEFAULT_TOKEN_DECIMALS,
-        )}
-        suffix={` ${formatText({
-          id: 'actionSidebar.manageReputation.points',
-        })}`}
-      />
-    </p>
+  const {
+    userReputation: oldUserReputation = '0',
+    totalReputation: oldTotalReputation = '0',
+  } = useUserReputation(
+    colony.colonyAddress,
+    recipientAddress,
+    domainId,
+    rootHash,
   );
+
+  const oldPercentageReputation =
+    calculatePercentageReputation(oldUserReputation, oldTotalReputation) || 0;
+
+  const updatedUserReputation = BigNumber.from(oldUserReputation).add(amount);
+  const updatedTotalReputation = BigNumber.from(oldTotalReputation).add(amount);
+  const updatedPercentageReputation =
+    calculatePercentageReputation(
+      updatedUserReputation.toString(),
+      updatedTotalReputation.toString(),
+    ) || 0;
+
+  const UpdatedReputationPercentage =
+    typeof updatedPercentageReputation === 'number' &&
+    typeof oldPercentageReputation === 'number'
+      ? Math.abs(updatedPercentageReputation - oldPercentageReputation)
+      : '~0';
 
   const pill = (
     <PillsBase
@@ -44,6 +59,23 @@ const ManageReputationTableCompletedState: FC<
         id: `actionSidebar.manageReputation.${isSmite ? 'removed' : 'awarded'}`,
       })}
     </PillsBase>
+  );
+
+  const amountContent = (
+    <p className="text-md font-normal text-gray-900">
+      <Numeral
+        value={amount}
+        decimals={getTokenDecimalsWithFallback(
+          nativeToken.decimals,
+          DEFAULT_TOKEN_DECIMALS,
+        )}
+        suffix={` ${formatText({
+          id: 'actionSidebar.manageReputation.points',
+        })}`}
+      />{' '}
+      (
+      <Numeral value={UpdatedReputationPercentage} suffix="%" />)
+    </p>
   );
 
   return (

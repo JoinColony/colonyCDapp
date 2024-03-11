@@ -117,6 +117,7 @@ fragment ColonyAction on ColonyAction {
   metadata {
     customTitle
   }
+  rootHash
 }
 
 fragment Annotation on Annotation {
@@ -153,7 +154,6 @@ fragment ColonyMotion on ColonyMotion {
   remainingStakes
   userMinStake
   requiredStake
-  rootHash
   motionDomain {
     ...Domain
   }

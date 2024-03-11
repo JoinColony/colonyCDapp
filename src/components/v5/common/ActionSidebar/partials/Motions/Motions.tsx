@@ -60,7 +60,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     refetchAction,
   } = useGetColonyAction(transactionId);
 
-  const { motionData } = action || {};
+  const { motionData, rootHash } = action || {};
   const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
 
   const [activeStepKey, setActiveStepKey] = useState<Steps>(networkMotionState);
@@ -166,6 +166,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             startPollingAction={startPollingForAction}
             stopPollingAction={stopPollingForAction}
             transactionId={transactionId}
+            rootHash={rootHash}
           />
         ),
         heading: {
@@ -287,6 +288,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     hasVotedMotionPassed,
     refetchAction,
     canInteract,
+    rootHash,
   ]);
 
   return loadingAction ? (

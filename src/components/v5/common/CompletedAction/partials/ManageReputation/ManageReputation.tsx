@@ -47,6 +47,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     recipientUser,
     recipientAddress,
     amount,
+    fromDomain,
   } = action;
   const { networkMotionState } = useGetActionData(transactionHash);
   const motionFinished =
@@ -168,6 +169,9 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
               isSmite={isSmite}
               amount={positiveAmountValue}
               className="mt-6"
+              recipientAddress={recipientAddress}
+              domainId={fromDomain?.nativeId}
+              rootHash={action.rootHash}
             />
           )}
         </>
