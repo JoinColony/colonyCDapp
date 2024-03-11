@@ -4,6 +4,7 @@ export interface RevealStepProps {
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
   motionData: ColonyMotion | undefined | null;
-  motionState?: number;
+  rootHash: string | undefined;
   transactionId: string;
+  motionState?: number;
 }
