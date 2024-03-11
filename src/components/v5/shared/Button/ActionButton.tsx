@@ -16,7 +16,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   onError,
   transform,
   values,
-  isLoading,
+  isLoading = false,
   ...props
 }) => {
   const submitAction = submit || actionType;
