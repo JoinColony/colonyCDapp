@@ -1,4 +1,4 @@
-import { type Props as CleaveProps } from 'cleave.js/react/props';
+import { type FormatNumeralOptions } from 'cleave-zen';
 import { type InputHTMLAttributes } from 'react';
 
 import { type BaseFieldProps } from '../types.ts';
@@ -21,9 +21,8 @@ export interface FormInputBaseProps
   name: string;
 }
 
-export interface FormattedInputProps
-  extends Omit<InputBaseProps, 'value' | 'prefix' | 'onChange'>,
-    CleaveProps {
+export interface FormattedInputProps extends Omit<InputBaseProps, 'prefix'> {
+  options: FormatNumeralOptions;
   buttonProps?: React.HTMLAttributes<HTMLButtonElement> & {
     label: string;
   };

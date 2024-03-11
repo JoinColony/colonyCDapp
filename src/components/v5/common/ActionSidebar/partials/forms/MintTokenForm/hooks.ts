@@ -28,9 +28,9 @@ export const useMintToken = (
     defaultValues: useMemo<DeepPartial<MintTokenFormValues>>(
       () => ({
         createdIn: Id.RootDomain,
-        amount: {},
+        tokenAddress: colony.nativeToken.tokenAddress,
       }),
-      [],
+      [colony],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions

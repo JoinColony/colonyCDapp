@@ -18,10 +18,7 @@ import {
 
 const displayName = 'v5.common.ActionsContent.partials.TransactionTable';
 
-const TransactionTable: FC<TransactionTableProps> = ({
-  name,
-  tokenAddress,
-}) => {
+const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
   const fieldArrayMethods = useFieldArray({
     name,
   });
@@ -31,7 +28,7 @@ const TransactionTable: FC<TransactionTableProps> = ({
     }),
   );
   const { readonly } = useAdditionalFormOptionsContext();
-  const columns = useTransactionTableColumns(name, tokenAddress);
+  const columns = useTransactionTableColumns(name);
   const isMobile = useMobile();
   const value = useWatch({ name });
   const getMenuProps = ({ index }) =>

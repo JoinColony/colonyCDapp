@@ -1,7 +1,7 @@
 import { Id } from '@colony/colony-js';
-import Cleave from 'cleave.js/react';
+import { formatNumeral, unformatNumeral } from 'cleave-zen';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { useState, type ChangeEvent, type FC, useEffect } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
@@ -20,13 +20,12 @@ import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
 import { useAmountField } from './hooks.ts';
-import { type AmountFieldProps, type CleaveChangeEvent } from './types.ts';
+import { type AmountFieldProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.AmountField';
 
 const AmountField: FC<AmountFieldProps> = ({
   name,
-  tokenAddress,
   maxWidth,
   domainId,
   isDisabled,
@@ -35,14 +34,15 @@ const AmountField: FC<AmountFieldProps> = ({
     field,
     fieldState: { error },
   } = useController({
-    name: `${name}.amount`,
+    name,
   });
   const {
     field: tokenAddressController,
     fieldState: { error: tokenAddressError },
   } = useController({
-    name: `${name}.tokenAddress`,
+    name: 'tokenAddress',
   });
+  const [value, setValue] = useState('');
   const isError = !!error || !!tokenAddressError;
   const { colony } = useColonyContext();
   const [
@@ -53,21 +53,23 @@ const AmountField: FC<AmountFieldProps> = ({
 
   const {
     colonyTokens,
-    dynamicCleaveOptionKey,
     formattingOptions,
     selectedToken,
     inputRef,
     adjustInputWidth,
-  } = useAmountField(
-    tokenAddress || tokenAddressController.value,
-    name,
-    maxWidth,
-  );
+  } = useAmountField(tokenAddressController.value, maxWidth);
 
-  const handleCleaveChange = (e: CleaveChangeEvent) => {
-    field.onChange(e.target.rawValue);
+  const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(formatNumeral(e.target.value, formattingOptions));
     adjustInputWidth();
   };
+
+  useEffect(() => {
+    const unformattedValue = unformatNumeral(value);
+    if (field.value !== unformattedValue) {
+      field.onChange(unformatNumeral(value));
+    }
+  }, [value, field]);
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -94,15 +96,13 @@ const AmountField: FC<AmountFieldProps> = ({
       className="flex items-center gap-3 w-full text-md"
       ref={registerContainerRef}
     >
-      <Cleave
-        htmlRef={(ref) => {
-          inputRef.current = ref;
+      <input
+        ref={(ref) => {
+          inputRef.current = ref || undefined;
           adjustInputWidth();
         }}
         readOnly={readonly || isDisabled}
         name={name}
-        key={dynamicCleaveOptionKey}
-        options={formattingOptions}
         className={clsx('flex-shrink text-gray-900 outline-0 outline-none', {
           'placeholder:text-gray-400': !isError || isDisabled,
           'text-negative-400 placeholder:text-negative-400':
@@ -111,107 +111,103 @@ const AmountField: FC<AmountFieldProps> = ({
         placeholder={formatText({
           id: 'actionSidebar.enterAmount',
         })}
-        value={field.value}
+        value={value}
         autoComplete="off"
-        onChange={handleCleaveChange}
+        onChange={handleFieldChange}
       />
-      {tokenAddress ? (
-        <div className="flex items-center gap-1">{selectedTokenContent}</div>
-      ) : (
-        <div className="sm:relative w-full">
-          <button
-            type="button"
-            ref={relativeElementRef}
-            className={clsx(
-              'flex-shrink-0 flex items-center gap-1 transition-colors',
-              {
-                'text-gray-900': selectedToken?.symbol,
-                'text-gray-500': !selectedToken?.symbol,
-                'md:hover:text-blue-400': !readonly,
-              },
-            )}
-            onClick={toggleTokenSelect}
-            aria-label={formatText({ id: 'ariaLabel.selectToken' })}
-            disabled={readonly || isDisabled}
-          >
-            {selectedTokenContent}
-          </button>
-          {isTokenSelectVisible && (
-            <Portal>
-              <MenuContainer
-                className="absolute z-[60] px-2 py-6 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none"
-                hasShadow
-                rounded="s"
-                ref={(ref) => {
-                  registerContainerRef(ref);
-                  portalElementRef.current = ref;
-                }}
-              >
-                <h5 className="text-4 text-gray-400 mb-2 uppercase ml-4">
-                  {formatText({ id: 'actionSidebar.availableTokens' })}
-                </h5>
-                <ul>
-                  {colonyTokens.map((colonyToken) => {
-                    const tokenBalance = getBalanceForTokenAndDomain(
-                      colony.balances,
-                      colonyToken.tokenAddress,
-                      domainId ?? Id.RootDomain,
-                    );
-
-                    return (
-                      <li
-                        key={colonyToken.tokenAddress}
-                        className="mb-1 last:mb-0"
-                      >
-                        <HoverWidthWrapper hoverClassName="font-medium block">
-                          <button
-                            type="button"
-                            className={`flex items-center gap-1 transition-colors
-                          md:hover:font-medium md:hover:bg-gray-50 py-2 px-4 rounded-lg
-                          justify-between w-full`}
-                            onClick={() => {
-                              tokenAddressController.onChange(
-                                colonyToken.tokenAddress,
-                              );
-                              toggleTokenSelect();
-                            }}
-                          >
-                            <div className="flex items-center gap-1">
-                              <TokenIcon
-                                token={colonyToken}
-                                size="xxs"
-                                className="mr-1.5"
-                              />
-                              <span className="text-md">
-                                {colonyToken.symbol}
-                              </span>
-                            </div>
-                            {tokenBalance && (
-                              <span className="text-sm text-gray-400 whitespace-nowrap ml-2">
-                                {formatText({
-                                  id: 'actionSidebar.availableFunds',
-                                })}
-                                {': '}
-                                <Numeral
-                                  value={tokenBalance}
-                                  decimals={getTokenDecimalsWithFallback(
-                                    colonyToken?.decimals,
-                                  )}
-                                />{' '}
-                                {colonyToken.symbol}
-                              </span>
-                            )}
-                          </button>
-                        </HoverWidthWrapper>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </MenuContainer>
-            </Portal>
+      <div className="sm:relative w-full">
+        <button
+          type="button"
+          ref={relativeElementRef}
+          className={clsx(
+            'flex-shrink-0 flex items-center gap-1 transition-colors',
+            {
+              'text-gray-900': selectedToken?.symbol,
+              'text-gray-500': !selectedToken?.symbol,
+              'md:hover:text-blue-400': !readonly,
+            },
           )}
-        </div>
-      )}
+          onClick={toggleTokenSelect}
+          aria-label={formatText({ id: 'ariaLabel.selectToken' })}
+          disabled={readonly || isDisabled}
+        >
+          {selectedTokenContent}
+        </button>
+        {isTokenSelectVisible && (
+          <Portal>
+            <MenuContainer
+              className="absolute z-[60] px-2 py-6 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none"
+              hasShadow
+              rounded="s"
+              ref={(ref) => {
+                registerContainerRef(ref);
+                portalElementRef.current = ref;
+              }}
+            >
+              <h5 className="text-4 text-gray-400 mb-2 uppercase ml-4">
+                {formatText({ id: 'actionSidebar.availableTokens' })}
+              </h5>
+              <ul>
+                {colonyTokens.map((colonyToken) => {
+                  const tokenBalance = getBalanceForTokenAndDomain(
+                    colony.balances,
+                    colonyToken.tokenAddress,
+                    domainId ?? Id.RootDomain,
+                  );
+
+                  return (
+                    <li
+                      key={colonyToken.tokenAddress}
+                      className="mb-1 last:mb-0"
+                    >
+                      <HoverWidthWrapper hoverClassName="font-medium block">
+                        <button
+                          type="button"
+                          className={`flex items-center gap-1 transition-colors
+                        md:hover:font-medium md:hover:bg-gray-50 py-2 px-4 rounded-lg
+                        justify-between w-full`}
+                          onClick={() => {
+                            tokenAddressController.onChange(
+                              colonyToken.tokenAddress,
+                            );
+                            toggleTokenSelect();
+                          }}
+                        >
+                          <div className="flex items-center gap-1">
+                            <TokenIcon
+                              token={colonyToken}
+                              size="xxs"
+                              className="mr-1.5"
+                            />
+                            <span className="text-md">
+                              {colonyToken.symbol}
+                            </span>
+                          </div>
+                          {tokenBalance && (
+                            <span className="text-sm text-gray-400 whitespace-nowrap ml-2">
+                              {formatText({
+                                id: 'actionSidebar.availableFunds',
+                              })}
+                              {': '}
+                              <Numeral
+                                value={tokenBalance}
+                                decimals={getTokenDecimalsWithFallback(
+                                  colonyToken?.decimals,
+                                )}
+                              />{' '}
+                              {colonyToken.symbol}
+                            </span>
+                          )}
+                        </button>
+                      </HoverWidthWrapper>
+                    </li>
+                  );
+                })}
+              </ul>
+            </MenuContainer>
+          </Portal>
+        )}
+      </div>
     </div>
   );
 };

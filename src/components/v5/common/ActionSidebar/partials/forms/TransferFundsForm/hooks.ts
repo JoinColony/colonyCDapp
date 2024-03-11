@@ -30,29 +30,19 @@ export const useValidationSchema = () => {
     () =>
       object()
         .shape({
-          amount: object()
-            .shape({
-              amount: number()
-                .required(() => formatText({ id: 'errors.amount' }))
-                .transform((value) => toFinite(value))
-                .moreThan(0, () =>
-                  formatText({ id: 'errors.amount.greaterThanZero' }),
-                )
-                .test(
-                  'enough-tokens',
-                  formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
-                  (value, context) =>
-                    hasEnoughFundsValidation(
-                      value,
-                      context,
-                      selectedTeam,
-                      colony,
-                    ),
-                ),
-              tokenAddress: string().address().required(),
-            })
-            .required()
-            .defined(),
+          amount: number()
+            .required(() => formatText({ id: 'errors.amount' }))
+            .transform((value) => toFinite(value))
+            .moreThan(0, () =>
+              formatText({ id: 'errors.amount.greaterThanZero' }),
+            )
+            .test(
+              'enough-tokens',
+              formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
+              (value, context) =>
+                hasEnoughFundsValidation(value, context, selectedTeam, colony),
+            ),
+          tokenAddress: string().address().required(),
           createdIn: number().defined(),
           from: number().required(),
           to: number()
@@ -81,17 +71,11 @@ export const useTransferFunds = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const {
-    [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-    from,
-    amount,
-  } = useWatch<{
+  const { [DECISION_METHOD_FIELD_NAME]: decisionMethod, from } = useWatch<{
     decisionMethod: DecisionMethod;
     from: TransferFundsFormValues['from'];
-    amount: TransferFundsFormValues['amount'];
   }>();
 
-  const selectedTokenAddress = amount?.tokenAddress;
   const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
@@ -100,11 +84,9 @@ export const useTransferFunds = (
       () => ({
         createdIn: from || Id.RootDomain,
         from: Id.RootDomain,
-        amount: {
-          tokenAddress: selectedTokenAddress ?? colony.nativeToken.tokenAddress,
-        },
+        tokenAddress: colony.nativeToken.tokenAddress,
       }),
-      [from, selectedTokenAddress, colony.nativeToken.tokenAddress],
+      [from, colony.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions

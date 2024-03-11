@@ -1,6 +1,6 @@
 import { type ColonyRole, type Extension } from '@colony/colony-js';
 import { type Icon } from '@phosphor-icons/react';
-import { type CleaveOptions } from 'cleave.js/options';
+import { type FormatNumeralOptions } from 'cleave-zen';
 import { type BigNumberish } from 'ethers';
 import { type MessageDescriptor } from 'react-intl';
 import { type Schema } from 'yup';
@@ -28,7 +28,7 @@ export interface ExtensionInitParam {
   validation: Schema<any>;
   type: ExtensionParamType;
   complementaryLabel?: 'hours' | 'periods' | 'percent';
-  formattingOptions?: CleaveOptions;
+  formattingOptions?: FormatNumeralOptions;
   // Transform function that will be applied to the param value before passing it to the saga
   transformValue?: (value: string | number) => BigNumberish;
 }

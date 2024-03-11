@@ -352,7 +352,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertFractionToWei,
@@ -370,7 +369,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertFractionToWei,
@@ -388,7 +386,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertFractionToWei,
@@ -406,7 +403,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'percent',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertFractionToWei,
@@ -424,7 +420,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertPeriodToSeconds,
@@ -442,7 +437,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertPeriodToSeconds,
@@ -460,7 +454,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertPeriodToSeconds,
@@ -484,7 +477,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         type: ExtensionParamType.Input,
         complementaryLabel: 'hours',
         formattingOptions: {
-          numeral: true,
           numeralPositiveOnly: true,
         },
         transformValue: convertPeriodToSeconds,
@@ -523,7 +515,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   //       type: ExtensionParamType.Input,
   //       complementaryLabel: 'percent',
   //       formattingOptions: {
-  //         numeral: true,
   //         numeralPositiveOnly: true,
   //       },
   //       transformValue: convertFractionToWei,

@@ -5,14 +5,11 @@ import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.t
 
 export const validationSchema = object()
   .shape({
-    amount: object()
-      .shape({
-        amount: number()
-          .required(() => 'required field')
-          .transform((value) => toFinite(value))
-          .moreThan(0, () => 'Amount must be greater than zero.'),
-      })
-      .required(),
+    amount: number()
+      .required(() => 'required field')
+      .transform((value) => toFinite(value))
+      .moreThan(0, () => 'Amount must be greater than zero.'),
+    tokenAddress: string().address().required(),
     decisionMethod: string().defined(),
   })
   .defined()

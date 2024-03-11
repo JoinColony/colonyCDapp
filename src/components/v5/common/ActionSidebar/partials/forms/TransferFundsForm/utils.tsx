@@ -11,7 +11,8 @@ import { type TransferFundsFormValues } from './hooks.ts';
 export const getTransferFundsPayload = (
   colony: Colony,
   {
-    amount: { amount: transferAmount, tokenAddress },
+    amount,
+    tokenAddress,
     from: fromDomainId,
     to: toDomainId,
     description: annotationMessage,
@@ -25,7 +26,7 @@ export const getTransferFundsPayload = (
   const decimals = getTokenDecimalsWithFallback(selectedToken?.token.decimals);
 
   // Convert amount string with decimals to BigInt (eth to wei)
-  const amount = BigNumber.from(moveDecimal(transferAmount, decimals));
+  const transferAmount = BigNumber.from(moveDecimal(amount, decimals));
 
   const fromDomain = findDomainByNativeId(Number(fromDomainId), colony);
   const toDomain = findDomainByNativeId(Number(toDomainId), colony);
@@ -36,7 +37,7 @@ export const getTransferFundsPayload = (
     tokenAddress,
     fromDomain,
     toDomain,
-    amount,
+    amount: transferAmount,
     annotationMessage: annotationMessage
       ? sanitizeHTML(annotationMessage)
       : undefined,

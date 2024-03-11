@@ -32,29 +32,19 @@ export const useValidationSchema = () => {
     () =>
       object()
         .shape({
-          amount: object()
-            .shape({
-              amount: number()
-                .required(() => formatText({ id: 'errors.amount' }))
-                .transform((value) => toFinite(value))
-                .moreThan(0, () =>
-                  formatText({ id: 'errors.amount.greaterThanZero' }),
-                )
-                .test(
-                  'enough-tokens',
-                  formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
-                  (value, context) =>
-                    hasEnoughFundsValidation(
-                      value,
-                      context,
-                      selectedTeam,
-                      colony,
-                    ),
-                ),
-              tokenAddress: string().address().required(),
-            })
-            .required()
-            .defined(),
+          amount: number()
+            .required(() => formatText({ id: 'errors.amount' }))
+            .transform((value) => toFinite(value))
+            .moreThan(0, () =>
+              formatText({ id: 'errors.amount.greaterThanZero' }),
+            )
+            .test(
+              'enough-tokens',
+              formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
+              (value, context) =>
+                hasEnoughFundsValidation(value, context, selectedTeam, colony),
+            ),
+          tokenAddress: string().address().required(),
           createdIn: number().defined(),
           recipient: string().address().required(),
           from: number().required(),
@@ -64,25 +54,21 @@ export const useValidationSchema = () => {
               object()
                 .shape({
                   recipient: string().required(),
-                  amount: object()
-                    .shape({
-                      amount: number()
-                        .required(() => formatText({ id: 'errors.amount' }))
-                        .transform((value) => toFinite(value))
-                        .moreThan(0, ({ path }) => {
-                          const index = getLastIndexFromPath(path);
+                  amount: number()
+                    .required(() => formatText({ id: 'errors.amount' }))
+                    .transform((value) => toFinite(value))
+                    .moreThan(0, ({ path }) => {
+                      const index = getLastIndexFromPath(path);
 
-                          if (index === undefined) {
-                            return formatText({ id: 'errors.amount' });
-                          }
+                      if (index === undefined) {
+                        return formatText({ id: 'errors.amount' });
+                      }
 
-                          return formatText(
-                            { id: 'errors.payments.amount' },
-                            { paymentIndex: index + 1 },
-                          );
-                        }),
-                    })
-                    .required(),
+                      return formatText(
+                        { id: 'errors.payments.amount' },
+                        { paymentIndex: index + 1 },
+                      );
+                    }),
                 })
                 .required(),
             )
@@ -108,9 +94,6 @@ export const useSimplePayment = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const selectedTokenAddress: string = useWatch({
-    name: 'amount.tokenAddress',
-  });
   const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
@@ -119,11 +102,9 @@ export const useSimplePayment = (
       () => ({
         createdIn: Id.RootDomain,
         payments: [],
-        amount: {
-          tokenAddress: selectedTokenAddress ?? colony.nativeToken.tokenAddress,
-        },
+        tokenAddress: colony.nativeToken.tokenAddress,
       }),
-      [selectedTokenAddress, colony.nativeToken.tokenAddress],
+      [colony.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions

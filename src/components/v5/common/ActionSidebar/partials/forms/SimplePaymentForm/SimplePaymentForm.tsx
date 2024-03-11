@@ -72,7 +72,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <CreatedIn />
       <Description />
       {/* Disabled for now */}
-      {/* <TransactionTable name="payments" tokenAddress={tokenAddress} /> */}
+      {/* <TransactionTable name="payments" /> */}
     </>
   );
 };
