@@ -71,12 +71,11 @@ export const useVotingStep = (
     colony: { colonyAddress, nativeToken },
   } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const { motionData } = actionData;
+  const { motionData, rootHash } = actionData;
   const {
     motionId,
     voterRecord,
     nativeMotionDomainId,
-    rootHash,
     repSubmitted,
     skillRep,
   } = motionData;

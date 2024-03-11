@@ -45,7 +45,6 @@ module.exports = {
         remainingStakes
         userMinStake
         requiredStake
-        rootHash
         nativeMotionDomainId
         stakerRewards {
           address

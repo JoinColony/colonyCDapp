@@ -2374,11 +2374,6 @@ type ColonyMotion @model {
   """
   motionDomain: Domain! @hasOne(fields: ["motionDomainId"])
   """
-  The reputation root hash at the time of the creation of the motion
-  Used for calculating a user's max stake in client
-  """
-  rootHash: String!
-  """
   The on chain id of the domain associated with the motion
   """
   nativeMotionDomainId: String! # native domain id
@@ -2878,6 +2873,10 @@ type ColonyAction @model @searchable {
   Metadata associated with the action (Eg. Custom action title)
   """
   metadata: ColonyActionMetadata @hasOne(fields: ["id"])
+  """
+  The reputation root hash at the time of the creation of the action
+  """
+  rootHash: String!
 }
 
 type ColonyActionMetadata @model {
