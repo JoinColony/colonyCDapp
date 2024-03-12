@@ -269,14 +269,15 @@ export function* claimExpenditurePayouts({
     channels[payoutChannelId].channel.close();
   }
 }
+
+/**
+ * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
+ * This is to meet the UI requirement that there should be one payout per row.
+ */
 export const getResolvedPayouts = (
   payouts: ExpenditurePayoutFieldValue[],
   expenditure: ExpenditureFragment,
 ) => {
-  /**
-   * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
-   * This is to meet the UI requirement that there should be one payout per row.
-   */
   const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
 
   const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
