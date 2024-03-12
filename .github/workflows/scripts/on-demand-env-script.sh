@@ -209,6 +209,24 @@ server {
 }
 
 server {
+    listen 13004 ssl;
+    server_name _;
+
+    # Specify the key and certificate file
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+    location / {
+        proxy_pass http://localhost:3004;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}
+
+server {
     listen 13005 ssl;
     server_name _;
 
@@ -260,17 +278,17 @@ export NVM_DIR="$HOME/.nvm"
 nvm install
 nvm use
 
-# Set env vars (reputation endpoint is 3001 and graphql is 20002, but increasing number by 1 to serve from nginx)
-cat <<EOL > ./.env
-METATRANSACTIONS=true
-REPUTATION_ORACLE_ENDPOINT=https://${PUBLIC_IP}:3002/reputation/local
-NETWORK_CONTRACT_ADDRESS=0x0000000000000000000000000000000000000000
-GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
-NETWORK=ganache
-AWS_APPSYNC_KEY=da2-fakeApiId123456
-AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
-AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
-GANACHE_ACCOUNTS_ENDPOINT="https://${PUBLIC_IP}:13006"
+# Set env vars (these will override the .env.local file)
+# frontend
+export AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
+export METATX_BROADCASTER_ENDPOINT=http://${PUBLIC_IP}:13004
+export REPUTATION_ORACLE_ENDPOINT=https://${PUBLIC_IP}:3002/reputation/local
+export URL=https://${PUBLIC_IP}
+export VITE_NETWORK_FILES_ENDPOINT=https://${PUBLIC_IP}:13006
+export VITE_GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
+# backend
+export AWS_APPSYNC_KEY=da2-fakeApiId123456
+export AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
 EOL
 
 # Install dependencies
