@@ -117,7 +117,9 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
                 avatar={selectedMember?.avatar}
                 size="xs"
                 showUsername
-                className="text-gray-900"
+                className={clsx('text-gray-900', {
+                  'text-negative-400': isError,
+                })}
               />
             ) : (
               formatText({ id: 'actionSidebar.selectMember' })

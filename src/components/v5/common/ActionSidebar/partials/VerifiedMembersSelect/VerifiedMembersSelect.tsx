@@ -123,7 +123,9 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
                   avatar={selectedMember?.avatar}
                   size="xs"
                   showUsername
-                  className="text-gray-900"
+                  className={clsx('text-gray-900', {
+                    'text-negative-400': isError,
+                  })}
                 />
                 <span className="flex ml-1 text-blue-400">
                   <SealCheck size={14} />

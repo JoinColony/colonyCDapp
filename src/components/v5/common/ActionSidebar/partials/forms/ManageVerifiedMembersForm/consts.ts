@@ -1,4 +1,4 @@
-import { array, type InferType, number, object, string } from 'yup';
+import { array, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { formatText } from '~utils/intl.ts';
@@ -41,7 +41,3 @@ export const validationSchema = object()
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);
-
-export type ManageVerifiedMembersFormValues = InferType<
-  typeof validationSchema
->;
