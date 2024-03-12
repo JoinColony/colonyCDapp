@@ -6,12 +6,11 @@ import type { Preview } from '@storybook/react';
 import '../src/styles/main.css';
 
 import '~utils/yup/customMethods';
-import { reactIntl } from './reactIntl.ts';
+import { reactIntl } from './reactIntl';
 import { applyTheme } from '../src/components/frame/Extensions/themes/utils';
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     options: {
       storySort: {
         order: ['Common', 'Frame', 'Shared'],
