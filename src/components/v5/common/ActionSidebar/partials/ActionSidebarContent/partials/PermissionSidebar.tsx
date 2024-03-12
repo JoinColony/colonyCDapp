@@ -2,7 +2,7 @@ import React, { type FC } from 'react';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/index.ts';
+import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';

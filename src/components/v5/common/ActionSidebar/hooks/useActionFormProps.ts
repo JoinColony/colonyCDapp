@@ -13,7 +13,7 @@ import {
 } from '../consts.ts';
 import { type ActionFormBaseProps } from '../types.ts';
 
-export const useActionFormProps = (
+const useActionFormProps = (
   defaultValues: ActionFormProps<any>['defaultValues'],
   isReadonly?: boolean,
 ) => {
@@ -99,3 +99,5 @@ export const useActionFormProps = (
     getFormOptions,
   };
 };
+
+export default useActionFormProps;

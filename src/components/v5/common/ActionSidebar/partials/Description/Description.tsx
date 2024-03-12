@@ -7,7 +7,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
 import { DESCRIPTION_FIELD_NAME } from '../../consts.ts';
-import { useHasNoDecisionMethods } from '../../hooks/index.ts';
+import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 import DescriptionField from '../DescriptionField/index.ts';
 
 import { type DescriptionProps } from './types.ts';

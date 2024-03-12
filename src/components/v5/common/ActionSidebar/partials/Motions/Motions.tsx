@@ -11,7 +11,7 @@ import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
-import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer/index.ts';

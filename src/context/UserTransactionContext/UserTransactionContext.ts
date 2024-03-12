@@ -10,7 +10,7 @@ export enum TransactionGroupStates {
   AllCompleted = 'AllCompleted',
 }
 
-interface UserTransactionContextValues
+export interface UserTransactionContextValues
   extends Omit<
     ReturnType<typeof useGroupedTransactionsAndMessages>,
     'refetchTransactions'

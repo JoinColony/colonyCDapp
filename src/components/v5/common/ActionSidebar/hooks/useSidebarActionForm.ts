@@ -24,7 +24,7 @@ import { type ActionFormBaseProps } from '../types.ts';
 
 import type React from 'react';
 
-export const useSidebarActionForm = () => {
+const useSidebarActionForm = () => {
   const actionFormComponents = useMemo<
     Partial<Record<Action, React.FC<ActionFormBaseProps>>>
   >(
@@ -60,3 +60,5 @@ export const useSidebarActionForm = () => {
     formComponent,
   };
 };
+
+export default useSidebarActionForm;

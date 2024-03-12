@@ -20,11 +20,9 @@ import Modal from '~v5/shared/Modal/index.ts';
 import CompletedAction from '../CompletedAction/index.ts';
 
 import { actionSidebarAnimation } from './consts.ts';
-import {
-  useCloseSidebarClick,
-  useGetActionData,
-  useRemoveTxParamOnClose,
-} from './hooks/index.ts';
+import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
+import useGetActionData from './hooks/useGetActionData.ts';
+import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';

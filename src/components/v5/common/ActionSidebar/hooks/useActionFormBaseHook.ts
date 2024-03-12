@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { type UseActionFormBaseHook } from '../types.ts';
 
-export const useActionFormBaseHook: UseActionFormBaseHook = ({
+const useActionFormBaseHook: UseActionFormBaseHook = ({
   validationSchema,
   transform,
   defaultValues,
@@ -30,3 +30,5 @@ export const useActionFormBaseHook: UseActionFormBaseHook = ({
     getFormOptions(undefined, form);
   });
 };
+
+export default useActionFormBaseHook;

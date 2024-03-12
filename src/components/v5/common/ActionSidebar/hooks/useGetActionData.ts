@@ -16,9 +16,9 @@ import {
   AVAILABLE_ROLES,
 } from '../partials/forms/ManagePermissionsForm/consts.ts';
 
-import { useGetColonyAction } from './useGetColonyAction.ts';
+import useGetColonyAction from './useGetColonyAction.ts';
 
-export const useGetActionData = (transactionId: string | undefined) => {
+const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction, networkMotionState, motionState } =
     useGetColonyAction(transactionId);
 
@@ -270,3 +270,5 @@ export const useGetActionData = (transactionId: string | undefined) => {
     motionState,
   };
 };
+
+export default useGetActionData;

@@ -11,7 +11,7 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
-import { useActionFormBaseHook } from '../../../hooks/index.ts';
+import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { validationSchema, type ManageTokensFormValues } from './consts.ts';

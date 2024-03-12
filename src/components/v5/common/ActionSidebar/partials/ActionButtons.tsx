@@ -18,7 +18,7 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '../consts.ts';
-import { useCloseSidebarClick } from '../hooks/index.ts';
+import useCloseSidebarClick from '../hooks/useCloseSidebarClick.ts';
 import { type ActionButtonsProps } from '../types.ts';
 
 import {

@@ -12,7 +12,7 @@ import { getPermissionsNeededForAction } from './helpers.ts';
 /**
  * Hook determining if the user has no decision methods available for the currently selected action type
  */
-export const useHasNoDecisionMethods = () => {
+const useHasNoDecisionMethods = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
@@ -41,3 +41,5 @@ export const useHasNoDecisionMethods = () => {
 
   return false;
 };
+
+export default useHasNoDecisionMethods;

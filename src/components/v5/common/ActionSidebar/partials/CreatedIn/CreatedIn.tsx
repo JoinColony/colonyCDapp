@@ -10,7 +10,7 @@ import {
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
 } from '../../consts.ts';
-import { useHasNoDecisionMethods } from '../../hooks/index.ts';
+import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 import TeamsSelect from '../TeamsSelect/index.ts';
 
 import { type CreatedInProps } from './types.ts';

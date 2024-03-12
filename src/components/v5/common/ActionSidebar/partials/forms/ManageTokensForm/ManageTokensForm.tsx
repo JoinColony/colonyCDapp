@@ -1,7 +1,6 @@
 import React, { type FC } from 'react';
 
-import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
-
+import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
