@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
@@ -22,11 +22,9 @@ import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
 import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm/index.ts';
 import { type ActionFormBaseProps } from '../types.ts';
 
-import type React from 'react';
-
 const useSidebarActionForm = () => {
   const actionFormComponents = useMemo<
-    Partial<Record<Action, React.FC<ActionFormBaseProps>>>
+    Partial<Record<Action, FC<ActionFormBaseProps>>>
   >(
     () => ({
       [Action.SimplePayment]: SinglePaymentForm,
