@@ -199,6 +199,7 @@ function* editLockedExpenditureMotion({
     });
   } finally {
     createMotion.channel.close();
+    annotateEditLockedExpenditure.channel.close();
   }
 }
 
