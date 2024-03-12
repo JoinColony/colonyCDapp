@@ -125,8 +125,8 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
                   showUsername
                   className="text-gray-900"
                 />
-                <span className="flex ml-2 text-blue-400">
-                  <SealCheck size={20} />
+                <span className="flex ml-1 text-blue-400">
+                  <SealCheck size={14} />
                 </span>
               </>
             ) : (
