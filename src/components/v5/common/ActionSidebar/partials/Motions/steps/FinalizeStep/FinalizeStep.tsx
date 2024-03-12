@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -84,7 +85,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   };
   if (
     actionData.motionData.isFinalized ||
-    actionData.motionData.motionStateHistory.hasFailedNotFinalizable
+    actionData.motionData.motionStateHistory.hasFailedNotFinalizable ||
+    actionData.type === ColonyActionType.CreateDecisionMotion
   ) {
     action = {
       actionType: ActionTypes.MOTION_CLAIM,
@@ -175,28 +177,38 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       }
                     />
                   )}
-                  {!isPolling && !actionData.motionData.isFinalized && (
-                    <Button
-                      mode="primarySolid"
-                      disabled={!isFinalizable || wrongMotionState}
-                      isFullSize
-                      text={formatText({ id: 'motion.finalizeStep.submit' })}
-                      type="submit"
-                    />
-                  )}
+                  {!isPolling &&
+                    !actionData.motionData.isFinalized &&
+                    actionData.type !==
+                      ColonyActionType.CreateDecisionMotion && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!isFinalizable || wrongMotionState}
+                        isFullSize
+                        text={formatText({
+                          id: 'motion.finalizeStep.submit',
+                        })}
+                        type="submit"
+                      />
+                    )}
                   {!isPolling &&
                     (actionData.motionData.isFinalized ||
                       actionData.motionData.motionStateHistory
-                        .hasFailedNotFinalizable) &&
+                        .hasFailedNotFinalizable ||
+                      actionData.type ===
+                        ColonyActionType.CreateDecisionMotion) &&
                     !isClaimed &&
                     canClaimStakes && (
                       <Button
                         mode="primarySolid"
                         disabled={!canClaimStakes || wrongMotionState}
                         isFullSize
-                        text={formatText({
-                          id: buttonTextId,
-                        })}
+                        text={
+                          actionData.type ===
+                          ColonyActionType.CreateDecisionMotion
+                            ? formatText('Return Stakes')
+                            : formatText({ id: buttonTextId })
+                        }
                         type="submit"
                       />
                     )}
