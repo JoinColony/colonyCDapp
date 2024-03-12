@@ -122,7 +122,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                             py-2
                             px-4
                             gap-2
-                            w-[calc(100%+2rem)]
+                            flex-shrink-0
                             -mx-4
                           `,
                           onClick: () => {
