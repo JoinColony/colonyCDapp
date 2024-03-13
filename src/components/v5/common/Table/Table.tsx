@@ -12,6 +12,7 @@ import React, { useMemo } from 'react';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
 import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
@@ -37,7 +38,7 @@ const Table = <T,>({
   emptyContent,
   data,
   getMenuProps,
-  meatBallMenuSize,
+  meatBallMenuSize = 60,
   meatBallMenuStaticSize,
   columns,
   renderSubComponent,
@@ -51,13 +52,12 @@ const Table = <T,>({
   const columnsWithMenu = useMemo(
     () => [
       ...columns,
-      ...(getMenuProps
+      ...(getMenuProps && !(isMobile && verticalOnMobile)
         ? [
             makeMenuColumn<T>(
               helper,
               getMenuProps,
               meatBallMenuSize,
-              verticalOnMobile,
               meatBallMenuStaticSize,
             ),
           ]
@@ -65,10 +65,11 @@ const Table = <T,>({
     ],
     [
       columns,
-      helper,
       getMenuProps,
-      meatBallMenuSize,
+      isMobile,
       verticalOnMobile,
+      helper,
+      meatBallMenuSize,
       meatBallMenuStaticSize,
     ],
   );
@@ -129,57 +130,88 @@ const Table = <T,>({
                 className={clsx(
                   getRowClassName(row),
                   '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b',
-                  {
-                    'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
-                      getMenuProps,
-                  },
                 )}
               >
                 {headerGroups.map((headerGroup) =>
-                  headerGroup.headers.map((header, index) => (
-                    <tr
-                      key={row.id + headerGroup.id + header.id}
-                      className={clsx({
-                        '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
-                          withBorder,
-                      })}
-                    >
-                      <th
-                        className={`
-                          border-r
-                          border-gray-200
+                  headerGroup.headers.map((header, index) => {
+                    const rowWithMeatBallMenu = index === 0 && getMenuProps;
+                    const meatBallMenuProps = getMenuProps?.(row);
+
+                    return (
+                      <tr
+                        key={row.id + headerGroup.id + header.id}
+                        className={clsx({
+                          '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
+                            withBorder,
+                        })}
+                      >
+                        <th
+                          className={`
                           bg-gray-50
                           p-4
                           text-left
                           text-sm
                           font-normal
                         `}
-                        style={{
-                          width:
-                            header.column.columnDef.staticSize ||
-                            (header.getSize() !== 150
-                              ? `${header.column.getSize()}${sizeUnit}`
-                              : undefined),
-                        }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </th>
-                      <td
-                        className="h-full p-4 text-left text-sm font-normal"
-                        colSpan={columnsCount}
-                      >
-                        {flexRender(
-                          header.column.columnDef.cell,
-                          cells[index].getContext(),
+                          style={{
+                            width:
+                              header.column.columnDef.staticSize ||
+                              (header.getSize() !== 150
+                                ? `${header.column.getSize()}${sizeUnit}`
+                                : undefined),
+                          }}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </th>
+                        <td
+                          className={clsx(
+                            'h-full text-left text-sm font-normal',
+                            {
+                              'py-4 pl-4': rowWithMeatBallMenu,
+                              'p-4': !rowWithMeatBallMenu,
+                            },
+                          )}
+                          colSpan={
+                            rowWithMeatBallMenu
+                              ? columnsCount - 1
+                              : columnsCount
+                          }
+                        >
+                          {flexRender(
+                            header.column.columnDef.cell,
+                            cells[index].getContext(),
+                          )}
+                        </td>
+                        {rowWithMeatBallMenu && meatBallMenuProps && (
+                          <td
+                            className="px-4"
+                            style={
+                              meatBallMenuSize || meatBallMenuStaticSize
+                                ? {
+                                    width: `${
+                                      meatBallMenuSize || meatBallMenuStaticSize
+                                    }${sizeUnit}`,
+                                  }
+                                : undefined
+                            }
+                          >
+                            <MeatBallMenu
+                              {...meatBallMenuProps}
+                              contentWrapperClassName={clsx(
+                                meatBallMenuProps?.contentWrapperClassName,
+                                '!left-6 right-6 !z-[65]',
+                              )}
+                            />
+                          </td>
                         )}
-                      </td>
-                    </tr>
-                  )),
+                      </tr>
+                    );
+                  }),
                 )}
               </tbody>
             );
@@ -335,7 +367,7 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="h-full border-gray-200 px-[1.125rem] text-md text-gray-500 sm:border-t"
+                    className="h-full border-gray-200 px-[1.1rem] text-md text-gray-500 sm:border-t"
                   >
                     {flexRender(
                       column.column.columnDef.footer,
