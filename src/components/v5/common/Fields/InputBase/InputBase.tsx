@@ -16,6 +16,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
     {
       className,
       wrapperClassName,
+      inputWrapperClassName,
       state,
       message,
       prefix,
@@ -56,6 +57,27 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldFocus]);
 
+    const input = (
+      <input
+        ref={inputRef}
+        className={clsx(
+          className,
+          state ? stateClassNames[state] : undefined,
+          'w-full text-gray-900 text-md outline-0 placeholder:text-gray-400 focus:outline-none',
+          {
+            'text-gray-400 pointer-events-none': disabled,
+            'bg-base-white rounded border py-2 px-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
+              mode === 'primary',
+            'border-none': mode === 'secondary',
+          },
+        )}
+        id={id}
+        value={value}
+        onBlur={onBlur}
+        {...rest}
+      />
+    );
+
     return (
       <div className={clsx(wrapperClassName, 'w-full')}>
         <label
@@ -64,26 +86,15 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
         >
           {label}
         </label>
-        {prefix}
-        <input
-          ref={inputRef}
-          className={clsx(
-            className,
-            state ? stateClassNames[state] : undefined,
-            'w-full text-gray-900 text-md outline-0 placeholder:text-gray-400 focus:outline-none',
-            {
-              'text-gray-400 pointer-events-none': disabled,
-              'bg-base-white rounded border py-2 px-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
-                mode === 'primary',
-              'border-none': mode === 'secondary',
-            },
-          )}
-          id={id}
-          value={value}
-          onBlur={onBlur}
-          {...rest}
-        />
-        {suffix}
+        {prefix || suffix ? (
+          <div className={clsx(inputWrapperClassName, 'w-full')}>
+            {prefix}
+            {input}
+            {suffix}
+          </div>
+        ) : (
+          input
+        )}
         {state === FieldState.Error &&
           notMaybe(maxLength) &&
           typeof value === 'string' &&

@@ -97,6 +97,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       exit="hidden"
       initial="hidden"
       animate="visible"
+      // @todo: remove additional z-index change when the z-index issue is resolved
       className={clsx(
         `
           transition-[max-width]
@@ -117,7 +118,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           border-gray-200
           rounded-l-lg
           shadow-default
-          z-[60]
+          z-[65]
+          md:z-[60]
           flex
           flex-col
         `,

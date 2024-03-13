@@ -16,7 +16,6 @@ export const makeMenuColumn = <T,>(
   helper: ColumnHelper<T>,
   getMenuProps: TableProps<T>['getMenuProps'],
   meatBallMenuSize = 60,
-  verticalOnMobile = true,
   meatBallMenuStaticSize: string | undefined,
 ) =>
   helper.display({
@@ -31,19 +30,13 @@ export const makeMenuColumn = <T,>(
       const props = getMenuProps?.(row);
 
       return props ? (
-        <div
-          className={clsx({
-            'absolute top-1/2 right-4 -translate-y-1/2': verticalOnMobile,
-          })}
-        >
-          <MeatBallMenu
-            {...props}
-            contentWrapperClassName={clsx(
-              props.contentWrapperClassName,
-              '!z-[60]',
-            )}
-          />
-        </div>
+        <MeatBallMenu
+          {...props}
+          contentWrapperClassName={clsx(
+            props.contentWrapperClassName,
+            '!z-[60]',
+          )}
+        />
       ) : undefined;
     },
   });

@@ -204,7 +204,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     return (
       <Portal>
         <MenuContainer
-          className="py-6 px-2.5 w-full bg-base-white max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
+          className="py-6 px-2.5 w-full bg-base-white max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[65] md:z-[60] absolute max-h-[37.5rem]"
           hasShadow
           rounded="s"
           ref={ref}

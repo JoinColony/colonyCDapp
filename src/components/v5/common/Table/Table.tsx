@@ -12,6 +12,7 @@ import React, { useMemo } from 'react';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
 import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
@@ -37,7 +38,7 @@ const Table = <T,>({
   emptyContent,
   data,
   getMenuProps,
-  meatBallMenuSize,
+  meatBallMenuSize = 60,
   meatBallMenuStaticSize,
   columns,
   renderSubComponent,
@@ -50,13 +51,12 @@ const Table = <T,>({
   const columnsWithMenu = useMemo(
     () => [
       ...columns,
-      ...(getMenuProps
+      ...(getMenuProps && !(isMobile && verticalOnMobile)
         ? [
             makeMenuColumn<T>(
               helper,
               getMenuProps,
               meatBallMenuSize,
-              verticalOnMobile,
               meatBallMenuStaticSize,
             ),
           ]
@@ -64,10 +64,11 @@ const Table = <T,>({
     ],
     [
       columns,
-      helper,
       getMenuProps,
-      meatBallMenuSize,
+      isMobile,
       verticalOnMobile,
+      helper,
+      meatBallMenuSize,
       meatBallMenuStaticSize,
     ],
   );
@@ -128,20 +129,17 @@ const Table = <T,>({
                 className={clsx(
                   getRowClassName(row),
                   '[&:not(:last-child)>tr:last-child>th]:border-b [&:not(:last-child)>tr:last-child>td]:border-b',
-                  {
-                    'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
-                      getMenuProps,
-                  },
                 )}
               >
                 {headerGroups.map((headerGroup) =>
-                  headerGroup.headers.map((header, index) => (
-                    <tr
-                      key={row.id + headerGroup.id + header.id}
-                      className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100"
-                    >
-                      <th
-                        className={`
+                  headerGroup.headers.map((header, index) => {
+                    const rowWithMeatBallMenu = index === 0 && getMenuProps;
+                    const meatBallMenuProps = getMenuProps?.(row);
+
+                    return (
+                      <tr key={row.id + headerGroup.id + header.id}>
+                        <th
+                          className={`
                           bg-gray-50
                           p-4
                           text-left
@@ -150,25 +148,58 @@ const Table = <T,>({
                           border-r
                           border-gray-200
                         `}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </th>
-                      <td
-                        className="p-4 text-left text-sm font-normal h-full"
-                        colSpan={columnsCount}
-                      >
-                        {flexRender(
-                          header.column.columnDef.cell,
-                          cells[index].getContext(),
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </th>
+                        <td
+                          className={clsx(
+                            'text-left text-sm font-normal h-full',
+                            {
+                              'py-4 pl-4': rowWithMeatBallMenu,
+                              'p-4': !rowWithMeatBallMenu,
+                            },
+                          )}
+                          colSpan={
+                            rowWithMeatBallMenu
+                              ? columnsCount - 1
+                              : columnsCount
+                          }
+                        >
+                          {flexRender(
+                            header.column.columnDef.cell,
+                            cells[index].getContext(),
+                          )}
+                        </td>
+                        {rowWithMeatBallMenu && meatBallMenuProps && (
+                          <td
+                            className="px-4"
+                            style={
+                              meatBallMenuSize || meatBallMenuStaticSize
+                                ? {
+                                    width: `${
+                                      meatBallMenuSize || meatBallMenuStaticSize
+                                    }${sizeUnit}`,
+                                  }
+                                : undefined
+                            }
+                          >
+                            <MeatBallMenu
+                              {...meatBallMenuProps}
+                              contentWrapperClassName={clsx(
+                                meatBallMenuProps?.contentWrapperClassName,
+                                '!z-[65] !left-6 right-6',
+                              )}
+                            />
+                          </td>
                         )}
-                      </td>
-                    </tr>
-                  )),
+                      </tr>
+                    );
+                  }),
                 )}
               </tbody>
             );
@@ -324,7 +355,7 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="text-md text-gray-500 px-[1.125rem] sm:border-t border-gray-200 h-full"
+                    className="text-md text-gray-500 px-[1.1rem] sm:border-t border-gray-200 h-full"
                   >
                     {flexRender(
                       column.column.columnDef.footer,
