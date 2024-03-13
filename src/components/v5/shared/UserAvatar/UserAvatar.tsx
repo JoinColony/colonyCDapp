@@ -8,8 +8,6 @@ import Link from '~v5/shared/Link/index.ts';
 
 import { type UserAvatarProps } from './types.ts';
 
-import styles from './UserAvatar.module.css';
-
 const displayName = 'v5.UserAvatar';
 
 const UserAvatar: FC<UserAvatarProps> = ({
@@ -33,7 +31,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   const imageString = preferThumbnail ? profile?.thumbnail : profile?.avatar;
 
   const avatar = (
-    <span className={clsx(styles.main, 'items-center text-current')}>
+    <span className="grid grid-cols-[auto,1fr] items-center rounded-full text-current">
       <span
         className={clsx('flex rounded-full', {
           'border-2 border-blue-400':

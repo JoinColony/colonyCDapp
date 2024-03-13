@@ -6,12 +6,11 @@ import { useIntl } from 'react-intl';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import { tw } from '~utils/css/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import { type ColonyVersionWidgetProps } from './types.ts';
-
-import styles from './ColonyVersionWidget.module.css';
 
 const displayName = 'v5.ColonyVersionWidget';
 
@@ -33,6 +32,10 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
     });
   };
 
+  const textClass = tw`flex items-center justify-center gap-1`;
+  const valueClass = tw`heading-5`;
+  const wrapperClass = tw`flex min-w-[20rem] flex-col justify-center text-center text-gray-500 text-1`;
+
   return (
     <div
       className={clsx(
@@ -48,9 +51,9 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
           'mr-6': !isMobile,
         })}
       >
-        <div className={styles.wrapper}>
+        <div className={wrapperClass}>
           {formatMessage({ id: 'current.version' })}
-          <div className={styles.text}>
+          <div className={textClass}>
             <span
               className={clsx({
                 'text-success-400': status === 'success',
@@ -63,7 +66,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
                 <WarningCircle size={18} />
               )}
             </span>
-            <span>{currentVersion}</span>
+            <span className={valueClass}>{currentVersion}</span>
           </div>
         </div>
 
@@ -74,13 +77,13 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
           })}
         />
 
-        <div className={styles.wrapper}>
+        <div className={wrapperClass}>
           {formatMessage({ id: 'latest.version' })}
-          <div className={styles.text}>
+          <div className={textClass}>
             <span className="text-success-400">
               <CheckCircle size={18} />
             </span>
-            <span>{latestVersion}</span>
+            <span className={valueClass}>{latestVersion}</span>
           </div>
         </div>
       </div>

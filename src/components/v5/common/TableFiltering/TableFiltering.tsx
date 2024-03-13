@@ -7,8 +7,6 @@ import { CloseButton } from '~v5/shared/Button/index.ts';
 
 import { type FilterType, type TableFilteringProps } from './types.ts';
 
-import styles from './TableFiltering.module.css';
-
 const displayName = 'v5.common.TableFiltering';
 
 const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
@@ -43,9 +41,11 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
           acc.push(
             <div
               key={parentFilterLabel}
-              className={`${className} ${styles.pill}`}
+              className={`${className} inline-flex items-center gap-1 rounded-lg bg-blue-100 px-3 py-2 text-blue-400`}
             >
-              <div className={styles.pillName}>{parentFilterLabel}:</div>
+              <div className="container text-sm font-semibold capitalize">
+                {parentFilterLabel}:
+              </div>
               {nestedFilters.map((label) => (
                 <p
                   key={formatText(label)}

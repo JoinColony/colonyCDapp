@@ -7,8 +7,6 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 
 import { type CloseButtonProps } from './types.ts';
 
-import styles from './CloseButton.module.css';
-
 const displayName = 'v5.Button.CloseButton';
 
 const CloseButton: FC<CloseButtonProps> = ({
@@ -37,9 +35,13 @@ const CloseButton: FC<CloseButtonProps> = ({
         <SpinnerLoader appearance={{ size: 'medium' }} />
       ) : (
         <button
-          className={clsx(styles.closeButton, className, {
-            'pointer-events-none': disabled,
-          })}
+          className={clsx(
+            'flex items-center justify-center p-2 transition-all duration-normal',
+            className,
+            {
+              'pointer-events-none': disabled,
+            },
+          )}
           disabled={disabled || loading}
           aria-label={ariaLabelText}
           aria-busy={loading}

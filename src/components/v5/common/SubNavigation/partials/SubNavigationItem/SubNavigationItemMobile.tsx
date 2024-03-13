@@ -7,8 +7,6 @@ import { accordionAnimation } from '~constants/accordionAnimation.ts';
 
 import { type SubNavigationItemProps } from './types.ts';
 
-import styles from './SubNavigationItemMobile.module.css';
-
 const displayName =
   'v5.common.SubNavigation.partials.SubNavigationItem.SubNavigationItemMobile';
 
@@ -19,9 +17,12 @@ const SubNavigationItemMobile: FC<
     <button
       type="button"
       onClick={setOpen}
-      className={clsx(styles.button, {
-        [styles.activeButton]: isOpen,
-      })}
+      className={clsx(
+        'flex w-full items-center justify-between py-3 text-lg font-semibold text-gray-700 sm:w-auto sm:text-md sm:hover:text-blue-400',
+        {
+          'text-blue-400': isOpen,
+        },
+      )}
     >
       <span className="flex items-center">
         <span className="flex shrink-0">
@@ -48,7 +49,9 @@ const SubNavigationItemMobile: FC<
           transition={{ duration: 0.4, ease: 'easeOut' }}
           className="overflow-hidden"
         >
-          <div className={styles.dropdownContent}>{content}</div>
+          <div className="mb-3 rounded-md border border-gray-200 bg-base-white sm:mb-0">
+            {content}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

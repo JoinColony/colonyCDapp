@@ -1,3 +1,0 @@
-.topContainer {
-  @apply flex flex-wrap gap-4 flex-col w-full sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6;
-}

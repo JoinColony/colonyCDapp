@@ -7,8 +7,6 @@ import Link from '~v5/shared/Link/index.ts';
 
 import { type ActionButtonProps } from './types.ts';
 
-import styles from './ActionButton.module.css';
-
 const displayName = 'common.Extensions.ExtensionItem.partials.ActionButton';
 
 const ActionButton: FC<ActionButtonProps> = ({
@@ -27,7 +25,11 @@ const ActionButton: FC<ActionButtonProps> = ({
   return (
     <>
       {isExtensionInstalled ? (
-        <Link to={extensionUrl} className={styles.button} onClick={handleClick}>
+        <Link
+          to={extensionUrl}
+          className="flex h-[2.5rem] items-center justify-center rounded-lg border border-gray-300 bg-base-white px-4 py-2.5 text-md font-medium text-gray-700 transition-all duration-normal hover:border-gray-900 hover:bg-gray-900 hover:text-base-white disabled:text-gray-300"
+          onClick={handleClick}
+        >
           {formatMessage({ id: 'button.manage' })}
         </Link>
       ) : (

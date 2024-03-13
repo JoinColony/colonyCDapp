@@ -7,8 +7,6 @@ import Button from '~v5/shared/Button/index.ts';
 
 import { type EmptyContentProps } from './types.ts';
 
-import styles from './EmptyContent.module.css';
-
 const displayName = 'v5.common.EmptyContent';
 
 const EmptyContent: FC<EmptyContentProps> = ({
@@ -44,7 +42,7 @@ const EmptyContent: FC<EmptyContentProps> = ({
     >
       <div className="flex flex-col items-center justify-center">
         {Icon && (
-          <div className={styles.emptyContent}>
+          <div className="flex shrink-0 items-center justify-center rounded-full border-[0.375rem] border-gray-50 bg-gray-200 p-1.5">
             <Icon className="fill-gray-600" size={20} />
           </div>
         )}

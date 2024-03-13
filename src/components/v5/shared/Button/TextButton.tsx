@@ -6,8 +6,6 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 
 import { type TextButtonProps } from './types.ts';
 
-import styles from './TextButton.module.css';
-
 const displayName = 'v5.Button.TextButton';
 
 const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
@@ -46,8 +44,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
         <button
           className={clsx(
             className,
-            [styles.textButton],
-            'flex items-center font-medium transition-all duration-normal',
+            'flex items-center font-medium transition-all duration-normal hover:text-blue-400 disabled:text-gray-400',
             {
               'text-sm text-gray-900': mode === 'default',
             },
@@ -55,7 +52,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
               'text-md': mode === 'medium',
             },
             {
-              [styles.underlined]: mode === 'underlined',
+              'text-xs underline hover:text-blue-400': mode === 'underlined',
               'pointer-events-none': disabled,
               'disabled:text-gray-400': !isErrorColor,
               'text-negative-400': isErrorColor,

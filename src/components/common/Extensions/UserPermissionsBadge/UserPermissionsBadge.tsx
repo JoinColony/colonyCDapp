@@ -1,12 +1,9 @@
-import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type UserPermissionsBadgeProps } from './types.ts';
-
-import styles from './UserPermissionsBadge.module.css';
 
 const displayName = 'common.Extensions.UserPermissionsBadge';
 
@@ -41,12 +38,16 @@ const UserPermissionsBadge: FC<
       {...rest}
       tooltipContent={
         <>
-          <span className={clsx(styles.tooltipBadge, 'mb-2.5')}>{content}</span>
+          <span className="mb-2.5 flex h-[1.875rem] items-center rounded-3xl border border-base-white px-3 py-1.5 text-center">
+            {content}
+          </span>
           {userPermissionsBadgeText}: {userPermissionsBadgeDescription}
         </>
       }
     >
-      <span className={clsx(styles.badge, 'text-3')}>{content}</span>
+      <span className="inline-flex h-[1.875rem] items-center rounded-3xl border border-gray-100 bg-base-white px-3 py-1.5 text-center text-3">
+        {content}
+      </span>
     </Tooltip>
   );
 };

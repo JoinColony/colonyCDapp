@@ -3,8 +3,6 @@ import React, { type FC, type PropsWithChildren } from 'react';
 
 import { type PillsProps } from './types.ts';
 
-import styles from './PillsBase.module.css';
-
 const displayName = 'v5.common.Pills.PillsBase';
 
 const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
@@ -17,10 +15,14 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
   ...rest
 }) => (
   <span
-    className={clsx(styles.pills, className, {
-      'h-[1.625rem] text-3': pillSize === 'medium',
-      'h-[1.5rem] text-4': pillSize === 'small',
-    })}
+    className={clsx(
+      'inline-flex shrink-0 items-center rounded-3xl px-3 py-1 text-center capitalize',
+      className,
+      {
+        'h-[1.625rem] text-3': pillSize === 'medium',
+        'h-[1.5rem] text-4': pillSize === 'small',
+      },
+    )}
     {...rest}
   >
     {Icon && (
