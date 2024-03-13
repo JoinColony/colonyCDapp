@@ -95,7 +95,7 @@ const DraftCard: FC = () => {
               <RichTextDisplay
                 content={description}
                 shouldFormat={false}
-                className="!text-sm !text-gray-600 mt-2"
+                className="!text-sm !text-gray-600 mt-2 break-word line-clamp-4"
               />
             )}
           </button>

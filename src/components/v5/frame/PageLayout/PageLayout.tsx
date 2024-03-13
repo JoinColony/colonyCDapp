@@ -74,7 +74,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
       <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
         {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}
         <div
-          className="sticky top-0 left-0 right-0 w-full z-[65] bg-base-white md:static md:top-auto md:left-auto md:right-auto md:bg-transparent"
+          className="sticky top-0 left-0 right-0 w-full z-10 sm:z-[65] bg-base-white md:static md:top-auto md:left-auto md:right-auto md:bg-transparent"
           ref={topContentWrapperRef}
         >
           <div className="w-full relative">
@@ -119,8 +119,11 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                     className={clsx({ '!items-center': isOnColonyRoute })}
                   />
                 </div>
-                <div className="flex-grow overflow-auto pr-4 pb-4">
-                  <div className="w-full xl:mx-auto max-w-[79.875rem]">
+                <div
+                  className="flex-grow overflow-auto pr-4 pb-4"
+                  style={{ scrollbarGutter: 'stable' }}
+                >
+                  <div className="w-full mx-auto max-w-[79.875rem]">
                     {children}
                   </div>
                 </div>
