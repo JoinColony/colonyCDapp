@@ -123,7 +123,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                   className="flex-grow overflow-auto pr-4 pb-4"
                   style={{ scrollbarGutter: 'stable' }}
                 >
-                  <div className="w-full mx-auto max-w-[79.875rem]">
+                  <div className="w-full xl:mx-auto max-w-[79.875rem]">
                     {children}
                   </div>
                 </div>

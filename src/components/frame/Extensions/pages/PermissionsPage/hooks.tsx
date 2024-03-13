@@ -364,10 +364,12 @@ export const useGetMembersForPermissions = () => {
     return filteredMembersList;
   }, [filterValue, mappedMembers, mappedExtensions, isFilterActive]);
 
-  const searchedMembers = filteredMembers.filter((member) =>
-    member.userAvatarProps.userName
-      ?.toLowerCase()
-      .includes(searchValue.toLowerCase()),
+  const searchedMembers = filteredMembers.filter(
+    (member) =>
+      member.userAvatarProps.userName
+        ?.toLowerCase()
+        .includes(searchValue.toLowerCase()) ||
+      member.role?.name?.toLowerCase().includes(searchValue.toLowerCase()),
   );
 
   const individualMembers: Partial<GroupedByPermissionMembersProps> =
