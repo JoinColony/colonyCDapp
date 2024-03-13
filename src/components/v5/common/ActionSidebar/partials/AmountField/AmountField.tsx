@@ -29,6 +29,8 @@ const AmountField: FC<AmountFieldProps> = ({
   maxWidth,
   domainId,
   isDisabled,
+  placeholder,
+  tokenAddressFieldName = 'tokenAddress',
 }) => {
   const {
     field,
@@ -40,7 +42,7 @@ const AmountField: FC<AmountFieldProps> = ({
     field: tokenAddressController,
     fieldState: { error: tokenAddressError },
   } = useController({
-    name: 'tokenAddress',
+    name: tokenAddressFieldName,
   });
   const [value, setValue] = useState<string | undefined>(undefined);
   const isError = !!error || !!tokenAddressError;
@@ -56,10 +58,14 @@ const AmountField: FC<AmountFieldProps> = ({
     formattingOptions,
     selectedToken,
     inputRef,
+    dropdownRef,
     adjustInputWidth,
   } = useAmountField(tokenAddressController.value, maxWidth);
 
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const unformattedValue = unformatNumeral(e.target.value);
+
+    field.onChange(unformattedValue);
     setValue(formatNumeral(e.target.value, formattingOptions));
     adjustInputWidth();
   };
@@ -72,7 +78,7 @@ const AmountField: FC<AmountFieldProps> = ({
         field.onChange(unformatNumeral(value));
       }
     }
-  }, [value, field]);
+  }, [value, field, formattingOptions]);
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -84,7 +90,7 @@ const AmountField: FC<AmountFieldProps> = ({
   const activeToken = selectedToken || colonyTokens[0];
 
   const selectedTokenContent = (
-    <>
+    <div className="flex items-center gap-1">
       <TokenAvatar
         size={18}
         tokenName={activeToken.name}
@@ -96,9 +102,9 @@ const AmountField: FC<AmountFieldProps> = ({
           'text-gray-300': isDisabled,
         })}
       >
-        {selectedToken?.symbol || colonyTokens[0].symbol}
+        {activeToken.symbol}
       </span>
-    </>
+    </div>
   );
 
   return (
@@ -119,14 +125,17 @@ const AmountField: FC<AmountFieldProps> = ({
           'text-negative-400 placeholder:text-negative-400':
             !isDisabled && isError,
         })}
-        placeholder={formatText({
-          id: 'actionSidebar.enterAmount',
-        })}
+        placeholder={
+          placeholder ||
+          formatText({
+            id: 'actionSidebar.enterAmount',
+          })
+        }
         value={value}
         autoComplete="off"
         onChange={handleFieldChange}
       />
-      <div className="w-full sm:relative">
+      <div className="w-full flex-shrink-0 sm:relative" ref={dropdownRef}>
         <button
           type="button"
           ref={relativeElementRef}

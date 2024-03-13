@@ -68,8 +68,8 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
             {formatText({ id: 'editColony.socialLinks.table.title' })}
           </h5>
           <Table<SocialLinksTableModel>
-            sizeUnit="%"
-            meatBallMenuSize={10}
+            sizeUnit={isMobile ? undefined : '%'}
+            meatBallMenuSize={isMobile ? undefined : 10}
             className={clsx({ '!border-negative-400': !!fieldState.error })}
             getRowId={({ key }) => key}
             columns={columns}
