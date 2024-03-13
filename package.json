@@ -201,6 +201,7 @@
     "axios": "^1.4.0",
     "bn.js": "^5.1.1",
     "camelcase": "^6.0.0",
+    "chokidar": "^3.6.0",
     "classnames": "^2.2.6",
     "cleave-zen": "^0.0.17",
     "clsx": "^1.2.1",
