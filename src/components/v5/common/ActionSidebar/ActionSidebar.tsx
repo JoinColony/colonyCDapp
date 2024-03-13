@@ -10,7 +10,6 @@ import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
-import { ExpenditureStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -44,7 +43,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     action?.expenditureId,
   );
 
-  const isExpeditureDraft = expenditure?.status === ExpenditureStatus.Draft;
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
@@ -79,7 +77,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       );
     }
 
-    if (action && !isExpeditureDraft) {
+    if (action) {
       return <CompletedAction action={action} />;
     }
 
@@ -90,7 +88,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         formRef={formRef}
         defaultValues={defaultValues || initialValues}
         isMotion={!!isMotion}
-        isExpenditureDraft={expenditure ? isExpeditureDraft : undefined}
       />
     );
   };
