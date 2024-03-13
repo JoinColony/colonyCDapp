@@ -27,6 +27,7 @@ export type CreateExpenditurePayload =
 
 function* createExpenditure({
   meta,
+  meta: { setTxHash },
   payload: {
     colonyAddress,
     payouts,
@@ -193,6 +194,8 @@ function* createExpenditure({
       payload: {},
       meta,
     });
+
+    setTxHash?.(txHash);
 
     // @TODO: Remove during advanced payments UI wiring
     // eslint-disable-next-line no-console

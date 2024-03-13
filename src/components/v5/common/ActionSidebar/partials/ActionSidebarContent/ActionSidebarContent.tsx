@@ -52,6 +52,7 @@ const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
+  isExpenditure,
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -160,7 +161,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           </div>
         ) : null}
       </div>
-      {!isMotion && !readonly && (
+      {!isMotion && !readonly && !isExpenditure && (
         <div className="mt-auto">
           <ActionButtons isActionDisabled={isSubmitDisabled} />
         </div>
@@ -197,10 +198,11 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
   formRef,
   defaultValues,
   isMotion,
+  isExpenditureDraft,
 }) => {
   const { getFormOptions, actionFormProps } = useActionFormProps(
     defaultValues,
-    !!transactionId,
+    !isExpenditureDraft ?? !!transactionId,
   );
   const client = useApolloClient();
 
@@ -232,6 +234,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             getFormOptions={getFormOptions}
             isMotion={isMotion}
             transactionId={transactionId}
+            isExpenditure={isExpenditureDraft}
           />
         </ActionForm>
       </div>
