@@ -19,6 +19,7 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
       formatText({
         id: 'actionSidebar.manageVerifiedMembers.table.column.members',
       }),
+    cellContentWrapperClassName: 'text-gray-900',
     cell: ({ row }) => {
       if (row.original.type === SelectedMemberType.USER) {
         const user = row.original.data;
@@ -47,7 +48,7 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
 
       return (
         <UserPopover
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 text-gray-900"
           userName={walletAddress}
           walletAddress={walletAddress}
           popperOptions={{
