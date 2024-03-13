@@ -4183,14 +4183,11 @@ export type MotionStakesInput = {
 /** Quick access flages to check the current state of a motion in its lifecycle */
 export type MotionStateHistory = {
   __typename?: 'MotionStateHistory';
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when all votes were revealed */
   allVotesRevealedAt?: Maybe<Scalars['AWSDateTime']>;
-  /**
-   * "
-   * Whether the motion is a Simple Decision
-   */
+  /** The timestamp when all votes were submitted */
   allVotesSubmittedAt?: Maybe<Scalars['AWSDateTime']>;
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when the motion was finalized */
   finalizedAt?: Maybe<Scalars['AWSDateTime']>;
   /** Whether the motion has failed */
   hasFailed: Scalars['Boolean'];
@@ -4202,22 +4199,19 @@ export type MotionStateHistory = {
   hasVoted: Scalars['Boolean'];
   /** Motion is in reveal phase (votes are being revealed) */
   inRevealPhase: Scalars['Boolean'];
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when the NAY side was fully staked */
   naySideFullyStakedAt?: Maybe<Scalars['AWSDateTime']>;
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when the YAY side was fully staked */
   yaySideFullyStakedAt?: Maybe<Scalars['AWSDateTime']>;
 };
 
 /** Input used to change the current state of a motion */
 export type MotionStateHistoryInput = {
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when all votes were revealed */
   allVotesRevealedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  /**
-   * "
-   * Whether the motion is a Simple Decision
-   */
+  /** The timestamp when all votes were submitted */
   allVotesSubmittedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when the motion was finalized */
   finalizedAt?: InputMaybe<Scalars['AWSDateTime']>;
   /** Whether the motion has failed */
   hasFailed: Scalars['Boolean'];
@@ -4229,9 +4223,9 @@ export type MotionStateHistoryInput = {
   hasVoted: Scalars['Boolean'];
   /** Motion is in reveal phase (votes are being revealed) */
   inRevealPhase: Scalars['Boolean'];
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when the NAY side was fully staked */
   naySideFullyStakedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  /** Whether the motion is a Simple Decision */
+  /** The timestamp when the YAY side was fully staked */
   yaySideFullyStakedAt?: InputMaybe<Scalars['AWSDateTime']>;
 };
 
