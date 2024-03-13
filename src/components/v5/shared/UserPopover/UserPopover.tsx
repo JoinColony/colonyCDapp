@@ -1,23 +1,19 @@
 import { CircleWavyCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { noop } from 'lodash';
-import React, {
-  type FC,
-  type PropsWithChildren,
-  useCallback,
-  useState,
-} from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyContributorQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
+import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
+import useToggle from '~hooks/useToggle/index.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 import { ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
 import Modal from '~v5/shared/Modal/index.ts';
-import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
+import MenuContainer from '../MenuContainer/index.ts';
+import Portal from '../Portal/Portal.tsx';
 import UserPopoverAdditionalContent from '../UserPopoverAdditionalContent/index.ts';
 
 import UserInfo from './partials/UserInfo.tsx';
@@ -32,12 +28,11 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   size,
   children,
   additionalContent,
-  popperOptions,
+  dropdownPlacementProps,
   withVerifiedBadge = true,
   className,
 }) => {
   const isMobile = useMobile();
-  const [isOpen, setIsOpen] = useState(false);
   const { profile } = user || {};
   const { avatar, thumbnail } = profile || {};
 
@@ -60,30 +55,20 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   const userStatus = (contributor?.type?.toLowerCase() ??
     null) as ContributorTypeFilter | null;
 
-  const onOpenModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const onCloseModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({
-      delayShow: 200,
-      delayHide: 200,
-      placement: popperOptions?.placement || 'bottom-end',
-      trigger: ['click'],
-      interactive: true,
-    });
+  const [
+    isOpen,
+    { toggleOn: openModal, toggleOff: closeModal, registerContainerRef },
+  ] = useToggle();
+  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
+    HTMLButtonElement,
+    HTMLDivElement
+  >([isOpen], dropdownPlacementProps);
 
   const button = (
     <button
-      onClick={isMobile ? onOpenModal : noop}
-      onMouseEnter={isMobile ? noop : () => onOpenModal()}
-      onMouseLeave={isMobile ? noop : () => onCloseModal()}
+      onClick={openModal}
       type="button"
-      ref={setTriggerRef}
+      ref={relativeElementRef}
       className={clsx(
         className,
         'inline-flex flex-shrink-0 transition-all duration-normal hover:text-blue-400',
@@ -132,7 +117,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       {isMobile ? (
         <Modal
           isFullOnMobile={false}
-          onClose={onCloseModal}
+          onClose={closeModal}
           isOpen={isOpen}
           isTopSectionWithBackground={isTopSectionWithBackground}
         >
@@ -140,27 +125,32 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
         </Modal>
       ) : (
         <>
-          {visible && (
-            <PopoverBase
-              setTooltipRef={setTooltipRef}
-              tooltipProps={getTooltipProps}
-              classNames="max-w-[20rem]"
-              withTooltipStyles={false}
-              cardProps={{
-                rounded: 's',
-                className: clsx('bg-base-white', {
-                  'p-6': !isTopSectionWithBackground,
-                  'overflow-hidden border-2 border-purple-200 ':
-                    userStatus === 'top',
-                }),
-                hasShadow: true,
-              }}
-              isTopSectionWithBackground={
-                isTopSectionWithBackground && isMobile
-              }
-            >
-              {content}
-            </PopoverBase>
+          {isOpen && (
+            <Portal>
+              <div
+                ref={(ref) => {
+                  registerContainerRef(ref);
+                  portalElementRef.current = ref;
+                }}
+                className="absolute z-[65] md:z-[60]"
+              >
+                <MenuContainer
+                  className={clsx(
+                    'max-h-[inherit] w-full max-w-[20rem] !overflow-y-auto bg-base-white',
+                    {
+                      'p-6': !isTopSectionWithBackground,
+                      'overflow-hidden border-2 border-purple-200 ':
+                        userStatus === 'top',
+                    },
+                  )}
+                  rounded="s"
+                  hasShadow
+                  withPadding={!isTopSectionWithBackground}
+                >
+                  {content}
+                </MenuContainer>
+              </div>
+            </Portal>
           )}
         </>
       )}

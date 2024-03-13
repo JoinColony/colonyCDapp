@@ -12,10 +12,7 @@ const MemberAvatar: FC<MemberAvatarProps> = ({ member }) => {
 
   return (
     <div className="ml-1 flex text-gray-900">
-      <UserAvatarPopover
-        walletAddress={walletAddress}
-        popperOptions={{ placement: 'bottom-start' }}
-      />
+      <UserAvatarPopover walletAddress={walletAddress} />
     </div>
   );
 };

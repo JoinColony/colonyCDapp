@@ -129,7 +129,7 @@ export const PAY_DROPDOWN_ITEMS = [
   // {
   //   title: MSG.advancedPayments,
   //   description: MSG.advancedPaymentsDescription,
-  //   action: Action.AdvancedPayment,
+  //   action: Action.PaymentBuilder,
   //   statusBadge: <ExtensionStatusBadge text={formatText(MSG.comingSoon)} />,
   // },
   // {

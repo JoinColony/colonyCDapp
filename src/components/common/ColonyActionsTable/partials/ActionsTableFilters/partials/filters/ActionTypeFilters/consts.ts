@@ -8,8 +8,8 @@ export const ACTION_TYPES_FILTERS = [
   },
   // @BETA: Disabled for now
   // {
-  //   label:formatText({ id: 'actions.advancedPayment' }),
-  //   name: Action.AdvancedPayment,
+  //   label:formatText({ id: 'actions.paymentBuilder' }),
+  //   name: Action.PaymentBuilder,
   // },
   // {
   //   label:formatText({ id: 'actions.batchPayment' }),
