@@ -123,6 +123,20 @@ To run unit tests you have the following npm script:
 npm run test
 ```
 
+## Tailwind CSS IntelliSense
+
+If using the Tailwind CSS IntelliSense plugin for VSCode, add the following to your `.vscode/settings.json` file to add additional tooling where tailwind classes have been used with the custom `tw` utility function:
+
+```
+// .vscode/settings.json
+{
+  // ..
+  "tailwindCSS.experimental.classRegex": [
+    "tw`([^`]*)",
+  ]
+}
+```
+
 ## Upgrading `colony-js`
 
 When upgrading `colony-js` package, you usually want to do it for not just CDapp but also all the lambdas that depend on it. There's an `upgrade-colony-js` script that does it for you:
