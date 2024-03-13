@@ -7,6 +7,7 @@ import { type ActionFormBaseProps } from '../../types.ts';
 export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
   isMotion?: boolean;
   transactionId?: string;
+  isExpenditure?: boolean;
 }
 
 export interface ActionSidebarContentProps {
@@ -14,6 +15,7 @@ export interface ActionSidebarContentProps {
   formRef: React.RefObject<UseFormReturn<object, any, undefined>>;
   defaultValues: ActionFormProps<any>['defaultValues'];
   isMotion?: boolean;
+  isExpenditureDraft?: boolean;
 }
 
 export interface PermissionSidebarProps {
