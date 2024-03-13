@@ -15,7 +15,6 @@ export const makeMenuColumn = <T,>(
   helper: ColumnHelper<T>,
   getMenuProps: TableProps<T>['getMenuProps'],
   meatBallMenuSize = 60,
-  verticalOnMobile = true,
   meatBallMenuStaticSize: string | undefined,
 ) =>
   helper.display({
