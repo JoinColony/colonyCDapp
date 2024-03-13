@@ -9,8 +9,7 @@ import { type RenderCellWrapper, type TableProps } from './types.ts';
 
 export const getDefaultRenderCellWrapper =
   <T,>(): RenderCellWrapper<T> =>
-  (cellClassName, content) =>
-    <div className={cellClassName}>{content}</div>;
+  (cellClassName, content) => <div className={cellClassName}>{content}</div>;
 
 export const makeMenuColumn = <T,>(
   helper: ColumnHelper<T>,

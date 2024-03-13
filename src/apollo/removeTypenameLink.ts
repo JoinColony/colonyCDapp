@@ -48,7 +48,7 @@ const omitDeep = <T extends Record<string, unknown>, K>(
   return value;
 };
 
-export default new ApolloLink((operation, forward) => {
+const apolloLink = new ApolloLink((operation, forward) => {
   if (!operation.variables) {
     return forward(operation);
   }
@@ -62,3 +62,5 @@ export default new ApolloLink((operation, forward) => {
 
   return forward(modifiedOperation);
 });
+
+export default apolloLink;

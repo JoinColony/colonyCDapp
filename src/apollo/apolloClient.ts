@@ -10,7 +10,7 @@ const httpLink = new HttpLink({
   credentials: 'include',
 });
 
-export default new ApolloClient({
+const apolloClient = new ApolloClient({
   link: from([removeTypenameLink, httpLink]),
   connectToDevTools: true,
   cache,
@@ -18,3 +18,5 @@ export default new ApolloClient({
    * @TODO Most likely we'll need to add resolvers here as well
    */
 });
+
+export default apolloClient;

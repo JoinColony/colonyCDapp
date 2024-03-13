@@ -1,5 +1,5 @@
-import debounce from 'lodash.debounce';
 import merge from 'lodash/merge';
+import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { type BaseFieldProps } from './types.ts';

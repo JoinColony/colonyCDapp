@@ -114,9 +114,8 @@ async function getMetatransactionPromise(
      * See if the token supports Metatransactions
      */
     try {
-      availableNonce = await lightTokenClient.getMetatransactionNonce(
-        userAddress,
-      );
+      availableNonce =
+        await lightTokenClient.getMetatransactionNonce(userAddress);
       lightTokenClient.metatransactionVariation =
         MetatransactionFlavour.Vanilla;
     } catch (error) {
@@ -147,9 +146,8 @@ async function getMetatransactionPromise(
      * support
      */
     try {
-      availableNonce = await normalizedClient.getMetatransactionNonce(
-        userAddress,
-      );
+      availableNonce =
+        await normalizedClient.getMetatransactionNonce(userAddress);
     } catch (error) {
       throw new Error(generateMetatransactionErrorMessage(normalizedClient));
     }

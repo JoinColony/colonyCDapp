@@ -139,9 +139,12 @@ const Popover = ({
 
   useEffect(() => {
     if (closeAfterDelay) {
-      closeTimeoutRef.current = setTimeout(() => {
-        close();
-      }, (closeDelay || 0) + (openDelay || 0));
+      closeTimeoutRef.current = setTimeout(
+        () => {
+          close();
+        },
+        (closeDelay || 0) + (openDelay || 0),
+      );
     }
   }, [close, openDelay, closeDelay, closeAfterDelay]);
 

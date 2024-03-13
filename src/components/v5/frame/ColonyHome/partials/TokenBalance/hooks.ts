@@ -16,18 +16,21 @@ const calculateTotalFunds = async (
   const funds = balances.items
     ?.filter(notNull)
     .filter(({ domain }) => !!domain?.isRoot)
-    .reduce(async (total, { balance, token: { tokenAddress } }) => {
-      const currentPrice = await fetchCurrentPrice({
-        contractAddress: tokenAddress,
-        conversionDenomination: currency,
-      });
+    .reduce(
+      async (total, { balance, token: { tokenAddress } }) => {
+        const currentPrice = await fetchCurrentPrice({
+          contractAddress: tokenAddress,
+          conversionDenomination: currency,
+        });
 
-      if (currentPrice == null) {
-        isError = true;
-      }
+        if (currentPrice == null) {
+          isError = true;
+        }
 
-      return (await total).add(new Decimal(balance).mul(currentPrice ?? 0));
-    }, Promise.resolve(new Decimal(0)));
+        return (await total).add(new Decimal(balance).mul(currentPrice ?? 0));
+      },
+      Promise.resolve(new Decimal(0)),
+    );
 
   if (isError) {
     return null;

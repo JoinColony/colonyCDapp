@@ -10,10 +10,8 @@ export type Add<A extends number, B extends number> = Length<
   [...BuildTuple<A>, ...BuildTuple<B>]
 >;
 
-export type Subtract<
-  A extends number,
-  B extends number,
-> = BuildTuple<A> extends [...infer U, ...BuildTuple<B>] ? Length<U> : never;
+export type Subtract<A extends number, B extends number> =
+  BuildTuple<A> extends [...infer U, ...BuildTuple<B>] ? Length<U> : never;
 
 export type KeysAtLevel<T, L extends number> = L extends 1
   ? keyof T

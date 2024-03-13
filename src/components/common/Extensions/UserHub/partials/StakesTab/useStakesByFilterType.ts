@@ -54,25 +54,31 @@ export const useStakesByFilterType = () => {
     [userStakes, motionStatesMap],
   );
 
-  const stakesByFilterType = stakesFilterOptions.reduce((stakes, option) => {
-    const updatedStakes = {
-      ...stakes,
-      [option.type]: stakesWithStatus.filter((stake) =>
-        option.stakeStatuses.includes(stake.status),
-      ),
-    };
+  const stakesByFilterType = stakesFilterOptions.reduce(
+    (stakes, option) => {
+      const updatedStakes = {
+        ...stakes,
+        [option.type]: stakesWithStatus.filter((stake) =>
+          option.stakeStatuses.includes(stake.status),
+        ),
+      };
 
-    return updatedStakes;
-  }, {} as Record<StakesFilterType, UserStakeWithStatus[]>);
+      return updatedStakes;
+    },
+    {} as Record<StakesFilterType, UserStakeWithStatus[]>,
+  );
 
-  const filtersDataLoading = stakesFilterOptions.reduce((loading, option) => {
-    const isFilterDataLoading =
-      stakesLoading || (option.requiresMotionState && motionStatesLoading);
-    return {
-      ...loading,
-      [option.type]: isFilterDataLoading,
-    };
-  }, {} as Record<StakesFilterType, boolean>);
+  const filtersDataLoading = stakesFilterOptions.reduce(
+    (loading, option) => {
+      const isFilterDataLoading =
+        stakesLoading || (option.requiresMotionState && motionStatesLoading);
+      return {
+        ...loading,
+        [option.type]: isFilterDataLoading,
+      };
+    },
+    {} as Record<StakesFilterType, boolean>,
+  );
 
   /**
    * Function updating Apollo cache after some stakes have been claimed

@@ -27,6 +27,7 @@ const RichTextDisplay = ({
   return (
     <div
       className={clsx(styles.richTextContent, className)}
+      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: cleanContent }}
     />
   );

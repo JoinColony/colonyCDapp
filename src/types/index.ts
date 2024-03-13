@@ -25,8 +25,8 @@ export type RequireProps<T, K extends keyof T> = Omit<T, K> &
 export type RemoveFirstFromTuple<T extends any[]> = T['length'] extends 0
   ? []
   : ((...b: T) => void) extends (a, ...b: infer I) => void
-  ? I
-  : [];
+    ? I
+    : [];
 
 export interface DataObject<T> {
   data?: T;

@@ -157,20 +157,23 @@ const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const getFilterPermissions = useCallback(() => {
     return [...selectedFilters[FilterTypes.Permissions].keys()].reduce<
       Record<UserRole, number[]>
-    >((acc, permission) => {
-      const permissions = USER_ROLES.find(({ role }) => role === permission);
+    >(
+      (acc, permission) => {
+        const permissions = USER_ROLES.find(({ role }) => role === permission);
 
-      if (permissions) {
-        acc[permissions.name] = permissions.permissions;
-      } else {
-        acc[CUSTOM_USER_ROLE.name] = [
-          ...(acc[CUSTOM_USER_ROLE.name] || []),
-          PermissionToNetworkIdMap[permission],
-        ];
-      }
+        if (permissions) {
+          acc[permissions.name] = permissions.permissions;
+        } else {
+          acc[CUSTOM_USER_ROLE.name] = [
+            ...(acc[CUSTOM_USER_ROLE.name] || []),
+            PermissionToNetworkIdMap[permission],
+          ];
+        }
 
-      return acc;
-    }, {} as Record<UserRole, number[]>);
+        return acc;
+      },
+      {} as Record<UserRole, number[]>,
+    );
   }, [selectedFilters]);
 
   const getFilterStatus = useCallback(
