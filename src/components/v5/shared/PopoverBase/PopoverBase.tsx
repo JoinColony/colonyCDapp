@@ -37,6 +37,7 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
     )}
   </div>
 );
+
 PopoverBase.displayName = displayName;
 
 export default PopoverBase;
