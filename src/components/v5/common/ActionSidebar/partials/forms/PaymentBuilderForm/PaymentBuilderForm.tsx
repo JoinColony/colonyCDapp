@@ -11,13 +11,13 @@ import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
 
-import { useAdvancedPayment } from './hooks.ts';
-import AdvancedPaymentRecipientsField from './partials/AdvancedPaymentRecipientsField/index.ts';
+import { usePaymentBuilder } from './hooks.ts';
+import PaymentBuilderRecipientsField from './partials/PaymentBuilderRecipientsField/index.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.AdvancedPaymentForm';
+const displayName = 'v5.common.ActionSidebar.partials.PaymentBuilderForm';
 
-const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  useAdvancedPayment(getFormOptions);
+const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  usePaymentBuilder(getFormOptions);
 
   const createdInFilterFn = useFilterCreatedInField('from');
 
@@ -40,11 +40,11 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      <AdvancedPaymentRecipientsField name="payments" />
+      <PaymentBuilderRecipientsField name="payments" />
     </>
   );
 };
 
-AdvancedPaymentForm.displayName = displayName;
+PaymentBuilderForm.displayName = displayName;
 
-export default AdvancedPaymentForm;
+export default PaymentBuilderForm;

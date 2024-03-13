@@ -17,11 +17,11 @@ const useActionsList = () => {
             label: { id: 'actions.simplePayment' },
             value: Action.SimplePayment,
           },
+          {
+            label: { id: 'actions.paymentBuilder' },
+            value: Action.PaymentBuilder,
+          },
           // @BETA: Disabled for now
-          // {
-          //   label: { id: 'actions.advancedPayment' },
-          //   value: Action.AdvancedPayment,
-          // },
           // {
           //   label: { id: 'actions.batchPayment' },
           //   value: Action.BatchPayment,
