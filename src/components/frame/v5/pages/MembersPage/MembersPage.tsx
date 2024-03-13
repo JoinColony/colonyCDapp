@@ -60,12 +60,14 @@ const MembersPage: FC = () => {
             id: 'members.subnav.invite',
           }),
           renderItemWrapper: (props, children) => (
-            <MeatballMenuCopyItem
-              textToCopy={`${APP_URL.origin}/${colonyName}`}
-              {...props}
-            >
-              {children}
-            </MeatballMenuCopyItem>
+            <div className="flex-grow">
+              <MeatballMenuCopyItem
+                textToCopy={`${APP_URL.origin}/${colonyName}`}
+                {...props}
+              >
+                {children}
+              </MeatballMenuCopyItem>
+            </div>
           ),
           onClick: () => false,
         },

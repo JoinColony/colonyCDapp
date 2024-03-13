@@ -9,7 +9,7 @@ const HoverWidthWrapper: FC<PropsWithChildren<HoverWidthWrapperProps>> = ({
   children,
 }) => (
   <>
-    {children}
+    <div className="flex">{children}</div>
     <HoverElement
       className={clsx(
         'invisible h-[.0625rem] overflow-hidden text-transparent',
