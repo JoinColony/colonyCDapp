@@ -4,6 +4,7 @@ import { type ColonyContributor } from '~types/graphql.ts';
 
 export const MemberContext = createContext<
   | {
+      memberMap: Record<string, ColonyContributor>;
       filteredMembers: ColonyContributor[];
       verifiedMembers: ColonyContributor[];
       totalMemberCount: number;

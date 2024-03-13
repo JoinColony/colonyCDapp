@@ -2,9 +2,6 @@ import { apolloClient } from '~apollo';
 import {
   GetColonyContributorDocument,
   GetColonyContributorsDocument,
-  GetNotVerifiedMembersDocument,
-  GetUsersDocument,
-  GetVerifiedMembersDocument,
 } from '~gql';
 import { type ColonyContributor } from '~types/graphql.ts';
 
@@ -39,14 +36,8 @@ export const invalidateMemberQueries = async (
   userAddresses: string[],
   colonyAddress: string,
 ): Promise<void> => {
-  // useUsersByAddresses is called by the `SelectedMembers` component
   await apolloClient.refetchQueries({
-    include: [
-      GetColonyContributorsDocument,
-      GetUsersDocument,
-      GetNotVerifiedMembersDocument,
-      GetVerifiedMembersDocument,
-    ],
+    include: [GetColonyContributorsDocument],
   });
   await apolloClient.refetchQueries({
     include: [GetColonyContributorDocument],
