@@ -763,6 +763,7 @@ enum ColonyActionType {
   An action related to creating expenditure (advanced payment)
   """
   CREATE_EXPENDITURE
+  TEMP_ADVANCED_PAYMENT
 }
 
 """

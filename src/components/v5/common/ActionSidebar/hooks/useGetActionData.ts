@@ -1,9 +1,11 @@
 import { Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
@@ -17,10 +19,15 @@ import {
 } from '../partials/forms/ManagePermissionsForm/consts.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
+import { useGetExpenditureData } from './useGetExpenditureData.ts';
 
 const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction, networkMotionState, motionState } =
     useGetColonyAction(transactionId);
+  const { expenditure } = useGetExpenditureData(action?.expenditureId);
+  const {
+    colony: { tokens },
+  } = useColonyContext();
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -43,6 +50,8 @@ const useGetActionData = (transactionId: string | undefined) => {
       roles,
       colony,
     } = action;
+
+    const { metadata: expenditureMetadata, slots } = expenditure || {};
 
     const extendedType = getExtendedActionType(action, colony.metadata);
     const { metadata } = colony;
@@ -232,6 +241,39 @@ const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
           ...repeatableFields,
         };
+      case ColonyActionType.TempAdvancedPayment: {
+        return {
+          [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
+          from: expenditureMetadata?.fundFromDomainNativeId,
+          payments: slots?.map((slot) => {
+            if (!slot) {
+              return undefined;
+            }
+
+            const currentToken = tokens?.items.find(
+              (slotToken) =>
+                slotToken?.token.tokenAddress ===
+                slot?.payouts?.[0].tokenAddress,
+            );
+            const currentAmount = BigNumber.from(
+              moveDecimal(
+                slot?.payouts?.[0].amount,
+                -getTokenDecimalsWithFallback(currentToken?.token.decimals),
+              ),
+            );
+
+            return {
+              recipient: slot.recipientAddress,
+              amount: {
+                amount: currentAmount.toString(),
+                tokenAddress: slot.payouts?.[0].tokenAddress,
+              },
+              delay: slot.claimDelay && Math.floor(slot.claimDelay / 3600),
+            };
+          }),
+          ...repeatableFields,
+        };
+      }
       case ColonyActionType.SetUserRoles:
       case ColonyActionType.SetUserRolesMotion: {
         const rolesList = convertRolesToArray(roles);
@@ -259,7 +301,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action]);
+  }, [action, expenditure]);
 
   return {
     action,

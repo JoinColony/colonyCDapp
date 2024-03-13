@@ -118,6 +118,7 @@ fragment ColonyAction on ColonyAction {
     customTitle
   }
   members
+  expenditureId
 }
 
 fragment Annotation on Annotation {

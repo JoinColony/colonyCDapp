@@ -10,6 +10,7 @@ import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { ExpenditureStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -22,8 +23,10 @@ import CompletedAction from '../CompletedAction/index.ts';
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
+import { useGetExpenditureData } from './hooks/useGetExpenditureData.ts';
 import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import ExpenditureBadge from './partials/ExpenditureBadge/ExpenditureBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 
@@ -36,7 +39,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 }) => {
   const { action, defaultValues, loadingAction, isMotion, motionState } =
     useGetActionData(transactionId);
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action?.expenditureId,
+  );
 
+  const isExpeditureDraft = expenditure?.status === ExpenditureStatus.Draft;
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
@@ -60,7 +67,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   useRemoveTxParamOnClose();
 
   const getSidebarContent = () => {
-    if (loadingAction) {
+    if (loadingAction || loadingExpenditure) {
       return (
         <div className="flex h-full flex-col items-center justify-center gap-4">
           <SpinnerLoader appearance={{ size: 'huge' }} />
@@ -71,7 +78,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       );
     }
 
-    if (action) {
+    if (action && !isExpeditureDraft) {
       return <CompletedAction action={action} />;
     }
 
@@ -82,6 +89,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         formRef={formRef}
         defaultValues={defaultValues || initialValues}
         isMotion={!!isMotion}
+        isExpenditureDraft={isExpeditureDraft}
       />
     );
   };
@@ -140,7 +148,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <X size={18} />
           </button>
         ) : (
-          <>
+          <div className="flex items-center gap-4">
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
@@ -154,8 +162,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               )}
             </button>
 
+            {expenditure?.status && (
+              <ExpenditureBadge status={expenditure.status} />
+            )}
             <MotionOutcomeBadge motionState={motionState} />
-          </>
+          </div>
         )}
         <div>{children}</div>
       </div>
