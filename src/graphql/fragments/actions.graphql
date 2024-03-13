@@ -119,6 +119,7 @@ fragment ColonyAction on ColonyAction {
   }
   members
   rootHash
+  expenditureId
 }
 
 fragment Annotation on Annotation {
