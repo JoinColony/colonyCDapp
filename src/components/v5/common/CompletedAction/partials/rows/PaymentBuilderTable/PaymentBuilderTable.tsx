@@ -110,7 +110,9 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
       enableSorting: false,
       header: formatText({ id: 'table.column.claimDelay' }),
       cell: ({ row }) => {
-        const formattedHours = Math.floor(row.original.claimDelay / 3600);
+        const formattedHours = Math.floor(
+          Number(row.original.claimDelay) / 3600,
+        );
 
         return (
           <span className="text-md text-gray-900">
@@ -133,7 +135,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
             cell: ({ row }) => {
               const totalHours =
                 expendituresGlobalClaimDelayHours +
-                (dataRef.current[row.index]?.claimDelay || 0);
+                (Number(dataRef.current[row.index]?.claimDelay) || 0);
 
               const formattedHours = totalHours / 60;
 
@@ -159,7 +161,7 @@ const PaymentBuilderTable = ({ items }: PaymentBuilderTableProps) => {
   const data: PaymentBuilderTableModel[] = items.map((item) => ({
     key: item.id.toString(),
     recipient: item.recipientAddress || '',
-    claimDelay: item.claimDelay || 0,
+    claimDelay: item.claimDelay || '0',
     amount:
       item?.payouts?.map((payout) => ({
         amount: payout.amount,
