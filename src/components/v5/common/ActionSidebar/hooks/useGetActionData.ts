@@ -264,10 +264,8 @@ const useGetActionData = (transactionId: string | undefined) => {
 
             return {
               recipient: slot.recipientAddress,
-              amount: {
-                amount: currentAmount.toString(),
-                tokenAddress: slot.payouts?.[0].tokenAddress,
-              },
+              amount: currentAmount.toString(),
+              tokenAddress: slot.payouts?.[0].tokenAddress,
               delay:
                 slot.claimDelay && Math.floor(Number(slot.claimDelay) / 3600),
             };
