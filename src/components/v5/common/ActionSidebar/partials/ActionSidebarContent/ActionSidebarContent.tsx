@@ -202,7 +202,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
 }) => {
   const { getFormOptions, actionFormProps } = useActionFormProps(
     defaultValues,
-    !isExpenditureDraft ?? !!transactionId,
+    (isExpenditureDraft && !isExpenditureDraft) ?? !!transactionId,
   );
   const client = useApolloClient();
 

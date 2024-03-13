@@ -91,7 +91,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         formRef={formRef}
         defaultValues={defaultValues || initialValues}
         isMotion={!!isMotion}
-        isExpenditureDraft={isExpeditureDraft}
+        isExpenditureDraft={expenditure ? isExpeditureDraft : undefined}
       />
     );
   };
