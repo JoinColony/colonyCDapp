@@ -10,7 +10,11 @@ import ActionData from './ActionData.tsx';
 const displayName = 'v5.common.CompletedAction.partials.AddRemoveRow';
 
 interface AddRemoveRowProps {
-  actionType: ColonyActionType;
+  actionType:
+    | ColonyActionType.AddVerifiedMembers
+    | ColonyActionType.AddVerifiedMembersMotion
+    | ColonyActionType.RemoveVerifiedMembers
+    | ColonyActionType.RemoveVerifiedMembersMotion;
 }
 
 // @TODO rework this to use same translation strings as the form
@@ -30,6 +34,20 @@ const MSG = defineMessages({
 });
 
 const AddRemoveRow = ({ actionType }: AddRemoveRowProps) => {
+  const getRowContent = () => {
+    switch (actionType) {
+      case ColonyActionType.AddVerifiedMembers:
+      case ColonyActionType.AddVerifiedMembersMotion:
+        return formatText(MSG.addMembers);
+      case ColonyActionType.RemoveVerifiedMembers:
+      case ColonyActionType.RemoveVerifiedMembersMotion:
+        return formatText(MSG.removeMembers);
+      default:
+        console.warn('Unsupported action type');
+        return '';
+    }
+  };
+
   return (
     <ActionData
       rowLabel={formatText(MSG.addOrRemoveMembers)}
@@ -37,11 +55,7 @@ const AddRemoveRow = ({ actionType }: AddRemoveRowProps) => {
       tooltipContent={formatText({
         id: 'actionSidebar.tooltip.manageMembers',
       })}
-      rowContent={formatText(
-        actionType === ColonyActionType.AddVerifiedMembers
-          ? MSG.addMembers
-          : MSG.removeMembers,
-      )}
+      rowContent={getRowContent()}
     />
   );
 };
