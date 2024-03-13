@@ -6,7 +6,7 @@ import { formatText } from '~utils/intl.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { SelectedMemberType, type SelectedMember } from '../../types.ts';
+import { SelectedMemberType, type SelectedMember } from './types.ts';
 
 export type MembersTableModel = SelectedMember;
 

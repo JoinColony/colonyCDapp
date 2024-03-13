@@ -10,11 +10,7 @@ import ActionData from './ActionData.tsx';
 const displayName = 'v5.common.CompletedAction.partials.AddRemoveRow';
 
 interface AddRemoveRowProps {
-  actionType:
-    | ColonyActionType.AddVerifiedMembers
-    | ColonyActionType.AddVerifiedMembersMotion
-    | ColonyActionType.RemoveVerifiedMembers
-    | ColonyActionType.RemoveVerifiedMembersMotion;
+  actionType: ColonyActionType;
 }
 
 // @TODO rework this to use same translation strings as the form

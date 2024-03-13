@@ -144,7 +144,6 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
               }}
-              isLoading={usersOptions.isLoading}
               className={clsx('z-[60] !max-h-[18.25rem]', {
                 'left-6 right-[1.9rem] w-auto': isMobile,
               })}
