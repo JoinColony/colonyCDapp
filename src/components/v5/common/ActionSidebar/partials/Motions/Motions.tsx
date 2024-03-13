@@ -235,7 +235,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               !hasVotedMotionPassed,
           }),
           tooltipProps: {
-            tooltipContent: getOutcomeStepTooltipText(motionState, motionData),
+            tooltipContent: getOutcomeStepTooltipText(
+              networkMotionState,
+              motionData,
+            ),
           },
         },
         isOptional: true,
