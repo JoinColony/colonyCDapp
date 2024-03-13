@@ -13,7 +13,7 @@ export interface PaymentBuilderTableModel {
   key: React.Key;
   recipient: string;
   amount: AmountProps[];
-  claimDelay: number;
+  claimDelay: string;
 }
 
 export interface RecipientFieldProps {

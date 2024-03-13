@@ -268,7 +268,8 @@ export const useGetActionData = (transactionId: string | undefined) => {
                 amount: currentAmount.toString(),
                 tokenAddress: slot.payouts?.[0].tokenAddress,
               },
-              delay: slot.claimDelay && Math.floor(slot.claimDelay / 3600),
+              delay:
+                slot.claimDelay && Math.floor(Number(slot.claimDelay) / 3600),
             };
           }),
           ...repeatableFields,
@@ -301,7 +302,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action, expenditure]);
+  }, [action, expenditure, tokens?.items]);
 
   return {
     action,
