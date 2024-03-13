@@ -50,7 +50,7 @@ export const WithErrorMessage: StoryObj<typeof InputBase> = {
   args: {
     mode: 'primary',
     message: (
-      <span className="text-sm text-negative-400 block mt-1">
+      <span className="mt-1 block text-sm text-negative-400">
         Something went wrong
       </span>
     ),
@@ -93,12 +93,12 @@ export const WithPrefixSuffixAndError: StoryObj<typeof InputBase> = {
     defaultValue: 'Input text',
     wrapperClassName: 'relative',
     className: 'ml-12',
-    suffix: <span className="text-md absolute top-[.1875rem] right-0">%</span>,
+    suffix: <span className="absolute right-0 top-[.1875rem] text-md">%</span>,
     prefix: (
-      <span className="text-md absolute top-[.1875rem] left-0">Prefix</span>
+      <span className="absolute left-0 top-[.1875rem] text-md">Prefix</span>
     ),
     message: (
-      <span className="text-sm text-negative-400 block mt-1">
+      <span className="mt-1 block text-sm text-negative-400">
         Something went wrong
       </span>
     ),

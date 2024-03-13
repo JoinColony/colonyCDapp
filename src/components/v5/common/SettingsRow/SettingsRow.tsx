@@ -29,29 +29,29 @@ const SettingsRow = <
   additionalContent,
 }: SettingsRowProps<TFieldValues, TFieldName>) => {
   return (
-    <div className={clsx(className, 'py-6 flex items-start justify-between')}>
+    <div className={clsx(className, 'flex items-start justify-between py-6')}>
       <div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center">
-            <h5 className={clsx(titleClassName, 'text-1 mr-1.5')}>
+            <h5 className={clsx(titleClassName, 'mr-1.5 text-1')}>
               {formatText(title)}
             </h5>
             {tooltipMessage && (
               <Tooltip
                 tooltipContent={<span>{formatText(tooltipMessage)}</span>}
               >
-                <span className="text-gray-400 flex">
+                <span className="flex text-gray-400">
                   <Info size={18} />
                 </span>
               </Tooltip>
             )}
           </div>
-          <p className="text-sm text-gray-600 max-w-[35rem]">
+          <p className="max-w-[35rem] text-sm text-gray-600">
             {formatText(description)}
           </p>
         </div>
         {additionalContent && (
-          <div className="flex w-full items-center justify-between mt-6">
+          <div className="mt-6 flex w-full items-center justify-between">
             <p className="text-md font-medium">{additionalContent}</p>
           </div>
         )}

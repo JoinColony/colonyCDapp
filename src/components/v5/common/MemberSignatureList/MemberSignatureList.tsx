@@ -18,7 +18,7 @@ const MemberSignatureList: FC<MemberSignatureListProps> = ({
 
   return (
     <div>
-      <h3 className="text-1 mb-2">{title}</h3>
+      <h3 className="mb-2 text-1">{title}</h3>
       {isLoading ? (
         <div className="flex justify-center">
           <SpinnerLoader appearance={{ size: 'medium' }} />

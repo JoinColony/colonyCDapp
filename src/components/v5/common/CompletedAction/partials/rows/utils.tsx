@@ -17,7 +17,7 @@ export const getCustomPermissionsTableColumns = (
     enableSorting: false,
     header: formatText({ id: 'table.column.type' }),
     cell: ({ getValue }) => (
-      <span className="text-md text-gray-900 font-medium">{getValue()}</span>
+      <span className="text-md font-medium text-gray-900">{getValue()}</span>
     ),
   }),
   customPermissionsColumnHelper.accessor('overview', {

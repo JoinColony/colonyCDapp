@@ -29,7 +29,7 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
     'general';
 
   return (
-    <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
+    <div className="grid grid-cols-[auto,1fr] items-center gap-x-4">
       {!!userStatus && userStatus === 'verified' ? (
         <Avatar
           size={size}
@@ -39,9 +39,9 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
           seed={walletAddress.toLowerCase()}
         />
       ) : (
-        <div className="flex relative justify-center">
+        <div className="relative flex justify-center">
           <div
-            className={clsx('rounded-full flex', {
+            className={clsx('flex rounded-full', {
               'border-2': isBordered,
               'border-success-400': userStatus === 'new',
               'border-warning-400': userStatus === 'active',
@@ -69,8 +69,8 @@ const UserAvatarDetails: FC<UserAvatarDetailsProps> = ({
         </div>
       )}
       <div>
-        <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center mb-0.5">
-          <p className="heading-4 truncate">{userName || walletAddress}</p>
+        <div className="mb-0.5 grid grid-cols-[auto,1fr] items-center gap-x-2">
+          <p className="truncate heading-4">{userName || walletAddress}</p>
           {isVerified && (
             <span className="flex shrink-0 text-blue-400">
               <SealCheck size={14} />

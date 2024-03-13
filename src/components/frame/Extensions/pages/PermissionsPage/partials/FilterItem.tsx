@@ -54,7 +54,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
           title={title}
           icon={CaretDown}
           iconSize={16}
-          className="[&_.accordion-toggler]:text-gray-400 [&_.accordion-toggler>span]:text-gray-700 [&_.accordion-toggler]:mb-2 sm:[&_.accordion-toggler]:mb-0 [&_.accordion-toggler]:text-4 [&_.accordion-toggler]:uppercase sm:[&_.accordion-toggler]:px-3.5 [&_.accordion-icon]:text-gray-700 mb-4 last:mb-0"
+          className="mb-4 last:mb-0 [&_.accordion-icon]:text-gray-700 [&_.accordion-toggler>span]:text-gray-700 [&_.accordion-toggler]:mb-2 [&_.accordion-toggler]:uppercase [&_.accordion-toggler]:text-gray-400 [&_.accordion-toggler]:text-4 sm:[&_.accordion-toggler]:mb-0 sm:[&_.accordion-toggler]:px-3.5"
         >
           {items.map(({ value, label: checkboxLabel, items: nestedItems }) => (
             <div key={value}>
@@ -145,7 +145,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
               }}
               classNames="w-full sm:max-w-[13.25rem]"
             >
-              <span className="text-4 text-gray-400 px-3.5 uppercase">
+              <span className="px-3.5 uppercase text-gray-400 text-4">
                 {formatText({ id: 'permissions.type' })}
               </span>
               {items.map(
@@ -194,7 +194,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
                         }}
                         classNames="w-full sm:max-w-[13.25rem]"
                       >
-                        <span className="text-4 text-gray-400 px-3.5 uppercase">
+                        <span className="px-3.5 uppercase text-gray-400 text-4">
                           {formatText({ id: 'permissions.type' })}
                         </span>
                         {nestedItems.map(

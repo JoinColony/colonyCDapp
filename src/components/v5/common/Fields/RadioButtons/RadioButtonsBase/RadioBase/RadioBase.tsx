@@ -23,7 +23,7 @@ const RadioBase: FC<RadioProps> = ({
       id={id}
       disabled={disabled}
       checked={checked}
-      className="peer/radio opacity-0 absolute h-0 w-0 inset-0 overflow-hidden"
+      className="peer/radio absolute inset-0 h-0 w-0 overflow-hidden opacity-0"
     />
     <label
       htmlFor={id}

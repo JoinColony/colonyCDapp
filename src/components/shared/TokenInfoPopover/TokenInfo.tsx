@@ -37,25 +37,25 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
     <div
       className={clsx(
         className,
-        'flex flex-col items-center p-6 gap-6 w-80 text-gray-900',
+        'flex w-80 flex-col items-center gap-6 p-6 text-gray-900',
       )}
     >
-      <div className="flex flex-row items-center w-full gap-4">
+      <div className="flex w-full flex-row items-center gap-4">
         <TokenIcon size="m" token={token} className="flex-shrink-0" />
-        <div className="flex flex-col flex-1 gap-1 min-w-0">
-          <div className="w-full flex items-center">
-            <h4 className="heading-4 truncate" title={`${name} (${symbol})`}>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <div className="flex w-full items-center">
+            <h4 className="truncate heading-4" title={`${name} (${symbol})`}>
               {name} ({symbol})
             </h4>
             {isTokenNative && (
-              <SealCheck size={18} className="shrink-0 text-blue-400 ml-1" />
+              <SealCheck size={18} className="ml-1 shrink-0 text-blue-400" />
             )}
           </div>
           <CopyableAddress address={tokenAddress} />
         </div>
       </div>
 
-      <div className="flex flex-row items-center w-full">
+      <div className="flex w-full flex-row items-center">
         <a
           className="flex flex-row items-center gap-2 text-md hover:text-blue-400"
           target="_blank"
@@ -71,7 +71,7 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
           })}
         </a>
         {isTokenNative && (
-          <PillsBase className="ml-auto bg-base-white border border-blue-100">
+          <PillsBase className="ml-auto border border-blue-100 bg-base-white">
             <span className="text-sm font-medium text-blue-400">
               {formatMessage(MSG.nativeToken)}
             </span>

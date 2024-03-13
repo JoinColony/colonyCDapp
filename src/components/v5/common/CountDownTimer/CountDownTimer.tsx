@@ -26,7 +26,7 @@ const CountDownTimer: FC<CountDownTimerProps> = ({
       className={clsx('flex items-center gap-1', className)}
     >
       {prefix}
-      <span className={clsx('text-4 text-gray-900', timerClassName)}>
+      <span className={clsx('text-gray-900 text-4', timerClassName)}>
         <TimerValue splitTime={countdown} />
       </span>
     </div>

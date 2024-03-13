@@ -89,7 +89,7 @@ const useColonyActionsTableColumns = (
           return (
             <span
               className={clsx(
-                'font-normal text-md text-gray-600 whitespace-nowrap',
+                'whitespace-nowrap text-md font-normal text-gray-600',
                 {
                   skeleton: loading,
                 },

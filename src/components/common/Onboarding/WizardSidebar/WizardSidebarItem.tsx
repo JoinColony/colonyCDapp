@@ -29,7 +29,7 @@ const WizardSidebarItem = ({
     currentStep < stepId || currentStep >= stepId + (subItems?.length || 0);
 
   return (
-    <div className="flex flex-col justify-start relative">
+    <div className="relative flex flex-col justify-start">
       {!isLastItem && (
         <WizardSidebarItemFlowLine
           currentStep={currentStep}
@@ -37,9 +37,9 @@ const WizardSidebarItem = ({
           subItems={subItems}
         />
       )}
-      <div className="flex items-center relative">
+      <div className="relative flex items-center">
         <div
-          className={clsx('w-2.5 h-2.5 rounded-full', {
+          className={clsx('h-2.5 w-2.5 rounded-full', {
             'bg-gray-900': currentStep >= stepId && hasSubItems,
             'border border-gray-900': currentStep < stepId,
             'bg-blue-400': !hasSubItems && currentStep === stepId,
@@ -47,7 +47,7 @@ const WizardSidebarItem = ({
         />
         <span
           className={clsx(
-            'text-sm font-semibold ml-4',
+            'ml-4 text-sm font-semibold',
             currentStep === stepId && !hasSubItems
               ? 'text-blue-400'
               : 'text-gray-900',
@@ -57,7 +57,7 @@ const WizardSidebarItem = ({
         </span>
       </div>
       <div
-        className={clsx('flex flex-col gap-2 mt-2 mb-2', {
+        className={clsx('mb-2 mt-2 flex flex-col gap-2', {
           hidden: hideSubItems,
         })}
       >

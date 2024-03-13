@@ -20,7 +20,7 @@ const RolesTooltip: FC<RolesTooltipProps> = ({
         <>
           {roleDescription ||
             formatText({ id: 'role.description' }, { role: role.name })}
-          <ul className="list-disc font-medium pl-4">
+          <ul className="list-disc pl-4 font-medium">
             {role.permissions.map((permission) => (
               <li key={permission}>{ColonyRole[permission]}</li>
             ))}

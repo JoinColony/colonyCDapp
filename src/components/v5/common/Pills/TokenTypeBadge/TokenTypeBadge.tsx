@@ -13,10 +13,10 @@ const TokenTypeBadge: FC<PropsWithChildren<TokenTypeBadgeProps>> = ({
 }) => {
   return (
     <PillsBase
-      className={clsx('bg-base-white text-sm border font-medium', {
-        'text-purple-400 border-purple-100':
+      className={clsx('border bg-base-white text-sm font-medium', {
+        'border-purple-100 text-purple-400':
           tokenType === TOKEN_TYPE.reputation,
-        'text-blue-400 border-blue-100': tokenType === TOKEN_TYPE.native,
+        'border-blue-100 text-blue-400': tokenType === TOKEN_TYPE.native,
       })}
     >
       {children}

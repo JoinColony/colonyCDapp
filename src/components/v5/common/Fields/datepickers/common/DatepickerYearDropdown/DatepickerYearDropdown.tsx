@@ -23,7 +23,7 @@ const DatepickerYearDropdown: FC<DatepickerYearDropdownProps> = ({
       <button
         type="button"
         onClick={toggle}
-        className="flex items-center justify-center gap-1.5 text-2 group"
+        className="group flex items-center justify-center gap-1.5 text-2"
       >
         {selectedMonth} {selectedYear}
         <CaretDown
@@ -41,15 +41,15 @@ const DatepickerYearDropdown: FC<DatepickerYearDropdownProps> = ({
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="overflow-hidden absolute top-full left-1/2 -translate-x-1/2"
+            className="absolute left-1/2 top-full -translate-x-1/2 overflow-hidden"
           >
             <Card
               withPadding={false}
-              className="min-w-[18.1rem] max-h-[17.75rem] overflow-auto bg-base-white p-3 pb-2"
+              className="max-h-[17.75rem] min-w-[18.1rem] overflow-auto bg-base-white p-3 pb-2"
             >
               <ul className="flex flex-wrap">
                 {years.map((year) => (
-                  <li key={year} className="basis-1/4 mb-1">
+                  <li key={year} className="mb-1 basis-1/4">
                     <button
                       type="button"
                       onClick={() => {
@@ -57,9 +57,9 @@ const DatepickerYearDropdown: FC<DatepickerYearDropdownProps> = ({
                         toggleOff();
                       }}
                       className={clsx(
-                        'flex justify-center items-center text-md transition-all py-2.5 px-3 rounded-[1.25rem] flex-shrink-0 min-w-[4rem]',
+                        'flex min-w-[4rem] flex-shrink-0 items-center justify-center rounded-[1.25rem] px-3 py-2.5 text-md transition-all',
                         {
-                          'bg-blue-400 text-base-white font-medium':
+                          'bg-blue-400 font-medium text-base-white':
                             year === selectedYear,
                           'text-gray-700 sm:hover:bg-gray-100 sm:hover:font-medium':
                             year !== selectedYear,

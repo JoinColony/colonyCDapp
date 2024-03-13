@@ -41,7 +41,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
   });
 
   return (
-    <div className="max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5 relative">
+    <div className="relative max-h-[9.25rem] rounded-lg border border-gray-200 bg-gray-25 p-5">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -80,14 +80,14 @@ const CardWithBios: FC<CardWithBiosProps> = ({
         </div>
 
         {description && (
-          <p className="text-gray-600 text-sm line-clamp-2">{description}</p>
+          <p className="line-clamp-2 text-sm text-gray-600">{description}</p>
         )}
 
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           {!!colonyReputationPercentage && (
             <span className="flex items-center text-gray-600 text-3">
               <Star size={12} />
-              <span className="inline-block ml-1 mr-2">
+              <span className="ml-1 mr-2 inline-block">
                 {Number.isInteger(colonyReputationPercentage)
                   ? colonyReputationPercentage
                   : colonyReputationPercentage.toFixed(2)}

@@ -38,14 +38,14 @@ const ColonyHome = () => {
     <div className="flex flex-col gap-6 lg:gap-10">
       <div className="flex flex-col gap-9 sm:gap-10">
         <DashboardHeader />
-        <div className="flex flex-col sm:flex-row items-center gap-[1.125rem] w-full">
+        <div className="flex w-full flex-col items-center gap-[1.125rem] sm:flex-row">
           <TotalActions />
           <Members />
           <TokenBalance />
         </div>
       </div>
-      <div className="flex flex-col lg:grid lg:grid-cols-[39%_1fr] gap-6 w-full">
-        <div className="flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-col gap-6 sm:gap-[1.125rem] lg:gap-[1.125rem] w-full">
+      <div className="flex w-full flex-col gap-6 lg:grid lg:grid-cols-[39%_1fr]">
+        <div className="flex w-full flex-col gap-6 sm:grid sm:grid-cols-2 sm:gap-[1.125rem] lg:flex lg:flex-col lg:gap-[1.125rem]">
           <Objective />
           <ReputationChart />
           <Agreements />
@@ -53,7 +53,7 @@ const ColonyHome = () => {
         <div className="w-full">
           <FiltersContextProvider>
             <ColonyActionsTable
-              className="w-full [&_tr:last-child_td>*:not(.expandable)]:!py-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[.875rem] [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2"
+              className="w-full [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr:last-child_td>*:not(.expandable)]:!py-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[.875rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[.9375rem]"
               pageSize={7}
               withHeader={false}
               state={{

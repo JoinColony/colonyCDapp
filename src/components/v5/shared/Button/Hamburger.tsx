@@ -38,7 +38,7 @@ const Hamburger: FC<HamburgerProps> = ({
       ) : (
         <button
           className={clsx(
-            'relative flex items-center justify-center border transition-all duration-normal min-w-[2.625rem] min-h-[2.5rem] p-2.5 bg-base-white rounded-full disabled:text-gray-300 z-50 text-1 text-gray-700',
+            'relative z-50 flex min-h-[2.5rem] min-w-[2.625rem] items-center justify-center rounded-full border bg-base-white p-2.5 text-gray-700 transition-all duration-normal text-1 disabled:text-gray-300',
             {
               'pointer-events-none': disabled,
               'border-blue-400': isOpened,

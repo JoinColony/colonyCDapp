@@ -78,7 +78,7 @@ const FileUpload: FC<FileUploadProps> = ({
   return (
     <div className="w-full">
       <div
-        className="flex md:flex-col w-full text-center"
+        className="flex w-full text-center md:flex-col"
         {...getRootProps({ 'aria-invalid': isDragReject })}
       >
         <input {...getInputProps()} />

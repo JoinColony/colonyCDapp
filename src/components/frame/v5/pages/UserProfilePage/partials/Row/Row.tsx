@@ -14,7 +14,7 @@ const Row: FC<RowProps> = ({ groups, className }) => (
         key={item.key}
         className={clsx(
           className,
-          '[&:not(:first-child)]:flex flex-col gap-6 justify-between py-6 first:pt-0 border-b last:border-b-0 border-b-gray-200 last:pb-0',
+          'flex-col justify-between gap-6 border-b border-b-gray-200 py-6 first:pt-0 last:border-b-0 last:pb-0 [&:not(:first-child)]:flex',
         )}
       >
         <RowItem {...item} />
@@ -23,7 +23,7 @@ const Row: FC<RowProps> = ({ groups, className }) => (
             {item.items.map((subItem) => (
               <li
                 key={subItem.key}
-                className="flex flex-col md:flex-row gap-6 md:gap-[6.5rem] justify-between"
+                className="flex flex-col justify-between gap-6 md:flex-row md:gap-[6.5rem]"
               >
                 <RowItem {...subItem} />
               </li>

@@ -24,7 +24,7 @@ const ContentTypeText: FC<ContentTypeProps> = ({ title, subTitle }) => {
       )}
       {subTitleText && (
         <p
-          className="text-sm text-gray-600 mt-0.5"
+          className="mt-0.5 text-sm text-gray-600"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: subTitleText }}
         />

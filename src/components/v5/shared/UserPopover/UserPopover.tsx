@@ -86,12 +86,12 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       ref={setTriggerRef}
       className={clsx(
         className,
-        'inline-flex transition-all duration-normal hover:text-blue-400 flex-shrink-0',
+        'inline-flex flex-shrink-0 transition-all duration-normal hover:text-blue-400',
       )}
     >
       {children}
       {withVerifiedBadge && isVerified && (
-        <CircleWavyCheck size={14} className="text-blue-400 ml-1" />
+        <CircleWavyCheck size={14} className="ml-1 text-blue-400" />
       )}
     </button>
   );
@@ -113,7 +113,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
           {!isVerified && (
             <UserPopoverAdditionalContent
               description={
-                <div className="mt-2 font-semibold break-words text-sm pb-2">
+                <div className="mt-2 break-words pb-2 text-sm font-semibold">
                   {user?.walletAddress}
                 </div>
               }
@@ -150,7 +150,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
                 rounded: 's',
                 className: clsx('bg-base-white', {
                   'p-6': !isTopSectionWithBackground,
-                  'border-2 border-purple-200 overflow-hidden ':
+                  'overflow-hidden border-2 border-purple-200 ':
                     userStatus === 'top',
                 }),
                 hasShadow: true,

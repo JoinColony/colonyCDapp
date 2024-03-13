@@ -43,8 +43,8 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
       )}
     >
       <div
-        className={clsx('flex items-center gap-6 w-full', {
-          'flex-col mb-6': isMobile,
+        className={clsx('flex w-full items-center gap-6', {
+          'mb-6 flex-col': isMobile,
           'mr-6': !isMobile,
         })}
       >
@@ -69,7 +69,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
 
         <div
           className={clsx('bg-gray-200', {
-            'w-full h-px': isMobile,
+            'h-px w-full': isMobile,
             'h-full w-px': !isMobile,
           })}
         />

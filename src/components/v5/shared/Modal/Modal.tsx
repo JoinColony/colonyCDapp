@@ -45,7 +45,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       {Icon && (
         <span
           className={clsx(
-            'flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-content mb-4 border-gray-200 flex-shrink-0',
+            'mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content',
             {
               'border-negative-200 text-negative-400': isWarning,
             },
@@ -58,10 +58,10 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
         title={formatMessage({ id: 'button.cancel' })}
         onClick={onClose}
-        className="text-gray-400 hover:text-gray-600 absolute top-4 right-4"
+        className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
       {!isMobile && shouldShowHeader && (
-        <div className="fixed top-9 right-4 z-10">
+        <div className="fixed right-4 top-9 z-10">
           <div className="relative">
             <UserNavigationWrapper
               txButtons={txButtons}
@@ -73,19 +73,19 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       )}
       <div
         className={clsx(
-          'flex flex-col w-full flex-grow [-webkit-overflow-scrolling:touch]',
+          'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
           {
             'pb-6 pr-6': !isTopSectionWithBackground,
           },
         )}
       >
         <div className="flex-grow">
-          {title && <h4 className="heading-5 mb-2">{title}</h4>}
-          {subTitle && <p className="text-gray-600 text-md">{subTitle}</p>}
+          {title && <h4 className="mb-2 heading-5">{title}</h4>}
+          {subTitle && <p className="text-md text-gray-600">{subTitle}</p>}
           {children}
         </div>
         {(closeMessage || confirmMessage) && (
-          <div className="flex flex-col-reverse gap-3 mt-8 sm:flex-row">
+          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
             {closeMessage && (
               <Button mode="primaryOutline" isFullSize onClick={onClose}>
                 {closeMessage}

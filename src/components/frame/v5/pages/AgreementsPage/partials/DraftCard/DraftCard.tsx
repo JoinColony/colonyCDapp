@@ -76,7 +76,7 @@ const DraftCard: FC = () => {
 
   return (
     <>
-      <div className="w-full border border-gray-200 bg-gray-25 rounded-lg pt-6 px-5 pb-5">
+      <div className="w-full rounded-lg border border-gray-200 bg-gray-25 px-5 pb-5 pt-6">
         <div className="w-full">
           <MotionStateBadge
             state={MotionState.Draft}
@@ -88,19 +88,19 @@ const DraftCard: FC = () => {
             className="group block text-left"
             onClick={openModal}
           >
-            <h3 className="text-1 text-gray-900 sm:group-hover:text-blue-400 transition-colors">
+            <h3 className="text-gray-900 transition-colors text-1 sm:group-hover:text-blue-400">
               {title || formatText({ id: 'agreementsPage.title.placeholder' })}
             </h3>
             {description && (
               <RichTextDisplay
                 content={description}
                 shouldFormat={false}
-                className="!text-sm !text-gray-600 mt-2 break-word line-clamp-4"
+                className="mt-2 line-clamp-4 !text-sm !text-gray-600 break-word"
               />
             )}
           </button>
         </div>
-        <div className="w-full pt-4 mt-4 border-t border-t-gray-200 flex justify-between items-center gap-4">
+        <div className="mt-4 flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-4">
           <UserPopover
             user={user}
             userName={user?.profile?.displayName || walletAddress}
@@ -120,7 +120,7 @@ const DraftCard: FC = () => {
               })}
             />
             <p
-              className={clsx('text-sm text-gray-600 hidden sm:inline-block', {
+              className={clsx('hidden text-sm text-gray-600 sm:inline-block', {
                 skeleton: loading,
               })}
             >

@@ -33,17 +33,17 @@ const TeamCard: FC<TeamCardProps> = ({
     <Card
       className={clsx(
         className,
-        'bg-gray-25 border-gray-200 pt-6 px-5 pb-5 h-full w-full flex flex-col min-h-[12.5rem] text-gray-600 relative',
+        'relative flex h-full min-h-[12.5rem] w-full flex-col border-gray-200 bg-gray-25 px-5 pb-5 pt-6 text-gray-600',
       )}
       withPadding={false}
     >
-      <div className="w-full flex-grow flex flex-col gap-3">
-        <div className="flex justify-between items-start gap-2">
+      <div className="flex w-full flex-grow flex-col gap-3">
+        <div className="flex items-start justify-between gap-2">
           <div className="truncate">
-            <h3 className="text-lg font-medium mb-1 truncate w-full text-gray-900">
+            <h3 className="mb-1 w-full truncate text-lg font-medium text-gray-900">
               {title || teamProps.name}
             </h3>
-            <div className="flex items-center gap-x-4 gap-y-1 flex-shrink-0 flex-wrap text-gray-600">
+            <div className="flex flex-shrink-0 flex-wrap items-center gap-x-4 gap-y-1 text-gray-600">
               <Tooltip
                 placement={isMobile ? 'auto' : 'right'}
                 tooltipContent="Team balance"
@@ -62,7 +62,7 @@ const TeamCard: FC<TeamCardProps> = ({
             </div>
           </div>
           {isMembersListLoading ? (
-            <div className="flex-shrink-0 ml-auto min-h-[2.375rem]">
+            <div className="ml-auto min-h-[2.375rem] flex-shrink-0">
               <SpinnerLoader
                 appearance={{
                   size: 'small',
@@ -72,7 +72,7 @@ const TeamCard: FC<TeamCardProps> = ({
           ) : (
             <>
               {!!members?.length && (
-                <div className="flex-shrink-0 ml-auto">
+                <div className="ml-auto flex-shrink-0">
                   <UserAvatars
                     maxAvatarsToShow={4}
                     className="[&_.placeholder]:bg-gray-200 [&_.placeholder]:text-gray-900"
@@ -90,7 +90,7 @@ const TeamCard: FC<TeamCardProps> = ({
           </p>
         ) : null}
       </div>
-      <div className="w-full border-t border-t-gray-200 mt-4 pt-4 flex items-center justify-between gap-4">
+      <div className="mt-4 flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-4">
         <div className="truncate">
           <TeamBadge
             {...teamProps}
@@ -98,16 +98,16 @@ const TeamCard: FC<TeamCardProps> = ({
             textClassName={clsx(teamProps.textClassName, 'truncate')}
           />
         </div>
-        <div className="ml-auto flex justify-end items-center gap-4">
+        <div className="ml-auto flex items-center justify-end gap-4">
           {!!links?.length && (
-            <ul className="flex items-center gap-4 justify-end">
+            <ul className="flex items-center justify-end gap-4">
               {links.map(({ key, className: linkClassName, ...restLink }) => (
                 <li key={key}>
                   <Link
                     {...restLink}
                     className={clsx(
                       linkClassName,
-                      'flex justify-center items-center text-4 underline text-inherit',
+                      'text-inherit flex items-center justify-center underline text-4',
                     )}
                   />
                 </li>

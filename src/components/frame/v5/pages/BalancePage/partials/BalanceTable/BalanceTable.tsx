@@ -223,7 +223,7 @@ const BalanceTable: FC = () => {
               title={{ id: 'balancePage.table.emptyTitle' }}
               description={{ id: 'balancePage.table.emptyDescription' }}
               withoutButtonIcon
-              className="pt-10 pb-9 px-6"
+              className="px-6 pb-9 pt-10"
             />
           )
         }
@@ -232,7 +232,7 @@ const BalanceTable: FC = () => {
           <div
             className={clsx(
               className,
-              'min-h-[4.25rem] md:min-h-[3.625rem] !py-[0.1rem]',
+              'min-h-[4.25rem] !py-[0.1rem] md:min-h-[3.625rem]',
               {
                 'pl-0 md:pl-[1.1rem]':
                   cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID,
@@ -254,10 +254,10 @@ const BalanceTable: FC = () => {
         onClose={toggleAddFundsModalOff}
       >
         <>
-          <h5 className="heading-5 mb-1.5">
+          <h5 className="mb-1.5 heading-5">
             {formatText({ id: 'balancePage.modal.title' })}
           </h5>
-          <p className="text-md text-gray-600 mb-6">
+          <p className="mb-6 text-md text-gray-600">
             {formatText({ id: 'balancePage.modal.subtitle' })}
           </p>
           <CopyWallet

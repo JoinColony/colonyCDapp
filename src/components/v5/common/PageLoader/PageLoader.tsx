@@ -16,7 +16,7 @@ interface PageLoaderProps {
 const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative w-[7.5rem] h-[7.5rem]">
+      <div className="relative h-[7.5rem] w-[7.5rem]">
         <svg
           viewBox="0 0 120 120"
           xmlns="http://www.w3.org/2000/svg"
@@ -42,17 +42,17 @@ const PageLoader = ({ loadingDescription, loadingText }: PageLoaderProps) => {
           />
         </svg>
         <ColonyIcon
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           size={48}
         />
       </div>
       {loadingText && (
-        <div className="text-gray-900 text-sm font-medium mt-6 uppercase tracking-[0.075rem]">
+        <div className="mt-6 text-sm font-medium uppercase tracking-[0.075rem] text-gray-900">
           {loadingText}
         </div>
       )}
       {loadingDescription && (
-        <div className="text-gray-900 text-sm font-medium mt-6">
+        <div className="mt-6 text-sm font-medium text-gray-900">
           {loadingDescription}
         </div>
       )}

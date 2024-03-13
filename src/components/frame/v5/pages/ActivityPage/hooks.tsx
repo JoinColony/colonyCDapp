@@ -27,7 +27,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
     'flex flex-row-reverse items-center gap-1.5 text-right sm:text-left sm:gap-0.5 sm:flex-col sm:items-start';
 
   const countSkeleton = (
-    <div className="skeleton w-[60px] h-[1em] my-[0.25em]" />
+    <div className="my-[0.25em] h-[1em] w-[60px] skeleton" />
   );
 
   return [
@@ -35,7 +35,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
       key: '1',
       title: formatText({ id: 'widget.totalActions' }),
       value: (
-        <span className="heading-4 text-gray-900">
+        <span className="text-gray-900 heading-4">
           {totalActionsLoading
             ? countSkeleton
             : getFormattedActionsCount(totalActions)}
@@ -49,7 +49,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
       key: '2',
       title: formatText({ id: 'activityPage.recentActions' }),
       value: (
-        <span className="heading-4 text-gray-900">
+        <span className="text-gray-900 heading-4">
           {recentActionsLoading
             ? countSkeleton
             : formatText(
@@ -57,7 +57,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
                 {
                   value: getFormattedActionsCount(recentActions),
                   span: (chunks) => (
-                    <span className="text-1 hidden sm:inline">{chunks}</span>
+                    <span className="hidden text-1 sm:inline">{chunks}</span>
                   ),
                 },
               )}
@@ -76,7 +76,7 @@ export const useActivityFeedWidgets = (): WidthBoxItem[] => {
         },
       ),
       value: (
-        <span className="heading-4 text-gray-900 truncate whitespace-nowrap overflow-hidden inline-block">
+        <span className="inline-block overflow-hidden truncate whitespace-nowrap text-gray-900 heading-4">
           {mostActiveDomainName}
         </span>
       ),

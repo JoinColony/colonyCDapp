@@ -26,11 +26,11 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   const [shouldFocus, setShouldFocus] = useState(false);
 
   return (
-    <div className="sm:relative w-full">
+    <div className="w-full sm:relative">
       {!isDecriptionFieldExpanded && (
         <div
           className={clsx(
-            'flex text-md transition-colors md:hover:text-blue-400 items-end w-full',
+            'flex w-full items-end text-md transition-colors md:hover:text-blue-400',
             {
               'text-gray-400': !isError,
               'text-negative-400': isError,

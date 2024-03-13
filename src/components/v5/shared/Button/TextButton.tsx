@@ -47,7 +47,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
           className={clsx(
             className,
             [styles.textButton],
-            'font-medium transition-all flex items-center duration-normal',
+            'flex items-center font-medium transition-all duration-normal',
             {
               'text-sm text-gray-900': mode === 'default',
             },
@@ -72,7 +72,7 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
           {...rest}
         >
           {Icon && (
-            <span className="flex shrink-0 mr-2">
+            <span className="mr-2 flex shrink-0">
               <Icon size={iconSize} />
             </span>
           )}

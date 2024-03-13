@@ -18,19 +18,19 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
   return (
     <li className={styles.stakesItem}>
       <div className="relative w-full">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center mr-2 min-w-0">
-            <p className="text-1 mr-2 truncate min-w-0">
+        <div className="flex items-center justify-between">
+          <div className="mr-2 flex min-w-0 items-center">
+            <p className="mr-2 min-w-0 truncate text-1">
               {stake.action?.metadata?.customTitle ?? stake.action?.type}
             </p>
-            <span className="text-gray-400 text-xs">
+            <span className="text-xs text-gray-400">
               <FormattedDate value={stake.createdAt} />
             </span>
           </div>
           <UserStakeStatusBadge status={stake.status} />
         </div>
         <div className="flex text-xs">
-          <div className="font-medium mr-2">
+          <div className="mr-2 font-medium">
             <Numeral
               value={stake.amount}
               decimals={nativeToken.decimals}

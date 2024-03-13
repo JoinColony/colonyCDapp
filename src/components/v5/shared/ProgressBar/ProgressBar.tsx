@@ -27,7 +27,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
         <span
           className={clsx(
             barClassName,
-            'bg-blue-400 h-full absolute left-0 top-0',
+            'absolute left-0 top-0 h-full bg-blue-400',
             {
               'rounded-lg': isTall,
               rounded: !isTall,
@@ -37,16 +37,16 @@ const ProgressBar: FC<ProgressBarProps> = ({
         />
         {threshold !== null && threshold !== 0 && progress < threshold && (
           <span
-            className="w-[.125rem] h-full bg-gray-400 absolute top-0"
+            className="absolute top-0 h-full w-[.125rem] bg-gray-400"
             style={{ left: `${threshold}%` }}
           />
         )}
       </div>
-      <span className="text-xs font-medium text-gray-600 ml-3 leading-3">
+      <span className="ml-3 text-xs font-medium leading-3 text-gray-600">
         {progress}
       </span>
       {additionalText && (
-        <span className={clsx(className, 'text-3 text-gray-600 flex-shrink-0')}>
+        <span className={clsx(className, 'flex-shrink-0 text-gray-600 text-3')}>
           {additionalText}
         </span>
       )}

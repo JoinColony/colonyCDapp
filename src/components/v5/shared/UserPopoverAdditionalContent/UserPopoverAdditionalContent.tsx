@@ -20,7 +20,7 @@ const UserPopoverAdditionalContent: FC<UserPopoverAdditionalContentProps> = ({
           {formatText({ id: 'add.verified.member' })}
         </button>
       }
-      className="text-left text-warning-400 !border-warning-400"
+      className="!border-warning-400 text-left text-warning-400"
       descriptionClassName="text-warning-400 font-semibold pb-3 border-b border-warning-200"
     >
       <span className="text-sm">

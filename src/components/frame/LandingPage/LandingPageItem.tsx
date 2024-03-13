@@ -32,7 +32,7 @@ const LandingPageItem = ({
   return (
     <div
       className={clsx(
-        'group flex items-center justify-between px-6 py-5 rounded-lg border border-gray-200',
+        'group flex items-center justify-between rounded-lg border border-gray-200 px-6 py-5',
         { 'hover:border-blue-400': !disabled, 'text-gray-300': disabled },
       )}
       onMouseEnter={() => onHover(disabled ? 0 : itemIndex)}
@@ -40,7 +40,7 @@ const LandingPageItem = ({
     >
       <div className="flex items-center">
         <div
-          className={clsx('flex items-center p-6 mr-4 bg-base-bg rounded-lg', {
+          className={clsx('mr-4 flex items-center rounded-lg bg-base-bg p-6', {
             'group-hover:bg-blue-100': !disabled,
           })}
         >
@@ -53,7 +53,7 @@ const LandingPageItem = ({
         </div>
         <div>
           <Heading text={headingText} className="text-md font-semibold" />
-          <p className="text-sm mt-1">
+          <p className="mt-1 text-sm">
             <FormattedMessage {...headingDescription} />
           </p>
         </div>

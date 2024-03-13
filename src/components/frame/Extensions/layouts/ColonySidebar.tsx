@@ -43,7 +43,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
         <UserNavigationWrapper txButtons={txButtons} userHub={userHub} />
       }
       mobileBottomContent={
-        <div className="w-full flex flex-col gap-6">
+        <div className="flex w-full flex-col gap-6">
           <Button
             icon={Plus}
             className="w-full"

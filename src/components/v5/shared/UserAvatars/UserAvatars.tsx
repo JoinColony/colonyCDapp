@@ -34,7 +34,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
             user={slicedAvatar}
             size={size}
             className={clsx(
-              'border-base-white bg-base-white border rounded-full',
+              'rounded-full border border-base-white bg-base-white',
               {
                 'border-2': withThickerBorder,
               },
@@ -44,7 +44,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
       ))}
       {!!(remainingAvatarsCountProp || remainingAvatarsCount) &&
         showRemainingAvatars && (
-          <li className="flex items-center justify-center -ml-3">
+          <li className="-ml-3 flex items-center justify-center">
             <div className="relative">
               <UserAvatar
                 user={{
@@ -52,7 +52,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
                 }}
                 size={size}
                 className={clsx(
-                  'border-base-white bg-base-white border rounded-full',
+                  'rounded-full border border-base-white bg-base-white',
                   {
                     'border-2': withThickerBorder,
                   },
@@ -60,7 +60,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
               />
               <div
                 className={clsx(
-                  'placeholder absolute inset-0 rounded-full z-[1] bg-gray-50 flex items-center justify-center text-5 text-gray-700 border border-base-white text-center',
+                  'placeholder absolute inset-0 z-[1] flex items-center justify-center rounded-full border border-base-white bg-gray-50 text-center text-gray-700 text-5',
                   {
                     'border-2': withThickerBorder,
                   },

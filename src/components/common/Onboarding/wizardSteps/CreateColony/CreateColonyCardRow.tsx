@@ -57,7 +57,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
             size="s"
           />
         ) : (
-          <div className="bg-gray-200 text-gray-600 p-2.5 rounded-full flex">
+          <div className="flex rounded-full bg-gray-200 p-2.5 text-gray-600">
             <Image size={16} />
           </div>
         ),
@@ -73,16 +73,16 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
     <div className="flex flex-col gap-6">
       {cards.map((card) => (
         <div className="flex flex-col gap-3.5" key={`option ${card.title}`}>
-          <h5 className="text-2 lowercase first-letter:uppercase">
+          <h5 className="lowercase text-2 first-letter:uppercase">
             {formatText(
               typeof card.title === 'string' ? { id: card.title } : card.title,
             )}
           </h5>
-          <div className="border border-gray-200 rounded px-6 py-4 flex place-content-between">
-            <div className="flex gap-5 items-center">
+          <div className="flex place-content-between rounded border border-gray-200 px-6 py-4">
+            <div className="flex items-center gap-5">
               {card.icon && card.icon}
               <div>
-                <p className="text-1 pb-1">{card.text}</p>
+                <p className="pb-1 text-1">{card.text}</p>
                 <p className="text-sm text-gray-600">{card.subText}</p>
               </div>
             </div>

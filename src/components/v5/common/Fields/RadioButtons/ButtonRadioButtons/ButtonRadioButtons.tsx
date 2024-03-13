@@ -27,19 +27,19 @@ function ButtonRadioButtons<TValue = string>({
                 ? className
                 : className(checked, disabledButton),
               `
-                flex
                 group/wrapper
+                flex
+                min-h-[2.5rem]
+                w-full
                 items-center
                 justify-center
                 gap-1.5
+                rounded-lg
                 border
                 border-current
-                transition
-                py-2
                 px-3
-                w-full
-                min-h-[2.5rem]
-                rounded-lg
+                py-2
+                transition
               `,
             )}
           >

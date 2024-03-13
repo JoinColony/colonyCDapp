@@ -21,8 +21,8 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
   const { statuses, sidePanelData } = useSpecificSidePanel(extensionData);
 
   return (
-    <div className="flex gap-2 flex-col">
-      <h3 className="heading-5 -mb-0.5">
+    <div className="flex flex-col gap-2">
+      <h3 className="-mb-0.5 heading-5">
         {formatMessage({ id: 'specific.side.panel.title' })}
       </h3>
       {(sidePanelData || [])?.map(
@@ -41,7 +41,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
           <Fragment key={id}>
             <div className={styles.panelRow}>
               <div className={styles.panelTitle}>{statusType.title}</div>
-              <div className="flex justify-start flex-col gap-y-2 md:flex-row md:flex-wrap">
+              <div className="flex flex-col justify-start gap-y-2 md:flex-row md:flex-wrap">
                 <div className="flex flex-wrap gap-1">
                   {statuses.map((status) => (
                     <ExtensionStatusBadge

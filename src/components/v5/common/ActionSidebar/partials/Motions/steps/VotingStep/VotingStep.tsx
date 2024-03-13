@@ -98,7 +98,7 @@ const VotingStep: FC<VotingStepProps> = ({
               <div>
                 {hasUserVoted && (isSupportVote || isOpposeVote) && (
                   <div className="mb-3">
-                    <div className="flex items-center justify-between gap-2 mb-6">
+                    <div className="mb-6 flex items-center justify-between gap-2">
                       <h4 className="text-2">
                         {formatText({ id: 'motion.votingStep.voted' })}
                       </h4>
@@ -107,7 +107,7 @@ const VotingStep: FC<VotingStepProps> = ({
                     {!actionData.motionData.motionStateHistory
                       .inRevealPhase && (
                       <>
-                        <h4 className="text-2 mb-1">
+                        <h4 className="mb-1 text-2">
                           {formatText({ id: 'motion.votingStep.changeVote' })}
                         </h4>
                         <p className="text-sm text-gray-600">
@@ -122,7 +122,7 @@ const VotingStep: FC<VotingStepProps> = ({
                 {canVote && (
                   <>
                     {!hasUserVoted && (
-                      <h4 className="text-1 mb-3 text-center">
+                      <h4 className="mb-3 text-center text-1">
                         {formatText({ id: 'motion.votingStep.title' })}
                       </h4>
                     )}
@@ -137,7 +137,7 @@ const VotingStep: FC<VotingStepProps> = ({
                 )}
               </div>
               {(hasUserVoted || canVote) && (
-                <div className="mt-7 pt-6 border-t border-gray-200" />
+                <div className="mt-7 border-t border-gray-200 pt-6" />
               )}
               <DescriptionList items={items} className="my-1" />
               {canVote && (

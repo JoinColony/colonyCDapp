@@ -53,12 +53,12 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
         {shouldBeTooltipVisible ? (
           <Tooltip
             tooltipContent={
-              <span className="text-3 w-full">{tooltipText}</span>
+              <span className="w-full text-3">{tooltipText}</span>
             }
             isOpen={isCopyTriggered}
             isSuccess={isCopyTriggered}
             placement={isMobile ? 'auto' : 'right'}
-            className="w-full flex items-center"
+            className="flex w-full items-center"
           >
             {tooltipContent}
           </Tooltip>

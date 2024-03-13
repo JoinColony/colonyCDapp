@@ -21,16 +21,16 @@ const ErrorContent: FC<ErrorContentProps> = ({
   const errorMessage = getErrorMessage(errorCode || DropzoneErrors.DEFAULT);
 
   return (
-    <div className="gap-3 bg-base-white border-negative-400 flex px-6 py-4 rounded border w-full">
-      <div className="w-10 mb-2">
-        <div className="bg-negative-100 p-[0.25rem] rounded-full flex items-start justify-center">
-          <div className="bg-negative-200 text-negative-400 p-[0.25rem] rounded-full flex items-start justify-center">
+    <div className="flex w-full gap-3 rounded border border-negative-400 bg-base-white px-6 py-4">
+      <div className="mb-2 w-10">
+        <div className="flex items-start justify-center rounded-full bg-negative-100 p-[0.25rem]">
+          <div className="flex items-start justify-center rounded-full bg-negative-200 p-[0.25rem] text-negative-400">
             <CloudArrowUp size={18} />
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full gap-1">
-        <div className="flex justify-between items-center">
+      <div className="flex w-full flex-col gap-1">
+        <div className="flex items-center justify-between">
           <span className="text-negative-400 text-1">
             {formatMessage(errorMessage)}
           </span>
@@ -42,7 +42,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
             <Trash size={18} />
           </button>
         </div>
-        <span className="text-gray-600 text-sm">{fileRejections}</span>
+        <span className="text-sm text-gray-600">{fileRejections}</span>
         <TextButton onClick={open} mode="underlined" isErrorColor>
           {formatMessage({ id: 'button.try.again' })}
           <input {...getInputProps()} />

@@ -15,16 +15,16 @@ const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({
   const { id, defaultMessage } = message;
 
   return (
-    <div className="text-sm flex justify-center items-center font-normal">
+    <div className="flex items-center justify-center text-sm font-normal">
       <Question size={14} />
-      <span className="block ml-2">
+      <span className="ml-2 block">
         <FormattedMessage
           id={id}
           defaultMessage={defaultMessage}
           values={{
             // eslint-disable-next-line react/no-unstable-nested-components
             a: (chunks) => (
-              <ExternalLink className="underline font-semibold" href={href}>
+              <ExternalLink className="font-semibold underline" href={href}>
                 {chunks}
               </ExternalLink>
             ),

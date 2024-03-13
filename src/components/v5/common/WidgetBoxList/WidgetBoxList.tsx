@@ -15,7 +15,7 @@ const WidgetBoxList: FC<WidgetBoxListProps> = ({
   <ul
     className={clsx(
       className,
-      'flex flex-col items-center gap-[1.125rem] w-full',
+      'flex w-full flex-col items-center gap-[1.125rem]',
       {
         'sm:flex-row': !isVertical,
       },

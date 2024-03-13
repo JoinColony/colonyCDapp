@@ -17,13 +17,13 @@ const FormError: FC<PropsWithChildren<FormErrorProps>> = ({
       allowLayoutShift ? 'pt-1' : 'absolute pt-1',
       {
         'w-full': isFullSize,
-        'text-right justify-end': alignment === 'right',
-        'text-left justify-start': alignment === 'left',
-        'text-center justify-center': alignment === 'center',
+        'justify-end text-right': alignment === 'right',
+        'justify-start text-left': alignment === 'left',
+        'justify-center text-center': alignment === 'center',
       },
     )}
   >
-    <span className="font-normal text-sm text-negative-400">{children}</span>
+    <span className="text-sm font-normal text-negative-400">{children}</span>
   </div>
 );
 

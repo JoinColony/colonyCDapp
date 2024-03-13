@@ -25,7 +25,7 @@ const DefaultContent: FC<DefaultContentProps> = ({
   return (
     <div
       className={clsx(
-        'flex-col items-center flex px-6 rounded border w-full hover:border-blue-400 hover:bg-blue-100',
+        'flex w-full flex-col items-center rounded border px-6 hover:border-blue-400 hover:bg-blue-100',
         {
           'py-4': !isSimpleOnMobile,
           'py-2': isSimpleOnMobile,
@@ -47,9 +47,9 @@ const DefaultContent: FC<DefaultContentProps> = ({
         </button>
       ) : (
         <>
-          <div className="w-9 h-9 mb-2">
-            <div className="bg-gray-50 p-[0.25rem] rounded-full flex items-start justify-center">
-              <div className="bg-gray-200 text-gray-600 p-[0.25rem] rounded-full flex items-start justify-center">
+          <div className="mb-2 h-9 w-9">
+            <div className="flex items-start justify-center rounded-full bg-gray-50 p-[0.25rem]">
+              <div className="flex items-start justify-center rounded-full bg-gray-200 p-[0.25rem] text-gray-600">
                 <CloudArrowUp size={18} />
               </div>
             </div>
@@ -74,7 +74,7 @@ const DefaultContent: FC<DefaultContentProps> = ({
               )}
             </button>
           </div>
-          <span className="text-gray-600 text-sm">
+          <span className="text-sm text-gray-600">
             {formatMessage(
               { id: 'avatar.uploader.text' },
               {

@@ -95,7 +95,7 @@ function CardSelect<TValue = string>({
     placeholder || formatText({ id: 'common.fields.cardSelect.placeholder' });
 
   return (
-    <div className="sm:relative w-full">
+    <div className="w-full sm:relative">
       {readonly || disabled ? (
         <span
           className={clsx('text-md', {
@@ -114,7 +114,7 @@ function CardSelect<TValue = string>({
             type="button"
             className={clsx(
               togglerClassName,
-              'flex text-md md:transition-colors md:hover:text-blue-400 text-left',
+              'flex text-left text-md md:transition-colors md:hover:text-blue-400',
               {
                 'text-gray-400': !state && !isSelectVisible,
                 'text-gray-900': value && !isSelectVisible,
@@ -141,7 +141,7 @@ function CardSelect<TValue = string>({
                 }}
                 className={clsx(
                   cardClassName,
-                  'py-4 px-2 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none absolute z-[60] overflow-auto',
+                  'absolute z-[60] w-full max-w-[calc(100%-2.25rem)] overflow-auto px-2 py-4 sm:w-auto sm:max-w-none',
                 )}
                 hasShadow
                 rounded="s"
@@ -150,7 +150,7 @@ function CardSelect<TValue = string>({
                   {groupedOptions.map((group) => (
                     <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
                       {group.title && (
-                        <h5 className="section-title text-4 text-gray-400 uppercase px-4 pt-2">
+                        <h5 className="section-title px-4 pt-2 uppercase text-gray-400 text-4">
                           {group.title}
                         </h5>
                       )}

@@ -69,13 +69,13 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <div className="w-full md:h-screen md:flex md:flex-col" ref={wrapperRef}>
+      <div className="w-full md:flex md:h-screen md:flex-col" ref={wrapperRef}>
         {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}
         <div
-          className="sticky top-0 left-0 right-0 w-full z-10 sm:z-[65] bg-base-white md:static md:top-auto md:left-auto md:right-auto md:bg-transparent"
+          className="sticky left-0 right-0 top-0 z-10 w-full bg-base-white sm:z-[65] md:static md:left-auto md:right-auto md:top-auto md:bg-transparent"
           ref={topContentWrapperRef}
         >
-          <div className="w-full relative">
+          <div className="relative w-full">
             {topContent && <div className="flex-shrink-0">{topContent}</div>}
             {isTablet && sidebar}
           </div>
@@ -89,7 +89,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               {children}
             </div>
           ) : (
-            <div className="w-full md:h-[calc(100vh-var(--top-content-height))] md:pl-4 md:pt-4 md:flex md:gap-8">
+            <div className="w-full md:flex md:h-[calc(100vh-var(--top-content-height))] md:gap-8 md:pl-4 md:pt-4">
               <div
                 className={clsx('relative z-[61] md:flex-shrink-0', {
                   'md:w-[5.125rem]': !hasWideSidebar,
@@ -98,7 +98,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               >
                 <div
                   className={clsx(
-                    'md:absolute md:top-0 md:bottom-4 md:left-0',
+                    'md:absolute md:bottom-4 md:left-0 md:top-0',
                     { 'w-full': hasWideSidebar },
                   )}
                 >
@@ -106,22 +106,22 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                 </div>
               </div>
               <div
-                className={clsx('md:flex-grow flex flex-col', {
+                className={clsx('flex flex-col md:flex-grow', {
                   'gap-[1.125rem]': isOnColonyRoute,
                   'gap-8': !isOnColonyRoute,
                 })}
               >
-                <div className="flex-shrink-0 pt-5 pr-4">
+                <div className="flex-shrink-0 pr-4 pt-5">
                   <PageHeader
                     {...headerProps}
                     className={clsx({ '!items-center': isOnColonyRoute })}
                   />
                 </div>
                 <div
-                  className="flex-grow overflow-auto pr-4 pb-4"
+                  className="flex-grow overflow-auto pb-4 pr-4"
                   style={{ scrollbarGutter: 'stable' }}
                 >
-                  <div className="w-full xl:mx-auto max-w-[79.875rem]">
+                  <div className="w-full max-w-[79.875rem] xl:mx-auto">
                     {children}
                   </div>
                 </div>

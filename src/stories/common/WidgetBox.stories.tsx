@@ -13,7 +13,7 @@ const widgetBoxMeta: Meta<typeof WidgetBox> = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-[25.875rem] w-full">
+      <div className="w-full max-w-[25.875rem]">
         <Story />
       </div>
     ),

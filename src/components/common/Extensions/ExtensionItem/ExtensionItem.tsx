@@ -38,25 +38,25 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
 
   return (
     <div className="flex flex-col items-end sm:block">
-      <div className="flex flex-col sm:flex-row items-center w-full gap-6 sm:gap-12">
+      <div className="flex w-full flex-col items-center gap-6 sm:flex-row sm:gap-12">
         <Link
           to={extensionUrl}
-          className="flex flex-1 flex-row items-start w-full"
+          className="flex w-full flex-1 flex-row items-start"
         >
           <div className="flex shrink-0">
             <Icon size={34} />
           </div>
-          <div className="flex flex-1 flex-col items-start ml-4">
-            <div className="flex items-center justify-start sm:justify-between w-full sm:w-auto">
-              <h5 className="flex items-center text-1 mr-4 content-end">
+          <div className="ml-4 flex flex-1 flex-col items-start">
+            <div className="flex w-full items-center justify-start sm:w-auto sm:justify-between">
+              <h5 className="mr-4 flex content-end items-center text-1">
                 {formatMessage(title)}
-                <span className="block text-xs text-gray-600 ml-2">
+                <span className="ml-2 block text-xs text-gray-600">
                   v{version}
                 </span>
               </h5>
               <ExtensionStatusBadge mode={status} text={badgeMessage} />
             </div>
-            <p className="text-md text-gray-600 mt-1.5">
+            <p className="mt-1.5 text-md text-gray-600">
               {formatMessage(description)}
             </p>
           </div>
@@ -64,7 +64,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
         {!isMobile && button}
       </div>
       {isMobile && (
-        <div className="w-[calc(100%-3.625rem)] mt-6 ml-3.625rem shrink-0 sm:w-auto sm:ml-4 sm:mt-0">
+        <div className="ml-3.625rem mt-6 w-[calc(100%-3.625rem)] shrink-0 sm:ml-4 sm:mt-0 sm:w-auto">
           {button}
         </div>
       )}

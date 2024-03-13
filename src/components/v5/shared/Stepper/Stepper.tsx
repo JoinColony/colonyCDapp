@@ -68,7 +68,7 @@ function Stepper<TKey extends React.Key>({
 
   return items.length ? (
     <>
-      <div className="flex items-center gap-1 w-full">
+      <div className="flex w-full items-center gap-1">
         {isMobile && isScrollableList && (
           <button type="button" onClick={scrollLeft}>
             <CaretLeft className="text-gray-400" size={18} />
@@ -76,7 +76,7 @@ function Stepper<TKey extends React.Key>({
         )}
         <ul
           className={clsx(
-            'w-full flex justify-between gap-3 sm:gap-0 sm:justify-start sm:flex-col relative',
+            'relative flex w-full justify-between gap-3 sm:flex-col sm:justify-start sm:gap-0',
             {
               'overflow-auto no-scrollbar': withArrowsOnMobile,
             },
@@ -101,40 +101,40 @@ function Stepper<TKey extends React.Key>({
                     `
                     relative
                     flex
-                    flex-grow
-                    last:flex-grow-0
-                    items-start
                     w-auto
+                    flex-grow
+                    items-start
+                    after:absolute
+                    after:left-0
+                    after:top-[.875rem]
+                    after:flex
+                    after:h-0
+                    after:w-[calc(100%+3rem)]
+                    after:flex-1
+                    after:flex-shrink-0
+                    after:border-t
+                    after:border-gray-900
+                    last:flex-grow-0
+                    last:after:hidden
                     sm:flex-col
+                    sm:pl-[1.625rem]
                     sm:before:absolute
                     sm:before:left-0
                     sm:before:top-2
                     sm:before:z-[1]
                     sm:before:h-[.6875rem]
                     sm:before:w-[.6875rem]
-                    sm:before:border
                     sm:before:rounded-full
-                    sm:pl-[1.625rem]
-                    after:absolute
-                    after:h-0
-                    after:flex
-                    after:flex-1
-                    after:flex-shrink-0
-                    after:border-t
+                    sm:before:border
+                    sm:before:border-gray-900
+                    sm:after:left-[.2813rem]
                     sm:after:h-[calc(100%+1rem)]
-                    after:w-[calc(100%+3rem)]
                     sm:after:w-0
                     sm:after:border-l-[.084rem]
                     sm:after:border-t-0
-                    after:border-gray-900
-                    after:top-[.875rem]
-                    after:left-0
-                    sm:after:left-[.2813rem]
-                    last:after:hidden
-                    sm:before:border-gray-900
                   `,
                     {
-                      'sm:mb-4 sm:last-mb-0': !isHidden,
+                      'sm:last-mb-0 sm:mb-4': !isHidden,
                       'sm:before:bg-gray-900': index <= activeItemIndex,
                       'sm:before:bg-base-white': index > activeItemIndex,
                       'after:border-dashed': isNextStepOptional,
@@ -143,7 +143,7 @@ function Stepper<TKey extends React.Key>({
                     },
                   )}
                 >
-                  <div className="flex flex-col sm:flex-row gap-[.375rem] items-start sm:items-center">
+                  <div className="flex flex-col items-start gap-[.375rem] sm:flex-row sm:items-center">
                     <StepperButton
                       stage={
                         (index < activeItemIndex &&
@@ -170,15 +170,15 @@ function Stepper<TKey extends React.Key>({
                   {!isMobile && !itemDisabled && (
                     <div
                       className={clsx(
-                        'grid transition-[grid-template-rows_0.5s_ease-in-out] w-full',
+                        'grid w-full transition-[grid-template-rows_0.5s_ease-in-out]',
                         {
                           'grid-rows-[1fr]': index === openItemIndex,
                           'grid-rows-[0fr]': index !== openItemIndex,
                         },
                       )}
                     >
-                      <div className="overflow-hidden w-full">
-                        <div className="pt-4 w-full">{content}</div>
+                      <div className="w-full overflow-hidden">
+                        <div className="w-full pt-4">{content}</div>
                       </div>
                     </div>
                   )}

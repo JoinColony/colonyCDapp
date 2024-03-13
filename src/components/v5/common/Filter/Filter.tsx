@@ -57,7 +57,7 @@ const Filter: FC<FilterProps> = ({
           />
           <Button
             mode="tertiary"
-            className="sm:hidden flex"
+            className="flex sm:hidden"
             size="small"
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
@@ -76,8 +76,8 @@ const Filter: FC<FilterProps> = ({
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4">{searchInputLabel}</p>
-            <div className="sm:px-3.5 sm:mb-6">
+            <p className="mb-4 text-gray-400 text-4">{searchInputLabel}</p>
+            <div className="sm:mb-6 sm:px-3.5">
               <SearchInput
                 onSearchButtonClick={() => setIsSearchOpened(false)}
                 searchValue={searchValue}
@@ -109,7 +109,7 @@ const Filter: FC<FilterProps> = ({
               }}
               classNames="w-full sm:max-w-[17.375rem]"
             >
-              <div className="sm:px-3.5 sm:mb-6">
+              <div className="sm:mb-6 sm:px-3.5">
                 <SearchInput
                   onSearchButtonClick={() => setIsSearchOpened(false)}
                   searchValue={searchValue}

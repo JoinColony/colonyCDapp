@@ -38,7 +38,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
 
   return (
     <div className={clsx(wrapperClassName, 'w-full')}>
-      <div className="w-full relative" ref={wrapperRef}>
+      <div className="relative w-full" ref={wrapperRef}>
         {buttonProps && (
           <button
             {...restButtonProps}
@@ -46,16 +46,16 @@ const FormattedInput: FC<FormattedInputProps> = ({
             className={clsx(
               `
               absolute
-              top-0
               bottom-0
               right-0
-              h-full
+              top-0
               z-[1]
-              text-right
+              h-full
               px-3.5
               py-3
-              text-1
+              text-right
               transition-all
+              text-1
               md:hover:opacity-80
             `,
               {
@@ -71,7 +71,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
         )}
         {customPrefix && (
           <div
-            className="absolute top-0 left-0 px-3.5 py-3 h-full flex items-center justify-center"
+            className="absolute left-0 top-0 flex h-full items-center justify-center px-3.5 py-3"
             ref={customPrefixRef}
           >
             {customPrefix}
@@ -85,10 +85,10 @@ const FormattedInput: FC<FormattedInputProps> = ({
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
-            'w-full text-md outline-0 placeholder:text-gray-400 pr-[var(--button-width)]',
+            'w-full pr-[var(--button-width)] text-md outline-0 placeholder:text-gray-400',
             {
-              'text-gray-400 pointer-events-none': disabled,
-              'bg-base-white rounded border py-3 pl-3.5 border-gray-300 focus:border-blue-200 focus:shadow-light-blue':
+              'pointer-events-none text-gray-400': disabled,
+              'rounded border border-gray-300 bg-base-white py-3 pl-3.5 focus:border-blue-200 focus:shadow-light-blue':
                 mode === 'primary',
               'border-none': mode === 'secondary',
               'pl-[var(--custom-prefix-width)]': customPrefix,
@@ -96,7 +96,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
           )}
         />
       </div>
-      <div className={clsx(messageClassName, 'text-negative-400 text-sm mt-1')}>
+      <div className={clsx(messageClassName, 'mt-1 text-sm text-negative-400')}>
         {message}
       </div>
     </div>

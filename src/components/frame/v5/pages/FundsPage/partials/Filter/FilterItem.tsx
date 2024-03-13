@@ -53,7 +53,7 @@ function FilterItem<TValue extends FilterValue>({
           title={title}
           icon={CaretDown}
           iconSize={16}
-          className="[&_.accordion-toggler]:text-gray-400 [&_.accordion-toggler]:mb-2 sm:[&_.accordion-toggler]:mb-0 [&_.accordion-toggler]:text-4 [&_.accordion-toggler]:uppercase sm:[&_.accordion-toggler]:px-3.5 [&_.accordion-icon]:text-gray-700 mb-4 last:mb-0"
+          className="mb-4 last:mb-0 [&_.accordion-icon]:text-gray-700 [&_.accordion-toggler]:mb-2 [&_.accordion-toggler]:uppercase [&_.accordion-toggler]:text-gray-400 [&_.accordion-toggler]:text-4 sm:[&_.accordion-toggler]:mb-0 sm:[&_.accordion-toggler]:px-3.5"
         >
           {FilterItems}
         </AccordionItem>
@@ -80,7 +80,7 @@ function FilterItem<TValue extends FilterValue>({
               classNames="w-full sm:max-w-[13.25rem] mr-2"
             >
               <>
-                <span className="text-4 text-gray-400 px-3.5 uppercase">
+                <span className="px-3.5 uppercase text-gray-400 text-4">
                   {title}
                 </span>
                 {FilterItems}

@@ -63,7 +63,7 @@ const Input: FC<InputProps> = ({
   }, [shouldFocus, name]);
 
   const input = (
-    <div className="w-full relative">
+    <div className="relative w-full">
       <input
         {...registerField}
         type="text"
@@ -75,7 +75,7 @@ const Input: FC<InputProps> = ({
           {
             'border-gray-300': !isTyping,
             'border-blue-200 shadow-light-blue': isTyping,
-            'focus:border-negative-400 border-negative-400 focus:shadow-none':
+            'border-negative-400 focus:border-negative-400 focus:shadow-none':
               isErrorStatus,
             'text-gray-400': isDisabled,
           },
@@ -114,7 +114,7 @@ const Input: FC<InputProps> = ({
         <Tooltip
           isFullWidthContent
           tooltipContent={
-            <span className="text-3 w-full">
+            <span className="w-full text-3">
               {formatText(disabledTooltipMessage)}
             </span>
           }

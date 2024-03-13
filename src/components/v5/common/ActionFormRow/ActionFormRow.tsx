@@ -53,7 +53,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
               'text-gray-900': !isDisabled && !isError,
               'text-gray-400': isDisabled,
             },
-            'text-md ml-2 flex gap-2 items-center',
+            'ml-2 flex items-center gap-2 text-md',
           )}
         >
           {title}
@@ -77,7 +77,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
 
     const tooltipContent = isExpandable ? (
       <button
-        className={clsx('flex items-center group', {
+        className={clsx('group flex items-center', {
           'hover:text-blue-400': isExpandable,
           'text-negative-400': isError,
           'text-gray-600': !isError,
@@ -103,7 +103,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
       <div
         className={clsx(
           className,
-          'flex gap-2 min-h-[1.875rem] justify-center relative mb-3 last:mb-0 w-full',
+          'relative mb-3 flex min-h-[1.875rem] w-full justify-center gap-2 last:mb-0',
           {
             'flex-col items-start': isExpandable && isExpanded,
             'items-start pt-[0.35rem]': isMultiLine || isExpandable,
@@ -113,7 +113,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
         ref={ref}
       >
         <div
-          className={clsx(className, 'w-[10rem] sm:w-[12.5rem] flex-shrink-0', {
+          className={clsx(className, 'w-[10rem] flex-shrink-0 sm:w-[12.5rem]', {
             'min-h-[1.875rem]': isExpandable && isExpanded,
           })}
         >

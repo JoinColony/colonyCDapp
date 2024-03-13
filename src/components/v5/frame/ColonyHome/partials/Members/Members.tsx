@@ -62,7 +62,7 @@ const Members = () => {
         />
       }
       searchParams={search}
-      className="bg-base-bg border-base-bg"
+      className="border-base-bg bg-base-bg"
     />
   );
 };

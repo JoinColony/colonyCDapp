@@ -13,7 +13,7 @@ const RadioList: FC<RadioListProps> = ({
   checkedRadios,
 }) => (
   <>
-    <h3 className="text-2 mb-4">{title}</h3>
+    <h3 className="mb-4 text-2">{title}</h3>
     <ul className="flex flex-col gap-y-3">
       {items.map(({ value, disabled, label, description, badge, tooltip }) => (
         <li key={value}>

@@ -24,10 +24,10 @@ const NotEnoughTokensInfo: FC = () => {
 
   return (
     <>
-      <p className="text-sm mb-1">{formatText(MSG.notEnoughTokens)}</p>
+      <p className="mb-1 text-sm">{formatText(MSG.notEnoughTokens)}</p>
       <button
         type="button"
-        className="text-4 underline transition-all md:hover:opacity-80"
+        className="underline transition-all text-4 md:hover:opacity-80"
         onClick={() => {
           toggleOnTokensModal();
           setTokensModalType(TokensModalType.Activate);

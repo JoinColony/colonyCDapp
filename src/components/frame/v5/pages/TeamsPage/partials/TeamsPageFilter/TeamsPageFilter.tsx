@@ -76,7 +76,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
         {isMobile && (
           <Button
             mode="tertiary"
-            className="sm:hidden flex"
+            className="flex sm:hidden"
             size="small"
             aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
@@ -102,10 +102,10 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4 uppercase">
+            <p className="mb-4 uppercase text-gray-400 text-4">
               {formatText({ id: 'teamsPage.filter.search' })}
             </p>
-            <div className="sm:px-3.5 sm:mb-6">
+            <div className="sm:mb-6 sm:px-3.5">
               <SearchInputMobile
                 onSearchButtonClick={() => setIsSearchOpened(false)}
                 setSearchValue={onInputChange}
@@ -130,7 +130,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
           }}
           classNames="w-full sm:max-w-[20.375rem]"
         >
-          <div className="px-3.5 mb-6">
+          <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
               placeholder={formatText({ id: 'teamsPage.filter.search' })}

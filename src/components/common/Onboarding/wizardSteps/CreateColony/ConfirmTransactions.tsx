@@ -37,7 +37,7 @@ const ConfirmTransactions = ({
           hideButton
         />
         {transactionGroupStatus === TransactionStatus.Succeeded && (
-          <div className="text-sm text-center text-gray-600 mt-8">
+          <div className="mt-8 text-center text-sm text-gray-600">
             <SpinnerLoader />
             <span className="ml-2 align-text-bottom">
               {formatText(MSG.loadingColony)}

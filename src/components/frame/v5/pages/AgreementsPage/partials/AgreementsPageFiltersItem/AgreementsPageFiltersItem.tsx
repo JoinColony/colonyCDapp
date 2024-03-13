@@ -33,7 +33,7 @@ const AgreementsPageFiltersItem: FC<AgreementsPageFiltersItemProps> = ({
       <button
         type="button"
         onClick={toggle}
-        className="flex justify-between items-center gap-2 w-full text-4 text-gray-400 uppercase"
+        className="flex w-full items-center justify-between gap-2 uppercase text-gray-400 text-4"
       >
         {label}{' '}
         <CaretDown
@@ -63,7 +63,7 @@ const AgreementsPageFiltersItem: FC<AgreementsPageFiltersItemProps> = ({
         type="button"
         ref={setTriggerRef}
         className={clsx(
-          'flex gap-2 w-full items-center text-md transition-colors text-gray-900 sm:hover:bg-gray-50 sm:hover:font-medium rounded py-2 px-3.5',
+          'flex w-full items-center gap-2 rounded px-3.5 py-2 text-md text-gray-900 transition-colors sm:hover:bg-gray-50 sm:hover:font-medium',
           {
             'bg-gray-50 font-medium': visible,
           },

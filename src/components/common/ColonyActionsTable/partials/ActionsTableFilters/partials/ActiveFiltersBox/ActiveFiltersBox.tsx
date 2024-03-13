@@ -7,7 +7,7 @@ const ActiveFiltersBox: FC<PropsWithChildren<ActiveFiltersBoxProps>> = ({
   onClose,
   children,
 }) => (
-  <div className="px-3 py-2 bg-blue-100 text-blue-400 rounded-lg flex items-center justify-end text-sm">
+  <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
     <div>{children}</div>
     <button type="button" onClick={onClose} className="ml-2 flex-shrink-0">
       <X size={12} className="text-inherit" />

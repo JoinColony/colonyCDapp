@@ -13,7 +13,7 @@ const DatepickerContainer: FC<CalendarContainerProps> = ({
   <Card
     withPadding={false}
     hasShadow
-    className="flex justify-center items-center bg-base-white border-gray-200"
+    className="flex items-center justify-center border-gray-200 bg-base-white"
   >
     <CalendarContainer className={className}>{children}</CalendarContainer>
   </Card>

@@ -25,7 +25,7 @@ export const TokenChoiceOptions = ({
         <label
           key={`tokenChoice-${option}`}
           htmlFor={option}
-          className="pb-6 flex gap-2 text-md text-gray-900"
+          className="flex gap-2 pb-6 text-md text-gray-900"
         >
           <input
             {...register('tokenChoice')}

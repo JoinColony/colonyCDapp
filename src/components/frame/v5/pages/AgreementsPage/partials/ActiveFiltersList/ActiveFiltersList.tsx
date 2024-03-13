@@ -10,7 +10,7 @@ const ActiveFiltersList: FC = () => {
     <ul className="flex flex-wrap justify-end gap-2">
       {activeFiltersToDisplay.map(({ filter, items, label }) => (
         <li key={filter}>
-          <div className="px-3 py-2 bg-blue-100 text-blue-400 rounded-lg flex items-center justify-end text-sm">
+          <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
             <div>
               <strong className="font-semibold">{label}</strong>:{' '}
               {items.join(', ')}

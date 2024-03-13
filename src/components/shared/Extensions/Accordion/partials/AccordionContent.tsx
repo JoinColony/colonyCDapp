@@ -24,7 +24,7 @@ const AccordionContent: FC<AccordionItemProps> = ({
         return (
           <div
             key={id}
-            className="border-b border-gray-200 mt-6 pb-6 last:border-none last:pb-0"
+            className="mt-6 border-b border-gray-200 pb-6 last:border-none last:pb-0"
           >
             <div className="flex justify-between">
               {textItem}

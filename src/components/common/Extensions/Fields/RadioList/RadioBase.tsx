@@ -43,7 +43,7 @@ const RadioBase: FC<RadioBaseProps> = ({
         htmlFor={label}
         className={clsx(
           styles.radioButtonLabel,
-          `border-gray-300 peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25 before:top-[0.875rem] after:top-[0.875rem]`,
+          `border-gray-300 before:top-[0.875rem] after:top-[0.875rem] peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25`,
           {
             'before:top-4 after:top-4': !!badge,
             'border-negative-400': isError,
@@ -56,7 +56,7 @@ const RadioBase: FC<RadioBaseProps> = ({
             <div className={tooltip && 'inline-flex items-center '}>
               <span className={styles.label}>{labelText}</span>
               {tooltip && (
-                <div className="flex items-center ml-2 text-gray-400">
+                <div className="ml-2 flex items-center text-gray-400">
                   <Tooltip {...tooltip}>
                     <Info size={12} />
                   </Tooltip>

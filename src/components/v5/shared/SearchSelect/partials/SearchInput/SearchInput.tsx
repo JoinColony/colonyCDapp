@@ -30,19 +30,19 @@ const SearchInput: FC<SearchInputProps> = ({
         onChange={(e) => {
           onChange?.(e.target.value);
         }}
-        className="px-[2.125rem] rounded-lg w-full text-3 peer focus:shadow-[0px_0px_0px_3px_#EFF8FF]"
+        className="peer w-full rounded-lg px-[2.125rem] text-3 focus:shadow-[0px_0px_0px_3px_#EFF8FF]"
         placeholder={placeholder}
         value={value}
         ref={searchInputRef}
         suffix={
-          <span className="absolute top-[.6875rem] left-3 flex text-gray-400 peer-focus:text-gray-900">
+          <span className="absolute left-3 top-[.6875rem] flex text-gray-400 peer-focus:text-gray-900">
             <MagnifyingGlass size={14} />
           </span>
         }
         prefix={
           value ? (
             <button
-              className="absolute top-0 right-0 flex h-[2.25rem] w-[2.25rem] justify-center items-center"
+              className="absolute right-0 top-0 flex h-[2.25rem] w-[2.25rem] items-center justify-center"
               onClick={() => {
                 if (searchInputRef.current) {
                   searchInputRef?.current?.focus();

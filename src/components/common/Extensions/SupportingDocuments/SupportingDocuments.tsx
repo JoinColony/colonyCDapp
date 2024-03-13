@@ -17,7 +17,7 @@ const SupportingDocuments: FC = () => {
       <p className="text-2">
         {formatText({ id: 'supporting.documents.subtitle' })}
       </p>
-      <span className="block border-b border-gray-200 mt-2 mb-4" />
+      <span className="mb-4 mt-2 block border-b border-gray-200" />
       <ul className="mb-2 last:mb-0">
         <LinkWrapper />
       </ul>

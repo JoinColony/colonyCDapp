@@ -21,7 +21,7 @@ const NavItem: FC<NavItemProps> = ({ disabled = false, linkTo, label }) => {
       aria-disabled={disabled}
       className={clsx(
         styles.navLink,
-        'text-1 [&.active]:bg-gray-50 hover:text-current',
+        'text-1 hover:text-current [&.active]:bg-gray-50',
       )}
       to={linkTo}
     >

@@ -206,9 +206,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             formatText({ id: 'motion.outcome.label' }) ||
             '',
           className: clsx({
-            'bg-base-white text-purple-400 border-purple-400':
+            'border-purple-400 bg-base-white text-purple-400':
               motionStateHistory?.hasPassed,
-            'bg-base-white text-negative-400 border-negative-400':
+            'border-negative-400 bg-base-white text-negative-400':
               motionStateHistory?.hasFailed ||
               motionStateHistory?.hasFailedNotFinalizable,
           }),
@@ -229,9 +229,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               formatText({ id: 'motion.oppose.wins.label' })
             : formatText({ id: 'motion.outcome.label' }) || '',
           className: clsx('z-[1]', {
-            'bg-base-white text-purple-400 border-purple-400':
+            'border-purple-400 bg-base-white text-purple-400':
               hasVotedMotionPassed,
-            'bg-base-white text-negative-400 border-negative-400':
+            'border-negative-400 bg-base-white text-negative-400':
               !hasVotedMotionPassed,
           }),
           tooltipProps: {

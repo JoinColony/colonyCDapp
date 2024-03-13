@@ -44,7 +44,7 @@ const StakesList = ({ userStakes }: StakesListProps) => {
 
   return (
     <>
-      <ul className="w-full flex flex-col gap-6 pt-6">
+      <ul className="flex w-full flex-col gap-6 pt-6">
         {[MotionVote.Yay, MotionVote.Nay].map((vote) => {
           if (!stakesByVote[vote].length) {
             return null;
@@ -56,13 +56,13 @@ const StakesList = ({ userStakes }: StakesListProps) => {
                 <MotionVoteBadge vote={vote} />
               </div>
 
-              <ul className="w-full flex flex-col gap-3">
+              <ul className="flex w-full flex-col gap-3">
                 {stakesByVote[vote]
                   .slice(0, shouldShowMoreStakes ? undefined : 3)
                   .map((stake) => (
                     <li
                       key={stake.address}
-                      className="w-full flex items-center justify-between gap-4"
+                      className="flex w-full items-center justify-between gap-4"
                     >
                       <UserAvatarPopover walletAddress={stake.address} />
                       <div className="flex-shrink-0 text-right text-sm text-gray-900">
@@ -94,7 +94,7 @@ const StakesList = ({ userStakes }: StakesListProps) => {
         <button
           type="button"
           onClick={() => setShouldShowMoreStakes(true)}
-          className="text-gray-500 text-sm w-full text-center mt-6 transition-colors md:hover:text-blue-500"
+          className="md:hover:text-blue-500 mt-6 w-full text-center text-sm text-gray-500 transition-colors"
         >
           {formatText({ id: 'button.loadMore' })}
         </button>

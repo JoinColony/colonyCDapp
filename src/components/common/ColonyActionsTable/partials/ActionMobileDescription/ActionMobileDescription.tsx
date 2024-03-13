@@ -51,11 +51,11 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
   );
 
   return (
-    <div className="expandable pl-[1.125rem] pr-[.9375rem] pb-4 flex justify-between items-start gap-1">
+    <div className="expandable flex items-start justify-between gap-1 pb-4 pl-[1.125rem] pr-[.9375rem]">
       <div className="flex flex-col gap-2 text-gray-500">
         {shouldShowCounter && isMotion && motionData && motionState && (
           <MotionCountDownTimer
-            className="text-negative-400 font-medium text-xs flex-shrink-0"
+            className="flex-shrink-0 text-xs font-medium text-negative-400"
             timerClassName="text-negative-400 font-medium text-xs"
             prefix={formatText({
               id: 'activityFeedTable.table.motionCountDown.prefix',
@@ -70,7 +70,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
           {actionMetadataDescription}
         </p>
         {team && (
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2">
             {formatText(
               { id: 'activityFeedTable.table.team' },
               {
@@ -86,7 +86,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
             )}
           </div>
         )}
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           {formatText(
             { id: 'activityFeedTable.table.date' },
             {
@@ -99,7 +99,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
             },
           )}
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           {formatText(
             { id: 'activityFeedTable.table.status' },
             {

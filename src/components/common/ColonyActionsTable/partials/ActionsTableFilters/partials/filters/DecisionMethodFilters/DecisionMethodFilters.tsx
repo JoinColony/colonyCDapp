@@ -12,7 +12,7 @@ const DecisionMethodFilters: FC = () => {
 
   return (
     <div>
-      <h5 className="hidden sm:block text-4 text-gray-400 px-3.5 uppercase">
+      <h5 className="hidden px-3.5 uppercase text-gray-400 text-4 sm:block">
         {formatText({ id: 'activityFeedTable.filters.decisionMethod' })}
       </h5>
       <ul>

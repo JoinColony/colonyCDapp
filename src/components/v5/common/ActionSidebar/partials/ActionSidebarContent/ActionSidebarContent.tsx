@@ -99,7 +99,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <FormTextareaBase
           name={TITLE_FIELD_NAME}
           placeholder={formatText({ id: 'placeholder.title' })}
-          className="heading-3 text-gray-900 transition-colors leading-tight"
+          className="leading-tight text-gray-900 transition-colors heading-3"
           message={false}
           shouldFocus
           onKeyDown={(e) => {
@@ -116,7 +116,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           })}
         />
         {selectedAction && (
-          <div className="text-gray-900 text-md flex gap-1 break-all">
+          <div className="flex gap-1 break-all text-md text-gray-900">
             <ActionSidebarDescription />
           </div>
         )}
@@ -124,7 +124,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {!readonly && <NoPermissionsError />}
         <ActionTypeSelect
           className={clsx(
-            'mt-7 min-h-[1.875rem] flex flex-col justify-center',
+            'mt-7 flex min-h-[1.875rem] flex-col justify-center',
             {
               'mb-3': FormComponent,
             },
@@ -146,7 +146,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
               status="error"
               icon={WarningCircle}
               description={
-                <ul className="list-disc list-inside text-negative-400">
+                <ul className="list-inside list-disc text-negative-400">
                   {flatFormErrors.map(({ key, message }) => (
                     <li key={key}>{message}</li>
                   ))}
@@ -218,7 +218,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
       >
         <ActionForm
           {...actionFormProps}
-          className="flex flex-col h-full"
+          className="flex h-full flex-col"
           innerRef={formRef}
           onSuccess={() => {
             client.refetchQueries({
@@ -237,18 +237,19 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
         <div
           className="
             w-full
-            md:w-[35%]
-            md:h-full
-            md:overflow-y-auto
-            md:flex-shrink-0
-            px-6
-            py-8
             border-b
             border-b-gray-200
+            bg-gray-25
+            bg-gray-25
+            px-6
+            py-8
+            md:h-full
+            md:w-[35%]
+            md:flex-shrink-0
+            md:overflow-y-auto
             md:border-b-0
             md:border-l
             md:border-l-gray-200
-            bg-gray-25
           "
         >
           {isMotion ? (

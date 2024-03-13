@@ -34,7 +34,7 @@ const BalanceFilters: FC = () => {
 
   const filtersContent = (
     <div>
-      <h4 className="text-gray-900 heading-5 sm:text-gray-400 sm:text-4 sm:uppercase sm:px-4 mb-6 sm:mb-0">
+      <h4 className="mb-6 text-gray-900 heading-5 sm:mb-0 sm:px-4 sm:uppercase sm:text-gray-400 sm:text-4">
         {formatText({ id: isMobile ? 'filterAndSort' : 'filters' })}
       </h4>
       <ul className="flex flex-col gap-7 sm:gap-0">
@@ -72,7 +72,7 @@ const BalanceFilters: FC = () => {
           />
           <Button
             mode="tertiary"
-            className="sm:hidden flex"
+            className="flex sm:hidden"
             size="small"
             aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
@@ -91,15 +91,15 @@ const BalanceFilters: FC = () => {
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4 uppercase">
+            <p className="mb-4 uppercase text-gray-400 text-4">
               {formatText({ id: 'balancePage.filter.searchModalTitle' })}
             </p>
-            <div className="sm:px-3.5 sm:mb-6">{searchInput}</div>
+            <div className="sm:mb-6 sm:px-3.5">{searchInput}</div>
           </Modal>
         </div>
       ) : (
         <>
-          <div className="flex flex-row justify-end items-start gap-2">
+          <div className="flex flex-row items-start justify-end gap-2">
             <ActiveFiltersList />
             <FilterButton
               isOpen={visible}

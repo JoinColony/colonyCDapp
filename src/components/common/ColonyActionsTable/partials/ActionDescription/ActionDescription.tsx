@@ -47,7 +47,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   );
 
   return (
-    <div className="flex gap-2 sm:gap-4 items-center w-full">
+    <div className="flex w-full items-center gap-2 sm:gap-4">
       <Avatar
         className={clsx('flex-shrink-0 flex-grow-0', {
           'overflow-hidden rounded-full skeleton': loading,
@@ -58,11 +58,11 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
         avatar={user?.profile?.thumbnail || user?.profile?.avatar}
       />
 
-      <div className="flex-grow flex-col-reverse md:flex-row flex md:justify-between md:items-center gap-0.5 md:gap-4">
+      <div className="flex flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
         <div>
           <p
             className={clsx(
-              'font-medium text-md text-gray-900 line-clamp-2 md:line-clamp-1',
+              'line-clamp-2 text-md font-medium text-gray-900 md:line-clamp-1',
               {
                 skeleton: loading,
               },
@@ -73,7 +73,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
           {colony && (
             <p
               className={clsx(
-                'font-normal mt-0.5 text-sm text-gray-600 line-clamp-2 md:line-clamp-1',
+                'mt-0.5 line-clamp-2 text-sm font-normal text-gray-600 md:line-clamp-1',
                 {
                   skeleton: loading,
                   hidden: hideDetails,
@@ -91,7 +91,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
           !isMobile && (
             <MotionCountDownTimer
               className={clsx(
-                'text-negative-400 font-medium text-xs flex-shrink-0',
+                'flex-shrink-0 text-xs font-medium text-negative-400',
                 {
                   hidden: hideDetails,
                 },

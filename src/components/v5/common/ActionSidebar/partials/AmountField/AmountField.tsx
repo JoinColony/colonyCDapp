@@ -93,7 +93,7 @@ const AmountField: FC<AmountFieldProps> = ({
 
   return (
     <div
-      className="flex items-center gap-3 w-full text-md"
+      className="flex w-full items-center gap-3 text-md"
       ref={registerContainerRef}
     >
       <input
@@ -103,7 +103,7 @@ const AmountField: FC<AmountFieldProps> = ({
         }}
         readOnly={readonly || isDisabled}
         name={name}
-        className={clsx('flex-shrink text-gray-900 outline-0 outline-none', {
+        className={clsx('flex-shrink text-gray-900 outline-none outline-0', {
           'placeholder:text-gray-400': !isError || isDisabled,
           'text-negative-400 placeholder:text-negative-400':
             !isDisabled && isError,
@@ -115,12 +115,12 @@ const AmountField: FC<AmountFieldProps> = ({
         autoComplete="off"
         onChange={handleFieldChange}
       />
-      <div className="sm:relative w-full">
+      <div className="w-full sm:relative">
         <button
           type="button"
           ref={relativeElementRef}
           className={clsx(
-            'flex-shrink-0 flex items-center gap-1 transition-colors',
+            'flex flex-shrink-0 items-center gap-1 transition-colors',
             {
               'text-gray-900': selectedToken?.symbol,
               'text-gray-500': !selectedToken?.symbol,
@@ -136,7 +136,7 @@ const AmountField: FC<AmountFieldProps> = ({
         {isTokenSelectVisible && (
           <Portal>
             <MenuContainer
-              className="absolute z-[60] px-2 py-6 w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none"
+              className="absolute z-[60] w-full max-w-[calc(100%-2.25rem)] px-2 py-6 sm:w-auto sm:max-w-none"
               hasShadow
               rounded="s"
               ref={(ref) => {
@@ -144,7 +144,7 @@ const AmountField: FC<AmountFieldProps> = ({
                 portalElementRef.current = ref;
               }}
             >
-              <h5 className="text-4 text-gray-400 mb-2 uppercase ml-4">
+              <h5 className="mb-2 ml-4 uppercase text-gray-400 text-4">
                 {formatText({ id: 'actionSidebar.availableTokens' })}
               </h5>
               <ul>
@@ -163,9 +163,9 @@ const AmountField: FC<AmountFieldProps> = ({
                       <HoverWidthWrapper hoverClassName="font-medium block">
                         <button
                           type="button"
-                          className={`flex items-center gap-1 transition-colors
-                        md:hover:font-medium md:hover:bg-gray-50 py-2 px-4 rounded-lg
-                        justify-between w-full`}
+                          className={`flex w-full items-center justify-between
+                        gap-1 rounded-lg px-4 py-2 transition-colors
+                        md:hover:bg-gray-50 md:hover:font-medium`}
                           onClick={() => {
                             tokenAddressController.onChange(
                               colonyToken.tokenAddress,
@@ -184,7 +184,7 @@ const AmountField: FC<AmountFieldProps> = ({
                             </span>
                           </div>
                           {tokenBalance && (
-                            <span className="text-sm text-gray-400 whitespace-nowrap ml-2">
+                            <span className="ml-2 whitespace-nowrap text-sm text-gray-400">
                               {formatText({
                                 id: 'actionSidebar.availableFunds',
                               })}

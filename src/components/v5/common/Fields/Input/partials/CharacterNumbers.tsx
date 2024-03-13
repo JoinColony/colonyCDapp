@@ -13,7 +13,7 @@ const CharacterNumbers: FC<CharacterNumbersProps> = ({
   isShowingLabel,
 }) => (
   <div
-    className={clsx('text-4 flex absolute right-3', {
+    className={clsx('absolute right-3 flex text-4', {
       'text-negative-400': isError,
       'text-gray-500': !isError,
       'top-10': isShowingLabel,

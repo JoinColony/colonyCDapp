@@ -56,12 +56,12 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
     <>
       {isOpen && (
         <div className="flex justify-between pb-6">
-          <h5 className="text-1 mt-3">
+          <h5 className="mt-3 text-1">
             {formatMessage({ id: 'advancedSettings.rpc.subtitle' })}
           </h5>
           {(customRpcValue || rpcValue) && !isInputVisible && (
             <div className="flex items-center">
-              <span className="text-md mr-6">{customRpcValue || rpcValue}</span>
+              <span className="mr-6 text-md">{customRpcValue || rpcValue}</span>
               <Button
                 mode="primarySolid"
                 onClick={() => setIsInputVisible(true)}
@@ -80,7 +80,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
                 isError={!!error}
                 customErrorMessage={error}
                 isDecoratedError={error === 'advancedSettings.rpc.errorUnable'}
-                className="text-md border-gray-300"
+                className="border-gray-300 text-md"
                 successfulMessage={
                   isValid && rpcValue
                     ? 'advancedSettings.rpc.successful'
@@ -89,7 +89,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
               />
               <Button
                 mode="primarySolid"
-                className="mt-6 ml-auto"
+                className="ml-auto mt-6"
                 disabled={!isValid || !rpcValue || !!error || !isDirty}
                 onClick={handleClick}
               >

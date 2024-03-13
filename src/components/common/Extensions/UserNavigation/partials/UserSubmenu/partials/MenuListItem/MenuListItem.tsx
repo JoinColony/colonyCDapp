@@ -7,7 +7,7 @@ type MenuListItemProps = PropsWithChildren<unknown>;
 
 const MenuListItem = ({ children }: MenuListItemProps) => {
   return (
-    <li className="mb-2 last:mb-0 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+    <li className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded last:mb-0 hover:bg-gray-50 sm:mb-0">
       {children}
     </li>
   );

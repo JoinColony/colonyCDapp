@@ -13,7 +13,7 @@ const DashboardContent: FC = () => {
 
   return (
     <div className="w-full pt-2 md:pt-4">
-      <div className="w-full flex items-center gap-4 mb-4 md:mb-7 text-sm text-gray-900 px-2 md:px-0">
+      <div className="mb-4 flex w-full items-center gap-4 px-2 text-sm text-gray-900 md:mb-7 md:px-0">
         {loading ? (
           <SpinnerLoader />
         ) : (
@@ -49,7 +49,7 @@ const DashboardContent: FC = () => {
         className="md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
         items={dashboardMainMenu}
       />
-      <div className="border-t border-t-gray-200 mt-4 pt-4">
+      <div className="mt-4 border-t border-t-gray-200 pt-4">
         <NavigationSidebarLinksList
           className="md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
           items={dashboardMenu}

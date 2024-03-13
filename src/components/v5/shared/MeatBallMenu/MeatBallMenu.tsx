@@ -50,9 +50,9 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           typeof buttonClassName === 'function'
             ? buttonClassName(isMenuOpen)
             : buttonClassName,
-          'p-[0.1875rem] transition-all duration-normal flex justify-center items-center',
+          'flex items-center justify-center p-[0.1875rem] transition-all duration-normal',
           {
-            'md:hover:text-blue-400 cursor-pointer': !disabled,
+            'cursor-pointer md:hover:text-blue-400': !disabled,
             'cursor-default': disabled,
             'text-gray-400': !isMenuOpen,
             'text-blue-400': isMenuOpen,
@@ -71,7 +71,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           <MenuContainer
             className={clsx(
               contentWrapperClassName,
-              'px-6 py-4 absolute z-[1] overflow-y-auto w-auto',
+              'absolute z-[1] w-auto overflow-y-auto px-6 py-4',
             )}
             hasShadow
             rounded="s"

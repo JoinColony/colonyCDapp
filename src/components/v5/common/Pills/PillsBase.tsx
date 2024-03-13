@@ -18,8 +18,8 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
 }) => (
   <span
     className={clsx(styles.pills, className, {
-      'text-3 h-[1.625rem]': pillSize === 'medium',
-      'text-4 h-[1.5rem]': pillSize === 'small',
+      'h-[1.625rem] text-3': pillSize === 'medium',
+      'h-[1.5rem] text-4': pillSize === 'small',
     })}
     {...rest}
   >

@@ -76,7 +76,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
   return (
     <div>
       <TitleLabel text={formatMessage(MSG.nativeToken)} />
-      <div className="flex flex-col gap-4 pt-2 pb-6 border-b border-gray-200">
+      <div className="flex flex-col gap-4 border-b border-gray-200 pb-6 pt-2">
         <div className={styles.row}>
           <span className={styles.rowName}>
             {formatMessage({ id: 'total.balance' })}
@@ -92,7 +92,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
         {/* @TODO: actived icons? */}
         <div>
           <div className={styles.row}>
-            <div className="flex gap-4 items-center">
+            <div className="flex items-center gap-4">
               <span className={styles.rowName}>
                 {formatMessage({ id: 'active' })}
               </span>
@@ -132,7 +132,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
             />
           </div>
           {isMobile && (
-            <div className="flex gap-2 w-full mt-3">
+            <div className="mt-3 flex w-full gap-2">
               <Button
                 mode="primaryOutline"
                 size="extraSmall"
@@ -164,7 +164,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
         {/* @TODO: stacked icon viewed? */}
         <div>
           <div className={styles.row}>
-            <div className="flex gap-4 items-center">
+            <div className="flex items-center gap-4">
               <span className={styles.rowName}>
                 {formatMessage({ id: 'staked' })}
               </span>

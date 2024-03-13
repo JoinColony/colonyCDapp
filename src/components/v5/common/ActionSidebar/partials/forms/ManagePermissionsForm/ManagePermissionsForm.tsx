@@ -52,14 +52,14 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     ([, { toggleOff }]) => (
       <button
         type="button"
-        className="w-full flex justify-center items-center py-2 hover:text-blue-400 transition-colors duration-200 focus:outline-none"
+        className="flex w-full items-center justify-center py-2 transition-colors duration-200 hover:text-blue-400 focus:outline-none"
         onClick={() => {
           togglePermissionsModalOn();
           toggleOff();
         }}
       >
         <Question size={14} />
-        <span className="font-semibold text-sm underline ml-[.375rem]">
+        <span className="ml-[.375rem] text-sm font-semibold underline">
           {formatText({
             id: 'actionSidebar.managePermissions.roleSelect.footerCta',
           })}

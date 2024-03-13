@@ -49,7 +49,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
   >([isTeamSelectVisible]);
 
   return (
-    <div className="sm:relative w-full">
+    <div className="w-full sm:relative">
       {readonly || readonlyProp ? (
         <TeamBadge
           name={

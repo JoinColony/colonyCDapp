@@ -17,12 +17,12 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
   return (
     <div
       className={clsx(
-        '@container/notificationBanner border rounded-lg py-3 px-[1.125rem] flex gap-2 flex-row items-start text-gray-900',
+        'flex flex-row items-start gap-2 rounded-lg border px-[1.125rem] py-3 text-gray-900 @container/notificationBanner',
         {
-          'bg-success-100 border-success-200': status === 'success',
-          'bg-warning-100 border-warning-200': status === 'warning',
-          'bg-negative-100 border-negative-200': status === 'error',
-          'bg-gray-50 border-gray-200': status === 'info',
+          'border-success-200 bg-success-100': status === 'success',
+          'border-warning-200 bg-warning-100': status === 'warning',
+          'border-negative-200 bg-negative-100': status === 'error',
+          'border-gray-200 bg-gray-50': status === 'info',
         },
         className,
       )}
@@ -39,8 +39,8 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
           })}
         />
       ) : null}
-      <div className="flex flex-1 gap-3 flex-col items-start @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center">
-        <div className="flex flex-1 flex-col gap-2 items-start text-md break-word">
+      <div className="flex flex-1 flex-col items-start gap-3 @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center">
+        <div className="flex flex-1 flex-col items-start gap-2 text-md break-word">
           {children}
           {description ? (
             <div
@@ -53,7 +53,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
         {callToAction ? (
           <div
             className={clsx(
-              'flex-shrink-0 underline font-medium text-xs md:hover:no-underline',
+              'flex-shrink-0 text-xs font-medium underline md:hover:no-underline',
             )}
           >
             {callToAction}

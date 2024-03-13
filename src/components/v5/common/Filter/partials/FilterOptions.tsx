@@ -31,7 +31,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({ excludeFilterType }) => {
       <Header
         title={{ id: isMobile ? 'filterAndSort' : 'filterBy' }}
         className={clsx({
-          'text-gray-900 capitalize mb-6': isMobile,
+          'mb-6 capitalize text-gray-900': isMobile,
         })}
         textSizeClassName={isMobile ? 'heading-5' : 'text-4'}
       />

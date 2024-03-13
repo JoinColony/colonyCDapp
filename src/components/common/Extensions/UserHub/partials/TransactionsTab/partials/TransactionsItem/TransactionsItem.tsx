@@ -39,7 +39,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
             defaultMessage: `${title}`,
           })}`}
           onClick={onClick}
-          className="flex gap-4 justify-between w-full text-left"
+          className="flex w-full justify-between gap-4 text-left"
         >
           <TransactionsHeader
             title={title}
@@ -49,7 +49,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
           />
         </button>
       ) : (
-        <div className="flex gap-4 justify-between w-full text-left">
+        <div className="flex w-full justify-between gap-4 text-left">
           <TransactionsHeader
             title={title}
             description={description}
@@ -68,7 +68,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
               exit="hidden"
               variants={accordionAnimation}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="overflow-hidden text-gray-600 text-md mt-2"
+              className="mt-2 overflow-hidden text-md text-gray-600"
             >
               {content.map(
                 (
@@ -95,13 +95,13 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                       'before:!bg-blue-400': isCurrentAction && isPending,
                     })}
                   >
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                       <h4>
                         {index + 1}. {title}
                       </h4>
                       {statusContent && !isPending && (
                         <div
-                          className={clsx('flex ml-2', {
+                          className={clsx('ml-2 flex', {
                             'text-success-400':
                               statusContent === TransactionStatus.Ready ||
                               statusContent === TransactionStatus.Succeeded,
@@ -118,7 +118,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                       )}
                       {isPending && (
                         <SpinnerGap
-                          className="ml-2.5 w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
+                          className="ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
                           size={14}
                         />
                       )}

@@ -29,7 +29,7 @@ const NavigationSidebarLinksList: FC<NavigationSidebarLinksListProps> = ({
   });
 
   return items.length ? (
-    <ul className={clsx(className, 'flex flex-col gap-2 w-full')}>
+    <ul className={clsx(className, 'flex w-full flex-col gap-2')}>
       {updatedItems.map(({ key, label, ...item }) => (
         <li key={key}>
           <NavigationSidebarLink {...item}>{label}</NavigationSidebarLink>

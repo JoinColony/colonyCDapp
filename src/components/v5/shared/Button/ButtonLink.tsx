@@ -38,12 +38,12 @@ const ButtonLink: FC<PropsWithChildren<ButtonLinkProps>> = ({
           'flex items-center justify-center font-medium transition-all duration-normal',
           `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
           {
-            'text-md min-h-[2.5rem] px-4 py-2': size === 'default',
-            'text-md min-h-[2.5rem] px-[0.875rem] py-[0.625rem]':
+            'min-h-[2.5rem] px-4 py-2 text-md': size === 'default',
+            'min-h-[2.5rem] px-[0.875rem] py-[0.625rem] text-md':
               size === 'large',
-            '!rounded-[0.1875rem] capitalize text-4 px-2 py-1':
+            '!rounded-[0.1875rem] px-2 py-1 capitalize text-4':
               size === 'extraSmall',
-            'text-sm min-h-[2.125rem] px-3 py-2': size === 'small',
+            'min-h-[2.125rem] px-3 py-2 text-sm': size === 'small',
             [styles.primarySolid]: mode === 'primarySolid',
             [styles.primaryOutline]: mode === 'primaryOutline',
             [styles.primaryOutlineFull]: mode === 'primaryOutlineFull',
@@ -57,7 +57,7 @@ const ButtonLink: FC<PropsWithChildren<ButtonLinkProps>> = ({
             [styles.completed]: mode === 'completed',
             'pointer-events-none': disabled || loading,
             'w-full': isFullSize,
-            'border border-gray-300 !text-gray-300 !bg-base-white':
+            'border border-gray-300 !bg-base-white !text-gray-300':
               disabled && isIconRight,
           },
           className,

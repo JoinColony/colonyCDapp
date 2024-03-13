@@ -83,7 +83,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
           <div className="flex items-center justify-between py-3.5">
             <div className="flex flex-col items-start">
               <h4 className="text-1">{value}</h4>
-              <p className="text-gray-600 text-xs">
+              <p className="text-xs text-gray-600">
                 <FormattedMessage
                   {...defaultTransactionGroupMessageDescriptorDescriptionId}
                   {...values.group?.description}
@@ -114,7 +114,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
             exit="hidden"
             variants={accordionAnimation}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="overflow-hidden text-gray-600 text-md -mt-1.5"
+            className="-mt-1.5 overflow-hidden text-md text-gray-600"
           >
             <ul>
               {transactionGroup.map((transaction, idx) => (

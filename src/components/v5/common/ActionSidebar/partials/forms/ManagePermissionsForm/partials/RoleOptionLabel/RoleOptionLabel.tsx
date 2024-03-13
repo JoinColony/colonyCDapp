@@ -10,14 +10,14 @@ const RoleOptionLabel: FC<PropsWithChildren<RoleOptionLabelProps>> = ({
   icon: Icon,
 }) => {
   return (
-    <div className="flex md:hover:bg-gray-50 rounded-lg">
-      <span className="pr-3 pt-1 text-gray-900 flex-shrink-0">
+    <div className="flex rounded-lg md:hover:bg-gray-50">
+      <span className="flex-shrink-0 pr-3 pt-1 text-gray-900">
         <Icon size={14} />
       </span>
       <div className="flex flex-col text-left">
-        <span className="text-gray-900 role-title">{children}</span>
+        <span className="role-title text-gray-900">{children}</span>
         {description && (
-          <span className="text-gray-600 text-sm">{description}</span>
+          <span className="text-sm text-gray-600">{description}</span>
         )}
       </div>
     </div>

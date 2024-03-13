@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import { type CountBoxProps } from './types.ts';
 
 const CountBox: FC<CountBoxProps> = ({ count }) => (
-  <span className="flex items-center justify-center text-blue-400 text-[0.5rem] font-bold bg-blue-100 rounded-sm ml-1.5 min-w-[0.75rem] h-3 px-[0.1875rem] pointer-events-none">
+  <span className="pointer-events-none ml-1.5 flex h-3 min-w-[0.75rem] items-center justify-center rounded-sm bg-blue-100 px-[0.1875rem] text-[0.5rem] font-bold text-blue-400">
     <span>{count}</span>
   </span>
 );

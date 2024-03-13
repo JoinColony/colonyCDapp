@@ -32,21 +32,21 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
   const isContentList = Array.isArray(content);
 
   return (
-    <div className="pb-8 md:p-6 md:pt-[1.625rem] h-full flex flex-col justify-between gap-4 md:overflow-auto">
+    <div className="flex h-full flex-col justify-between gap-4 pb-8 md:overflow-auto md:p-6 md:pt-[1.625rem]">
       <div>
         {!isTablet && (
           <div className="flex justify-between gap-4 px-2 md:px-0">
-            <h2 className="heading-5 text-gray-900">{title}</h2>
+            <h2 className="text-gray-900 heading-5">{title}</h2>
             {onArrowClick && (
               <button
                 type="button"
                 onClick={onArrowClick}
-                className="text-gray-900 transition-colors md:hover:text-blue-500"
+                className="md:hover:text-blue-500 text-gray-900 transition-colors"
               >
                 <ArrowLineRight
                   size={16}
                   className={clsx(
-                    'fill-current inline-block transition-transform',
+                    'inline-block fill-current transition-transform',
                     {
                       'rotate-180': isExpanded,
                     },
@@ -57,13 +57,13 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
           </div>
         )}
         {description && (
-          <div className="h-15 line-clamp-3 md:mt-1 text-md text-gray-600 px-2 md:px-0">
+          <div className="h-15 line-clamp-3 px-2 text-md text-gray-600 md:mt-1 md:px-0">
             <p>{multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)}</p>
           </div>
         )}
         {isContentList ? (
           <NavigationSidebarLinksList
-            className="mt-4 md:mt-9 md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
+            className="mt-4 md:-mx-2.5 md:mt-9 md:w-[calc(100%+1.25rem)]"
             items={content}
           />
         ) : (

@@ -17,7 +17,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
   onClick,
   onInputChange,
 }) => (
-  <div className="w-full mb-4 last:mb-0">
+  <div className="mb-4 w-full last:mb-0">
     <AccordionHeader
       onClick={onClick}
       onKeyUp={onClick}

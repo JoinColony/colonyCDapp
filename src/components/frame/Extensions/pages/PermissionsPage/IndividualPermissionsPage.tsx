@@ -23,7 +23,7 @@ const IndividualPermissionsPage = () => {
         <EmptyContent
           title={formatText({ id: 'permissionsPage.empty.title' })}
           description={formatText({ id: 'permissionsPage.empty.description' })}
-          className="pt-10 pb-9 px-6 mt-6"
+          className="mt-6 px-6 pb-9 pt-10"
           icon={Binoculars}
           withBorder
         />

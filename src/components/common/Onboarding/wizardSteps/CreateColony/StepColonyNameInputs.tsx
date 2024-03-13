@@ -58,7 +58,7 @@ const StepColonyNameInputs = ({
         register={register}
         isError={showDisplayNameError}
         customErrorMessage={displayNameError}
-        className="text-md border-gray-300"
+        className="border-gray-300 text-md"
         maxCharNumber={MAX_COLONY_DISPLAY_NAME}
         isDisabled={isSubmitting}
         defaultValue={wizardDisplayName}
@@ -73,7 +73,7 @@ const StepColonyNameInputs = ({
           </span>
         </label>
         <div className="flex">
-          <div className="text-gray-500 border rounded-s border-gray-300 border-e-0 text-md p-3">
+          <div className="rounded-s border border-e-0 border-gray-300 p-3 text-md text-gray-500">
             {APP_URL.host}/
           </div>
           <div className="grow">
@@ -82,7 +82,7 @@ const StepColonyNameInputs = ({
               register={register}
               isError={showColonyNameError}
               customErrorMessage={colonyNameError}
-              className="text-md border-gray-300 lowercase rounded-s-none"
+              className="rounded-s-none border-gray-300 text-md lowercase"
               isDisabled={isSubmitting}
               defaultValue={wizardColonyName}
               maxCharNumber={MAX_COLONY_DISPLAY_NAME}

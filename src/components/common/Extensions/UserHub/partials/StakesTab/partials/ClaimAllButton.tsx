@@ -59,7 +59,7 @@ const ClaimAllButton = ({
   return (
     <button
       type="button"
-      className="text-blue-400 text-4 enabled:hover:text-gray-900 disabled:text-gray-900 transition-all duration-normal"
+      className="text-blue-400 transition-all duration-normal text-4 enabled:hover:text-gray-900 disabled:text-gray-900"
       aria-label={formatMessage({ id: 'claimStakes' })}
       disabled={isLoading}
       onClick={handleClick}

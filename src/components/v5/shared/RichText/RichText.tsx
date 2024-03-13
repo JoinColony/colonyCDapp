@@ -53,7 +53,7 @@ const RichText: FC<RichTextProps> = ({
                 type="button"
                 onClick={toggleOnDecriptionSelect}
                 className={clsx(
-                  'transition sm:hover:text-blue-400 w-full text-left',
+                  'w-full text-left transition sm:hover:text-blue-400',
                   {
                     'text-gray-900': characterCount,
                     'text-gray-400': !characterCount,
@@ -68,7 +68,7 @@ const RichText: FC<RichTextProps> = ({
 
                     setIsTextTruncated(ref.scrollHeight > ref.offsetHeight);
                   }}
-                  className="line-clamp-2 text-left break-words"
+                  className="line-clamp-2 break-words text-left"
                 >
                   {notFormattedContent}
                 </span>
@@ -76,7 +76,7 @@ const RichText: FC<RichTextProps> = ({
               {isTextTruncated && !isDecriptionFieldExpanded && (
                 <TextButton
                   mode="underlined"
-                  className="text-gray-400 ml-1"
+                  className="ml-1 text-gray-400"
                   onClick={toggleOnDecriptionSelect}
                 >
                   {formatText({ id: 'button.expand' })}
@@ -93,7 +93,7 @@ const RichText: FC<RichTextProps> = ({
               <RichTextContent editor={editor} {...omit(field, 'ref')} />
 
               {(characterCount || isDecriptionFieldExpanded) && (
-                <div className="flex items-center justify-between mt-4">
+                <div className="mt-4 flex items-center justify-between">
                   {characterCount >= 1000 && isDecriptionFieldExpanded && (
                     <TextButton
                       mode="underlined"
@@ -105,7 +105,7 @@ const RichText: FC<RichTextProps> = ({
                   )}
                   {characterCount >= maxDescriptionLength / 4 &&
                     isDecriptionFieldExpanded && (
-                      <div className="text-xs text-gray-500 flex justify-end">
+                      <div className="flex justify-end text-xs text-gray-500">
                         {characterCount} / {maxDescriptionLength}
                       </div>
                     )}
@@ -117,7 +117,7 @@ const RichText: FC<RichTextProps> = ({
               <button
                 type="button"
                 onClick={toggleOnDecriptionSelect}
-                className={clsx('transition text-left', {
+                className={clsx('text-left transition', {
                   'text-gray-900': characterCount,
                   'text-gray-400': !characterCount,
                   'sm:hover:text-blue-400': !isDisabled,
@@ -140,7 +140,7 @@ const RichText: FC<RichTextProps> = ({
               {isTextTruncated && !isDecriptionFieldExpanded && (
                 <TextButton
                   mode="underlined"
-                  className="text-gray-400 ml-1"
+                  className="ml-1 text-gray-400"
                   onClick={toggleOnDecriptionSelect}
                 >
                   {formatText({ id: 'button.expand' })}

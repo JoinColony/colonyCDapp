@@ -165,9 +165,9 @@ const StakingForm: FC<StakingFormProps> = ({
                 >
                   <label
                     htmlFor="amount-field"
-                    className="flex justify-between items-center gap-x-4 flex-wrap mb-2"
+                    className="mb-2 flex flex-wrap items-center justify-between gap-x-4"
                   >
-                    <span className="text-1 text-gray-900">
+                    <span className="text-gray-900 text-1">
                       {formatText({ id: 'motion.staking.input.label' })}
                     </span>
                     <span className="text-sm text-gray-600">

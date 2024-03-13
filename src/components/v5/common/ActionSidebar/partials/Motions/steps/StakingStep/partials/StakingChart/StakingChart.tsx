@@ -17,7 +17,7 @@ const StakingChart: FC<StakingChartProps> = ({
 }) => (
   <>
     {requiredStake && (
-      <h4 className="text-1 text-center text-gray-900 mb-3">
+      <h4 className="mb-3 text-center text-gray-900 text-1">
         {formatText(
           {
             id: 'motion.staking.form.title',

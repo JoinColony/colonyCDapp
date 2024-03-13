@@ -41,7 +41,7 @@ const Textarea: FC<TextareaProps> = ({
       )}
       <div
         className={clsx(
-          'w-full min-h-[5.75rem] bg-base-white rounded border relative',
+          'relative min-h-[5.75rem] w-full rounded border bg-base-white',
           {
             'border-gray-300': !isTyping,
             'border-blue-200 shadow-light-blue': isTyping,
@@ -54,13 +54,13 @@ const Textarea: FC<TextareaProps> = ({
           {...register?.(name)}
           name={name}
           placeholder={placeholder}
-          className="resize-none bg-base-white input rounded py-3 px-3.5 absolute inset-0"
+          className="input absolute inset-0 resize-none rounded bg-base-white px-3.5 py-3"
           onChange={onChange}
         />
         {!!currentCharNumber && shouldNumberOfCharsBeVisible && (
           <div
             className={clsx(
-              'text-4 flex justify-end absolute bottom-3 right-3.5',
+              'absolute bottom-3 right-3.5 flex justify-end text-4',
               {
                 'text-negative-400': isErrorStatus,
                 'text-gray-500': !isErrorStatus,
@@ -71,7 +71,7 @@ const Textarea: FC<TextareaProps> = ({
           </div>
         )}
       </div>
-      <div className="flex items-center justify-between w-full">
+      <div className="flex w-full items-center justify-between">
         {isErrorStatus && (
           <span>
             <FormError isFullSize alignment="left">
@@ -80,7 +80,7 @@ const Textarea: FC<TextareaProps> = ({
           </span>
         )}
         {showFieldLimit && (
-          <div className="flex justify-end text-gray-600 text-xs ml-auto">
+          <div className="ml-auto flex justify-end text-xs text-gray-600">
             {formatMessage({ id: 'characters.remaining' }, { maxCharNumber })}
           </div>
         )}

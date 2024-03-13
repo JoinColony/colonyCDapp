@@ -15,9 +15,9 @@ const RowItem: FC<RowItemProps> = (props): JSX.Element => {
   const { descriptionClassName, title, description, headerProps } = props;
   const labelDescription = (
     <div className={clsx(descriptionClassName, 'flex flex-col gap-1')}>
-      <span className="text-1 leading-5">{title}</span>
+      <span className="leading-5 text-1">{title}</span>
       {description && (
-        <span className="text-gray-600 text-sm">{description}</span>
+        <span className="text-sm text-gray-600">{description}</span>
       )}
     </div>
   );
@@ -99,12 +99,12 @@ const RowItem: FC<RowItemProps> = (props): JSX.Element => {
           </div>
         )}
         {copyAddressProps && (
-          <div className="flex md:flex-row flex-col items-center justify-between p-3 bg-gray-50 rounded-lg w-full">
-            <div className="flex items-center mb-3 md:mb-0">
+          <div className="flex w-full flex-col items-center justify-between rounded-lg bg-gray-50 p-3 md:flex-row">
+            <div className="mb-3 flex items-center md:mb-0">
               {copyAddressProps.icon ? (
                 <copyAddressProps.icon size={18} />
               ) : null}
-              <span className="text-md ml-2 truncate block w-full">
+              <span className="ml-2 block w-full truncate text-md">
                 {copyAddressProps.walletAddress}
               </span>
             </div>

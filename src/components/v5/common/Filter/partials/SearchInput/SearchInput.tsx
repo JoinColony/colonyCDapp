@@ -72,7 +72,7 @@ const SearchInput: FC<SearchInputProps> = ({
     <div
       className={clsx(
         styles.wrapper,
-        'group focus-within:border-blue-100 hover:after:border-blue-100 w-full relative',
+        'group relative w-full focus-within:border-blue-100 hover:after:border-blue-100',
       )}
     >
       <span className={styles.icon}>
@@ -82,7 +82,7 @@ const SearchInput: FC<SearchInputProps> = ({
         ref={ref}
         className={clsx(
           styles.searchInput,
-          'border-gray-300 focus:outline-none group-hover:border-blue-200 group-focus-within:border-blue-200',
+          'border-gray-300 focus:outline-none group-focus-within:border-blue-200 group-hover:border-blue-200',
           isMobile && value && '!pr-[5.375rem]',
         )}
         type="text"

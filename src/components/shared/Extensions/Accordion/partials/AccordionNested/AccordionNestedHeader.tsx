@@ -24,7 +24,7 @@ const AccordionNestedHeader: FC<AccordionHeaderProps> = ({
       onClick={onClick}
       onKeyUp={onKeyUp}
       type="button"
-      className="flex justify-between items-center w-full group text-3"
+      className="group flex w-full items-center justify-between text-3"
       aria-expanded={isOpen}
     >
       {titleText}

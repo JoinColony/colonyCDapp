@@ -17,7 +17,7 @@ const Navigation: FC<NavigationProps> = ({ className, navigationItems }) => {
   const [selectedElement, setSelectedElement] = useState(navId);
 
   return (
-    <nav role="navigation" className={clsx(className, 'flex flex-col w-full')}>
+    <nav role="navigation" className={clsx(className, 'flex w-full flex-col')}>
       {isMobile ? (
         <Select
           options={navigationItems}

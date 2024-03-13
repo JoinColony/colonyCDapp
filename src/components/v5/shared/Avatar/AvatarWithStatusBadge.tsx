@@ -12,7 +12,7 @@ const displayName = 'v5.AvatarWithStatusBadge';
 const AvatarWithStatusBadge: FC<
   PropsWithChildren<AvatarWithStatusBadgeProps>
 > = ({ mode, badgeText, isFilled, ...rest }) => (
-  <div className="flex justify-center items-center flex-col">
+  <div className="flex flex-col items-center justify-center">
     <Avatar mode={mode} {...rest} />
     {mode && (
       <UserStatus
@@ -23,7 +23,7 @@ const AvatarWithStatusBadge: FC<
             : undefined
         }
         isFilled={isFilled}
-        className="-mt-3.5 relative z-[1]"
+        className="relative z-[1] -mt-3.5"
       />
     )}
   </div>

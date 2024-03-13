@@ -26,7 +26,7 @@ const meta: Meta<typeof TxButton> = {
     text: 'Pending...',
     disabled: false,
     icon: (
-      <span className="flex shrink-0 ml-1.5">
+      <span className="ml-1.5 flex shrink-0">
         <SpinnerGap className="animate-spin" size={14} />
       </span>
     ),

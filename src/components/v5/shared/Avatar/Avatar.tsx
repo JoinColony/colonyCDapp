@@ -45,7 +45,7 @@ const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   return (
     <figure className={clsx(className, mainClass)} title={title ?? undefined}>
       <div
-        className={clsx('w-full h-full rounded-full bg-cover', {
+        className={clsx('h-full w-full rounded-full bg-cover', {
           'border-purple-400': mode === 'top',
           'border-warning-400': mode === 'active',
           'border-blue-400': mode === 'dedicated',

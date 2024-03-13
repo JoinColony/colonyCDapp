@@ -35,7 +35,7 @@ export const useSocialLinksTableColumns = (): ColumnDef<
           </span>
         ),
         cell: ({ getValue }) => (
-          <span className="text-gray-700 font-normal text-md overflow-ellipsis overflow-hidden whitespace-nowrap block">
+          <span className="block overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal text-gray-700">
             {getValue()}
           </span>
         ),

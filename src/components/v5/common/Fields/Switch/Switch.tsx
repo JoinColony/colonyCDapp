@@ -31,7 +31,7 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
         <div
           className={clsx(
             styles.toggle,
-            'bg-gray-200 border-2 border-gray-200 h-5 w-9 rounded-full',
+            'h-5 w-9 rounded-full border-2 border-gray-200 bg-gray-200',
           )}
         />
       </label>

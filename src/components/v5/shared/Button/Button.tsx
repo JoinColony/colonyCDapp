@@ -48,16 +48,16 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
         ) : (
           <button
             className={clsx(
-              'flex items-center justify-center font-medium transition-all duration-normal whitespace-nowrap',
+              'flex items-center justify-center whitespace-nowrap font-medium transition-all duration-normal',
               `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
               {
-                'text-md min-h-[2.5rem] px-4 py-2': size === 'default',
-                'text-md min-h-[2.5rem] px-[0.875rem] py-[0.625rem]':
+                'min-h-[2.5rem] px-4 py-2 text-md': size === 'default',
+                'min-h-[2.5rem] px-[0.875rem] py-[0.625rem] text-md':
                   size === 'large',
-                '!rounded-[0.1875rem] capitalize text-4 px-2 py-1':
+                '!rounded-[0.1875rem] px-2 py-1 capitalize text-4':
                   size === 'extraSmall',
-                'text-sm min-h-[2.125rem] px-3 py-2': size === 'medium',
-                'text-sm min-h-[2.125rem] px-2.5 py-1.5': size === 'small',
+                'min-h-[2.125rem] px-3 py-2 text-sm': size === 'medium',
+                'min-h-[2.125rem] px-2.5 py-1.5 text-sm': size === 'small',
                 [styles.primarySolid]: mode === 'primarySolid',
                 [styles.primarySolidFull]: mode === 'primarySolidFull',
                 [styles.primaryOutline]: mode === 'primaryOutline',
@@ -73,9 +73,9 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
                 'pointer-events-none': disabled,
                 'w-full': isFullSize,
                 'bg-blue-400 text-base-white': mode === 'filled',
-                'border border-gray-300 !text-gray-300 !bg-base-white':
+                'border border-gray-300 !bg-base-white !text-gray-300':
                   disabled && isIconRight,
-                'bg-base-white border border-gray-300 text-gray-700 sm:hover:bg-blue-400 sm:hover:text-base-white sm:hover:border-blue-400':
+                'border border-gray-300 bg-base-white text-gray-700 sm:hover:border-blue-400 sm:hover:bg-blue-400 sm:hover:text-base-white':
                   mode === 'notFilled',
                 'rounded-full': isFullRounded,
                 'rounded-lg': !isFullRounded,

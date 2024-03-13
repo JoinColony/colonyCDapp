@@ -85,7 +85,7 @@ const StepCreateTokenInputs = ({
             register={register}
             isError={showTokenNameError}
             customErrorMessage={tokenNameError}
-            className="text-md border-gray-300"
+            className="border-gray-300 text-md"
             maxCharNumber={MAX_TOKEN_NAME}
             isDisabled={isSubmitting}
             defaultValue={wizardTokenName}
@@ -100,7 +100,7 @@ const StepCreateTokenInputs = ({
             register={register}
             isError={showTokenSymbolError}
             customErrorMessage={tokenSymbolError}
-            className="text-md border-gray-300 uppercase"
+            className="border-gray-300 text-md uppercase"
             maxCharNumber={MAX_TOKEN_SYMBOL}
             isDisabled={isSubmitting}
             defaultValue={wizardTokenSymbol}
@@ -109,8 +109,8 @@ const StepCreateTokenInputs = ({
           />
         </div>
       </div>
-      <p className="text-1 pb-1">{formatMessage(MSG.tokenLogo)}</p>
-      <p className="text-sm text-gray-600 pb-2">
+      <p className="pb-1 text-1">{formatMessage(MSG.tokenLogo)}</p>
+      <p className="pb-2 text-sm text-gray-600">
         {formatMessage(MSG.tokenDescription)}
       </p>
       <AvatarUploader
@@ -118,7 +118,7 @@ const StepCreateTokenInputs = ({
           tokenAvatarUrl ? (
             <Avatar size="m" avatar={tokenAvatarUrl} />
           ) : (
-            <div className="bg-gray-200 text-gray-600 p-4 rounded-full flex">
+            <div className="flex rounded-full bg-gray-200 p-4 text-gray-600">
               <Image size={28} />
             </div>
           )

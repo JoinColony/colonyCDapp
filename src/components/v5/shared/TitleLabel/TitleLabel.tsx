@@ -23,7 +23,7 @@ const TitleLabel: FC<TitleLabelProps> = ({
       className={clsx(
         className,
         textSizeClassName,
-        'block text-gray-400 uppercase group-hover:text-blue-400 transition-all duration-normal',
+        'block uppercase text-gray-400 transition-all duration-normal group-hover:text-blue-400',
       )}
     >
       {textLabel}

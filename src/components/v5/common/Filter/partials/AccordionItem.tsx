@@ -26,7 +26,7 @@ const AccordionItem: FC<AccordionItemProps> = ({
   return (
     <li>
       <button
-        className="flex justify-between items-center text-4 text-gray-400 uppercase w-full group"
+        className="group flex w-full items-center justify-between uppercase text-gray-400 text-4"
         onClick={handleToggle}
         type="button"
         aria-expanded={isOpened}

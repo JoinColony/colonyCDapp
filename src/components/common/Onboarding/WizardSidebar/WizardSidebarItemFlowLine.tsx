@@ -20,9 +20,9 @@ const WizardSidebarItemFlowLine = ({
   const lastSubid = subItems ? subItems[subItems.length - 1].id : 0;
 
   return (
-    <div className="absolute w-2.5 flex flex-col items-center top-[13px] gap-2.5 h-[calc(100%+8px)]">
+    <div className="absolute top-[13px] flex h-[calc(100%+8px)] w-2.5 flex-col items-center gap-2.5">
       <div
-        className={clsx('w-px h-full bg-gray-900', {
+        className={clsx('h-full w-px bg-gray-900', {
           'h-6': currentStep < stepId || currentStep > lastSubid,
         })}
       />

@@ -35,7 +35,7 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                 })}
               </h4>
               {initiatorAddress && (
-                <div className="flex items-center justify-between gap-2 mt-2">
+                <div className="mt-2 flex items-center justify-between gap-2">
                   <span className="text-sm text-gray-600">
                     {formatText({
                       id: 'action.executed.permissions.member',
@@ -45,7 +45,7 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                 </div>
               )}
               {initiatorAddress && (
-                <div className="flex items-center justify-between gap-2 mt-2">
+                <div className="mt-2 flex items-center justify-between gap-2">
                   <span className="text-sm text-gray-600">
                     {formatText({
                       id: 'action.executed.permissions.permission',

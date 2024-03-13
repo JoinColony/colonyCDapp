@@ -21,7 +21,7 @@ const AccordionHeader: FC<AccordionHeaderProps> = ({
       onClick={onClick}
       onKeyUp={onKeyUp}
       type="button"
-      className="flex justify-between items-center py-2 w-full group border-b border-gray-200 text-1"
+      className="group flex w-full items-center justify-between border-b border-gray-200 py-2 text-1"
       aria-expanded={isOpen}
     >
       {titleText}

@@ -27,7 +27,7 @@ const Toast: FC<ToastProps> = ({
       : description && formatMessage(description);
 
   return (
-    <div className="flex bg-base-white font-inter relative">
+    <div className="relative flex bg-base-white font-inter">
       <div
         className={clsx({
           'text-success-400': type === 'success',
@@ -37,16 +37,16 @@ const Toast: FC<ToastProps> = ({
       >
         <StatusCircle size={20} status={type} />
       </div>
-      <div className="flex flex-col ml-[1.125rem] max-w-[90%]">
-        {title && <span className="text-2 text-gray-900">{titleText}</span>}
+      <div className="ml-[1.125rem] flex max-w-[90%] flex-col">
+        {title && <span className="text-gray-900 text-2">{titleText}</span>}
         {description && (
-          <span className="text-md text-gray-600 mt-1">{descriptionText}</span>
+          <span className="mt-1 text-md text-gray-600">{descriptionText}</span>
         )}
         {linkName && url && (
           <div className="mt-1">
             <Link
               to={url}
-              className={clsx('text-4 underline', {
+              className={clsx('underline text-4', {
                 'text-success-400': type === 'success',
                 'text-warning-400': type === 'warn',
                 'text-negative-400': type === 'error',

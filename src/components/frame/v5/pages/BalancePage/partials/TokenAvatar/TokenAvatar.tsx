@@ -42,7 +42,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
   const isTokenInfoShown = isTokenModalOpened || isTokenVisible;
 
   const content = (
-    <div className="flex gap-2 md:gap-4 items-center text-left">
+    <div className="flex items-center gap-2 text-left md:gap-4">
       <TokenIcon
         token={token}
         size="xs"
@@ -53,7 +53,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
       <div className="flex items-center gap-1">
         {token.name ? (
           <span
-            className={clsx('font-medium line-clamp-2 break-word', {
+            className={clsx('line-clamp-2 font-medium break-word', {
               'text-gray-900 group-hover:text-blue-400': !isTokenInfoShown,
               'text-blue-400': isTokenInfoShown,
             })}
@@ -66,7 +66,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
         {isTokenNative && !nativeTokenStatus?.unlocked && (
           <Tooltip
             tooltipContent={
-              <span className="sm:w-64 text-left">
+              <span className="text-left sm:w-64">
                 {formatText({ id: 'tooltip.lockedToken' })}
               </span>
             }
@@ -79,11 +79,11 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
   );
 
   return (
-    <div className="flex relative">
+    <div className="relative flex">
       <button
         type="button"
         ref={relativeElementRef}
-        className="flex gap-4 items-center group"
+        className="group flex items-center gap-4"
         onClick={isMobile ? toggleTokenModalOn : toggleToken}
       >
         {content}
@@ -95,7 +95,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
           isOpen={isTokenModalOpened}
         >
           <TokenInfo
-            className="!p-0 w-full"
+            className="w-full !p-0"
             token={token}
             isTokenNative={isTokenNative}
           />
@@ -104,7 +104,7 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
         isTokenVisible && (
           <Portal>
             <MenuContainer
-              className="absolute !p-0 z-[60] min-w-80"
+              className="absolute z-[60] min-w-80 !p-0"
               hasShadow
               rounded="s"
               ref={(ref) => {

@@ -6,14 +6,14 @@ import styles from './Blocks.module.css';
 export const ActionTitle = ({
   children,
 }: PropsWithChildren<Record<never, any>>) => {
-  return <h3 className="text-2xl font-bold mb-2 text-gray-900">{children}</h3>;
+  return <h3 className="mb-2 text-2xl font-bold text-gray-900">{children}</h3>;
 };
 
 export const ActionSubtitle = ({
   children,
 }: PropsWithChildren<Record<never, any>>) => {
   return (
-    <div className="mb-7 text-md flex whitespace-pre-wrap">{children}</div>
+    <div className="mb-7 flex whitespace-pre-wrap text-md">{children}</div>
   );
 };
 

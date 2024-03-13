@@ -6,7 +6,7 @@ import { formatText } from '~utils/intl.ts';
 const coinGeckoAttributionMessageValues = {
   a: (chunks: string[]) => (
     <a
-      className="underline text-blue-400 font-medium decoration-blue-400 hover:text-gray-900"
+      className="font-medium text-blue-400 underline decoration-blue-400 hover:text-gray-900"
       href={currencyApiConfig.attribution}
       target="_blank"
       rel="noreferrer"
@@ -20,7 +20,7 @@ const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.CoinGeckoAttribution';
 
 const CoinGeckoAttribution = () => (
-  <div className="text-xs pt-6">
+  <div className="pt-6 text-xs">
     {formatText(
       { id: 'userMenu.coinGeckoAttribution' },
       coinGeckoAttributionMessageValues,

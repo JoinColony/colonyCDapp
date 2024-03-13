@@ -163,11 +163,11 @@ const ColonyPreviewPage = () => {
     colonyData?.getColonyByName?.items[0]?.metadata?.externalLinks || [];
 
   return (
-    <div className="max-w-[34rem] mx-auto">
-      <h1 className="text-2xl mb-2 font-semibold">
+    <div className="mx-auto max-w-[34rem]">
+      <h1 className="mb-2 text-2xl font-semibold">
         <FormattedMessage {...MSG.heading} />
       </h1>
-      <p className="text-sm mb-5 text-gray-600">
+      <p className="mb-5 text-sm text-gray-600">
         <FormattedMessage {...MSG.description} />
       </p>
       <hr className="mb-8" />
@@ -194,7 +194,7 @@ const ColonyPreviewPage = () => {
           text={formatMessage(MSG.connectWalletText)}
         />
       )}
-      <h2 className="text-md font-semibold mt-8 mb-3">
+      <h2 className="mb-3 mt-8 text-md font-semibold">
         <FormattedMessage {...MSG.privateAccessHeading} />
       </h2>
       <CardWithCallout
@@ -211,7 +211,7 @@ const ColonyPreviewPage = () => {
           ) : null
         }
         title={
-          <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:flex-nowrap">
+          <div className="flex w-full flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4">
             <ColonyAvatar
               colonyImageProps={{
                 src:
@@ -222,9 +222,9 @@ const ColonyPreviewPage = () => {
               colonyAddress={colonyAddress || ADDRESS_ZERO}
               size="xxsm"
             />
-            <h1 className="text-md font-medium inline">{colonyDisplayName}</h1>
+            <h1 className="inline text-md font-medium">{colonyDisplayName}</h1>
             <SocialLinks
-              className="w-full sm:w-auto sm:ml-auto"
+              className="w-full sm:ml-auto sm:w-auto"
               externalLinks={socialLinks}
             />
           </div>

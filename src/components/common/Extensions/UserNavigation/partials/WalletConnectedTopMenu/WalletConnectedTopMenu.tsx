@@ -29,7 +29,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
   const iconSize = isMobile ? 18 : 16;
 
   return (
-    <div className="w-full pb-4 mb-6 border-b border-b-gray-200 sm:pb-3 sm:mb-5">
+    <div className="mb-6 w-full border-b border-b-gray-200 pb-4 sm:mb-5 sm:pb-3">
       <div className="mb-4 sm:mb-2">
         <UserAvatarDetails
           userName={userName}
@@ -41,7 +41,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
       {user ? (
         <Link
           to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
-          className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+          className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50"
         >
           <UserCircleGear size={iconSize} />
           <p className="ml-2">
@@ -51,7 +51,7 @@ const WalletConnectedTopMenu: FC<UserAvatarDetailsProps> = ({
       ) : (
         <Link
           to={CREATE_PROFILE_ROUTE}
-          className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+          className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50"
         >
           <UserCircleGear size={iconSize} />
           <p className="ml-2">

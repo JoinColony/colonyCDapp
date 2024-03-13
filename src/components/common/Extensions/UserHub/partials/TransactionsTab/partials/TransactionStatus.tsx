@@ -26,14 +26,14 @@ const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
     >
       {pending && (
         <SpinnerGap
-          className="ml-2.5 w-[0.8125rem] h-[0.8125rem] animate-spin text-blue-400"
+          className="ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
           size={14}
         />
       )}
       {succeeded && <CheckCircle size={14} />}
       {failed && <XCircle size={14} />}
       {createdAt && (
-        <span className="text-gray-400 text-xs block mt-1">{createdAt}</span>
+        <span className="mt-1 block text-xs text-gray-400">{createdAt}</span>
       )}
     </div>
   );

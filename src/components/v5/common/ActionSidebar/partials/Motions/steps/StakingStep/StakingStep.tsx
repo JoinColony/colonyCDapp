@@ -186,8 +186,8 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                       onToggle={toggleAccordion}
                       className={clsx(
                         `
-                          [&_.accordion-toggler]:text-gray-500
                           [&_.accordion-toggler]:text-sm
+                          [&_.accordion-toggler]:text-gray-500
                         `,
                         {
                           '[&_.accordion-toggler]:text-blue-500':

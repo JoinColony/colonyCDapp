@@ -17,7 +17,7 @@ const ActiveInstalls: FC<ActiveInstallsProps> = ({ activeInstalls }) => {
           text={formatText({ id: 'status.new' })}
         />
       ) : (
-        <p className="text-gray-400 text-sm text-right">
+        <p className="text-right text-sm text-gray-400">
           {activeInstalls.toLocaleString('en-US')}{' '}
           {formatText({ id: 'active.installs' })}
         </p>

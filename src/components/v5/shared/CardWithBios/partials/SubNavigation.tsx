@@ -51,7 +51,7 @@ const SubNavigation: FC<SubNavigationProps> = ({
           title="members.subnav.gnosis.scan"
         />
       </ul>
-      <span className="divider my-3 mx-3.5 w-[calc(100%-1.75rem)]" />
+      <span className="divider mx-3.5 my-3 w-[calc(100%-1.75rem)]" />
       <ul>
         <SubNavigationItem
           icon={CopySimple}

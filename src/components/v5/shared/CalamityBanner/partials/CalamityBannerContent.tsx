@@ -38,10 +38,10 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
         },
       )}
     >
-      <div className="flex flex-col md:flex-row items-center justify-normal md:justify-between">
+      <div className="flex flex-col items-center justify-normal md:flex-row md:justify-between">
         <div
           className={clsx(
-            'flex justify-between w-full md:w-auto md:justify-normal items-start',
+            'flex w-full items-start justify-between md:w-auto md:justify-normal',
           )}
         >
           <div className="text-gray-900 text-1">{title}</div>
@@ -49,17 +49,17 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
         </div>
         <div
           className={clsx(
-            'flex justify-between w-full md:w-auto md:justify-normal items-center mt-2 md:mt-0',
+            'mt-2 flex w-full items-center justify-between md:mt-0 md:w-auto md:justify-normal',
           )}
         >
           <div className="flex items-center">
             <Link
               {...linkProps}
-              className="text-sm font-semibold text-gray-900 underline !hover:text-base-white sm:hover:no-underline"
+              className="!hover:text-base-white text-sm font-semibold text-gray-900 underline sm:hover:no-underline"
             />
             <Button
               {...buttonProps}
-              className="md:mr-7 ml-4"
+              className="ml-4 md:mr-7"
               mode="primarySolid"
               size="small"
             />
@@ -68,7 +68,7 @@ const CalamityBannerContent: FC<CalamityBannerContentProps> = ({
           {onCaretClick && (
             <button
               type="button"
-              className="flex items-center justify-center p-2 ml-4 text-gray-900 transition-colors sm:hover:text-blue-400"
+              className="ml-4 flex items-center justify-center p-2 text-gray-900 transition-colors sm:hover:text-blue-400"
               aria-label={formatText({
                 id: 'ariaLabel.calamityBanner',
               })}

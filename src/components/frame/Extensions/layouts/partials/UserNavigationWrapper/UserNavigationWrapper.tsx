@@ -24,9 +24,9 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   );
 
   return (
-    <div className="w-full flex">
+    <div className="flex w-full">
       <div
-        className={clsx('transition-all ml-auto', {
+        className={clsx('ml-auto transition-all', {
           'opacity-0': isHidden,
         })}
       >

@@ -45,7 +45,7 @@ const TokenSelector = ({
       <MenuContainer
         checked={checked}
         className={clsx(
-          'flex flex-col items-center cursor-pointer text-center h-full md:hover:shadow-default md:hover:border-blue-200',
+          'flex h-full cursor-pointer flex-col items-center text-center md:hover:border-blue-200 md:hover:shadow-default',
         )}
       >
         <input
@@ -56,8 +56,8 @@ const TokenSelector = ({
           className="mb-4"
         />
         {icon}
-        <span className="text-1 pt-4">{formatText(title)}</span>
-        <span className="description-1 pt-1">{formatText(description)}</span>
+        <span className="pt-4 text-1">{formatText(title)}</span>
+        <span className="pt-1 description-1">{formatText(description)}</span>
       </MenuContainer>
     </label>
   );

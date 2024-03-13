@@ -148,7 +148,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           content: (
             <ActionForm {...action} onSuccess={handleSuccess}>
               <div className="mb-2">
-                <h4 className="text-1 mb-3 flex justify-between items-center">
+                <h4 className="mb-3 flex items-center justify-between text-1">
                   {formatText({ id: 'motion.finalizeStep.title' })}
                   {isClaimed && (
                     <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
@@ -174,7 +174,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       rounded="s"
                       text={{ id: 'button.pending' }}
                       icon={
-                        <span className="flex shrink-0 ml-1.5">
+                        <span className="ml-1.5 flex shrink-0">
                           <SpinnerGap size={14} className="animate-spin" />
                         </span>
                       }
