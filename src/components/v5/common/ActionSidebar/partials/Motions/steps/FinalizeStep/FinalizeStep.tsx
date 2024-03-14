@@ -206,7 +206,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         text={
                           actionData.type ===
                           ColonyActionType.CreateDecisionMotion
-                            ? formatText('Return Stakes')
+                            ? formatText({
+                                id: 'motion.finalizeStep.returnStakes',
+                              })
                             : formatText({ id: buttonTextId })
                         }
                         type="submit"
