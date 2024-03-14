@@ -3240,12 +3240,16 @@ type Expenditure @model {
   Hash of the `ExpenditureAdded` event transaction
   @TODO: Make this a non-nullable field once existing data is updated
   """
-  createdTransactionHash: ID
-  action: ColonyAction @hasOne(fields: ["createdTransactionHash"])
+  transactionHash: ID
+  action: ColonyAction @hasOne(fields: ["transactionHash"])
   """
-  Hash of the `ExpenditureMadeViaStake` event transaction, if applicable
+  ID of the user stake associated with the expenditure, if any
   """
-  stakedTransactionHash: ID
+  userStakeId: ID
+  """
+  User stake associated with the expenditure, if any
+  """	  
+  userStake: UserStake @hasOne(fields: ["userStakeId"])
 }
 
 """
