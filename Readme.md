@@ -32,6 +32,14 @@ _Note: at the end of the install there's a post-install script that will recursi
 
 Copy `.env.example` and rename it to `.env`. You should not need to change any of the values to get CDapp running.
 
+### (Linux only) Increase the limit of watched files
+
+On Linux, you'll need to run the following commands to increase the default limit of watched files. Otherwise, the `watchAmplifyFiles` script will not work properly.
+
+```bash
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
+
 ## Running the dev environment
 
 ```bash
