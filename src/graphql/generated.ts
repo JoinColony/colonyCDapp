@@ -253,6 +253,10 @@ export type ColonyAction = {
   createdAt: Scalars['AWSDateTime'];
   /** Corresponding Decision data, if action is a Simple Decision */
   decisionData?: Maybe<ColonyDecision>;
+  /** Expenditure associated with the action, if any */
+  expenditure?: Maybe<Expenditure>;
+  /** ID of the associated expenditure, if any */
+  expenditureId?: Maybe<Scalars['ID']>;
   /** The source Domain of the action, if applicable */
   fromDomain?: Maybe<Domain>;
   /** The source Domain identifier, if applicable */
@@ -381,6 +385,8 @@ export enum ColonyActionType {
   CreateDomain = 'CREATE_DOMAIN',
   /** An action related to creating a domain within a Colony via a motion */
   CreateDomainMotion = 'CREATE_DOMAIN_MOTION',
+  /** An action related to creating expenditure (dvanced payment)  */
+  CreateExpenditure = 'CREATE_EXPENDITURE',
   /** An action related to editing a domain's details */
   EditDomain = 'EDIT_DOMAIN',
   /** An action related to editing a domain's details via a motion */
@@ -1086,6 +1092,7 @@ export type CreateColonyActionInput = {
   colonyDecisionId?: InputMaybe<Scalars['ID']>;
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  expenditureId?: InputMaybe<Scalars['ID']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<Scalars['ID']>;
   individualEvents?: InputMaybe<Scalars['String']>;
@@ -1358,9 +1365,10 @@ export type CreateExpenditureInput = {
   nativeId: Scalars['Int'];
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlotInput>;
-  stakedTransactionHash?: InputMaybe<Scalars['ID']>;
   status: ExpenditureStatus;
+  transactionHash?: InputMaybe<Scalars['ID']>;
   type: ExpenditureType;
+  userStakeId?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateExpenditureMetadataInput = {
@@ -1859,6 +1867,7 @@ export type DomainMetadataChangelogInput = {
 
 export type Expenditure = {
   __typename?: 'Expenditure';
+  action?: Maybe<ColonyAction>;
   /** Array containing balances of tokens in the expenditure */
   balances?: Maybe<Array<ExpenditureBalance>>;
   /** The Colony to which the expenditure belongs */
@@ -1891,12 +1900,19 @@ export type Expenditure = {
   ownerAddress: Scalars['ID'];
   /** Array containing expenditure slots */
   slots: Array<ExpenditureSlot>;
-  /** Hash of the `ExpenditureMadeViaStake` event transaction, if applicable */
-  stakedTransactionHash?: Maybe<Scalars['ID']>;
   /** Status of the expenditure */
   status: ExpenditureStatus;
+  /**
+   * Hash of the `ExpenditureAdded` event transaction
+   * @TODO: Make this a non-nullable field once existing data is updated
+   */
+  transactionHash?: Maybe<Scalars['ID']>;
   type: ExpenditureType;
   updatedAt: Scalars['AWSDateTime'];
+  /** User stake associated with the expenditure, if any */
+  userStake?: Maybe<UserStake>;
+  /** ID of the user stake associated with the expenditure, if any */
+  userStakeId?: Maybe<Scalars['ID']>;
 };
 
 
@@ -2238,6 +2254,7 @@ export type ModelColonyActionConditionInput = {
   colonyDecisionId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  expenditureId?: InputMaybe<ModelIdInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
@@ -2273,6 +2290,7 @@ export type ModelColonyActionFilterInput = {
   colonyDecisionId?: InputMaybe<ModelIdInput>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  expenditureId?: InputMaybe<ModelIdInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
@@ -2929,9 +2947,10 @@ export type ModelExpenditureConditionInput = {
   not?: InputMaybe<ModelExpenditureConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
-  stakedTransactionHash?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
+  transactionHash?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
+  userStakeId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelExpenditureConnection = {
@@ -2953,9 +2972,10 @@ export type ModelExpenditureFilterInput = {
   not?: InputMaybe<ModelExpenditureFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
-  stakedTransactionHash?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
+  transactionHash?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
+  userStakeId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelExpenditureMetadataConditionInput = {
@@ -3405,6 +3425,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   colonyDecisionId?: InputMaybe<ModelSubscriptionIdInput>;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
   fromDomainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   individualEvents?: InputMaybe<ModelSubscriptionStringInput>;
@@ -3665,9 +3686,10 @@ export type ModelSubscriptionExpenditureFilterInput = {
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelSubscriptionIdInput>;
-  stakedTransactionHash?: InputMaybe<ModelSubscriptionIdInput>;
   status?: InputMaybe<ModelSubscriptionStringInput>;
+  transactionHash?: InputMaybe<ModelSubscriptionIdInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
+  userStakeId?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionExpenditureMetadataFilterInput = {
@@ -6548,6 +6570,7 @@ export enum SearchableColonyActionAggregateField {
   ColonyDecisionId = 'colonyDecisionId',
   ColonyId = 'colonyId',
   CreatedAt = 'createdAt',
+  ExpenditureId = 'expenditureId',
   FromDomainId = 'fromDomainId',
   Id = 'id',
   IndividualEvents = 'individualEvents',
@@ -6591,6 +6614,7 @@ export type SearchableColonyActionFilterInput = {
   colonyDecisionId?: InputMaybe<SearchableIdFilterInput>;
   colonyId?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
+  expenditureId?: InputMaybe<SearchableIdFilterInput>;
   fromDomainId?: InputMaybe<SearchableIdFilterInput>;
   id?: InputMaybe<SearchableIdFilterInput>;
   individualEvents?: InputMaybe<SearchableStringFilterInput>;
@@ -6626,6 +6650,7 @@ export enum SearchableColonyActionSortableFields {
   ColonyDecisionId = 'colonyDecisionId',
   ColonyId = 'colonyId',
   CreatedAt = 'createdAt',
+  ExpenditureId = 'expenditureId',
   FromDomainId = 'fromDomainId',
   Id = 'id',
   IndividualEvents = 'individualEvents',
@@ -7720,6 +7745,7 @@ export type UpdateColonyActionInput = {
   colonyDecisionId?: InputMaybe<Scalars['ID']>;
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  expenditureId?: InputMaybe<Scalars['ID']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
   individualEvents?: InputMaybe<Scalars['String']>;
@@ -7975,9 +8001,10 @@ export type UpdateExpenditureInput = {
   nativeId?: InputMaybe<Scalars['Int']>;
   ownerAddress?: InputMaybe<Scalars['ID']>;
   slots?: InputMaybe<Array<ExpenditureSlotInput>>;
-  stakedTransactionHash?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ExpenditureStatus>;
+  transactionHash?: InputMaybe<Scalars['ID']>;
   type?: InputMaybe<ExpenditureType>;
+  userStakeId?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdateExpenditureMetadataInput = {
