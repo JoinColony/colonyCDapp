@@ -97,25 +97,24 @@ export const useMembersTabContentItems = (
                       onClick: () => false,
                       className: 'border-t border-t-gray-200 mt-3 pt-3',
                       renderItemWrapper: (props, children) => (
-                        <div className="flex-grow">
-                          <Tooltip
-                            tooltipContent={
-                              formatText({
-                                id: 'copy.addressCopied',
-                              }) || ''
-                            }
-                            isOpen={isCopied}
-                            isSuccess
+                        <Tooltip
+                          tooltipContent={
+                            formatText({
+                              id: 'copy.addressCopied',
+                            }) || ''
+                          }
+                          isOpen={isCopied}
+                          isSuccess
+                          isFullWidthContent
+                        >
+                          <button
+                            type="button"
+                            {...props}
+                            onClick={() => handleClipboardCopy(walletAddress)}
                           >
-                            <button
-                              type="button"
-                              {...props}
-                              onClick={() => handleClipboardCopy(walletAddress)}
-                            >
-                              {children}
-                            </button>
-                          </Tooltip>
-                        </div>
+                            {children}
+                          </button>
+                        </Tooltip>
                       ),
                     },
                   ]
