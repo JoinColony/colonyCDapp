@@ -14,11 +14,11 @@ interface SelectedMembersProps {
 const displayName = 'v5.common.CompletedAction.partials.SelectedMembers';
 
 const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
-  const { memberMap } = useMemberContext();
+  const { membersByAddress } = useMemberContext();
 
   const members = memberAddresses.reduce<SelectedMember[]>(
     (selectedMembers, address) => {
-      const member = memberMap[address];
+      const member = membersByAddress[address];
 
       if (member?.user) {
         return [

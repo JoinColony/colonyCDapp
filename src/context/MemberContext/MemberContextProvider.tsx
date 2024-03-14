@@ -176,7 +176,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const membersLimit = getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT);
-  const memberMap = useMemo(
+  const membersByAddress = useMemo(
     () =>
       totalMembers.reduce<Record<string, ColonyContributor>>((map, member) => {
         return {
@@ -189,7 +189,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      memberMap,
+      membersByAddress,
       filteredMembers,
       verifiedMembers,
       totalMemberCount,
@@ -207,7 +207,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       loading,
     }),
     [
-      memberMap,
+      membersByAddress,
       filteredMembers,
       verifiedMembers,
       totalMemberCount,
