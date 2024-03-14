@@ -18,6 +18,7 @@ import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/final
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
 import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
@@ -107,6 +108,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.EXPENDITURE_CANCEL,
     error: ActionTypes.EXPENDITURE_CANCEL_ERROR,
     success: ActionTypes.EXPENDITURE_CANCEL_SUCCESS,
+  });
+  const editLockedExpenditureMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE,
+    error: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR,
+    success: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
   });
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
@@ -309,6 +315,35 @@ const TmpAdvancedPayments = () => {
     await cancelExpenditure(payload);
   };
 
+  const handleEditViaMotion = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: EditExpenditureMotionPayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      networkInverseFee,
+      payouts: [
+        {
+          amount: '23.45',
+          tokenAddress: colony.nativeToken.tokenAddress,
+          recipientAddress: colony.colonyAddress,
+          claimDelay: '0',
+        },
+        {
+          amount: '67.89',
+          tokenAddress: colony.nativeToken.tokenAddress,
+          recipientAddress: user?.walletAddress ?? '',
+          claimDelay: '300',
+        },
+      ],
+      motionDomainId: expenditure.nativeDomainId,
+    };
+
+    await editLockedExpenditureMotion(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -362,6 +397,7 @@ const TmpAdvancedPayments = () => {
           <Button onClick={handleEdit}>Edit</Button>
           <Button onClick={handleCancel}>Cancel</Button>
           <Button onClick={() => refetch()}>Refetch</Button>
+          <Button onClick={handleEditViaMotion}>Edit via motion</Button>
         </div>
       </div>
       <div className="flex gap-4">
