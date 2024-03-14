@@ -106,7 +106,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                     key={key}
                     className={clsx(itemClassName, 'flex-shrink-0')}
                   >
-                    <HoverWidthWrapper hoverClassName="md:font-medium">
+                    <HoverWidthWrapper hoverClassName="w-full md:font-medium">
                       {(itemRenderItemWrapper || renderItemWrapper)(
                         {
                           className: `

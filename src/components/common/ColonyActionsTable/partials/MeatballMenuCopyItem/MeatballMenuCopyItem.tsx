@@ -16,6 +16,7 @@ const MeatballMenuCopyItem: FC<
       isSuccess
       tooltipContent={formatText({ id: 'meatBallMenuCopyItem.copySuccess' })}
       isOpen={isCopied}
+      isFullWidthContent
     >
       <button
         type="button"
