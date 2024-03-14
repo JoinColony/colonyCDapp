@@ -4286,12 +4286,8 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
-  /**
-   * Validates the user invite code and adds the user to the colony whitelist
-   * and as a colony contributor
-   */
+  /** Removes the user from the colony whitelist */
   removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
-  deleteVerifiedMember?: Maybe<VerifiedMember>;
   /** Updates the latest available version of a Colony or an extension */
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateAnnotation?: Maybe<Annotation>;
@@ -4895,11 +4891,6 @@ export type MutationDeleteUserTokensArgs = {
 /** Root mutation type */
 export type MutationRemoveMemberFromColonyWhitelistArgs = {
   input: RemoveMemberFromColonyWhitelistInput;
-}
-
-export type MutationDeleteVerifiedMemberArgs = {
-  condition?: InputMaybe<ModelVerifiedMemberConditionInput>;
-  input: DeleteVerifiedMemberInput;
 };
 
 
