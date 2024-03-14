@@ -3,8 +3,6 @@ import React, { useId } from 'react';
 
 import { type SwitchProps } from './types.ts';
 
-import styles from './Switch.module.css';
-
 const displayName = 'v5.common.Fields.Switch';
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
@@ -25,13 +23,14 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           {...rest}
           type="checkbox"
           id={id || generatedId}
-          className={clsx('sr-only', className)}
+          className={clsx('peer sr-only', className)}
           disabled={disabled}
         />
         <div
           className={clsx(
-            styles.toggle,
             'h-5 w-9 rounded-full border-2 border-gray-200 bg-gray-200',
+            "after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-base-white after:shadow-sm after:transition after:content-['']",
+            'peer-checked:border-gray-900 peer-checked:bg-gray-900 peer-checked:after:translate-x-full',
           )}
         />
       </label>

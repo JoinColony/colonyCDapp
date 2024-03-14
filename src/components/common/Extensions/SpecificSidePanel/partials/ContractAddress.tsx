@@ -5,9 +5,8 @@ import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 
+import specificSidePanelClasses from '../SpecifcSidePanel.styles.ts';
 import { type PanelTypeProps } from '../types.ts';
-
-import styles from '../SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.partials.ContractAddress';
 
@@ -15,8 +14,8 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
   const { isCopied, handleClipboardCopy } = useCopyToClipboard();
 
   return (
-    <div className={styles.panelRow}>
-      <p className={styles.panelTitle}>{title}</p>
+    <div className={specificSidePanelClasses.panelRow}>
+      <p className={specificSidePanelClasses.panelTitle}>{title}</p>
       {description && (
         <Tooltip
           interactive

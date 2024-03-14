@@ -11,8 +11,7 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 import LinkItem from '../LinkItem/index.ts';
 
 import { MSG, PAY_DROPDOWN_ITEMS } from './consts.ts';
-
-import styles from './DropdownContent.module.css';
+import dropdownClasses from './DecideDropdown.styles.ts';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.PayDropdown';
@@ -29,7 +28,7 @@ const PayDropdown: FC<PropsWithChildren> = () => {
         className="mx-6 mt-6 hidden sm:block"
         text={formatMessage({ id: 'createNewPayments' })}
       />
-      <ul className={styles.listWrapper}>
+      <ul className={dropdownClasses.listWrapper}>
         {PAY_DROPDOWN_ITEMS.map(({ action, ...rest }) => (
           <LinkItem
             {...rest}
@@ -42,10 +41,10 @@ const PayDropdown: FC<PropsWithChildren> = () => {
           />
         ))}
       </ul>
-      <div className={styles.buttonWrapper}>
+      <div className={dropdownClasses.buttonWrapper}>
         <Button text={MSG.buttonTextPay} mode="quinary" isFullSize />
       </div>
-      <div className={styles.infoWrapper}>
+      <div className={dropdownClasses.infoWrapper}>
         <LearnMore
           message={{
             id: `${displayName}.helpText`,

@@ -4,10 +4,9 @@ import React, { forwardRef, type PropsWithChildren } from 'react';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 
+import buttonClasses from './Button.styles.ts';
 import ButtonContent from './ButtonContent.tsx';
 import { type ButtonProps } from './types.ts';
-
-import styles from './Button.module.css';
 
 const displayName = 'v5.Button';
 
@@ -58,18 +57,20 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
                   size === 'extraSmall',
                 'min-h-[2.125rem] px-3 py-2 text-sm': size === 'medium',
                 'min-h-[2.125rem] px-2.5 py-1.5 text-sm': size === 'small',
-                [styles.primarySolid]: mode === 'primarySolid',
-                [styles.primarySolidFull]: mode === 'primarySolidFull',
-                [styles.primaryOutline]: mode === 'primaryOutline',
-                [styles.primaryOutlineFull]: mode === 'primaryOutlineFull',
-                [styles.secondarySolid]: mode === 'secondarySolid',
-                [styles.secondaryOutline]: mode === 'secondaryOutline',
-                [styles.quinary]: mode === 'quinary',
-                [styles.senary]: mode === 'senary',
-                [styles.quaternary]: mode === 'quaternary',
-                [styles.tertiary]: mode === 'tertiary' || size === 'large',
-                [styles.septenary]: mode === 'septenary',
-                [styles.completed]: mode === 'completed',
+                [buttonClasses.primarySolid]: mode === 'primarySolid',
+                [buttonClasses.primarySolidFull]: mode === 'primarySolidFull',
+                [buttonClasses.primaryOutline]: mode === 'primaryOutline',
+                [buttonClasses.primaryOutlineFull]:
+                  mode === 'primaryOutlineFull',
+                [buttonClasses.secondarySolid]: mode === 'secondarySolid',
+                [buttonClasses.secondaryOutline]: mode === 'secondaryOutline',
+                [buttonClasses.tertiary]:
+                  mode === 'tertiary' || size === 'large',
+                [buttonClasses.quaternary]: mode === 'quaternary',
+                [buttonClasses.quinary]: mode === 'quinary',
+                [buttonClasses.senary]: mode === 'senary',
+                [buttonClasses.septenary]: mode === 'septenary',
+                [buttonClasses.completed]: mode === 'completed',
                 'pointer-events-none': disabled,
                 'w-full': isFullSize,
                 'bg-blue-400 text-base-white': mode === 'filled',

@@ -3,9 +3,8 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import tooltipClasses from './Tooltip.styles.ts';
 import { type TooltipProps } from './types.ts';
-
-import styles from './Tooltip.module.css';
 
 const displayName = 'Extensions.Tooltip';
 
@@ -60,8 +59,8 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
           ref={setTooltipRef}
           {...getTooltipProps({
             className: clsx(
-              styles.tooltipContainer,
-              'tooltip-container relative p-3 text-base-white text-3',
+              tooltipClasses.tooltipContainer,
+              'tooltip-container',
               {
                 'bg-success-400': isSuccess,
                 'bg-gray-900 [&_a]:underline': !isSuccess,
@@ -72,7 +71,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
           <div
             {...getArrowProps({
               className: clsx({
-                [styles.tooltipArrow]: showArrow,
+                [tooltipClasses.tooltipArrow]: showArrow,
                 'tooltip-arrow': showArrow,
                 'text-success-400': isSuccess,
                 'text-gray-900': !isSuccess,

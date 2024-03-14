@@ -11,8 +11,7 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 import LinkItem from '../LinkItem/index.ts';
 
 import { DECIDE_DROPDOWN_ITEMS, MSG } from './consts.ts';
-
-import styles from './DropdownContent.module.css';
+import dropdownClasses from './DecideDropdown.styles.ts';
 
 const displayName =
   'v5.common.SubNavigation.partials.DropdownContent.DecideDropdown';
@@ -29,7 +28,7 @@ const DecideDropdown: FC<PropsWithChildren> = () => {
         className="mx-6 mt-6 hidden sm:block"
         text={formatMessage({ id: 'createNewDecisions' })}
       />
-      <ul className={styles.listWrapper}>
+      <ul className={dropdownClasses.listWrapper}>
         {DECIDE_DROPDOWN_ITEMS.map(({ action, ...rest }) => (
           <LinkItem
             {...rest}
@@ -42,10 +41,10 @@ const DecideDropdown: FC<PropsWithChildren> = () => {
           />
         ))}
       </ul>
-      <div className={styles.buttonWrapper}>
+      <div className={dropdownClasses.buttonWrapper}>
         <Button text={MSG.buttonTextDecide} mode="quinary" isFullSize />
       </div>
-      <div className={styles.infoWrapper}>
+      <div className={dropdownClasses.infoWrapper}>
         <LearnMore
           message={{
             id: `${displayName}.helpText`,
