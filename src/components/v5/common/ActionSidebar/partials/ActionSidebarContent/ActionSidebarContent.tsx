@@ -235,7 +235,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
       </div>
       {transactionId && (
         <div
-          className={`
+          className="
             w-full
             md:w-[35%]
             md:h-full
@@ -249,7 +249,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             md:border-l
             md:border-l-gray-200
             bg-gray-25
-          `}
+          "
         >
           {isMotion ? (
             <Motions transactionId={transactionId} />
