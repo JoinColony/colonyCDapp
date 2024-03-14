@@ -36,6 +36,8 @@ export const invalidateMemberQueries = async (
   userAddresses: string[],
   colonyAddress: string,
 ): Promise<void> => {
+  // we deliberately have separate calls due to https://www.apollographql.com/docs/react/data/refetching/#onqueryupdated
+  // so we don't need to put if statements into the callback, and it just always executed for the GetColonyContributor query
   await apolloClient.refetchQueries({
     include: [GetColonyContributorsDocument],
   });
