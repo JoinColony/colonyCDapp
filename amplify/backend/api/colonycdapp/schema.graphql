@@ -759,6 +759,10 @@ enum ColonyActionType {
   """
   REMOVE_VERIFIED_MEMBERS
   REMOVE_VERIFIED_MEMBERS_MOTION
+  """
+  An action related to creating expenditure (advanced payment)
+  """
+  CREATE_EXPENDITURE
 }
 
 """
@@ -2911,6 +2915,14 @@ type ColonyAction @model @searchable {
   Metadata associated with the action (Eg. Custom action title)
   """
   metadata: ColonyActionMetadata @hasOne(fields: ["id"])
+  """
+  ID of the associated expenditure, if any
+  """
+  expenditureId: ID
+  """
+  Expenditure associated with the action, if any
+  """
+  expenditure: Expenditure @hasOne(fields: ["expenditureId"])
 }
 
 type ColonyActionMetadata @model {
@@ -3237,6 +3249,12 @@ type Expenditure @model {
   """
   isStaked: Boolean!
   type: ExpenditureType!
+  """
+  Hash of the `ExpenditureAdded` event transaction
+  @TODO: Make this a non-nullable field once existing data is updated
+  """
+  createdTransactionHash: ID
+  action: ColonyAction @hasOne(fields: ["createdTransactionHash"])
   """
   Hash of the `ExpenditureMadeViaStake` event transaction, if applicable
   """
