@@ -291,29 +291,27 @@ export const useGetMembersForPermissions = () => {
                     onClick: () => false,
                     className: 'border-t border-t-gray-200 mt-3 pt-3',
                     renderItemWrapper: (props, children) => (
-                      <div className="flex-grow">
-                        <Tooltip
-                          tooltipContent={
-                            formatText({
-                              id: 'copy.addressCopied',
-                            }) || ''
+                      <Tooltip
+                        tooltipContent={
+                          formatText({
+                            id: 'copy.addressCopied',
+                          }) || ''
+                        }
+                        isOpen={isCopied}
+                        isSuccess
+                      >
+                        <button
+                          type="button"
+                          {...props}
+                          onClick={() =>
+                            handleClipboardCopy(
+                              member.userAvatarProps.walletAddress,
+                            )
                           }
-                          isOpen={isCopied}
-                          isSuccess
                         >
-                          <button
-                            type="button"
-                            {...props}
-                            onClick={() =>
-                              handleClipboardCopy(
-                                member.userAvatarProps.walletAddress,
-                              )
-                            }
-                          >
-                            {children}
-                          </button>
-                        </Tooltip>
-                      </div>
+                          {children}
+                        </button>
+                      </Tooltip>
                     ),
                   },
                 ]
