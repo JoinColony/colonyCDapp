@@ -1,7 +1,9 @@
 import { apolloClient } from '~apollo';
 import {
   GetColonyContributorDocument,
+  type GetColonyContributorQuery,
   GetColonyContributorsDocument,
+  type GetColonyContributorsQuery,
 } from '~gql';
 import { type ColonyContributor } from '~types/graphql.ts';
 
@@ -32,35 +34,75 @@ export const getColonyContributorAddressFromId = (
   colonyContributorId: string,
 ) => colonyContributorId.split('_')[1];
 
-export const invalidateMemberQueries = async (
+export const invalidateMemberQueries = (
   userAddresses: string[],
   colonyAddress: string,
-): Promise<void> => {
-  // we deliberately have separate calls due to https://www.apollographql.com/docs/react/data/refetching/#onqueryupdated
-  // so we don't need to put if statements into the callback, and it just always executed for the GetColonyContributor query
-  await apolloClient.refetchQueries({
-    include: [GetColonyContributorsDocument],
-  });
-  await apolloClient.refetchQueries({
-    include: [GetColonyContributorDocument],
-    onQueryUpdated: (query) => {
-      // useGetColonyContributorQuery variables
-      if (
-        !query.variables?.id ||
-        !query.variables?.colonyAddress ||
-        query.variables.colonyAddress !== colonyAddress
-      ) {
-        return false;
+  isVerified: boolean,
+) => {
+  apolloClient.cache.updateQuery(
+    {
+      query: GetColonyContributorsDocument,
+      variables: {
+        colonyAddress,
+      },
+    },
+    (
+      data: GetColonyContributorsQuery | null,
+    ): GetColonyContributorsQuery | null => {
+      if (!data?.getContributorsByColony) {
+        return null;
       }
 
-      const colonyContributorId = query.variables.id;
+      const modifiedContributors = data.getContributorsByColony.items.map(
+        (contributor) => {
+          if (
+            !contributor ||
+            !userAddresses.includes(contributor.contributorAddress)
+          ) {
+            return contributor;
+          }
 
-      const contributorAddress =
-        getColonyContributorAddressFromId(colonyContributorId);
-      const isUserAffected = userAddresses.indexOf(contributorAddress) !== -1;
+          return {
+            ...contributor,
+            isVerified,
+          };
+        },
+      );
 
-      // refetch only if user's verified status was changed
-      return isUserAffected;
+      return {
+        ...data,
+        getContributorsByColony: {
+          ...data.getContributorsByColony,
+          items: modifiedContributors,
+        },
+      };
     },
-  });
+  );
+
+  for (const userAddress of userAddresses) {
+    apolloClient.cache.updateQuery(
+      {
+        query: GetColonyContributorDocument,
+        variables: {
+          colonyAddress,
+          id: getColonyContributorId(colonyAddress, userAddress),
+        },
+      },
+      (
+        data: GetColonyContributorQuery | null,
+      ): GetColonyContributorQuery | null => {
+        if (!data?.getColonyContributor) {
+          return null;
+        }
+
+        return {
+          ...data,
+          getColonyContributor: {
+            ...data.getColonyContributor,
+            isVerified,
+          },
+        };
+      },
+    );
+  }
 };
