@@ -199,13 +199,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         mode="primarySolid"
                         disabled={!canClaimStakes || wrongMotionState}
                         isFullSize
-                        text={
-                          isMotionAgreement
-                            ? formatText({
-                                id: 'motion.finalizeStep.returnStakes',
-                              })
-                            : formatText({ id: buttonTextId })
-                        }
+                        text={formatText({
+                          id: isMotionAgreement
+                            ? 'motion.finalizeStep.returnStakes'
+                            : buttonTextId,
+                        })}
                         type="submit"
                       />
                     )}
