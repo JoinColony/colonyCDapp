@@ -120,7 +120,7 @@ function* removeVerifiedMembersAction({
       meta,
     });
 
-    yield fork(invalidateMemberQueries, members, colonyAddress);
+    yield fork(invalidateMemberQueries, members, colonyAddress, false);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

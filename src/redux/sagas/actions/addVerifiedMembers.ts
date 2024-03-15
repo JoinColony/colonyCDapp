@@ -117,7 +117,7 @@ function* addVerifiedMembersAction({
       meta,
     });
 
-    yield fork(invalidateMemberQueries, members, colonyAddress);
+    yield fork(invalidateMemberQueries, members, colonyAddress, true);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {
