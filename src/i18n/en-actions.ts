@@ -77,6 +77,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EmitDomainReputationReward} {Award}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Award}
       ${ColonyActionType.CreateDecisionMotion} {Decision}
+      ${ColonyActionType.TempAdvancedPayment} {Payment Builder}
       ${ExtendedColonyActionType.UpdateAddressBook} {Update Address Book}
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
