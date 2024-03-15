@@ -143,7 +143,7 @@ function Stepper<TKey extends React.Key>({
                     },
                   )}
                 >
-                  <div className="flex flex-col sm:flex-row gap-[.375rem] items-center">
+                  <div className="flex flex-col sm:flex-row gap-[.375rem] items-start sm:items-center">
                     <StepperButton
                       stage={
                         (index < activeItemIndex &&
