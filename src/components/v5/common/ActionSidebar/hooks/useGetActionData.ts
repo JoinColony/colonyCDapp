@@ -1,5 +1,4 @@
 import { Id } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
@@ -11,6 +10,7 @@ import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import {
@@ -261,11 +261,9 @@ const useGetActionData = (transactionId: string | undefined) => {
                 slotToken?.token.tokenAddress ===
                 slot?.payouts?.[0].tokenAddress,
             );
-            const currentAmount = BigNumber.from(
-              moveDecimal(
-                slot?.payouts?.[0].amount,
-                -getTokenDecimalsWithFallback(currentToken?.token.decimals),
-              ),
+            const currentAmount = getFormattedTokenAmount(
+              slot?.payouts?.[0].amount || '0',
+              currentToken?.token.decimals,
             );
 
             return {
