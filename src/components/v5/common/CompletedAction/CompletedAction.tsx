@@ -71,7 +71,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   return (
-    <div className="flex flex-grow flex-col sm:flex-row overflow-auto">
+    <div className="flex flex-grow flex-col-reverse justify-end sm:justify-start sm:flex-row overflow-auto">
       <div
         className={clsx('overflow-y-auto pb-6 pt-8 px-6', {
           'w-full': !action.isMotion,

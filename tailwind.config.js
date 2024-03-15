@@ -252,6 +252,9 @@ module.exports = {
         '.break-word': {
           'word-break': 'break-word',
         },
+        '.no-scrollbar': {
+          'scrollbar-width': 'none',
+        },
       });
       addComponents({
         '.inner': {
