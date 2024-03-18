@@ -1,5 +1,5 @@
 import { type Colony, type Domain } from '~types/graphql.ts';
-import { sanitizeHTML } from '~utils/strings/index.ts';
+import { sanitizeHTML } from '~utils/strings.ts';
 
 import { type EditTeamFormValues } from './consts.ts';
 

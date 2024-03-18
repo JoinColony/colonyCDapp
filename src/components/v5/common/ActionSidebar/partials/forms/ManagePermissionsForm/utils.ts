@@ -8,7 +8,7 @@ import {
 import { type Colony } from '~types/graphql.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
-import { sanitizeHTML } from '~utils/strings/index.ts';
+import { sanitizeHTML } from '~utils/strings.ts';
 
 import {
   AVAILABLE_ROLES,

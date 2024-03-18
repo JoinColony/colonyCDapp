@@ -9,7 +9,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { tw } from '~utils/css/index.ts';
-import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
 import ObjectiveBox from '~v5/common/ObjectiveBox/index.ts';
