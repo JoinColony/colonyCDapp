@@ -2329,6 +2329,10 @@ input MotionStateHistoryInput {
   """
   allVotesRevealedAt: AWSDateTime
   """
+  The timestamp when the motion ended (Passed or failed)
+  """
+  endedAt: AWSDateTime
+  """
   The timestamp when the motion was finalized
   """
   finalizedAt: AWSDateTime
@@ -2374,6 +2378,10 @@ type MotionStateHistory {
   The timestamp when all votes were revealed
   """
   allVotesRevealedAt: AWSDateTime
+  """
+  The timestamp when the motion ended (Passed or failed)
+  """
+  endedAt: AWSDateTime
   """
   The timestamp when the motion was finalized
   """

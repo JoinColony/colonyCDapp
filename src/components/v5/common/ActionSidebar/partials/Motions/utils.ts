@@ -33,7 +33,7 @@ const MSG = defineMessages({
   },
   stakingNoSidesOutcome: {
     id: `${displayName}.stakingNoSidesOutcome`,
-    defaultMessage: 'Staking period ended not fully supported.',
+    defaultMessage: 'Staking period ended not fully supported. {timestamp}',
   },
   stakingBothSidesOutcome: {
     id: `${displayName}.stakingBothSidesOutcome`,
@@ -90,6 +90,24 @@ const MSG = defineMessages({
     defaultMessage:
       'Action went to a vote and the outcome was in opposition. {timestamp}',
   },
+  finalizeNotStarted: {
+    id: `${displayName}.finalizeNotStarted`,
+    defaultMessage:
+      'Execute and return all stakes of the supported action or only return stakes of a opposed/failed action.',
+  },
+  finalizeYaySideWon: {
+    id: `${displayName}.finalizeYaySideWon`,
+    defaultMessage:
+      'Action can now be finalized and stakes can be returned. {timestamp}',
+  },
+  finalizeNaySideWon: {
+    id: `${displayName}.finalizeNaySideWon`,
+    defaultMessage: 'Action failed stakes can be returned. {timestamp}',
+  },
+  finalizedAction: {
+    id: `${displayName}.finalizedAction`,
+    defaultMessage: 'Action was finalized. {timestamp}',
+  },
 });
 
 export const getStakingStepTooltipText = (
@@ -102,7 +120,7 @@ export const getStakingStepTooltipText = (
     motionStateHistory,
   } = motionData || {};
   const { percentage } = motionStakes || {};
-  const { naySideFullyStakedAt, yaySideFullyStakedAt } =
+  const { naySideFullyStakedAt, yaySideFullyStakedAt, endedAt } =
     motionStateHistory || {};
   const { nay, yay } = percentage || {};
 
@@ -121,7 +139,9 @@ export const getStakingStepTooltipText = (
         formatRelative(new Date(yaySideFullyStakedAt), new Date()),
       )
     : '';
-
+  const formattedEndedAt = endedAt
+    ? capitalizeFirstLetter(formatRelative(new Date(endedAt), new Date()))
+    : '';
   const objectingStakesPercentageValue = Number(nay) || 0;
   const supportingStakesPercentageValue = Number(yay) || 0;
 
@@ -161,17 +181,19 @@ export const getStakingStepTooltipText = (
 
   if (isFullyOpposed) {
     return formatText(MSG.stakingFullyOpposedOutcome, {
-      timestamp: formattedNaySideFullyStakedAt,
+      timestamp: formattedEndedAt,
     });
   }
 
   if (isFullySupported) {
     return formatText(MSG.stakingFullySupportedOutcome, {
-      timestamp: formattedYaySideFullyStakedAt,
+      timestamp: formattedEndedAt,
     });
   }
 
-  return formatText(MSG.stakingNoSidesOutcome);
+  return formatText(MSG.stakingNoSidesOutcome, {
+    timestamp: formattedEndedAt,
+  });
 };
 
 export const getVotingStepTooltipText = (
@@ -245,7 +267,7 @@ export const getRevealStepTooltipText = (
     });
   }
 
-  const revealedVoteCount = voterRecord.reduce((acc, voter) => {
+  const revealedVoteCount = voterRecord?.reduce((acc, voter) => {
     if (typeof voter.vote === 'number') {
       return acc + 1;
     }
@@ -316,5 +338,42 @@ export const getOutcomeStepTooltipText = (
 
   return formatText(MSG.outcomeNaySideWon, {
     timestamp: formattedAllVotesSubmittedAt,
+  });
+};
+
+export const getFinalizeStepTooltipText = (
+  motionState: MotionState | undefined = MotionState.Null,
+  motionData: ColonyMotion | undefined | null,
+) => {
+  const { motionStateHistory, revealedVotes } = motionData || {};
+  const { endedAt, finalizedAt } = motionStateHistory || {};
+  const yayRevealedRep = Number(revealedVotes?.raw.yay) || 0;
+  const nayRevealedRep = Number(revealedVotes?.raw.nay) || 0;
+
+  const formattedFinalizedAt = finalizedAt
+    ? formatRelative(new Date(finalizedAt), new Date())
+    : '';
+  const formattedEndedAt = endedAt
+    ? capitalizeFirstLetter(formatRelative(new Date(endedAt), new Date()))
+    : '';
+
+  if (motionState < MotionState.Closed) {
+    return formatText(MSG.finalizeNotStarted);
+  }
+
+  if (motionState === MotionState.Finalizable) {
+    if (yayRevealedRep > nayRevealedRep) {
+      return formatText(MSG.finalizeYaySideWon, {
+        timestamp: formattedEndedAt,
+      });
+    }
+
+    return formatText(MSG.finalizeNaySideWon, {
+      timestamp: formattedEndedAt,
+    });
+  }
+
+  return formatText(MSG.finalizedAction, {
+    timestamp: formattedFinalizedAt,
   });
 };

@@ -4187,6 +4187,8 @@ export type MotionStateHistory = {
   allVotesRevealedAt?: Maybe<Scalars['AWSDateTime']>;
   /** The timestamp when all votes were submitted */
   allVotesSubmittedAt?: Maybe<Scalars['AWSDateTime']>;
+  /** The timestamp when the motion ended (Passed or failed) */
+  endedAt?: Maybe<Scalars['AWSDateTime']>;
   /** The timestamp when the motion was finalized */
   finalizedAt?: Maybe<Scalars['AWSDateTime']>;
   /** Whether the motion has failed */
@@ -4211,6 +4213,8 @@ export type MotionStateHistoryInput = {
   allVotesRevealedAt?: InputMaybe<Scalars['AWSDateTime']>;
   /** The timestamp when all votes were submitted */
   allVotesSubmittedAt?: InputMaybe<Scalars['AWSDateTime']>;
+  /** The timestamp when the motion ended (Passed or failed) */
+  endedAt?: InputMaybe<Scalars['AWSDateTime']>;
   /** The timestamp when the motion was finalized */
   finalizedAt?: InputMaybe<Scalars['AWSDateTime']>;
   /** Whether the motion has failed */
@@ -9326,6 +9330,7 @@ export const ColonyMotionFragmentDoc = gql`
     naySideFullyStakedAt
     allVotesSubmittedAt
     allVotesRevealedAt
+    endedAt
     finalizedAt
   }
   messages {

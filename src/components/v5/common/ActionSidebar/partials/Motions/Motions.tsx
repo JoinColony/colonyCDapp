@@ -1,9 +1,9 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
+import { type Placement } from '@popperjs/core';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
@@ -23,6 +23,7 @@ import StakingStep from './steps/StakingStep/index.ts';
 import VotingStep from './steps/VotingStep/index.ts';
 import { type MotionsProps, type Steps, CustomStep } from './types.ts';
 import {
+  getFinalizeStepTooltipText,
   getOutcomeStepTooltipText,
   getRevealStepTooltipText,
   getStakingStepTooltipText,
@@ -30,14 +31,6 @@ import {
 } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
-
-const MSG = defineMessages({
-  finalizePhaseButtonTooltip: {
-    id: `${displayName}.finalizePhaseButtonTooltip`,
-    defaultMessage:
-      'Execute and return all stakes of the supported action or only return stakes of a opposed/failed action.',
-  },
-});
 
 const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const { canInteract } = useAppContext();
@@ -122,7 +115,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left',
+            placement: 'left' as Placement,
             className: 'z-10',
           },
         },
@@ -153,7 +146,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left',
+            placement: 'left' as Placement,
             className: 'z-10',
           },
         },
@@ -188,7 +181,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left',
+            placement: 'left' as Placement,
             className: 'z-10',
           },
         },
@@ -252,7 +245,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left',
+            placement: 'left' as Placement,
             className: 'z-10',
           },
         },
@@ -273,10 +266,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.finalize.label' }) || '',
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.finalizePhaseButtonTooltip} />
+            tooltipContent: getFinalizeStepTooltipText(
+              networkMotionState,
+              motionData,
             ),
-            placement: 'left',
+            placement: 'left' as Placement,
             className: 'z-10',
           },
         },

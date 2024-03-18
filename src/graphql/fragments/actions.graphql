@@ -187,6 +187,7 @@ fragment ColonyMotion on ColonyMotion {
     naySideFullyStakedAt
     allVotesSubmittedAt
     allVotesRevealedAt
+    endedAt
     finalizedAt
   }
   messages {
