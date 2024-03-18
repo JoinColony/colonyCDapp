@@ -2,7 +2,7 @@ import { array, type InferType, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 export enum ManageMembersType {

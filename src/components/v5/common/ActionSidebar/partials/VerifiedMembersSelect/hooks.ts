@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetVerifiedMembersQuery } from '~gql';
 import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
