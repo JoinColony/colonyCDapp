@@ -221,10 +221,8 @@ export const getRevealStepTooltipText = (
   motionState: MotionState | undefined = MotionState.Null,
   motionData: ColonyMotion | undefined | null,
 ) => {
-  const { motionStateHistory, revealedVotes } = motionData || {};
+  const { motionStateHistory, voterRecord } = motionData || {};
   const { allVotesSubmittedAt, allVotesRevealedAt } = motionStateHistory || {};
-  const yayRevealedVotes = Number(revealedVotes?.raw.yay) || 0;
-  const nayRevealedVotes = Number(revealedVotes?.raw.nay) || 0;
 
   const formattedAllVotesSubmittedAt = allVotesSubmittedAt
     ? capitalizeFirstLetter(
@@ -247,9 +245,16 @@ export const getRevealStepTooltipText = (
     });
   }
 
+  const revealedVoteCount = voterRecord.reduce((acc, voter) => {
+    if (typeof voter.vote === 'number') {
+      return acc + 1;
+    }
+    return acc + 0;
+  }, 0);
+
   return formatText(MSG.revealEnded, {
     timestamp: formattedAllVotesRevealedAt,
-    revealedVoteCount: yayRevealedVotes + nayRevealedVotes || 0,
+    revealedVoteCount,
   });
 };
 
