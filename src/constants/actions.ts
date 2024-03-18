@@ -1,6 +1,6 @@
 export enum Action {
   SimplePayment = 'simple-payment',
-  AdvancedPayment = 'advanced-payment',
+  PaymentBuilder = 'payment-builder',
   BatchPayment = 'batch-payment',
   SplitPayment = 'split-payment',
   StagedPayment = 'staged-payment',

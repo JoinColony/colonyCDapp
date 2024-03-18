@@ -13,7 +13,7 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
 
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
-  [Action.AdvancedPayment]: 'button.createPayment',
+  [Action.PaymentBuilder]: 'button.createPayment',
   [Action.SimplePayment]: 'button.createPayment',
   [Action.BatchPayment]: 'button.createPayment',
   [Action.SplitPayment]: 'button.createPayment',
