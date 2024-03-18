@@ -85,6 +85,7 @@ module.exports = {
           naySideFullyStakedAt
           allVotesSubmittedAt
           allVotesRevealedAt
+          endedAt
           finalizedAt
         }
         messages {

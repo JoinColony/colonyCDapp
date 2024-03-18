@@ -291,16 +291,19 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
 
   const newMessagesPromises = motionMessages
     .filter((message) => !messageKeys.has(`${motionData.id}_${message}`))
-    .map((message) =>
-      graphqlRequest(createMotionMessage, {
+    .map((message) => {
+      if (message === 'MotionHasPassed' || message === 'MotionHasFailed' || message === 'MotionHasFailedFinalizable') {
+        updatedStateHistory.endedAt = new Date().toISOString();
+      }
+      return graphqlRequest(createMotionMessage, {
         input: {
           initiatorAddress: constants.AddressZero,
           name: message,
           messageKey: `${motionData.id}_${message}`,
           motionId: motionData.id,
         },
-      }),
-    );
+      });
+    });
 
   await Promise.all(newMessagesPromises);
 
