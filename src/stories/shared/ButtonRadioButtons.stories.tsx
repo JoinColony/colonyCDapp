@@ -1,5 +1,6 @@
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import clsx from 'clsx';
 import React from 'react';
 
 import ButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/index.ts';
@@ -25,21 +26,28 @@ const ButtonRadioButtonsWithHooks = () => {
           label: 'Oppose',
           id: 'oppose',
           value: 'oppose',
-          className:
-            'text-gray-900 hover:text-negative-400 border-negative-400',
-          checkedClassName: 'text-base-white bg-negative-400',
-          iconClassName: 'text-negative-400',
-          checkedIconClassName: 'text-base-white',
+          className: (checked, disabled) =>
+            clsx({
+              'text-gray-900 border-negative-300 [&_.icon]:text-negative-400':
+                !checked && !disabled,
+              'border-gray-300 text-gray-300 [&_.icon]:text-gray-300': disabled,
+              'bg-negative-400 border-negative-400 text-base-white':
+                checked && !disabled,
+            }),
           icon: ThumbsDown,
         },
         {
           label: 'Support',
           id: 'support',
           value: 'support',
-          className: 'text-gray-900 hover:text-purple-400 border-purple-400',
-          checkedClassName: 'text-base-white bg-purple-400',
-          iconClassName: 'text-purple-400',
-          checkedIconClassName: 'text-base-white',
+          className: (checked, disabled) =>
+            clsx({
+              'text-gray-900 border-purple-200 [&_.icon]:text-purple-400':
+                !checked && !disabled,
+              'border-gray-300 text-gray-300 [&_.icon]:text-gray-300': disabled,
+              'border-purple-400 bg-purple-400 text-base-white':
+                checked && !disabled,
+            }),
           icon: ThumbsUp,
         },
       ]}

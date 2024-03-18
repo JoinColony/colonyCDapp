@@ -15,16 +15,7 @@ function ButtonRadioButtons<TValue = string>({
   ...rest
 }: ButtonRadioButtonsProps<TValue>): JSX.Element {
   const modifiedItems = items.map<RadioItem<TValue>>(
-    ({
-      label,
-      icon: Icon,
-      className,
-      checkedClassName,
-      checkedIconClassName,
-      iconClassName,
-      disabled: disabledButton,
-      ...item
-    }) => {
+    ({ label, icon: Icon, className, disabled: disabledButton, ...item }) => {
       return {
         ...item,
         disabled: disabledButton,
@@ -32,6 +23,9 @@ function ButtonRadioButtons<TValue = string>({
         children: ({ checked }) => (
           <span
             className={clsx(
+              typeof className === 'string'
+                ? className
+                : className(checked, disabledButton),
               `
                 flex
                 group/wrapper
@@ -47,32 +41,9 @@ function ButtonRadioButtons<TValue = string>({
                 min-h-[2.5rem]
                 rounded-lg
               `,
-              {
-                [className]: !checked && !disabledButton && !disabled,
-                [checkedClassName]: checked && !disabledButton && !disabled,
-                'text-base-white bg-gray-300 border-gray-300':
-                  disabledButton || disabled,
-              },
             )}
           >
-            {Icon && (
-              <Icon
-                size={18}
-                className={clsx(
-                  [
-                    checked && !disabledButton && !disabled
-                      ? checkedIconClassName
-                      : '',
-                    !checked && !disabledButton && !disabled
-                      ? iconClassName
-                      : '',
-                  ],
-                  {
-                    'text-base-white': disabledButton || disabled,
-                  },
-                )}
-              />
-            )}
+            {Icon && <Icon size={18} className="icon" />}
             <span className="text-3">{label}</span>
           </span>
         ),
