@@ -9,6 +9,7 @@ import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { ActionTypes } from '~redux';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
+import { formatText } from '~utils/intl.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useActionFormBaseHook } from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
@@ -36,7 +37,8 @@ export const useManageVerifiedMembers = (
   const {
     colony: { colonyAddress, name },
   } = useColonyContext();
-  const { totalMembers, verifiedMembers } = useMemberContext();
+  const { membersByAddress, totalMembers, verifiedMembers } =
+    useMemberContext();
 
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
@@ -54,12 +56,15 @@ export const useManageVerifiedMembers = (
       : ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS;
 
   const validationSchema = useMemo(() => {
+    const allMemberAddresses = Object.keys(membersByAddress);
+
     if (manageMembers === ManageMembersType.Add) {
       const verifiedBlacklist = verifiedMembers.map(
         (member) => member.contributorAddress,
       );
       return getValidationSchema(
         verifiedBlacklist,
+        allMemberAddresses,
         formatText(MSG.memberAlreadyVerified),
       );
     }
@@ -70,9 +75,10 @@ export const useManageVerifiedMembers = (
 
     return getValidationSchema(
       unverifiedBlacklist,
+      allMemberAddresses,
       formatText(MSG.memberAlreadyNotVerified),
     );
-  }, [verifiedMembers, totalMembers, manageMembers]);
+  }, [manageMembers, totalMembers, membersByAddress, verifiedMembers]);
 
   useActionFormBaseHook({
     actionType:
