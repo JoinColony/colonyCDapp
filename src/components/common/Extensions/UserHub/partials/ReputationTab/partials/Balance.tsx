@@ -85,7 +85,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
             className={styles.numeral}
             value={tokenBalanceData?.balance ?? 0}
             decimals={tokenDecimals}
-            suffix={nativeToken?.symbol || 'CLNY'}
+            suffix={` ${nativeToken?.symbol || 'CLNY'}`}
             appearance={{ size: 'small' }}
           />
         </div>
@@ -127,7 +127,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               className={styles.numeral}
               value={tokenBalanceData?.activeBalance ?? 0}
               decimals={tokenDecimals}
-              suffix={nativeToken?.symbol || 'CLNY'}
+              suffix={` ${nativeToken?.symbol || 'CLNY'}`}
               appearance={{ size: 'small' }}
             />
           </div>
@@ -178,7 +178,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               className={styles.numeral}
               value={tokenBalanceData?.lockedBalance ?? 0}
               decimals={tokenDecimals}
-              suffix={nativeToken?.symbol || 'CLNY'}
+              suffix={` ${nativeToken?.symbol || 'CLNY'}`}
               appearance={{ size: 'small' }}
             />
           </div>

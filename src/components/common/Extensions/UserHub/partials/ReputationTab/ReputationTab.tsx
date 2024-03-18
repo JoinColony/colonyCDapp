@@ -33,7 +33,11 @@ const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
         wallet={wallet}
         onTabChange={onTabChange}
       />
-      <TotalReputation colonyAddress={colonyAddress} wallet={wallet} />
+      <TotalReputation
+        colonyAddress={colonyAddress}
+        wallet={wallet}
+        nativeToken={nativeToken}
+      />
       <PendingReputation
         colonyAddress={colonyAddress}
         wallet={wallet}

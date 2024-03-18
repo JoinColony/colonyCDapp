@@ -92,7 +92,7 @@ const RichText: FC<RichTextProps> = ({
               <MenuBar editor={editor} />
               <RichTextContent editor={editor} {...omit(field, 'ref')} />
 
-              {(characterCount || isDecriptionFieldExpanded) && (
+              {characterCount && isDecriptionFieldExpanded ? (
                 <div className="flex items-center justify-between mt-4">
                   {characterCount >= 1000 && isDecriptionFieldExpanded && (
                     <TextButton
@@ -110,7 +110,7 @@ const RichText: FC<RichTextProps> = ({
                       </div>
                     )}
                 </div>
-              )}
+              ) : null}
             </>
           ) : (
             <>

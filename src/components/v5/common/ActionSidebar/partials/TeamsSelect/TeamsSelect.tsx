@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
-import { useController } from 'react-hook-form';
+import React, { useEffect, type FC } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
@@ -26,6 +26,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
   } = useController({
     name,
   });
+  const { resetField } = useFormContext();
   const selectedTeam = field.value;
   const isError = !!error;
   const teamsOptions = useTeamsOptions(filterOptionsFn);
@@ -47,6 +48,12 @@ const TeamsSelect: FC<TeamSelectProps> = ({
     HTMLButtonElement,
     HTMLDivElement
   >([isTeamSelectVisible]);
+
+  useEffect(() => {
+    if (!selectedOption && field.value) {
+      resetField(name);
+    }
+  }, [field.value, name, resetField, selectedOption]);
 
   return (
     <div className="sm:relative w-full">

@@ -34,7 +34,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
             <Numeral
               value={stake.amount}
               decimals={nativeToken.decimals}
-              suffix={nativeToken.symbol}
+              suffix={` ${nativeToken.symbol}`}
             />
           </div>
           <div className="text-gray-600">

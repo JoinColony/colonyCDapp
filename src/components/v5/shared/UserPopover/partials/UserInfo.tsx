@@ -158,7 +158,7 @@ const UserInfo: FC<UserInfoProps> = ({
                       <Tooltip
                         className="flex justify-end text-sm text-blue-400 min-w-[4.5rem] items-center"
                         tooltipContent={
-                          <Numeral value={reputationRaw} suffix="pts" />
+                          <Numeral value={reputationRaw} suffix=" pts" />
                         }
                       >
                         <Star size={12} />

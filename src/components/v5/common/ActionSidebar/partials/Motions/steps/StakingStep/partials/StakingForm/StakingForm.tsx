@@ -168,7 +168,7 @@ const StakingForm: FC<StakingFormProps> = ({
                           balance: (
                             <Numeral
                               value={userAvailableBalance}
-                              suffix={tokenSymbol}
+                              suffix={` ${tokenSymbol}`}
                               decimals={tokenDecimals}
                             />
                           ),
