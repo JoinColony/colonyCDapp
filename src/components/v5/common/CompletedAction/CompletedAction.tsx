@@ -77,7 +77,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <EditColonyDetails action={action} />;
       case ExtendedColonyActionType.UpdateColonyObjective:
         return <UpgradeColonyObjective action={action} />;
-      case ColonyActionType.TempAdvancedPayment:
+      case ColonyActionType.CreateExpenditure:
         return (
           !loadingExpenditure &&
           expenditure && (
