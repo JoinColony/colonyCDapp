@@ -23,7 +23,6 @@ import PillsBase from '../Pills/PillsBase.tsx';
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
-import { useGetExpenditureData } from './hooks/useGetExpenditureData.ts';
 import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ExpenditureBadge from './partials/ExpenditureBadge/ExpenditureBadge.tsx';
@@ -37,11 +36,15 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   initialValues,
   transactionId,
 }) => {
-  const { action, defaultValues, loadingAction, isMotion, motionState } =
-    useGetActionData(transactionId);
-  const { expenditure, loadingExpenditure } = useGetExpenditureData(
-    action?.expenditureId,
-  );
+  const {
+    action,
+    defaultValues,
+    loadingAction,
+    isMotion,
+    motionState,
+    expenditure,
+    loadingExpenditure,
+  } = useGetActionData(transactionId);
 
   const {
     actionSidebarToggle: [

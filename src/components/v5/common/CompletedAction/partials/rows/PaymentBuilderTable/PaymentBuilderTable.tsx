@@ -5,15 +5,16 @@ import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
-import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import PaymentBuilderTokensTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderTokensTotal/PaymentBuilderTokensTotal.tsx';
-import { type PaymentBuilderTokenItem } from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderTokensTotal/types.ts';
+import { getSelectedToken } from '~utils/tokens.ts';
+import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
+import { type PaymentBuilderPayoutItem } from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/types.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import AmountField from './AmountField.tsx';
 import RecipientField from './RecipientField.tsx';
 import {
+  type SelectedTokensProps,
   type PaymentBuilderTableModel,
   type PaymentBuilderTableProps,
 } from './types.ts';
@@ -27,10 +28,9 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = data.length > 1;
   const {
-    colony: { expendituresGlobalClaimDelay, tokens },
+    colony,
+    colony: { expendituresGlobalClaimDelay },
   } = useColonyContext();
-  const colonyTokens =
-    tokens?.items.filter(notNull).map((colonyToken) => colonyToken.token) || [];
   const expendituresGlobalClaimDelayHours = useMemo(() => {
     if (typeof expendituresGlobalClaimDelay !== 'number') {
       return null;
@@ -64,7 +64,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
       footer: hasMoreThanOneToken
         ? () => {
             const selectedTokens = dataRef.current?.reduce(
-              (result, { amount }) => {
+              (result: SelectedTokensProps, { amount }) => {
                 if (!amount) {
                   return result;
                 }
@@ -73,34 +73,27 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
                   return result;
                 }
 
-                const tokenData = colonyTokens.find(
-                  (colonyToken) => colonyToken.tokenAddress === amount[0].token,
-                );
+                const tokenData = getSelectedToken(colony, amount[0].token);
 
                 if (!tokenData) {
                   return result;
                 }
 
-                return {
-                  ...result,
-                  [amount[0].token]: {
+                return [
+                  {
                     ...tokenData,
-                    amount: BigNumber.from(
-                      result[amount[0].token]?.amount || '0',
-                    )
+                    amount: BigNumber.from(result[0]?.amount || '0')
                       .add(BigNumber.from(amount[0].amount || '0'))
                       .toString(),
                   },
-                };
+                ];
               },
-              {},
+              [],
             );
 
-            const selectedTokensData = Object.values(selectedTokens);
-
             return (
-              <PaymentBuilderTokensTotal
-                tokens={selectedTokensData as PaymentBuilderTokenItem[]}
+              <PaymentBuilderPayoutsTotal
+                payouts={selectedTokens as PaymentBuilderPayoutItem[]}
               />
             );
           }
