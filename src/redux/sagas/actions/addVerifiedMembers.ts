@@ -4,7 +4,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
-import { invalidateMemberQueries } from '~utils/members.ts';
+import { updateContributorQueries } from '~utils/members.ts';
 
 import {
   createTransaction,
@@ -117,7 +117,7 @@ function* addVerifiedMembersAction({
       meta,
     });
 
-    yield fork(invalidateMemberQueries, members, colonyAddress, true);
+    yield fork(updateContributorQueries, members, colonyAddress, true);
 
     if (colonyName && navigate) {
       navigate(`/${colonyName}?tx=${txHash}`, {

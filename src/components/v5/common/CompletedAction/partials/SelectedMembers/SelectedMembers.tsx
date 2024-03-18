@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { formatText } from '~utils/intl.ts';
 import Table from '~v5/common/Table/Table.tsx';
 

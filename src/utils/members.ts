@@ -30,11 +30,7 @@ export const getColonyContributorId = (
   walletAddress: string,
 ) => `${colonyAddress}_${walletAddress}`;
 
-export const getColonyContributorAddressFromId = (
-  colonyContributorId: string,
-) => colonyContributorId.split('_')[1];
-
-export const invalidateMemberQueries = (
+export const updateContributorQueries = (
   userAddresses: string[],
   colonyAddress: string,
   isVerified: boolean,
