@@ -1,7 +1,8 @@
-import { type ExpenditureSlotFragment } from '~gql';
+import { type TokenType } from '~gql';
+import { type ExpenditureSlot } from '~types/graphql.ts';
 
 export interface PaymentBuilderTableProps {
-  items: ExpenditureSlotFragment[];
+  items: ExpenditureSlot[];
 }
 
 export interface AmountProps {
@@ -18,4 +19,15 @@ export interface PaymentBuilderTableModel {
 
 export interface RecipientFieldProps {
   address: string;
+}
+
+export interface SelectedTokensProps {
+  amount: string;
+  decimals: number;
+  name: string;
+  symbol: string;
+  type?: TokenType | null | undefined;
+  avatar?: string | null | undefined;
+  thumbnail?: string | null | undefined;
+  tokenAddress: string;
 }

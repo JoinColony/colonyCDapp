@@ -31,7 +31,7 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
     switch (actionType) {
       case ColonyActionType.SetUserRoles:
         return formatText({ id: 'actionSidebar.team' });
-      case ColonyActionType.TempAdvancedPayment:
+      case ColonyActionType.CreateExpenditure:
         return formatText({ id: 'actionSidebar.fundFrom' });
       default:
         return formatText({ id: 'actionSidebar.from' });
