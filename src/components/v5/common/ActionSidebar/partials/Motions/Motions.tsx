@@ -228,12 +228,14 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 formatText({ id: 'motion.support.wins.label' })) ||
               formatText({ id: 'motion.oppose.wins.label' })
             : formatText({ id: 'motion.outcome.label' }) || '',
-          className: clsx('z-[1]', {
-            'bg-base-white text-purple-400 border-purple-400':
-              hasVotedMotionPassed,
-            'bg-base-white text-negative-400 border-negative-400':
-              !hasVotedMotionPassed,
-          }),
+          className: motionFinished
+            ? clsx('z-[1]', {
+                'bg-base-white text-purple-400 border-purple-400':
+                  hasVotedMotionPassed,
+                'bg-base-white text-negative-400 border-negative-400':
+                  !hasVotedMotionPassed,
+              })
+            : undefined,
           tooltipProps: {
             tooltipContent: (
               <FormattedMessage {...MSG.outcomePhaseButtonTooltip} />
