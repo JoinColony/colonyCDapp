@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import { type ColonyMotion } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import { capitalizeFirstLetter } from '~utils/strings.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
@@ -106,13 +107,19 @@ export const getStakingStepTooltipText = (
   const { nay, yay } = percentage || {};
 
   const formatttedMotionCreatedAt = motionCreatedAt
-    ? formatRelative(new Date(motionCreatedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(motionCreatedAt), new Date()),
+      )
     : '';
   const formattedNaySideFullyStakedAt = naySideFullyStakedAt
-    ? formatRelative(new Date(naySideFullyStakedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(naySideFullyStakedAt), new Date()),
+      )
     : '';
   const formattedYaySideFullyStakedAt = yaySideFullyStakedAt
-    ? formatRelative(new Date(yaySideFullyStakedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(yaySideFullyStakedAt), new Date()),
+      )
     : '';
 
   const objectingStakesPercentageValue = Number(nay) || 0;
@@ -176,13 +183,19 @@ export const getVotingStepTooltipText = (
     motionStateHistory || {};
 
   const formattedNaySideFullyStakedAt = naySideFullyStakedAt
-    ? formatRelative(new Date(naySideFullyStakedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(naySideFullyStakedAt), new Date()),
+      )
     : '';
   const formattedYaySideFullyStakedAt = yaySideFullyStakedAt
-    ? formatRelative(new Date(yaySideFullyStakedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(yaySideFullyStakedAt), new Date()),
+      )
     : '';
   const formattedAllVotesSubmittedAt = allVotesSubmittedAt
-    ? formatRelative(new Date(allVotesSubmittedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(allVotesSubmittedAt), new Date()),
+      )
     : '';
 
   if (motionState < MotionState.Submit) {
@@ -214,10 +227,14 @@ export const getRevealStepTooltipText = (
   const nayRevealedVotes = Number(revealedVotes?.raw.nay) || 0;
 
   const formattedAllVotesSubmittedAt = allVotesSubmittedAt
-    ? formatRelative(new Date(allVotesSubmittedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(allVotesSubmittedAt), new Date()),
+      )
     : '';
   const formattedAllVotesRevealedAt = allVotesRevealedAt
-    ? formatRelative(new Date(allVotesRevealedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(allVotesRevealedAt), new Date()),
+      )
     : '';
 
   if (motionState < MotionState.Reveal) {
@@ -253,10 +270,14 @@ export const getOutcomeStepTooltipText = (
   const isFullySupported = supportingStakesPercentageValue === 100;
 
   const formattedAllVotesSubmittedAt = allVotesSubmittedAt
-    ? formatRelative(new Date(allVotesSubmittedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(allVotesSubmittedAt), new Date()),
+      )
     : '';
   const formattedAllVotesRevealedAt = allVotesRevealedAt
-    ? formatRelative(new Date(allVotesRevealedAt), new Date())
+    ? capitalizeFirstLetter(
+        formatRelative(new Date(allVotesRevealedAt), new Date()),
+      )
     : '';
 
   if (motionState < MotionState.Closed) {

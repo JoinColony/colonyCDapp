@@ -92,7 +92,6 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             md:h-full
             md:w-[35%]
             md:flex-shrink-0
-            md:overflow-y-auto
             md:border-b-0
             md:border-l
             md:border-l-gray-200

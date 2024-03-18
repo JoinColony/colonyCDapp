@@ -2,7 +2,7 @@ import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
-import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
 import { type ObjectiveBoxProps } from './types.ts';
