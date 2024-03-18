@@ -9,9 +9,9 @@ import React, { useCallback, type FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { removeDecisionAction } from '~redux/actionCreators/index.ts';
@@ -22,7 +22,7 @@ import { formatText } from '~utils/intl.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.tsx';
+} from '~v5/common/ActionSidebar/consts.ts';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import Avatar from '~v5/shared/Avatar/Avatar.tsx';

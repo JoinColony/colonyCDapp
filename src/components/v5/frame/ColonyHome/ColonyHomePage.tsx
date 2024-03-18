@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ColonyDashboardProvider } from '~context/ColonyDashboardContext.tsx';
+import ColonyDashboardProvider from '~context/ColonyDashboardContext/ColonyDashboardContextProvider.tsx';
 
 import ColonyHome from './ColonyHome.tsx';
 

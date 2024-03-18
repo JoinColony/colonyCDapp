@@ -12,9 +12,9 @@ import {
 import React, { useCallback, useState } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { ModelSortDirection } from '~gql';
 import { useMobile } from '~hooks';
 import { useActivityData } from '~hooks/useActivityData.ts';
@@ -31,7 +31,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { type TeamCardListItem } from '~v5/common/TeamCardList/types.ts';
 import Link from '~v5/shared/Link/index.ts';
 

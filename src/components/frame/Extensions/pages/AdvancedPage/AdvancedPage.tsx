@@ -2,8 +2,8 @@ import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 // @BETA: Disabled for now
 // import Button from '~v5/shared/Button';
 // import Link from '~v5/shared/Link';

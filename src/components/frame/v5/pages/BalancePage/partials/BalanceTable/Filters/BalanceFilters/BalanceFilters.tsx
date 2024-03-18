@@ -10,7 +10,7 @@ import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import { useFiltersContext } from '../FilterContext/FiltersContext.tsx';
+import { useFiltersContext } from '../FiltersContext/FiltersContext.ts';
 import ActiveFiltersList from '../partials/ActiveFiltersList/ActiveFiltersList.tsx';
 import BalanceTableFiltersItem from '../partials/BalanceTableFiltersItem/BalanceTableFiltersItem.tsx';
 

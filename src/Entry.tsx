@@ -5,7 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { AnalyticsContextProvider } from '~context/AnalyticsContext/index.ts';
+import AnalyticsContextProvider from '~context/AnalyticsContext/AnalyticsContextProvider.tsx';
 import { getContext, ContextModule } from '~context/index.ts';
 import RouteTracker from '~routes/RouteTracker.tsx';
 
@@ -20,17 +20,9 @@ interface Props {
   store: any;
 }
 
-/**
- * @NOTE Coming from webpack DefinePlugin, only on production
- *
- * It became apparent that we need a "live" way to check what commit we're running on
- * while debugging issues strait into production
- */
-declare const PROD_COMMIT_HASH: string | undefined;
-
-if (PROD_COMMIT_HASH) {
+if (__COMMIT_HASH__) {
   // eslint-disable-next-line no-console
-  console.log(`Running on ${PROD_COMMIT_HASH}`);
+  console.log(`Running on ${__COMMIT_HASH__}`);
 }
 
 const Entry = ({ store }: Props) => {

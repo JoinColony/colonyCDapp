@@ -3,7 +3,7 @@ import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { isEqual } from 'lodash';
 import React, { useMemo, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
 import { notNull } from '~utils/arrays/index.ts';

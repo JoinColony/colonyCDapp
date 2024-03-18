@@ -1,13 +1,13 @@
 import { useFormContext } from 'react-hook-form';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { DecisionMethod } from '~types/actions.ts';
 
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
-} from '../../consts.tsx';
+} from '../../consts.ts';
 
 import { getHasActionPermissions } from './helpers.ts';
 

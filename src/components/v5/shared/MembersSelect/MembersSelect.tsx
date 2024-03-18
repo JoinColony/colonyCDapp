@@ -1,7 +1,7 @@
 import React, { type FC, useCallback, useState } from 'react';
 import { type Props as ReactSelectProps, type SingleValue } from 'react-select';
 
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   DropdownIndicator,

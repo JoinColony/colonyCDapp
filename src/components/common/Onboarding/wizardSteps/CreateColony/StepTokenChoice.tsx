@@ -2,14 +2,16 @@ import { CoinVertical, HandCoins } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type ReactNode } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { defineMessages, type MessageDescriptor } from 'react-intl';
+import { type MessageDescriptor } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 
-import { ButtonRow, HeaderRow } from '../shared.tsx';
+import ButtonRow from '../ButtonRow.tsx';
+import HeaderRow from '../HeaderRow.tsx';
+import { MSGTokenChoice as MSG } from '../shared.ts';
 
 import { type FormValues, type Step2 } from './types.ts';
 
@@ -26,36 +28,6 @@ interface TokenSelectorProps {
   title: MessageDescriptor | string;
   description: MessageDescriptor | string;
 }
-
-export const MSG = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Creating a new native token or use existing?',
-  },
-  description: {
-    id: `${displayName}.description`,
-    defaultMessage:
-      'We highly recommend creating a new token, you will have greater control of your token going forward, support all features of Colony, and potentially save a lot of cost if on another chain.',
-  },
-  createOptionTitle: {
-    id: `${displayName}.createOptionTitle`,
-    defaultMessage: 'Create a new token',
-  },
-  createOptionDescription: {
-    id: `${displayName}.createOptionDescription`,
-    defaultMessage:
-      'Quickest, easiest, and best option for greater control over your token using your Colony.',
-  },
-  selectOptionTitle: {
-    id: `${displayName}.selectOptionTitle`,
-    defaultMessage: 'Use an existing token',
-  },
-  selectOptionDescription: {
-    id: `${displayName}.selectOptionDescription`,
-    defaultMessage:
-      'Suitable for public tokens. Requires token to be on the same blockchain as the Colony.',
-  },
-});
 
 const TokenSelector = ({
   name,

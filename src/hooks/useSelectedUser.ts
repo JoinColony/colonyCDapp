@@ -1,4 +1,4 @@
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { type User } from '~types/graphql.ts';
 
 const useSelectedUser = (colonyUsers: User[]) => {

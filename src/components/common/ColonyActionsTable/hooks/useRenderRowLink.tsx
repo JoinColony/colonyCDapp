@@ -8,7 +8,7 @@ import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { type RenderCellWrapper } from '~v5/common/Table/types.ts';
 import Link from '~v5/shared/Link/index.ts';
 
-export const useRenderRowLink = (
+const useRenderRowLink = (
   loading: boolean,
 ): RenderCellWrapper<ActivityFeedColonyAction> => {
   const cellWrapperClassName = '!pt-[.5625rem] !pb-2';
@@ -29,3 +29,5 @@ export const useRenderRowLink = (
       </Link>
     );
 };
+
+export default useRenderRowLink;

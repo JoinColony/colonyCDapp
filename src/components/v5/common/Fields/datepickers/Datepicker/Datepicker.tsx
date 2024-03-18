@@ -15,7 +15,7 @@ import DatepickerCustomHeader from './partials/DatepickerCustomHeader/index.ts';
 import DatepickerCustomInput from './partials/DatepickerCustomInput/index.ts';
 import { type DatepickerProps } from './types.ts';
 
-import styles from '../common/Datepicker.css';
+import styles from '../common/Datepicker.module.css';
 
 const Datepicker: FC<DatepickerProps> = ({
   cancelButtonProps,

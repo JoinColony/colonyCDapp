@@ -7,7 +7,7 @@ import {
 
 import { type FileReaderFile } from '~utils/fileReader/types.ts';
 
-import { type DropzoneErrors } from './utils.tsx';
+import { type DropzoneErrors } from './utils.ts';
 
 export type SuccessContentProps = Pick<
   ErrorContentProps,

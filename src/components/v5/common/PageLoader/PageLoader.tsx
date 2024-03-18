@@ -3,7 +3,7 @@ import React, { type ReactNode } from 'react';
 
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 
-import styles from './PageLoader.css';
+import styles from './PageLoader.module.css';
 
 const STROKE_WIDTH = 4;
 const RADIUS = 60 - STROKE_WIDTH / 2; // stroke goes on both sides so we need to reduce the radius just by half

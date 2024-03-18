@@ -7,7 +7,7 @@ import { isFullWallet } from '~types/wallet.ts';
 const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
   try {
     const response = await fetch(
-      `${process.env.AUTH_PROXY_ENDPOINT}/${urlPartial}`,
+      `${import.meta.env.AUTH_PROXY_ENDPOINT}/${urlPartial}`,
       {
         method: 'GET',
         headers: {

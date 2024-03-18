@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 
 import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import { formatText } from '~utils/intl.ts';

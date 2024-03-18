@@ -5,14 +5,14 @@ import React, { type FC, useEffect } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress.ts';
 import {
   COLONY_AGREEMENTS_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
-} from '~routes';
+} from '~routes/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';

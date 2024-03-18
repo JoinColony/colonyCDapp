@@ -4,8 +4,8 @@ import pinataClient from './pinataClient.ts';
 
 const getIPFSContext = () => {
   if (
-    process.env.NETWORK === 'ganache' ||
-    !(process.env.PINATA_API_KEY && process.env.PINATA_API_SECRET)
+    import.meta.env.NETWORK_ID === 'ganache' ||
+    !(import.meta.env.PINATA_API_KEY && import.meta.env.PINATA_API_SECRET)
   ) {
     const ipfsNode = new IPFSNode();
     return getIPFSWithFallback(ipfsNode);

@@ -1,9 +1,9 @@
 import React, { type FC } from 'react';
 
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { FiltersContextProvider } from './partials/BalanceTable/Filters/FilterContext/index.ts';
+import { FiltersContextProvider } from './partials/BalanceTable/Filters/FiltersContext/index.ts';
 import BalanceTable from './partials/BalanceTable/index.ts';
 
 const displayName = 'v5.pages.BalancePage';

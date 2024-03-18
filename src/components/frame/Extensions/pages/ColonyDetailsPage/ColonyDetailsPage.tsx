@@ -7,12 +7,12 @@ import {
   ADDRESS_ZERO,
   MAX_OBJECTIVE_DESCRIPTION_LENGTH,
 } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/hooks.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings/index.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
 import ObjectiveBox from '~v5/common/ObjectiveBox/index.ts';
 import Button from '~v5/shared/Button/index.ts';

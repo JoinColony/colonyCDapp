@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ENV_FILE=".env"
 AMPLIFY_CONFIG_LOCAL_AWS_INFO='./amplify/.config/local-aws-info.json'

@@ -10,7 +10,7 @@ import {
   DEFAULT_MIME_TYPES,
   DEFAULT_MAX_FILE_SIZE,
   DEFAULT_MAX_FILE_LIMIT,
-} from '~v5/common/AvatarUploader/utils.tsx';
+} from '~v5/common/AvatarUploader/utils.ts';
 
 const useDropzoneWithFileReader = ({
   dropzoneOptions: {

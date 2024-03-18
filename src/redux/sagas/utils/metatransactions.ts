@@ -110,7 +110,7 @@ export const broadcastMetatransaction = async (
   response: Response;
 }> => {
   const response = await fetch(
-    `${process.env.BROADCASTER_ENDPOINT}/broadcast`,
+    `${import.meta.env.METATX_BROADCASTER_ENDPOINT}/broadcast`,
     {
       method: 'POST',
       headers: {

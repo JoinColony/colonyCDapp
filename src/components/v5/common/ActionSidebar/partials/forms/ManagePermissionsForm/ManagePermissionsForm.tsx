@@ -24,15 +24,12 @@ import Description from '../../Description/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
 
-import {
-  AuthorityOptions,
-  PERMISSIONS_OPTIONS,
-  RemoveRoleOptionValue,
-} from './consts.tsx';
+import { AuthorityOptions, RemoveRoleOptionValue } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
-import { getRoleLabel } from './utils.tsx';
+import PermissionsOptions from './PermissionOptions.tsx';
+import { getRoleLabel } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
@@ -72,7 +69,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     [togglePermissionsModalOn],
   );
 
-  const ALLOWED_PERMISSION_OPTIONS = PERMISSIONS_OPTIONS.map(
+  const ALLOWED_PERMISSION_OPTIONS = PermissionsOptions.map(
     ({ options, ...rest }) => ({
       ...rest,
       options: options.filter(({ value }) =>

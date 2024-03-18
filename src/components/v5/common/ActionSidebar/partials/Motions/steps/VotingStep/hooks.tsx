@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { number, object } from 'yup';
 
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetVoterRewardsQuery } from '~gql';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { type MotionVotePayload } from '~redux/sagas/motions/voteMotion.ts';

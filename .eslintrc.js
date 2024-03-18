@@ -5,6 +5,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
+    project: './tsconfig.json',
   },
   env: {
     browser: true,
@@ -18,7 +19,14 @@ module.exports = {
     '@colony/eslint-config-colony',
     'prettier',
   ],
-  plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jsdoc', 'react-hooks'],
+  plugins: [
+    '@typescript-eslint',
+    'react',
+    'jsx-a11y',
+    'jsdoc',
+    'react-hooks',
+    'react-refresh',
+  ],
   overrides: [
     {
       files: [
@@ -91,6 +99,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
 
+    'react-refresh/only-export-components': 'error',
+
     // import plugin (resolvers disabled in favour of using typescript)
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': 'off',
@@ -144,6 +154,12 @@ module.exports = {
       'error',
       {
         fixStyle: 'inline-type-imports',
+      },
+    ],
+    '@typescript-eslint/consistent-type-exports': [
+      'error',
+      {
+        fixMixedExportsWithInlineTypeSpecifier: true,
       },
     ],
     'no-shadow': 'off',

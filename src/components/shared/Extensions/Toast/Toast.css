@@ -1,0 +1,27 @@
+.Toastify__toast-container {
+  @apply w-auto;
+}
+
+.Toastify__toast {
+  @apply min-w-[24.375rem] p-6 mb-0 right-4 rounded-r-lg rounded-l-none shadow-lg border border-gray-200 bg-base-white relative before:block before:content-[''] before:h-full before:absolute before:top-0 before:left-0 before:w-[0.375rem];
+}
+
+.Toastify__toast-body {
+  @apply p-0;
+}
+
+.Toastify__toast-icon {
+  @apply hidden;
+}
+
+.Toastify__toast--error {
+  @apply before:bg-negative-400;
+}
+
+.Toastify__toast--success {
+  @apply before:bg-success-400;
+}
+
+.Toastify__toast--warning {
+  @apply before:bg-warning-400;
+}

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyContributorQuery } from '~gql';
 import { getColonyContributorId } from '~utils/members.ts';
 import { type ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';

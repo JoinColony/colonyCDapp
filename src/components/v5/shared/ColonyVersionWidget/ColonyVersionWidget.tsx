@@ -4,9 +4,9 @@ import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import { type ColonyVersionWidgetProps } from './types.ts';
@@ -63,7 +63,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
                 <WarningCircle size={18} />
               )}
             </span>
-            <span className={styles.value}>{currentVersion}</span>
+            <span>{currentVersion}</span>
           </div>
         </div>
 
@@ -80,7 +80,7 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
             <span className="text-success-400">
               <CheckCircle size={18} />
             </span>
-            <span className={styles.value}>{latestVersion}</span>
+            <span>{latestVersion}</span>
           </div>
         </div>
       </div>

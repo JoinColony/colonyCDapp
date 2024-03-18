@@ -4,7 +4,7 @@ import { type FieldValues } from 'react-hook-form';
 import { type useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { type RefetchColonyFn } from '~context/ColonyContext.tsx';
+import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,

@@ -7,7 +7,7 @@ import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge/index.ts
 
 import { type StakeItemProps } from '../types.ts';
 
-import styles from './StakeItem.css';
+import styles from './StakeItem.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';

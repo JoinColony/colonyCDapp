@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
   useGetColonyMemberInviteQuery,
   useGetColonyWhitelistByNameQuery,

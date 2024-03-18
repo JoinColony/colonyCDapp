@@ -2,7 +2,7 @@ import { Cardholder, GearSix, List, X } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useGetNetworkToken from '~hooks/useGetNetworkToken.ts';
@@ -14,7 +14,7 @@ import Token from './partials/Token/index.ts';
 import UserMenu from './partials/UserMenu/index.ts';
 import { type UserNavigationProps } from './types.ts';
 
-export const displayName = 'common.Extensions.UserNavigation';
+const displayName = 'common.Extensions.UserNavigation';
 
 const UserNavigation: FC<UserNavigationProps> = ({
   extra = null,

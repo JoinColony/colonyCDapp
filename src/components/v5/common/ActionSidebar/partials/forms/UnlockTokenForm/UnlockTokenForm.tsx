@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';

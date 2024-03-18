@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -15,7 +15,7 @@ import ActionFormRow from '../ActionFormRow/index.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
-} from './consts.tsx';
+} from './consts.ts';
 import { useActionsList } from './hooks/index.ts';
 import { translateAction } from './utils.ts';
 

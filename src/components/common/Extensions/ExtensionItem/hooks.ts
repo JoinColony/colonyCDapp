@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import useExtensionsBadge from '~hooks/useExtensionsBadgeStatus.ts';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';

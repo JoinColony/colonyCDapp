@@ -9,11 +9,11 @@ import {
   findNewestGroup,
   type TransactionOrMessageGroups,
 } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { TransactionStatus } from '~gql';
 import { groupedTransactionsAndMessages } from '~redux/selectors/index.ts';
 
-import { HeaderRow } from '../shared.tsx';
+import HeaderRow from '../HeaderRow.tsx';
 
 import ConfirmTransactions from './ConfirmTransactions.tsx';
 

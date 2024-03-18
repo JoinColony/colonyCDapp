@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { string, bool, object } from 'yup';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import { yupDebounce } from '~utils/yup/tests/index.ts';
 

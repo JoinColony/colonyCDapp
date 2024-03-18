@@ -2,8 +2,8 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useColonyDashboardContext } from '~context/ColonyDashboardContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useColonyDashboardContext } from '~context/ColonyDashboardContext/ColonyDashboardContext.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';

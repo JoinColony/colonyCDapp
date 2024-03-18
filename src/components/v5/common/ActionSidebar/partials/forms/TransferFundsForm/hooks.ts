@@ -4,7 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 import { type InferType, number, object, string } from 'yup';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
@@ -14,7 +14,7 @@ import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValida
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.tsx';
+} from '~v5/common/ActionSidebar/consts.ts';
 
 import { useActionFormBaseHook } from '../../../hooks/index.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';

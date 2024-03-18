@@ -2,13 +2,13 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ColonyActionRoles, ColonyActionType } from '~gql';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type ManagePermissionsFormValues } from '../../forms/ManagePermissionsForm/consts.tsx';
-import { getPermissionsMap } from '../../forms/ManagePermissionsForm/utils.tsx';
+import { getPermissionsMap } from '../../forms/ManagePermissionsForm/utils.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 import RecipientUser from './RecipientUser.tsx';

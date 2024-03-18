@@ -18,7 +18,7 @@ import {
   type PopoverContent as PopoverContentType,
 } from './types.ts';
 
-import styles from './PopoverWrapper.css';
+import styles from './PopoverWrapper.module.css';
 
 interface Props {
   appearance?: PopoverAppearanceType;

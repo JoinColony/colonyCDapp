@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { AppContextProvider } from '~context/AppContext.tsx';
-import { CurrencyContextProvider } from '~context/CurrencyContext.tsx';
-import { PageHeadingContextProvider } from '~context/PageHeadingContext/index.ts';
-import {
-  PageThemeContextProvider,
-  usePageThemeContext,
-} from '~context/PageThemeContext.tsx';
+import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
+import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
+import PageHeadingContextProvider from '~context/PageHeadingContext/PageHeadingContextProvider.tsx';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
+import PageThemeContextProvider from '~context/PageThemeContext/PageThemeContextProvider.tsx';
 import { Theme } from '~frame/Extensions/themes/enum.ts';
 import { applyTheme } from '~frame/Extensions/themes/utils.ts';
 

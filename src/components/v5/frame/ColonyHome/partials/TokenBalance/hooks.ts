@@ -1,8 +1,8 @@
 import Decimal from 'decimal.js';
 import { useEffect, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { type SupportedCurrencies } from '~gql';
 import { type ColonyBalances } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';

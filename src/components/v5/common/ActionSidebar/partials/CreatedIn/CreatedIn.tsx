@@ -9,7 +9,7 @@ import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import {
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
-} from '../../consts.tsx';
+} from '../../consts.ts';
 import { useHasNoDecisionMethods } from '../../hooks/index.ts';
 import TeamsSelect from '../TeamsSelect/index.ts';
 

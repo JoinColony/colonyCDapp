@@ -4,8 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { type TransactionOrMessageGroups } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   type GetUserTransactionsQuery,
   useGetUserTransactionsQuery,

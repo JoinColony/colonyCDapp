@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { SupportedCurrencies } from '~gql';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 
@@ -8,8 +8,6 @@ import { currencyIcons } from '../../../UserMenu/consts.ts';
 import CoinGeckoAttribution from '../../CoinGeckoAttribution.tsx';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
-
-import styles from '../Submenu.module.css';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.partials.Currency';
@@ -38,15 +36,12 @@ const Currency = ({ closeSubmenu }: CurrencyProps) => {
               <MenuListItem key={currency}>
                 <button
                   type="button"
-                  className={styles.actionItem}
                   onClick={() => {
                     handleCurrencyClick(currency);
                   }}
                 >
                   <CurrencyIcon size={iconSize} />
-                  <p className={styles.actionItemLabel}>
-                    {currency.toUpperCase()}
-                  </p>
+                  <p>{currency.toUpperCase()}</p>
                 </button>
               </MenuListItem>
             );

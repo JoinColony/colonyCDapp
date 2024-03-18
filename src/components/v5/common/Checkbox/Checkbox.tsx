@@ -6,8 +6,6 @@ import { formatText } from '~utils/intl.ts';
 
 import { type CheckboxProps } from './types.ts';
 
-import styles from './Checkbox.module.css';
-
 const displayName = 'v5.common.Checkbox';
 
 const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
@@ -44,10 +42,13 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
           onChange={onChange}
         />
         <span
-          className={clsx(styles.checkboxBox, {
-            'border-blue-400 text-blue-400 bg-base-white': isChecked,
-            'border-gray-200 bg-base-white': !isChecked,
-          })}
+          className={clsx(
+            'flex items-center justify-center relative mt-0.5 shrink-0 mr-2 transition-all duration-normal border h-4 w-4 rounded',
+            {
+              'border-blue-400 text-blue-400 bg-base-white': isChecked,
+              'border-gray-200 bg-base-white': !isChecked,
+            },
+          )}
         >
           {isChecked && (
             <span className="absolute">

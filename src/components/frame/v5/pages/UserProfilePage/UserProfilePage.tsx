@@ -9,7 +9,7 @@ import {
 import {
   usePageHeadingContext,
   useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/index.ts';
+} from '~context/PageHeadingContext/PageHeadingContext.ts';
 import {
   USER_ADVANCED_ROUTE,
   USER_EDIT_PROFILE_ROUTE,

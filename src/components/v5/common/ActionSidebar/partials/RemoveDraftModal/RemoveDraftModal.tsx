@@ -2,8 +2,8 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React, { useCallback, type FC } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { removeDecisionAction } from '~redux/actionCreators/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';

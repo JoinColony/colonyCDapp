@@ -2,7 +2,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-import { MSG } from './StepTokenChoice.tsx';
+import { MSGTokenChoice as MSG } from '../shared.ts';
+
 import { type TokenChoice } from './types.ts';
 
 interface TokenChoiceOptionsProps {

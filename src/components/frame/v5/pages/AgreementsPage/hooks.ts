@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   useGetColonyActionsQuery,
   ColonyActionType,
@@ -13,7 +13,7 @@ import {
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
-import { useFiltersContext } from './FiltersContext/FiltersContext.tsx';
+import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 
 export const useGetAgreements = () => {
   const {

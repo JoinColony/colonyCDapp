@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useMobile } from '~hooks';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-export const displayName =
-  'common.Extensions.UserNavigation.partials.HeaderAvatar';
+const displayName = 'common.Extensions.UserNavigation.partials.HeaderAvatar';
 
 const HeaderAvatar = () => {
   const { wallet, user } = useAppContext();

@@ -1,0 +1,44 @@
+.main {
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.button {
+  display: block;
+  margin: 0;
+  padding: 15px 0;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
+
+  &[disabled] {
+    cursor: default;
+  }
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/*
+ * @NOTE Hacky fix to properly align the transaction status ready counter
+ * In both the card view and the details view
+ */
+.summary span {
+  padding-top: 1px;
+}
+
+.description {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

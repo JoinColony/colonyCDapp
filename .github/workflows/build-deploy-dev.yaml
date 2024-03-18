@@ -29,7 +29,7 @@ jobs:
           echo "$GITHUB_CONTEXT"
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
@@ -37,10 +37,10 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -59,8 +59,10 @@ jobs:
           tags: |
             ${{ env.ECR_REPOSITORY }}:run-${{ github.run_number }}-dev
             ${{ env.ECR_REPOSITORY }}:${{ env.COMMIT_HASH }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,image-manifest=true
 
-      - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
+      - uses: sarisia/actions-status-discord@v1
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
@@ -80,7 +82,7 @@ jobs:
 
     steps:
       - name: Configure AWS credentials for ECR
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
@@ -107,7 +109,7 @@ jobs:
           aws ecr batch-get-image --repository-name ${{ env.REPOSITORY_NAME }} --image-ids imageDigest=$SHA256 --output json | jq '.images[].imageId'
 
       - name: Configure AWS credentials for EKS
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
@@ -128,7 +130,7 @@ jobs:
         run: |
           kubectl rollout status deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
 
-      - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
+      - uses: sarisia/actions-status-discord@v1
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}

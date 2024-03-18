@@ -2,8 +2,8 @@ import { SmileyMeh } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { APP_URL } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/index.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamReputationSummary from '~v5/common/TeamReputationSummary/index.ts';

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';

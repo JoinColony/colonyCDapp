@@ -1,7 +1,7 @@
 export {
-  PopoverAppearanceType,
-  PopoverTriggerType,
-  PopoverChildFn,
+  type PopoverAppearanceType,
+  type PopoverTriggerType,
+  type PopoverChildFn,
 } from './types.ts';
 
 export { default } from './Popover.tsx';

@@ -16,7 +16,7 @@ import ReputationPage from '~frame/Extensions/pages/ReputationPage/index.ts';
 import FourOFour from '~frame/FourOFour/index.ts';
 import LandingPage from '~frame/LandingPage/index.ts';
 import ActivityPage from '~frame/v5/pages/ActivityPage/index.ts';
-import { FiltersContextProvider } from '~frame/v5/pages/AgreementsPage/FiltersContext/FiltersContext.tsx';
+import FiltersContextProvider from '~frame/v5/pages/AgreementsPage/FiltersContext/FiltersContextProvider.tsx';
 import AgreementsPage from '~frame/v5/pages/AgreementsPage/index.ts';
 import BalancePage from '~frame/v5/pages/BalancePage/index.ts';
 import ColonyPreviewPage from '~frame/v5/pages/ColonyPreviewPage/index.ts';
@@ -36,7 +36,6 @@ import ColonyHomePage from '~v5/frame/ColonyHome/index.ts';
 
 import ColonyMembersRoute from './ColonyMembersRoute.tsx';
 import ColonyRoute from './ColonyRoute.tsx';
-import LandingPageRoute from './LandingPageRoute/index.ts';
 import MainRoute from './MainRoute.tsx';
 import NotFoundRoute from './NotFoundRoute.tsx';
 import RootRoute from './RootRoute.tsx';
@@ -85,9 +84,7 @@ const Routes = () => {
   return (
     <RoutesSwitch>
       <Route path="/" element={<RootRoute />}>
-        <Route element={<LandingPageRoute />}>
-          <Route index element={<LandingPage />} />
-        </Route>
+        <Route index element={<LandingPage />} />
 
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
@@ -167,18 +164,17 @@ const Routes = () => {
           {/* Colony settings routes */}
           <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
 
-          {/* Enable the following routes in dev mode */}
+          <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
 
-          {/* @ts-ignore */}
-          {!WEBPACK_IS_PRODUCTION && (
+          {/* Enable the following routes in dev mode */}
+          {import.meta.env.DEV && (
             <Route
               path={COLONY_INTEGRATIONS_ROUTE}
               element={<IntegrationsPage />}
             />
           )}
 
-          {/* @ts-ignore */}
-          {!WEBPACK_IS_PRODUCTION && (
+          {import.meta.env.DEV && (
             <Route
               path={COLONY_INCORPORATION_ROUTE}
               element={<IncorporationPage />}

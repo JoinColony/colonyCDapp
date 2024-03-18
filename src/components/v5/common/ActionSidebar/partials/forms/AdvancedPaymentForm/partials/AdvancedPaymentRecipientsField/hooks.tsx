@@ -2,7 +2,7 @@ import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';

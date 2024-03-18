@@ -2,7 +2,7 @@ import { getExtensionHash } from '@colony/colony-js';
 import { useCallback, useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   useGetColonyExtensionsQuery,
   useGetCurrentExtensionsVersionsQuery,

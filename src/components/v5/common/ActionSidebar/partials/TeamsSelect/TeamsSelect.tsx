@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useTeamsOptions from '~hooks/useTeamsOptions.ts';
 import useToggle from '~hooks/useToggle/index.ts';

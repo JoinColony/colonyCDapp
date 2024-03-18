@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
 import React, { type FC } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { SystemMessages } from '~types/actions.ts';

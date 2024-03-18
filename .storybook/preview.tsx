@@ -3,10 +3,11 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import type { Preview } from '@storybook/react';
 
+import '../src/styles/main.css';
+
 import '~utils/yup/customMethods';
-import '../src/styles/main.global.css';
-import { reactIntl } from './reactIntl.js';
-import { applyTheme } from "../src/components/frame/Extensions/themes/utils";
+import { reactIntl } from './reactIntl.ts';
+import { applyTheme } from '../src/components/frame/Extensions/themes/utils';
 
 const preview: Preview = {
   parameters: {

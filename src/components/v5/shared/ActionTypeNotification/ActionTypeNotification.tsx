@@ -5,8 +5,8 @@ import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 

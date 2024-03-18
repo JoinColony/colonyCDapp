@@ -41,23 +41,30 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     }transaction.${groupKey}.title`,
   };
   const defaultTransactionGroupMessageDescriptorDescriptionId = {
-    id: process.env.DEBUG
-      ? `${
-          transactionGroup[0].metatransaction ? 'meta' : ''
-        }transaction.debug.description`
-      : `${
-          transactionGroup[0].metatransaction ? 'meta' : ''
-        }transaction.${groupKey}.description`,
+    id:
+      import.meta.env.VITE_DEBUG === 'true'
+        ? `${
+            transactionGroup[0].metatransaction ? 'meta' : ''
+          }transaction.debug.description`
+        : `${
+            transactionGroup[0].metatransaction ? 'meta' : ''
+          }transaction.${groupKey}.description`,
   };
 
   const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
+
+  const { methodName, context } = values;
+  const titleValues = { methodName, context };
 
   const value = formatText(
     {
       ...defaultTransactionGroupMessageDescriptorTitleId,
       ...values.group?.title,
     },
-    values.group?.titleValues || arrayToObject(values.params),
+    values.group?.titleValues || {
+      ...arrayToObject(values.params),
+      ...titleValues,
+    },
   );
 
   return (
@@ -81,8 +88,10 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                   {...defaultTransactionGroupMessageDescriptorDescriptionId}
                   {...values.group?.description}
                   values={
-                    values.group?.descriptionValues ||
-                    arrayToObject(values.params)
+                    values.group?.descriptionValues || {
+                      ...arrayToObject(values.params),
+                      ...titleValues,
+                    }
                   }
                 />
               </p>

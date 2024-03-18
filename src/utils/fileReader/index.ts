@@ -2,7 +2,7 @@ import {
   DEFAULT_MAX_FILE_LIMIT,
   DEFAULT_MAX_FILE_SIZE,
   DEFAULT_MIME_TYPES,
-} from '~v5/common/AvatarUploader/utils.tsx';
+} from '~v5/common/AvatarUploader/utils.ts';
 
 import { type FileReaderFile, type FileReaderOptions } from './types.ts';
 

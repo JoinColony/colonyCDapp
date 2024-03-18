@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { COLONY_BALANCES_ROUTE } from '~routes/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { currencySymbolMap } from '~utils/currency/config.ts';

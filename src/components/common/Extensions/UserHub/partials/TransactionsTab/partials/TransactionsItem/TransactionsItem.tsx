@@ -13,7 +13,7 @@ import TransactionsHeader from '../TransactionsHeader.tsx';
 
 import styles from './TransactionsItem.module.css';
 
-export const displayName =
+const displayName =
   'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';
 
 const TransactionsItem: FC<TransactionsItemProps> = ({

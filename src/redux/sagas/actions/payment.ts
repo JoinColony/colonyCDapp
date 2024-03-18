@@ -271,7 +271,7 @@ export function sortAndCombinePayments(
         {
           ...payment,
           // prev amount is only not defined if idx is 0, in which case recipient !== prevRecipient
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
           amount: convertedAmount.add(prevAmount!),
         },
       ];

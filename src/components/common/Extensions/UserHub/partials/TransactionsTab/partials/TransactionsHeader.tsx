@@ -6,7 +6,7 @@ import { TransactionStatus } from '~gql';
 
 import { type TransactionHeaderProps } from '../types.ts';
 
-export const displayName =
+const displayName =
   'common.Extensions.UserHub.TransactionsTab.partials.TransactionHeader';
 
 const TransactionsHeader: FC<TransactionHeaderProps> = ({

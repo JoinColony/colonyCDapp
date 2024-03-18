@@ -1,8 +1,8 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';

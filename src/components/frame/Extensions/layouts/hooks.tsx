@@ -15,13 +15,13 @@ import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   TransactionGroupStates,
   useUserTransactionContext,
-} from '~context/UserTransactionContext.tsx';
+} from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useTransformer from '~hooks/useTransformer.ts';
@@ -32,7 +32,7 @@ import {
 import { getAllUserRoles } from '~transformers/index.ts';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { type NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types.ts';
 import { TxButton } from '~v5/shared/Button/index.ts';
 import { type CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts';

@@ -2,7 +2,7 @@ import { isAddress } from '@ethersproject/address';
 import React, { useMemo } from 'react';
 
 import { getNetworkTokenList } from '~constants/tokens/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetTokenFromEverywhereQuery } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';

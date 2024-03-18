@@ -7,6 +7,8 @@ import Link from '~v5/shared/Link/index.ts';
 
 import { type ToastProps } from './types.ts';
 
+import './Toast.css';
+
 const displayName = 'Extensions.Toast';
 
 const Toast: FC<ToastProps> = ({

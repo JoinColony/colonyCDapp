@@ -3,7 +3,7 @@ import { useWatch } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../../consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
 
 import CreateDecisionDescription from './partials/CreateDecisionDescription.tsx';
 import CreateNewDomainDescription from './partials/CreateNewDomainDescription.tsx';

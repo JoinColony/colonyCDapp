@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
 
-import { useFiltersContext } from '../../../FilterContext/FiltersContext.tsx';
+import { useFiltersContext } from '../../../FiltersContext/FiltersContext.ts';
 
 import { ATTRIBUTE_FILTERS } from './consts.ts';
 

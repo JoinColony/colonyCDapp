@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/index.ts';
+import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { FiltersValues } from '~common/ColonyActionsTable/FiltersContext/types.ts';
 import { getCustomDateLabel } from '~common/ColonyActionsTable/utils.ts';
 import { formatText } from '~utils/intl.ts';

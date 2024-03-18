@@ -4,7 +4,7 @@ import {
   MAX_COLONY_DISPLAY_NAME,
   MAX_DOMAIN_PURPOSE_LENGTH,
 } from '~constants/index.ts';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
 export const validationSchema = object()
   .shape({

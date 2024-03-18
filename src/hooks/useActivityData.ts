@@ -1,4 +1,4 @@
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetTotalColonyDomainActionsQuery } from '~gql';
 import { notNull } from '~utils/arrays/index.ts';
 

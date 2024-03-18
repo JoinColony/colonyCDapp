@@ -10,7 +10,6 @@ const useTransformer = <
   transform: T,
   args: A = [] as unknown as A,
 ): ReturnType<T> =>
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useMemo<ReturnType<T>>(
     () => transform(...args),
     // eslint-disable-next-line react-hooks/exhaustive-deps

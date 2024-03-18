@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useTokensModalContext } from '~context/TokensModalContext.tsx';
+import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 

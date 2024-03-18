@@ -1,0 +1,14 @@
+.main {
+  display: inline-flex;
+  max-width: 200px;
+}
+
+:global(.popoverWrapper) .main {
+  max-width: 100%;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

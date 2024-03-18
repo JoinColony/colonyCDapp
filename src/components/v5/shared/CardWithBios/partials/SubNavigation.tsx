@@ -8,7 +8,7 @@ import {
 } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { useMemberModalContext } from '~context/MemberModalContext.tsx';
+import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks.ts';
 import SubNavigationItem from '~v5/shared/SubNavigationItem/index.ts';

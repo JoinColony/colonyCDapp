@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';

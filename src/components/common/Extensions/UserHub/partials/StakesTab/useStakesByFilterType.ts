@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetUserStakesQuery } from '~gql';
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
 import { type UserStakeWithStatus } from '~types/userStake.ts';

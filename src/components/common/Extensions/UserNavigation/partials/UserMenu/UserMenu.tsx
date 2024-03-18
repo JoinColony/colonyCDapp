@@ -13,8 +13,8 @@ import React, { type FC, useState } from 'react';
 // @BETA: Disabled for now
 // import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';

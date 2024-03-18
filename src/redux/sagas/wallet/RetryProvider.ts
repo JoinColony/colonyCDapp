@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 import { type Block } from '@ethersproject/providers';
 import { providers } from 'ethers';
 import { backOff } from 'exponential-backoff';
@@ -19,17 +17,6 @@ const classFactory = (
 
     delay: number;
 
-    /*
-     * Types need to be declared so that the intance is aware of them,
-     * however I do not want to re-declare them on the exnded class so as
-     * to not overwrite the parent
-     */
-    // @ts-ignore strictPropertyInitialization
-    getSigner: (addressOrIndex?: string | number) => providers.JsonRpcSigner;
-
-    // @ts-ignore strictPropertyInitialization
-    getBlock: (blockHashOrBlockTag?: string | number) => Promise<Block>;
-
     constructor(options?: RetryProviderOptions) {
       super(isDev ? GANACHE_LOCAL_RPC_URL : window.ethereum);
       this.attempts = options?.attempts || 5;
@@ -43,6 +30,14 @@ const classFactory = (
         return false;
       }
       return true;
+    }
+
+    getBlock(blockHashOrBlockTag?: string | number): Promise<Block> {
+      return super.getBlock(blockHashOrBlockTag);
+    }
+
+    getSigner(addressOrIndex?: string | number): providers.JsonRpcSigner {
+      return super.getSigner(addressOrIndex);
     }
 
     getNetwork(): Promise<providers.Network> {

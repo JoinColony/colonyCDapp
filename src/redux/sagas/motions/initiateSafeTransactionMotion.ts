@@ -1,7 +1,7 @@
 import { ClientType, getChildIndex, Id } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO, isDev } from '~constants/index.ts';
+import { ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateSafeTransactionDocument,
@@ -30,7 +30,7 @@ import {
 } from '../utils/index.ts';
 import {
   getHomeBridgeByChain,
-  ZODIAC_BRIDGE_MODULE_ADDRESS,
+  getSafeAddresses,
   getTransactionEncodedData,
 } from '../utils/safeHelpers.ts';
 
@@ -58,16 +58,17 @@ function* initiateSafeTransactionMotion({
       colonyAddress,
     );
 
-    const zodiacBridgeModuleAddress = isDev
-      ? ZODIAC_BRIDGE_MODULE_ADDRESS
-      : safe.moduleContractAddress;
+    const { ZODIAC_BRIDGE_MODULE_ADDRESS } = yield getSafeAddresses();
+
+    const zodiacBridgeModuleAddress =
+      ZODIAC_BRIDGE_MODULE_ADDRESS || safe.moduleContractAddress;
 
     if (!zodiacBridgeModuleAddress) {
       throw new Error(
         `Please provide a ZODIAC_BRIDGE_MODULE_ADDRESS. If running local, please add key-pair to your .env file.`,
       );
     }
-    const homeBridge = getHomeBridgeByChain(safe.chainId);
+    const homeBridge = yield getHomeBridgeByChain(safe.chainId);
 
     const motionChildSkillIndex = yield call(
       getChildIndex,

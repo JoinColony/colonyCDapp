@@ -6,8 +6,8 @@ import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -17,7 +17,7 @@ import TextButton from '~v5/shared/Button/TextButton.tsx';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts.ts';
 
 import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow.tsx';
 import { type TeamReputationSummaryProps } from './types.ts';

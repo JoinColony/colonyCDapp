@@ -4,7 +4,7 @@ import { useWatch } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { type Action } from '~constants/actions.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import {
   useHasActionPermissions,
   useHasNoDecisionMethods,

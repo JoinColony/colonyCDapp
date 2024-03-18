@@ -9,7 +9,7 @@ import { type StakesListProps } from '../types.ts';
 
 import StakeItem from './StakeItem.tsx';
 
-import styles from './StakesList.css';
+import styles from './StakesList.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';

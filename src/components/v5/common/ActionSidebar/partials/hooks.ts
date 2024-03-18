@@ -3,14 +3,14 @@ import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { canColonyBeUpgraded } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.AdvancedPayment]: 'button.createPayment',

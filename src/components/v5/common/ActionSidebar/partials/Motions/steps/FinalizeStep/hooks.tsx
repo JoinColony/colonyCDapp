@@ -3,9 +3,9 @@ import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
 import { ColonyActionType } from '~gql';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';

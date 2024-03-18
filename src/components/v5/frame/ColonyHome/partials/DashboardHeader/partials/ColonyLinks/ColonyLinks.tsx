@@ -3,7 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { APP_URL } from '~constants/index.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';

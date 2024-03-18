@@ -4,7 +4,7 @@ import React, { type FC, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import { useFilterContext } from '~context/FilterContext.tsx';
+import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';

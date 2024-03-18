@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import { APP_URL } from '~constants/index.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useFilterContext } from '~context/FilterContext.tsx';
-import { useSearchContext } from '~context/SearchContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
+import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';

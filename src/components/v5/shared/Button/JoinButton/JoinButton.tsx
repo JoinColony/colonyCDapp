@@ -1,8 +1,8 @@
 import Lottie from 'lottie-react';
 import React, { type FC, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import joinButtonAnimation from '~utils/animations/joinButtonAnimation.json';
 import { formatText } from '~utils/intl.ts';
 

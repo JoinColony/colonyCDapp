@@ -7,7 +7,7 @@ import Heading from '~shared/Heading/index.ts';
 
 import MessageCardStatus from './MessageCardStatus.tsx';
 
-import styles from './MessageCard.css';
+import styles from './MessageCard.module.css';
 
 const displayName = 'frame.GasStation.MessageCard';
 

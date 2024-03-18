@@ -3,7 +3,7 @@ import format from 'date-fns/format';
 import React, { type FC } from 'react';
 
 import getActionTitleValues from '~common/ColonyActions/helpers/getActionTitleValues.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';

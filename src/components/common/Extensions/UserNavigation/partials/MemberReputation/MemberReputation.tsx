@@ -8,7 +8,7 @@ import { ZeroValue, calculatePercentageReputation } from '~utils/reputation.ts';
 
 import { type MemberReputationProps } from './types.ts';
 
-export const displayName =
+const displayName =
   'common.Extensions.UserNavigation.partials.MemberReputation';
 
 const MemberReputation: FC<MemberReputationProps> = ({

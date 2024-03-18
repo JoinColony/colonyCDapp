@@ -3,8 +3,8 @@ import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';

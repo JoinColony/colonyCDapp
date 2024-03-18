@@ -3,7 +3,7 @@ import { type BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import React from 'react';
 
-import { useCurrencyContext } from '~context/CurrencyContext.tsx';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import useCurrency from '~hooks/useCurrency.ts';
 import Numeral, {
   type Props as NumeralProps,

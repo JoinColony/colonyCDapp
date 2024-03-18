@@ -47,7 +47,7 @@ function* initiateSafeTransactionAction({
     txChannel = yield call(getTxChannel, metaId);
     const apolloClient = getContext(ContextModule.ApolloClient);
 
-    const homeBridge = getHomeBridgeByChain(safe.chainId);
+    const homeBridge = yield getHomeBridgeByChain(safe.chainId);
 
     const transactionData: string[] = yield getTransactionEncodedData(
       transactions,

@@ -2,16 +2,16 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate, Outlet, useParams } from 'react-router-dom';
 
-import { ActionSidebarContextProvider } from '~context/ActionSidebarContext/index.tsx';
-import { useAppContext } from '~context/AppContext.tsx';
-import { ColonyContextProvider } from '~context/ColonyContext.tsx';
-import { ColonyCreatedModalProvider } from '~context/ColonyCreatedModalContext.tsx';
-import { ColonyDecisionProvider } from '~context/ColonyDecisionContext.tsx';
-import { MemberContextProviderWithSearchAndFilter as MemberContextProvider } from '~context/MemberContext.tsx';
-import { MemberModalProvider } from '~context/MemberModalContext.tsx';
-import { TokensModalContextProvider } from '~context/TokensModalContext.tsx';
-import { UserTokenBalanceProvider } from '~context/UserTokenBalanceContext.tsx';
-import { UserTransactionContextProvider } from '~context/UserTransactionContext.tsx';
+import ActionSidebarContextProvider from '~context/ActionSidebarContext/ActionSidebarContextProvider.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import ColonyContextProvider from '~context/ColonyContext/ColonyContextProvider.tsx';
+import ColonyCreateModalProvider from '~context/ColonyCreateModalContext/ColonyCreateModalContextProvider.tsx';
+import ColonyDecisionProvider from '~context/ColonyDecisionContext/ColonyDecisionContextProvider.tsx';
+import MemberContextProvider from '~context/MemberContext/MemberContextProviderWithSearchAndFilter.tsx';
+import MemberModalProvider from '~context/MemberModalContext/MemberModalContextProvider.tsx';
+import TokensModalContextProvider from '~context/TokensModalContext/TokensModalContextProvider.tsx';
+import UserTokenBalanceProvider from '~context/UserTokenBalanceContext/UserTokenBalanceContextProvider.tsx';
+import UserTransactionContextProvider from '~context/UserTransactionContext/UserTransactionContextProvider.tsx';
 import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import {
@@ -89,7 +89,7 @@ const ColonyRoute = () => {
           <ColonyDecisionProvider>
             <UserTokenBalanceProvider>
               <MemberModalProvider>
-                <ColonyCreatedModalProvider>
+                <ColonyCreateModalProvider>
                   <UserTransactionContextProvider>
                     <TokensModalContextProvider>
                       <ColonyLayout>
@@ -97,7 +97,7 @@ const ColonyRoute = () => {
                       </ColonyLayout>
                     </TokensModalContextProvider>
                   </UserTransactionContextProvider>
-                </ColonyCreatedModalProvider>
+                </ColonyCreateModalProvider>
               </MemberModalProvider>
             </UserTokenBalanceProvider>
           </ColonyDecisionProvider>

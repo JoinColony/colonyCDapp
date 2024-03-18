@@ -10,10 +10,10 @@ import useActivityFeed from '~hooks/useActivityFeed/index.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 
-import { useFiltersContext } from '../FiltersContext/index.ts';
+import { useFiltersContext } from '../FiltersContext/FiltersContext.ts';
 import { makeLoadingRows } from '../utils.ts';
 
-export const useActionsTableData = (pageSize: number) => {
+const useActionsTableData = (pageSize: number) => {
   const selectedDomain = useGetSelectedDomainFilter();
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -91,3 +91,5 @@ export const useActionsTableData = (pageSize: number) => {
     setSorting,
   };
 };
+
+export default useActionsTableData;

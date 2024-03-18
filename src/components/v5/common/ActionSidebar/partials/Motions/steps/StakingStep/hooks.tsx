@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useGetUserReputationQuery } from '~gql';
 import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking.ts';
 

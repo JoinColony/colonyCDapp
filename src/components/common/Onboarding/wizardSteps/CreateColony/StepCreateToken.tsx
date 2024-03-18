@@ -4,7 +4,8 @@ import { defineMessages } from 'react-intl';
 import { Form } from '~shared/Fields/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 
-import { ButtonRow, HeaderRow } from '../shared.tsx';
+import ButtonRow from '../ButtonRow.tsx';
+import HeaderRow from '../HeaderRow.tsx';
 
 import { TokenChoiceOptions } from './StepCreateTokenComponents.tsx';
 import TokenInputs from './StepCreateTokenInputs.tsx';
@@ -14,7 +15,7 @@ import { tokenValidationSchema as validationSchema } from './validation.ts';
 
 const displayName = `common.CreateColonyWizard.StepCreateToken`;
 
-export const MSG = defineMessages({
+const MSG = defineMessages({
   heading: {
     id: `${displayName}.heading`,
     defaultMessage: `Your Colony's native token`,

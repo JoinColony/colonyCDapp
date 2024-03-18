@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useMemberContext } from '~context/MemberContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 
 import { type MembersTabContentListItem } from './partials/MembersTabContent/types.ts';

@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { DecisionMethod } from '~types/actions.ts';
@@ -17,7 +17,7 @@ import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
-} from '../../../consts.tsx';
+} from '../../../consts.ts';
 import { useIsFieldDisabled } from '../../hooks.ts';
 
 const displayName =

@@ -110,6 +110,6 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
   },
 );
 
-Object.assign(InputBase, { displayName });
+InputBase.displayName = displayName;
 
 export default InputBase;

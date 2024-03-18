@@ -14,11 +14,10 @@ interface EthUsdResponse {
   message: string;
   result: {
     ethbtc: string;
-    /* eslint-disable camelcase */
+
     ethbtc_timestamp: string;
     ethusd: string;
     ethusd_timestamp: string;
-    /* eslint-enable camelcase */
   };
 }
 

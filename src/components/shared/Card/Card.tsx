@@ -3,7 +3,7 @@ import React, { type ReactNode, useState, useCallback } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
-import styles from './Card.css';
+import styles from './Card.module.css';
 
 interface Props {
   /** Card child content to render */

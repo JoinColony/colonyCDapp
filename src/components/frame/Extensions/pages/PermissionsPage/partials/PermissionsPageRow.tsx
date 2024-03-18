@@ -1,7 +1,7 @@
 import { Signature, Binoculars } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect } from 'react';
 
-import { useMobile } from '~hooks';
+import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import MemberCardList from '~v5/common/MemberCardList/MemberCardList.tsx';

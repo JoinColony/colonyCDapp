@@ -1,7 +1,7 @@
 import { type FormatNumeralOptions } from 'cleave-zen';
 import { useRef } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { getInputTextWidth } from '~utils/elements.ts';
 import {

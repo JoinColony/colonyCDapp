@@ -1,6 +1,6 @@
 import React, { type FC, useMemo } from 'react';
 
-import { useFilterContext } from '~context/FilterContext.tsx';
+import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';

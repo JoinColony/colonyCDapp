@@ -13,14 +13,11 @@ export const getGroupId = (txOrMessageGroup: TransactionOrMessageGroup) => {
   // Typescripts flow inference totall seems to fall apart here
   if (!txOrMessageGroup[0]) return undefined;
   if ((txOrMessageGroup[0] as TransactionType).group) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return Array.isArray((txOrMessageGroup[0] as TransactionType).group!.id)
-      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ((txOrMessageGroup[0] as TransactionType).group!.id as string[]).join(
+      ? ((txOrMessageGroup[0] as TransactionType).group!.id as string[]).join(
           '.',
         )
-      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ((txOrMessageGroup[0] as TransactionType).group!.id as string);
+      : ((txOrMessageGroup[0] as TransactionType).group!.id as string);
   }
   return txOrMessageGroup[0].id;
 };
@@ -28,7 +25,6 @@ export const getGroupId = (txOrMessageGroup: TransactionOrMessageGroup) => {
 // Get the group key (mostly used for i18n)
 export const getGroupKey = (txGroup: TransactionOrMessageGroup) => {
   if ((txGroup[0] as TransactionType).group) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return `group.${(txGroup[0] as TransactionType).group!.key}`;
   }
   if (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/hooks.ts';
+import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 
 const ColonyMembersRoute = () => {

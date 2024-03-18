@@ -12,7 +12,6 @@ import { ToastContainer } from 'react-toastify';
 import { useTablet } from '~hooks/index.ts';
 import { COLONY_HOME_ROUTE } from '~routes/index.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
-import styles from '~shared/Extensions/Toast/Toast.module.css';
 
 import NavigationSidebarContextProvider from '../NavigationSidebar/partials/NavigationSidebarContext/index.ts';
 
@@ -62,7 +61,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   return (
     <NavigationSidebarContextProvider>
       <ToastContainer
-        className={styles.toastNotification}
         autoClose={3000}
         hideProgressBar
         closeOnClick

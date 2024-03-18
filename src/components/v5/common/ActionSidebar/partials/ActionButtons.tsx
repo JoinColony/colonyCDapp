@@ -4,10 +4,10 @@ import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import Button, { TxButton } from '~v5/shared/Button/index.ts';
@@ -17,7 +17,7 @@ import {
   CREATED_IN_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
-} from '../consts.tsx';
+} from '../consts.ts';
 import { useCloseSidebarClick } from '../hooks/index.ts';
 import { type ActionButtonsProps } from '../types.ts';
 

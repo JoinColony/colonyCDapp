@@ -2,15 +2,15 @@ import React, { type PropsWithChildren, type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { LEARN_MORE_ADMIN } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import LearnMore from '~shared/Extensions/LearnMore/index.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import LinkItem from '../LinkItem/index.ts';
 
-import { DECIDE_DROPDOWN_ITEMS, MSG } from './consts.tsx';
+import { DECIDE_DROPDOWN_ITEMS, MSG } from './consts.ts';
 
 import styles from './DropdownContent.module.css';
 

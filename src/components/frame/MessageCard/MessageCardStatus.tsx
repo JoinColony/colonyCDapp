@@ -6,7 +6,7 @@ import { TransactionStatus } from '~gql';
 import { Tooltip } from '~shared/Popover/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 
-import styles from './MessageCardStatus.css';
+import styles from './MessageCardStatus.module.css';
 
 const displayName = 'frame.GasStation.MessageCard.MessageCardStatus';
 

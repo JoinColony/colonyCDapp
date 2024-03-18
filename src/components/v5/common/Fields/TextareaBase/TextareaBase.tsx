@@ -74,6 +74,6 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
   },
 );
 
-Object.assign(TextareaBase, { displayName });
+TextareaBase.displayName = displayName;
 
 export default TextareaBase;

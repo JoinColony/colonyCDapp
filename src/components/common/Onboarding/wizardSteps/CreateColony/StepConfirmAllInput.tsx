@@ -7,7 +7,8 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { mergePayload, pipe, withMeta } from '~utils/actions.ts';
 
-import { ButtonRow, HeaderRow } from '../shared.tsx';
+import ButtonRow from '../ButtonRow.tsx';
+import HeaderRow from '../HeaderRow.tsx';
 
 import CardRow from './CreateColonyCardRow.tsx';
 import { type FormValues, TokenChoice } from './types.ts';

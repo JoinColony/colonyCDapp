@@ -8,7 +8,7 @@ import {
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
 } from '~constants/index.ts';
-import colonyIcon from '~images/icons/colony-logo-wallet.svg';
+import ColonyWalletIcon from '~images/icons/colony-logo-wallet.svg';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/autoLogin.ts';
 import { intl } from '~utils/intl.ts';
@@ -22,14 +22,12 @@ const { formatMessage } = intl({
 });
 
 const ganacheAccountsUrl = new URL(
-  process.env.GANACHE_ACCOUNTS_ENDPOINT || 'http://localhost:3006',
+  import.meta.env.VITE_NETWORK_FILES_ENDPOINT || 'http://localhost:3006',
 );
 
 const getDevelopmentWallets = async () => {
-  // variable injected by webpack
-  // @ts-ignore
-  // if we're using the webpack.dev config, include dev wallets
-  if (!WEBPACK_IS_PRODUCTION) {
+  // if we're using the dev config, include dev wallets
+  if (import.meta.env.DEV) {
     const fetchRes = await fetch(
       `${ganacheAccountsUrl.href}ganache-accounts.json`,
     );
@@ -85,7 +83,7 @@ const onboardConfig: InitOptions = {
   },
   appMetadata: {
     name: formatMessage({ id: 'info.text' }),
-    icon: colonyIcon.content.replace('symbol', 'svg'),
+    icon: ColonyWalletIcon,
     description: formatMessage({ id: 'metadata.description' }),
     agreement: { termsUrl: TERMS_AND_CONDITIONS, version: CDAPP_VERSION },
   },

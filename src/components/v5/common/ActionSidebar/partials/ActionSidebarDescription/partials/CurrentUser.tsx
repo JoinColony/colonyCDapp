@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 

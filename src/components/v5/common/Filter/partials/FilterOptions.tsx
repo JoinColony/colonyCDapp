@@ -2,12 +2,12 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useFilterContext } from '~context/FilterContext.tsx';
+import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import SubNavigationItem from '~v5/shared/SubNavigationItem/index.ts';
 import Header from '~v5/shared/SubNavigationItem/partials/Header.tsx';
 
-import { followersFilterOptions } from '../consts.tsx';
+import { followersFilterOptions } from '../consts.ts';
 
 import Accordion from './Accordion.tsx';
 import { type FilterOptionsProps } from './types.ts';

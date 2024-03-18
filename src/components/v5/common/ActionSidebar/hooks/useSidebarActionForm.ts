@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import AdvancedPaymentForm from '../partials/forms/AdvancedPaymentForm/index.ts';
 import BatchPaymentForm from '../partials/forms/BatchPaymentForm/index.ts';
 import CreateDecisionForm from '../partials/forms/CreateDecisionForm/index.ts';

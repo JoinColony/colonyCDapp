@@ -3,8 +3,8 @@ import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useFilterContext } from '~context/FilterContext.tsx';
-import { useSearchContext } from '~context/SearchContext.tsx';
+import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
+import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';

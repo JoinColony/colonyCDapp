@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   type UseAvatarUploaderProps,
   useGetUploaderText,
-} from '~v5/common/AvatarUploader/hooks.tsx';
+} from '~v5/common/AvatarUploader/hooks.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
 
 import {
@@ -51,9 +51,6 @@ export const useUserProfilePageForm = () => {
     const formData = new FormData();
     formData.append('file', avatar || '');
     setProgress(0);
-
-    /* Axios upload currently has no destination */
-    /* axiosUpload(avatar, thumbnail, setProgress); */
 
     await updateAvatar({
       variables: {

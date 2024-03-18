@@ -6,7 +6,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { type Token } from '~types/graphql.ts';
 import { getNetworkByChainId } from '~utils/web3/index.ts';
 
-import { getInputError } from '../shared.tsx';
+import { getInputError } from '../shared.ts';
 
 import TokenSelector from './TokenSelector.tsx';
 

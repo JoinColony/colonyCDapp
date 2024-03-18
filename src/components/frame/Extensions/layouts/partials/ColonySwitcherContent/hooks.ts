@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 
 import { type UseColonySwitcherContentReturnType } from './types.ts';

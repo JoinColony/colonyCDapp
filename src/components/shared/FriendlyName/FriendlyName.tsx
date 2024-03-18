@@ -13,7 +13,7 @@ import { removeValueUnits } from '~utils/css/index.ts';
 
 import { getAddressFromAgent, getDisplayNameFromAgent } from './helpers.ts';
 
-import styles from './FriendlyName.css';
+import styles from './FriendlyName.module.css';
 
 const displayName = 'FriendlyName';
 

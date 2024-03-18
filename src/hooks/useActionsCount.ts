@@ -1,6 +1,6 @@
 import { startOfDay, subDays } from 'date-fns';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetTotalColonyActionsQuery } from '~gql';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 

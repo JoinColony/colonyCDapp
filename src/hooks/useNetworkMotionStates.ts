@@ -2,7 +2,7 @@ import { type MotionState, VotingReputationFactory } from '@colony/colony-js';
 import { type Provider } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 
 import useEnabledExtensions from './useEnabledExtensions.tsx';
 

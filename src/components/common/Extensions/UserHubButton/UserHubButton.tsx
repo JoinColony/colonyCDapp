@@ -4,10 +4,10 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub/index.ts';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
-import { useAnalyticsContext } from '~context/AnalyticsContext/index.ts';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
-import { useUserTransactionContext } from '~context/UserTransactionContext.tsx';
+import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
@@ -23,8 +23,7 @@ import { OPEN_USER_HUB_EVENT } from './consts.ts';
 import { type UserHubButtonProps } from './types.ts';
 import { findNewestGroup, getGroupStatus } from './utils.ts';
 
-export const displayName =
-  'common.Extensions.UserNavigation.partials.UserHubButton';
+const displayName = 'common.Extensions.UserNavigation.partials.UserHubButton';
 
 const UserHubButton: FC<UserHubButtonProps> = ({
   hideMemberReputationOnMobile,

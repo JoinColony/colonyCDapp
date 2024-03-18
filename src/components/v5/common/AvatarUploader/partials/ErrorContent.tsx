@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { TextButton } from '~v5/shared/Button/index.ts';
 
 import { type ErrorContentProps } from '../types.ts';
-import { DropzoneErrors, getErrorMessage } from '../utils.tsx';
+import { DropzoneErrors, getErrorMessage } from '../utils.ts';
 
 const displayName = 'v5.common.AvatarUploader.partials.ErrorContent';
 

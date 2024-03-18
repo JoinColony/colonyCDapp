@@ -197,7 +197,6 @@ export const validateType = (
         return true;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return failIdx!; // If we get here, it means allElementsValid is false and failIdx was set.
     } catch {
       return -1;

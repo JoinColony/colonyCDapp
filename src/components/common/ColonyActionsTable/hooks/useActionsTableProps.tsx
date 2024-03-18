@@ -9,8 +9,8 @@ import React from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
 import { APP_URL, DEFAULT_NETWORK_INFO } from '~constants';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import {
@@ -26,16 +26,14 @@ import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 
-import { useFiltersContext } from '../FiltersContext/FiltersContext.tsx';
+import { useFiltersContext } from '../FiltersContext/FiltersContext.ts';
 import MeatballMenuCopyItem from '../partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { type ColonyActionsTableProps } from '../types.ts';
 
-import { useActionsTableData } from './useActionsTableData.ts';
-import {
-  useColonyActionsTableColumns,
-  useRenderSubComponent,
-} from './useColonyActionsTableColumns.tsx';
-import { useRenderRowLink } from './useRenderRowLink.tsx';
+import useActionsTableData from './useActionsTableData.ts';
+import useColonyActionsTableColumns from './useColonyActionsTableColumns.tsx';
+import useRenderRowLink from './useRenderRowLink.tsx';
+import useRenderSubComponent from './useRenderSubComponent.tsx';
 
 export const useActionsTableProps = (
   props: Omit<ColonyActionsTableProps, 'withHeader'>,

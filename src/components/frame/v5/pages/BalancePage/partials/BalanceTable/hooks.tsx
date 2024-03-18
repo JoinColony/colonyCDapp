@@ -2,7 +2,7 @@ import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import CurrencyConversion from '~shared/CurrencyConversion/index.ts';
@@ -18,7 +18,7 @@ import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
 
 import TokenAvatar from '../TokenAvatar/index.ts';
 
-import { useFiltersContext } from './Filters/FilterContext/FiltersContext.tsx';
+import { useFiltersContext } from './Filters/FiltersContext/FiltersContext.ts';
 import { type BalanceTableFieldModel } from './types.ts';
 
 export const useBalancesData = (): BalanceTableFieldModel[] => {

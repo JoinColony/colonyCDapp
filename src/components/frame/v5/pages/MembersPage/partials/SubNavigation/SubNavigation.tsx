@@ -2,9 +2,9 @@ import { LockKey, ShareNetwork } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/index.tsx';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.tsx';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks.ts';
 import SubNavigationItem from '~v5/shared/SubNavigationItem/index.ts';
 
