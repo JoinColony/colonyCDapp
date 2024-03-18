@@ -1,4 +1,4 @@
-import { SealCheck, WarningCircle } from '@phosphor-icons/react';
+import { CircleWavyCheck, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { utils } from 'ethers';
 import React, { type FC } from 'react';
@@ -79,9 +79,10 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
             })}
           />
           {selectedUser?.isVerified && (
-            <span className="flex ml-2 text-blue-400">
-              <SealCheck size={20} />
-            </span>
+            <CircleWavyCheck
+              size={14}
+              className="ml-1 text-blue-400 flex-shrink-0"
+            />
           )}
         </>
       ) : (
@@ -89,7 +90,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
           <button
             type="button"
             ref={relativeElementRef}
-            className={clsx('flex text-md transition-colors', {
+            className={clsx('flex text-md transition-colors items-center', {
               'text-gray-400': !isError && !isUserSelectVisible,
               'text-negative-400': isError,
               'text-blue-400': isUserSelectVisible,
@@ -111,9 +112,10 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
                   })}
                 />
                 {selectedUser?.isVerified && (
-                  <span className="flex ml-2 text-blue-400">
-                    <SealCheck size={20} />
-                  </span>
+                  <CircleWavyCheck
+                    size={14}
+                    className="ml-1 text-blue-400 flex-shrink-0"
+                  />
                 )}
               </>
             ) : (
@@ -146,12 +148,10 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
               walletAddress={userWalletAddress}
               aboutDescription={userByAddress?.profile?.bio || ''}
               user={userByAddress}
-              className="text-warning-400"
+              className="ml-1"
               size="m"
             >
-              <span className="flex ml-2 text-warning-400">
-                <WarningCircle size={20} />
-              </span>
+              <WarningCircle size={14} className="text-warning-400" />
             </UserPopover>
           )}
         </>

@@ -17,5 +17,4 @@ export interface UserPopoverProps extends UserInfoProps {
   isContributorsList?: boolean;
   additionalContent?: JSX.Element;
   withVerifiedBadge?: boolean;
-  wrapperClassName?: string;
 }

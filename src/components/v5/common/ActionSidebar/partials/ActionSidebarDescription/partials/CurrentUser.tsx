@@ -19,7 +19,6 @@ const CurrentUser = () => {
       walletAddress={user.walletAddress}
       aboutDescription={user.profile?.bio || ''}
       user={user}
-      wrapperClassName="!inline-flex"
     >
       <span className="text-gray-900">
         {user.profile ? (
