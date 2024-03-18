@@ -90,12 +90,14 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.ReputationChangeNumeral,
         ActionTitleMessageKeys.ReputationChange,
+        ActionTitleMessageKeys.Initiator,
       ];
     case actionType.includes(ColonyActionType.EmitDomainReputationReward):
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.ReputationChangeNumeral,
         ActionTitleMessageKeys.ReputationChange,
+        ActionTitleMessageKeys.Initiator,
       ];
     case actionType.includes(ColonyActionType.SetUserRoles):
       return [

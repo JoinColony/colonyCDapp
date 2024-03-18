@@ -13,6 +13,7 @@ import Motions from '../ActionSidebar/partials/Motions/index.ts';
 import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
 import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
+import ManageReputation from './partials/ManageReputation/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
 import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
@@ -67,6 +68,11 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.RemoveVerifiedMembers:
       case ColonyActionType.RemoveVerifiedMembersMotion:
         return <RemoveVerifiedMembers action={action} />;
+      case ColonyActionType.EmitDomainReputationReward:
+      case ColonyActionType.EmitDomainReputationRewardMotion:
+      case ColonyActionType.EmitDomainReputationPenalty:
+      case ColonyActionType.EmitDomainReputationPenaltyMotion:
+        return <ManageReputation action={action} />;
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
         return <EditColonyDetails action={action} />;

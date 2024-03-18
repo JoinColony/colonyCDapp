@@ -116,7 +116,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           })}
         />
         {selectedAction && (
-          <div className="flex gap-1 break-all text-md text-gray-900">
+          <div className="text-md text-gray-900">
             <ActionSidebarDescription />
           </div>
         )}

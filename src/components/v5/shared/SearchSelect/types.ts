@@ -36,4 +36,5 @@ export interface SearchSelectOption {
   token?: TokenFragment;
   isRoot?: boolean;
   isVerified?: boolean;
+  userReputation?: string;
 }

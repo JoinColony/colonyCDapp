@@ -118,7 +118,7 @@ const RevealStep: FC<RevealStepProps> = ({
                       <Numeral
                         value={voterReward || '0'}
                         decimals={decimals}
-                        suffix={symbol}
+                        suffix={` ${symbol}`}
                       />
                     </div>
                   </div>

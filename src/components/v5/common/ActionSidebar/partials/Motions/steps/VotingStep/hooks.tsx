@@ -175,7 +175,7 @@ export const useVotingStep = (
             <Numeral
               value={maxReward || '0'}
               decimals={nativeToken?.decimals}
-              suffix={nativeToken?.symbol}
+              suffix={` ${nativeToken?.symbol}`}
             />
           </div>
         ),

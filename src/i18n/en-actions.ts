@@ -28,10 +28,10 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EditDomain} {Change {fromDomain} team details by {initiator}}
       ${ColonyActionType.EditDomainMotion} {Change {fromDomain} team details by {initiator}}
       ${ColonyActionType.Recovery} {Enter recovery mode by {initiator}}
-      ${ColonyActionType.EmitDomainReputationPenalty} {Smite {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation penalty}
-      ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Smite {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation penalty}
-      ${ColonyActionType.EmitDomainReputationReward} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
-      ${ColonyActionType.EmitDomainReputationRewardMotion} {Award {recipient} with a {reputationChangeNumeral} {reputationChange, plural, one {pt} other {pts}} reputation reward}
+      ${ColonyActionType.EmitDomainReputationPenalty} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
+      ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
+      ${ColonyActionType.EmitDomainReputationReward} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
+      ${ColonyActionType.EmitDomainReputationRewardMotion} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
       ${ColonyActionType.SetUserRoles} {{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.SetUserRolesMotion} {{direction} {rolesChanged} permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.AddVerifiedMembers} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
@@ -75,10 +75,10 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.SetUserRoles} {Permission Management}
       ${ColonyActionType.SetUserRolesMotion} {Permission Management}
       ${ColonyActionType.Recovery} {Recovery}
-      ${ColonyActionType.EmitDomainReputationPenalty} {Smite}
-      ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Smite}
-      ${ColonyActionType.EmitDomainReputationReward} {Award}
-      ${ColonyActionType.EmitDomainReputationRewardMotion} {Award}
+      ${ColonyActionType.EmitDomainReputationPenalty} {Manage reputation}
+      ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Manage reputation}
+      ${ColonyActionType.EmitDomainReputationReward} {Manage reputation}
+      ${ColonyActionType.EmitDomainReputationRewardMotion} {Manage reputation}
       ${ColonyActionType.CreateDecisionMotion} {Decision}
       ${ColonyActionType.AddVerifiedMembers} {Manage verified members}
       ${ColonyActionType.AddVerifiedMembersMotion} {Manage verified members}

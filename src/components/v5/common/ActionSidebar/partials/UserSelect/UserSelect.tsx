@@ -8,6 +8,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
@@ -19,7 +20,14 @@ import { type UserSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
+const UserSelect: FC<UserSelectProps> = ({
+  name,
+  disabled,
+  domainId,
+  filterOptionsFn,
+  tooltipContent,
+  options,
+}) => {
   const {
     field,
     fieldState: { error },
@@ -27,7 +35,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
     name,
   });
   const isError = !!error;
-  const { usersOptions } = useUserSelect();
+  const { usersOptions } = useUserSelect({ domainId, filterOptionsFn });
   const [
     isUserSelectVisible,
     {
@@ -46,7 +54,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
     HTMLDivElement
   >([isUserSelectVisible]);
 
-  const selectedUserOption = usersOptions.options.find(
+  const selectedUserOption = (options || usersOptions).options.find(
     (option) => option.value === field.value,
   );
 
@@ -142,7 +150,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
           </button>
           {isUserSelectVisible && (
             <SearchSelect
-              items={[usersOptions]}
+              items={[options || usersOptions]}
               onSelect={(value) => {
                 field.onChange(utils.isHexString(value) ? value : undefined);
                 toggleUserSelectOff();
