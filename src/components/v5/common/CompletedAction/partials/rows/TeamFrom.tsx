@@ -35,7 +35,7 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
       case ColonyActionType.EmitDomainReputationPenalty:
       case ColonyActionType.EmitDomainReputationReward:
         return formatText({ id: 'actionSidebar.team' });
-      case ColonyActionType.TempAdvancedPayment:
+      case ColonyActionType.CreateExpenditure:
         return formatText({ id: 'actionSidebar.fundFrom' });
       default:
         return formatText({ id: 'actionSidebar.from' });
