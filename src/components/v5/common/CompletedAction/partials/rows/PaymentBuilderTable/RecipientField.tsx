@@ -9,23 +9,23 @@ import { type RecipientFieldProps } from './types.ts';
 
 const RecipientField: FC<RecipientFieldProps> = ({ address }) => {
   const { totalMembers, loading } = useMemberContext();
-  const currentUser = totalMembers.find(
+  const selectedUser = totalMembers.find(
     (member) => member.contributorAddress === address,
   );
 
   return (
     <>
-      {!loading && currentUser?.user && (
+      {!loading && selectedUser?.user && (
         <div className="flex items-center">
           <UserAvatar
-            user={currentUser?.user}
+            user={selectedUser?.user}
             size="xs"
             showUsername
             className={clsx({
-              'text-warning-400': !currentUser?.isVerified,
+              'text-warning-400': !selectedUser?.isVerified,
             })}
           />
-          {currentUser?.isVerified && (
+          {selectedUser?.isVerified && (
             <span className="flex ml-2 text-blue-400">
               <SealCheck size={20} />
             </span>

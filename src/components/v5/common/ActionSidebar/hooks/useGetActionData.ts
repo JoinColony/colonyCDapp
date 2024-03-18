@@ -9,7 +9,10 @@ import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
 import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.tsx';
@@ -24,10 +27,10 @@ import { useGetExpenditureData } from './useGetExpenditureData.ts';
 export const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction, networkMotionState, motionState } =
     useGetColonyAction(transactionId);
-  const { expenditure } = useGetExpenditureData(action?.expenditureId);
-  const {
-    colony: { tokens },
-  } = useColonyContext();
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action?.expenditureId,
+  );
+  const { colony: colonyFragment } = useColonyContext();
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -241,7 +244,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
           ...repeatableFields,
         };
-      case ColonyActionType.TempAdvancedPayment: {
+      case ColonyActionType.CreateExpenditure: {
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
           from: expenditureMetadata?.fundFromDomainNativeId,
@@ -249,15 +252,14 @@ export const useGetActionData = (transactionId: string | undefined) => {
             if (!slot) {
               return undefined;
             }
-
-            const currentToken = tokens?.items.find(
-              (slotToken) =>
-                slotToken?.token.tokenAddress ===
-                slot?.payouts?.[0].tokenAddress,
+            const currentToken = getSelectedToken(
+              colonyFragment,
+              slot.payouts?.[0].tokenAddress || '',
             );
+
             const currentAmount = getFormattedTokenAmount(
               slot?.payouts?.[0].amount || '0',
-              currentToken?.token.decimals,
+              currentToken?.decimals,
             );
 
             return {
@@ -298,7 +300,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action, expenditure, tokens?.items]);
+  }, [action, colonyFragment, expenditure]);
 
   return {
     action,
@@ -307,5 +309,7 @@ export const useGetActionData = (transactionId: string | undefined) => {
     isMotion: !!action?.isMotion,
     networkMotionState,
     motionState,
+    expenditure,
+    loadingExpenditure,
   };
 };
