@@ -1,9 +1,16 @@
+import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
-export const useUserSelect = () => {
+export const useUserSelect = ({
+  domainId = Id.RootDomain,
+  filterOptionsFn,
+}: {
+  domainId?: number;
+  filterOptionsFn?: (option: SearchSelectOption) => boolean;
+}) => {
   const { totalMembers, loading } = useMemberContext();
 
   const options = useMemo(
@@ -13,7 +20,15 @@ export const useUserSelect = () => {
           return result;
         }
 
-        const { walletAddress, profile } = member.user || {};
+        const { reputation, user } = member;
+        const reputationItems = reputation?.items ?? [];
+        const userReputation = reputationItems?.find(
+          (item) =>
+            item?.domain.nativeId === domainId ||
+            item?.domain.nativeId === Id.RootDomain,
+        )?.reputationRaw;
+
+        const { walletAddress, profile } = user || {};
 
         return [
           ...result,
@@ -29,16 +44,17 @@ export const useUserSelect = () => {
             showAvatar: true,
             walletAddress,
             isVerified: member.isVerified,
+            userReputation,
           },
         ];
       }, []),
-    [totalMembers],
+    [domainId, totalMembers],
   );
 
   return {
     usersOptions: {
       isLoading: loading,
-      options,
+      options: filterOptionsFn ? options.filter(filterOptionsFn) : options,
       key: 'users',
       title: { id: 'actions.recipient' },
     },

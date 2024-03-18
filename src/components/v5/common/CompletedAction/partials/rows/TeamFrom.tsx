@@ -18,6 +18,8 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
   const getTooltipContent = () => {
     switch (actionType) {
       case ColonyActionType.SetUserRoles:
+      case ColonyActionType.EmitDomainReputationPenalty:
+      case ColonyActionType.EmitDomainReputationReward:
         return formatText({
           id: 'actionSidebar.tooltip.managePermissions.team',
         });
@@ -30,6 +32,8 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
   const getRowTitle = () => {
     switch (actionType) {
       case ColonyActionType.SetUserRoles:
+      case ColonyActionType.EmitDomainReputationPenalty:
+      case ColonyActionType.EmitDomainReputationReward:
         return formatText({ id: 'actionSidebar.team' });
       default:
         return formatText({ id: 'actionSidebar.from' });

@@ -8,6 +8,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
@@ -18,7 +19,14 @@ import { type UserSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
+const UserSelect: FC<UserSelectProps> = ({
+  name,
+  disabled,
+  domainId,
+  filterOptionsFn,
+  tooltipContent,
+  options,
+}) => {
   const {
     field,
     fieldState: { error },
@@ -26,7 +34,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
     name,
   });
   const isError = !!error;
-  const { usersOptions } = useUserSelect();
+  const { usersOptions } = useUserSelect({ domainId, filterOptionsFn });
   const [
     isUserSelectVisible,
     {
@@ -50,7 +58,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
     HTMLDivElement
   >([isUserSelectVisible]);
 
-  const selectedUserOption = usersOptions.options.find(
+  const selectedUserOption = (options || usersOptions).options.find(
     (option) => option.value === field.value,
   );
 
@@ -65,6 +73,44 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
           isVerified: selectedUserOption?.isVerified,
         }
       : undefined;
+
+  const toggler = (
+    <button
+      type="button"
+      ref={relativeElementRef}
+      className={clsx('flex text-md transition-colors items-center', {
+        'text-gray-400': !isError && !isUserSelectVisible,
+        'text-negative-400': isError,
+        'text-blue-400': isUserSelectVisible,
+        'md:hover:text-blue-400': !disabled,
+      })}
+      onClick={toggleUserSelect}
+      aria-label={formatText({ id: 'ariaLabel.selectUser' })}
+      disabled={disabled}
+    >
+      {selectedUser || field.value ? (
+        <>
+          <UserAvatar
+            user={selectedUser || field.value}
+            size="xs"
+            showUsername
+            className={clsx({
+              'text-warning-400': !selectedUser?.isVerified,
+              'text-gray-900': selectedUser?.isVerified,
+            })}
+          />
+          {selectedUser?.isVerified && (
+            <CircleWavyCheck
+              size={14}
+              className="ml-1 text-blue-400 flex-shrink-0"
+            />
+          )}
+        </>
+      ) : (
+        formatText({ id: 'actionSidebar.selectMember' })
+      )}
+    </button>
+  );
 
   return (
     <div className="flex w-full items-center sm:relative">
@@ -87,44 +133,26 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
         </>
       ) : (
         <>
-          <button
-            type="button"
-            ref={relativeElementRef}
-            className={clsx('flex items-center text-md transition-colors', {
-              'text-gray-400': !isError && !isUserSelectVisible,
-              'text-negative-400': isError,
-              'text-blue-400': isUserSelectVisible,
-              'md:hover:text-blue-400': !disabled,
-            })}
-            onClick={toggleUserSelect}
-            aria-label={formatText({ id: 'ariaLabel.selectUser' })}
-            disabled={disabled}
-          >
-            {selectedUser || field.value ? (
-              <>
-                <UserAvatar
-                  user={selectedUser || field.value}
-                  size="xs"
-                  showUsername
-                  className={clsx({
-                    'text-warning-400': !selectedUser?.isVerified,
-                    'text-gray-900': selectedUser?.isVerified,
-                  })}
-                />
-                {selectedUser?.isVerified && (
-                  <CircleWavyCheck
-                    size={14}
-                    className="ml-1 flex-shrink-0 text-blue-400"
-                  />
-                )}
-              </>
-            ) : (
-              formatText({ id: 'actionSidebar.selectMember' })
-            )}
-          </button>
+          {tooltipContent ? (
+            <Tooltip
+              tooltipContent={tooltipContent}
+              // selectTriggerRef={(triggerRef) => {
+              //   if (!triggerRef) {
+              //     return null;
+              //   }
+
+              //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
+              // }}
+              placement="top"
+            >
+              {toggler}
+            </Tooltip>
+          ) : (
+            toggler
+          )}
           {isUserSelectVisible && (
             <SearchSelect
-              items={[usersOptions]}
+              items={[options || usersOptions]}
               onSelect={(value) => {
                 field.onChange(utils.isHexString(value) ? value : undefined);
                 toggleUserSelectOff();
@@ -136,7 +164,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
               }}
-              isLoading={usersOptions.isLoading}
+              isLoading={(options || usersOptions).isLoading}
               className="z-[60]"
               showSearchValueAsOption
               showEmptyContent={false}

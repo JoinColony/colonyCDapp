@@ -26,7 +26,7 @@ const StakingChart: FC<StakingChartProps> = ({
             requiredStake: (
               <Numeral
                 value={requiredStake}
-                suffix={tokenSymbol}
+                suffix={` ${tokenSymbol}`}
                 decimals={tokenDecimals}
               />
             ),

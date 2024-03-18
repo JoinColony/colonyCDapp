@@ -67,7 +67,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                       <Numeral
                         value={tokenBalanceData || 0}
                         decimals={tokenDecimals}
-                        suffix={tokenSymbol}
+                        suffix={` ${tokenSymbol}`}
                       />
                     ),
                   },
