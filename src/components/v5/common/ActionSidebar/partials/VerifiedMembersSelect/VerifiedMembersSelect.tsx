@@ -4,7 +4,7 @@ import { utils } from 'ethers';
 import React, { type FC } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.tsx';
+import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useMobile } from '~hooks';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
