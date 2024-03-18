@@ -87,7 +87,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       /* case ColonyActionType.EmitDomainReputationReward:
          case ColonyActionType.EmitDomainReputationPenalty:
           return <ManageReputation action={action} />; */
-      case ColonyActionType.TempAdvancedPayment:
+      case ColonyActionType.CreateExpenditure:
         return (
           !loadingExpenditure &&
           expenditure && (

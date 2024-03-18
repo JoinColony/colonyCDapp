@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext.tsx';
 import { type Expenditure, type ColonyAction } from '~types/graphql.ts';
+import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
@@ -41,9 +42,9 @@ const PaymentBuilder = ({ expenditure, action }: PaymentBuilderProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
 
-  const selectedTeam = colony.domains?.items.find(
-    (domain) =>
-      domain?.nativeId === expenditure.metadata?.fundFromDomainNativeId,
+  const selectedTeam = findDomainByNativeId(
+    expenditure.metadata?.fundFromDomainNativeId,
+    colony,
   );
 
   return (

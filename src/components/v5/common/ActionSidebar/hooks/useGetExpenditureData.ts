@@ -7,6 +7,7 @@ export const useGetExpenditureData = (
     variables: {
       expenditureId: expenditureId || '',
     },
+    skip: !expenditureId,
   });
 
   return {
