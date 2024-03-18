@@ -15,6 +15,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   label,
   stage,
   isHighlighted,
+  highlightedClassName = '!bg-gray-900 !border-gray-900 !text-base-white',
   className,
   icon,
   tooltipProps,
@@ -45,7 +46,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
         {
           'border-gray-900 bg-base-white text-gray-900':
             !isHighlighted && stage !== StepStage.Skipped,
-          '!border-gray-900 !bg-gray-900 !text-base-white': isHighlighted,
+          [highlightedClassName]: isHighlighted,
           'border-gray-400 bg-base-white text-gray-400':
             stage === StepStage.Skipped,
         },

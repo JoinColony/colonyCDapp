@@ -13,4 +13,5 @@ export interface StepperButtonProps
   className?: string;
   icon?: Icon;
   tooltipProps?: TooltipProps;
+  highlightedClassName?: string;
 }
