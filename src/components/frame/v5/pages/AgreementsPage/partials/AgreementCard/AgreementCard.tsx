@@ -16,7 +16,7 @@ import {
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
-import { useGetColonyAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';

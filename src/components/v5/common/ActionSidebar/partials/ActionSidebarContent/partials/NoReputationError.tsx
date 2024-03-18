@@ -2,7 +2,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useReputationValidation } from '~v5/common/ActionSidebar/hooks/index.ts';
+import useReputationValidation from '~v5/common/ActionSidebar/hooks/useReputationValidation.ts';
 import Link from '~v5/shared/Link/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 

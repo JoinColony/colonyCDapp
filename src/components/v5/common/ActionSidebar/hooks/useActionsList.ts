@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Action } from '~constants/actions.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
-export const useActionsList = () => {
+const useActionsList = () => {
   return useMemo(
     (): SearchSelectOptionProps[] => [
       {
@@ -130,3 +130,5 @@ export const useActionsList = () => {
     [],
   );
 };
+
+export default useActionsList;

@@ -4,7 +4,7 @@ import React from 'react';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 
-import { useHasNoDecisionMethods } from '../../hooks/index.ts';
+import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 import AmountField from '../AmountField/index.ts';
 
 import { type AmountRowProps } from './types.ts';

@@ -4,15 +4,15 @@ import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
-import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 
+import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
+import TeamsSelect from '../../TeamsSelect/index.ts';
+import UserSelect from '../../UserSelect/index.ts';
 
 import { useSimplePayment } from './hooks.ts';
 

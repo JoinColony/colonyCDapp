@@ -3,7 +3,7 @@ import { useFormContext, type UseFormReturn } from 'react-hook-form';
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 
-export const useCloseSidebarClick = () => {
+const useCloseSidebarClick = () => {
   const formContext = useFormContext();
   const formRef = useRef<UseFormReturn<object>>(null);
   const {
@@ -24,3 +24,5 @@ export const useCloseSidebarClick = () => {
     formRef,
   };
 };
+
+export default useCloseSidebarClick;

@@ -3,15 +3,30 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import type { Preview } from '@storybook/react';
 
+import { type Meta, type StoryObj } from '@storybook/react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+
+import reduxPromiseListener from '../src/redux/createPromiseListener';
+import createRootReducer from '../src/redux/createRootReducer';
+
+import AppContextStub from './preview/AppContextStub';
+import ColonyContextStub from './preview/ColonyContextStub';
+import UserTransactionContextStub from './preview/UserTransactionsContextStub';
+
+const store = createStore(
+  createRootReducer(),
+  applyMiddleware(reduxPromiseListener.middleware),
+);
+
 import '../src/styles/main.css';
 
-import '~utils/yup/customMethods';
-import { reactIntl } from './reactIntl.ts';
+import '../src/utils/yup/customMethods';
+import { reactIntl } from './reactIntl';
 import { applyTheme } from '../src/components/frame/Extensions/themes/utils';
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     options: {
       storySort: {
         order: ['Common', 'Frame', 'Shared'],
@@ -39,11 +54,19 @@ export const decorators = [
     applyTheme('light');
 
     return (
-      <MemoryRouter>
-        <Routes>
-          <Route path="/*" element={<Story />} />
-        </Routes>
-      </MemoryRouter>
+      <ReduxProvider store={store}>
+        <AppContextStub>
+          <ColonyContextStub>
+            <UserTransactionContextStub>
+              <MemoryRouter>
+                <Routes>
+                  <Route path="/*" element={<Story />} />
+                </Routes>
+              </MemoryRouter>
+            </UserTransactionContextStub>
+          </ColonyContextStub>
+        </AppContextStub>
+      </ReduxProvider>
     );
   },
 ];

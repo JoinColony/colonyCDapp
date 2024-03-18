@@ -11,12 +11,12 @@ import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { toFinite } from '~utils/lodash.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
+
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
-
-import { useActionFormBaseHook } from '../../../hooks/index.ts';
+} from '../../../consts.ts';
+import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 export const useValidationSchema = () => {

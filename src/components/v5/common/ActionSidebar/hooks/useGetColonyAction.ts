@@ -22,7 +22,7 @@ export type RefetchAction = ReturnType<
   typeof useGetColonyActionQuery
 >['refetch'];
 
-export const useGetColonyAction = (transactionHash?: string) => {
+const useGetColonyAction = (transactionHash?: string) => {
   const {
     colony: { colonyAddress },
     refetchColony,
@@ -140,3 +140,5 @@ export const useGetColonyAction = (transactionHash?: string) => {
     refetchAction,
   };
 };
+
+export default useGetColonyAction;

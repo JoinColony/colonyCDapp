@@ -11,7 +11,7 @@ import {
 
 import { getHasActionPermissions } from './helpers.ts';
 
-export const useHasActionPermissions = () => {
+const useHasActionPermissions = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
@@ -35,3 +35,5 @@ export const useHasActionPermissions = () => {
 
   return hasPermissions;
 };
+
+export default useHasActionPermissions;

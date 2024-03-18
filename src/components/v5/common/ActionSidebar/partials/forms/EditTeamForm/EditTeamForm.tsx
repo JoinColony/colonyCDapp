@@ -15,12 +15,12 @@ import {
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
+import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';

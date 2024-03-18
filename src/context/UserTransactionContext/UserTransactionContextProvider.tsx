@@ -231,7 +231,7 @@ const UserTransactionContextProvider: FC<PropsWithChildren> = ({
   );
 
   return (
-    <UserTransactionContext.Provider {...{ value }}>
+    <UserTransactionContext.Provider value={value}>
       {children}
     </UserTransactionContext.Provider>
   );

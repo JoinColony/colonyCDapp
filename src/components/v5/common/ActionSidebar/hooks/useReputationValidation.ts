@@ -21,7 +21,7 @@ export const reputationValidationSchema = object()
   })
   .defined();
 
-export const useReputationValidation = () => {
+const useReputationValidation = () => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
@@ -65,3 +65,5 @@ export const useReputationValidation = () => {
 
   return { noReputationError: !!fieldError && isSubmitted };
 };
+
+export default useReputationValidation;

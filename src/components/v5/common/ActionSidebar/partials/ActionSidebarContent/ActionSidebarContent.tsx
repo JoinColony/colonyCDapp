@@ -26,12 +26,10 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '../../consts.ts';
-import {
-  useActionFormProps,
-  useHasActionPermissions,
-  useHasNoDecisionMethods,
-  useSidebarActionForm,
-} from '../../hooks/index.ts';
+import useHasActionPermissions from '../../hooks/permissions/useHasActionPermissions.ts';
+import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+import useActionFormProps from '../../hooks/useActionFormProps.ts';
+import useSidebarActionForm from '../../hooks/useSidebarActionForm.ts';
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
 import Motions from '../Motions/index.ts';
@@ -237,7 +235,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
       </div>
       {transactionId && (
         <div
-          className={`
+          className="
             w-full
             md:w-[35%]
             md:h-full
@@ -251,7 +249,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             md:border-l
             md:border-l-gray-200
             bg-gray-25
-          `}
+          "
         >
           {isMotion ? (
             <Motions transactionId={transactionId} />

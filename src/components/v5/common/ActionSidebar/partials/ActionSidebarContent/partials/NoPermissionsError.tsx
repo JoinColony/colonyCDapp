@@ -5,10 +5,8 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { type Action } from '~constants/actions.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
-import {
-  useHasActionPermissions,
-  useHasNoDecisionMethods,
-} from '~v5/common/ActionSidebar/hooks/index.ts';
+import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName =

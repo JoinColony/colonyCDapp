@@ -16,7 +16,7 @@ import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
 } from './consts.ts';
-import { useActionsList } from './hooks/index.ts';
+import useActionsList from './hooks/useActionsList.ts';
 import { translateAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionTypeSelect';

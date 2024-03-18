@@ -10,7 +10,7 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';
 import { sanitizeHTML } from '~utils/strings/index.ts';
 
-import { useActionFormBaseHook } from '../../../hooks/index.ts';
+import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { validationSchema, type CreateDecisionFormValues } from './consts.ts';

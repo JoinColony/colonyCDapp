@@ -7,17 +7,10 @@ import setupSagas from './sagas/index.ts';
 
 const sagaMiddleware = createSagaMiddleware();
 
-/*
- * @todo Remove action black-hole Redux middlewares
- * @body We're using some custom middleware which swallows up actions. This can
- * end up being really confusing, so we should seek to remove them in favour of
- * more proper solutions.
- */
-
-const composeEnhancer =
-  // @ts-ignore
-  // eslint-disable-next-line no-underscore-dangle
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancer = import.meta.env.DEV
+  ? // eslint-disable-next-line no-underscore-dangle
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+  : compose;
 
 const store = createStore(
   createRootReducer(),

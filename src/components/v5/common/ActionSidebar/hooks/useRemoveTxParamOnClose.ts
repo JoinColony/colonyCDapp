@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import { removeQueryParamFromUrl } from '~utils/urls.ts';
 
-export const useRemoveTxParamOnClose = () => {
+const useRemoveTxParamOnClose = () => {
   const navigate = useNavigate();
 
   useEffect(
@@ -16,3 +16,5 @@ export const useRemoveTxParamOnClose = () => {
     [navigate],
   );
 };
+
+export default useRemoveTxParamOnClose;

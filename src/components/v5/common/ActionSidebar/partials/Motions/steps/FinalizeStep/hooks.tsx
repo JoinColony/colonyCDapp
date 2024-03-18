@@ -18,7 +18,7 @@ import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
-import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/index.ts';
+import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
 import { type DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
 

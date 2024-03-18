@@ -20,11 +20,11 @@ import { getLastWallet } from '~utils/autoLogin.ts';
 import { getContext, ContextModule } from '../index.ts';
 import { TokenActivationProvider } from '../TokenActivationContext/TokenActivationContextProvider.tsx';
 
-import { AppContext, type AppContextValues } from './AppContext.ts';
+import { AppContext, type AppContextValue } from './AppContext.ts';
 
 const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const [wallet, setWallet] = useState<AppContextValues['wallet']>();
-  const [user, setUser] = useState<AppContextValues['user']>();
+  const [wallet, setWallet] = useState<AppContextValue['wallet']>();
+  const [user, setUser] = useState<AppContextValue['user']>();
   const [userLoading, setUserLoading] = useState(false);
   // We need to start with true here as we can't know whethere we are going to try to connect
   // and the first render is important here
@@ -164,7 +164,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const appContext = useMemo<AppContextValues>(
+  const appContext = useMemo<AppContextValue>(
     () => ({
       wallet,
       walletConnecting,

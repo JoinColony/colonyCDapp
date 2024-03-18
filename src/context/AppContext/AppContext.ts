@@ -8,7 +8,7 @@ import {
 import { type User } from '~types/graphql.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
 
-export interface AppContextValues {
+export interface AppContextValue {
   wallet?: ColonyWallet | null;
   walletConnecting: boolean;
   setWalletConnecting: Dispatch<SetStateAction<boolean>>;
@@ -23,9 +23,7 @@ export interface AppContextValues {
   canInteract: boolean;
 }
 
-export const AppContext = createContext<AppContextValues | undefined>(
-  undefined,
-);
+export const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 export const useAppContext = () => {
   const appContext = useContext(AppContext);
