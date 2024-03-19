@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
@@ -30,7 +29,6 @@ const useGetActionData = (transactionId: string | undefined) => {
   const { expenditure, loadingExpenditure } = useGetExpenditureData(
     action?.expenditureId,
   );
-  const { colony: colonyFragment } = useColonyContext();
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -259,7 +257,7 @@ const useGetActionData = (transactionId: string | undefined) => {
               return undefined;
             }
             const currentToken = getSelectedToken(
-              colonyFragment,
+              colony,
               slot.payouts?.[0].tokenAddress || '',
             );
 
@@ -306,7 +304,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action, colonyFragment, expenditure]);
+  }, [action, expenditure]);
 
   return {
     action,
