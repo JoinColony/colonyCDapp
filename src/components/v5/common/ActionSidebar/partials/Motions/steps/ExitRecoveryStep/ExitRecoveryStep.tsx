@@ -4,7 +4,8 @@ import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
-import MemberSignatureList from '~v5/common/MemberSignatureList/index.ts';
+import MemberSignature from '~v5/common/MemberSignature/MemberSignature.tsx';
+import { Avatar2 } from '~v5/shared/Avatar/Avatar.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
@@ -50,10 +51,34 @@ const ExitRecoveryStep: FC = () => {
                 actionType={ActionTypes.ACTION_RECOVERY_EXIT}
                 className="flex flex-col gap-6"
               >
-                <MemberSignatureList
-                  items={membersList}
-                  title={formatText({ id: 'common.memberSignature.title' })}
-                />
+                <div>
+                  <h3 className="text-1 mb-2">
+                    {formatText({ id: 'common.memberSignature.title' })}
+                  </h3>
+                  {membersList?.length ? (
+                    <ul>
+                      {membersList.map(
+                        ({ hasSigned, userName, address, key }) => (
+                          <li key={key} className="mb-3 last:mb-0">
+                            <MemberSignature hasSigned={hasSigned}>
+                              <Avatar2
+                                alt={`${userName} avatar}`}
+                                size={20}
+                                address={address}
+                              />
+                            </MemberSignature>
+                          </li>
+                        ),
+                      )}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-500">
+                      {formatText({
+                        id: 'common.memberSignatureList.empty',
+                      })}
+                    </p>
+                  )}
+                </div>
                 <Button
                   mode="primarySolid"
                   isFullSize
