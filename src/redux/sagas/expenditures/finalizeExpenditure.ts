@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
