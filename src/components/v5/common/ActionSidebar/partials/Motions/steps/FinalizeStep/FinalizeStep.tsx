@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -55,6 +56,14 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     canClaimStakes,
   } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
+  const isMotionFinalized = actionData.motionData.isFinalized;
+  const isMotionFailedNotFinalizable =
+    actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
+  const isMotionAgreement =
+    actionData.type === ColonyActionType.CreateDecisionMotion;
+  const isMotionClaimable =
+    isMotionFinalized || isMotionFailedNotFinalizable || isMotionAgreement;
+
   const handleSuccess = () => {
     startPollingAction(getSafePollingInterval());
     setIsPolling(true);
@@ -71,21 +80,18 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   /* Update colony object when motion gets finalized. */
   useEffect(() => {
-    if (actionData.motionData.isFinalized) {
+    if (isMotionFinalized) {
       refetchColony();
       setIsPolling(false);
     }
-  }, [actionData.motionData.isFinalized, refetchColony]);
+  }, [isMotionFinalized, refetchColony]);
 
   let action = {
     actionType: ActionTypes.MOTION_FINALIZE,
     transform: finalizePayload,
     onSuccess: handleSuccess,
   };
-  if (
-    actionData.motionData.isFinalized ||
-    actionData.motionData.motionStateHistory.hasFailedNotFinalizable
-  ) {
+  if (isMotionClaimable) {
     action = {
       actionType: ActionTypes.MOTION_CLAIM,
       transform: claimPayload,
@@ -156,8 +162,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   items={items}
                   className={clsx({
                     'mb-6':
-                      !actionData.motionData.isFinalized ||
-                      (!isClaimed && canClaimStakes),
+                      !isMotionFinalized || (!isClaimed && canClaimStakes),
                   })}
                 />
               )}
@@ -175,19 +180,19 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       }
                     />
                   )}
-                  {!isPolling && !actionData.motionData.isFinalized && (
+                  {!isPolling && !isMotionFinalized && !isMotionAgreement && (
                     <Button
                       mode="primarySolid"
                       disabled={!isFinalizable || wrongMotionState}
                       isFullSize
-                      text={formatText({ id: 'motion.finalizeStep.submit' })}
+                      text={formatText({
+                        id: 'motion.finalizeStep.submit',
+                      })}
                       type="submit"
                     />
                   )}
                   {!isPolling &&
-                    (actionData.motionData.isFinalized ||
-                      actionData.motionData.motionStateHistory
-                        .hasFailedNotFinalizable) &&
+                    isMotionClaimable &&
                     !isClaimed &&
                     canClaimStakes && (
                       <Button
@@ -195,7 +200,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         disabled={!canClaimStakes || wrongMotionState}
                         isFullSize
                         text={formatText({
-                          id: buttonTextId,
+                          id: isMotionAgreement
+                            ? 'motion.finalizeStep.returnStakes'
+                            : buttonTextId,
                         })}
                         type="submit"
                       />

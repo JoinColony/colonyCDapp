@@ -1345,6 +1345,7 @@
     "motion.finalizeStep.winnings": "Winnings",
     "motion.finalizeStep.total": "Total",
     "motion.finalizeStep.submit": "Finalize",
+    "motion.finalizeStep.returnStakes": "Return stakes",
     "motion.finalizeStep.transactions.remaining": "{transactions} transactions remaining",
     "motion.finalizeStep.claimed": "Claimed",
     "table.row.recipient": "Recipient",
