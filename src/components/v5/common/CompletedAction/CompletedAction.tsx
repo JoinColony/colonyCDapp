@@ -122,6 +122,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             sm:h-full
             sm:w-[35%]
             sm:flex-shrink-0
+            sm:overflow-y-auto
             sm:border-b-0
             sm:border-l
             sm:border-l-gray-200
