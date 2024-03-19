@@ -17,10 +17,7 @@ export const toB32 = (input: BigNumberish) =>
  * Indexes of relevant data slots in network contracts
  * See: https://github.com/JoinColony/colonyNetwork/blob/develop/contracts/colony/ColonyStorage.sol
  */
-const EXPENDITURES_SLOT = toB32(BigNumber.from(25));
 const EXPENDITURESLOTS_SLOT = toB32(BigNumber.from(26));
-
-const EXPENDITURE_OWNER_AND_STATUS = toB32(BigNumber.from(0));
 
 const EXPENDITURESLOT_RECIPIENT = toB32(BigNumber.from(0));
 const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
@@ -146,34 +143,4 @@ export const getMulticallDataForUpdatedPayouts = async (
   });
 
   return encodedMulticallData;
-};
-
-export const getDataForCancelLockedExpenditure = async (
-  expenditure: Expenditure,
-  colonyClient: AnyColonyClient,
-  userAddress: string,
-) => {
-  const [permissionDomainId, childSkillIndex] = await getPermissionProofs(
-    colonyClient.networkClient,
-    colonyClient,
-    expenditure.nativeDomainId,
-    ColonyRole.Arbitration,
-    userAddress,
-  );
-
-  /**
-   * @NOTE: Owner address and status share the same slot, so we need to combine the
-   * current owner address with cancelled state (01)
-   */
-  const value = toB32(`${expenditure.ownerAddress}01`);
-
-  return [
-    permissionDomainId,
-    childSkillIndex,
-    expenditure.nativeId,
-    EXPENDITURES_SLOT,
-    [ARRAY],
-    [EXPENDITURE_OWNER_AND_STATUS],
-    value,
-  ];
 };

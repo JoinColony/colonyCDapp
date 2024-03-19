@@ -399,6 +399,8 @@
     "transaction.group.finalizeExpenditure.description": "Finalize Expenditure",
     "transaction.group.cancelStakedExpenditure.title": "Cancel Staked Expenditure",
     "transaction.group.cancelStakedExpenditure.description": "Cancel Staked Expenditure",
+    "transaction.ColonyClient.cancelExpenditureViaArbitration.title": "Cancel Locked Expenditure",
+    "transaction.ColonyClient.cancelExpenditureViaArbitration.description": "Cancel Locked Expenditure",
     "transaction.StakedExpenditureClient.makeExpenditureWithStake.title": "Make Expenditure With Stake",
     "transaction.StakedExpenditureClient.makeExpenditureWithStake.description": "Make Expenditure With Stake",
     "transaction.StakedExpenditureClient.reclaimStake.title": "Reclaim Stake",
