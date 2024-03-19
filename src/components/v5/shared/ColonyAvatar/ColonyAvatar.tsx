@@ -23,14 +23,15 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
     >
       <Avatar2
         size={size}
+        alt="colony-avatar"
         src={colonyImageSrc}
-        address={colonyAddress.toLowerCase()}
+        address={colonyAddress}
       />
       {Icon && (
         <figure
           className={`
-          h-[1.125rem]
-          w-[1.125rem]
+          h-[1.1875rem]
+          w-[1.1875rem]
           rounded-full
           border
           border-gray-200

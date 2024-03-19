@@ -15,17 +15,18 @@ const displayName = 'v5.Avatar';
 
 export const Avatar2: FC<AvatarProps2> = ({
   address,
+  alt,
   className,
   size,
   src,
 }) => {
-  const source = src ?? getIcon(address);
+  const source = src ?? getIcon(address.toLowerCase());
 
   return (
     <img
       className={clsx('rounded-full bg-cover', className)}
       src={source}
-      alt="tmp"
+      alt={alt}
       style={{
         width: size,
         height: size,
