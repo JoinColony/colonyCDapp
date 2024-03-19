@@ -6,11 +6,8 @@ import {
 } from '../RadioButtonsBase/types.ts';
 
 export interface ButtonRadioButtonItem<TValue>
-  extends Omit<RadioItem<TValue>, 'children' | 'label'> {
-  className: string;
-  checkedClassName: string;
-  checkedIconClassName?: string;
-  iconClassName?: string;
+  extends Omit<RadioItem<TValue>, 'children' | 'label' | 'className'> {
+  className: ((checked?: boolean, disabled?: boolean) => string) | string;
   label: React.ReactNode;
   icon?: Icon;
 }
