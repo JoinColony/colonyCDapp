@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -20,7 +21,6 @@ import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 import { useClaimConfig, useFinalizeStep } from './hooks.tsx';
 import { type FinalizeStepProps, FinalizeStepSections } from './types.ts';
 import { handleMotionFinalized } from './utils.ts';
-import { ColonyActionType } from '~gql';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
