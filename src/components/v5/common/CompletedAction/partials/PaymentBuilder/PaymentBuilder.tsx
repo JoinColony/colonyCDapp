@@ -33,7 +33,8 @@ const MSG = defineMessages({
   },
   subtitle: {
     id: `${displayName}.subtitle`,
-    defaultMessage: 'Payment with multiple recipients and tokens by {user}',
+    defaultMessage:
+      'Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {user}',
   },
 });
 
@@ -47,11 +48,42 @@ const PaymentBuilder = ({ expenditure, action }: PaymentBuilderProps) => {
     colony,
   );
 
+  const recipientCounts = expenditure.slots.reduce(
+    (uniqueAddresses: string[], item) => {
+      const address = item.recipientAddress;
+      if (address) {
+        if (!uniqueAddresses.includes(address)) {
+          uniqueAddresses.push(address);
+        }
+      }
+
+      return uniqueAddresses;
+    },
+    [],
+  ).length;
+
+  const tokensCount = expenditure.slots.reduce(
+    (uniqueTokens: string[], item) => {
+      const token = item.payouts?.[0].tokenAddress;
+
+      if (token) {
+        if (!uniqueTokens.includes(token)) {
+          uniqueTokens.push(token);
+        }
+      }
+
+      return uniqueTokens;
+    },
+    [],
+  ).length;
+
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
+          recipientsNumber: recipientCounts,
+          tokensNumber: tokensCount,
           user: initiatorUser ? (
             <UserPopover
               userName={initiatorUser.profile?.displayName}
