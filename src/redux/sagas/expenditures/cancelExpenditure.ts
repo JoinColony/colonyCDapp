@@ -18,7 +18,6 @@ import {
 } from '../transactions/index.ts';
 import {
   getColonyManager,
-  getDataForCancelLockedExpenditure,
   initiateTransaction,
   putError,
 } from '../utils/index.ts';
@@ -136,15 +135,19 @@ function* cancelLockedExpenditure({
     return;
   }
 
-  const params = yield getDataForCancelLockedExpenditure(
-    expenditure,
+  const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+    colonyClient.networkClient,
     colonyClient,
+    expenditure.nativeDomainId,
+    ColonyRole.Arbitration,
     userAddress,
   );
 
+  const params = [permissionDomainId, childSkillIndex, expenditure.nativeId];
+
   yield fork(createTransaction, meta.id, {
     context: ClientType.ColonyClient,
-    methodName: 'setExpenditureState',
+    methodName: 'cancelExpenditureViaArbitration',
     identifier: colonyAddress,
     params,
   });
