@@ -2,9 +2,9 @@
  * This script watches for changes in the amplify directory and copies the changed files to the `amplify` Docker container.
  */
 /* eslint-disable no-console */
-import { execSync } from 'child_process';
-import chokidar from 'chokidar';
-import path from 'path';
+const { execSync } = require('child_process');
+const chokidar = require('chokidar');
+const path = require('path');
 
 const watchDir = './amplify';
 const targetDir = '/colonyCDapp';
@@ -14,7 +14,7 @@ const watcher = chokidar.watch(watchDir, {
   ignoreInitial: true,
 });
 
-const copyToDockerContainer = (filePath: string) => {
+const copyToDockerContainer = (filePath) => {
   // Compute the relative path from the watched directory
   const relativePath = path.relative(process.cwd(), filePath);
   // Construct the target path inside the Docker container
