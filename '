@@ -29,12 +29,21 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
       {Icon && (
         <figure
           className={`
-          h-[1.125rem]
-          w-[1.125rem]
+          h-[1.1875rem]
+          w-[1.1875rem]
           rounded-full
           border
           border-gray-200
           bg-base-white
+          overflow-hidden
+          absolute
+          top-0
+          right-0
+          translate-x-[.375rem]
+          -translate-y-[.375rem]
+          flex
+          justify-center
+          items-center
       `}
         >
           <Icon size={14} />

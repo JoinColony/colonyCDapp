@@ -36,3 +36,10 @@ export interface AvatarWithStatusBadgeProps extends AvatarProps {
   badgeText?: string;
   isFilled?: boolean;
 }
+
+export interface AvatarProps2 {
+  className?: string;
+  src?: string;
+  address: string;
+  size: number;
+}

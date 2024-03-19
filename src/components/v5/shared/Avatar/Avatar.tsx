@@ -9,16 +9,9 @@ import React, {
 import { tw } from '~utils/css/index.ts';
 
 import getIcon from './identicon.ts';
-import { type AvatarProps } from './types.ts';
+import { type AvatarProps2, type AvatarProps } from './types.ts';
 
 const displayName = 'v5.Avatar';
-
-interface AvatarProps2 {
-  className?: string;
-  src?: string;
-  address: string;
-  size: number;
-}
 
 export const Avatar2: FC<AvatarProps2> = ({
   address,

@@ -213,14 +213,11 @@ const ColonyPreviewPage = () => {
         title={
           <div className="flex w-full flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4">
             <ColonyAvatar
-              colonyImageProps={{
-                src:
-                  colonyMetadata?.thumbnail ||
-                  colonyMetadata?.avatar ||
-                  undefined,
-              }}
+              colonyImageSrc={
+                colonyMetadata?.thumbnail || colonyMetadata?.avatar || undefined
+              }
               colonyAddress={colonyAddress || ADDRESS_ZERO}
-              size="xxsm"
+              size={24}
             />
             <h1 className="inline text-md font-medium">{colonyDisplayName}</h1>
             <SocialLinks

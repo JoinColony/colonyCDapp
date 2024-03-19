@@ -63,8 +63,9 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
       hamburgerLabel={formatText({ id: 'menu' })}
       colonySwitcherProps={{
         avatarProps: {
-          colonyImageProps: metadata?.avatar
-            ? { src: metadata?.thumbnail || metadata?.avatar }
+          size: 38,
+          colonyImageSrc: metadata?.avatar
+            ? metadata?.thumbnail || metadata?.avatar
             : undefined,
           chainIcon,
           colonyAddress,
