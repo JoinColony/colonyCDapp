@@ -121,11 +121,11 @@ const StakingForm: FC<StakingFormProps> = ({
                       value: MotionVote.Nay,
                       className: (checked, disabled) =>
                         clsx({
-                          'text-gray-900 border-negative-300 [&_.icon]:text-negative-400':
+                          'border-negative-300 text-gray-900 [&_.icon]:text-negative-400':
                             !checked && !disabled,
                           'border-gray-300 text-gray-300 [&_.icon]:text-gray-300':
                             disabled,
-                          'bg-negative-400 border-negative-400 text-base-white':
+                          'border-negative-400 bg-negative-400 text-base-white':
                             checked && !disabled,
                         }),
                       icon: ThumbsDown,
@@ -137,7 +137,7 @@ const StakingForm: FC<StakingFormProps> = ({
                       value: MotionVote.Yay,
                       className: (checked, disabled) =>
                         clsx({
-                          'text-gray-900 border-purple-200 [&_.icon]:text-purple-400':
+                          'border-purple-200 text-gray-900 [&_.icon]:text-purple-400':
                             !checked && !disabled,
                           'border-gray-300 text-gray-300 [&_.icon]:text-gray-300':
                             disabled,
