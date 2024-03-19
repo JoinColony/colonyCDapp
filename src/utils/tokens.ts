@@ -92,7 +92,10 @@ export const calculateFee = (
   }; // NOTE: seems like moveDecimal does not have strict typing
 };
 
-export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
+export const getSelectedToken = (
+  colony: Pick<Colony, 'tokens'>,
+  tokenAddress: string,
+) => {
   const colonyTokens =
     colony?.tokens?.items
       .filter(notNull)

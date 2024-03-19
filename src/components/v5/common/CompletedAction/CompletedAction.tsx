@@ -96,17 +96,17 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       <div
         className={`
             w-full
-            md:w-[35%]
-            md:h-full
-            md:overflow-y-auto
-            md:flex-shrink-0
+            sm:w-[35%]
+            sm:h-full
+            sm:overflow-y-auto
+            sm:flex-shrink-0
             px-6
             py-8
             border-b
             border-b-gray-200
-            md:border-b-0
-            md:border-l
-            md:border-l-gray-200
+            sm:border-b-0
+            sm:border-l
+            sm:border-l-gray-200
             bg-gray-25
           `}
       >

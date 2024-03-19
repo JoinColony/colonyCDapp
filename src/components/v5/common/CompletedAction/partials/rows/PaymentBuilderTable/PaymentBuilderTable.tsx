@@ -170,7 +170,7 @@ const PaymentBuilderTable = ({ items }: PaymentBuilderTableProps) => {
       </h5>
       <Table<PaymentBuilderTableModel>
         className={clsx(
-          'sm:[&_td>div]:py-2 sm:[&_td>div]:min-h-[2.875rem] sm:[&_tr>td]:border-none',
+          'sm:[&_tbody>td>div]:p-[1.1rem] [&_tbody>tr>td]:!border-none sm:[&_tfoot>tr>td]:border-t [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2',
         )}
         data={data}
         columns={columns}

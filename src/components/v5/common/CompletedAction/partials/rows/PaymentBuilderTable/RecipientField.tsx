@@ -1,9 +1,10 @@
-import { SealCheck } from '@phosphor-icons/react';
+import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useMemberContext } from '~context/MemberContext.tsx';
-import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import Avatar from '~shared/Avatar/Avatar.tsx';
+import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import { type RecipientFieldProps } from './types.ts';
 
@@ -17,19 +18,47 @@ const RecipientField: FC<RecipientFieldProps> = ({ address }) => {
     <>
       {!loading && selectedUser?.user && (
         <div className="flex items-center">
-          <UserAvatar
-            user={selectedUser?.user}
-            size="xs"
-            showUsername
-            className={clsx({
+          <UserPopover
+            user={selectedUser.user}
+            walletAddress={selectedUser.contributorAddress}
+            withVerifiedBadge={selectedUser.isVerified}
+            className={clsx('flex items-center sm:hover:text-blue-400', {
+              'pointer-events-none': loading,
               'text-warning-400': !selectedUser?.isVerified,
+              'text-gray-900': selectedUser?.isVerified,
             })}
-          />
-          {selectedUser?.isVerified && (
-            <span className="flex ml-2 text-blue-400">
-              <SealCheck size={20} />
-            </span>
-          )}
+          >
+            <Avatar
+              seed={selectedUser.contributorAddress?.toLowerCase()}
+              title={
+                selectedUser.user?.profile?.displayName ||
+                selectedUser.contributorAddress
+              }
+              avatar={
+                selectedUser.user?.profile?.thumbnail ||
+                selectedUser.user?.profile?.avatar
+              }
+              size="xxs"
+              className={clsx({
+                'skeleton before:rounded-full': loading,
+              })}
+            />
+            <p
+              className={clsx('ml-2 text-md inline-block', {
+                skeleton: loading,
+              })}
+            >
+              {loading
+                ? 'Loading...'
+                : selectedUser.user?.profile?.displayName ||
+                  selectedUser.contributorAddress}
+            </p>
+            {!selectedUser?.isVerified && (
+              <span className="ml-1">
+                <WarningCircle size={14} className="text-warning-400" />
+              </span>
+            )}
+          </UserPopover>
         </div>
       )}
     </>

@@ -434,7 +434,6 @@ export enum ColonyActionType {
   SetUserRoles = 'SET_USER_ROLES',
   /** An action related to setting user roles within a Colony via a motion */
   SetUserRolesMotion = 'SET_USER_ROLES_MOTION',
-  TempAdvancedPayment = 'TEMP_ADVANCED_PAYMENT',
   /** An action related to unlocking a token within a Colony */
   UnlockToken = 'UNLOCK_TOKEN',
   /** An action related to unlocking a token within a Colony via a motion */
