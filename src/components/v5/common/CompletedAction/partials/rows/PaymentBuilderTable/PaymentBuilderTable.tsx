@@ -4,6 +4,7 @@ import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMobile } from '~hooks';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
@@ -31,6 +32,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
     colony,
     colony: { expendituresGlobalClaimDelay },
   } = useColonyContext();
+  const isMobile = useMobile();
   const expendituresGlobalClaimDelayHours = useMemo(() => {
     if (typeof expendituresGlobalClaimDelay !== 'number') {
       return null;
@@ -55,53 +57,92 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
     paymentBuilderColumnHelper.accessor('amount', {
       enableSorting: false,
       header: formatText({ id: 'table.row.amount' }),
+      footer:
+        hasMoreThanOneToken && !isMobile
+          ? () => {
+              const selectedTokens = dataRef.current?.reduce(
+                (result: SelectedTokensProps, { amount }) => {
+                  if (!amount) {
+                    return result;
+                  }
+
+                  if (!amount[0].token) {
+                    return result;
+                  }
+
+                  const tokenData = getSelectedToken(colony, amount[0].token);
+
+                  if (!tokenData) {
+                    return result;
+                  }
+
+                  return [
+                    {
+                      ...tokenData,
+                      amount: BigNumber.from(result[0]?.amount || '0')
+                        .add(BigNumber.from(amount[0].amount || '0'))
+                        .toString(),
+                    },
+                  ];
+                },
+                [],
+              );
+
+              return (
+                <PaymentBuilderPayoutsTotal
+                  payouts={selectedTokens as PaymentBuilderPayoutItem[]}
+                />
+              );
+            }
+          : undefined,
       cell: ({ row }) => (
         <AmountField
           amount={row.original.amount[0].amount}
           token={row.original.amount[0].token}
         />
       ),
-      footer: hasMoreThanOneToken
-        ? () => {
-            const selectedTokens = dataRef.current?.reduce(
-              (result: SelectedTokensProps, { amount }) => {
-                if (!amount) {
-                  return result;
-                }
-
-                if (!amount[0].token) {
-                  return result;
-                }
-
-                const tokenData = getSelectedToken(colony, amount[0].token);
-
-                if (!tokenData) {
-                  return result;
-                }
-
-                return [
-                  {
-                    ...tokenData,
-                    amount: BigNumber.from(result[0]?.amount || '0')
-                      .add(BigNumber.from(amount[0].amount || '0'))
-                      .toString(),
-                  },
-                ];
-              },
-              [],
-            );
-
-            return (
-              <PaymentBuilderPayoutsTotal
-                payouts={selectedTokens as PaymentBuilderPayoutItem[]}
-              />
-            );
-          }
-        : undefined,
     }),
     paymentBuilderColumnHelper.accessor('claimDelay', {
       enableSorting: false,
       header: formatText({ id: 'table.column.claimDelay' }),
+      footer:
+        hasMoreThanOneToken && isMobile
+          ? () => {
+              const selectedTokens = dataRef.current?.reduce(
+                (result: SelectedTokensProps, { amount }) => {
+                  if (!amount) {
+                    return result;
+                  }
+
+                  if (!amount[0].token) {
+                    return result;
+                  }
+
+                  const tokenData = getSelectedToken(colony, amount[0].token);
+
+                  if (!tokenData) {
+                    return result;
+                  }
+
+                  return [
+                    {
+                      ...tokenData,
+                      amount: BigNumber.from(result[0]?.amount || '0')
+                        .add(BigNumber.from(amount[0].amount || '0'))
+                        .toString(),
+                    },
+                  ];
+                },
+                [],
+              );
+
+              return (
+                <PaymentBuilderPayoutsTotal
+                  payouts={selectedTokens as PaymentBuilderPayoutItem[]}
+                />
+              );
+            }
+          : undefined,
       cell: ({ row }) => {
         const formattedHours = Math.floor(
           Number(row.original.claimDelay) / 3600,
@@ -170,7 +211,7 @@ const PaymentBuilderTable = ({ items }: PaymentBuilderTableProps) => {
       </h5>
       <Table<PaymentBuilderTableModel>
         className={clsx(
-          'sm:[&_tbody>td>div]:p-[1.1rem] [&_tbody>tr>td]:!border-none [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 sm:[&_tfoot>tr>td]:border-t',
+          'sm:[&_tbody>td>div]:p-[1.1rem] sm:[&_tbody>tr>td]:!border-none [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 sm:[&_tfoot>tr>td]:border-t',
         )}
         data={data}
         columns={columns}
