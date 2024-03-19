@@ -98,10 +98,8 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
                 <SpinnerLoader appearance={{ size: 'medium' }} />
               ) : (
                 <ColonyAvatar
-                  size="m"
-                  colonyImageProps={{
-                    src: modalValue?.image,
-                  }}
+                  size={60}
+                  colonyImageSrc={modalValue?.image}
                   colonyAddress={colonyAddress}
                 />
               )}

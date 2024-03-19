@@ -45,7 +45,7 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
         <ColonyAvatar
           size={18}
           colonyAddress={colonyAddress}
-          colonyImageProps={avatarSrc ? { src: avatarSrc } : undefined}
+          colonyImageSrc={avatarSrc ?? undefined}
         />
         <p className="max-w-[13.313rem] truncate text-2">{name}</p>
       </div>

@@ -1,10 +1,9 @@
 import { type Icon } from '@phosphor-icons/react';
-import { type ImgHTMLAttributes } from 'react';
 
 export interface ColonyAvatarProps {
+  className?: string;
   colonyAddress: string;
   chainIcon?: Icon;
-  colonyImageProps?: ImgHTMLAttributes<HTMLImageElement>;
-  className?: string;
+  colonyImageSrc?: string;
   size: number;
 }
