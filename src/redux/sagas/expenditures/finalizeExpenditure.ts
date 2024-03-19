@@ -15,7 +15,6 @@ import {
 } from '../transactions/index.ts';
 import {
   getColonyManager,
-  getDataForFinalizeExpenditure,
   initiateTransaction,
   putError,
   takeFrom,
@@ -171,15 +170,19 @@ function* finalizeExpenditureWithPermissions({
       colonyAddress,
     );
 
-    const params = yield getDataForFinalizeExpenditure(
-      expenditure,
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
+      expenditure.nativeDomainId,
+      ColonyRole.Arbitration,
       userAddress,
     );
 
+    const params = [permissionDomainId, childSkillIndex, expenditure.nativeId];
+
     yield fork(createTransaction, finalizeExpenditure.id, {
       context: ClientType.ColonyClient,
-      methodName: 'setExpenditureState',
+      methodName: 'finalizeExpenditureViaArbitration',
       identifier: colonyAddress,
       params,
       group: {
@@ -236,11 +239,12 @@ function* finalizeExpenditureWithPermissions({
       meta,
     });
   } catch (error) {
-    yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
+    return yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
   }
   [finalizeExpenditure, annotateFinalizeExpenditure].forEach((channel) =>
     channel.channel.close(),
   );
+  return null;
 }
 
 export default function* finalizeExpenditureSaga() {
