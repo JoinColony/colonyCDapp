@@ -40,6 +40,7 @@ export interface AvatarWithStatusBadgeProps extends AvatarProps {
 export interface AvatarProps2 {
   className?: string;
   src?: string;
+  alt: string;
   address: string;
   size: number;
 }

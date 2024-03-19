@@ -1,4 +1,4 @@
-import { At, Image } from '@phosphor-icons/react';
+import { Image } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
@@ -10,7 +10,7 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks.ts';
 import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload.tsx';
-import Avatar from '~v5/shared/Avatar/index.ts';
+import { Avatar2 } from '~v5/shared/Avatar/Avatar.tsx';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -48,12 +48,11 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
   return (
     <>
       <div className="mr-2 flex shrink-0">
-        <Avatar
-          avatar={field.value?.image}
-          placeholderIcon={At}
-          seed={colonyAddress.toLowerCase()}
-          title={colonyName}
-          size="xs"
+        <Avatar2
+          src={field.value?.image}
+          address={colonyAddress}
+          size={20}
+          alt={`${colonyName} avatar`}
         />
       </div>
       {!readonly && (
