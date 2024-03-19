@@ -27,7 +27,7 @@ const ActionButton: FC<ActionButtonProps> = ({
       {isExtensionInstalled ? (
         <Link
           to={extensionUrl}
-          className="flex h-[2.5rem] items-center justify-center rounded-lg border border-gray-300 bg-base-white px-4 py-2.5 text-md font-medium text-gray-700 transition-all duration-normal hover:border-gray-900 hover:bg-gray-900 hover:text-base-white disabled:text-gray-300"
+          className="flex h-[2.5rem] items-center justify-center rounded-lg border border-gray-300 bg-base-white px-4 py-2.5 text-md font-medium text-gray-700 transition-all duration-normal hover:border-gray-900 hover:bg-gray-900 hover:!text-base-white disabled:text-gray-300"
           onClick={handleClick}
         >
           {formatMessage({ id: 'button.manage' })}

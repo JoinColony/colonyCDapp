@@ -43,7 +43,7 @@ const CopyWallet: FC<CopyWalletProps> = ({
           mode="primaryOutlineFull"
           icon={CopySimple}
           className={clsx(
-            'flex items-center !border-gray-300 text-sm transition-all duration-normal md:hover:text-blue-400',
+            'flex items-center !border-gray-300 text-sm transition-all duration-normal',
             {
               'pointer-events-none text-gray-300': disabled,
               'text-gray-700 text-1': !disabled,
