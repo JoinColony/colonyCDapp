@@ -1,4 +1,4 @@
-import { SealCheck } from '@phosphor-icons/react';
+import { CircleWavyCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { noop } from 'lodash';
 import React, {
@@ -35,7 +35,6 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   popperOptions,
   withVerifiedBadge = true,
   className,
-  wrapperClassName,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +77,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       interactive: true,
     });
 
-  const buttonComponent = (
+  const button = (
     <button
       onClick={isMobile ? onOpenModal : noop}
       onMouseEnter={isMobile ? noop : () => onOpenModal()}
@@ -91,16 +90,10 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       )}
     >
       {children}
+      {withVerifiedBadge && isVerified && (
+        <CircleWavyCheck size={14} className="text-blue-400 ml-1" />
+      )}
     </button>
-  );
-
-  const button = withVerifiedBadge ? (
-    <div className={clsx(wrapperClassName, 'items-center flex flex-shrink-0')}>
-      {buttonComponent}
-      {isVerified && <SealCheck size={14} className="text-blue-400 ml-1" />}
-    </div>
-  ) : (
-    buttonComponent
   );
 
   const content = (

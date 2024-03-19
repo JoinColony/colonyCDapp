@@ -1,3 +1,4 @@
+import { CircleWavyCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -42,6 +43,7 @@ const SearchItem: FC<SearchItemProps> = ({
           color,
           walletAddress = '',
           token,
+          isVerified,
         }) => {
           const firstDisabledOption = options.filter(
             (option) => option.isDisabled,
@@ -106,6 +108,12 @@ const SearchItem: FC<SearchItemProps> = ({
                     </div>
                   )}
                   {isLabelVisible && labelText}
+                  {isVerified && (
+                    <CircleWavyCheck
+                      size={14}
+                      className="text-blue-400 ml-1 flex-shrink-0"
+                    />
+                  )}
                   {!label && <span className="truncate">{walletAddress}</span>}
                   {firstDisabledOption?.value === value && (
                     <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
