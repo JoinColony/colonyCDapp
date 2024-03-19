@@ -94,13 +94,13 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
     </button>
   );
 
-  const button = withVerifiedBadge ? (
+  const button = (
     <div className={clsx(wrapperClassName, 'items-center flex flex-shrink-0')}>
       {buttonComponent}
-      {isVerified && <SealCheck size={14} className="text-blue-400 ml-1" />}
+      {withVerifiedBadge && isVerified && (
+        <SealCheck size={14} className="text-blue-400 ml-1" />
+      )}
     </div>
-  ) : (
-    buttonComponent
   );
 
   const content = (

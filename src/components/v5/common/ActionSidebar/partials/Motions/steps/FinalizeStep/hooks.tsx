@@ -103,7 +103,7 @@ export const useClaimConfig = (
 
   const userAddress = user?.walletAddress;
   const nativeTokenDecimals = nativeToken.decimals;
-  const nativeTokenSymbol = nativeToken.symbol;
+  const nativeTokenSymbol = ` ${nativeToken.symbol}`;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
   const stakerReward = stakerRewards.find(

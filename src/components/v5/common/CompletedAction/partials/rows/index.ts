@@ -7,3 +7,4 @@ export { default as TeamFromRow } from './TeamFrom.tsx';
 export { default as PermissionsTableRow } from './PermissionsTable.tsx';
 export { default as SocialLinksTable } from './SocialLinksTable.tsx';
 export { default as ActionData } from './ActionData.tsx';
+export { default as ModificationRow } from './Modification.tsx';
