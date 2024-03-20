@@ -7,8 +7,6 @@ import { formatText } from '~utils/intl.ts';
 
 import { type IconButtonProps } from './types.ts';
 
-import styles from './TxButton.module.css';
-
 const displayName = 'v5.Button.IconButton';
 
 const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
@@ -38,8 +36,7 @@ const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
       ) : (
         <button
           className={clsx(
-            styles.pending,
-            'flex items-center justify-center font-medium transition-all duration-normal',
+            'flex min-w-[6.25rem] items-center justify-center bg-blue-400 px-3.5 py-2.5 text-sm font-medium text-base-white transition-all duration-normal hover:bg-blue-300 disabled:bg-gray-300',
             {
               'rounded-lg': rounded === 's',
               'rounded-full': rounded === 'l',

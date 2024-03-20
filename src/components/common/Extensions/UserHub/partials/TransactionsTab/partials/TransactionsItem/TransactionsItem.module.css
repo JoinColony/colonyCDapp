@@ -1,3 +1,0 @@
-.listItem {
-  @apply rounded relative before:content-[""] before:block before:w-0.5 before:h-[1rem] before:absolute before:top-[0.4375rem] first:before:top-3 before:left-0 text-sm bg-gray-50 px-3.5 py-[0.4375rem] first:pt-3 last:pb-3;
-}

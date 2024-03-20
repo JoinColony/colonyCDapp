@@ -8,10 +8,9 @@ import { type GroupedTransactionContentProps } from '../types.ts';
 
 import CancelTransaction from './CancelTransaction.tsx';
 import { useGroupedTransactionContent } from './hooks.tsx';
+import transactionsItemClasses from './TransactionsItem/TransactionsItem.styles.ts';
 import TransactionStatus from './TransactionStatus.tsx';
 import { shortErrorMessage } from './utils.ts';
-
-import styles from './TransactionsItem/TransactionsItem.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';
@@ -70,7 +69,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
 
   return (
     <li
-      className={clsx(`${styles.listItem}`, {
+      className={clsx(`${transactionsItemClasses.listItem}`, {
         'before:bg-success-400': succeeded,
         'before:bg-negative-400': failed,
         'before:bg-blue-400': pending,

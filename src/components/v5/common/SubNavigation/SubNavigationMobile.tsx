@@ -5,8 +5,6 @@ import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import { SubNavigationItems } from './partials/SubNavigationItem/index.ts';
 import SubNavigationItemMobile from './partials/SubNavigationItem/SubNavigationItemMobile.tsx';
 
-import styles from './SubNavigationMobile.module.css';
-
 const displayName = 'v5.common.SubNavigation.SubNavigationMobile';
 
 const SubNavigationMobile: FC<PropsWithChildren> = () => {
@@ -17,7 +15,7 @@ const SubNavigationMobile: FC<PropsWithChildren> = () => {
   });
 
   return (
-    <ul className={styles.listWrapper} ref={ref}>
+    <ul className="flex flex-col text-md text-gray-700" ref={ref}>
       {SubNavigationItems.map(({ id, label, content, icon }) => (
         <SubNavigationItemMobile
           key={id}

@@ -76,3 +76,21 @@ export const removeValueUnits = (valueWithUnit: string): number => {
     10,
   );
 };
+
+/**
+ * This function is intended for use when tailwind classes are being assigned to a variable.
+ * It works in conjunction with prettier-plugin-tailwindcss to automatically sort the classes
+ * in template literal strings tagged with 'tw'.
+ *
+ * Example:
+ * tw`p-4 bg-white` will automatically sort when the file is saved to: 'bg-white p-4'.
+ *
+ * @method tw
+ *
+ * @param {Array<string>} strings Array of strings from the template literal
+ * @param {...any} values Values to be interpolated into the template literal
+ *
+ * @return {string} The composed class names string with classes sorted
+ */
+export const tw = (strings, ...values) =>
+  String.raw({ raw: strings }, ...values);

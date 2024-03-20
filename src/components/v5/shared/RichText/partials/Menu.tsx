@@ -13,9 +13,9 @@ import { BubbleMenu } from '@tiptap/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { type MenuBarProps } from '../types.ts';
+import { tw } from '~utils/css/index.ts';
 
-import styles from './Menu.module.css';
+import { type MenuBarProps } from '../types.ts';
 
 const displayName = 'v5.RichText.partials.MenuBar';
 
@@ -24,9 +24,11 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
     return null;
   }
 
+  const iconClass = tw`hover:text-blue-400`;
+
   return (
     <BubbleMenu
-      className={styles.bubbleMenu}
+      className="flex items-center gap-2 rounded-lg border border-gray-200 bg-base-white p-2"
       tippyOptions={{ duration: 100 }}
       editor={editor}
     >
@@ -36,7 +38,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <TextHOne
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('heading', { level: 1 }),
             'text-gray-900': !editor.isActive('heading', { level: 1 }),
           })}
@@ -48,7 +50,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <TextHTwo
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('heading', { level: 2 }),
             'text-gray-900': !editor.isActive('heading', { level: 2 }),
           })}
@@ -60,7 +62,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <TextHThree
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('heading', { level: 3 }),
             'text-gray-900': !editor.isActive('heading', { level: 3 }),
           })}
@@ -72,7 +74,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <TextBolder
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('bold'),
             'text-gray-900': !editor.isActive('bold'),
           })}
@@ -84,7 +86,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <TextItalic
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('italic'),
             'text-gray-900': !editor.isActive('italic'),
           })}
@@ -96,7 +98,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <TextUnderline
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('underline'),
             'text-gray-900': !editor.isActive('underline'),
           })}
@@ -109,7 +111,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <ListNumbers
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('orderedList'),
             'text-gray-900': !editor.isActive('orderedList'),
           })}
@@ -121,7 +123,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <ListBullets
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('bulletList'),
             'text-gray-900': !editor.isActive('bulletList'),
           })}
@@ -133,7 +135,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
       >
         <Quotes
           size={16}
-          className={clsx(styles.icon, {
+          className={clsx(iconClass, {
             'text-blue-400': editor.isActive('blockquote'),
             'text-gray-900': !editor.isActive('blockquote'),
           })}

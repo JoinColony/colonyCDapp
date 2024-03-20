@@ -18,9 +18,8 @@ import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
+import reputationTabClasses from '../ReputationTab.styles.ts';
 import { type BalanceProps, type ViewStakedButtonProps } from '../types.ts';
-
-import styles from '../ReputationTab.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.Balance';
@@ -77,12 +76,12 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
     <div>
       <TitleLabel text={formatMessage(MSG.nativeToken)} />
       <div className="flex flex-col gap-4 border-b border-gray-200 pb-6 pt-2">
-        <div className={styles.row}>
-          <span className={styles.rowName}>
+        <div className={reputationTabClasses.row}>
+          <span className={reputationTabClasses.rowName}>
             {formatMessage({ id: 'total.balance' })}
           </span>
           <Numeral
-            className={styles.numeral}
+            className={reputationTabClasses.numeral}
             value={tokenBalanceData?.balance ?? 0}
             decimals={tokenDecimals}
             suffix={nativeToken?.symbol || 'CLNY'}
@@ -91,9 +90,9 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
         </div>
         {/* @TODO: actived icons? */}
         <div>
-          <div className={styles.row}>
+          <div className={reputationTabClasses.row}>
             <div className="flex items-center gap-4">
-              <span className={styles.rowName}>
+              <span className={reputationTabClasses.rowName}>
                 {formatMessage({ id: 'active' })}
               </span>
               {!isMobile && (
@@ -124,7 +123,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               )}
             </div>
             <Numeral
-              className={styles.numeral}
+              className={reputationTabClasses.numeral}
               value={tokenBalanceData?.activeBalance ?? 0}
               decimals={tokenDecimals}
               suffix={nativeToken?.symbol || 'CLNY'}
@@ -163,9 +162,9 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
 
         {/* @TODO: stacked icon viewed? */}
         <div>
-          <div className={styles.row}>
+          <div className={reputationTabClasses.row}>
             <div className="flex items-center gap-4">
-              <span className={styles.rowName}>
+              <span className={reputationTabClasses.rowName}>
                 {formatMessage({ id: 'staked' })}
               </span>
               {!isMobile && (
@@ -175,7 +174,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               )}
             </div>
             <Numeral
-              className={styles.numeral}
+              className={reputationTabClasses.numeral}
               value={tokenBalanceData?.lockedBalance ?? 0}
               decimals={tokenDecimals}
               suffix={nativeToken?.symbol || 'CLNY'}

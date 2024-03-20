@@ -45,9 +45,12 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
       <button
         type="button"
         onClick={setOpen}
-        className={clsx(styles.button, {
-          [styles.activeButton]: isOpen,
-        })}
+        className={clsx(
+          'flex text-lg font-semibold text-gray-700 hover:text-blue-400 sm:text-md',
+          {
+            'font-semibold text-blue-400': isOpen,
+          },
+        )}
       >
         <Icon size={18} />
         <span className="ml-2 flex" ref={setTriggerRef}>
@@ -59,7 +62,7 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
           <div
             ref={setTooltipRef}
             {...getTooltipProps({
-              className: `${styles.tooltipContainer} tooltip-container p-0`,
+              className: `${styles.tooltipContainer} font-normal z-50 relative text-sm bg-base-white shadow-default border border-gray-200 rounded-lg overflow-y-scroll max-h-[36rem] min-w-[20.5rem] tooltip-container p-0`,
             })}
           >
             {content}

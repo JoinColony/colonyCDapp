@@ -6,8 +6,6 @@ import { useEmblaCarouselSettings } from './hooks.ts';
 import DotButton from './partials/DotButton.tsx';
 import { type ImageCarouselProps } from './types.ts';
 
-import styles from './ImageCarousel.module.css';
-
 const displayName = 'common.Extensions.ImageCarousel';
 
 const ImageCarousel: FC<ImageCarouselProps> = ({
@@ -18,27 +16,37 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
     useEmblaCarouselSettings(options);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.embla}>
+    <div className="relative pb-[1.75rem]">
+      <div className="cursor-grab overflow-hidden">
         <div ref={emblaRef}>
-          <div className={styles.emblaContainer}>
+          <div className="flex">
             {slideUrls.map((url) => (
-              <div className={styles.emblaSlide} key={url}>
-                <img alt="file" src={url} className={styles.image} />
+              <div
+                className="min-w-full sm:mr-4 sm:w-[31.875rem] sm:min-w-[31.875rem]"
+                key={url}
+              >
+                <img
+                  alt="file"
+                  src={url}
+                  className="aspect-[380/248] w-full object-cover sm:aspect-[510/248]"
+                />
               </div>
             ))}
           </div>
         </div>
       </div>
-      <div className={styles.dots}>
+      <div className="absolute bottom-0 m-0 flex w-full justify-center">
         {scrollSnaps.map((_, index) => (
           <DotButton
             // eslint-disable-next-line react/no-array-index-key
             key={index}
             onClick={() => scrollTo(index)}
-            className={clsx(styles.dot, {
-              [styles.dotSelected]: index === selectedIndex,
-            })}
+            className={clsx(
+              'mx-1 h-2 w-2 cursor-pointer rounded-full bg-gray-200 transition-all duration-normal hover:bg-blue-400',
+              {
+                'bg-gray-500': index === selectedIndex,
+              },
+            )}
           />
         ))}
       </div>

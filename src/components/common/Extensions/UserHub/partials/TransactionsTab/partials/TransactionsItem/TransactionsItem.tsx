@@ -11,7 +11,7 @@ import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import { type TransactionsItemProps } from '../../types.ts';
 import TransactionsHeader from '../TransactionsHeader.tsx';
 
-import styles from './TransactionsItem.module.css';
+import transactionsItemClasses from './TransactionsItem.styles.ts';
 
 const displayName =
   'common.Extensions.UserHub.TransactionsTab.partials.TransactionsItem';
@@ -83,7 +83,7 @@ const TransactionsItem: FC<TransactionsItemProps> = ({
                 ) => (
                   <div
                     key={key}
-                    className={clsx(styles.listItem, {
+                    className={clsx(transactionsItemClasses.listItem, {
                       'font-semibold': isCurrentAction,
                       'before:bg-success-400':
                         isCurrentAction &&

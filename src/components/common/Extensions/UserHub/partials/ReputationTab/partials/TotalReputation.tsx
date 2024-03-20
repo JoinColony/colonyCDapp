@@ -10,9 +10,8 @@ import { calculatePercentageReputation, ZeroValue } from '~utils/reputation.ts';
 import { getFormattedTokenValue } from '~utils/tokens.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
+import reputationTabClasses from '../ReputationTab.styles.ts';
 import { type TotalReputationProps } from '../types.ts';
-
-import styles from '../ReputationTab.module.css';
 
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.TotalReputation';
@@ -51,21 +50,21 @@ const TotalReputation: FC<TotalReputationProps> = ({
         {/* </button> */}
       </div>
       <div className="flex flex-col gap-4 pb-6 pt-2">
-        <div className={styles.row}>
-          <span className={styles.rowName}>
+        <div className={reputationTabClasses.row}>
+          <span className={reputationTabClasses.rowName}>
             {formatMessage({ id: 'total.balance' })}
           </span>
           <div className="flex items-center">
-            <Star className={styles.icon} size={12} />
+            <Star className={reputationTabClasses.icon} size={12} />
             {percentageReputation === ZeroValue.NearZero && (
-              <span className={styles.reputationValue}>
+              <span className={reputationTabClasses.reputationValue}>
                 {percentageReputation}
               </span>
             )}
             {percentageReputation &&
               percentageReputation !== ZeroValue.NearZero && (
                 <Numeral
-                  className={styles.reputationValue}
+                  className={reputationTabClasses.reputationValue}
                   value={percentageReputation || 0}
                   suffix="%"
                   appearance={{ size: 'small' }}
@@ -73,8 +72,8 @@ const TotalReputation: FC<TotalReputationProps> = ({
               )}
           </div>
         </div>
-        <div className={styles.row}>
-          <span className={styles.rowName}>
+        <div className={reputationTabClasses.row}>
+          <span className={reputationTabClasses.rowName}>
             {formatMessage({ id: 'reputation.points' })}
           </span>
           <Numeral

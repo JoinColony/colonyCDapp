@@ -10,9 +10,8 @@ import { useSpecificSidePanel } from './hooks.tsx';
 import ContractAddress from './partials/ContractAddress.tsx';
 import InstalledBy from './partials/InstalledBy.tsx';
 import SpecificSidePanelRow from './partials/SpecificSidePanelRow.tsx';
+import specificSidePanelClasses from './SpecifcSidePanel.styles.ts';
 import { type SpecificSidePanelProps } from './types.ts';
-
-import styles from './SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.SpecificSidePanel';
 
@@ -39,8 +38,10 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
           permissions,
         }) => (
           <Fragment key={id}>
-            <div className={styles.panelRow}>
-              <div className={styles.panelTitle}>{statusType.title}</div>
+            <div className={specificSidePanelClasses.panelRow}>
+              <div className={specificSidePanelClasses.panelTitle}>
+                {statusType.title}
+              </div>
               <div className="flex flex-col justify-start gap-y-2 md:flex-row md:flex-wrap">
                 <div className="flex flex-wrap gap-1">
                   {statuses.map((status) => (
@@ -91,8 +92,8 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               title={developer.title}
               description={developer.developer}
             />
-            <div className={styles.panelRow}>
-              <div className={styles.panelTitle}>
+            <div className={specificSidePanelClasses.panelRow}>
+              <div className={specificSidePanelClasses.panelTitle}>
                 {formatText({ id: 'extensionsPage.permission' })}
               </div>
               <RolesTooltip role={getRole(permissions)} />

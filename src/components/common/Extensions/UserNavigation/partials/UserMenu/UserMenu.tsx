@@ -30,8 +30,6 @@ import WalletConnectedTopMenu from '../WalletConnectedTopMenu/index.ts';
 import { currencyIcons, userMenuItems } from './consts.ts';
 import { UserMenuItemName, type UserMenuProps } from './types.ts';
 
-import styles from './UserMenu.module.css';
-
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
 const UserMenu: FC<UserMenuProps> = ({
@@ -90,7 +88,7 @@ const UserMenu: FC<UserMenuProps> = ({
           />
         ) : (
           <>
-            <div className={styles.mobileButtons}>
+            <div className="mb-6 flex w-full items-center gap-1 border-b border-b-gray-200 pb-6 md:mb-5 md:hidden md:pb-5">
               <Button
                 mode="tertiary"
                 size="small"
@@ -197,7 +195,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <button
               type="button"
               aria-label={formatText({ id: 'ariaLabel.backToMainMenu' })}
-              className={clsx(styles.buttonBack, 'group mb-2 text-4')}
+              className="group mb-2 flex w-full items-center text-gray-400 transition-all duration-normal text-4 hover:text-blue-400"
               onClick={closeSubmenu}
             >
               <CaretLeft size={10} />

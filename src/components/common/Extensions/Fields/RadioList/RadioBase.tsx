@@ -8,8 +8,6 @@ import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts
 
 import { type RadioBaseProps, type RadioItemProps } from './types.ts';
 
-import styles from './RadioList.module.css';
-
 const displayName = 'common.Extensions.Fields.RadioBase';
 
 const RadioBase: FC<RadioBaseProps> = ({
@@ -25,7 +23,7 @@ const RadioBase: FC<RadioBaseProps> = ({
   const labelText = formatText(label);
 
   return (
-    <div className={styles.wrapper}>
+    <div className='relative w-full after:absolute after:-left-[0.1875rem] after:-top-[0.1875rem] after:block after:h-[calc(100%+0.375rem)] after:w-[calc(100%+0.375rem)] after:rounded-[0.7rem] after:border-[0.1875rem] after:border-transparent after:transition-all after:duration-normal after:content-[""] hover:after:border-blue-100'>
       <input
         type="radio"
         name={name}
@@ -42,8 +40,7 @@ const RadioBase: FC<RadioBaseProps> = ({
       <label
         htmlFor={label}
         className={clsx(
-          styles.radioButtonLabel,
-          `border-gray-300 before:top-[0.875rem] after:top-[0.875rem] peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25`,
+          `relative z-[1] flex min-h-[2.75rem] cursor-pointer flex-col justify-center rounded-lg border border-gray-300 py-3 pl-[3.25rem] pr-6 text-md transition-all duration-normal before:absolute before:left-6 before:top-[0.875rem] before:h-[1rem] before:w-[1rem] before:rounded-full before:border before:border-gray-200 before:transition-all before:duration-normal after:absolute after:left-6 after:top-[0.875rem] after:h-[0.4375rem] after:w-[0.4375rem] after:translate-x-[calc(50%+1px)] after:translate-y-[calc(50%+1px)] after:rounded-full after:bg-blue-400 after:opacity-0 after:transition-all after:duration-normal hover:border-blue-200 peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25`,
           {
             'before:top-4 after:top-4': !!badge,
             'border-negative-400': isError,
@@ -54,7 +51,7 @@ const RadioBase: FC<RadioBaseProps> = ({
         <div className={badge && 'flex justify-between gap-2'}>
           <div className="self-center">
             <div className={tooltip && 'inline-flex items-center '}>
-              <span className={styles.label}>{labelText}</span>
+              <span className="block">{labelText}</span>
               {tooltip && (
                 <div className="ml-2 flex items-center text-gray-400">
                   <Tooltip {...tooltip}>
@@ -64,7 +61,7 @@ const RadioBase: FC<RadioBaseProps> = ({
               )}
             </div>
             {description && (
-              <span className={styles.description}>
+              <span className="mt-1 block text-sm text-gray-600">
                 {formatText(description)}
               </span>
             )}

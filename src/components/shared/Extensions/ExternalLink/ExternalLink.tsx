@@ -3,8 +3,6 @@ import { useIntl } from 'react-intl';
 
 import { type ExternalLinkProps } from './types.ts';
 
-import styles from './ExternalLink.module.css';
-
 const displayName = 'Extensions.ExternalLink';
 
 const ExternalLink = ({
@@ -23,7 +21,7 @@ const ExternalLink = ({
 
   return (
     <a
-      className={`${className} ${styles.main}`}
+      className={`${className} transition-all duration-normal hover:text-blue-400`}
       href={href}
       target="_blank"
       rel="noreferrer noopener"

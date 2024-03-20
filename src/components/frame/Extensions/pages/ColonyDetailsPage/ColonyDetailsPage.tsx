@@ -11,6 +11,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import { tw } from '~utils/css/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
@@ -19,8 +20,6 @@ import Button from '~v5/shared/Button/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
 import SocialLinks from '~v5/shared/SocialLinks/index.ts';
-
-import styles from './ColonyDetailsPage.module.css';
 
 const displayName = 'frame.Extensions.pages.ColonyDetailsPage';
 
@@ -70,9 +69,11 @@ const ColonyDetailsPage: FC = () => {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
+  const boxClass = tw`relative rounded-lg border border-gray-200 bg-gray-25`;
+
   return (
     <div className="pb-6">
-      <div className={clsx('flex flex-col items-start p-6', styles.box)}>
+      <div className={clsx('flex flex-col items-start p-6', boxClass)}>
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <ColonyAvatar
             size="m"
@@ -129,7 +130,7 @@ const ColonyDetailsPage: FC = () => {
       <div
         className={clsx(
           'mt-6 flex flex-col items-start gap-6 p-6 sm:mt-9 sm:flex-row sm:gap-12',
-          styles.box,
+          boxClass,
         )}
       >
         <div className="flex-1">

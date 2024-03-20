@@ -11,8 +11,6 @@ import ActionButtons from '../partials/ActionButtons.tsx';
 import { ExtensionsBadgeMap } from './consts.ts';
 import PermissionsNeededBanner from './PermissionsNeededBanner.tsx';
 
-import styles from '../Pages.module.css';
-
 interface ExtensionsTopRowProps {
   extensionData: AnyExtensionData;
   waitingForEnableConfirmation: boolean;
@@ -52,7 +50,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
         <PermissionsNeededBanner extensionData={extensionData} />
       )}
       <div className="flex flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
-        <div className={styles.topContainer}>
+        <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
           <ActionButtons
             waitingForEnableConfirmation={waitingForEnableConfirmation}
             isSetupRoute={isSetupRoute}

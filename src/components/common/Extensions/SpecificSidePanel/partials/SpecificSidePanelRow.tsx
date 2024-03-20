@@ -1,15 +1,14 @@
 import React, { type FC } from 'react';
 
+import specificSidePanelClasses from '../SpecifcSidePanel.styles.ts';
 import { type PanelTypeProps } from '../types.ts';
-
-import styles from '../SpecificSidePanel.module.css';
 
 const displayName = 'common.Extensions.partials.SpecificSidePanelRow';
 
 const SpecificSidePanelRow: FC<PanelTypeProps> = ({ title, description }) => (
-  <div className={styles.panelRow}>
-    <p className={styles.panelTitle}>{title}</p>
-    <p className={styles.panelData}>{description}</p>
+  <div className={specificSidePanelClasses.panelRow}>
+    <p className={specificSidePanelClasses.panelTitle}>{title}</p>
+    <p className={specificSidePanelClasses.panelData}>{description}</p>
   </div>
 );
 

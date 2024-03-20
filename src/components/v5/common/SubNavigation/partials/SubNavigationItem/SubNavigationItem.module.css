@@ -1,15 +1,5 @@
 .tooltipContainer {
-  @apply font-normal z-50 relative text-sm bg-base-white shadow-default border border-gray-200 rounded-lg overflow-y-scroll max-h-[36rem] min-w-[20.5rem];
-
   &::-webkit-scrollbar {
     @apply hidden;
   }
-}
-
-.button {
-  @apply text-gray-700 flex hover:text-blue-400 font-semibold text-lg sm:text-md;
-}
-
-.activeButton {
-  @apply text-blue-400 font-semibold;
 }

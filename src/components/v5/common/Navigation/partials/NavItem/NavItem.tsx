@@ -1,12 +1,9 @@
-import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import NavLink from '~v5/shared/NavLink/index.ts';
 
 import { type NavItemProps } from '../../types.ts';
-
-import styles from './NavItem.module.css';
 
 const displayName = 'v5.common.Navigation.partials.NavItem';
 
@@ -19,10 +16,7 @@ const NavItem: FC<NavItemProps> = ({ disabled = false, linkTo, label }) => {
   return (
     <NavLink
       aria-disabled={disabled}
-      className={clsx(
-        styles.navLink,
-        'text-1 hover:text-current [&.active]:bg-gray-50',
-      )}
+      className="mb-2.5 block min-h-[2.25rem] rounded px-3 py-2 text-gray-900 transition-all duration-normal text-1 last:mb-0 hover:bg-gray-50 hover:text-current disabled:pointer-events-none disabled:text-gray-400 [&.active]:bg-gray-50"
       to={linkTo}
     >
       <span>{labelText}</span>
