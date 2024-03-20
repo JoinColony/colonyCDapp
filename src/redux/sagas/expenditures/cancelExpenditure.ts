@@ -140,7 +140,6 @@ function* cancelLockedExpenditure({
     colonyClient,
     expenditure.nativeDomainId,
     ColonyRole.Arbitration,
-    userAddress,
   );
 
   const params = [permissionDomainId, childSkillIndex, expenditure.nativeId];
