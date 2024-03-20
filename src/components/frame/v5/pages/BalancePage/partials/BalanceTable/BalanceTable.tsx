@@ -22,7 +22,6 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -67,9 +66,8 @@ const MSG = defineMessages({
 
 const BalanceTable: FC = () => {
   const data = useBalancesData();
-  const selectedDomain = useGetSelectedDomainFilter();
   const {
-    colony: { balances, nativeToken, status, colonyAddress },
+    colony: { nativeToken, status, colonyAddress },
   } = useColonyContext();
   const { nativeToken: nativeTokenStatus } = status || {};
   const isMobile = useMobile();
@@ -87,12 +85,7 @@ const BalanceTable: FC = () => {
   ] = useToggle();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
-  const columns = useBalanceTableColumns(
-    nativeToken,
-    balances,
-    nativeTokenStatus,
-    Number(selectedDomain?.nativeId) || undefined,
-  );
+  const columns = useBalanceTableColumns(nativeToken, nativeTokenStatus);
   const getMenuProps: TableProps<BalanceTableFieldModel>['getMenuProps'] = ({
     original: { token: selectedTokenData },
   }) => {
