@@ -22,24 +22,24 @@ import UserPopoverAdditionalContent from '../UserPopoverAdditionalContent/index.
 
 import UserInfo from './partials/UserInfo.tsx';
 import { type UserPopoverProps } from './types.ts';
+import UserDetails from '../UserDetails/UserDetails.tsx';
 
 const displayName = 'v5.UserPopover';
 
 const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
+  className,
   userName,
-  walletAddress = '',
+  walletAddress,
   user,
   size,
   children,
-  additionalContent,
   popperOptions,
   withVerifiedBadge = true,
-  className,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
   const { profile } = user || {};
-  const { avatar, thumbnail } = profile || {};
+  const { avatar } = profile || {};
 
   const {
     colony: { colonyAddress },
@@ -98,28 +98,29 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
 
   const content = (
     <UserInfo
-      size={size}
-      userName={userName}
-      title={userName}
-      walletAddress={walletAddress}
-      isVerified={isVerified}
       aboutDescription={bio || ''}
-      avatar={thumbnail || avatar || ''}
       userStatus={userStatus}
       domains={domains}
+      userDetails={
+        <UserDetails
+          isVerified={isVerified}
+          size={size}
+          userName={userName}
+          userAvatarSrc={avatar ?? undefined}
+          userStatus={userStatus}
+          walletAddress={walletAddress}
+        />
+      }
       additionalContent={
-        <>
-          {additionalContent}
-          {!isVerified && (
-            <UserPopoverAdditionalContent
-              description={
-                <div className="mt-2 break-words pb-2 text-sm font-semibold">
-                  {user?.walletAddress}
-                </div>
-              }
-            />
-          )}
-        </>
+        !isVerified ? (
+          <UserPopoverAdditionalContent
+            description={
+              <div className="mt-2 font-semibold break-words text-sm pb-2">
+                {user?.walletAddress}
+              </div>
+            }
+          />
+        ) : null
       }
     />
   );

@@ -25,6 +25,7 @@ const MemberCard: FC<MemberCardProps> = ({
 }) => {
   const { userName, isVerified, mode, ...restUserAvatarProps } =
     userAvatarProps;
+  console.log('dej fakof prou res', userAvatarProps);
 
   return (
     <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5">

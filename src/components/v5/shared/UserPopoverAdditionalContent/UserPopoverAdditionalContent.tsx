@@ -7,6 +7,7 @@ import { type UserPopoverAdditionalContentProps } from './types.ts';
 
 const displayName = 'v5.UserPopoverAdditionalContent';
 
+// rename to UserNotVerified??
 const UserPopoverAdditionalContent: FC<UserPopoverAdditionalContentProps> = ({
   description,
 }) => {

@@ -4,21 +4,23 @@ import React, { type FC } from 'react';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyContributorQuery } from '~gql';
 import { getColonyContributorId } from '~utils/members.ts';
-import { type ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
-import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import UserPopover from '../UserPopover/index.ts';
 
 import { type UserAvatarPopoverProps } from './types.ts';
+import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
+import UserStatusWrapper from '../UserStatusWrapper/UserStatusWrapper.tsx';
 
 const displayName = 'v5.UserAvatarPopover';
 
+// AVATAR: ta stvar naj sam nrdi avatar + username je lhk composan in
+// DEFAULT JE BIU xs
 const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   size,
-  additionalContent,
-  ...props
+  popperOptions,
+  walletAddress,
+  userNameClassName,
 }) => {
-  const { walletAddress, isContributorsList } = props;
   const {
     colony: { colonyAddress },
   } = useColonyContext();
@@ -33,26 +35,54 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   const { user } = contributor ?? {};
   const { displayName: userDisplayName } = user?.profile || {};
 
-  const userStatus = (contributor?.type?.toLowerCase() ??
-    null) as ContributorTypeFilter | null;
+  const userStatus = contributor?.type;
+
+  const getUserAvatarWrapper = () => {
+    const userAvatar = (
+      <UserAvatar2
+        size={size}
+        userAvatarSrc={user?.profile?.avatar ?? undefined}
+        userName={displayName ?? undefined}
+        userAddress={walletAddress}
+      />
+    );
+    if (userStatus === null || userStatus === undefined) {
+      return userAvatar;
+    }
+
+    if (userStatus === 'general') {
+      return userAvatar;
+    }
+
+    return (
+      <UserStatusWrapper userStatus={userStatus}>
+        {userAvatar}
+      </UserStatusWrapper>
+    );
+  };
 
   return (
     <UserPopover
-      userName={userDisplayName}
+      size={size}
+      walletAddress={walletAddress}
+      userName={userDisplayName ?? undefined}
       user={user}
       className={clsx({
         skeleton: loading,
       })}
-      additionalContent={additionalContent}
-      {...props}
+      popperOptions={popperOptions}
     >
-      <UserAvatar
-        size={size || 'xs'}
-        user={user || walletAddress}
-        showUsername
-        userStatus={userStatus}
-        isContributorsList={isContributorsList}
-      />
+      <div className="flex items-center">
+        {getUserAvatarWrapper()}
+        <p
+          className={clsx(
+            'font-medium truncate text-md ml-2',
+            userNameClassName,
+          )}
+        >
+          {displayName ?? walletAddress}
+        </p>
+      </div>
     </UserPopover>
   );
 };
