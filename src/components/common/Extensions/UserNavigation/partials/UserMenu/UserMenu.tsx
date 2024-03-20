@@ -66,9 +66,9 @@ const UserMenu: FC<UserMenuProps> = ({
       tooltipProps={tooltipProps}
       withTooltipStyles={!isTablet}
       classNames={clsx(
-        'w-full p-6 bg-base-white md:rounded-lg md:border md:border-gray-100 md:w-80 md:shadow-default overflow-hidden',
+        'w-full overflow-hidden bg-base-white p-6 md:w-80 md:rounded-lg md:border md:border-gray-100 md:shadow-default',
         {
-          '!translate-y-0 !top-full h-[calc(100dvh-var(--top-content-height))]':
+          '!top-full h-[calc(100dvh-var(--top-content-height))] !translate-y-0':
             isTablet,
         },
       )}
@@ -76,7 +76,7 @@ const UserMenu: FC<UserMenuProps> = ({
       <div
         className={clsx('transition-transform', {
           '-translate-x-0': !activeSubmenu,
-          '-translate-x-[100vw] absolute': activeSubmenu,
+          'absolute -translate-x-[100vw]': activeSubmenu,
         })}
       >
         {wallet ? (
@@ -110,7 +110,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 {formatText({ id: 'help' })}
               </Button>
             </div>
-            <div className="w-full pb-4 mb-6 sm:pb-0">
+            <div className="mb-6 w-full pb-4 sm:pb-0">
               <Button mode="quinary" isFullSize onClick={connectWallet}>
                 {formatText({ id: 'connectWallet' })}
               </Button>
@@ -124,7 +124,7 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
           <ul className="text-left">
-            <li className="mb-2 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+            <li className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 sm:mb-0">
               <Link to="/" className="navigation-link">
                 <CirclesThreePlus size={iconSize} />
                 <p className="ml-2">
@@ -135,7 +135,7 @@ const UserMenu: FC<UserMenuProps> = ({
             {userMenuItems.map(({ id, icon: Icon, name: itemName }) => (
               <li
                 key={id}
-                className="mb-2 sm:mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]"
+                className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 sm:mb-0"
               >
                 <button
                   type="button"
@@ -144,7 +144,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   aria-expanded={activeSubmenu === itemName}
                   aria-controls="actionsWithVisibility"
                 >
-                  <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                  <span className="mr-2 flex shrink-0 flex-grow items-center sm:mr-0">
                     <Icon size={iconSize} />
                     <p className="ml-2">{formatText({ id: itemName })}</p>
                   </span>
@@ -154,7 +154,7 @@ const UserMenu: FC<UserMenuProps> = ({
             ))}
 
             {wallet && (
-              <li className="mb-0 hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+              <li className="-ml-4 mb-0 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
                 <button
                   type="button"
                   className="navigation-link"
@@ -162,7 +162,7 @@ const UserMenu: FC<UserMenuProps> = ({
                   aria-expanded={activeSubmenu === UserMenuItemName.CURRENCY}
                   aria-controls="actionsWithVisibility"
                 >
-                  <span className="flex items-center shrink-0 mr-2 sm:mr-0 flex-grow">
+                  <span className="mr-2 flex shrink-0 flex-grow items-center sm:mr-0">
                     <CurrencyIcon size={iconSize} />
                     <p className="ml-2">{currency.toUpperCase()}</p>
                   </span>
@@ -175,7 +175,7 @@ const UserMenu: FC<UserMenuProps> = ({
         {wallet && (
           <div className="w-full">
             <TitleLabel text={formatText({ id: 'userMenu.other' })} />
-            <div className="navigation-link hover:bg-gray-50 rounded -ml-4 w-[calc(100%+2rem)]">
+            <div className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
               <Plugs size={iconSize} />
               <button type="button" className="ml-2" onClick={disconnectWallet}>
                 {formatText({ id: 'userMenu.disconnectWalletTitle' })}
@@ -197,7 +197,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <button
               type="button"
               aria-label={formatText({ id: 'ariaLabel.backToMainMenu' })}
-              className={clsx(styles.buttonBack, 'group text-4 mb-2')}
+              className={clsx(styles.buttonBack, 'group mb-2 text-4')}
               onClick={closeSubmenu}
             >
               <CaretLeft size={10} />

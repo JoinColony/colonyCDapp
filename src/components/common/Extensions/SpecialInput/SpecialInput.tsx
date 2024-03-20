@@ -36,7 +36,7 @@ const SpecialInput: FC<SpecialInputProps> = ({
         type="number"
         className={`${
           styles.input
-        } focus:outline-none group-hover:border-blue-200 group-focus-within:border-blue-200 ${
+        } focus:outline-none group-focus-within:border-blue-200 group-hover:border-blue-200 ${
           isError ? '!border-negative-400' : 'border-gray-300'
         }`}
         id={id}

@@ -24,7 +24,7 @@ const ButtonContent: FC<PropsWithChildren<ButtonContentProps>> = ({
   return (
     <>
       {mode === 'completed' && (
-        <span className="flex shrink-0 mr-2">
+        <span className="mr-2 flex shrink-0">
           <Check size={iconSize || 12} />
         </span>
       )}

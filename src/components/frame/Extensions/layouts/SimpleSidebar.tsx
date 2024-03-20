@@ -4,7 +4,7 @@ import ColonyIcon from '~icons/ColonyIcon.tsx';
 
 const SimpleSidebar: FC = () => {
   return (
-    <nav className="border text-center border-gray-200 rounded-lg p-4 h-full">
+    <nav className="h-full rounded-lg border border-gray-200 p-4 text-center">
       <ColonyIcon size={34} />
       {/* @TODO: Add feedback button? */}
     </nav>

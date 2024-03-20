@@ -47,17 +47,17 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
       >
         {({ setValue, formState: { isSubmitting, isLoading } }) => (
           <>
-            <h4 className="heading-5 mb-1.5">
+            <h4 className="mb-1.5 heading-5">
               {formatText({ id: `tokensModal.${type}.title` })}
             </h4>
-            <p className="text-md text-gray-600 mb-6">
+            <p className="mb-6 text-md text-gray-600">
               {formatText({ id: `tokensModal.${type}.description` })}
             </p>
-            <div className="flex items-center justify-between gap-2 mb-1">
+            <div className="mb-1 flex items-center justify-between gap-2">
               <p className="text-1">
                 {formatText({ id: `tokensModal.${type}.input` })}
               </p>
-              <span className="text-sm text-gray-600 flex items-center gap-1">
+              <span className="flex items-center gap-1 text-sm text-gray-600">
                 {formatText(
                   { id: 'tokensModal.balance' },
                   {
@@ -112,7 +112,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                   rounded="s"
                   text={{ id: 'button.pending' }}
                   icon={
-                    <span className="flex shrink-0 ml-1.5">
+                    <span className="ml-1.5 flex shrink-0">
                       <SpinnerGap className="animate-spin" size={14} />
                     </span>
                   }

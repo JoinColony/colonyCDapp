@@ -32,7 +32,7 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   } = useAvatarUploader({ updateFn });
 
   return (
-    <div className="flex sm:flex-row flex-col gap-4">
+    <div className="flex flex-col gap-4 sm:flex-row">
       <div
         className={clsx('flex items-center sm:items-start', {
           'gap-4': uploaderText,
@@ -46,12 +46,12 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
           )}
         </div>
         {uploaderText && (
-          <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
+          <div className="text-sm text-gray-600 sm:hidden">{uploaderText}</div>
         )}
       </div>
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex w-full flex-col gap-2">
         {uploaderText && (
-          <div className="hidden sm:block text-gray-600 text-sm">
+          <div className="hidden text-sm text-gray-600 sm:block">
             {uploaderText}
           </div>
         )}

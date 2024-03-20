@@ -62,7 +62,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const getSidebarContent = () => {
     if (loadingAction) {
       return (
-        <div className="h-full flex items-center justify-center flex-col gap-4">
+        <div className="flex h-full flex-col items-center justify-center gap-4">
           <SpinnerLoader appearance={{ size: 'huge' }} />
           <p className="text-gray-600">
             {formatText({ id: 'actionSidebar.loading' })}
@@ -97,27 +97,27 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       animate="visible"
       className={clsx(
         `
-          transition-[max-width]
           fixed
-          top-0
-          sm:top-4
           bottom-4
-          sm:bottom-0
           right-0
+          top-0
+          z-[60]
+          flex
           h-full
-          sm:h-[calc(100vh-2rem)]
           w-full
-          sm:w-[calc(100vw-8.125rem)]
-          bg-base-white
+          flex-col
+          rounded-l-lg
           rounded-bl-lg
           border
           border-r-0
           border-gray-200
-          rounded-l-lg
+          bg-base-white
           shadow-default
-          z-[60]
-          flex
-          flex-col
+          transition-[max-width]
+          sm:bottom-0
+          sm:top-4
+          sm:h-[calc(100vh-2rem)]
+          sm:w-[calc(100vw-8.125rem)]
         `,
         {
           'sm:max-w-full': isSidebarFullscreen,
@@ -127,11 +127,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       )}
       ref={registerContainerRef}
     >
-      <div className="py-4 px-6 flex w-full items-center justify-between border-b border-gray-200">
+      <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
         {isMobile ? (
           <button
             type="button"
-            className="py-2.5 flex items-center justify-center text-gray-400"
+            className="flex items-center justify-center py-2.5 text-gray-400"
             onClick={closeSidebarClick}
             aria-label={formatText({ id: 'ariaLabel.closeModal' })}
           >
@@ -141,7 +141,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <>
             <button
               type="button"
-              className="py-2.5 flex items-center justify-center text-gray-400 transition sm:hover:text-blue-400"
+              className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
               onClick={toggleIsSidebarFullscreen}
               aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
             >

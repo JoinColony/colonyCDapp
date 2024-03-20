@@ -51,12 +51,12 @@ const UserHub: FC<UserHubProps> = ({
 
   return (
     <div
-      className={clsx('flex flex-col sm:flex-row h-full sm:w-[42.625rem]', {
+      className={clsx('flex h-full flex-col sm:w-[42.625rem] sm:flex-row', {
         'sm:h-[27.75rem]': selectedTab !== UserHubTabs.Balance,
         'sm:min-h-[27.75rem]': selectedTab === UserHubTabs.Balance,
       })}
     >
-      <div className="sticky top-0 left-0 right-0 bg-base-white sm:bg-transparent border-b border-b-gray-200 sm:border-b-0 sm:static sm:top-auto sm:left-auto sm:right-auto flex sm:border-r sm:border-gray-100 flex-col justify-between sm:w-[13.85rem] shrink-0 px-6 pb-6 pt-4 sm:px-6 sm:p-6">
+      <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[13.85rem] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
         {isMobile ? (
           <Select
             options={tabList}
@@ -73,7 +73,7 @@ const UserHub: FC<UserHubProps> = ({
                 className="pb-5"
                 text={formatText(MSG.titleColonyOverview)}
               />
-              <ul className="-ml-4 w-[calc(100%+2rem)] flex flex-col">
+              <ul className="-ml-4 flex w-[calc(100%+2rem)] flex-col">
                 {tabList.map(({ value, id, icon: Icon, label }) => (
                   <li
                     className="w-full"
@@ -86,18 +86,18 @@ const UserHub: FC<UserHubProps> = ({
                       onKeyDown={() => setSelectedTab(id)}
                       onClick={() => setSelectedTab(id)}
                       className={clsx(
-                        'w-full flex items-center justify-between text-gray-900 font-normal text-md leading-5 rounded cursor-pointer transition-all sm:hover:bg-gray-50 p-4 py-2',
+                        'flex w-full cursor-pointer items-center justify-between rounded p-4 py-2 text-md font-normal leading-5 text-gray-900 transition-all sm:hover:bg-gray-50',
                         {
                           'bg-gray-50': selectedTab === id,
                         },
                       )}
                     >
                       <div
-                        className={clsx('flex items-center flex-grow mr-2', {
+                        className={clsx('mr-2 flex flex-grow items-center', {
                           'font-medium': selectedTab === id,
                         })}
                       >
-                        <span className="flex shrink-0 mr-2">
+                        <span className="mr-2 flex shrink-0">
                           <Icon size={14} />
                         </span>
                         {formatText(label)}
@@ -116,7 +116,7 @@ const UserHub: FC<UserHubProps> = ({
         )}
       </div>
       <div
-        className={clsx('h-full overflow-auto w-full p-6 relative', {
+        className={clsx('relative h-full w-full overflow-auto p-6', {
           'sm:pr-2': selectedTab === UserHubTabs.Transactions,
         })}
       >

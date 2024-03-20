@@ -70,14 +70,14 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
               'transition-transform': showSubMenuInPopover,
               'translate-x-0':
                 activeSubMenuIndex === undefined && showSubMenuInPopover,
-              '-translate-x-full absolute':
+              'absolute -translate-x-full':
                 activeSubMenuIndex !== undefined && showSubMenuInPopover,
             })}
           >
             {groups.map(({ key, items }, index) => (
               <li
                 key={key}
-                className="mb-3 pb-3 border-b border-b-gray-200 last:mb-0 last:pb-0 last:border-0"
+                className="mb-3 border-b border-b-gray-200 pb-3 last:mb-0 last:border-0 last:pb-0"
               >
                 <ul>
                   {items.map(
@@ -117,7 +117,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
             showSubMenuInPopover &&
             popoverSubMenuItems?.length && (
               <div
-                className={clsx('transition-transform px-6 sm:w-[20rem]', {
+                className={clsx('px-6 transition-transform sm:w-[20rem]', {
                   'translate-x-0': activeSubMenuIndex !== undefined,
                   'translate-x-full': activeSubMenuIndex === undefined,
                 })}
@@ -125,7 +125,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
                 <div className="flex flex-col">
                   <button
                     type="button"
-                    className="w-full flex items-center gap-2 text-gray-400 uppercase text-4 py-2 sm:hover:text-blue-400"
+                    className="flex w-full items-center gap-2 py-2 uppercase text-gray-400 text-4 sm:hover:text-blue-400"
                     onClick={() => {
                       setActiveGroupIndex(undefined);
                       setActiveSubMenuIndex(undefined);

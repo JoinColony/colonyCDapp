@@ -157,12 +157,12 @@ const LandingPage = () => {
     <MainLayout sidebar={user ? <MainSidebar /> : <SimpleSidebar />}>
       <div className="w-full">
         <div className="mb-8">
-          <div className="flex items-center mb-4">
+          <div className="mb-4 flex items-center">
             <Heading
               text={{ id: 'colonyWelcome' }}
-              className="font-semibold text-gray-900 text-3xl"
+              className="text-3xl font-semibold text-gray-900"
             />
-            <span className="font-medium text-blue-400 text-sm px-3 py-1 bg-blue-100 rounded-3xl ml-3">
+            <span className="ml-3 rounded-3xl bg-blue-100 px-3 py-1 text-sm font-medium text-blue-400">
               <FormattedMessage {...MSG.privateBetaLabel} />
             </span>
           </div>
@@ -170,8 +170,8 @@ const LandingPage = () => {
             <FormattedMessage {...MSG.headerDescription} />
           </p>
         </div>
-        <div className="w-full flex justify-center gap-4">
-          <div className="w-1/2 flex flex-col justify-between">
+        <div className="flex w-full justify-center gap-4">
+          <div className="flex w-1/2 flex-col justify-between">
             {landingPageItems.map((item, index) => (
               <LandingPageItem
                 key={nanoid()}
@@ -184,7 +184,7 @@ const LandingPage = () => {
           <img
             src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
             alt=""
-            className="w-1/2 border border-gray-200 rounded-lg shadow-sm object-cover"
+            className="w-1/2 rounded-lg border border-gray-200 object-cover shadow-sm"
           />
         </div>
         {hasShareableInvitationCode && <InvitationBlock />}

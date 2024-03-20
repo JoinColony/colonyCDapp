@@ -36,9 +36,9 @@ const EmptyContent: FC<EmptyContentProps> = ({
     <div
       className={clsx(
         className,
-        'p-4 flex flex-col justify-center items-center w-full text-center',
+        'flex w-full flex-col items-center justify-center p-4 text-center',
         {
-          'border border-gray-200 rounded-lg': withBorder,
+          'rounded-lg border border-gray-200': withBorder,
         },
       )}
     >
@@ -49,9 +49,9 @@ const EmptyContent: FC<EmptyContentProps> = ({
           </div>
         )}
         {titleText && (
-          <h5 className="text-1 mt-3 text-gray-900">{titleText}</h5>
+          <h5 className="mt-3 text-gray-900 text-1">{titleText}</h5>
         )}
-        <p className="mt-2 sm:mt-3 text-sm text-gray-600">{descriptionText}</p>
+        <p className="mt-2 text-sm text-gray-600 sm:mt-3">{descriptionText}</p>
         {onClick && (
           <Button
             mode="primaryOutline"

@@ -14,11 +14,11 @@ const UserStakeStatusBadge: FC<UserStakeStatusBadgeProps> = ({
 }) => (
   <PillsBase
     className={clsx({
-      'text-success-400 bg-success-100': status === UserStakeStatus.Staking,
-      'text-blue-400 bg-blue-100':
+      'bg-success-100 text-success-400': status === UserStakeStatus.Staking,
+      'bg-blue-100 text-blue-400':
         status === UserStakeStatus.Finalizable ||
         status === UserStakeStatus.Claimable,
-      'text-gray-500 bg-gray-100': status === UserStakeStatus.Claimed,
+      'bg-gray-100 text-gray-500': status === UserStakeStatus.Claimed,
     })}
     {...rest}
   >

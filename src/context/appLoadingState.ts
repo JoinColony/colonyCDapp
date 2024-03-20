@@ -36,4 +36,6 @@ class AppLoadingState {
   }
 }
 
-export default new AppLoadingState();
+const appLoadingState = new AppLoadingState();
+
+export default appLoadingState;

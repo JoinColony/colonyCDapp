@@ -56,9 +56,9 @@ const DatepickerCustomHeader: FC<DatepickerCustomHeaderProps> = ({
   const years = range(minYear, maxYear);
 
   return (
-    <div className="w-full pt-5 pb-3 px-4 flex flex-col gap-3">
+    <div className="flex w-full flex-col gap-3 px-4 pb-3 pt-5">
       {onClose && (
-        <div className="w-full flex justify-end">
+        <div className="flex w-full justify-end">
           <button
             type="button"
             onClick={onClose}
@@ -68,7 +68,7 @@ const DatepickerCustomHeader: FC<DatepickerCustomHeaderProps> = ({
           </button>
         </div>
       )}
-      <div className="w-full flex justify-between items-center gap-2">
+      <div className="flex w-full items-center justify-between gap-2">
         <button
           type="button"
           onClick={decreaseMonth}
@@ -95,7 +95,7 @@ const DatepickerCustomHeader: FC<DatepickerCustomHeaderProps> = ({
           <CaretRight size={16} className="text-inherit" />
         </button>
       </div>
-      <div className="w-full flex items-center justify-between gap-2 px-2">
+      <div className="flex w-full items-center justify-between gap-2 px-2">
         <InputBase
           placeholder={formatText({
             id: 'calendar.from',
@@ -106,7 +106,7 @@ const DatepickerCustomHeader: FC<DatepickerCustomHeaderProps> = ({
           })}
           readOnly
         />
-        <span className="flex justify-center items-center flex-shrink-0 text-gray-900 text-2 w-6 text-center">
+        <span className="flex w-6 flex-shrink-0 items-center justify-center text-center text-gray-900 text-2">
           -
         </span>
         <InputBase

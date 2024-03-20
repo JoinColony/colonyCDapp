@@ -26,7 +26,7 @@ const DecideDropdown: FC<PropsWithChildren> = () => {
   return (
     <div className="bg-base-white">
       <TitleLabel
-        className="hidden sm:block mx-6 mt-6"
+        className="mx-6 mt-6 hidden sm:block"
         text={formatMessage({ id: 'createNewDecisions' })}
       />
       <ul className={styles.listWrapper}>

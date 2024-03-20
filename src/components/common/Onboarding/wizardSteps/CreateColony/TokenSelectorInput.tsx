@@ -68,7 +68,7 @@ const TokenSelectorInput = ({
         register={register}
         isError={showTokenAddressError}
         customErrorMessage={tokenAddressError}
-        className="text-md border-gray-300"
+        className="border-gray-300 text-md"
         isDisabled={isSubmitting}
         defaultValue={wizardTokenAddress}
         labelMessage={MSG.existingToken}
@@ -78,9 +78,9 @@ const TokenSelectorInput = ({
       />
 
       {doesTokenExistError && isLoading === false && (
-        <div className="mt-14 px-6 py-3 bg-warning-100 border rounded border-warning-200 text-gray-900">
-          <p className="flex self-start items-center gap-2 text-md pb-1">
-            <span className="text-warning-400 flex">
+        <div className="mt-14 rounded border border-warning-200 bg-warning-100 px-6 py-3 text-gray-900">
+          <p className="flex items-center gap-2 self-start pb-1 text-md">
+            <span className="flex text-warning-400">
               <WarningCircle size={18} />
             </span>
             <span>{formatMessage(MSG.definitelyCorrectTitle)}</span>

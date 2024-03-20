@@ -38,9 +38,8 @@ function* revealVoteMotion({
         colonyAddress,
       );
 
-    const { domainId, rootHash } = yield votingReputationClient.getMotion(
-      motionId,
-    );
+    const { domainId, rootHash } =
+      yield votingReputationClient.getMotion(motionId);
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],

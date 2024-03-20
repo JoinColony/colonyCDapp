@@ -10,7 +10,7 @@ import { type DraftSectionProps } from './types.ts';
 const DraftSection: FC<DraftSectionProps> = ({ className }) => {
   return (
     <div className={clsx(className, 'w-full')}>
-      <h4 className="heading-4 mb-6 text-gray-900">
+      <h4 className="mb-6 text-gray-900 heading-4">
         {formatText({ id: 'agreementsPage.drafts' })}
       </h4>
       <DraftCard />

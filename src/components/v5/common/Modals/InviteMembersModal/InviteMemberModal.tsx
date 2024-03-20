@@ -59,10 +59,10 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose()}>
-      <div className="mt-10 flex flex-col items-center mb-8">
+      <div className="mb-8 mt-10 flex flex-col items-center">
         <Heading3
           appearance={{ theme: 'dark' }}
-          className="text-gray-900 font-semibold"
+          className="font-semibold text-gray-900"
           text={MSG.modalTitle}
         />
         <p className="mt-1 text-center text-sm text-gray-600">
@@ -71,7 +71,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
       </div>
       <CardWithCallout
         title={
-          <span className="rounded-lg bg-gray-100 text-sm font-medium text-gray-900 p-2">
+          <span className="rounded-lg bg-gray-100 p-2 text-sm font-medium text-gray-900">
             <FormattedMessage
               {...MSG.invitesUsed}
               values={{ invitesAvailable, invitesUsed }}

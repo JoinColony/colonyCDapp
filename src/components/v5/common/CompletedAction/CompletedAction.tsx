@@ -71,9 +71,9 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   return (
-    <div className="flex flex-grow flex-col-reverse justify-end sm:justify-start sm:flex-row overflow-auto">
+    <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
       <div
-        className={clsx('overflow-y-auto pb-6 pt-8 px-6', {
+        className={clsx('overflow-y-auto px-6 pb-6 pt-8', {
           'w-full': !action.isMotion,
           'w-full sm:w-[65%]': action.isMotion,
         })}
@@ -84,18 +84,18 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       <div
         className={`
             w-full
-            md:w-[35%]
-            md:h-full
-            md:overflow-y-auto
-            md:flex-shrink-0
-            px-6
-            py-8
             border-b
             border-b-gray-200
+            bg-gray-25
+            px-6
+            py-8
+            md:h-full
+            md:w-[35%]
+            md:flex-shrink-0
+            md:overflow-y-auto
             md:border-b-0
             md:border-l
             md:border-l-gray-200
-            bg-gray-25
           `}
       >
         {action.isMotion ? (

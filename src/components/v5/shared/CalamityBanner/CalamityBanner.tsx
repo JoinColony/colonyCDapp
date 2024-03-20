@@ -16,7 +16,7 @@ const CalamityBanner: FC<CalamityBannerProps> = ({ items }) => {
   }
 
   return (
-    <div className="overflow-hidden relative">
+    <div className="relative overflow-hidden">
       {items.map(({ key, ...item }, index) => (
         <CalamityBannerContent
           {...item}

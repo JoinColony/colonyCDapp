@@ -19,7 +19,7 @@ const AvatarUser: FC<AvatarUserProps> = ({
   ...rest
 }) => {
   const avatarImage = (
-    <div className="flex rounded-full items-center">
+    <div className="flex items-center rounded-full">
       <span
         className={clsx('flex rounded-full', {
           'border-2': hasAvatarDecor,
@@ -38,9 +38,9 @@ const AvatarUser: FC<AvatarUserProps> = ({
       </span>
       {userName && (
         <p
-          className={clsx('font-medium truncate', {
-            'text-sm ml-1': size === 'xxs',
-            'text-md ml-2': size === 'xs' || size === 'sm',
+          className={clsx('truncate font-medium', {
+            'ml-1 text-sm': size === 'xxs',
+            'ml-2 text-md': size === 'xs' || size === 'sm',
           })}
         >
           {userName}

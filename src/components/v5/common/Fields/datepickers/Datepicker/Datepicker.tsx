@@ -77,7 +77,7 @@ const Datepicker: FC<DatepickerProps> = ({
       ref={calendarRef}
       customInput={<DatepickerCustomInput />}
       dateFormat={dateFormat}
-      popperClassName={clsx(popperClassName, 'max-w-[20.5rem] !z-[1000]')}
+      popperClassName={clsx(popperClassName, '!z-[1000] max-w-[20.5rem]')}
       renderDayContents={(day) => (
         <div className="react-datepicker__day-content">{day}</div>
       )}
@@ -98,7 +98,7 @@ const Datepicker: FC<DatepickerProps> = ({
       {...rest}
     >
       {selectedDate && (
-        <div className="p-4 border-t border-t-gray-200 w-full flex items-center justify-between gap-2">
+        <div className="flex w-full items-center justify-between gap-2 border-t border-t-gray-200 p-4">
           <Button
             {...cancelButtonProps}
             mode={cancelButtonMode || ('primaryOutline' as ButtonMode)}

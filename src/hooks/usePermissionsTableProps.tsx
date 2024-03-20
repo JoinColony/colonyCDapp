@@ -27,7 +27,7 @@ export const usePermissionsTableProps = (
               permissionsColumnHelper.accessor('permissions', {
                 enableSorting: false,
                 header: () => (
-                  <span className="text-gray-900 text-md font-medium">
+                  <span className="text-md font-medium text-gray-900">
                     {PERMISSIONS_TABLE_CONTENT[selectedRole].heading}
                   </span>
                 ),
@@ -39,16 +39,16 @@ export const usePermissionsTableProps = (
 
                   return (
                     <>
-                      <span className="mb-3 text-gray-600 text-md inline-block">
+                      <span className="mb-3 inline-block text-md text-gray-600">
                         {formatText({
                           id: 'actionSidebar.managePermissions.tableDescriptionHeading',
                         })}
                       </span>
-                      <div className="flex gap-4 w-full">
+                      <div className="flex w-full gap-4">
                         {permissionsColumns.map((column) => (
                           <ul
                             key={JSON.stringify(column)}
-                            className="list-disc pl-6 flex-1"
+                            className="flex-1 list-disc pl-6"
                           >
                             {column.map((permission) => (
                               <li

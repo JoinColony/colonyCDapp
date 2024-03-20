@@ -65,15 +65,17 @@ const UserInfo: FC<UserInfoProps> = ({
               text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {domains?.slice(0, 3).map(({ domainName, domainId }) => (
-                <UserStatus
-                  key={domainId}
-                  mode="team"
-                  text={multiLineTextEllipsis(domainName, 7)}
-                />
-              ))}
+              {domains
+                ?.slice(0, 3)
+                .map(({ domainName, domainId }) => (
+                  <UserStatus
+                    key={domainId}
+                    mode="team"
+                    text={multiLineTextEllipsis(domainName, 7)}
+                  />
+                ))}
               {domains?.length > 3 && (
-                <UserStatus mode="team" className="!max-w-none !w-auto">
+                <UserStatus mode="team" className="!w-auto !max-w-none">
                   +{domains.length - 3}
                 </UserStatus>
               )}
@@ -84,7 +86,7 @@ const UserInfo: FC<UserInfoProps> = ({
       {aboutDescriptionText && (
         <div
           className={clsx({
-            'pt-6 px-6': isTopContributorType,
+            'px-6 pt-6': isTopContributorType,
           })}
         >
           <TitleLabel
@@ -144,7 +146,7 @@ const UserInfo: FC<UserInfoProps> = ({
                     key={domainId}
                     className="grid grid-cols-[2fr,1fr] items-center font-medium"
                   >
-                    <span className="text-md whitespace-nowrap truncate">
+                    <span className="truncate whitespace-nowrap text-md">
                       {domainName}
                     </span>
                     <div className="flex justify-end">
@@ -156,13 +158,13 @@ const UserInfo: FC<UserInfoProps> = ({
                       )}
 
                       <Tooltip
-                        className="flex justify-end text-sm text-blue-400 min-w-[4.5rem] items-center"
+                        className="flex min-w-[4.5rem] items-center justify-end text-sm text-blue-400"
                         tooltipContent={
                           <Numeral value={reputationRaw} suffix="pts" />
                         }
                       >
                         <Star size={12} />
-                        <span className="inline-block ml-1">
+                        <span className="ml-1 inline-block">
                           {reputationPercentage.toFixed(2)}%
                         </span>
                       </Tooltip>

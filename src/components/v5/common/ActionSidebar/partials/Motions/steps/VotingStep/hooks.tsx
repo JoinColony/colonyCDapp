@@ -122,7 +122,7 @@ export const useVotingStep = (
         userAddress: user?.walletAddress,
         vote: Number(vote),
         motionId: BigNumber.from(motionId),
-      } as MotionVotePayload),
+      }) as MotionVotePayload,
   );
 
   const handleSuccess: OnSuccess<VotingFormValues> = (vote, { reset }) => {

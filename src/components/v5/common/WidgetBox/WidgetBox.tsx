@@ -33,7 +33,7 @@ const WidgetBox: FC<WidgetBoxProps> = ({
   const content = (
     <>
       {Icon ? (
-        <span className="w-full flex gap-4 items-center justify-between sm:items-start sm:justify-start">
+        <span className="flex w-full items-center justify-between gap-4 sm:items-start sm:justify-start">
           <Icon className={iconClassName} size={24} />
           {baseContent}
         </span>

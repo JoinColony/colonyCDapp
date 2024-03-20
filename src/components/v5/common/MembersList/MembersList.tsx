@@ -68,8 +68,8 @@ const MembersList: FC<MembersListProps> = ({
 
   return (
     <div>
-      <div className="flex items-center mb-2">
-        <h3 className="heading-5 mr-3">{formatMessage(title)}</h3>
+      <div className="mb-2 flex items-center">
+        <h3 className="mr-3 heading-5">{formatMessage(title)}</h3>
         <span className="text-md text-blue-400">{subTitle}</span>
       </div>
       <p className="mb-6 text-md text-gray-600">{formatMessage(description)}</p>
@@ -108,7 +108,7 @@ const MembersList: FC<MembersListProps> = ({
           onClick={() => handleClipboardCopy(colonyURL)}
         />
       ) : undefined}
-      <div className="w-full flex justify-center mt-2">
+      <div className="mt-2 flex w-full justify-center">
         {/* {list.length > membersLimit && !searchValue && viewMoreUrl && (
           <Link className="text-3" to={viewMoreUrl}>
             {formatMessage({ id: 'viewMore' })}

@@ -101,7 +101,7 @@ const ReputationChart = () => {
             <li
               key={id}
               className={clsx('flex items-center text-sm', {
-                'transition-all font-semibold': hoveredSegment?.id === id,
+                'font-semibold transition-all': hoveredSegment?.id === id,
               })}
             >
               <TeamReputationSummaryRow
@@ -119,20 +119,20 @@ const ReputationChart = () => {
   return (
     <WidgetBox
       value={
-        <div className="grid grid-cols-[36%_1fr] justify-items-center w-full gap-6">
-          <div className="relative w-full max-w-[9.375rem] flex-shrink-0 flex justify-center items-center">
+        <div className="grid w-full grid-cols-[36%_1fr] justify-items-center gap-6">
+          <div className="relative flex w-full max-w-[9.375rem] flex-shrink-0 items-center justify-center">
             <DonutChart
               data={chartData || []}
               hoveredSegment={hoveredSegment}
               updateHoveredSegment={updateHoveredSegment}
             />
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex w-full flex-col">
             <div>
-              <p className="uppercase text-4 text-gray-400">
+              <p className="uppercase text-gray-400 text-4">
                 {formatText({ id: 'dashboard.team.widget.title' })}
               </p>
-              <h3 className="text-2 mb-3">
+              <h3 className="mb-3 text-2">
                 {formatText({ id: 'dashboard.team.widget.subtitle' })}
               </h3>
             </div>
@@ -140,7 +140,7 @@ const ReputationChart = () => {
           </div>
         </div>
       }
-      className="flex-col items-start p-6 bg-base-white min-h-[12.5rem] sm:hover:text-gray-900"
+      className="min-h-[12.5rem] flex-col items-start bg-base-white p-6 sm:hover:text-gray-900"
       // @BETA: Disabled for now
       // href={allTeams?.length ? COLONY_TEAMS_ROUTE : undefined}
     />

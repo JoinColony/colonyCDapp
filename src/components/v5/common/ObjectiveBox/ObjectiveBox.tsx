@@ -25,11 +25,11 @@ const ObjectiveBox: FC<ObjectiveBoxProps> = ({ objective }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div className="p-6 bg-base-white border border-gray-200 rounded-lg">
-      <h6 className="text-1 mb-1">
+    <div className="rounded-lg border border-gray-200 bg-base-white p-6">
+      <h6 className="mb-1 text-1">
         {objective?.title || formatMessage(MSG.noObjectiveBoxTitle)}
       </h6>
-      <p className="text-sm text-gray-600 mb-[1.125rem]">
+      <p className="mb-[1.125rem] text-sm text-gray-600">
         {objective
           ? multiLineTextEllipsis(
               objective.description,

@@ -69,7 +69,7 @@ const DropdownMenuItem: FC<DropdownMenuItemProps> = (props) => {
           }}
           {...rest}
         >
-          <span className="flex-grow flex items-center gap-3">{content}</span>
+          <span className="flex flex-grow items-center gap-3">{content}</span>
           {ChevronIcon ? (
             <ChevronIcon size={18} />
           ) : (
@@ -121,7 +121,7 @@ const DropdownMenuItem: FC<DropdownMenuItemProps> = (props) => {
     >
       {ChevronIcon ? (
         <>
-          <span className="flex-grow flex items-center gap-3">{content}</span>
+          <span className="flex flex-grow items-center gap-3">{content}</span>
           <ChevronIcon />
         </>
       ) : (

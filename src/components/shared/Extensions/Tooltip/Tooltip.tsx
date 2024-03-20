@@ -61,7 +61,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
           {...getTooltipProps({
             className: clsx(
               styles.tooltipContainer,
-              'tooltip-container text-base-white relative text-3 p-3',
+              'tooltip-container relative p-3 text-base-white text-3',
               {
                 'bg-success-400': isSuccess,
                 'bg-gray-900 [&_a]:underline': !isSuccess,
@@ -79,9 +79,9 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
               }),
             })}
           />
-          <div className="max-w-[15.625rem] flex flex-col items-start">
+          <div className="flex max-w-[15.625rem] flex-col items-start">
             {isSuccess ? (
-              <div className="flex items-center text-base-white gap-2">
+              <div className="flex items-center gap-2 text-base-white">
                 <Check size={12} />
                 {tooltipContent}
               </div>

@@ -29,7 +29,7 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
     <NavLink
       title={name}
       className={clsx(
-        'flex items-center gap-4 text-2 px-2 rounded-lg transition-all bg-base-white md:hover:bg-gray-900 md:hover:text-base-white min-h-[2.25rem] -mx-2',
+        '-mx-2 flex min-h-[2.25rem] items-center gap-4 rounded-lg bg-base-white px-2 transition-all text-2 md:hover:bg-gray-900 md:hover:text-base-white',
         {
           'justify-between': !!ChainIcon,
         },
@@ -47,7 +47,7 @@ const ColonySwitcherItem: FC<ColonySwitcherItemProps> = ({
           colonyAddress={colonyAddress}
           colonyImageProps={avatarSrc ? { src: avatarSrc } : undefined}
         />
-        <p className="text-2 truncate max-w-[13.313rem]">{name}</p>
+        <p className="max-w-[13.313rem] truncate text-2">{name}</p>
       </div>
       {ChainIcon && <ChainIcon size={18} />}
     </NavLink>

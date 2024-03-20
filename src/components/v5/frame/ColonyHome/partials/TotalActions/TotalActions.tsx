@@ -34,7 +34,7 @@ const TotalActions = () => {
       value={
         <h4 className="heading-4">
           {loading ? (
-            <div className="skeleton opacity-25 w-[60px] h-[1em] my-[0.25em]" />
+            <div className="my-[0.25em] h-[1em] w-[60px] opacity-25 skeleton" />
           ) : (
             totalActions
           )}
@@ -42,7 +42,7 @@ const TotalActions = () => {
       }
       className={clsx('text-base-white', {
         [teamColor]: selectedDomain,
-        'bg-gray-900 border-gray-900': !selectedDomain,
+        'border-gray-900 bg-gray-900': !selectedDomain,
       })}
       href={COLONY_ACTIVITY_ROUTE}
       searchParams={searchParams}

@@ -23,20 +23,20 @@ function TileRadioButtons<TValue = string>({
           className={clsx(
             `
               flex
-              gap-2
-              p-[.5625rem]
-              border
-              transition-all
-              rounded-lg
               items-center
               justify-center
+              gap-2
+              rounded-lg
+              border
+              p-[.5625rem]
+              transition-all
               duration-75
             `,
             {
-              'text-base-white bg-gray-900 border-gray-900':
+              'border-gray-900 bg-gray-900 text-base-white':
                 checked && !disabled,
-              'text-gray-300 border-gray-900': disabled,
-              'text-gray-900 border-gray-300 md:hover:border-gray-900':
+              'border-gray-900 text-gray-300': disabled,
+              'border-gray-300 text-gray-900 md:hover:border-gray-900':
                 !checked && !disabled,
             },
           )}

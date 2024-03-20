@@ -25,14 +25,14 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
       className={clsx(
         `
           accordion-toggler
-          w-full
+          md:hover:text-blue-500
           flex
+          w-full
           items-center
           justify-between
-          text-left
           gap-4
+          text-left
           transition-colors
-          md:hover:text-blue-500
         `,
         { 'text-blue-500': isOpen },
       )}
@@ -40,9 +40,9 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
       {title}
       <span
         className={clsx(
-          'accordion-icon flex items-center flex-shrink-0 transition-transform duration-[400ms] ease-out',
+          'accordion-icon flex flex-shrink-0 items-center transition-transform duration-[400ms] ease-out',
           {
-            'rotate-180 text-blue-500': isOpen,
+            'text-blue-500 rotate-180': isOpen,
           },
         )}
       >

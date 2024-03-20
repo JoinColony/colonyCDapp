@@ -20,11 +20,11 @@ const TeamReputationSummaryRow: FC<TeamReputationSummaryRowProps> = ({
 }) => {
   return (
     <>
-      <div className="flex items-center flex-grow">
+      <div className="flex flex-grow items-center">
         <div
-          className={`flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 ${color}`}
+          className={`mr-2 flex h-[0.625rem] w-[0.625rem] rounded-full ${color}`}
         />
-        <span className="truncate max-w-[8.5rem] sm:max-w-[7.25rem]">
+        <span className="max-w-[8.5rem] truncate sm:max-w-[7.25rem]">
           {name}
         </span>
       </div>

@@ -38,14 +38,14 @@ const FundsTable: FC = () => {
             activeFilters.map((activeFilter) =>
               activeFilter ? (
                 <div
-                  className="bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400"
+                  className="inline-flex items-center gap-1 rounded-lg bg-blue-100 px-3 py-2 text-blue-400"
                   key={activeFilter.filterName}
                 >
-                  <div className="text-sm font-semibold capitalize container">
+                  <div className="container text-sm font-semibold capitalize">
                     {activeFilter.filterName}:
                   </div>
                   {activeFilter.filters.map((filter, index) => (
-                    <p className="text-sm min-w-fit" key={filter?.toString()}>
+                    <p className="min-w-fit text-sm" key={filter?.toString()}>
                       {filter}
                       {index < activeFilter.filters.length - 1 && ','}
                     </p>
@@ -53,7 +53,7 @@ const FundsTable: FC = () => {
                   <CloseButton
                     iconSize={12}
                     aria-label={formatText({ id: 'ariaLabel.closeFilter' })}
-                    className="shrink-0 text-current ml-1 !p-0"
+                    className="ml-1 shrink-0 !p-0 text-current"
                     onClick={() => {
                       const filterToRemove = filters.items.find(
                         (item) => item.filterName === activeFilter.filterName,
@@ -94,10 +94,10 @@ const FundsTable: FC = () => {
         }}
         getFilteredRowModel={getFilteredRowModel()}
         getPaginationRowModel={getPaginationRowModel()}
-        className="[&_td]:border-b [&_td]:border-gray-100 [&_tr:last-child>td]:border-0 [&_td>div]:p-0 [&_th:last-child]:text-right w-full [&_th:empty]:border-none"
+        className="w-full [&_td>div]:p-0 [&_td]:border-b [&_td]:border-gray-100 [&_th:empty]:border-none [&_th:last-child]:text-right [&_tr:last-child>td]:border-0"
         emptyContent={
           (!searchedTokens.length || claims.length <= 0) && (
-            <div className="border w-full rounded-lg border-gray-200">
+            <div className="w-full rounded-lg border border-gray-200">
               <EmptyContent
                 title={{ id: 'incomingFundsPage.table.emptyTitle' }}
                 description={{ id: 'incomingFundsPage.table.emptyDescription' }}

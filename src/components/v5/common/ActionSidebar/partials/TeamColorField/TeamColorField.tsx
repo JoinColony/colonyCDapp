@@ -44,7 +44,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
   });
 
   return (
-    <div className="sm:relative w-full">
+    <div className="w-full sm:relative">
       {readonly ? (
         <TeamColorBadge defaultColor={field.value} title={teamNameValue} />
       ) : (
@@ -79,7 +79,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
                 }}
-                className="p-6 absolute z-[60] w-full max-w-[calc(100%-2.25rem)] sm:w-auto sm:max-w-none"
+                className="absolute z-[60] w-full max-w-[calc(100%-2.25rem)] p-6 sm:w-auto sm:max-w-none"
                 hasShadow
                 rounded="s"
               >

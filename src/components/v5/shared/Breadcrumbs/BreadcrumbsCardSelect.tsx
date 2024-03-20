@@ -23,11 +23,11 @@ const BreadcrumbsCardSelect = ({ item }: Props) => {
             <Link
               to={href}
               className={clsx({
-                'flex items-center w-full gap-2 px-4 py-2 transition-none sm:hover:!text-gray-900':
+                'flex w-full items-center gap-2 px-4 py-2 transition-none sm:hover:!text-gray-900':
                   !!color,
               })}
             >
-              {color && <span className={clsx(color, 'w-3.5 h-3.5 rounded')} />}
+              {color && <span className={clsx(color, 'h-3.5 w-3.5 rounded')} />}
               {label}
             </Link>
           ),
@@ -55,7 +55,7 @@ const BreadcrumbsCardSelect = ({ item }: Props) => {
             {selectedOption || placeholder}{' '}
             <CaretDown
               className={clsx(
-                '!h-[0.75rem] !w-[0.75rem] text-[.625rem] fill-current ml-2 transition-transform',
+                'ml-2 !h-[0.75rem] !w-[0.75rem] fill-current text-[.625rem] transition-transform',
                 {
                   'rotate-180': isSelectVisible,
                 },

@@ -52,7 +52,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
   }, [isTokenSelectVisible]);
 
   return (
-    <div className="sm:relative w-full">
+    <div className="w-full sm:relative">
       {readonly ? (
         <div className="flex text-md">{renderButtonContent()}</div>
       ) : (

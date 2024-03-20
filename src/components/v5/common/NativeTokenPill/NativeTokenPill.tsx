@@ -23,7 +23,7 @@ const NativeTokenPill = ({
   return (
     <div
       className={clsx(
-        'h-[1.875rem] flex flex-row items-center px-1.5 rounded-lg text-gray-900 cursor-pointer',
+        'flex h-[1.875rem] cursor-pointer flex-row items-center rounded-lg px-1.5 text-gray-900',
         {
           'bg-base-bg': variant === 'primary',
           'border border-gray-200 bg-base-white': variant === 'secondary',

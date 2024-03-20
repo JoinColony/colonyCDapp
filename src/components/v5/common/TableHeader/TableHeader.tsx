@@ -10,13 +10,13 @@ const TableHeader = ({
   children,
 }: PropsWithChildren<TableHeaderProps>) => (
   <div className="pb-3.5">
-    <div className="flex sm:justify-between sm:items-start sm:flex-row flex-col">
-      <div className="flex items-center flex-shrink-0 sm:min-h-[2.125rem]">
-        <h4 className="heading-5 mr-3">{title}</h4>
+    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-shrink-0 items-center sm:min-h-[2.125rem]">
+        <h4 className="mr-3 heading-5">{title}</h4>
         {additionalHeaderContent}
       </div>
       {children && (
-        <div className="flex items-center mt-2.5 sm:mt-0">{children}</div>
+        <div className="mt-2.5 flex items-center sm:mt-0">{children}</div>
       )}
     </div>
   </div>

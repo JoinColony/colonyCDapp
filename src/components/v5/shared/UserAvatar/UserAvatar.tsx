@@ -40,7 +40,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
             userStatus === 'dedicated' && isContributorsList,
           'border-2 border-warning-400':
             userStatus === 'active' && isContributorsList,
-          'border-2 border-green-400':
+          'border-green-400 border-2':
             userStatus === 'new' && isContributorsList,
           'border-2 border-purple-400':
             userStatus === 'top' && isContributorsList,
@@ -58,9 +58,9 @@ const UserAvatar: FC<UserAvatarProps> = ({
       </span>
       {showUsername ? (
         <p
-          className={clsx(className, 'font-medium truncate', {
-            'text-sm ml-1': size === 'xxs',
-            'text-md ml-2': size === 'xs' || size === 'sm',
+          className={clsx(className, 'truncate font-medium', {
+            'ml-1 text-sm': size === 'xxs',
+            'ml-2 text-md': size === 'xs' || size === 'sm',
           })}
         >
           {username}

@@ -23,7 +23,7 @@ const MenuContainer = React.forwardRef<
     <div
       className={clsx(
         className,
-        'bg-base-white border flex flex-col',
+        'flex flex-col border bg-base-white',
         checked ? 'border-blue-400' : 'border-gray-200',
         {
           'rounded-lg': rounded === 's',

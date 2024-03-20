@@ -24,7 +24,7 @@ const SocialLinksTable = ({ socialLinks }: Props) => {
     <>
       {!!data.length && (
         <>
-          <h5 className="text-2 mb-3 mt-6">
+          <h5 className="mb-3 mt-6 text-2">
             {formatText({ id: 'editColony.socialLinks.table.title' })}
           </h5>
           <Table<SocialLinksTableModel>

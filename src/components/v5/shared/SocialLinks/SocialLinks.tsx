@@ -38,7 +38,7 @@ const SocialLinks = ({
           <ExternalLink
             href={link}
             key={`${linkName}:${link}`}
-            className="flex items-center gap-2 text-gray-900 text-md"
+            className="flex items-center gap-2 text-md text-gray-900"
           >
             <LinkIcon size={16} />
             {showLabels ? label : null}

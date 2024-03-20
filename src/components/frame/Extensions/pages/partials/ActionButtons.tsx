@@ -53,9 +53,9 @@ const ActionButtons: FC<ActionButtonProps> = ({
 
   return (
     <>
-      <div className="flex flex-col sm:items-center sm:flex-row sm:gap-2 sm:grow">
+      <div className="flex flex-col sm:grow sm:flex-row sm:items-center sm:gap-2">
         <HeadingIcon name={extensionData.name} icon={extensionData.icon} />
-        <div className="flex justify-between items-center mt-4 sm:mt-0 gap-4 sm:grow sm:shrink-0">
+        <div className="mt-4 flex items-center justify-between gap-4 sm:mt-0 sm:shrink-0 sm:grow">
           <ExtensionStatusBadge
             mode={extensionStatusMode}
             text={extensionStatusText}

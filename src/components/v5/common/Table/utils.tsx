@@ -9,8 +9,7 @@ import { type RenderCellWrapper, type TableProps } from './types.ts';
 
 export const getDefaultRenderCellWrapper =
   <T,>(): RenderCellWrapper<T> =>
-  (cellClassName, content) =>
-    <div className={cellClassName}>{content}</div>;
+  (cellClassName, content) => <div className={cellClassName}>{content}</div>;
 
 export const makeMenuColumn = <T,>(
   helper: ColumnHelper<T>,
@@ -33,7 +32,7 @@ export const makeMenuColumn = <T,>(
       return props ? (
         <div
           className={clsx({
-            'absolute top-1/2 right-4 -translate-y-1/2': verticalOnMobile,
+            'absolute right-4 top-1/2 -translate-y-1/2': verticalOnMobile,
           })}
         >
           <MeatBallMenu

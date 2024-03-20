@@ -204,9 +204,12 @@ const transactionChannel = (
   tx: TransactionRecord,
   client: ContractClient,
 ) =>
-  eventChannel((emit) => {
-    channelStart(tx, txPromise, client, emit);
-    return () => {};
-  }, <Buffer<null>>buffers.fixed());
+  eventChannel(
+    (emit) => {
+      channelStart(tx, txPromise, client, emit);
+      return () => {};
+    },
+    <Buffer<null>>buffers.fixed(),
+  );
 
 export default transactionChannel;

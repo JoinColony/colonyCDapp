@@ -19,24 +19,24 @@ const ProgressContent: FC<ProgressContentProps> = ({
   return (
     <div
       className={clsx(
-        'gap-3 bg-base-white flex px-6 py-4 rounded border w-full',
+        'flex w-full gap-3 rounded border bg-base-white px-6 py-4',
         {
           'border-blue-400': isUploadCompleted,
         },
       )}
     >
-      <div className="w-10 mb-2">
-        <div className="bg-blue-100 w-9 h-9 p-[0.25rem] rounded-full flex items-start justify-center">
+      <div className="mb-2 w-10">
+        <div className="flex h-9 w-9 items-start justify-center rounded-full bg-blue-100 p-[0.25rem]">
           <div
-            className={`bg-blue-light-100 text-blue-400
-            w-7 h-7 p-[0.25rem] rounded-full flex items-start justify-center`}
+            className={`bg-blue-light-100 flex
+            h-7 w-7 items-start justify-center rounded-full p-[0.25rem] text-blue-400`}
           >
             <CloudArrowUp size={18} />
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full gap-1">
-        <div className="flex justify-between items-center w-full">
+      <div className="flex w-full flex-col gap-1">
+        <div className="flex w-full items-center justify-between">
           <span className="text-gray-900 text-1">{fileName}</span>
           <div className="flex flex-col">
             {isUploadCompleted ? (
@@ -44,7 +44,7 @@ const ProgressContent: FC<ProgressContentProps> = ({
                 <CheckCircle size={18} />
               </span>
             ) : (
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <button
                   type="button"
                   className="flex text-gray-400"
@@ -56,7 +56,7 @@ const ProgressContent: FC<ProgressContentProps> = ({
             )}
           </div>
         </div>
-        <span className="text-gray-600 text-sm">{fileSize}</span>
+        <span className="text-sm text-gray-600">{fileSize}</span>
         <ProgressBar progress={progress} additionalText="%" />
       </div>
     </div>

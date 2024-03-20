@@ -28,7 +28,7 @@ const SearchItem: FC<SearchItemProps> = ({
     <ul
       className={clsx({
         'w-full': isLabelVisible,
-        'flex -mx-2 items-center flex-wrap sm:w-[8.75rem] gap-y-4':
+        '-mx-2 flex flex-wrap items-center gap-y-4 sm:w-[8.75rem]':
           !isLabelVisible,
         'sm:w-[12.75rem]': !isLabelVisible && isMobile,
       })}
@@ -58,7 +58,7 @@ const SearchItem: FC<SearchItemProps> = ({
           return (
             <li
               className={clsx({
-                'w-full mb-1': isLabelVisible,
+                'mb-1 w-full': isLabelVisible,
                 'inline-flex w-1/4': !isLabelVisible,
               })}
               key={value}
@@ -66,11 +66,11 @@ const SearchItem: FC<SearchItemProps> = ({
               <button
                 type="button"
                 className={clsx(
-                  'w-full text-md transition-colors text-left flex items-center py-1.5 rounded px-2',
+                  'flex w-full items-center rounded px-2 py-1.5 text-left text-md transition-colors',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
-                    'text-gray-400 pointer-events-none gap-1': isDisabled,
+                    'pointer-events-none gap-1 text-gray-400': isDisabled,
 
                     'justify-center': !isLabelVisible,
                   },
@@ -79,12 +79,12 @@ const SearchItem: FC<SearchItemProps> = ({
                   onChange?.(value);
                 }}
               >
-                <div className="relative w-full flex items-center">
+                <div className="relative flex w-full items-center">
                   {color && !isLabelVisible && (
                     <div
-                      className={clsx(teamColor, 'rounded shrink-0', {
-                        'w-[1.125rem] h-[1.125rem]': !isMobile,
-                        'w-7 h-7': isMobile,
+                      className={clsx(teamColor, 'shrink-0 rounded', {
+                        'h-[1.125rem] w-[1.125rem]': !isMobile,
+                        'h-7 w-7': isMobile,
                       })}
                     />
                   )}
@@ -95,11 +95,11 @@ const SearchItem: FC<SearchItemProps> = ({
                   )}
                   {color && isLabelVisible && (
                     <span
-                      className={clsx(teamColor, 'mr-2 w-3.5 h-3.5 rounded')}
+                      className={clsx(teamColor, 'mr-2 h-3.5 w-3.5 rounded')}
                     />
                   )}
                   {showAvatar && (
-                    <div className="mr-2 items-center justify-center flex">
+                    <div className="mr-2 flex items-center justify-center">
                       <UserAvatar
                         avatar={avatar}
                         user={walletAddress}
@@ -111,12 +111,12 @@ const SearchItem: FC<SearchItemProps> = ({
                   {isVerified && (
                     <CircleWavyCheck
                       size={14}
-                      className="text-blue-400 ml-1 flex-shrink-0"
+                      className="ml-1 flex-shrink-0 text-blue-400"
                     />
                   )}
                   {!label && <span className="truncate">{walletAddress}</span>}
                   {firstDisabledOption?.value === value && (
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
                       <ExtensionsStatusBadge
                         mode="coming-soon"
                         text="Coming soon"

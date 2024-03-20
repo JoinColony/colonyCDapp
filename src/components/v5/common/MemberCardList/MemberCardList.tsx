@@ -25,7 +25,7 @@ const MemberCardList: FC<MemberCardListProps> = ({
           isSimple && items.length > 3,
         'grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))] md:grid-cols-4':
           isSimple && items.length <= 3,
-        'gap-y-6 gap-x-6 sm:gap-y-4': !isSimple,
+        'gap-x-6 gap-y-6 sm:gap-y-4': !isSimple,
         'gap-6': isSimple,
       })}
     >

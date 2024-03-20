@@ -31,7 +31,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
 
   return (
     <div
-      className={clsx('flex items-start text-md text-gray-900 mt-4', {
+      className={clsx('mt-4 flex items-start text-md text-gray-900', {
         'flex-col': isExpanded,
       })}
     >
@@ -50,7 +50,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
           <CaretRight
             size={12}
             className={clsx(
-              'transition-transform duration-300 ease-in-out rotate-0',
+              'rotate-0 transition-transform duration-300 ease-in-out',
               {
                 'rotate-90': isExpanded,
               },
@@ -61,20 +61,20 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
       <div
         className={clsx('flex flex-1 items-start', {
           'h-10': !isExpanded,
-          'flex-col mt-4': isExpanded,
+          'mt-4 flex-col': isExpanded,
         })}
       >
         <RichTextDisplay
           content={description}
           shouldFormat={isExpanded}
           className={
-            !isExpanded ? 'flex-1 line-clamp-2 text-left break-word' : undefined
+            !isExpanded ? 'line-clamp-2 flex-1 text-left break-word' : undefined
           }
         />
         {isExpandButtonVisible && (
           <button
             type="button"
-            className="font-medium text-xs underline text-gray-400 ml-1 hover:text-blue-400 self-end"
+            className="ml-1 self-end text-xs font-medium text-gray-400 underline hover:text-blue-400"
             onClick={() => {
               setIsExpanded(true);
             }}
@@ -85,7 +85,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
         {isExpanded && (
           <button
             type="button"
-            className="font-medium text-xs underline text-gray-400 mt-4 hover:text-blue-400"
+            className="mt-4 text-xs font-medium text-gray-400 underline hover:text-blue-400"
             onClick={() => {
               setIsExpanded(false);
             }}

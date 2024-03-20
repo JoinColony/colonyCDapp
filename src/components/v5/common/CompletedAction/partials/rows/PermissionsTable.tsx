@@ -43,7 +43,7 @@ const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
       ) : (
         <Table<CustomPermissionTableModel>
           className={clsx(
-            'sm:[&_td>div]:py-2 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td:nth-child(2)>div]:px-0 sm:[&_th:nth-child(2)]:px-0 sm:[&_tr>td]:border-none',
+            'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0 sm:[&_tr>td]:border-none',
           )}
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}

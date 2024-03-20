@@ -47,22 +47,22 @@ const ColonyCreatedModal = ({
 }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isFullOnMobile={false}>
-      <div className="md:mt-10 flex flex-col items-center pb-6 md:pb-8">
+      <div className="flex flex-col items-center pb-6 md:mt-10 md:pb-8">
         <Confetti className="mb-3 [&>svg]:fill-gray-900" size={42} />
-        <h3 className="heading-3 mb-2">
+        <h3 className="mb-2 heading-3">
           <FormattedMessage {...MSG.modalTitle} />
         </h3>
-        <p className="text-gray-600 text-sm mb-6 text-center">
+        <p className="mb-6 text-center text-sm text-gray-600">
           <FormattedMessage {...MSG.modalDescription} />
         </p>
         <Button mode="primarySolid" text={MSG.modalButton} onClick={onClose} />
       </div>
       {shareableInvitesCount > 0 && (
-        <div className="flex flex-col items-center md:mb-4 border-t border-t-gray-200 pt-6 md:pt-8">
-          <h4 className="heading-5 mb-2">
+        <div className="flex flex-col items-center border-t border-t-gray-200 pt-6 md:mb-4 md:pt-8">
+          <h4 className="mb-2 heading-5">
             <FormattedMessage {...MSG.modalSubtitle} />
           </h4>
-          <p className="text-gray-600 text-sm text-center">
+          <p className="text-center text-sm text-gray-600">
             <FormattedMessage
               {...MSG.modalSubtitleDescription}
               values={{ count: shareableInvitesCount }}

@@ -76,8 +76,8 @@ const PermissionsPageContent: FC<
 
   return (
     <div>
-      <div className="sm:flex sm:items-center justify-between sm:flex-row flex-col">
-        <div className="flex items-center gap-2 sm:mb-0 mb-2.5">
+      <div className="flex-col justify-between sm:flex sm:flex-row sm:items-center">
+        <div className="mb-2.5 flex items-center gap-2 sm:mb-0">
           <h4 className="heading-4">
             {formatText({ id: 'permissionsPage.permissionTypes' })}
           </h4>
@@ -135,15 +135,15 @@ const PermissionsPageContent: FC<
               filter.activeFilters.length ? (
                 <div
                   key={filter.label?.toString()}
-                  className="bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400"
+                  className="inline-flex items-center gap-1 rounded-lg bg-blue-100 px-3 py-2 text-blue-400"
                 >
-                  <div className="text-sm font-semibold capitalize container">
+                  <div className="container text-sm font-semibold capitalize">
                     {filter.label}:
                   </div>
                   {filter.activeFilters.map((activeFilter) => (
                     <p
                       key={activeFilter.value}
-                      className="text-sm capitalize min-w-fit"
+                      className="min-w-fit text-sm capitalize"
                     >
                       {activeFilter.label}
                       {filter.activeFilters.length > 1 &&
@@ -158,7 +158,7 @@ const PermissionsPageContent: FC<
                     onClick={() => {
                       onChange(defaultPermissionsPageFilterValue);
                     }}
-                    className="flex-shrink-0 ml-1"
+                    className="ml-1 flex-shrink-0"
                   >
                     <X size={12} className="text-inherit" />
                   </button>

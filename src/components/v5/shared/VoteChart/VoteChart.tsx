@@ -53,7 +53,7 @@ const VoteChart: FC<VoteChartProps> = ({
   return (
     <div className={clsx(className, 'w-full')}>
       {shouldHideIndicator && (
-        <p className="text-xs font-medium text-center mb-1 text-blue-400">
+        <p className="mb-1 text-center text-xs font-medium text-blue-400">
           {thresholdLabel ||
             formatText(
               {
@@ -79,8 +79,8 @@ const VoteChart: FC<VoteChartProps> = ({
             direction={VoteChartBarDirection.Left}
           />
           <span
-            className={clsx('text-xs text-center transition-[color]', {
-              'text-negative-400 font-medium':
+            className={clsx('text-center text-xs transition-[color]', {
+              'font-medium text-negative-400':
                 predictedAgainstValue || againstValue > 0,
               'text-gray-500': againstValue === 0 && !predictedAgainstValue,
             })}
@@ -92,7 +92,7 @@ const VoteChart: FC<VoteChartProps> = ({
           <div className="relative w-full">
             {shouldHideIndicator && (
               <div
-                className="absolute top-0 bottom-0 h-full z-[3]"
+                className="absolute bottom-0 top-0 z-[3] h-full"
                 style={{
                   left: `${threshold}%`,
                 }}
@@ -109,8 +109,8 @@ const VoteChart: FC<VoteChartProps> = ({
             />
           </div>
           <span
-            className={clsx('text-xs text-center transition', {
-              'text-purple-400 font-medium': predictedForValue || forValue > 0,
+            className={clsx('text-center text-xs transition', {
+              'font-medium text-purple-400': predictedForValue || forValue > 0,
               'text-gray-500': forValue === 0 && !predictedForValue,
             })}
           >

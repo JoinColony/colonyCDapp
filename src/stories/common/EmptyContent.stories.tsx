@@ -9,7 +9,7 @@ const meta: Meta<typeof EmptyContent> = {
   component: EmptyContent,
   decorators: [
     (Story) => (
-      <div className="max-w-[41.75rem] mx-auto">
+      <div className="mx-auto max-w-[41.75rem]">
         <Story />
       </div>
     ),

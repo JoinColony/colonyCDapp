@@ -70,22 +70,22 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
   return claimsAmount.gt(0) && token ? (
     <>
       <AccordionItem
-        className="text-1 text-gray-900 w-full [&_.accordion-toggler]:px-[1.125rem] sm:hover:[&_.accordion-toggler]:bg-gray-25"
+        className="w-full text-gray-900 text-1 [&_.accordion-toggler]:px-[1.125rem] sm:hover:[&_.accordion-toggler]:bg-gray-25"
         isOpen={isTableRowOpen}
         onToggle={toggleTableRowAccordion}
         icon={CaretDown}
         title={
-          <div className="flex items-center justify-between w-full py-4 text-gray-900">
+          <div className="flex w-full items-center justify-between py-4 text-gray-900">
             <button
               type="button"
-              className="flex items-center gap-4 group"
+              className="group flex items-center gap-4"
               ref={relativeElementRef}
               onClick={handleToggleToken}
             >
               <TokenIcon token={token} size="xs" />
               <span
                 className={clsx('font-medium', {
-                  'truncate max-w-[6.25rem] md:max-w-full': !isTokenModalOpened,
+                  'max-w-[6.25rem] truncate md:max-w-full': !isTokenModalOpened,
                   'md:whitespace-normal': isTokenModalOpened,
                   'text-gray-900 group-hover:text-blue-400': !isTokenInfoShown,
                   'text-blue-400': isTokenInfoShown,
@@ -108,7 +108,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           getSortedRowModel={getSortedRowModel()}
           verticalOnMobile={false}
           columns={columns}
-          className="border-0 rounded-none -mx-[1.125rem] px-[1.125rem] !w-[calc(100%+2.25rem)] [&_td]:px-[1.125rem] [&_th]:border-y border-gray-200 [&_td]:py-4"
+          className="-mx-[1.125rem] !w-[calc(100%+2.25rem)] rounded-none border-0 border-gray-200 px-[1.125rem] [&_td]:px-[1.125rem] [&_td]:py-4 [&_th]:border-y"
         />
       </AccordionItem>
       {isMobile ? (
@@ -118,7 +118,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           isOpen={isTokenModalOpened}
         >
           <TokenInfo
-            className="!p-0 w-full"
+            className="w-full !p-0"
             token={token}
             isTokenNative={isTokenNative}
           />
@@ -127,7 +127,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
         isTokenVisible && (
           <Portal>
             <MenuContainer
-              className="absolute !p-0 z-[60] min-w-80"
+              className="absolute z-[60] min-w-80 !p-0"
               hasShadow
               rounded="s"
               ref={(ref) => {

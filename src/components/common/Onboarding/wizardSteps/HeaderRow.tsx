@@ -32,8 +32,8 @@ const HeaderRow: FC<HeaderRowProps> = ({
       : description && formatText(description, descriptionValues);
 
   return (
-    <div className="pb-4 border-b border-gray300 mb-8">
-      <h3 className="heading-3 pb-2">{headingText}</h3>
+    <div className="border-gray300 mb-8 border-b pb-4">
+      <h3 className="pb-2 heading-3">{headingText}</h3>
       <p className="text-sm text-gray-600">{subHeadingText}</p>
     </div>
   );

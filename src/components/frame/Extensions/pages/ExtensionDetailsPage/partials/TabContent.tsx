@@ -8,14 +8,14 @@ const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.TabContent';
 
 const HeadingChunks = (chunks: React.ReactNode[]) => (
-  <h4 className="text-gray-900 font-semibold mt-6 mb-4">{chunks}</h4>
+  <h4 className="mb-4 mt-6 font-semibold text-gray-900">{chunks}</h4>
 );
 
 const ParagraphChunks = (chunks: React.ReactNode[]) => (
   <p className="mb-4">{chunks}</p>
 );
 const BoldChunks = (chunks: React.ReactNode[]) => (
-  <b className="text-gray-900 font-medium">{chunks}</b>
+  <b className="font-medium text-gray-900">{chunks}</b>
 );
 const ListChunks = (chunks: React.ReactNode[]) => (
   <ul className="my-4 ml-4 list-disc">{chunks}</ul>

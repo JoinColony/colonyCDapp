@@ -43,15 +43,15 @@ const SocialLinkFormModal: FC<SocialLinkFormModalProps> = ({
       >
         {({ getValues }) => (
           <>
-            <h5 className="heading-5 mb-1.5">
+            <h5 className="mb-1.5 heading-5">
               {formatText({ id: 'editColony.socialLinks.modal.title' })}
             </h5>
-            <p className="text-md text-gray-600 mb-10 md:mb-6">
+            <p className="mb-10 text-md text-gray-600 md:mb-6">
               {formatText({ id: 'editColony.socialLinks.modal.subtitle' })}
             </p>
             <FormTileRadioButtons
               name="name"
-              className="grid md:grid-cols-3 gap-y-3 gap-x-4"
+              className="grid gap-x-4 gap-y-3 md:grid-cols-3"
               items={LINK_TYPE_RADIO_BUTTONS}
             />
             {getValues('name') && (
@@ -61,7 +61,7 @@ const SocialLinkFormModal: FC<SocialLinkFormModalProps> = ({
                   name="link"
                   label={LINK_TYPE_TO_LABEL_MAP[getValues('name')]}
                 />
-                <div className="flex flex-col-reverse gap-3 mt-[5.625rem] md:mt-8 sm:flex-row">
+                <div className="mt-[5.625rem] flex flex-col-reverse gap-3 sm:flex-row md:mt-8">
                   <Button
                     type="button"
                     mode="primaryOutline"

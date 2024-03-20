@@ -55,8 +55,8 @@ const AgreementsPage: FC = () => {
   return (
     <div>
       {draftAgreement && <DraftSection className="mb-6" />}
-      <div className="sm:flex sm:items-center justify-between sm:flex-row flex-col mb-6">
-        <div className="flex items-center gap-2 sm:mb-0 mb-2.5">
+      <div className="mb-6 flex-col justify-between sm:flex sm:flex-row sm:items-center">
+        <div className="mb-2.5 flex items-center gap-2 sm:mb-0">
           <h4 className="heading-5">
             {formatText({ id: 'agreementsPage.subtitle' })}
           </h4>
@@ -78,11 +78,11 @@ const AgreementsPage: FC = () => {
         </div>
       </div>
       {loading || loadingMotionStateFilter ? (
-        <ul className="grid sm:grid-cols-2 gap-6">
+        <ul className="grid gap-6 sm:grid-cols-2">
           {[...Array(4).keys()].map((key) => (
             <li
               key={key}
-              className="w-full h-full flex flex-col pt-6 pb-5 px-5 rounded-lg border border-gray-200"
+              className="flex h-full w-full flex-col rounded-lg border border-gray-200 px-5 pb-5 pt-6"
             >
               <AgreementCardSkeleton />
             </li>
@@ -91,7 +91,7 @@ const AgreementsPage: FC = () => {
       ) : (
         <>
           {searchedAgreements && searchedAgreements?.length > 0 && (
-            <ul className="grid auto-rows-fr sm:auto-rows-auto grid-cols-1 sm:grid-cols-2 gap-6">
+            <ul className="grid auto-rows-fr grid-cols-1 gap-6 sm:auto-rows-auto sm:grid-cols-2">
               {searchedAgreements.map(({ transactionHash }) => (
                 <motion.li
                   initial={{ opacity: 0 }}
@@ -116,7 +116,7 @@ const AgreementsPage: FC = () => {
             !isFilterActive && (
               <EmptyContent
                 description={{ id: 'agreementsPage.empty.description' }}
-                className="px-5 py-[5.75rem] border-dashed"
+                className="border-dashed px-5 py-[5.75rem]"
                 buttonText={{ id: 'agreementsPage.empty.button' }}
                 onClick={() => {
                   toggleActionSidebarOn({
@@ -134,7 +134,7 @@ const AgreementsPage: FC = () => {
               <EmptyContent
                 title={{ id: 'agreementsPage.empty.title.filter' }}
                 description={{ id: 'agreementsPage.empty.description.filter' }}
-                className="pt-10 pb-9 px-6"
+                className="px-6 pb-9 pt-10"
                 icon={Binoculars}
                 withBorder
               />

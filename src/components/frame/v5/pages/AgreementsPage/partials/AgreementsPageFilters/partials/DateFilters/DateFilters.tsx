@@ -18,7 +18,7 @@ const DateFilters: FC = () => {
 
   return (
     <div className="pb-2">
-      <h5 className="hidden sm:block text-4 text-gray-400 px-3.5 uppercase">
+      <h5 className="hidden px-3.5 uppercase text-gray-400 text-4 sm:block">
         {formatText({ id: 'agreementsPage.filters.date' })}
       </h5>
       <ul>
@@ -39,7 +39,7 @@ const DateFilters: FC = () => {
           );
         })}
       </ul>
-      <h5 className="text-4 text-gray-400 sm:px-3.5 uppercase mt-2">
+      <h5 className="mt-2 uppercase text-gray-400 text-4 sm:px-3.5">
         {formatText({ id: 'agreementsPage.filters.date.custom' })}
       </h5>
       <div className="mt-4 sm:px-3.5">
@@ -49,7 +49,7 @@ const DateFilters: FC = () => {
           endDate={endDate ? new Date(endDate) : undefined}
           maxDate={new Date()}
           popperClassName={clsx({
-            '!fixed !top-1/2 !inset-auto !left-1/2 !-translate-x-1/2 !-translate-y-1/2 w-full':
+            '!fixed !inset-auto !left-1/2 !top-1/2 w-full !-translate-x-1/2 !-translate-y-1/2':
               isMobile,
           })}
         />

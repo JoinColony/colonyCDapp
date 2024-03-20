@@ -23,7 +23,7 @@ const DonutChart: FC<DonutChartProps> = ({
   } = useDonutChart({ data, hoveredSegment, updateHoveredSegment });
 
   return (
-    <div ref={chartRef} className="relative w-full h-full max-w-full">
+    <div ref={chartRef} className="relative h-full w-full max-w-full">
       <svg width="100%" height="100%" viewBox={`0 0 ${size} ${size}`}>
         {data.length === 1 || summedChartValues < 1
           ? renderSingleSegment()
@@ -32,11 +32,11 @@ const DonutChart: FC<DonutChartProps> = ({
       {tooltipStyle && (
         <div
           ref={tooltipRef}
-          className="py-2 px-4 text-base-white vertical-align bg-gray-900 rounded-full shadow-lg -mt-2.5 absolute pointer-events-none z-10 translate-x-[-50%] translate-y-[-100%]"
+          className="vertical-align pointer-events-none absolute z-10 -mt-2.5 translate-x-[-50%] translate-y-[-100%] rounded-full bg-gray-900 px-4 py-2 text-base-white shadow-lg"
           style={tooltipStyle}
         >
-          <div className="flex items-center justify-center text-xs md:text-sm font-bold text-center">
-            <div className="flex-shrink overflow-hidden truncate max-w-[6.25rem] mr-1">
+          <div className="flex items-center justify-center text-center text-xs font-bold md:text-sm">
+            <div className="mr-1 max-w-[6.25rem] flex-shrink overflow-hidden truncate">
               {hoveredSegment?.label}
             </div>
             <div>
@@ -46,7 +46,7 @@ const DonutChart: FC<DonutChartProps> = ({
             </div>
           </div>
           <div
-            className="absolute left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gray-900 rotate-45"
+            className="absolute left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 transform bg-gray-900"
             style={{ boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)' }}
           />
         </div>

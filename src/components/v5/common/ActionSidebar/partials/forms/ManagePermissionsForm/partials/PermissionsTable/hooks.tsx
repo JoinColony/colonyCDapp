@@ -16,7 +16,7 @@ export const useCustomPermissionsTableColumns = (name: string) =>
         enableSorting: false,
         header: formatText({ id: 'table.column.type' }),
         cell: ({ getValue }) => (
-          <span className="text-md text-gray-900 font-medium">
+          <span className="text-md font-medium text-gray-900">
             {getValue()}
           </span>
         ),

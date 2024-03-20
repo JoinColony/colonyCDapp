@@ -23,7 +23,7 @@ const ModalBase: FC<ModalBaseProps> = ({
       role={role}
       overlayClassName={{
         base: clsx(
-          `flex justify-start items-center fixed inset-0 z-[999] bg-base-sprite flex-col before:content-[''] after:content-[''] before:h-full after:h-full before:max-h-[9.688rem] after:max-h-[9.688rem]`,
+          `fixed inset-0 z-[999] flex flex-col items-center justify-start bg-base-sprite before:h-full before:max-h-[9.688rem] before:content-[''] after:h-full after:max-h-[9.688rem] after:content-['']`,
           {
             'py-4': !isFullOnMobile,
           },
@@ -32,15 +32,15 @@ const ModalBase: FC<ModalBaseProps> = ({
         beforeClose: 'blur-none',
       }}
       className={clsx(
-        `relative outline-0 overflow-auto max-h-full bg-base-white md:h-auto
-        md:border md:border-gray-200 md:rounded-xl shadow-default flex flex-col md:w-[30.3125rem] shrink-0`,
+        `relative flex max-h-full shrink-0 flex-col overflow-auto
+        bg-base-white shadow-default outline-0 md:h-auto md:w-[30.3125rem] md:rounded-xl md:border md:border-gray-200`,
         {
-          'w-screen h-full': isFullOnMobile,
-          'w-[calc(100vw-3rem)] max-h-[calc(100%-4rem)] border border-gray-200 rounded-xl shadow-default':
+          'h-full w-screen': isFullOnMobile,
+          'max-h-[calc(100%-4rem)] w-[calc(100vw-3rem)] rounded-xl border border-gray-200 shadow-default':
             !isFullOnMobile,
           base: 'z-[4] outline-0',
-          'pt-6 pl-6': !isTopSectionWithBackground,
-          'pt-0 pl-0 border-2 border-purple-200': isTopSectionWithBackground,
+          'pl-6 pt-6': !isTopSectionWithBackground,
+          'border-2 border-purple-200 pl-0 pt-0': isTopSectionWithBackground,
         },
       )}
       shouldFocusAfterRender

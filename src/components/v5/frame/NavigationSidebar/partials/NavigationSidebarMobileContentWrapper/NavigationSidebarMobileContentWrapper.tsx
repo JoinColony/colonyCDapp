@@ -23,26 +23,26 @@ const NavigationSidebarMobileContentWrapper: FC<
     className={clsx(
       `
         absolute
-        top-full
         left-0
         right-0
-        w-full
+        top-full
         h-[calc(100vh-var(--top-content-height))]
-        bg-base-white
+        w-full
         overflow-hidden
+        bg-base-white
       `,
       {
         'z-[1]': isOpen,
       },
     )}
   >
-    <div className="inner !p-6 h-full flex flex-col gap-6">
+    <div className="inner flex h-full flex-col gap-6 !p-6">
       <div className="flex-grow overflow-y-auto overflow-x-hidden">
         {children}
       </div>
       <NavigationFeedbackWidget />
       {mobileBottomContent && (
-        <div className="flex-shrink-0 pt-6 border-t border-t-gray-200">
+        <div className="flex-shrink-0 border-t border-t-gray-200 pt-6">
           {mobileBottomContent}
         </div>
       )}

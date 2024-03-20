@@ -14,7 +14,7 @@ const DatepickerCustomRangeInput = React.forwardRef<
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
 >(({ onClick, onFocus, startDate, endDate, dateFormat }, ref) => {
   return (
-    <div className="w-full flex items-center justify-between gap-2">
+    <div className="flex w-full items-center justify-between gap-2">
       <InputBase
         placeholder={formatText({ id: 'calendar.from' })}
         readOnly
@@ -22,7 +22,7 @@ const DatepickerCustomRangeInput = React.forwardRef<
         onFocus={onFocus}
         value={startDate ? format(startDate, dateFormat) : ''}
       />
-      <span className="flex justify-center items-center flex-shrink-0 text-gray-900 text-2 w-6 text-center">
+      <span className="flex w-6 flex-shrink-0 items-center justify-center text-center text-gray-900 text-2">
         -
       </span>
       <InputBase

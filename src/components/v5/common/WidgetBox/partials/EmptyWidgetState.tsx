@@ -16,12 +16,12 @@ const EmptyWidgetState: FC<EmptyWidgetStateProps> = ({
   <div
     className={clsx(
       className,
-      'flex flex-col gap-1 items-center justify-center text-gray-600 text-sm',
+      'flex flex-col items-center justify-center gap-1 text-sm text-gray-600',
     )}
   >
     {title}
     <TextButton
-      className="text-gray-900 text-sm underline font-normal"
+      className="text-sm font-normal text-gray-900 underline"
       onClick={onClick}
     >
       {actionTitle}

@@ -20,10 +20,10 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
     <div
       className={clsx(
         className,
-        'flex justify-center items-center flex-shrink-0 relative h-[1em] w-[1em]',
+        'relative flex h-[1em] w-[1em] flex-shrink-0 items-center justify-center',
         {
-          'h-16 w-16 text-6xl': size === 'xm',
-          'h-[3.75em] w-[3.75em] text-6xl': size === 'm',
+          'text-6xl h-16 w-16': size === 'xm',
+          'text-6xl h-[3.75em] w-[3.75em]': size === 'm',
           'text-4xl': size === 'xms',
           'text-3xl': size === 'smx',
           'text-2xl': size === 'xxsm',
@@ -35,7 +35,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
     >
       <div
         className={clsx(
-          'h-full w-full rounded-full overflow-hidden flex justify-center items-center',
+          'flex h-full w-full items-center justify-center overflow-hidden rounded-full',
         )}
       >
         {colonyImageProps?.src ? (
@@ -54,21 +54,21 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
       {Icon && (
         <figure
           className={`
+          absolute
+          right-0
+          top-0
+          flex
           h-[0.5em]
           w-[0.5em]
+          -translate-y-[.375rem]
+          translate-x-[.375rem]
+          items-center
+          justify-center
+          overflow-hidden
           rounded-full
           border
           border-gray-200
           bg-base-white
-          overflow-hidden
-          absolute
-          top-0
-          right-0
-          translate-x-[.375rem]
-          -translate-y-[.375rem]
-          flex
-          justify-center
-          items-center
       `}
         >
           <Icon size={14} />

@@ -51,7 +51,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
       {!isSetupRoute && showPermissionsBanner && (
         <PermissionsNeededBanner extensionData={extensionData} />
       )}
-      <div className="flex justify-between flex-col flex-wrap sm:items-center sm:flex-row sm:gap-6">
+      <div className="flex flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
         <div className={styles.topContainer}>
           <ActionButtons
             waitingForEnableConfirmation={waitingForEnableConfirmation}

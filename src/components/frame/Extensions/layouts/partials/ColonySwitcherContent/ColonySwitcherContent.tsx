@@ -57,7 +57,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
   }
 
   return (
-    <div className="w-full flex flex-col gap-4 md:pt-6">
+    <div className="flex w-full flex-col gap-4 md:pt-6">
       {colony && (
         <div>
           <h3 className={titleClassName}>
@@ -78,7 +78,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
       )}
       <div
         className={clsx('flex flex-col gap-6', {
-          'pt-6 border-t border-t-gray-200': colony,
+          'border-t border-t-gray-200 pt-6': colony,
         })}
       >
         <SearchInput onChange={onSearchValueChange} value={searchValue} />
@@ -87,7 +87,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
             {formatText(MSG.joinedColonyTitle)}
           </h3>
           {!!filteredColonies.length && (
-            <ul className="w-full flex flex-col gap-2">
+            <ul className="flex w-full flex-col gap-2">
               {filteredColonies.map((filteredColony) => {
                 return (
                   <li key={filteredColony.colonyAddress}>

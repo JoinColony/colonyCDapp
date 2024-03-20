@@ -19,7 +19,7 @@ const TeamBadge: FC<TeamBadgeProps> = ({ name, color, className, ...rest }) => {
   return (
     <PillsBase
       {...rest}
-      className={clsx(className, 'bg-base-white border', teamColor)}
+      className={clsx(className, 'border bg-base-white', teamColor)}
     >
       {name}
     </PillsBase>

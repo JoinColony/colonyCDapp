@@ -72,7 +72,7 @@ export const useVerifiedTableColumns = (): ColumnDef<
         id: 'reputation',
         header: () => formatText({ id: 'verifiedPage.table.reputation' }),
         cell: ({ row }) => (
-          <div className="hidden sm:flex items-center justify-end w-full text-gray-600">
+          <div className="hidden w-full items-center justify-end text-gray-600 sm:flex">
             <Star size={18} />
             <span className="ml-1 text-sm">
               {Number.isInteger(row.original.colonyReputationPercentage)
@@ -98,7 +98,7 @@ export const useVerifiedTableColumns = (): ColumnDef<
           <div className="flex">
             <button
               type="button"
-              className="ml-auto flex items-center text-gray-600 hover:text-negative-400 transition-colors duration-normal"
+              className="ml-auto flex items-center text-gray-600 transition-colors duration-normal hover:text-negative-400"
               aria-label={formatText({ id: 'ariaLabel.deleteMember' })}
               onClick={onDeleteClick}
             >

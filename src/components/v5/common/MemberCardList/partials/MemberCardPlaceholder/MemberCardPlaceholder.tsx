@@ -21,10 +21,10 @@ const MemberCardPlaceholder: FC<MemberCardPlaceholderProps> = ({
     <div
       className={clsx(
         styles.wrapper,
-        'w-full h-full bg-gray-25 p-5 rounded-lg flex flex-col justify-center items-center text-gray-700 transition-all md:hover:text-gray-900',
+        'flex h-full w-full flex-col items-center justify-center rounded-lg bg-gray-25 p-5 text-gray-700 transition-all md:hover:text-gray-900',
       )}
     >
-      <p className="text-center text-sm mb-4">{description}</p>
+      <p className="mb-4 text-center text-sm">{description}</p>
       {buttonTooltipProps ? (
         <Tooltip {...buttonTooltipProps}>{button}</Tooltip>
       ) : (

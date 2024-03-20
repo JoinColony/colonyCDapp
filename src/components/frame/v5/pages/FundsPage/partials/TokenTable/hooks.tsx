@@ -19,7 +19,7 @@ export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
             value={row.original.amount}
             decimals={row.original.token?.decimals}
             suffix={row.original.token?.symbol}
-            className="text-1 text-gray-900"
+            className="text-gray-900 text-1"
           />
         ),
       }),

@@ -17,7 +17,7 @@ const NavigationSidebarLink: FC<
     className={({ isActive }) =>
       clsx(
         className,
-        'flex items-center justify-between gap-4 w-full text-2 px-2.5 rounded-lg transition-all bg-base-white md:hover:bg-gray-900 md:hover:text-base-white min-h-[2.25rem]',
+        'flex min-h-[2.25rem] w-full items-center justify-between gap-4 rounded-lg bg-base-white px-2.5 transition-all text-2 md:hover:bg-gray-900 md:hover:text-base-white',
         {
           'bg-gray-900 text-base-white': isActive,
           'pointer-events-none': disabled,
@@ -28,7 +28,7 @@ const NavigationSidebarLink: FC<
     }
   >
     <span className="flex items-center gap-2">
-      <Icon className="text-current flex-shrink-0" size={16} />
+      <Icon className="flex-shrink-0 text-current" size={16} />
       {children}
     </span>
     {tagProps && (

@@ -29,7 +29,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
           id: 'actionSidebar.managePermissions.permissionsModal.heading',
         })}
       </p>
-      <div className="text-sm text-gray-600 mt-1">
+      <div className="mt-1 text-sm text-gray-600">
         {showMore ? (
           <>
             <p>
@@ -50,7 +50,7 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
         )}{' '}
         <button
           type="button"
-          className="inline text-gray-900 sm:hover:text-blue-400 underline transition-colors cursor-pointer"
+          className="inline cursor-pointer text-gray-900 underline transition-colors sm:hover:text-blue-400"
           onClick={toggleShowMore}
         >
           {showMore
@@ -71,10 +71,10 @@ const PermissionsModal: FC<PermissionsModalProps> = (props) => {
             <Fragment key={key}>
               <p className="mt-6 text-md font-medium text-gray-900">{title}</p>
               <p className="mt-1 text-sm text-gray-600">{heading}</p>
-              <div className="flex gap-4 text-sm text-gray-600 mt-2">
+              <div className="mt-2 flex gap-4 text-sm text-gray-600">
                 {actionsGroups.map((actionsGroup) => (
                   <ul
-                    className="list-disc pl-6 flex-1"
+                    className="flex-1 list-disc pl-6"
                     key={JSON.stringify(actionsGroup)}
                   >
                     {actionsGroup.map((action) => (

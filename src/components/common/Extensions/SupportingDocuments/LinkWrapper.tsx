@@ -22,7 +22,7 @@ const LinkWrapper: FC = () => {
             className="flex items-center text-md text-gray-600"
           >
             <span
-              className="flex items-center shrink-0 mr-1"
+              className="mr-1 flex shrink-0 items-center"
               title={formatText({ id: 'file-text' })}
             >
               <FileText size={14} />

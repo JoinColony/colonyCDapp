@@ -31,7 +31,7 @@ const AdvancedPage: FC = () => {
 
   return (
     <div>
-      <h3 className="heading-4 mb-6">
+      <h3 className="mb-6 heading-4">
         <FormattedMessage id="advancedPage.colony.title" />
       </h3>
       <div className="mb-4">

@@ -33,7 +33,7 @@ const RpcForm = () => {
             description={{ id: 'advancedSettings.rpc.description' }}
             tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
             name="decentralizedModeEnabled"
-            className="pt-0 items-end"
+            className="items-end pt-0"
             titleClassName="!font-semibold !text-lg"
             additionalContent={formatText({ id: 'profilePage.customRpc' })}
           />

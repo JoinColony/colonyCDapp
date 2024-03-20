@@ -49,7 +49,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
               {nestedFilters.map((label) => (
                 <p
                   key={formatText(label)}
-                  className="text-sm capitalize min-w-fit"
+                  className="min-w-fit text-sm capitalize"
                 >
                   {formatText(label)}
                   {lastLabel !== label ? ',' : ''}
@@ -57,7 +57,7 @@ const TableFiltering: FC<PropsWithChildren<TableFilteringProps>> = ({
               ))}
               <CloseButton
                 aria-label={formatMessage({ id: 'ariaLabel.closeFilter' })}
-                className="shrink-0 ml-2 text-current !p-0"
+                className="ml-2 shrink-0 !p-0 text-current"
                 onClick={(e) => handleClick(e, parentFilterLabel)}
               />
             </div>,

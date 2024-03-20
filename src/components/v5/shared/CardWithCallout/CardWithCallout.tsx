@@ -14,20 +14,20 @@ const CardWithCallout: FC<PropsWithChildren<CardWithCalloutProps>> = ({
 }) => {
   const titleComponent =
     typeof title == 'string' ? (
-      <h1 className="text-md font-medium inline">{title}</h1>
+      <h1 className="inline text-md font-medium">{title}</h1>
     ) : (
       title
     );
 
   return (
     <Card className={className}>
-      <div className="flex items-center gap-x-2 mb-1.5">
+      <div className="mb-1.5 flex items-center gap-x-2">
         {Icon && <Icon size={24} />}
         {titleComponent}
       </div>
-      <div className="flex items-center justify-between gap-y-3 gap-x-4 flex-wrap md:flex-nowrap md:gap-y-0">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 md:flex-nowrap md:gap-y-0">
         <div>
-          {subtitle && <h2 className="text-md font-medium mb-1">{subtitle}</h2>}
+          {subtitle && <h2 className="mb-1 text-md font-medium">{subtitle}</h2>}
           {children && <p className="text-sm text-gray-600">{children}</p>}
         </div>
         {button}

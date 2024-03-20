@@ -48,19 +48,19 @@ const WizardSidebar = ({
   sidebarTitleValues,
   wizardSteps,
 }: Props) => (
-  <nav className="flex flex-col border border-gray-200 rounded-lg p-6 h-full">
-    <Link to={LANDING_PAGE_ROUTE} className="w-fit h-fit mb-10">
+  <nav className="flex h-full flex-col rounded-lg border border-gray-200 p-6">
+    <Link to={LANDING_PAGE_ROUTE} className="mb-10 h-fit w-fit">
       <ColonyIcon size={36} />
     </Link>
     <Heading3
       appearance={{ theme: 'dark' }}
-      className="text-gray-900 text-xl font-semibold mb-6"
+      className="mb-6 text-xl font-semibold text-gray-900"
       text={sidebarTitle}
       textValues={sidebarTitleValues}
     />
-    <div className="flex flex-col flex-1 content-between">
-      <div className="flex flex-1 gap-4 relative">
-        <div className="flex flex-col gap-4 -mt-1">
+    <div className="flex flex-1 flex-col content-between">
+      <div className="relative flex flex-1 gap-4">
+        <div className="-mt-1 flex flex-col gap-4">
           {wizardSteps.map((step, index) => {
             // To work out the current step we add all the previous
             // subitems to the index (the current step count) minus one
@@ -88,12 +88,12 @@ const WizardSidebar = ({
       </div>
       <div className="text-sm text-gray-400">
         <Question size={18} className="mb-1.5 [&>svg]:fill-gray-900" />
-        <div className="text-gray-900 text-xs">
+        <div className="text-xs text-gray-900">
           <FormattedMessage {...MSG.guidance} />
         </div>
         <ExternalLink
           href="https://docs.colony.io/"
-          className="text-gray-900 hover:text-blue-400 underline text-xs font-medium"
+          className="text-xs font-medium text-gray-900 underline hover:text-blue-400"
         >
           <FormattedMessage {...MSG.footerLink} />
         </ExternalLink>

@@ -56,9 +56,8 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
       await Promise.all(
         newMotionIds.map(async (nativeMotionId) => {
           try {
-            const motionState = await votingRepClient.getMotionState(
-              nativeMotionId,
-            );
+            const motionState =
+              await votingRepClient.getMotionState(nativeMotionId);
             statesMap.set(nativeMotionId, motionState);
           } catch {
             statesMap.set(nativeMotionId, null);

@@ -19,8 +19,8 @@ interface Props extends Pick<WizardSidebarSubStep, 'text'> {
 
 const WizardSidebarSubItem = ({ text: stepText, isActive }: Props) => (
   <span
-    className={clsx('text-xs ml-[26px]', {
-      'text-blue-400 font-semibold': isActive,
+    className={clsx('ml-[26px] text-xs', {
+      'font-semibold text-blue-400': isActive,
     })}
   >
     <FormattedMessage {...stepText} />

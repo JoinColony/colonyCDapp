@@ -19,7 +19,7 @@ const MenuWithSections: React.FC<MenuWithSectionsProps> = ({
           key={key}
           className={clsx(
             className,
-            'border-b border-gray-200 last:border-b-0 px-[1.125rem] py-3',
+            'border-b border-gray-200 px-[1.125rem] py-3 last:border-b-0',
           )}
         >
           {content}

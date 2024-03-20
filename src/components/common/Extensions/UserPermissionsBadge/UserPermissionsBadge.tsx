@@ -29,7 +29,7 @@ const UserPermissionsBadge: FC<
 
   const content = (
     <>
-      <span className="flex items-center shrink-0">
+      <span className="flex shrink-0 items-center">
         <Icon size={12} />
       </span>
       <span className="ml-1.5">{userPermissionsBadgeText || children}</span>

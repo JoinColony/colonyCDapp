@@ -72,8 +72,8 @@ const ColonyDetailsPage: FC = () => {
 
   return (
     <div className="pb-6">
-      <div className={clsx('p-6 flex flex-col items-start', styles.box)}>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div className={clsx('flex flex-col items-start p-6', styles.box)}>
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <ColonyAvatar
             size="m"
             colonyAddress={colonyAddress || ADDRESS_ZERO}
@@ -96,7 +96,7 @@ const ColonyDetailsPage: FC = () => {
           </div>
         </div>
         <p
-          className={clsx('text-md text-gray-600 mt-4 mb-6', {
+          className={clsx('mb-6 mt-4 text-md text-gray-600', {
             'text-gray-700': !!description,
           })}
         >
@@ -128,12 +128,12 @@ const ColonyDetailsPage: FC = () => {
       </div>
       <div
         className={clsx(
-          'p-6 mt-6 sm:mt-9 flex flex-col items-start gap-6 sm:flex-row sm:gap-12',
+          'mt-6 flex flex-col items-start gap-6 p-6 sm:mt-9 sm:flex-row sm:gap-12',
           styles.box,
         )}
       >
         <div className="flex-1">
-          <h3 className="heading-4 mb-4">
+          <h3 className="mb-4 heading-4">
             {formatMessage(MSG.objectiveTitle)}
           </h3>
           <p className="text-md text-gray-600 sm:mb-6">
@@ -154,7 +154,7 @@ const ColonyDetailsPage: FC = () => {
           )}
         </div>
         <div className="w-full sm:max-w-[20.375rem]">
-          <h5 className="text-3 mb-2">
+          <h5 className="mb-2 text-3">
             {formatMessage(MSG.objectiveBoxTitle)}
           </h5>
           <ObjectiveBox objective={objective} />

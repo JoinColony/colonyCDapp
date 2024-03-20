@@ -36,27 +36,27 @@ const RemoveDraftModal: FC<RemoveDraftModalProps> = ({
 
   return (
     <ModalBase isOpen={isOpen} isFullOnMobile>
-      <span className="flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded border shadow-content mb-4 border-gray-200 flex-shrink-0">
+      <span className="mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content">
         <WarningCircle size={24} />
       </span>
       <CloseButton
         aria-label={formatText({ id: 'ariaLabel.closeModal' })}
         title={formatText({ id: 'button.cancel' })}
         onClick={onCloseClick}
-        className="text-gray-400 hover:text-gray-600 absolute top-4 right-4"
+        className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
-      <div className="flex flex-col w-full flex-grow [-webkit-overflow-scrolling:touch] pb-6 pr-6">
+      <div className="flex w-full flex-grow flex-col pb-6 pr-6 [-webkit-overflow-scrolling:touch]">
         <div className="flex-grow">
-          <h4 className="heading-5 mb-2">
+          <h4 className="mb-2 heading-5">
             {formatText({ id: 'removeDraftModal.title' })}
           </h4>
-          <p className="text-gray-600 text-md">
+          <p className="text-md text-gray-600">
             {formatText({
               id: 'removeDraftModal.subtitle',
             })}
           </p>
         </div>
-        <div className="flex flex-col-reverse gap-3 mt-8 sm:flex-row">
+        <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
           <Button mode="primaryOutline" isFullSize onClick={onViewDraftClick}>
             {formatText({
               id: 'removeDraftModal.button.viewDraft',

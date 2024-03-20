@@ -50,7 +50,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
         {/*   {formatMessage({ id: 'view.all' })} */}
         {/* </button> */}
       </div>
-      <div className="flex flex-col gap-4 pt-2 pb-6">
+      <div className="flex flex-col gap-4 pb-6 pt-2">
         <div className={styles.row}>
           <span className={styles.rowName}>
             {formatMessage({ id: 'total.balance' })}

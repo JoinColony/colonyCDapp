@@ -27,7 +27,7 @@ const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
               { id: 'role.description' },
               { role: permissionRole.name },
             )}
-            <ul className="list-disc font-medium pl-4 mb-4">
+            <ul className="mb-4 list-disc pl-4 font-medium">
               {permissionRole.permissions.map((permission) => (
                 <li key={permission}>{ColonyRole[permission]}</li>
               ))}

@@ -21,7 +21,7 @@ const CopyWallet: FC<CopyWalletProps> = ({
   const isMobile = useMobile();
 
   return (
-    <div className="bg-gray-50 rounded p-3 flex flex-col gap-4">
+    <div className="flex flex-col gap-4 rounded bg-gray-50 p-3">
       <div className="flex items-center gap-2">
         <Cardholder size={16} />
         <span className="text-md">
@@ -43,7 +43,7 @@ const CopyWallet: FC<CopyWalletProps> = ({
           mode="primaryOutlineFull"
           icon={CopySimple}
           className={clsx(
-            'flex items-center transition-all duration-normal text-sm !border-gray-300 md:hover:text-blue-400',
+            'flex items-center !border-gray-300 text-sm transition-all duration-normal md:hover:text-blue-400',
             {
               'pointer-events-none text-gray-300': disabled,
               'text-gray-700 text-1': !disabled,

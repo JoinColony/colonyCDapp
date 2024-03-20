@@ -25,7 +25,7 @@ const DeprecateButton = ({
 
   return (
     <>
-      <div className="flex justify-center w-full">
+      <div className="flex w-full justify-center">
         <Button
           mode="primaryOutlineFull"
           size="small"
@@ -51,7 +51,7 @@ const DeprecateButton = ({
         closeMessage={formatText({ id: 'button.cancel' })}
         buttonMode="primarySolid"
       >
-        <p className="text-gray-600 text-md mt-6">
+        <p className="mt-6 text-md text-gray-600">
           {formatText({ id: 'extensionDetailsPage.confirmation' })}
         </p>
       </Modal>

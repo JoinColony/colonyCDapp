@@ -12,7 +12,7 @@ const TitleWithNumber: FC<TitleWithNumberProps> = ({
   <div className="flex items-center gap-1 text-2">
     {title && <h3 className={className}>{title}</h3>}
     {!!number && (
-      <span className="flex items-center justify-center text-blue-400 text-[0.375rem] font-bold bg-blue-100 rounded-sm ml-1 min-w-[0.75rem] h-3 pointer-events-none">
+      <span className="pointer-events-none ml-1 flex h-3 min-w-[0.75rem] items-center justify-center rounded-sm bg-blue-100 text-[0.375rem] font-bold text-blue-400">
         {number}
       </span>
     )}

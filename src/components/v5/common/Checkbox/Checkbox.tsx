@@ -29,7 +29,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
     >
       <label
         htmlFor={id}
-        className="flex relative w-full text-gray-700 text-md cursor-pointer"
+        className="relative flex w-full cursor-pointer text-md text-gray-700"
       >
         <input
           type="checkbox"
@@ -38,14 +38,14 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
           id={id || generatedId}
           checked={isChecked}
           disabled={disabled}
-          className="peer absolute top-0 left-0 overflow-hidden w-0 h-0 opacity-0"
+          className="peer absolute left-0 top-0 h-0 w-0 overflow-hidden opacity-0"
           onChange={onChange}
         />
         <span
           className={clsx(
-            'flex items-center justify-center relative mt-0.5 shrink-0 mr-2 transition-all duration-normal border h-4 w-4 rounded',
+            'relative mr-2 mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition-all duration-normal',
             {
-              'border-blue-400 text-blue-400 bg-base-white': isChecked,
+              'border-blue-400 bg-base-white text-blue-400': isChecked,
               'border-gray-200 bg-base-white': !isChecked,
             },
           )}

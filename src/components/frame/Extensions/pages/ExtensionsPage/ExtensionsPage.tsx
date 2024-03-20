@@ -33,15 +33,15 @@ const ExtensionsPage: FC = () => {
 
   return (
     <div>
-      <h2 className="heading-4 mb-6">
+      <h2 className="mb-6 heading-4">
         {formatText({ id: 'extensionsPage.availableExtensions' })}
       </h2>
       {Object.entries(categorizedExtensions).map(([category, extensions]) => (
         <div
           key={category}
-          className="border-b border-gray-100 last:border-none mb-6 last:mb-0"
+          className="mb-6 border-b border-gray-100 last:mb-0 last:border-none"
         >
-          <h3 className="text-2 mb-4">{category}</h3>
+          <h3 className="mb-4 text-2">{category}</h3>
           <ul className="flex flex-col gap-y-6 pb-6">
             {extensions.map((extension) => (
               <li key={extension.extensionId} className="pb-2">

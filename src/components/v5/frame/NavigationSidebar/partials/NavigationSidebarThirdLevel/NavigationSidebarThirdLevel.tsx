@@ -60,20 +60,20 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
   return (
     <div
       className={`
-        bg-gray-900
-        text-base-white
-        md:bg-transparent
         md:text-inherit
-        px-4 py-2
-        md:p-0
         rounded-[.25rem]
+        bg-gray-900
+        px-4
+        py-2 text-base-white
         md:rounded-none
+        md:bg-transparent
+        md:p-0
       `}
     >
       {title && !isTablet && (
         <motion.h3
           variants={thirdLevelContentAnimation}
-          className="mb-4 text-4 md:uppercase text-inherit md:whitespace-nowrap"
+          className="text-inherit mb-4 text-4 md:whitespace-nowrap md:uppercase"
         >
           {title}
         </motion.h3>
@@ -81,7 +81,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
       {title && isTablet && (
         <button
           type="button"
-          className="text-inherit flex justify-between items-center gap-4 w-full text-2 py-2"
+          className="text-inherit flex w-full items-center justify-between gap-4 py-2 text-2"
           onClick={toggle}
         >
           {title}

@@ -108,10 +108,10 @@ const ExtensionDetailsPage: FC = () => {
             <ImageCarousel slideUrls={extensionData.imageURLs} />
           )}
         </div>
-        <div className="order-3 md:order-4 lg:order-3 col-span-6 md:col-span-2 lg:row-span-2">
+        <div className="order-3 col-span-6 md:order-4 md:col-span-2 lg:order-3 lg:row-span-2">
           <ExtensionDetails extensionData={extensionData} />
         </div>
-        <div className="order-4 lg:mt-6 md:order-3 lg:order-4 col-span-6 md:col-span-4">
+        <div className="order-4 col-span-6 md:order-3 md:col-span-4 lg:order-4 lg:mt-6">
           <Routes>
             <Route
               path="/"

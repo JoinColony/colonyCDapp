@@ -34,7 +34,7 @@ const CopyWalletAddressButton: FC<CopyWalletAddressButtonProps> = ({
       className={clsx(
         'flex items-center transition-all duration-normal hover:text-blue-400',
         isMobile
-          ? `border border-gray-100 rounded-[0.1875rem] w-full px-1.5 py-1 justify-center text-gray-700 text-xs mt-1.5`
+          ? `mt-1.5 w-full justify-center rounded-[0.1875rem] border border-gray-100 px-1.5 py-1 text-xs text-gray-700`
           : 'text-sm text-gray-600',
         {
           'pointer-events-none text-gray-300': disabled,

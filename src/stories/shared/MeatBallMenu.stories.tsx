@@ -13,7 +13,7 @@ const meatBallMenuMeta: Meta<typeof MeatBallMenu> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-full relative">
+      <div className="relative w-full">
         <Story />
       </div>
     ),

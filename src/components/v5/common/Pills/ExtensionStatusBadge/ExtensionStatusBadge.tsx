@@ -15,18 +15,18 @@ const ExtensionStatusBadge: FC<PropsWithChildren<PillsProps>> = ({
 }) => (
   <PillsBase
     className={clsx(className, {
-      'text-indigo-400 bg-indigo-100': mode === 'coming-soon',
-      'text-blue-400 bg-blue-100':
+      'bg-indigo-100 text-indigo-400': mode === 'coming-soon',
+      'bg-blue-100 text-blue-400':
         mode === 'not-installed' ||
         mode === 'finalizable' ||
         mode === 'extension',
-      'text-negative-400 bg-negative-100': mode === 'disabled',
-      'text-purple-400 bg-purple-100': mode === 'deprecated',
-      'text-gray-900 bg-base-white border border-gray-200':
+      'bg-negative-100 text-negative-400': mode === 'disabled',
+      'bg-purple-100 text-purple-400': mode === 'deprecated',
+      'border border-gray-200 bg-base-white text-gray-900':
         mode === 'governance' || mode === 'payments',
-      'text-success-400 bg-success-100':
+      'bg-success-100 text-success-400':
         mode === 'staking' || mode === 'enabled' || mode === 'new',
-      'text-gray-500 bg-gray-100': mode === 'claimed',
+      'bg-gray-100 text-gray-500': mode === 'claimed',
     })}
     {...rest}
   >

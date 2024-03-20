@@ -23,7 +23,7 @@ const TransactionsHeader: FC<TransactionHeaderProps> = ({
     <>
       <div>
         <h4 className="text-1">{title}</h4>
-        <p className="text-gray-600 text-xs">{description}</p>
+        <p className="text-xs text-gray-600">{description}</p>
       </div>
       <div
         className={clsx('flex flex-col items-end', {
@@ -32,7 +32,7 @@ const TransactionsHeader: FC<TransactionHeaderProps> = ({
         })}
       >
         {succeeded || ready ? <CheckCircle size={14} /> : <XCircle size={14} />}
-        <span className="text-gray-400 text-xs block mt-1">{date}</span>
+        <span className="mt-1 block text-xs text-gray-400">{date}</span>
       </div>
     </>
   );

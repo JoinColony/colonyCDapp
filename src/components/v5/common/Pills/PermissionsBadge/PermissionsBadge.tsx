@@ -13,7 +13,7 @@ const PermissionsBadge: FC<PillsProps> = ({
   ...rest
 }) => (
   <PillsBase
-    className={clsx('bg-base-white border border-gray-100', className)}
+    className={clsx('border border-gray-100 bg-base-white', className)}
     icon={icon}
     {...rest}
   >

@@ -58,7 +58,7 @@ const UserNavigationWithData = () => {
     <ApolloProvider client={apolloClient}>
       <div ref={ref}>
         {isMobile && isOpen && (
-          <div className="flex justify-end mb-2">
+          <div className="mb-2 flex justify-end">
             <button
               type="button"
               aria-label={formatMessage({ id: 'ariaLabel.closeDropdown' })}
@@ -90,8 +90,8 @@ const UserNavigationWithData = () => {
         </div>
         {!isMobile && isOpen && (
           <div
-            className={`flex absolute right-[4.25rem] h-auto bg-base-white shadow-default
-            border border-gray-200 rounded-lg mt-2 w-[44.375rem]`}
+            className={`absolute right-[4.25rem] mt-2 flex h-auto w-[44.375rem]
+            rounded-lg border border-gray-200 bg-base-white shadow-default`}
             ref={setTooltipRef}
           >
             {/* @ts-ignore */}

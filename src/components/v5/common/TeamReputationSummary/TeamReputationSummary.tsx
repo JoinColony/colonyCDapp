@@ -58,16 +58,16 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
 
   return (
     <MenuContainer className={clsx(className, 'w-full')}>
-      <span className="flex text-blue-400 mb-2">
+      <span className="mb-2 flex text-blue-400">
         <UsersThree size={32} />
       </span>
-      <span className="heading-4 mb-1">
+      <span className="mb-1 heading-4">
         <Numeral
           value={new Decimal(colonyReputation).abs()}
           decimals={nativeToken?.decimals || DEFAULT_TOKEN_DECIMALS}
         />
       </span>
-      <span className="text-gray-600 text-sm border-b border-gray-200 pb-6 mb-6">
+      <span className="mb-6 border-b border-gray-200 pb-6 text-sm text-gray-600">
         {formatText({ id: 'teamReputation.reputationPoints.label' })}
       </span>
       <TitleLabel
@@ -85,7 +85,7 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
                 index < 5 && (
                   <li
                     key={nativeId}
-                    className="flex items-center text-sm mb-3 last:mb-0"
+                    className="mb-3 flex items-center text-sm last:mb-0"
                   >
                     <TeamReputationSummaryRow
                       color={getTeamColor(team.metadata?.color)}
@@ -98,9 +98,9 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
             })}
           </ul>
           {showOthers && (
-            <div className="flex items-center text-sm mt-3">
-              <span className="flex items-center flex-grow">
-                <span className="flex rounded-full w-[0.625rem] h-[0.625rem] mr-2 bg-gray-100" />
+            <div className="mt-3 flex items-center text-sm">
+              <span className="flex flex-grow items-center">
+                <span className="mr-2 flex h-[0.625rem] w-[0.625rem] rounded-full bg-gray-100" />
                 <span>
                   {formatText({
                     id: 'label.allOther',
@@ -124,7 +124,7 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
         </>
       ) : (
         <>
-          <span className="block text-gray-600 text-sm mb-2">
+          <span className="mb-2 block text-sm text-gray-600">
             {formatText({ id: 'teamReputation.noTeams' })}
           </span>
           <TextButton

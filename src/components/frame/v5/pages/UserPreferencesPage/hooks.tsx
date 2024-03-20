@@ -105,7 +105,7 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
       title: formatText({ id: 'field.email' }),
       description: formatText({ id: 'description.email' }),
       className: clsx(rowStyles, {
-        '!justify-normal !flex-row !gap-[6.5rem]':
+        '!flex-row !justify-normal !gap-[6.5rem]':
           !emailValue || isEmailInputVisible,
       }),
       descriptionClassName: 'md:w-[16.375rem]',
@@ -113,7 +113,7 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
         <>
           {emailValue && !isEmailInputVisible && (
             <div className="flex items-center justify-end">
-              <span className="text-md mr-6">{emailValue}</span>
+              <span className="mr-6 text-md">{emailValue}</span>
               <Button
                 mode="primarySolid"
                 text={{ id: 'button.updateEmail' }}
@@ -122,14 +122,14 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
             </div>
           )}
           {(!emailValue || isEmailInputVisible) && (
-            <div className="w-full flex flex-col">
+            <div className="flex w-full flex-col">
               <Input
                 name="email"
                 register={register}
                 isError={!!errors.email?.message}
                 customErrorMessage={errors.email?.message}
               />
-              <div className="flex ml-auto items-center gap-2 mt-2">
+              <div className="ml-auto mt-2 flex items-center gap-2">
                 <Button
                   mode="primaryOutline"
                   text={{ id: 'button.cancel' }}

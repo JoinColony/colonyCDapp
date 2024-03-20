@@ -17,22 +17,22 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
       className={clsx(
         `
           relative
-          w-full
-          h-[1.875rem]
-          bg-base-white
-          overflow-hidden
           flex
+          h-[1.875rem]
+          w-full
+          overflow-hidden
+          bg-base-white
           after:absolute
           after:inset-0
-          after:border
-          after:border-gray-200
           after:h-full
           after:w-full
+          after:border
+          after:border-gray-200
         `,
         {
-          'rounded-r-3xl after:rounded-r-3xl -ml-[1px]':
+          '-ml-[1px] rounded-r-3xl after:rounded-r-3xl':
             direction === VoteChartBarDirection.Right,
-          'rounded-l-3xl after:rounded-l-3xl -mr-[1px] justify-end':
+          '-mr-[1px] justify-end rounded-l-3xl after:rounded-l-3xl':
             direction === VoteChartBarDirection.Left,
         },
       )}
@@ -43,7 +43,7 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
         }}
         className={clsx(
           barBackgroundClassName,
-          'h-[calc(100%+2px)] -my-[1px] block transition-[width] relative z-[2]',
+          'relative z-[2] -my-[1px] block h-[calc(100%+2px)] transition-[width]',
         )}
       />
       {predictedValue && (
@@ -53,7 +53,7 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
           }}
           className={clsx(
             predictionBarClassName,
-            'absolute top-0 bottom-0 border h-full block transition-all z-[1]',
+            'absolute bottom-0 top-0 z-[1] block h-full border transition-all',
             {
               'left-0': direction === VoteChartBarDirection.Right,
               'right-0': direction === VoteChartBarDirection.Left,

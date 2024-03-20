@@ -8,7 +8,7 @@ const displayName = 'v5.CardWithBios.partials.CardPermission';
 
 const CardPermission: FC<CardPermissionProps> = ({ text, icon: Icon }) => (
   <Tooltip tooltipContent={<span>{text}</span>}>
-    <div className="text-gray-600 hover:text-blue-400 transition-all duration-normal cursor-pointer">
+    <div className="cursor-pointer text-gray-600 transition-all duration-normal hover:text-blue-400">
       <Icon size={12} />
     </div>
   </Tooltip>

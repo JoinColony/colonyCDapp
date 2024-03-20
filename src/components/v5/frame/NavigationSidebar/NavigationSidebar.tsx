@@ -81,40 +81,40 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
       className={clsx(
         className,
         `
-          py-6
-          md:py-0
+          flex
           h-[5.625rem]
+          border-b
+          border-gray-200
+          bg-base-white
+          py-6
           md:h-full
           md:rounded-lg
-          bg-base-white
-          border-b
           md:border
-          border-gray-200
-          flex
+          md:py-0
         `,
       )}
       ref={registerContainerRef}
     >
       <div
-        className={clsx('md:h-full md:p-4 md:pb-6 w-full md:w-[5.125rem]', {
-          'flex flex-col items-center gap-4 justify-between': !isTablet,
+        className={clsx('w-full md:h-full md:w-[5.125rem] md:p-4 md:pb-6', {
+          'flex flex-col items-center justify-between gap-4': !isTablet,
           'inner h-full': isTablet,
         })}
       >
         <div
           className={`
-            w-full
-            md:w-auto
-            h-full
-            md:h-auto
+            z-[1]
             flex
+            h-full
+            w-full
             items-center
             justify-between
-            md:justify-start
-            md:flex-col
-            md:gap-9
             md:relative
-            z-[1]
+            md:h-auto
+            md:w-auto
+            md:flex-col
+            md:justify-start
+            md:gap-9
           `}
         >
           <div className="flex gap-6 md:flex-col md:gap-9">
@@ -148,7 +148,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 {colonySwitcherProps?.avatarProps ? (
                   <ColonyAvatar {...colonySwitcherProps.avatarProps} />
                 ) : (
-                  <div className="w-9 h-9">
+                  <div className="h-9 w-9">
                     <ColonyIcon size={36} />
                   </div>
                 )}
@@ -195,7 +195,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
         </div>
         {!isTablet && (
           <>
-            <div className="w-11 px-px mt-auto flex justify-start">
+            <div className="mt-auto flex w-11 justify-start px-px">
               <FeedbackButton
                 onClick={() => {
                   if (openItemIndex === 0) {
@@ -246,9 +246,9 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 initial="hidden"
                 exit="hidden"
                 animate={isThirdLevelMenuOpen ? 'visible' : 'hidden'}
-                className="absolute top-0 bottom-0 h-full left-[calc(100%-.625rem)] -z-[1] overflow-hidden"
+                className="absolute bottom-0 left-[calc(100%-.625rem)] top-0 -z-[1] h-full overflow-hidden"
               >
-                <div className="pb-6 pr-6 pl-9 pt-[1.8125rem] bg-gray-900 text-base-white rounded-r-lg h-full overflow-auto">
+                <div className="h-full overflow-auto rounded-r-lg bg-gray-900 pb-6 pl-9 pr-6 pt-[1.8125rem] text-base-white">
                   <NavigationSidebarThirdLevel
                     title={relatedActions?.title}
                     items={relatedActions?.items || []}

@@ -28,22 +28,22 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
         className,
         `
           group/navigation-button
-          w-full
-          md:w-auto
-          text-left
-          md:rounded-lg
-          px-2.5
-          py-2
           flex
+          w-full
           items-center
           justify-between
-          md:justify-center
           gap-4
+          px-2.5
+          py-2
+          text-left
+          md:w-auto
+          md:justify-center
           md:gap-0
+          md:rounded-lg
           md:transition-all
         `,
         {
-          'text-blue-400 md:text-base-white md:bg-gray-900':
+          'text-blue-400 md:bg-gray-900 md:text-base-white':
             isActive && !isTablet,
           'text-gray-900 md:hover:bg-gray-900 md:hover:text-base-white':
             !isActive && !isHighlighted,
@@ -56,14 +56,14 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
       <span
         className={`
           heading-5
-          md:text-2
           md:max-w-0
           md:overflow-hidden
-          md:group-hover/navigation-button:max-w-xs
           md:transition-[max-width]
+          md:text-2
+          md:group-hover/navigation-button:max-w-xs
         `}
       >
-        <span className="align-middle md:pl-2 md:whitespace-nowrap">
+        <span className="align-middle md:whitespace-nowrap md:pl-2">
           {label}
         </span>
       </span>

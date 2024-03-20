@@ -75,7 +75,7 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
       <Table<ColonyContributorFragment>
         emptyContent={
           !listLength && (
-            <div className="border border-1 w-full rounded-b-lg border-gray-200">
+            <div className="border-1 w-full rounded-b-lg border border-gray-200">
               <EmptyContent
                 icon={Binoculars}
                 title={{ id: 'verifiedPage.table.emptyTitle' }}

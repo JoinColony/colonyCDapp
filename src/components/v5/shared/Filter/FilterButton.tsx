@@ -32,10 +32,10 @@ const FilterButton: FC<FilterButtonProps> = ({
       mode="tertiary"
       size={size}
     >
-      <FunnelSimple size={18} className="flex-shrink-0 mr-2" />
+      <FunnelSimple size={18} className="mr-2 flex-shrink-0" />
       {customLabel || formatMessage({ id: 'filter' })}
       {!!numberSelectedFilters && (
-        <span className="bg-blue-100 py-0.5 px-1 min-w-[.75rem] rounded-sm text-blue-400 h-[.8125rem] inline-flex items-center ml-2 text-[.5rem] leading-none font-bold">
+        <span className="ml-2 inline-flex h-[.8125rem] min-w-[.75rem] items-center rounded-sm bg-blue-100 px-1 py-0.5 text-[.5rem] font-bold leading-none text-blue-400">
           {numberSelectedFilters}
         </span>
       )}

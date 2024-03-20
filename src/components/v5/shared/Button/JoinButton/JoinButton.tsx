@@ -46,7 +46,7 @@ const JoinButton: FC = () => {
       {isButtonClicked && (
         <Lottie
           animationData={joinButtonAnimation}
-          className="h-4 w-4 ml-1 mb-0.5"
+          className="mb-0.5 ml-1 h-4 w-4"
           loop={false}
         />
       )}

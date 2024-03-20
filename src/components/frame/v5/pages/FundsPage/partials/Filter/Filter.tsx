@@ -85,7 +85,7 @@ function Filter<TValue extends FilterValue>({
         {isMobile && (
           <Button
             mode="tertiary"
-            className="sm:hidden flex"
+            className="flex sm:hidden"
             size="small"
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
@@ -111,10 +111,10 @@ function Filter<TValue extends FilterValue>({
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4 uppercase">
+            <p className="mb-4 uppercase text-gray-400 text-4">
               {searchInputLabel}
             </p>
-            <div className="sm:px-3.5 sm:mb-6">
+            <div className="sm:mb-6 sm:px-3.5">
               <SearchInputMobile
                 onSearchButtonClick={() => setIsSearchOpened(false)}
                 setSearchValue={onInputChange}
@@ -137,7 +137,7 @@ function Filter<TValue extends FilterValue>({
           }}
           classNames="w-full sm:max-w-[20.375rem]"
         >
-          <div className="px-3.5 mb-6">
+          <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
               placeholder={searchInputPlaceholder}

@@ -71,12 +71,12 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
     motionState !== MotionState.Passed;
 
   return (
-    <div className="w-full h-full flex flex-col pt-6 pb-5 px-5 rounded-lg border border-gray-200 sm:min-h-[15.5rem]">
+    <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 px-5 pb-5 pt-6 sm:min-h-[15.5rem]">
       {loadingAction ? (
         <AgreementCardSkeleton />
       ) : (
         <>
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             {motionState && <MotionStateBadge state={motionState} />}
             {isMotionActive && (
               <MotionCountDownTimer
@@ -92,7 +92,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
           </div>
           <button
             type="button"
-            className="text-left mb-4 sm:hover:text-blue-400 transition-colors"
+            className="mb-4 text-left transition-colors sm:hover:text-blue-400"
             onClick={() => {
               navigate(
                 `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionId}`,
@@ -102,22 +102,22 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
               );
             }}
           >
-            <h5 className="text-1 mb-2 truncate">{title}</h5>
+            <h5 className="mb-2 truncate text-1">{title}</h5>
             {description && (
               <RichTextDisplay
                 content={description}
                 shouldFormat={false}
-                className="!text-sm !text-gray-600 line-clamp-4"
+                className="line-clamp-4 !text-sm !text-gray-600"
               />
             )}
           </button>
-          <div className="flex items-center justify-between gap-2 pt-4 mt-auto border-t border-gray-200">
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-gray-200 pt-4">
             <UserPopover
               user={user}
               walletAddress={walletAddress}
               withVerifiedBadge={false}
               className={clsx(
-                'flex items-center sm:gap-2 text-gray-600 sm:hover:text-blue-400',
+                'flex items-center text-gray-600 sm:gap-2 sm:hover:text-blue-400',
                 {
                   'pointer-events-none': loading,
                 },
@@ -133,7 +133,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
                 })}
               />
               <p
-                className={clsx('text-sm hidden sm:inline-block', {
+                className={clsx('hidden text-sm sm:inline-block', {
                   skeleton: loading,
                 })}
               >

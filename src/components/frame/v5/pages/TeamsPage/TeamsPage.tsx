@@ -34,24 +34,24 @@ const TeamsPage: FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6">
-      <div className="w-full flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-        <h2 className="heading-4 text-gray-900">
+    <div className="flex w-full flex-col gap-6">
+      <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-gray-900 heading-4">
           {formatText({ id: 'teamsPage.allTeams' })}
         </h2>
-        <div className="sm:ml-auto flex sm:justify-end items-center gap-2">
+        <div className="flex items-center gap-2 sm:ml-auto sm:justify-end">
           {hasFilterChanged &&
             !isEqual(defaultFilterValue, filters.filterValue) &&
             !isMobile && (
-              <div className="bg-blue-100 py-2 px-3 rounded-lg inline-flex items-center gap-1 text-blue-400">
-                <div className="text-sm font-semibold capitalize container">
+              <div className="inline-flex items-center gap-1 rounded-lg bg-blue-100 px-3 py-2 text-blue-400">
+                <div className="container text-sm font-semibold capitalize">
                   {currentFilters.label}:
                 </div>
-                <p className="text-sm min-w-fit">{currentFilters.direction}</p>
+                <p className="min-w-fit text-sm">{currentFilters.direction}</p>
                 <CloseButton
                   iconSize={12}
                   aria-label={formatText({ id: 'ariaLabel.closeFilter' })}
-                  className="shrink-0 text-current ml-1 !p-0"
+                  className="ml-1 shrink-0 !p-0 text-current"
                   onClick={() => {
                     filters.onChange(defaultFilterValue);
                   }}

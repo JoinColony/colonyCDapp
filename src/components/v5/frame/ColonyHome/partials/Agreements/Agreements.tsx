@@ -77,7 +77,7 @@ const Agreements = () => {
               {newestAgreement.decisionData?.description && (
                 <RichTextDisplay
                   content={newestAgreement.decisionData?.description}
-                  className="!text-sm !text-gray-600 line-clamp-3"
+                  className="line-clamp-3 !text-sm !text-gray-600"
                   shouldFormat={false}
                 />
               )}
@@ -98,7 +98,7 @@ const Agreements = () => {
         </>
       }
       contentClassName="w-full"
-      className="flex-col p-6 bg-base-white min-h-[11.25rem] col-span-2 lg:col-span-1"
+      className="col-span-2 min-h-[11.25rem] flex-col bg-base-white p-6 lg:col-span-1"
       href={agreements ? COLONY_AGREEMENTS_ROUTE : undefined}
     />
   );

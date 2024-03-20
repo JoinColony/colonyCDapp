@@ -28,21 +28,21 @@ const StepperButton: React.FC<StepperButtonProps> = ({
           flex
           items-center
           justify-center
+          rounded-3xl
           border
           px-[.625rem]
           py-1
-          rounded-3xl
           transition
           text-4
-          lg:enabled:hover:bg-gray-900
           lg:enabled:hover:border-gray-900
+          lg:enabled:hover:bg-gray-900
           lg:enabled:hover:text-base-white
         `,
         {
-          'border-gray-900 text-gray-900 bg-base-white':
+          'border-gray-900 bg-base-white text-gray-900':
             !isHighlighted && stage !== StepStage.Skipped,
-          '!bg-gray-900 !border-gray-900 !text-base-white': isHighlighted,
-          'border-gray-400 text-gray-400 bg-base-white':
+          '!border-gray-900 !bg-gray-900 !text-base-white': isHighlighted,
+          'border-gray-400 bg-base-white text-gray-400':
             stage === StepStage.Skipped,
         },
       )}

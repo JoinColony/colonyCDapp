@@ -75,7 +75,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
         {isMobile && (
           <Button
             mode="tertiary"
-            className="sm:hidden flex"
+            className="flex sm:hidden"
             size="small"
             aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
             onClick={() => setIsSearchOpened(true)}
@@ -91,7 +91,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             onClose={toggleModalOff}
             isFullOnMobile={false}
           >
-            <h4 className="sm:px-4 mb-6 sm:mb-0 heading-5 text-gray-900 capitalize">
+            <h4 className="mb-6 capitalize text-gray-900 heading-5 sm:mb-0 sm:px-4">
               {formatText({ id: 'filterAndSort' })}
             </h4>
             {RootItems}
@@ -101,10 +101,10 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
           >
-            <p className="text-4 text-gray-400 mb-4 uppercase">
+            <p className="mb-4 uppercase text-gray-400 text-4">
               {formatText({ id: 'permissionsPage.filter.search' })}
             </p>
-            <div className="sm:px-3.5 sm:mb-6">
+            <div className="sm:mb-6 sm:px-3.5">
               <SearchInputMobile
                 onSearchButtonClick={() => setIsSearchOpened(false)}
                 setSearchValue={onInputChange}
@@ -129,7 +129,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
           }}
           classNames="w-full sm:max-w-[20.375rem]"
         >
-          <div className="px-3.5 mb-6">
+          <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
               placeholder={formatText({ id: 'permissionsPage.filter.search' })}

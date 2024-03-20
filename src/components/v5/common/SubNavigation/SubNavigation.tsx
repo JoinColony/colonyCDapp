@@ -16,7 +16,7 @@ const SubNavigation: FC<PropsWithChildren> = () => {
   });
 
   return (
-    <ul className="flex gap-8 heading-5 text-gray-700" ref={ref}>
+    <ul className="flex gap-8 text-gray-700 heading-5" ref={ref}>
       {SubNavigationItems.map(({ id, label, content, icon }) => (
         <SubNavigationItem
           key={id}

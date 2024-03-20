@@ -14,7 +14,7 @@ const PageHeading: FC<PageHeadingProps> = ({
 }) => (
   <div className={className}>
     <Breadcrumbs className={clsx({ 'mb-2': title })} items={breadcrumbs} />
-    {title && <h1 className="heading-3 text-gray-900">{title}</h1>}
+    {title && <h1 className="text-gray-900 heading-3">{title}</h1>}
   </div>
 );
 

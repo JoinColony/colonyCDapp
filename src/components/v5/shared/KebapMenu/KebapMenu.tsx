@@ -19,7 +19,7 @@ const KebapMenu: FC<KebapMenuProps> = ({
       type="button"
       className={clsx(
         className,
-        'text-gray-400 md:hover:text-blue-400 p-[0.1875rem] transition-all duration-normal cursor-pointer flex justify-center items-center',
+        'flex cursor-pointer items-center justify-center p-[0.1875rem] text-gray-400 transition-all duration-normal md:hover:text-blue-400',
       )}
       aria-label={formatMessage({ id: 'ariaLabel.openMenu' })}
       ref={setTriggerRef}

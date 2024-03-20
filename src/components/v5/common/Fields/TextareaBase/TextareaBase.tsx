@@ -50,9 +50,9 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
-            'text-md placeholder:text-gray-400 resize-none w-full outline-none',
+            'w-full resize-none text-md outline-none placeholder:text-gray-400',
             {
-              'text-gray-400 pointer-events-none': disabled,
+              'pointer-events-none text-gray-400': disabled,
             },
           )}
           value={value}
@@ -60,7 +60,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
         />
         {state === FieldState.Error && notMaybe(maxLength) && (
           <div
-            className={clsx('text-4 flex justify-end absolute right-0', {
+            className={clsx('absolute right-0 flex justify-end text-4', {
               'text-negative-400': state === FieldState.Error,
               'text-gray-500': state !== FieldState.Error,
             })}

@@ -101,7 +101,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           })}
         >
           {isMobile && hideSearchOnMobile ? (
-            <p className="text-4 text-gray-400 uppercase">
+            <p className="uppercase text-gray-400 text-4">
               {formatText({ id: 'actions.selectActionType' })}
             </p>
           ) : (
@@ -117,25 +117,25 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           )}
         </div>
         {isLoading && (
-          <div className="flex justify-center h-5">
+          <div className="flex h-5 justify-center">
             <SpinnerLoader appearance={{ size: 'medium' }} />
           </div>
         )}
         {!isLoading && (
-          <div className="pr-1 sm:w-full overflow-y-scroll max-h-[calc(100vh-12rem)] sm:max-h-full px-1.5">
+          <div className="max-h-[calc(100vh-12rem)] overflow-y-scroll px-1.5 pr-1 sm:max-h-full sm:w-full">
             <div>
               {filteredList.length > 0 ? (
                 filteredList.map(({ options, title, isAccordion, key }) =>
                   isAccordion ? (
                     <div className="mb-[0.625rem] last:mb-0" key={key}>
                       <div className="flex items-center justify-between px-2">
-                        <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                        <h5 className="mb-2 uppercase text-gray-400 text-4">
                           {formatText(title)}
                         </h5>
                         {isAccordion && (
                           <button
                             type="button"
-                            className="text-gray-700 w-4 h-4 justify-center items-end flex"
+                            className="flex h-4 w-4 items-end justify-center text-gray-700"
                             onClick={() => handleAccordionClick(key)}
                           >
                             <span className="text-gray-700 md:hover:text-blue-400">
@@ -165,7 +165,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                     </div>
                   ) : (
                     <div key={key} className="mb-[0.625rem] last:mb-0">
-                      <h5 className="text-4 text-gray-400 mb-2 uppercase pl-2">
+                      <h5 className="mb-2 pl-2 uppercase text-gray-400 text-4">
                         {formatText(title)}
                       </h5>
                       <SearchItem options={options} onChange={onSelect} />
@@ -177,7 +177,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                   {showSearchValueAsOption && (
                     <button
                       type="button"
-                      className="text-sm md:hover:text-blue-400 flex items-center gap-2 min-h-[3.125rem] justify-center"
+                      className="flex min-h-[3.125rem] items-center justify-center gap-2 text-sm md:hover:text-blue-400"
                       onClick={() => onSelect?.(searchValue)}
                     >
                       <Avatar />
@@ -204,7 +204,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     return (
       <Portal>
         <MenuContainer
-          className="py-6 px-2.5 w-full bg-base-white max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]"
+          className="absolute z-[60] max-h-[37.5rem] w-full max-w-[calc(100%-2.25rem)] bg-base-white px-2.5 py-6 sm:max-w-[20.375rem]"
           hasShadow
           rounded="s"
           ref={ref}

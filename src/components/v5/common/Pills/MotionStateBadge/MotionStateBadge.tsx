@@ -21,10 +21,10 @@ const MotionStateBadge: FC<MotionStateBadgeProps> = ({
       {...rest}
       className={clsx(
         className,
-        'font-medium text-sm',
+        'text-sm font-medium',
         MOTION_STATE_TO_CLASSNAME_MAP[state],
         {
-          'text-gray-500 bg-gray-100': !MOTION_STATE_TO_CLASSNAME_MAP[state],
+          'bg-gray-100 text-gray-500': !MOTION_STATE_TO_CLASSNAME_MAP[state],
         },
       )}
       textClassName={clsx({ 'flex items-center gap-1': Icon })}

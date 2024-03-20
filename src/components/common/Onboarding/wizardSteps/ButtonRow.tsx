@@ -28,7 +28,7 @@ const ButtonRow: FC<ButtonRowProps> = ({
   return (
     <div
       className={clsx(
-        'pt-12 flex',
+        'flex pt-12',
         showBackButton ? 'justify-between' : 'justify-end',
       )}
     >

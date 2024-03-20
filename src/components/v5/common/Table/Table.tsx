@@ -103,16 +103,16 @@ const Table = <T,>({
     <div
       className={clsx(
         className,
-        'border border-gray-200 rounded-lg overflow-hidden',
+        'overflow-hidden rounded-lg border border-gray-200',
       )}
     >
       <table
         className={`
+          h-px
+          w-full
+          table-fixed
           border-separate
           border-spacing-0
-          table-fixed
-          w-full
-          h-px
         `}
         cellPadding="0"
         cellSpacing="0"
@@ -127,9 +127,9 @@ const Table = <T,>({
                 key={row.id}
                 className={clsx(
                   getRowClassName(row),
-                  '[&:not(:last-child)>tr:last-child>th]:border-b [&:not(:last-child)>tr:last-child>td]:border-b',
+                  '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b',
                   {
-                    'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
+                    'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                       getMenuProps,
                   },
                 )}
@@ -142,13 +142,13 @@ const Table = <T,>({
                     >
                       <th
                         className={`
+                          border-r
+                          border-gray-200
                           bg-gray-50
                           p-4
                           text-left
                           text-sm
                           font-normal
-                          border-r
-                          border-gray-200
                         `}
                       >
                         {header.isPlaceholder
@@ -159,7 +159,7 @@ const Table = <T,>({
                             )}
                       </th>
                       <td
-                        className="p-4 text-left text-sm font-normal h-full"
+                        className="h-full p-4 text-left text-sm font-normal"
                         colSpan={columnsCount}
                       >
                         {flexRender(
@@ -183,7 +183,7 @@ const Table = <T,>({
                       key={header.id}
                       className={clsx(
                         header.column.columnDef.headCellClassName,
-                        'text-left text-sm text-gray-600 bg-gray-50 font-normal px-[1.125rem] empty:p-0 py-2.5 border-b border-b-gray-200',
+                        'border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 empty:p-0',
                         {
                           'cursor-pointer':
                             header.column.getCanSort() &&
@@ -213,7 +213,7 @@ const Table = <T,>({
                         <ArrowDown
                           size={12}
                           className={clsx(
-                            'inline-block ml-1 mb-0.5 transition-[transform,opacity] align-middle',
+                            'mb-0.5 ml-1 inline-block align-middle transition-[transform,opacity]',
                             {
                               'rotate-180':
                                 header.column.getIsSorted() === 'asc' &&
@@ -237,7 +237,7 @@ const Table = <T,>({
               {shouldShowEmptyContent ? (
                 <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
                   <td colSpan={totalColumnsCount} className="h-full">
-                    <div className="text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start">
+                    <div className="flex h-full flex-col items-start justify-center p-[1.1rem] text-md text-gray-500">
                       {emptyContent}
                     </div>
                   </td>
@@ -251,7 +251,7 @@ const Table = <T,>({
                     <React.Fragment key={row.id}>
                       <tr
                         className={clsx(getRowClassName(row), {
-                          'relative translate-z-0 [&>tr:last-child>th]:p-0 [&>tr:last-child>td]:p-0 [&>tr:first-child>td]:pr-9':
+                          'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
                             !showExpandableContent,
@@ -261,7 +261,7 @@ const Table = <T,>({
                         {row.getVisibleCells().map((cell) => {
                           const renderCellWrapperCommonArgs = [
                             clsx(
-                              'text-md text-gray-500 p-[1.1rem] flex h-full flex-col justify-center items-start',
+                              'flex h-full flex-col items-start justify-center p-[1.1rem] text-md text-gray-500',
                               cell.column.columnDef.cellContentWrapperClassName,
                             ),
                             flexRender(
@@ -324,7 +324,7 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="text-md text-gray-500 px-[1.125rem] sm:border-t border-gray-200 h-full"
+                    className="h-full border-gray-200 px-[1.125rem] text-md text-gray-500 sm:border-t"
                   >
                     {flexRender(
                       column.column.columnDef.footer,
@@ -342,7 +342,7 @@ const Table = <T,>({
         (canGoToPreviousPage || canGoToNextPage) && (
           <div
             className={clsx(
-              'grid grid-cols-[1fr_auto_1fr] gap-2 items-center pt-2 pb-[1.4375rem] px-[1.125rem]',
+              'grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-[1.125rem] pb-[1.4375rem] pt-2',
               {
                 'sm:grid-cols-[1fr_auto_auto]':
                   canGoToNextPage ||
@@ -356,7 +356,7 @@ const Table = <T,>({
           >
             {(canGoToPreviousPage ||
               (additionalPaginationButtonsContent && !isMobile)) && (
-              <div className="col-start-1 sm:col-start-2 row-start-1 flex justify-start items-center gap-3">
+              <div className="col-start-1 row-start-1 flex items-center justify-start gap-3 sm:col-start-2">
                 {!isMobile && additionalPaginationButtonsContent}
                 {canGoToPreviousPage && (
                   <Button
@@ -371,7 +371,7 @@ const Table = <T,>({
               </div>
             )}
             {showPageNumber && (
-              <p className="col-start-2 text-3 text-gray-700 w-full sm:w-auto sm:text-left text-center sm:col-start-1 row-start-1">
+              <p className="col-start-2 row-start-1 w-full text-center text-gray-700 text-3 sm:col-start-1 sm:w-auto sm:text-left">
                 {formatText(
                   {
                     id: showTotalPagesNumber
@@ -387,7 +387,7 @@ const Table = <T,>({
             )}
             {(canGoToNextPage ||
               (additionalPaginationButtonsContent && isMobile)) && (
-              <div className="col-start-3 row-start-1 flex justify-end items-center gap-3">
+              <div className="col-start-3 row-start-1 flex items-center justify-end gap-3">
                 {isMobile && additionalPaginationButtonsContent}
                 {canGoToNextPage && (
                   <Button

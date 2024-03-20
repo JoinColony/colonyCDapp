@@ -31,7 +31,7 @@ const CreateUserFormInputs = () => {
         <Input
           name="emailAddress"
           register={register}
-          className="w-full text-md border-gray-300"
+          className="w-full border-gray-300 text-md"
           labelMessage={{ id: 'label.email' }}
           isError={showEmailAddressError}
           customErrorMessage={emailAddressError}
@@ -41,7 +41,7 @@ const CreateUserFormInputs = () => {
       <Input
         name="username"
         register={register}
-        className="w-full text-md border-gray-300"
+        className="w-full border-gray-300 text-md"
         maxCharNumber={MAX_USERNAME_LENGTH}
         labelMessage={{ id: 'label.username' }}
         isError={showUsernameError}

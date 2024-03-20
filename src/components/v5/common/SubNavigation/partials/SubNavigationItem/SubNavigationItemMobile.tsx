@@ -27,10 +27,10 @@ const SubNavigationItemMobile: FC<
         <span className="flex shrink-0">
           <Icon size={18} />
         </span>
-        <span className="flex ml-2">{label}</span>
+        <span className="ml-2 flex">{label}</span>
       </span>
       <span
-        className={clsx('flex ml-2.5 transition-transform duration-normal', {
+        className={clsx('ml-2.5 flex transition-transform duration-normal', {
           'rotate-180': isOpen,
         })}
       >

@@ -80,7 +80,7 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
           key: '1',
           content: (
             <div className="flex flex-col">
-              <h3 className="text-center text-1 mb-4">
+              <h3 className="mb-4 text-center text-1">
                 {formatText(getOutcomeStepTitle(currentUserVote, winningSide))}
               </h3>
               <VoteStatuses items={voteStatuses} voters={voters} />

@@ -46,7 +46,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
         'flex items-start gap-6': children,
       })}
     >
-      <div className="flex-grow w-full sm:w-auto">
+      <div className="w-full flex-grow sm:w-auto">
         <MemberCardList
           items={items}
           isSimple={withSimpleCards}
@@ -80,7 +80,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
           )}
         {isLoading && (
           <div
-            className={clsx('flex justify-center items-center w-full', {
+            className={clsx('flex w-full items-center justify-center', {
               'mt-6': !!items.length,
             })}
           >
@@ -88,7 +88,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
           </div>
         )}
         {loadMoreButtonProps && (
-          <div className="w-full flex justify-center mt-6">
+          <div className="mt-6 flex w-full justify-center">
             <TextButton
               {...loadMoreButtonProps}
               disabled={isLoading}

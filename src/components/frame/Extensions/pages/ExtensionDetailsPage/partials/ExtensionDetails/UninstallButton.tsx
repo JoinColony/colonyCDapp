@@ -24,7 +24,7 @@ const UninstallButton = ({
 
   return (
     <>
-      <div className="flex justify-center w-full">
+      <div className="flex w-full justify-center">
         <Button
           mode="primaryOutlineFull"
           size="small"
@@ -59,8 +59,8 @@ const UninstallButton = ({
         })}
         disabled={!isCheckboxChecked}
       >
-        <div className="rounded-md border bg-negative-100 border-negative-400 p-4 text-negative-400 mt-6">
-          <ul className="text-sm list-disc pl-4">
+        <div className="mt-6 rounded-md border border-negative-400 bg-negative-100 p-4 text-negative-400">
+          <ul className="list-disc pl-4 text-sm">
             <li>
               {formatText({
                 id: 'extensionDetailsPage.uninstallBoxOne',

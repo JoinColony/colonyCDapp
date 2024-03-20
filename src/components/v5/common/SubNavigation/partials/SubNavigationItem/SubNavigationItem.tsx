@@ -50,7 +50,7 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
         })}
       >
         <Icon size={18} />
-        <span className="flex ml-2" ref={setTriggerRef}>
+        <span className="ml-2 flex" ref={setTriggerRef}>
           {label}
         </span>
       </button>

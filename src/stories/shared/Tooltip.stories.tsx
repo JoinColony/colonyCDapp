@@ -76,8 +76,8 @@ export const Top: Story = {
       {...args}
       tooltipContent={
         <>
-          <span className="mb-2.5 flex items-center px-3 py-1 rounded-3xl border border-base-white">
-            <span className="flex items-center shrink-0">
+          <span className="mb-2.5 flex items-center rounded-3xl border border-base-white px-3 py-1">
+            <span className="flex shrink-0 items-center">
               <CrownSimple size={12} />
               <span className="ml-1 text-xs">Top </span>
             </span>

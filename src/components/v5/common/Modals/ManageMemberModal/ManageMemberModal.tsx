@@ -42,13 +42,13 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
       }}
       icon={FolderUser}
     >
-      <h4 className="heading-5 mb-1.5">
+      <h4 className="mb-1.5 heading-5">
         {formatMessage({ id: 'members.modal.title' })}
       </h4>
-      <p className="text-md text-gray-600 mb-6">
+      <p className="mb-6 text-md text-gray-600">
         {formatMessage({ id: 'members.modal.description' })}
       </p>
-      <span className="text-1 block mb-1">
+      <span className="mb-1 block text-1">
         {formatMessage({ id: 'members.modal.member' })}
       </span>
       <div className="mb-4">
@@ -64,7 +64,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
 
       {(isBanOptionSelected || isUnbanOptionSelected) && (
         <>
-          <div className="border border-gray-300 bg-base-bg rounded p-4 text-gray-600 text-sm mt-4">
+          <div className="mt-4 rounded border border-gray-300 bg-base-bg p-4 text-sm text-gray-600">
             <span className="font-medium">
               {formatMessage({ id: 'note' })}:{' '}
             </span>{' '}
@@ -77,7 +77,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
             </span>
           </div>
 
-          <div className="text-gray-700 text-1 flex justify-between my-4">
+          <div className="my-4 flex justify-between text-gray-700 text-1">
             <div className="flex items-center gap-2">
               {formatMessage({
                 id: isBanOptionSelected
@@ -89,7 +89,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
                   <span>{formatMessage({ id: 'members.ban.tooltip' })}</span>
                 }
               >
-                <span className="text-gray-400 flex">
+                <span className="flex text-gray-400">
                   <Info size={12} />
                 </span>
               </Tooltip>
@@ -99,7 +99,7 @@ const ManageMemberModal: FC<ManageMemberModalProps> = ({
 
           <Textarea textareaTitle={{ id: 'members.ban.textarea.label' }} />
 
-          <div className="flex flex-col-reverse gap-3 mt-8 sm:flex-row">
+          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
             <Button mode="primaryOutline" isFullSize>
               {formatMessage({ id: 'button.cancel' })}
             </Button>

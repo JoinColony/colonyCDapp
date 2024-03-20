@@ -102,7 +102,7 @@ const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           })}
         />
       </button>
-      <div className="w-px h-4 bg-gray-200 mx-2" />
+      <div className="mx-2 h-4 w-px bg-gray-200" />
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleOrderedList().run()}

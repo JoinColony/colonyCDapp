@@ -24,12 +24,12 @@ const IconSuccessContent: FC<SuccessContentProps> = ({
   const uploaderText = useGetUploaderText(profileFileOptions);
 
   return (
-    <div className="flex sm:flex-row flex-col gap-4">
-      <div className={clsx('flex items-center sm:items-start gap-4')}>
-        <div className="sm:hidden text-gray-600 text-sm">{uploaderText}</div>
+    <div className="flex flex-col gap-4 sm:flex-row">
+      <div className={clsx('flex items-center gap-4 sm:items-start')}>
+        <div className="text-sm text-gray-600 sm:hidden">{uploaderText}</div>
       </div>
-      <div className="flex flex-col gap-2 w-full">
-        <div className="hidden sm:block text-gray-600 text-sm">
+      <div className="flex w-full flex-col gap-2">
+        <div className="hidden text-sm text-gray-600 sm:block">
           {uploaderText}
         </div>
         <div className="flex items-center gap-2">

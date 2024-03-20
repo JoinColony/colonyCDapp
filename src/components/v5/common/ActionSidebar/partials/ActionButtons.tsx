@@ -82,11 +82,11 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
 
   return (
     <div
-      className="flex items-center flex-col-reverse sm:flex-row
-        justify-between gap-6 pt-6 mt-8 border-t border-gray-200 px-6"
+      className="mt-8 flex flex-col-reverse items-center
+        justify-between gap-6 border-t border-gray-200 px-6 pt-6 sm:flex-row"
     >
       {createDecisionActionSelected && <SaveDraftButton />}
-      <div className="flex w-full flex-col-reverse items-center sm:flex-row justify-end gap-2">
+      <div className="flex w-full flex-col-reverse items-center justify-end gap-2 sm:flex-row">
         <Button
           mode="primaryOutline"
           text={{ id: 'button.cancel' }}
@@ -99,7 +99,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
             isFullSize={isMobile}
             text={{ id: 'button.pending' }}
             icon={
-              <span className="flex shrink-0 ml-2">
+              <span className="ml-2 flex shrink-0">
                 <SpinnerGap size={18} className="animate-spin" />
               </span>
             }

@@ -37,8 +37,8 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
   }, [members, isMobile]);
 
   return (
-    <div className="py-6 last:pb-0 border-b border-gray-200 last:border-none">
-      <div className="flex items-center mb-1">
+    <div className="border-b border-gray-200 py-6 last:border-none last:pb-0">
+      <div className="mb-1 flex items-center">
         {isMultiSig && (
           <span className="mr-1.5">
             <Signature size={16} />
@@ -49,17 +49,17 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
           <CountBox count={membersCount + extensionsCount} />
         )}
       </div>
-      <p className="text-md text-gray-600 mb-6">{description}</p>
+      <p className="mb-6 text-md text-gray-600">{description}</p>
       {isLoading ? (
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))] md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))] gap-6 md:grid-cols-4">
           {[...Array(4).keys()].map((key) => (
             <div
-              className="w-full h-full flex flex-col p-5 rounded-lg border border-gray-200 bg-gray-25"
+              className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5"
               key={key}
             >
               <div className="flex items-center gap-2.5">
-                <div className="skeleton w-[1.875rem] h-[1.875rem] rounded-full overflow-hidden bg-gray-300" />
-                <div className="skeleton w-2/3 h-4 bg-gray-300 overflow-hidden rounded" />
+                <div className="h-[1.875rem] w-[1.875rem] overflow-hidden rounded-full bg-gray-300 skeleton" />
+                <div className="h-4 w-2/3 overflow-hidden rounded bg-gray-300 skeleton" />
               </div>
             </div>
           ))}
@@ -72,7 +72,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
               description={formatText({
                 id: 'permissionsPage.empty.description',
               })}
-              className="pt-10 pb-9 px-6 mt-6"
+              className="mt-6 px-6 pb-9 pt-10"
               icon={Binoculars}
               withBorder
             />
@@ -81,7 +81,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
               <MemberCardList items={currentMembers} isSimple />
               {(membersCount > 0 || extensionsCount > 0) &&
                 currentMembers.length < membersCount + extensionsCount && (
-                  <div className="flex justify-center mt-6">
+                  <div className="mt-6 flex justify-center">
                     <TextButton onClick={loadMore}>
                       {formatText({ id: 'loadMore' })}
                     </TextButton>

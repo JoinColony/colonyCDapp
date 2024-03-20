@@ -47,7 +47,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
 
   return (
     <>
-      <div className="flex mr-2 shrink-0">
+      <div className="mr-2 flex shrink-0">
         <Avatar
           avatar={field.value?.image}
           placeholderIcon={At}
@@ -59,7 +59,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
       {!readonly && (
         <button
           type="button"
-          className={clsx('text-3 underline text-gray-700', {
+          className={clsx('text-gray-700 underline text-3', {
             'md:hover:text-blue-400': !disabled,
           })}
           onClick={() => {
@@ -85,14 +85,14 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
         })}
         closeMessage={formatText({ id: 'button.cancel' })}
       >
-        <h5 className="heading-5 mb-1.5">
+        <h5 className="mb-1.5 heading-5">
           {formatText({ id: 'editColonyLogo.modal.title' })}
         </h5>
-        <p className="text-md text-gray-600 mb-6">
+        <p className="mb-6 text-md text-gray-600">
           {formatText({ id: 'editColonyLogo.modal.subtitle' })}
         </p>
-        <div className="flex sm:flex-row flex-col gap-4 sm:gap-2">
-          <div className="flex items-center gap-4 sm:items-start mr-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
+          <div className="mr-4 flex items-center gap-4 sm:items-start">
             <div className="flex-shrink-0">
               {isLoading ? (
                 <SpinnerLoader appearance={{ size: 'medium' }} />
@@ -106,10 +106,10 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
                 />
               )}
             </div>
-            <p className="sm:hidden text-gray-600 text-sm">{uploaderText}</p>
+            <p className="text-sm text-gray-600 sm:hidden">{uploaderText}</p>
           </div>
-          <div className="flex flex-col gap-2 w-full">
-            <p className="hidden sm:block text-gray-600 text-sm">
+          <div className="flex w-full flex-col gap-2">
+            <p className="hidden text-sm text-gray-600 sm:block">
               {uploaderText}
             </p>
             <FileUpload

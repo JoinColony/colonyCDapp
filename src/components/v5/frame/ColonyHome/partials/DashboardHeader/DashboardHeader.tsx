@@ -24,7 +24,7 @@ const DashboardHeader = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-end gap-3">
-        <h1 className="heading-2 text-gray-900 capitalize truncate">
+        <h1 className="truncate capitalize text-gray-900 heading-2">
           {colonyName}
         </h1>
         {nativeToken && (
@@ -34,8 +34,8 @@ const DashboardHeader = () => {
           />
         )}
       </div>
-      <div className="flex flex-col sm:flex-row gap-6 sm:gap-4 items-start justify-between">
-        <p className="text-gray-700 max-w-[52.75rem] text-md line-clamp-5 sm:line-clamp-3 md:line-clamp-2">
+      <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:gap-4">
+        <p className="line-clamp-5 max-w-[52.75rem] text-md text-gray-700 sm:line-clamp-3 md:line-clamp-2">
           {description}
         </p>
         <div className="flex-shrink-0 sm:mt-1">

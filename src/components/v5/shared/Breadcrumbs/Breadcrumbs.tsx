@@ -34,7 +34,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) => {
     >
       {items.map((item) => (
         <li
-          className='after:content-["/"] after:mx-2 last:after:hidden'
+          className='after:mx-2 after:content-["/"] last:after:hidden'
           key={item.key}
         >
           {getBreadcrumbItem(item)}

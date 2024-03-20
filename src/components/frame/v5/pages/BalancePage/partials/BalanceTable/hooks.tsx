@@ -155,7 +155,7 @@ export const useBalanceTableColumns = (
         header: () => formatText({ id: 'table.row.balance' }),
         size: isMobile ? 110 : 165,
         headCellClassName: clsx('text-right', {
-          'pr-2 pl-0': isMobile,
+          'pl-0 pr-2': isMobile,
         }),
         cell: ({ row }) => {
           const currentTokenBalance =
@@ -166,13 +166,13 @@ export const useBalanceTableColumns = (
             ) || 0;
 
           return (
-            <div className="text-right ml-auto">
+            <div className="ml-auto text-right">
               <Numeral
                 value={currentTokenBalance}
                 decimals={getTokenDecimalsWithFallback(
                   row.original.token?.decimals,
                 )}
-                className="text-1 text-gray-900 block"
+                className="block text-gray-900 text-1"
                 suffix={row.original.token?.symbol}
               />
               <CurrencyConversion
@@ -183,7 +183,7 @@ export const useBalanceTableColumns = (
                     : 0
                 }
                 contractAddress={row.original.token?.tokenAddress ?? ''}
-                className="text-gray-600 !text-sm block"
+                className="block !text-sm text-gray-600"
               />
             </div>
           );

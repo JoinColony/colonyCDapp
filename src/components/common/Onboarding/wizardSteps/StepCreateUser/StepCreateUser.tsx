@@ -40,7 +40,7 @@ const StepCreateUser = ({
 
   return (
     <ActionForm<CreateUserFormValues>
-      className="max-w-lg flex flex-col items-end"
+      className="flex max-w-lg flex-col items-end"
       validationSchema={validationSchema}
       defaultValues={{
         username,
