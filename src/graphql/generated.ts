@@ -4285,10 +4285,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
-  /**
-   * Validates the user invite code and adds the user to the colony whitelist
-   * and as a colony contributor
-   */
+  /** Removes the user from the colony whitelist */
   removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
   /** Updates the latest available version of a Colony or an extension */
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
@@ -8441,6 +8438,8 @@ export type TokenFragment = { __typename?: 'Token', decimals: number, name: stri
 
 export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, inactiveBalance?: string | null, lockedBalance?: string | null, activeBalance?: string | null, pendingBalance?: string | null };
 
+export type NativeTokenStatusFragment = { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null };
+
 export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null };
 
 export type UserFragment = { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null };
@@ -9401,6 +9400,13 @@ export const TokenFragmentDoc = gql`
   thumbnail
 }
     `;
+export const NativeTokenStatusFragmentDoc = gql`
+    fragment NativeTokenStatus on NativeTokenStatus {
+  mintable
+  unlockable
+  unlocked
+}
+    `;
 export const ColonyTokensConnectionFragmentDoc = gql`
     fragment ColonyTokensConnection on ModelColonyTokensConnection {
   items {
@@ -9488,9 +9494,7 @@ export const ColonyFragmentDoc = gql`
   status {
     recovery
     nativeToken {
-      mintable
-      unlockable
-      unlocked
+      ...NativeTokenStatus
     }
   }
   chainMetadata {
@@ -9537,6 +9541,7 @@ export const ColonyFragmentDoc = gql`
   }
 }
     ${TokenFragmentDoc}
+${NativeTokenStatusFragmentDoc}
 ${ColonyTokensConnectionFragmentDoc}
 ${UnclaimedStakesFragmentDoc}
 ${DomainFragmentDoc}

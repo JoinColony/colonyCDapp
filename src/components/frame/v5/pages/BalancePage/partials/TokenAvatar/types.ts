@@ -1,7 +1,7 @@
-import { type NativeTokenStatus, type TokenFragment } from '~gql';
+import { type NativeTokenStatus, type Token } from '~types/graphql.ts';
 
 export interface TokenAvatarProps {
-  token: TokenFragment;
+  token: Token;
   tokenAddress: string;
-  nativeTokenStatus: NativeTokenStatus;
+  nativeTokenStatus?: NativeTokenStatus | null;
 }

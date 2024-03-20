@@ -42,6 +42,7 @@ import {
   SearchableSortDirection,
   type JoinedColonyFragment,
   type UserMotionStakesFragment,
+  type NativeTokenStatusFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -147,3 +148,5 @@ export type UserStake = UserStakeFragment;
 export type JoinedColony = JoinedColonyFragment;
 
 export type UserMotionStakes = UserMotionStakesFragment;
+
+export type NativeTokenStatus = NativeTokenStatusFragment;
