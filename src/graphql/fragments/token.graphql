@@ -15,3 +15,9 @@ fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   activeBalance
   pendingBalance
 }
+
+fragment NativeTokenStatus on NativeTokenStatus {
+  mintable
+  unlockable
+  unlocked
+}

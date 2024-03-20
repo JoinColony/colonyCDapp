@@ -737,7 +737,10 @@ enum ColonyActionType {
   """
   CANCEL_STAKED_EXPENDITURE_MOTION
   """
-  "
+  An action related to creating a motion to release an expenditure stage
+  """
+  SET_EXPENDITURE_STATE_MOTION
+  """
   An action related to the creation of safe transactions via Safe Control
   """
   MAKE_ARBITRARY_TRANSACTION
@@ -2450,6 +2453,11 @@ type ColonyMotion @model {
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
 
+  """
+  Id of the expenditure stage payment to be released if the motion pass, if any
+  """
+  expenditureSlotId: Int
+
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
 }
 
@@ -3183,15 +3191,14 @@ type Expenditure @model {
   """
   nativeDomainId: Int!
   """
+  Array containing balances of tokens in the expenditure
+  """
+  balances: [ExpenditureBalance!]
+  """
   Optional metadata linked to the expenditure
   It contains client-side data that is not stored on chain
   """
   metadata: ExpenditureMetadata @hasOne(fields: ["id"])
-  """
-  Array containing expenditure balances
-  """
-  balances: [ExpenditureBalance!]
-    @function(name: "fetchExpenditureBalances-${env}")
   """
   The timestamp at which the expenditure was finalized
   """
@@ -3204,15 +3211,11 @@ type Expenditure @model {
   Indicates whether the expenditure was staked for
   """
   isStaked: Boolean!
-  """
-  Indicates if the creator's stake was forfeited when staked expenditure was cancelled
-  """
-  isStakeForfeited: Boolean
-  """
-  Indicates whether the expenditure stake has been reclaimed
-  """
-  hasReclaimedStake: Boolean
   type: ExpenditureType!
+  """
+  Hash of the `ExpenditureMadeViaStake` event transaction, if applicable
+  """
+  stakedTransactionHash: ID
 }
 
 """
@@ -3229,7 +3232,15 @@ type ExpenditureSlot {
 
 type ExpenditurePayout {
   tokenAddress: ID!
+  """
+  Payout amount, excluding network fee
+  """
   amount: String!
+  """
+  Network fee amount
+  @TODO: Make this a non-nullable field once existing data is updated
+  """
+  networkFee: String
   isClaimed: Boolean!
 }
 
@@ -3243,7 +3254,6 @@ type ExpenditureMetadata @model {
 type ExpenditureBalance {
   tokenAddress: ID!
   amount: String!
-  requiredAmount: String! # Total amount required to cover all payouts for the given token
 }
 
 type ExpenditureStage {
@@ -3425,4 +3435,8 @@ type UserStake @model {
   actionId: ID!
   action: ColonyAction @hasOne(fields: ["actionId"])
   createdAt: AWSDateTime!
+  """
+  Only applicable for expenditure stakes, indicates if the creator's stake was forfeited when expenditure was cancelled
+  """
+  isForfeited: Boolean
 }

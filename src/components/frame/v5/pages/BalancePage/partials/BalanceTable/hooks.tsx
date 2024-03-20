@@ -1,13 +1,16 @@
+import { Id } from '@colony/colony-js';
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
+import { useColonyExpenditureBalances } from '~hooks/useColonyExpenditureBalances.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import CurrencyConversion from '~shared/CurrencyConversion/index.ts';
-import Numeral, { getFormattedNumeralValue } from '~shared/Numeral/index.ts';
-import { convertToDecimal } from '~utils/convertToDecimal.ts';
+import Numeral from '~shared/Numeral/index.ts';
+import { type NativeTokenStatus, type Token } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   getBalanceForTokenAndDomain,
@@ -27,33 +30,33 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const { attributeFilters, tokenTypes, searchFilter } = useFiltersContext();
+  const { balancesByToken: expenditureBalances } =
+    useColonyExpenditureBalances();
 
   const tokensData = useMemo(
     () =>
-      colonyTokens?.items.map((item) => {
-        const currentTokenBalance =
-          getBalanceForTokenAndDomain(
-            balances,
-            item?.token?.tokenAddress || '',
-            selectedDomain ? Number(selectedDomain.nativeId) : undefined,
-          ) || 0;
-        const decimals = getTokenDecimalsWithFallback(item?.token.decimals);
-        const convertedValue = convertToDecimal(
-          currentTokenBalance,
-          decimals || 0,
+      colonyTokens?.items.filter(notNull).map((item) => {
+        const colonyTokenBalance = getBalanceForTokenAndDomain(
+          balances,
+          item.token.tokenAddress,
+          selectedDomain ? Number(selectedDomain.nativeId) : undefined,
         );
 
-        const formattedValue = getFormattedNumeralValue(
-          convertedValue,
-          currentTokenBalance,
-        );
+        let totalBalance = colonyTokenBalance;
+        if (!selectedDomain || selectedDomain.nativeId === Id.RootDomain) {
+          // When "All teams" or Root domain is selected, add the token balance held in expenditures
+          const expenditureTokenBalance =
+            expenditureBalances[item.token.tokenAddress] ?? 0;
+
+          totalBalance = totalBalance.add(expenditureTokenBalance);
+        }
 
         return {
           ...item,
-          balance: typeof formattedValue === 'string' ? formattedValue : '',
+          balance: totalBalance,
         };
-      }),
-    [colonyTokens, balances, selectedDomain],
+      }) ?? [],
+    [colonyTokens?.items, balances, selectedDomain, expenditureBalances],
   );
 
   const filteredTokens = tokensData?.filter((token) => {
@@ -82,24 +85,22 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
       token?.symbol.toLowerCase().includes(searchFilter.toLowerCase()),
   );
 
-  const sortedTokens =
-    useMemo(
-      () =>
-        searchedTokens?.sort((a, b) => {
-          if (!a.balance || !b.balance) return 0;
-          return parseInt(b.balance, 10) - parseInt(a.balance, 10);
-        }),
-      [searchedTokens],
-    ) || [];
+  const sortedTokens = useMemo(
+    () =>
+      searchedTokens?.sort((a, b) => {
+        if (!a.balance || !b.balance || a.balance.eq(b.balance)) return 0;
+
+        return a.balance.gt(b.balance) ? -1 : 1;
+      }),
+    [searchedTokens],
+  );
 
   return sortedTokens;
 };
 
 export const useBalanceTableColumns = (
-  nativeToken,
-  balances,
-  nativeTokenStatus,
-  domainId = 1,
+  nativeToken: Token,
+  nativeTokenStatus?: NativeTokenStatus | null,
 ): ColumnDef<BalanceTableFieldModel, string>[] => {
   const isMobile = useMobile();
 
@@ -158,12 +159,7 @@ export const useBalanceTableColumns = (
           'pl-0 pr-2': isMobile,
         }),
         cell: ({ row }) => {
-          const currentTokenBalance =
-            getBalanceForTokenAndDomain(
-              balances,
-              row.original.token?.tokenAddress || '',
-              domainId,
-            ) || 0;
+          const currentTokenBalance = row.original.balance;
 
           return (
             <div className="ml-auto text-right">
@@ -190,13 +186,7 @@ export const useBalanceTableColumns = (
         },
       }),
     ];
-  }, [
-    balances,
-    domainId,
-    isMobile,
-    nativeToken.tokenAddress,
-    nativeTokenStatus,
-  ]);
+  }, [isMobile, nativeToken.tokenAddress, nativeTokenStatus]);
 
   return columns;
 };

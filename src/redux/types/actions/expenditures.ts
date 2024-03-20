@@ -5,7 +5,6 @@ import {
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
 import {
-  type Colony,
   type Domain,
   type Expenditure,
   type ExpenditureSlot,
@@ -22,20 +21,22 @@ export type ExpenditureFundPayload = {
   colonyAddress: Address;
   fromDomainFundingPotId: number;
   expenditure: Expenditure;
+  annotationMessage?: string;
 };
 
-export type StakedExpenditureCancelPayload = {
+export type CancelStakedExpenditurePayload = {
   colonyAddress: Address;
   stakedExpenditureAddress: string;
   shouldPunish: boolean;
   expenditure: Expenditure;
+  annotationMessage?: string;
 };
 
 export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CREATE,
       {
-        colony: Colony;
+        colonyAddress: Address;
         payouts: ExpenditurePayoutFieldValue[];
         // the domain to create the expenditure in
         createdInDomain: Domain;
@@ -43,6 +44,8 @@ export type ExpendituresActionTypes =
         fundFromDomainId: number;
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
+        networkInverseFee: string;
+        annotationMessage?: string;
       },
       MetaWithSetter<object>
     >
@@ -51,9 +54,9 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_LOCK,
       {
-        colonyName: string;
         colonyAddress: Address;
-        nativeExpenditureId: string;
+        nativeExpenditureId: number;
+        annotationMessage?: string;
       },
       object
     >
@@ -62,11 +65,11 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_FINALIZE,
       {
-        colonyName: string;
         colonyAddress: Address;
         nativeExpenditureId: number;
+        annotationMessage?: string;
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_FINALIZE_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_FINALIZE_SUCCESS, object, object>
@@ -83,8 +86,10 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
+        networkInverseFee: string;
+        annotationMessage?: string;
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_EDIT_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>
@@ -94,6 +99,7 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         expenditure: Expenditure;
         stakedExpenditureAddress?: Address;
+        annotationMessage?: string;
       },
       object
     >
@@ -107,7 +113,7 @@ export type ExpendituresActionTypes =
       ActionTypes.EXPENDITURE_CLAIM,
       {
         colonyAddress: Address;
-        expenditureId: number;
+        nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
       },
       object
@@ -117,7 +123,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CREATE,
       {
-        colony: Colony;
+        colonyAddress: Address;
         payouts: ExpenditurePayoutFieldValue[];
         // the domain to create the expenditure in
         createdInDomain: Domain;
@@ -127,6 +133,8 @@ export type ExpendituresActionTypes =
         stakedExpenditureAddress: Address;
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
+        networkInverseFee: string;
+        annotationMessage?: string;
       },
       MetaWithSetter<object>
     >
@@ -140,7 +148,7 @@ export type ExpendituresActionTypes =
       ActionTypes.RECLAIM_EXPENDITURE_STAKE,
       {
         colonyAddress: Address;
-        nativeExpenditureId: string;
+        nativeExpenditureId: number;
       },
       MetaWithSetter<object>
     >
@@ -158,6 +166,7 @@ export type ExpendituresActionTypes =
         slotId: number;
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
+        annotationMessage?: string;
       },
       MetaWithSetter<object>
     >
@@ -169,7 +178,7 @@ export type ExpendituresActionTypes =
     >
   | UniqueActionType<
       ActionTypes.STAKED_EXPENDITURE_CANCEL,
-      StakedExpenditureCancelPayload,
+      CancelStakedExpenditurePayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR, object>
@@ -191,6 +200,7 @@ export type ExpendituresActionTypes =
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
+        annotationMessage?: string;
       },
       MetaWithSetter<object>
     >

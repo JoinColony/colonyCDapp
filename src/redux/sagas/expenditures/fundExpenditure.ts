@@ -14,10 +14,23 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
-import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
+import {
+  initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils/index.ts';
+
+export type FundExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_FUND>['payload'];
 
 function* fundExpenditure({
-  payload: { colonyAddress, expenditure, fromDomainFundingPotId },
+  payload: {
+    colonyAddress,
+    expenditure,
+    fromDomainFundingPotId,
+    annotationMessage,
+  },
   meta,
 }: Action<ActionTypes.EXPENDITURE_FUND>) {
   const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
@@ -30,10 +43,13 @@ function* fundExpenditure({
     getExpenditureBalancesByTokenAddress(expenditure);
 
   // Create channel for each token, using its address as channel id
-  const channels: Record<string, ChannelDefinition> =
-    yield createTransactionChannels(meta.id, [
-      ...balancesByTokenAddresses.keys(),
-    ]);
+  const {
+    annotateFundExpenditure,
+    ...channels
+  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
+    meta.id,
+    [...balancesByTokenAddresses.keys(), 'annotateFundExpenditure'],
+  );
 
   try {
     yield all(
@@ -52,6 +68,19 @@ function* fundExpenditure({
         }),
       ),
     );
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateFundExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: Object.keys(balancesByTokenAddresses).length,
+        },
+        ready: false,
+      });
+    }
 
     for (const [tokenAddress, amount] of [
       ...balancesByTokenAddresses.entries(),
@@ -60,6 +89,13 @@ function* fundExpenditure({
         channels[tokenAddress].channel,
         ActionTypes.TRANSACTION_CREATED,
       );
+      if (annotationMessage) {
+        yield takeFrom(
+          annotateFundExpenditure.channel,
+          ActionTypes.TRANSACTION_CREATED,
+        );
+      }
+
       yield put(transactionPending(channels[tokenAddress].id));
       yield put(
         transactionAddParams(channels[tokenAddress].id, [
@@ -69,8 +105,25 @@ function* fundExpenditure({
           tokenAddress,
         ]),
       );
+
       yield initiateTransaction({ id: channels[tokenAddress].id });
+
+      const {
+        payload: { hash: txHash },
+      } = yield takeFrom(
+        channels[tokenAddress].channel,
+        ActionTypes.TRANSACTION_HASH_RECEIVED,
+      );
+
       yield waitForTxResult(channels[tokenAddress].channel);
+
+      if (annotationMessage) {
+        yield uploadAnnotation({
+          txChannel: annotateFundExpenditure,
+          message: annotationMessage,
+          txHash,
+        });
+      }
     }
 
     yield put<AllActions>({
@@ -84,6 +137,7 @@ function* fundExpenditure({
     [...balancesByTokenAddresses.keys()].forEach((tokenAddress) =>
       channels[tokenAddress].channel.close(),
     );
+    annotateFundExpenditure.channel.close();
   }
 
   return null;

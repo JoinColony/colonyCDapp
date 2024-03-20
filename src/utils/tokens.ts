@@ -88,8 +88,8 @@ export const calculateFee = (
   const feesInWei = totalToPayInWei.sub(amountInWei);
   return {
     feesInWei: feesInWei.toString(),
-    totalToPay: moveDecimal(totalToPayInWei, -1 * decimals),
-  }; // NOTE: seems like moveDecimal does not have strict typing
+    totalToPay: totalToPayInWei.toString(),
+  };
 };
 
 export const getSelectedToken = (colony: Colony, tokenAddress: string) => {

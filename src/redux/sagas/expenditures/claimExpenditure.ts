@@ -11,6 +11,9 @@ import {
 } from '../transactions/index.ts';
 import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
+export type ClaimExpenditurePayload =
+  Action<ActionTypes.EXPENDITURE_CLAIM>['payload'];
+
 type PayoutWithSlotId = ExpenditurePayout & {
   slotId: number;
 };
@@ -20,7 +23,7 @@ const getPayoutChannelId = (payout: PayoutWithSlotId) =>
 
 function* claimExpenditure({
   meta,
-  payload: { colonyAddress, expenditureId, claimableSlots },
+  payload: { colonyAddress, nativeExpenditureId, claimableSlots },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
   const batchKey = 'claimExpenditure';
 
@@ -46,7 +49,7 @@ function* claimExpenditure({
           context: ClientType.ColonyClient,
           methodName: 'claimExpenditurePayout',
           identifier: colonyAddress,
-          params: [expenditureId, payout.slotId, payout.tokenAddress],
+          params: [nativeExpenditureId, payout.slotId, payout.tokenAddress],
           group: {
             key: batchKey,
             id: meta.id,
@@ -59,10 +62,12 @@ function* claimExpenditure({
 
     for (const payout of payoutsWithSlotIds) {
       const payoutChannelId = getPayoutChannelId(payout);
+
       yield takeFrom(
         channels[payoutChannelId].channel,
         ActionTypes.TRANSACTION_CREATED,
       );
+
       yield initiateTransaction({ id: channels[payoutChannelId].id });
       yield waitForTxResult(channels[payoutChannelId].channel);
     }

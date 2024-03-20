@@ -396,10 +396,7 @@ export enum ColonyActionType {
   FundExpenditureMotion = 'FUND_EXPENDITURE_MOTION',
   /** A generic or unspecified Colony action */
   Generic = 'GENERIC',
-  /**
-   * "
-   * An action related to the creation of safe transactions via Safe Control
-   */
+  /** An action related to the creation of safe transactions via Safe Control */
   MakeArbitraryTransaction = 'MAKE_ARBITRARY_TRANSACTION',
   MakeArbitraryTransactionsMotion = 'MAKE_ARBITRARY_TRANSACTIONS_MOTION',
   /** An action related to minting tokens within a Colony */
@@ -422,6 +419,8 @@ export enum ColonyActionType {
   PaymentMotion = 'PAYMENT_MOTION',
   /** An action related to the recovery functionality of a Colony */
   Recovery = 'RECOVERY',
+  /** An action related to creating a motion to release an expenditure stage */
+  SetExpenditureStateMotion = 'SET_EXPENDITURE_STATE_MOTION',
   /** An action related to setting user roles within a Colony */
   SetUserRoles = 'SET_USER_ROLES',
   /** An action related to setting user roles within a Colony via a motion */
@@ -790,6 +789,8 @@ export type ColonyMotion = {
   createdBy: Scalars['String'];
   /** Expenditure associated with the motion, if any */
   expenditureId?: Maybe<Scalars['ID']>;
+  /** Id of the expenditure stage payment to be released if the motion pass, if any */
+  expenditureSlotId?: Maybe<Scalars['Int']>;
   /**
    * An option to manually specify the amount of gas to estimate for the finalization of this motion.
    * Particularly useful for "heavy" actions, such as a multicall.
@@ -1236,6 +1237,7 @@ export type CreateColonyMetadataInput = {
 export type CreateColonyMotionInput = {
   createdBy: Scalars['String'];
   expenditureId?: InputMaybe<Scalars['ID']>;
+  expenditureSlotId?: InputMaybe<Scalars['Int']>;
   gasEstimate: Scalars['String'];
   hasObjection: Scalars['Boolean'];
   id?: InputMaybe<Scalars['ID']>;
@@ -1346,15 +1348,14 @@ export type CreateExpenditureInput = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   finalizedAt?: InputMaybe<Scalars['AWSTimestamp']>;
-  hasReclaimedStake?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['ID']>;
-  isStakeForfeited?: InputMaybe<Scalars['Boolean']>;
   isStaked: Scalars['Boolean'];
   nativeDomainId: Scalars['Int'];
   nativeFundingPotId: Scalars['Int'];
   nativeId: Scalars['Int'];
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlotInput>;
+  stakedTransactionHash?: InputMaybe<Scalars['ID']>;
   status: ExpenditureStatus;
   type: ExpenditureType;
 };
@@ -1533,6 +1534,7 @@ export type CreateUserStakeInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
   isClaimed: Scalars['Boolean'];
+  isForfeited?: InputMaybe<Scalars['Boolean']>;
   userAddress: Scalars['ID'];
 };
 
@@ -1854,7 +1856,7 @@ export type DomainMetadataChangelogInput = {
 
 export type Expenditure = {
   __typename?: 'Expenditure';
-  /** Array containing expenditure balances */
+  /** Array containing balances of tokens in the expenditure */
   balances?: Maybe<Array<ExpenditureBalance>>;
   /** The Colony to which the expenditure belongs */
   colony: Colony;
@@ -1863,15 +1865,11 @@ export type Expenditure = {
   createdAt: Scalars['AWSDateTime'];
   /** The timestamp at which the expenditure was finalized */
   finalizedAt?: Maybe<Scalars['AWSTimestamp']>;
-  /** Indicates whether the expenditure stake has been reclaimed */
-  hasReclaimedStake?: Maybe<Scalars['Boolean']>;
   /**
    * Unique identifier for the role snapshot
    * Self-managed, format: `colonyId_nativeExpenditureId`
    */
   id: Scalars['ID'];
-  /** Indicates if the creator's stake was forfeited when staked expenditure was cancelled */
-  isStakeForfeited?: Maybe<Scalars['Boolean']>;
   /** Indicates whether the expenditure was staked for */
   isStaked: Scalars['Boolean'];
   /**
@@ -1890,6 +1888,8 @@ export type Expenditure = {
   ownerAddress: Scalars['ID'];
   /** Array containing expenditure slots */
   slots: Array<ExpenditureSlot>;
+  /** Hash of the `ExpenditureMadeViaStake` event transaction, if applicable */
+  stakedTransactionHash?: Maybe<Scalars['ID']>;
   /** Status of the expenditure */
   status: ExpenditureStatus;
   type: ExpenditureType;
@@ -1907,13 +1907,11 @@ export type ExpenditureMotionsArgs = {
 export type ExpenditureBalance = {
   __typename?: 'ExpenditureBalance';
   amount: Scalars['String'];
-  requiredAmount: Scalars['String'];
   tokenAddress: Scalars['ID'];
 };
 
 export type ExpenditureBalanceInput = {
   amount: Scalars['String'];
-  requiredAmount: Scalars['String'];
   tokenAddress: Scalars['ID'];
 };
 
@@ -1929,14 +1927,21 @@ export type ExpenditureMetadata = {
 
 export type ExpenditurePayout = {
   __typename?: 'ExpenditurePayout';
+  /** Payout amount, excluding network fee */
   amount: Scalars['String'];
   isClaimed: Scalars['Boolean'];
+  /**
+   * Network fee amount
+   * @TODO: Make this a non-nullable field once existing data is updated
+   */
+  networkFee?: Maybe<Scalars['String']>;
   tokenAddress: Scalars['ID'];
 };
 
 export type ExpenditurePayoutInput = {
   amount: Scalars['String'];
   isClaimed: Scalars['Boolean'];
+  networkFee?: InputMaybe<Scalars['String']>;
   tokenAddress: Scalars['ID'];
 };
 
@@ -2585,6 +2590,7 @@ export type ModelColonyMotionConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyMotionConditionInput>>>;
   createdBy?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
+  expenditureSlotId?: InputMaybe<ModelIntInput>;
   gasEstimate?: InputMaybe<ModelStringInput>;
   hasObjection?: InputMaybe<ModelBooleanInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
@@ -2614,6 +2620,7 @@ export type ModelColonyMotionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyMotionFilterInput>>>;
   createdBy?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
+  expenditureSlotId?: InputMaybe<ModelIntInput>;
   gasEstimate?: InputMaybe<ModelStringInput>;
   hasObjection?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -2911,8 +2918,6 @@ export type ModelExpenditureConditionInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   finalizedAt?: InputMaybe<ModelIntInput>;
-  hasReclaimedStake?: InputMaybe<ModelBooleanInput>;
-  isStakeForfeited?: InputMaybe<ModelBooleanInput>;
   isStaked?: InputMaybe<ModelBooleanInput>;
   nativeDomainId?: InputMaybe<ModelIntInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
@@ -2920,6 +2925,7 @@ export type ModelExpenditureConditionInput = {
   not?: InputMaybe<ModelExpenditureConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
+  stakedTransactionHash?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
 };
@@ -2935,9 +2941,7 @@ export type ModelExpenditureFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   finalizedAt?: InputMaybe<ModelIntInput>;
-  hasReclaimedStake?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
-  isStakeForfeited?: InputMaybe<ModelBooleanInput>;
   isStaked?: InputMaybe<ModelBooleanInput>;
   nativeDomainId?: InputMaybe<ModelIntInput>;
   nativeFundingPotId?: InputMaybe<ModelIntInput>;
@@ -2945,6 +2949,7 @@ export type ModelExpenditureFilterInput = {
   not?: InputMaybe<ModelExpenditureFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
+  stakedTransactionHash?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
 };
@@ -3532,6 +3537,7 @@ export type ModelSubscriptionColonyMotionFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMotionFilterInput>>>;
   createdBy?: InputMaybe<ModelSubscriptionStringInput>;
   expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
+  expenditureSlotId?: InputMaybe<ModelSubscriptionIntInput>;
   gasEstimate?: InputMaybe<ModelSubscriptionStringInput>;
   hasObjection?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -3648,15 +3654,14 @@ export type ModelSubscriptionExpenditureFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   finalizedAt?: InputMaybe<ModelSubscriptionIntInput>;
-  hasReclaimedStake?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  isStakeForfeited?: InputMaybe<ModelSubscriptionBooleanInput>;
   isStaked?: InputMaybe<ModelSubscriptionBooleanInput>;
   nativeDomainId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeFundingPotId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  stakedTransactionHash?: InputMaybe<ModelSubscriptionIdInput>;
   status?: InputMaybe<ModelSubscriptionStringInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
 };
@@ -3882,6 +3887,7 @@ export type ModelSubscriptionUserStakeFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isClaimed?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isForfeited?: InputMaybe<ModelSubscriptionBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserStakeFilterInput>>>;
   userAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
@@ -4039,6 +4045,7 @@ export type ModelUserStakeConditionInput = {
   colonyAddress?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   isClaimed?: InputMaybe<ModelBooleanInput>;
+  isForfeited?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelUserStakeConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserStakeConditionInput>>>;
   userAddress?: InputMaybe<ModelIdInput>;
@@ -4058,6 +4065,7 @@ export type ModelUserStakeFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   isClaimed?: InputMaybe<ModelBooleanInput>;
+  isForfeited?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelUserStakeFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserStakeFilterInput>>>;
   userAddress?: InputMaybe<ModelIdInput>;
@@ -4277,10 +4285,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
-  /**
-   * Validates the user invite code and adds the user to the colony whitelist
-   * and as a colony contributor
-   */
+  /** Removes the user from the colony whitelist */
   removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
   /** Updates the latest available version of a Colony or an extension */
   setCurrentVersion?: Maybe<Scalars['Boolean']>;
@@ -7843,6 +7848,7 @@ export type UpdateColonyMetadataInput = {
 export type UpdateColonyMotionInput = {
   createdBy?: InputMaybe<Scalars['String']>;
   expenditureId?: InputMaybe<Scalars['ID']>;
+  expenditureSlotId?: InputMaybe<Scalars['Int']>;
   gasEstimate?: InputMaybe<Scalars['String']>;
   hasObjection?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
@@ -7958,15 +7964,14 @@ export type UpdateExpenditureInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   finalizedAt?: InputMaybe<Scalars['AWSTimestamp']>;
-  hasReclaimedStake?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
-  isStakeForfeited?: InputMaybe<Scalars['Boolean']>;
   isStaked?: InputMaybe<Scalars['Boolean']>;
   nativeDomainId?: InputMaybe<Scalars['Int']>;
   nativeFundingPotId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
   ownerAddress?: InputMaybe<Scalars['ID']>;
   slots?: InputMaybe<Array<ExpenditureSlotInput>>;
+  stakedTransactionHash?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ExpenditureStatus>;
   type?: InputMaybe<ExpenditureType>;
 };
@@ -8146,6 +8151,7 @@ export type UpdateUserStakeInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
   isClaimed?: InputMaybe<Scalars['Boolean']>;
+  isForfeited?: InputMaybe<Scalars['Boolean']>;
   userAddress?: InputMaybe<Scalars['ID']>;
 };
 
@@ -8241,6 +8247,8 @@ export type UserStake = {
   /** Self-managed, formatted as userAddress_transactionHash, where transactionHash is the hash of the transaction that is being staked for */
   id: Scalars['ID'];
   isClaimed: Scalars['Boolean'];
+  /** Only applicable for expenditure stakes, indicates if the creator's stake was forfeited when expenditure was cancelled */
+  isForfeited?: Maybe<Scalars['Boolean']>;
   updatedAt: Scalars['AWSDateTime'];
   user: User;
   userAddress: Scalars['ID'];
@@ -8402,13 +8410,15 @@ export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: numb
 
 export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null };
 
-export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null };
+export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, type: ExpenditureType, isStaked: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', expenditureSlotId?: number | null, remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string }> | null };
 
-export type ExpenditureSlotFragment = { __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null };
+export type ExpenditureSlotFragment = { __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null };
 
-export type ExpenditurePayoutFragment = { __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean };
+export type ExpenditurePayoutFragment = { __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null };
 
 export type ExpenditureStageFragment = { __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean };
+
+export type ExpenditureBalanceFragment = { __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string };
 
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null };
 
@@ -8427,6 +8437,8 @@ export type UserStakeFragment = { __typename?: 'UserStake', id: string, amount: 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
 export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, inactiveBalance?: string | null, lockedBalance?: string | null, activeBalance?: string | null, pendingBalance?: string | null };
+
+export type NativeTokenStatusFragment = { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null };
 
 export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null };
 
@@ -8794,14 +8806,14 @@ export type GetColonyExpendituresQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number } | null> } | null } | null };
+export type GetColonyExpendituresQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, expenditures?: { __typename?: 'ModelExpenditureConnection', items: Array<{ __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, type: ExpenditureType, isStaked: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', expenditureSlotId?: number | null, remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string }> | null } | null> } | null } | null };
 
 export type GetExpenditureQueryVariables = Exact<{
   expenditureId: Scalars['ID'];
 }>;
 
 
-export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, hasReclaimedStake?: boolean | null, type: ExpenditureType, isStaked: boolean, isStakeForfeited?: boolean | null, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string, requiredAmount: string }> | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null } | null };
+export type GetExpenditureQuery = { __typename?: 'Query', getExpenditure?: { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, type: ExpenditureType, isStaked: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: number | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, stakeAmount?: string | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string, isReleased: boolean }> | null } | null, motions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', expenditureSlotId?: number | null, remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string }> | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -9121,6 +9133,7 @@ export const ExpenditurePayoutFragmentDoc = gql`
   tokenAddress
   amount
   isClaimed
+  networkFee
 }
     `;
 export const ExpenditureSlotFragmentDoc = gql`
@@ -9303,6 +9316,12 @@ ${DomainFragmentDoc}
 ${VoterRecordFragmentDoc}
 ${MotionMessageFragmentDoc}
 ${AnnotationFragmentDoc}`;
+export const ExpenditureBalanceFragmentDoc = gql`
+    fragment ExpenditureBalance on ExpenditureBalance {
+  tokenAddress
+  amount
+}
+    `;
 export const ExpenditureFragmentDoc = gql`
     fragment Expenditure on Expenditure {
   id
@@ -9321,25 +9340,23 @@ export const ExpenditureFragmentDoc = gql`
     }
     stakeAmount
   }
-  balances {
-    tokenAddress
-    amount
-    requiredAmount
-  }
   finalizedAt
-  hasReclaimedStake
   motions {
     items {
       ...ColonyMotion
+      expenditureSlotId
     }
   }
   type
   isStaked
-  isStakeForfeited
+  balances {
+    ...ExpenditureBalance
+  }
 }
     ${ExpenditureSlotFragmentDoc}
 ${ExpenditureStageFragmentDoc}
-${ColonyMotionFragmentDoc}`;
+${ColonyMotionFragmentDoc}
+${ExpenditureBalanceFragmentDoc}`;
 export const UserDisplayFragmentDoc = gql`
     fragment UserDisplay on User {
   walletAddress: id
@@ -9381,6 +9398,13 @@ export const TokenFragmentDoc = gql`
   type
   avatar
   thumbnail
+}
+    `;
+export const NativeTokenStatusFragmentDoc = gql`
+    fragment NativeTokenStatus on NativeTokenStatus {
+  mintable
+  unlockable
+  unlocked
 }
     `;
 export const ColonyTokensConnectionFragmentDoc = gql`
@@ -9470,9 +9494,7 @@ export const ColonyFragmentDoc = gql`
   status {
     recovery
     nativeToken {
-      mintable
-      unlockable
-      unlocked
+      ...NativeTokenStatus
     }
   }
   chainMetadata {
@@ -9519,6 +9541,7 @@ export const ColonyFragmentDoc = gql`
   }
 }
     ${TokenFragmentDoc}
+${NativeTokenStatusFragmentDoc}
 ${ColonyTokensConnectionFragmentDoc}
 ${UnclaimedStakesFragmentDoc}
 ${DomainFragmentDoc}
@@ -11581,13 +11604,12 @@ export const GetColonyExpendituresDocument = gql`
     id
     expenditures {
       items {
-        id
-        nativeId
+        ...Expenditure
       }
     }
   }
 }
-    `;
+    ${ExpenditureFragmentDoc}`;
 
 /**
  * __useGetColonyExpendituresQuery__

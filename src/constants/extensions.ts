@@ -2,8 +2,11 @@ import { ColonyRole, Extension } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { number } from 'yup';
 
+import ExtensionAdvancedPaymentsIcon from '~icons/ExtensionAdvancedPaymentsIcon.tsx';
 import ExtensionLazyConsensusIcon from '~icons/ExtensionLazyConsensusIcon.tsx';
 import ExtensionOneTransactionPaymentIcon from '~icons/ExtensionOneTransactionPaymentIcon.tsx';
+import advancedHero from '~images/assets/extensions/advanced-hero.png';
+import advancedInterface from '~images/assets/extensions/advanced-interface.png';
 import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
@@ -16,8 +19,6 @@ import {
 import { toFinite } from '~utils/lodash.ts';
 
 // @BETA: Disabled for now
-// import advancedHero from '~images/assets/extensions/advanced-hero.png';
-// import advancedInterface from '~images/assets/extensions/advanced-interface.png';
 // import streamingHero from '~images/assets/extensions/streaming-hero.png';
 // import streamingInterface from '~images/assets/extensions/streaming-interface.png';
 
@@ -486,57 +487,57 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     createdAt: 1603915271852,
   },
   // @BETA: Disabled for now
-  // {
-  //   icon: 'extension-advanced-payments',
-  //   imageURLs: [advancedHero, advancedInterface],
-  //   category: ExtensionCategory.Expenditures,
-  //   extensionId: Extension.StakedExpenditure,
-  //   name: MSG.stakedExpenditureName,
-  //   descriptionShort: MSG.stakedExpenditureDescriptionShort,
-  //   descriptionLong: MSG.stakedExpenditureDescriptionLong,
-  //   neededColonyPermissions: [
-  //     ColonyRole.Administration,
-  //     ColonyRole.Funding,
-  //     ColonyRole.Arbitration,
-  //   ],
-  //   uninstallable: true,
-  //   createdAt: 1692048380000,
-  //   initializationParams: [
-  //     {
-  //       paramName: 'stakeFraction',
-  //       validation: number()
-  //         .transform((value) => toFinite(value))
-  //         .positive(() => MSG.positiveError)
-  //         .required(() => MSG.requiredError)
-  //         .max(100, () => MSG.lessThan100Error),
-  //       defaultValue: 1,
-  //       title: MSG.stakedExpenditureStakeFractionTitle,
-  //       description: MSG.stakedExpenditureStakeFractionDescription,
-  //       type: ExtensionParamType.Input,
-  //       complementaryLabel: 'percent',
-  //       formattingOptions: {
-  //         numeralPositiveOnly: true,
-  //       },
-  //       transformValue: convertFractionToWei,
-  //     },
-  //   ],
-  // },
-  // {
-  //   icon: 'extension-advanced-payments',
-  //   imageURLs: [advancedHero, advancedInterface],
-  //   category: ExtensionCategory.Expenditures,
-  //   extensionId: Extension.StagedExpenditure,
-  //   name: MSG.stagedExpenditureName,
-  //   descriptionShort: MSG.stagedExpenditureDescriptionShort,
-  //   descriptionLong: MSG.stagedExpenditureDescriptionLong,
-  //   neededColonyPermissions: [
-  //     ColonyRole.Administration,
-  //     ColonyRole.Funding,
-  //     ColonyRole.Arbitration,
-  //   ],
-  //   uninstallable: true,
-  //   createdAt: 1692048380000,
-  // },
+  {
+    icon: ExtensionAdvancedPaymentsIcon,
+    imageURLs: [advancedHero, advancedInterface],
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StakedExpenditure,
+    name: MSG.stakedExpenditureName,
+    descriptionShort: MSG.stakedExpenditureDescriptionShort,
+    descriptionLong: MSG.stakedExpenditureDescriptionLong,
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
+    uninstallable: true,
+    createdAt: 1692048380000,
+    initializationParams: [
+      {
+        paramName: 'stakeFraction',
+        validation: number()
+          .transform((value) => toFinite(value))
+          .positive(() => MSG.positiveError)
+          .required(() => MSG.requiredError)
+          .max(100, () => MSG.lessThan100Error),
+        defaultValue: 1,
+        title: MSG.stakedExpenditureStakeFractionTitle,
+        description: MSG.stakedExpenditureStakeFractionDescription,
+        type: ExtensionParamType.Input,
+        complementaryLabel: 'percent',
+        formattingOptions: {
+          numeralPositiveOnly: true,
+        },
+        transformValue: convertFractionToWei,
+      },
+    ],
+  },
+  {
+    icon: ExtensionAdvancedPaymentsIcon,
+    imageURLs: [advancedHero, advancedInterface],
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StagedExpenditure,
+    name: MSG.stagedExpenditureName,
+    descriptionShort: MSG.stagedExpenditureDescriptionShort,
+    descriptionLong: MSG.stagedExpenditureDescriptionLong,
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
+    uninstallable: true,
+    createdAt: 1692048380000,
+  },
   // {
   //   icon: 'extension-streaming-payments',
   //   imageURLs: [streamingHero, streamingInterface],

@@ -1,36 +1,48 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
+  type ChannelDefinition,
   createTransaction,
-  getTxChannel,
+  createTransactionChannels,
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
   getColonyManager,
   initiateTransaction,
   putError,
+  takeFrom,
+  uploadAnnotation,
 } from '../utils/index.ts';
 
-function* cancelStakedExpenditure({
+function* cancelStakedExpenditureAction({
   meta,
   payload: {
     colonyAddress,
     stakedExpenditureAddress,
     shouldPunish,
     expenditure,
+    annotationMessage,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CANCEL>) {
+  const batchKey = 'cancelStakedExpenditure';
+
   const colonyManager: ColonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
   );
 
-  const txChannel = yield call(getTxChannel, meta.id);
+  const {
+    cancelStakedExpenditure,
+    annotateCancelStakedExpenditure,
+  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
+    meta.id,
+    ['cancelStakedExpenditure', 'annotateCancelStakedExpenditure'],
+  );
 
   try {
     const [extensionPermissionDomainId, extensionChildSkillIndex] =
@@ -50,10 +62,15 @@ function* cancelStakedExpenditure({
         ColonyRole.Arbitration,
       );
 
-    yield fork(createTransaction, meta.id, {
+    yield fork(createTransaction, cancelStakedExpenditure.id, {
       context: ClientType.StakedExpenditureClient,
       methodName: 'cancelAndPunish',
       identifier: colonyAddress,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
       params: [
         extensionPermissionDomainId,
         extensionChildSkillIndex,
@@ -64,17 +81,55 @@ function* cancelStakedExpenditure({
       ],
     });
 
-    yield initiateTransaction({ id: meta.id });
-
-    const { type } = yield waitForTxResult(txChannel);
-
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<AllActions>({
-        type: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
-        payload: {},
-        meta,
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateCancelStakedExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 1,
+        },
+        ready: false,
       });
     }
+
+    yield takeFrom(
+      cancelStakedExpenditure.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateCancelStakedExpenditure.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
+    yield initiateTransaction({ id: cancelStakedExpenditure.id });
+
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      cancelStakedExpenditure.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
+
+    yield waitForTxResult(cancelStakedExpenditure.channel);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateCancelStakedExpenditure,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
+    yield put<AllActions>({
+      type: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      payload: {},
+      meta,
+    });
   } catch (error) {
     return yield putError(
       ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR,
@@ -82,8 +137,9 @@ function* cancelStakedExpenditure({
       meta,
     );
   }
-
-  txChannel.close();
+  [cancelStakedExpenditure, annotateCancelStakedExpenditure].forEach(
+    (channel) => channel.channel.close(),
+  );
 
   return null;
 }
@@ -91,6 +147,6 @@ function* cancelStakedExpenditure({
 export default function* cancelStakedExpenditureSaga() {
   yield takeEvery(
     ActionTypes.STAKED_EXPENDITURE_CANCEL,
-    cancelStakedExpenditure,
+    cancelStakedExpenditureAction,
   );
 }
