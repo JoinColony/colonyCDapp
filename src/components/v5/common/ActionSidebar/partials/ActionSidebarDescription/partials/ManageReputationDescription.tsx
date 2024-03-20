@@ -8,6 +8,7 @@ import { ColonyActionType } from '~gql';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
+import { toFinite } from '~utils/lodash.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -61,14 +62,14 @@ const ManageReputationDescription: FC = () => {
           : ColonyActionType.EmitDomainReputationReward,
         initiator: <CurrentUser />,
         reputationChange: formatReputationChange(
-          amount || '0',
+          toFinite(amount),
           getTokenDecimalsWithFallback(
             nativeToken.decimals,
             DEFAULT_TOKEN_DECIMALS,
           ),
         ),
         reputationChangeNumeral: amount ? (
-          <Numeral value={amount} />
+          <Numeral value={toFinite(amount)} />
         ) : (
           formatText({
             id: 'actionSidebar.metadataDescription.anAmount',
