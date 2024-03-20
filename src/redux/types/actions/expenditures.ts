@@ -67,7 +67,6 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         expenditure: Expenditure;
-        annotationMessage?: string;
         userAddress: Address;
       },
       MetaWithSetter<object>
