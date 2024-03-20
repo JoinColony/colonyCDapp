@@ -11,21 +11,16 @@ import { multiLineTextEllipsis } from '~utils/strings/index.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
-import UserAvatarDetails from '~v5/shared/UserAvatarDetails/index.ts';
 
 import { type UserInfoProps } from '../types.ts';
 
 const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
-  userName,
-  isVerified,
-  walletAddress,
   aboutDescription = '',
-  avatar,
   userStatus,
   domains,
-  size,
+  userDetails,
   additionalContent,
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
@@ -49,14 +44,7 @@ const UserInfo: FC<UserInfoProps> = ({
             'mb-6': userStatus === 'general',
           })}
         >
-          <UserAvatarDetails
-            userName={userName}
-            walletAddress={walletAddress}
-            avatar={avatar}
-            size={size}
-            isVerified={isVerified}
-            userStatus={userStatus}
-          />
+          {userDetails}
         </div>
         {isTopContributorType && domains && (
           <>

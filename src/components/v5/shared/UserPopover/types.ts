@@ -1,20 +1,26 @@
+import { type PropsWithChildren } from 'react';
 import { type MessageDescriptor } from 'react-intl';
 import { type PopperOptions } from 'react-popper-tooltip';
 
 import { type DomainWithPermissionsAndReputation } from '~hooks/members/types.ts';
 import { type User } from '~types/graphql.ts';
-import { type AvatarProps } from '~v5/shared/Avatar/types.ts';
-import { type UserAvatarDetailsProps } from '~v5/shared/UserAvatarDetails/types.ts';
+import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 
-export interface UserInfoProps extends AvatarProps, UserAvatarDetailsProps {
+export interface UserInfoProps {
   aboutDescription?: MessageDescriptor | string;
   domains?: DomainWithPermissionsAndReputation[];
+  additionalContent?: JSX.Element | null;
+  userDetails: JSX.Element;
+  userStatus?: UserStatusMode | null;
 }
 
-export interface UserPopoverProps extends UserInfoProps {
+export type UserPopoverProps = PropsWithChildren<{
+  className?: string;
+  userName?: string;
+  walletAddress: string;
+  size: number;
   user?: User | null;
   popperOptions?: PopperOptions;
   isContributorsList?: boolean;
-  additionalContent?: JSX.Element;
   withVerifiedBadge?: boolean;
-}
+}>;

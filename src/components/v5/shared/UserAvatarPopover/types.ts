@@ -1,12 +1,8 @@
-import { type UserAvatarDetailsProps } from '../UserAvatarDetails/types.ts';
-import { type UserPopoverProps } from '../UserPopover/types.ts';
+import { type PopperOptions } from 'react-popper-tooltip';
 
-export interface UserAvatarPopoverProps
-  extends Omit<UserPopoverProps, 'aboutDescription'>,
-    Pick<UserAvatarDetailsProps, 'isContributorsList'> {
+export interface UserAvatarPopoverProps {
+  size: number;
   walletAddress: string;
+  popperOptions?: PopperOptions;
+  userNameClassName?: string;
 }
-
-export type UserAvatarContentProps = UserAvatarPopoverProps & {
-  aboutDescription: string;
-};

@@ -8,8 +8,39 @@ import Link from '~v5/shared/Link/index.ts';
 
 import { type UserAvatarProps } from './types.ts';
 
+import styles from './UserAvatar.module.css';
+import { Avatar2 } from '../Avatar/Avatar.tsx';
+
 const displayName = 'v5.UserAvatar';
 
+interface UserAvatar2Props {
+  className?: string;
+  size: number;
+  userAddress: string;
+  userAvatarSrc?: string;
+  userName?: string;
+}
+
+export const UserAvatar2: FC<UserAvatar2Props> = ({
+  className,
+  size,
+  userAddress,
+  userAvatarSrc,
+  userName,
+}) => {
+  return (
+    <Avatar2
+      className={className}
+      size={size}
+      alt={`Avatar of user ${userName ?? userAddress}`}
+      src={userAvatarSrc}
+      address={userAddress}
+    />
+  );
+};
+// UserAvatar should just be an avatar
+// the border color wrapper should be a separate component that just wraps around the UserAvatar
+// showUsername is used in like 2 places, let's just do it manually
 const UserAvatar: FC<UserAvatarProps> = ({
   avatarSize,
   className,
