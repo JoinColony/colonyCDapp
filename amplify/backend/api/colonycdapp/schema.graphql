@@ -733,9 +733,9 @@ enum ColonyActionType {
   """
   FUND_EXPENDITURE_MOTION
   """
-  An action related to a motion to cancel a staked expenditure
+  An action related to a motion to cancel an expenditure
   """
-  CANCEL_STAKED_EXPENDITURE_MOTION
+  CANCEL_EXPENDITURE_MOTION
   """
   An action related to creating a motion to release an expenditure stage
   """
@@ -750,7 +750,7 @@ enum ColonyActionType {
   MAKE_ARBITRARY_TRANSACTION
   MAKE_ARBITRARY_TRANSACTIONS_MOTION
   """
-  An action related to creating expenditure (dvanced payment) 
+  An action related to creating expenditure (dvanced payment)
   """
   CREATE_EXPENDITURE
 }
@@ -3248,7 +3248,7 @@ type Expenditure @model {
   userStakeId: ID
   """
   User stake associated with the expenditure, if any
-  """	  
+  """
   userStake: UserStake @hasOne(fields: ["userStakeId"])
 }
 

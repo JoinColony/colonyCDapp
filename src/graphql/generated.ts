@@ -373,8 +373,8 @@ export type ColonyActionRolesInput = {
  * These can all happen in a Colony and will be interpreted by the dApp according to their types
  */
 export enum ColonyActionType {
-  /** An action related to a motion to cancel a staked expenditure */
-  CancelStakedExpenditureMotion = 'CANCEL_STAKED_EXPENDITURE_MOTION',
+  /** An action related to a motion to cancel an expenditure */
+  CancelExpenditureMotion = 'CANCEL_EXPENDITURE_MOTION',
   /** An action related to editing a Colony's details */
   ColonyEdit = 'COLONY_EDIT',
   /** An action related to editing a Colony's details via a motion */
@@ -385,7 +385,7 @@ export enum ColonyActionType {
   CreateDomain = 'CREATE_DOMAIN',
   /** An action related to creating a domain within a Colony via a motion */
   CreateDomainMotion = 'CREATE_DOMAIN_MOTION',
-  /** An action related to creating expenditure (dvanced payment)  */
+  /** An action related to creating expenditure (dvanced payment) */
   CreateExpenditure = 'CREATE_EXPENDITURE',
   /** An action related to editing a domain's details */
   EditDomain = 'EDIT_DOMAIN',
