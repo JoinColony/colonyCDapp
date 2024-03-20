@@ -98,8 +98,7 @@ const UserInfo: FC<UserInfoProps> = ({
       )}
       {additionalContent && (
         <div
-          className={clsx({
-            'pt-6': aboutDescriptionText,
+          className={clsx('pt-6', {
             'px-6': isTopContributorType,
           })}
         >
