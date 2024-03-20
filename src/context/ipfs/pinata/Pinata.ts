@@ -1,15 +1,12 @@
-import {
-  PINATA_API_KEY,
-  PINATA_API_SECRET,
-  PINATA_ENDPOINT,
-  JSON_MIME_TYPE,
-} from './constants.ts';
+import { PINATA_ENDPOINT, JSON_MIME_TYPE } from './constants.ts';
 
 class Pinata {
   hasApiAccess: boolean;
 
   constructor() {
-    this.hasApiAccess = !!(PINATA_API_KEY && PINATA_API_SECRET);
+    this.hasApiAccess = !!(
+      import.meta.env.PINATA_API_KEY && import.meta.env.PINATA_API_SECRET
+    );
   }
 
   /**
@@ -40,9 +37,9 @@ class Pinata {
         // @ts-ignore
         headers: {
           // eslint-disable-next-line camelcase
-          pinata_api_key: PINATA_API_KEY,
+          pinata_api_key: import.meta.env.PINATA_API_KEY,
           // eslint-disable-next-line camelcase
-          pinata_secret_api_key: PINATA_API_SECRET,
+          pinata_secret_api_key: import.meta.env.PINATA_API_SECRET,
           'Content-Type': JSON_MIME_TYPE,
         },
         body: potentialJSONBlob,
