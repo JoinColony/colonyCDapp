@@ -1,4 +1,9 @@
-import { type AnyColonyClient, ClientType, Id } from '@colony/colony-js';
+import {
+  ClientType,
+  Id,
+  getPermissionProofs,
+  ColonyRole,
+} from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO, APP_URL } from '~constants/index.ts';
@@ -10,12 +15,10 @@ import {
 } from '~redux/sagas/transactions/index.ts';
 import {
   getColonyManager,
-  getDataForCancelExpenditure,
   initiateTransaction,
   putError,
   takeFrom,
 } from '~redux/sagas/utils/index.ts';
-import { findDomainByNativeId } from '~utils/domains.ts';
 
 function* cancelExpenditureMotion({
   meta,
@@ -36,38 +39,41 @@ function* cancelExpenditureMotion({
       throw new Error('Invalid payload');
     }
 
+    if (colony.version < 15) {
+      throw new Error(
+        'Motions to cancel expenditure are only available in Colony version 15 and above',
+      );
+    }
+
     const colonyManager = yield call(getColonyManager);
-    const colonyClient: AnyColonyClient = yield call(
+    const colonyClient = yield call(
       [colonyManager, colonyManager.getClient],
       ClientType.ColonyClient,
       colony.colonyAddress,
     );
 
-    const params = yield getDataForCancelExpenditure(
-      expenditure,
+    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
       colonyClient,
+      expenditure.nativeDomainId,
+      ColonyRole.Arbitration,
       votingReputationAddress,
     );
 
-    const encodedAction = colonyClient.interface.encodeFunctionData(
-      'setExpenditureState',
-      params,
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      Id.RootDomain,
     );
-
-    // Child skill index is the second param of `setExpenditureState`
-    const childSkillIndex = params[1];
-
-    const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
-    if (!rootDomain) {
-      throw new Error('Root domain not found');
-    }
-
-    const skillId = rootDomain.nativeSkillId;
 
     const { key, value, branchMask, siblings } = yield call(
       [colonyClient, colonyClient.getReputation],
       skillId,
       ADDRESS_ZERO,
+    );
+
+    const encodedAction = colonyClient.interface.encodeFunctionData(
+      'cancelExpenditureViaArbitration',
+      [permissionDomainId, childSkillIndex, expenditure.nativeId],
     );
 
     const batchKey = 'createMotion';
@@ -107,7 +113,7 @@ function* cancelExpenditureMotion({
     const { type } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS>>({
+      yield put({
         type: ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
         meta,
       });
