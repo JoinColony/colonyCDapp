@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useMemberContext } from '~context/MemberContext.tsx';
-import Avatar from '~shared/Avatar/Avatar.tsx';
-import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
+import Avatar from '~shared/Avatar/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { type RecipientFieldProps } from './types.ts';
 
