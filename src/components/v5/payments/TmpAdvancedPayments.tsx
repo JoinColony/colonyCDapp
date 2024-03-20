@@ -1,8 +1,8 @@
 import { Extension, Id } from '@colony/colony-js';
 import React, { useState } from 'react';
 
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type Expenditure, useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';

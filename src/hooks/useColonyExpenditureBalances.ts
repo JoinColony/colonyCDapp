@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyExpendituresQuery } from '~gql';
 import { type Address } from '~types';
 

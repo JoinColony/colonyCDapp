@@ -3,8 +3,8 @@ import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { ADDRESS_ZERO } from '~constants';
-import { useAppContext } from '~context/AppContext.tsx';
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetUserReputationQuery } from '~gql';
 import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
