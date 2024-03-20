@@ -136,7 +136,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
               >
                 <MenuContainer
                   className={clsx(
-                    'max-h-[inherit] w-full max-w-[20rem] !overflow-y-auto bg-base-white',
+                    'max-h-[inherit] w-full max-w-[20rem] !overflow-y-auto overflow-x-hidden bg-base-white',
                     {
                       'p-6': !isTopSectionWithBackground,
                       'overflow-hidden border-2 border-purple-200 ':
