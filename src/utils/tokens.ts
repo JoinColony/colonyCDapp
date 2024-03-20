@@ -89,7 +89,7 @@ export const calculateFee = (
   return {
     feesInWei: feesInWei.toString(),
     totalToPay: totalToPayInWei.toString(),
-  }; // NOTE: seems like moveDecimal does not have strict typing
+  };
 };
 
 export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
