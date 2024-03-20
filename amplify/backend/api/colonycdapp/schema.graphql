@@ -750,7 +750,7 @@ enum ColonyActionType {
   MAKE_ARBITRARY_TRANSACTION
   MAKE_ARBITRARY_TRANSACTIONS_MOTION
   """
-  An action related to creating expenditure (dvanced payment)
+  An action related to creating expenditure (advanced payment)
   """
   CREATE_EXPENDITURE
 }

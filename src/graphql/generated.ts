@@ -385,7 +385,7 @@ export enum ColonyActionType {
   CreateDomain = 'CREATE_DOMAIN',
   /** An action related to creating a domain within a Colony via a motion */
   CreateDomainMotion = 'CREATE_DOMAIN_MOTION',
-  /** An action related to creating expenditure (dvanced payment) */
+  /** An action related to creating expenditure (advanced payment) */
   CreateExpenditure = 'CREATE_EXPENDITURE',
   /** An action related to editing a domain's details */
   EditDomain = 'EDIT_DOMAIN',
