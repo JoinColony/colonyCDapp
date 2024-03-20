@@ -43,7 +43,7 @@ export const calculatePercentageReputation = (
 };
 
 export const formatReputationChange = (
-  reputationChange: string,
+  reputationChange: Decimal.Value,
   decimals: number,
 ) => {
   const absoluteChange = new Decimal(reputationChange).abs();
