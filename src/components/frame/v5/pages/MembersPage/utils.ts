@@ -48,15 +48,15 @@ export const getMembersList = (
       key: contributorAddress,
       userAvatarProps: {
         user,
-        isVerified,
         aboutDescription: bio ?? '',
         userName: displayName ?? contributorAddress,
         avatar: avatar || thumbnail,
         seed: contributorAddress.toLowerCase(),
-        mode: type ? (type.toLowerCase() as UserStatusMode) : undefined,
         domains: getContributorBreakdown(contributor),
         walletAddress: contributorAddress,
       },
+      isVerified,
+      mode: type ? (type.toLowerCase() as UserStatusMode) : undefined,
       reputation: selectedTeamId
         ? reputation?.items?.find((item) => {
             const { domain } = item || {};

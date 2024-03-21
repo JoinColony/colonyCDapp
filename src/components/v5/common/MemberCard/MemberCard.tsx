@@ -14,17 +14,18 @@ import { type MemberCardProps } from './types.ts';
 
 const displayName = 'v5.common.MemberCard';
 
+// @TODO lets get rif of isExtension and try to create a separate component for that
 const MemberCard: FC<MemberCardProps> = ({
   userAvatarProps,
   meatBallMenuProps,
   reputation,
   role,
+  mode,
   isExtension,
+  isVerified,
 }) => {
-  const { userName, isVerified, mode, ...restUserAvatarProps } =
-    userAvatarProps;
+  const { userName, ...restUserAvatarProps } = userAvatarProps;
 
-  // isContributorsList = true alneki
   return (
     <div className="w-full h-full flex flex-col p-5 rounded-lg border border-gray-200 bg-gray-25">
       <div className="w-full flex items-center relative flex-grow justify-center flex-col">
