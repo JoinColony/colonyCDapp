@@ -13,7 +13,7 @@ export const useAmountField = (
   selectedTokenAddress: string | undefined,
   maxWidth: number | undefined,
 ) => {
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const {
     colony,
