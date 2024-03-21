@@ -2742,6 +2742,8 @@ type ColonyAction @model @searchable {
   """
   Whether to show the motion in the actions list
   True for (forced) actions. True for motions if staked above 10%
+  @TODO: Refactor this into more granular fields for better searchability
+  Currently it is impossible to tell the reason for the action being hidden from the actions list
   """
   showInActionsList: Boolean!
   """
@@ -2927,6 +2929,7 @@ type ColonyAction @model @searchable {
   ID of the associated expenditure, if any
   """
   expenditureId: ID
+    @index(name: "byExpenditureId", queryField: "getActionByExpenditureId")
   """
   Expenditure associated with the action, if any
   """
@@ -3262,7 +3265,11 @@ type Expenditure @model {
   @TODO: Make this a non-nullable field once existing data is updated
   """
   transactionHash: ID
-  action: ColonyAction @hasOne(fields: ["transactionHash"])
+  """
+  Actions associated with the expenditure
+  """
+  actions: [ColonyAction!]
+    @hasMany(indexName: "byExpenditureId", fields: ["id"])
   """
   ID of the user stake associated with the expenditure, if any
   """

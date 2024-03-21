@@ -322,6 +322,8 @@ export type ColonyAction = {
   /**
    * Whether to show the motion in the actions list
    * True for (forced) actions. True for motions if staked above 10%
+   * @TODO: Refactor this into more granular fields for better searchability
+   * Currently it is impossible to tell the reason for the action being hidden from the actions list
    */
   showInActionsList: Scalars['Boolean'];
   /** The target Domain of the action, if applicable */
@@ -1885,7 +1887,7 @@ export type DomainMetadataChangelogInput = {
 
 export type Expenditure = {
   __typename?: 'Expenditure';
-  action?: Maybe<ColonyAction>;
+  actions?: Maybe<ModelColonyActionConnection>;
   /** Array containing balances of tokens in the expenditure */
   balances?: Maybe<Array<ExpenditureBalance>>;
   /** The Colony to which the expenditure belongs */
@@ -1931,6 +1933,14 @@ export type Expenditure = {
   userStake?: Maybe<UserStake>;
   /** ID of the user stake associated with the expenditure, if any */
   userStakeId?: Maybe<Scalars['ID']>;
+};
+
+
+export type ExpenditureActionsArgs = {
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -5441,6 +5451,7 @@ export type ProfileMetadataInput = {
 /** Root query type */
 export type Query = {
   __typename?: 'Query';
+  getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getAnnotation?: Maybe<Annotation>;
   getColoniesByNativeTokenId?: Maybe<ModelColonyConnection>;
@@ -5562,6 +5573,16 @@ export type Query = {
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
+};
+
+
+/** Root query type */
+export type QueryGetActionByExpenditureIdArgs = {
+  expenditureId: Scalars['ID'];
+  filter?: InputMaybe<ModelColonyActionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
