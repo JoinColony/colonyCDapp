@@ -36,22 +36,6 @@ On Linux, you'll need to run the following commands to increase the default limi
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
 
-### (Linux only) Increase the limit of watched files
-
-On Linux, you'll need to run the following commands to increase the default limit of watched files. Otherwise, the `watchAmplifyFiles` script will not work properly.
-
-```bash
-echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-```
-
-### (Linux only) Increase the limit of watched files
-
-On Linux, you'll need to run the following commands to increase the default limit of watched files. Otherwise, the `watchAmplifyFiles` script will not work properly.
-
-```bash
-echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-```
-
 ## Running the dev environment
 
 ```bash
