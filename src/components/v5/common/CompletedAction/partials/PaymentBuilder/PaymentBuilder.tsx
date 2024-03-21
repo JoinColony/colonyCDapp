@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type Expenditure, type ColonyAction } from '~types/graphql.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
