@@ -2905,6 +2905,11 @@ type ColonyAction @model @searchable {
   Expenditure associated with the action, if any
   """
   expenditure: Expenditure @hasOne(fields: ["expenditureId"])
+  """
+  Indicates whether the action is a result of a motion being finalized
+  @TODO: Make this field non-nullable
+  """
+  isMotionFinalization: Boolean
 }
 
 type ColonyActionMetadata @model {
