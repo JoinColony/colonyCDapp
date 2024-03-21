@@ -16,9 +16,8 @@ export interface UserInfoProps {
 
 export type UserInfoPopoverProps = PropsWithChildren<{
   className?: string;
-  userName?: string;
+  userName?: string | null;
   walletAddress: string;
-  size: number;
   user?: User | null;
   popperOptions?: PopperOptions;
   withVerifiedBadge?: boolean;

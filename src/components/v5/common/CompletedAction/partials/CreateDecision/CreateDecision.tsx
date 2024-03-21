@@ -5,6 +5,7 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { USER_AVATAR_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -45,6 +46,7 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
             <UserInfoPopover
+              size={USER_AVATAR_SIZE}
               userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}

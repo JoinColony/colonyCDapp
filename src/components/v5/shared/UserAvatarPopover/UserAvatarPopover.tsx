@@ -5,11 +5,11 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ContributorType, useGetColonyContributorQuery } from '~gql';
 import { getColonyContributorId } from '~utils/members.ts';
 
+import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWrapper.tsx';
+import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '../UserInfoPopover/index.ts';
 
 import { type UserAvatarPopoverProps } from './types.ts';
-import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
-import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWrapper.tsx';
 
 const displayName = 'v5.UserAvatarPopover';
 
@@ -37,7 +37,6 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
 
   return (
     <UserInfoPopover
-      size={size}
       walletAddress={walletAddress}
       userName={userDisplayName ?? undefined}
       user={user}
