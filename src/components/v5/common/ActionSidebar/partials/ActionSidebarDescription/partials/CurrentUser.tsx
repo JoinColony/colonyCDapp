@@ -17,7 +17,6 @@ const CurrentUser = () => {
     <UserInfoPopover
       userName={user.profile?.displayName}
       walletAddress={user.walletAddress}
-      aboutDescription={user.profile?.bio || ''}
       user={user}
       withVerifiedBadge={false}
     >

@@ -2,7 +2,7 @@ import { type MemberCardProps } from '../MemberCard/types.ts';
 
 import { type MemberCardPlaceholderProps } from './partials/MemberCardPlaceholder/types.ts';
 
-export interface MemberCardListItem extends Omit<MemberCardProps, 'isSimple'> {
+export interface MemberCardListItem extends MemberCardProps {
   key: string;
 }
 

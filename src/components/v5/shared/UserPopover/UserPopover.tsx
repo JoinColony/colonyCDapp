@@ -2,10 +2,9 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ContributorType, useGetColonyContributorQuery } from '~gql';
+import { useGetColonyContributorQuery } from '~gql';
 import { getColonyContributorId } from '~utils/members.ts';
 
-import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWrapper.tsx';
 import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '../UserInfoPopover/index.ts';
 
@@ -32,7 +31,7 @@ const UserPopover: FC<UserPopoverProps> = ({
   });
 
   const contributor = data?.getColonyContributor;
-  const { user, type: contributorType } = contributor ?? {};
+  const { user } = contributor ?? {};
   const { displayName: userDisplayName } = user?.profile || {};
 
   return (
@@ -46,16 +45,12 @@ const UserPopover: FC<UserPopoverProps> = ({
       popperOptions={popperOptions}
     >
       <div className="flex items-center">
-        <ContributorTypeWrapper
-          contributorType={contributorType || ContributorType.General}
-        >
-          <UserAvatar2
-            size={size}
-            userAvatarSrc={user?.profile?.avatar ?? undefined}
-            userName={displayName ?? undefined}
-            userAddress={walletAddress}
-          />
-        </ContributorTypeWrapper>
+        <UserAvatar2
+          size={size}
+          userAvatarSrc={user?.profile?.avatar ?? undefined}
+          userName={displayName ?? undefined}
+          userAddress={walletAddress}
+        />
         <p
           className={clsx(
             'font-medium truncate text-md ml-2',
