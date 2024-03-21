@@ -273,6 +273,11 @@ export type ColonyAction = {
   initiatorUser?: Maybe<User>;
   /** Will be true if the action is a motion */
   isMotion?: Maybe<Scalars['Boolean']>;
+  /**
+   * Indicates whether the action is a result of a motion being finalized
+   * @TODO: Make this field non-nullable
+   */
+  isMotionFinalization?: Maybe<Scalars['Boolean']>;
   /** Members impacted by the action (used for add/remove verified members) */
   members?: Maybe<Array<Scalars['ID']>>;
   /** Metadata associated with the action (Eg. Custom action title) */
@@ -1106,6 +1111,7 @@ export type CreateColonyActionInput = {
   individualEvents?: InputMaybe<Scalars['String']>;
   initiatorAddress: Scalars['ID'];
   isMotion?: InputMaybe<Scalars['Boolean']>;
+  isMotionFinalization?: InputMaybe<Scalars['Boolean']>;
   members?: InputMaybe<Array<Scalars['ID']>>;
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
@@ -2267,6 +2273,7 @@ export type ModelColonyActionConditionInput = {
   individualEvents?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
+  isMotionFinalization?: InputMaybe<ModelBooleanInput>;
   members?: InputMaybe<ModelIdInput>;
   motionDomainId?: InputMaybe<ModelIntInput>;
   motionId?: InputMaybe<ModelIdInput>;
@@ -2308,6 +2315,7 @@ export type ModelColonyActionFilterInput = {
   individualEvents?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
+  isMotionFinalization?: InputMaybe<ModelBooleanInput>;
   members?: InputMaybe<ModelIdInput>;
   motionDomainId?: InputMaybe<ModelIntInput>;
   motionId?: InputMaybe<ModelIdInput>;
@@ -3445,6 +3453,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   individualEvents?: InputMaybe<ModelSubscriptionStringInput>;
   initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
   isMotion?: InputMaybe<ModelSubscriptionBooleanInput>;
+  isMotionFinalization?: InputMaybe<ModelSubscriptionBooleanInput>;
   members?: InputMaybe<ModelSubscriptionIdInput>;
   motionDomainId?: InputMaybe<ModelSubscriptionIntInput>;
   motionId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -6620,6 +6629,7 @@ export enum SearchableColonyActionAggregateField {
   IndividualEvents = 'individualEvents',
   InitiatorAddress = 'initiatorAddress',
   IsMotion = 'isMotion',
+  IsMotionFinalization = 'isMotionFinalization',
   Members = 'members',
   MotionDomainId = 'motionDomainId',
   MotionId = 'motionId',
@@ -6668,6 +6678,7 @@ export type SearchableColonyActionFilterInput = {
   individualEvents?: InputMaybe<SearchableStringFilterInput>;
   initiatorAddress?: InputMaybe<SearchableIdFilterInput>;
   isMotion?: InputMaybe<SearchableBooleanFilterInput>;
+  isMotionFinalization?: InputMaybe<SearchableBooleanFilterInput>;
   members?: InputMaybe<SearchableIdFilterInput>;
   motionDomainId?: InputMaybe<SearchableIntFilterInput>;
   motionId?: InputMaybe<SearchableIdFilterInput>;
@@ -6708,6 +6719,7 @@ export enum SearchableColonyActionSortableFields {
   IndividualEvents = 'individualEvents',
   InitiatorAddress = 'initiatorAddress',
   IsMotion = 'isMotion',
+  IsMotionFinalization = 'isMotionFinalization',
   Members = 'members',
   MotionDomainId = 'motionDomainId',
   MotionId = 'motionId',
@@ -7858,6 +7870,7 @@ export type UpdateColonyActionInput = {
   individualEvents?: InputMaybe<Scalars['String']>;
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   isMotion?: InputMaybe<Scalars['Boolean']>;
+  isMotionFinalization?: InputMaybe<Scalars['Boolean']>;
   members?: InputMaybe<Array<Scalars['ID']>>;
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
