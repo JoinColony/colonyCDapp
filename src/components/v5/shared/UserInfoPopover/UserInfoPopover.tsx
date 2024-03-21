@@ -10,23 +10,22 @@ import React, {
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetColonyContributorQuery } from '~gql';
+import { ContributorType, useGetColonyContributorQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
 import { getColonyContributorId } from '~utils/members.ts';
-import { ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import UserPopoverAdditionalContent from '../UserPopoverAdditionalContent/index.ts';
-
-import UserInfo from './partials/UserInfo.tsx';
-import { type UserPopoverProps } from './types.ts';
 import UserDetails from '../UserDetails/UserDetails.tsx';
 
-const displayName = 'v5.UserPopover';
+import UserInfo from './partials/UserInfo.tsx';
+import UserNotVerified from './partials/UserNotVerified.tsx';
+import { type UserInfoPopoverProps } from './types.ts';
 
-const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
+const displayName = 'v5.UserInfoPopover';
+
+const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
   className,
   userName,
   walletAddress,
@@ -50,15 +49,13 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       id: getColonyContributorId(colonyAddress, walletAddress),
       colonyAddress,
     },
+    fetchPolicy: 'cache-first',
   });
 
   const contributor = colonyContributorData?.getColonyContributor;
   const { bio } = contributor?.user?.profile || {};
-  const { isVerified } = contributor || {};
+  const { isVerified, type: contributorType } = contributor || {};
   const domains = useContributorBreakdown(contributor);
-
-  const userStatus = (contributor?.type?.toLowerCase() ??
-    null) as ContributorTypeFilter | null;
 
   const onOpenModal = useCallback(() => {
     setIsOpen(true);
@@ -99,7 +96,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   const content = (
     <UserInfo
       aboutDescription={bio || ''}
-      userStatus={userStatus}
+      contributorType={contributorType ?? undefined}
       domains={domains}
       userDetails={
         <UserDetails
@@ -107,13 +104,13 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
           size={size}
           userName={userName}
           userAvatarSrc={avatar ?? undefined}
-          userStatus={userStatus}
           walletAddress={walletAddress}
+          contributorType={contributorType ?? undefined}
         />
       }
       additionalContent={
         !isVerified ? (
-          <UserPopoverAdditionalContent
+          <UserNotVerified
             description={
               <div className="mt-2 font-semibold break-words text-sm pb-2">
                 {user?.walletAddress}
@@ -125,7 +122,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
     />
   );
 
-  const isTopSectionWithBackground = userStatus === ContributorTypeFilter.Top;
+  const isTopSectionWithBackground = contributorType === ContributorType.Top;
 
   return (
     <>
@@ -151,8 +148,8 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
                 rounded: 's',
                 className: clsx('bg-base-white', {
                   'p-6': !isTopSectionWithBackground,
-                  'overflow-hidden border-2 border-purple-200 ':
-                    userStatus === 'top',
+                  'border-2 border-purple-200 overflow-hidden ':
+                    isTopSectionWithBackground,
                 }),
                 hasShadow: true,
               }}
@@ -169,6 +166,6 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
   );
 };
 
-UserPopover.displayName = displayName;
+UserInfoPopover.displayName = displayName;
 
-export default UserPopover;
+export default UserInfoPopover;

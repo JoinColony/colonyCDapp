@@ -23,7 +23,7 @@ import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
 import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
-import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import AgreementCardSkeleton from '../AgreementCardSkeleton.tsx';
 
@@ -111,8 +111,8 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
               />
             )}
           </button>
-          <div className="mt-auto flex items-center justify-between gap-2 border-t border-gray-200 pt-4">
-            <UserPopover
+          <div className="flex items-center justify-between gap-2 pt-4 mt-auto border-t border-gray-200">
+            <UserInfoPopover
               user={user}
               walletAddress={walletAddress}
               withVerifiedBadge={false}
@@ -146,7 +146,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
                       },
                     )}
               </p>
-            </UserPopover>
+            </UserInfoPopover>
             <div className="flex items-center gap-2">
               {currentTeam && (
                 <TeamBadge

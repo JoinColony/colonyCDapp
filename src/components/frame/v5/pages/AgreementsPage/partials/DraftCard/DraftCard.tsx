@@ -29,7 +29,7 @@ import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
-import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 const DraftCard: FC = () => {
   const { colony } = useColonyContext();
@@ -100,8 +100,8 @@ const DraftCard: FC = () => {
             )}
           </button>
         </div>
-        <div className="mt-4 flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-4">
-          <UserPopover
+        <div className="w-full pt-4 mt-4 border-t border-t-gray-200 flex justify-between items-center gap-4">
+          <UserInfoPopover
             user={user}
             userName={user?.profile?.displayName || walletAddress}
             walletAddress={walletAddress}
@@ -133,7 +133,7 @@ const DraftCard: FC = () => {
                     },
                   )}
             </p>
-          </UserPopover>
+          </UserInfoPopover>
           <div className="flex items-center gap-2">
             {currentTeam && (
               <TeamBadge

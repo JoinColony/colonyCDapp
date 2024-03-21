@@ -7,7 +7,7 @@ import { AvatarWithStatusBadge } from '~v5/shared/Avatar/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
 import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import ExtensionStatusBadge from '../Pills/ExtensionStatusBadge/ExtensionStatusBadge.tsx';
 
@@ -25,7 +25,6 @@ const MemberCard: FC<MemberCardProps> = ({
 }) => {
   const { userName, isVerified, mode, ...restUserAvatarProps } =
     userAvatarProps;
-  console.log('dej fakof prou res', userAvatarProps);
 
   return (
     <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5">
@@ -46,7 +45,7 @@ const MemberCard: FC<MemberCardProps> = ({
             />
           </div>
         ) : (
-          <UserPopover
+          <UserInfoPopover
             {...userAvatarProps}
             withVerifiedBadge={false}
             isContributorsList={!isSimple}
@@ -82,7 +81,7 @@ const MemberCard: FC<MemberCardProps> = ({
                 />
               )}
             </p>
-          </UserPopover>
+          </UserInfoPopover>
         )}
         <div
           className={clsx({
