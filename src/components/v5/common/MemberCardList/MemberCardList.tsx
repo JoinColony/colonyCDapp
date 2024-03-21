@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
 import MemberCard from '../MemberCard/MemberCard.tsx';
+import SimpleMemberCard from '../MemberCard/SimpleMemberCard.tsx';
 
 import MemberCardPlaceholder from './partials/MemberCardPlaceholder/index.ts';
 import { type MemberCardListProps } from './types.ts';
@@ -42,7 +43,11 @@ const MemberCardList: FC<MemberCardListProps> = ({
             key={key}
             className={clsx({ 'min-h-[11.5rem]': !isSimple })}
           >
-            <MemberCard isSimple={isSimple} {...item} />
+            {isSimple ? (
+              <SimpleMemberCard {...item} />
+            ) : (
+              <MemberCard {...item} />
+            )}
           </motion.li>
         ))}
         {placeholderCardProps && (

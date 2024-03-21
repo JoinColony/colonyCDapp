@@ -46,7 +46,6 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
             <UserInfoPopover
-              size={USER_AVATAR_SIZE}
               userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}

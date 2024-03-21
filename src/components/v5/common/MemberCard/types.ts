@@ -7,6 +7,5 @@ export interface MemberCardProps {
   meatBallMenuProps: MeatBallMenuProps;
   role?: UserRoleMeta;
   reputation?: number;
-  isSimple?: boolean;
   isExtension?: boolean;
 }

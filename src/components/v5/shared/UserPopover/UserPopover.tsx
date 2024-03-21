@@ -9,13 +9,13 @@ import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWra
 import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '../UserInfoPopover/index.ts';
 
-import { type UserAvatarPopoverProps } from './types.ts';
+import { type UserPopoverProps } from './types.ts';
 
-const displayName = 'v5.UserAvatarPopover';
+const displayName = 'v5.UserPopover';
 
 // AVATAR: ta stvar naj sam nrdi avatar + username je lhk composan in
 // DEFAULT JE BIU xs
-const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
+const UserPopover: FC<UserPopoverProps> = ({
   size,
   popperOptions,
   walletAddress,
@@ -62,13 +62,13 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
             userNameClassName,
           )}
         >
-          {displayName ?? walletAddress}
+          {userDisplayName ?? walletAddress}
         </p>
       </div>
     </UserInfoPopover>
   );
 };
 
-UserAvatarPopover.displayName = displayName;
+UserPopover.displayName = displayName;
 
-export default UserAvatarPopover;
+export default UserPopover;
