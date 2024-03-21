@@ -261,6 +261,8 @@ export type ColonyAction = {
   fromDomain?: Maybe<Domain>;
   /** The source Domain identifier, if applicable */
   fromDomainId?: Maybe<Scalars['ID']>;
+  /** The native ID of the source funding pot, only applicable for MOVE_FUNDS action */
+  fromPotId?: Maybe<Scalars['Int']>;
   /** Unique identifier for the ColonyAction */
   id: Scalars['ID'];
   /** JSON string to pass custom, dynamic event data */
@@ -324,6 +326,8 @@ export type ColonyAction = {
   toDomain?: Maybe<Domain>;
   /** The target Domain identifier, if applicable */
   toDomainId?: Maybe<Scalars['ID']>;
+  /** The native ID of the target funding pot, only applicable for MOVE_FUNDS action */
+  toPotId?: Maybe<Scalars['Int']>;
   /** The Token involved in the action, if applicable */
   token?: Maybe<Token>;
   /** The Ethereum address of the token involved in the action, if applicable */
@@ -1096,6 +1100,7 @@ export type CreateColonyActionInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
+  fromPotId?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
   individualEvents?: InputMaybe<Scalars['String']>;
   initiatorAddress: Scalars['ID'];
@@ -1112,6 +1117,7 @@ export type CreateColonyActionInput = {
   roles?: InputMaybe<ColonyActionRolesInput>;
   showInActionsList: Scalars['Boolean'];
   toDomainId?: InputMaybe<Scalars['ID']>;
+  toPotId?: InputMaybe<Scalars['Int']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
   type: ColonyActionType;
 };
@@ -2259,6 +2265,7 @@ export type ModelColonyActionConditionInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
+  fromPotId?: InputMaybe<ModelIntInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
@@ -2274,6 +2281,7 @@ export type ModelColonyActionConditionInput = {
   recipientAddress?: InputMaybe<ModelIdInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
+  toPotId?: InputMaybe<ModelIntInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyActionTypeInput>;
 };
@@ -2295,6 +2303,7 @@ export type ModelColonyActionFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
+  fromPotId?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
   initiatorAddress?: InputMaybe<ModelIdInput>;
@@ -2311,6 +2320,7 @@ export type ModelColonyActionFilterInput = {
   recipientAddress?: InputMaybe<ModelIdInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
+  toPotId?: InputMaybe<ModelIntInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelColonyActionTypeInput>;
 };
@@ -3430,6 +3440,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
   fromDomainId?: InputMaybe<ModelSubscriptionIdInput>;
+  fromPotId?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   individualEvents?: InputMaybe<ModelSubscriptionStringInput>;
   initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
@@ -3445,6 +3456,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   recipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
   showInActionsList?: InputMaybe<ModelSubscriptionBooleanInput>;
   toDomainId?: InputMaybe<ModelSubscriptionIdInput>;
+  toPotId?: InputMaybe<ModelSubscriptionIntInput>;
   tokenAddress?: InputMaybe<ModelSubscriptionIdInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
 };
@@ -6575,6 +6587,7 @@ export enum SearchableColonyActionAggregateField {
   CreatedAt = 'createdAt',
   ExpenditureId = 'expenditureId',
   FromDomainId = 'fromDomainId',
+  FromPotId = 'fromPotId',
   Id = 'id',
   IndividualEvents = 'individualEvents',
   InitiatorAddress = 'initiatorAddress',
@@ -6589,6 +6602,7 @@ export enum SearchableColonyActionAggregateField {
   RecipientAddress = 'recipientAddress',
   ShowInActionsList = 'showInActionsList',
   ToDomainId = 'toDomainId',
+  ToPotId = 'toPotId',
   TokenAddress = 'tokenAddress',
   Type = 'type',
   UpdatedAt = 'updatedAt'
@@ -6619,6 +6633,7 @@ export type SearchableColonyActionFilterInput = {
   createdAt?: InputMaybe<SearchableStringFilterInput>;
   expenditureId?: InputMaybe<SearchableIdFilterInput>;
   fromDomainId?: InputMaybe<SearchableIdFilterInput>;
+  fromPotId?: InputMaybe<SearchableIntFilterInput>;
   id?: InputMaybe<SearchableIdFilterInput>;
   individualEvents?: InputMaybe<SearchableStringFilterInput>;
   initiatorAddress?: InputMaybe<SearchableIdFilterInput>;
@@ -6635,6 +6650,7 @@ export type SearchableColonyActionFilterInput = {
   recipientAddress?: InputMaybe<SearchableIdFilterInput>;
   showInActionsList?: InputMaybe<SearchableBooleanFilterInput>;
   toDomainId?: InputMaybe<SearchableIdFilterInput>;
+  toPotId?: InputMaybe<SearchableIntFilterInput>;
   tokenAddress?: InputMaybe<SearchableIdFilterInput>;
   type?: InputMaybe<SearchableStringFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
@@ -6655,6 +6671,7 @@ export enum SearchableColonyActionSortableFields {
   CreatedAt = 'createdAt',
   ExpenditureId = 'expenditureId',
   FromDomainId = 'fromDomainId',
+  FromPotId = 'fromPotId',
   Id = 'id',
   IndividualEvents = 'individualEvents',
   InitiatorAddress = 'initiatorAddress',
@@ -6669,6 +6686,7 @@ export enum SearchableColonyActionSortableFields {
   RecipientAddress = 'recipientAddress',
   ShowInActionsList = 'showInActionsList',
   ToDomainId = 'toDomainId',
+  ToPotId = 'toPotId',
   TokenAddress = 'tokenAddress',
   UpdatedAt = 'updatedAt'
 }
@@ -7750,6 +7768,7 @@ export type UpdateColonyActionInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
+  fromPotId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   individualEvents?: InputMaybe<Scalars['String']>;
   initiatorAddress?: InputMaybe<Scalars['ID']>;
@@ -7766,6 +7785,7 @@ export type UpdateColonyActionInput = {
   roles?: InputMaybe<ColonyActionRolesInput>;
   showInActionsList?: InputMaybe<Scalars['Boolean']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
+  toPotId?: InputMaybe<Scalars['Int']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
   type?: InputMaybe<ColonyActionType>;
 };

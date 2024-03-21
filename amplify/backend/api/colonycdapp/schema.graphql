@@ -2818,6 +2818,14 @@ type ColonyAction @model @searchable {
   """
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   """
+  The native ID of the source funding pot, only applicable for MOVE_FUNDS action
+  """
+  fromPotId: Int
+  """
+  The native ID of the target funding pot, only applicable for MOVE_FUNDS action
+  """
+  toPotId: Int
+  """
   The native id of the payment
   """
   paymentId: Int
