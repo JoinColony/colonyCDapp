@@ -62,11 +62,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
           ? () => {
               const selectedTokens = dataRef.current?.reduce(
                 (result: SelectedTokensProps, { amount }) => {
-                  if (!amount) {
-                    return result;
-                  }
-
-                  if (!amount[0].token) {
+                  if (!amount || !amount[0].token) {
                     return result;
                   }
 

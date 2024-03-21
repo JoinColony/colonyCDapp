@@ -4,7 +4,7 @@ import moveDecimal from 'move-decimal-point';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useColonyContext } from '~context/ColonyContext.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';

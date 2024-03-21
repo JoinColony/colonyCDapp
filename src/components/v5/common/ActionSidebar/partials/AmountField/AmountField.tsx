@@ -107,7 +107,7 @@ const AmountField: FC<AmountFieldProps> = ({
     >
       <input
         ref={(ref) => {
-          inputRef.current = ref || undefined;
+          inputRef.current = ref;
           adjustInputWidth();
         }}
         readOnly={readonly || isDisabled}
@@ -127,7 +127,7 @@ const AmountField: FC<AmountFieldProps> = ({
         autoComplete="off"
         onChange={handleFieldChange}
       />
-      <div className="w-full flex-shrink-0 sm:relative" ref={dropdownRef}>
+      <div className="flex-shrink-0 sm:relative" ref={dropdownRef}>
         <button
           type="button"
           ref={relativeElementRef}
