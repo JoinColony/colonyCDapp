@@ -1,6 +1,7 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
+import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
 
@@ -46,6 +47,12 @@ function* releaseExpenditureStage({
   );
 
   try {
+    if (expenditure.status !== ExpenditureStatus.Finalized) {
+      throw new Error(
+        'Expenditure must be finalized in order to release expenditure stage',
+      );
+    }
+
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient.networkClient,
       colonyClient,
