@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import React from 'react';
 
+import { useMobile } from '~hooks';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+
+import StepperTooltip from '../StepperTooltip/StepperTooltip.tsx';
 
 import { ICON_NAME_MAP, StepStage } from './consts.ts';
 import { type StepperButtonProps } from './types.ts';
@@ -18,6 +21,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   ...rest
 }) => {
   const Icon = icon || ICON_NAME_MAP[stage];
+  const isMobile = useMobile();
 
   const content = (
     <button
@@ -54,9 +58,21 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   );
 
   return tooltipProps ? (
-    <Tooltip placement="right" className="!inline-flex" {...tooltipProps}>
-      {content}
-    </Tooltip>
+    <>
+      {isMobile ? (
+        <StepperTooltip tooltipContent={tooltipProps.tooltipContent}>
+          {content}
+        </StepperTooltip>
+      ) : (
+        <Tooltip
+          placement={isMobile ? 'bottom' : 'right'}
+          className="!inline-flex"
+          {...tooltipProps}
+        >
+          {content}
+        </Tooltip>
+      )}
+    </>
   ) : (
     content
   );
