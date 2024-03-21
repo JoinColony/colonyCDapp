@@ -4,33 +4,27 @@ import React, { type FC } from 'react';
 import { formatText } from '~utils/intl.ts';
 import { AvatarWithStatusBadge } from '~v5/shared/Avatar/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
-import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
-import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import ExtensionStatusBadge from '../Pills/ExtensionStatusBadge/ExtensionStatusBadge.tsx';
 
 import { type MemberCardProps } from './types.ts';
 
-const displayName = 'v5.common.MemberCard';
+const displayName = 'v5.common.SimpleMemberCard';
 
-const MemberCard: FC<MemberCardProps> = ({
+const SimpleMemberCard: FC<MemberCardProps> = ({
   userAvatarProps,
   meatBallMenuProps,
-  reputation,
-  role,
   isExtension,
 }) => {
-  const { userName, isVerified, mode, ...restUserAvatarProps } =
-    userAvatarProps;
+  const { userName, isVerified, ...restUserAvatarProps } = userAvatarProps;
 
-  // isContributorsList = true alneki
   return (
     <div className="w-full h-full flex flex-col p-5 rounded-lg border border-gray-200 bg-gray-25">
-      <div className="w-full flex items-center relative flex-grow justify-center flex-col">
+      <div className="w-full flex items-center justify-between gap-4">
         {isExtension ? (
-          <div className="flex items-center justify-between gap-2 truncate">
-            <span className="inline-block w-full truncate text-1">
+          <div className="flex items-center gap-2 justify-between truncate">
+            <span className="inline-block w-full text-1 truncate">
               {userName}
             </span>
             <ExtensionStatusBadge
@@ -45,48 +39,33 @@ const MemberCard: FC<MemberCardProps> = ({
             popperOptions={{
               placement: 'bottom-start',
             }}
-            className="flex items-center text-gray-900 flex-col justify-between flex-grow gap-2 w-full"
+            className="flex items-center text-gray-900 gap-2.5 w-[calc(100%-18px-24px)]"
           >
             <AvatarWithStatusBadge
-              size="m"
-              mode={mode}
+              size="sm"
+              mode={undefined}
               isFilled
               {...restUserAvatarProps}
             />
-            <p className="flex items-center justify-center text-center text-1 max-w-full">
+            <p className="flex items-center justify-center text-center text-1 truncate">
               <span className="truncate inline-block w-full">{userName}</span>
               {isVerified && (
                 <SealCheck
                   size={14}
-                  className="ml-1 flex-shrink-0 text-blue-400"
+                  className="text-blue-400 ml-1 flex-shrink-0"
                 />
               )}
             </p>
           </UserInfoPopover>
         )}
-        <div className="absolute top-0 right-0">
+        <div className="flex-shrink-0">
           <MeatBallMenu withVerticalIcon {...meatBallMenuProps} />
         </div>
       </div>
-      {(reputation !== undefined || role) && (
-        <div className="w-full pt-[.6875rem] mt-[.6875rem] border-t border-t-gray-200 flex items-center justify-between gap-4">
-          {reputation !== undefined && (
-            <ReputationBadge
-              className="min-h-[1.625rem]"
-              reputation={reputation}
-            />
-          )}
-          {role && (
-            <div className="ml-auto">
-              <RolesTooltip role={role} />
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };
 
-MemberCard.displayName = displayName;
+SimpleMemberCard.displayName = displayName;
 
-export default MemberCard;
+export default SimpleMemberCard;

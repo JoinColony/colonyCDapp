@@ -6,7 +6,7 @@ import { type ContributorTypeFilter } from '~v5/common/TableFiltering/types.ts';
 
 import KebapMenu from '../KebapMenu/index.ts';
 import PopoverBase from '../PopoverBase/index.ts';
-import UserAvatarPopover from '../UserAvatarPopover/index.ts';
+import UserPopover from '../UserPopover/index.ts';
 
 import { SubNavigation } from './partials/index.ts';
 import UserStatusComponent from './partials/UserStatus.tsx';
@@ -45,7 +45,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <UserAvatarPopover size={20} walletAddress={walletAddress} />
+            <UserPopover size={20} walletAddress={walletAddress} />
           </div>
           <div className="flex gap-2">
             {userStatus && userStatus !== 'general' && isContributorsList && (

@@ -6,7 +6,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import { USER_AVATAR_SIZE } from '../../consts.ts';
@@ -97,7 +97,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.recipient' })}
           rowContent={
-            <UserAvatarPopover
+            <UserPopover
               walletAddress={action.recipientAddress || ADDRESS_ZERO}
               size={20}
             />

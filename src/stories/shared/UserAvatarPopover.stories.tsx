@@ -1,10 +1,10 @@
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof UserAvatarPopover> = {
+const meta: Meta<typeof UserPopover> = {
   title: 'Shared/User Avatar Popover',
-  component: UserAvatarPopover,
+  component: UserPopover,
   argTypes: {
     user: {
       name: 'User',
@@ -29,7 +29,7 @@ const meta: Meta<typeof UserAvatarPopover> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof UserAvatarPopover>;
+type Story = StoryObj<typeof UserPopover>;
 
 export const Base: Story = {};
 
