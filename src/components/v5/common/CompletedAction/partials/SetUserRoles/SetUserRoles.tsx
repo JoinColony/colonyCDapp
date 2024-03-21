@@ -12,6 +12,7 @@ import { formatText } from '~utils/intl.ts';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { USER_AVATAR_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -84,6 +85,7 @@ const SetUserRoles = ({ action }: Props) => {
           fromDomain: action.fromDomain?.metadata?.name,
           initiator: initiatorUser ? (
             <UserInfoPopover
+              size={USER_AVATAR_SIZE}
               userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
@@ -94,6 +96,7 @@ const SetUserRoles = ({ action }: Props) => {
           ) : null,
           recipient: recipientUser ? (
             <UserInfoPopover
+              size={USER_AVATAR_SIZE}
               userName={recipientUser.profile?.displayName}
               walletAddress={recipientUser.walletAddress}
               user={recipientUser}
@@ -111,7 +114,7 @@ const SetUserRoles = ({ action }: Props) => {
           rowContent={
             <UserAvatarPopover
               walletAddress={action.recipientAddress || ADDRESS_ZERO}
-              size="xs"
+              size={20}
             />
           }
           RowIcon={UserFocus}

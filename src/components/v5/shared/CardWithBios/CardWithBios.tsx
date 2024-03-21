@@ -45,13 +45,8 @@ const CardWithBios: FC<CardWithBiosProps> = ({
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <UserAvatarPopover
-              user={user}
-              walletAddress={walletAddress}
-              isContributorsList={isContributorsList}
-            />
+            <UserAvatarPopover size={20} walletAddress={walletAddress} />
           </div>
-
           <div className="flex gap-2">
             {userStatus && userStatus !== 'general' && isContributorsList && (
               <UserStatusComponent userStatus={userStatus} />

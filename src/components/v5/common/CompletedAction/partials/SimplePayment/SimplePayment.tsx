@@ -9,6 +9,7 @@ import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { USER_AVATAR_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -61,6 +62,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           token: action.token?.symbol,
           recipient: recipientAddress ? (
             <UserInfoPopover
+              size={USER_AVATAR_SIZE}
               userName={recipientUser?.profile?.displayName}
               walletAddress={recipientAddress}
               user={recipientUser}
@@ -72,6 +74,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           ) : null,
           user: initiatorUser ? (
             <UserInfoPopover
+              size={USER_AVATAR_SIZE}
               userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
@@ -96,7 +99,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           rowContent={
             <UserAvatarPopover
               walletAddress={action.recipientAddress || ADDRESS_ZERO}
-              size="xs"
+              size={20}
             />
           }
           RowIcon={UserFocus}

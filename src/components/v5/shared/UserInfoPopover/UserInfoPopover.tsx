@@ -30,7 +30,6 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
   userName,
   walletAddress,
   user,
-  size,
   children,
   popperOptions,
   withVerifiedBadge = true,
@@ -101,7 +100,6 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
       userDetails={
         <UserDetails
           isVerified={isVerified}
-          size={size}
           userName={userName}
           userAvatarSrc={avatar ?? undefined}
           walletAddress={walletAddress}

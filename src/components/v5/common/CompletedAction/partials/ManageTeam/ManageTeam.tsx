@@ -7,6 +7,7 @@ import { formatText } from '~utils/intl.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { USER_AVATAR_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -61,6 +62,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
           team: action.fromDomain?.metadata?.name,
           user: initiatorUser ? (
             <UserInfoPopover
+              size={USER_AVATAR_SIZE}
               userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}

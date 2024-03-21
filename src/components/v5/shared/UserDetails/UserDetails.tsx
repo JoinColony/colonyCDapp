@@ -19,13 +19,13 @@ const getUserStatusMode = (
 ): UserStatusMode => {
   switch (contributorType) {
     case ContributorType.New:
-      return 'active-new';
+      return 'new';
     case ContributorType.Active:
-      return 'active-filled';
+      return 'active';
     case ContributorType.Dedicated:
-      return 'dedicated-filled';
+      return 'dedicated';
     case ContributorType.Top:
-      return 'top-filled';
+      return 'top';
     default:
       return 'general';
   }
@@ -37,7 +37,6 @@ const UserDetails: FC<UserDetailsProps> = ({
   contributorType,
   isVerified,
   userAvatarSrc,
-  size,
 }) => {
   const userStatus = contributorType
     ? getUserStatusMode(contributorType)
@@ -45,36 +44,28 @@ const UserDetails: FC<UserDetailsProps> = ({
 
   return (
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
-      {isVerified ? (
-        <UserAvatar2
-          size={size}
-          userAvatarSrc={userAvatarSrc}
-          userName={userName ?? undefined}
-          userAddress={walletAddress}
-        />
-      ) : (
-        <div className="flex relative justify-center">
-          <ContributorTypeWrapper
-            contributorType={contributorType || ContributorType.General}
-          >
-            <UserAvatar2
-              size={size}
-              userAvatarSrc={userAvatarSrc}
-              userName={userName ?? undefined}
-              userAddress={walletAddress}
+      <div className="flex relative justify-center">
+        <ContributorTypeWrapper
+          contributorType={contributorType || ContributorType.General}
+        >
+          <UserAvatar2
+            size={60}
+            userAvatarSrc={userAvatarSrc}
+            userName={userName ?? undefined}
+            userAddress={walletAddress}
+          />
+        </ContributorTypeWrapper>
+        {!!userStatus && userStatus !== 'general' && (
+          <span className="absolute bottom-[-0.9375rem]">
+            <UserStatus
+              isFilled
+              mode={userStatus}
+              text={formatText({ id: userStatus })}
+              pillSize="small"
             />
-          </ContributorTypeWrapper>
-          {!!userStatus && userStatus !== 'general' && (
-            <span className="absolute bottom-[-0.9375rem]">
-              <UserStatus
-                mode={userStatus}
-                text={formatText({ id: userStatus })}
-                pillSize="small"
-              />
-            </span>
-          )}
-        </div>
-      )}
+          </span>
+        )}
+      </div>
       <div>
         <div className="mb-0.5 grid grid-cols-[auto,1fr] items-center gap-x-2">
           <p className="truncate heading-4">{userName || walletAddress}</p>
