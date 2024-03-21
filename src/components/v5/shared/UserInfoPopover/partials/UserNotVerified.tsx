@@ -3,14 +3,13 @@ import React, { type FC } from 'react';
 import { formatText } from '~utils/intl.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { type UserPopoverAdditionalContentProps } from './types.ts';
+const displayName = 'v5.UserInfoPopover.partials.UserNotVerified';
 
-const displayName = 'v5.UserPopoverAdditionalContent';
-
+export interface UserNotVerifiedProps {
+  description?: React.ReactNode;
+}
 // rename to UserNotVerified??
-const UserPopoverAdditionalContent: FC<UserPopoverAdditionalContentProps> = ({
-  description,
-}) => {
+const UserNotVerified: FC<UserNotVerifiedProps> = ({ description }) => {
   return (
     <NotificationBanner
       status="warning"
@@ -31,6 +30,6 @@ const UserPopoverAdditionalContent: FC<UserPopoverAdditionalContentProps> = ({
   );
 };
 
-UserPopoverAdditionalContent.displayName = displayName;
+UserNotVerified.displayName = displayName;
 
-export default UserPopoverAdditionalContent;
+export default UserNotVerified;

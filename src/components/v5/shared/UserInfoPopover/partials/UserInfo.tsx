@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
+import { ContributorType } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -14,17 +15,17 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { type UserInfoProps } from '../types.ts';
 
-const displayName = 'v5.UserAvatarPopover.partials.UserInfo';
+const displayName = 'v5.UserInfoPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
   aboutDescription = '',
-  userStatus,
+  contributorType,
   domains,
   userDetails,
   additionalContent,
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
-  const isTopContributorType = userStatus === 'top';
+  const isTopContributorType = contributorType === ContributorType.Top;
 
   return (
     <div
@@ -40,8 +41,9 @@ const UserInfo: FC<UserInfoProps> = ({
       >
         <div
           className={clsx({
-            'mb-[2.4375rem]': userStatus && userStatus !== 'general',
-            'mb-6': userStatus === 'general',
+            'mb-[2.4375rem]':
+              !!contributorType && contributorType !== ContributorType.General,
+            'mb-6': contributorType === ContributorType.General,
           })}
         >
           {userDetails}
@@ -53,15 +55,13 @@ const UserInfo: FC<UserInfoProps> = ({
               text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {domains
-                ?.slice(0, 3)
-                .map(({ domainName, domainId }) => (
-                  <UserStatus
-                    key={domainId}
-                    mode="team"
-                    text={multiLineTextEllipsis(domainName, 7)}
-                  />
-                ))}
+              {domains?.slice(0, 3).map(({ domainName, domainId }) => (
+                <UserStatus
+                  key={domainId}
+                  mode="team"
+                  text={multiLineTextEllipsis(domainName, 7)}
+                />
+              ))}
               {domains?.length > 3 && (
                 <UserStatus mode="team" className="!w-auto !max-w-none">
                   +{domains.length - 3}

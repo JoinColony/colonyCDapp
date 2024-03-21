@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import Avatar from '~v5/shared/Avatar/Avatar.tsx';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import {
   ActionDataGrid,
@@ -50,14 +50,14 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
-            <UserPopover
+            <UserInfoPopover
               userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
             >
               {initiatorUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
         })}
       </ActionSubtitle>

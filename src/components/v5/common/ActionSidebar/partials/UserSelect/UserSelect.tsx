@@ -11,7 +11,7 @@ import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import { useUserSelect } from './hooks.ts';
 import { type UserSelectProps } from './types.ts';
@@ -142,7 +142,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
             />
           )}
           {!selectedUser?.isVerified && field.value && (
-            <UserPopover
+            <UserInfoPopover
               userName={userDisplayName}
               walletAddress={userWalletAddress}
               aboutDescription={userByAddress?.profile?.bio || ''}
@@ -150,8 +150,10 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
               className="ml-1"
               size="m"
             >
-              <WarningCircle size={14} className="text-warning-400" />
-            </UserPopover>
+              <span className="flex ml-2 text-warning-400">
+                <WarningCircle size={20} />
+              </span>
+            </UserInfoPopover>
           )}
         </>
       )}

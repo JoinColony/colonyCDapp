@@ -1,66 +1,73 @@
 import { SealCheck } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { ContributorType } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
 
+import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWrapper.tsx';
 import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
-import UserStatusWrapper from '../UserStatusWrapper/UserStatusWrapper.tsx';
 
 import { type UserDetailsProps } from './types.ts';
 
 const displayName = 'v5.UserDetails';
 
+const getUserStatusMode = (
+  contributorType: ContributorType,
+): UserStatusMode => {
+  switch (contributorType) {
+    case ContributorType.New:
+      return 'active-new';
+    case ContributorType.Active:
+      return 'active-filled';
+    case ContributorType.Dedicated:
+      return 'dedicated-filled';
+    case ContributorType.Top:
+      return 'top-filled';
+    default:
+      return 'general';
+  }
+};
+
 const UserDetails: FC<UserDetailsProps> = ({
   userName,
   walletAddress,
-  userStatus,
+  contributorType,
   isVerified,
   userAvatarSrc,
   size,
 }) => {
-  const mode: UserStatusMode =
-    (userStatus === 'new' && 'active-new') ||
-    (userStatus === 'active' && 'active-filled') ||
-    (userStatus === 'dedicated' && 'dedicated-filled') ||
-    (userStatus === 'top' && 'top-filled') ||
-    'general';
-
-  const getUserAvatarWrapper = () => {
-    const userAvatar = (
-      <UserAvatar2
-        size={size}
-        userAvatarSrc={userAvatarSrc}
-        userName={userName ?? undefined}
-        userAddress={walletAddress}
-      />
-    );
-    if (mode === 'general') {
-      return userAvatar;
-    }
-
-    return (
-      <UserStatusWrapper userStatus={mode}>{userAvatar}</UserStatusWrapper>
-    );
-  };
+  const userStatus = contributorType
+    ? getUserStatusMode(contributorType)
+    : undefined;
 
   return (
-    <div className="grid grid-cols-[auto,1fr] items-center gap-x-4">
-      {!!userStatus && userStatus === 'verified' ? (
+    <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
+      {isVerified ? (
         <UserAvatar2
           size={size}
           userAvatarSrc={userAvatarSrc}
+          userName={userName ?? undefined}
           userAddress={walletAddress}
         />
       ) : (
         <div className="flex relative justify-center">
-          {getUserAvatarWrapper()}
+          <ContributorTypeWrapper
+            contributorType={contributorType || ContributorType.General}
+          >
+            <UserAvatar2
+              size={size}
+              userAvatarSrc={userAvatarSrc}
+              userName={userName ?? undefined}
+              userAddress={walletAddress}
+            />
+          </ContributorTypeWrapper>
           {!!userStatus && userStatus !== 'general' && (
             <span className="absolute bottom-[-0.9375rem]">
               <UserStatus
-                mode={mode}
+                mode={userStatus}
                 text={formatText({ id: userStatus })}
                 pillSize="small"
               />

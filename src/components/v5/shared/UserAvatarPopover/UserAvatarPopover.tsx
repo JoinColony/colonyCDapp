@@ -2,14 +2,14 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetColonyContributorQuery } from '~gql';
+import { ContributorType, useGetColonyContributorQuery } from '~gql';
 import { getColonyContributorId } from '~utils/members.ts';
 
-import UserPopover from '../UserPopover/index.ts';
+import UserInfoPopover from '../UserInfoPopover/index.ts';
 
 import { type UserAvatarPopoverProps } from './types.ts';
 import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
-import UserStatusWrapper from '../UserStatusWrapper/UserStatusWrapper.tsx';
+import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWrapper.tsx';
 
 const displayName = 'v5.UserAvatarPopover';
 
@@ -32,37 +32,11 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
   });
 
   const contributor = data?.getColonyContributor;
-  const { user } = contributor ?? {};
+  const { user, type: contributorType } = contributor ?? {};
   const { displayName: userDisplayName } = user?.profile || {};
 
-  const userStatus = contributor?.type;
-
-  const getUserAvatarWrapper = () => {
-    const userAvatar = (
-      <UserAvatar2
-        size={size}
-        userAvatarSrc={user?.profile?.avatar ?? undefined}
-        userName={displayName ?? undefined}
-        userAddress={walletAddress}
-      />
-    );
-    if (userStatus === null || userStatus === undefined) {
-      return userAvatar;
-    }
-
-    if (userStatus === 'general') {
-      return userAvatar;
-    }
-
-    return (
-      <UserStatusWrapper userStatus={userStatus}>
-        {userAvatar}
-      </UserStatusWrapper>
-    );
-  };
-
   return (
-    <UserPopover
+    <UserInfoPopover
       size={size}
       walletAddress={walletAddress}
       userName={userDisplayName ?? undefined}
@@ -73,7 +47,16 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
       popperOptions={popperOptions}
     >
       <div className="flex items-center">
-        {getUserAvatarWrapper()}
+        <ContributorTypeWrapper
+          contributorType={contributorType || ContributorType.General}
+        >
+          <UserAvatar2
+            size={size}
+            userAvatarSrc={user?.profile?.avatar ?? undefined}
+            userName={displayName ?? undefined}
+            userAddress={walletAddress}
+          />
+        </ContributorTypeWrapper>
         <p
           className={clsx(
             'font-medium truncate text-md ml-2',
@@ -83,7 +66,7 @@ const UserAvatarPopover: FC<UserAvatarPopoverProps> = ({
           {displayName ?? walletAddress}
         </p>
       </div>
-    </UserPopover>
+    </UserInfoPopover>
   );
 };
 
