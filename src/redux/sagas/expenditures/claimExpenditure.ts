@@ -9,12 +9,12 @@ export type ClaimExpenditurePayload =
 
 export function* claimExpenditure({
   meta,
-  payload: { colonyAddress, nativeExpenditureId, claimableSlots },
+  payload: { colonyAddress, nativeExpenditureId, claimablePayouts },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
   try {
     yield claimExpenditurePayouts({
       colonyAddress,
-      claimableSlots,
+      claimablePayouts,
       metaId: meta.id,
       nativeExpenditureId,
     });
