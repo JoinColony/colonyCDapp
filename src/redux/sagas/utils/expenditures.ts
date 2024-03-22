@@ -5,14 +5,13 @@ import { all, fork } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
-  type ExpenditureSlot,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
-  type ExpenditurePayout,
 } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { type Address } from '~types';
 import {
+  type ExpenditurePayoutWithSlotId,
   type ExpenditurePayoutFieldValue,
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
@@ -180,50 +179,23 @@ export const getPayoutsWithSlotIds = (
   }));
 };
 
-type PayoutWithSlotId = ExpenditurePayout & {
-  slotId: number;
-};
-
-// @TODO: This is wrong as it's not considering finalization timestamp
-export const getImmediatelyClaimableSlots = (slots: ExpenditureSlot[]) => {
-  return slots.filter(
-    (slot) =>
-      slot.claimDelay !== null &&
-      slot.claimDelay !== undefined &&
-      BigNumber.from(slot.claimDelay).eq(0),
-  );
-};
-
-const getPayoutsWithSlotIdsFromSlots = (
-  claimableSlots: ExpenditureSlot[],
-): PayoutWithSlotId[] => {
-  return claimableSlots.flatMap((slot) =>
-    (slot.payouts || []).map((payout) => ({
-      ...payout,
-      slotId: slot.id,
-    })),
-  );
-};
+const getPayoutChannelId = (payout: ExpenditurePayoutWithSlotId) =>
+  `${payout.slotId}-${payout.tokenAddress}`;
 
 interface ClaimExpendituresPayoutsParams {
   colonyAddress: Address;
   nativeExpenditureId: number;
-  claimableSlots: ExpenditureSlot[];
+  claimablePayouts: ExpenditurePayoutWithSlotId[];
   metaId: string;
 }
-
-const getPayoutChannelId = (payout: PayoutWithSlotId) =>
-  `${payout.slotId}-${payout.tokenAddress}`;
 
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
 export function* claimExpenditurePayouts({
   colonyAddress,
-  claimableSlots,
+  claimablePayouts,
   nativeExpenditureId,
   metaId,
 }: ClaimExpendituresPayoutsParams) {
-  const claimablePayouts = getPayoutsWithSlotIdsFromSlots(claimableSlots);
-
   if (claimablePayouts.length === 0) {
     return;
   }

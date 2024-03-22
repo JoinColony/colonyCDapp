@@ -5,6 +5,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
@@ -24,6 +25,7 @@ import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expend
 import { type ExpenditureCancelMotionPayload } from '~redux/types/actions/motion.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import { ActionButton } from '~v5/shared/Button/index.ts';
@@ -121,6 +123,8 @@ const TmpAdvancedPayments = () => {
     success: ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
   });
 
+  const blockTime = useCurrentBlockTime();
+
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   if (!rootDomain) {
     return null;
@@ -202,39 +206,20 @@ const TmpAdvancedPayments = () => {
     await finalizeExpenditure(finalizePayload);
   };
 
-  const handleFinalizeWithoutClaiming = async () => {
-    if (!expenditure) {
-      return;
-    }
-
-    const finalizePayload: FinalizeExpenditurePayload = {
-      colonyAddress: colony.colonyAddress,
-      expenditure: {
-        ...expenditure,
-        slots: [],
-      },
-      userAddress: user?.walletAddress ?? '',
-    };
-
-    await finalizeExpenditure(finalizePayload);
-  };
-
   const handleClaimExpenditure = async () => {
-    if (!expenditure) {
+    if (!expenditure || !blockTime) {
       return;
     }
 
-    const finalizePayload: FinalizeExpenditurePayload = {
-      colonyAddress: colony.colonyAddress,
-      expenditure,
-      userAddress: user?.walletAddress ?? '',
-    };
-
-    await finalizeExpenditure(finalizePayload);
+    const claimablePayouts = getClaimableExpenditurePayouts(
+      expenditure.slots,
+      blockTime,
+      expenditure.finalizedAt,
+    );
 
     const claimPayload: ClaimExpenditurePayload = {
       colonyAddress: colony.colonyAddress,
-      claimableSlots: expenditure.slots,
+      claimablePayouts,
       nativeExpenditureId: Number(expenditureId),
     };
     await claimExpenditure(claimPayload);
@@ -435,9 +420,6 @@ const TmpAdvancedPayments = () => {
             Fund
           </Button>
           <Button onClick={handleFinalizeExpenditure}>Finalize</Button>
-          <Button onClick={handleFinalizeWithoutClaiming}>
-            Finalize without auto claim
-          </Button>
           <Button onClick={handleClaimExpenditure}>Claim</Button>
           <Button onClick={handleReclaimStake}>Reclaim stake</Button>
           <Button onClick={handleCancelAndPunish} disabled={!expenditure}>
