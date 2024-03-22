@@ -19,6 +19,7 @@ export const getMembersList = (
       isVerified,
       roles,
       reputation,
+      type,
     } = contributor;
     const { items } = roles || {};
     const hasRoleInTeam = items?.some((item) => {
@@ -52,6 +53,7 @@ export const getMembersList = (
           })?.reputationPercentage
         : colonyReputationPercentage,
       role: permissionRole,
+      contributorType: type ?? undefined,
     };
   });
 };

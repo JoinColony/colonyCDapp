@@ -30,8 +30,8 @@ const PermissionsPage: FC = () => {
   const resolvedMultisigPath = useResolvedPath(COLONY_MULTISIG_ROUTE);
   const [activeTab, setActiveTab] = useState(PermissionType.Individual);
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
-  const { individualMembers, isLoading } = useGetMembersForPermissions();
-  const individualMembersCount = Object.values(individualMembers).reduce(
+  const { itemsByRole, isLoading } = useGetMembersForPermissions();
+  const individualMembersCount = Object.values(itemsByRole).reduce(
     (acc, members) => acc + members.length,
     0,
   );

@@ -3,10 +3,12 @@ import { type Icon } from '@phosphor-icons/react';
 
 import { type UserRole } from '~constants/permissions.ts';
 
+import { type ExtensionRowItem, type MemberRowItem } from '../types.ts';
+
 export interface PermissionPageRowProps {
   title: string;
   description: string;
-  members: PermissionPageRowItem[];
+  items: Array<MemberRowItem | ExtensionRowItem>;
   isLoading?: boolean;
   isMultiSig?: boolean;
 }

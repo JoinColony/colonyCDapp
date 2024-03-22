@@ -11,10 +11,9 @@ import PermissionsPageContent from './partials/PermissionsPageContent.tsx';
 import PermissionsPageRow from './partials/PermissionsPageRow.tsx';
 
 const IndividualPermissionsPage = () => {
-  const { individualMembers, filters, isLoading } =
-    useGetMembersForPermissions();
-  const emptyMembers = Object.keys(individualMembers).every(
-    (role) => individualMembers[role].length === 0,
+  const { itemsByRole, filters, isLoading } = useGetMembersForPermissions();
+  const emptyMembers = Object.keys(itemsByRole).every(
+    (role) => itemsByRole[role].length === 0,
   );
 
   return (
@@ -36,17 +35,17 @@ const IndividualPermissionsPage = () => {
             description={formatText({
               id: `permissionsPage.${role.toLowerCase()}`,
             })}
-            members={[]}
+            items={[]}
             isLoading={isLoading}
           />
         ))}
       {!isLoading &&
-        Object.keys(individualMembers).map((role) => (
+        Object.keys(itemsByRole).map((role) => (
           <PermissionsPageRow
             key={role}
             title={capitalize(role)}
             description={formatText({ id: `permissionsPage.${role}` })}
-            members={individualMembers[role]}
+            items={itemsByRole[role]}
             isLoading={isLoading}
           />
         ))}
