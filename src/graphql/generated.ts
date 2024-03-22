@@ -1383,7 +1383,6 @@ export type CreateExpenditureInput = {
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlotInput>;
   status: ExpenditureStatus;
-  transactionHash?: InputMaybe<Scalars['ID']>;
   type: ExpenditureType;
   userStakeId?: InputMaybe<Scalars['ID']>;
 };
@@ -1919,11 +1918,6 @@ export type Expenditure = {
   slots: Array<ExpenditureSlot>;
   /** Status of the expenditure */
   status: ExpenditureStatus;
-  /**
-   * Hash of the `ExpenditureAdded` event transaction
-   * @TODO: Make this a non-nullable field once existing data is updated
-   */
-  transactionHash?: Maybe<Scalars['ID']>;
   type: ExpenditureType;
   updatedAt: Scalars['AWSDateTime'];
   /** User stake associated with the expenditure, if any */
@@ -2979,7 +2973,6 @@ export type ModelExpenditureConditionInput = {
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
-  transactionHash?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
   userStakeId?: InputMaybe<ModelIdInput>;
 };
@@ -3004,7 +2997,6 @@ export type ModelExpenditureFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
-  transactionHash?: InputMaybe<ModelIdInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
   userStakeId?: InputMaybe<ModelIdInput>;
 };
@@ -3721,7 +3713,6 @@ export type ModelSubscriptionExpenditureFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelSubscriptionIdInput>;
   status?: InputMaybe<ModelSubscriptionStringInput>;
-  transactionHash?: InputMaybe<ModelSubscriptionIdInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
   userStakeId?: InputMaybe<ModelSubscriptionIdInput>;
 };
@@ -8060,7 +8051,6 @@ export type UpdateExpenditureInput = {
   ownerAddress?: InputMaybe<Scalars['ID']>;
   slots?: InputMaybe<Array<ExpenditureSlotInput>>;
   status?: InputMaybe<ExpenditureStatus>;
-  transactionHash?: InputMaybe<Scalars['ID']>;
   type?: InputMaybe<ExpenditureType>;
   userStakeId?: InputMaybe<Scalars['ID']>;
 };

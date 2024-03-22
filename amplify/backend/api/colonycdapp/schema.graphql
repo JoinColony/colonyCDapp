@@ -3253,11 +3253,6 @@ type Expenditure @model {
   isStaked: Boolean!
   type: ExpenditureType!
   """
-  Hash of the `ExpenditureAdded` event transaction
-  @TODO: Make this a non-nullable field once existing data is updated
-  """
-  transactionHash: ID
-  """
   Actions associated with the expenditure
   """
   actions: [ColonyAction!]
