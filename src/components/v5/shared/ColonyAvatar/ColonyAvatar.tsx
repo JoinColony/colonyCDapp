@@ -11,6 +11,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
   colonyAddress,
   chainIcon: Icon,
   colonyImageSrc,
+  colonyName,
   size,
   className,
 }) => {
@@ -23,7 +24,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
     >
       <Avatar2
         size={size}
-        alt="colony-avatar"
+        alt={`Avatar of colony ${colonyName ?? colonyAddress}`}
         src={colonyImageSrc}
         address={colonyAddress}
       />

@@ -26,7 +26,7 @@ export const Avatar2: FC<AvatarProps2> = ({
     <img
       className={clsx('rounded-full bg-cover', className)}
       src={source}
-      alt={alt}
+      alt={alt ?? `Avatar of ${address}`}
       style={{
         width: size,
         height: size,

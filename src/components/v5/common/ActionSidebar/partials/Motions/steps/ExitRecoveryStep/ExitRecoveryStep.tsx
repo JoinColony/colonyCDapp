@@ -5,12 +5,12 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import MemberSignature from '~v5/common/MemberSignature/MemberSignature.tsx';
-import { Avatar2 } from '~v5/shared/Avatar/Avatar.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { membersList } from './consts.ts';
 
@@ -61,10 +61,10 @@ const ExitRecoveryStep: FC = () => {
                         ({ hasSigned, userName, address, key }) => (
                           <li key={key} className="mb-3 last:mb-0">
                             <MemberSignature hasSigned={hasSigned}>
-                              <Avatar2
-                                alt={`${userName} avatar}`}
+                              <UserAvatar2
                                 size={20}
-                                address={address}
+                                userAddress={address}
+                                userName={userName}
                               />
                             </MemberSignature>
                           </li>

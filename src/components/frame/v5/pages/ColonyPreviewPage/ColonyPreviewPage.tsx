@@ -217,6 +217,7 @@ const ColonyPreviewPage = () => {
                 colonyMetadata?.thumbnail || colonyMetadata?.avatar || undefined
               }
               colonyAddress={colonyAddress || ADDRESS_ZERO}
+              colonyName={colonyDisplayName}
               size={24}
             />
             <h1 className="inline text-md font-medium">{colonyDisplayName}</h1>
