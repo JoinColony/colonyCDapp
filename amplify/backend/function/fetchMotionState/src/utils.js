@@ -285,6 +285,7 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const updatedStateHistory = {
     ...motionStateHistory,
     [flag]: true,
+    endedAt: flag === 'hasFailed' || flag === 'hasPassed' || flag === 'hasFailedNotFinalizable' ? new Date().toISOString() : null,
   };
 
   const messageKeys = new Set(messages.items.map((m) => m.messageKey));
@@ -292,9 +293,6 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const newMessagesPromises = motionMessages
     .filter((message) => !messageKeys.has(`${motionData.id}_${message}`))
     .map((message) => {
-      if (message === 'MotionHasPassed' || message === 'MotionHasFailed' || message === 'MotionHasFailedFinalizable') {
-        updatedStateHistory.endedAt = new Date().toISOString();
-      }
       return graphqlRequest(createMotionMessage, {
         input: {
           initiatorAddress: constants.AddressZero,
