@@ -76,6 +76,7 @@ const ColonyDetailsPage: FC = () => {
             size={60}
             colonyAddress={colonyAddress}
             colonyImageSrc={thumbnail || avatar || undefined}
+            colonyName={colonyDisplayName}
           />
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-row items-end gap-3">

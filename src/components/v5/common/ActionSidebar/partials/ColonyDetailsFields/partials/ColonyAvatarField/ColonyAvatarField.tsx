@@ -10,7 +10,6 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 import { useGetUploaderText } from '~v5/common/AvatarUploader/hooks.ts';
 import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload.tsx';
-import { Avatar2 } from '~v5/shared/Avatar/Avatar.tsx';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -47,12 +46,12 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
 
   return (
     <>
-      <div className="mr-2 flex shrink-0">
-        <Avatar2
-          src={field.value?.image}
-          address={colonyAddress}
+      <div className="flex mr-2 shrink-0">
+        <ColonyAvatar
+          colonyImageSrc={field.value?.image}
+          colonyAddress={colonyAddress}
+          colonyName={colonyName}
           size={20}
-          alt={`${colonyName} avatar`}
         />
       </div>
       {!readonly && (
@@ -100,6 +99,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
                   size={60}
                   colonyImageSrc={modalValue?.image}
                   colonyAddress={colonyAddress}
+                  colonyName={colonyName}
                 />
               )}
             </div>

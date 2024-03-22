@@ -33,7 +33,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
   const {
-    colony: { metadata, chainMetadata, colonyAddress },
+    colony: { name, metadata, chainMetadata, colonyAddress },
     colony,
   } = useColonyContext();
   const { chainId } = chainMetadata;
@@ -75,6 +75,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
             : undefined,
           chainIcon,
           colonyAddress,
+          colonyName: metadata?.displayName || name,
         },
         content: {
           title: formatText({ id: 'navigation.colonySwitcher.title' }),
