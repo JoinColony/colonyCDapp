@@ -1,14 +1,11 @@
 import { type StreamingPaymentEndCondition } from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
+  type ExpenditurePayoutWithSlotId,
   type ExpenditurePayoutFieldValue,
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
-import {
-  type Domain,
-  type Expenditure,
-  type ExpenditureSlot,
-} from '~types/graphql.ts';
+import { type Domain, type Expenditure } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
 import {
@@ -114,7 +111,7 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
-        claimableSlots: ExpenditureSlot[];
+        claimablePayouts: ExpenditurePayoutWithSlotId[];
       },
       MetaWithSetter<object>
     >

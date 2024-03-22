@@ -13,7 +13,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  getImmediatelyClaimableSlots,
   claimExpenditurePayouts,
   getColonyManager,
   initiateTransaction,
@@ -122,17 +121,18 @@ function* releaseExpenditureStage({
       });
     }
     const slotToClaim = expenditure.slots.find((slot) => slot.id === slotId);
-    // Should never be undefined, but still
-    if (slotToClaim) {
-      const claimableSlots = getImmediatelyClaimableSlots([slotToClaim]);
+    const payoutsWithSlotIds =
+      slotToClaim?.payouts?.map((payout) => ({
+        ...payout,
+        slotId,
+      })) ?? [];
 
-      yield claimExpenditurePayouts({
-        colonyAddress,
-        claimableSlots,
-        metaId: meta.id,
-        nativeExpenditureId: expenditure.nativeId,
-      });
-    }
+    yield claimExpenditurePayouts({
+      colonyAddress,
+      claimablePayouts: payoutsWithSlotIds,
+      metaId: meta.id,
+      nativeExpenditureId: expenditure.nativeId,
+    });
 
     yield put<AllActions>({
       type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
