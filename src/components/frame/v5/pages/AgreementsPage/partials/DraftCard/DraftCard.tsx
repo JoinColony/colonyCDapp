@@ -25,10 +25,10 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
-import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
+import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 const DraftCard: FC = () => {
@@ -103,24 +103,29 @@ const DraftCard: FC = () => {
         <div className="w-full pt-4 mt-4 border-t border-t-gray-200 flex justify-between items-center gap-4">
           <UserInfoPopover
             user={user}
-            userName={user?.profile?.displayName || walletAddress}
             walletAddress={walletAddress}
             withVerifiedBadge={false}
-            className={clsx('flex items-center sm:gap-2', {
-              'pointer-events-none': loading,
-            })}
+            popperOptions={{
+              placement: 'bottom-start',
+            }}
+            className={clsx(
+              'flex items-center sm:gap-2 text-gray-600 sm:hover:text-blue-400',
+              {
+                'pointer-events-none': loading,
+              },
+            )}
           >
-            <Avatar
-              seed={walletAddress?.toLowerCase()}
-              title={user?.profile?.displayName || walletAddress}
-              avatar={user?.profile?.thumbnail || user?.profile?.avatar}
-              size="sm"
+            <UserAvatar2
+              size={30}
+              userAvatarSrc={user?.profile?.avatar ?? undefined}
+              userAddress={walletAddress}
+              userName={user?.profile?.displayName ?? undefined}
               className={clsx({
                 'skeleton before:rounded-full': loading,
               })}
             />
             <p
-              className={clsx('hidden text-sm text-gray-600 sm:inline-block', {
+              className={clsx('text-sm text-gray-600 hidden sm:inline-block', {
                 skeleton: loading,
               })}
             >

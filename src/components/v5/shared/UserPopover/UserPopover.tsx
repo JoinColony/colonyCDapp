@@ -37,7 +37,6 @@ const UserPopover: FC<UserPopoverProps> = ({
   return (
     <UserInfoPopover
       walletAddress={walletAddress}
-      userName={userDisplayName ?? undefined}
       user={user}
       className={clsx({
         skeleton: loading,

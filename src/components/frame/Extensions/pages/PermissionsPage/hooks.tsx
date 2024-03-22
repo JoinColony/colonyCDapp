@@ -32,7 +32,6 @@ import Link from '~v5/shared/Link/index.ts';
 
 import {
   type RolePermissionFilters,
-  type GroupedByPermissionMembersProps,
   type PermissionsPageFilterProps,
   type PermissionsPageFilters,
 } from './partials/types.ts';
@@ -158,167 +157,180 @@ export const useGetMembersForPermissions = () => {
 
   const mappedExtensions = useMemo(
     () =>
-      allExtensions.map((extension) => ({
-        key: extension.extensionId,
-        role: getRole(extension.neededColonyPermissions),
-        isExtension: true,
-        userAvatarProps: {
-          userName: formatText(extension.name),
-          isVerified: false,
-        },
-        meatBallMenuProps: {
-          contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
-            '!left-6 right-6': isMobile,
-          }),
-          dropdownPlacementProps: {
-            withAutoTopPlacement: true,
-            top: 12,
-          },
-          items: [
-            {
-              key: '1',
-              icon: PuzzlePiece,
-              label: formatText({ id: 'permissionsPage.viewExtension' }),
-              renderItemWrapper: (props, children) => (
-                <Link
-                  to={`/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extension.extensionId}`}
-                  {...props}
-                  className={clsx(props.className, 'md:hover:!text-inherit')}
-                >
-                  {children}
-                </Link>
-              ),
+      allExtensions.reduce(
+        (extensionMap, extension) => ({
+          ...extensionMap,
+          [extension.extensionId]: {
+            key: extension.extensionId,
+            role: getRole(extension.neededColonyPermissions),
+            isExtension: true,
+            name: formatText(extension.name),
+            meatBallMenuProps: {
+              contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
+                '!left-6 right-6': isMobile,
+              }),
+              dropdownPlacementProps: {
+                withAutoTopPlacement: true,
+                top: 12,
+              },
+              items: [
+                {
+                  key: '1',
+                  icon: PuzzlePiece,
+                  label: formatText({ id: 'permissionsPage.viewExtension' }),
+                  renderItemWrapper: (props, children) => (
+                    <Link
+                      to={`/${colony.name}/${COLONY_EXTENSIONS_ROUTE}/${extension.extensionId}`}
+                      {...props}
+                      className={clsx(
+                        props.className,
+                        'md:hover:!text-inherit',
+                      )}
+                    >
+                      {children}
+                    </Link>
+                  ),
+                },
+                // @TODO: Uncomment when not installed extension address will be known
+                // {
+                //   key: '2',
+                //   icon: <Pencil size={16} />,
+                //   label: formatText({ id: 'permissionsPage.managePermissions' }),
+                //   onClick: () => {
+                //     toggleActionSidebarOn({
+                //       [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+                //       member: extension.address,
+                //     });
+                //   },
+                // },
+              ],
             },
-            // @TODO: Uncomment when not installed extension address will be known
-            // {
-            //   key: '2',
-            //   icon: <Pencil size={16} />,
-            //   label: formatText({ id: 'permissionsPage.managePermissions' }),
-            //   onClick: () => {
-            //     toggleActionSidebarOn({
-            //       [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
-            //       member: extension.address,
-            //     });
-            //   },
-            // },
-          ],
-        },
-      })),
+          },
+        }),
+        {},
+      ),
     [allExtensions, colony.name, isMobile],
   );
   const mappedMembers = useMemo(
     () =>
-      membersList.map((member) => ({
-        ...member,
-        key: member.userAvatarProps.walletAddress,
-        meatBallMenuProps: {
-          contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
-            '!left-6 right-6': isMobile,
-          }),
-          dropdownPlacementProps: {
-            withAutoTopPlacement: true,
-            top: 12,
-          },
-          items: [
-            // @BETA: Disabled for now
-            // {
-            //   key: '1',
-            //   icon: 'pencil',
-            //   label: formatText({ id: 'membersPage.memberNav.manageMember' }),
-            //   onClick: () => {
-            //     setUser(userAvatarProps.user);
-            //     setIsMemberModalOpen(true);
-            //   },
-            // },
-            {
-              key: '2',
-              icon: HandCoins,
-              label: formatText({
-                id: 'membersPage.memberNav.makePayment',
+      membersList.reduce(
+        (memberMap, member) => ({
+          ...memberMap,
+          [member.userAvatarProps.walletAddress]: {
+            ...member,
+            key: member.userAvatarProps.walletAddress,
+            meatBallMenuProps: {
+              contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
+                '!left-6 right-6': isMobile,
               }),
-              onClick: () =>
-                toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-                  recipient: member.userAvatarProps.walletAddress,
-                }),
-            },
-            {
-              key: '5',
-              icon: Pencil,
-              label: formatText({
-                id: 'permissionsPage.managePermissions',
-              }),
-              onClick: () => {
-                toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
-                  member: member.userAvatarProps.walletAddress,
-                });
+              dropdownPlacementProps: {
+                withAutoTopPlacement: true,
+                top: 12,
               },
-            },
-            ...(member.userAvatarProps.walletAddress
-              ? [
-                  {
-                    key: '3',
-                    icon: ArrowSquareOut,
-                    label: formatText(
-                      { id: 'membersPage.memberNav.viewOn' },
-                      {
-                        networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
-                      },
-                    ),
-                    renderItemWrapper: (props, children) => (
-                      <Link
-                        to={getBlockExplorerLink({
-                          linkType: 'address',
-                          addressOrHash: member.userAvatarProps.walletAddress,
-                        })}
-                        {...props}
-                        className={clsx(
-                          props.className,
-                          'md:hover:!text-inherit',
-                        )}
-                      >
-                        {children}
-                      </Link>
-                    ),
-                  },
-                  {
-                    key: '4',
-                    icon: CopySimple,
-                    label: formatText({
-                      id: 'membersPage.memberNav.copyWalletAddress',
+              items: [
+                // @BETA: Disabled for now
+                // {
+                //   key: '1',
+                //   icon: 'pencil',
+                //   label: formatText({ id: 'membersPage.memberNav.manageMember' }),
+                //   onClick: () => {
+                //     setUser(userAvatarProps.user);
+                //     setIsMemberModalOpen(true);
+                //   },
+                // },
+                {
+                  key: '2',
+                  icon: HandCoins,
+                  label: formatText({
+                    id: 'membersPage.memberNav.makePayment',
+                  }),
+                  onClick: () =>
+                    toggleActionSidebarOn({
+                      [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+                      recipient: member.userAvatarProps.walletAddress,
                     }),
-                    onClick: () => false,
-                    className: 'border-t border-t-gray-200 mt-3 pt-3',
-                    renderItemWrapper: (props, children) => (
-                      <Tooltip
-                        tooltipContent={
-                          formatText({
-                            id: 'copy.addressCopied',
-                          }) || ''
-                        }
-                        isOpen={isCopied}
-                        isSuccess
-                      >
-                        <button
-                          type="button"
-                          {...props}
-                          onClick={() =>
-                            handleClipboardCopy(
-                              member.userAvatarProps.walletAddress,
-                            )
-                          }
-                        >
-                          {children}
-                        </button>
-                      </Tooltip>
-                    ),
+                },
+                {
+                  key: '5',
+                  icon: Pencil,
+                  label: formatText({
+                    id: 'permissionsPage.managePermissions',
+                  }),
+                  onClick: () => {
+                    toggleActionSidebarOn({
+                      [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+                      member: member.userAvatarProps.walletAddress,
+                    });
                   },
-                ]
-              : []),
-          ],
-        },
-      })),
+                },
+                ...(member.userAvatarProps.walletAddress
+                  ? [
+                      {
+                        key: '3',
+                        icon: ArrowSquareOut,
+                        label: formatText(
+                          { id: 'membersPage.memberNav.viewOn' },
+                          {
+                            networkName: DEFAULT_NETWORK_INFO.blockExplorerName,
+                          },
+                        ),
+                        renderItemWrapper: (props, children) => (
+                          <Link
+                            to={getBlockExplorerLink({
+                              linkType: 'address',
+                              addressOrHash:
+                                member.userAvatarProps.walletAddress,
+                            })}
+                            {...props}
+                            className={clsx(
+                              props.className,
+                              'md:hover:!text-inherit',
+                            )}
+                          >
+                            {children}
+                          </Link>
+                        ),
+                      },
+                      {
+                        key: '4',
+                        icon: CopySimple,
+                        label: formatText({
+                          id: 'membersPage.memberNav.copyWalletAddress',
+                        }),
+                        onClick: () => false,
+                        className: 'border-t border-t-gray-200 mt-3 pt-3',
+                        renderItemWrapper: (props, children) => (
+                          <Tooltip
+                            tooltipContent={
+                              formatText({
+                                id: 'copy.addressCopied',
+                              }) || ''
+                            }
+                            isOpen={isCopied}
+                            isSuccess
+                          >
+                            <button
+                              type="button"
+                              {...props}
+                              onClick={() =>
+                                handleClipboardCopy(
+                                  member.userAvatarProps.walletAddress,
+                                )
+                              }
+                            >
+                              {children}
+                            </button>
+                          </Tooltip>
+                        ),
+                      },
+                    ]
+                  : []),
+              ],
+            },
+          },
+        }),
+        {},
+      ),
     [
       handleClipboardCopy,
       isCopied,
@@ -332,38 +344,74 @@ export const useGetMembersForPermissions = () => {
   const isFilterActive = Object.values(filterValue).some((value) => value);
 
   const filteredMembers = useMemo(() => {
-    const filteredMembersList = [...mappedMembers, ...mappedExtensions].filter(
-      (member) => {
-        if (!isFilterActive) {
-          return true;
-        }
+    const filteredMembersList = membersList.filter((member) => {
+      if (!isFilterActive) {
+        return true;
+      }
 
-        if (member.role) {
-          const memberRole = UserRole[member.role.name];
-          const isPermissionChecked = Object.keys(filterValue).some(
-            (key) => !Number.isNaN(Number(key)) && filterValue[key],
-          );
+      if (member.role) {
+        const memberRole = UserRole[member.role.name];
+        const isPermissionChecked = Object.keys(filterValue).some(
+          (key) => !Number.isNaN(Number(key)) && filterValue[key],
+        );
 
-          if (filterValue[memberRole] && memberRole === UserRole.Custom) {
-            if (!isPermissionChecked) {
-              return true;
-            }
-            return member.role.permissions.some(
-              (permission) => filterValue[permission],
-            );
-          }
-
-          if (filterValue[memberRole]) {
+        if (filterValue[memberRole] && memberRole === UserRole.Custom) {
+          if (!isPermissionChecked) {
             return true;
           }
+          return member.role.permissions.some(
+            (permission) => filterValue[permission],
+          );
         }
-        return false;
-      },
-    );
+
+        if (filterValue[memberRole]) {
+          return true;
+        }
+      }
+      return false;
+    });
 
     return filteredMembersList;
-  }, [filterValue, mappedMembers, mappedExtensions, isFilterActive]);
+  }, [filterValue, membersList, isFilterActive]);
 
+  const filteredExtensions = useMemo(() => {
+    const filteredExtensionsList = allExtensions.filter((extension) => {
+      if (!isFilterActive) {
+        return true;
+      }
+
+      const role = getRole(extension.neededColonyPermissions);
+
+      if (role) {
+        const memberRole = role.role;
+        const isPermissionChecked = Object.keys(filterValue).some(
+          (key) => !Number.isNaN(Number(key)) && filterValue[key],
+        );
+
+        if (filterValue[memberRole] && memberRole === UserRole.Custom) {
+          if (!isPermissionChecked) {
+            return true;
+          }
+          return role.permissions.some((permission) => filterValue[permission]);
+        }
+
+        if (filterValue[memberRole]) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    return filteredExtensionsList;
+  }, [filterValue, allExtensions, isFilterActive]);
+
+  const searchedMembers2 = filteredMembers.filter(
+    (member) =>
+      member.userAvatarProps.userName
+        ?.toLowerCase()
+        .includes(searchValue.toLowerCase()) ||
+      member.role?.name?.toLowerCase().includes(searchValue.toLowerCase()),
+  );
   const searchedMembers = filteredMembers.filter(
     (member) =>
       member.userAvatarProps.userName

@@ -7,7 +7,6 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress.ts';
 import {
   COLONY_AGREEMENTS_ROUTE,
   COLONY_HOME_ROUTE,
@@ -20,9 +19,9 @@ import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyActio
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
-import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
+import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import AgreementCardSkeleton from '../AgreementCardSkeleton.tsx';
@@ -48,10 +47,10 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
     motionDomainId,
     walletAddress = '',
   } = decisionData || {};
+  const { initiatorUser } = action || {};
   const { motionId = '', motionStakes } = motionData || {};
   const navigate = useNavigate();
   const { colony } = useColonyContext();
-  const { user, loading } = useUserByNameOrAddress(walletAddress);
   const currentTeam = colony?.domains?.items.find(
     (domain) => domain?.nativeId === motionDomainId,
   );
@@ -113,36 +112,40 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
           </button>
           <div className="flex items-center justify-between gap-2 pt-4 mt-auto border-t border-gray-200">
             <UserInfoPopover
-              user={user}
+              user={initiatorUser}
               walletAddress={walletAddress}
               withVerifiedBadge={false}
+              popperOptions={{
+                placement: 'bottom-start',
+              }}
               className={clsx(
                 'flex items-center text-gray-600 sm:gap-2 sm:hover:text-blue-400',
                 {
-                  'pointer-events-none': loading,
+                  'pointer-events-none': loadingAction,
                 },
               )}
             >
-              <Avatar
-                seed={walletAddress?.toLowerCase()}
-                title={user?.profile?.displayName || walletAddress}
-                avatar={user?.profile?.thumbnail || user?.profile?.avatar}
-                size="sm"
+              <UserAvatar2
+                size={30}
+                userAvatarSrc={initiatorUser?.profile?.avatar ?? undefined}
+                userAddress={walletAddress}
+                userName={initiatorUser?.profile?.displayName ?? undefined}
                 className={clsx({
-                  'skeleton before:rounded-full': loading,
+                  'skeleton before:rounded-full': loadingAction,
                 })}
               />
               <p
-                className={clsx('hidden text-sm sm:inline-block', {
-                  skeleton: loading,
+                className={clsx('text-sm hidden sm:inline-block', {
+                  skeleton: loadingAction,
                 })}
               >
-                {loading
+                {loadingAction
                   ? 'Loading...'
                   : formatText(
                       { id: 'agreementsPage.createdBy' },
                       {
-                        username: user?.profile?.displayName || walletAddress,
+                        username:
+                          initiatorUser?.profile?.displayName || walletAddress,
                       },
                     )}
               </p>

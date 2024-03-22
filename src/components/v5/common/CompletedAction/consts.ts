@@ -1,6 +1,5 @@
 import { ColonyActionType } from '~gql';
 
-export const USER_AVATAR_SIZE = 20;
 export const ICON_SIZE = 14;
 export const DEFAULT_TOOLTIP_POSITION = 'top';
 

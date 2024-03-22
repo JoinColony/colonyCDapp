@@ -2,15 +2,6 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type Icon } from '@phosphor-icons/react';
 
 import { type UserRole } from '~constants/permissions.ts';
-import { type MemberCardListItem } from '~v5/common/MemberCardList/types.ts';
-
-export type GroupedByPermissionMembersProps = {
-  [key in UserRole]: MemberCardListItem[];
-};
-
-export interface PermissionPageRowItem extends MemberCardListItem {
-  isExtension?: boolean;
-}
 
 export interface PermissionPageRowProps {
   title: string;
