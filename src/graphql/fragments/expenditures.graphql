@@ -27,6 +27,17 @@ fragment Expenditure on Expenditure {
   balances {
     ...ExpenditureBalance
   }
+  fundingActions: actions(
+    filter: { type: { eq: MOVE_FUNDS }, isMotionFinalization: { ne: true } }
+  ) {
+    items {
+      id
+      initiatorAddress
+      initiatorUser {
+        ...User
+      }
+    }
+  }
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
