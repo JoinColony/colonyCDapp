@@ -32,6 +32,10 @@ fragment Expenditure on Expenditure {
   ) {
     items {
       id
+      initiatorAddress
+      initiatorUser {
+        ...User
+      }
     }
   }
 }
