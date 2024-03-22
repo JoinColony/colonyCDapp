@@ -3,18 +3,17 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import type ColonyManager from '~context/ColonyManager.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { type Address } from '~types';
+import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 
 import {
   type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
-  type TransactionChannel,
+  waitForTxResult,
 } from '../transactions/index.ts';
 import {
   getColonyManager,
   claimExpenditurePayouts,
-  getImmediatelyClaimableSlots,
   initiateTransaction,
   putError,
   takeFrom,
@@ -40,29 +39,60 @@ function* finalizeExpenditureAction({
   );
 
   try {
+    const colonyManager: ColonyManager = yield getColonyManager();
+
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
     if (expenditure.ownerAddress === userAddress) {
-      yield finalizeExpenditureAsOwner({
-        batchKey,
-        colonyAddress,
-        expenditureId,
-        finalizeExpenditure,
-        metaId: meta.id,
+      yield fork(createTransaction, finalizeExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'finalizeExpenditure',
+        identifier: colonyAddress,
+        params: [expenditureId],
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
       });
     } else {
-      yield finalizeExpenditureWithPermissions({
-        batchKey,
-        colonyAddress,
-        expenditureId,
+      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
         expenditureDomainId,
-        finalizeExpenditure,
-        metaId: meta.id,
+        ColonyRole.Arbitration,
+      );
+
+      const params = [permissionDomainId, childSkillIndex, expenditureId];
+
+      yield fork(createTransaction, finalizeExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'finalizeExpenditureViaArbitration',
+        identifier: colonyAddress,
+        params,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
       });
     }
-    const claimableSlots = getImmediatelyClaimableSlots(expenditure.slots);
+
+    yield takeFrom(
+      finalizeExpenditure.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+    yield initiateTransaction({ id: finalizeExpenditure.id });
+    yield waitForTxResult(finalizeExpenditure.channel);
+
+    const claimablePayouts = getClaimableExpenditurePayouts(expenditure.slots);
 
     yield claimExpenditurePayouts({
       colonyAddress,
-      claimableSlots,
+      claimablePayouts,
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
     });
@@ -78,81 +108,6 @@ function* finalizeExpenditureAction({
   [finalizeExpenditure, annotateFinalizeExpenditure].forEach((channel) =>
     channel.channel.close(),
   );
-}
-
-type FinalizeExpenditureAsOwnerParams = {
-  finalizeExpenditure: TransactionChannel;
-  colonyAddress: Address;
-  expenditureId: number;
-  metaId: string;
-  batchKey: string;
-};
-
-function* finalizeExpenditureAsOwner({
-  batchKey,
-  colonyAddress,
-  expenditureId,
-  finalizeExpenditure,
-  metaId,
-}: FinalizeExpenditureAsOwnerParams) {
-  yield fork(createTransaction, finalizeExpenditure.id, {
-    context: ClientType.ColonyClient,
-    methodName: 'finalizeExpenditure',
-    identifier: colonyAddress,
-    params: [expenditureId],
-    group: {
-      key: batchKey,
-      id: metaId,
-      index: 0,
-    },
-  });
-
-  yield takeFrom(finalizeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-  yield initiateTransaction({ id: finalizeExpenditure.id });
-}
-
-interface FinalizeExpenditureWithPermissions
-  extends FinalizeExpenditureAsOwnerParams {
-  expenditureDomainId: number;
-}
-
-function* finalizeExpenditureWithPermissions({
-  batchKey,
-  colonyAddress,
-  expenditureId,
-  expenditureDomainId,
-  finalizeExpenditure,
-  metaId,
-}: FinalizeExpenditureWithPermissions) {
-  const colonyManager: ColonyManager = yield getColonyManager();
-
-  const colonyClient = yield colonyManager.getClient(
-    ClientType.ColonyClient,
-    colonyAddress,
-  );
-
-  const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-    colonyClient.networkClient,
-    colonyClient,
-    expenditureDomainId,
-    ColonyRole.Arbitration,
-  );
-
-  const params = [permissionDomainId, childSkillIndex, expenditureId];
-
-  yield fork(createTransaction, finalizeExpenditure.id, {
-    context: ClientType.ColonyClient,
-    methodName: 'finalizeExpenditureViaArbitration',
-    identifier: colonyAddress,
-    params,
-    group: {
-      key: batchKey,
-      id: metaId,
-      index: 0,
-    },
-  });
-  yield takeFrom(finalizeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-  yield initiateTransaction({ id: finalizeExpenditure.id });
 }
 
 export default function* finalizeExpenditureSaga() {

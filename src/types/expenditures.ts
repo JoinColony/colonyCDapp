@@ -1,3 +1,5 @@
+import { type ExpenditurePayout } from './graphql.ts';
+
 export interface ExpenditurePayoutFieldValue {
   slotId?: number;
   recipientAddress: string;
@@ -11,4 +13,8 @@ export interface ExpenditureStageFieldValue {
   name: string;
   amount: string;
   tokenAddress: string;
+}
+
+export interface ExpenditurePayoutWithSlotId extends ExpenditurePayout {
+  slotId: number;
 }
