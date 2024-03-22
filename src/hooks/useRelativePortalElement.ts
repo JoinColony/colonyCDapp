@@ -6,12 +6,14 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
     bottomWindowPadding = 20,
     rightWindowPadding = 20,
     top = 0,
+    customLeftPosition = 0,
     withAutoTopPlacement = false,
   }: {
     bottomWindowPadding?: number;
     rightWindowPadding?: number;
     top?: number;
     withAutoTopPlacement?: boolean;
+    customLeftPosition?: number;
   } = {},
 ) => {
   const relativeElementRef = useRef<T | null>(null);
@@ -43,7 +45,9 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
             rightWindowPadding
           : left;
 
-      portalElementRef.current.style.left = `${leftPosition}px`;
+      portalElementRef.current.style.left = `${
+        leftPosition + customLeftPosition
+      }px`;
       if (shouldShowOnTop) {
         portalElementRef.current.style.top = `${
           relativeElementTop + window.scrollY - top - dropdownHeight
