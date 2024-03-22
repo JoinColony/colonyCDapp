@@ -74,8 +74,8 @@ export type ExpendituresActionTypes =
       ActionTypes.EXPENDITURE_FINALIZE,
       {
         colonyAddress: Address;
-        nativeExpenditureId: number;
-        annotationMessage?: string;
+        expenditure: Expenditure;
+        userAddress: Address;
       },
       MetaWithSetter<object>
     >
@@ -116,7 +116,7 @@ export type ExpendituresActionTypes =
         nativeExpenditureId: number;
         claimableSlots: ExpenditureSlot[];
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CLAIM_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>
