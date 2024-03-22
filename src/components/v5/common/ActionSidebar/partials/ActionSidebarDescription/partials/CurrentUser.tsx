@@ -15,7 +15,6 @@ const CurrentUser = () => {
 
   return (
     <UserInfoPopover
-      userName={user.profile?.displayName}
       walletAddress={user.walletAddress}
       user={user}
       withVerifiedBadge={false}

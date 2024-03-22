@@ -1,9 +1,6 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { type FC } from 'react';
-
-import MemberCard from '../MemberCard/MemberCard.tsx';
-import SimpleMemberCard from '../MemberCard/SimpleMemberCard.tsx';
+import React, { Children, type FC } from 'react';
 
 import MemberCardPlaceholder from './partials/MemberCardPlaceholder/index.ts';
 import { type MemberCardListProps } from './types.ts';
@@ -11,28 +8,31 @@ import { type MemberCardListProps } from './types.ts';
 const displayName = 'v5.common.MemberCardList';
 
 const MemberCardList: FC<MemberCardListProps> = ({
-  items,
+  children,
   placeholderCardProps,
   isSimple,
-}) =>
-  items?.length || (!items?.length && placeholderCardProps) ? (
+}) => {
+  const childrenLength = Children.count(children);
+
+  return childrenLength > 0 ||
+    (childrenLength === 0 && placeholderCardProps) ? (
     <ul
       className={clsx('grid', {
         'grid-cols-[repeat(auto-fit,minmax(14.75rem,1fr))]':
-          !isSimple && items.length > 2,
+          !isSimple && childrenLength > 2,
         'grid-cols-[repeat(auto-fit,minmax(14.75rem,1fr))] lg:grid-cols-4':
-          !isSimple && items.length <= 2,
+          !isSimple && childrenLength <= 2,
         'grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))]':
-          isSimple && items.length > 3,
+          isSimple && childrenLength > 3,
         'grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))] md:grid-cols-4':
-          isSimple && items.length <= 3,
-        'gap-x-6 gap-y-6 sm:gap-y-4': !isSimple,
+          isSimple && childrenLength <= 3,
+        'gap-y-6 gap-x-6 sm:gap-y-4': !isSimple,
         'gap-6': isSimple,
       })}
     >
       {/* @todo: update the animation */}
       <AnimatePresence initial={false}>
-        {items.map(({ key, ...item }) => (
+        {Children.map(children, (child, index) => (
           <motion.li
             initial={{ opacity: 0, y: 10 }}
             animate={{
@@ -40,14 +40,12 @@ const MemberCardList: FC<MemberCardListProps> = ({
               y: 0,
             }}
             exit={{ opacity: 0, y: 10 }}
-            key={key}
+            // I don't know how else to key it better
+            // eslint-disable-next-line react/no-array-index-key
+            key={`member-card-${index}`}
             className={clsx({ 'min-h-[11.5rem]': !isSimple })}
           >
-            {isSimple ? (
-              <SimpleMemberCard {...item} />
-            ) : (
-              <MemberCard {...item} />
-            )}
+            {child}
           </motion.li>
         ))}
         {placeholderCardProps && (
@@ -64,6 +62,7 @@ const MemberCardList: FC<MemberCardListProps> = ({
       </AnimatePresence>
     </ul>
   ) : null;
+};
 
 MemberCardList.displayName = displayName;
 

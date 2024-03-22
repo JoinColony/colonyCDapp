@@ -6,10 +6,9 @@ import { ADDRESS_ZERO } from '~constants';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { USER_AVATAR_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -62,8 +61,6 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           token: action.token?.symbol,
           recipient: recipientAddress ? (
             <UserInfoPopover
-              size={USER_AVATAR_SIZE}
-              userName={recipientUser?.profile?.displayName}
               walletAddress={recipientAddress}
               user={recipientUser}
               withVerifiedBadge={false}
@@ -74,8 +71,6 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           ) : null,
           user: initiatorUser ? (
             <UserInfoPopover
-              size={USER_AVATAR_SIZE}
-              userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}

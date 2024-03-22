@@ -9,7 +9,6 @@ export interface MemberCardProps {
   meatBallMenuProps: MeatBallMenuProps;
   role?: UserRoleMeta;
   reputation?: number;
-  isExtension?: boolean;
   isVerified?: boolean;
   mode?: UserStatusMode;
 }
@@ -17,5 +16,4 @@ export interface MemberCardProps {
 export interface SimpleMemberCardProps {
   userAvatarProps: UserInfoPopoverProps;
   meatBallMenuProps: MeatBallMenuProps;
-  isExtension?: boolean;
 }

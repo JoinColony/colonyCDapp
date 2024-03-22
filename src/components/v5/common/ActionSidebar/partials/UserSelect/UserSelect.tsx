@@ -35,13 +35,8 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const { user: userByAddress, loading: userByAddressLoading } =
-    useUserByAddress(field.value);
+  const { user: userByAddress } = useUserByAddress(field.value);
   const { readonly } = useAdditionalFormOptionsContext();
-
-  const userDisplayName = userByAddressLoading
-    ? formatText({ id: 'status.loading' }, { optionalText: '' })
-    : userByAddress?.profile?.displayName || field.value;
 
   const userWalletAddress = field.value;
 
@@ -143,12 +138,9 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
           )}
           {!selectedUser?.isVerified && field.value && (
             <UserInfoPopover
-              userName={userDisplayName}
               walletAddress={userWalletAddress}
-              aboutDescription={userByAddress?.profile?.bio || ''}
               user={userByAddress}
-              className="ml-1"
-              size="m"
+              className="ml-1 text-warning-400"
             >
               <span className="flex ml-2 text-warning-400">
                 <WarningCircle size={20} />

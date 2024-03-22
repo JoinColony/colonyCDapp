@@ -27,7 +27,6 @@ const displayName = 'v5.UserInfoPopover';
 
 const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
   className,
-  userName,
   walletAddress,
   user,
   children,
@@ -37,7 +36,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
   const { profile } = user || {};
-  const { avatar } = profile || {};
+  const { avatar, displayName: userName } = profile || {};
 
   const {
     colony: { colonyAddress },

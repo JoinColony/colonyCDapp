@@ -7,7 +7,6 @@ import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
-import { USER_AVATAR_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -62,8 +61,6 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           toDomain: action.toDomain?.metadata?.name,
           user: initiatorUser ? (
             <UserInfoPopover
-              size={USER_AVATAR_SIZE}
-              userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}

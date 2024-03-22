@@ -9,10 +9,9 @@ import { type ColonyActionRoles } from '~gql';
 import { type ColonyAction } from '~types/graphql.ts';
 import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { USER_AVATAR_SIZE } from '../../consts.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -85,8 +84,6 @@ const SetUserRoles = ({ action }: Props) => {
           fromDomain: action.fromDomain?.metadata?.name,
           initiator: initiatorUser ? (
             <UserInfoPopover
-              size={USER_AVATAR_SIZE}
-              userName={initiatorUser.profile?.displayName}
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
@@ -96,8 +93,6 @@ const SetUserRoles = ({ action }: Props) => {
           ) : null,
           recipient: recipientUser ? (
             <UserInfoPopover
-              size={USER_AVATAR_SIZE}
-              userName={recipientUser.profile?.displayName}
               walletAddress={recipientUser.walletAddress}
               user={recipientUser}
               withVerifiedBadge={false}
