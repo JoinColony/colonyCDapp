@@ -8,16 +8,14 @@ import { type SimpleMemberCardProps } from './types.ts';
 const displayName = 'v5.common.SimpleMemberCard';
 
 const SimpleMemberCard: FC<SimpleMemberCardProps> = ({
-  userAvatarProps,
+  userAddress,
   meatBallMenuProps,
 }) => {
-  const { walletAddress } = userAvatarProps;
-
   return (
     <div className="w-full h-full flex flex-col p-5 rounded-lg border border-gray-200 bg-gray-25">
       <div className="w-full flex items-center justify-between gap-4">
         <UserPopover
-          walletAddress={walletAddress}
+          walletAddress={userAddress}
           size={30}
           popperOptions={{
             placement: 'bottom-start',

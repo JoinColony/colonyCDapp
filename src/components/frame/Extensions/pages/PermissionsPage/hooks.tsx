@@ -16,7 +16,7 @@ import { UserRole, getRole } from '~constants/permissions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { type MembersTabContentListItem } from '~frame/v5/pages/MembersPage/partials/MembersTabContent/types.ts';
+import { type MemberCardItem } from '~frame/v5/pages/MembersPage/types.ts';
 import { getMembersList } from '~frame/v5/pages/MembersPage/utils.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
@@ -35,6 +35,7 @@ import {
   type PermissionsPageFilterProps,
   type PermissionsPageFilters,
 } from './partials/types.ts';
+import { type ExtensionCardItem, type ItemsByRole } from './types.ts';
 
 export const defaultPermissionsPageFilterValue:
   | PermissionsPageFilters
@@ -146,7 +147,7 @@ export const useGetMembersForPermissions = () => {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
-  const membersList = useMemo<MembersTabContentListItem[]>(
+  const membersList = useMemo(
     () => getMembersList(pagedMembers, selectedDomain?.nativeId, colony),
     [colony, pagedMembers, selectedDomain],
   );
@@ -155,16 +156,16 @@ export const useGetMembersForPermissions = () => {
     [availableExtensionsData, installedExtensionsData],
   );
 
-  const mappedExtensions = useMemo(
+  const mappedExtensions = useMemo<Record<string, ExtensionCardItem>>(
     () =>
       allExtensions.reduce(
         (extensionMap, extension) => ({
           ...extensionMap,
           [extension.extensionId]: {
-            key: extension.extensionId,
-            role: getRole(extension.neededColonyPermissions),
-            isExtension: true,
-            name: formatText(extension.name),
+            extension: {
+              role: getRole(extension.neededColonyPermissions),
+              name: formatText(extension.name),
+            },
             meatBallMenuProps: {
               contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
                 '!left-6 right-6': isMobile,
@@ -211,14 +212,13 @@ export const useGetMembersForPermissions = () => {
       ),
     [allExtensions, colony.name, isMobile],
   );
-  const mappedMembers = useMemo(
+  const mappedMembers = useMemo<Record<string, MemberCardItem>>(
     () =>
       membersList.reduce(
         (memberMap, member) => ({
           ...memberMap,
-          [member.userAvatarProps.walletAddress]: {
-            ...member,
-            key: member.userAvatarProps.walletAddress,
+          [member.walletAddress]: {
+            member,
             meatBallMenuProps: {
               contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
                 '!left-6 right-6': isMobile,
@@ -247,7 +247,7 @@ export const useGetMembersForPermissions = () => {
                   onClick: () =>
                     toggleActionSidebarOn({
                       [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-                      recipient: member.userAvatarProps.walletAddress,
+                      recipient: member.walletAddress,
                     }),
                 },
                 {
@@ -259,11 +259,11 @@ export const useGetMembersForPermissions = () => {
                   onClick: () => {
                     toggleActionSidebarOn({
                       [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
-                      member: member.userAvatarProps.walletAddress,
+                      member: member.walletAddress,
                     });
                   },
                 },
-                ...(member.userAvatarProps.walletAddress
+                ...(member.walletAddress
                   ? [
                       {
                         key: '3',
@@ -278,8 +278,7 @@ export const useGetMembersForPermissions = () => {
                           <Link
                             to={getBlockExplorerLink({
                               linkType: 'address',
-                              addressOrHash:
-                                member.userAvatarProps.walletAddress,
+                              addressOrHash: member.walletAddress,
                             })}
                             {...props}
                             className={clsx(
@@ -313,9 +312,7 @@ export const useGetMembersForPermissions = () => {
                               type="button"
                               {...props}
                               onClick={() =>
-                                handleClipboardCopy(
-                                  member.userAvatarProps.walletAddress,
-                                )
+                                handleClipboardCopy(member.walletAddress)
                               }
                             >
                               {children}
@@ -344,98 +341,134 @@ export const useGetMembersForPermissions = () => {
   const isFilterActive = Object.values(filterValue).some((value) => value);
 
   const filteredMembers = useMemo(() => {
-    const filteredMembersList = membersList.filter((member) => {
-      if (!isFilterActive) {
-        return true;
-      }
-
-      if (member.role) {
-        const memberRole = UserRole[member.role.name];
-        const isPermissionChecked = Object.keys(filterValue).some(
-          (key) => !Number.isNaN(Number(key)) && filterValue[key],
-        );
-
-        if (filterValue[memberRole] && memberRole === UserRole.Custom) {
-          if (!isPermissionChecked) {
-            return true;
-          }
-          return member.role.permissions.some(
-            (permission) => filterValue[permission],
-          );
-        }
-
-        if (filterValue[memberRole]) {
+    const filteredMembersList = Object.values(mappedMembers).filter(
+      ({ member }) => {
+        if (!isFilterActive) {
           return true;
         }
-      }
-      return false;
-    });
+
+        if (member.role) {
+          const memberRole = UserRole[member.role.name];
+          const isPermissionChecked = Object.keys(filterValue).some(
+            (key) => !Number.isNaN(Number(key)) && filterValue[key],
+          );
+
+          if (filterValue[memberRole] && memberRole === UserRole.Custom) {
+            if (!isPermissionChecked) {
+              return true;
+            }
+            return member.role.permissions.some(
+              (permission) => filterValue[permission],
+            );
+          }
+
+          if (filterValue[memberRole]) {
+            return true;
+          }
+        }
+        return false;
+      },
+    );
 
     return filteredMembersList;
-  }, [filterValue, membersList, isFilterActive]);
+  }, [mappedMembers, isFilterActive, filterValue]);
 
   const filteredExtensions = useMemo(() => {
-    const filteredExtensionsList = allExtensions.filter((extension) => {
-      if (!isFilterActive) {
-        return true;
-      }
-
-      const role = getRole(extension.neededColonyPermissions);
-
-      if (role) {
-        const memberRole = role.role;
-        const isPermissionChecked = Object.keys(filterValue).some(
-          (key) => !Number.isNaN(Number(key)) && filterValue[key],
-        );
-
-        if (filterValue[memberRole] && memberRole === UserRole.Custom) {
-          if (!isPermissionChecked) {
-            return true;
-          }
-          return role.permissions.some((permission) => filterValue[permission]);
-        }
-
-        if (filterValue[memberRole]) {
+    const filteredExtensionsList = Object.values(mappedExtensions).filter(
+      ({ extension }) => {
+        if (!isFilterActive) {
           return true;
         }
-      }
-      return false;
-    });
+
+        if (extension.role) {
+          const memberRole = extension.role.role;
+          const isPermissionChecked = Object.keys(filterValue).some(
+            (key) => !Number.isNaN(Number(key)) && filterValue[key],
+          );
+
+          if (filterValue[memberRole] && memberRole === UserRole.Custom) {
+            if (!isPermissionChecked) {
+              return true;
+            }
+            return extension.role.permissions.some(
+              (permission) => filterValue[permission],
+            );
+          }
+
+          if (filterValue[memberRole]) {
+            return true;
+          }
+        }
+        return false;
+      },
+    );
 
     return filteredExtensionsList;
-  }, [filterValue, allExtensions, isFilterActive]);
+  }, [filterValue, mappedExtensions, isFilterActive]);
 
-  const searchedMembers2 = filteredMembers.filter(
-    (member) =>
-      member.userAvatarProps.userName
-        ?.toLowerCase()
-        .includes(searchValue.toLowerCase()) ||
-      member.role?.name?.toLowerCase().includes(searchValue.toLowerCase()),
-  );
   const searchedMembers = filteredMembers.filter(
-    (member) =>
-      member.userAvatarProps.userName
+    ({ member }) =>
+      member.user?.profile?.displayName
         ?.toLowerCase()
         .includes(searchValue.toLowerCase()) ||
-      member.role?.name?.toLowerCase().includes(searchValue.toLowerCase()),
+      member.role?.name.toLowerCase().includes(searchValue.toLowerCase()),
   );
 
-  const individualMembers: Partial<GroupedByPermissionMembersProps> =
-    useMemo(() => {
-      return searchedMembers.reduce((acc, member) => {
-        if (member.role) {
-          const roleName = member.role.name.toLowerCase();
-          if (!acc[roleName]) {
-            acc[roleName] = [];
-          }
-          acc[roleName].push(member);
+  const searchedExtensions = filteredExtensions.filter(
+    ({ extension }) =>
+      extension.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      extension.role?.name.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
+  const itemsByRole: ItemsByRole = useMemo(() => {
+    const memberItems = searchedMembers.reduce((acc, memberCard) => {
+      if (memberCard.member.role) {
+        const roleName = memberCard.member.role.name.toLowerCase();
+        if (!acc[roleName]) {
+          acc[roleName] = [];
         }
-        return acc;
-      }, {});
-    }, [searchedMembers]);
+        acc[roleName].push({ type: 'member', data: memberCard });
+      }
+      return acc;
+    }, {});
+
+    const extensionItems = searchedExtensions.reduce((acc, extensionCard) => {
+      if (extensionCard.extension.role) {
+        const roleName = extensionCard.extension.role.name.toLowerCase();
+        if (!acc[roleName]) {
+          acc[roleName] = [];
+        }
+        acc[roleName].push({ type: 'extension', data: extensionCard });
+      }
+      return acc;
+    }, {});
+
+    return {
+      [UserRole.Mod]: [
+        ...(memberItems[UserRole.Mod] || []),
+        ...(extensionItems[UserRole.Mod] || []),
+      ],
+      [UserRole.Payer]: [
+        ...(memberItems[UserRole.Payer] || []),
+        ...(extensionItems[UserRole.Payer] || []),
+      ],
+      [UserRole.Admin]: [
+        ...(memberItems[UserRole.Admin] || []),
+        ...(extensionItems[UserRole.Admin] || []),
+      ],
+      [UserRole.Owner]: [
+        ...(memberItems[UserRole.Owner] || []),
+        ...(extensionItems[UserRole.Owner] || []),
+      ],
+      [UserRole.Custom]: [
+        ...(memberItems[UserRole.Custom] || []),
+        ...(extensionItems[UserRole.Custom] || []),
+      ],
+    };
+  }, [searchedExtensions, searchedMembers]);
 
   return {
-    individualMembers,
+    itemsByRole,
     filters,
     isLoading: loading || extensionLoading,
   };

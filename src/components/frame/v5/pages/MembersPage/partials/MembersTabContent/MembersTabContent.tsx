@@ -11,6 +11,8 @@ import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import MemberCard from '~v5/common/MemberCard/index.ts';
+import SimpleMemberCard from '~v5/common/MemberCard/SimpleMemberCard.tsx';
 import MemberCardList from '~v5/common/MemberCardList/index.ts';
 import { TextButton } from '~v5/shared/Button/index.ts';
 
@@ -48,7 +50,6 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
     >
       <div className="w-full flex-grow sm:w-auto">
         <MemberCardList
-          items={items}
           isSimple={withSimpleCards}
           placeholderCardProps={
             showPlaceholderCard && items.length > 0
@@ -71,7 +72,32 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
                 }
               : undefined
           }
-        />
+        >
+          {items.map((item) => {
+            if (withSimpleCards) {
+              return (
+                <SimpleMemberCard
+                  key={item.member.walletAddress}
+                  userAddress={item.member.walletAddress}
+                  meatBallMenuProps={item.meatBallMenuProps}
+                />
+              );
+            }
+
+            return (
+              <MemberCard
+                key={item.member.walletAddress}
+                userAddress={item.member.walletAddress}
+                user={item.member.user ?? undefined}
+                meatBallMenuProps={item.meatBallMenuProps}
+                reputation={item.member.reputation}
+                role={item.member.role}
+                isVerified={item.member.isVerified}
+                contributorType={item.member.contributorType}
+              />
+            );
+          })}
+        </MemberCardList>
         {!isLoading &&
           !items.length &&
           emptyContentProps &&
