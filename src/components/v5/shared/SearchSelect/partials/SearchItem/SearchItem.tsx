@@ -9,7 +9,7 @@ import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
-import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { sortDisabled } from '../../utils.ts';
 
@@ -106,7 +106,7 @@ const SearchItem: FC<SearchItemProps> = ({
                   )}
                   {showAvatar && (
                     <div className="mr-2 items-center justify-center flex">
-                      <UserAvatar2
+                      <UserAvatar
                         userAvatarSrc={avatar}
                         userAddress={walletAddress}
                         size={16}

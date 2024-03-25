@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
 
 import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWrapper.tsx';
-import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '../UserAvatar/UserAvatar.tsx';
 
 import { type UserDetailsProps } from './types.ts';
 
@@ -21,7 +21,7 @@ const UserDetails: FC<UserDetailsProps> = ({
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
       <div className="flex relative justify-center">
         <ContributorTypeWrapper contributorType={contributorType}>
-          <UserAvatar2
+          <UserAvatar
             size={60}
             userAvatarSrc={userAvatarSrc}
             userName={userName ?? undefined}

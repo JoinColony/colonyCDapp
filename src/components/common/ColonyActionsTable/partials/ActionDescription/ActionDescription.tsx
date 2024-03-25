@@ -8,7 +8,7 @@ import { useMobile } from '~hooks';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import { formatText } from '~utils/intl.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
-import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { type ActionDescriptionProps } from './types.ts';
 
@@ -48,7 +48,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
 
   return (
     <div className="flex gap-2 sm:gap-4 items-center w-full">
-      <UserAvatar2
+      <UserAvatar
         className={clsx('flex-shrink-0 flex-grow-0', {
           'overflow-hidden rounded-full skeleton': loading,
         })}

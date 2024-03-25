@@ -10,7 +10,7 @@ import {
   type UseAvatarUploaderProps,
   useGetUploaderText,
 } from '~v5/common/AvatarUploader/hooks.ts';
-import { Avatar2 } from '~v5/shared/Avatar/Avatar.tsx';
+import { Avatar } from '~v5/shared/Avatar/Avatar.tsx';
 
 import {
   profileFileOptions,
@@ -145,7 +145,7 @@ export const useUserProfilePageForm = () => {
           descriptionClassName,
           avatarUploaderProps: {
             avatarPlaceholder: wallet ? (
-              <Avatar2
+              <Avatar
                 size={64}
                 src={avatarUrl ?? undefined}
                 address={wallet.address}

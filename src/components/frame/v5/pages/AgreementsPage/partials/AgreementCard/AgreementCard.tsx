@@ -21,7 +21,7 @@ import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
-import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import AgreementCardSkeleton from '../AgreementCardSkeleton.tsx';
@@ -125,7 +125,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
                 },
               )}
             >
-              <UserAvatar2
+              <UserAvatar
                 size={30}
                 userAvatarSrc={initiatorUser?.profile?.avatar ?? undefined}
                 userAddress={walletAddress}

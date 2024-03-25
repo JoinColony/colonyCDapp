@@ -5,7 +5,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyContributorQuery } from '~gql';
 import { getColonyContributorId } from '~utils/members.ts';
 
-import { UserAvatar2 } from '../UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '../UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '../UserInfoPopover/index.ts';
 
 import { type UserPopoverProps } from './types.ts';
@@ -44,7 +44,7 @@ const UserPopover: FC<UserPopoverProps> = ({
       popperOptions={popperOptions}
     >
       <div className="flex items-center">
-        <UserAvatar2
+        <UserAvatar
           size={size}
           userAvatarSrc={user?.profile?.avatar ?? undefined}
           userName={displayName ?? undefined}

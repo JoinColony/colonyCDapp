@@ -28,7 +28,7 @@ import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
-import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 const DraftCard: FC = () => {
@@ -115,7 +115,7 @@ const DraftCard: FC = () => {
               },
             )}
           >
-            <UserAvatar2
+            <UserAvatar
               size={30}
               userAvatarSrc={user?.profile?.avatar ?? undefined}
               userAddress={walletAddress}

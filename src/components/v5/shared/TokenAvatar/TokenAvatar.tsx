@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { Avatar2 } from '../Avatar/Avatar.tsx';
+import { Avatar } from '../Avatar/Avatar.tsx';
 
 interface TokenAvatarProps {
   className?: string;
@@ -18,7 +18,7 @@ export const TokenAvatar: FC<TokenAvatarProps> = ({
   tokenName,
 }) => {
   return (
-    <Avatar2
+    <Avatar
       className={className}
       size={size}
       alt={`Avatar of token ${tokenName ?? tokenAddress}`}
