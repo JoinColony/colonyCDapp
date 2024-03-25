@@ -1,5 +1,5 @@
 import { type Colony } from '~types/graphql.ts';
-import { sanitizeHTML } from '~utils/strings/index.ts';
+import { sanitizeHTML } from '~utils/strings.ts';
 
 import { type ManageColonyObjectivesFormValues } from './consts.ts';
 

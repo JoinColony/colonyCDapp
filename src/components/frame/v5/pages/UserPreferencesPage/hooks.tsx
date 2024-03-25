@@ -15,7 +15,7 @@ import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { Input } from '~v5/common/Fields/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 

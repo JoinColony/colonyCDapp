@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
-import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
 
 import ColonyLinks from './partials/ColonyLinks/index.ts';

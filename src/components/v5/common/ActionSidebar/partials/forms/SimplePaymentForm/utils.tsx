@@ -1,6 +1,6 @@
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
 import { type Colony } from '~types/graphql.ts';
-import { sanitizeHTML } from '~utils/strings/index.ts';
+import { sanitizeHTML } from '~utils/strings.ts';
 import {
   calculateFee,
   getSelectedToken,

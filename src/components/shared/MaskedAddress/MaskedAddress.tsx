@@ -3,7 +3,7 @@ import React, { type RefObject, forwardRef } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { type Address } from '~types/index.ts';
-import { splitAddress, type AddressElements } from '~utils/strings/index.ts';
+import { splitAddress, type AddressElements } from '~utils/strings.ts';
 
 const MSG = defineMessages({
   wrongAddressFormat: {

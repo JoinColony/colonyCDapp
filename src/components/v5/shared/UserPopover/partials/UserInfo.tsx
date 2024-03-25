@@ -7,7 +7,7 @@ import { getRole } from '~constants/permissions.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';

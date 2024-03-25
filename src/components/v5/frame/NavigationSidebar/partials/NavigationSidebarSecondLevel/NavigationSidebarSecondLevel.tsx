@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
-import { multiLineTextEllipsis } from '~utils/strings/index.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
