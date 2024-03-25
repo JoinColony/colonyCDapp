@@ -110,6 +110,11 @@ const MSG = defineMessages({
   },
 });
 
+const formatMotionTooltipTimestamp = (timestamp: string | undefined | null) =>
+  timestamp
+    ? capitalizeFirstLetter(formatRelative(new Date(timestamp), new Date()))
+    : '';
+
 export const getStakingStepTooltipText = (
   motionState: MotionState | undefined,
   motionData: ColonyMotion | undefined | null,
@@ -124,24 +129,13 @@ export const getStakingStepTooltipText = (
     motionStateHistory || {};
   const { nay, yay } = percentage || {};
 
-  const formatttedMotionCreatedAt = motionCreatedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(motionCreatedAt), new Date()),
-      )
-    : '';
-  const formattedNaySideFullyStakedAt = naySideFullyStakedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(naySideFullyStakedAt), new Date()),
-      )
-    : '';
-  const formattedYaySideFullyStakedAt = yaySideFullyStakedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(yaySideFullyStakedAt), new Date()),
-      )
-    : '';
-  const formattedEndedAt = endedAt
-    ? capitalizeFirstLetter(formatRelative(new Date(endedAt), new Date()))
-    : '';
+  const formatttedMotionCreatedAt =
+    formatMotionTooltipTimestamp(motionCreatedAt);
+  const formattedNaySideFullyStakedAt =
+    formatMotionTooltipTimestamp(naySideFullyStakedAt);
+  const formattedYaySideFullyStakedAt =
+    formatMotionTooltipTimestamp(yaySideFullyStakedAt);
+  const formattedEndedAt = formatMotionTooltipTimestamp(endedAt);
   const objectingStakesPercentageValue = Number(nay) || 0;
   const supportingStakesPercentageValue = Number(yay) || 0;
 
@@ -204,21 +198,12 @@ export const getVotingStepTooltipText = (
   const { naySideFullyStakedAt, yaySideFullyStakedAt, allVotesSubmittedAt } =
     motionStateHistory || {};
 
-  const formattedNaySideFullyStakedAt = naySideFullyStakedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(naySideFullyStakedAt), new Date()),
-      )
-    : '';
-  const formattedYaySideFullyStakedAt = yaySideFullyStakedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(yaySideFullyStakedAt), new Date()),
-      )
-    : '';
-  const formattedAllVotesSubmittedAt = allVotesSubmittedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(allVotesSubmittedAt), new Date()),
-      )
-    : '';
+  const formattedNaySideFullyStakedAt =
+    formatMotionTooltipTimestamp(naySideFullyStakedAt);
+  const formattedYaySideFullyStakedAt =
+    formatMotionTooltipTimestamp(yaySideFullyStakedAt);
+  const formattedAllVotesSubmittedAt =
+    formatMotionTooltipTimestamp(allVotesSubmittedAt);
 
   if (motionState < MotionState.Submit) {
     return formatText(MSG.votingNotStarted);
@@ -246,16 +231,10 @@ export const getRevealStepTooltipText = (
   const { motionStateHistory, voterRecord } = motionData || {};
   const { allVotesSubmittedAt, allVotesRevealedAt } = motionStateHistory || {};
 
-  const formattedAllVotesSubmittedAt = allVotesSubmittedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(allVotesSubmittedAt), new Date()),
-      )
-    : '';
-  const formattedAllVotesRevealedAt = allVotesRevealedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(allVotesRevealedAt), new Date()),
-      )
-    : '';
+  const formattedAllVotesSubmittedAt =
+    formatMotionTooltipTimestamp(allVotesSubmittedAt);
+  const formattedAllVotesRevealedAt =
+    formatMotionTooltipTimestamp(allVotesRevealedAt);
 
   if (motionState < MotionState.Reveal) {
     return formatText(MSG.revealNotStarted);
@@ -296,16 +275,10 @@ export const getOutcomeStepTooltipText = (
 
   const isFullySupported = supportingStakesPercentageValue === 100;
 
-  const formattedAllVotesSubmittedAt = allVotesSubmittedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(allVotesSubmittedAt), new Date()),
-      )
-    : '';
-  const formattedAllVotesRevealedAt = allVotesRevealedAt
-    ? capitalizeFirstLetter(
-        formatRelative(new Date(allVotesRevealedAt), new Date()),
-      )
-    : '';
+  const formattedAllVotesSubmittedAt =
+    formatMotionTooltipTimestamp(allVotesSubmittedAt);
+  const formattedAllVotesRevealedAt =
+    formatMotionTooltipTimestamp(allVotesRevealedAt);
 
   if (motionState < MotionState.Closed) {
     return formatText(MSG.outcomeNotStarted);
@@ -350,12 +323,8 @@ export const getFinalizeStepTooltipText = (
   const yayRevealedRep = Number(revealedVotes?.raw.yay) || 0;
   const nayRevealedRep = Number(revealedVotes?.raw.nay) || 0;
 
-  const formattedFinalizedAt = finalizedAt
-    ? formatRelative(new Date(finalizedAt), new Date())
-    : '';
-  const formattedEndedAt = endedAt
-    ? capitalizeFirstLetter(formatRelative(new Date(endedAt), new Date()))
-    : '';
+  const formattedFinalizedAt = formatMotionTooltipTimestamp(finalizedAt);
+  const formattedEndedAt = formatMotionTooltipTimestamp(endedAt);
 
   if (motionState < MotionState.Closed) {
     return formatText(MSG.finalizeNotStarted);
