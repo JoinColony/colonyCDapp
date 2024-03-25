@@ -10,7 +10,7 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
-import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { membersList } from './consts.ts';
 
@@ -61,7 +61,7 @@ const ExitRecoveryStep: FC = () => {
                         ({ hasSigned, userName, address, key }) => (
                           <li key={key} className="mb-3 last:mb-0">
                             <MemberSignature hasSigned={hasSigned}>
-                              <UserAvatar2
+                              <UserAvatar
                                 size={20}
                                 userAddress={address}
                                 userName={userName}

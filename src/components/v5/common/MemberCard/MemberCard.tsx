@@ -5,7 +5,7 @@ import ContributorTypeWrapper from '~v5/shared/ContributorTypeWrapper/Contributo
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
 import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
-import { UserAvatar2 } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import { type MemberCardProps } from './types.ts';
@@ -36,7 +36,7 @@ const MemberCard: FC<MemberCardProps> = ({
           className="flex items-center text-gray-900 flex-col justify-between flex-grow w-full gap-2"
         >
           <ContributorTypeWrapper contributorType={contributorType}>
-            <UserAvatar2
+            <UserAvatar
               userAvatarSrc={user?.profile?.avatar ?? undefined}
               userName={user?.profile?.displayName ?? undefined}
               userAddress={userAddress}

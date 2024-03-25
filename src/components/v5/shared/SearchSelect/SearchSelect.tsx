@@ -17,7 +17,7 @@ import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
-import { Avatar2 } from '../Avatar/Avatar.tsx';
+import { Avatar } from '../Avatar/Avatar.tsx';
 import MenuContainer from '../MenuContainer/index.ts';
 
 import { useSearchSelect } from './hooks.ts';
@@ -180,7 +180,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                       className="flex min-h-[3.125rem] items-center justify-center gap-2 text-sm md:hover:text-blue-400"
                       onClick={() => onSelect?.(searchValue)}
                     >
-                      <Avatar2 size={20} address={searchValue} />
+                      <Avatar size={20} address={searchValue} />
                       <span className="max-w-[15.625rem] truncate">
                         {searchValue}
                       </span>

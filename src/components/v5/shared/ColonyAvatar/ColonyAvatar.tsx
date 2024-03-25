@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { Avatar2 } from '../Avatar/Avatar.tsx';
+import { Avatar } from '../Avatar/Avatar.tsx';
 
 import { type ColonyAvatarProps } from './types.ts';
 
@@ -22,7 +22,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         'flex justify-center items-center flex-shrink-0 relative',
       )}
     >
-      <Avatar2
+      <Avatar
         size={size}
         alt={`Avatar of colony ${colonyName ?? colonyAddress}`}
         src={colonyImageSrc}
