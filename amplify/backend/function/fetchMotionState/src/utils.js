@@ -292,16 +292,16 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
 
   const newMessagesPromises = motionMessages
     .filter((message) => !messageKeys.has(`${motionData.id}_${message}`))
-    .map((message) => {
-      return graphqlRequest(createMotionMessage, {
+    .map((message) =>
+      graphqlRequest(createMotionMessage, {
         input: {
           initiatorAddress: constants.AddressZero,
           name: message,
           messageKey: `${motionData.id}_${message}`,
           motionId: motionData.id,
         },
-      });
-    });
+      }),
+    );
 
   await Promise.all(newMessagesPromises);
 
