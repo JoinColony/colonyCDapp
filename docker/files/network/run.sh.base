@@ -1,23 +1,32 @@
 #!/bin/bash
 
 cd colonyNetwork
+#TODO: remove this once the node version in the network is upgraded
+sed -i 's/v14.18.2/v16.20.2/g' package.json
 
 # Ganache
 
 # Uncomment the line below if you need ganache to run in verbose mode
 # sed -i 's/100000000000000000000" >\/dev\/null 2>&1/100000000000000000000" --verbose/g' scripts/start-blockchain-client.sh
-sed -i 's/--db $DBPATH/--db $DBPATH --server.host "0.0.0.0"/g' scripts/start-blockchain-client.sh
+# sed -i 's/--db $DBPATH/--db $DBPATH --server.host "0.0.0.0"/g' scripts/start-blockchain-client.sh
 yarn start:blockchain:client &
 
 # Colony Network Contracts
 
-DISABLE_DOCKER=true yarn truffle migrate
+npx hardhat compile
+npx hardhat deploy
 
 # Export deployed addresses
 
 ETHER_ROUTER_ADDRESS=$(jq -r .etherRouterAddress etherrouter-address.json)
 MINER_ACCOUNT_ADDRESS=$(jq -r '.addresses | to_entries | .[5] | .value' ganache-accounts.json)
 BROADCASTER_ACCOUNT_PRIVKEY=$(jq -r '.private_keys | to_entries | .[17] | .value' ganache-accounts.json)
+
+echo "****"
+echo $ETHER_ROUTER_ADDRESS
+echo $MINER_ACCOUNT_ADDRESS
+echo $BROADCASTER_ACCOUNT_PRIVKEY
+echo "****"
 
 # Copy over colony network build artifacts to aid in development
 # Some of the files are needed to be imported and used in the app for local dev
