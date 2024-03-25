@@ -1,6 +1,7 @@
 import { SealCheck } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import ContributorTypeWrapper from '~v5/shared/ContributorTypeWrapper/ContributorTypeWrapper.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
 import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
@@ -17,7 +18,7 @@ const MemberCard: FC<MemberCardProps> = ({
   meatBallMenuProps,
   reputation,
   role,
-  // contributorType,
+  contributorType,
   isVerified,
 }) => {
   const userName = user?.profile?.displayName || userAddress;
@@ -32,14 +33,16 @@ const MemberCard: FC<MemberCardProps> = ({
           popperOptions={{
             placement: 'bottom-start',
           }}
-          className="flex items-center text-gray-900 flex-col justify-between flex-grow gap-2 w-full"
+          className="flex items-center text-gray-900 flex-col justify-between flex-grow w-full gap-2"
         >
-          <UserAvatar2
-            userAvatarSrc={user?.profile?.avatar ?? undefined}
-            userName={user?.profile?.displayName ?? undefined}
-            userAddress={userAddress}
-            size={60}
-          />
+          <ContributorTypeWrapper contributorType={contributorType}>
+            <UserAvatar2
+              userAvatarSrc={user?.profile?.avatar ?? undefined}
+              userName={user?.profile?.displayName ?? undefined}
+              userAddress={userAddress}
+              size={60}
+            />
+          </ContributorTypeWrapper>
           <p className="flex items-center justify-center text-center text-1 max-w-full">
             <span className="truncate inline-block w-full">{userName}</span>
             {isVerified && (
