@@ -23,7 +23,7 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
   const currentReputationContent = isLoading ? (
     <SpinnerLoader />
   ) : (
-    <p className="text-md font-normal text-gray-400 flex items-center gap-x-2 flex-wrap">
+    <p className="flex flex-wrap items-center gap-x-2 text-md font-normal text-gray-400">
       <Numeral value={formattedReputationPoints} />
       <span className="flex-shrink-0">
         {formatText(
@@ -39,7 +39,7 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
   );
 
   const newReputationContent = (
-    <p className="text-md font-normal text-gray-400 flex items-center gap-x-2 flex-wrap">
+    <p className="flex flex-wrap items-center gap-x-2 text-md font-normal text-gray-400">
       <Numeral value={formattedNewReputationPoints} />
       <span className="flex-shrink-0">
         {formatText(
@@ -60,7 +60,7 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
         {formatText({ id: 'actionSidebar.manageReputation.reputationChange' })}
       </h3>
       <div
-        className={clsx('w-full rounded-lg overflow-hidden border', {
+        className={clsx('w-full overflow-hidden rounded-lg border', {
           'border-negative-400': isError,
           'border-gray-200': !isError,
         })}
@@ -71,7 +71,7 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
               <tr>
                 <th
                   className={clsx(
-                    'text-left font-normal text-gray-600 text-sm bg-gray-50 border-r px-4 pt-2 pb-1 w-[6.125rem]',
+                    'w-[6.125rem] border-r bg-gray-50 px-4 pb-1 pt-2 text-left text-sm font-normal text-gray-600',
                     {
                       'border-r-negative-400': isError,
                       'border-r-gray-200': !isError,
@@ -82,8 +82,8 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
                     id: 'actionSidebar.manageReputation.currentReputation',
                   })}
                 </th>
-                <td className="pt-2 pb-1 px-4">
-                  <div className="h-[2.875rem] flex items-center">
+                <td className="px-4 pb-1 pt-2">
+                  <div className="flex h-[2.875rem] items-center">
                     {currentReputationContent}
                   </div>
                 </td>
@@ -91,7 +91,7 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
               <tr>
                 <th
                   className={clsx(
-                    'text-left font-normal text-gray-600 text-sm bg-gray-50 border-r px-4 py-1',
+                    'border-r bg-gray-50 px-4 py-1 text-left text-sm font-normal text-gray-600',
                     {
                       'border-r-negative-400': isError,
                       'border-r-gray-200': !isError,
@@ -102,8 +102,8 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
                     id: 'actionSidebar.manageReputation.change',
                   })}
                 </th>
-                <td className="py-1 px-4">
-                  <div className="h-[2.875rem] flex items-center">
+                <td className="px-4 py-1">
+                  <div className="flex h-[2.875rem] items-center">
                     {changeContent}
                   </div>
                 </td>
@@ -111,7 +111,7 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
               <tr>
                 <th
                   className={clsx(
-                    'text-left font-normal text-gray-600 text-sm bg-gray-50 border-r px-4 pt-1 pb-2',
+                    'border-r bg-gray-50 px-4 pb-2 pt-1 text-left text-sm font-normal text-gray-600',
                     {
                       'border-r-negative-400': isError,
                       'border-r-gray-200': !isError,
@@ -122,8 +122,8 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
                     id: 'actionSidebar.manageReputation.newReputation',
                   })}
                 </th>
-                <td className="pt-1 pb-2 px-4">
-                  <div className="h-[2.875rem] flex items-center">
+                <td className="px-4 pb-2 pt-1">
+                  <div className="flex h-[2.875rem] items-center">
                     {newReputationContent}
                   </div>
                 </td>
@@ -132,24 +132,24 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
           </table>
         ) : (
           <table className="w-full table-fixed">
-            <thead className="text-gray-600 text-sm">
+            <thead className="text-sm text-gray-600">
               <tr
                 className={clsx('border-b bg-gray-50', {
                   'border-b-negative-400': isError,
                   'border-b-gray-200': !isError,
                 })}
               >
-                <th className="text-left font-normal py-[.6875rem] pl-4 pr-2">
+                <th className="py-[.6875rem] pl-4 pr-2 text-left font-normal">
                   {formatText({
                     id: 'actionSidebar.manageReputation.currentReputation',
                   })}
                 </th>
-                <th className="text-left font-normal py-[.6875rem] px-2">
+                <th className="px-2 py-[.6875rem] text-left font-normal">
                   {formatText({
                     id: 'actionSidebar.manageReputation.change',
                   })}
                 </th>
-                <th className="text-left font-normal py-[.6875rem] pl-2 pr-4">
+                <th className="py-[.6875rem] pl-2 pr-4 text-left font-normal">
                   {formatText({
                     id: 'actionSidebar.manageReputation.newReputation',
                   })}
@@ -161,7 +161,7 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
                 <td className="h-[3.375rem] py-1 pl-4 pr-2">
                   {currentReputationContent}
                 </td>
-                <td className="h-[3.375rem] py-1 px-2">{changeContent}</td>
+                <td className="h-[3.375rem] px-2 py-1">{changeContent}</td>
                 <td className="h-[3.375rem] py-1 pl-2 pr-4">
                   {newReputationContent}
                 </td>
