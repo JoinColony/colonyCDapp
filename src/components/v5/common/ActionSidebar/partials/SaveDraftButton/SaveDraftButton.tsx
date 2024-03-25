@@ -18,7 +18,7 @@ const SaveDraftButton: FC = () => {
   const { wallet } = useAppContext();
   const dispatch = useDispatch();
   const {
-    formState: { isValid, isValidating },
+    formState: { isValid, ...formState },
     getValues,
     trigger,
   } = useFormContext();
@@ -65,7 +65,7 @@ const SaveDraftButton: FC = () => {
         }
       }}
       isFullSize={isMobile}
-      disabled={isValidating || isDraftSaved}
+      disabled={formState.isValidating || isDraftSaved}
     >
       {!isDraftSaved && <FileDashed size={18} className="mr-2" />}
       {formatText({
