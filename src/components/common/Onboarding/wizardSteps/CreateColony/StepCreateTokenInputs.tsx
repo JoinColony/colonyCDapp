@@ -3,10 +3,11 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { ADDRESS_ZERO } from '~constants';
 import { type UseAvatarUploaderProps } from '~v5/common/AvatarUploader/hooks.ts';
 import AvatarUploader from '~v5/common/AvatarUploader/index.ts';
 import Input from '~v5/common/Fields/Input/index.ts';
-import Avatar from '~v5/shared/Avatar/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { getInputError } from '../shared.ts';
 
@@ -116,7 +117,12 @@ const StepCreateTokenInputs = ({
       <AvatarUploader
         avatarPlaceholder={
           tokenAvatarUrl ? (
-            <Avatar size="m" avatar={tokenAvatarUrl} />
+            <TokenAvatar
+              size={60}
+              tokenName={wizardTokenName}
+              tokenAvatarSrc={tokenAvatarUrl}
+              tokenAddress={ADDRESS_ZERO}
+            />
           ) : (
             <div className="flex rounded-full bg-gray-200 p-4 text-gray-600">
               <Image size={28} />

@@ -10,7 +10,7 @@ import {
   type UseAvatarUploaderProps,
   useGetUploaderText,
 } from '~v5/common/AvatarUploader/hooks.ts';
-import Avatar from '~v5/shared/Avatar/index.ts';
+import { Avatar2 } from '~v5/shared/Avatar/Avatar.tsx';
 
 import {
   profileFileOptions,
@@ -144,12 +144,14 @@ export const useUserProfilePageForm = () => {
           description: formatText({ id: 'description.avatar' }),
           descriptionClassName,
           avatarUploaderProps: {
-            avatarPlaceholder: (
-              <Avatar
-                size="xm"
-                avatar={avatarUrl}
-                seed={wallet?.address.toLowerCase()}
+            avatarPlaceholder: wallet ? (
+              <Avatar2
+                size={64}
+                src={avatarUrl ?? undefined}
+                address={wallet.address}
               />
+            ) : (
+              <div />
             ),
             fileOptions: profileFileOptions,
             updateFn: updateAvatarFn,

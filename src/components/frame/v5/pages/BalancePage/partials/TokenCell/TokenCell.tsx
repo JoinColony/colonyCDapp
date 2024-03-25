@@ -6,19 +6,19 @@ import { useMobile } from '~hooks/index.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import TokenInfo from '~shared/TokenInfo/index.ts';
 import { formatText } from '~utils/intl.ts';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
-import { type TokenAvatarProps } from './types.ts';
+import { type TokenCellProps } from './types.ts';
 
-const displayName = 'v5.pages.BalancePage.partials.TokenAvatar';
+const displayName = 'v5.pages.BalancePage.partials.TokenCell';
 
-const TokenAvatar: FC<TokenAvatarProps> = ({
+const TokenCell: FC<TokenCellProps> = ({
   token,
   tokenAddress,
   nativeTokenStatus,
@@ -43,9 +43,11 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
 
   const content = (
     <div className="flex items-center gap-2 text-left md:gap-4">
-      <TokenIcon
-        token={token}
-        size="xs"
+      <TokenAvatar
+        size={18}
+        tokenName={token.name}
+        tokenAddress={token.tokenAddress}
+        tokenAvatarSrc={token.avatar ?? undefined}
         className={clsx('flex-shrink-0', {
           '!h-6 !w-6': isMobile,
         })}
@@ -121,6 +123,6 @@ const TokenAvatar: FC<TokenAvatarProps> = ({
   );
 };
 
-TokenAvatar.displayName = displayName;
+TokenCell.displayName = displayName;
 
-export default TokenAvatar;
+export default TokenCell;

@@ -6,10 +6,11 @@ import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
+import { Avatar2 } from '../Avatar/Avatar.tsx';
+
 import { type UserAvatarProps } from './types.ts';
 
 import styles from './UserAvatar.module.css';
-import { Avatar2 } from '../Avatar/Avatar.tsx';
 
 const displayName = 'v5.UserAvatar';
 

@@ -1,9 +1,9 @@
 import { Coins } from '@phosphor-icons/react';
 import React from 'react';
 
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { getFormattedTokenAmount } from '../utils.ts';
 
@@ -31,7 +31,12 @@ const AmountRow = ({ amount, token }: AmountRowProps) => {
           {formattedAmount}
           {token && (
             <>
-              <TokenIcon token={token} size="xxs" />
+              <TokenAvatar
+                size={18}
+                tokenName={token.name}
+                tokenAddress={token.tokenAddress}
+                tokenAvatarSrc={token.avatar ?? undefined}
+              />
               <span className="text-md">{token.symbol}</span>
             </>
           )}

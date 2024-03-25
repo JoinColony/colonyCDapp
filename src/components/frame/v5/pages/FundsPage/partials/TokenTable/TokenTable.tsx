@@ -10,13 +10,13 @@ import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import TokenInfo from '~shared/TokenInfo/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { useTokenTableColumns } from './hooks.tsx';
 import { type TokenTableProps } from './types.ts';
@@ -82,7 +82,12 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
               ref={relativeElementRef}
               onClick={handleToggleToken}
             >
-              <TokenIcon token={token} size="xs" />
+              <TokenAvatar
+                size={26}
+                tokenName={token.name}
+                tokenAddress={token.tokenAddress}
+                tokenAvatarSrc={token.avatar ?? undefined}
+              />
               <span
                 className={clsx('font-medium', {
                   'max-w-[6.25rem] truncate md:max-w-full': !isTokenModalOpened,
