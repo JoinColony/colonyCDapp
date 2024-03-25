@@ -2,14 +2,15 @@ import { useMemo } from 'react';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { splitAddress } from '~utils/strings/index.ts';
-import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+
+import { type UserSearchSelectOption } from './types.ts';
 
 export const useUserSelect = () => {
   const { totalMembers, loading } = useMemberContext();
 
   const options = useMemo(
     () =>
-      totalMembers.reduce<SearchSelectOption[]>((result, member) => {
+      totalMembers.reduce<UserSearchSelectOption[]>((result, member) => {
         if (!member) {
           return result;
         }
@@ -35,8 +36,8 @@ export const useUserSelect = () => {
               profile?.displayName ||
               (walletAddress && maskedWalletAddress) ||
               maskedContributorAddress,
-            avatar: profile?.thumbnail || profile?.avatar || '',
-            thumbnail: profile?.thumbnail || '',
+            avatar: profile?.thumbnail || profile?.avatar || undefined,
+            thumbnail: profile?.thumbnail || undefined,
             id: result.length,
             showAvatar: true,
             walletAddress,

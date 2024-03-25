@@ -9,6 +9,7 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
+import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
@@ -54,25 +55,42 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
       ? {
           profile: {
             displayName: selectedUserOption?.label,
-            thumbnail: selectedUserOption?.thumbnail,
+            avatar: selectedUserOption?.thumbnail,
           },
           walletAddress: selectedUserOption?.walletAddress,
           isVerified: selectedUserOption?.isVerified,
         }
       : undefined;
 
+  const getUserName = () => {
+    if (!selectedUser?.walletAddress) {
+      return null;
+    }
+    return (
+      selectedUser?.profile?.displayName ??
+      splitWalletAddress(selectedUser.walletAddress)
+    );
+  };
+
+  const userName = getUserName();
+
   return (
-    <div className="flex w-full items-center sm:relative">
-      {readonly ? (
+    <div className="sm:relative w-full flex items-center">
+      {readonly && selectedUser?.walletAddress ? (
         <>
           <UserAvatar
-            user={selectedUser || field.value}
-            size="xs"
-            showUsername
-            className={clsx({
+            userName={selectedUser?.profile?.displayName ?? undefined}
+            userAddress={selectedUser.walletAddress}
+            userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+            size={20}
+          />
+          <p
+            className={clsx('font-medium truncate text-md ml-2 text-gray-900', {
               'text-warning-400': !selectedUser?.isVerified,
             })}
-          />
+          >
+            {userName}
+          </p>
           {selectedUser?.isVerified && (
             <CircleWavyCheck
               size={14}
@@ -98,14 +116,19 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
             {selectedUser || field.value ? (
               <>
                 <UserAvatar
-                  user={selectedUser || field.value}
-                  size="xs"
-                  showUsername
-                  className={clsx({
+                  userName={selectedUser?.profile?.displayName ?? undefined}
+                  userAddress={userWalletAddress}
+                  userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+                  size={20}
+                />
+                <p
+                  className={clsx('font-medium truncate text-md ml-2', {
                     'text-warning-400': !selectedUser?.isVerified,
                     'text-gray-900': selectedUser?.isVerified,
                   })}
-                />
+                >
+                  {userName}
+                </p>
                 {selectedUser?.isVerified && (
                   <CircleWavyCheck
                     size={14}
