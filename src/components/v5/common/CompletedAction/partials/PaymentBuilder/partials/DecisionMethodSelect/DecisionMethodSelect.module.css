@@ -1,0 +1,59 @@
+.wrapper :global(.select__control) {
+  @apply rounded-e rounded-s border-gray-300 text-md font-medium text-gray-900;
+}
+
+.wrapper :global(.select__placeholder) {
+  @apply text-md font-normal text-gray-400;
+}
+
+.wrapper :global(.select__control--is-focused) {
+  @apply border-blue-200 !shadow-none;
+}
+
+.wrapper :global(.select__value-container) {
+  @apply px-3.5 py-1;
+}
+
+.wrapper :global(.select__single-value) {
+  @apply m-0;
+}
+
+.wrapper :global(.select__indicator) {
+  @apply px-3.5 py-3 text-gray-400 transition-all;
+}
+
+.wrapper :global(.select__input-container) {
+  @apply text-md font-normal;
+}
+
+.wrapper :global(.select__control--menu-is-open .select__indicator) {
+  @apply rotate-180;
+}
+
+.menu {
+  @apply my-1 rounded-e rounded-s border border-gray-300 !shadow-none;
+}
+
+.menu :global(.select__menu-list) {
+  @apply px-1.5 py-2;
+}
+
+.menu :global(.select__option) {
+  @apply cursor-pointer rounded-e rounded-s p-2 text-gray-900 transition-all;
+}
+
+.menu :global(.select__option--is-selected) {
+  @apply bg-transparent font-medium text-blue-400;
+}
+
+.menu :global(.select__option--is-disabled) {
+  @apply cursor-not-allowed bg-base-white text-gray-400;
+}
+
+.menu :global(.select__option--is-focused) {
+  @apply bg-base-white;
+}
+
+.menu :global(.select__option:not(.select__option--is-disabled):hover) {
+  @apply bg-gray-50 font-medium;
+}
