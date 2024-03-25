@@ -37,7 +37,7 @@ const ManageReputationTableInMotion: FC<ManageReputationTableInMotionProps> = ({
       newPercentageReputation={newPercentageReputation}
       percentageReputation={percentageReputation}
       changeContent={
-        <p className="text-md font-normal text-gray-900 flex items-center gap-x-2 flex-wrap">
+        <p className="flex flex-wrap items-center gap-x-2 text-md font-normal text-gray-900">
           <Numeral
             value={amount}
             decimals={getTokenDecimalsWithFallback(

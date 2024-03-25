@@ -11,7 +11,7 @@ import { formatText } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-import { useGetActionData } from '~v5/common/ActionSidebar/hooks/index.ts';
+import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 

@@ -37,7 +37,7 @@ const ManageReputationDescription: FC = () => {
         walletAddress={member}
         user={user}
         withVerifiedBadge={false}
-        wrapperClassName="!inline-flex"
+        className="!inline-flex"
       >
         {user?.profile?.displayName || splitWalletAddress(member)}
       </UserPopover>

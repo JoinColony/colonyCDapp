@@ -14,7 +14,7 @@ import {
   MODIFICATION_FIELD_NAME,
   TEAM_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import { useHasNoDecisionMethods } from '~v5/common/ActionSidebar/hooks/index.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -63,7 +63,7 @@ const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   return (
     <>
-      <div className="w-full mb-6">
+      <div className="mb-6 w-full">
         <ActionFormRow
           icon={ArrowsOutLineVertical}
           fieldName={MODIFICATION_FIELD_NAME}

@@ -78,7 +78,7 @@ const UserSelect: FC<UserSelectProps> = ({
     <button
       type="button"
       ref={relativeElementRef}
-      className={clsx('flex text-md transition-colors items-center', {
+      className={clsx('flex items-center text-md transition-colors', {
         'text-gray-400': !isError && !isUserSelectVisible,
         'text-negative-400': isError,
         'text-blue-400': isUserSelectVisible,
@@ -102,7 +102,7 @@ const UserSelect: FC<UserSelectProps> = ({
           {selectedUser?.isVerified && (
             <CircleWavyCheck
               size={14}
-              className="ml-1 text-blue-400 flex-shrink-0"
+              className="ml-1 flex-shrink-0 text-blue-400"
             />
           )}
         </>

@@ -83,17 +83,17 @@ const ManageReputationTableCompletedState: FC<
       <h3 className="mb-3 text-gray-900 text-2">
         {formatText({ id: 'actionSidebar.manageReputation.reputationChange' })}
       </h3>
-      <div className="w-full rounded-lg overflow-hidden border border-gray-200">
+      <div className="w-full overflow-hidden rounded-lg border border-gray-200">
         <table className="w-full table-fixed">
           {isMobile ? (
             <tbody>
               <tr>
-                <th className="text-left font-normal text-gray-600 text-sm bg-gray-50 border-r border-r-gray-200 p-4 align-top w-[6.125rem]">
+                <th className="w-[6.125rem] border-r border-r-gray-200 bg-gray-50 p-4 text-left align-top text-sm font-normal text-gray-600">
                   {formatText({
                     id: 'actionSidebar.manageReputation.change',
                   })}
                 </th>
-                <td className="px-4 pt-[.9375rem] pb-4">
+                <td className="px-4 pb-4 pt-[.9375rem]">
                   <div className="flex flex-col items-start gap-4">
                     {amountContent}
                     {pill}
@@ -103,10 +103,10 @@ const ManageReputationTableCompletedState: FC<
             </tbody>
           ) : (
             <>
-              <thead className="text-gray-600 text-sm">
+              <thead className="text-sm text-gray-600">
                 <tr className="border-b border-b-gray-200 bg-gray-50">
                   <th
-                    className="text-left font-normal py-[.6875rem] px-4"
+                    className="px-4 py-[.6875rem] text-left font-normal"
                     colSpan={2}
                   >
                     {formatText({
