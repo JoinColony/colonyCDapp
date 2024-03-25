@@ -14,7 +14,7 @@ const RevealInformationItem: FC<RevealInformationListItem> = ({
 }) => {
   return (
     <div className="flex items-center justify-between gap-2 text-gray-900">
-      <UserPopover walletAddress={address} />
+      <UserPopover size={20} walletAddress={address} />
       <div className="flex items-center gap-2 text-gray-900">
         {hasRevealed ? <Eye size={14} /> : <EyeClosed size={14} />}
         <span className="text-sm">{hasRevealed ? 'Revealed' : 'Hidden'}</span>

@@ -81,7 +81,6 @@ const UserMenu: FC<UserMenuProps> = ({
         {wallet ? (
           <WalletConnectedTopMenu>
             <UserDetails
-              size={60}
               userName={
                 profile?.displayName ?? splitWalletAddress(wallet.address ?? '')
               }

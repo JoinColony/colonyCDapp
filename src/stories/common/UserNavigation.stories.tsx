@@ -7,6 +7,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import UserHub from '~common/Extensions/UserHub/index.ts';
 import UserNavigation from '~common/Extensions/UserNavigation/index.ts';
 import Token from '~common/Extensions/UserNavigation/partials/Token/index.ts';
+import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context/index.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
@@ -78,11 +79,9 @@ const UserNavigationWithData = () => {
           >
             <div className="flex items-center gap-3">
               <UserAvatar
-                user={{
-                  profile: { displayName: 'Panda' },
-                  walletAddress: '0x',
-                }}
-                size="xxs"
+                userName="Panda"
+                userAddress={ADDRESS_ZERO}
+                size={16}
               />
             </div>
           </Button>
