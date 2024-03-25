@@ -1,10 +1,6 @@
 import { SealCheck } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { ContributorType } from '~gql';
-import { formatText } from '~utils/intl.ts';
-import { type UserStatusMode } from '~v5/common/Pills/types.ts';
-import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
 
 import ContributorTypeWrapper from '../ContributorTypeWrapper/ContributorTypeWrapper.tsx';
@@ -14,23 +10,6 @@ import { type UserDetailsProps } from './types.ts';
 
 const displayName = 'v5.UserDetails';
 
-const getUserStatusMode = (
-  contributorType: ContributorType,
-): UserStatusMode => {
-  switch (contributorType) {
-    case ContributorType.New:
-      return 'new';
-    case ContributorType.Active:
-      return 'active';
-    case ContributorType.Dedicated:
-      return 'dedicated';
-    case ContributorType.Top:
-      return 'top';
-    default:
-      return 'general';
-  }
-};
-
 const UserDetails: FC<UserDetailsProps> = ({
   userName,
   walletAddress,
@@ -38,16 +17,10 @@ const UserDetails: FC<UserDetailsProps> = ({
   isVerified,
   userAvatarSrc,
 }) => {
-  const userStatus = contributorType
-    ? getUserStatusMode(contributorType)
-    : undefined;
-
   return (
     <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
       <div className="flex relative justify-center">
-        <ContributorTypeWrapper
-          contributorType={contributorType || ContributorType.General}
-        >
+        <ContributorTypeWrapper contributorType={contributorType}>
           <UserAvatar2
             size={60}
             userAvatarSrc={userAvatarSrc}
@@ -55,16 +28,6 @@ const UserDetails: FC<UserDetailsProps> = ({
             userAddress={walletAddress}
           />
         </ContributorTypeWrapper>
-        {!!userStatus && userStatus !== 'general' && (
-          <span className="absolute bottom-[-0.9375rem]">
-            <UserStatus
-              isFilled
-              mode={userStatus}
-              text={formatText({ id: userStatus })}
-              pillSize="small"
-            />
-          </span>
-        )}
       </div>
       <div>
         <div className="mb-0.5 grid grid-cols-[auto,1fr] items-center gap-x-2">
