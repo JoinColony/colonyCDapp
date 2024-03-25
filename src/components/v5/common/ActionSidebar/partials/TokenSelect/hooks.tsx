@@ -6,9 +6,9 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetTokenFromEverywhereQuery } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import TokenIcon from '~shared/TokenIcon/TokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import TokenStatus from './partials/TokenStatus/TokenStatus.tsx';
 
@@ -61,7 +61,14 @@ export const useTokenSelect = (inputValue: string) => {
 
       return (
         <div className="flex items-center gap-2">
-          {selectedToken && <TokenIcon token={selectedToken} size="xxs" />}
+          {selectedToken && (
+            <TokenAvatar
+              size={18}
+              tokenName={selectedToken.name}
+              tokenAddress={selectedToken.tokenAddress}
+              tokenAvatarSrc={selectedToken?.avatar ?? undefined}
+            />
+          )}
           {selectedToken?.name}
         </div>
       );

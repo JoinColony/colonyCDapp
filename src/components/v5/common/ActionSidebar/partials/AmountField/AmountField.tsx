@@ -9,7 +9,6 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   getBalanceForTokenAndDomain,
@@ -18,6 +17,7 @@ import {
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { useAmountField } from './hooks.ts';
 import { type AmountFieldProps } from './types.ts';
@@ -81,9 +81,16 @@ const AmountField: FC<AmountFieldProps> = ({
     top: 8,
   });
 
+  const activeToken = selectedToken || colonyTokens[0];
+
   const selectedTokenContent = (
     <>
-      <TokenIcon token={selectedToken || colonyTokens[0]} size="xxs" />
+      <TokenAvatar
+        size={18}
+        tokenName={activeToken.name}
+        tokenAddress={activeToken.tokenAddress}
+        tokenAvatarSrc={activeToken.avatar ?? undefined}
+      />
       <span
         className={clsx('text-md', {
           'text-gray-400': isDisabled,
@@ -177,10 +184,11 @@ const AmountField: FC<AmountFieldProps> = ({
                           }}
                         >
                           <div className="flex items-center gap-1">
-                            <TokenIcon
-                              token={colonyToken}
-                              size="xxs"
-                              className="mr-1.5"
+                            <TokenAvatar
+                              size={18}
+                              tokenName={colonyToken.name}
+                              tokenAddress={colonyToken.tokenAddress}
+                              tokenAvatarSrc={colonyToken.avatar ?? undefined}
                             />
                             <span className="text-md">
                               {colonyToken.symbol}

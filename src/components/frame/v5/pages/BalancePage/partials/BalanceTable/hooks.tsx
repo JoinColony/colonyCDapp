@@ -19,7 +19,7 @@ import {
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge/index.ts';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
 
-import TokenAvatar from '../TokenAvatar/index.ts';
+import TokenCell from '../TokenCell/index.ts';
 
 import { useFiltersContext } from './Filters/FiltersContext/FiltersContext.ts';
 import { type BalanceTableFieldModel } from './types.ts';
@@ -116,7 +116,7 @@ export const useBalanceTableColumns = (
           if (!row.original.token) return [];
 
           return (
-            <TokenAvatar
+            <TokenCell
               token={row.original.token}
               tokenAddress={nativeToken.tokenAddress}
               nativeTokenStatus={nativeTokenStatus}

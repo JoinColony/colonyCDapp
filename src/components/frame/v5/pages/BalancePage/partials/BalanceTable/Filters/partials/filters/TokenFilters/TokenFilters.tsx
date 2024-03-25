@@ -1,8 +1,8 @@
 import React, { type FC } from 'react';
 
-import TokenIcon from '~shared/TokenIcon/TokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { useFiltersContext } from '../../../FiltersContext/FiltersContext.ts';
 
@@ -15,7 +15,12 @@ const TokenFilters: FC = () => {
     symbol: token.symbol,
     label: (
       <div className="flex items-center gap-2">
-        <TokenIcon token={token} size="xxxs" />
+        <TokenAvatar
+          size={16}
+          tokenName={token.name}
+          tokenAddress={token.tokenAddress}
+          tokenAvatarSrc={token.avatar ?? undefined}
+        />
         {token.symbol}
       </div>
     ),
