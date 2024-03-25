@@ -41,7 +41,10 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                       id: 'action.executed.permissions.member',
                     })}
                   </span>
-                  <UserPopover walletAddress={initiatorAddress || ''} />
+                  <UserPopover
+                    size={20}
+                    walletAddress={initiatorAddress || ''}
+                  />
                 </div>
               )}
               {initiatorAddress && (

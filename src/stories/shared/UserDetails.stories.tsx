@@ -1,10 +1,10 @@
-import UserAvatarDetails from '~v5/shared/UserAvatarDetails/index.ts';
+import UserDetails from '~v5/shared/UserDetails/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof UserAvatarDetails> = {
-  title: 'Shared/User Avatar Details',
-  component: UserAvatarDetails,
+const meta: Meta<typeof UserDetails> = {
+  title: 'Shared/User Details',
+  component: UserDetails,
   argTypes: {
     userName: {
       name: 'User name',
@@ -33,6 +33,6 @@ const meta: Meta<typeof UserAvatarDetails> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof UserAvatarDetails>;
+type Story = StoryObj<typeof UserDetails>;
 
 export const Base: Story = {};

@@ -13,6 +13,7 @@ const MemberAvatar: FC<MemberAvatarProps> = ({ member }) => {
   return (
     <div className="ml-1 flex text-gray-900">
       <UserPopover
+        size={20}
         walletAddress={walletAddress}
         popperOptions={{ placement: 'bottom-start' }}
       />

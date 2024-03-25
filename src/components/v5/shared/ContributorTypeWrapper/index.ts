@@ -1,1 +1,1 @@
-export { default } from './UserStatusWrapper.tsx';
+export { default } from './ContributorTypeWrapper.tsx';

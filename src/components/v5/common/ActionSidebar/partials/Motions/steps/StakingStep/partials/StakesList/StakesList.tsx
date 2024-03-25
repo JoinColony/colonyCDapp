@@ -64,7 +64,7 @@ const StakesList = ({ userStakes }: StakesListProps) => {
                       key={stake.address}
                       className="flex w-full items-center justify-between gap-4"
                     >
-                      <UserPopover walletAddress={stake.address} />
+                      <UserPopover size={20} walletAddress={stake.address} />
                       <div className="flex-shrink-0 text-right text-sm text-gray-900">
                         {formatText(
                           { id: 'motion.staking.staked' },
