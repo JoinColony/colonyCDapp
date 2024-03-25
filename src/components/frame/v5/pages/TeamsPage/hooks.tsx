@@ -63,8 +63,7 @@ export const useTeams = () => {
           return result;
         }
 
-        const { userAvatarProps, role, reputation } = item;
-        const { user } = userAvatarProps;
+        const { user, role, reputation } = item;
 
         if (!user || (!role && !reputation)) {
           return result;

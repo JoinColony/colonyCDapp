@@ -4,6 +4,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub/index.ts';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
+import { ADDRESS_ZERO } from '~constants';
 import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -12,6 +13,7 @@ import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
@@ -20,15 +22,11 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import { UserHubTabs } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
-import { type UserHubButtonProps } from './types.ts';
 import { findNewestGroup, getGroupStatus } from './utils.ts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserHubButton';
 
-const UserHubButton: FC<UserHubButtonProps> = ({
-  hideMemberReputationOnMobile,
-  hideUserNameOnMobile,
-}) => {
+const UserHubButton: FC = () => {
   const isMobile = useMobile();
   const {
     colony: { colonyAddress },
@@ -111,6 +109,10 @@ const UserHubButton: FC<UserHubButtonProps> = ({
     }
   }, [groupStatus, prevGroupStatus]);
 
+  const userName =
+    user?.profile?.displayName ??
+    splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
+
   return (
     <div ref={ref}>
       <Button
@@ -126,20 +128,30 @@ const UserHubButton: FC<UserHubButtonProps> = ({
         )}
         onClick={handleButtonClick}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           {/* If there's a user, there's a wallet */}
           {walletAddress ? (
             <>
               <UserAvatar
-                user={user || walletAddress}
-                showUsername={!(hideUserNameOnMobile && isMobile)}
-                size={isMobile ? 'xss' : 'xxs'}
+                userAvatarSrc={user?.profile?.avatar ?? undefined}
+                userName={userName}
+                userAddress={wallet.address}
+                size={isMobile ? 18 : 16}
               />
-              <MemberReputation
-                colonyAddress={colonyAddress}
-                hideOnMobile={hideMemberReputationOnMobile}
-                walletAddress={walletAddress}
-              />
+              {!isMobile && (
+                <>
+                  <p className="font-medium truncate text-sm ml-1">
+                    {userName}
+                  </p>
+                  <div className="ml-2">
+                    <MemberReputation
+                      colonyAddress={colonyAddress}
+                      hideOnMobile
+                      walletAddress={walletAddress}
+                    />
+                  </div>
+                </>
+              )}
             </>
           ) : null}
         </div>

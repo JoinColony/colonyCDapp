@@ -11,6 +11,7 @@ import { type VoteStatusesProps } from './types.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.Motion.steps.OutcomeStep.partials.VoteStatuses';
 
+// @TODO re-check for UserAvatars after change
 const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
   const {
     registeredUsers: yayVoters,
@@ -69,7 +70,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
                   : remainingNayVoters
               }
               maxAvatarsToShow={3}
-              size="smx"
+              size={28}
             />
           )}
         </div>
