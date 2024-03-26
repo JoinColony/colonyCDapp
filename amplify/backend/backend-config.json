@@ -474,6 +474,22 @@
         }
       ]
     },
+    "AMPLIFY_function_removeMemberFromColonyWhitelist_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "removeMemberFromColonyWhitelist"
+        }
+      ]
+    },
+    "AMPLIFY_function_removeMemberFromColonyWhitelist_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "removeMemberFromColonyWhitelist"
+        }
+      ]
+    },
     "AMPLIFY_function_updateContributorsWithReputation_deploymentBucketName": {
       "usedBy": [
         {
