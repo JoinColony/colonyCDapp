@@ -6,6 +6,8 @@ export interface TabItem {
   title: MessageDescriptor | string;
   content?: React.ReactNode;
   notificationNumber?: number;
+  className?: string;
+  activeClassName?: string;
 }
 
 export interface TabsProps {

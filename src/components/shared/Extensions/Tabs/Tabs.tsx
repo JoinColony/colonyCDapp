@@ -32,18 +32,30 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
       navBtnClassName="transition-colors duration-normal border-none bg-gray-200 w-[1.375rem] h-[1.375rem] rounded flex items-center justify-center shrink-0 sm:hover:bg-gray-300 [&_i]:w-[0.625em] [&_i]:h-[0.625em]"
       hideNavBtnsOnMobile={false}
     >
-      {items.map(({ id, title, notificationNumber }) => (
-        <Tab
-          key={id}
-          className={clsx({
-            '!font-semibold': id === activeTab,
-            'text-gray-700': id !== activeTab,
-          })}
-        >
-          {formatText({ id: `tabs.${id}`, defaultMessage: `${title}` })}
-          {!!notificationNumber && <CountBox count={notificationNumber} />}
-        </Tab>
-      ))}
+      {items.map(
+        ({
+          id,
+          title,
+          notificationNumber,
+          className: itemClassName,
+          activeClassName: itemActiveClassName,
+        }) => (
+          <Tab
+            key={id}
+            className={clsx(
+              {
+                '!font-semibold': id === activeTab,
+                'text-gray-700': id !== activeTab,
+              },
+              itemClassName,
+              id === activeTab && itemActiveClassName,
+            )}
+          >
+            {formatText({ id: `tabs.${id}`, defaultMessage: `${title}` })}
+            {!!notificationNumber && <CountBox count={notificationNumber} />}
+          </Tab>
+        ),
+      )}
     </ReactTabs>
     {items.map(({ id, content }) => (
       <TabScreen
