@@ -1723,5 +1723,20 @@
     "teamsPage.empty.title": "No results to display",
     "teamsPage.empty.description": "There are teams in the Colony that match your search. Try searching again",
     "expenditure.description": "Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}",
-    "expenditure.description.placeholder": "Payment with multiple recipients and tokens by {initiator}"
+    "expenditure.description.placeholder": "Payment with multiple recipients and tokens by {initiator}",
+    "expenditure.createStage.label": "Create",
+    "expenditure.reviewStage.label": "Review",
+    "expenditure.reviewStage.tooltip": "Payment is currently in review. The payment creator can make changes freely until details are confirmed.",
+    "expenditure.reviewStage.confirmDetails.info": "If all details are correct, confirm the payment details to move onto funding. Changing after this point will require a governance process.",
+    "expenditure.reviewStage.confirmDetails.button": "Confirm details",
+    "expenditure.fundingStage.label": "Funding",
+    "expenditure.fundingStage.info": "You need collective approval in order to fund the payment, click “Fund” to start the process.",
+    "expenditure.fundingStage.button": "Fund",
+    "expenditure.releaseStage.label": "Release",
+    "expenditure.releaseStage.info": "To allow recipients to claim their funds, you need to release them first. This will start the countdown on any claim delays as well.",
+    "expenditure.releaseStage.button": "Release",
+    "expenditure.paymentStage.label": "Payment",
+    "expenditure.paymentStage.info": "You are now able to pay funds to recipients who have passed their claim delay.",
+    "expenditure.paymentStage.info.nextClaim": "Next claim in {counter}",
+    "expenditure.paymentStage.button": "Make payment"
 }

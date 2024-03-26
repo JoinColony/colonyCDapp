@@ -2,9 +2,11 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type Expenditure, type ColonyAction } from '~types/graphql.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { type ColonyAction } from '~types/graphql.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
+import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import {
@@ -20,7 +22,6 @@ import PaymentBuilderTable from '../rows/PaymentBuilderTable/PaymentBuilderTable
 import TeamFromRow from '../rows/TeamFrom.tsx';
 
 interface PaymentBuilderProps {
-  expenditure: Expenditure;
   action: ColonyAction;
 }
 
@@ -38,44 +39,59 @@ const MSG = defineMessages({
   },
 });
 
-const PaymentBuilder = ({ expenditure, action }: PaymentBuilderProps) => {
+const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
 
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action.expenditureId,
+  );
+
+  if (loadingExpenditure) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-4">
+        <SpinnerLoader appearance={{ size: 'huge' }} />
+        <p className="text-gray-600">
+          {formatText({ id: 'actionSidebar.loading' })}
+        </p>
+      </div>
+    );
+  }
+
+  if (!expenditure) {
+    return null;
+  }
+
+  const { slots = [], metadata } = expenditure;
+
   const selectedTeam = findDomainByNativeId(
-    expenditure.metadata?.fundFromDomainNativeId,
+    metadata?.fundFromDomainNativeId,
     colony,
   );
 
-  const recipientCounts = expenditure.slots.reduce(
-    (uniqueAddresses: string[], item) => {
-      const address = item.recipientAddress;
-      if (address) {
-        if (!uniqueAddresses.includes(address)) {
-          uniqueAddresses.push(address);
-        }
+  const recipientCounts = slots.reduce((uniqueAddresses: string[], item) => {
+    const address = item.recipientAddress;
+    if (address) {
+      if (!uniqueAddresses.includes(address)) {
+        uniqueAddresses.push(address);
       }
+    }
 
-      return uniqueAddresses;
-    },
-    [],
-  ).length;
+    return uniqueAddresses;
+  }, []).length;
 
-  const tokensCount = expenditure.slots.reduce(
-    (uniqueTokens: string[], item) => {
-      const token = item.payouts?.[0].tokenAddress;
+  const tokensCount = slots.reduce((uniqueTokens: string[], item) => {
+    const token = item.payouts?.[0].tokenAddress;
 
-      if (token) {
-        if (!uniqueTokens.includes(token)) {
-          uniqueTokens.push(token);
-        }
+    if (token) {
+      if (!uniqueTokens.includes(token)) {
+        uniqueTokens.push(token);
       }
+    }
 
-      return uniqueTokens;
-    },
-    [],
-  ).length;
+    return uniqueTokens;
+  }, []).length;
 
   return (
     <>
@@ -118,7 +134,7 @@ const PaymentBuilder = ({ expenditure, action }: PaymentBuilderProps) => {
         <DescriptionRow description={action.annotation.message} />
       )}
 
-      <PaymentBuilderTable items={expenditure.slots} />
+      <PaymentBuilderTable items={slots} />
     </>
   );
 };

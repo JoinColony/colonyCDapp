@@ -7,7 +7,6 @@ import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
-import { useGetExpenditureData } from '../ActionSidebar/hooks/useGetExpenditureData.ts';
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
@@ -17,6 +16,7 @@ import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageReputation from './partials/ManageReputation/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
+import PaymentBuilderWidget from './partials/PaymentBuilder/partials/PaymentBuilderWidget/index.ts';
 import PaymentBuilder from './partials/PaymentBuilder/PaymentBuilder.tsx';
 import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
@@ -34,9 +34,6 @@ const displayName = 'v5.common.CompletedAction';
 
 const CompletedAction = ({ action }: CompletedActionProps) => {
   const { colony } = useColonyContext();
-  const { expenditure, loadingExpenditure } = useGetExpenditureData(
-    action.expenditureId,
-  );
 
   const actionType = getExtendedActionType(action, colony.metadata);
 
@@ -88,15 +85,30 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
          case ColonyActionType.EmitDomainReputationPenalty:
           return <ManageReputation action={action} />; */
       case ColonyActionType.CreateExpenditure:
-        return (
-          !loadingExpenditure &&
-          expenditure && (
-            <PaymentBuilder action={action} expenditure={expenditure} />
-          )
-        );
+        return <PaymentBuilder action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
+    }
+  };
+
+  const getSidebarWidgetContent = () => {
+    switch (actionType) {
+      case ColonyActionType.PaymentMotion:
+      case ColonyActionType.MintTokensMotion:
+      case ColonyActionType.MoveFundsMotion:
+      case ColonyActionType.CreateDomainMotion:
+      case ColonyActionType.EditDomainMotion:
+      case ColonyActionType.UnlockTokenMotion:
+      case ColonyActionType.VersionUpgradeMotion:
+      case ColonyActionType.CreateDecisionMotion:
+      case ColonyActionType.SetUserRolesMotion:
+      case ColonyActionType.ColonyEditMotion:
+        return <Motions transactionId={action.transactionHash} />;
+      case ColonyActionType.CreateExpenditure:
+        return <PaymentBuilderWidget action={action} />;
+      default:
+        return <PermissionSidebar transactionId={action.transactionHash} />;
     }
   };
 
@@ -128,11 +140,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             sm:border-l-gray-200
           `}
       >
-        {action.isMotion ? (
-          <Motions transactionId={action.transactionHash} />
-        ) : (
-          <PermissionSidebar transactionId={action.transactionHash} />
-        )}
+        {getSidebarWidgetContent()}
       </div>
     </div>
   );

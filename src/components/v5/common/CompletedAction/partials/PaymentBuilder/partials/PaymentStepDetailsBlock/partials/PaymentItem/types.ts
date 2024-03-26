@@ -1,5 +1,5 @@
 import { type ExpenditurePayout } from '~types/graphql.ts';
 
-export interface PaymentBuilderPayoutsTotalProps {
+export interface PaymentItemProps {
   payouts: ExpenditurePayout[];
 }
