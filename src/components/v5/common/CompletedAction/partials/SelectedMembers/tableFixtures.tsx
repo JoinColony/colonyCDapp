@@ -26,7 +26,7 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
 
         return (
           <UserPopover
-            className="flex items-center gap-2 text-md font-medium text-gray-900"
+            className="flex items-center text-md font-medium text-gray-900"
             userName={user.profile?.displayName ?? user.walletAddress}
             walletAddress={user.walletAddress}
             user={user}
@@ -39,7 +39,9 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
               avatar={user.profile?.avatar ?? undefined}
               seed={user.walletAddress.toLowerCase()}
             />
-            {user.profile?.displayName ?? user.walletAddress}
+            <span className="ml-2">
+              {user.profile?.displayName ?? user.walletAddress}
+            </span>
           </UserPopover>
         );
       }
@@ -48,7 +50,7 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
 
       return (
         <UserPopover
-          className="flex items-center gap-2 text-gray-900"
+          className="flex items-center text-gray-900"
           userName={walletAddress}
           walletAddress={walletAddress}
           popperOptions={{
@@ -58,7 +60,7 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
           <Avatar size="xs" seed={walletAddress.toLowerCase()} />
           <MaskedAddress
             address={walletAddress}
-            className="!text-md !font-medium text-gray-900 hover:text-blue-400"
+            className="ml-2 !text-md !font-medium text-gray-900 hover:text-blue-400"
           />
         </UserPopover>
       );
