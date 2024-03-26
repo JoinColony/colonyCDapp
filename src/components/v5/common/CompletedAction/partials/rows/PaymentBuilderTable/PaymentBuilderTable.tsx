@@ -6,16 +6,15 @@ import React, { useMemo } from 'react';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
+import { type ExpenditurePayout } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
-import { type PaymentBuilderPayoutItem } from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/types.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import AmountField from './AmountField.tsx';
 import RecipientField from './RecipientField.tsx';
 import {
-  type SelectedTokensProps,
   type PaymentBuilderTableModel,
   type PaymentBuilderTableProps,
 } from './types.ts';
@@ -61,7 +60,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
         hasMoreThanOneToken && !isMobile
           ? () => {
               const selectedTokens = dataRef.current?.reduce(
-                (result: SelectedTokensProps, { amount }) => {
+                (result: ExpenditurePayout[], { amount }) => {
                   if (!amount || !amount[0].token) {
                     return result;
                   }
@@ -74,21 +73,18 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
 
                   return [
                     {
-                      ...tokenData,
+                      tokenAddress: amount[0].token,
                       amount: BigNumber.from(result[0]?.amount || '0')
                         .add(BigNumber.from(amount[0].amount || '0'))
                         .toString(),
+                      isClaimed: false,
                     },
                   ];
                 },
                 [],
               );
 
-              return (
-                <PaymentBuilderPayoutsTotal
-                  payouts={selectedTokens as PaymentBuilderPayoutItem[]}
-                />
-              );
+              return <PaymentBuilderPayoutsTotal payouts={selectedTokens} />;
             }
           : undefined,
       cell: ({ row }) => (
@@ -105,7 +101,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
         hasMoreThanOneToken && isMobile
           ? () => {
               const selectedTokens = dataRef.current?.reduce(
-                (result: SelectedTokensProps, { amount }) => {
+                (result: ExpenditurePayout[], { amount }) => {
                   if (!amount) {
                     return result;
                   }
@@ -122,21 +118,18 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
 
                   return [
                     {
-                      ...tokenData,
+                      tokenAddress: amount[0].token,
                       amount: BigNumber.from(result[0]?.amount || '0')
                         .add(BigNumber.from(amount[0].amount || '0'))
                         .toString(),
+                      isClaimed: false,
                     },
                   ];
                 },
                 [],
               );
 
-              return (
-                <PaymentBuilderPayoutsTotal
-                  payouts={selectedTokens as PaymentBuilderPayoutItem[]}
-                />
-              );
+              return <PaymentBuilderPayoutsTotal payouts={selectedTokens} />;
             }
           : undefined,
       cell: ({ row }) => {
