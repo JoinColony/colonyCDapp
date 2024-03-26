@@ -267,13 +267,15 @@ export const getOutcomeStepTooltipText = (
   const { allVotesSubmittedAt, allVotesRevealedAt, yaySideFullyStakedAt } =
     motionStateHistory || {};
   const { percentage } = motionStakes || {};
-  const { yay } = percentage || {};
+  const { yay, nay } = percentage || {};
   const yayRevealedRep = Number(revealedVotes?.raw.yay) || 0;
   const nayRevealedRep = Number(revealedVotes?.raw.nay) || 0;
 
   const supportingStakesPercentageValue = Number(yay) || 0;
+  const againstStakesPercentageValue = Number(nay) || 0;
 
   const isFullySupported = supportingStakesPercentageValue === 100;
+  const isFullyOpposed = againstStakesPercentageValue === 100;
 
   const formattedAllVotesSubmittedAt =
     formatMotionTooltipTimestamp(allVotesSubmittedAt);
@@ -288,7 +290,12 @@ export const getOutcomeStepTooltipText = (
     motionState === MotionState.Finalizable ||
     motionState === MotionState.Finalized
   ) {
-    if (isFullySupported && !yayRevealedRep && !nayRevealedRep) {
+    if (
+      !isFullyOpposed &&
+      isFullySupported &&
+      !yayRevealedRep &&
+      !nayRevealedRep
+    ) {
       const formattedYaySideFullyStakedAt = yaySideFullyStakedAt
         ? formatRelative(new Date(yaySideFullyStakedAt), new Date())
         : '';
@@ -318,10 +325,18 @@ export const getFinalizeStepTooltipText = (
   motionState: MotionState | undefined = MotionState.Null,
   motionData: ColonyMotion | undefined | null,
 ) => {
-  const { motionStateHistory, revealedVotes } = motionData || {};
+  const { motionStateHistory, revealedVotes, motionStakes } = motionData || {};
   const { endedAt, finalizedAt } = motionStateHistory || {};
+  const { percentage } = motionStakes || {};
+  const { yay, nay } = percentage || {};
   const yayRevealedRep = Number(revealedVotes?.raw.yay) || 0;
   const nayRevealedRep = Number(revealedVotes?.raw.nay) || 0;
+
+  const supportingStakesPercentageValue = Number(yay) || 0;
+  const againstStakesPercentageValue = Number(nay) || 0;
+
+  const isFullySupported = supportingStakesPercentageValue === 100;
+  const isFullyOpposed = againstStakesPercentageValue === 100;
 
   const formattedFinalizedAt = formatMotionTooltipTimestamp(finalizedAt);
   const formattedEndedAt = formatMotionTooltipTimestamp(endedAt);
@@ -331,7 +346,13 @@ export const getFinalizeStepTooltipText = (
   }
 
   if (motionState === MotionState.Finalizable) {
-    if (yayRevealedRep > nayRevealedRep) {
+    if (
+      (!isFullyOpposed &&
+        isFullySupported &&
+        !yayRevealedRep &&
+        !nayRevealedRep) ||
+      yayRevealedRep > nayRevealedRep
+    ) {
       return formatText(MSG.finalizeYaySideWon, {
         timestamp: formattedEndedAt,
       });
