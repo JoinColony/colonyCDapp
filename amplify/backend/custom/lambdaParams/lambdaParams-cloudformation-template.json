@@ -5,7 +5,6 @@
       "Type": "String"
     }
   },
-
   "Conditions": {
     "IsQaEnv": {
       "Fn::Equals": [
@@ -16,7 +15,6 @@
       ]
     }
   },
-
   "Resources": {
     "chainNetworkSSM": {
       "Type": "AWS::SSM::Parameter",
