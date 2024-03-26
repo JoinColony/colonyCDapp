@@ -12,10 +12,7 @@ import SearchSelect from '~v5/shared/SearchSelect/index.ts';
 
 import ActionFormRow from '../ActionFormRow/index.ts';
 
-import {
-  ACTION_TYPE_FIELD_NAME,
-  DECISION_METHOD_FIELD_NAME,
-} from './consts.ts';
+import { ACTION_TYPE_FIELD_NAME, TITLE_FIELD_NAME } from './consts.ts';
 import useActionsList from './hooks/useActionsList.ts';
 import { translateAction } from './utils.ts';
 
@@ -42,8 +39,9 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
     HTMLButtonElement,
     HTMLDivElement
   >([isSelectVisible]);
-  const { formState, setValue } = useFormContext();
+  const { formState, setValue, reset, watch } = useFormContext();
   const { readonly } = useAdditionalFormOptionsContext();
+  const title = watch('title');
 
   return (
     <div className={className}>
@@ -103,16 +101,19 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                     return;
                   }
 
-                  if (
-                    Object.keys(formState.dirtyFields).length > 0 &&
-                    actionType
-                  ) {
+                  const hasMadeChanges = Object.keys(
+                    formState.dirtyFields,
+                  ).find(
+                    (fieldName) =>
+                      fieldName !== 'title' && fieldName !== 'actionType',
+                  );
+
+                  if (hasMadeChanges && actionType) {
                     setNextActionType(action);
 
                     return;
                   }
 
-                  setValue(DECISION_METHOD_FIELD_NAME, undefined);
                   onChange(action);
                 }}
               />
@@ -128,8 +129,15 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         isOpen={!!nextActionType}
         onClose={() => setNextActionType(undefined)}
         onConfirm={() => {
-          setValue(ACTION_TYPE_FIELD_NAME, nextActionType);
-          setValue(DECISION_METHOD_FIELD_NAME, undefined);
+          reset();
+
+          if (title) {
+            setValue(TITLE_FIELD_NAME, title, { shouldDirty: true });
+          }
+
+          setValue(ACTION_TYPE_FIELD_NAME, nextActionType, {
+            shouldDirty: true,
+          });
           setNextActionType(undefined);
         }}
         icon={WarningCircle}
