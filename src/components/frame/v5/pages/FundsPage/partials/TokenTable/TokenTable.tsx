@@ -83,7 +83,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
               onClick={handleToggleToken}
             >
               <TokenAvatar
-                size={26}
+                size={24}
                 tokenName={token.name}
                 tokenAddress={token.tokenAddress}
                 tokenAvatarSrc={token.avatar ?? undefined}

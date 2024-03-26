@@ -146,7 +146,7 @@ export const useUserProfilePageForm = () => {
           avatarUploaderProps: {
             avatarPlaceholder: wallet ? (
               <Avatar
-                size={64}
+                size={60}
                 src={avatarUrl ?? undefined}
                 address={wallet.address}
               />

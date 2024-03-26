@@ -44,7 +44,7 @@ const TokenCell: FC<TokenCellProps> = ({
   const content = (
     <div className="flex items-center gap-2 text-left md:gap-4">
       <TokenAvatar
-        size={18}
+        size={24}
         tokenName={token.name}
         tokenAddress={token.tokenAddress}
         tokenAvatarSrc={token.avatar ?? undefined}

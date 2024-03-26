@@ -47,6 +47,7 @@ export interface FileUploadProps {
 
 export interface AvatarUploaderProps {
   avatarPlaceholder: React.ReactElement;
+  avatarSrc?: string;
   disabled?: boolean;
   fileOptions: FileUploadOptions;
   SuccessComponent?: React.FC<SuccessContentProps>;

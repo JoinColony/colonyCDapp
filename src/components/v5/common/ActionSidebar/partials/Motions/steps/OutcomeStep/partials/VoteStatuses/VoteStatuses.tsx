@@ -11,7 +11,6 @@ import { type VoteStatusesProps } from './types.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.Motion.steps.OutcomeStep.partials.VoteStatuses';
 
-// @TODO re-check for UserAvatars after change
 const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
   const {
     registeredUsers: yayVoters,
