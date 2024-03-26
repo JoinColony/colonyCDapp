@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { TransactionStatus } from '~gql';
-import { Tooltip } from '~shared/Popover/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 
 import styles from './MessageCardStatus.module.css';
@@ -32,7 +32,8 @@ const MessageCardStatus = ({ status }: Props) => (
     <Tooltip
       /* Because it's in an overflow window */
       popperOptions={{ strategy: 'fixed' }}
-      content={
+      placement="bottom"
+      tooltipContent={
         <span>
           <FormattedMessage {...MSG.messageState} values={{ status }} />
         </span>
