@@ -7,7 +7,7 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
-import TokenInfo from '~shared/TokenInfoPopover/TokenInfo.tsx';
+import TokenInfo from '~shared/TokenInfo/index.ts';
 import { formatText } from '~utils/intl.ts';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';

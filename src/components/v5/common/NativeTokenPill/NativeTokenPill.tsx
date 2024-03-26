@@ -6,7 +6,7 @@ import { useMobile } from '~hooks';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
-import TokenInfo from '~shared/TokenInfoPopover/TokenInfo.tsx';
+import TokenInfo from '~shared/TokenInfo/index.ts';
 import { type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
