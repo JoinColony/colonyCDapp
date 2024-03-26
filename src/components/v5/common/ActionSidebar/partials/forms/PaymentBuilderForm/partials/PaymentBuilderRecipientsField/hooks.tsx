@@ -93,7 +93,6 @@ export const useRecipientsFieldTableColumns = (
                     return {
                       ...result,
                       [tokenAddress]: {
-                        ...tokenData,
                         amount: BigNumber.from(
                           !result[tokenAddress]?.amount ||
                             result[tokenAddress]?.amount === ''
