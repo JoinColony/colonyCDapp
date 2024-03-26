@@ -52,7 +52,7 @@ const ExitRecoveryStep: FC = () => {
                 className="flex flex-col gap-6"
               >
                 <div>
-                  <h3 className="text-1 mb-2">
+                  <h3 className="mb-2 text-1">
                     {formatText({ id: 'common.memberSignature.title' })}
                   </h3>
                   {membersList?.length ? (

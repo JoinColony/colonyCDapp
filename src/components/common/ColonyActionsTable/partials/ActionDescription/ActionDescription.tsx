@@ -47,7 +47,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   );
 
   return (
-    <div className="flex gap-2 sm:gap-4 items-center w-full">
+    <div className="flex w-full items-center gap-2 sm:gap-4">
       <UserAvatar
         className={clsx('flex-shrink-0 flex-grow-0', {
           'overflow-hidden rounded-full skeleton': loading,
@@ -59,7 +59,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
           user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
         }
       />
-      <div className="flex-grow flex-col-reverse md:flex-row flex md:justify-between md:items-center gap-0.5 md:gap-4">
+      <div className="flex flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
         <div>
           <p
             className={clsx(

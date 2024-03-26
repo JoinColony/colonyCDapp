@@ -46,7 +46,7 @@ const ContributorTypeWrapper = ({
   }
 
   return (
-    <div className="flex justify-center items-center flex-col">
+    <div className="flex flex-col items-center justify-center">
       <span
         className={clsx('flex rounded-full border-2', {
           'border-blue-400': contributorType === ContributorType.Dedicated,
@@ -58,7 +58,7 @@ const ContributorTypeWrapper = ({
         {children}
       </span>
       {!!userStatus && userStatus !== 'general' && (
-        <span className="-mt-3.5 z-[1]">
+        <span className="z-[1] -mt-3.5">
           <UserStatus
             isFilled
             mode={userStatus}

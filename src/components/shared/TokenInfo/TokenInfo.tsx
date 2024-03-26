@@ -40,16 +40,16 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
         'flex w-80 flex-col items-center gap-6 p-6 text-gray-900',
       )}
     >
-      <div className="flex flex-row items-center w-full gap-4">
+      <div className="flex w-full flex-row items-center gap-4">
         <TokenAvatar
           size={60}
           tokenName={token.name}
           tokenAddress={token.tokenAddress}
           tokenAvatarSrc={token.avatar ?? undefined}
         />
-        <div className="flex flex-col flex-1 gap-1 min-w-0">
-          <div className="w-full flex items-center">
-            <h4 className="heading-4 truncate" title={`${name} (${symbol})`}>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <div className="flex w-full items-center">
+            <h4 className="truncate heading-4" title={`${name} (${symbol})`}>
               {name} ({symbol})
             </h4>
             {isTokenNative && (

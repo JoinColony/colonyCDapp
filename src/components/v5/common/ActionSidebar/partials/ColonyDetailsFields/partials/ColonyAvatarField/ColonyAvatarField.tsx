@@ -46,7 +46,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
 
   return (
     <>
-      <div className="flex mr-2 shrink-0">
+      <div className="mr-2 flex shrink-0">
         <ColonyAvatar
           colonyImageSrc={field.value?.image}
           colonyAddress={colonyAddress}

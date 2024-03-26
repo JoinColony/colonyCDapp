@@ -17,10 +17,10 @@ const SimpleExtensionCard: FC<SimpleExtensionCardProps> = ({
   meatBallMenuProps,
 }) => {
   return (
-    <div className="w-full h-full flex flex-col p-5 rounded-lg border border-gray-200 bg-gray-25">
-      <div className="w-full flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2 justify-between truncate">
-          <span className="inline-block w-full text-1 truncate">
+    <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5">
+      <div className="flex w-full items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-2 truncate">
+          <span className="inline-block w-full truncate text-1">
             {extensionName}
           </span>
           <ExtensionStatusBadge

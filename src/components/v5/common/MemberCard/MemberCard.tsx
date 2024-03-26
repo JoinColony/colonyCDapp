@@ -24,8 +24,8 @@ const MemberCard: FC<MemberCardProps> = ({
   const userName = user?.profile?.displayName || userAddress;
 
   return (
-    <div className="w-full h-full flex flex-col p-5 rounded-lg border border-gray-200 bg-gray-25">
-      <div className="w-full flex items-center relative flex-grow justify-center flex-col">
+    <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5">
+      <div className="relative flex w-full flex-grow flex-col items-center justify-center">
         <UserInfoPopover
           walletAddress={userAddress}
           user={user}
@@ -33,7 +33,7 @@ const MemberCard: FC<MemberCardProps> = ({
           popperOptions={{
             placement: 'bottom-start',
           }}
-          className="flex items-center text-gray-900 flex-col justify-between flex-grow w-full gap-2"
+          className="flex w-full flex-grow flex-col items-center justify-between gap-2 text-gray-900"
         >
           <ContributorTypeWrapper contributorType={contributorType}>
             <UserAvatar
@@ -43,22 +43,22 @@ const MemberCard: FC<MemberCardProps> = ({
               size={60}
             />
           </ContributorTypeWrapper>
-          <p className="flex items-center justify-center text-center text-1 max-w-full">
-            <span className="truncate inline-block w-full">{userName}</span>
+          <p className="flex max-w-full items-center justify-center text-center text-1">
+            <span className="inline-block w-full truncate">{userName}</span>
             {isVerified && (
               <SealCheck
                 size={14}
-                className="text-blue-400 ml-1 flex-shrink-0"
+                className="ml-1 flex-shrink-0 text-blue-400"
               />
             )}
           </p>
         </UserInfoPopover>
-        <div className="absolute top-0 right-0">
+        <div className="absolute right-0 top-0">
           <MeatBallMenu withVerticalIcon {...meatBallMenuProps} />
         </div>
       </div>
       {(reputation !== undefined || role) && (
-        <div className="w-full pt-[.6875rem] mt-[.6875rem] border-t border-t-gray-200 flex items-center justify-between gap-4">
+        <div className="mt-[.6875rem] flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-[.6875rem]">
           {reputation !== undefined && (
             <ReputationBadge
               className="min-h-[1.625rem]"

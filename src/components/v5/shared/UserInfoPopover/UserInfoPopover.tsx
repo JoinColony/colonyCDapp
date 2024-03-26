@@ -109,7 +109,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
         !isVerified ? (
           <UserNotVerified
             description={
-              <div className="mt-2 font-semibold break-words text-sm pb-2">
+              <div className="mt-2 break-words pb-2 text-sm font-semibold">
                 {user?.walletAddress}
               </div>
             }
@@ -145,7 +145,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
                 rounded: 's',
                 className: clsx('bg-base-white', {
                   'p-6': !isTopSectionWithBackground,
-                  'border-2 border-purple-200 overflow-hidden ':
+                  'overflow-hidden border-2 border-purple-200 ':
                     isTopSectionWithBackground,
                 }),
                 hasShadow: true,

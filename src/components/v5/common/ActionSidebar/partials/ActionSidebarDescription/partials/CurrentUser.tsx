@@ -14,10 +14,7 @@ const CurrentUser = () => {
   }
 
   return (
-    <UserInfoPopover
-      walletAddress={user.walletAddress}
-      user={user}
-    >
+    <UserInfoPopover walletAddress={user.walletAddress} user={user}>
       <span className="text-gray-900">
         {user.profile ? (
           user.profile.displayName

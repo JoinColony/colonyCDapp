@@ -140,7 +140,7 @@ const UserHubButton: FC = () => {
               />
               {!isMobile && (
                 <>
-                  <p className="font-medium truncate text-sm ml-1">
+                  <p className="ml-1 truncate text-sm font-medium">
                     {userName}
                   </p>
                   <div className="ml-2">

@@ -105,7 +105,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
               </MemberCardList>
               {(membersCount > 0 || extensionsCount > 0) &&
                 currentItems.length < membersCount + extensionsCount && (
-                  <div className="flex justify-center mt-6">
+                  <div className="mt-6 flex justify-center">
                     <TextButton onClick={loadMore}>
                       {formatText({ id: 'loadMore' })}
                     </TextButton>
