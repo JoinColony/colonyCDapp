@@ -760,9 +760,13 @@ enum ColonyActionType {
   REMOVE_VERIFIED_MEMBERS
   REMOVE_VERIFIED_MEMBERS_MOTION
   """
-  An action related to creating expenditure (advanced payment)
+  An action related to creating an expenditure (advanced payment)
   """
   CREATE_EXPENDITURE
+  """
+  An action related to finalizing an expenditure
+  """
+  FINALIZE_EXPENDITURE
 }
 
 """
