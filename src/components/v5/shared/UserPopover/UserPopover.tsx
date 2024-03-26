@@ -114,7 +114,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
             {!isVerified && (
               <UserPopoverAdditionalContent
                 description={
-                  <div className="mt-2 font-semibold break-words text-sm pb-2">
+                  <div className="mt-2 break-words pb-2 text-sm font-semibold">
                     {user ? user.walletAddress : walletAddress}
                   </div>
                 }
