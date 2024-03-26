@@ -87,7 +87,7 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
   const walletAddress = field.value.value;
 
   return (
-    <div className="sm:relative w-full flex items-center">
+    <div className="flex w-full items-center sm:relative">
       {readonly ? (
         <UserAvatar
           user={selectedMember || walletAddress}

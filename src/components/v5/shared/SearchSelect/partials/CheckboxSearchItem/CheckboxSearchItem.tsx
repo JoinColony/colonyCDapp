@@ -30,7 +30,7 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
     <ul
       className={clsx({
         'w-full': isLabelVisible,
-        'flex -mx-2 items-center flex-wrap sm:w-[8.75rem] gap-y-4':
+        '-mx-2 flex flex-wrap items-center gap-y-4 sm:w-[8.75rem]':
           !isLabelVisible,
         'sm:w-[12.75rem]': !isLabelVisible && isMobile,
       })}
@@ -60,18 +60,18 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
           return (
             <li
               className={clsx({
-                'w-full mb-1': isLabelVisible,
+                'mb-1 w-full': isLabelVisible,
                 'inline-flex w-1/4': !isLabelVisible,
               })}
               key={value}
             >
               <label
                 className={clsx(
-                  'w-full text-md transition-colors text-left flex items-center py-1.5 rounded px-2',
+                  'flex w-full items-center rounded px-2 py-1.5 text-left text-md transition-colors',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
-                    'text-gray-400 pointer-events-none gap-1': isDisabled,
+                    'pointer-events-none gap-1 text-gray-400': isDisabled,
 
                     'justify-center': !isLabelVisible,
                     'cursor-pointer': !!checkboxesList,
@@ -79,7 +79,7 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                 )}
                 htmlFor={value.toString()}
               >
-                <div className="relative w-full flex items-center">
+                <div className="relative flex w-full items-center">
                   {checkboxesList && (
                     <Checkbox
                       name={value.toString()}
@@ -92,9 +92,9 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                   )}
                   {color && !isLabelVisible && (
                     <div
-                      className={clsx(teamColor, 'rounded shrink-0', {
-                        'w-[1.125rem] h-[1.125rem]': !isMobile,
-                        'w-7 h-7': isMobile,
+                      className={clsx(teamColor, 'shrink-0 rounded', {
+                        'h-[1.125rem] w-[1.125rem]': !isMobile,
+                        'h-7 w-7': isMobile,
                       })}
                     />
                   )}
@@ -105,11 +105,11 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                   )}
                   {color && isLabelVisible && (
                     <span
-                      className={clsx(teamColor, 'mr-2 w-3.5 h-3.5 rounded')}
+                      className={clsx(teamColor, 'mr-2 h-3.5 w-3.5 rounded')}
                     />
                   )}
                   {showAvatar && (
-                    <div className="mr-2 items-center justify-center flex">
+                    <div className="mr-2 flex items-center justify-center">
                       <UserAvatar
                         avatar={avatar}
                         user={walletAddress}
@@ -119,13 +119,13 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                   )}
                   {isLabelVisible && labelText}
                   {isVerified && (
-                    <span className="flex ml-1 text-blue-400">
+                    <span className="ml-1 flex text-blue-400">
                       <SealCheck size={14} />
                     </span>
                   )}
                   {!label && <span className="truncate">{walletAddress}</span>}
                   {firstDisabledOption?.value === value && (
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
                       <ExtensionsStatusBadge
                         mode="coming-soon"
                         text="Coming soon"

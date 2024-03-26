@@ -71,7 +71,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           <MenuContainer
             className={clsx(
               contentWrapperClassName,
-              'px-6 py-4 w-full absolute z-[60] overflow-y-auto sm:w-auto max-w-[calc(100%-3.4rem)] -translate-x-3 sm:translate-x-0',
+              'absolute z-[60] w-full max-w-[calc(100%-3.4rem)] -translate-x-3 overflow-y-auto px-6 py-4 sm:w-auto sm:translate-x-0',
             )}
             hasShadow
             rounded="s"
@@ -80,8 +80,8 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
               portalElementRef.current = ref;
             }}
           >
-            <div className="flex sm:hidden items-center justify-between mb-3">
-              <p className="text-4 text-gray-400 uppercase">
+            <div className="mb-3 flex items-center justify-between sm:hidden">
+              <p className="uppercase text-gray-400 text-4">
                 {formatText({ id: 'meatballMenu.selectAction' })}
               </p>
               <button

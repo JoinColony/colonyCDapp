@@ -87,7 +87,7 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
   const walletAddress = field.value.value;
 
   return (
-    <div className="sm:relative w-full flex items-center">
+    <div className="flex w-full items-center sm:relative">
       {readonly ? (
         <>
           <UserAvatar
@@ -95,7 +95,7 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
             size="xs"
             showUsername
           />
-          <span className="flex ml-2 text-blue-400">
+          <span className="ml-2 flex text-blue-400">
             <SealCheck size={20} />
           </span>
         </>
@@ -127,7 +127,7 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
                     'text-negative-400': isError,
                   })}
                 />
-                <span className="flex ml-1 text-blue-400">
+                <span className="ml-1 flex text-blue-400">
                   <SealCheck size={14} />
                 </span>
               </>

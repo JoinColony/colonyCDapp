@@ -45,7 +45,7 @@ const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
 
   return (
     <div className="mt-4">
-      <h5 className="text-md font-bold mb-3">
+      <h5 className="mb-3 text-md font-bold">
         {formatText({ id: 'actionSidebar.manageVerifiedMembers.table.title' })}
       </h5>
       <Table<MembersTableModel>

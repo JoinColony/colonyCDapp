@@ -15,12 +15,9 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
     rightWindowPadding?: number;
     top?: number;
     withAutoTopPlacement?: boolean;
-<<<<<<< HEAD
     customLeftPosition?: number;
-=======
     withMaxHeight?: boolean;
     withLeftPosition?: boolean;
->>>>>>> a8c292ff3 (feat: implement verified members form)
   } = {},
 ) => {
   const relativeElementRef = useRef<T | null>(null);
@@ -52,15 +49,12 @@ const useRelativePortalElement = <T extends HTMLElement, S extends HTMLElement>(
             rightWindowPadding
           : left;
 
-<<<<<<< HEAD
-      portalElementRef.current.style.left = `${
-        leftPosition + customLeftPosition
-      }px`;
-=======
       if (withLeftPosition) {
-        portalElementRef.current.style.left = `${leftPosition}px`;
+        portalElementRef.current.style.left = `${
+          leftPosition + customLeftPosition
+        }px`;
       }
->>>>>>> a8c292ff3 (feat: implement verified members form)
+
       if (shouldShowOnTop) {
         portalElementRef.current.style.top = `${
           relativeElementTop + window.scrollY - top - dropdownHeight

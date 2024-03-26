@@ -248,7 +248,7 @@ const Table = <T,>({
               {shouldShowEmptyContent ? (
                 <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
                   <td colSpan={totalColumnsCount} className="h-full">
-                    <div className="text-md text-gray-500 py-4 px-[1.1rem] flex h-full flex-col justify-center items-start">
+                    <div className="flex h-full flex-col items-start justify-center px-[1.1rem] py-4 text-md text-gray-500">
                       {emptyContent}
                     </div>
                   </td>

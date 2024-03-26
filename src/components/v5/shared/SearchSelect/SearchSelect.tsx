@@ -131,7 +131,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                     isAccordion ? (
                       <div className="mb-[0.625rem] last:mb-0" key={key}>
                         <div className="flex items-center justify-between px-2">
-                          <h5 className="text-4 text-gray-400 mb-2 uppercase">
+                          <h5 className="mb-2 uppercase text-gray-400 text-4">
                             {formatText(title)}
                           </h5>
                           <button
@@ -176,7 +176,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                       </div>
                     ) : (
                       <div key={key} className="mb-[0.625rem] last:mb-0">
-                        <h5 className="text-4 text-gray-400 mb-2 uppercase pl-2">
+                        <h5 className="mb-2 pl-2 uppercase text-gray-400 text-4">
                           {formatText(title)}
                         </h5>
                         {checkboxesList ? (
@@ -191,30 +191,13 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                       </div>
                     ),
                   )
-                : (
-                  <>
-                                    {showSearchValueAsOption && (
-                    <button
-                      type="button"
-                      className="flex min-h-[3.125rem] items-center justify-center gap-2 text-sm md:hover:text-blue-400"
-                      onClick={() => onSelect?.(searchValue)}
-                    >
-                      <Avatar />
-                      <span className="max-w-[15.625rem] truncate">
-                        {searchValue}
-                      </span>
-                    </button>
-                  )}
-                  {showEmptyContent && (
+                : showEmptyContent && (
                     <EmptyContent
                       icon={Binoculars}
                       title={{ id: 'actionSidebar.emptyTitle' }}
                       description={{ id: 'actionSidebar.emptyDescription' }}
                     />
                   )}
-
-                  </>
-                )}
             </div>
           </div>
         )}
@@ -226,7 +209,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
         <MenuContainer
           className={clsx(
             className,
-            'py-6 px-2.5 w-full bg-base-white max-w-[calc(100%-2.25rem)] sm:max-w-[20.375rem] z-[60] absolute max-h-[37.5rem]',
+            'absolute z-[60] max-h-[37.5rem] w-full max-w-[calc(100%-2.25rem)] bg-base-white px-2.5 py-6 sm:max-w-[20.375rem]',
           )}
           hasShadow
           rounded="s"
