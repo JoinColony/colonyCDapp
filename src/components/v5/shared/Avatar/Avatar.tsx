@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import getIcon from './identicon.ts';
@@ -23,16 +22,18 @@ export const Avatar: FC<AvatarProps> = ({
   const source = src ?? getIcon(address.toLowerCase());
 
   return (
-    <img
-      className={clsx('rounded-full', className)}
-      src={source}
-      alt={alt ?? `Avatar of ${address}`}
-      style={{
-        width: size,
-        height: size,
-        imageRendering: src ? undefined : 'pixelated',
-      }}
-    />
+    <picture className={className}>
+      <img
+        className="rounded-full"
+        src={source}
+        alt={alt ?? `Avatar of ${address}`}
+        style={{
+          width: size,
+          height: size,
+          imageRendering: src ? undefined : 'pixelated',
+        }}
+      />
+    </picture>
   );
 };
 

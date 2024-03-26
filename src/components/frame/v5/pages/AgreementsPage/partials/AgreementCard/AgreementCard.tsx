@@ -118,36 +118,22 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
               popperOptions={{
                 placement: 'bottom-start',
               }}
-              className={clsx(
-                'flex items-center text-gray-600 sm:gap-2 sm:hover:text-blue-400',
-                {
-                  'pointer-events-none': loadingAction,
-                },
-              )}
+              className="flex items-center text-gray-600 sm:gap-2 sm:hover:text-blue-400"
             >
               <UserAvatar
                 size={30}
                 userAvatarSrc={initiatorUser?.profile?.avatar ?? undefined}
                 userAddress={walletAddress}
                 userName={initiatorUser?.profile?.displayName ?? undefined}
-                className={clsx({
-                  'skeleton before:rounded-full': loadingAction,
-                })}
               />
-              <p
-                className={clsx('hidden text-sm sm:inline-block', {
-                  skeleton: loadingAction,
-                })}
-              >
-                {loadingAction
-                  ? 'Loading...'
-                  : formatText(
-                      { id: 'agreementsPage.createdBy' },
-                      {
-                        username:
-                          initiatorUser?.profile?.displayName || walletAddress,
-                      },
-                    )}
+              <p className="hidden text-sm sm:inline-block">
+                {formatText(
+                  { id: 'agreementsPage.createdBy' },
+                  {
+                    username:
+                      initiatorUser?.profile?.displayName || walletAddress,
+                  },
+                )}
               </p>
             </UserInfoPopover>
             <div className="flex items-center gap-2">

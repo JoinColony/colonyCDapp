@@ -49,15 +49,15 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   return (
     <div className="flex w-full items-center gap-2 sm:gap-4">
       <UserAvatar
-        className={clsx('flex-shrink-0 flex-grow-0', {
-          'overflow-hidden rounded-full skeleton': loading,
-        })}
         size={26}
         userAddress={walletAddress}
         userName={user?.profile?.displayName ?? undefined}
         userAvatarSrc={
           user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
         }
+        className={clsx('flex-shrink-0 flex-grow-0', {
+          'skeleton before:rounded-full': loading,
+        })}
       />
       <div className="flex flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
         <div>
