@@ -12,8 +12,6 @@ import { type UserPopoverProps } from './types.ts';
 
 const displayName = 'v5.UserPopover';
 
-// AVATAR: ta stvar naj sam nrdi avatar + username je lhk composan in
-// DEFAULT JE BIU xs
 const UserPopover: FC<UserPopoverProps> = ({
   size,
   popperOptions,

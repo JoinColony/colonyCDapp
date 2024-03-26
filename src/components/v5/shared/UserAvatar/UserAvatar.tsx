@@ -1,8 +1,18 @@
 import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
+
+import { formatText } from '~utils/intl.ts';
 
 import { Avatar } from '../Avatar/Avatar.tsx';
 
-const displayName = 'v5.UserAvatar';
+const displayName = 'v5.shared.UserAvatar';
+
+const MSG = defineMessages({
+  defaultAlt: {
+    id: `${displayName}.userAvatarAlt`,
+    defaultMessage: 'Avatar of user {name}',
+  },
+});
 
 interface UserAvatarProps {
   className?: string;
@@ -23,7 +33,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({
     <Avatar
       className={className}
       size={size}
-      alt={`Avatar of user ${userName ?? userAddress}`}
+      alt={formatText(MSG.defaultAlt, { name: userName ?? userAddress })}
       src={userAvatarSrc}
       address={userAddress}
     />

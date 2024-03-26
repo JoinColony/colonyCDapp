@@ -8,8 +8,7 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { type UserAvatarsProps } from './types.ts';
 
-const displayName =
-  'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';
+const displayName = 'v5.shared.UserAvatars';
 
 const UserAvatars: FC<UserAvatarsProps> = ({
   items,

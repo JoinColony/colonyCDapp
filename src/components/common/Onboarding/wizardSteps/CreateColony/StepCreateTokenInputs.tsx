@@ -115,6 +115,7 @@ const StepCreateTokenInputs = ({
         {formatMessage(MSG.tokenDescription)}
       </p>
       <AvatarUploader
+        avatarSrc={tokenAvatarUrl}
         avatarPlaceholder={
           tokenAvatarUrl ? (
             <TokenAvatar

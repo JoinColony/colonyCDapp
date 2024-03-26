@@ -149,7 +149,7 @@ export const useFundsTable = (): UseFundsTableProps => {
     label: (
       <div className="flex items-center gap-2">
         <TokenAvatar
-          size={16}
+          size={18}
           tokenName={token.name}
           tokenAddress={token.tokenAddress}
           tokenAvatarSrc={token.avatar ?? undefined}

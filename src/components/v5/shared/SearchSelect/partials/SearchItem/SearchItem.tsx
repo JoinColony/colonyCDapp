@@ -109,7 +109,7 @@ const SearchItem: FC<SearchItemProps> = ({
                       <UserAvatar
                         userAvatarSrc={avatar}
                         userAddress={walletAddress}
-                        size={16}
+                        size={20}
                       />
                     </div>
                   )}
