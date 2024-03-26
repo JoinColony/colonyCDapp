@@ -40,15 +40,21 @@ const IndividualPermissionsPage = () => {
           />
         ))}
       {!isLoading &&
-        Object.keys(itemsByRole).map((role) => (
-          <PermissionsPageRow
-            key={role}
-            title={capitalize(role)}
-            description={formatText({ id: `permissionsPage.${role}` })}
-            items={itemsByRole[role]}
-            isLoading={isLoading}
-          />
-        ))}
+        Object.keys(itemsByRole).map((role) => {
+          if (itemsByRole[role].length > 0) {
+            return (
+              <PermissionsPageRow
+                key={role}
+                title={capitalize(role)}
+                description={formatText({ id: `permissionsPage.${role}` })}
+                items={itemsByRole[role]}
+                isLoading={isLoading}
+              />
+            );
+          }
+
+          return null;
+        })}
     </PermissionsPageContent>
   );
 };
