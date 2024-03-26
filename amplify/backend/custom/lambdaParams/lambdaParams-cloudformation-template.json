@@ -47,7 +47,7 @@
             "https://app-polygon.colony.io/rpc/"
           ]
         },
-        "Description": "Xdai chain RPC endpoint"
+        "Description": "Polygon chain RPC endpoint"
       }
     },
     "chainNetworkContractSSM": {
@@ -64,7 +64,7 @@
             "placeholder"
           ]
         },
-        "Description": "Xdai chain network contract"
+        "Description": "Polygon chain network contract"
       }
     },
     "reputationEndpointSSM": {
@@ -77,8 +77,8 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "https://qa-app-polygon-testnet.colony.io/reputation/xdai",
-            "https://app-polygon.colony.io/reputation/xdai"
+            "https://qa-app-polygon-testnet.colony.io/reputation/polygon",
+            "https://app-polygon.colony.io/reputation/polygon"
           ]
         },
         "Description": "Reputation endpoint"
