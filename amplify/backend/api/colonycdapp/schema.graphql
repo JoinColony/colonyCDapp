@@ -701,6 +701,10 @@ enum ColonyActionType {
   An action related to finalizing an expenditure
   """
   FINALIZE_EXPENDITURE
+  """
+  An action related to finalizing an expenditure via a motion
+  """
+  FINALIZE_EXPENDITURE_MOTION
 }
 
 """
