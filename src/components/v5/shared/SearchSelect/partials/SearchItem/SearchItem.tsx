@@ -105,7 +105,7 @@ const SearchItem: FC<SearchItemProps> = ({
                     />
                   )}
                   {showAvatar && (
-                    <div className="mr-2 items-center justify-center flex">
+                    <div className="mr-2 flex items-center justify-center">
                       <UserAvatar
                         userAvatarSrc={avatar}
                         userAddress={walletAddress}

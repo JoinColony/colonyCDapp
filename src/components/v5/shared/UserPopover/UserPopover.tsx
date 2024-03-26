@@ -52,7 +52,7 @@ const UserPopover: FC<UserPopoverProps> = ({
         />
         <p
           className={clsx(
-            'font-medium truncate text-md ml-2',
+            'ml-2 truncate text-md font-medium',
             userNameClassName,
           )}
         >

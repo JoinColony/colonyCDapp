@@ -19,7 +19,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
     <div
       className={clsx(
         className,
-        'flex justify-center items-center flex-shrink-0 relative',
+        'relative flex flex-shrink-0 items-center justify-center',
       )}
     >
       <Avatar

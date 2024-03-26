@@ -110,7 +110,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
               />
             )}
           </button>
-          <div className="flex items-center justify-between gap-2 pt-4 mt-auto border-t border-gray-200">
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-gray-200 pt-4">
             <UserInfoPopover
               user={initiatorUser}
               walletAddress={walletAddress}
@@ -135,7 +135,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
                 })}
               />
               <p
-                className={clsx('text-sm hidden sm:inline-block', {
+                className={clsx('hidden text-sm sm:inline-block', {
                   skeleton: loadingAction,
                 })}
               >

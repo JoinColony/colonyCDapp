@@ -18,8 +18,8 @@ const UserDetails: FC<UserDetailsProps> = ({
   userAvatarSrc,
 }) => {
   return (
-    <div className="grid grid-cols-[auto,1fr] gap-x-4 items-center">
-      <div className="flex relative justify-center">
+    <div className="grid grid-cols-[auto,1fr] items-center gap-x-4">
+      <div className="relative flex justify-center">
         <ContributorTypeWrapper contributorType={contributorType}>
           <UserAvatar
             size={60}

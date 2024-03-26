@@ -75,7 +75,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
   const userName = getUserName();
 
   return (
-    <div className="sm:relative w-full flex items-center">
+    <div className="flex w-full items-center sm:relative">
       {readonly && selectedUser?.walletAddress ? (
         <>
           <UserAvatar
@@ -85,7 +85,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
             size={20}
           />
           <p
-            className={clsx('font-medium truncate text-md ml-2 text-gray-900', {
+            className={clsx('ml-2 truncate text-md font-medium text-gray-900', {
               'text-warning-400': !selectedUser?.isVerified,
             })}
           >
@@ -122,7 +122,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
                   size={20}
                 />
                 <p
-                  className={clsx('font-medium truncate text-md ml-2', {
+                  className={clsx('ml-2 truncate text-md font-medium', {
                     'text-warning-400': !selectedUser?.isVerified,
                     'text-gray-900': selectedUser?.isVerified,
                   })}
@@ -165,7 +165,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
               user={userByAddress}
               className="ml-1 text-warning-400"
             >
-              <span className="flex ml-2 text-warning-400">
+              <span className="ml-2 flex text-warning-400">
                 <WarningCircle size={20} />
               </span>
             </UserInfoPopover>

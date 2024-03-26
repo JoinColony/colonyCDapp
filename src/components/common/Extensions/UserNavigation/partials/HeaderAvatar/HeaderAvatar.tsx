@@ -28,7 +28,7 @@ const HeaderAvatar = () => {
         size={isMobile ? 18 : 16}
       />
       {!isMobile && (
-        <p className="font-medium truncate text-sm ml-1">{userName}</p>
+        <p className="ml-1 truncate text-sm font-medium">{userName}</p>
       )}
     </div>
   );

@@ -100,7 +100,7 @@ const DraftCard: FC = () => {
             )}
           </button>
         </div>
-        <div className="w-full pt-4 mt-4 border-t border-t-gray-200 flex justify-between items-center gap-4">
+        <div className="mt-4 flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-4">
           <UserInfoPopover
             user={user}
             walletAddress={walletAddress}
@@ -109,7 +109,7 @@ const DraftCard: FC = () => {
               placement: 'bottom-start',
             }}
             className={clsx(
-              'flex items-center sm:gap-2 text-gray-600 sm:hover:text-blue-400',
+              'flex items-center text-gray-600 sm:gap-2 sm:hover:text-blue-400',
               {
                 'pointer-events-none': loading,
               },
@@ -125,7 +125,7 @@ const DraftCard: FC = () => {
               })}
             />
             <p
-              className={clsx('text-sm text-gray-600 hidden sm:inline-block', {
+              className={clsx('hidden text-sm text-gray-600 sm:inline-block', {
                 skeleton: loading,
               })}
             >

@@ -23,7 +23,7 @@ const MemberAvatar: FC<MemberAvatarProps> = ({
   href,
 }) => {
   const nameAndAvatar = (
-    <div className={clsx('flex rounded-full items-center text-sm', className)}>
+    <div className={clsx('flex items-center rounded-full text-sm', className)}>
       <span
         className={clsx('flex rounded-full', {
           'border-2': hasAvatarDecor,
@@ -35,7 +35,7 @@ const MemberAvatar: FC<MemberAvatarProps> = ({
       >
         {children}
       </span>
-      {userName && <p className="font-medium truncate ml-1">{userName}</p>}
+      {userName && <p className="ml-1 truncate font-medium">{userName}</p>}
     </div>
   );
 
