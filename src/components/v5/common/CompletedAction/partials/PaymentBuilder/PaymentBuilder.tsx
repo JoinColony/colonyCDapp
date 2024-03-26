@@ -23,6 +23,7 @@ import PaymentBuilderTable from '../rows/PaymentBuilderTable/PaymentBuilderTable
 import TeamFromRow from '../rows/TeamFrom.tsx';
 
 import FundingModal from './partials/FundingModal/FundingModal.tsx';
+import ReleasePaymentModal from './partials/ReleasePaymentModal/index.ts';
 
 interface PaymentBuilderProps {
   action: ColonyAction;
@@ -51,6 +52,11 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { expenditure, loadingExpenditure } = useGetExpenditureData(
     action.expenditureId,
   );
+
+  const [
+    isReleasePaymentModalOpen,
+    { toggleOn: releasePaymentToggleOn, toggleOff: releasePaymentToggleOff },
+  ] = useToggle();
 
   if (loadingExpenditure) {
     return (
@@ -147,6 +153,16 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         isOpen={isFundingModalOpen}
         onClose={toggleOff}
         expenditure={expenditure}
+      />
+
+      <button type="button" onClick={releasePaymentToggleOn}>
+        temp release payment modal
+      </button>
+
+      <ReleasePaymentModal
+        expenditure={expenditure}
+        isOpen={isReleasePaymentModalOpen}
+        onClose={releasePaymentToggleOff}
       />
     </>
   );
