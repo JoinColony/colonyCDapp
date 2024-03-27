@@ -8,6 +8,7 @@ import { currencyIcons } from '../../../UserMenu/consts.ts';
 import CoinGeckoAttribution from '../../CoinGeckoAttribution.tsx';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
+import { actionItemClass, actionItemLabelClass } from '../submenu.styles.ts';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.partials.Currency';
@@ -39,9 +40,12 @@ const Currency = ({ closeSubmenu }: CurrencyProps) => {
                   onClick={() => {
                     handleCurrencyClick(currency);
                   }}
+                  className={actionItemClass}
                 >
                   <CurrencyIcon size={iconSize} />
-                  <p>{currency.toUpperCase()}</p>
+                  <p className={actionItemLabelClass}>
+                    {currency.toUpperCase()}
+                  </p>
                 </button>
               </MenuListItem>
             );
