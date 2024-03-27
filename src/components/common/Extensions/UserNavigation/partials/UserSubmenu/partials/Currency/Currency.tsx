@@ -28,13 +28,13 @@ const Currency = ({ closeSubmenu }: CurrencyProps) => {
 
   return (
     <>
-      <MenuList className="columns-2">
+      <MenuList className="grid w-[calc(100%+2rem)] grid-cols-2">
         {Object.values(SupportedCurrencies)
           .reverse()
           .map((currency) => {
             const CurrencyIcon = currencyIcons[currency] || ClnyTokenIcon;
             return (
-              <MenuListItem key={currency}>
+              <MenuListItem key={currency} className="w-full">
                 <button
                   type="button"
                   onClick={() => {
