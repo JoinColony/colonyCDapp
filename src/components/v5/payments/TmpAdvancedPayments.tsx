@@ -20,6 +20,7 @@ import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpen
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
+import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
 import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import { type ExpenditureCancelMotionPayload } from '~redux/types/actions/motion.ts';
@@ -121,6 +122,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.MOTION_EXPENDITURE_CANCEL,
     error: ActionTypes.MOTION_EXPENDITURE_CANCEL_ERROR,
     success: ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
+  });
+  const finalizeExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FINALIZE,
+    error: ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
   });
 
   const blockTime = useCurrentBlockTime();
@@ -374,6 +380,21 @@ const TmpAdvancedPayments = () => {
     await cancelExpenditureViaMotion(payload);
   };
 
+  const handleFinalizeViaMotion = async () => {
+    if (!expenditure || !votingReputationAddress) {
+      return;
+    }
+
+    const payload: FinalizeExpenditureMotionPayload = {
+      colony,
+      expenditure,
+      votingReputationAddress,
+      motionDomainId: Id.RootDomain,
+    };
+
+    await finalizeExpenditureViaMotion(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -427,9 +448,10 @@ const TmpAdvancedPayments = () => {
           </Button>
           <Button onClick={handleEdit}>Edit</Button>
           <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleCancelViaMotion}>Cancel using motion</Button>
-          <Button onClick={() => refetch()}>Refetch</Button>
+          <Button onClick={handleCancelViaMotion}>Cancel via motion</Button>
           <Button onClick={handleEditViaMotion}>Edit via motion</Button>
+          <Button onClick={handleFinalizeViaMotion}>Finalize via motion</Button>
+          <Button onClick={() => refetch()}>Refetch</Button>
         </div>
       </div>
       <div className="flex gap-4">
