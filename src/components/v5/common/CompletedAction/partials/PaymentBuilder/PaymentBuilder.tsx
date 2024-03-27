@@ -46,14 +46,14 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action.expenditureId,
+  );
+
   const [
     isReleasePaymentModalOpen,
     { toggleOn: releasePaymentToggleOn, toggleOff: releasePaymentToggleOff },
   ] = useToggle();
-
-  const { expenditure, loadingExpenditure } = useGetExpenditureData(
-    action.expenditureId,
-  );
 
   if (loadingExpenditure) {
     return (
