@@ -65,14 +65,15 @@ const UserInfo: FC<UserInfoProps> = ({
               text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {domains?.slice(0, 3).map(({ domainName, domainId }) => (
-                <div key={domainId}>
+              {domains
+                ?.slice(0, 3)
+                .map(({ domainName, domainId }) => (
                   <UserStatus
+                    key={domainId}
                     mode="team"
                     text={multiLineTextEllipsis(domainName, 7)}
                   />
-                </div>
-              ))}
+                ))}
               {domains?.length > 3 && (
                 <UserStatus mode="team" className="!w-auto !max-w-none">
                   +{domains.length - 3}
