@@ -11,7 +11,7 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
-import TokenInfo from '~shared/TokenInfoPopover/TokenInfo.tsx';
+import TokenInfo from '~shared/TokenInfo/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
