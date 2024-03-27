@@ -124,7 +124,7 @@ function* cancelExpenditureMotion({
     }
   } catch (e) {
     console.error(e);
-    yield putError(ActionTypes.MOTION_EXPENDITURE_CANCEL, e, meta);
+    yield putError(ActionTypes.MOTION_EXPENDITURE_CANCEL_ERROR, e, meta);
   } finally {
     createMotion.channel.close();
   }
