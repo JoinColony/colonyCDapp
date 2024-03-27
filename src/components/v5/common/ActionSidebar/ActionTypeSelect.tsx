@@ -12,7 +12,7 @@ import SearchSelect from '~v5/shared/SearchSelect/index.ts';
 
 import ActionFormRow from '../ActionFormRow/index.ts';
 
-import { ACTION_TYPE_FIELD_NAME, TITLE_FIELD_NAME } from './consts.ts';
+import { ACTION_TYPE_FIELD_NAME, NON_RESETTABLE_FIELDS } from './consts.ts';
 import useActionsList from './hooks/useActionsList.ts';
 import { translateAction } from './utils.ts';
 
@@ -39,9 +39,19 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
     HTMLButtonElement,
     HTMLDivElement
   >([isSelectVisible]);
-  const { formState, setValue, reset, watch } = useFormContext();
+  const { formState, reset, watch } = useFormContext();
   const { readonly } = useAdditionalFormOptionsContext();
-  const title = watch('title');
+
+  const defaultValues = NON_RESETTABLE_FIELDS.reduce(
+    (acc, fieldName) => ({
+      ...acc,
+      [fieldName]:
+        fieldName === ACTION_TYPE_FIELD_NAME
+          ? nextActionType
+          : watch(fieldName),
+    }),
+    {},
+  );
 
   return (
     <div className={className}>
@@ -105,7 +115,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                     formState.dirtyFields,
                   ).find(
                     (fieldName) =>
-                      fieldName !== 'title' && fieldName !== 'actionType',
+                      NON_RESETTABLE_FIELDS.indexOf(fieldName) === -1,
                   );
 
                   if (hasMadeChanges && actionType) {
@@ -129,15 +139,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         isOpen={!!nextActionType}
         onClose={() => setNextActionType(undefined)}
         onConfirm={() => {
-          reset();
-
-          if (title) {
-            setValue(TITLE_FIELD_NAME, title, { shouldDirty: true });
-          }
-
-          setValue(ACTION_TYPE_FIELD_NAME, nextActionType, {
-            shouldDirty: true,
-          });
+          reset(defaultValues);
           setNextActionType(undefined);
         }}
         icon={WarningCircle}
