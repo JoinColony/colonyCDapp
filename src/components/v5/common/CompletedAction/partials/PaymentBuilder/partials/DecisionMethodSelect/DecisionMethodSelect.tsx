@@ -6,9 +6,11 @@ import {
   DropdownIndicator,
   SelectBase,
 } from '~v5/common/Fields/Select/index.ts';
-import { type SelectBaseOption } from '~v5/common/Fields/Select/types.ts';
 
-import { type DecisionMethodSelectProps } from './types.ts';
+import {
+  type DecisionMethodSelectProps,
+  type DecisionMethodOption,
+} from './types.ts';
 
 import styles from './DecisionMethodSelect.module.css';
 
@@ -18,7 +20,7 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
   value,
 }) => {
   const handleChange = useCallback<
-    Exclude<ReactSelectProps<SelectBaseOption>['onChange'], undefined>
+    Exclude<ReactSelectProps<DecisionMethodOption>['onChange'], undefined>
   >(
     (newValue, actionMeta) => {
       if (Array.isArray(newValue)) {
@@ -29,7 +31,7 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
         return;
       }
 
-      onChange(newValue as SingleValue<SelectBaseOption>, actionMeta);
+      onChange(newValue as SingleValue<DecisionMethodOption>, actionMeta);
     },
     [onChange],
   );

@@ -4,7 +4,11 @@ import {
   type SelectOption,
 } from '~v5/common/Fields/Select/types.ts';
 
+export interface DecisionMethodOption extends SelectOption {
+  isDisabled?: boolean;
+}
+
 export interface DecisionMethodSelectProps
   extends SelectBaseProps<SelectBaseOption> {
-  options: SelectOption[];
+  options: DecisionMethodOption[];
 }

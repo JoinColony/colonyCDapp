@@ -9,12 +9,13 @@ import { type ModalProps } from '~v5/shared/Modal/types.ts';
 import DecisionMethodSelect from '../DecisionMethodSelect/index.ts';
 
 import {
-  releaseDecisionMethodItems,
+  useGetReleaseDecisionMethodItems,
   releaseDecisionMethodDescriptions,
 } from './consts.ts';
 
 const ReleasePaymentModal: FC<ModalProps> = ({ isOpen, onClose, ...rest }) => {
   const [method, setMethod] = useState<SelectOption['value']>();
+  const releaseDecisionMethodItems = useGetReleaseDecisionMethodItems();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} {...rest}>

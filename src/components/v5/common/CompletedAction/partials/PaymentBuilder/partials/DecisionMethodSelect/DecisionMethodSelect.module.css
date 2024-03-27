@@ -3,7 +3,7 @@
 }
 
 .wrapper :global(.select__placeholder) {
-  @apply text-gray-400;
+  @apply text-md font-normal text-gray-400;
 }
 
 .wrapper :global(.select__control--is-focused) {
@@ -23,10 +23,6 @@
 }
 
 .wrapper :global(.select__input-container) {
-  @apply text-md font-normal;
-}
-
-.wrapper :global(.select__input-container::placeholder) {
   @apply text-md font-normal;
 }
 
@@ -50,10 +46,14 @@
   @apply bg-transparent font-medium text-blue-400;
 }
 
+.menu :global(.select__option--is-disabled) {
+  @apply cursor-not-allowed bg-base-white text-gray-400;
+}
+
 .menu :global(.select__option--is-focused) {
   @apply bg-base-white;
 }
 
-.menu :global(.select__option:hover) {
+.menu :global(.select__option:not(.select__option--is-disabled):hover) {
   @apply bg-gray-50 font-medium;
 }
