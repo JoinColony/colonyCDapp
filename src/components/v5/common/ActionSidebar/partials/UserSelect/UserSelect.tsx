@@ -63,12 +63,12 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
       : undefined;
 
   const getUserName = () => {
-    if (!selectedUser?.walletAddress) {
+    if (!userWalletAddress) {
       return null;
     }
     return (
       selectedUser?.profile?.displayName ??
-      splitWalletAddress(selectedUser.walletAddress)
+      splitWalletAddress(userWalletAddress)
     );
   };
 

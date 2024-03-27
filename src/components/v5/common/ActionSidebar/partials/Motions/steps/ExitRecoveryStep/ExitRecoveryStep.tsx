@@ -6,6 +6,7 @@ import { formatText } from '~utils/intl.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import MemberSignature from '~v5/common/MemberSignature/MemberSignature.tsx';
 import Button from '~v5/shared/Button/index.ts';
+import ContributorTypeBorder from '~v5/shared/ContributorTypeWrapper/ContributorTypeBorder.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
@@ -58,14 +59,24 @@ const ExitRecoveryStep: FC = () => {
                   {membersList?.length ? (
                     <ul>
                       {membersList.map(
-                        ({ hasSigned, userName, address, key }) => (
+                        ({
+                          hasSigned,
+                          userName,
+                          address,
+                          contributorType,
+                          key,
+                        }) => (
                           <li key={key} className="mb-3 last:mb-0">
                             <MemberSignature hasSigned={hasSigned}>
-                              <UserAvatar
-                                size={20}
-                                userAddress={address}
-                                userName={userName}
-                              />
+                              <ContributorTypeBorder
+                                contributorType={contributorType}
+                              >
+                                <UserAvatar
+                                  size={20}
+                                  userAddress={address}
+                                  userName={userName}
+                                />
+                              </ContributorTypeBorder>
                             </MemberSignature>
                           </li>
                         ),

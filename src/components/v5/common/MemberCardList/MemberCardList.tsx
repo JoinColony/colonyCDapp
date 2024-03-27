@@ -32,7 +32,7 @@ const MemberCardList: FC<MemberCardListProps> = ({
     >
       {/* @todo: update the animation */}
       <AnimatePresence initial={false}>
-        {Children.map(children, (child, index) => (
+        {Children.map(children, (card, index) => (
           <motion.li
             initial={{ opacity: 0, y: 10 }}
             animate={{
@@ -45,7 +45,7 @@ const MemberCardList: FC<MemberCardListProps> = ({
             key={`member-card-${index}`}
             className={clsx({ 'min-h-[11.5rem]': !isSimple })}
           >
-            {child}
+            {card}
           </motion.li>
         ))}
         {placeholderCardProps && (
