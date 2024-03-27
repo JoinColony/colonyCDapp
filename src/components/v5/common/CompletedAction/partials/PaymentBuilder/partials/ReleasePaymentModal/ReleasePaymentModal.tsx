@@ -1,10 +1,14 @@
 import React, { useState, type FC } from 'react';
 
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ActionTypes } from '~redux';
+import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { formatText } from '~utils/intl.ts';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
+import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
-import { type ModalProps } from '~v5/shared/Modal/types.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/index.ts';
 
@@ -12,10 +16,24 @@ import {
   useGetReleaseDecisionMethodItems,
   releaseDecisionMethodDescriptions,
 } from './consts.ts';
+import { type ReleasePaymentModalProps } from './types.ts';
 
-const ReleasePaymentModal: FC<ModalProps> = ({ isOpen, onClose, ...rest }) => {
+const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
+  expenditure,
+  isOpen,
+  onClose,
+  ...rest
+}) => {
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
   const [method, setMethod] = useState<SelectOption['value']>();
   const releaseDecisionMethodItems = useGetReleaseDecisionMethodItems();
+
+  const finalizePayload: FinalizeExpenditurePayload = {
+    colonyAddress: colony.colonyAddress,
+    expenditure,
+    userAddress: user?.walletAddress ?? '',
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} {...rest}>
@@ -45,15 +63,20 @@ const ReleasePaymentModal: FC<ModalProps> = ({ isOpen, onClose, ...rest }) => {
         <Button mode="primaryOutline" isFullSize onClick={onClose}>
           {formatText({ id: 'button.cancel' })}
         </Button>
-        <Button
-          mode="primarySolid"
-          isFullSize
-          onClick={() => {
-            onClose();
-          }}
-        >
-          {formatText({ id: 'releaseModal.accept' })}
-        </Button>
+        <div className="flex w-full justify-center">
+          <ActionButton
+            actionType={ActionTypes.EXPENDITURE_FINALIZE}
+            values={finalizePayload}
+            disabled={!method}
+            mode="primarySolid"
+            isFullSize
+            onSuccess={() => {
+              onClose();
+            }}
+          >
+            {formatText({ id: 'releaseModal.accept' })}
+          </ActionButton>
+        </div>
       </div>
     </Modal>
   );

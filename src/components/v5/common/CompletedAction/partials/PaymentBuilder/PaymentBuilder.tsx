@@ -148,6 +148,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       </button>
 
       <ReleasePaymentModal
+        expenditure={expenditure}
         isOpen={isReleasePaymentModalOpen}
         onClose={releasePaymentToggleOff}
       />
