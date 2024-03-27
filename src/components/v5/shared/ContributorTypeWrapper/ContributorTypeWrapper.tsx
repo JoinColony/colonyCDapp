@@ -1,10 +1,11 @@
-import clsx from 'clsx';
 import React, { type PropsWithChildren } from 'react';
 
 import { ContributorType } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type UserStatusMode } from '~v5/common/Pills/types.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
+
+import ContributorTypeBorder from './ContributorTypeBorder.tsx';
 
 const displayName = 'v5.ContributorTypeWrapper';
 
@@ -33,6 +34,7 @@ const ContributorTypeWrapper = ({
   children,
   contributorType,
 }: ContributorTypeWrapperProps) => {
+  // this is suboptimal, but until we refactor the UserStatus component to use ContributorType, it's good enough
   const userStatus = contributorType
     ? getUserStatusMode(contributorType)
     : undefined;
@@ -47,16 +49,9 @@ const ContributorTypeWrapper = ({
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <span
-        className={clsx('flex rounded-full border-2', {
-          'border-blue-400': contributorType === ContributorType.Dedicated,
-          'border-warning-400': contributorType === ContributorType.Active,
-          'border-green-400': contributorType === ContributorType.New,
-          'border-purple-400': contributorType === ContributorType.Top,
-        })}
-      >
+      <ContributorTypeBorder contributorType={contributorType}>
         {children}
-      </span>
+      </ContributorTypeBorder>
       {!!userStatus && userStatus !== 'general' && (
         <span className="z-[1] -mt-3.5">
           <UserStatus
