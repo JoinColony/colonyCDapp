@@ -14,26 +14,30 @@ import Button from '~v5/shared/Button/Button.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
-import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/index.ts';
+import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/FinalizeWithPermissionsInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
-import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/index.ts';
+import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
-import StepDetailsBlock from '../StepDetailsBlock/index.ts';
+import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
-import { getExpenditureStep, isExpenditureFullyFunded } from './utils.ts';
+import { getExpenditureStep } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { walletAddress } = user || {};
-  const { expenditureId } = action;
 
-  const [isFundingModalOpen, { toggleOn, toggleOff }] = useToggle();
+  const [
+    isFundingModalOpen,
+    { toggleOn: showFundingModal, toggleOff: hideFundingModal },
+  ] = useToggle();
   const [
     isReleasePaymentModalOpen,
-    { toggleOn: releasePaymentToggleOn, toggleOff: releasePaymentToggleOff },
+    { toggleOn: showReleasePaymentModal, toggleOff: hideReleasePaymentModal },
   ] = useToggle();
+
+  const { expenditureId } = action;
 
   const {
     expenditure,
@@ -43,31 +47,23 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     stopPolling,
   } = useGetExpenditureData(expenditureId);
 
-  const { status, finalizingActions } = expenditure || {};
+  const { fundingActions, finalizingActions } = expenditure || {};
+  const { items: fundingActionsItems } = fundingActions || {};
 
-  const expenditureStatus = getExpenditureStep(status);
+  const expenditureStatus = getExpenditureStep(expenditure);
 
   const [activeStepKey, setActiveStepKey] =
     useState<ExpenditureStep>(expenditureStatus);
 
   const [isRefetching, setIsRefetching] = useState(false);
-  const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   useEffect(() => {
     startPolling(getSafePollingInterval());
 
-    if (
-      expenditureStatus &&
-      isExpenditureFunded &&
-      expenditureStatus !== ExpenditureStep.Payment
-    ) {
-      setActiveStepKey(ExpenditureStep.Release);
-    } else {
-      setActiveStepKey(expenditureStatus);
-    }
+    setActiveStepKey(expenditureStatus);
 
     return () => stopPolling();
-  }, [isExpenditureFunded, expenditureStatus, startPolling, stopPolling]);
+  }, [expenditureStatus, startPolling, stopPolling]);
 
   const lockExpenditurePayload: LockExpenditurePayload | null = expenditure
     ? {
@@ -141,53 +137,58 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       key: ExpenditureStep.Funding,
       heading: { label: formatText({ id: 'expenditure.fundingStage.label' }) },
       isHidden: isExpenditureCanceled,
-      content: (
-        <StepDetailsBlock
-          text={formatText({
-            id: 'expenditure.fundingStage.info',
-          })}
-          content={
-            <Button
-              className="w-full"
-              onClick={toggleOn}
-              text={formatText({
-                id: 'expenditure.fundingStage.button',
-              })}
-            />
-          }
-        />
-      ),
+      content:
+        expenditureStatus === ExpenditureStep.Funding ? (
+          <StepDetailsBlock
+            text={formatText({
+              id: 'expenditure.fundingStage.info',
+            })}
+            content={
+              <Button
+                className="w-full"
+                onClick={showFundingModal}
+                text={formatText({
+                  id: 'expenditure.fundingStage.button',
+                })}
+              />
+            }
+          />
+        ) : (
+          // @todo: please update this element when other decisions methods for funding will be implemented
+          <>
+            {fundingActionsItems?.length === 1 && (
+              <FinalizeWithPermissionsInfo
+                userAdddress={fundingActionsItems[0]?.initiatorAddress}
+              />
+            )}
+          </>
+        ),
     },
     {
       key: ExpenditureStep.Release,
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
       isHidden: isExpenditureCanceled,
-      content: (
-        <>
-          {expenditureStatus === ExpenditureStep.Funding && (
-            <StepDetailsBlock
-              text={formatText({
-                id: 'expenditure.releaseStage.info',
-              })}
-              content={
-                <Button
-                  className="w-full"
-                  onClick={releasePaymentToggleOn}
-                  text={formatText({
-                    id: 'expenditure.releaseStage.button',
-                  })}
-                />
-              }
-            />
-          )}
-          {isExpenditureFunded &&
-            expenditureStatus !== ExpenditureStep.Funding && (
-              <FinalizeWithPermissionsInfo
-                userAdddress={finalizingActions?.items[0]?.initiatorAddress}
+      content:
+        expenditureStatus === ExpenditureStep.Release ? (
+          <StepDetailsBlock
+            text={formatText({
+              id: 'expenditure.releaseStage.info',
+            })}
+            content={
+              <Button
+                className="w-full"
+                onClick={showReleasePaymentModal}
+                text={formatText({
+                  id: 'expenditure.releaseStage.button',
+                })}
               />
-            )}
-        </>
-      ),
+            }
+          />
+        ) : (
+          <FinalizeWithPermissionsInfo
+            userAdddress={finalizingActions?.items[0]?.initiatorAddress}
+          />
+        ),
     },
     {
       key: ExpenditureStep.Payment,
@@ -213,12 +214,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           <ReleasePaymentModal
             expenditure={expenditure}
             isOpen={isReleasePaymentModalOpen}
-            onClose={releasePaymentToggleOff}
+            onClose={hideReleasePaymentModal}
             refetchExpenditure={refetchExpenditure}
           />
           <FundingModal
             isOpen={isFundingModalOpen}
-            onClose={toggleOff}
+            onClose={hideFundingModal}
             expenditure={expenditure}
             refetchExpenditure={refetchExpenditure}
           />
