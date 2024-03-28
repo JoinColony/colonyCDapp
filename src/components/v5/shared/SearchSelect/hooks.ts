@@ -1,3 +1,4 @@
+import { utils } from 'ethers';
 import { useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
@@ -10,9 +11,8 @@ export const useSearchSelect = (
 ) => {
   const searchedOptions = useMemo(
     () =>
-      items.map((item) => ({
-        ...item,
-        options: item.options.filter((option) => {
+      items.map((item) => {
+        const filteredOptions = item.options.filter((option) => {
           const searchQuery = searchValue.toLowerCase();
           const optionValue =
             typeof option.value === 'string'
@@ -23,8 +23,28 @@ export const useSearchSelect = (
           return [optionValue, optionUserName].some((value) =>
             value.toString().includes(searchQuery),
           );
-        }),
-      })),
+        });
+
+        const options =
+          searchValue &&
+          !filteredOptions.length &&
+          utils.isHexString(searchValue)
+            ? [
+                {
+                  ...item.options[0],
+                  avatar: item.options[0].showAvatar ? '' : undefined,
+                  value: searchValue,
+                  label: searchValue,
+                  walletAddress: searchValue,
+                },
+              ]
+            : filteredOptions;
+
+        return {
+          ...item,
+          options,
+        };
+      }),
     [items, searchValue],
   );
 

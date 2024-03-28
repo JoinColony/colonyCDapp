@@ -23,19 +23,6 @@ query GetColonyContributors(
   }
 }
 
-query GetVerifiedMembers($colonyAddress: ID!) {
-  getContributorsByColony(
-    colonyAddress: $colonyAddress
-    filter: { isVerified: { eq: true } }
-  ) {
-    items {
-      user {
-        ...User
-      }
-    }
-  }
-}
-
 query GetContributorsByAddress(
   $contributorAddress: ID!
   $sortDirection: ModelSortDirection = ASC

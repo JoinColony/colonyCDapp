@@ -1,5 +1,6 @@
 import { all, call } from 'redux-saga/effects';
 
+import addVerifiedMembersActionSaga from './addVerifiedMembers.ts';
 import createDomainActionSaga from './createDomain.ts';
 import editColonyActionSaga from './editColony.ts';
 import editDomainActionSaga from './editDomain.ts';
@@ -11,6 +12,7 @@ import manageVerifiedRecipientsSaga from './manageVerifiedRecipients.ts';
 import mintTokensActionSaga from './mintTokens.ts';
 import moveFundsActionSaga from './moveFunds.ts';
 import paymentActionSaga from './payment.ts';
+import removeVerifiedMembersActionSaga from './removeVerifiedMembers.ts';
 import unlockTokenActionSaga from './unlockToken.ts';
 import versionUpgradeActionSaga from './versionUpgrade.ts';
 // import enterRecoveryActionSaga from './enterRecovery';
@@ -31,5 +33,7 @@ export default function* actionsSagas() {
     call(manageVerifiedRecipientsSaga),
     call(manageExistingSafesActionSaga),
     call(initiateSafeTransactionSaga),
+    call(addVerifiedMembersActionSaga),
+    call(removeVerifiedMembersActionSaga),
   ]);
 }

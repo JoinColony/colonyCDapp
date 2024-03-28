@@ -102,7 +102,6 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       ];
     }
     case actionType.includes(ColonyActionType.ColonyEdit):
-    case actionType.includes(ExtendedColonyActionType.UpdateAddressBook):
     case actionType.includes(ExtendedColonyActionType.UpdateTokens): {
       return [ActionPageDetails.Type, ActionPageDetails.Name];
     }

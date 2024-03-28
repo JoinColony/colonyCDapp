@@ -1,4 +1,4 @@
-import { DotsThree } from '@phosphor-icons/react';
+import { DotsThree, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -71,7 +71,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           <MenuContainer
             className={clsx(
               contentWrapperClassName,
-              'absolute z-[1] w-auto overflow-y-auto px-6 py-4',
+              'absolute z-[60] w-full max-w-[calc(100%-3.4rem)] -translate-x-3 overflow-y-auto px-6 py-4 sm:w-auto sm:translate-x-0',
             )}
             hasShadow
             rounded="s"
@@ -80,6 +80,18 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
               portalElementRef.current = ref;
             }}
           >
+            <div className="mb-3 flex items-center justify-between sm:hidden">
+              <p className="uppercase text-gray-400 text-4">
+                {formatText({ id: 'meatballMenu.selectAction' })}
+              </p>
+              <button
+                type="button"
+                className="text-gray-400"
+                onClick={toggleMenuOff}
+              >
+                <X size={18} />
+              </button>
+            </div>
             <ul>
               {items.map(
                 ({
@@ -94,7 +106,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                     key={key}
                     className={clsx(itemClassName, 'flex-shrink-0')}
                   >
-                    <HoverWidthWrapper hoverClassName="md:font-medium">
+                    <HoverWidthWrapper hoverClassName="w-full md:font-medium">
                       {(itemRenderItemWrapper || renderItemWrapper)(
                         {
                           className: `
@@ -110,7 +122,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
                             py-2
                             px-4
                             gap-2
-                            w-[calc(100%+2rem)]
+                            flex-grow
                             -mx-4
                           `,
                           onClick: () => {

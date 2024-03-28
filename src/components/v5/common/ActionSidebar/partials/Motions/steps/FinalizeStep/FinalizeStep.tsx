@@ -1,6 +1,6 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState, useRef } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -20,6 +20,7 @@ import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
 import { useClaimConfig, useFinalizeStep } from './hooks.tsx';
 import { type FinalizeStepProps, FinalizeStepSections } from './types.ts';
+import { handleMotionFinalized } from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -40,6 +41,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 }) => {
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
+  const hasFinalizedHandlerRun = useRef(false);
   const { refetchColony } = useColonyContext();
   const {
     isFinalizable,
@@ -80,11 +82,13 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   /* Update colony object when motion gets finalized. */
   useEffect(() => {
-    if (isMotionFinalized) {
+    if (actionData.motionData.isFinalized && !hasFinalizedHandlerRun.current) {
       refetchColony();
       setIsPolling(false);
+      handleMotionFinalized(actionData);
+      hasFinalizedHandlerRun.current = true;
     }
-  }, [isMotionFinalized, refetchColony]);
+  }, [actionData, refetchColony]);
 
   let action = {
     actionType: ActionTypes.MOTION_FINALIZE,

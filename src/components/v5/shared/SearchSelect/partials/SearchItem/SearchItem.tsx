@@ -75,6 +75,7 @@ const SearchItem: FC<SearchItemProps> = ({
                     'justify-center': !isLabelVisible,
                   },
                 )}
+                name={value.toString()}
                 onClick={() => {
                   onChange?.(value);
                 }}

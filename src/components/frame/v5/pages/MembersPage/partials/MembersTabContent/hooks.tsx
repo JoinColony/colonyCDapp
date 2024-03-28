@@ -105,6 +105,7 @@ export const useMembersTabContentItems = (
                           }
                           isOpen={isCopied}
                           isSuccess
+                          isFullWidthContent
                         >
                           <button
                             type="button"

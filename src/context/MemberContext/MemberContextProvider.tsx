@@ -19,6 +19,7 @@ import { useMobile } from '~hooks/index.ts';
 import useAllMembers from '~hooks/members/useAllMembers.ts';
 import useColonyContributors from '~hooks/members/useColonyContributors.ts';
 import { COLONY_VERIFIED_ROUTE } from '~routes/index.ts';
+import { type ColonyContributor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
 import { useColonyContext } from '../ColonyContext/ColonyContext.ts';
@@ -175,9 +176,20 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const membersLimit = getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT);
+  const membersByAddress = useMemo(
+    () =>
+      totalMembers.reduce<Record<string, ColonyContributor>>((map, member) => {
+        return {
+          ...map,
+          [member.contributorAddress]: member,
+        };
+      }, {}),
+    [totalMembers],
+  );
 
   const value = useMemo(
     () => ({
+      membersByAddress,
       filteredMembers,
       verifiedMembers,
       totalMemberCount,
@@ -195,6 +207,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       loading,
     }),
     [
+      membersByAddress,
       filteredMembers,
       verifiedMembers,
       totalMemberCount,

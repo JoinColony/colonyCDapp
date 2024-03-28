@@ -235,5 +235,6 @@ export const mapColonyActionToExpectedFormat = (
         ActionTitleMessageKeys.SafeTransactionTitle,
         notMaybe(actionData.metadata?.customTitle),
       ),
+    [ActionTitleMessageKeys.Members]: actionData.members?.length || 0,
   };
 };
