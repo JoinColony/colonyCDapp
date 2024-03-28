@@ -10,6 +10,7 @@ import { formatText } from '~utils/intl.ts';
 import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts.ts';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
+import { actionItemClass, actionItemLabelClass } from '../submenu.styles.ts';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.partials.Developers';
@@ -32,15 +33,17 @@ const Developers = () => {
   return (
     <MenuList>
       <MenuListItem>
-        <ExternalLink href={COLONY_DEV_DOCS}>
+        <ExternalLink href={COLONY_DEV_DOCS} className={actionItemClass}>
           <Code size={iconSize} />
-          <p className="ml-2">{formatText(MSG.developerDocs)}</p>
+          <p className={actionItemLabelClass}>
+            {formatText(MSG.developerDocs)}
+          </p>
         </ExternalLink>
       </MenuListItem>
       <MenuListItem>
-        <ExternalLink href={COLONY_GITHUB}>
+        <ExternalLink href={COLONY_GITHUB} className={actionItemClass}>
           <GithubLogo size={iconSize} />
-          <p className="ml-2">{formatText(MSG.github)}</p>
+          <p className={actionItemLabelClass}>{formatText(MSG.github)}</p>
         </ExternalLink>
       </MenuListItem>
     </MenuList>

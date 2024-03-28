@@ -21,6 +21,7 @@ import { formatText } from '~utils/intl.ts';
 import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts.ts';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
+import { actionItemClass, actionItemLabelClass } from '../submenu.styles.ts';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.partials.Contact';
@@ -55,33 +56,41 @@ const Contact = () => {
   return (
     <MenuList>
       <MenuListItem>
-        <ExternalLink href={COLONY_DOCS}>
+        <ExternalLink href={COLONY_DOCS} className={actionItemClass}>
           <Lifebuoy size={iconSize} />
-          <p className="ml-2">{formatText(MSG.getHelp)}</p>
+          <p className={actionItemLabelClass}>{formatText(MSG.getHelp)}</p>
         </ExternalLink>
       </MenuListItem>
       <MenuListItem>
-        <button type="button" onClick={openWhatsNew}>
+        <button
+          type="button"
+          onClick={openWhatsNew}
+          className={actionItemClass}
+        >
           <Star size={iconSize} />
-          <p className="ml-2">{formatText(MSG.whatsNew)}</p>
+          <p className={actionItemLabelClass}>{formatText(MSG.whatsNew)}</p>
         </button>
       </MenuListItem>
       <MenuListItem>
-        <button type="button" onClick={openFeaturesBugs}>
+        <button
+          type="button"
+          onClick={openFeaturesBugs}
+          className={actionItemClass}
+        >
           <Bug size={iconSize} />
-          <p className="ml-2">{formatText(MSG.featureBugs)}</p>
+          <p className={actionItemLabelClass}>{formatText(MSG.featureBugs)}</p>
         </button>
       </MenuListItem>
       <MenuListItem>
-        <ExternalLink href={COLONY_DISCORD}>
+        <ExternalLink href={COLONY_DISCORD} className={actionItemClass}>
           <DiscordLogo size={iconSize} />
-          <p className="ml-2">{formatText(MSG.discord)}</p>
+          <p className={actionItemLabelClass}>{formatText(MSG.discord)}</p>
         </ExternalLink>
       </MenuListItem>
       <MenuListItem>
-        <ExternalLink href={COLONY_TWITTER}>
+        <ExternalLink href={COLONY_TWITTER} className={actionItemClass}>
           <TwitterLogo size={iconSize} />
-          <p className="ml-2">{formatText(MSG.twitter)}</p>
+          <p className={actionItemLabelClass}>{formatText(MSG.twitter)}</p>
         </ExternalLink>
       </MenuListItem>
     </MenuList>
