@@ -22,7 +22,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { expenditure, loadingExpenditure } =
     useGetExpenditureData(expenditureId);
 
-  const { status } = expenditure || {};
+  const { status, fundingActions } = expenditure || {};
+  const { items: fundingActionsItems } = fundingActions || {};
 
   const [activeStepKey, setActiveStepKey] = useState<ExpenditureStep>(
     getExpenditureStep(status),
@@ -65,20 +66,30 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Funding,
       heading: { label: formatText({ id: 'expenditure.fundingStage.label' }) },
-      content: (
-        <StepDetailsBlock
-          text={formatText({
-            id: 'expenditure.fundingStage.info',
-          })}
-          buttonProps={{
-            // @todo: replace onClick with actual functionality
-            onClick: () => setActiveStepKey(ExpenditureStep.Release),
-            text: formatText({
-              id: 'expenditure.fundingStage.button',
-            }),
-          }}
-        />
-      ),
+      content:
+        activeStepKey === ExpenditureStep.Funding ? (
+          <StepDetailsBlock
+            text={formatText({
+              id: 'expenditure.fundingStage.info',
+            })}
+            buttonProps={{
+              // @todo: replace onClick with actual functionality
+              onClick: () => setActiveStepKey(ExpenditureStep.Release),
+              text: formatText({
+                id: 'expenditure.fundingStage.button',
+              }),
+            }}
+          />
+        ) : (
+          // @todo: please update this element when other decisions methods for funding will be implemented
+          <>
+            {fundingActionsItems?.length === 1 && (
+              <FinalizeWithPermissionsInfo
+                userAdddress={fundingActionsItems[0]?.initiatorAddress}
+              />
+            )}
+          </>
+        ),
     },
     {
       key: ExpenditureStep.Release,
