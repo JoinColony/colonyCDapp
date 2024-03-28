@@ -20,6 +20,7 @@ export interface ViewStakedButtonProps {
 export interface TotalReputationProps {
   colonyAddress: string;
   wallet: ColonyWallet;
+  nativeToken: Token;
 }
 
 export interface PendingReputationProps {

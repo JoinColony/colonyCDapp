@@ -30,6 +30,7 @@ const RevealStep: FC<RevealStepProps> = ({
   startPollingAction,
   stopPollingAction,
   transactionId,
+  rootHash,
 }) => {
   const { canInteract } = useAppContext();
   const [isInformationAccordionOpen, { toggle: toggleInformationAccordion }] =
@@ -50,6 +51,7 @@ const RevealStep: FC<RevealStepProps> = ({
     startPollingAction,
     stopPollingAction,
     transactionId,
+    rootHash,
   );
 
   const { decimals, symbol } = nativeToken || {};
@@ -118,7 +120,7 @@ const RevealStep: FC<RevealStepProps> = ({
                       <Numeral
                         value={voterReward || '0'}
                         decimals={decimals}
-                        suffix={symbol}
+                        suffix={` ${symbol}`}
                       />
                     </div>
                   </div>

@@ -14,6 +14,9 @@ export const DECISION_METHOD_FIELD_NAME = 'decisionMethod';
 export const TITLE_FIELD_NAME = 'title';
 export const DESCRIPTION_FIELD_NAME = 'description';
 export const CREATED_IN_FIELD_NAME = 'createdIn';
+export const MODIFICATION_FIELD_NAME = 'modification';
+export const TEAM_FIELD_NAME = 'team';
+export const MEMBER_FIELD_NAME = 'member';
 
 export const actionSidebarAnimation: Variants = {
   hidden: {

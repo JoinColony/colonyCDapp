@@ -12,6 +12,7 @@ import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
 import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
+import ManageReputation from './partials/ManageReputation/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
@@ -59,11 +60,20 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.SetUserRoles:
       case ColonyActionType.SetUserRolesMotion:
         return <SetUserRoles action={action} />;
+      case ColonyActionType.EmitDomainReputationReward:
+      case ColonyActionType.EmitDomainReputationRewardMotion:
+      case ColonyActionType.EmitDomainReputationPenalty:
+      case ColonyActionType.EmitDomainReputationPenaltyMotion:
+        return <ManageReputation action={action} />;
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
         return <EditColonyDetails action={action} />;
       case ExtendedColonyActionType.UpdateColonyObjective:
         return <UpgradeColonyObjective action={action} />;
+      // @TODO: Connect this to the reputation actions
+      /* case ColonyActionType.EmitDomainReputationReward:
+         case ColonyActionType.EmitDomainReputationPenalty:
+          return <ManageReputation action={action} />; */
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;

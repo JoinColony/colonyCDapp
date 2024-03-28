@@ -93,11 +93,10 @@ const useActionsList = () => {
         isAccordion: true,
         title: { id: 'actions.admin' },
         options: [
-          // @BETA: Disabled for now
-          // {
-          //   label: { id: 'actions.manageReputation' },
-          //   value: Action.ManageReputation,
-          // },
+          {
+            label: { id: 'actions.manageReputation' },
+            value: Action.ManageReputation,
+          },
           {
             label: { id: 'actions.managePermissions' },
             value: Action.ManagePermissions,

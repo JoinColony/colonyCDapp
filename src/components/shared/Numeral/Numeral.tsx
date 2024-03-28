@@ -49,6 +49,7 @@ const Numeral = ({
   const convertedValue = convertToDecimal(value, decimals || 0);
 
   const formattedValue = getFormattedNumeralValue(convertedValue, value);
+
   return (
     <span
       className={classNames(getMainClasses(appearance, styles), className)}
@@ -56,7 +57,7 @@ const Numeral = ({
     >
       {prefix && `${prefix} `}
       {formattedValue}
-      {suffix && ` ${suffix}`}
+      {suffix}
     </span>
   );
 };

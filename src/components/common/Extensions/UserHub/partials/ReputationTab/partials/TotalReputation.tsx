@@ -7,7 +7,10 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation.ts';
-import { getFormattedTokenValue } from '~utils/tokens.ts';
+import {
+  getFormattedTokenValue,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import reputationTabClasses from '../ReputationTab.styles.ts';
@@ -19,6 +22,7 @@ const displayName =
 const TotalReputation: FC<TotalReputationProps> = ({
   colonyAddress,
   wallet,
+  nativeToken,
 }) => {
   const { formatMessage } = useIntl();
   const { userReputation, totalReputation } = useUserReputation(
@@ -33,7 +37,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
 
   const formattedReputationPoints = getFormattedTokenValue(
     new Decimal(userReputation || 0).toString(),
-    DEFAULT_TOKEN_DECIMALS,
+    getTokenDecimalsWithFallback(nativeToken.decimals, DEFAULT_TOKEN_DECIMALS),
   );
 
   return (
@@ -66,7 +70,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
                 <Numeral
                   className={reputationTabClasses.reputationValue}
                   value={percentageReputation || 0}
-                  suffix="%"
+                  suffix=" %"
                   appearance={{ size: 'small' }}
                 />
               )}
@@ -78,7 +82,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
           </span>
           <Numeral
             value={formattedReputationPoints}
-            suffix="pts"
+            suffix=" pts"
             appearance={{ size: 'small' }}
           />
         </div>
