@@ -84,20 +84,25 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       key: ExpenditureStep.Release,
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
       // @todo: add completed state content
-      content: (
-        <StepDetailsBlock
-          text={formatText({
-            id: 'expenditure.releaseStage.info',
-          })}
-          buttonProps={{
-            // @todo: replace onClick with actual functionality
-            onClick: () => setActiveStepKey(ExpenditureStep.Payment),
-            text: formatText({
-              id: 'expenditure.releaseStage.button',
-            }),
-          }}
-        />
-      ),
+      content:
+        activeStepKey === ExpenditureStep.Release ? (
+          <StepDetailsBlock
+            text={formatText({
+              id: 'expenditure.releaseStage.info',
+            })}
+            buttonProps={{
+              // @todo: replace onClick with actual functionality
+              onClick: () => setActiveStepKey(ExpenditureStep.Payment),
+              text: formatText({
+                id: 'expenditure.releaseStage.button',
+              }),
+            }}
+          />
+        ) : (
+          <FinalizeWithPermissionsInfo
+            userAdddress={expenditure?.ownerAddress}
+          />
+        ),
     },
     {
       key: ExpenditureStep.Payment,
