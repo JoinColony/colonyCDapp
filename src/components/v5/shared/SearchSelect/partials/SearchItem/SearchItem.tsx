@@ -108,12 +108,6 @@ const SearchItem: FC<SearchItemProps> = ({
                     </div>
                   )}
                   {isLabelVisible && labelText}
-                  {isVerified && (
-                    <CircleWavyCheck
-                      size={14}
-                      className="ml-1 flex-shrink-0 text-blue-400"
-                    />
-                  )}
                   {!label && <span className="truncate">{walletAddress}</span>}
                   {isVerified && (
                     <CircleWavyCheck
