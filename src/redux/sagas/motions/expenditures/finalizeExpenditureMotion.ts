@@ -20,11 +20,14 @@ import {
   takeFrom,
 } from '~redux/sagas/utils/index.ts';
 
-function* cancelExpenditureMotion({
+export type FinalizeExpenditureMotionPayload =
+  Action<ActionTypes.MOTION_EXPENDITURE_FINALIZE>['payload'];
+
+function* finalizeExpenditureMotion({
   meta,
   meta: { setTxHash },
   payload: { colony, votingReputationAddress, expenditure, motionDomainId },
-}: Action<ActionTypes.MOTION_EXPENDITURE_CANCEL>) {
+}: Action<ActionTypes.MOTION_EXPENDITURE_FINALIZE>) {
   const { createMotion } = yield call(createTransactionChannels, meta.id, [
     'createMotion',
   ]);
@@ -41,7 +44,7 @@ function* cancelExpenditureMotion({
 
     if (colony.version < 15) {
       throw new Error(
-        'Motions to cancel expenditure are only available in Colony version 15 and above',
+        'Motions to finalize expenditure are only available in Colony version 15 and above',
       );
     }
 
@@ -72,7 +75,7 @@ function* cancelExpenditureMotion({
     );
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
-      'cancelExpenditureViaArbitration',
+      'finalizeExpenditureViaArbitration',
       [permissionDomainId, childSkillIndex, expenditure.nativeId],
     );
 
@@ -114,7 +117,7 @@ function* cancelExpenditureMotion({
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put({
-        type: ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
+        type: ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
         meta,
       });
 
@@ -124,15 +127,15 @@ function* cancelExpenditureMotion({
     }
   } catch (e) {
     console.error(e);
-    yield putError(ActionTypes.MOTION_EXPENDITURE_CANCEL_ERROR, e, meta);
+    yield putError(ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR, e, meta);
   } finally {
     createMotion.channel.close();
   }
 }
 
-export default function* cancelExpenditureMotionSaga() {
+export default function* finalizeExpenditureMotionSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_EXPENDITURE_CANCEL,
-    cancelExpenditureMotion,
+    ActionTypes.MOTION_EXPENDITURE_FINALIZE,
+    finalizeExpenditureMotion,
   );
 }

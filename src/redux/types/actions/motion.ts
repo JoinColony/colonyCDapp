@@ -2,7 +2,7 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExpenditureFragment, type ExternalLink } from '~gql';
+import { type ExternalLink } from '~gql';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import {
   type Expenditure,
@@ -347,7 +347,7 @@ export type MotionActionTypes =
       ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE,
       {
         colonyAddress: Address;
-        expenditure: ExpenditureFragment;
+        expenditure: Expenditure;
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
@@ -358,5 +358,20 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_FINALIZE,
+      {
+        colony: Colony;
+        expenditure: Expenditure;
+        votingReputationAddress: Address;
+        motionDomainId: number;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
       MetaWithSetter<object>
     >;
