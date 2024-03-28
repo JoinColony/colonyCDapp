@@ -229,10 +229,16 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               formatText({ id: 'motion.oppose.wins.label' })
             : formatText({ id: 'motion.outcome.label' }) || '',
           className: clsx('z-[1]', {
-            'border-purple-400 bg-base-white text-purple-400':
-              hasVotedMotionPassed,
-            'border-negative-400 bg-base-white text-negative-400':
-              !hasVotedMotionPassed,
+            'border-purple-400 bg-base-white text-purple-400 lg:enabled:hover:border-purple-400 lg:enabled:hover:bg-purple-400 lg:enabled:hover:text-base-white':
+              motionFinished && hasVotedMotionPassed,
+            'border-negative-400 bg-base-white text-negative-400 lg:enabled:hover:border-negative-400 lg:enabled:hover:bg-negative-400 lg:enabled:hover:text-base-white':
+              motionFinished && !hasVotedMotionPassed,
+          }),
+          highlightedClassName: clsx({
+            '!border-purple-400 !bg-purple-400 !text-base-white':
+              motionFinished && hasVotedMotionPassed,
+            '!border-negative-400 !bg-negative-400 !text-base-white':
+              motionFinished && !hasVotedMotionPassed,
           }),
           tooltipProps: {
             tooltipContent: (
