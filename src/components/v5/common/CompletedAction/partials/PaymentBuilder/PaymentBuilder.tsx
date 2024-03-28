@@ -133,8 +133,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-
-      <PaymentBuilderTable items={slots} />
+      {!!slots.length && <PaymentBuilderTable items={slots} />}
     </>
   );
 };
