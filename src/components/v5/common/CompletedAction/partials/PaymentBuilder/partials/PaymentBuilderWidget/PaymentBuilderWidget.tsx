@@ -1,9 +1,15 @@
-import React, { useState, type FC } from 'react';
+import React, { useState, type FC, useEffect } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ActionTypes } from '~redux';
+import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
+import { getSafePollingInterval } from '~utils/queries.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
+import ActionButton from '~v5/shared/Button/ActionButton.tsx';
+import Button from '~v5/shared/Button/Button.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
@@ -15,18 +21,41 @@ import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import { getExpenditureStep } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
+  const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { walletAddress } = user || {};
   const { expenditureId } = action;
 
-  const { expenditure, loadingExpenditure } =
-    useGetExpenditureData(expenditureId);
+  const {
+    expenditure,
+    loadingExpenditure,
+    refetchExpenditure,
+    startPolling,
+    stopPolling,
+  } = useGetExpenditureData(expenditureId);
 
   const { status } = expenditure || {};
 
-  const [activeStepKey, setActiveStepKey] = useState<ExpenditureStep>(
-    getExpenditureStep(status),
-  );
+  const expenditureStatus = getExpenditureStep(status);
+
+  const [activeStepKey, setActiveStepKey] =
+    useState<ExpenditureStep>(expenditureStatus);
+
+  const [isRefetching, setIsRefetching] = useState(false);
+
+  useEffect(() => {
+    startPolling(getSafePollingInterval());
+    setActiveStepKey(expenditureStatus);
+
+    return () => stopPolling();
+  }, [expenditureStatus, startPolling, stopPolling]);
+
+  const lockExpenditurePayload: LockExpenditurePayload | null = expenditure
+    ? {
+        colonyAddress: colony.colonyAddress,
+        nativeExpenditureId: expenditure.nativeId,
+      }
+    : null;
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -40,21 +69,34 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       key: ExpenditureStep.Review,
       heading: { label: formatText({ id: 'expenditure.reviewStage.label' }) },
       content:
-        activeStepKey === ExpenditureStep.Review ? (
+        expenditureStatus === ExpenditureStep.Review ? (
           <StepDetailsBlock
             text={formatText({
               id: 'expenditure.reviewStage.confirmDetails.info',
             })}
-            buttonProps={{
-              disabled:
-                !expenditure?.ownerAddress ||
-                walletAddress !== expenditure?.ownerAddress,
-              // @todo: replace onClick with actual functionality
-              onClick: () => setActiveStepKey(ExpenditureStep.Funding),
-              text: formatText({
-                id: 'expenditure.reviewStage.confirmDetails.button',
-              }),
-            }}
+            content={
+              <ActionButton
+                disabled={
+                  !expenditure?.ownerAddress ||
+                  walletAddress !== expenditure?.ownerAddress
+                }
+                onSuccess={async () => {
+                  setIsRefetching(true);
+                  await refetchExpenditure({
+                    expenditureId: expenditureId || '',
+                  });
+                  setIsRefetching(false);
+                }}
+                text={formatText({
+                  id: 'expenditure.reviewStage.confirmDetails.button',
+                })}
+                values={lockExpenditurePayload}
+                actionType={ActionTypes.EXPENDITURE_LOCK}
+                mode="primarySolid"
+                className="w-full"
+                isLoading={isRefetching}
+              />
+            }
           />
         ) : (
           <FinalizeWithPermissionsInfo
@@ -70,13 +112,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           text={formatText({
             id: 'expenditure.fundingStage.info',
           })}
-          buttonProps={{
-            // @todo: replace onClick with actual functionality
-            onClick: () => setActiveStepKey(ExpenditureStep.Release),
-            text: formatText({
-              id: 'expenditure.fundingStage.button',
-            }),
-          }}
+          content={
+            <Button
+              className="w-full"
+              // @todo: replace onClick with actual functionality
+              onClick={() => setActiveStepKey(ExpenditureStep.Release)}
+              text={formatText({
+                id: 'expenditure.fundingStage.button',
+              })}
+            />
+          }
         />
       ),
     },
@@ -89,13 +134,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           text={formatText({
             id: 'expenditure.releaseStage.info',
           })}
-          buttonProps={{
-            // @todo: replace onClick with actual functionality
-            onClick: () => setActiveStepKey(ExpenditureStep.Payment),
-            text: formatText({
-              id: 'expenditure.releaseStage.button',
-            }),
-          }}
+          content={
+            <Button
+              className="w-full"
+              // @todo: replace onClick with actual functionality
+              onClick={() => setActiveStepKey(ExpenditureStep.Payment)}
+              text={formatText({
+                id: 'expenditure.releaseStage.button',
+              })}
+            />
+          }
         />
       ),
     },
