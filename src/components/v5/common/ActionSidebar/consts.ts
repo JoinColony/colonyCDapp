@@ -15,6 +15,8 @@ export const TITLE_FIELD_NAME = 'title';
 export const DESCRIPTION_FIELD_NAME = 'description';
 export const CREATED_IN_FIELD_NAME = 'createdIn';
 
+export const NON_RESETTABLE_FIELDS = [TITLE_FIELD_NAME, ACTION_TYPE_FIELD_NAME];
+
 export const actionSidebarAnimation: Variants = {
   hidden: {
     x: '100%',
