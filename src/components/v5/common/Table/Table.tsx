@@ -9,7 +9,7 @@ import {
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { useMobile } from '~hooks/index.ts';
+import { useMobile, useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
@@ -43,15 +43,20 @@ const Table = <T,>({
   columns,
   renderSubComponent,
   getRowCanExpand,
+  changeLayoutBreakpoint = 'mobile',
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
+  const isTablet = useTablet();
+  const shouldShowMobileContent =
+    (changeLayoutBreakpoint === 'mobile' && isMobile) ||
+    (changeLayoutBreakpoint === 'tablet' && isTablet);
   const helper = useMemo(() => createColumnHelper<T>(), []);
 
   const columnsWithMenu = useMemo(
     () => [
       ...columns,
-      ...(getMenuProps && !(isMobile && verticalOnMobile)
+      ...(getMenuProps && !(shouldShowMobileContent && verticalOnMobile)
         ? [
             makeMenuColumn<T>(
               helper,
@@ -65,7 +70,7 @@ const Table = <T,>({
     [
       columns,
       getMenuProps,
-      isMobile,
+      shouldShowMobileContent,
       verticalOnMobile,
       helper,
       meatBallMenuSize,
@@ -118,7 +123,7 @@ const Table = <T,>({
         cellPadding="0"
         cellSpacing="0"
       >
-        {isMobile && verticalOnMobile ? (
+        {shouldShowMobileContent && verticalOnMobile ? (
           rows.map((row) => {
             const cells = row.getVisibleCells();
             const columnsCount = cells.length - 1;
@@ -353,7 +358,13 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="h-full border-gray-200 px-[1.1rem] text-md text-gray-500 sm:border-t"
+                    className={clsx(
+                      'h-full border-gray-200 px-[1.1rem] text-md text-gray-500',
+                      {
+                        'sm:border-t': changeLayoutBreakpoint === 'mobile',
+                        'md:border-t': changeLayoutBreakpoint === 'tablet',
+                      },
+                    )}
                   >
                     {flexRender(
                       column.column.columnDef.footer,
@@ -375,18 +386,42 @@ const Table = <T,>({
               {
                 'sm:grid-cols-[1fr_auto_auto]':
                   canGoToNextPage ||
-                  (additionalPaginationButtonsContent && isMobile),
+                  (additionalPaginationButtonsContent &&
+                    shouldShowMobileContent &&
+                    changeLayoutBreakpoint === 'mobile'),
+                'md:grid-cols-[1fr_auto_auto]':
+                  canGoToNextPage ||
+                  (additionalPaginationButtonsContent &&
+                    shouldShowMobileContent &&
+                    changeLayoutBreakpoint === 'tablet'),
                 'sm:grid-cols-[1fr_auto]': !(
                   canGoToNextPage ||
-                  (additionalPaginationButtonsContent && isMobile)
+                  (additionalPaginationButtonsContent &&
+                    shouldShowMobileContent &&
+                    changeLayoutBreakpoint === 'mobile')
+                ),
+                'md:grid-cols-[1fr_auto]': !(
+                  canGoToNextPage ||
+                  (additionalPaginationButtonsContent &&
+                    shouldShowMobileContent &&
+                    changeLayoutBreakpoint === 'tablet')
                 ),
               },
             )}
           >
             {(canGoToPreviousPage ||
-              (additionalPaginationButtonsContent && !isMobile)) && (
-              <div className="col-start-1 row-start-1 flex items-center justify-start gap-3 sm:col-start-2">
-                {!isMobile && additionalPaginationButtonsContent}
+              (additionalPaginationButtonsContent &&
+                !shouldShowMobileContent)) && (
+              <div
+                className={clsx(
+                  'col-start-1 row-start-1 flex items-center justify-start gap-3',
+                  {
+                    'sm:col-start-2': changeLayoutBreakpoint === 'mobile',
+                    'md:col-start-2': changeLayoutBreakpoint === 'tablet',
+                  },
+                )}
+              >
+                {!shouldShowMobileContent && additionalPaginationButtonsContent}
                 {canGoToPreviousPage && (
                   <Button
                     onClick={goToPreviousPage}
@@ -400,7 +435,17 @@ const Table = <T,>({
               </div>
             )}
             {showPageNumber && (
-              <p className="col-start-2 row-start-1 w-full text-center text-gray-700 text-3 sm:col-start-1 sm:w-auto sm:text-left">
+              <p
+                className={clsx(
+                  'col-start-2 row-start-1 w-full text-center text-gray-700 text-3 ',
+                  {
+                    'sm:col-start-1 sm:w-auto sm:text-left':
+                      changeLayoutBreakpoint === 'mobile',
+                    'md:col-start-1 md:w-auto md:text-left':
+                      changeLayoutBreakpoint === 'tablet',
+                  },
+                )}
+              >
                 {formatText(
                   {
                     id: showTotalPagesNumber
@@ -415,9 +460,10 @@ const Table = <T,>({
               </p>
             )}
             {(canGoToNextPage ||
-              (additionalPaginationButtonsContent && isMobile)) && (
+              (additionalPaginationButtonsContent &&
+                shouldShowMobileContent)) && (
               <div className="col-start-3 row-start-1 flex items-center justify-end gap-3">
-                {isMobile && additionalPaginationButtonsContent}
+                {shouldShowMobileContent && additionalPaginationButtonsContent}
                 {canGoToNextPage && (
                   <Button
                     onClick={goToNextPage}

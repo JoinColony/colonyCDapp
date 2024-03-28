@@ -84,6 +84,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           className={clsx('[&_tfoot_td]:py-2 [&_tfoot_td]:align-top', {
             '!border-negative-400': !!fieldState.error,
           })}
+          changeLayoutBreakpoint="tablet"
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
