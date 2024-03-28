@@ -1,6 +1,8 @@
 import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
+import { BigNumber } from 'ethers';
 import { AnimatePresence, motion } from 'framer-motion';
+import moveDecimal from 'move-decimal-point';
 import React, { useMemo, type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
@@ -15,11 +17,61 @@ import { getSelectedToken } from '~utils/tokens.ts';
 import { type PaymentBuilderPayoutsTotalProps } from './types.ts';
 
 const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
-  payouts,
+  data,
+  moveDecimals,
 }) => {
   const { colony } = useColonyContext();
   const [isExpanded, { toggle }] = useToggle();
-  const sortedPayouts = useMemo(() => sortPayouts(payouts), [payouts]) || [];
+
+  const sortedTokens =
+    useMemo(() => {
+      const summedTokens = data.reduce<ExpenditurePayout[]>(
+        (result, { amount, tokenAddress }) => {
+          if (!amount || !tokenAddress) {
+            return result;
+          }
+
+          const tokenData = getSelectedToken(colony, tokenAddress);
+
+          if (!tokenData) {
+            return result;
+          }
+
+          const existingEntryIndex = result.findIndex(
+            (entry) => entry.tokenAddress === tokenAddress,
+          );
+
+          const tokenAmount = moveDecimals
+            ? moveDecimal(amount, tokenData.decimals)
+            : amount;
+
+          if (existingEntryIndex < 0) {
+            return [
+              ...result,
+              {
+                tokenAddress,
+                isClaimed: false,
+                amount: tokenAmount,
+              },
+            ];
+          }
+
+          return [
+            ...result.slice(0, existingEntryIndex),
+            {
+              ...result[existingEntryIndex],
+              amount: BigNumber.from(result[existingEntryIndex].amount)
+                .add(BigNumber.from(tokenAmount))
+                .toString(),
+            },
+            ...result.slice(existingEntryIndex + 1),
+          ];
+        },
+        [],
+      );
+
+      return sortPayouts(summedTokens);
+    }, [colony, data, moveDecimals]) || [];
 
   const getItem = (token: ExpenditurePayout) => {
     const tokenData = getSelectedToken(colony, token.tokenAddress);
@@ -39,20 +91,20 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
     ) : null;
   };
 
-  if (!sortedPayouts.length) {
+  if (!sortedTokens.length) {
     return null;
   }
 
   return (
     <div className="w-full">
-      {sortedPayouts.length > 1 ? (
+      {sortedTokens.length > 1 ? (
         <>
           <button
             type="button"
             className="flex w-full items-center gap-2 py-[.3125rem]"
             onClick={toggle}
           >
-            {getItem(sortedPayouts[0])}
+            {getItem(sortedTokens[0])}
             <CaretDown
               size={12}
               className={clsx('flex-shrink-0 transition', {
@@ -70,7 +122,7 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
                 className="overflow-hidden"
               >
                 <ul>
-                  {sortedPayouts.slice(1).map((token) => (
+                  {sortedTokens.slice(1).map((token) => (
                     <li
                       key={token.tokenAddress}
                       className="w-full py-[.3125rem]"
@@ -84,7 +136,7 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
           </AnimatePresence>
         </>
       ) : (
-        <div className="w-full py-[.3125rem]">{getItem(sortedPayouts[0])}</div>
+        <div className="w-full py-[.3125rem]">{getItem(sortedTokens[0])}</div>
       )}
     </div>
   );

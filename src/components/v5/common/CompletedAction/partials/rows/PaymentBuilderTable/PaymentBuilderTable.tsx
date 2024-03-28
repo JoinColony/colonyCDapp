@@ -1,14 +1,11 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
-import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
-import { type ExpenditurePayout } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import Table from '~v5/common/Table/index.ts';
 
@@ -28,7 +25,6 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = data.length > 1;
   const {
-    colony,
     colony: { expendituresGlobalClaimDelay },
   } = useColonyContext();
   const isMobile = useMobile();
@@ -58,39 +54,12 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
       header: formatText({ id: 'table.row.amount' }),
       footer:
         hasMoreThanOneToken && !isMobile
-          ? () => {
-              const selectedTokens = dataRef.current?.reduce(
-                (result: ExpenditurePayout[], { amount }) => {
-                  if (!amount || !amount[0].token) {
-                    return result;
-                  }
-
-                  const tokenData = getSelectedToken(colony, amount[0].token);
-
-                  if (!tokenData) {
-                    return result;
-                  }
-
-                  return [
-                    {
-                      tokenAddress: amount[0].token,
-                      amount: BigNumber.from(result[0]?.amount || '0')
-                        .add(BigNumber.from(amount[0].amount || '0'))
-                        .toString(),
-                      isClaimed: false,
-                    },
-                  ];
-                },
-                [],
-              );
-
-              return <PaymentBuilderPayoutsTotal payouts={selectedTokens} />;
-            }
+          ? () => <PaymentBuilderPayoutsTotal data={dataRef.current} />
           : undefined,
       cell: ({ row }) => (
         <AmountField
-          amount={row.original.amount[0].amount}
-          token={row.original.amount[0].token}
+          amount={row.original.amount}
+          tokenAddress={row.original.tokenAddress}
         />
       ),
     }),
@@ -99,38 +68,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
       header: formatText({ id: 'table.column.claimDelay' }),
       footer:
         hasMoreThanOneToken && isMobile
-          ? () => {
-              const selectedTokens = dataRef.current?.reduce(
-                (result: ExpenditurePayout[], { amount }) => {
-                  if (!amount) {
-                    return result;
-                  }
-
-                  if (!amount[0].token) {
-                    return result;
-                  }
-
-                  const tokenData = getSelectedToken(colony, amount[0].token);
-
-                  if (!tokenData) {
-                    return result;
-                  }
-
-                  return [
-                    {
-                      tokenAddress: amount[0].token,
-                      amount: BigNumber.from(result[0]?.amount || '0')
-                        .add(BigNumber.from(amount[0].amount || '0'))
-                        .toString(),
-                      isClaimed: false,
-                    },
-                  ];
-                },
-                [],
-              );
-
-              return <PaymentBuilderPayoutsTotal payouts={selectedTokens} />;
-            }
+          ? () => <PaymentBuilderPayoutsTotal data={dataRef.current} />
           : undefined,
       cell: ({ row }) => {
         const formattedHours = Math.floor(
@@ -182,14 +120,10 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
 
 const PaymentBuilderTable = ({ items }: PaymentBuilderTableProps) => {
   const data: PaymentBuilderTableModel[] = items.map((item) => ({
-    key: item.id.toString(),
     recipient: item.recipientAddress || '',
     claimDelay: item.claimDelay || '0',
-    amount:
-      item?.payouts?.map((payout) => ({
-        amount: payout.amount,
-        token: payout.tokenAddress,
-      })) || [],
+    amount: item.payouts?.[0].amount || '0',
+    tokenAddress: item.payouts?.[0].tokenAddress || '',
   }));
   const columns = useGetPaymentBuilderColumns(data);
 

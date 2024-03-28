@@ -10,6 +10,7 @@ import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { ExpenditureStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -162,7 +163,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               )}
             </button>
 
-            {expenditure?.status && (
+            {expenditure?.status === ExpenditureStatus.Draft && (
               <ExpenditureBadge status={expenditure.status} />
             )}
             <MotionOutcomeBadge motionState={motionState} />

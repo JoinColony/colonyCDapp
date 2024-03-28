@@ -1,5 +1,6 @@
-import { type ExpenditurePayout } from '~types/graphql.ts';
+import { type PaymentBuilderRecipientsFieldModel } from '../PaymentBuilderRecipientsField/types.ts';
 
 export interface PaymentBuilderPayoutsTotalProps {
-  payouts: ExpenditurePayout[];
+  data: PaymentBuilderRecipientsFieldModel[];
+  moveDecimals?: boolean;
 }
