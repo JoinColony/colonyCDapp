@@ -9,7 +9,7 @@ import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
-import { toFinite } from '~utils/lodash.ts';
+import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
@@ -30,11 +30,15 @@ export const useValidationSchema = () => {
     () =>
       object()
         .shape({
-          amount: number()
+          amount: string()
             .required(() => formatText({ id: 'errors.amount' }))
-            .transform((value) => toFinite(value))
-            .moreThan(0, () =>
-              formatText({ id: 'errors.amount.greaterThanZero' }),
+            .test(
+              'more-than-zero',
+              formatText({
+                id: 'errors.amount.greaterThanZero',
+              }),
+              (value, context) =>
+                amountGreaterThanZeroValidation(value, context, colony),
             )
             .test(
               'enough-tokens',

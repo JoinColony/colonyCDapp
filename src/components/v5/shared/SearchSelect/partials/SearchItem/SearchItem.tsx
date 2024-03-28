@@ -108,13 +108,13 @@ const SearchItem: FC<SearchItemProps> = ({
                     </div>
                   )}
                   {isLabelVisible && labelText}
+                  {!label && <span className="truncate">{walletAddress}</span>}
                   {isVerified && (
                     <CircleWavyCheck
                       size={14}
                       className="ml-1 flex-shrink-0 text-blue-400"
                     />
                   )}
-                  {!label && <span className="truncate">{walletAddress}</span>}
                   {firstDisabledOption?.value === value && (
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
                       <ExtensionsStatusBadge

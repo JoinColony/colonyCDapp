@@ -11,12 +11,16 @@ import {
 } from '~utils/tokens.ts';
 
 export const hasEnoughFundsValidation = (
-  value: number | null | undefined,
+  value: string | null | undefined,
   context: TestContext<object>,
   selectedTeam: string | undefined,
   colony: ColonyFragment,
   tokenAddress?: string,
 ) => {
+  if (!value) {
+    return false;
+  }
+
   const { parent } = context;
   const { tokenAddress: tokenAddressFieldValue } = parent || {};
 
@@ -41,9 +45,6 @@ export const hasEnoughFundsValidation = (
   );
 
   return !BigNumber.from(
-    moveDecimal(
-      value || 0,
-      getTokenDecimalsWithFallback(selectedToken?.decimals),
-    ),
+    moveDecimal(value, getTokenDecimalsWithFallback(selectedToken?.decimals)),
   ).gt(tokenBalance);
 };

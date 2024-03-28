@@ -19,6 +19,7 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
+  getPayoutsWithSlotIds,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -26,6 +27,7 @@ export type CreateExpenditurePayload =
 
 function* createExpenditure({
   meta,
+  meta: { setTxHash },
   payload: {
     colonyAddress,
     payouts,
@@ -44,11 +46,7 @@ function* createExpenditure({
   );
   const batchKey = 'createExpenditure';
 
-  // Add slot id to each payout
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   const {
     makeExpenditure,
@@ -157,6 +155,7 @@ function* createExpenditure({
           expenditureId,
           payoutsWithSlotIds,
           networkInverseFee,
+          isStaged,
         ),
       ),
     );
@@ -195,6 +194,8 @@ function* createExpenditure({
       payload: {},
       meta,
     });
+
+    setTxHash?.(txHash);
 
     // @TODO: Remove during advanced payments UI wiring
     // eslint-disable-next-line no-console

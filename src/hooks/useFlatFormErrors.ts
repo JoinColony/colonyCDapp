@@ -23,6 +23,10 @@ const useFlatFormErrors = <TFieldValues extends FieldValues = FieldValues>(
         | FieldErrorsImpl<DeepRequired<TFieldValues>>,
       path = '',
     ) => {
+      if (!error) {
+        return;
+      }
+
       const nextPath = path ? `${path}.` : '';
 
       if (Array.isArray(error)) {

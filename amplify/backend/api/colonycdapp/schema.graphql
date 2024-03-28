@@ -733,18 +733,34 @@ enum ColonyActionType {
   """
   FUND_EXPENDITURE_MOTION
   """
-  An action related to a motion to cancel a staked expenditure
+  An action related to a motion to cancel an expenditure
   """
-  CANCEL_STAKED_EXPENDITURE_MOTION
+  CANCEL_EXPENDITURE_MOTION
   """
   An action related to creating a motion to release an expenditure stage
   """
   SET_EXPENDITURE_STATE_MOTION
   """
+  An action related to creating a motion to edit an expenditure
+  """
+  EDIT_LOCKED_EXPENDITURE_MOTION
+  """
   An action related to the creation of safe transactions via Safe Control
   """
   MAKE_ARBITRARY_TRANSACTION
   MAKE_ARBITRARY_TRANSACTIONS_MOTION
+  """
+  An action related to creating an expenditure (advanced payment)
+  """
+  CREATE_EXPENDITURE
+  """
+  An action related to finalizing an expenditure
+  """
+  FINALIZE_EXPENDITURE
+  """
+  An action related to finalizing an expenditure via a motion
+  """
+  FINALIZE_EXPENDITURE_MOTION
 }
 
 """
@@ -1328,7 +1344,10 @@ type Colony @model {
   reputation: String
 
   expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
-  expendituresGlobalClaimDelay: Int
+  """
+  Global claim delay for expenditures (in seconds)
+  """
+  expendituresGlobalClaimDelay: String
 
   """
   A flag to indicate whether the colony is private
@@ -2459,6 +2478,11 @@ type ColonyMotion @model {
   expenditureSlotId: Int
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
+
+  """
+  Edited expenditure slots associated with the motion, if any
+  """
+  editedExpenditureSlots: [ExpenditureSlot!]
 }
 
 """
@@ -2716,6 +2740,8 @@ type ColonyAction @model @searchable {
   """
   Whether to show the motion in the actions list
   True for (forced) actions. True for motions if staked above 10%
+  @TODO: Refactor this into more granular fields for better searchability
+  Currently it is impossible to tell the reason for the action being hidden from the actions list
   """
   showInActionsList: Boolean!
   """
@@ -2802,6 +2828,14 @@ type ColonyAction @model @searchable {
   """
   toDomain: Domain @hasOne(fields: ["toDomainId"])
   """
+  The native ID of the source funding pot, only applicable for MOVE_FUNDS action
+  """
+  fromPotId: Int
+  """
+  The native ID of the target funding pot, only applicable for MOVE_FUNDS action
+  """
+  toPotId: Int
+  """
   The native id of the payment
   """
   paymentId: Int
@@ -2886,6 +2920,20 @@ type ColonyAction @model @searchable {
   Metadata associated with the action (Eg. Custom action title)
   """
   metadata: ColonyActionMetadata @hasOne(fields: ["id"])
+  """
+  ID of the associated expenditure, if any
+  """
+  expenditureId: ID
+    @index(name: "byExpenditureId", queryField: "getActionByExpenditureId")
+  """
+  Expenditure associated with the action, if any
+  """
+  expenditure: Expenditure @hasOne(fields: ["expenditureId"])
+  """
+  Indicates whether the action is a result of a motion being finalized
+  @TODO: Make this field non-nullable
+  """
+  isMotionFinalization: Boolean
 }
 
 type ColonyActionMetadata @model {
@@ -3213,9 +3261,18 @@ type Expenditure @model {
   isStaked: Boolean!
   type: ExpenditureType!
   """
-  Hash of the `ExpenditureMadeViaStake` event transaction, if applicable
+  Actions associated with the expenditure
   """
-  stakedTransactionHash: ID
+  actions: [ColonyAction!]
+    @hasMany(indexName: "byExpenditureId", fields: ["id"])
+  """
+  ID of the user stake associated with the expenditure, if any
+  """
+  userStakeId: ID
+  """
+  User stake associated with the expenditure, if any
+  """
+  userStake: UserStake @hasOne(fields: ["userStakeId"])
 }
 
 """
@@ -3225,7 +3282,10 @@ Each expenditure can have multiple slots, with a single recipients and multiple 
 type ExpenditureSlot {
   id: Int!
   recipientAddress: String
-  claimDelay: Int
+  """
+  Slot claim delay (in seconds)
+  """
+  claimDelay: String
   payoutModifier: Int
   payouts: [ExpenditurePayout!]
 }

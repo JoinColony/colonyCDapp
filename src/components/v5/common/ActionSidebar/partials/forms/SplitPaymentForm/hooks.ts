@@ -9,7 +9,7 @@ import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { toFinite } from '~utils/lodash.ts';
+import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
@@ -28,11 +28,15 @@ export const useValidationSchema = () => {
     () =>
       object({
         amount: object({
-          amount: number()
+          amount: string()
             .required(() => formatText({ id: 'validation.required' }))
-            .transform((value) => toFinite(value))
-            .moreThan(0, () =>
-              formatText({ id: 'errors.amount.greaterThanZero' }),
+            .test(
+              'more-than-zero',
+              formatText({
+                id: 'errors.amount.greaterThanZero',
+              }),
+              (value, context) =>
+                amountGreaterThanZeroValidation(value, context, colony),
             )
             .test(
               'enough-tokens',

@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type UserStakeWithStatus } from '~types/userStake.ts';
 

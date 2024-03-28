@@ -14,6 +14,8 @@ import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
+import PaymentBuilderWidget from './partials/PaymentBuilder/partials/PaymentBuilderWidget/index.ts';
+import PaymentBuilder from './partials/PaymentBuilder/PaymentBuilder.tsx';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
@@ -64,9 +66,31 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <EditColonyDetails action={action} />;
       case ExtendedColonyActionType.UpdateColonyObjective:
         return <UpgradeColonyObjective action={action} />;
+      case ColonyActionType.CreateExpenditure:
+        return <PaymentBuilder action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
+    }
+  };
+
+  const getSidebarWidgetContent = () => {
+    switch (actionType) {
+      case ColonyActionType.PaymentMotion:
+      case ColonyActionType.MintTokensMotion:
+      case ColonyActionType.MoveFundsMotion:
+      case ColonyActionType.CreateDomainMotion:
+      case ColonyActionType.EditDomainMotion:
+      case ColonyActionType.UnlockTokenMotion:
+      case ColonyActionType.VersionUpgradeMotion:
+      case ColonyActionType.CreateDecisionMotion:
+      case ColonyActionType.SetUserRolesMotion:
+      case ColonyActionType.ColonyEditMotion:
+        return <Motions transactionId={action.transactionHash} />;
+      case ColonyActionType.CreateExpenditure:
+        return <PaymentBuilderWidget action={action} />;
+      default:
+        return <PermissionSidebar transactionId={action.transactionHash} />;
     }
   };
 
@@ -89,20 +113,16 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             bg-gray-25
             px-6
             py-8
-            md:h-full
-            md:w-[35%]
-            md:flex-shrink-0
-            md:overflow-y-auto
-            md:border-b-0
-            md:border-l
-            md:border-l-gray-200
+            sm:h-full
+            sm:w-[35%]
+            sm:flex-shrink-0
+            sm:overflow-y-auto
+            sm:border-b-0
+            sm:border-l
+            sm:border-l-gray-200
           `}
       >
-        {action.isMotion ? (
-          <Motions transactionId={action.transactionHash} />
-        ) : (
-          <PermissionSidebar transactionId={action.transactionHash} />
-        )}
+        {getSidebarWidgetContent()}
       </div>
     </div>
   );

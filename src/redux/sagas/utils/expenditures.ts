@@ -1,4 +1,6 @@
+import { ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { all, fork } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -6,7 +8,10 @@ import {
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
 } from '~gql';
+import { ActionTypes } from '~redux/index.ts';
+import { type Address } from '~types';
 import {
+  type ExpenditurePayoutWithSlotId,
   type ExpenditurePayoutFieldValue,
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
@@ -15,12 +20,22 @@ import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
+import {
+  createTransaction,
+  createTransactionChannels,
+  waitForTxResult,
+} from '../transactions/index.ts';
+
+import { initiateTransaction, takeFrom } from './effects.ts';
+
+const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
+
 /**
  * Util returning a map between token addresses and arrays of payouts field values
  */
 const groupExpenditurePayoutsByTokenAddresses = (
   payouts: ExpenditurePayoutFieldValue[],
-) => {
+): Map<string, ExpenditurePayoutFieldValue[]> => {
   const payoutsByTokenAddresses = new Map<
     string,
     ExpenditurePayoutFieldValue[]
@@ -37,7 +52,7 @@ const groupExpenditurePayoutsByTokenAddresses = (
   return payoutsByTokenAddresses;
 };
 
-const getPayoutAmount = (
+export const getPayoutAmount = (
   payout: ExpenditurePayoutFieldValue,
   networkInverseFee: string,
 ) => {
@@ -54,6 +69,7 @@ export const getSetExpenditureValuesFunctionParams = (
   nativeExpenditureId: number,
   payouts: ExpenditurePayoutFieldValue[],
   networkInverseFee: string,
+  isStaged?: boolean,
 ): MethodParams => {
   // Group payouts by token addresses
   const payoutsByTokenAddresses =
@@ -72,7 +88,9 @@ export const getSetExpenditureValuesFunctionParams = (
     // slot ids for claim delays
     payouts.map((payout) => payout.slotId ?? 0),
     // claim delays
-    payouts.map((payout) => payout.claimDelay),
+    payouts.map((payout) =>
+      isStaged ? MAX_CLAIM_DELAY_VALUE : payout.claimDelay,
+    ),
     // slot ids for payout modifiers
     [],
     // payout modifiers
@@ -151,3 +169,131 @@ export function* saveExpenditureMetadata({
     },
   });
 }
+
+export const getPayoutsWithSlotIds = (
+  payouts: ExpenditurePayoutFieldValue[],
+) => {
+  return payouts.map((payout, index) => ({
+    ...payout,
+    slotId: index + 1,
+  }));
+};
+
+const getPayoutChannelId = (payout: ExpenditurePayoutWithSlotId) =>
+  `${payout.slotId}-${payout.tokenAddress}`;
+
+interface ClaimExpendituresPayoutsParams {
+  colonyAddress: Address;
+  nativeExpenditureId: number;
+  claimablePayouts: ExpenditurePayoutWithSlotId[];
+  metaId: string;
+}
+
+// NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
+export function* claimExpenditurePayouts({
+  colonyAddress,
+  claimablePayouts,
+  nativeExpenditureId,
+  metaId,
+}: ClaimExpendituresPayoutsParams) {
+  if (claimablePayouts.length === 0) {
+    return;
+  }
+
+  const batchKey = 'claimExpenditurePayouts';
+
+  const channels = yield createTransactionChannels(
+    metaId,
+    claimablePayouts.map(getPayoutChannelId),
+  );
+
+  // Create one claim transaction for each slot
+  yield all(
+    claimablePayouts.map((payout, index) =>
+      fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
+        context: ClientType.ColonyClient,
+        methodName: 'claimExpenditurePayout',
+        identifier: colonyAddress,
+        params: [nativeExpenditureId, payout.slotId, payout.tokenAddress],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index,
+        },
+        ready: false,
+      }),
+    ),
+  );
+
+  for (const payout of claimablePayouts) {
+    const payoutChannelId = getPayoutChannelId(payout);
+
+    yield takeFrom(
+      channels[payoutChannelId].channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+
+    yield initiateTransaction({ id: channels[payoutChannelId].id });
+    yield waitForTxResult(channels[payoutChannelId].channel);
+  }
+
+  for (const payout of claimablePayouts) {
+    const payoutChannelId = getPayoutChannelId(payout);
+    channels[payoutChannelId].channel.close();
+  }
+}
+
+/**
+ * @NOTE: Resolving payouts means making sure that for every slot, there's only one payout with non-zero amount.
+ * This is to meet the UI requirement that there should be one payout per row.
+ */
+export const getResolvedPayouts = (
+  payouts: ExpenditurePayoutFieldValue[],
+  expenditure: Expenditure,
+) => {
+  const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
+
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
+
+  payoutsWithSlotIds.forEach((payout) => {
+    // Add payout as specified in the form
+    resolvedPayouts.push(payout);
+
+    const existingSlot = expenditure.slots.find(
+      (slot) => slot.id === payout.slotId,
+    );
+
+    // Set the amounts for any existing payouts in different tokens to 0
+    resolvedPayouts.push(
+      ...(existingSlot?.payouts
+        ?.filter(
+          (slotPayout) =>
+            slotPayout.tokenAddress !== payout.tokenAddress &&
+            BigNumber.from(slotPayout.amount).gt(0),
+        )
+        .map((slotPayout) => ({
+          slotId: payout.slotId,
+          recipientAddress: payout.recipientAddress,
+          tokenAddress: slotPayout.tokenAddress,
+          amount: '0',
+          claimDelay: payout.claimDelay,
+        })) ?? []),
+    );
+  });
+
+  // If there are now less payouts than expenditure slots, we need to remove them by setting their amounts to 0
+  const remainingSlots = expenditure.slots.slice(payouts.length);
+  remainingSlots.forEach((slot) => {
+    slot.payouts?.forEach((payout) => {
+      resolvedPayouts.push({
+        slotId: slot.id,
+        recipientAddress: slot.recipientAddress ?? '',
+        tokenAddress: payout.tokenAddress,
+        amount: '0',
+        claimDelay: slot.claimDelay ?? '0',
+      });
+    });
+  });
+
+  return resolvedPayouts;
+};

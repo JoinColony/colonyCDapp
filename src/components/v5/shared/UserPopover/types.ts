@@ -1,5 +1,4 @@
 import { type MessageDescriptor } from 'react-intl';
-import { type PopperOptions } from 'react-popper-tooltip';
 
 import { type DomainWithPermissionsAndReputation } from '~hooks/members/types.ts';
 import { type User } from '~types/graphql.ts';
@@ -13,8 +12,11 @@ export interface UserInfoProps extends AvatarProps, UserAvatarDetailsProps {
 
 export interface UserPopoverProps extends UserInfoProps {
   user?: User | null;
-  popperOptions?: PopperOptions;
   isContributorsList?: boolean;
   additionalContent?: JSX.Element;
   withVerifiedBadge?: boolean;
+  dropdownPlacementProps?: {
+    top?: number;
+    withAutoTopPlacement?: boolean;
+  };
 }

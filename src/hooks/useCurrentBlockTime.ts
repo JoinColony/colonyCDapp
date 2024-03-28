@@ -20,7 +20,7 @@ const useCurrentBlockTime = () => {
         return;
       }
 
-      setCurrentBlockTime(block.timestamp * 1000);
+      setCurrentBlockTime(block.timestamp);
     };
 
     fetchCurrentBlockTime();

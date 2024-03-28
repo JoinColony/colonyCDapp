@@ -24,6 +24,7 @@ import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import ExpenditureBadge from './partials/ExpenditureBadge/ExpenditureBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 
@@ -34,8 +35,15 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   initialValues,
   transactionId,
 }) => {
-  const { action, defaultValues, loadingAction, isMotion, motionState } =
-    useGetActionData(transactionId);
+  const {
+    action,
+    defaultValues,
+    loadingAction,
+    isMotion,
+    motionState,
+    expenditure,
+    loadingExpenditure,
+  } = useGetActionData(transactionId);
 
   const {
     actionSidebarToggle: [
@@ -60,7 +68,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   useRemoveTxParamOnClose();
 
   const getSidebarContent = () => {
-    if (loadingAction) {
+    if (loadingAction || loadingExpenditure) {
       return (
         <div className="flex h-full flex-col items-center justify-center gap-4">
           <SpinnerLoader appearance={{ size: 'huge' }} />
@@ -95,13 +103,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       exit="hidden"
       initial="hidden"
       animate="visible"
+      // @todo: remove additional z-index change when the z-index issue is resolved
       className={clsx(
         `
           fixed
           bottom-4
           right-0
           top-0
-          z-[60]
+          z-[65]
           flex
           h-full
           w-full
@@ -118,6 +127,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           sm:top-4
           sm:h-[calc(100vh-2rem)]
           sm:w-[calc(100vw-8.125rem)]
+          md:z-[60]
         `,
         {
           'sm:max-w-full': isSidebarFullscreen,
@@ -138,7 +148,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <X size={18} />
           </button>
         ) : (
-          <>
+          <div className="flex items-center gap-4">
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
@@ -152,8 +162,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               )}
             </button>
 
+            {expenditure?.status && (
+              <ExpenditureBadge status={expenditure.status} />
+            )}
             <MotionOutcomeBadge motionState={motionState} />
-          </>
+          </div>
         )}
         <div>{children}</div>
       </div>
