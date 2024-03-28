@@ -1,3 +1,4 @@
+import { Wallet } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -15,7 +16,7 @@ import DecisionMethodSelect from '../DecisionMethodSelect/index.ts';
 import {
   useGetReleaseDecisionMethodItems,
   releaseDecisionMethodDescriptions,
-} from './consts.ts';
+} from './hooks.ts';
 import { type ReleasePaymentModalProps } from './types.ts';
 
 const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
@@ -27,7 +28,8 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const [method, setMethod] = useState<SelectOption['value']>();
-  const releaseDecisionMethodItems = useGetReleaseDecisionMethodItems();
+  const releaseDecisionMethodItems =
+    useGetReleaseDecisionMethodItems(expenditure);
 
   const finalizePayload: FinalizeExpenditurePayload = {
     colonyAddress: colony.colonyAddress,
@@ -36,7 +38,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} {...rest}>
+    <Modal isOpen={isOpen} onClose={onClose} icon={Wallet} {...rest}>
       <h5 className="mb-2 heading-5">
         {formatText({ id: 'releaseModal.title' })}
       </h5>

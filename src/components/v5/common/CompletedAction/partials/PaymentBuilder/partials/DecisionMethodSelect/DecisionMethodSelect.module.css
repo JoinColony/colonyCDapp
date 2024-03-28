@@ -7,7 +7,7 @@
 }
 
 .wrapper :global(.select__control--is-focused) {
-  @apply border-blue-200 shadow-[0rem_0rem_0rem_.1875rem_#EFF8FF];
+  @apply border-blue-200 !shadow-none;
 }
 
 .wrapper :global(.select__value-container) {
