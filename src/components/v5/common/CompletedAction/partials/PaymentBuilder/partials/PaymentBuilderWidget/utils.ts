@@ -5,22 +5,6 @@ import { type Expenditure } from '~types/graphql.ts';
 
 import { ExpenditureStep } from './types.ts';
 
-// @todo: update steps
-export const getExpenditureStep = (status?: ExpenditureStatus) => {
-  switch (status) {
-    case ExpenditureStatus.Draft:
-      return ExpenditureStep.Review;
-    case ExpenditureStatus.Locked:
-      return ExpenditureStep.Funding;
-    case ExpenditureStatus.Finalized:
-      return ExpenditureStep.Payment;
-    case ExpenditureStatus.Cancelled:
-      return ExpenditureStep.Cancel;
-    default:
-      return ExpenditureStep.Create;
-  }
-};
-
 /**
  * Returns a boolean indicating whether the expenditure is fully funded,
  * i.e. the balance of each token is greater than or equal to the sum of its payouts
@@ -65,4 +49,29 @@ export const isExpenditureFullyFunded = (expenditure?: Expenditure | null) => {
 
     return amount.lte(tokenBalance?.amount ?? 0);
   });
+};
+
+export const getExpenditureStep = (
+  expenditure: Expenditure | null | undefined,
+) => {
+  const { status } = expenditure || {};
+  const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
+
+  switch (status) {
+    case ExpenditureStatus.Draft:
+      return ExpenditureStep.Review;
+    case ExpenditureStatus.Locked: {
+      if (isExpenditureFunded) {
+        return ExpenditureStep.Release;
+      }
+
+      return ExpenditureStep.Funding;
+    }
+    case ExpenditureStatus.Finalized:
+      return ExpenditureStep.Payment;
+    case ExpenditureStatus.Cancelled:
+      return ExpenditureStep.Cancel;
+    default:
+      return ExpenditureStep.Create;
+  }
 };
