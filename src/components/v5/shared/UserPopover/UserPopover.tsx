@@ -108,18 +108,20 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       userStatus={userStatus}
       domains={domains}
       additionalContent={
-        <>
-          {additionalContent}
-          {!isVerified && (
-            <UserPopoverAdditionalContent
-              description={
-                <div className="mt-2 break-words pb-2 text-sm font-semibold">
-                  {user?.walletAddress}
-                </div>
-              }
-            />
-          )}
-        </>
+        additionalContent || !isVerified ? (
+          <>
+            {additionalContent}
+            {!isVerified && (
+              <UserPopoverAdditionalContent
+                description={
+                  <div className="mt-2 break-words pb-2 text-sm font-semibold">
+                    {user ? user.walletAddress : walletAddress}
+                  </div>
+                }
+              />
+            )}
+          </>
+        ) : undefined
       }
     />
   );

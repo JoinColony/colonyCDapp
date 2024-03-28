@@ -86,7 +86,7 @@ const UserInfo: FC<UserInfoProps> = ({
       {aboutDescriptionText && (
         <div
           className={clsx({
-            'px-6 pt-6': isTopContributorType,
+            'mt-6 px-6': isTopContributorType,
           })}
         >
           <TitleLabel
@@ -98,8 +98,7 @@ const UserInfo: FC<UserInfoProps> = ({
       )}
       {additionalContent && (
         <div
-          className={clsx({
-            'pt-6': aboutDescriptionText,
+          className={clsx('mt-6', {
             'px-6': isTopContributorType,
           })}
         >
@@ -109,8 +108,7 @@ const UserInfo: FC<UserInfoProps> = ({
       {domains?.length ? (
         <div
           className={clsx({
-            'px-6 pb-6': isTopContributorType,
-            'pt-6': !aboutDescriptionText && isTopContributorType,
+            'mb-6 px-6': isTopContributorType,
           })}
         >
           <div className="my-6 border-t border-gray-200" />
