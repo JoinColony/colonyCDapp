@@ -16,7 +16,6 @@ const UserPopover: FC<UserPopoverProps> = ({
   size,
   popperOptions,
   walletAddress,
-  userNameClassName,
 }) => {
   const {
     colony: { colonyAddress },
@@ -37,7 +36,7 @@ const UserPopover: FC<UserPopoverProps> = ({
       walletAddress={walletAddress}
       user={user}
       className={clsx({
-        skeleton: loading,
+        'flex-1 skeleton': loading,
       })}
       popperOptions={popperOptions}
     >
@@ -48,12 +47,7 @@ const UserPopover: FC<UserPopoverProps> = ({
           userName={displayName ?? undefined}
           userAddress={walletAddress}
         />
-        <p
-          className={clsx(
-            'ml-2 truncate text-md font-medium',
-            userNameClassName,
-          )}
-        >
+        <p className="ml-2 truncate text-md font-medium">
           {userDisplayName ?? walletAddress}
         </p>
       </div>
