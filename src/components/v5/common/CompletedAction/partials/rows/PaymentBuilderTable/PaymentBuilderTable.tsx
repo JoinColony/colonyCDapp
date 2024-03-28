@@ -200,8 +200,9 @@ const PaymentBuilderTable = ({ items }: PaymentBuilderTableProps) => {
       </h5>
       <Table<PaymentBuilderTableModel>
         className={clsx(
-          'sm:[&_tbody>td>div]:p-[1.1rem] sm:[&_tbody>tr>td]:!border-none [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 sm:[&_tfoot>tr>td]:border-t',
+          'md:[&_tbody>td>div]:p-[1.1rem] md:[&_tbody>tr>td]:!border-none [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
         )}
+        changeLayoutBreakpoint="tablet"
         data={data}
         columns={columns}
       />
