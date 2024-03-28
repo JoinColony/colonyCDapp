@@ -4,11 +4,11 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { type Token } from '~types/graphql.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 const displayName = 'TokenInfoPopover.TokenInfo';
 
@@ -41,7 +41,12 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
       )}
     >
       <div className="flex w-full flex-row items-center gap-4">
-        <TokenIcon size="m" token={token} className="flex-shrink-0" />
+        <TokenAvatar
+          size={60}
+          tokenName={token.name}
+          tokenAddress={token.tokenAddress}
+          tokenAvatarSrc={token.avatar ?? undefined}
+        />
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="flex w-full items-center">
             <h4 className="truncate heading-4" title={`${name} (${symbol})`}>

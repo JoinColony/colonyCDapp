@@ -1,14 +1,10 @@
 import { type EmptyContentProps } from '~v5/common/EmptyContent/types.ts';
-import { type MemberCardListItem } from '~v5/common/MemberCardList/types.ts';
 import { type TextButtonProps } from '~v5/shared/Button/types.ts';
 
-export type MembersTabContentListItem = Omit<
-  MemberCardListItem,
-  'meatBallMenuProps'
->;
+import { type MemberItem } from '../../types.ts';
 
 export interface MembersTabContentProps {
-  items: MembersTabContentListItem[];
+  items: MemberItem[];
   withSimpleCards?: boolean;
   isLoading?: boolean;
   loadMoreButtonProps?: TextButtonProps;

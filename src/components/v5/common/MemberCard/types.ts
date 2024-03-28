@@ -1,12 +1,20 @@
 import { type UserRoleMeta } from '~constants/permissions.ts';
+import { type ContributorType } from '~gql';
+import { type User } from '~types/graphql.ts';
 import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
-import { type UserPopoverProps } from '~v5/shared/UserPopover/types.ts';
 
 export interface MemberCardProps {
-  userAvatarProps: UserPopoverProps;
+  userAddress: string;
+  user?: User;
   meatBallMenuProps: MeatBallMenuProps;
   role?: UserRoleMeta;
   reputation?: number;
-  isSimple?: boolean;
-  isExtension?: boolean;
+  isVerified?: boolean;
+  contributorType?: ContributorType;
+}
+
+export interface SimpleMemberCardProps {
+  userAddress: string;
+  user?: User;
+  meatBallMenuProps: MeatBallMenuProps;
 }

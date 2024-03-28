@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { type MemberAvatarProps } from './types.ts';
 
@@ -12,7 +12,8 @@ const MemberAvatar: FC<MemberAvatarProps> = ({ member }) => {
 
   return (
     <div className="ml-1 flex text-gray-900">
-      <UserAvatarPopover
+      <UserPopover
+        size={20}
         walletAddress={walletAddress}
         popperOptions={{ placement: 'bottom-start' }}
       />

@@ -12,32 +12,34 @@ const meta: Meta<typeof UserAvatar> = {
     },
   },
   argTypes: {
-    user: {
-      name: 'User',
+    userName: {
+      name: 'Username',
       control: {
-        type: 'object',
+        type: 'text',
       },
     },
-    isLink: {
-      name: 'Is link?',
+    userAddress: {
+      name: 'Username',
       control: {
-        type: 'boolean',
+        type: 'text',
+      },
+    },
+    userAvatarSrc: {
+      name: 'Username',
+      control: {
+        type: 'text',
       },
     },
     size: {
       name: 'Size',
-      options: ['xxs', 'xs'],
       control: {
-        type: 'select',
+        type: 'number',
       },
     },
   },
   args: {
-    user: {
-      profile: { displayName: 'Panda' },
-      walletAddress: '0x0',
-    },
-    isLink: false,
+    userName: 'Panda',
+    userAddress: '0x0',
   },
 };
 

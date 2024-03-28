@@ -4,7 +4,6 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 
-import { type MembersTabContentListItem } from './partials/MembersTabContent/types.ts';
 import { getMembersList } from './utils.ts';
 
 export const useMembersPage = () => {
@@ -22,12 +21,12 @@ export const useMembersPage = () => {
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
 
-  const contributorsList = useMemo<MembersTabContentListItem[]>(
+  const contributorsList = useMemo(
     () => getMembersList(pagedContributors, selectedDomain?.nativeId, colony),
     [colony, pagedContributors, selectedDomain],
   );
 
-  const membersList = useMemo<MembersTabContentListItem[]>(
+  const membersList = useMemo(
     () => getMembersList(pagedMembers, selectedDomain?.nativeId, colony),
     [colony, pagedMembers, selectedDomain],
   );

@@ -4,8 +4,8 @@ import { defineMessages } from 'react-intl';
 
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import Avatar from '~v5/shared/Avatar/Avatar.tsx';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/ColonyAvatar.tsx';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import {
   ActionDataGrid,
@@ -50,14 +50,13 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
+            <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
             >
               {initiatorUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
         })}
       </ActionSubtitle>
@@ -77,11 +76,11 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
             id: 'actionSidebar.tooltip.editColony.colonyLogo',
           })}
           rowContent={
-            <Avatar
-              avatar={actionColonyMetadata?.avatar}
-              seed={action.colonyAddress.toLowerCase()}
-              title={actionColonyMetadata?.displayName}
-              size="xs"
+            <ColonyAvatar
+              colonyImageSrc={actionColonyMetadata?.avatar ?? undefined}
+              colonyAddress={action.colonyAddress}
+              colonyName={actionColonyMetadata?.displayName}
+              size={20}
             />
           }
           RowIcon={Image}

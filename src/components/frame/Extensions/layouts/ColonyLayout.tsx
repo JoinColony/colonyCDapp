@@ -88,7 +88,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [hasRecentlyCreatedColony, setIsColonyCreatedModalOpen]);
 
-  const userHub = useMemo(() => <UserHubButton hideUserNameOnMobile />, []);
+  const userHub = useMemo(() => <UserHubButton />, []);
 
   const getUserNavigation = useCallback(
     (isHidden?: boolean) =>

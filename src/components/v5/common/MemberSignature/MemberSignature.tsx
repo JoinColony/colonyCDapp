@@ -1,21 +1,17 @@
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import AvatarUser from '~v5/shared/AvatarUser/index.ts';
-
+import MemberAvatar from './partials/MemberAvatar/MemberAvatar.tsx';
 import { type MemberSignatureProps } from './types.ts';
 
 const displayName = 'v5.common.MemberSignature';
 
-const MemberSignature: FC<MemberSignatureProps> = ({
-  hasSigned,
-  avatarProps,
-}) => {
+const MemberSignature: FC<MemberSignatureProps> = ({ hasSigned, children }) => {
   const { formatMessage } = useIntl();
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <AvatarUser {...avatarProps} size="xs" />
+      <MemberAvatar>{children}</MemberAvatar>
       <span className="text-sm">
         {formatMessage({
           id: hasSigned

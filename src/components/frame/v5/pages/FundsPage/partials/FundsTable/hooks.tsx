@@ -5,10 +5,10 @@ import React, { useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { type FilterProps } from '../Filter/types.ts';
 import TokenTable from '../TokenTable/index.ts';
@@ -148,7 +148,12 @@ export const useFundsTable = (): UseFundsTableProps => {
     symbol: token.symbol,
     label: (
       <div className="flex items-center gap-2">
-        <TokenIcon token={token} size="xxxs" />
+        <TokenAvatar
+          size={18}
+          tokenName={token.name}
+          tokenAddress={token.tokenAddress}
+          tokenAvatarSrc={token.avatar ?? undefined}
+        />
         {token.symbol}
       </div>
     ),

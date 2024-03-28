@@ -5,7 +5,7 @@ import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { type PermissionSidebarProps } from '../types.ts';
 
@@ -41,7 +41,10 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                       id: 'action.executed.permissions.member',
                     })}
                   </span>
-                  <UserAvatarPopover walletAddress={initiatorAddress || ''} />
+                  <UserPopover
+                    size={20}
+                    walletAddress={initiatorAddress || ''}
+                  />
                 </div>
               )}
               {initiatorAddress && (

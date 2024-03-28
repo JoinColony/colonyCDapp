@@ -69,7 +69,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
                   : remainingNayVoters
               }
               maxAvatarsToShow={3}
-              size="smx"
+              size={26}
             />
           )}
         </div>

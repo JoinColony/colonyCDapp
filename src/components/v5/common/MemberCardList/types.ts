@@ -1,13 +1,8 @@
-import { type MemberCardProps } from '../MemberCard/types.ts';
+import { type PropsWithChildren } from 'react';
 
 import { type MemberCardPlaceholderProps } from './partials/MemberCardPlaceholder/types.ts';
 
-export interface MemberCardListItem extends Omit<MemberCardProps, 'isSimple'> {
-  key: string;
-}
-
-export interface MemberCardListProps {
-  items: MemberCardListItem[];
+export type MemberCardListProps = PropsWithChildren<{
   placeholderCardProps?: MemberCardPlaceholderProps;
   isSimple?: boolean;
-}
+}>;

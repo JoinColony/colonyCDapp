@@ -7,7 +7,6 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress.ts';
 import {
   COLONY_AGREEMENTS_ROUTE,
   COLONY_HOME_ROUTE,
@@ -20,10 +19,10 @@ import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyActio
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
-import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
-import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import AgreementCardSkeleton from '../AgreementCardSkeleton.tsx';
 
@@ -48,10 +47,10 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
     motionDomainId,
     walletAddress = '',
   } = decisionData || {};
+  const { initiatorUser } = action || {};
   const { motionId = '', motionStakes } = motionData || {};
   const navigate = useNavigate();
   const { colony } = useColonyContext();
-  const { user, loading } = useUserByNameOrAddress(walletAddress);
   const currentTeam = colony?.domains?.items.find(
     (domain) => domain?.nativeId === motionDomainId,
   );
@@ -112,41 +111,31 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
             )}
           </button>
           <div className="mt-auto flex items-center justify-between gap-2 border-t border-gray-200 pt-4">
-            <UserPopover
-              user={user}
+            <UserInfoPopover
+              user={initiatorUser}
               walletAddress={walletAddress}
               withVerifiedBadge={false}
-              className={clsx(
-                'flex items-center text-gray-600 sm:gap-2 sm:hover:text-blue-400',
-                {
-                  'pointer-events-none': loading,
-                },
-              )}
+              popperOptions={{
+                placement: 'bottom-start',
+              }}
+              className="flex items-center text-gray-600 sm:gap-2 sm:hover:text-blue-400"
             >
-              <Avatar
-                seed={walletAddress?.toLowerCase()}
-                title={user?.profile?.displayName || walletAddress}
-                avatar={user?.profile?.thumbnail || user?.profile?.avatar}
-                size="sm"
-                className={clsx({
-                  'skeleton before:rounded-full': loading,
-                })}
+              <UserAvatar
+                size={30}
+                userAvatarSrc={initiatorUser?.profile?.avatar ?? undefined}
+                userAddress={walletAddress}
+                userName={initiatorUser?.profile?.displayName ?? undefined}
               />
-              <p
-                className={clsx('hidden text-sm sm:inline-block', {
-                  skeleton: loading,
-                })}
-              >
-                {loading
-                  ? 'Loading...'
-                  : formatText(
-                      { id: 'agreementsPage.createdBy' },
-                      {
-                        username: user?.profile?.displayName || walletAddress,
-                      },
-                    )}
+              <p className="hidden text-sm sm:inline-block">
+                {formatText(
+                  { id: 'agreementsPage.createdBy' },
+                  {
+                    username:
+                      initiatorUser?.profile?.displayName || walletAddress,
+                  },
+                )}
               </p>
-            </UserPopover>
+            </UserInfoPopover>
             <div className="flex items-center gap-2">
               {currentTeam && (
                 <TeamBadge

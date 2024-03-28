@@ -14,17 +14,13 @@ export const Base: StoryObj<typeof ColonyAvatar> = {};
 
 export const WithImage: StoryObj<typeof ColonyAvatar> = {
   args: {
-    colonyImageProps: {
-      src: 'https://placekitten.com/200/200',
-    },
+    colonyImageSrc: 'https://placekitten.com/200/200',
   },
 };
 
 export const WithChainImage: StoryObj<typeof ColonyAvatar> = {
   args: {
-    colonyImageProps: {
-      src: 'https://placekitten.com/200/200',
-    },
+    colonyImageSrc: 'https://placekitten.com/200/200',
     chainIcon: Bird,
   },
 };

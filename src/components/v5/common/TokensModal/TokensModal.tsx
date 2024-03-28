@@ -5,10 +5,10 @@ import { useIntl } from 'react-intl';
 import { ActionForm } from '~shared/Fields/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput.tsx';
 import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import Modal from '../../shared/Modal/Modal.tsx';
 
@@ -79,7 +79,12 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
               placeholder={formatMessage({ id: 'tokensModal.placeholder' })}
               customPrefix={
                 nativeToken ? (
-                  <TokenIcon token={nativeToken} size="xxs" />
+                  <TokenAvatar
+                    size={18}
+                    tokenName={nativeToken.name}
+                    tokenAddress={nativeToken.tokenAddress}
+                    tokenAvatarSrc={nativeToken.avatar ?? undefined}
+                  />
                 ) : undefined
               }
               options={{

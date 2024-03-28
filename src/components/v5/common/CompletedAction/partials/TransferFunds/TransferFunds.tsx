@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import {
   ActionDataGrid,
@@ -60,14 +60,13 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           fromDomain: action.fromDomain?.metadata?.name,
           toDomain: action.toDomain?.metadata?.name,
           user: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
+            <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
             >
               {initiatorUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
         })}
       </ActionSubtitle>

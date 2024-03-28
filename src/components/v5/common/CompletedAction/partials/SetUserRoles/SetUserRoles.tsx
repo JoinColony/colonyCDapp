@@ -9,7 +9,7 @@ import { type ColonyActionRoles } from '~gql';
 import { type ColonyAction } from '~types/graphql.ts';
 import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import {
@@ -83,24 +83,22 @@ const SetUserRoles = ({ action }: Props) => {
           rolesChanged: rolesTitle.roleTitle,
           fromDomain: action.fromDomain?.metadata?.name,
           initiator: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
+            <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
             >
               {initiatorUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
           recipient: recipientUser ? (
-            <UserPopover
-              userName={recipientUser.profile?.displayName}
+            <UserInfoPopover
               walletAddress={recipientUser.walletAddress}
               user={recipientUser}
               withVerifiedBadge={false}
             >
               {recipientUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
         })}
       </ActionSubtitle>
@@ -109,9 +107,9 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.member' })}
           rowContent={
-            <UserAvatarPopover
+            <UserPopover
               walletAddress={action.recipientAddress || ADDRESS_ZERO}
-              size="xs"
+              size={20}
             />
           }
           RowIcon={UserFocus}

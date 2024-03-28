@@ -9,6 +9,7 @@ import { type UserStatusProps } from './types.ts';
 
 const displayName = 'v5.common.Pills.UserStatus';
 
+// @TODO refactor this to use just ContributorType instead of all these strings
 const UserStatus: FC<PropsWithChildren<UserStatusProps>> = ({
   mode,
   children,

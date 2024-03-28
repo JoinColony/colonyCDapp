@@ -2,24 +2,24 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
-import { getContributorBreakdown } from '~hooks/members/useContributorBreakdown.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
-import { type UserStatusMode } from '~v5/common/Pills/types.ts';
+
+import { type MemberItem } from './types.ts';
 
 export const getMembersList = (
   members: ColonyContributorFragment[],
   selectedTeamId: number | undefined,
   colony: ColonyFragment,
-) => {
+): MemberItem[] => {
   return members.map((contributor) => {
     const {
       contributorAddress,
       colonyReputationPercentage,
       user,
       isVerified,
-      type,
       roles,
       reputation,
+      type,
     } = contributor;
     const { items } = roles || {};
     const hasRoleInTeam = items?.some((item) => {
@@ -41,22 +41,11 @@ export const getMembersList = (
       hasRoleInTeam && allRolesFiltered?.length
         ? getRole(allRolesFiltered)
         : undefined;
-    const { profile } = user || {};
-    const { bio, displayName, avatar, thumbnail } = profile || {};
 
     return {
-      key: contributorAddress,
-      userAvatarProps: {
-        user,
-        isVerified,
-        aboutDescription: bio ?? '',
-        userName: displayName ?? contributorAddress,
-        avatar: avatar || thumbnail,
-        seed: contributorAddress.toLowerCase(),
-        mode: type ? (type.toLowerCase() as UserStatusMode) : undefined,
-        domains: getContributorBreakdown(contributor),
-        walletAddress: contributorAddress,
-      },
+      user,
+      walletAddress: contributorAddress,
+      isVerified,
       reputation: selectedTeamId
         ? reputation?.items?.find((item) => {
             const { domain } = item || {};
@@ -64,6 +53,7 @@ export const getMembersList = (
           })?.reputationPercentage
         : colonyReputationPercentage,
       role: permissionRole,
+      contributorType: type ?? undefined,
     };
   });
 };

@@ -1,6 +1,5 @@
-import { type AvatarUserProps } from '~v5/shared/AvatarUser/types.ts';
+import { type PropsWithChildren } from 'react';
 
-export interface MemberSignatureProps {
-  avatarProps: Omit<AvatarUserProps, 'size'>;
+export type MemberSignatureProps = PropsWithChildren<{
   hasSigned: boolean;
-}
+}>;
