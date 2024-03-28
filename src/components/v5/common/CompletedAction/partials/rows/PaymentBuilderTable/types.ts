@@ -7,13 +7,11 @@ export interface PaymentBuilderTableProps {
 
 export interface AmountProps {
   amount: string;
-  token: string;
+  tokenAddress: string;
 }
 
-export interface PaymentBuilderTableModel {
-  key: React.Key;
+export interface PaymentBuilderTableModel extends AmountProps {
   recipient: string;
-  amount: AmountProps[];
   claimDelay: string;
 }
 
