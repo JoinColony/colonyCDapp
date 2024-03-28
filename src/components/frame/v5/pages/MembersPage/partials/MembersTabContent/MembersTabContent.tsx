@@ -79,6 +79,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
                 <SimpleMemberCard
                   key={item.member.walletAddress}
                   userAddress={item.member.walletAddress}
+                  user={item.member.user ?? undefined}
                   meatBallMenuProps={item.meatBallMenuProps}
                 />
               );

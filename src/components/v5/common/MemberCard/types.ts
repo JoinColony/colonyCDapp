@@ -15,5 +15,6 @@ export interface MemberCardProps {
 
 export interface SimpleMemberCardProps {
   userAddress: string;
+  user?: User;
   meatBallMenuProps: MeatBallMenuProps;
 }
