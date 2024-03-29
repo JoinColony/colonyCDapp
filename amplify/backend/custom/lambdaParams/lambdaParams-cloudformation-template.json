@@ -43,7 +43,7 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "https://arbitrum-sepolia.colony.io/rpc/",
+            "https://arbitrum-sepolia.core.chainstack.com/5ee6818452437d552323df146564523d",
             "https://arbitrum.colony.io/rpc/"
           ]
         },
