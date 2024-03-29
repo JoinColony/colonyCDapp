@@ -167,17 +167,33 @@ export const POLYGON_NETWORK: NetworkInfo = {
   blockExplorerName: 'PolygonScan',
   blockExplorerUrl: 'https://polygonscan.com/',
   tokenExplorerLink: 'https://polygonscan.com/tokens',
-  contractAddressLink: 'https://polygonscan.com/address', // !!!
+  contractAddressLink: 'https://polygonscan.com/address',
+  displayENSDomain: 'joincolony.matic',
   icon: PolygonIcon,
   blockTime: 3,
 };
+
+export const AMOY_NETWORK: NetworkInfo = {
+  name: 'Polygon Amoy Testnet',
+  chainId: 80002,
+  shortName: 'Amoy',
+  blockExplorerName: 'OKLink',
+  blockExplorerUrl: 'https://www.oklink.com/amoy/',
+  tokenExplorerLink: 'https://www.oklink.com/amoy/address',
+  contractAddressLink: 'https://www.oklink.com/amoy/address',
+  displayENSDomain: 'joincolony.matic',
+  icon: PolygonIcon,
+  blockTime: 3,
+};
+
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
   [Network.Ganache]: GANACHE_NETWORK,
   [Network.Gnosis]: GNOSIS_NETWORK,
   [Network.GnosisFork]: GNOSIS_NETWORK,
   [Network.Goerli]: GOERLI_NETWORK,
   [Network.Mainnet]: ETHEREUM_NETWORK,
-  polygon: POLYGON_NETWORK, // @TODO Add in colonyJS
+  [Network.Polygon]: POLYGON_NETWORK,
+  [Network.Amoy]: AMOY_NETWORK,
 };
 
 export const TOKEN_DATA = {
@@ -186,14 +202,16 @@ export const TOKEN_DATA = {
   [Network.GnosisFork]: XDAI_TOKEN,
   [Network.Goerli]: GOERLI_TOKEN,
   [Network.Mainnet]: ETHER_TOKEN,
-  polygon: POLYGON_TOKEN, // @TODO
+  [Network.Polygon]: POLYGON_TOKEN,
+  [Network.Amoy]: POLYGON_TOKEN,
 };
 
 const GAS_LIMITS = {
   [Network.Ganache]: 6_721_975, // Default ganache gas limit. To verify, run web3.eth.getBlock("latest") in truffle console and inspect "gasLimit" field.
   [Network.Gnosis]: 30_000_000, // https://docs.gnosischain.com/specs/#general-information
   [Network.Mainnet]: 30_000_000, // https://ethereum.org/en/developers/docs/blocks/#:~:text=Each%20block%20has%20a%20target,(2x%20target%20block%20size).
-  polygon: 30_000_000, // https://polygonscan.com/chart/gaslimit
+  [Network.Polygon]: 30_000_000, // https://polygonscan.com/chart/gaslimit
+  [Network.Amoy]: 30_000_000, // No source!
 };
 
 export const DEFAULT_GAS_LIMIT: number =
@@ -207,7 +225,8 @@ export const DEFAULT_GAS_LIMIT: number =
 export const NETWORK_AVAILABLE_CHAINS = {
   [Network.Ganache]: GANACHE_NETWORK,
   [Network.Gnosis]: GNOSIS_NETWORK,
-  polygon: POLYGON_NETWORK, // @TODO
+  [Network.Polygon]: POLYGON_NETWORK,
+  [Network.Amoy]: AMOY_NETWORK,
 };
 
 export const DEFAULT_NETWORK_TOKEN = TOKEN_DATA[DEFAULT_NETWORK];
