@@ -125,6 +125,7 @@ export const useActionsTableProps = (
   const renderRowLink = useRenderRowLink(loading);
   const renderSubComponent = useRenderSubComponent(
     loadingMotionStates,
+    loading,
     refetchMotionStates,
     getMenuProps,
   );
