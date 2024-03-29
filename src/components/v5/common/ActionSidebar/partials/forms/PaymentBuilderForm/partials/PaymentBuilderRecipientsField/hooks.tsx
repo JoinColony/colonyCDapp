@@ -1,13 +1,10 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
-import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
@@ -73,51 +70,12 @@ export const useRecipientsFieldTableColumns = (
             />
           ),
           footer: hasMoreThanOneToken
-            ? () => {
-                const summedPayouts = dataRef.current?.reduce(
-                  (result, { amount, tokenAddress }) => {
-                    if (!amount) {
-                      return result;
-                    }
-
-                    if (!tokenAddress) {
-                      return result;
-                    }
-
-                    const tokenData = getSelectedToken(colony, tokenAddress);
-
-                    if (!tokenData) {
-                      return result;
-                    }
-
-                    return {
-                      ...result,
-                      [tokenAddress]: {
-                        amount: BigNumber.from(
-                          !result[tokenAddress]?.amount ||
-                            result[tokenAddress]?.amount === ''
-                            ? '0'
-                            : result[tokenAddress]?.amount,
-                        )
-                          .add(
-                            BigNumber.from(
-                              moveDecimal(
-                                amount === '' ? '0' : amount,
-                                tokenData.decimals,
-                              ),
-                            ),
-                          )
-                          .toString(),
-                      },
-                    };
-                  },
-                  {},
-                );
-
-                const payouts = Object.values(summedPayouts);
-
-                return <PaymentBuilderPayoutsTotal payouts={payouts} />;
-              }
+            ? () => (
+                <PaymentBuilderPayoutsTotal
+                  data={dataRef.current}
+                  moveDecimals
+                />
+              )
             : undefined,
         }),
         columnHelper.display({
@@ -180,7 +138,6 @@ export const useRecipientsFieldTableColumns = (
       name,
       selectedTeam,
       dataRef,
-      colony,
     ]);
 
   return columns;
