@@ -4,12 +4,12 @@ import React, { type FC } from 'react';
 
 import { DomainColor } from '~gql';
 import { useMobile } from '~hooks/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { sortDisabled } from '../../utils.ts';
@@ -100,7 +100,12 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                   )}
                   {token && (
                     <div className="mr-2">
-                      <TokenIcon token={token} size="xxs" />
+                      <TokenAvatar
+                        tokenName={token.name}
+                        tokenAvatarSrc={token.avatar ?? undefined}
+                        tokenAddress={token.tokenAddress}
+                        size={20}
+                      />
                     </div>
                   )}
                   {color && isLabelVisible && (
@@ -111,9 +116,12 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                   {showAvatar && (
                     <div className="mr-2 flex items-center justify-center">
                       <UserAvatar
-                        avatar={avatar}
-                        user={walletAddress}
-                        size="xs"
+                        userAvatarSrc={
+                          avatar && avatar.length > 0 ? avatar : undefined
+                        }
+                        userAddress={walletAddress}
+                        userName={labelText}
+                        size={20}
                       />
                     </div>
                   )}

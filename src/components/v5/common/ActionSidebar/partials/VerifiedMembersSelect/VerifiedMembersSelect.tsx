@@ -91,10 +91,14 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
       {readonly ? (
         <>
           <UserAvatar
-            user={selectedMember || walletAddress}
-            size="xs"
-            showUsername
+            userAvatarSrc={selectedMember?.avatar ?? undefined}
+            userName={selectedMember?.label.toString() ?? undefined}
+            userAddress={walletAddress}
+            size={20}
           />
+          <span className="ml-2 text-md font-medium text-gray-900">
+            {selectedMember?.label ?? walletAddress}
+          </span>
           <span className="ml-2 flex text-blue-400">
             <SealCheck size={20} />
           </span>
@@ -119,14 +123,21 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
             (walletAddress && typeof walletAddress === 'string') ? (
               <>
                 <UserAvatar
-                  user={selectedMember || walletAddress}
-                  avatar={selectedMember?.avatar}
-                  size="xs"
-                  showUsername
-                  className={clsx('text-gray-900', {
-                    'text-negative-400': isError,
-                  })}
+                  userAvatarSrc={selectedMember?.avatar ?? undefined}
+                  userName={selectedMember?.label.toString() ?? undefined}
+                  userAddress={walletAddress}
+                  size={20}
                 />
+                <span
+                  className={clsx(
+                    'ml-2 text-md font-medium text-gray-900 hover:text-blue-400',
+                    {
+                      'text-negative-400': isError,
+                    },
+                  )}
+                >
+                  {selectedMember?.label ?? walletAddress}
+                </span>
                 <span className="ml-1 flex text-blue-400">
                   <SealCheck size={14} />
                 </span>

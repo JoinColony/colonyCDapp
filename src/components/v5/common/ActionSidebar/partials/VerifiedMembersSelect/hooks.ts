@@ -29,7 +29,7 @@ export const useVerifiedMembersSelect = () => {
             profile?.displayName ||
             (walletAddress && maskedWalletAddress) ||
             maskedContributorAddress,
-          avatar: profile?.thumbnail || profile?.avatar || '',
+          avatar: profile?.thumbnail || profile?.avatar || undefined,
           id: result.length,
           profile,
           showAvatar: true,

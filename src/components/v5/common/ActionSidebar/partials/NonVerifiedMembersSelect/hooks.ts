@@ -33,7 +33,7 @@ export const useNonVerifiedMembersSelect = () => {
             profile?.displayName ||
             (walletAddress && maskedWalletAddress) ||
             maskedContributorAddress,
-          avatar: profile?.thumbnail || profile?.avatar || '',
+          avatar: profile?.thumbnail || profile?.avatar || undefined,
           id: result.length,
           showAvatar: true,
           walletAddress,
