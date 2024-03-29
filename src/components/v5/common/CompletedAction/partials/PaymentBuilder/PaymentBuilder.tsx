@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { type ColonyAction } from '~types/graphql.ts';
+import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
@@ -31,11 +31,6 @@ const MSG = defineMessages({
   defaultTitle: {
     id: `${displayName}.defaultTitle`,
     defaultMessage: 'Payment builder',
-  },
-  subtitle: {
-    id: `${displayName}.subtitle`,
-    defaultMessage:
-      'Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {user}',
   },
 });
 
@@ -97,20 +92,24 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
-        {formatText(MSG.subtitle, {
-          recipientsNumber: recipientCounts,
-          tokensNumber: tokensCount,
-          user: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
-              walletAddress={initiatorUser.walletAddress}
-              user={initiatorUser}
-              withVerifiedBadge={false}
-            >
-              {initiatorUser.profile?.displayName}
-            </UserPopover>
-          ) : null,
-        })}
+        {formatText(
+          { id: 'action.title' },
+          {
+            actionType: ColonyActionType.CreateExpenditure,
+            recipientsNumber: recipientCounts,
+            tokensNumber: tokensCount,
+            initiator: initiatorUser ? (
+              <UserPopover
+                userName={initiatorUser.profile?.displayName}
+                walletAddress={initiatorUser.walletAddress}
+                user={initiatorUser}
+                withVerifiedBadge={false}
+              >
+                {initiatorUser.profile?.displayName}
+              </UserPopover>
+            ) : null,
+          },
+        )}
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
