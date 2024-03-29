@@ -6,6 +6,7 @@ import {
   type ColonyAction,
   ColonyActionType,
   type Colony,
+  type Expenditure,
 } from '~types/graphql.ts';
 import {
   getExtendedActionType,
@@ -33,6 +34,8 @@ export enum ActionTitleMessageKeys {
   ChainName = 'chainName',
   VerifiedMembers = 'verifiedMembers',
   SafeTransactionTitle = 'safeTransactionTitle',
+  RecipientsNumber = 'recipientsNumber',
+  TokensNumber = 'tokensNumber',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
@@ -105,6 +108,12 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Initiator,
       ];
+    case actionType.includes(ColonyActionType.CreateExpenditure):
+      return [
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.RecipientsNumber,
+        ActionTitleMessageKeys.TokensNumber,
+      ];
     case actionType.includes(ExtendedColonyActionType.AddSafe):
       return [ActionTitleMessageKeys.ChainName];
     case actionType.includes(ColonyActionType.CreateDecisionMotion):
@@ -125,18 +134,26 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
 };
 
 /* Returns the correct message values according to the action type. */
-const getActionTitleValues = (
-  actionData: ColonyAction,
-  colony: Colony,
-  keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>,
-) => {
+const getActionTitleValues = ({
+  actionData,
+  colony,
+  keyFallbackValues,
+  expenditureData,
+}: {
+  actionData: ColonyAction;
+  colony: Colony;
+  keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
+  expenditureData?: Expenditure;
+}) => {
   const { isMotion, pendingColonyMetadata } = actionData;
 
   const updatedItem = mapColonyActionToExpectedFormat(
     actionData,
     colony,
     keyFallbackValues,
+    expenditureData,
   );
+
   const actionType = getExtendedActionType(
     actionData,
     isMotion ? pendingColonyMetadata : colony.metadata,
