@@ -13,7 +13,7 @@ on:
       - 'amplify/**'
 
 concurrency:
-  group: cdapp-amplify
+  group: ${{ github.ref }}-cdapp-amplify
   cancel-in-progress: true
 
 # Set global env variables
