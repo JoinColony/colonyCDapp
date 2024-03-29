@@ -8,6 +8,7 @@ on:
   push: # Disabling auto deployment until production branch is merged
     branches:
       - master
+      - master-arbitrum
     paths:
       - 'amplify/**'
 
@@ -26,13 +27,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_AMPLIFY_WEBHOOK_QA: ${{ vars.AWS_AMPLIFY_WEBHOOK_QA }}
+      AWS_AMPLIFY_WEBHOOK: ${{ github.ref == 'refs/heads/master' && vars.AWS_AMPLIFY_WEBHOOK_QA || github.ref == 'refs/heads/master-arbitrum' && vars.AWS_AMPLIFY_WEBHOOK_QA_ARBITRUM_SEPOLIA }}
       AWS_AMPLIFY_APP_ID_QA: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
 
     steps:
       - name: Trigger Amplify AWS Pipeline
         run: |
-          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_QA}&operation=startbuild" -H "Content-Type:application/json"
+          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK}&operation=startbuild" -H "Content-Type:application/json"
       
       - name: Post AWS Amplify console link in GH summary
         run: |
@@ -54,13 +55,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_AMPLIFY_WEBHOOK_PROD: ${{ vars.AWS_AMPLIFY_WEBHOOK_PROD }}
+      AWS_AMPLIFY_WEBHOOK: ${{ github.ref == 'refs/heads/master' && vars.AWS_AMPLIFY_WEBHOOK_PROD || github.ref == 'refs/heads/master-arbitrum' && vars.AWS_AMPLIFY_WEBHOOK_PROD_ARBITRUM }}
       AWS_AMPLIFY_APP_ID_PROD: ${{ vars.AWS_AMPLIFY_APP_ID_PROD }}
 
     steps:
       - name: Trigger Amplify AWS Pipeline
         run: |
-          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_PROD}&operation=startbuild" -H "Content-Type:application/json"
+          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK}&operation=startbuild" -H "Content-Type:application/json"
 
       - name: Post AWS Amplify console link in GH summary
         run: |
