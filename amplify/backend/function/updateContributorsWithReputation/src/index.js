@@ -41,7 +41,7 @@ let network = Network.Custom;
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
 
-  if (ENV === 'qa' || ENV === 'prod') {
+  if (ENV === 'qaarbsep' || ENV === 'prod') {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
