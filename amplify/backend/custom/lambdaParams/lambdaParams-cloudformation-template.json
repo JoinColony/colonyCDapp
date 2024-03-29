@@ -26,8 +26,8 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "arbitrum-sepolia",
-            "arbitrum"
+            "arbitrumSepolia",
+            "arbitrumOne"
           ]
         },
         "Description": "The name of the network"
