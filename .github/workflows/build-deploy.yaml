@@ -7,8 +7,9 @@ on:
     types: [cdapp-frontend]
 
   push: # Disable automatic deploys until production branch is merged
-    branches:
-      - master # Automatically deploy on commits to master
+    branches: # Automatically deploy on commits to master
+      - master
+      - master-arbitrum 
     paths-ignore:
       - '.github/**'
       - 'amplify/**'
@@ -67,6 +68,7 @@ jobs:
           push: true
           tags: |
             ${{ env.ECR_REPOSITORY }}:run-${{ github.run_number }}
+            ${{ env.ECR_REPOSITORY }}:${{ (github.ref == 'refs/heads/master' && 'gnosis') || (github.ref == 'refs/heads/master-arbitrum' && 'arbitrum') }}
             ${{ env.ECR_REPOSITORY }}:${{ env.COMMIT_HASH }}
           cache-from: type=gha
           cache-to: type=gha,mode=max,image-manifest=true
@@ -87,7 +89,8 @@ jobs:
     env:
       NAMESPACE: cdapp
       CLUSTER_NAME: qa-cluster
-      ENVIRONMENT_TAG: qa
+      # Tagging image based on whether we are deploying to gnosis or arbitrum
+      ENVIRONMENT_TAG: ${{ (github.ref == 'refs/heads/master' && 'qa') || (github.ref == 'refs/heads/master-arbitrum' && 'qa-arbitrum-sepolia') }}
       REPOSITORY_NAME: cdapp/frontend
 
     steps:
@@ -157,7 +160,8 @@ jobs:
     env:
       NAMESPACE: cdapp
       CLUSTER_NAME: prod-cluster
-      ENVIRONMENT_TAG: prod
+      # Tagging image based on whether we are deploying to gnosis or arbitrum
+      ENVIRONMENT_TAG: ${{ (github.ref == 'refs/heads/master' && 'qa') || (github.ref == 'refs/heads/master-arbitrum' && 'qa-arbitrum-sepolia') }}
       REPOSITORY_NAME: cdapp/frontend
 
     steps:
