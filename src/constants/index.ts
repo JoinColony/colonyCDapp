@@ -4,6 +4,7 @@ import { constants as ethersContants } from 'ethers';
 import EthereumIcon from '~icons/EthereumIcon.tsx';
 import GanacheIcon from '~icons/GanacheIcon.tsx';
 import GnosisIcon from '~icons/GnosisIcon.tsx';
+import PolygonIcon from '~icons/PolygonIcon.tsx';
 import { Network } from '~types/network.ts';
 
 import { version } from '../../package.json';
@@ -84,6 +85,12 @@ const BINANCE_TOKEN: TokenInfo = {
   decimals: 18,
 };
 
+export const POLYGON_TOKEN: TokenInfo = {
+  name: 'Matic Token',
+  symbol: 'MATIC',
+  decimals: 18,
+};
+
 export const GNOSIS_NETWORK: NetworkInfo = {
   name: 'Gnosis Chain',
   chainId: 100,
@@ -153,12 +160,24 @@ export const BINANCE_NETWORK: NetworkInfo = {
   blockTime: 3,
 };
 
+export const POLYGON_NETWORK: NetworkInfo = {
+  name: 'Polygon Mainnet',
+  chainId: 137,
+  shortName: 'Polygon',
+  blockExplorerName: 'PolygonScan',
+  blockExplorerUrl: 'https://polygonscan.com/',
+  tokenExplorerLink: 'https://polygonscan.com/tokens',
+  contractAddressLink: 'https://polygonscan.com/address', // !!!
+  icon: PolygonIcon,
+  blockTime: 3,
+};
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
   [Network.Ganache]: GANACHE_NETWORK,
   [Network.Gnosis]: GNOSIS_NETWORK,
   [Network.GnosisFork]: GNOSIS_NETWORK,
   [Network.Goerli]: GOERLI_NETWORK,
   [Network.Mainnet]: ETHEREUM_NETWORK,
+  polygon: POLYGON_NETWORK, // @TODO Add in colonyJS
 };
 
 export const TOKEN_DATA = {
@@ -167,12 +186,14 @@ export const TOKEN_DATA = {
   [Network.GnosisFork]: XDAI_TOKEN,
   [Network.Goerli]: GOERLI_TOKEN,
   [Network.Mainnet]: ETHER_TOKEN,
+  polygon: POLYGON_TOKEN, // @TODO
 };
 
 const GAS_LIMITS = {
   [Network.Ganache]: 6_721_975, // Default ganache gas limit. To verify, run web3.eth.getBlock("latest") in truffle console and inspect "gasLimit" field.
   [Network.Gnosis]: 30_000_000, // https://docs.gnosischain.com/specs/#general-information
   [Network.Mainnet]: 30_000_000, // https://ethereum.org/en/developers/docs/blocks/#:~:text=Each%20block%20has%20a%20target,(2x%20target%20block%20size).
+  polygon: 30_000_000, // https://polygonscan.com/chart/gaslimit
 };
 
 export const DEFAULT_GAS_LIMIT: number =
@@ -186,6 +207,7 @@ export const DEFAULT_GAS_LIMIT: number =
 export const NETWORK_AVAILABLE_CHAINS = {
   [Network.Ganache]: GANACHE_NETWORK,
   [Network.Gnosis]: GNOSIS_NETWORK,
+  polygon: POLYGON_NETWORK, // @TODO
 };
 
 export const DEFAULT_NETWORK_TOKEN = TOKEN_DATA[DEFAULT_NETWORK];
