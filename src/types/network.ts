@@ -8,6 +8,8 @@ export enum Network {
   Ganache = 'ganache',
   Polygon = 'polygon',
   Amoy = 'amoy',
+  ArbitrumOne = 'arbitrumOne',
+  ArbitrumSepolia = 'arbitrumSepolia',
 }
 
 export const ColonyJSNetworkMapping = {
@@ -16,6 +18,6 @@ export const ColonyJSNetworkMapping = {
   [Network.Gnosis]: ColonyJSNetwork.Xdai,
   [Network.GnosisFork]: ColonyJSNetwork.XdaiQa,
   [Network.Ganache]: ColonyJSNetwork.Custom,
-  [Network.Polygon]: ColonyJSNetwork.Polygon,
-  [Network.Amoy]: ColonyJSNetwork.Amoy,
+  [Network.ArbitrumOne]: ColonyJSNetwork.ArbitrumOne,
+  [Network.ArbitrumSepolia]: ColonyJSNetwork.ArbitrumSepolia,
 };
