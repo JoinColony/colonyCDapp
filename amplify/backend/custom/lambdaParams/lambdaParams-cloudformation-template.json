@@ -11,7 +11,7 @@
         {
           "Ref": "env"
         },
-        "qa"
+        "qaarbsep"
       ]
     }
   },
@@ -23,8 +23,13 @@
           "Fn::Sub": "/amplify/cdapp/${env}/chain_network"
         },
         "Type": "String",
-
-        "Value": "gnosis",
+        "Value": {
+          "Fn::If": [
+            "IsQaEnv",
+            "arbitrum-sepolia",
+            "arbitrum"
+          ]
+        },
         "Description": "The name of the network"
       }
     },
@@ -38,11 +43,11 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "https://qa-gnosis.colony.io/rpc/",
-            "https://gnosis.colony.io/rpc/"
+            "https://arbitrum-sepolia.colony.io/rpc/",
+            "https://arbitrum.colony.io/rpc/"
           ]
         },
-        "Description": "Xdai chain RPC endpoint"
+        "Description": "Arbitrum chain RPC endpoint"
       }
     },
     "chainNetworkContractSSM": {
@@ -55,11 +60,11 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "0x6a05DD32860C1b5351B97b4eCAAbFbc60edb102f",
-            "0x78163f593D1Fa151B4B7cacD146586aD2b686294"
+            "placeholder",
+            "placeholder"
           ]
         },
-        "Description": "Xdai chain network contract"
+        "Description": "Arbitrum chain network contract"
       }
     },
     "reputationEndpointSSM": {
@@ -72,8 +77,8 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "https://qa-gnosis.colony.io/reputation/xdai",
-            "https://gnosis.colony.io/reputation/xdai"
+            "https://arbitrum-sepolia.colony.io/reputation/arbitrum-sepolia",
+            "https://arbitrum.colony.io/reputation/arbitrum"
           ]
         },
         "Description": "Reputation endpoint"
@@ -89,13 +94,13 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "https://4wbzavolujffngfax5dalwsywi.appsync-api.eu-west-2.amazonaws.com/graphql",
-            "https://ti5jbmzg65agjjm3fb2ukcj7jy.appsync-api.eu-west-2.amazonaws.com/graphql"
+            "https://ti2cnotqjbailbj6oj5hxpknue.appsync-api.eu-west-2.amazonaws.com/graphql",
+            "placeholder"
           ]
         },
         "Description": "App Sync Graphql Url endpoint"
       }
     }
   },
-  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.1.1\",\"stackType\":\"custom-customCloudformation\",\"metadata\":{}}"
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"AmplifyAdmin\",\"createdWith\":\"12.10.1-rc.73b08dc424db2fb.0\",\"stackType\":\"custom-customCloudformation\",\"metadata\":{}}"
 }
