@@ -17,7 +17,7 @@ RUN apt-get install -y \
   libusb-1.0-0-dev \
   libudev-dev
 
-ENV NETWORK_HASH=6a12f65ce0d0b271435fefdbc7d82242014ed15f
+ENV NETWORK_HASH=a2dbcaf8c323e3ea8cc6e6c967d4fa9a2a316d8a
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]
@@ -44,9 +44,6 @@ RUN git submodule update --init --recursive --depth 1
 
 # Install required network dependencies
 RUN npm i --build-from-source
-
-# Compile network contracts
-RUN DISABLE_DOCKER=true yarn provision:token:contracts
 
 # Initialize the justification tree cache
 # To avoid the error spewed by the miner at startup
