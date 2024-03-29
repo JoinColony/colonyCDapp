@@ -24,6 +24,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   expenditure,
   isOpen,
   onClose,
+  refetchExpenditure,
   ...rest
 }) => {
   const { colony } = useColonyContext();
@@ -52,6 +53,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
       };
 
       await finalizeExpenditure(finalizePayload);
+      await refetchExpenditure({ expenditureId: expenditure.id });
       setIsSubmitting(false);
       onClose();
     } catch (err) {
