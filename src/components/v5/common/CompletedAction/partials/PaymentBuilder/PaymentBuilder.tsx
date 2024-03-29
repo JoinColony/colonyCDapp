@@ -163,6 +163,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         expenditure={expenditure}
         isOpen={isReleasePaymentModalOpen}
         onClose={releasePaymentToggleOff}
+        refetchExpenditure={refetchExpenditure}
       />
     </>
   );
