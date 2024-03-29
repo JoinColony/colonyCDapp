@@ -8,6 +8,7 @@ export interface ActionMobileDescriptionProps {
   actionRow: Row<ActivityFeedColonyAction>;
   refetchMotionStates: RefetchMotionStates;
   loadingMotionStates: boolean;
+  loading: boolean;
   getMenuProps: (
     row: Row<ActivityFeedColonyAction>,
   ) => MeatBallMenuProps | undefined;

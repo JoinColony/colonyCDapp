@@ -5,12 +5,13 @@ import React, { type FC } from 'react';
 import getActionTitleValues from '~common/ColonyActions/helpers/getActionTitleValues.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
-import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
+import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
-import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
+
+import ActionBadge from '../ActionBadge/ActionBadge.tsx';
 
 import { type ActionMobileDescriptionProps } from './types.ts';
 
@@ -18,12 +19,25 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
   actionRow,
   refetchMotionStates,
   loadingMotionStates,
+  loading,
   getMenuProps,
 }) => {
   const { colony } = useColonyContext();
   const { original: action } = actionRow;
 
-  const { isMotion, motionData, motionState, fromDomain, createdAt } = action;
+  const {
+    isMotion,
+    motionData,
+    motionState,
+    fromDomain,
+    createdAt,
+    expenditureId,
+  } = action;
+
+  const { expenditure, loadingExpenditure } =
+    useGetExpenditureData(expenditureId);
+
+  const isLoading = loading || !!loadingExpenditure;
 
   const shouldShowCounter = useShouldDisplayMotionCountdownTime(
     motionState || null,
@@ -39,7 +53,11 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
 
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
-    getActionTitleValues(action, colony),
+    getActionTitleValues({
+      actionData: action,
+      colony,
+      expenditureData: expenditure ?? undefined,
+    }),
   );
   const team = fromDomain?.metadata || motionData?.motionDomain.metadata;
   const date = format(new Date(createdAt), 'dd MMMM yyyy');
@@ -66,7 +84,11 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
             refetchMotionState={refetchMotionState}
           />
         )}
-        <p className={clsx(textClassName, 'text-gray-600')}>
+        <p
+          className={clsx(textClassName, 'text-gray-600', {
+            skeleton: isLoading,
+          })}
+        >
           {actionMetadataDescription}
         </p>
         {team && (
@@ -104,11 +126,10 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
             { id: 'activityFeedTable.table.status' },
             {
               statusBadge: (
-                <MotionStateBadge
-                  state={motionState || MotionState.Unknown}
-                  className={clsx({
-                    skeleton: loadingMotionStates,
-                  })}
+                <ActionBadge
+                  motionState={motionState}
+                  loading={loadingMotionStates || isLoading}
+                  expenditureId={expenditureId ?? undefined}
                 />
               ),
               p: renderLabel,
