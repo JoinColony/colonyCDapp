@@ -49,9 +49,8 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { initiatorUser } = action;
   const [isFundingModalOpen, { toggleOn, toggleOff }] = useToggle();
 
-  const { expenditure, loadingExpenditure } = useGetExpenditureData(
-    action.expenditureId,
-  );
+  const { expenditure, refetchExpenditure, loadingExpenditure } =
+    useGetExpenditureData(action.expenditureId);
 
   const [
     isReleasePaymentModalOpen,
@@ -153,6 +152,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         isOpen={isFundingModalOpen}
         onClose={toggleOff}
         expenditure={expenditure}
+        refetchExpenditure={refetchExpenditure}
       />
 
       <button type="button" onClick={releasePaymentToggleOn}>
