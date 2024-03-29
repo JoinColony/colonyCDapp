@@ -35,7 +35,7 @@ const setEnvVariables = async (network) => {
     rpcURL = getDevRpcUrl(network);
   }
 
-  if (ENV === 'qa' || ENV === 'prod') {
+  if (ENV === 'qaarbsep' || ENV === 'prod') {
     let chainRpcParam = getRpcUrlParamName(network);
 
     const { getParams } = require('/opt/nodejs/getParams');
@@ -62,6 +62,11 @@ exports.handler = async (event) => {
   } catch (e) {
     throw new Error('Unable to set env variables. Reason:', e);
   }
+
+  console.log('ENV', process.env.ENV);
+  console.log('RPC URL', rpcURL);
+  console.log('GRAPHQL URL', graphqlURL);
+  console.log('API KEY', apiKey);
 
   /*
    * We do not store native chain tokens in the database and the ethers logic
@@ -99,6 +104,7 @@ exports.handler = async (event) => {
        */
       const checksummedAddress = utils.getAddress(tokenAddress);
       const provider = new providers.StaticJsonRpcProvider(rpcURL);
+      console.log('PROVIDER', provider);
       const tokenFromChain = new Contract(
         checksummedAddress,
         basicTokenAbi,
