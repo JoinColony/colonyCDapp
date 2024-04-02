@@ -1786,7 +1786,7 @@ type Domain @model {
   Native skill ID of the Domain
   The native skill ID is assigned to a domain from the contract on creation
   """
-  nativeSkillId: Int!
+  nativeSkillId: String!
   """
   Indicates whether the Domain is the root domain (ID 1)
   """
