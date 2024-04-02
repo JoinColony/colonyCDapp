@@ -22,7 +22,8 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
 }) => {
   const isTablet = useTablet();
   const [isOpen, { toggle }] = useToggle();
-  const { setOpenItemIndex } = useNavigationSidebarContext();
+  const { mobileMenuToggle, setOpenItemIndex } = useNavigationSidebarContext();
+  const [, { toggleOff: toggleOffMenu }] = mobileMenuToggle;
 
   if (!items.length) {
     throw new Error('NavigationSidebarThirdLevel: items are required');
@@ -44,6 +45,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
               type="button"
               className={ctaClassName}
               onClick={(e) => {
+                toggleOffMenu();
                 setOpenItemIndex(undefined);
                 onClick?.(e);
               }}

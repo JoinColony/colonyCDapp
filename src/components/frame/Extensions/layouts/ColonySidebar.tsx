@@ -9,6 +9,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import LearnMore from '~shared/Extensions/LearnMore/index.ts';
 import { formatText } from '~utils/intl.ts';
 import NavigationSidebar from '~v5/frame/NavigationSidebar/index.ts';
+import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import { useMainMenuItems } from './hooks.tsx';
@@ -25,6 +26,8 @@ interface Props {
 }
 
 const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
+  const { mobileMenuToggle } = useNavigationSidebarContext();
+  const [, { toggleOff: toggleOffMenu }] = mobileMenuToggle;
   const mainMenuItems = useMainMenuItems(!!transactionId);
   const {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
@@ -47,7 +50,10 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
           <Button
             icon={Plus}
             className="w-full"
-            onClick={() => toggleActionSideBar()}
+            onClick={() => {
+              toggleOffMenu();
+              toggleActionSideBar();
+            }}
           >
             {formatText({ id: 'button.createNewAction' })}
           </Button>
