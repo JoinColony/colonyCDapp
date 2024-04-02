@@ -7,7 +7,7 @@ import { BigNumber } from 'ethers';
  * @returns Hex string.
  */
 export const getChainIdAsHex = (chainId: string) =>
-  `0x${BigNumber.from(chainId).toHexString()}`;
+  BigNumber.from(chainId).toHexString();
 
 /**
  * web3-onboard stores chainId as hex strings. E.g. ganache id of 2656691 is stored as "0x2889b3".
