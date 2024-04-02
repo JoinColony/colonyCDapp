@@ -14,6 +14,8 @@ export const getExpenditureStep = (status?: ExpenditureStatus) => {
       return ExpenditureStep.Funding;
     case ExpenditureStatus.Finalized:
       return ExpenditureStep.Payment;
+    case ExpenditureStatus.Cancelled:
+      return ExpenditureStep.Cancel;
     default:
       return ExpenditureStep.Create;
   }
