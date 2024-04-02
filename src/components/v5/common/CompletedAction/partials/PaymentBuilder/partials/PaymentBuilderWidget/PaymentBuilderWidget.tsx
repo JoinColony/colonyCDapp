@@ -180,6 +180,23 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     },
   ];
 
+  const cancelItems: StepperItem<ExpenditureStep>[] = [
+    {
+      key: ExpenditureStep.Create,
+      heading: { label: formatText({ id: 'expenditure.createStage.label' }) },
+      content: (
+        <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
+      ),
+    },
+    {
+      key: ExpenditureStep.Cancel,
+      heading: { label: formatText({ id: 'expenditure.cancelStage.label' }) },
+      content: (
+        <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
+      ),
+    },
+  ];
+
   if (loadingExpenditure) {
     return <SpinnerLoader appearance={{ size: 'medium' }} />;
   }
@@ -187,7 +204,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   return (
     <>
       <Stepper<ExpenditureStep>
-        items={items}
+        items={
+          expenditureStatus === ExpenditureStep.Cancel ? cancelItems : items
+        }
         activeStepKey={activeStepKey}
         setActiveStepKey={setActiveStepKey}
       />
