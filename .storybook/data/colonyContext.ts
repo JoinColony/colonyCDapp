@@ -93,7 +93,7 @@ const colonyContext = {
           nativeId: 1,
           isRoot: true,
           nativeFundingPotId: 1,
-          nativeSkillId: 5,
+          nativeSkillId: '5',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'General',
@@ -111,7 +111,7 @@ const colonyContext = {
           nativeId: 2,
           isRoot: false,
           nativeFundingPotId: 2,
-          nativeSkillId: 7,
+          nativeSkillId: '7',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'Andromeda',
@@ -129,7 +129,7 @@ const colonyContext = {
           nativeId: 3,
           isRoot: false,
           nativeFundingPotId: 3,
-          nativeSkillId: 8,
+          nativeSkillId: '8',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'Serenity',
@@ -147,7 +147,7 @@ const colonyContext = {
           nativeId: 4,
           isRoot: false,
           nativeFundingPotId: 4,
-          nativeSkillId: 9,
+          nativeSkillId: '9',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'Rocinante',
@@ -165,7 +165,7 @@ const colonyContext = {
           nativeId: 5,
           isRoot: false,
           nativeFundingPotId: 5,
-          nativeSkillId: 10,
+          nativeSkillId: '10',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'Ascendant',
@@ -183,7 +183,7 @@ const colonyContext = {
           nativeId: 6,
           isRoot: false,
           nativeFundingPotId: 6,
-          nativeSkillId: 11,
+          nativeSkillId: '11',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'Daedalus',
@@ -201,7 +201,7 @@ const colonyContext = {
           nativeId: 7,
           isRoot: false,
           nativeFundingPotId: 7,
-          nativeSkillId: 12,
+          nativeSkillId: '12',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'Agamemnon',
@@ -219,7 +219,7 @@ const colonyContext = {
           nativeId: 8,
           isRoot: false,
           nativeFundingPotId: 8,
-          nativeSkillId: 13,
+          nativeSkillId: '13',
           metadata: {
             __typename: 'DomainMetadata',
             name: 'azizazizazizazizaziz',
@@ -246,7 +246,7 @@ const colonyContext = {
             nativeId: 1,
             isRoot: true,
             nativeFundingPotId: 1,
-            nativeSkillId: 5,
+            nativeSkillId: '5',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'General',
@@ -280,7 +280,7 @@ const colonyContext = {
             nativeId: 1,
             isRoot: true,
             nativeFundingPotId: 1,
-            nativeSkillId: 5,
+            nativeSkillId: '5',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'General',
@@ -314,7 +314,7 @@ const colonyContext = {
             nativeId: 1,
             isRoot: true,
             nativeFundingPotId: 1,
-            nativeSkillId: 5,
+            nativeSkillId: '5',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'General',
@@ -348,7 +348,7 @@ const colonyContext = {
             nativeId: 2,
             isRoot: false,
             nativeFundingPotId: 2,
-            nativeSkillId: 7,
+            nativeSkillId: '7',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Andromeda',
@@ -382,7 +382,7 @@ const colonyContext = {
             nativeId: 2,
             isRoot: false,
             nativeFundingPotId: 2,
-            nativeSkillId: 7,
+            nativeSkillId: '7',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Andromeda',
@@ -416,7 +416,7 @@ const colonyContext = {
             nativeId: 2,
             isRoot: false,
             nativeFundingPotId: 2,
-            nativeSkillId: 7,
+            nativeSkillId: '7',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Andromeda',
@@ -450,7 +450,7 @@ const colonyContext = {
             nativeId: 3,
             isRoot: false,
             nativeFundingPotId: 3,
-            nativeSkillId: 8,
+            nativeSkillId: '8',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Serenity',
@@ -484,7 +484,7 @@ const colonyContext = {
             nativeId: 3,
             isRoot: false,
             nativeFundingPotId: 3,
-            nativeSkillId: 8,
+            nativeSkillId: '8',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Serenity',
@@ -518,7 +518,7 @@ const colonyContext = {
             nativeId: 3,
             isRoot: false,
             nativeFundingPotId: 3,
-            nativeSkillId: 8,
+            nativeSkillId: '8',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Serenity',
@@ -552,7 +552,7 @@ const colonyContext = {
             nativeId: 4,
             isRoot: false,
             nativeFundingPotId: 4,
-            nativeSkillId: 9,
+            nativeSkillId: '9',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Rocinante',
@@ -586,7 +586,7 @@ const colonyContext = {
             nativeId: 4,
             isRoot: false,
             nativeFundingPotId: 4,
-            nativeSkillId: 9,
+            nativeSkillId: '9',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Rocinante',
@@ -620,7 +620,7 @@ const colonyContext = {
             nativeId: 4,
             isRoot: false,
             nativeFundingPotId: 4,
-            nativeSkillId: 9,
+            nativeSkillId: '9',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Rocinante',
@@ -654,7 +654,7 @@ const colonyContext = {
             nativeId: 5,
             isRoot: false,
             nativeFundingPotId: 5,
-            nativeSkillId: 10,
+            nativeSkillId: '10',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Ascendant',
@@ -688,7 +688,7 @@ const colonyContext = {
             nativeId: 5,
             isRoot: false,
             nativeFundingPotId: 5,
-            nativeSkillId: 10,
+            nativeSkillId: '10',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Ascendant',
@@ -722,7 +722,7 @@ const colonyContext = {
             nativeId: 5,
             isRoot: false,
             nativeFundingPotId: 5,
-            nativeSkillId: 10,
+            nativeSkillId: '10',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Ascendant',
@@ -756,7 +756,7 @@ const colonyContext = {
             nativeId: 6,
             isRoot: false,
             nativeFundingPotId: 6,
-            nativeSkillId: 11,
+            nativeSkillId: '11',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Daedalus',
@@ -790,7 +790,7 @@ const colonyContext = {
             nativeId: 6,
             isRoot: false,
             nativeFundingPotId: 6,
-            nativeSkillId: 11,
+            nativeSkillId: '11',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Daedalus',
@@ -824,7 +824,7 @@ const colonyContext = {
             nativeId: 6,
             isRoot: false,
             nativeFundingPotId: 6,
-            nativeSkillId: 11,
+            nativeSkillId: '11',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Daedalus',
@@ -858,7 +858,7 @@ const colonyContext = {
             nativeId: 7,
             isRoot: false,
             nativeFundingPotId: 7,
-            nativeSkillId: 12,
+            nativeSkillId: '12',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Agamemnon',
@@ -892,7 +892,7 @@ const colonyContext = {
             nativeId: 7,
             isRoot: false,
             nativeFundingPotId: 7,
-            nativeSkillId: 12,
+            nativeSkillId: '12',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Agamemnon',
@@ -926,7 +926,7 @@ const colonyContext = {
             nativeId: 7,
             isRoot: false,
             nativeFundingPotId: 7,
-            nativeSkillId: 12,
+            nativeSkillId: '12',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'Agamemnon',
@@ -960,7 +960,7 @@ const colonyContext = {
             nativeId: 8,
             isRoot: false,
             nativeFundingPotId: 8,
-            nativeSkillId: 13,
+            nativeSkillId: '13',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'azizazizazizazizaziz',
@@ -994,7 +994,7 @@ const colonyContext = {
             nativeId: 8,
             isRoot: false,
             nativeFundingPotId: 8,
-            nativeSkillId: 13,
+            nativeSkillId: '13',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'azizazizazizazizaziz',
@@ -1028,7 +1028,7 @@ const colonyContext = {
             nativeId: 8,
             isRoot: false,
             nativeFundingPotId: 8,
-            nativeSkillId: 13,
+            nativeSkillId: '13',
             metadata: {
               __typename: 'DomainMetadata',
               name: 'azizazizazizazizaziz',
