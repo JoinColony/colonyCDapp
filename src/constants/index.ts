@@ -21,7 +21,7 @@ export type TokenInfo = {
 
 export type NetworkInfo = {
   name: string;
-  chainId: number;
+  chainId: string;
   shortName: string;
   description?: string;
   displayENSDomain?: string;
@@ -94,7 +94,7 @@ export const POLYGON_TOKEN: TokenInfo = {
 
 export const GNOSIS_NETWORK: NetworkInfo = {
   name: 'Gnosis Chain',
-  chainId: 100,
+  chainId: '100',
   shortName: 'xDai',
   displayENSDomain: 'joincolony.colonyxdai',
   blockExplorerName: 'Gnosisscan',
@@ -107,7 +107,7 @@ export const GNOSIS_NETWORK: NetworkInfo = {
 
 export const ETHEREUM_NETWORK: NetworkInfo = {
   name: 'Ethereum',
-  chainId: 1,
+  chainId: '1',
   shortName: 'ETH',
   blockExplorerName: 'Etherscan',
   blockExplorerUrl: 'https://etherscan.io',
@@ -124,7 +124,7 @@ export const ETHEREUM_NETWORK: NetworkInfo = {
 
 export const GOERLI_NETWORK: NetworkInfo = {
   name: 'Goerli Testnet',
-  chainId: 5,
+  chainId: '5',
   shortName: 'Goerli',
   blockExplorerName: 'Etherscan',
   blockExplorerUrl: 'https://goerli.etherscan.io',
@@ -137,7 +137,7 @@ export const GOERLI_NETWORK: NetworkInfo = {
 
 export const GANACHE_NETWORK: NetworkInfo = {
   name: 'Local Ganache Instance',
-  chainId: 2656691,
+  chainId: '2656691',
   shortName: 'Ganache',
   blockExplorerName: 'Noexplorer',
   blockExplorerUrl: 'http://localhost',
@@ -151,7 +151,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
 
 export const BINANCE_NETWORK: NetworkInfo = {
   name: 'Binance Smart Chain',
-  chainId: 56,
+  chainId: '56',
   shortName: 'BNB',
   contractAddressLink: '',
   safeTxService: 'https://safe-transaction-bsc.safe.global/api',
@@ -163,7 +163,7 @@ export const BINANCE_NETWORK: NetworkInfo = {
 
 export const POLYGON_NETWORK: NetworkInfo = {
   name: 'Polygon Mainnet',
-  chainId: 137,
+  chainId: '137',
   shortName: 'Polygon',
   blockExplorerName: 'PolygonScan',
   blockExplorerUrl: 'https://polygonscan.com/',
@@ -176,7 +176,7 @@ export const POLYGON_NETWORK: NetworkInfo = {
 
 export const AMOY_NETWORK: NetworkInfo = {
   name: 'Polygon Amoy Testnet',
-  chainId: 80002,
+  chainId: '80002',
   shortName: 'Amoy',
   blockExplorerName: 'OKLink',
   blockExplorerUrl: 'https://www.oklink.com/amoy/',
@@ -189,7 +189,7 @@ export const AMOY_NETWORK: NetworkInfo = {
 
 export const ARBITRUM_NETWORK: NetworkInfo = {
   name: 'Arbitrum One',
-  chainId: 42161,
+  chainId: '42161',
   shortName: 'Arbitrum',
   blockExplorerName: 'Arbiscan',
   blockExplorerUrl: 'https://explorer.arbitrum.io/',
@@ -202,7 +202,7 @@ export const ARBITRUM_NETWORK: NetworkInfo = {
 
 export const ARBITRUM_SEPOLIA_NETWORK: NetworkInfo = {
   name: 'Arbitrum Sepolia Testnet',
-  chainId: 421614,
+  chainId: '421614',
   shortName: 'Arbitrum Sepolia',
   blockExplorerName: 'Sepolia Arbiscan',
   blockExplorerUrl: 'https://sepolia.arbitrum.io/',

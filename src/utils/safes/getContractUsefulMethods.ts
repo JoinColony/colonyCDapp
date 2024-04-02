@@ -11,11 +11,11 @@ export interface AbiItemExtended extends JsonFragment {
   signatureHash: string;
 }
 
-const getCurrentNetworkData = (chainId: number) => {
+const getCurrentNetworkData = (chainId: string) => {
   return SUPPORTED_SAFE_NETWORKS.find((network) => network.chainId === chainId);
 };
 
-export const getApiKey = (chainId: number) => {
+export const getApiKey = (chainId: string) => {
   if (chainId === BINANCE_NETWORK.chainId) {
     return import.meta.env.BSCSCAN_API_KEY;
   }
@@ -24,7 +24,7 @@ export const getApiKey = (chainId: number) => {
 
 export const fetchContractName = async (
   contractAddress: string,
-  safeChainId: number,
+  safeChainId: string,
 ): Promise<string> => {
   // will be defined since fetchContractName is only called if selectedSafe is defined
 
@@ -50,7 +50,7 @@ export const fetchContractName = async (
 
 export const fetchContractABI = async (
   contractAddress: string,
-  safeChainId: number,
+  safeChainId: string,
 ) => {
   if (!contractAddress) {
     return [];

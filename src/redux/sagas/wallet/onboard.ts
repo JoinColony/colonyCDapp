@@ -9,7 +9,7 @@ import {
   GANACHE_LOCAL_RPC_URL,
 } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
-import { getChainIdAsHex } from '~utils/autoLogin.ts';
+import { getChainIdAsHex } from '~utils/chainId.ts';
 import { intl } from '~utils/intl.ts';
 
 import ganacheModule from './ganacheModule.ts';

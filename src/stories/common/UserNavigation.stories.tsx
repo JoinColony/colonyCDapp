@@ -6,7 +6,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import UserHub from '~common/Extensions/UserHub/index.ts';
 import UserNavigation from '~common/Extensions/UserNavigation/index.ts';
-import Token from '~common/Extensions/UserNavigation/partials/Token/index.ts';
+import NetworkName from '~common/Extensions/UserNavigation/partials/NetworkName/index.ts';
 import { ADDRESS_ZERO } from '~constants';
 import { ContextModule, getContext } from '~context/index.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -32,9 +32,9 @@ const UserNavigationWithData = () => {
 
   const ref = useDetectClickOutside({ onTriggered: () => setIsOpen(false) });
 
-  const nativeToken = {
+  const networkInfo = {
     name: 'Gnosis Chain',
-    chainId: 100,
+    chainId: '100',
     shortName: 'xDai',
     displayENSDomain: 'joincolony.colonyxdai',
     blockExplorerName: 'Gnosisscan',
@@ -71,7 +71,7 @@ const UserNavigationWithData = () => {
           </div>
         )}
         <div className="flex w-full justify-end gap-1">
-          {nativeToken && <Token nativeToken={nativeToken} />}
+          {networkInfo && <NetworkName networkInfo={networkInfo} />}
           <Button
             mode="tertiary"
             isFullRounded

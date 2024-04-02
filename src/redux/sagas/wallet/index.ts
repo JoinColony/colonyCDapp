@@ -23,8 +23,8 @@ import {
   setLastWallet,
   type LastWallet,
   clearLastWallet,
-  getChainIdAsHex,
 } from '~utils/autoLogin.ts';
+import { getChainIdAsHex } from '~utils/chainId.ts';
 
 import RetryProvider from './RetryProvider.ts';
 
@@ -67,7 +67,9 @@ export const getBasicWallet = async (lastWallet: LastWallet) => {
     return {
       address: lastWallet.address,
       label: lastWallet.type,
-      chains: [{ id: getChainIdAsHex(network.chainId), namespace: 'evm' }],
+      chains: [
+        { id: getChainIdAsHex(String(network.chainId)), namespace: 'evm' },
+      ],
       ethersProvider: provider,
     } as BasicWallet;
   }

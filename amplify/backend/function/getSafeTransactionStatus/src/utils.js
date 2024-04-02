@@ -8,13 +8,13 @@ const { ForeignAMB, HomeAMB } = require('./abis');
 const isDev = process.env.ENV === 'dev';
 
 const ETHEREUM_NETWORK = {
-  chainId: 1,
+  chainId: '1',
   apiUri: 'https://api.etherscan.io/api',
   rpcUrl: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
 };
 
 const BINANCE_NETWORK = {
-  chainId: 56,
+  chainId: '56',
   apiUri: 'https://api.bscscan.com/api',
   rpcUrl: 'https://bsc-dataseed.binance.org/',
 };
@@ -73,10 +73,7 @@ const getMessageLogs = async (
   // so there is no need to limit the range of the block to reduce the network traffic
   url.searchParams.append('fromBlock', '0');
   url.searchParams.append('toBlock', 'latest');
-  url.searchParams.append(
-    'apiKey',
-    (await getApiKey(Number(safeChainId))) || '',
-  );
+  url.searchParams.append('apiKey', await getApiKey(safeChainId));
   const eventTopic = utils.id(event);
   const topics = [eventTopic, ...options.topics];
 
@@ -170,7 +167,8 @@ const getForeignBridgeByChain = (safeChainId) => {
   const foreignProvider = getForeignProvider(safeChainId);
   const foreignSigner = foreignProvider.getSigner();
   const foreignBridgeAddress = isDev
-    ? require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json').LOCAL_FOREIGN_BRIDGE_ADDRESS
+    ? require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json')
+        .LOCAL_FOREIGN_BRIDGE_ADDRESS
     : GNOSIS_AMB_BRIDGES[safeChainId]?.foreignAMB;
 
   if (!foreignBridgeAddress) {
@@ -186,7 +184,8 @@ const getHomeBridgeByChain = async (safeChainId) => {
   const homeProvider = await getHomeProvider();
   const homeSigner = homeProvider.getSigner();
   const homeBridgeAddress = isDev
-    ? require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json').LOCAL_HOME_BRIDGE_ADDRESS
+    ? require('../../../../mock-data/colonyNetworkArtifacts/safe-addresses.json')
+        .LOCAL_HOME_BRIDGE_ADDRESS
     : GNOSIS_AMB_BRIDGES[safeChainId]?.homeAMB;
 
   if (!homeBridgeAddress) {

@@ -107,7 +107,7 @@ export const getRemovedSafes = (actionData: ColonyAction) => {
         !newSafes.some(
           (newSafe) =>
             newSafe.address === safe.address &&
-            Number(newSafe.chainId) === safe.chainId,
+            newSafe.chainId === safe.chainId,
         ),
     );
     return removedSafes;

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { type Token } from '~types/graphql.ts';
 import { getNetworkByChainId } from '~utils/web3/index.ts';
 
@@ -57,7 +58,7 @@ const TokenSelectorInput = ({
     symbol: token?.symbol,
     chain:
       // Need to update this when multi chain is enabled
-      getNetworkByChainId(100)?.name || '',
+      getNetworkByChainId(DEFAULT_NETWORK_INFO.chainId)?.name || '',
   });
 
   const doesTokenExistError = errors.tokenAddress?.type === 'doesTokenExist';
