@@ -20,7 +20,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
 
   const provider = new providers.JsonRpcProvider(rpcURL);
 
-  const { chainId } = await provider.getNetwork();
+  const chainId = String((await provider.getNetwork()).chainId);
   const block = await provider.getBlockNumber();
   const now = new Date();
 

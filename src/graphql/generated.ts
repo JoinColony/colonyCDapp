@@ -5234,11 +5234,7 @@ export type NativeTokenStatus = {
   unlocked?: Maybe<Scalars['Boolean']>;
 };
 
-/**
- * Input data for the status of a Colony's native token
- *
- * Colonies can have different types of native tokens in various modes. Here we define some important properties that the dApp uses to enable or disable certain features or views. This is set when a Colony is created and can be changed later
- */
+/** Colonies can have different types of native tokens in various modes. Here we define some important properties that the dApp uses to enable or disable certain features or views. This is set when a Colony is created and can be changed later */
 export type NativeTokenStatusInput = {
   /** Whether the native token is mintable */
   mintable?: InputMaybe<Scalars['Boolean']>;
