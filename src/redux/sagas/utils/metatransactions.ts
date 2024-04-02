@@ -7,7 +7,7 @@ import { isFullWallet } from '~types/wallet.ts';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages.ts';
 
-export const getChainId = (): number => DEFAULT_NETWORK_INFO.chainId;
+export const getChainId = (): string => DEFAULT_NETWORK_INFO.chainId;
 
 export const signTypedData = async ({
   domain,
@@ -39,7 +39,7 @@ export const signTypedData = async ({
 export const generateEIP2612TypedData = (
   userAddress: Address,
   tokenName: string,
-  chainId: number,
+  chainId: string,
   verifyingContract: Address,
   spender: Address,
   value: BigNumberish,
@@ -78,7 +78,7 @@ export const generateEIP2612TypedData = (
 export const generateMetatransactionMessage = async (
   encodedTransaction: string,
   contractAddress: Address,
-  chainId: number,
+  chainId: string,
   nonce: BigNumberish,
 ): Promise<{
   message: string;

@@ -72,7 +72,7 @@ export const getSafeAddresses = async (): Promise<SafeAddresses> => {
 
 export const getHomeProvider = () => new RetryProvider();
 
-export const getForeignProvider = (safeChainId: number) => {
+export const getForeignProvider = (safeChainId: string) => {
   const network = SUPPORTED_SAFE_NETWORKS.find(
     (n) => n.chainId === safeChainId,
   );
@@ -88,7 +88,7 @@ export const getForeignProvider = (safeChainId: number) => {
   );
 };
 
-export const getForeignBridgeByChain = async (safeChainId: number) => {
+export const getForeignBridgeByChain = async (safeChainId: string) => {
   const { LOCAL_FOREIGN_BRIDGE_ADDRESS } = await getSafeAddresses();
 
   const foreignProvider = getForeignProvider(safeChainId);
@@ -106,7 +106,7 @@ export const getForeignBridgeByChain = async (safeChainId: number) => {
   return new ethers.Contract(foreignBridgeAddress, ForeignAMB, foreignSigner);
 };
 
-export const getHomeBridgeByChain = async (safeChainId: number) => {
+export const getHomeBridgeByChain = async (safeChainId: string) => {
   const { LOCAL_HOME_BRIDGE_ADDRESS } = await getSafeAddresses();
   const homeProvider = getHomeProvider();
   const homeSigner = homeProvider.getSigner();

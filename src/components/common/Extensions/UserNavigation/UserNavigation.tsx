@@ -5,12 +5,12 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
-import useGetNetworkToken from '~hooks/useGetNetworkToken.ts';
+import useGetCurrentNetwork from '~hooks/useGetCurrentNetwork.ts';
 import { formatText } from '~utils/intl.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button, { Hamburger } from '~v5/shared/Button/index.ts';
 
-import Token from './partials/Token/index.ts';
+import NetworkName from './partials/NetworkName/index.ts';
 import UserMenu from './partials/UserMenu/index.ts';
 import { type UserNavigationProps } from './types.ts';
 
@@ -27,7 +27,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const [, { toggleOff }] = mobileMenuToggle;
 
   const isWalletConnected = !!wallet?.address;
-  const nativeToken = useGetNetworkToken();
+  const networkInfo = useGetCurrentNetwork();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
@@ -59,8 +59,8 @@ const UserNavigation: FC<UserNavigationProps> = ({
       {txButtons}
       {isWalletConnected ? (
         <div className="flex gap-1">
-          {nativeToken && (
-            <Token size={isMobile ? 18 : 16} nativeToken={nativeToken} />
+          {networkInfo && (
+            <NetworkName size={isMobile ? 18 : 16} networkInfo={networkInfo} />
           )}
           {userHub}
         </div>
@@ -89,7 +89,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
         <UserMenu
           tooltipProps={getTooltipProps}
           setTooltipRef={setTooltipRef}
-          nativeToken={nativeToken}
         />
       )}
       {extra}

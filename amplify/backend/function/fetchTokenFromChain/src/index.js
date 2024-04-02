@@ -114,6 +114,7 @@ exports.handler = async (event) => {
       const symbol = await tokenFromChain.symbol();
       const decimals = await tokenFromChain.decimals();
       const type = await getTokenType(tokenFromChain);
+      const chainId = String((await provider.getNetwork()).chainId);
 
       /*
        * Save it to the database first
@@ -135,7 +136,7 @@ exports.handler = async (event) => {
              * have the concept of chains
              */
             chainMetadata: {
-              chainId: (await provider.getNetwork()).chainId,
+              chainId,
             },
           },
         },
