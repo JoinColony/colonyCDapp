@@ -4,7 +4,7 @@ import React, { type PropsWithChildren } from 'react';
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.blocks.MenuListItem';
 
-type MenuListItemProps = PropsWithChildren<unknown> & { className?: string };
+type MenuListItemProps = PropsWithChildren<{ className?: string }>;
 
 const MenuListItem = ({ children, className }: MenuListItemProps) => {
   return (
