@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { type ColonyAction } from '~types/graphql.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -21,9 +20,6 @@ import DecisionMethodRow from '../rows/DecisionMethod.tsx';
 import DescriptionRow from '../rows/Description.tsx';
 import PaymentBuilderTable from '../rows/PaymentBuilderTable/PaymentBuilderTable.tsx';
 import TeamFromRow from '../rows/TeamFrom.tsx';
-
-import FundingModal from './partials/FundingModal/FundingModal.tsx';
-import ReleasePaymentModal from './partials/ReleasePaymentModal/index.ts';
 
 interface PaymentBuilderProps {
   action: ColonyAction;
@@ -47,16 +43,10 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
-  const [isFundingModalOpen, { toggleOn, toggleOff }] = useToggle();
 
   const { expenditure, loadingExpenditure } = useGetExpenditureData(
     action.expenditureId,
   );
-
-  const [
-    isReleasePaymentModalOpen,
-    { toggleOn: releasePaymentToggleOn, toggleOff: releasePaymentToggleOff },
-  ] = useToggle();
 
   if (loadingExpenditure) {
     return (
@@ -144,26 +134,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         <DescriptionRow description={action.annotation.message} />
       )}
       {!!slots.length && <PaymentBuilderTable items={slots} />}
-
-      <button type="button" onClick={toggleOn}>
-        temp fund
-      </button>
-
-      <FundingModal
-        isOpen={isFundingModalOpen}
-        onClose={toggleOff}
-        expenditure={expenditure}
-      />
-
-      <button type="button" onClick={releasePaymentToggleOn}>
-        temp release payment modal
-      </button>
-
-      <ReleasePaymentModal
-        expenditure={expenditure}
-        isOpen={isReleasePaymentModalOpen}
-        onClose={releasePaymentToggleOff}
-      />
     </>
   );
 };

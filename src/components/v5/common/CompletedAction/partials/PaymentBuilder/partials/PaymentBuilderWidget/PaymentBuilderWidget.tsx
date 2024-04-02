@@ -2,6 +2,7 @@ import React, { useState, type FC, useEffect } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useToggle from '~hooks/useToggle/index.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -14,7 +15,9 @@ import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/index.ts';
+import FundingModal from '../FundingModal/FundingModal.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/index.ts';
+import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/index.ts';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
@@ -25,6 +28,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { user } = useAppContext();
   const { walletAddress } = user || {};
   const { expenditureId } = action;
+
+  const [isFundingModalOpen, { toggleOn, toggleOff }] = useToggle();
+  const [
+    isReleasePaymentModalOpen,
+    { toggleOn: releasePaymentToggleOn, toggleOff: releasePaymentToggleOff },
+  ] = useToggle();
 
   const {
     expenditure,
@@ -115,8 +124,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           content={
             <Button
               className="w-full"
-              // @todo: replace onClick with actual functionality
-              onClick={() => setActiveStepKey(ExpenditureStep.Release)}
+              onClick={toggleOn}
               text={formatText({
                 id: 'expenditure.fundingStage.button',
               })}
@@ -137,8 +145,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           content={
             <Button
               className="w-full"
-              // @todo: replace onClick with actual functionality
-              onClick={() => setActiveStepKey(ExpenditureStep.Payment)}
+              onClick={releasePaymentToggleOn}
               text={formatText({
                 id: 'expenditure.releaseStage.button',
               })}
@@ -159,11 +166,29 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   }
 
   return (
-    <Stepper<ExpenditureStep>
-      items={items}
-      activeStepKey={activeStepKey}
-      setActiveStepKey={setActiveStepKey}
-    />
+    <>
+      <Stepper<ExpenditureStep>
+        items={items}
+        activeStepKey={activeStepKey}
+        setActiveStepKey={setActiveStepKey}
+      />
+      {expenditure && (
+        <>
+          <ReleasePaymentModal
+            expenditure={expenditure}
+            isOpen={isReleasePaymentModalOpen}
+            onClose={releasePaymentToggleOff}
+            refetchExpenditure={refetchExpenditure}
+          />
+          <FundingModal
+            isOpen={isFundingModalOpen}
+            onClose={toggleOff}
+            expenditure={expenditure}
+            refetchExpenditure={refetchExpenditure}
+          />
+        </>
+      )}
+    </>
   );
 };
 
