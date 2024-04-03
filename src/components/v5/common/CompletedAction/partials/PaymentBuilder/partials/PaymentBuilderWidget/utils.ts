@@ -41,9 +41,9 @@ export const isExpenditureFullyFunded = (expenditure?: Expenditure | null) => {
           (item) => item.tokenAddress === payout.tokenAddress,
         );
         if (existingAmountIndex !== -1) {
-          amounts[existingAmountIndex].amount = amounts[
-            existingAmountIndex
-          ].amount.add(payout.amount);
+          amounts[existingAmountIndex].amount = BigNumber.from(
+            amounts[existingAmountIndex].amount ?? 0,
+          ).add(payout.amount);
         } else {
           amounts.push({
             tokenAddress: payout.tokenAddress,
