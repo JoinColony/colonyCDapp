@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useMobile } from '~hooks';
 import { useScrollIntoView } from '~hooks/useScrollIntoView.ts';
@@ -23,8 +23,15 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   ...rest
 }) => {
   const { ref, scroll } = useScrollIntoView<HTMLButtonElement>();
+  const [buttonWidth, setButtonWidth] = useState<number>(0);
   const Icon = icon || ICON_NAME_MAP[stage];
   const isMobile = useMobile();
+
+  useEffect(() => {
+    if (ref.current) {
+      setButtonWidth(ref.current.offsetWidth);
+    }
+  }, []);
 
   useEffect(() => {
     if (isHighlighted) {
@@ -83,8 +90,9 @@ const StepperButton: React.FC<StepperButtonProps> = ({
         </StepperTooltip>
       ) : (
         <Tooltip
-          placement={isMobile ? 'bottom' : 'right'}
+          placement="right"
           className="!inline-flex"
+          tooltipStyle={{ maxWidth: `calc(100% - ${buttonWidth}px - 20px)` }}
           {...tooltipProps}
         >
           {content}

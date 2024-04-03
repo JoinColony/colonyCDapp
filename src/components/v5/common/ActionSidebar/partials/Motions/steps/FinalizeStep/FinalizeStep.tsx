@@ -119,7 +119,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
             ? 'motion.finalizeStep.failed.statusText'
             : 'motion.finalizeStep.statusText',
         }),
-        textClassName: 'text-4',
+        textClassName: 'text-4 text-gray-900',
         iconAlignment: 'top',
         content: (
           <div />

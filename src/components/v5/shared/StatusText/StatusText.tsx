@@ -30,7 +30,7 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
   return (
     <div
       className={clsx(className, 'flex', {
-        'text-gray-900': status === StatusTypes.Info,
+        'text-gray-500': status === StatusTypes.Info,
         'text-success-400': status === StatusTypes.Success,
         'text-warning-400': status === StatusTypes.Warning,
         'text-negative-400': status === StatusTypes.Error,
@@ -45,7 +45,12 @@ const StatusText: FC<PropsWithChildren<StatusTextProps>> = ({
           className={clsx(iconClassName, 'flex-shrink-0')}
         />
       )}
-      <p className={textClassName}>{children}</p>
+      {children && typeof children === 'string' && (
+        <p className={textClassName}>{children}</p>
+      )}
+      {children && typeof children !== 'string' && (
+        <div className={textClassName}>{children}</div>
+      )}
     </div>
   );
 };

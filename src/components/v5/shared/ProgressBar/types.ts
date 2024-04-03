@@ -1,9 +1,10 @@
 export interface ProgressBarProps {
   progress: number;
+  progressLabel?: string;
   isTall?: boolean;
-  additionalText?: React.ReactNode;
   threshold?: number;
   max?: number;
   barClassName?: string;
   className?: string;
+  labelClassName?: string;
 }

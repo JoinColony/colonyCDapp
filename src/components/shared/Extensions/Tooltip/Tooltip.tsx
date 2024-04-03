@@ -11,6 +11,7 @@ const displayName = 'Extensions.Tooltip';
 const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   children,
   tooltipContent,
+  tooltipStyle,
   placement = 'auto',
   popperOptions,
   interactive,
@@ -68,6 +69,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
                 'bg-gray-900 [&_a]:underline': !isSuccess,
               },
             ),
+            style: tooltipStyle,
           })}
         >
           <div

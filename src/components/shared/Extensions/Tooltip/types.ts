@@ -4,6 +4,7 @@ import { type PopperOptions, type TriggerType } from 'react-popper-tooltip';
 
 export interface TooltipProps {
   tooltipContent: ReactNode;
+  tooltipStyle?: React.CSSProperties;
   trigger?: TriggerType | TriggerType[] | null;
   placement?: PlacementType;
   offset?: [number, number];

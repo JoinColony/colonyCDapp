@@ -77,7 +77,7 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
           id: 'action.executed.permissions.description',
         }),
         iconAlignment: 'top',
-        textClassName: 'text-4',
+        textClassName: 'text-4 text-gray-900',
       }}
       sections={[
         {

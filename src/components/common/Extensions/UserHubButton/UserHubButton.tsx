@@ -141,7 +141,7 @@ const UserHubButton: FC = () => {
     splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="flex-shrink-0">
       <Button
         mode="tertiary"
         size="large"
@@ -155,11 +155,12 @@ const UserHubButton: FC = () => {
         )}
         onClick={handleButtonClick}
       >
-        <div className="flex items-center">
+        <div className="flex flex-shrink-0 items-center">
           {/* If there's a user, there's a wallet */}
           {walletAddress ? (
             <>
               <UserAvatar
+                className="flex-shrink-0"
                 userAvatarSrc={user?.profile?.avatar ?? undefined}
                 userName={userName}
                 userAddress={wallet.address}
