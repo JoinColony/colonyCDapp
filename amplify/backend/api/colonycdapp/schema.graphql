@@ -733,6 +733,10 @@ enum ColonyActionType {
   """
   FUND_EXPENDITURE_MOTION
   """
+  An action related to canceling an expenditure
+  """
+  CANCEL_EXPENDITURE
+  """
   An action related to a motion to cancel an expenditure
   """
   CANCEL_EXPENDITURE_MOTION
