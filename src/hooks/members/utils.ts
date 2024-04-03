@@ -39,6 +39,10 @@ export const hasSomeRole = (
   return includesCustomPermissions || isInFilters;
 };
 
+export const truncateAddress = (name: string) => {
+  return `${name.slice(0, 6)}...${name.slice(-4)}`;
+};
+
 export const sortByReputationAscending = (items: ColonyContributor[]) => {
   return items.sort(
     (a, b) => a.colonyReputationPercentage - b.colonyReputationPercentage,

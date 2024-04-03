@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import { truncateAddress } from '~hooks/members/utils.ts';
 import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 export const useUserSelect = () => {
@@ -21,8 +22,8 @@ export const useUserSelect = () => {
             value: walletAddress || member.contributorAddress,
             label:
               profile?.displayName ||
-              walletAddress ||
-              member.contributorAddress,
+              (walletAddress && truncateAddress(walletAddress)) ||
+              truncateAddress(member.contributorAddress),
             avatar: profile?.thumbnail || profile?.avatar || '',
             thumbnail: profile?.thumbnail || '',
             id: result.length,

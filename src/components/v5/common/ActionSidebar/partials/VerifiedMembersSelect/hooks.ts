@@ -1,4 +1,5 @@
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import { truncateAddress } from '~hooks/members/utils.ts';
 import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 export const useVerifiedMembersSelect = () => {
@@ -13,7 +14,10 @@ export const useVerifiedMembersSelect = () => {
         {
           value: walletAddress || '',
           isVerified: true,
-          label: profile?.displayName || walletAddress || '',
+          label:
+            profile?.displayName ||
+            (walletAddress && truncateAddress(walletAddress)) ||
+            truncateAddress(member.contributorAddress),
           avatar: profile?.thumbnail || profile?.avatar || '',
           id: result.length,
           profile,
