@@ -103,6 +103,10 @@ function* revealVoteMotion({
     } catch (error) {
       // Same as above. Silent error
     }
+
+    // eslint-disable-next-line no-console
+    console.log('REVEAL for', sideVoted, { signature, salt, message });
+
     if (sideVoted !== undefined) {
       const { revealVoteMotionTransaction } = yield createTransactionChannels(
         meta.id,
