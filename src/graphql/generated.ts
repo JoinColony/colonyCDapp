@@ -384,6 +384,8 @@ export type ColonyActionRolesInput = {
  * These can all happen in a Colony and will be interpreted by the dApp according to their types
  */
 export enum ColonyActionType {
+  /** An action related to canceling an expenditure */
+  CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
   CancelExpenditureMotion = 'CANCEL_EXPENDITURE_MOTION',
   /** An action related to editing a Colony's details */
