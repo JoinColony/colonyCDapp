@@ -23,7 +23,7 @@ const AvatarWithStatusBadge: FC<
             : undefined
         }
         isFilled={isFilled}
-        className="relative z-[1] -mt-3.5"
+        className="relative -mt-3.5"
       />
     )}
   </div>

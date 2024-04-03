@@ -137,7 +137,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
                 portalElementRef.current = ref;
               }}
               isLoading={usersOptions.isLoading}
-              className="z-[60]"
+              className="z-sidebar"
               showEmptyContent={false}
             />
           )}

@@ -228,7 +228,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 formatText({ id: 'motion.support.wins.label' })) ||
               formatText({ id: 'motion.oppose.wins.label' })
             : formatText({ id: 'motion.outcome.label' }) || '',
-          className: clsx('z-[1]', {
+          className: clsx('z-base', {
             'border-purple-400 bg-base-white text-purple-400 lg:enabled:hover:border-purple-400 lg:enabled:hover:bg-purple-400 lg:enabled:hover:text-base-white':
               motionFinished && hasVotedMotionPassed,
             'border-negative-400 bg-base-white text-negative-400 lg:enabled:hover:border-negative-400 lg:enabled:hover:bg-negative-400 lg:enabled:hover:text-base-white':

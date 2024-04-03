@@ -62,7 +62,7 @@ const SubNavigationItem: FC<PropsWithChildren<SubNavigationItemProps>> = ({
           <div
             ref={setTooltipRef}
             {...getTooltipProps({
-              className: `${styles.tooltipContainer} font-normal z-50 relative text-sm bg-base-white shadow-default border border-gray-200 rounded-lg overflow-y-scroll max-h-[36rem] min-w-[20.5rem] tooltip-container p-0`,
+              className: `${styles.tooltipContainer} font-normal relative text-sm bg-base-white shadow-default border border-gray-200 rounded-lg overflow-y-scroll max-h-[36rem] min-w-[20.5rem] tooltip-container p-0`,
             })}
           >
             {content}

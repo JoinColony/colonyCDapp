@@ -23,7 +23,7 @@ const ModalBase: FC<ModalBaseProps> = ({
       role={role}
       overlayClassName={{
         base: clsx(
-          `fixed inset-0 z-[999] flex flex-col items-center justify-start bg-base-sprite before:h-full before:max-h-[9.688rem] before:content-[''] after:h-full after:max-h-[9.688rem] after:content-['']`,
+          `fixed inset-0 z-top flex flex-col items-center justify-start bg-base-sprite before:h-full before:max-h-[9.688rem] before:content-[''] after:h-full after:max-h-[9.688rem] after:content-['']`,
           {
             'py-4': !isFullOnMobile,
           },
@@ -38,7 +38,7 @@ const ModalBase: FC<ModalBaseProps> = ({
           'h-full w-screen': isFullOnMobile,
           'max-h-[calc(100%-4rem)] w-[calc(100vw-3rem)] rounded-xl border border-gray-200 shadow-default':
             !isFullOnMobile,
-          base: 'z-[4] outline-0',
+          base: 'z-base outline-0',
           'pl-6 pt-6': !isTopSectionWithBackground,
           'border-2 border-purple-200 pl-0 pt-0': isTopSectionWithBackground,
         },

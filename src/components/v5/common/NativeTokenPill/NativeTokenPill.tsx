@@ -87,7 +87,7 @@ const NativeTokenPill = ({
         isTokenVisible && (
           <Portal>
             <MenuContainer
-              className="absolute z-[60] min-w-80 !p-0"
+              className="absolute z-sidebar min-w-80 !p-0"
               hasShadow
               rounded="s"
               ref={(ref) => {

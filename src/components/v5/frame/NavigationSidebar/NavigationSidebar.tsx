@@ -103,7 +103,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
       >
         <div
           className={`
-            z-[1]
+            z-base
             flex
             h-full
             w-full
@@ -246,7 +246,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 initial="hidden"
                 exit="hidden"
                 animate={isThirdLevelMenuOpen ? 'visible' : 'hidden'}
-                className="absolute bottom-0 left-[calc(100%-.625rem)] top-0 -z-[1] h-full overflow-hidden"
+                className="absolute bottom-0 left-[calc(100%-.625rem)] top-0 -z-base h-full overflow-hidden"
               >
                 <div className="h-full overflow-auto rounded-r-lg bg-gray-900 pb-6 pl-9 pr-6 pt-[1.8125rem] text-base-white">
                   <NavigationSidebarThirdLevel

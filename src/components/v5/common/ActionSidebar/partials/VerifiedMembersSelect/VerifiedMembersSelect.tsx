@@ -144,7 +144,7 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
               }}
-              className={clsx('z-[60] !max-h-[18.25rem]', {
+              className={clsx('z-sidebar !max-h-[18.25rem]', {
                 'left-6 right-[1.9rem] w-auto': isMobile,
               })}
               showEmptyContent

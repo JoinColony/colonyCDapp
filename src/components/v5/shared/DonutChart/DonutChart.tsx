@@ -32,7 +32,7 @@ const DonutChart: FC<DonutChartProps> = ({
       {tooltipStyle && (
         <div
           ref={tooltipRef}
-          className="vertical-align pointer-events-none absolute z-10 -mt-2.5 translate-x-[-50%] translate-y-[-100%] rounded-full bg-gray-900 px-4 py-2 text-base-white shadow-lg"
+          className="vertical-align pointer-events-none absolute -mt-2.5 translate-x-[-50%] translate-y-[-100%] rounded-full bg-gray-900 px-4 py-2 text-base-white shadow-lg"
           style={tooltipStyle}
         >
           <div className="flex items-center justify-center text-center text-xs font-bold md:text-sm">

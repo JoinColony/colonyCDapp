@@ -77,7 +77,7 @@ const Datepicker: FC<DatepickerProps> = ({
       ref={calendarRef}
       customInput={<DatepickerCustomInput />}
       dateFormat={dateFormat}
-      popperClassName={clsx(popperClassName, '!z-[1000] max-w-[20.5rem]')}
+      popperClassName={clsx(popperClassName, '!z-top max-w-[20.5rem]')}
       renderDayContents={(day) => (
         <div className="react-datepicker__day-content">{day}</div>
       )}
