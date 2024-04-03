@@ -101,9 +101,9 @@ export const useUserProfilePageForm = () => {
   const uploaderText = useGetUploaderText(profileFileOptions);
 
   const rowStyles =
-    'flex md:items-center gap-6 sm:!gap-[6.5rem] flex-col sm:flex-row w-full';
+    'flex md:items-center gap-2 md:gap-[6.5rem] flex-col md:flex-row w-full';
 
-  const descriptionClassName = 'w-[23.375rem]';
+  const descriptionClassName = 'max-w-[23.375rem] w-full';
 
   const columnsList: RowGroup[] = [
     {

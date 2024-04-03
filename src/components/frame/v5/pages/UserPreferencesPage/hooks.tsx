@@ -11,22 +11,19 @@ import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCre
 import { isFullScreen } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
-import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { multiLineTextEllipsis } from '~utils/strings/index.ts';
 import { Input } from '~v5/common/Fields/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import { type UserPreferencesFormProps } from './types.ts';
 
-export const useUserPreferencesPage = (truncateLimit = 20) => {
+export const useUserPreferencesPage = () => {
   const { formatMessage } = useIntl();
   const { updateUser, user } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
   const [isEmailInputVisible, setIsEmailInputVisible] = useState(false);
-  const isMobile = useMobile();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   const validationSchema = object<UserPreferencesFormProps>({
@@ -97,23 +94,24 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
   const emailValue = getValues('email');
 
   const rowStyles =
-    'flex md:items-start sm:justify-between gap-6 md:gap-0 flex-col md:flex-row w-full';
+    'flex md:items-start md:justify-between gap-4 md:gap-0 flex-col md:flex-row w-full';
 
   const columnsList = [
     {
       key: '1',
       title: formatText({ id: 'field.email' }),
       description: formatText({ id: 'description.email' }),
-      className: clsx(rowStyles, {
-        '!flex-row !justify-normal !gap-[6.5rem]':
-          !emailValue || isEmailInputVisible,
+      className: clsx('flex w-full md:items-start ', {
+        'flex-row md:gap-[6.5rem]': !emailValue || isEmailInputVisible,
+        'flex-col gap-2 md:flex-row md:justify-between md:gap-0':
+          emailValue || !isEmailInputVisible,
       }),
       descriptionClassName: 'md:w-[16.375rem]',
       contentProps: (
         <>
           {emailValue && !isEmailInputVisible && (
-            <div className="flex items-center justify-end">
-              <span className="mr-6 text-md">{emailValue}</span>
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-end md:gap-6">
+              <span className="text-md">{emailValue}</span>
               <Button
                 mode="primarySolid"
                 text={{ id: 'button.updateEmail' }}
@@ -128,8 +126,9 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
                 register={register}
                 isError={!!errors.email?.message}
                 customErrorMessage={errors.email?.message}
+                allowLayoutShift
               />
-              <div className="ml-auto mt-2 flex items-center gap-2">
+              <div className="mt-4 flex flex-col-reverse items-center gap-2 md:ml-auto md:mt-6 md:flex-row">
                 <Button
                   mode="primaryOutline"
                   text={{ id: 'button.cancel' }}
@@ -137,11 +136,13 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
                     reset({ email: user?.profile?.email || '' });
                     setIsEmailInputVisible(false);
                   }}
+                  className="w-full md:w-auto"
                 />
                 <Button
                   mode="primarySolid"
-                  text={{ id: 'button.saveEmail' }}
+                  text={{ id: 'button.saveUserProfile' }}
                   type="submit"
+                  className="w-full md:w-auto"
                 />
               </div>
             </div>
@@ -158,15 +159,12 @@ export const useUserPreferencesPage = (truncateLimit = 20) => {
       },
       copyAddressProps: {
         icon: Cardholder,
-        walletAddress: isMobile
-          ? multiLineTextEllipsis(user?.walletAddress || '', truncateLimit)
-          : user?.walletAddress,
+        walletAddress: user?.walletAddress,
       },
       className: rowStyles,
       buttonProps: {
         mode: isCopied ? 'completed' : 'septenary',
         icon: isCopied ? undefined : CopySimple,
-        isFullSize: isMobile,
         onClick: () => handleClipboardCopy(user?.walletAddress || ''),
         text: formatText({
           id: isCopied ? 'copy.addressCopied' : 'copy.address',

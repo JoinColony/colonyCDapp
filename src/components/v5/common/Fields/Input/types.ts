@@ -25,6 +25,7 @@ export type InputProps = {
   subLabelMessage?: Message;
   setIsTyping?: React.Dispatch<React.SetStateAction<boolean>>;
   shouldFocus?: boolean;
+  allowLayoutShift?: boolean;
 };
 
 export type PillProps = {
