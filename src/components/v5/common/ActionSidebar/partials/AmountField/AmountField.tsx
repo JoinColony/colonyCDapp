@@ -42,7 +42,7 @@ const AmountField: FC<AmountFieldProps> = ({
   } = useController({
     name: 'tokenAddress',
   });
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string | undefined>(undefined);
   const isError = !!error || !!tokenAddressError;
   const { colony } = useColonyContext();
   const [
@@ -65,9 +65,12 @@ const AmountField: FC<AmountFieldProps> = ({
   };
 
   useEffect(() => {
-    const unformattedValue = unformatNumeral(value);
-    if (field.value !== unformattedValue) {
-      field.onChange(unformatNumeral(value));
+    if (value) {
+      const unformattedValue = unformatNumeral(value);
+
+      if (field.value !== unformattedValue) {
+        field.onChange(unformatNumeral(value));
+      }
     }
   }, [value, field]);
 
