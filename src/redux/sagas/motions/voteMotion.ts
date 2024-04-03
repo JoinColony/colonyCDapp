@@ -66,9 +66,6 @@ function* voteMotion({
       [utils.keccak256(signature), vote],
     );
 
-    // eslint-disable-next-line no-console
-    console.log('VOTE for', vote, { signature, hash, message });
-
     const { voteMotionTransaction } = yield createTransactionChannels(meta.id, [
       'voteMotionTransaction',
     ]);
