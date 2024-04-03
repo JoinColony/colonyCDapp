@@ -8,6 +8,7 @@ import { currencyIcons } from '../../../UserMenu/consts.ts';
 import CoinGeckoAttribution from '../../CoinGeckoAttribution.tsx';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
+import { actionItemClass, actionItemLabelClass } from '../submenu.styles.ts';
 
 const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.partials.Currency';
@@ -27,21 +28,24 @@ const Currency = ({ closeSubmenu }: CurrencyProps) => {
 
   return (
     <>
-      <MenuList className="columns-2">
+      <MenuList className="grid w-[calc(100%+2rem)] grid-cols-2">
         {Object.values(SupportedCurrencies)
           .reverse()
           .map((currency) => {
             const CurrencyIcon = currencyIcons[currency] || ClnyTokenIcon;
             return (
-              <MenuListItem key={currency}>
+              <MenuListItem key={currency} className="w-full">
                 <button
                   type="button"
                   onClick={() => {
                     handleCurrencyClick(currency);
                   }}
+                  className={actionItemClass}
                 >
                   <CurrencyIcon size={iconSize} />
-                  <p>{currency.toUpperCase()}</p>
+                  <p className={actionItemLabelClass}>
+                    {currency.toUpperCase()}
+                  </p>
                 </button>
               </MenuListItem>
             );
