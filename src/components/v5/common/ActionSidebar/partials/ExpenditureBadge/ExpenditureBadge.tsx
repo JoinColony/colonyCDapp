@@ -9,7 +9,7 @@ import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import { EXPENDITURE_STATE_TO_CLASSNAME_MAP } from './consts.ts';
 import { type ExpenditureBadgeProps } from './types.ts';
 
-const ExpenditureBadge: FC<ExpenditureBadgeProps> = ({ status }) => {
+const ExpenditureBadge: FC<ExpenditureBadgeProps> = ({ status, className }) => {
   const badgeTexts = {
     [ExpenditureStatus.Draft]: formatText({ id: 'expenditure.draft' }),
     [ExpenditureStatus.Cancelled]: formatText({ id: 'expenditure.cancelled' }),
@@ -20,11 +20,12 @@ const ExpenditureBadge: FC<ExpenditureBadgeProps> = ({ status }) => {
   const pill = (
     <PillsBase
       className={clsx(
-        EXPENDITURE_STATE_TO_CLASSNAME_MAP[status],
+        className,
+        EXPENDITURE_STATE_TO_CLASSNAME_MAP[status || ExpenditureStatus.Draft],
         'bg-gray-100 text-sm font-medium text-gray-500',
       )}
     >
-      {badgeTexts[status]}
+      {status ? badgeTexts[status] : formatText({ id: 'expenditure.unknown' })}
     </PillsBase>
   );
 

@@ -39,7 +39,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
             {stake.action
               ? formatMessage(
                   { id: 'action.title' },
-                  getActionTitleValues(stake.action, colony),
+                  getActionTitleValues({ actionData: stake.action, colony }),
                 )
               : '-'}
           </div>

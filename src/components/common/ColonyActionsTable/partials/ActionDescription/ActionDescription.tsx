@@ -7,6 +7,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import { formatText } from '~utils/intl.ts';
+import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
 
@@ -26,7 +27,14 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     isMotion,
     motionData,
     motionState,
+    expenditureId,
   } = action;
+
+  const { expenditure, loadingExpenditure } =
+    useGetExpenditureData(expenditureId);
+
+  const isLoading = loading || loadingExpenditure;
+
   const walletAddress = user?.walletAddress || initiatorAddress || ADDRESS_ZERO;
   const refetchMotionState = () => {
     if (!motionData) {
@@ -43,14 +51,18 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
 
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
-    getActionTitleValues(action, colony),
+    getActionTitleValues({
+      actionData: action,
+      colony,
+      expenditureData: expenditure ?? undefined,
+    }),
   );
 
   return (
     <div className="flex w-full items-center gap-2 sm:gap-4">
       <Avatar
         className={clsx('flex-shrink-0 flex-grow-0', {
-          'overflow-hidden rounded-full skeleton': loading,
+          'overflow-hidden rounded-full skeleton': isLoading,
         })}
         size="xsm"
         seed={walletAddress.toLowerCase()}
@@ -64,7 +76,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
             className={clsx(
               'line-clamp-2 text-md font-medium text-gray-900 md:line-clamp-1',
               {
-                skeleton: loading,
+                skeleton: isLoading,
               },
             )}
           >
@@ -75,12 +87,12 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
               className={clsx(
                 'mt-0.5 line-clamp-2 text-sm font-normal text-gray-600 md:line-clamp-1',
                 {
-                  skeleton: loading,
+                  skeleton: isLoading,
                   hidden: hideDetails,
                 },
               )}
             >
-              {loading ? '-' : actionMetadataDescription}
+              {isLoading ? '-' : actionMetadataDescription}
             </p>
           )}
         </div>

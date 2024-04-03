@@ -8,11 +8,10 @@ import { defineMessages } from 'react-intl';
 import { useMobile } from '~hooks';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
-import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 
+import ActionBadge from '../partials/ActionBadge/ActionBadge.tsx';
 import ActionDescription from '../partials/ActionDescription/index.ts';
 
 // NOTE: No idea why this is being picked up as an export
@@ -106,14 +105,16 @@ const useColonyActionsTableColumns = (
           id: 'activityFeedTable.table.header.status',
         }),
         enableSorting: false,
-        cell: ({ getValue, row: { getIsExpanded } }) => {
+        cell: ({ getValue, row: { getIsExpanded, original } }) => {
           const motionState = getValue();
+          const { expenditureId } = original;
 
           return getIsExpanded() ? null : (
-            <MotionStateBadge
-              state={motionState || MotionState.Unknown}
+            <ActionBadge
+              motionState={motionState}
+              loading={loading || loadingMotionStates}
+              expenditureId={expenditureId ?? undefined}
               className={clsx({
-                skeleton: loading || loadingMotionStates,
                 '!hidden': getIsExpanded(),
               })}
             />

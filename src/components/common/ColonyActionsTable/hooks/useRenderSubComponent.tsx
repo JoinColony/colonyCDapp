@@ -9,6 +9,7 @@ import ActionMobileDescription from '../partials/ActionMobileDescription/index.t
 
 const useRenderSubComponent = (
   loadingMotionStates: boolean,
+  loading: boolean,
   refetchMotionStates: RefetchMotionStates,
   getMenuProps: (
     row: Row<ActivityFeedColonyAction>,
@@ -20,6 +21,7 @@ const useRenderSubComponent = (
       loadingMotionStates={loadingMotionStates}
       refetchMotionStates={refetchMotionStates}
       getMenuProps={getMenuProps}
+      loading={loading}
     />
   );
 };
