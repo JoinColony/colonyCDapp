@@ -32,24 +32,31 @@ export const isExpenditureFullyFunded = (expenditure?: Expenditure | null) => {
     return false;
   }
 
-  const amountsByToken = expenditure.slots.map((slot) => {
-    const amounts = {};
+  const slotAmountsByToken = expenditure.slots.flatMap((slot) => {
+    const amounts: { tokenAddress: string; amount: BigNumber }[] = [];
 
     slot.payouts?.forEach((payout) => {
       if (!payout.isClaimed) {
-        amounts[payout.tokenAddress] = BigNumber.from(
-          amounts[payout.tokenAddress] ?? 0,
-        ).add(payout.amount);
+        const existingAmountIndex = amounts.findIndex(
+          (item) => item.tokenAddress === payout.tokenAddress,
+        );
+        if (existingAmountIndex !== -1) {
+          amounts[existingAmountIndex].amount = amounts[
+            existingAmountIndex
+          ].amount.add(payout.amount);
+        } else {
+          amounts.push({
+            tokenAddress: payout.tokenAddress,
+            amount: BigNumber.from(payout.amount),
+          });
+        }
       }
     });
 
     return amounts;
   });
 
-  return amountsByToken.every((token) => {
-    const [tokenAddress] = Object.keys(token);
-    const amount = token[tokenAddress];
-
+  return slotAmountsByToken.every(({ tokenAddress, amount }) => {
     const tokenBalance = expenditure.balances?.find(
       (balance) => balance.tokenAddress === tokenAddress,
     );
