@@ -9,10 +9,12 @@ import { ContextModule, getContext } from '~context/index.ts';
 import { ColonyJSNetworkMapping, Network } from '~types/network.ts';
 import { isFullWallet } from '~types/wallet.ts';
 
+import type { SignerOrProvider } from '@colony/colony-js';
+
 /*
  * Return an initialized ColonyNetworkClient instance.
  */
-const getNetworkClient = async () => {
+const getNetworkClient = async (signerOrProvider?: SignerOrProvider) => {
   const wallet = getContext(ContextModule.Wallet);
 
   if (!isFullWallet(wallet)) {
@@ -21,7 +23,7 @@ const getNetworkClient = async () => {
 
   const network = DEFAULT_NETWORK;
 
-  const signer = wallet.ethersProvider.getSigner();
+  const signer = signerOrProvider || wallet.ethersProvider.getSigner();
 
   const reputationOracleUrl = import.meta.env.REPUTATION_ORACLE_ENDPOINT
     ? new URL(import.meta.env.REPUTATION_ORACLE_ENDPOINT)
