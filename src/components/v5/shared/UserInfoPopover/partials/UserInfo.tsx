@@ -39,15 +39,7 @@ const UserInfo: FC<UserInfoProps> = ({
           'bg-purple-100 p-6': isTopContributorType,
         })}
       >
-        <div
-          className={clsx({
-            'mb-[2.4375rem]':
-              !!contributorType && contributorType !== ContributorType.General,
-            'mb-6': contributorType === ContributorType.General,
-          })}
-        >
-          {userDetails}
-        </div>
+        <div className="mb-6">{userDetails}</div>
         {isTopContributorType && domains && (
           <>
             <TitleLabel

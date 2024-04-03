@@ -26,12 +26,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
   className,
 }) => {
   return (
-    <div
-      className={clsx(
-        className,
-        'relative flex flex-shrink-0 items-center justify-center',
-      )}
-    >
+    <div className={clsx(className, 'relative flex-shrink-0')}>
       <Avatar
         size={size}
         alt={formatText(MSG.defaultAlt, { name: colonyName ?? colonyAddress })}

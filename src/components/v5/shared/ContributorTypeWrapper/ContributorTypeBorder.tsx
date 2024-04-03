@@ -23,7 +23,7 @@ const ContributorTypeBorder = ({
       className={clsx('flex rounded-full border-2', {
         'border-blue-400': contributorType === ContributorType.Dedicated,
         'border-warning-400': contributorType === ContributorType.Active,
-        'border-green-400': contributorType === ContributorType.New,
+        'border-success-400': contributorType === ContributorType.New,
         'border-purple-400': contributorType === ContributorType.Top,
       })}
     >

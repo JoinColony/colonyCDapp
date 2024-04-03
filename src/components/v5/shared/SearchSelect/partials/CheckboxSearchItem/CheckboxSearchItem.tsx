@@ -114,16 +114,15 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                     />
                   )}
                   {showAvatar && (
-                    <div className="mr-2 flex items-center justify-center">
-                      <UserAvatar
-                        userAvatarSrc={
-                          avatar && avatar.length > 0 ? avatar : undefined
-                        }
-                        userAddress={walletAddress}
-                        userName={labelText}
-                        size={20}
-                      />
-                    </div>
+                    <UserAvatar
+                      className="mr-2"
+                      userAvatarSrc={
+                        avatar && avatar.length > 0 ? avatar : undefined
+                      }
+                      userAddress={walletAddress}
+                      userName={labelText}
+                      size={20}
+                    />
                   )}
                   {isLabelVisible && labelText}
                   {isVerified && (
