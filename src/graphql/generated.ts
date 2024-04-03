@@ -385,6 +385,8 @@ export enum ColonyActionType {
   /** An action related to adding verified members */
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
+  /** An action related to canceling an expenditure */
+  CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
   CancelExpenditureMotion = 'CANCEL_EXPENDITURE_MOTION',
   /** An action related to editing a Colony's details */
