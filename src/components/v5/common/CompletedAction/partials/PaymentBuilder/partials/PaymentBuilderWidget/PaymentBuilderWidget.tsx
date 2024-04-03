@@ -156,8 +156,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               content={
                 <Button
                   className="w-full"
-                  // @todo: replace onClick with actual functionality
-                  onClick={() => setActiveStepKey(ExpenditureStep.Payment)}
+                  onClick={releasePaymentToggleOn}
                   text={formatText({
                     id: 'expenditure.releaseStage.button',
                   })}
