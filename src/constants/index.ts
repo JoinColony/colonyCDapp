@@ -197,7 +197,7 @@ export const ARBITRUM_NETWORK: NetworkInfo = {
   contractAddressLink: 'https://arbitrum.io/address',
   displayENSDomain: 'joincolony.arbitrum',
   icon: ArbitrumIcon,
-  blockTime: 1,
+  blockTime: 4,
 };
 
 export const ARBITRUM_SEPOLIA_NETWORK: NetworkInfo = {
@@ -210,7 +210,7 @@ export const ARBITRUM_SEPOLIA_NETWORK: NetworkInfo = {
   contractAddressLink: 'https://sepolia.arbiscan.io/address',
   displayENSDomain: 'joincolony.arbitrumsepolia',
   icon: ArbitrumIcon,
-  blockTime: 1,
+  blockTime: 4,
 };
 
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
