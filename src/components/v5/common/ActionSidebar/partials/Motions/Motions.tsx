@@ -1,6 +1,6 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
-import { left as LeftPlacementType } from '@popperjs/core/index';
+import { left as LeftPlacementType } from '@popperjs/core';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
