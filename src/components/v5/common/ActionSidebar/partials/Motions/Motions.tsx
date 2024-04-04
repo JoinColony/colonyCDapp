@@ -1,6 +1,6 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
-import { type Placement } from '@popperjs/core';
+import { left as LeftPlacementType } from '@popperjs/core/index';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
@@ -115,7 +115,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left' as Placement,
+            placement: LeftPlacementType,
             className: 'z-10',
           },
         },
@@ -146,7 +146,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left' as Placement,
+            placement: LeftPlacementType,
             className: 'z-10',
           },
         },
@@ -181,7 +181,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left' as Placement,
+            placement: LeftPlacementType,
             className: 'z-10',
           },
         },
@@ -245,7 +245,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left' as Placement,
+            placement: LeftPlacementType,
             className: 'z-10',
           },
         },
@@ -270,7 +270,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               networkMotionState,
               motionData,
             ),
-            placement: 'left' as Placement,
+            placement: LeftPlacementType,
             className: 'z-10',
           },
         },

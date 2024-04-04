@@ -116,7 +116,7 @@ const formatMotionTooltipTimestamp = (timestamp: string | undefined | null) =>
     : '';
 
 export const getStakingStepTooltipText = (
-  motionState: MotionState | undefined,
+  motionState: MotionState,
   motionData: ColonyMotion | undefined | null,
 ) => {
   const {
@@ -191,7 +191,7 @@ export const getStakingStepTooltipText = (
 };
 
 export const getVotingStepTooltipText = (
-  motionState: MotionState | undefined = MotionState.Null,
+  motionState: MotionState,
   motionData: ColonyMotion | undefined | null,
 ) => {
   const { motionStateHistory, voterRecord } = motionData || {};
@@ -225,7 +225,7 @@ export const getVotingStepTooltipText = (
 };
 
 export const getRevealStepTooltipText = (
-  motionState: MotionState | undefined = MotionState.Null,
+  motionState: MotionState,
   motionData: ColonyMotion | undefined | null,
 ) => {
   const { motionStateHistory, voterRecord } = motionData || {};
@@ -250,7 +250,7 @@ export const getRevealStepTooltipText = (
     if (typeof voter.vote === 'number') {
       return acc + 1;
     }
-    return acc + 0;
+    return acc;
   }, 0);
 
   return formatText(MSG.revealEnded, {
@@ -260,7 +260,7 @@ export const getRevealStepTooltipText = (
 };
 
 export const getOutcomeStepTooltipText = (
-  motionState: MotionState | undefined = MotionState.Null,
+  motionState: MotionState,
   motionData: ColonyMotion | undefined | null,
 ) => {
   const { motionStateHistory, revealedVotes, motionStakes } = motionData || {};
@@ -322,7 +322,7 @@ export const getOutcomeStepTooltipText = (
 };
 
 export const getFinalizeStepTooltipText = (
-  motionState: MotionState | undefined = MotionState.Null,
+  motionState: MotionState,
   motionData: ColonyMotion | undefined | null,
 ) => {
   const { motionStateHistory, revealedVotes, motionStakes } = motionData || {};
