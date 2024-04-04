@@ -19,6 +19,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   trigger = 'hover',
   isOpen,
   isSuccess = false,
+  isError = false,
   isFullWidthContent,
   className,
   selectTriggerRef = (v) => v,
@@ -63,6 +64,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
               'tooltip-container',
               {
                 'bg-success-400': isSuccess,
+                'bg-negative-400': isError,
                 'bg-gray-900 [&_a]:underline': !isSuccess,
               },
             ),
@@ -74,6 +76,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
                 [tooltipClasses.tooltipArrow]: showArrow,
                 'tooltip-arrow': showArrow,
                 'text-success-400': isSuccess,
+                'text-negative-400': isError,
                 'text-gray-900': !isSuccess,
               }),
             })}
