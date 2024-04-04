@@ -21,7 +21,7 @@ import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx'
 import StepDetailsBlock from '../StepDetailsBlock/index.ts';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
-import { getExpenditureStep } from './utils.ts';
+import { getExpenditureStep, isExpenditureFullyFunded } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony } = useColonyContext();
@@ -43,7 +43,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     stopPolling,
   } = useGetExpenditureData(expenditureId);
 
-  const { status } = expenditure || {};
+  const { status, finalizingActions } = expenditure || {};
 
   const expenditureStatus = getExpenditureStep(status);
 
@@ -51,13 +51,23 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     useState<ExpenditureStep>(expenditureStatus);
 
   const [isRefetching, setIsRefetching] = useState(false);
+  const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   useEffect(() => {
     startPolling(getSafePollingInterval());
-    setActiveStepKey(expenditureStatus);
+
+    if (
+      expenditureStatus &&
+      isExpenditureFunded &&
+      expenditureStatus !== ExpenditureStep.Payment
+    ) {
+      setActiveStepKey(ExpenditureStep.Release);
+    } else {
+      setActiveStepKey(expenditureStatus);
+    }
 
     return () => stopPolling();
-  }, [expenditureStatus, startPolling, stopPolling]);
+  }, [isExpenditureFunded, expenditureStatus, startPolling, stopPolling]);
 
   const lockExpenditurePayload: LockExpenditurePayload | null = expenditure
     ? {
@@ -136,22 +146,31 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Release,
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
-      // @todo: add completed state content
       content: (
-        <StepDetailsBlock
-          text={formatText({
-            id: 'expenditure.releaseStage.info',
-          })}
-          content={
-            <Button
-              className="w-full"
-              onClick={releasePaymentToggleOn}
+        <>
+          {expenditureStatus === ExpenditureStep.Funding && (
+            <StepDetailsBlock
               text={formatText({
-                id: 'expenditure.releaseStage.button',
+                id: 'expenditure.releaseStage.info',
               })}
+              content={
+                <Button
+                  className="w-full"
+                  onClick={releasePaymentToggleOn}
+                  text={formatText({
+                    id: 'expenditure.releaseStage.button',
+                  })}
+                />
+              }
             />
-          }
-        />
+          )}
+          {isExpenditureFunded &&
+            expenditureStatus !== ExpenditureStep.Funding && (
+              <FinalizeWithPermissionsInfo
+                userAdddress={finalizingActions?.items[0]?.initiatorAddress}
+              />
+            )}
+        </>
       ),
     },
     {
