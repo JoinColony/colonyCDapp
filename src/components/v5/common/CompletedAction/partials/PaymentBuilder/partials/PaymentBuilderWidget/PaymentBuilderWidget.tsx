@@ -76,6 +76,18 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       }
     : null;
 
+  const cancelItem: StepperItem<ExpenditureStep> = {
+    key: ExpenditureStep.Cancel,
+    heading: {
+      label: formatText({ id: 'expenditure.cancelStage.label' }),
+    },
+    content: (
+      <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
+    ),
+    isHidden: expenditureStatus !== ExpenditureStep.Cancel,
+  };
+  const isExpenditureCanceled = expenditureStatus === ExpenditureStep.Cancel;
+
   const items: StepperItem<ExpenditureStep>[] = [
     {
       key: ExpenditureStep.Create,
@@ -84,9 +96,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
       ),
     },
+    cancelItem,
     {
       key: ExpenditureStep.Review,
       heading: { label: formatText({ id: 'expenditure.reviewStage.label' }) },
+      isHidden: isExpenditureCanceled,
       content:
         expenditureStatus === ExpenditureStep.Review ? (
           <StepDetailsBlock
@@ -126,6 +140,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Funding,
       heading: { label: formatText({ id: 'expenditure.fundingStage.label' }) },
+      isHidden: isExpenditureCanceled,
       content: (
         <StepDetailsBlock
           text={formatText({
@@ -146,6 +161,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Release,
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
+      isHidden: isExpenditureCanceled,
       content: (
         <>
           {expenditureStatus === ExpenditureStep.Funding && (
@@ -176,6 +192,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Payment,
       heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
+      isHidden: isExpenditureCanceled,
       content: <PaymentStepDetailsBlock />,
     },
   ];
