@@ -121,7 +121,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     requiredRolesDomains: [expenditure.nativeDomainId],
   });
   const showCancelOption =
-    expenditure?.status !== ExpenditureStatus.Cancelled ??
+    expenditure?.status !== ExpenditureStatus.Cancelled &&
     (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
 
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
