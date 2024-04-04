@@ -150,7 +150,7 @@ function CardSelect<TValue = string>({
                   {groupedOptions.map((group) => (
                     <li key={group.key} className={OPTION_LIST_ITEM_CLASSES}>
                       {group.title && (
-                        <h5 className="section-title px-4 pt-2 uppercase text-gray-400 text-4">
+                        <h5 className="section-title px-4 py-2 uppercase text-gray-400 text-4">
                           {group.title}
                         </h5>
                       )}
