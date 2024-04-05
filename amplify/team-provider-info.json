@@ -161,10 +161,6 @@
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
           "s3Key": "amplify-builds/qaSSMtest-7566624e7545796b7370-build.zip"
         },
-        "setCurrentVersion": {
-          "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
-          "s3Key": "amplify-builds/setCurrentVersion-57306463474f59617172-build.zip"
-        },
         "updateContributorsWithReputation": {
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
           "s3Key": "amplify-builds/updateContributorsWithReputation-784f46374d777679616c-build.zip"
