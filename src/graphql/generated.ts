@@ -11434,7 +11434,7 @@ export type GetColonyContributorQueryHookResult = ReturnType<typeof useGetColony
 export type GetColonyContributorLazyQueryHookResult = ReturnType<typeof useGetColonyContributorLazyQuery>;
 export type GetColonyContributorQueryResult = Apollo.QueryResult<GetColonyContributorQuery, GetColonyContributorQueryVariables>;
 export const GetColonyContributorsDocument = gql`
-    query GetColonyContributors($colonyAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int, $nextToken: String) {
+    query GetColonyContributors($colonyAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String) {
   getContributorsByColony(
     colonyAddress: $colonyAddress
     sortDirection: $sortDirection
@@ -11480,7 +11480,7 @@ export type GetColonyContributorsQueryHookResult = ReturnType<typeof useGetColon
 export type GetColonyContributorsLazyQueryHookResult = ReturnType<typeof useGetColonyContributorsLazyQuery>;
 export type GetColonyContributorsQueryResult = Apollo.QueryResult<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>;
 export const GetContributorsByAddressDocument = gql`
-    query GetContributorsByAddress($contributorAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int, $nextToken: String, $isWatching: Boolean) {
+    query GetContributorsByAddress($contributorAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String, $isWatching: Boolean) {
   getContributorsByAddress(
     contributorAddress: $contributorAddress
     sortDirection: $sortDirection

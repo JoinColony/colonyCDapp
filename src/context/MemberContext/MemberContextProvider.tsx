@@ -103,6 +103,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
         // If there's more data to fetch, call fetchMore
         fetchMore({
           variables: {
+            colonyAddress,
             nextToken: receivedData.getContributorsByColony.nextToken,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
@@ -111,11 +112,11 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
             // Here, combine the previous items with the newly fetched items
             return {
               ...prev,
-              getColonyContributors: {
+              getContributorsByColony: {
                 ...prev.getContributorsByColony,
                 items: [
-                  ...[prev?.getContributorsByColony?.items || []],
-                  ...[fetchMoreResult?.getContributorsByColony?.items || []],
+                  ...(prev?.getContributorsByColony?.items || []),
+                  ...(fetchMoreResult?.getContributorsByColony?.items || []),
                 ],
                 nextToken: fetchMoreResult?.getContributorsByColony?.nextToken,
               },

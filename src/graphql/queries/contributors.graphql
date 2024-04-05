@@ -7,7 +7,7 @@ query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
 query GetColonyContributors(
   $colonyAddress: ID!
   $sortDirection: ModelSortDirection = ASC
-  $limit: Int
+  $limit: Int = 100
   $nextToken: String
 ) {
   getContributorsByColony(
@@ -26,7 +26,7 @@ query GetColonyContributors(
 query GetContributorsByAddress(
   $contributorAddress: ID!
   $sortDirection: ModelSortDirection = ASC
-  $limit: Int
+  $limit: Int = 100
   $nextToken: String
   $isWatching: Boolean
 ) {
