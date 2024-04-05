@@ -56,8 +56,8 @@ const actionsMessageDescriptors = {
     }`,
   'action.type': `{actionType, select,
       ${ColonyActionType.WrongColony} {Not part of the Colony}
-      ${ColonyActionType.Payment} {Payment}
-      ${ColonyActionType.PaymentMotion} {Payment}
+      ${ColonyActionType.Payment} {Simple payment}
+      ${ColonyActionType.PaymentMotion} {Simple payment}
       ${ColonyActionType.MoveFunds} {Move Funds}
       ${ColonyActionType.MoveFundsMotion} {Move Funds}
       ${ColonyActionType.UnlockToken} {Unlock Token}

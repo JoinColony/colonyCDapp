@@ -1,16 +1,8 @@
 import clsx from 'clsx';
 import React, { type RefObject, forwardRef } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { type Address } from '~types/index.ts';
 import { splitAddress, type AddressElements } from '~utils/strings/index.ts';
-
-const MSG = defineMessages({
-  wrongAddressFormat: {
-    id: 'MaskedAddress.wrongAddressFormat',
-    defaultMessage: 'Address format is wrong!',
-  },
-});
 
 interface Props {
   /*
@@ -47,11 +39,7 @@ const MaskedAddress = forwardRef(
     { address, mask = '...', full = false, dataTest, className }: Props,
     ref: RefObject<any>,
   ) => {
-    const cutAddress: AddressElements | Error = splitAddress(address);
-
-    if (cutAddress instanceof Error) {
-      return <FormattedMessage {...MSG.wrongAddressFormat} />;
-    }
+    const cutAddress: AddressElements = splitAddress(address);
 
     return (
       <span
