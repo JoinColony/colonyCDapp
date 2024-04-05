@@ -32,7 +32,7 @@ export const useSearchSelect = (
             ? [
                 {
                   ...item.options[0],
-                  avatar: item.options[0].showAvatar ? '' : undefined,
+                  avatar: item.options[0]?.showAvatar ? '' : undefined,
                   value: searchValue,
                   label: searchValue,
                   walletAddress: searchValue,
