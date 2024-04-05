@@ -37,12 +37,8 @@ const ExtensionCard: FC<ExtensionCardProps> = ({
         </div>
       </div>
       {role && (
-        <div className="mt-[.6875rem] flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-[.6875rem]">
-          {role && (
-            <div className="ml-auto">
-              <RolesTooltip role={role} />
-            </div>
-          )}
+        <div className="ml-auto mt-[.6875rem] flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-[.6875rem]">
+          <RolesTooltip role={role} />
         </div>
       )}
     </div>
