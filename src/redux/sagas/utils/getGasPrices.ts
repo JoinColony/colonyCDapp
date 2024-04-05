@@ -79,6 +79,13 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       response = await fetch(XDAI_GAS_STATION);
     }
 
+    if (
+      DEFAULT_NETWORK === Network.ArbitrumOne ||
+      DEFAULT_NETWORK === Network.ArbitrumSepolia
+    ) {
+      response = { ok: true };
+    }
+
     if (DEFAULT_NETWORK !== Network.Ganache && !response.ok) {
       throw new Error(response.statusText);
     }
@@ -145,6 +152,26 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
         faster: BigNumber.from(fastInteger)
           .mul(oneGwei)
           .add(String(fastRemainder).padEnd(9, '0')),
+      };
+    }
+
+    // We don't have a oracle for Arbitrum, so we have to do our best
+    if (
+      DEFAULT_NETWORK === Network.ArbitrumOne ||
+      DEFAULT_NETWORK === Network.ArbitrumSepolia
+    ) {
+      const cheaper = defaultGasPrices.network;
+
+      return {
+        ...defaultGasPrices,
+
+        cheaper,
+        suggested: cheaper.mul(150).div(100), // 50% more than network
+        faster: cheaper.mul(200).div(100), // 100% more than network
+
+        suggestedWait: -Infinity,
+        cheaperWait: -Infinity,
+        fasterWait: -Infinity,
       };
     }
 
