@@ -4344,8 +4344,6 @@ export type Mutation = {
   deleteUserTokens?: Maybe<UserTokens>;
   /** Removes the user from the colony whitelist */
   removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
-  /** Updates the latest available version of a Colony or an extension */
-  setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -4947,12 +4945,6 @@ export type MutationDeleteUserTokensArgs = {
 /** Root mutation type */
 export type MutationRemoveMemberFromColonyWhitelistArgs = {
   input: RemoveMemberFromColonyWhitelistInput;
-};
-
-
-/** Root mutation type */
-export type MutationSetCurrentVersionArgs = {
-  input?: InputMaybe<SetCurrentVersionInput>;
 };
 
 
@@ -6778,18 +6770,6 @@ export type SearchableStringFilterInput = {
   range?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   regexp?: InputMaybe<Scalars['String']>;
   wildcard?: InputMaybe<Scalars['String']>;
-};
-
-/**
- * Input data to store the latest available version of the core Colony contract and available extensions
- *
- * The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
- */
-export type SetCurrentVersionInput = {
-  /** COLONY for the Colony contract, extension hash for extensions */
-  key: Scalars['String'];
-  /** Latest available version */
-  version: Scalars['Int'];
 };
 
 export type SimpleTarget = {
