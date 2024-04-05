@@ -90,25 +90,27 @@ const RowItem: FC<RowItemProps> = (props): JSX.Element => {
     'buttonProps' in props
   ) {
     const { buttonProps, copyAddressProps } = props;
+    const { walletAddress, icon: Icon } = copyAddressProps || {};
 
     return (
       <>
-        {headerProps && (
-          <div className="flex w-full">
-            <h5 className="heading-5">{headerProps?.title}</h5>
-          </div>
+        {headerProps?.title && (
+          <h5 className="heading-5">{headerProps?.title}</h5>
         )}
-        {copyAddressProps && (
+        {walletAddress && Icon && (
           <div className="flex w-full flex-col items-center justify-between rounded-lg bg-gray-50 p-3 md:flex-row">
-            <div className="mb-3 flex items-center md:mb-0">
-              {copyAddressProps.icon ? (
-                <copyAddressProps.icon size={18} />
-              ) : null}
-              <span className="ml-2 block w-full truncate text-md">
-                {copyAddressProps.walletAddress}
+            <div className="mb-3 flex w-full items-center md:mb-0 md:w-auto">
+              <Icon size={18} className="mr-2 flex-shrink-0" />
+              <span className="block w-[calc(100%-18px-8px)] truncate text-md">
+                {walletAddress}
               </span>
             </div>
-            {buttonProps && <Button {...buttonProps} />}
+            {buttonProps && (
+              <Button
+                {...buttonProps}
+                className={clsx(buttonProps.className, 'w-full md:w-auto')}
+              />
+            )}
           </div>
         )}
       </>

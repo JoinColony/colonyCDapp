@@ -35,6 +35,7 @@ const Input: FC<InputProps> = ({
   subLabelMessage,
   setIsTyping,
   shouldFocus,
+  allowLayoutShift = false,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -145,7 +146,11 @@ const Input: FC<InputProps> = ({
             {isDecoratedError ? (
               <InputPills message={customErrorMessage} status="error" />
             ) : (
-              <FormError isFullSize alignment="left" allowLayoutShift={false}>
+              <FormError
+                isFullSize
+                alignment="left"
+                allowLayoutShift={allowLayoutShift}
+              >
                 {customErrorMessage ||
                   (errorMaxChar
                     ? formatMessage(
