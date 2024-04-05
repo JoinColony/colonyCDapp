@@ -4,7 +4,7 @@ import {
   type TransactionError,
   type TransactionType,
 } from '~redux/immutable/index.ts';
-import { type MethodParams } from '~types/transactions.ts';
+import { type TxConfig, type MethodParams } from '~types/transactions.ts';
 
 import { type ActionTypes } from '../../actionTypes.ts';
 
@@ -64,6 +64,7 @@ export type TransactionSucceededPayload = {
   receipt: TransactionReceipt;
   deployedContractAddress?: string;
 };
+export type TransactionOptionsUpdatePayload = { options?: TxConfig['options'] };
 
 export type TransactionActionTypes =
   | ActionTypeWithPayloadAndMeta<
@@ -96,6 +97,11 @@ export type TransactionActionTypes =
   | ActionTypeWithPayloadAndMeta<
       ActionTypes.TRANSACTION_GAS_UPDATE,
       TransactionGasUpdatePayload,
+      Meta
+    >
+  | ActionTypeWithPayloadAndMeta<
+      ActionTypes.TRANSACTION_OPTIONS_UPDATE,
+      TransactionOptionsUpdatePayload,
       Meta
     >
   | ActionTypeWithPayloadAndMeta<

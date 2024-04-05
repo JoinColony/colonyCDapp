@@ -201,3 +201,12 @@ export const transactionSend = (id: string): AllActions => ({
   type: ActionTypes.TRANSACTION_SEND,
   meta: { id },
 });
+
+export const transactionUpdateOptions = (
+  id: string,
+  data: { options?: TxConfig['options'] },
+): AllActions => ({
+  type: ActionTypes.TRANSACTION_OPTIONS_UPDATE,
+  payload: data,
+  meta: { id },
+});

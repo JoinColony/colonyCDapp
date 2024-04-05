@@ -161,6 +161,8 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       DEFAULT_NETWORK === Network.ArbitrumSepolia
     ) {
       const cheaper = defaultGasPrices.network;
+      const { maxFeePerGas, maxPriorityFeePerGas } =
+        await userWallet.ethersProvider.getFeeData();
 
       return {
         ...defaultGasPrices,
@@ -168,6 +170,9 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
         cheaper,
         suggested: cheaper.mul(150).div(100), // 50% more than network
         faster: cheaper.mul(200).div(100), // 100% more than network
+
+        maxFeePerGas,
+        maxPriorityFeePerGas,
 
         suggestedWait: -Infinity,
         cheaperWait: -Infinity,
