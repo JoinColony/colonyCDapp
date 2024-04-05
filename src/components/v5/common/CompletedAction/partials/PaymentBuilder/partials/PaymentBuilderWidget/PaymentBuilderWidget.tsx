@@ -47,7 +47,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     stopPolling,
   } = useGetExpenditureData(expenditureId);
 
-  const { fundingActions, finalizingActions } = expenditure || {};
+  const { fundingActions, finalizingActions, cancellingActions } =
+    expenditure || {};
   const { items: fundingActionsItems } = fundingActions || {};
 
   const expenditureStatus = getExpenditureStep(expenditure);
@@ -78,7 +79,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       label: formatText({ id: 'expenditure.cancelStage.label' }),
     },
     content: (
-      <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
+      <FinalizeWithPermissionsInfo
+        userAdddress={cancellingActions?.items[0]?.initiatorAddress}
+      />
     ),
     isHidden: expenditureStatus !== ExpenditureStep.Cancel,
   };
