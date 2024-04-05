@@ -71,7 +71,7 @@ const UserPopover: FC<PropsWithChildren<UserPopoverProps>> = ({
       ref={relativeElementRef}
       className={clsx(
         className,
-        'inline-flex flex-shrink-0 transition-all duration-normal hover:text-blue-400',
+        'inline-flex flex-shrink-0 items-center transition-all duration-normal hover:text-blue-400',
       )}
     >
       {children}
