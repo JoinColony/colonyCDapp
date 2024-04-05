@@ -17,7 +17,7 @@ RUN apt-get install -y \
   libusb-1.0-0-dev \
   libudev-dev
 
-ENV NETWORK_HASH=a2dbcaf8c323e3ea8cc6e6c967d4fa9a2a316d8a
+ENV NETWORK_HASH=065d6933acf7cf7cb7bcc25d591cf9b0a2d5af17
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]

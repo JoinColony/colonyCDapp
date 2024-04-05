@@ -429,6 +429,10 @@ const createColony = async (
 
   const gas = await signerOrWallet.provider.estimateGas(populatedTransaction);
   populatedTransaction.gasLimit = gas;
+
+  const nonce = await signerOrWallet.getTransactionCount();
+  populatedTransaction.nonce = nonce;
+
   const signedTransaction = await signerOrWallet.signTransaction(
     populatedTransaction,
   );
