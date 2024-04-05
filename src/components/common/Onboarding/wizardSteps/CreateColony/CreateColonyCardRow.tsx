@@ -42,7 +42,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
     {
       title: 'navigation.admin.colonyDetails',
       text: colonyDisplayName,
-      subText: `${APP_URL.origin}/${colonyName.toLowerCase()}`,
+      subText: `${APP_URL.origin}/${colonyName}`,
       step: 0,
     },
     {

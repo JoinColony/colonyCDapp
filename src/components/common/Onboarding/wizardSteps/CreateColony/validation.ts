@@ -56,6 +56,7 @@ export const colonyNameValidationSchema = object({
   colonyName: string()
     .required(formatMessage({ id: 'error.colonyURLRequired' }))
     .max(MAX_COLONY_DISPLAY_NAME, '')
+    .lowercase()
     .test('isValidName', formatMessage({ id: 'error.colonyURL' }), isValidName)
     .test('isNameTaken', formatMessage({ id: 'error.urlTaken' }), isNameTaken),
 }).defined();
