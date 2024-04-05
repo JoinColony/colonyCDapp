@@ -10,7 +10,7 @@ import { type TransactionRecord } from '../../immutable/index.ts';
  */
 async function getTransactionPromise(
   // @TODO this is not great but I feel like we will replace this anyways at some point
-  client: ContractClient,
+  client: ContractClient & { clientType: string },
   tx: TransactionRecord,
 ): Promise<TransactionResponse> {
   const {
@@ -18,6 +18,8 @@ async function getTransactionPromise(
     options: {
       gasLimit: gasLimitOverride,
       gasPrice: gasPriceOverride,
+      maxFeePerGas,
+      maxPriorityFeePerGas,
       ...restOptions
     },
     params,
@@ -25,10 +27,24 @@ async function getTransactionPromise(
     gasPrice,
   } = tx;
   const sendOptions: Overrides = {
+    maxFeePerGas,
+    maxPriorityFeePerGas,
     gasLimit: gasLimitOverride || gasLimit,
-    gasPrice: gasPriceOverride || gasPrice,
     ...restOptions,
   };
+  if (!maxFeePerGas && !maxPriorityFeePerGas) {
+    delete sendOptions.maxFeePerGas;
+    delete sendOptions.maxPriorityFeePerGas;
+    sendOptions.gasPrice = gasPriceOverride || gasPrice;
+  }
+
+  console.info('TX DEBUG', {
+    client: client?.clientType || 'unknownContractClient',
+    methodName,
+    params,
+    overrides: sendOptions,
+  });
+
   return client[methodName](...[...params, sendOptions]);
 }
 

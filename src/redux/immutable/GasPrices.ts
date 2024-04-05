@@ -11,6 +11,8 @@ export interface GasPricesProps {
   network?: BigNumber;
   suggested?: BigNumber;
   suggestedWait?: number;
+  maxFeePerGas?: BigNumber;
+  maxPriorityFeePerGas?: BigNumber;
   /**
    * On xdai the gas price of 1 gwei will always work, so for now, we're setting it manually
    */
@@ -27,6 +29,8 @@ const defaultValues: DefaultValues<GasPricesProps> = {
   network: undefined,
   suggested: undefined,
   suggestedWait: undefined,
+  maxFeePerGas: undefined,
+  maxPriorityFeePerGas: undefined,
   /**
    * 1 Gwei converted into wei
    */
