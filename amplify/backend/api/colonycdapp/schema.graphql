@@ -306,22 +306,6 @@ input GetSafeTransactionStatusInput {
 }
 
 """
-Input data to store the latest available version of the core Colony contract and available extensions
-
-The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
-"""
-input SetCurrentVersionInput {
-  """
-  COLONY for the Colony contract, extension hash for extensions
-  """
-  key: String!
-  """
-  Latest available version
-  """
-  version: Int!
-}
-
-"""
 Return type for tokens gotten from DB or from chain
 """
 type TokenFromEverywhereReturn {
@@ -903,11 +887,6 @@ type Mutation {
   createColonyEtherealMetadata(
     input: CreateColonyEtherealMetadataInput!
   ): ColonyMetadata @function(name: "createColonyEtherealMetadata-${env}")
-  """
-  Updates the latest available version of a Colony or an extension
-  """
-  setCurrentVersion(input: SetCurrentVersionInput): Boolean
-    @function(name: "setCurrentVersion-${env}")
 
   """
   Update contributors with reputation in the database for a colony
