@@ -16,7 +16,7 @@ const MSG = {
 const FeedbackButton = ({ onClick }: Props) => (
   <button
     type="button"
-    className="group/feedback-button z-10 mt-auto flex items-center rounded-lg px-2.5 py-2 text-gray-900 md:transition-all md:hover:bg-gray-900 md:hover:text-base-white"
+    className="group/feedback-button mt-auto flex items-center rounded-lg px-2.5 py-2 text-gray-900 md:transition-all md:hover:bg-gray-900 md:hover:text-base-white"
     onClick={onClick}
   >
     <ChatCircle size={22} />

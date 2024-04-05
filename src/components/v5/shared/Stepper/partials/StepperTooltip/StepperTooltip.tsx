@@ -53,7 +53,7 @@ const StepperTooltip: FC<PropsWithChildren<StepperTooltipProps>> = ({
       {isTooltipVisible && (
         <Portal>
           <div
-            className="tooltip-container group absolute z-[60] rounded-none border-none 
+            className="tooltip-container group absolute z-sidebar rounded-none border-none 
             bg-gray-900 p-3 !text-base-white 
             shadow-none text-3 hover-[&_a]:no-underline 
             [&_a]:underline"
@@ -68,7 +68,7 @@ const StepperTooltip: FC<PropsWithChildren<StepperTooltipProps>> = ({
                 arrowPortalElementRef.current = ref;
               }}
               className="fixed
-                z-[60]
+                z-sidebar
                 block
                 border-b-[0.625rem] 
                 border-l-[0.5rem]

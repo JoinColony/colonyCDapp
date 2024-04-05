@@ -39,7 +39,7 @@ export const makeMenuColumn = <T,>(
             {...props}
             contentWrapperClassName={clsx(
               props.contentWrapperClassName,
-              '!z-[60]',
+              '!z-sidebar',
             )}
           />
         </div>

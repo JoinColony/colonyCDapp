@@ -142,7 +142,10 @@ module.exports = {
         xl: 'calc(90rem + 1px)',
       },
       zIndex: {
-        1: '1',
+        base: '1',
+        mid: '2',
+        sidebar: '10',
+        top: '1000',
       },
     },
   },

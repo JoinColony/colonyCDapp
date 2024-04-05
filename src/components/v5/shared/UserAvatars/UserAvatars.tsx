@@ -60,7 +60,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
               />
               <div
                 className={clsx(
-                  'placeholder absolute inset-0 z-[1] flex items-center justify-center rounded-full border border-base-white bg-gray-50 text-center text-gray-700 text-5',
+                  'placeholder absolute inset-0 z-base flex items-center justify-center rounded-full border border-base-white bg-gray-50 text-center text-gray-700 text-5',
                   {
                     'border-2': withThickerBorder,
                   },

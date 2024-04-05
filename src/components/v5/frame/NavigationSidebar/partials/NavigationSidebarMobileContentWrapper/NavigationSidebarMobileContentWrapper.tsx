@@ -32,7 +32,7 @@ const NavigationSidebarMobileContentWrapper: FC<
         bg-base-white
       `,
       {
-        'z-[1]': isOpen,
+        'z-base': isOpen,
       },
     )}
   >

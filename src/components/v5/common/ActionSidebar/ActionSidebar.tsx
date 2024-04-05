@@ -101,7 +101,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           bottom-4
           right-0
           top-0
-          z-[60]
+          z-sidebar
           flex
           h-full
           w-full

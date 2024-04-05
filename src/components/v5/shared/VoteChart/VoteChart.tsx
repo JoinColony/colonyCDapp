@@ -92,7 +92,7 @@ const VoteChart: FC<VoteChartProps> = ({
           <div className="relative w-full">
             {shouldHideIndicator && (
               <div
-                className="absolute bottom-0 top-0 z-[3] h-full"
+                className="absolute bottom-0 top-0 z-base h-full"
                 style={{
                   left: `${threshold}%`,
                 }}

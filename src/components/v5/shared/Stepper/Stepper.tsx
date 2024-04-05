@@ -121,7 +121,7 @@ function Stepper<TKey extends React.Key>({
                     sm:before:absolute
                     sm:before:left-0
                     sm:before:top-2
-                    sm:before:z-[1]
+                    sm:before:z-base
                     sm:before:h-[.6875rem]
                     sm:before:w-[.6875rem]
                     sm:before:rounded-full
@@ -160,7 +160,7 @@ function Stepper<TKey extends React.Key>({
                           setActiveStepKey(key);
                         }
                       }}
-                      className="relative z-[1]"
+                      className="relative z-base"
                       disabled={itemDisabled}
                       isHighlighted={index === openItemIndex && !isSkipped}
                       {...restHeading}

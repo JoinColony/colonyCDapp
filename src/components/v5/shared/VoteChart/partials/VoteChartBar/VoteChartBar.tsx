@@ -43,7 +43,7 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
         }}
         className={clsx(
           barBackgroundClassName,
-          'relative z-[2] -my-[1px] block h-[calc(100%+2px)] transition-[width]',
+          'relative -my-[1px] block h-[calc(100%+2px)] transition-[width]',
         )}
       />
       {predictedValue && (
@@ -53,7 +53,7 @@ const VoteChartBar: FC<VoteChartBarProps> = ({
           }}
           className={clsx(
             predictionBarClassName,
-            'absolute bottom-0 top-0 z-[1] block h-full border transition-all',
+            'absolute bottom-0 top-0 block h-full border transition-all',
             {
               'left-0': direction === VoteChartBarDirection.Right,
               'right-0': direction === VoteChartBarDirection.Left,

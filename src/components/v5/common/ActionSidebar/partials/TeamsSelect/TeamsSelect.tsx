@@ -105,7 +105,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
 
                 toggleTeamSelectOff();
               }}
-              className="z-[60]"
+              className="z-sidebar"
             />
           )}
         </>

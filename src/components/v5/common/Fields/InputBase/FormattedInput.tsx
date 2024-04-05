@@ -49,7 +49,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
               bottom-0
               right-0
               top-0
-              z-[1]
+              z-base
               h-full
               px-3.5
               py-3

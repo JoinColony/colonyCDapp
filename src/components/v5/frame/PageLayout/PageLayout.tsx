@@ -72,7 +72,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
       <div className="w-full md:flex md:h-screen md:flex-col" ref={wrapperRef}>
         {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}
         <div
-          className="sticky left-0 right-0 top-0 z-10 w-full bg-base-white sm:z-[65] md:static md:left-auto md:right-auto md:top-auto md:bg-transparent"
+          className="sticky left-0 right-0 top-0 z-base w-full bg-base-white sm:z-sidebar md:static md:left-auto md:right-auto md:top-auto md:bg-transparent"
           ref={topContentWrapperRef}
         >
           <div className="relative w-full">
@@ -91,7 +91,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           ) : (
             <div className="w-full md:flex md:h-[calc(100vh-var(--top-content-height))] md:gap-8 md:pl-4 md:pt-4">
               <div
-                className={clsx('relative z-[61] md:flex-shrink-0', {
+                className={clsx('relative z-sidebar md:flex-shrink-0', {
                   'md:w-[5.125rem]': !hasWideSidebar,
                   'md:w-[17.5rem]': hasWideSidebar,
                 })}
