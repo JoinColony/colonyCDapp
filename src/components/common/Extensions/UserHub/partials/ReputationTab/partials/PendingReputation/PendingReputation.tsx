@@ -48,7 +48,7 @@ const PendingReputation: FC<PendingReputationProps> = ({
       );
 
       if (nextMiningCycleDate < halfIntervalAgo) {
-        setNextMiningCycleDate(getNextMiningCycleDate(halfIntervalAgo));
+        setNextMiningCycleDate(getNextMiningCycleDate(nextMiningCycleDate));
       }
     }, UPDATE_INTERVAL * 1000);
 
