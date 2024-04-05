@@ -2,6 +2,7 @@ import { Image } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { APP_URL } from '~constants';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Avatar from '~v5/shared/Avatar/index.ts';
@@ -41,7 +42,7 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
     {
       title: 'navigation.admin.colonyDetails',
       text: colonyDisplayName,
-      subText: `app.colony.io/${colonyName}`,
+      subText: `${APP_URL.origin}/${colonyName.toLowerCase()}`,
       step: 0,
     },
     {
