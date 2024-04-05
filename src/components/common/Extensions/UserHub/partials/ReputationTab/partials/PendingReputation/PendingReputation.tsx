@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useGetReputationMiningCycleMetadataQuery } from '~gql';
@@ -17,6 +17,8 @@ import {
 const displayName =
   'common.Extensions.UserHub.partials.ReputationTab.partials.PendingReputation';
 
+const UPDATE_INTERVAL = 15;
+
 const PendingReputation: FC<PendingReputationProps> = ({
   colonyAddress,
   wallet,
@@ -28,9 +30,30 @@ const PendingReputation: FC<PendingReputationProps> = ({
 
   const { data } = useGetReputationMiningCycleMetadataQuery();
   const { lastCompletedAt } = data?.getReputationMiningCycleMetadata ?? {};
-  const nextMiningCycleDate = lastCompletedAt
-    ? getNextMiningCycleDate(new Date(lastCompletedAt ?? ''))
-    : null;
+
+  const [nextMiningCycleDate, setNextMiningCycleDate] = useState(
+    lastCompletedAt
+      ? getNextMiningCycleDate(new Date(lastCompletedAt ?? ''))
+      : null,
+  );
+
+  useEffect(() => {
+    const intervalTimer = setInterval(() => {
+      if (!nextMiningCycleDate) {
+        return;
+      }
+
+      const halfIntervalAgo = new Date(
+        Date.now() - (UPDATE_INTERVAL / 2) * 1000,
+      );
+
+      if (nextMiningCycleDate < halfIntervalAgo) {
+        setNextMiningCycleDate(getNextMiningCycleDate(nextMiningCycleDate));
+      }
+    }, UPDATE_INTERVAL * 1000);
+
+    return () => clearInterval(intervalTimer);
+  }, [nextMiningCycleDate]);
 
   return (
     <div className="pt-6">
@@ -42,7 +65,10 @@ const PendingReputation: FC<PendingReputationProps> = ({
           </p>
           <span className="text-sm">
             {nextMiningCycleDate ? (
-              <TimeRelative value={nextMiningCycleDate} />
+              <TimeRelative
+                value={nextMiningCycleDate}
+                updateInterval={UPDATE_INTERVAL}
+              />
             ) : (
               '-'
             )}
