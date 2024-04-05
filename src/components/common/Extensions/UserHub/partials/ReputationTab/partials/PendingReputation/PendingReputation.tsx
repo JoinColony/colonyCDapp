@@ -31,7 +31,7 @@ const PendingReputation: FC<PendingReputationProps> = ({
   const { data } = useGetReputationMiningCycleMetadataQuery();
   const { lastCompletedAt } = data?.getReputationMiningCycleMetadata ?? {};
 
-  const [nextMiningCycleDate, setNextMiningCyleDate] = useState(
+  const [nextMiningCycleDate, setNextMiningCycleDate] = useState(
     lastCompletedAt
       ? getNextMiningCycleDate(new Date(lastCompletedAt ?? ''))
       : null,
@@ -48,7 +48,7 @@ const PendingReputation: FC<PendingReputationProps> = ({
       );
 
       if (nextMiningCycleDate < halfIntervalAgo) {
-        setNextMiningCyleDate(getNextMiningCycleDate(halfIntervalAgo));
+        setNextMiningCycleDate(getNextMiningCycleDate(halfIntervalAgo));
       }
     }, UPDATE_INTERVAL * 1000);
 
