@@ -5504,6 +5504,7 @@ export type Query = {
   listUserTokens?: Maybe<ModelUserTokensConnection>;
   listUsers?: Maybe<ModelUserConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
+  searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
 };
 
 
@@ -6417,6 +6418,17 @@ export type QuerySearchColonyActionsArgs = {
   sort?: InputMaybe<Array<InputMaybe<SearchableColonyActionSortInput>>>;
 };
 
+
+/** Root query type */
+export type QuerySearchColonyContributorsArgs = {
+  aggregates?: InputMaybe<Array<InputMaybe<SearchableColonyContributorAggregationInput>>>;
+  filter?: InputMaybe<SearchableColonyContributorFilterInput>;
+  from?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableColonyContributorSortInput>>>;
+};
+
 export type RemoveMemberFromColonyWhitelistInput = {
   /** The colony address */
   colonyAddress: Scalars['ID'];
@@ -6639,6 +6651,69 @@ export enum SearchableColonyActionSortableFields {
   ShowInActionsList = 'showInActionsList',
   ToDomainId = 'toDomainId',
   TokenAddress = 'tokenAddress',
+  UpdatedAt = 'updatedAt'
+}
+
+export enum SearchableColonyContributorAggregateField {
+  ColonyAddress = 'colonyAddress',
+  ColonyReputationPercentage = 'colonyReputationPercentage',
+  ContributorAddress = 'contributorAddress',
+  CreatedAt = 'createdAt',
+  HasPermissions = 'hasPermissions',
+  HasReputation = 'hasReputation',
+  Id = 'id',
+  IsVerified = 'isVerified',
+  IsWatching = 'isWatching',
+  Type = 'type',
+  UpdatedAt = 'updatedAt'
+}
+
+export type SearchableColonyContributorAggregationInput = {
+  field: SearchableColonyContributorAggregateField;
+  name: Scalars['String'];
+  type: SearchableAggregateType;
+};
+
+export type SearchableColonyContributorConnection = {
+  __typename?: 'SearchableColonyContributorConnection';
+  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
+  items: Array<Maybe<ColonyContributor>>;
+  nextToken?: Maybe<Scalars['String']>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+export type SearchableColonyContributorFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<SearchableColonyContributorFilterInput>>>;
+  colonyAddress?: InputMaybe<SearchableIdFilterInput>;
+  colonyReputationPercentage?: InputMaybe<SearchableFloatFilterInput>;
+  contributorAddress?: InputMaybe<SearchableIdFilterInput>;
+  createdAt?: InputMaybe<SearchableStringFilterInput>;
+  hasPermissions?: InputMaybe<SearchableBooleanFilterInput>;
+  hasReputation?: InputMaybe<SearchableBooleanFilterInput>;
+  id?: InputMaybe<SearchableIdFilterInput>;
+  isVerified?: InputMaybe<SearchableBooleanFilterInput>;
+  isWatching?: InputMaybe<SearchableBooleanFilterInput>;
+  not?: InputMaybe<SearchableColonyContributorFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<SearchableColonyContributorFilterInput>>>;
+  type?: InputMaybe<SearchableStringFilterInput>;
+  updatedAt?: InputMaybe<SearchableStringFilterInput>;
+};
+
+export type SearchableColonyContributorSortInput = {
+  direction?: InputMaybe<SearchableSortDirection>;
+  field?: InputMaybe<SearchableColonyContributorSortableFields>;
+};
+
+export enum SearchableColonyContributorSortableFields {
+  ColonyAddress = 'colonyAddress',
+  ColonyReputationPercentage = 'colonyReputationPercentage',
+  ContributorAddress = 'contributorAddress',
+  CreatedAt = 'createdAt',
+  HasPermissions = 'hasPermissions',
+  HasReputation = 'hasReputation',
+  Id = 'id',
+  IsVerified = 'isVerified',
+  IsWatching = 'isWatching',
   UpdatedAt = 'updatedAt'
 }
 
@@ -8766,6 +8841,15 @@ export type GetContributorsByAddressQueryVariables = Exact<{
 
 
 export type GetContributorsByAddressQuery = { __typename?: 'Query', getContributorsByAddress?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, isWhitelistActivated?: boolean | null, whitelistedAddresses?: Array<string> | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, modifiedTokenAddresses?: { __typename?: 'PendingModifiedTokenAddresses', added?: Array<string> | null, removed?: Array<string> | null } | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasWhitelistChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null } } } | null> } | null };
+
+export type SearchColonyContributorsQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+  nextToken?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchColonyContributorsQuery = { __typename?: 'Query', searchColonyContributors?: { __typename?: 'SearchableColonyContributorConnection', total?: number | null, nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
 
 export type GetColonyDecisionsQueryVariables = Exact<{
   colonyAddress: Scalars['String'];
@@ -11461,6 +11545,53 @@ export function useGetContributorsByAddressLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetContributorsByAddressQueryHookResult = ReturnType<typeof useGetContributorsByAddressQuery>;
 export type GetContributorsByAddressLazyQueryHookResult = ReturnType<typeof useGetContributorsByAddressLazyQuery>;
 export type GetContributorsByAddressQueryResult = Apollo.QueryResult<GetContributorsByAddressQuery, GetContributorsByAddressQueryVariables>;
+export const SearchColonyContributorsDocument = gql`
+    query SearchColonyContributors($colonyAddress: ID!, $nextToken: String, $limit: Int = 100) {
+  searchColonyContributors(
+    limit: $limit
+    nextToken: $nextToken
+    filter: {colonyAddress: {eq: $colonyAddress}}
+    sort: {field: createdAt, direction: asc}
+    from: 0
+  ) {
+    items {
+      ...ColonyContributor
+    }
+    total
+    nextToken
+  }
+}
+    ${ColonyContributorFragmentDoc}`;
+
+/**
+ * __useSearchColonyContributorsQuery__
+ *
+ * To run a query within a React component, call `useSearchColonyContributorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchColonyContributorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchColonyContributorsQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *      nextToken: // value for 'nextToken'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useSearchColonyContributorsQuery(baseOptions: Apollo.QueryHookOptions<SearchColonyContributorsQuery, SearchColonyContributorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchColonyContributorsQuery, SearchColonyContributorsQueryVariables>(SearchColonyContributorsDocument, options);
+      }
+export function useSearchColonyContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchColonyContributorsQuery, SearchColonyContributorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchColonyContributorsQuery, SearchColonyContributorsQueryVariables>(SearchColonyContributorsDocument, options);
+        }
+export type SearchColonyContributorsQueryHookResult = ReturnType<typeof useSearchColonyContributorsQuery>;
+export type SearchColonyContributorsLazyQueryHookResult = ReturnType<typeof useSearchColonyContributorsLazyQuery>;
+export type SearchColonyContributorsQueryResult = Apollo.QueryResult<SearchColonyContributorsQuery, SearchColonyContributorsQueryVariables>;
 export const GetColonyDecisionsDocument = gql`
     query getColonyDecisions($colonyAddress: String!, $sortDirection: ModelSortDirection = ASC, $filter: ModelColonyDecisionFilterInput, $limit: Int = 10) {
   getColonyDecisionByColonyAddress(

@@ -1085,7 +1085,7 @@ type ContributorReputation @model {
 """
 The ColonyContributor model represents a contributor to the Colony.
 """
-type ColonyContributor @model {
+type ColonyContributor @model @searchable {
   """
   Unique identifier
   Format: <colonyAddress>_<contributorAddress>

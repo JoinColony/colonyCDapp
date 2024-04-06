@@ -14,7 +14,7 @@ import {
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants/index.ts';
-import { useGetColonyContributorsQuery } from '~gql';
+import { useSearchColonyContributorsQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useAllMembers from '~hooks/members/useAllMembers.ts';
 import useColonyContributors from '~hooks/members/useColonyContributors.ts';
@@ -88,23 +88,21 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [getFilterContributorType],
   );
 
-  // Make sure we fetch all members which is needed to select members
   const {
-    data: memberData,
+    data: memberSearchData,
     loading,
     fetchMore,
-  } = useGetColonyContributorsQuery({
+  } = useSearchColonyContributorsQuery({
     variables: {
       colonyAddress,
     },
     skip: !colonyAddress,
     onCompleted: (receivedData) => {
-      if (receivedData?.getContributorsByColony?.nextToken) {
+      if (receivedData?.searchColonyContributors?.nextToken) {
         // If there's more data to fetch, call fetchMore
         fetchMore({
           variables: {
-            colonyAddress,
-            nextToken: receivedData.getContributorsByColony.nextToken,
+            nextToken: receivedData.searchColonyContributors.nextToken,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
             if (!fetchMoreResult) return prev;
@@ -112,13 +110,13 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
             // Here, combine the previous items with the newly fetched items
             return {
               ...prev,
-              getContributorsByColony: {
-                ...prev.getContributorsByColony,
+              searchColonyContributors: {
+                ...prev.searchColonyContributors,
                 items: [
-                  ...(prev?.getContributorsByColony?.items || []),
-                  ...(fetchMoreResult?.getContributorsByColony?.items || []),
+                  ...(prev?.searchColonyContributors?.items || []),
+                  ...(fetchMoreResult?.searchColonyContributors?.items || []),
                 ],
-                nextToken: fetchMoreResult?.getContributorsByColony?.nextToken,
+                nextToken: fetchMoreResult?.searchColonyContributors?.nextToken,
               },
             };
           },
@@ -128,8 +126,9 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const allMembers = useMemo(
-    () => memberData?.getContributorsByColony?.items.filter(notNull) || [],
-    [memberData],
+    () =>
+      memberSearchData?.searchColonyContributors?.items.filter(notNull) || [],
+    [memberSearchData],
   );
 
   const {
@@ -155,8 +154,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     verifiedMembers,
     canLoadMore: moreMembers,
     loadMore: loadMoreMembers,
-    totalMemberCount,
-    totalMembers,
   } = useAllMembers({
     allMembers,
     contributorTypes,
@@ -179,13 +176,13 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const membersLimit = getAllMembersPageSize(ALL_MEMBERS_LIST_LIMIT);
   const membersByAddress = useMemo(
     () =>
-      totalMembers.reduce<Record<string, ColonyContributor>>((map, member) => {
+      allMembers.reduce<Record<string, ColonyContributor>>((map, member) => {
         return {
           ...map,
           [member.contributorAddress]: member,
         };
       }, {}),
-    [totalMembers],
+    [allMembers],
   );
 
   const value = useMemo(
@@ -193,8 +190,8 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       membersByAddress,
       filteredMembers,
       verifiedMembers,
-      totalMemberCount,
-      totalMembers,
+      totalMemberCount: memberSearchData?.searchColonyContributors?.total || 0,
+      totalMembers: allMembers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
@@ -211,8 +208,8 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       membersByAddress,
       filteredMembers,
       verifiedMembers,
-      totalMemberCount,
-      totalMembers,
+      memberSearchData,
+      allMembers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,

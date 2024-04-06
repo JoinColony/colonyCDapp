@@ -41,25 +41,8 @@ const useAllMembers = ({
     0,
   );
 
-  /*
-   * To be considered a member, you must either:
-   * be watching the colony, or
-   * be verified in the colony, or
-   * have at least one permission in any domain
-   * have at least some reputation in any domain
-   */
-
-  const members = useMemo(
-    () =>
-      allMembers.filter(
-        ({ isVerified, hasPermissions, hasReputation, isWatching }) =>
-          isWatching || hasPermissions || hasReputation || isVerified,
-      ) ?? [],
-    [allMembers],
-  );
-
   const filteredMembers = useMemberFilters({
-    members,
+    members: allMembers,
     contributorTypes,
     filterPermissions,
     nativeDomainIds,
@@ -84,8 +67,6 @@ const useAllMembers = ({
     loadMore() {
       setPage((prevPage) => prevPage + 1);
     },
-    totalMemberCount: members.length,
-    totalMembers: members,
   };
 };
 
