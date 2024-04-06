@@ -47,3 +47,23 @@ query GetContributorsByAddress(
     nextToken
   }
 }
+
+query SearchColonyContributors(
+  $colonyAddress: ID!
+  $nextToken: String
+  $limit: Int = 100
+) {
+  searchColonyContributors(
+    limit: $limit
+    nextToken: $nextToken
+    filter: { colonyAddress: { eq: $colonyAddress } }
+    sort: { field: createdAt, direction: asc }
+    from: 0
+  ) {
+    items {
+      ...ColonyContributor
+    }
+    total
+    nextToken
+  }
+}
