@@ -7,7 +7,7 @@ import {
   ColonyRole,
   colonyRoles2Hex,
 } from '@colony/colony-js';
-import { utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { poll } from 'ethers/lib/utils';
 import { all, call, put } from 'redux-saga/effects';
 
@@ -57,6 +57,10 @@ import {
   initiateTransaction,
 } from '../utils/index.ts';
 
+const DEFAULT_STAKE_FRACTION = BigNumber.from(1)
+  .mul(BigNumber.from(10).pow(18))
+  .div(100);
+
 function* colonyCreate({
   meta,
   meta: { navigate },
@@ -90,9 +94,11 @@ function* colonyCreate({
   }
 
   channelNames.push('deployOneTx');
-  channelNames.push('deployStakedExpenditure');
   channelNames.push('setOneTxRoles');
+
+  channelNames.push('deployStakedExpenditure');
   channelNames.push('setStakedExpenditureRoles');
+  channelNames.push('enableStakedExpenditure');
 
   /*
    * Define a manifest of transaction ids and their respective channels.
@@ -111,6 +117,7 @@ function* colonyCreate({
     setOwner,
     deployStakedExpenditure,
     setStakedExpenditureRoles,
+    enableStakedExpenditure,
   } = channels;
 
   const batchKey = TRANSACTION_METHODS.CreateColony;
@@ -169,6 +176,14 @@ function* colonyCreate({
         context: ClientType.ColonyClient,
         methodContext: 'setStakedExpenditureRoles',
         methodName: 'setUserRoles',
+        ready: false,
+      });
+    }
+
+    if (enableStakedExpenditure) {
+      yield createGroupTransaction(enableStakedExpenditure, batchKey, meta, {
+        context: ClientType.StakedExpenditureClient,
+        methodName: 'initialise',
         ready: false,
       });
     }
@@ -314,6 +329,7 @@ function* colonyCreate({
         setOneTxRoles,
         deployStakedExpenditure,
         setStakedExpenditureRoles,
+        enableStakedExpenditure,
       ]
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, colonyAddress))),
@@ -447,7 +463,7 @@ function* colonyCreate({
       );
 
       /*
-       * Set OneTx administration role
+       * Set Staked Expenditure required permissions
        */
       yield put(transactionPending(setStakedExpenditureRoles.id));
 
@@ -476,6 +492,18 @@ function* colonyCreate({
       yield initiateTransaction({ id: setStakedExpenditureRoles.id });
 
       yield waitForTxResult(setStakedExpenditureRoles.channel);
+
+      yield put(transactionPending(enableStakedExpenditure.id));
+
+      yield put(
+        transactionAddParams(enableStakedExpenditure.id, [
+          DEFAULT_STAKE_FRACTION,
+        ]),
+      );
+
+      yield initiateTransaction({ id: enableStakedExpenditure.id });
+
+      yield waitForTxResult(enableStakedExpenditure.channel);
     }
 
     /*
