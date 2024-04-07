@@ -1,4 +1,4 @@
-import { Extension, getExtensionHash } from '@colony/colony-js';
+import { type Extension, getExtensionHash } from '@colony/colony-js';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -7,7 +7,9 @@ import {
   type GetCurrentExtensionVersionQueryVariables,
 } from '~gql';
 
-export const getOneTxPaymentVersion = async (): Promise<number> => {
+export const getExtensionVersion = async (
+  extension: Extension,
+): Promise<number> => {
   const apolloClient = getContext(ContextModule.ApolloClient);
   const { data } = await apolloClient.query<
     GetCurrentExtensionVersionQuery,
@@ -15,7 +17,7 @@ export const getOneTxPaymentVersion = async (): Promise<number> => {
   >({
     query: GetCurrentExtensionVersionDocument,
     variables: {
-      extensionHash: getExtensionHash(Extension.OneTxPayment),
+      extensionHash: getExtensionHash(extension),
     },
   });
 
