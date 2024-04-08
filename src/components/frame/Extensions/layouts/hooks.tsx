@@ -106,7 +106,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
 
 export const useMainMenuItems = (hasTransactionId: boolean) => {
   const {
-    colony: { metadata },
+    colony: { metadata, status },
   } = useColonyContext();
 
   const {
@@ -293,14 +293,6 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
                 [ACTION_TYPE_FIELD_NAME]: Action.ManageTokens,
               }),
           },
-          {
-            key: '9',
-            label: formatText({ id: 'actions.mintTokens' }),
-            onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
-              }),
-          },
         ],
       },
     },
@@ -386,6 +378,17 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
       },
     },
   ];
+
+  if (status?.nativeToken?.mintable) {
+    mainMenuItems[3].relatedActionsProps?.items?.push({
+      key: '9',
+      label: formatText({ id: 'actions.mintTokens' }),
+      onClick: () =>
+        toggleActionSidebarOn({
+          [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+        }),
+    });
+  }
 
   return mainMenuItems;
 };

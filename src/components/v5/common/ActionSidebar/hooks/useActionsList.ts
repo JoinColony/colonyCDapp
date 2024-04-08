@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
 const useActionsList = () => {
-  return useMemo(
-    (): SearchSelectOptionProps[] => [
+  const { colony } = useColonyContext();
+  return useMemo((): SearchSelectOptionProps[] => {
+    const actionsListOptions: SearchSelectOptionProps[] = [
       {
         key: '1',
         title: { id: 'actions.payments' },
@@ -129,9 +131,15 @@ const useActionsList = () => {
           // },
         ],
       },
-    ],
-    [],
-  );
+    ];
+    if (!colony?.status?.nativeToken?.mintable) {
+      actionsListOptions[2].options[1].isDisabled = true;
+    }
+    if (!colony?.status?.nativeToken?.unlockable) {
+      actionsListOptions[2].options[2].isDisabled = true;
+    }
+    return actionsListOptions;
+  }, [colony]);
 };
 
 export default useActionsList;
