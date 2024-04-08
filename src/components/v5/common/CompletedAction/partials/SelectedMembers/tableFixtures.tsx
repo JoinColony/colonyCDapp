@@ -30,9 +30,6 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
             userName={user.profile?.displayName ?? user.walletAddress}
             walletAddress={user.walletAddress}
             user={user}
-            popperOptions={{
-              placement: 'bottom-start',
-            }}
           >
             <Avatar
               size="xs"
@@ -53,9 +50,6 @@ export const membersColumns: ColumnDef<SelectedMember>[] = [
           className="flex items-center text-gray-900"
           userName={walletAddress}
           walletAddress={walletAddress}
-          popperOptions={{
-            placement: 'bottom-start',
-          }}
         >
           <Avatar size="xs" seed={walletAddress.toLowerCase()} />
           <MaskedAddress
