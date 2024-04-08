@@ -145,6 +145,7 @@ module.exports = {
         base: '1',
         mid: '2',
         sidebar: '10',
+        dropdown: '20',
         top: '1000',
       },
     },

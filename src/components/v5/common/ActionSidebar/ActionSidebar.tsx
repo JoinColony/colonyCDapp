@@ -104,13 +104,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       exit="hidden"
       initial="hidden"
       animate="visible"
-      // @todo: remove additional z-index change when the z-index issue is resolved
       className={clsx(
         `
           fixed
           bottom-4
           right-0
           top-0
+          isolate
           z-sidebar
           flex
           h-full
