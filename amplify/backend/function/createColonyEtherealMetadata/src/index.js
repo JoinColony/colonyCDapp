@@ -114,7 +114,7 @@ exports.handler = async (event) => {
         id: `etherealcolonymetadata-${transactionHash}`,
         displayName: colonyDisplayName,
         etherealData: {
-          colonyName,
+          colonyName: colonyName.toLowerCase(),
           colonyDisplayName,
           colonyAvatar,
           colonyThumbnail,
