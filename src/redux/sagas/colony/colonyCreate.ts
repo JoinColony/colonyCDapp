@@ -92,10 +92,9 @@ function* colonyCreate({
     channelNames.push('setOwner');
   }
 
-  channelNames.push('deployOneTx');
+  channelNames.push('installExtensions');
   channelNames.push('setOneTxRoles');
 
-  channelNames.push('deployStakedExpenditure');
   channelNames.push('setStakedExpenditureRoles');
   channelNames.push('enableStakedExpenditure');
 
@@ -111,10 +110,9 @@ function* colonyCreate({
 
   const {
     createColony,
-    deployOneTx,
+    installExtensions,
     setOneTxRoles,
     setOwner,
-    deployStakedExpenditure,
     setStakedExpenditureRoles,
     enableStakedExpenditure,
   } = channels;
@@ -145,18 +143,10 @@ function* colonyCreate({
       });
     }
 
-    if (deployOneTx) {
-      yield createGroupTransaction(deployOneTx, batchKey, meta, {
+    if (installExtensions) {
+      yield createGroupTransaction(installExtensions, batchKey, meta, {
         context: ClientType.ColonyClient,
-        methodName: 'installExtension',
-        ready: false,
-      });
-    }
-
-    if (deployStakedExpenditure) {
-      yield createGroupTransaction(deployStakedExpenditure, batchKey, meta, {
-        context: ClientType.ColonyClient,
-        methodName: 'installExtension',
+        methodName: 'multicall',
         ready: false,
       });
     }
@@ -323,9 +313,8 @@ function* colonyCreate({
      */
     yield all(
       [
-        deployOneTx,
+        installExtensions,
         setOneTxRoles,
-        deployStakedExpenditure,
         setStakedExpenditureRoles,
         enableStakedExpenditure,
       ]
@@ -344,21 +333,43 @@ function* colonyCreate({
       yield waitForTxResult(setOwner.channel);
     }
 
-    if (deployOneTx) {
+    if (installExtensions) {
       /*
-       * Deploy OneTx
+       * Install OneTxPayment and StakedExpenditure extensions using multicall
        */
       const oneTxHash = getExtensionHash(Extension.OneTxPayment);
       const oneTxVersion = yield call(
         getExtensionVersion,
         Extension.OneTxPayment,
       );
-      yield put(
-        transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]),
+      const stakedExpenditureHash = getExtensionHash(
+        Extension.StakedExpenditure,
       );
-      yield initiateTransaction({ id: deployOneTx.id });
+      const stakedExpenditureVersion = yield call(
+        getExtensionVersion,
+        Extension.StakedExpenditure,
+      );
 
-      yield waitForTxResult(deployOneTx.channel);
+      const multicallData: string[] = [];
+
+      multicallData.push(
+        colonyClient.interface.encodeFunctionData('installExtension', [
+          oneTxHash,
+          oneTxVersion,
+        ]),
+      );
+
+      multicallData.push(
+        colonyClient.interface.encodeFunctionData('installExtension', [
+          stakedExpenditureHash,
+          stakedExpenditureVersion,
+        ]),
+      );
+
+      yield put(transactionAddParams(installExtensions.id, [multicallData]));
+      yield initiateTransaction({ id: installExtensions.id });
+
+      yield waitForTxResult(installExtensions.channel);
 
       /*
        * Set OneTx administration role
@@ -398,7 +409,7 @@ function* colonyCreate({
         [ColonyRole.Architecture, ColonyRole.Root],
       );
 
-      const extensionConfig = supportedExtensionsConfig.find(
+      const oneTxConfig = supportedExtensionsConfig.find(
         (config) => config.extensionId === Extension.OneTxPayment,
       );
       yield put(
@@ -407,34 +418,12 @@ function* colonyCreate({
           childSkillIndex,
           oneTxPaymentExtension.address,
           Id.RootDomain,
-          colonyRoles2Hex(extensionConfig?.neededColonyPermissions ?? []),
+          colonyRoles2Hex(oneTxConfig?.neededColonyPermissions ?? []),
         ]),
       );
       yield initiateTransaction({ id: setOneTxRoles.id });
 
       yield waitForTxResult(setOneTxRoles.channel);
-    }
-
-    if (deployStakedExpenditure) {
-      /*
-       * Deploy Staked Expenditure
-       */
-      const stakedExpenditureHash = getExtensionHash(
-        Extension.StakedExpenditure,
-      );
-      const stakedExpenditureVersion = yield call(
-        getExtensionVersion,
-        Extension.StakedExpenditure,
-      );
-      yield put(
-        transactionAddParams(deployStakedExpenditure.id, [
-          stakedExpenditureHash,
-          stakedExpenditureVersion,
-        ]),
-      );
-      yield initiateTransaction({ id: deployStakedExpenditure.id });
-
-      yield waitForTxResult(deployStakedExpenditure.channel);
 
       /*
        * Avoid a race condition where the contract might actually not be found on chain
@@ -464,17 +453,7 @@ function* colonyCreate({
        */
       yield put(transactionPending(setStakedExpenditureRoles.id));
 
-      /*
-       * Generate proofs for setting permissions the the newly deployed OneTxPayment extension
-       */
-      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-        colonyClient.networkClient,
-        colonyClient,
-        Id.RootDomain,
-        [ColonyRole.Architecture, ColonyRole.Root],
-      );
-
-      const extensionConfig = supportedExtensionsConfig.find(
+      const stakedExpenditureConfig = supportedExtensionsConfig.find(
         (config) => config.extensionId === Extension.StakedExpenditure,
       );
       yield put(
@@ -483,7 +462,9 @@ function* colonyCreate({
           childSkillIndex,
           stakedExpenditureClient.address,
           Id.RootDomain,
-          colonyRoles2Hex(extensionConfig?.neededColonyPermissions ?? []),
+          colonyRoles2Hex(
+            stakedExpenditureConfig?.neededColonyPermissions ?? [],
+          ),
         ]),
       );
       yield initiateTransaction({ id: setStakedExpenditureRoles.id });
