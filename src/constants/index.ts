@@ -137,7 +137,7 @@ export const GOERLI_NETWORK: NetworkInfo = {
 
 export const GANACHE_NETWORK: NetworkInfo = {
   name: 'Local Ganache Instance',
-  chainId: '2656691',
+  chainId: '265669100',
   shortName: 'Ganache',
   blockExplorerName: 'Noexplorer',
   blockExplorerUrl: 'http://localhost',
