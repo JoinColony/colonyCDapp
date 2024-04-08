@@ -97,7 +97,7 @@ const FundsTable: FC = () => {
         className="w-full [&_td>div]:p-0 [&_td]:border-b [&_td]:border-gray-100 [&_th:empty]:border-none [&_th:last-child]:text-right [&_tr:last-child>td]:border-0"
         emptyContent={
           (!searchedTokens.length || claims.length <= 0) && (
-            <div className="w-full rounded-lg border border-gray-200">
+            <div className="w-full rounded-lg">
               <EmptyContent
                 title={{ id: 'incomingFundsPage.table.emptyTitle' }}
                 description={{ id: 'incomingFundsPage.table.emptyDescription' }}
