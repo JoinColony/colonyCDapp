@@ -6,8 +6,9 @@ import {
   getPermissionProofs,
   ColonyRole,
   colonyRoles2Hex,
+  type AnyColonyClient,
 } from '@colony/colony-js';
-import { utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { poll } from 'ethers/lib/utils';
 import { all, call, put } from 'redux-saga/effects';
 
@@ -47,7 +48,7 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import { updateTransaction } from '../transactions/transactionsToDb.ts';
-import { getOneTxPaymentVersion } from '../utils/extensionVersion.ts';
+import { getExtensionVersion } from '../utils/extensionVersion.ts';
 import {
   putError,
   takeFrom,
@@ -88,8 +89,9 @@ function* colonyCreate({
     channelNames.push('setOwner');
   }
 
-  channelNames.push('deployOneTx');
-  channelNames.push('setOneTxRoles');
+  channelNames.push('installExtensions');
+  channelNames.push('setExtensionsRoles');
+  channelNames.push('enableStakedExpenditure');
 
   /*
    * Define a manifest of transaction ids and their respective channels.
@@ -101,7 +103,13 @@ function* colonyCreate({
     channelNames,
   );
 
-  const { createColony, deployOneTx, setOneTxRoles, setOwner } = channels;
+  const {
+    createColony,
+    installExtensions,
+    setExtensionsRoles,
+    setOwner,
+    enableStakedExpenditure,
+  } = channels;
 
   const batchKey = 'createColony';
 
@@ -129,19 +137,28 @@ function* colonyCreate({
       });
     }
 
-    if (deployOneTx) {
-      yield createGroupTransaction(deployOneTx, batchKey, meta, {
+    if (installExtensions) {
+      yield createGroupTransaction(installExtensions, batchKey, meta, {
         context: ClientType.ColonyClient,
-        methodName: 'installExtension',
+        methodName: 'multicall',
+        methodContext: 'installExtensions',
         ready: false,
       });
     }
 
-    if (setOneTxRoles) {
-      yield createGroupTransaction(setOneTxRoles, batchKey, meta, {
+    if (setExtensionsRoles) {
+      yield createGroupTransaction(setExtensionsRoles, batchKey, meta, {
         context: ClientType.ColonyClient,
-        methodContext: 'setOneTxRoles',
-        methodName: 'setUserRoles',
+        methodContext: 'setExtensionsRoles',
+        methodName: 'multicall',
+        ready: false,
+      });
+    }
+
+    if (enableStakedExpenditure) {
+      yield createGroupTransaction(enableStakedExpenditure, batchKey, meta, {
+        context: ClientType.StakedExpenditureClient,
+        methodName: 'initialise',
         ready: false,
       });
     }
@@ -282,7 +299,7 @@ function* colonyCreate({
      * Add a colonyAddress identifier to all pending transactions.
      */
     yield all(
-      [deployOneTx, setOneTxRoles]
+      [installExtensions, setExtensionsRoles, enableStakedExpenditure]
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, colonyAddress))),
     );
@@ -298,73 +315,12 @@ function* colonyCreate({
       yield waitForTxResult(setOwner.channel);
     }
 
-    if (deployOneTx) {
-      /*
-       * Deploy OneTx
-       */
-      const oneTxHash = getExtensionHash(Extension.OneTxPayment);
-      const oneTxVersion = yield call(getOneTxPaymentVersion);
-      yield put(
-        transactionAddParams(deployOneTx.id, [oneTxHash, oneTxVersion]),
-      );
-      yield initiateTransaction({ id: deployOneTx.id });
-
-      yield waitForTxResult(deployOneTx.channel);
-
-      /*
-       * Set OneTx administration role
-       */
-      yield put(transactionPending(setOneTxRoles.id));
-
-      /*
-       * Avoid a race condition where the contract might actually not be found on chain
-       * even though we have it from inside the transaction receipt
-       *
-       * This might happen if using different RPC endpoints which are at different block
-       * heights from one another
-       */
-      const oneTxPaymentExtension = yield poll(
-        async () => {
-          try {
-            const client = await colonyClient.getExtensionClient(
-              Extension.OneTxPayment,
-            );
-            return client;
-          } catch (err) {
-            return undefined;
-          }
-        },
-        {
-          timeout: 30000,
-          retryLimit: 0,
-        },
-      );
-
-      /*
-       * Generate proofs for setting permissions the the newly deployed OneTxPayment extension
-       */
-      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-        colonyClient.networkClient,
-        colonyClient,
-        Id.RootDomain,
-        [ColonyRole.Architecture, ColonyRole.Root],
-      );
-
-      const extensionConfig = supportedExtensionsConfig.find(
-        (config) => config.extensionId === Extension.OneTxPayment,
-      );
-      yield put(
-        transactionAddParams(setOneTxRoles.id, [
-          permissionDomainId,
-          childSkillIndex,
-          oneTxPaymentExtension.address,
-          Id.RootDomain,
-          colonyRoles2Hex(extensionConfig?.neededColonyPermissions ?? []),
-        ]),
-      );
-      yield initiateTransaction({ id: setOneTxRoles.id });
-
-      yield waitForTxResult(setOneTxRoles.channel);
+    if (installExtensions) {
+      yield deployExtensions(colonyClient, {
+        installExtensions,
+        setExtensionsRoles,
+        enableStakedExpenditure,
+      });
     }
 
     /*
@@ -429,6 +385,150 @@ function* colonyCreate({
       ),
     );
   }
+}
+
+const DEFAULT_STAKE_FRACTION = BigNumber.from(1)
+  .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
+  .div(100); // 1% in wei
+
+function* deployExtensions(
+  colonyClient: AnyColonyClient,
+  channels: Record<string, ChannelDefinition>,
+) {
+  const { installExtensions, setExtensionsRoles, enableStakedExpenditure } =
+    channels;
+
+  /*
+   * Install OneTxPayment and StakedExpenditure extensions using multicall
+   */
+  yield put(transactionPending(installExtensions.id));
+
+  const oneTxHash = getExtensionHash(Extension.OneTxPayment);
+  const oneTxVersion = yield call(getExtensionVersion, Extension.OneTxPayment);
+  const stakedExpenditureHash = getExtensionHash(Extension.StakedExpenditure);
+  const stakedExpenditureVersion = yield call(
+    getExtensionVersion,
+    Extension.StakedExpenditure,
+  );
+
+  const installMulticallData: string[] = [];
+  installMulticallData.push(
+    colonyClient.interface.encodeFunctionData('installExtension', [
+      oneTxHash,
+      oneTxVersion,
+    ]),
+  );
+  installMulticallData.push(
+    colonyClient.interface.encodeFunctionData('installExtension', [
+      stakedExpenditureHash,
+      stakedExpenditureVersion,
+    ]),
+  );
+
+  yield put(transactionAddParams(installExtensions.id, [installMulticallData]));
+  yield initiateTransaction({ id: installExtensions.id });
+  yield waitForTxResult(installExtensions.channel);
+
+  /*
+   * Avoid a race condition where the contract might actually not be found on chain
+   * even though we have it from inside the transaction receipt
+   *
+   * This might happen if using different RPC endpoints which are at different block
+   * heights from one another
+   */
+  const [oneTxClient, stakedExpenditureClient] = yield all([
+    poll(
+      async () => {
+        try {
+          const client = await colonyClient.getExtensionClient(
+            Extension.OneTxPayment,
+          );
+          return client;
+        } catch (err) {
+          return undefined;
+        }
+      },
+      {
+        timeout: 30000,
+        retryLimit: 0,
+      },
+    ),
+    poll(
+      async () => {
+        try {
+          const client = await colonyClient.getExtensionClient(
+            Extension.StakedExpenditure,
+          );
+          return client;
+        } catch (err) {
+          return undefined;
+        }
+      },
+      {
+        timeout: 30000,
+        retryLimit: 0,
+      },
+    ),
+  ]);
+
+  /*
+   * Set permissions for the newly deployed extensions
+   */
+  yield put(transactionPending(setExtensionsRoles.id));
+
+  const setRolesMulticallData: string[] = [];
+
+  const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+    colonyClient.networkClient,
+    colonyClient,
+    Id.RootDomain,
+    [ColonyRole.Architecture, ColonyRole.Root],
+  );
+
+  const oneTxConfig = supportedExtensionsConfig.find(
+    (config) => config.extensionId === Extension.OneTxPayment,
+  );
+  const stakedExpenditureConfig = supportedExtensionsConfig.find(
+    (config) => config.extensionId === Extension.StakedExpenditure,
+  );
+
+  setRolesMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setUserRoles', [
+      permissionDomainId,
+      childSkillIndex,
+      oneTxClient.address,
+      Id.RootDomain,
+      colonyRoles2Hex(oneTxConfig?.neededColonyPermissions ?? []),
+    ]),
+  );
+  setRolesMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setUserRoles', [
+      permissionDomainId,
+      childSkillIndex,
+      stakedExpenditureClient.address,
+      Id.RootDomain,
+      colonyRoles2Hex(stakedExpenditureConfig?.neededColonyPermissions ?? []),
+    ]),
+  );
+
+  yield put(
+    transactionAddParams(setExtensionsRoles.id, [setRolesMulticallData]),
+  );
+
+  yield initiateTransaction({ id: setExtensionsRoles.id });
+  yield waitForTxResult(setExtensionsRoles.channel);
+
+  /**
+   * Enable Staked Expenditure
+   */
+  yield put(transactionPending(enableStakedExpenditure.id));
+
+  yield put(
+    transactionAddParams(enableStakedExpenditure.id, [DEFAULT_STAKE_FRACTION]),
+  );
+
+  yield initiateTransaction({ id: enableStakedExpenditure.id });
+  yield waitForTxResult(enableStakedExpenditure.channel);
 }
 
 export default function* colonyCreateSaga() {
