@@ -112,32 +112,19 @@ export type AddressElements = {
  *
  * @return {array} The split address in an array of strings
  */
-export const splitAddress = (address: Address): AddressElements | Error => {
-  try {
-    /*
-     * @TODO Refactor to remove the use of purser
-     *
-     * Maybe copy-paste the validator logic from puser and store it here under utils
-     * as it's quite robust and light weight. No point in importing the whole
-     * deprecated lib just for this one validator
-     *
-     * https://github.com/JoinColony/purser/blob/master/packages/%40purser/core/src/validators.ts#L202-L259
-     */
-    // addressValidator(address);
-    const HEX_HEADER = '0x';
-    const rawAddress: string = address.replace('0x', '');
-    const addressStart: string = rawAddress.slice(0, 4);
-    const addressMiddle: string = rawAddress.slice(4, -4);
-    const addressEnd: string = rawAddress.slice(-4);
-    return {
-      header: HEX_HEADER,
-      start: `${addressStart}`,
-      middle: `${addressMiddle}`,
-      end: addressEnd,
-    };
-  } catch (caughtError) {
-    return caughtError;
-  }
+export const splitAddress = (address: Address): AddressElements => {
+  const HEX_HEADER = '0x';
+  const rawAddress: string = address.replace('0x', '');
+  const addressStart: string = rawAddress.slice(0, 4);
+  const addressMiddle: string = rawAddress.slice(4, -4);
+  const addressEnd: string = rawAddress.slice(-4);
+
+  return {
+    header: HEX_HEADER,
+    start: `${addressStart}`,
+    middle: `${addressMiddle}`,
+    end: addressEnd,
+  };
 };
 
 export const splitTransactionHash = (
