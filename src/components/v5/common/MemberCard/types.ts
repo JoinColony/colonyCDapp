@@ -12,9 +12,3 @@ export interface MemberCardProps {
   isVerified?: boolean;
   contributorType?: ContributorType;
 }
-
-export interface SimpleMemberCardProps {
-  userAddress: string;
-  user?: User;
-  meatBallMenuProps: MeatBallMenuProps;
-}

@@ -5,8 +5,9 @@ import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import SimpleExtensionCard from '~v5/common/Filter/ExtensionCard/SimpleExtensionCard.tsx';
-import SimpleMemberCard from '~v5/common/MemberCard/SimpleMemberCard.tsx';
 import MemberCardList from '~v5/common/MemberCardList/MemberCardList.tsx';
+import SimpleMemberCard from '~v5/common/SimpleMemberCard/SimpleMemberCard.tsx';
+import SimpleMemberCardSkeleton from '~v5/common/SimpleMemberCard/SimpleMemberCardSkeleton.tsx';
 import TextButton from '~v5/shared/Button/TextButton.tsx';
 import CountBox from '~v5/shared/CountBox/index.ts';
 
@@ -57,15 +58,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
       {isLoading ? (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(18.75rem,1fr))] gap-6 md:grid-cols-4">
           {[...Array(4).keys()].map((key) => (
-            <div
-              className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5"
-              key={key}
-            >
-              <div className="flex items-center gap-2.5">
-                <div className="h-[1.875rem] w-[1.875rem] overflow-hidden rounded-full bg-gray-300 skeleton" />
-                <div className="h-4 w-2/3 overflow-hidden rounded bg-gray-300 skeleton" />
-              </div>
-            </div>
+            <SimpleMemberCardSkeleton key={key} />
           ))}
         </div>
       ) : (
