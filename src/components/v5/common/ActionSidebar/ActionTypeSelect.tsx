@@ -103,7 +103,6 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                   portalElementRef.current = ref;
                 }}
                 items={actionsList}
-                className="z-sidebar"
                 onSelect={(action) => {
                   toggleSelectOff();
 
