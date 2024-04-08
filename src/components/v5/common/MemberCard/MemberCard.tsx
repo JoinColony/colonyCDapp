@@ -33,7 +33,7 @@ const MemberCard: FC<MemberCardProps> = ({
           popperOptions={{
             placement: 'bottom-start',
           }}
-          className="flex w-full flex-grow flex-col items-center justify-between gap-2 text-gray-900"
+          className="flex w-full max-w-full flex-grow flex-col items-center justify-between gap-2 text-gray-900"
         >
           <ContributorTypeWrapper contributorType={contributorType}>
             <UserAvatar
@@ -43,15 +43,15 @@ const MemberCard: FC<MemberCardProps> = ({
               size={60}
             />
           </ContributorTypeWrapper>
-          <p className="flex max-w-full items-center justify-center text-center text-1">
-            <span className="inline-block w-full truncate">{userName}</span>
+          <div className="flex max-w-full items-center justify-center text-center text-1">
+            <p className="min-w-0 flex-1 truncate">{userName}</p>
             {isVerified && (
               <SealCheck
                 size={14}
                 className="ml-1 flex-shrink-0 text-blue-400"
               />
             )}
-          </p>
+          </div>
         </UserInfoPopover>
         <div className="absolute right-0 top-0">
           <MeatBallMenu withVerticalIcon {...meatBallMenuProps} />

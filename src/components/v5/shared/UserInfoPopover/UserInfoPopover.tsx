@@ -80,13 +80,16 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
       type="button"
       ref={setTriggerRef}
       className={clsx(
-        className,
         'inline-flex flex-shrink-0 items-center transition-all duration-normal hover:text-blue-400',
+        className,
       )}
     >
       {children}
       {withVerifiedBadge && isVerified && (
-        <CircleWavyCheck size={14} className="ml-1 text-blue-400" />
+        <CircleWavyCheck
+          size={14}
+          className="ml-1 flex-shrink-0 text-blue-400"
+        />
       )}
     </button>
   );
