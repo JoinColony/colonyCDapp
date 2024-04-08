@@ -41,6 +41,7 @@ export interface PillsProps {
   className?: string;
   textClassName?: string;
   isIconVisible?: boolean;
+  isCapitalized?: boolean;
 }
 
 export interface UserStakeStatusBadgeProps extends Omit<PillsProps, 'mode'> {

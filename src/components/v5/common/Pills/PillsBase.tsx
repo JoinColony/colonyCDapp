@@ -11,14 +11,16 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
   text,
   icon: Icon,
   pillSize = 'medium',
+  isCapitalized = true,
   textClassName,
   ...rest
 }) => (
   <span
     className={clsx(
-      'inline-flex shrink-0 items-center rounded-3xl px-3 py-1 text-center capitalize',
+      'inline-flex shrink-0 items-center rounded-3xl px-3 py-1 text-center',
       className,
       {
+        capitalize: isCapitalized,
         'h-[1.625rem] text-3': pillSize === 'medium',
         'h-[1.5rem] text-4': pillSize === 'small',
       },

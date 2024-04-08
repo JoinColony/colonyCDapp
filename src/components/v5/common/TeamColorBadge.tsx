@@ -41,7 +41,10 @@ const TeamColorBadge = ({ title, defaultColor }: Props) => {
   return (
     <div className="flex items-center gap-1">
       <span className={clsx(color, 'mr-2 h-[1.125rem] w-[1.125rem] rounded')} />
-      <PillsBase className={`border bg-base-white ${badgeColor}`}>
+      <PillsBase
+        className={`border bg-base-white ${badgeColor}`}
+        isCapitalized={false}
+      >
         {title}
       </PillsBase>
     </div>

@@ -106,8 +106,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           h-full
           w-full
           flex-col
-          rounded-l-lg
-          rounded-bl-lg
           border
           border-r-0
           border-gray-200
@@ -118,6 +116,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           sm:top-4
           sm:h-[calc(100vh-2rem)]
           sm:w-[calc(100vw-8.125rem)]
+          sm:rounded-l-lg
         `,
         {
           'sm:max-w-full': isSidebarFullscreen,
