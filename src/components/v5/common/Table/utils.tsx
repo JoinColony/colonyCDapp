@@ -29,19 +29,13 @@ export const makeMenuColumn = <T,>(
       const props = getMenuProps?.(row);
 
       return props ? (
-        <div
-          className={clsx({
-            'absolute right-4 top-1/2 -translate-y-1/2': verticalOnMobile,
-          })}
-        >
-          <MeatBallMenu
-            {...props}
-            contentWrapperClassName={clsx(
-              props.contentWrapperClassName,
-              '!z-sidebar',
-            )}
-          />
-        </div>
+        <MeatBallMenu
+          {...props}
+          contentWrapperClassName={clsx(
+            props.contentWrapperClassName,
+            '!z-sidebar',
+          )}
+        />
       ) : undefined;
     },
   });
