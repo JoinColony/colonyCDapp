@@ -27,6 +27,7 @@ export interface SearchSelectOption {
   label: MessageDescriptor | string;
   value: string | number;
   isDisabled?: boolean;
+  isComingSoon?: boolean;
   avatar?: string;
   thumbnail?: string;
   showAvatar?: boolean;

@@ -134,7 +134,7 @@ const BalanceTable: FC = () => {
           ),
           icon: ArrowSquareOut,
         },
-        ...(isTokenNative
+        ...(isTokenNative && nativeTokenStatus?.mintable
           ? [
               {
                 key: 'mint_tokens',
