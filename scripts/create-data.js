@@ -27,7 +27,7 @@ const { abi: OneTxAbi } = require('@colony/abis/versions/hmwss/OneTxPayment');
 const {
   abi: StakedExpenditureAbi,
 } = require('@colony/abis/versions/hmwss/StakedExpenditure');
-console.log(StakedExpenditureAbi);
+
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
  * So if that lambda function gets removed, this script will stop working
