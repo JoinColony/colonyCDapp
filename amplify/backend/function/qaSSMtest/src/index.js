@@ -12,7 +12,7 @@ let networkAddress;
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prod') {
+  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
