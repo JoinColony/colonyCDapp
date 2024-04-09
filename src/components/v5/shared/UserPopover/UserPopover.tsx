@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyContributorQuery } from '~gql';
+import MaskedAddress from '~shared/MaskedAddress/index.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 
 import { UserAvatar } from '../UserAvatar/UserAvatar.tsx';
@@ -48,7 +49,12 @@ const UserPopover: FC<UserPopoverProps> = ({
           userAddress={walletAddress}
         />
         <p className="ml-2 truncate text-md font-medium">
-          {userDisplayName ?? walletAddress}
+          {userDisplayName ?? (
+            <MaskedAddress
+              address={walletAddress}
+              className="!text-md !font-medium"
+            />
+          )}
         </p>
       </div>
     </UserInfoPopover>
