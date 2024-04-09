@@ -44,7 +44,7 @@
           "Fn::If": [
             "IsQaEnv",
             "https://arbitrum-sepolia.core.chainstack.com/5ee6818452437d552323df146564523d",
-            "https://arbitrum.colony.io/rpc/"
+            "https://arbitrum-mainnet.core.chainstack.com/09365a049b04d0d7f3e3d40f97c18f2d"
           ]
         },
         "Description": "Arbitrum chain RPC endpoint"
@@ -60,8 +60,8 @@
         "Value": {
           "Fn::If": [
             "IsQaEnv",
-            "placeholder",
-            "placeholder"
+            "0x7777494e3d8cce0D3570E21FEf820F9Fee077777",
+            "0xcccccdcc0ccf6c708d860e19353c5f9a49accccc"
           ]
         },
         "Description": "Arbitrum chain network contract"
@@ -78,7 +78,7 @@
           "Fn::If": [
             "IsQaEnv",
             "https://arbitrum-sepolia.colony.io/reputation/arbitrum-sepolia",
-            "https://arbitrum.colony.io/reputation/arbitrum"
+            "https://arbitrum.colony.io/reputation/arbitrum-one"
           ]
         },
         "Description": "Reputation endpoint"
@@ -95,7 +95,7 @@
           "Fn::If": [
             "IsQaEnv",
             "https://wmc3qb57g5cnhhpok2bvdhmism.appsync-api.eu-west-2.amazonaws.com/graphql",
-            "placeholder"
+            "https://o4mnvckgrjhanhdnspfchnl6py.appsync-api.eu-west-2.amazonaws.com/graphql"
           ]
         },
         "Description": "App Sync Graphql Url endpoint"
