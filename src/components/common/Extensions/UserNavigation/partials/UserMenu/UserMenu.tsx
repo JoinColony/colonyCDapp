@@ -123,7 +123,10 @@ const UserMenu: FC<UserMenuProps> = ({
             'mb-5 border-b border-b-gray-200 pb-4 sm:pb-3': wallet,
           })}
         >
-          <TitleLabel text={formatText({ id: 'userMenu.optionsTitle' })} />
+          <TitleLabel
+            text={formatText({ id: 'userMenu.optionsTitle' })}
+            className="pb-2"
+          />
           <ul className="text-left">
             <li className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 sm:mb-0">
               <Link to="/" className="navigation-link">
@@ -175,7 +178,10 @@ const UserMenu: FC<UserMenuProps> = ({
         </div>
         {wallet && (
           <div className="w-full">
-            <TitleLabel text={formatText({ id: 'userMenu.other' })} />
+            <TitleLabel
+              text={formatText({ id: 'userMenu.other' })}
+              className="pb-2"
+            />
             <div className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
               <Plugs size={iconSize} />
               <button type="button" className="ml-2" onClick={disconnectWallet}>

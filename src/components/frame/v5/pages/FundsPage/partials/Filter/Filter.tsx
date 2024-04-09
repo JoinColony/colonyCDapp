@@ -144,7 +144,7 @@ function Filter<TValue extends FilterValue>({
               value={searchValue}
             />
           </div>
-          <Header title={{ id: filtersHeader }} />
+          <Header title={{ id: filtersHeader }} className="pb-2" />
           {RootItems}
         </PopoverBase>
       )}

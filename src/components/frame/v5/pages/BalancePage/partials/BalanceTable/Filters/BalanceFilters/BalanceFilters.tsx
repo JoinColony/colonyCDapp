@@ -34,7 +34,7 @@ const BalanceFilters: FC = () => {
 
   const filtersContent = (
     <div>
-      <h4 className="mb-6 text-gray-900 heading-5 sm:mb-0 sm:px-4 sm:uppercase sm:text-gray-400 sm:text-4">
+      <h4 className="mb-6 pb-2 text-gray-900 heading-5 sm:mb-0 sm:px-4 sm:uppercase sm:text-gray-400 sm:text-4">
         {formatText({ id: isMobile ? 'filterAndSort' : 'filters' })}
       </h4>
       <ul className="flex flex-col gap-7 sm:gap-0">

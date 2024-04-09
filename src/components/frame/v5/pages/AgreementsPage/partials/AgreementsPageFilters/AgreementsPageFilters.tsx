@@ -45,7 +45,7 @@ const AgreementsPageFilters: FC = () => {
   const FiltersContent = (
     <div>
       <h4
-        className={clsx('mb-6 sm:mb-0 sm:px-4', {
+        className={clsx('mb-6 pb-2 sm:mb-0 sm:px-4', {
           'uppercase text-gray-400 text-4': !isMobile,
           'capitalize text-gray-900 heading-5': isMobile,
         })}

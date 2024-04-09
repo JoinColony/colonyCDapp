@@ -139,8 +139,9 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
           </div>
           <Header
             title={{
-              id: !isMobile ? 'teamsPage.filter.sortBy' : undefined,
+              id: 'teamsPage.filter.sortBy',
             }}
+            className="pb-2"
           />
           {RootItems}
         </PopoverBase>
