@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import { ICON_SIZE } from '../../consts.ts';
 import {
@@ -58,14 +58,13 @@ const UpgradeColonyObjective = ({ action }: Props) => {
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
+            <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
             >
               {initiatorUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
         })}
       </ActionSubtitle>

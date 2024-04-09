@@ -4,12 +4,14 @@ import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
-import MemberSignatureList from '~v5/common/MemberSignatureList/index.ts';
+import MemberSignature from '~v5/common/MemberSignature/MemberSignature.tsx';
 import Button from '~v5/shared/Button/index.ts';
+import ContributorTypeBorder from '~v5/shared/ContributorTypeWrapper/ContributorTypeBorder.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { membersList } from './consts.ts';
 
@@ -50,10 +52,44 @@ const ExitRecoveryStep: FC = () => {
                 actionType={ActionTypes.ACTION_RECOVERY_EXIT}
                 className="flex flex-col gap-6"
               >
-                <MemberSignatureList
-                  items={membersList}
-                  title={formatText({ id: 'common.memberSignature.title' })}
-                />
+                <div>
+                  <h3 className="mb-2 text-1">
+                    {formatText({ id: 'common.memberSignature.title' })}
+                  </h3>
+                  {membersList?.length ? (
+                    <ul>
+                      {membersList.map(
+                        ({
+                          hasSigned,
+                          userName,
+                          address,
+                          contributorType,
+                          key,
+                        }) => (
+                          <li key={key} className="mb-3 last:mb-0">
+                            <MemberSignature hasSigned={hasSigned}>
+                              <ContributorTypeBorder
+                                contributorType={contributorType}
+                              >
+                                <UserAvatar
+                                  size={20}
+                                  userAddress={address}
+                                  userName={userName}
+                                />
+                              </ContributorTypeBorder>
+                            </MemberSignature>
+                          </li>
+                        ),
+                      )}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-500">
+                      {formatText({
+                        id: 'common.memberSignatureList.empty',
+                      })}
+                    </p>
+                  )}
+                </div>
                 <Button
                   mode="primarySolid"
                   isFullSize

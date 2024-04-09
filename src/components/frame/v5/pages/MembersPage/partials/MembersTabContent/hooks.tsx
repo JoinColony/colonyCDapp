@@ -15,11 +15,11 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Link from '~v5/shared/Link/index.ts';
 
-import { type MembersTabContentListItem } from './types.ts';
+import { type MemberCardItem, type MemberItem } from '../../types.ts';
 
 export const useMembersTabContentItems = (
-  items: MembersTabContentListItem[],
-) => {
+  items: MemberItem[],
+): MemberCardItem[] => {
   // @BETA: Disabled for now
   // const { setIsMemberModalOpen, setUser } = useMemberModalContext();
   const isMobile = useMobile();
@@ -30,12 +30,11 @@ export const useMembersTabContentItems = (
 
   return useMemo(
     () =>
-      items.map(({ userAvatarProps, ...item }) => {
-        const { walletAddress } = userAvatarProps;
+      items.map((item) => {
+        const { walletAddress } = item;
 
         return {
-          ...item,
-          userAvatarProps,
+          member: item,
           meatBallMenuProps: {
             contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
               '!left-6 right-6': isMobile,

@@ -3,10 +3,7 @@ import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import {
-  ADDRESS_ZERO,
-  MAX_OBJECTIVE_DESCRIPTION_LENGTH,
-} from '~constants/index.ts';
+import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
@@ -76,11 +73,10 @@ const ColonyDetailsPage: FC = () => {
       <div className={clsx('flex flex-col items-start p-6', boxClass)}>
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <ColonyAvatar
-            size="m"
-            colonyAddress={colonyAddress || ADDRESS_ZERO}
-            colonyImageProps={{
-              src: thumbnail || avatar || undefined,
-            }}
+            size={60}
+            colonyAddress={colonyAddress}
+            colonyImageSrc={thumbnail || avatar || undefined}
+            colonyName={colonyDisplayName}
           />
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-row items-end gap-3">

@@ -6,7 +6,7 @@ import { type UserMotionStakes } from '~types/graphql.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import MotionVoteBadge from '~v5/common/Pills/MotionVoteBadge/index.ts';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import type { StakesListProps } from './types.ts';
 
@@ -64,7 +64,7 @@ const StakesList = ({ userStakes }: StakesListProps) => {
                       key={stake.address}
                       className="flex w-full items-center justify-between gap-4"
                     >
-                      <UserAvatarPopover walletAddress={stake.address} />
+                      <UserPopover size={20} walletAddress={stake.address} />
                       <div className="flex-shrink-0 text-right text-sm text-gray-900">
                         {formatText(
                           { id: 'motion.staking.staked' },

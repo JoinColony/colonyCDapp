@@ -89,11 +89,17 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
   return (
     <div className="flex w-full items-center sm:relative">
       {readonly ? (
-        <UserAvatar
-          user={selectedMember || walletAddress}
-          size="xs"
-          showUsername
-        />
+        <>
+          <UserAvatar
+            userAvatarSrc={selectedMember?.avatar ?? undefined}
+            userName={selectedMember?.label.toString() ?? undefined}
+            userAddress={walletAddress}
+            size={20}
+          />
+          <span className="ml-2 text-md font-medium text-gray-900">
+            {selectedMember?.label ?? walletAddress}
+          </span>
+        </>
       ) : (
         <>
           <button
@@ -112,15 +118,24 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
           >
             {selectedMember ||
             (walletAddress && typeof walletAddress === 'string') ? (
-              <UserAvatar
-                user={selectedMember || walletAddress}
-                avatar={selectedMember?.avatar}
-                size="xs"
-                showUsername
-                className={clsx('text-gray-900', {
-                  'text-negative-400': isError,
-                })}
-              />
+              <>
+                <UserAvatar
+                  userAvatarSrc={selectedMember?.avatar ?? undefined}
+                  userName={selectedMember?.label.toString() ?? undefined}
+                  userAddress={walletAddress}
+                  size={20}
+                />
+                <span
+                  className={clsx(
+                    'ml-2 text-md font-medium text-gray-900 hover:text-blue-400',
+                    {
+                      'text-negative-400': isError,
+                    },
+                  )}
+                >
+                  {selectedMember?.label ?? walletAddress}
+                </span>
+              </>
             ) : (
               formatText({ id: 'actionSidebar.selectMember' })
             )}

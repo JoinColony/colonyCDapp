@@ -33,7 +33,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
     actionSidebarToggle: [, { toggle: toggleActionSideBar }],
   } = useActionSidebarContext();
   const {
-    colony: { metadata, chainMetadata, colonyAddress },
+    colony: { name, metadata, chainMetadata, colonyAddress },
     colony,
   } = useColonyContext();
   const { chainId } = chainMetadata;
@@ -69,11 +69,13 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
       hamburgerLabel={formatText({ id: 'menu' })}
       colonySwitcherProps={{
         avatarProps: {
-          colonyImageProps: metadata?.avatar
-            ? { src: metadata?.thumbnail || metadata?.avatar }
+          size: 38,
+          colonyImageSrc: metadata?.avatar
+            ? metadata?.thumbnail || metadata?.avatar
             : undefined,
           chainIcon,
           colonyAddress,
+          colonyName: metadata?.displayName || name,
         },
         content: {
           title: formatText({ id: 'navigation.colonySwitcher.title' }),

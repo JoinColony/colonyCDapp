@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 
 import type { InstalledExtensionData } from '~types/extensions.ts';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import specificSidePanelClasses from '../SpecifcSidePanel.styles.ts';
 import { type PanelTypeProps } from '../types.ts';
@@ -15,7 +15,7 @@ const InstalledBy: FC<PanelTypeProps> = ({ title, extensionData }) => {
     <div className={specificSidePanelClasses.panelRow}>
       <div className={specificSidePanelClasses.panelTitle}>{title}</div>
       <div className="flex">
-        <UserAvatarPopover walletAddress={installedBy} />
+        <UserPopover size={20} walletAddress={installedBy} />
       </div>
     </div>
   );

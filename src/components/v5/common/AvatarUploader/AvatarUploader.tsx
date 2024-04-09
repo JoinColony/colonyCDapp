@@ -11,9 +11,7 @@ import { displayName } from './utils.ts';
 
 const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   avatarPlaceholder,
-  avatarPlaceholder: {
-    props: { avatar },
-  },
+  avatarSrc,
   disabled = false,
   fileOptions,
   updateFn,
@@ -64,7 +62,7 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
           handleFileReject={handleFileReject}
           handleFileRemove={handleFileRemove}
           errorCode={uploadAvatarError}
-          isAvatarUploaded={avatar}
+          isAvatarUploaded={!!avatarSrc}
           isProgressContentVisible={showPropgress}
           SuccessComponent={SuccessComponent}
         />

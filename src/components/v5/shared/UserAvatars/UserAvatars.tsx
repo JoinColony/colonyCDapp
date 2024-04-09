@@ -1,14 +1,14 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
+import { ADDRESS_ZERO } from '~constants';
 import { type User } from '~types/graphql.ts';
 import { calculateLastSliceIndex } from '~utils/avatars.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { type UserAvatarsProps } from './types.ts';
 
-const displayName =
-  'v5.common.ActionSidebar.partials.motions.Motion.steps.OutcomeStep.partials.MembersAvatars';
+const displayName = 'v5.shared.UserAvatars';
 
 const UserAvatars: FC<UserAvatarsProps> = ({
   items,
@@ -16,7 +16,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
   className,
   showRemainingAvatars = true,
   remainingAvatarsCount: remainingAvatarsCountProp,
-  size = 'sm',
+  size = 20,
   withThickerBorder,
 }) => {
   const slicedAvatars = items.slice(
@@ -27,11 +27,13 @@ const UserAvatars: FC<UserAvatarsProps> = ({
     items.length > maxAvatarsToShow ? items.length - maxAvatarsToShow : 0;
 
   return (
-    <ul className={clsx(className, 'flex')}>
+    <ul className={clsx(className, 'flex flex-shrink-0')}>
       {slicedAvatars?.map((slicedAvatar: User) => (
         <li key={slicedAvatar.walletAddress} className="-ml-3">
           <UserAvatar
-            user={slicedAvatar}
+            userAddress={slicedAvatar.walletAddress}
+            userAvatarSrc={slicedAvatar.profile?.avatar ?? undefined}
+            userName={slicedAvatar.profile?.displayName ?? undefined}
             size={size}
             className={clsx(
               'rounded-full border border-base-white bg-base-white',
@@ -47,9 +49,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
           <li className="-ml-3 flex items-center justify-center">
             <div className="relative">
               <UserAvatar
-                user={{
-                  walletAddress: '0x0',
-                }}
+                userAddress={ADDRESS_ZERO}
                 size={size}
                 className={clsx(
                   'rounded-full border border-base-white bg-base-white',

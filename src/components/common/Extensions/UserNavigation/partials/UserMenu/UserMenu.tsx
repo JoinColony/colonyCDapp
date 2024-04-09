@@ -23,6 +23,7 @@ import Button from '~v5/shared/Button/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
+import UserDetails from '~v5/shared/UserDetails/index.ts';
 
 import UserSubmenu from '../UserSubmenu/index.ts';
 import WalletConnectedTopMenu from '../WalletConnectedTopMenu/index.ts';
@@ -78,14 +79,16 @@ const UserMenu: FC<UserMenuProps> = ({
         })}
       >
         {wallet ? (
-          <WalletConnectedTopMenu
-            userName={
-              profile?.displayName ?? splitWalletAddress(wallet.address ?? '')
-            }
-            isVerified={isVerified}
-            walletAddress={wallet.address}
-            avatar={profile?.thumbnail || profile?.avatar || ''}
-          />
+          <WalletConnectedTopMenu>
+            <UserDetails
+              userName={
+                profile?.displayName ?? splitWalletAddress(wallet.address ?? '')
+              }
+              isVerified={isVerified}
+              walletAddress={wallet.address}
+              userAvatarSrc={profile?.thumbnail || profile?.avatar || undefined}
+            />
+          </WalletConnectedTopMenu>
         ) : (
           <>
             <div className="mb-6 flex w-full items-center gap-1 border-b border-b-gray-200 pb-6 md:mb-5 md:hidden md:pb-5">

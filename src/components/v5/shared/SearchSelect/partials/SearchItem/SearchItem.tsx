@@ -4,12 +4,12 @@ import React, { type FC } from 'react';
 
 import { DomainColor } from '~gql';
 import { useMobile } from '~hooks/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
-import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
+import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { sortDisabled } from '../../utils.ts';
 
@@ -91,7 +91,12 @@ const SearchItem: FC<SearchItemProps> = ({
                   )}
                   {token && (
                     <div className="mr-2">
-                      <TokenIcon token={token} size="xxs" />
+                      <TokenAvatar
+                        size={18}
+                        tokenName={token.name}
+                        tokenAddress={token.tokenAddress}
+                        tokenAvatarSrc={token.avatar ?? undefined}
+                      />
                     </div>
                   )}
                   {color && isLabelVisible && (
@@ -100,13 +105,14 @@ const SearchItem: FC<SearchItemProps> = ({
                     />
                   )}
                   {showAvatar && (
-                    <div className="mr-2 flex items-center justify-center">
-                      <UserAvatar
-                        avatar={avatar}
-                        user={walletAddress}
-                        size="xs"
-                      />
-                    </div>
+                    <UserAvatar
+                      className="mr-2"
+                      userAvatarSrc={
+                        avatar && avatar.length > 0 ? avatar : undefined
+                      }
+                      userAddress={walletAddress}
+                      size={20}
+                    />
                   )}
                   {isLabelVisible && labelText}
                   {isVerified && (

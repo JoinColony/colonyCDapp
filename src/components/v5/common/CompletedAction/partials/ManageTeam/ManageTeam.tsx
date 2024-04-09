@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import {
   ActionDataGrid,
@@ -60,14 +60,13 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
         {formatText(MSG.subtitle, {
           team: action.fromDomain?.metadata?.name,
           user: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
+            <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
             >
               {initiatorUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
           isAddingNewTeam,
         })}

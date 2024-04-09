@@ -76,7 +76,7 @@ const TeamCard: FC<TeamCardProps> = ({
                   <UserAvatars
                     maxAvatarsToShow={4}
                     className="[&_.placeholder]:bg-gray-200 [&_.placeholder]:text-gray-900"
-                    size="sm"
+                    size={30}
                     items={members}
                   />
                 </div>

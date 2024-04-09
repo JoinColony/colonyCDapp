@@ -8,10 +8,12 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import MemberCard from '~v5/common/MemberCard/index.ts';
 import MemberCardList from '~v5/common/MemberCardList/index.ts';
+import SimpleMemberCard from '~v5/common/SimpleMemberCard/SimpleMemberCard.tsx';
+import SimpleMemberCardSkeleton from '~v5/common/SimpleMemberCard/SimpleMemberCardSkeleton.tsx';
 import { TextButton } from '~v5/shared/Button/index.ts';
 
 import { useMembersTabContentItems } from './hooks.tsx';
@@ -48,7 +50,6 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
     >
       <div className="w-full flex-grow sm:w-auto">
         <MemberCardList
-          items={items}
           isSimple={withSimpleCards}
           placeholderCardProps={
             showPlaceholderCard && items.length > 0
@@ -71,7 +72,33 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
                 }
               : undefined
           }
-        />
+        >
+          {items.map((item) => {
+            if (withSimpleCards) {
+              return (
+                <SimpleMemberCard
+                  key={item.member.walletAddress}
+                  userAddress={item.member.walletAddress}
+                  user={item.member.user ?? undefined}
+                  meatBallMenuProps={item.meatBallMenuProps}
+                />
+              );
+            }
+
+            return (
+              <MemberCard
+                key={item.member.walletAddress}
+                userAddress={item.member.walletAddress}
+                user={item.member.user ?? undefined}
+                meatBallMenuProps={item.meatBallMenuProps}
+                reputation={item.member.reputation}
+                role={item.member.role}
+                isVerified={item.member.isVerified}
+                contributorType={item.member.contributorType}
+              />
+            );
+          })}
+        </MemberCardList>
         {!isLoading &&
           !items.length &&
           emptyContentProps &&
@@ -79,13 +106,11 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
             <EmptyContent {...emptyContentProps} withBorder />
           )}
         {isLoading && (
-          <div
-            className={clsx('flex w-full items-center justify-center', {
-              'mt-6': !!items.length,
-            })}
-          >
-            <SpinnerLoader />
-          </div>
+          <MemberCardList isSimple={withSimpleCards}>
+            {[...Array(16).keys()].map((key) => (
+              <SimpleMemberCardSkeleton key={key} />
+            ))}
+          </MemberCardList>
         )}
         {loadMoreButtonProps && (
           <div className="mt-6 flex w-full justify-center">

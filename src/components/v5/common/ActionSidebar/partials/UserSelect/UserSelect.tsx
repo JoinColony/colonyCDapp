@@ -9,9 +9,10 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
+import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import { useUserSelect } from './hooks.ts';
 import { type UserSelectProps } from './types.ts';
@@ -35,13 +36,8 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const { user: userByAddress, loading: userByAddressLoading } =
-    useUserByAddress(field.value);
+  const { user: userByAddress } = useUserByAddress(field.value);
   const { readonly } = useAdditionalFormOptionsContext();
-
-  const userDisplayName = userByAddressLoading
-    ? formatText({ id: 'status.loading' }, { optionalText: '' })
-    : userByAddress?.profile?.displayName || field.value;
 
   const userWalletAddress = field.value;
 
@@ -59,25 +55,42 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
       ? {
           profile: {
             displayName: selectedUserOption?.label,
-            thumbnail: selectedUserOption?.thumbnail,
+            avatar: selectedUserOption?.thumbnail,
           },
           walletAddress: selectedUserOption?.walletAddress,
           isVerified: selectedUserOption?.isVerified,
         }
       : undefined;
 
+  const getUserName = () => {
+    if (!userWalletAddress) {
+      return null;
+    }
+    return (
+      selectedUser?.profile?.displayName ??
+      splitWalletAddress(userWalletAddress)
+    );
+  };
+
+  const userName = getUserName();
+
   return (
     <div className="flex w-full items-center sm:relative">
-      {readonly ? (
+      {readonly && selectedUser?.walletAddress ? (
         <>
           <UserAvatar
-            user={selectedUser || field.value}
-            size="xs"
-            showUsername
-            className={clsx({
+            userName={selectedUser?.profile?.displayName ?? undefined}
+            userAddress={selectedUser.walletAddress}
+            userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+            size={20}
+          />
+          <p
+            className={clsx('ml-2 truncate text-md font-medium text-gray-900', {
               'text-warning-400': !selectedUser?.isVerified,
             })}
-          />
+          >
+            {userName}
+          </p>
           {selectedUser?.isVerified && (
             <CircleWavyCheck
               size={14}
@@ -103,14 +116,19 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
             {selectedUser || field.value ? (
               <>
                 <UserAvatar
-                  user={selectedUser || field.value}
-                  size="xs"
-                  showUsername
-                  className={clsx({
+                  userName={selectedUser?.profile?.displayName ?? undefined}
+                  userAddress={userWalletAddress}
+                  userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+                  size={20}
+                />
+                <p
+                  className={clsx('ml-2 truncate text-md font-medium', {
                     'text-warning-400': !selectedUser?.isVerified,
                     'text-gray-900': selectedUser?.isVerified,
                   })}
-                />
+                >
+                  {userName}
+                </p>
                 {selectedUser?.isVerified && (
                   <CircleWavyCheck
                     size={14}
@@ -142,16 +160,15 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
             />
           )}
           {!selectedUser?.isVerified && field.value && (
-            <UserPopover
-              userName={userDisplayName}
+            <UserInfoPopover
               walletAddress={userWalletAddress}
-              aboutDescription={userByAddress?.profile?.bio || ''}
               user={userByAddress}
-              className="ml-1"
-              size="m"
+              className="ml-1 text-warning-400"
             >
-              <WarningCircle size={14} className="text-warning-400" />
-            </UserPopover>
+              <span className="ml-2 flex text-warning-400">
+                <WarningCircle size={20} />
+              </span>
+            </UserInfoPopover>
           )}
         </>
       )}

@@ -2,11 +2,11 @@ import { Image } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { APP_URL } from '~constants';
+import { ADDRESS_ZERO, APP_URL } from '~constants';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Avatar from '~v5/shared/Avatar/index.ts';
 import Button from '~v5/shared/Button/index.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { type FormValues } from './types.ts';
 
@@ -52,10 +52,11 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       step: 2,
       icon:
         tokenAvatar || existingToken ? (
-          <Avatar
-            avatar={tokenAvatar || existingToken?.avatar}
-            seed={existingToken?.tokenAddress}
-            size="s"
+          <TokenAvatar
+            tokenAvatarSrc={(tokenAvatar || existingToken?.avatar) ?? undefined}
+            tokenAddress={existingToken?.tokenAddress ?? ADDRESS_ZERO}
+            tokenName={existingToken?.name}
+            size={32}
           />
         ) : (
           <div className="flex rounded-full bg-gray-200 p-2.5 text-gray-600">

@@ -4,12 +4,12 @@ import React, { useMemo, useCallback, useEffect } from 'react';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { DistributionMethod } from '~v5/common/ActionSidebar/partials/consts.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import {
   type SplitPaymentRecipientsFieldModel,
@@ -60,7 +60,12 @@ export const useRecipientsFieldTableColumns = (
                 className="text-md"
                 value={(getPercentValue(row.index) / 100) * amount}
               />
-              <TokenIcon token={token} size="xs" />
+              <TokenAvatar
+                size={20}
+                tokenName={token.name}
+                tokenAddress={token.tokenAddress}
+                tokenAvatarSrc={token.avatar ?? undefined}
+              />
               <span className="text-md">{token.symbol}</span>
             </div>
           ),
@@ -74,7 +79,12 @@ export const useRecipientsFieldTableColumns = (
                   0,
                 )}
               />
-              <TokenIcon token={token} size="xs" />
+              <TokenAvatar
+                size={20}
+                tokenName={token.name}
+                tokenAddress={token.tokenAddress}
+                tokenAvatarSrc={token.avatar ?? undefined}
+              />
               <span className="text-md font-semibold">{token.symbol}</span>
             </div>
           ),

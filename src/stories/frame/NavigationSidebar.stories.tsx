@@ -28,6 +28,7 @@ const navigationSidebarMeta: Meta<typeof NavigationSidebar> = {
     hamburgerLabel: 'Menu',
     colonySwitcherProps: {
       avatarProps: {
+        size: 24,
         chainIcon: Bird,
         colonyAddress: ADDRESS_ZERO,
       },

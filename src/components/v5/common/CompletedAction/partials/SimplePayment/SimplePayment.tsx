@@ -6,7 +6,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import {
@@ -60,25 +60,23 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           amount: formattedAmount,
           token: action.token?.symbol,
           recipient: recipientAddress ? (
-            <UserPopover
-              userName={recipientUser?.profile?.displayName}
+            <UserInfoPopover
               walletAddress={recipientAddress}
               user={recipientUser}
               withVerifiedBadge={false}
             >
               {recipientUser?.profile?.displayName ||
                 splitWalletAddress(recipientAddress)}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
           user: initiatorUser ? (
-            <UserPopover
-              userName={initiatorUser.profile?.displayName}
+            <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
               user={initiatorUser}
               withVerifiedBadge={false}
             >
               {initiatorUser.profile?.displayName}
-            </UserPopover>
+            </UserInfoPopover>
           ) : null,
         })}
       </ActionSubtitle>
@@ -94,9 +92,9 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.recipient' })}
           rowContent={
-            <UserAvatarPopover
+            <UserPopover
               walletAddress={action.recipientAddress || ADDRESS_ZERO}
-              size="xs"
+              size={20}
             />
           }
           RowIcon={UserFocus}

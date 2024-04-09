@@ -1,4 +1,5 @@
 import { UserRole } from '~constants/permissions.ts';
+import { ContributorType } from '~gql';
 import MemberCard from '~v5/common/MemberCard/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -7,10 +8,12 @@ const memberCardMeta: Meta<typeof MemberCard> = {
   title: 'Common/Member Card',
   component: MemberCard,
   args: {
-    userAvatarProps: {
-      aboutDescription: 'test',
-      userName: 'test',
-      isVerified: true,
+    isVerified: true,
+    user: {
+      profile: {
+        bio: 'test',
+        displayName: 'test',
+      },
       walletAddress: '',
     },
     meatBallMenuProps: {
@@ -31,12 +34,15 @@ export const Base: StoryObj<typeof MemberCard> = {};
 
 export const WithBadge: StoryObj<typeof MemberCard> = {
   args: {
-    userAvatarProps: {
-      aboutDescription: 'test',
-      userName: 'test',
-      mode: 'active',
+    user: {
+      profile: {
+        bio: 'test',
+        displayName: 'test',
+      },
       walletAddress: '',
     },
+    contributorType: ContributorType.Active,
+    userAddress: '',
     role: {
       name: 'admin',
       role: UserRole.Admin,
@@ -59,11 +65,5 @@ export const WithReputationAndBadge: StoryObj<typeof MemberCard> = {
       role: UserRole.Admin,
       permissions: [],
     },
-  },
-};
-
-export const Simple: StoryObj<typeof MemberCard> = {
-  args: {
-    isSimple: true,
   },
 };

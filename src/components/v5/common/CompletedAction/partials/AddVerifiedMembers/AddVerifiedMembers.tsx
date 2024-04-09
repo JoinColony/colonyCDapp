@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import {
   ActionDataGrid,
@@ -50,14 +50,13 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
             actionType: ColonyActionType.AddVerifiedMembers,
             members: numberOfMembers,
             initiator: initiatorUser ? (
-              <UserPopover
-                userName={initiatorUser.profile?.displayName}
+              <UserInfoPopover
                 walletAddress={initiatorUser.walletAddress}
                 user={initiatorUser}
                 withVerifiedBadge={false}
               >
                 {initiatorUser.profile?.displayName}
-              </UserPopover>
+              </UserInfoPopover>
             ) : null,
           },
         )}

@@ -8,6 +8,7 @@ import mainnetTokenList from './tokenList.mainnet.json';
 import xdaiTokenList from './tokenList.xdai.json';
 
 interface ListToken {
+  avatar?: string;
   address: string;
   symbol: string;
   name: string;
@@ -16,6 +17,7 @@ interface ListToken {
 
 interface FormattedListToken {
   token: {
+    avatar?: string;
     tokenAddress: string;
     symbol: string;
     name: string;
