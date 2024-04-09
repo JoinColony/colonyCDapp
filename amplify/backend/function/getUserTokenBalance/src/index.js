@@ -23,7 +23,7 @@ let graphqlURL = 'http://localhost:20002/graphql';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prod') {
+  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
     const { getParams } = require('/opt/nodejs/getParams');
     [rpcURL, networkAddress, network, apiKey, graphqlURL] = await getParams([
       'chainRpcEndpoint',

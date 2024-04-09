@@ -35,7 +35,7 @@ const setEnvVariables = async (network) => {
     rpcURL = getDevRpcUrl(network);
   }
 
-  if (ENV === 'qaarbsep' || ENV === 'prod') {
+  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
     let chainRpcParam = getRpcUrlParamName(network);
 
     const { getParams } = require('/opt/nodejs/getParams');

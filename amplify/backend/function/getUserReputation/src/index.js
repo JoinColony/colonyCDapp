@@ -15,7 +15,7 @@ let network = Network.Custom;
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prod') {
+  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
     const { getParams } = require('/opt/nodejs/getParams');
     [rpcURL, networkAddress, reputationOracleEndpoint, network] =
       await getParams([
