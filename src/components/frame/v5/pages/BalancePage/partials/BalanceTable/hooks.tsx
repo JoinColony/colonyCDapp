@@ -153,6 +153,7 @@ export const useBalanceTableColumns = (
         },
       }),
       columnHelper.accessor('balance', {
+        id: 'balance',
         header: () => formatText({ id: 'table.row.balance' }),
         size: isMobile ? 110 : 165,
         headCellClassName: clsx('text-right', {

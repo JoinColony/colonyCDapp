@@ -27,7 +27,7 @@ const ActivityPage: FC = () => {
       <WidgetBoxList items={widgets} />
       <div>
         <FiltersContextProvider>
-          <ColonyActionsTable className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2" />
+          <ColonyActionsTable className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none" />
         </FiltersContextProvider>
       </div>
     </div>
