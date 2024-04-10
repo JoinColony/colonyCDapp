@@ -6,7 +6,7 @@ import {
   NETWORK_RELEASES,
   ETHERSCAN_CONVERSION_RATE,
 } from '~constants/externalUrls.ts';
-import { DEFAULT_NETWORK } from '~constants/index.ts';
+import { DEFAULT_NETWORK, DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
 
 interface EthUsdResponse {
@@ -92,38 +92,17 @@ export const getEthToUsd = async (
 };
 
 export const getBlockExplorerLink = ({
-  network = DEFAULT_NETWORK,
   linkType = 'address',
   addressOrHash,
 }: BlockExplorerLinkProps): string => {
   if (!addressOrHash) {
     return '';
   }
-  if (network === Network.Ganache) {
+  if (DEFAULT_NETWORK === Network.Ganache) {
     return '#';
   }
-  if (network === Network.Ganache) {
-    const xdaiLinkType = linkType === 'token' ? 'address' : linkType;
 
-    return `https://gnosis.blockscout.com/${xdaiLinkType}/${addressOrHash}`;
-  }
-  const tld = network === 'tobalaba' ? 'com' : 'io';
-
-  let baseURL = '';
-
-  if (network === Network.Gnosis) {
-    // @NOTE: I'm making this URL as dynamic as possible as there are other networks (like Polygon)
-    // that we may include, in the "multi-chain" future, that use the same base URL pattern
-    baseURL = `${network}scan`;
-  } else {
-    const networkSubdomain =
-      network === 'homestead' || network === Network.Mainnet
-        ? ''
-        : `${network}.`;
-    baseURL = `${networkSubdomain}etherscan`;
-  }
-
-  return `https://${baseURL}.${tld}/${linkType}/${addressOrHash}`;
+  return `${DEFAULT_NETWORK_INFO.blockExplorerUrl}/${linkType}/${addressOrHash}`;
 };
 
 export const getNetworkReleaseLink = () => `${NETWORK_RELEASES}/${LATEST_TAG}`;
