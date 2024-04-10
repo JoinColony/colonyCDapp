@@ -78,7 +78,7 @@
           "Fn::If": [
             "IsQaEnv",
             "https://arbitrum-sepolia.colony.io/reputation/arbitrum-sepolia",
-            "https://arbitrum.colony.io/reputation/arbitrum-one"
+            "https://app.colony.io/reputation/arbitrum-one"
           ]
         },
         "Description": "Reputation endpoint"
