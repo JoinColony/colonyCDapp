@@ -136,7 +136,10 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
               value={searchValue}
             />
           </div>
-          <Header title={{ id: 'permissionsPage.filter.filterBy' }} />
+          <Header
+            title={{ id: 'permissionsPage.filter.filterBy' }}
+            className="pb-2"
+          />
           {RootItems}
         </PopoverBase>
       )}

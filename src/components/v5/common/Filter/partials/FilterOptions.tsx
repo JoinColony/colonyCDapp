@@ -30,7 +30,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({ excludeFilterType }) => {
     <div>
       <Header
         title={{ id: isMobile ? 'filterAndSort' : 'filterBy' }}
-        className={clsx({
+        className={clsx('pb-2', {
           'mb-6 capitalize text-gray-900': isMobile,
         })}
         textSizeClassName={isMobile ? 'heading-5' : 'text-4'}
@@ -42,7 +42,7 @@ const FilterOptions: FC<FilterOptionsProps> = ({ excludeFilterType }) => {
           {filteredOptions?.map(
             ({ id, icon, title, filterType, content, header }) => (
               <li key={id}>
-                {header && <Header title={{ id: header }} className="mt-2" />}
+                {header && <Header title={{ id: header }} className="my-2" />}
                 <SubNavigationItem
                   icon={icon}
                   title={title}

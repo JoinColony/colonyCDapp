@@ -12,7 +12,7 @@ const ActionTypeFilters: FC = () => {
 
   return (
     <div>
-      <h5 className="hidden px-3.5 uppercase text-gray-400 text-4 sm:block">
+      <h5 className="hidden px-3.5 pb-2 uppercase text-gray-400 text-4 sm:block">
         {formatText({ id: 'activityFeedTable.filters.actionType' })}
       </h5>
       <ul>

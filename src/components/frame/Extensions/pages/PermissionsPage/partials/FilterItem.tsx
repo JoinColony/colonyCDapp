@@ -145,7 +145,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
               }}
               classNames="w-full sm:max-w-[13.25rem]"
             >
-              <span className="px-3.5 uppercase text-gray-400 text-4">
+              <span className="px-3.5 pb-2 uppercase text-gray-400 text-4">
                 {formatText({ id: 'permissions.type' })}
               </span>
               {items.map(

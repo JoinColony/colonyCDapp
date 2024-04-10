@@ -53,10 +53,10 @@ const NestedOptions: FC<NestedOptionsProps> = ({
 
   return (
     <>
-      {!isMobile && <Header title={{ id: filterTitle }} />}
+      {!isMobile && <Header title={{ id: filterTitle }} className="pb-2" />}
       <ul
         className={clsx('flex flex-col', {
-          'mt-1': isMobile,
+          'mt-2': isMobile,
         })}
       >
         {(nestedFilters || []).map(

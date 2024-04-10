@@ -80,7 +80,7 @@ function FilterItem<TValue extends FilterValue>({
               classNames="w-full sm:max-w-[13.25rem] mr-2"
             >
               <>
-                <span className="px-3.5 uppercase text-gray-400 text-4">
+                <span className="px-3.5 pb-2 uppercase text-gray-400 text-4">
                   {title}
                 </span>
                 {FilterItems}
