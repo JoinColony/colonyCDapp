@@ -39,7 +39,7 @@ const DateFilters: FC = () => {
           );
         })}
       </ul>
-      <h5 className="mt-2 pb-2 uppercase text-gray-400 text-4 sm:px-3.5">
+      <h5 className="mt-2 uppercase text-gray-400 text-4 sm:px-3.5">
         {formatText({ id: 'activityFeedTable.filters.date.custom' })}
       </h5>
       <div className="mt-4 sm:px-3.5">
