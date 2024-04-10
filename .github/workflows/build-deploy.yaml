@@ -17,7 +17,7 @@ on:
 
 
 concurrency:
-  group: cdapp-frontend
+  group: ${{ github.ref }}-cdapp-frontend
   cancel-in-progress: true
 
 # Set global env variables
