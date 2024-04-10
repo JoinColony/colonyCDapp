@@ -86,14 +86,14 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
           columns={columns}
           data={data}
           getMenuProps={getMenuProps}
+          verticalLayout={isMobile}
         />
       )}
       <Button
         mode="primaryOutline"
         icon={Plus}
         size="small"
-        className="mt-6"
-        isFullSize={isMobile}
+        className="mt-6 w-full sm:w-auto"
         onClick={() => {
           fieldArrayMethods.append({
             percent: 0,

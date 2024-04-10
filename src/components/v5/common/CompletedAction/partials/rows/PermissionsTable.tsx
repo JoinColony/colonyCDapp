@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 import { UserRole } from '~constants/permissions.ts';
+import { useMobile } from '~hooks/index.ts';
 import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
 import {
   type CustomPermissionTableModel,
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
+  const isMobile = useMobile();
   const customPermissionsTableColumns =
     getCustomPermissionsTableColumns(userColonyRoles);
   const permissionsTableProps = usePermissionsTableProps(role);
@@ -36,10 +38,7 @@ const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
   return (
     <div className="mt-7">
       {role !== UserRole.Custom ? (
-        <Table<PermissionsTableModel>
-          verticalOnMobile={false}
-          {...permissionsTableProps}
-        />
+        <Table<PermissionsTableModel> {...permissionsTableProps} />
       ) : (
         <Table<CustomPermissionTableModel>
           className={clsx(
@@ -47,6 +46,7 @@ const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
           )}
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
+          verticalLayout={isMobile}
         />
       )}
     </div>

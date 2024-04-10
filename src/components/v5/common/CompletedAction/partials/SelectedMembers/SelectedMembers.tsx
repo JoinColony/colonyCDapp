@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Table from '~v5/common/Table/Table.tsx';
 
@@ -15,6 +16,7 @@ const displayName = 'v5.common.CompletedAction.partials.SelectedMembers';
 
 const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
   const { membersByAddress } = useMemberContext();
+  const isMobile = useMobile();
 
   const members = memberAddresses.reduce<SelectedMember[]>(
     (selectedMembers, address) => {
@@ -51,7 +53,7 @@ const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
       <Table<MembersTableModel>
         data={members}
         columns={membersColumns}
-        verticalOnMobile
+        verticalLayout={isMobile}
       />
     </div>
   );
