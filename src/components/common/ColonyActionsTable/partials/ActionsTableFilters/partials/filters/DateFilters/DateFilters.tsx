@@ -18,7 +18,7 @@ const DateFilters: FC = () => {
 
   return (
     <div className="pb-2">
-      <h5 className="hidden px-3.5 uppercase text-gray-400 text-4 sm:block">
+      <h5 className="hidden px-3.5 pb-2 uppercase text-gray-400 text-4 sm:block">
         {formatText({ id: 'activityFeedTable.filters.date' })}
       </h5>
       <ul>
@@ -39,7 +39,7 @@ const DateFilters: FC = () => {
           );
         })}
       </ul>
-      <h5 className="mt-2 uppercase text-gray-400 text-4 sm:px-3.5">
+      <h5 className="mt-2 pb-2 uppercase text-gray-400 text-4 sm:px-3.5">
         {formatText({ id: 'activityFeedTable.filters.date.custom' })}
       </h5>
       <div className="mt-4 sm:px-3.5">
