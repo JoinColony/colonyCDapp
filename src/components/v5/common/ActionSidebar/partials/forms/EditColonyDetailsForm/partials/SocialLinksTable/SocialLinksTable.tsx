@@ -77,6 +77,7 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
             getMenuProps={
               readonly || hasNoDecisionMethods ? undefined : getMenuProps
             }
+            verticalLayout={isMobile}
           />
         </>
       )}

@@ -88,8 +88,6 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
           )
         }
         className="w-full"
-        verticalOnMobile={false}
-        hasPagination
         getRowId={({ contributorAddress }) => contributorAddress}
         columns={columns}
         data={list}

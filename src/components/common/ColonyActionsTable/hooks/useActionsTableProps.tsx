@@ -140,7 +140,6 @@ export const useActionsTableProps = (
       ),
       enableSortingRemoval: false,
       renderCellWrapper: isMobile ? undefined : renderRowLink,
-      verticalOnMobile: false,
       state: {
         columnVisibility: isMobile
           ? {
@@ -168,7 +167,6 @@ export const useActionsTableProps = (
       getMenuProps,
       columns,
       data,
-      hasPagination: loading || hasNextPage || hasPrevPage,
       manualPagination: true,
       canNextPage: hasNextPage || loading,
       canPreviousPage: hasPrevPage,
