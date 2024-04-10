@@ -23,7 +23,11 @@ const {
   colonyRoles2Hex,
   getChildIndex,
 } = require('@colony/colony-js');
-const { abi: OneTxAbi } = require('@colony/abis/versions/glwss4/OneTxPayment');
+const { abi: OneTxAbi } = require('@colony/abis/versions/hmwss/OneTxPayment');
+const {
+  abi: StakedExpenditureAbi,
+} = require('@colony/abis/versions/hmwss/StakedExpenditure');
+
 /*
  * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
  * So if that lambda function gets removed, this script will stop working
@@ -435,9 +439,8 @@ const createColony = async (
 
   const gas = await signerOrWallet.provider.estimateGas(populatedTransaction);
   populatedTransaction.gasLimit = gas;
-  const signedTransaction = await signerOrWallet.signTransaction(
-    populatedTransaction,
-  );
+  const signedTransaction =
+    await signerOrWallet.signTransaction(populatedTransaction);
   const hash = utils.keccak256(signedTransaction);
 
   // create the colony
@@ -470,9 +473,8 @@ const createColony = async (
     );
   }
 
-  const colonyDeployment = await signerOrWallet.provider.sendTransaction(
-    signedTransaction,
-  );
+  const colonyDeployment =
+    await signerOrWallet.provider.sendTransaction(signedTransaction);
   const colonyDeploymentTransaction = await colonyDeployment.wait();
 
   await delay();
@@ -639,9 +641,11 @@ const createColony = async (
   await setOwner.wait();
   await delay();
 
-  // deploy one tx
+  // deploy OneTxPayment and StakedExpenditure extensions
   const oneTxHash = getExtensionHash('OneTxPayment');
-  const { data: currentVersionData } = await graphqlRequest(
+  const stakedExpenditureHash = getExtensionHash('StakedExpenditure');
+
+  const { data: oneTxVersionData } = await graphqlRequest(
     getCurrentVersion,
     {
       key: oneTxHash,
@@ -649,39 +653,84 @@ const createColony = async (
     GRAPHQL_URI,
     API_KEY,
   );
-  const latestOneTxVersion =
-    currentVersionData?.getCurrentVersionByKey?.items[0]?.version || 1;
-
-  const deployOneTx = await colonyClient.installExtension(
-    oneTxHash,
-    latestOneTxVersion,
+  const { data: stakedExpenditureVersionData } = await graphqlRequest(
+    getCurrentVersion,
+    {
+      key: stakedExpenditureHash,
+    },
+    GRAPHQL_URI,
+    API_KEY,
   );
+  const latestOneTxVersion =
+    oneTxVersionData?.getCurrentVersionByKey?.items[0]?.version || 1;
+  const latestStakedExpenditureVersion =
+    stakedExpenditureVersionData?.getCurrentVersionByKey?.items[0]?.version ||
+    1;
+
+  const installMulticallData = [];
+  installMulticallData.push(
+    colonyClient.interface.encodeFunctionData('installExtension', [
+      oneTxHash,
+      latestOneTxVersion,
+    ]),
+  );
+  installMulticallData.push(
+    colonyClient.interface.encodeFunctionData('installExtension', [
+      stakedExpenditureHash,
+      latestStakedExpenditureVersion,
+    ]),
+  );
+
+  const installExtensions = await colonyClient.multicall(installMulticallData);
   await delay();
-  await deployOneTx.wait();
+  await installExtensions.wait();
   await delay(1000);
 
-  // give one tx permissions
-  const oneTxExtensionAddress = await poll(
-    async () => {
-      try {
-        const address = await colonyNetwork.getExtensionInstallation(
-          oneTxHash,
-          colonyAddress,
-        );
-        return address;
-      } catch (err) {
-        return undefined;
-      }
-    },
-    {
-      timeout: 30000,
-    },
-  );
+  // give permissions to extensions
+  const [oneTxExtensionAddress, stakedExpenditureAddress] = await Promise.all([
+    poll(
+      async () => {
+        try {
+          const address = await colonyNetwork.getExtensionInstallation(
+            oneTxHash,
+            colonyAddress,
+          );
+          return address;
+        } catch (err) {
+          return undefined;
+        }
+      },
+      {
+        timeout: 30000,
+      },
+    ),
+    poll(
+      async () => {
+        try {
+          const address = await colonyNetwork.getExtensionInstallation(
+            stakedExpenditureHash,
+            colonyAddress,
+          );
+          return address;
+        } catch (err) {
+          return undefined;
+        }
+      },
+      {
+        timeout: 30000,
+      },
+    ),
+  ]);
 
   console.log(
     `Installed OneTxPayment extension in colony ${
       colonyDisplayName || colonyName
     } at address ${oneTxExtensionAddress}`,
+  );
+  console.log(
+    `Installed StakedExpenditure extension in colony ${
+      colonyDisplayName || colonyName
+    } at address ${stakedExpenditureAddress}`,
   );
 
   const [permissionDomainId, childSkillIndex] = await getPermissionProofs(
@@ -691,19 +740,60 @@ const createColony = async (
     [ColonyRole.Architecture, ColonyRole.Root],
   );
 
-  const oneTxPermissions = await colonyClient.setUserRoles(
-    permissionDomainId,
-    childSkillIndex,
-    oneTxExtensionAddress,
-    1,
-    colonyRoles2Hex([
-      ColonyRole.Administration,
-      ColonyRole.Funding,
-      ColonyRole.Arbitration,
+  const setRolesMulticallData = [];
+  setRolesMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setUserRoles', [
+      permissionDomainId,
+      childSkillIndex,
+      oneTxExtensionAddress,
+      1,
+      colonyRoles2Hex([
+        ColonyRole.Administration,
+        ColonyRole.Funding,
+        ColonyRole.Arbitration,
+      ]),
     ]),
   );
+  setRolesMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setUserRoles', [
+      permissionDomainId,
+      childSkillIndex,
+      stakedExpenditureAddress,
+      1,
+      colonyRoles2Hex([
+        ColonyRole.Administration,
+        ColonyRole.Funding,
+        ColonyRole.Arbitration,
+      ]),
+    ]),
+  );
+  const setExtensionRoles = await colonyClient.multicall(setRolesMulticallData);
+
   await delay();
-  await oneTxPermissions.wait();
+  await setExtensionRoles.wait();
+  await delay();
+
+  const stakeFraction = BigNumber.from(1)
+    .mul(BigNumber.from(10).pow(tokenDecimals))
+    .div(100); // 1% in wei
+  const stakedExpenditureClient = new Contract(
+    stakedExpenditureAddress,
+    StakedExpenditureAbi,
+    signerOrWallet,
+  );
+  const enableStakedExpenditureGas =
+    await stakedExpenditureClient.estimateGas.initialise(stakeFraction);
+  const enableStakedExpenditure = await stakedExpenditureClient.initialise(
+    stakeFraction,
+    {
+      gasLimit: enableStakedExpenditureGas
+        .div(BigNumber.from(10))
+        .add(enableStakedExpenditureGas),
+    },
+  );
+
+  await delay();
+  await enableStakedExpenditure.wait();
   await delay();
 
   return {
