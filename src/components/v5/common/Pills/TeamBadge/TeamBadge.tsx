@@ -20,6 +20,7 @@ const TeamBadge: FC<TeamBadgeProps> = ({ name, color, className, ...rest }) => {
     <PillsBase
       {...rest}
       className={clsx(className, 'border bg-base-white', teamColor)}
+      isCapitalized={false}
     >
       {name}
     </PillsBase>
