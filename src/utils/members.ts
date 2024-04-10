@@ -7,6 +7,11 @@ import {
 } from '~gql';
 import { type ColonyContributor } from '~types/graphql.ts';
 
+export type UpdatedContributorData = {
+  userAddress: string;
+  newData: Partial<ColonyContributor>;
+};
+
 export const searchMembers = (
   members: ColonyContributor[],
   searchValue?: string,
@@ -30,10 +35,9 @@ export const getColonyContributorId = (
   walletAddress: string,
 ) => `${colonyAddress}_${walletAddress}`;
 
-export const updateContributorQueries = (
-  userAddresses: string[],
+const updateContributorQueries = (
+  updatedContributors: UpdatedContributorData[],
   colonyAddress: string,
-  isVerified: boolean,
 ) => {
   apolloClient.cache.updateQuery(
     {
@@ -51,16 +55,22 @@ export const updateContributorQueries = (
 
       const modifiedContributors = data.getContributorsByColony.items.map(
         (contributor) => {
-          if (
-            !contributor ||
-            !userAddresses.includes(contributor.contributorAddress)
-          ) {
+          if (!contributor) {
+            return contributor;
+          }
+
+          const contributorData = updatedContributors.find(
+            (contributorEntry) =>
+              contributorEntry.userAddress === contributor.contributorAddress,
+          );
+
+          if (!contributorData) {
             return contributor;
           }
 
           return {
             ...contributor,
-            isVerified,
+            ...contributorData.newData,
           };
         },
       );
@@ -75,7 +85,7 @@ export const updateContributorQueries = (
     },
   );
 
-  for (const userAddress of userAddresses) {
+  updatedContributors.forEach(({ userAddress, newData }) => {
     apolloClient.cache.updateQuery(
       {
         query: GetColonyContributorDocument,
@@ -95,10 +105,33 @@ export const updateContributorQueries = (
           ...data,
           getColonyContributor: {
             ...data.getColonyContributor,
-            isVerified,
+            ...newData,
           },
         };
       },
     );
-  }
+  });
+};
+
+export const updateContributorVerifiedStatus = (
+  userAddresses: string[],
+  colonyAddress: string,
+  isVerified: boolean,
+) => {
+  const updatedContributors: UpdatedContributorData[] = userAddresses.map(
+    (userAddress) => ({
+      userAddress,
+      newData: { isVerified },
+    }),
+  );
+
+  updateContributorQueries(updatedContributors, colonyAddress);
+};
+
+export const updateMemberData = (
+  userAddress: string,
+  colonyAddress: string,
+  newData: Partial<ColonyContributor>,
+) => {
+  updateContributorQueries([{ userAddress, newData }], colonyAddress);
 };
