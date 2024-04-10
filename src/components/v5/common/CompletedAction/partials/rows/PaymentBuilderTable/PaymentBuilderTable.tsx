@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useMobile } from '~hooks';
+import { useTablet } from '~hooks';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
@@ -27,7 +27,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
   const {
     colony: { expendituresGlobalClaimDelay },
   } = useColonyContext();
-  const isMobile = useMobile();
+  const isTablet = useTablet();
   const expendituresGlobalClaimDelayHours = useMemo(() => {
     if (typeof expendituresGlobalClaimDelay !== 'number') {
       return null;
@@ -53,7 +53,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
       enableSorting: false,
       header: formatText({ id: 'table.row.amount' }),
       footer:
-        hasMoreThanOneToken && !isMobile
+        hasMoreThanOneToken && !isTablet
           ? () => <PaymentBuilderPayoutsTotal data={dataRef.current} />
           : undefined,
       cell: ({ row }) => (
@@ -67,7 +67,7 @@ const useGetPaymentBuilderColumns = (data: PaymentBuilderTableModel[]) => {
       enableSorting: false,
       header: formatText({ id: 'table.column.claimDelay' }),
       footer:
-        hasMoreThanOneToken && isMobile
+        hasMoreThanOneToken && isTablet
           ? () => <PaymentBuilderPayoutsTotal data={dataRef.current} />
           : undefined,
       cell: ({ row }) => {
@@ -126,6 +126,7 @@ const PaymentBuilderTable = ({ items }: PaymentBuilderTableProps) => {
     tokenAddress: item.payouts?.[0].tokenAddress || '',
   }));
   const columns = useGetPaymentBuilderColumns(data);
+  const isTablet = useTablet();
 
   return (
     <div className="mt-7">
@@ -134,8 +135,9 @@ const PaymentBuilderTable = ({ items }: PaymentBuilderTableProps) => {
       </h5>
       <Table<PaymentBuilderTableModel>
         className={clsx(
-          'sm:[&_tbody>td>div]:p-[1.1rem] sm:[&_tbody>tr>td]:!border-none [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 sm:[&_tfoot>tr>td]:border-t',
+          'md:[&_tbody>td>div]:p-[1.1rem] md:[&_tbody>tr>td]:!border-none [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
         )}
+        verticalLayout={isTablet}
         data={data}
         columns={columns}
       />

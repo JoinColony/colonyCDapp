@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useMobile } from '~hooks/index.ts';
+import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -34,7 +34,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
     }));
   const value: PaymentBuilderRecipientsFieldModel[] = useWatch({ name }) || [];
   const columns = useRecipientsFieldTableColumns(name, value);
-  const isMobile = useMobile();
+  const isTablet = useTablet();
   const getMenuProps = ({ index }) => ({
     cardClassName: 'sm:min-w-[9.625rem]',
     items: [
@@ -84,6 +84,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           className={clsx('[&_tfoot_td]:py-2 [&_tfoot_td]:align-top', {
             '!border-negative-400': !!fieldState.error,
           })}
+          verticalLayout={isTablet}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
@@ -94,8 +95,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
         mode="primaryOutline"
         icon={Plus}
         size="small"
-        className="mt-6"
-        isFullSize={isMobile}
+        className="mt-6 w-full sm:w-auto"
         onClick={() => {
           fieldArrayMethods.append({
             recipient: undefined,
