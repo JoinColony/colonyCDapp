@@ -1,6 +1,11 @@
 import { Check } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, {
+  useState,
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+} from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import tooltipClasses from './Tooltip.styles.ts';
@@ -20,22 +25,25 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   isOpen,
   isSuccess = false,
   isError = false,
-  isFullWidthContent,
+  isCopyTooltip,
   className,
   selectTriggerRef = (v) => v,
 }) => {
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const {
     getArrowProps,
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
+    triggerRef,
+    tooltipRef,
     visible,
   } = usePopperTooltip(
     {
       delayShow: 200,
       placement,
       trigger: tooltipContent ? trigger : null,
-      visible: isOpen,
+      visible: isCopyTooltip ? isTooltipVisible : isOpen,
       delayHide: interactive ? 200 : 0,
       interactive,
       offset,
@@ -43,12 +51,53 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     popperOptions,
   );
 
+  useEffect(() => {
+    if (isOpen !== undefined && isCopyTooltip) {
+      setIsTooltipVisible(isOpen);
+    }
+  }, [isOpen, setIsTooltipVisible, isCopyTooltip]);
+
+  useEffect(() => {
+    if (isCopyTooltip) {
+      const handleClickOutside = (event: MouseEvent) => {
+        const isOutsideTooltip =
+          tooltipRef && !tooltipRef.contains(event.target as Node);
+
+        if (isOutsideTooltip) {
+          setIsTooltipVisible(false);
+        }
+      };
+
+      const handleMouseMove = (event: MouseEvent) => {
+        const isOutsideTrigger =
+          triggerRef && !triggerRef.contains(event.target as Node);
+
+        if (isOutsideTrigger) {
+          setIsTooltipVisible(false);
+        }
+      };
+
+      if (visible) {
+        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('mousemove', handleMouseMove);
+      } else {
+        document.removeEventListener('click', handleClickOutside);
+        document.removeEventListener('mousemove', handleMouseMove);
+      }
+
+      return () => {
+        document.removeEventListener('click', handleClickOutside);
+        document.removeEventListener('mousemove', handleMouseMove);
+      };
+    }
+
+    return undefined;
+  }, [tooltipRef, triggerRef, visible, setIsTooltipVisible, isCopyTooltip]);
+
   return (
     <>
       <div
-        className={clsx(className, 'flex', {
-          'w-full': isFullWidthContent,
-        })}
+        className={clsx(className, 'flex')}
         ref={(ref) => {
           setTriggerRef(selectTriggerRef(ref));
         }}

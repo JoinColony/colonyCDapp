@@ -1627,7 +1627,7 @@
     "activityFeedTable.filters.decisionMethod": "Decision Method",
     "activityFeedTable.filters.searchPlaceholder": "Search activity",
     "activityFeedTable.filters.searchModalTitle": "Search for activity",
-    "meatBallMenuCopyItem.copySuccess": "URL copied!",
+    "meatBallMenuCopyItem.copySuccess": "URL copied",
     "actionSidebar.metadataDescription.tokensMultiple": "multiple",
     "actionSidebar.metadataDescription.withTokens": "with {tokens} {tokens, plural, one {token} other {tokens}}",
     "actionSidebar.metadataDescription.recipientsMultiple": "multiple",

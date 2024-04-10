@@ -2,7 +2,7 @@ import React, { type FC, useMemo } from 'react';
 
 import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import PopoverBase from '../PopoverBase/index.ts';
@@ -55,6 +55,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
             tooltipContent={
               <span className="w-full text-3">{tooltipText}</span>
             }
+            isCopyTooltip
             isOpen={isCopyTriggered}
             isSuccess={isCopyTriggered}
             placement={isMobile ? 'auto' : 'right'}

@@ -54,19 +54,20 @@ const ColonyLinks = () => {
   const { colonyAddress, metadata } = colony || {};
   const { dropdownMenuProps } = useHeaderLinks();
   const { pathname } = useLocation();
-  const {
-    handleClipboardCopy: handleShareUrlCopy,
-    isCopied: isShareUrlCopied,
-  } = useCopyToClipboard(5000);
-  const {
-    handleClipboardCopy: handleColonyAddressCopy,
-    isCopied: isColonyAddressCopied,
-  } = useCopyToClipboard(5000);
 
   const colonyUrl = `${APP_URL.host}${pathname}`;
   const topLinks = metadata?.externalLinks
     ? sortExternalLinks(metadata.externalLinks).slice(0, 3)
     : [];
+
+  const {
+    handleClipboardCopy: handleShareUrlCopy,
+    isCopied: isShareUrlCopied,
+  } = useCopyToClipboard();
+  const {
+    handleClipboardCopy: handleColonyAddressCopy,
+    isCopied: isColonyAddressCopied,
+  } = useCopyToClipboard();
 
   return (
     <ul className="flex items-center gap-4">
@@ -108,7 +109,7 @@ const ColonyLinks = () => {
           <button
             type="button"
             className="md:hover:text-blue-400"
-            onClick={() => handleColonyAddressCopy(colonyAddress ?? '')}
+            onClick={() => handleColonyAddressCopy(colonyAddress)}
           >
             <CopySimple size={16} />
           </button>

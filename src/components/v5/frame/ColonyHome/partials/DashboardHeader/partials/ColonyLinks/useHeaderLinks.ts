@@ -33,11 +33,11 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
   const {
     handleClipboardCopy: handleShareUrlItemCopy,
     isCopied: isShareUrlItemCopied,
-  } = useCopyToClipboard(5000);
+  } = useCopyToClipboard();
   const {
     handleClipboardCopy: handleColonyAddressItemCopy,
     isCopied: isColonyAddressItemCopied,
-  } = useCopyToClipboard(5000);
+  } = useCopyToClipboard();
 
   const colonyUrl = `${APP_URL.host}${pathname}`;
   const { isWatching } = colonySubscription;
