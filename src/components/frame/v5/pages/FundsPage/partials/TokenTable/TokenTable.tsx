@@ -111,7 +111,6 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           state={{ sorting }}
           onSortingChange={setSorting}
           getSortedRowModel={getSortedRowModel()}
-          verticalOnMobile={false}
           columns={columns}
           className="-mx-[1.125rem] !w-[calc(100%+2.25rem)] rounded-none border-0 border-gray-200 px-[1.125rem] [&_td]:px-[1.125rem] [&_td]:py-4 [&_th]:border-y"
         />
