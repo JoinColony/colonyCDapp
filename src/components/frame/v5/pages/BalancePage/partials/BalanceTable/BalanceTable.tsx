@@ -118,7 +118,7 @@ const BalanceTable: FC = () => {
           renderItemWrapper: (props, children) => (
             <Link
               to={getBlockExplorerLink({
-                linkType: 'address',
+                linkType: 'token',
                 addressOrHash: selectedTokenData?.tokenAddress || '',
               })}
               {...props}
