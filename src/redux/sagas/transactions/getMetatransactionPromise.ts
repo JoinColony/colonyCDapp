@@ -230,6 +230,11 @@ async function getMetatransactionPromise(
     };
   }
 
+  console.info('METATX DEBUG', {
+    normalizedMethodName,
+    broadcastData,
+  });
+
   const {
     responseData: { txHash: hash },
   } = await broadcastMetatransaction(normalizedMethodName, broadcastData);
