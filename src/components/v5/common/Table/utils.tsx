@@ -31,6 +31,7 @@ export const makeMenuColumn = <T,>(
       return props ? (
         <MeatBallMenu
           {...props}
+          buttonClassName="ml-auto"
           contentWrapperClassName={clsx(
             props.contentWrapperClassName,
             '!z-sidebar',

@@ -5,11 +5,11 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import TokenIcon from '~shared/TokenIcon/TokenIcon.tsx';
 import { getSelectedToken } from '~utils/tokens.ts';
 
-import { getFormattedTokenAmount } from '../../utils.ts';
+import { getFormattedTokenAmount } from '../../../../../utils.ts';
 
-import { type AmountProps } from './types.ts';
+import { type AmountFieldProps } from './types.ts';
 
-const AmountField: FC<AmountProps> = ({ amount, tokenAddress }) => {
+const AmountField: FC<AmountFieldProps> = ({ amount, tokenAddress }) => {
   const { colony } = useColonyContext();
   const tokenData = getSelectedToken(colony, tokenAddress);
   const formattedAmount = getFormattedTokenAmount(

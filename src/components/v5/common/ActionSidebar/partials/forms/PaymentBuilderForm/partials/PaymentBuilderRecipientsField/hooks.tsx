@@ -74,6 +74,8 @@ export const useRecipientsFieldTableColumns = (
                 <PaymentBuilderPayoutsTotal
                   data={dataRef.current}
                   moveDecimals
+                  itemClassName="justify-end md:justify-start"
+                  buttonClassName="justify-end md:justify-start"
                 />
               )
             : undefined,
@@ -118,9 +120,8 @@ export const useRecipientsFieldTableColumns = (
 
                   return (
                     <span className="text-gray-300">
-                      {totalHours}{' '}
                       {formatText(
-                        { id: 'table.column.claimDelayFieldSuffix' },
+                        { id: 'table.column.claimDelayField' },
                         {
                           hours: totalHours,
                         },

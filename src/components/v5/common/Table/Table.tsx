@@ -126,13 +126,14 @@ const Table = <T,>({
                 key={row.id}
                 className={clsx(
                   getRowClassName(row),
-                  '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b',
+                  '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b [&_tr:first-child_td]:pt-2 [&_tr:first-child_th]:h-[2.875rem] [&_tr:first-child_th]:pt-2 [&_tr:last-child_td]:pb-2 [&_tr:last-child_th]:h-[2.875rem] [&_tr:last-child_th]:pb-2',
                 )}
               >
                 {headerGroups.map((headerGroup) =>
                   headerGroup.headers.map((header, index) => {
                     const rowWithMeatBallMenu = index === 0 && getMenuProps;
                     const meatBallMenuProps = getMenuProps?.(row);
+                    const colSpan = rowWithMeatBallMenu ? undefined : 2;
 
                     return (
                       <tr
@@ -144,12 +145,16 @@ const Table = <T,>({
                       >
                         <th
                           className={`
-                          bg-gray-50
-                          p-4
-                          text-left
-                          text-sm
-                          font-normal
-                        `}
+                            h-[2.625rem]
+                            border-r
+                            border-r-gray-200
+                            bg-gray-50
+                            px-4
+                            py-1
+                            text-left
+                            text-sm
+                            font-normal
+                          `}
                           style={{
                             width:
                               header.column.columnDef.staticSize ||
@@ -169,11 +174,11 @@ const Table = <T,>({
                           className={clsx(
                             'h-full text-left text-sm font-normal',
                             {
-                              'py-4 pl-4': rowWithMeatBallMenu,
-                              'p-4': !rowWithMeatBallMenu,
+                              'py-1 pl-4': rowWithMeatBallMenu,
+                              'px-4 py-1': !rowWithMeatBallMenu,
                             },
                           )}
-                          colSpan={rowWithMeatBallMenu ? undefined : 2}
+                          colSpan={meatBallMenuProps ? colSpan : undefined}
                         >
                           {flexRender(
                             header.column.columnDef.cell,
@@ -195,6 +200,7 @@ const Table = <T,>({
                           >
                             <MeatBallMenu
                               {...meatBallMenuProps}
+                              buttonClassName="ml-auto"
                               contentWrapperClassName={clsx(
                                 meatBallMenuProps?.contentWrapperClassName,
                                 '!left-6 right-6 !z-[65] sm:!left-auto',
@@ -290,7 +296,8 @@ const Table = <T,>({
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
-                            !showExpandableContent || withBorder,
+                            (!showExpandableContent && row.getCanExpand()) ||
+                            withBorder,
                           'expanded-below': showExpandableContent,
                         })}
                       >
