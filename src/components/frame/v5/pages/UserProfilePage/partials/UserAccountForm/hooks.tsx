@@ -6,6 +6,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { updateMemberProfile } from '~utils/members.ts';
 import {
   type UseAvatarUploaderProps,
   useGetUploaderText,
@@ -27,7 +28,7 @@ export const useUserProfilePageForm = () => {
   const { avatarUrl, canChangeUsername, daysTillUsernameChange } =
     useUserProfile();
   const { formState, register, setValue, getValues, reset } = useFormContext();
-  const { updateUser, wallet } = useAppContext();
+  const { updateUser, wallet, joinedColonies } = useAppContext();
   const [updateAvatar] = useUpdateUserProfileMutation();
   const displayNameDirty = formState?.dirtyFields.displayName;
   const showNameMessage: boolean =
@@ -48,6 +49,9 @@ export const useUserProfilePageForm = () => {
     thumbnail,
     setProgress,
   ) => {
+    if (!user) {
+      return;
+    }
     const formData = new FormData();
     formData.append('file', avatar || '');
     setProgress(0);
@@ -55,15 +59,22 @@ export const useUserProfilePageForm = () => {
     await updateAvatar({
       variables: {
         input: {
-          // @ts-ignore
-          id: user?.walletAddress,
+          id: user.walletAddress,
           avatar,
           thumbnail,
         },
       },
     });
 
-    await updateUser(user?.walletAddress, true);
+    await updateUser(user.walletAddress, true);
+
+    // update avatar in all joined colonies
+    joinedColonies.forEach(({ colonyAddress }) => {
+      updateMemberProfile(user.walletAddress, colonyAddress, {
+        avatar,
+        thumbnail,
+      });
+    });
 
     toast.success(
       <Toast

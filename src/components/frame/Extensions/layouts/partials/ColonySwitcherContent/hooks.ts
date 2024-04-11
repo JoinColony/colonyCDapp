@@ -1,14 +1,12 @@
 import { useCallback, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 
 import { type UseColonySwitcherContentReturnType } from './types.ts';
 
 export const useColonySwitcherContent =
   (): UseColonySwitcherContentReturnType => {
-    const { wallet } = useAppContext();
-    const { joinedColonies, loading } = useJoinedColonies(wallet?.address);
+    const { joinedColonies, joinedColoniesLoading } = useAppContext();
 
     const [searchValue, setSearchValue] = useState('');
 
@@ -23,7 +21,7 @@ export const useColonySwitcherContent =
     );
 
     return {
-      loading,
+      loading: joinedColoniesLoading,
       filteredColonies,
       searchValue,
       onSearchValueChange: handleSearchValueChange,

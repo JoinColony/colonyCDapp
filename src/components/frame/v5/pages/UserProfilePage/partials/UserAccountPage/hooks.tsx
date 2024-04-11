@@ -5,6 +5,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { updateMemberProfile } from '~utils/members.ts';
 
 import { type UserProfileFormProps } from '../types.ts';
 
@@ -30,7 +31,7 @@ const calculateUsernameChangePeriod = (displayNameChanged?: string | null) => {
   return { canChangeUsername, daysTillUsernameChange };
 };
 export const useUserProfile = () => {
-  const { user, updateUser } = useAppContext();
+  const { user, updateUser, joinedColonies } = useAppContext();
   const [editUser] = useUpdateUserProfileMutation();
   const { profile } = user || {};
   const avatarUrl = profile?.avatar || profile?.thumbnail;
@@ -41,6 +42,9 @@ export const useUserProfile = () => {
     ...updatedProfile
   }: UserProfileFormProps) => {
     try {
+      if (!user) {
+        return;
+      }
       await editUser({
         variables: {
           input: {
@@ -53,6 +57,10 @@ export const useUserProfile = () => {
       });
 
       updateUser(user?.walletAddress, true);
+
+      joinedColonies.forEach(({ colonyAddress }) => {
+        updateMemberProfile(user.walletAddress, colonyAddress, updatedProfile);
+      });
 
       toast.success(
         <Toast

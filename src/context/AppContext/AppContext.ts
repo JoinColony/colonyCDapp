@@ -5,7 +5,7 @@ import {
   type SetStateAction,
 } from 'react';
 
-import { type User } from '~types/graphql.ts';
+import { type JoinedColony, type User } from '~types/graphql.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
 
 export interface AppContextValue {
@@ -21,6 +21,8 @@ export interface AppContextValue {
     shouldBackgroundUpdate?: boolean,
   ) => Promise<void>;
   canInteract: boolean;
+  joinedColonies: JoinedColony[];
+  joinedColoniesLoading: boolean;
 }
 
 export const AppContext = createContext<AppContextValue | undefined>(undefined);

@@ -4,8 +4,10 @@ import {
   type GetColonyContributorQuery,
   GetColonyContributorsDocument,
   type GetColonyContributorsQuery,
+  type Profile,
 } from '~gql';
 import { type ColonyContributor } from '~types/graphql.ts';
+import { merge } from '~utils/lodash.ts';
 
 export type UpdatedContributorData = {
   userAddress: string;
@@ -35,6 +37,7 @@ export const getColonyContributorId = (
   walletAddress: string,
 ) => `${colonyAddress}_${walletAddress}`;
 
+// @TODO this should use apolloClient's writeFragment
 const updateContributorQueries = (
   updatedContributors: UpdatedContributorData[],
   colonyAddress: string,
@@ -68,10 +71,7 @@ const updateContributorQueries = (
             return contributor;
           }
 
-          return {
-            ...contributor,
-            ...contributorData.newData,
-          };
+          return merge({ ...contributor }, contributorData.newData);
         },
       );
 
@@ -103,10 +103,10 @@ const updateContributorQueries = (
 
         return {
           ...data,
-          getColonyContributor: {
-            ...data.getColonyContributor,
-            ...newData,
-          },
+          getColonyContributor: merge(
+            { ...data.getColonyContributor },
+            newData,
+          ),
         };
       },
     );
@@ -128,10 +128,20 @@ export const updateContributorVerifiedStatus = (
   updateContributorQueries(updatedContributors, colonyAddress);
 };
 
-export const updateMemberData = (
+export const updateMemberProfile = (
   userAddress: string,
   colonyAddress: string,
-  newData: Partial<ColonyContributor>,
+  newProfile: Partial<Profile>,
 ) => {
-  updateContributorQueries([{ userAddress, newData }], colonyAddress);
+  const newContributorData = {
+    user: {
+      walletAddress: userAddress,
+      profile: newProfile,
+    },
+  };
+
+  updateContributorQueries(
+    [{ userAddress, newData: newContributorData }],
+    colonyAddress,
+  );
 };
