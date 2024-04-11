@@ -24,13 +24,7 @@ const {
   getChildIndex,
 } = require('@colony/colony-js');
 const { abi: OneTxAbi } = require('@colony/abis/versions/glwss4/OneTxPayment');
-/*
- * @NOTE To preserve time, I just re-used a script I wrote for one of the lambda functions
- * So if that lambda function gets removed, this script will stop working
- */
-const {
-  graphqlRequest,
-} = require('../amplify/backend/function/createUniqueColony/src/utils');
+const { graphqlRequest } = require('./utils/graphqlRequest');
 /*
  * @NOTE This script depends on both the ganache chain (and especially accounts) being active
  * as well as the network contracts being deployed on said chain
