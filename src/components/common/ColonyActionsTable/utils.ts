@@ -39,6 +39,7 @@ export const makeLoadingRows = (pageSize: number): ActivityFeedColonyAction[] =>
       showInActionsList: true,
       transactionHash: ADDRESS_ZERO + index,
       type: ColonyActionType.Payment,
+      rootHash: '',
     }),
   );
 

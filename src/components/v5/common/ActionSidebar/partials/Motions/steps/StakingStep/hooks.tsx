@@ -10,11 +10,11 @@ export const useStakingStep = () => {
   const { motionAction } = useMotionContext();
   const { user, userLoading, walletConnecting } = useAppContext();
 
-  const { colony, motionData } = motionAction;
+  const { colony, motionData, rootHash } = motionAction;
   const { nativeToken, colonyAddress } = colony;
   const { tokenAddress } = nativeToken;
 
-  const { userMinStake, rootHash, nativeMotionDomainId } = motionData;
+  const { userMinStake, nativeMotionDomainId } = motionData;
 
   const {
     hasEnoughTokens: enoughTokensToStakeMinimum,

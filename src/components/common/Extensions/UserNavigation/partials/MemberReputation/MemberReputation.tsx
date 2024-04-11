@@ -43,7 +43,7 @@ const MemberReputation: FC<MemberReputationProps> = ({
         {percentageReputation === ZeroValue.NearZero && percentageReputation}
         {percentageReputation &&
           percentageReputation !== ZeroValue.NearZero && (
-            <Numeral value={percentageReputation} suffix="%" />
+            <Numeral value={percentageReputation} suffix=" %" />
           )}
       </span>
     </div>

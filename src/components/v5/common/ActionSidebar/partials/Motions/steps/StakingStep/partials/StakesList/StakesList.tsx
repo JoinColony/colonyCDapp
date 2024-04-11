@@ -77,7 +77,7 @@ const StakesList = ({ userStakes }: StakesListProps) => {
                                   ]
                                 }
                                 decimals={tokenDecimals}
-                                suffix={tokenSymbol}
+                                suffix={` ${tokenSymbol}`}
                               />
                             ),
                           },

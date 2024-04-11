@@ -71,12 +71,11 @@ export const useVotingStep = (
     colony: { colonyAddress, nativeToken },
   } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const { motionData } = actionData;
+  const { motionData, rootHash } = actionData;
   const {
     motionId,
     voterRecord,
     nativeMotionDomainId,
-    rootHash,
     repSubmitted,
     skillRep,
   } = motionData;
@@ -175,7 +174,7 @@ export const useVotingStep = (
             <Numeral
               value={maxReward || '0'}
               decimals={nativeToken?.decimals}
-              suffix={nativeToken?.symbol}
+              suffix={` ${nativeToken?.symbol}`}
             />
           </div>
         ),

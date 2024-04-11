@@ -1,4 +1,4 @@
-.rich-text-content :global(.tiptap) > * {
+.rich-text-content :global(.tiptap) > *:not(:last-child) {
   @apply mb-1;
 }
 

@@ -8,6 +8,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
+import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
@@ -19,7 +20,14 @@ import { type UserSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.UserSelect';
 
-const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
+const UserSelect: FC<UserSelectProps> = ({
+  name,
+  disabled,
+  domainId,
+  filterOptionsFn,
+  tooltipContent,
+  options,
+}) => {
   const {
     field,
     fieldState: { error },
@@ -27,7 +35,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
     name,
   });
   const isError = !!error;
-  const { usersOptions } = useUserSelect();
+  const { usersOptions } = useUserSelect({ domainId, filterOptionsFn });
   const [
     isUserSelectVisible,
     {
@@ -46,7 +54,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
     HTMLDivElement
   >([isUserSelectVisible]);
 
-  const selectedUserOption = usersOptions.options.find(
+  const selectedUserOption = (options || usersOptions).options.find(
     (option) => option.value === field.value,
   );
 
@@ -74,12 +82,59 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
 
   const userName = getUserName();
 
+  const toggler = (
+    <button
+      type="button"
+      ref={relativeElementRef}
+      className={clsx('flex items-center text-md transition-colors', {
+        'text-gray-400': !isError && !isUserSelectVisible,
+        'text-negative-400': isError,
+        'text-blue-400': isUserSelectVisible,
+        'md:hover:text-blue-400': !disabled,
+      })}
+      onClick={toggleUserSelect}
+      aria-label={formatText({ id: 'ariaLabel.selectUser' })}
+      disabled={disabled}
+    >
+      {selectedUser || field.value ? (
+        <>
+          <UserAvatar
+            userName={
+              selectedUser?.profile?.displayName?.toString() ?? undefined
+            }
+            userAddress={userWalletAddress}
+            userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+            size={20}
+          />
+          <p
+            className={clsx('ml-2 truncate text-md font-medium', {
+              'text-warning-400': !selectedUser?.isVerified,
+              'text-gray-900': selectedUser?.isVerified,
+            })}
+          >
+            {formatText(userName || '')}
+          </p>
+          {selectedUser?.isVerified && (
+            <CircleWavyCheck
+              size={14}
+              className="ml-1 flex-shrink-0 text-blue-400"
+            />
+          )}
+        </>
+      ) : (
+        formatText({ id: 'actionSidebar.selectMember' })
+      )}
+    </button>
+  );
+
   return (
     <div className="flex w-full items-center sm:relative">
       {readonly && selectedUser?.walletAddress ? (
         <>
           <UserAvatar
-            userName={selectedUser?.profile?.displayName ?? undefined}
+            userName={
+              selectedUser?.profile?.displayName?.toString() ?? undefined
+            }
             userAddress={selectedUser.walletAddress}
             userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
             size={20}
@@ -89,7 +144,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
               'text-warning-400': !selectedUser?.isVerified,
             })}
           >
-            {userName}
+            {formatText(userName || '')}
           </p>
           {selectedUser?.isVerified && (
             <CircleWavyCheck
@@ -100,49 +155,26 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
         </>
       ) : (
         <>
-          <button
-            type="button"
-            ref={relativeElementRef}
-            className={clsx('flex items-center text-md transition-colors', {
-              'text-gray-400': !isError && !isUserSelectVisible,
-              'text-negative-400': isError,
-              'text-blue-400': isUserSelectVisible,
-              'md:hover:text-blue-400': !disabled,
-            })}
-            onClick={toggleUserSelect}
-            aria-label={formatText({ id: 'ariaLabel.selectUser' })}
-            disabled={disabled}
-          >
-            {selectedUser || field.value ? (
-              <>
-                <UserAvatar
-                  userName={selectedUser?.profile?.displayName ?? undefined}
-                  userAddress={userWalletAddress}
-                  userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
-                  size={20}
-                />
-                <p
-                  className={clsx('ml-2 truncate text-md font-medium', {
-                    'text-warning-400': !selectedUser?.isVerified,
-                    'text-gray-900': selectedUser?.isVerified,
-                  })}
-                >
-                  {userName}
-                </p>
-                {selectedUser?.isVerified && (
-                  <CircleWavyCheck
-                    size={14}
-                    className="ml-1 flex-shrink-0 text-blue-400"
-                  />
-                )}
-              </>
-            ) : (
-              formatText({ id: 'actionSidebar.selectMember' })
-            )}
-          </button>
+          {tooltipContent ? (
+            <Tooltip
+              tooltipContent={tooltipContent}
+              // selectTriggerRef={(triggerRef) => {
+              //   if (!triggerRef) {
+              //     return null;
+              //   }
+
+              //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
+              // }}
+              placement="top"
+            >
+              {toggler}
+            </Tooltip>
+          ) : (
+            toggler
+          )}
           {isUserSelectVisible && (
             <SearchSelect
-              items={[usersOptions]}
+              items={[options || usersOptions]}
               onSelect={(value) => {
                 field.onChange(utils.isHexString(value) ? value : undefined);
                 toggleUserSelectOff();

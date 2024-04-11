@@ -170,7 +170,7 @@ export const useBalanceTableColumns = (
                   row.original.token?.decimals,
                 )}
                 className="block text-gray-900 text-1"
-                suffix={row.original.token?.symbol}
+                suffix={` ${row.original.token?.symbol}`}
               />
               <CurrencyConversion
                 tokenBalance={currentTokenBalance}
