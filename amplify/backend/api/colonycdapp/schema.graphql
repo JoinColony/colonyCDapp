@@ -702,6 +702,10 @@ enum ColonyActionType {
   """
   CREATE_EXPENDITURE
   """
+  An action related to locking an expenditure
+  """
+  LOCK_EXPENDITURE
+  """
   An action related to finalizing an expenditure
   """
   FINALIZE_EXPENDITURE
