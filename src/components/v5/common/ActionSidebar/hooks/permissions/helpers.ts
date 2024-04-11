@@ -44,6 +44,8 @@ export const getPermissionsNeededForAction = (
       return [ColonyRole.Root];
     case Action.EnterRecoveryMode:
       return [ColonyRole.Recovery];
+    case Action.PaymentBuilder:
+      return [ColonyRole.Administration];
     default:
       return undefined;
   }
@@ -57,6 +59,7 @@ const getPermissionsDomainIdForAction = (
   switch (actionType) {
     case Action.SimplePayment:
     case Action.TransferFunds:
+    case Action.PaymentBuilder:
       return formValues.from;
     case Action.ManageReputation:
     case Action.ManagePermissions:

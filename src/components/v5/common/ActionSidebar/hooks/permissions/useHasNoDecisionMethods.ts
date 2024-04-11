@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
+import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -24,7 +25,8 @@ const useHasNoDecisionMethods = () => {
     return true;
   }
 
-  if (isVotingReputationEnabled) {
+  // User can't use reputation to create Payment builder action
+  if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
     return false;
   }
 

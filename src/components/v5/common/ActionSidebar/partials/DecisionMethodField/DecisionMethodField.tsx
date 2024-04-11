@@ -12,13 +12,17 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 
-import { type DecisionMethodFieldProps } from './types.ts';
+import {
+  type DecisionMethodOption,
+  type DecisionMethodFieldProps,
+} from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DecisionMethodField';
 
 const DecisionMethodField = ({
   reputationOnly,
   disabled,
+  filterOptionsFn,
 }: DecisionMethodFieldProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -30,24 +34,32 @@ const DecisionMethodField = ({
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
 
-  const decisionMethods = [
-    ...(shouldShowPermissions
-      ? [
-          {
-            label: formatText({ id: 'actionSidebar.method.permissions' }),
-            value: DecisionMethod.Permissions,
-          },
-        ]
-      : []),
-    ...(isVotingReputationEnabled
-      ? [
-          {
-            label: formatText({ id: 'actionSidebar.method.reputation' }),
-            value: DecisionMethod.Reputation,
-          },
-        ]
-      : []),
-  ];
+  const getDecisionMethods = () => {
+    const decisionMethods: DecisionMethodOption[] = [
+      ...(shouldShowPermissions
+        ? [
+            {
+              label: formatText({ id: 'actionSidebar.method.permissions' }),
+              value: DecisionMethod.Permissions,
+            },
+          ]
+        : []),
+      ...(isVotingReputationEnabled
+        ? [
+            {
+              label: formatText({ id: 'actionSidebar.method.reputation' }),
+              value: DecisionMethod.Reputation,
+            },
+          ]
+        : []),
+    ];
+
+    if (filterOptionsFn) {
+      return decisionMethods?.filter(filterOptionsFn);
+    }
+
+    return decisionMethods;
+  };
 
   return (
     <ActionFormRow
@@ -65,7 +77,7 @@ const DecisionMethodField = ({
     >
       <FormCardSelect
         name="decisionMethod"
-        options={decisionMethods}
+        options={getDecisionMethods()}
         title={formatText({ id: 'actionSidebar.availableDecisions' })}
         placeholder={formatText({
           id: 'actionSidebar.decisionMethod.placeholder',

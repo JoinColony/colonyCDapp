@@ -240,7 +240,6 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             border-b
             border-b-gray-200
             bg-gray-25
-            bg-gray-25
             px-6
             py-8
             md:h-full
