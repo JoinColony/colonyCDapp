@@ -12,7 +12,7 @@ import { toFinite } from '~utils/lodash.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import { ModificationOption } from '../../forms/ManageReputationForm/consts.ts';
 
@@ -32,15 +32,14 @@ const ManageReputationDescription: FC = () => {
 
   const recipientUser =
     member && !loading && !error ? (
-      <UserPopover
-        userName={user?.profile?.displayName}
+      <UserInfoPopover
         walletAddress={member}
         user={user}
         withVerifiedBadge={false}
         className="!inline-flex"
       >
         {user?.profile?.displayName || splitWalletAddress(member)}
-      </UserPopover>
+      </UserInfoPopover>
     ) : (
       formatText({
         id: 'actionSidebar.metadataDescription.member',

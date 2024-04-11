@@ -12,7 +12,7 @@ import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
-import UserAvatarPopover from '~v5/shared/UserAvatarPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import {
@@ -77,25 +77,23 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
           {
             actionType: action.type,
             initiator: initiatorUser ? (
-              <UserPopover
-                userName={initiatorUser.profile?.displayName}
+              <UserInfoPopover
                 walletAddress={initiatorUser.walletAddress}
                 user={initiatorUser}
                 withVerifiedBadge={false}
               >
                 {initiatorUser.profile?.displayName}
-              </UserPopover>
+              </UserInfoPopover>
             ) : null,
             recipient: recipientAddress ? (
-              <UserPopover
-                userName={recipientUser?.profile?.displayName}
+              <UserInfoPopover
                 walletAddress={recipientAddress}
                 user={recipientUser}
                 withVerifiedBadge={false}
               >
                 {recipientUser?.profile?.displayName ||
                   splitWalletAddress(recipientAddress)}
-              </UserPopover>
+              </UserInfoPopover>
             ) : null,
             reputationChange: amount
               ? formatReputationChange(
@@ -128,9 +126,9 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.member' })}
           rowContent={
-            <UserAvatarPopover
+            <UserPopover
               walletAddress={action.recipientAddress || ADDRESS_ZERO}
-              size="xs"
+              size={20}
             />
           }
           RowIcon={UserFocus}

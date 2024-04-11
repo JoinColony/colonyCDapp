@@ -11,7 +11,7 @@ export const useUserSelect = ({
   filterOptionsFn,
 }: {
   domainId?: number;
-  filterOptionsFn?: (option: SearchSelectOption) => boolean;
+  filterOptionsFn?: (option: UserSearchSelectOption) => boolean;
 }) => {
   const { totalMembers, loading } = useMemberContext();
 
