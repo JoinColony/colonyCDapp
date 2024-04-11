@@ -9,11 +9,10 @@ import {
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Button from '~v5/shared/Button/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
+import TablePagination from './partials/TablePagination/index.ts';
 import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
 
@@ -23,8 +22,6 @@ const Table = <T,>({
   className,
   getCoreRowModel,
   getRowClassName = () => undefined,
-  verticalOnMobile = true,
-  hasPagination = false,
   sizeUnit = 'px',
   canNextPage,
   canPreviousPage,
@@ -44,15 +41,15 @@ const Table = <T,>({
   renderSubComponent,
   getRowCanExpand,
   withBorder = true,
+  verticalLayout,
   ...rest
 }: TableProps<T>) => {
-  const isMobile = useMobile();
   const helper = useMemo(() => createColumnHelper<T>(), []);
 
   const columnsWithMenu = useMemo(
     () => [
       ...columns,
-      ...(getMenuProps && !(isMobile && verticalOnMobile)
+      ...(getMenuProps && !verticalLayout
         ? [
             makeMenuColumn<T>(
               helper,
@@ -66,8 +63,7 @@ const Table = <T,>({
     [
       columns,
       getMenuProps,
-      isMobile,
-      verticalOnMobile,
+      verticalLayout,
       helper,
       meatBallMenuSize,
       meatBallMenuStaticSize,
@@ -98,6 +94,8 @@ const Table = <T,>({
     canPreviousPage === undefined
       ? table.getCanPreviousPage()
       : canPreviousPage;
+  const pageCount = table.getPageCount();
+  const hasPagination = pageCount > 1 || canGoToNextPage || canGoToPreviousPage;
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
 
@@ -119,10 +117,9 @@ const Table = <T,>({
         cellPadding="0"
         cellSpacing="0"
       >
-        {isMobile && verticalOnMobile ? (
+        {verticalLayout ? (
           rows.map((row) => {
             const cells = row.getVisibleCells();
-            const columnsCount = cells.length - 1;
 
             return (
               <tbody
@@ -176,11 +173,7 @@ const Table = <T,>({
                               'p-4': !rowWithMeatBallMenu,
                             },
                           )}
-                          colSpan={
-                            rowWithMeatBallMenu
-                              ? columnsCount - 1
-                              : columnsCount
-                          }
+                          colSpan={rowWithMeatBallMenu ? undefined : 2}
                         >
                           {flexRender(
                             header.column.columnDef.cell,
@@ -204,7 +197,7 @@ const Table = <T,>({
                               {...meatBallMenuProps}
                               contentWrapperClassName={clsx(
                                 meatBallMenuProps?.contentWrapperClassName,
-                                '!left-6 right-6 !z-[65]',
+                                '!left-6 right-6 !z-[65] sm:!left-auto',
                               )}
                             />
                           </td>
@@ -367,7 +360,12 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="h-full border-gray-200 px-[1.1rem] text-md text-gray-500 sm:border-t"
+                    className={clsx(
+                      'h-full px-[1.1rem] text-md text-gray-500',
+                      {
+                        'border-t border-gray-200': !verticalLayout,
+                      },
+                    )}
                   >
                     {flexRender(
                       column.column.columnDef.footer,
@@ -383,68 +381,26 @@ const Table = <T,>({
       {hasPagination &&
         showPageNumber &&
         (canGoToPreviousPage || canGoToNextPage) && (
-          <div
-            className={clsx(
-              'grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-[1.125rem] pb-[1.4375rem] pt-2',
+          <TablePagination
+            onNextClick={goToNextPage}
+            onPrevClick={goToPreviousPage}
+            canGoToNextPage={canGoToNextPage}
+            canGoToPreviousPage={canGoToPreviousPage}
+            pageNumberLabel={formatText(
               {
-                'sm:grid-cols-[1fr_auto_auto]':
-                  canGoToNextPage ||
-                  (additionalPaginationButtonsContent && isMobile),
-                'sm:grid-cols-[1fr_auto]': !(
-                  canGoToNextPage ||
-                  (additionalPaginationButtonsContent && isMobile)
-                ),
+                id: showTotalPagesNumber
+                  ? 'table.pageNumberWithTotal'
+                  : 'table.pageNumber',
+              },
+              {
+                actualPage: table.getState().pagination.pageIndex + 1,
+                pageNumber: table.getPageCount(),
               },
             )}
+            disabled={paginationDisabled}
           >
-            {(canGoToPreviousPage ||
-              (additionalPaginationButtonsContent && !isMobile)) && (
-              <div className="col-start-1 row-start-1 flex items-center justify-start gap-3 sm:col-start-2">
-                {!isMobile && additionalPaginationButtonsContent}
-                {canGoToPreviousPage && (
-                  <Button
-                    onClick={goToPreviousPage}
-                    size="small"
-                    mode="primaryOutline"
-                    disabled={paginationDisabled}
-                  >
-                    {formatText({ id: 'table.previous' })}
-                  </Button>
-                )}
-              </div>
-            )}
-            {showPageNumber && (
-              <p className="col-start-2 row-start-1 w-full text-center text-gray-700 text-3 sm:col-start-1 sm:w-auto sm:text-left">
-                {formatText(
-                  {
-                    id: showTotalPagesNumber
-                      ? 'table.pageNumberWithTotal'
-                      : 'table.pageNumber',
-                  },
-                  {
-                    actualPage: table.getState().pagination.pageIndex + 1,
-                    pageNumber: table.getPageCount(),
-                  },
-                )}
-              </p>
-            )}
-            {(canGoToNextPage ||
-              (additionalPaginationButtonsContent && isMobile)) && (
-              <div className="col-start-3 row-start-1 flex items-center justify-end gap-3">
-                {isMobile && additionalPaginationButtonsContent}
-                {canGoToNextPage && (
-                  <Button
-                    onClick={goToNextPage}
-                    size="small"
-                    mode="primaryOutline"
-                    disabled={paginationDisabled}
-                  >
-                    {formatText({ id: 'table.next' })}
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
+            {additionalPaginationButtonsContent}
+          </TablePagination>
         )}
     </div>
   );

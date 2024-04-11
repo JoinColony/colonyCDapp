@@ -85,8 +85,6 @@ const FundsTable: FC = () => {
       <Table<FundsTableModel>
         data={searchedTokens}
         columns={columns}
-        verticalOnMobile={false}
-        hasPagination
         initialState={{
           pagination: {
             pageSize: 10,

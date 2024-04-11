@@ -56,6 +56,7 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
             columns={columns}
             data={data}
             getMenuProps={getMenuProps}
+            verticalLayout={isMobile}
           />
         </>
       )}
