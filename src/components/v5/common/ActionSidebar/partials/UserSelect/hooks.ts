@@ -2,7 +2,7 @@ import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { splitAddress } from '~utils/strings/index.ts';
+import { splitAddress } from '~utils/strings.ts';
 
 import { type UserSearchSelectOption } from './types.ts';
 

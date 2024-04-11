@@ -1,5 +1,5 @@
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { splitAddress } from '~utils/strings/index.ts';
+import { splitAddress } from '~utils/strings.ts';
 import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 export const useNonVerifiedMembersSelect = () => {
