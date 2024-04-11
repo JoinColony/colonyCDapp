@@ -38,7 +38,8 @@ const useHasNoDecisionMethods = () => {
     return true;
   }
 
-  if (isVotingReputationEnabled) {
+  // User can't use reputation to create Payment builder action
+  if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
     return false;
   }
 

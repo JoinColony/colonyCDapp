@@ -6,6 +6,7 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -28,6 +29,8 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   const fieldArrayMethods = useFieldArray({
     name,
   });
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   const data: PaymentBuilderRecipientsTableModel[] =
     fieldArrayMethods.fields.map(({ id }) => ({
       key: id,
@@ -79,7 +82,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
-      {!!data.length && (
+      {!!data.length && !hasNoDecisionMethods && (
         <Table<PaymentBuilderRecipientsTableModel>
           className={clsx('[&_tfoot_td]:py-2 [&_tfoot_td]:align-top', {
             '!border-negative-400': !!fieldState.error,
@@ -104,6 +107,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
             delay: undefined,
           });
         }}
+        disabled={hasNoDecisionMethods}
       >
         {formatText({ id: 'button.addPayment' })}
       </Button>
