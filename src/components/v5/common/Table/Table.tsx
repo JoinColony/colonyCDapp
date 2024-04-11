@@ -77,6 +77,7 @@ const Table = <T,>({
     getCoreRowModel: getCoreRowModel || libGetCoreRowModel<T>(),
     data,
     columns: columnsWithMenu,
+    enableSortingRemoval: false,
     getRowCanExpand,
     getExpandedRowModel: getExpandedRowModel<T>(),
     ...rest,

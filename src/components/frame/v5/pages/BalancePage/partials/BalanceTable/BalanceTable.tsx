@@ -72,7 +72,9 @@ const BalanceTable: FC = () => {
   const { nativeToken: nativeTokenStatus } = status || {};
   const isMobile = useMobile();
   // const { searchValue } = useSearchContext();
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { desc: true, id: 'balance' },
+  ]);
   const [rowSelection, setRowSelection] = useState({});
   const tokensDataLength = data?.length;
   const { formatMessage } = useIntl();
@@ -94,7 +96,9 @@ const BalanceTable: FC = () => {
 
     return {
       cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-      contentWrapperClassName: isMobile ? '!left-6 right-6' : undefined,
+      contentWrapperClassName: clsx('sm:min-w-[17.375rem]', {
+        '!left-6 right-6': isMobile,
+      }),
       dropdownPlacementProps: { withAutoTopPlacement: isMobile },
       items: [
         ...(!isTokenNative && !nativeTokenStatus?.unlocked

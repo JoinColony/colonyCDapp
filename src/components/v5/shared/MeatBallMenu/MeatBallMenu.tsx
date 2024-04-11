@@ -71,7 +71,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
           <MenuContainer
             className={clsx(
               contentWrapperClassName,
-              'absolute z-sidebar w-full max-w-[calc(100%-3.4rem)] -translate-x-3 overflow-y-auto px-6 py-4 sm:w-auto sm:translate-x-0',
+              'absolute z-sidebar overflow-y-auto px-6 py-4',
             )}
             hasShadow
             rounded="s"

@@ -45,6 +45,9 @@ const VerifiedMembersTable: FC<VerifiedMembersTableProps> = ({ name }) => {
     return !isEmptyData || data.length > 1
       ? {
           cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+          contentWrapperClassName: clsx({
+            '!left-6 right-6': isMobile,
+          }),
           items: [
             {
               key: 'remove',
