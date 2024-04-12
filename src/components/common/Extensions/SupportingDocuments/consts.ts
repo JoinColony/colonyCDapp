@@ -25,6 +25,14 @@ const supportingDocumentsMessages = defineMessages({
     id: 'SupportingDocuments.StreamingPayments.paymentsLink',
     defaultMessage: 'Streaming Payments',
   },
+  permissionsLink: {
+    id: 'SupportingDocuments.MultiSig.permissionsLink',
+    defaultMessage: 'Understanding Permissions',
+  },
+  multiSigExtensionLink: {
+    id: 'SupportingDocuments.MultiSig.extensionLink',
+    defaultMessage: 'Multi-Sig Extension',
+  },
 });
 
 export const links = {
@@ -50,4 +58,5 @@ export const links = {
       message: supportingDocumentsMessages.streamingPaymentsLink,
     },
   ],
+  // @TODO add multisig with new colonyJS version
 };
