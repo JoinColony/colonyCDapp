@@ -72,7 +72,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
       <div className="w-full md:flex md:h-screen md:flex-col" ref={wrapperRef}>
         {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}
         <div
-          className="sticky left-0 right-0 top-0 z-base w-full bg-base-white sm:z-sidebar md:static md:left-auto md:right-auto md:top-auto md:bg-transparent"
+          className="z-base w-full bg-base-white sm:z-sidebar md:bg-transparent"
           ref={topContentWrapperRef}
         >
           <div className="relative w-full">
@@ -82,7 +82,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         </div>
         <AnimatePresence>
           {isTablet ? (
-            <div className="inner py-6">
+            <div className="inner h-[calc(100vh-var(--top-content-height))] overflow-auto py-6">
               {pageHeadingProps && (
                 <PageHeading {...pageHeadingProps} className="mb-6" />
               )}
