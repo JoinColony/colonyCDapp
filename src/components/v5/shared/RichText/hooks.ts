@@ -79,6 +79,18 @@ export const useRichText = (
         },
       },
       content: field.value,
+      onUpdate: (props) => {
+        const trimmedText = props.editor.getText().trim();
+        const isCreatingHeading = !!props.editor.getAttributes('heading');
+        const isCreatingList = !!props.editor.getAttributes('list');
+        const html =
+          (props.editor.isEmpty || trimmedText.length === 0) &&
+          !isCreatingHeading &&
+          !isCreatingList
+            ? ''
+            : props.editor.getHTML();
+        field.onChange(html);
+      },
     },
     [],
   );
@@ -95,25 +107,21 @@ export const useRichText = (
   }, [editor, isDecriptionFieldExpanded, field.value]);
 
   useEffect(() => {
-    const handleUpdate = ({ editor: textEditor }: { editor }) => {
+    const handleBlur = ({ editor: textEditor }: { editor }) => {
       const trimmedText = textEditor.getText().trim();
-      const isCreatingHeading = textEditor.getAttributes('heading');
-      const isCreatingList = textEditor.getAttributes('list');
+
       const html =
-        (textEditor.isEmpty || trimmedText.length === 0) &&
-        !isCreatingHeading &&
-        !isCreatingList
+        textEditor.isEmpty || trimmedText.length === 0
           ? ''
           : textEditor.getHTML();
+
       field.onChange(html);
     };
 
-    editor?.on('selectionUpdate', handleUpdate);
-    editor?.on('blur', handleUpdate);
+    editor?.on('blur', handleBlur);
 
     return () => {
-      editor?.off('selectionUpdate', handleUpdate);
-      editor?.off('blur', handleUpdate);
+      editor?.off('blur', handleBlur);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, field.value, name]);
