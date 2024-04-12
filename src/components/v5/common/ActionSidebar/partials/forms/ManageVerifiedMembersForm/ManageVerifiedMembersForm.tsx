@@ -4,6 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -28,6 +29,8 @@ const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
   const { resetField } = useFormContext();
   useManageVerifiedMembers(getFormOptions);
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   return (
     <>
       <ActionFormRow
@@ -41,6 +44,7 @@ const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
       >
         <FormCardSelect
           name="manageMembers"
@@ -52,6 +56,7 @@ const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
             id: 'actionSidebar.manageMembers.placeholder',
           })}
           title={formatText({ id: 'actionSidebar.manageMembers.placeholder' })}
+          disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
       <DecisionMethodField />

@@ -11,6 +11,8 @@ import { type DecisionDraft } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 
+import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+
 const SaveDraftButton: FC = () => {
   const [isDraftSaved, setIsDraftSaved] = useState(false);
   const isMobile = useMobile();
@@ -24,6 +26,8 @@ const SaveDraftButton: FC = () => {
   } = useFormContext();
 
   const formValues = getValues();
+
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const handleSaveAgreementInLocalStorage = useCallback(
     (values: DecisionDraft) => {
@@ -65,7 +69,7 @@ const SaveDraftButton: FC = () => {
         }
       }}
       isFullSize={isMobile}
-      disabled={formState.isValidating || isDraftSaved}
+      disabled={formState.isValidating || isDraftSaved || hasNoDecisionMethods}
     >
       {!isDraftSaved && <FileDashed size={18} className="mr-2" />}
       {formatText({

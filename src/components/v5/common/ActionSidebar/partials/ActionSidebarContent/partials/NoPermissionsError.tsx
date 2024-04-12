@@ -3,7 +3,7 @@ import React from 'react';
 import { useWatch } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { type Action } from '~constants/actions.ts';
+import { Action } from '~constants/actions.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -29,7 +29,11 @@ const NoPermissionsError = () => {
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
-  if (actionType && (hasNoDecisionMethods || hasPermissions === false)) {
+  if (
+    actionType &&
+    actionType !== Action.CreateDecision &&
+    (hasNoDecisionMethods || hasPermissions === false)
+  ) {
     return (
       <div className="mt-6">
         <NotificationBanner status="error" icon={WarningCircle}>
