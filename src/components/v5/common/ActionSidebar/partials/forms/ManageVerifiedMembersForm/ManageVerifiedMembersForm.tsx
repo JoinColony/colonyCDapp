@@ -54,7 +54,7 @@ const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
           title={formatText({ id: 'actionSidebar.manageMembers.placeholder' })}
         />
       </ActionFormRow>
-      <DecisionMethodField />
+      <DecisionMethodField tooltipContent="actionSidebar.manageMembers.decisionMethod" />
       <CreatedIn readonly />
       <Description />
       {manageMembers !== undefined && <VerifiedMembersTable name="members" />}

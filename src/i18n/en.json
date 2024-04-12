@@ -1070,6 +1070,7 @@
     "actionSidebar.availableDecisions": "Available decision methods",
     "actionSidebar.manageMembers": "Add/remove",
     "actionSidebar.manageMembers.placeholder": "Select option",
+    "actionSidebar.manageMembers.decisionMethod": "The decision to Manage verified members can only be done in the Root domain.",
     "actionSidebar.manageMembers.table": "Selected members",
     "actionSidebar.decisionMethod": "Decision method",
     "actionSidebar.decisionMethod.placeholder": "Select method",

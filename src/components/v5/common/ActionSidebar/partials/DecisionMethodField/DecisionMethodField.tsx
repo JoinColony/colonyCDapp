@@ -19,6 +19,7 @@ const displayName = 'v5.common.ActionSidebar.partials.DecisionMethodField';
 const DecisionMethodField = ({
   reputationOnly,
   disabled,
+  tooltipContent = 'actionSidebar.tooltip.decisionMethod',
 }: DecisionMethodFieldProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -56,7 +57,7 @@ const DecisionMethodField = ({
       tooltips={{
         label: {
           tooltipContent: formatText({
-            id: 'actionSidebar.tooltip.decisionMethod',
+            id: tooltipContent,
           }),
         },
       }}
