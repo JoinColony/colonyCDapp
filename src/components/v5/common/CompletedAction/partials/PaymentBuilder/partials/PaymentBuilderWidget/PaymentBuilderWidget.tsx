@@ -21,7 +21,7 @@ import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx'
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
-import { getExpenditureStep } from './utils.ts';
+import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony } = useColonyContext();
@@ -95,11 +95,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
       ),
     },
-    cancelItem,
     {
       key: ExpenditureStep.Review,
       heading: { label: formatText({ id: 'expenditure.reviewStage.label' }) },
-      isHidden: isExpenditureCanceled,
       content:
         expenditureStatus === ExpenditureStep.Review ? (
           <StepDetailsBlock
@@ -139,7 +137,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Funding,
       heading: { label: formatText({ id: 'expenditure.fundingStage.label' }) },
-      isHidden: isExpenditureCanceled,
       content:
         expenditureStatus === ExpenditureStep.Funding ? (
           <StepDetailsBlock
@@ -170,7 +167,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Release,
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
-      isHidden: isExpenditureCanceled,
       content:
         expenditureStatus === ExpenditureStep.Release ? (
           <StepDetailsBlock
@@ -196,10 +192,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Payment,
       heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
-      isHidden: isExpenditureCanceled,
       content: <PaymentStepDetailsBlock />,
     },
   ];
+
+  const currentIndex = getCancelStepIndex(expenditure);
+
+  const updatedItems = isExpenditureCanceled
+    ? [...items.slice(0, currentIndex), cancelItem]
+    : items;
 
   if (loadingExpenditure) {
     return <SpinnerLoader appearance={{ size: 'medium' }} />;
@@ -208,7 +209,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   return (
     <>
       <Stepper<ExpenditureStep>
-        items={items}
+        items={updatedItems}
         activeStepKey={activeStepKey}
         setActiveStepKey={setActiveStepKey}
       />
