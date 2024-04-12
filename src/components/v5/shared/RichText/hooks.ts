@@ -79,15 +79,6 @@ export const useRichText = (
         },
       },
       content: field.value,
-      onUpdate: (props) => {
-        const trimmedText = props.editor.getText().trim();
-        const html =
-          props.editor.isEmpty || trimmedText.length === 0
-            ? ''
-            : props.editor.getHTML();
-
-        field.onChange(html);
-      },
     },
     [],
   );
@@ -106,11 +97,14 @@ export const useRichText = (
   useEffect(() => {
     const handleUpdate = ({ editor: textEditor }: { editor }) => {
       const trimmedText = textEditor.getText().trim();
+      const isCreatingHeading = textEditor.getAttributes('heading');
+      const isCreatingList = textEditor.getAttributes('list');
       const html =
-        textEditor.isEmpty || trimmedText.length === 0
+        (textEditor.isEmpty || trimmedText.length === 0) &&
+        !isCreatingHeading &&
+        !isCreatingList
           ? ''
           : textEditor.getHTML();
-
       field.onChange(html);
     };
 
