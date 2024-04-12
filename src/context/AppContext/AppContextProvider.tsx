@@ -13,6 +13,7 @@ import {
   type GetUserByAddressQueryVariables,
 } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { getLastWallet } from '~utils/autoLogin.ts';
@@ -29,6 +30,10 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // We need to start with true here as we can't know whethere we are going to try to connect
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(true);
+
+  const { joinedColonies, loading: joinedColoniesLoading } = useJoinedColonies(
+    wallet?.address,
+  );
 
   const updateUser = useCallback(
     async (address: string | undefined, shouldBackgroundUpdate = false) => {
@@ -175,6 +180,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       disconnectWallet,
       updateUser,
       canInteract: !!wallet && !!user,
+      joinedColonies,
+      joinedColoniesLoading,
     }),
     [
       wallet,
@@ -185,6 +192,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       connectWallet,
       disconnectWallet,
       updateUser,
+      joinedColonies,
+      joinedColoniesLoading,
     ],
   );
 

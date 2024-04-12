@@ -4,8 +4,15 @@ import {
   type GetColonyContributorQuery,
   GetColonyContributorsDocument,
   type GetColonyContributorsQuery,
+  type Profile,
 } from '~gql';
 import { type ColonyContributor } from '~types/graphql.ts';
+import { merge } from '~utils/lodash.ts';
+
+export type UpdatedContributorData = {
+  userAddress: string;
+  newData: Partial<ColonyContributor>;
+};
 
 export const searchMembers = (
   members: ColonyContributor[],
@@ -30,10 +37,10 @@ export const getColonyContributorId = (
   walletAddress: string,
 ) => `${colonyAddress}_${walletAddress}`;
 
-export const updateContributorQueries = (
-  userAddresses: string[],
+// @TODO this should use apolloClient's writeFragment
+const updateContributorQueries = (
+  updatedContributors: UpdatedContributorData[],
   colonyAddress: string,
-  isVerified: boolean,
 ) => {
   apolloClient.cache.updateQuery(
     {
@@ -51,17 +58,20 @@ export const updateContributorQueries = (
 
       const modifiedContributors = data.getContributorsByColony.items.map(
         (contributor) => {
-          if (
-            !contributor ||
-            !userAddresses.includes(contributor.contributorAddress)
-          ) {
+          if (!contributor) {
             return contributor;
           }
 
-          return {
-            ...contributor,
-            isVerified,
-          };
+          const contributorData = updatedContributors.find(
+            (contributorEntry) =>
+              contributorEntry.userAddress === contributor.contributorAddress,
+          );
+
+          if (!contributorData) {
+            return contributor;
+          }
+
+          return merge({ ...contributor }, contributorData.newData);
         },
       );
 
@@ -75,7 +85,7 @@ export const updateContributorQueries = (
     },
   );
 
-  for (const userAddress of userAddresses) {
+  updatedContributors.forEach(({ userAddress, newData }) => {
     apolloClient.cache.updateQuery(
       {
         query: GetColonyContributorDocument,
@@ -93,12 +103,45 @@ export const updateContributorQueries = (
 
         return {
           ...data,
-          getColonyContributor: {
-            ...data.getColonyContributor,
-            isVerified,
-          },
+          getColonyContributor: merge(
+            { ...data.getColonyContributor },
+            newData,
+          ),
         };
       },
     );
-  }
+  });
+};
+
+export const updateContributorVerifiedStatus = (
+  userAddresses: string[],
+  colonyAddress: string,
+  isVerified: boolean,
+) => {
+  const updatedContributors: UpdatedContributorData[] = userAddresses.map(
+    (userAddress) => ({
+      userAddress,
+      newData: { isVerified },
+    }),
+  );
+
+  updateContributorQueries(updatedContributors, colonyAddress);
+};
+
+export const updateMemberProfile = (
+  userAddress: string,
+  colonyAddress: string,
+  newProfile: Partial<Profile>,
+) => {
+  const newContributorData = {
+    user: {
+      walletAddress: userAddress,
+      profile: newProfile,
+    },
+  };
+
+  updateContributorQueries(
+    [{ userAddress, newData: newContributorData }],
+    colonyAddress,
+  );
 };
