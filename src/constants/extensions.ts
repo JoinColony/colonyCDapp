@@ -4,9 +4,12 @@ import { number } from 'yup';
 
 import ExtensionAdvancedPaymentsIcon from '~icons/ExtensionAdvancedPaymentsIcon.tsx';
 import ExtensionLazyConsensusIcon from '~icons/ExtensionLazyConsensusIcon.tsx';
+import ExtensionMultiSigIcon from '~icons/ExtensionMultiSigIcon.tsx';
 import ExtensionOneTransactionPaymentIcon from '~icons/ExtensionOneTransactionPaymentIcon.tsx';
 import advancedHero from '~images/assets/extensions/advanced-hero.png';
 import advancedInterface from '~images/assets/extensions/advanced-interface.png';
+import multiSigHero from '~images/assets/extensions/multi-sig-hero.png';
+import multiSigInterface from '~images/assets/extensions/multi-sig-interface.png';
 import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
@@ -27,6 +30,7 @@ export enum ExtensionCategory {
   Expenditures = 'Expenditures',
 }
 
+const multiSigName = 'extensions.MultiSig';
 const oneTransactionPaymentName = 'extensions.OneTxPayment';
 const votingReputationName = 'extensions.VotingReputation';
 const stakedExpenditureName = 'extensions.StakedExpenditure';
@@ -53,6 +57,22 @@ const validationMessages = {
   positiveError: {
     id: 'extensions.param.validation.positiveError',
     defaultMessage: 'Please enter a positive number',
+  },
+};
+
+const multiSigMessages = {
+  multiSigName: {
+    id: `${multiSigName}.name`,
+    defaultMessage: 'Multi-sig Permissions',
+  },
+  multiSigDescriptionShort: {
+    id: `${multiSigName}.description`,
+    defaultMessage:
+      'Enables the multi-signer permissions system for the Colony.',
+  },
+  multiSigDescriptionLong: {
+    id: `${oneTransactionPaymentName}.descriptionLong`,
+    defaultMessage: `<p>The Multi-Sig Permissions system leverages the existing “Core” Permissions system on Colony. With the additional security requirement of needing multiple permission holders to sign before an action can be taken.</p><p>This means that as long as at least two people hold the same permission in a team, then individuals are not able to skip governance and solely control that team or the Colony as a whole. So, doing actions such as transferring funds, making payments, changing reputation, creating teams, unlocking the token, etc. cannot be done without collective input from other permission holders.</p><p>This makes for more flexible options for distribution of authority and a more secure and decentralized Colony and permission system, while maintaining efficiency.</p><h4>How the extension works</h4><ul><li>A Colony member creates an action such as, “Pay Alice 100 xDAI”, selecting the “Multi-Sig” as the Governance option.</li><li>An approval process begins, where users with the required permissions need to approve the action by signing.</li><li>A minimum required number of permission holders need to sign to reach consensus, this can be fixed or relative based on how this extension is configured.</li><li>Once consensus has been achieved, approval concludes and the action is able to be finalized.</li></ul><h4>Useful for:</h4><ul><li>Taking quick actions in a Colony in a secure way.</li><li>Teams that need to be more decentralized, and autonomous without compromising security.</li><li>Teams that require more flexible ways of distributing authority.</li><li>Complimenting the Reputation governance extension to allow quicker actions without individuals having control with “Core” Permissions.</li></ul>`,
   },
 };
 
@@ -304,6 +324,7 @@ const MSG = defineMessages({
   ...stakedExpenditureMessages,
   ...stagedExpenditureMessages,
   ...streamingPaymentsMessage,
+  ...multiSigMessages,
 });
 
 export const supportedExtensionsConfig: ExtensionConfig[] = [
@@ -549,4 +570,34 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1692048380000,
   },
+  {
+    icon: ExtensionMultiSigIcon,
+    imageURLs: [multiSigHero, multiSigInterface],
+    category: ExtensionCategory.DecisionMethods,
+    extensionId: Extension.MultisigPermissions,
+    name: MSG.multiSigName,
+    descriptionShort: MSG.multiSigDescriptionShort,
+    descriptionLong: MSG.multiSigDescriptionLong,
+    neededColonyPermissions: [
+      ColonyRole.Root,
+      ColonyRole.Administration,
+      ColonyRole.Arbitration,
+      ColonyRole.Architecture,
+      ColonyRole.Funding,
+    ],
+    uninstallable: true,
+    createdAt: 1713173071843,
+  },
+  // {
+  //   icon: 'extension-streaming-payments',
+  //   imageURLs: [streamingHero, streamingInterface],
+  //   category: ExtensionCategory.Expenditures,
+  //   extensionId: Extension.StreamingPayments,
+  //   name: MSG.streamingPaymentsName,
+  //   descriptionShort: MSG.streamingPaymentsDescriptionShort,
+  //   descriptionLong: MSG.streamingPaymentsDescriptionLong,
+  //   neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+  //   uninstallable: true,
+  //   createdAt: 1692048380000,
+  // },
 ];
