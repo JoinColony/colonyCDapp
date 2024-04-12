@@ -11,6 +11,7 @@ import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import MemberCard from '~v5/common/MemberCard/index.ts';
+import MemberCardSkeleton from '~v5/common/MemberCard/MemberCardSkeleton.tsx';
 import MemberCardList from '~v5/common/MemberCardList/index.ts';
 import SimpleMemberCard from '~v5/common/SimpleMemberCard/SimpleMemberCard.tsx';
 import SimpleMemberCardSkeleton from '~v5/common/SimpleMemberCard/SimpleMemberCardSkeleton.tsx';
@@ -105,10 +106,17 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
           (selectedFilterCount > 0 || searchValue) && (
             <EmptyContent {...emptyContentProps} withBorder />
           )}
-        {isLoading && (
-          <MemberCardList isSimple={withSimpleCards}>
+        {isLoading && withSimpleCards && (
+          <MemberCardList isSimple>
             {[...Array(16).keys()].map((key) => (
               <SimpleMemberCardSkeleton key={key} />
+            ))}
+          </MemberCardList>
+        )}
+        {isLoading && !withSimpleCards && (
+          <MemberCardList>
+            {[...Array(8).keys()].map((key) => (
+              <MemberCardSkeleton key={key} />
             ))}
           </MemberCardList>
         )}
