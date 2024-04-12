@@ -1,8 +1,10 @@
 import { UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -17,6 +19,7 @@ const displayName = 'v5.common.ActionSidebar.partials.PaymentBuilderForm';
 
 const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   usePaymentBuilder(getFormOptions);
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   return (
     <>
@@ -31,10 +34,13 @@ const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.fundFrom' })}
+        isDisabled={hasNoDecisionMethods}
       >
-        <TeamsSelect name="from" />
+        <TeamsSelect name="from" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
-      <DecisionMethodField />
+      <DecisionMethodField
+        filterOptionsFn={({ value }) => value !== DecisionMethod.Reputation}
+      />
       <CreatedIn />
       <Description />
       <PaymentBuilderRecipientsField name="payments" />
