@@ -79,7 +79,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           },
         )}
       >
-        <div className="flex-grow">
+        <div className="flex flex-grow flex-col">
           {title && <h4 className="mb-2 heading-5">{title}</h4>}
           {subTitle && <p className="text-md text-gray-600">{subTitle}</p>}
           {children}
