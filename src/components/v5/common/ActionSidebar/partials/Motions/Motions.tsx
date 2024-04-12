@@ -1,4 +1,7 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import {
+  Extension,
+  MotionState as NetworkMotionState,
+} from '@colony/colony-js';
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import { left as LeftPlacementType } from '@popperjs/core';
 import clsx from 'clsx';
@@ -6,6 +9,7 @@ import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -14,6 +18,7 @@ import { getSafePollingInterval } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
+import ExtensionStatusBox from './partials/ExtensionStatusBox/ExtensionStatusBox.tsx';
 import MotionCountDownTimer from './partials/MotionCountDownTimer/index.ts';
 import MotionProvider from './partials/MotionProvider/MotionProvider.tsx';
 import FinalizeStep from './steps/FinalizeStep/index.ts';
@@ -48,12 +53,20 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const { motionData, rootHash } = action || {};
   const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
 
-  const [activeStepKey, setActiveStepKey] = useState<Steps>(networkMotionState);
+  const { installedExtensionsData } = useExtensionsData();
 
+  const votingReputationExtensionData = installedExtensionsData.find(
+    ({ extensionId }) => extensionId === Extension.VotingReputation,
+  );
+
+  const { isDeleted, isDeprecated } = votingReputationExtensionData || {};
+
+  const [activeStepKey, setActiveStepKey] = useState<Steps>(networkMotionState);
   const motionFinished =
     networkMotionState === NetworkMotionState.Finalizable ||
     networkMotionState === NetworkMotionState.Finalized ||
-    networkMotionState === NetworkMotionState.Failed;
+    networkMotionState === NetworkMotionState.Failed ||
+    isDeprecated;
 
   useEffect(() => {
     startPollingForAction(getSafePollingInterval());
@@ -310,11 +323,15 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       startPollingAction={startPollingForAction}
       stopPollingAction={stopPollingForAction}
     >
-      <Stepper<Steps>
-        activeStepKey={activeStepKey}
-        setActiveStepKey={setActiveStepKey}
-        items={items}
-      />
+      {isDeleted ? (
+        <ExtensionStatusBox motionState={motionState} />
+      ) : (
+        <Stepper<Steps>
+          activeStepKey={activeStepKey}
+          setActiveStepKey={setActiveStepKey}
+          items={items}
+        />
+      )}
     </MotionProvider>
   );
 };

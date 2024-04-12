@@ -77,7 +77,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
         <>
           <div className="mb-4 flex items-center justify-between">
             {motionState && <MotionStateBadge state={motionState} />}
-            {isMotionActive && (
+            {!!isMotionActive && (
               <MotionCountDownTimer
                 prefix={formatText({ id: 'agreementsPage.endsIn' })}
                 className="text-negative-400 text-4"
