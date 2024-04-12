@@ -65,9 +65,8 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
   ] = useToggle();
 
-  const { expenditure, loadingExpenditure } = useGetExpenditureData(
-    action.expenditureId,
-  );
+  const { expenditure, loadingExpenditure, refetchExpenditure } =
+    useGetExpenditureData(action.expenditureId);
 
   if (loadingExpenditure) {
     return (
@@ -122,6 +121,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   });
   const showCancelOption =
     expenditure?.status !== ExpenditureStatus.Cancelled &&
+    expenditure?.status !== ExpenditureStatus.Finalized &&
     (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
 
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
@@ -212,6 +212,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         isOpen={isCancelModalOpen}
         expenditure={expenditure}
         onClose={toggleCancelModalOff}
+        refetchExpenditure={refetchExpenditure}
       />
     </>
   );
