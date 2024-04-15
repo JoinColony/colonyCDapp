@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { type RefObject, forwardRef } from 'react';
 
 import { type Address } from '~types/index.ts';
-import { splitAddress, type AddressElements } from '~utils/strings/index.ts';
+import { splitAddress, type AddressElements } from '~utils/strings.ts';
 
 interface Props {
   /*

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { sanitizeHTML, stripHTML } from '~utils/strings/index.ts';
+import { sanitizeHTML, stripHTML } from '~utils/strings.ts';
 
 import styles from './RichTextDisplay.module.css';
 

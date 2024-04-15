@@ -1,9 +1,9 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
+import { left as LeftPlacementType } from '@popperjs/core';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
@@ -22,30 +22,15 @@ import RevealStep from './steps/RevealStep/index.ts';
 import StakingStep from './steps/StakingStep/index.ts';
 import VotingStep from './steps/VotingStep/index.ts';
 import { type MotionsProps, type Steps, CustomStep } from './types.ts';
+import {
+  getFinalizeStepTooltipText,
+  getOutcomeStepTooltipText,
+  getRevealStepTooltipText,
+  getStakingStepTooltipText,
+  getVotingStepTooltipText,
+} from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
-
-const MSG = defineMessages({
-  votingPhaseButtonTooltip: {
-    id: `${displayName}.votingPhaseButtonTooltip`,
-    defaultMessage:
-      'Voting will start if action is fully supported and fully opposed.',
-  },
-  revealPhaseButtonTooltip: {
-    id: `${displayName}.revealPhaseButtonTooltip`,
-    defaultMessage:
-      'Votes are hidden, so you need to reveal your vote during the Reveal stage for it to be counted and to be eligible for rewards.',
-  },
-  finalizePhaseButtonTooltip: {
-    id: `${displayName}.finalizePhaseButtonTooltip`,
-    defaultMessage:
-      'Execute and return all stakes of the supported action or only return stakes of a opposed/failed action.',
-  },
-  outcomePhaseButtonTooltip: {
-    id: `${displayName}.outcomePhaseButtonTooltip`,
-    defaultMessage: 'The outcome of this proposed action.',
-  },
-});
 
 const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const { canInteract } = useAppContext();
@@ -125,6 +110,14 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
                 refetchMotionState={refetchMotionState}
               />
             ) : null,
+          tooltipProps: {
+            tooltipContent: getStakingStepTooltipText(
+              networkMotionState,
+              motionData,
+            ),
+            placement: LeftPlacementType,
+            className: 'z-10',
+          },
         },
       },
       {
@@ -149,9 +142,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               />
             ) : null,
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.votingPhaseButtonTooltip} />
+            tooltipContent: getVotingStepTooltipText(
+              networkMotionState,
+              motionData,
             ),
+            placement: LeftPlacementType,
+            className: 'z-10',
           },
         },
         isOptional: !isFullyStaked,
@@ -181,9 +177,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               />
             ) : null,
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.revealPhaseButtonTooltip} />
+            tooltipContent: getRevealStepTooltipText(
+              networkMotionState,
+              motionData,
             ),
+            placement: LeftPlacementType,
+            className: 'z-10',
           },
         },
         isHidden: motionStakedAndFinalizable,
@@ -242,9 +241,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               motionFinished && !hasVotedMotionPassed,
           }),
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.outcomePhaseButtonTooltip} />
+            tooltipContent: getOutcomeStepTooltipText(
+              networkMotionState,
+              motionData,
             ),
+            placement: LeftPlacementType,
+            className: 'z-10',
           },
         },
         isOptional: true,
@@ -264,9 +266,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.finalize.label' }) || '',
           tooltipProps: {
-            tooltipContent: (
-              <FormattedMessage {...MSG.finalizePhaseButtonTooltip} />
+            tooltipContent: getFinalizeStepTooltipText(
+              networkMotionState,
+              motionData,
             ),
+            placement: LeftPlacementType,
+            className: 'z-10',
           },
         },
         isSkipped: !canInteract,

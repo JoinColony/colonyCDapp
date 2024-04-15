@@ -1,5 +1,5 @@
 import { type Colony, type User } from '~types/graphql.ts';
-import { sanitizeHTML } from '~utils/strings/index.ts';
+import { sanitizeHTML } from '~utils/strings.ts';
 
 import { type EnterRecoveryModeFormValues } from './consts.ts';
 
