@@ -79,11 +79,11 @@ export const getExpenditureStep = (
 export const getCancelStepIndex = (
   expenditure: Expenditure | null | undefined,
 ) => {
-  const { lockingActions, finalizingActions } = expenditure || {};
-
   if (!expenditure) {
     return undefined;
   }
+
+  const { lockingActions, finalizingActions } = expenditure;
 
   const isExpenditureLocked =
     lockingActions?.items && lockingActions.items.length > 0;
