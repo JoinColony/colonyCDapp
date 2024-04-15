@@ -38,4 +38,5 @@ export interface TableProps<T>
   renderSubComponent?: (props: { row: Row<T> }) => React.ReactElement;
   getRowCanExpand?: (row: Row<T>) => boolean;
   withBorder?: boolean;
+  isDisabled?: boolean;
 }

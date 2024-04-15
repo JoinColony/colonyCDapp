@@ -119,7 +119,8 @@ const RichText: FC<RichTextProps> = ({
                 onClick={toggleOnDecriptionSelect}
                 className={clsx('text-left transition', {
                   'text-gray-900': characterCount,
-                  'text-gray-400': !characterCount,
+                  'text-gray-400': !characterCount && !isDisabled,
+                  'text-gray-300': isDisabled,
                   'sm:hover:text-blue-400': !isDisabled,
                 })}
                 disabled={isDisabled}

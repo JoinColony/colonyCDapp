@@ -1,4 +1,5 @@
 import { Article, FileText, Percent } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -87,7 +88,15 @@ const ColonyObjectiveFields: FC = () => {
           max={100}
           name="colonyObjectiveProgress"
           placeholder="0"
-          suffix={<span className="text-md">%</span>}
+          suffix={
+            <span
+              className={clsx('text-md', {
+                'text-gray-300': hasNoDecisionMethods,
+              })}
+            >
+              %
+            </span>
+          }
           mode="secondary"
           autoWidth
           message={undefined}

@@ -69,7 +69,7 @@ const ManageReputationTable: FC = () => {
     <div
       className={clsx('flex flex-wrap items-center gap-x-2 text-md', {
         'text-negative-400': !!error,
-        'text-gray-400': isChangeFieldDisabled,
+        'text-gray-300': isChangeFieldDisabled,
         'text-gray-900': !isChangeFieldDisabled && !error,
       })}
     >
@@ -81,8 +81,9 @@ const ManageReputationTable: FC = () => {
         disabled={isChangeFieldDisabled}
         name="amount"
         className={clsx('flex-shrink outline-none outline-0', {
-          'placeholder:text-gray-400': !error,
           'placeholder:text-negative-400': !!error,
+          'bg-transparent placeholder:text-gray-300': isChangeFieldDisabled,
+          'placeholder:text-gray-400': !isChangeFieldDisabled && !error,
         })}
         placeholder="0"
         value={value}

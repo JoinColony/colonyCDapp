@@ -43,6 +43,7 @@ const Table = <T,>({
   renderSubComponent,
   getRowCanExpand,
   withBorder = true,
+  isDisabled = false,
   ...rest
 }: TableProps<T>) => {
   const isMobile = useMobile();
@@ -273,7 +274,11 @@ const Table = <T,>({
                         {row.getVisibleCells().map((cell) => {
                           const renderCellWrapperCommonArgs = [
                             clsx(
-                              'flex h-full flex-col items-start justify-center p-[1.1rem] text-md text-gray-500',
+                              'flex h-full flex-col items-start justify-center p-[1.1rem] text-md',
+                              {
+                                'text-gray-500': !isDisabled,
+                                'text-gray-300': isDisabled,
+                              },
                               cell.column.columnDef.cellContentWrapperClassName,
                             ),
                             flexRender(

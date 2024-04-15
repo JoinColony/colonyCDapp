@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
@@ -7,7 +8,7 @@ import { type TokenSymbolProps } from './types.ts';
 const displayName =
   'v5.common.ActionsContent.partials.TokenSelect.partials.TokenSymbol';
 
-const TokenSymbol: FC<TokenSymbolProps> = ({ address }) => {
+const TokenSymbol: FC<TokenSymbolProps> = ({ address, disabled = false }) => {
   const allTokens = useGetAllTokens();
 
   const selectedToken = allTokens.find(
@@ -20,7 +21,11 @@ const TokenSymbol: FC<TokenSymbolProps> = ({ address }) => {
 
   const { symbol } = selectedToken || {};
 
-  return <span className="text-md">{symbol}</span>;
+  return (
+    <span className={clsx('text-md', { 'text-gray-300': disabled })}>
+      {symbol}
+    </span>
+  );
 };
 
 TokenSymbol.displayName = displayName;

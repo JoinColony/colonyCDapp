@@ -53,7 +53,9 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
             ref={relativeElementRef}
             type="button"
             className={clsx('flex text-md transition-colors', {
-              'text-gray-400': !isError && !isTeamColourSelectVisible,
+              'text-gray-400':
+                !isError && !isTeamColourSelectVisible && !disabled,
+              'text-gray-300': disabled,
               'text-negative-400': isError,
               'text-blue-400': isTeamColourSelectVisible,
               'md:hover:text-blue-400': !disabled,

@@ -72,7 +72,8 @@ const TeamsSelect: FC<TeamSelectProps> = ({
             type="button"
             ref={relativeElementRef}
             className={clsx('flex text-md transition-colors', {
-              'text-gray-400': (!isError && !isTeamSelectVisible) || disabled,
+              'text-gray-400': !isError && !isTeamSelectVisible && !disabled,
+              'text-gray-300': disabled,
               'text-negative-400': !disabled && isError,
               'text-blue-400': isTeamSelectVisible,
               'md:hover:text-blue-400': !disabled,

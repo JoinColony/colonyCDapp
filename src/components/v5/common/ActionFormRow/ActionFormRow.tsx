@@ -42,7 +42,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
           className={clsx({
             'text-negative-400': !isDisabled && isError,
             'text-gray-900': !isDisabled && !isError,
-            'text-gray-400': isDisabled,
+            'text-gray-300': isDisabled,
           })}
         />
         <span
@@ -51,7 +51,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
             {
               'text-negative-400': !isDisabled && isError,
               'text-gray-900': !isDisabled && !isError,
-              'text-gray-400': isDisabled,
+              'text-gray-300': isDisabled,
             },
             'ml-2 flex items-center gap-2 text-md',
           )}
@@ -64,7 +64,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
                 {
                   'rotate-90': isExpanded,
                   'text-gray-900': !isError && !isDisabled,
-                  'text-gray-400': isDisabled && !isError,
+                  'text-gray-300': !isError && isDisabled,
                 },
               )}
             >

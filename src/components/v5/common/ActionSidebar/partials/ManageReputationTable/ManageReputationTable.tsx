@@ -6,6 +6,8 @@ import Numeral from '~shared/Numeral/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 
+import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+
 import { type ManageReputationTableProps } from './types.ts';
 
 const ManageReputationTable: FC<ManageReputationTableProps> = ({
@@ -20,10 +22,20 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
 }) => {
   const isMobile = useMobile();
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   const currentReputationContent = isLoading ? (
     <SpinnerLoader />
   ) : (
-    <p className="flex flex-wrap items-center gap-x-2 text-md font-normal text-gray-400">
+    <p
+      className={clsx(
+        'flex flex-wrap items-center gap-x-2 text-md font-normal',
+        {
+          'text-gray-300': hasNoDecisionMethods,
+          'text-gray-400': !hasNoDecisionMethods,
+        },
+      )}
+    >
       <Numeral value={formattedReputationPoints} />
       <span className="flex-shrink-0">
         {formatText(
@@ -39,7 +51,15 @@ const ManageReputationTable: FC<ManageReputationTableProps> = ({
   );
 
   const newReputationContent = (
-    <p className="flex flex-wrap items-center gap-x-2 text-md font-normal text-gray-400">
+    <p
+      className={clsx(
+        'flex flex-wrap items-center gap-x-2 text-md font-normal',
+        {
+          'text-gray-300': hasNoDecisionMethods,
+          'text-gray-400': !hasNoDecisionMethods,
+        },
+      )}
+    >
       <Numeral value={formattedNewReputationPoints} />
       <span className="flex-shrink-0">
         {formatText(
