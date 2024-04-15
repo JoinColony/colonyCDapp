@@ -1,7 +1,11 @@
 import { mergeAttributes } from '@tiptap/core';
 import Blockquote from '@tiptap/extension-blockquote';
+import BulletList from '@tiptap/extension-bullet-list';
 import CharacterCount from '@tiptap/extension-character-count';
 import Heading from '@tiptap/extension-heading';
+import ListItem from '@tiptap/extension-list-item';
+import OrderedList from '@tiptap/extension-ordered-list';
+import Paragraph from '@tiptap/extension-paragraph';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
@@ -69,6 +73,26 @@ export const useRichText = (
             class: 'border-l border-gray-300 pl-2 ml-8',
           },
         }),
+        Paragraph.configure({
+          HTMLAttributes: {
+            class: 'text-md empty:h-[1lh]',
+          },
+        }),
+        BulletList.configure({
+          HTMLAttributes: {
+            class: 'list-disc pl-6',
+          },
+        }),
+        OrderedList.configure({
+          HTMLAttributes: {
+            class: 'list-decimal pl-6',
+          },
+        }),
+        ListItem.configure({
+          HTMLAttributes: {
+            class: 'marker:normal-nums',
+          },
+        }),
         CharacterCount.configure({
           limit: maxDescriptionLength,
         }),
@@ -89,6 +113,7 @@ export const useRichText = (
           !isCreatingList
             ? ''
             : props.editor.getHTML();
+
         field.onChange(html);
       },
     },

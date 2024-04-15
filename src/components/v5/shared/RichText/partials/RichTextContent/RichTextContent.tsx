@@ -13,7 +13,7 @@ const RichTextContent: React.FC<RichTextContentProps> = ({
   ...props
 }) => (
   <EditorContent
-    className={clsx('prose', styles.richTextContent, className)}
+    className={clsx(styles.richTextContent, className)}
     {...props}
   />
 );
