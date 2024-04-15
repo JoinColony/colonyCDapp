@@ -55,7 +55,7 @@ export const getPermissionsNeededForAction = (
 };
 
 // Function returning the domain ID in which the user needs to have required permissions to create the action
-const getPermissionsDomainIdForAction = (
+export const getPermissionsDomainIdForAction = (
   actionType: Action,
   formValues: Record<string, any>,
 ) => {

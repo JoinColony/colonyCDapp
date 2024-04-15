@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
@@ -8,7 +9,10 @@ import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
 
-import { getPermissionsNeededForAction } from './helpers.ts';
+import {
+  getPermissionsDomainIdForAction,
+  getPermissionsNeededForAction,
+} from './helpers.ts';
 
 /**
  * Hook determining if the user has no decision methods available for the currently selected action type
@@ -38,11 +42,21 @@ const useHasNoDecisionMethods = () => {
     return false;
   }
 
-  // Check if the user has the required permissions in root domain
-  // for action types which can only be actioned in root domain
-  const userRootRoles = getUserRolesForDomain(colony, user.walletAddress, 1);
-  if (!requiredPermissions.every((role) => userRootRoles.includes(role))) {
-    if (actionType === Action.ManageVerifiedMembers) {
+  const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
+
+  // If the requiredRolesDomain is root, check the user has the required permissions in root
+  if (requiredRolesDomain === Id.RootDomain) {
+    const userRootRoles = getUserRolesForDomain(
+      colony,
+      user.walletAddress,
+      Id.RootDomain,
+    );
+
+    if (
+      !requiredPermissions.every((requiredPermission) =>
+        userRootRoles.includes(requiredPermission),
+      )
+    ) {
       return true;
     }
   }
