@@ -41,7 +41,10 @@ export const useAmountField = (
     }
 
     inputRef.current.style.width = `${Math.min(
-      getInputTextWidth(inputRef.current, { usePlaceholderAsFallback: true }),
+      getInputTextWidth(inputRef.current, {
+        usePlaceholderAsFallback: true,
+        formattingOptions,
+      }),
       maxWidth || 120,
     )}px`;
   };

@@ -1,10 +1,16 @@
+import { type FormatNumeralOptions, formatNumeral } from 'cleave-zen';
+
 interface GetInputTextWidthOptions {
   usePlaceholderAsFallback?: boolean;
+  formattingOptions?: FormatNumeralOptions;
 }
 
 export const getInputTextWidth = (
   input: HTMLInputElement,
-  { usePlaceholderAsFallback }: GetInputTextWidthOptions = {},
+  {
+    usePlaceholderAsFallback,
+    formattingOptions,
+  }: GetInputTextWidthOptions = {},
 ): number => {
   const textMeasureContainer = document.createElement('span');
   document.body.appendChild(textMeasureContainer);
@@ -23,10 +29,16 @@ export const getInputTextWidth = (
     }
   });
 
-  textMeasureContainer.innerHTML =
-    (input.type === 'number' && !Number.isNaN(input.valueAsNumber)
-      ? input.valueAsNumber.toString()
-      : input.value) || (usePlaceholderAsFallback ? input.placeholder : '0');
+  if (formattingOptions) {
+    textMeasureContainer.innerHTML =
+      formatNumeral(input.value, formattingOptions) ||
+      (usePlaceholderAsFallback ? input.placeholder : '0');
+  } else {
+    textMeasureContainer.innerHTML =
+      (input.type === 'number' && !Number.isNaN(input.valueAsNumber)
+        ? input.valueAsNumber.toString()
+        : input.value) || (usePlaceholderAsFallback ? input.placeholder : '0');
+  }
 
   const textWidth = textMeasureContainer.getBoundingClientRect().width + 2;
 
