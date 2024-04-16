@@ -44,26 +44,24 @@ const useHasNoDecisionMethods = () => {
 
   const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
 
-  // If the requiredRolesDomain is root, check the user has the required permissions in root
-  if (requiredRolesDomain === Id.RootDomain) {
-    const userRootRoles = getUserRolesForDomain(
-      colony,
-      user.walletAddress,
-      Id.RootDomain,
-    );
+  const userRootRoles = getUserRolesForDomain(
+    colony,
+    user.walletAddress,
+    Id.RootDomain,
+  );
 
-    if (
-      !requiredPermissions.every((requiredPermission) =>
-        userRootRoles.includes(requiredPermission),
-      )
-    ) {
-      return true;
-    }
-  }
-
-  // Check if the user has the required permissions in any domain
   const userRoles = getAllUserRoles(colony, user.walletAddress);
-  if (!requiredPermissions.every((role) => userRoles.includes(role))) {
+
+  if (
+    !requiredPermissions.every((role) => {
+      // If the requiredRolesDomain is root, check the user has the required permissions in root
+      if (requiredRolesDomain === Id.RootDomain) {
+        return userRootRoles.includes(role);
+      }
+      // Otherwise, check the user has the required permissions in any domain
+      return userRoles.includes(role);
+    })
+  ) {
     return true;
   }
 
