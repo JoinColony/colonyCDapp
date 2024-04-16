@@ -25,7 +25,7 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
 
   return (
     <>
-      <h6 className="mb-2 text-2">
+      <h6 className="mb-2 text-gray-700 text-2">
         {formatText({ id: 'decisionMethodSelect.title' })}
       </h6>
       <SelectBase

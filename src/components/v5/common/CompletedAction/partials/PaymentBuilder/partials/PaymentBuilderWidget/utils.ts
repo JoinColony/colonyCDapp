@@ -75,3 +75,33 @@ export const getExpenditureStep = (
       return ExpenditureStep.Create;
   }
 };
+
+export const getCancelStepIndex = (
+  expenditure: Expenditure | null | undefined,
+) => {
+  if (!expenditure) {
+    return undefined;
+  }
+
+  const { lockingActions, finalizingActions } = expenditure;
+
+  const isExpenditureLocked =
+    lockingActions?.items && lockingActions.items.length > 0;
+  const isExpenditureFinalized =
+    finalizingActions?.items && finalizingActions.items.length > 0;
+  const isExpenditureFullFunded = isExpenditureFullyFunded(expenditure);
+
+  if (!isExpenditureLocked) {
+    return 1;
+  }
+
+  if (isExpenditureLocked && !isExpenditureFullFunded) {
+    return 2;
+  }
+
+  if (isExpenditureFullFunded && !isExpenditureFinalized) {
+    return 3;
+  }
+
+  return undefined;
+};
