@@ -131,9 +131,15 @@ const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
           colonyName: colony?.metadata?.displayName,
           colonyAvatar: colony.metadata?.avatar || colony.metadata?.thumbnail,
-          colonyObjectiveTitle: colony.metadata?.objective?.title,
-          colonyObjectiveDescription: colony.metadata?.objective?.description,
-          colonyObjectiveProgress: colony.metadata?.objective?.progress,
+          colonyObjectiveTitle: isMotion
+            ? pendingColonyMetadata?.objective?.title
+            : colony.metadata?.objective?.title,
+          colonyObjectiveDescription: isMotion
+            ? pendingColonyMetadata?.objective?.description
+            : colony.metadata?.objective?.description,
+          colonyObjectiveProgress: isMotion
+            ? pendingColonyMetadata?.objective?.progress
+            : colony.metadata?.objective?.progress,
           ...repeatableFields,
         };
       case ColonyActionType.ColonyEdit:

@@ -68,8 +68,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateDomainMotion} {Create Team}
       ${ColonyActionType.VersionUpgrade} {Version Upgrade}
       ${ColonyActionType.VersionUpgradeMotion} {Version Upgrade}
-      ${ColonyActionType.ColonyEdit} {Colony Edit}
-      ${ColonyActionType.ColonyEditMotion} {Colony Edit}
+      ${ColonyActionType.ColonyEdit} {Manage Colony objective}
+      ${ColonyActionType.ColonyEditMotion} {Manage Colony objective}
       ${ColonyActionType.EditDomain} {Edit Team}
       ${ColonyActionType.EditDomainMotion} {Edit Team}
       ${ColonyActionType.SetUserRoles} {Permission Management}

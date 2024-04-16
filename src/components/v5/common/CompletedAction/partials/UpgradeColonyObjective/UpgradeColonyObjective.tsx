@@ -50,7 +50,7 @@ const MSG = defineMessages({
 
 const UpgradeColonyObjective = ({ action }: Props) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser } = action;
+  const { initiatorUser, colony, isMotion, pendingColonyMetadata } = action;
 
   return (
     <>
@@ -75,14 +75,22 @@ const UpgradeColonyObjective = ({ action }: Props) => {
           <span>{formatText(MSG.objectiveTitle)}</span>
         </div>
         <div>
-          <span>{action.colony.metadata?.objective?.title}</span>
+          <span>
+            {isMotion
+              ? pendingColonyMetadata?.objective?.title
+              : colony.metadata?.objective?.title}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <FileText size={ICON_SIZE} />
           <span>{formatText(MSG.objectiveDescription)}</span>
         </div>
         <div>
-          <span>{action.colony.metadata?.objective?.description}</span>
+          <span>
+            {isMotion
+              ? pendingColonyMetadata?.objective?.description
+              : colony.metadata?.objective?.description}
+          </span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -90,7 +98,12 @@ const UpgradeColonyObjective = ({ action }: Props) => {
           <span>{formatText(MSG.objectiveProgress)}</span>
         </div>
         <div>
-          <span>{action.colony.metadata?.objective?.progress}%</span>
+          <span>
+            {isMotion
+              ? pendingColonyMetadata?.objective?.progress
+              : colony.metadata?.objective?.progress}
+            %
+          </span>
         </div>
         <DecisionMethodRow isMotion={action.isMotion || false} />
         {action.motionData?.motionDomain.metadata && (
