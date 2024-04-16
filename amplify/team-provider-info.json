@@ -28,10 +28,6 @@
           "deploymentBucketName": "amplify-colonycdapp-qa-170436-deployment",
           "s3Key": "amplify-builds/createPrivateBetaInvite-55427466654d6f623644-build.zip"
         },
-        "createUniqueColony": {
-          "deploymentBucketName": "amplify-colonycdapp-qa-170436-deployment",
-          "s3Key": "amplify-builds/createUniqueColony-32784e383574304e6550-build.zip"
-        },
         "createUniqueUser": {
           "deploymentBucketName": "amplify-colonycdapp-qa-170436-deployment",
           "s3Key": "amplify-builds/createUniqueUser-38654538584a2f4e706e-build.zip"
@@ -124,10 +120,6 @@
         "createPrivateBetaInvite": {
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
           "s3Key": "amplify-builds/createPrivateBetaInvite-7637566b6e4174734e6f-build.zip"
-        },
-        "createUniqueColony": {
-          "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",
-          "s3Key": "amplify-builds/createUniqueColony-6e785659765a4b7a4467-build.zip"
         },
         "createUniqueUser": {
           "deploymentBucketName": "amplify-colonycdapp-prod-190158-deployment",

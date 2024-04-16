@@ -122,32 +122,6 @@ input ColonyStatusInput {
 }
 
 """
-Input data for creating a unique Colony within the Colony Network. Use this instead of the automatically generated `CreateColonyInput` input type
-"""
-input CreateUniqueColonyInput {
-  """
-  Unique identifier for the Colony. This is the Colony's contract address
-  """
-  colonyAddress: ID!
-  """
-  Unique identifier for the Colony's native token (this is its address)
-  """
-  tokenAddress: ID!
-  """
-  Type of the Colony (regular or MetaColony)
-  """
-  type: ColonyType
-  """
-  User id of creator to associate with further invite codes
-  """
-  initiatorAddress: ID!
-  """
-  The transaction hash of colony creation transaction
-  """
-  transactionHash: String!
-}
-
-"""
 Input data for creating a temporary colony metadata entry
 """
 input CreateColonyEtherealMetadataInput {
@@ -872,11 +846,6 @@ type Mutation {
   """
   createUniqueUser(input: CreateUniqueUserInput): User
     @function(name: "createUniqueUser-${env}")
-  """
-  Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation
-  """
-  createUniqueColony(input: CreateUniqueColonyInput): Colony
-    @function(name: "createUniqueColony-${env}")
   """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
   """
