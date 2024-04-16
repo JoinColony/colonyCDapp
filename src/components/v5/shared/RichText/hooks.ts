@@ -1,5 +1,4 @@
 import { mergeAttributes } from '@tiptap/core';
-import Blockquote from '@tiptap/extension-blockquote';
 import CharacterCount from '@tiptap/extension-character-count';
 import Heading from '@tiptap/extension-heading';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -28,7 +27,31 @@ export const useRichText = (
       extensions: [
         StarterKit.configure({
           heading: false,
-          blockquote: false,
+          blockquote: {
+            HTMLAttributes: {
+              class: 'border-l border-gray-300 pl-2 ml-8',
+            },
+          },
+          paragraph: {
+            HTMLAttributes: {
+              class: 'text-md empty:h-[1lh]',
+            },
+          },
+          bulletList: {
+            HTMLAttributes: {
+              class: 'list-disc pl-6',
+            },
+          },
+          orderedList: {
+            HTMLAttributes: {
+              class: 'list-decimal pl-6',
+            },
+          },
+          listItem: {
+            HTMLAttributes: {
+              class: 'marker:normal-nums',
+            },
+          },
         }),
         Underline,
         Placeholder.configure({
@@ -64,11 +87,6 @@ export const useRichText = (
             ];
           },
         }),
-        Blockquote.configure({
-          HTMLAttributes: {
-            class: 'border-l border-gray-300 pl-2 ml-8',
-          },
-        }),
         CharacterCount.configure({
           limit: maxDescriptionLength,
         }),
@@ -81,8 +99,12 @@ export const useRichText = (
       content: field.value,
       onUpdate: (props) => {
         const trimmedText = props.editor.getText().trim();
+        const isCreatingHeading = !!props.editor.getAttributes('heading');
+        const isCreatingList = !!props.editor.getAttributes('list');
         const html =
-          props.editor.isEmpty || trimmedText.length === 0
+          (props.editor.isEmpty || trimmedText.length === 0) &&
+          !isCreatingHeading &&
+          !isCreatingList
             ? ''
             : props.editor.getHTML();
 
@@ -104,8 +126,9 @@ export const useRichText = (
   }, [editor, isDecriptionFieldExpanded, field.value]);
 
   useEffect(() => {
-    const handleUpdate = ({ editor: textEditor }: { editor }) => {
+    const handleBlur = ({ editor: textEditor }: { editor }) => {
       const trimmedText = textEditor.getText().trim();
+
       const html =
         textEditor.isEmpty || trimmedText.length === 0
           ? ''
@@ -114,12 +137,10 @@ export const useRichText = (
       field.onChange(html);
     };
 
-    editor?.on('selectionUpdate', handleUpdate);
-    editor?.on('blur', handleUpdate);
+    editor?.on('blur', handleBlur);
 
     return () => {
-      editor?.off('selectionUpdate', handleUpdate);
-      editor?.off('blur', handleUpdate);
+      editor?.off('blur', handleBlur);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, field.value, name]);
