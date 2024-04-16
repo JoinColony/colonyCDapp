@@ -36,10 +36,10 @@ import ActionTypeRow from '../rows/ActionType.tsx';
 import CreatedInRow from '../rows/CreatedIn.tsx';
 import DecisionMethodRow from '../rows/DecisionMethod.tsx';
 import DescriptionRow from '../rows/Description.tsx';
-import PaymentBuilderTable from '../rows/PaymentBuilderTable/index.ts';
 import TeamFromRow from '../rows/TeamFrom.tsx';
 
 import CancelModal from './partials/CancelModal/CancelModal.tsx';
+import PaymentBuilderTable from './partials/PaymentBuilderTable/PaymentBuilderTable.tsx';
 
 interface PaymentBuilderProps {
   action: ColonyAction;
@@ -83,23 +83,12 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     return null;
   }
 
-  const { slots = [], metadata } = expenditure;
+  const { slots = [], metadata, status, finalizedAt } = expenditure;
 
   const selectedTeam = findDomainByNativeId(
     metadata?.fundFromDomainNativeId,
     colony,
   );
-
-  const recipientCounts = slots.reduce((uniqueAddresses: string[], item) => {
-    const address = item.recipientAddress;
-    if (address) {
-      if (!uniqueAddresses.includes(address)) {
-        uniqueAddresses.push(address);
-      }
-    }
-
-    return uniqueAddresses;
-  }, []).length;
 
   const tokensCount = slots.reduce((uniqueTokens: string[], item) => {
     const token = item.payouts?.[0].tokenAddress;
@@ -171,7 +160,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           { id: 'action.title' },
           {
             actionType: ColonyActionType.CreateExpenditure,
-            recipientsNumber: recipientCounts,
+            recipientsNumber: slots.length,
             tokensNumber: tokensCount,
             initiator: initiatorUser ? (
               <UserPopover
@@ -207,7 +196,12 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!slots.length && <PaymentBuilderTable items={slots} />}
+      <PaymentBuilderTable
+        items={slots}
+        status={status}
+        finalizedTimestamp={finalizedAt}
+        isLoading={!slots.length}
+      />
       <CancelModal
         isOpen={isCancelModalOpen}
         expenditure={expenditure}

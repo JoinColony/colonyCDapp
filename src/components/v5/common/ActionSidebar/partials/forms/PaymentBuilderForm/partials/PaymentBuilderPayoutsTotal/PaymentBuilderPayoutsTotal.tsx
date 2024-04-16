@@ -19,6 +19,8 @@ import { type PaymentBuilderPayoutsTotalProps } from './types.ts';
 const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
   data,
   moveDecimals,
+  itemClassName,
+  buttonClassName,
 }) => {
   const { colony } = useColonyContext();
   const [isExpanded, { toggle }] = useToggle();
@@ -26,8 +28,8 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
   const sortedTokens =
     useMemo(() => {
       const summedTokens = data.reduce<ExpenditurePayout[]>(
-        (result, { amount, tokenAddress }) => {
-          if (!amount || !tokenAddress) {
+        (result, { amount = '0', tokenAddress }) => {
+          if (!tokenAddress) {
             return result;
           }
 
@@ -77,7 +79,12 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
     const tokenData = getSelectedToken(colony, token.tokenAddress);
 
     return tokenData ? (
-      <div className="flex items-center gap-3 text-gray-900 text-1">
+      <div
+        className={clsx(
+          itemClassName,
+          'flex items-center gap-3 text-gray-900 text-1',
+        )}
+      >
         <Numeral value={token.amount} decimals={tokenData?.decimals} />
         <div className="flex items-center gap-1">
           <TokenIcon
@@ -101,7 +108,10 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
         <>
           <button
             type="button"
-            className="flex w-full items-center gap-2 py-[.3125rem]"
+            className={clsx(
+              buttonClassName,
+              'flex w-full items-center gap-2 py-[.3125rem]',
+            )}
             onClick={toggle}
           >
             {getItem(sortedTokens[0])}

@@ -78,7 +78,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
               }),
             })}
           />
-          <div className="flex max-w-[15.625rem] flex-col items-start">
+          <div className="flex w-full max-w-[15.625rem] flex-col items-start">
             {isSuccess ? (
               <div className="flex items-center gap-2 text-base-white">
                 <Check size={12} />

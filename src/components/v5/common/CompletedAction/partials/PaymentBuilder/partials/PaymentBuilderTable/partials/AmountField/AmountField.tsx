@@ -5,11 +5,15 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import TokenIcon from '~shared/TokenIcon/TokenIcon.tsx';
 import { getSelectedToken } from '~utils/tokens.ts';
 
-import { getFormattedTokenAmount } from '../../utils.ts';
+import { getFormattedTokenAmount } from '../../../../../utils.ts';
 
-import { type AmountProps } from './types.ts';
+import { type AmountFieldProps } from './types.ts';
 
-const AmountField: FC<AmountProps> = ({ amount, tokenAddress }) => {
+const AmountField: FC<AmountFieldProps> = ({
+  amount,
+  tokenAddress,
+  isLoading,
+}) => {
   const { colony } = useColonyContext();
   const tokenData = getSelectedToken(colony, tokenAddress);
   const formattedAmount = getFormattedTokenAmount(
@@ -17,7 +21,7 @@ const AmountField: FC<AmountProps> = ({ amount, tokenAddress }) => {
     tokenData?.decimals || DEFAULT_TOKEN_DECIMALS,
   );
 
-  return (
+  return !isLoading ? (
     <div className="flex items-center gap-3 text-md text-gray-900">
       {formattedAmount}
       {tokenData && (
@@ -26,6 +30,10 @@ const AmountField: FC<AmountProps> = ({ amount, tokenAddress }) => {
           {tokenData.symbol}
         </div>
       )}
+    </div>
+  ) : (
+    <div className="flex w-[11.25rem] items-center">
+      <div className="h-4 w-full overflow-hidden rounded skeleton" />
     </div>
   );
 };
