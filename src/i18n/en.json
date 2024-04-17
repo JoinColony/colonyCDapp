@@ -853,7 +853,6 @@
     "advancedPage.version.warning": "An upgrade for your Colony is available",
     "status.payments": "Payments",
     "status.governance": "Governance",
-    "status.operations": "Operations",
     "status.new": "New",
     "status.enabled": "Enabled",
     "status.notInstalled": "Not Installed",
