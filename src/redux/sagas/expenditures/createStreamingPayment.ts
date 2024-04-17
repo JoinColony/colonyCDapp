@@ -4,6 +4,7 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
@@ -16,6 +17,7 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import {
   type ChannelDefinition,
@@ -43,9 +45,10 @@ function* createStreamingPaymentAction({
     createdInDomain,
     recipientAddress,
     tokenAddress,
+    tokenDecimals,
     amount,
-    startTime,
-    endTime,
+    startTimestamp,
+    endTimestamp,
     interval,
     endCondition,
     limitAmount,
@@ -95,6 +98,10 @@ function* createStreamingPaymentAction({
         ColonyRole.Arbitration,
       );
 
+    const convertedAmount = BigNumber.from(amount).mul(
+      BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
+    );
+
     yield fork(createTransaction, createStreamingPayment.id, {
       context: ClientType.StreamingPaymentsClient,
       methodName: 'create',
@@ -110,12 +117,12 @@ function* createStreamingPaymentAction({
         adminPermissionDomainId,
         adminChildSkillIndex,
         createdInDomain.nativeId,
-        startTime,
-        endTime ?? TIMESTAMP_IN_FUTURE,
+        startTimestamp,
+        endTimestamp ?? TIMESTAMP_IN_FUTURE,
         interval,
         recipientAddress,
         [tokenAddress],
-        [amount],
+        [convertedAmount],
       ],
     });
 
