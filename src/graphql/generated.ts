@@ -405,8 +405,10 @@ export enum ColonyActionType {
   EditDomain = 'EDIT_DOMAIN',
   /** An action related to editing a domain's details via a motion */
   EditDomainMotion = 'EDIT_DOMAIN_MOTION',
+  /** An action related to editing an expenditure */
+  EditExpenditure = 'EDIT_EXPENDITURE',
   /** An action related to creating a motion to edit an expenditure */
-  EditLockedExpenditureMotion = 'EDIT_LOCKED_EXPENDITURE_MOTION',
+  EditExpenditureMotion = 'EDIT_EXPENDITURE_MOTION',
   /** An action related to a domain reputation penalty within a Colony (smite) */
   EmitDomainReputationPenalty = 'EMIT_DOMAIN_REPUTATION_PENALTY',
   /** An action related to a domain reputation penalty within a Colony (smite) via a motion */
