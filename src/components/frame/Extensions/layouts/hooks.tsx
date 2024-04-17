@@ -14,6 +14,8 @@ import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { type TransactionOrMessageGroup } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
+import { findNewestGroup } from '~common/Extensions/UserHubButton/utils.ts';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -22,6 +24,7 @@ import {
   TransactionGroupStates,
   useUserTransactionContext,
 } from '~context/UserTransactionContext/UserTransactionContext.ts';
+import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useTransformer from '~hooks/useTransformer.ts';
@@ -388,14 +391,25 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
 };
 
 export const useGetTxButtons = () => {
-  const { groupState } = useUserTransactionContext();
+  const { groupState, transactionAndMessageGroups } =
+    useUserTransactionContext();
+  const firstGroup: TransactionOrMessageGroup | undefined = findNewestGroup(
+    transactionAndMessageGroups,
+  );
+
+  const signedTransactionsCount = firstGroup?.reduce((acc, tx) => {
+    if (tx.status === TransactionStatus.Succeeded) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+
   const isMobile = useMobile();
 
   const txButtons = (
     <>
       {groupState === TransactionGroupStates.SomePending && (
         <TxButton
-          text={isMobile ? undefined : { id: 'button.pending' }}
           className={clsx({
             '!min-w-0': isMobile,
           })}
@@ -409,7 +423,16 @@ export const useGetTxButtons = () => {
             </span>
           }
           data-openhubifclicked // see UserReputation for usage
-        />
+        >
+          {isMobile ? undefined : (
+            <span>
+              {formatText({ id: 'button.pending' })}{' '}
+              {firstGroup &&
+                firstGroup.length > 1 &&
+                `${signedTransactionsCount}/${firstGroup.length}`}
+            </span>
+          )}
+        </TxButton>
       )}
       {groupState === TransactionGroupStates.AllCompleted && (
         <TxButton
