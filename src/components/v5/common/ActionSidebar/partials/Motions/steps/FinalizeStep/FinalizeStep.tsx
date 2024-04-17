@@ -114,7 +114,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     <MenuWithStatusText
       statusTextSectionProps={{
         status: StatusTypes.Info,
-        children: formatText({ id: 'motion.finalizeStep.statusText' }),
+        children: formatText({
+          id: isMotionFailedNotFinalizable
+            ? 'motion.finalizeStep.failed.statusText'
+            : 'motion.finalizeStep.statusText',
+        }),
         textClassName: 'text-4',
         iconAlignment: 'top',
         content: (
@@ -166,7 +170,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   items={items}
                   className={clsx({
                     'mb-6':
-                      !isMotionFinalized || (!isClaimed && canClaimStakes),
+                      !isMotionFailedNotFinalizable &&
+                      (!isMotionFinalized || (!isClaimed && canClaimStakes)),
                   })}
                 />
               )}
@@ -184,18 +189,22 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       }
                     />
                   )}
-                  {!isPolling && !isMotionFinalized && !isMotionAgreement && (
-                    <Button
-                      mode="primarySolid"
-                      disabled={!isFinalizable || wrongMotionState}
-                      isFullSize
-                      text={formatText({
-                        id: 'motion.finalizeStep.submit',
-                      })}
-                      type="submit"
-                    />
-                  )}
                   {!isPolling &&
+                    !isMotionFailedNotFinalizable &&
+                    !isMotionFinalized &&
+                    !isMotionAgreement && (
+                      <Button
+                        mode="primarySolid"
+                        disabled={!isFinalizable || wrongMotionState}
+                        isFullSize
+                        text={formatText({
+                          id: 'motion.finalizeStep.submit',
+                        })}
+                        type="submit"
+                      />
+                    )}
+                  {!isPolling &&
+                    !isMotionFailedNotFinalizable &&
                     isMotionClaimable &&
                     !isClaimed &&
                     canClaimStakes && (

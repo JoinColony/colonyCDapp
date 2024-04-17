@@ -104,6 +104,8 @@ export const useClaimConfig = (
   const userAddress = user?.walletAddress;
   const nativeTokenDecimals = nativeToken.decimals;
   const nativeTokenSymbol = ` ${nativeToken.symbol}`;
+  const isMotionFailedNotFinalizable =
+    actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
   const stakerReward = stakerRewards.find(
@@ -218,6 +220,36 @@ export const useClaimConfig = (
           <div>
             <Numeral
               value={totals || 0}
+              decimals={nativeTokenDecimals}
+              suffix={nativeTokenSymbol}
+            />
+          </div>
+        ),
+      },
+    );
+  }
+  if (isMotionFailedNotFinalizable) {
+    items.push(
+      {
+        key: WinningsItems.Winnings,
+        label: formatText({ id: 'motion.finalizeStep.winnings' }),
+        value: (
+          <div>
+            <Numeral
+              value={0}
+              decimals={nativeTokenDecimals}
+              suffix={nativeTokenSymbol}
+            />
+          </div>
+        ),
+      },
+      {
+        key: WinningsItems.Total,
+        label: formatText({ id: 'motion.finalizeStep.total' }),
+        value: (
+          <div>
+            <Numeral
+              value={0}
               decimals={nativeTokenDecimals}
               suffix={nativeTokenSymbol}
             />
