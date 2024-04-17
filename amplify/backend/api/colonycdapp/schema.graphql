@@ -2938,6 +2938,16 @@ type ColonyAction @model @searchable {
   @TODO: Make this field non-nullable
   """
   isMotionFinalization: Boolean
+  """
+  Changes to the expenditure slots associated with the action, if any
+  Applicable to `EDIT_EXPENDITURE` action only
+  """
+  expenditureSlotChanges: ExpenditureSlotChanges
+}
+
+type ExpenditureSlotChanges {
+  oldSlots: [ExpenditureSlot!]!
+  newSlots: [ExpenditureSlot!]!
 }
 
 type ColonyActionMetadata @model {
