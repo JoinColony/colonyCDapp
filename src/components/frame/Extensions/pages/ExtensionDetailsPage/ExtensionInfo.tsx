@@ -9,8 +9,10 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 
+import MultiSigPageSetup from '../MultiSigPage/MultiSigPageSetup.tsx';
+
 import { tabsItems } from './consts.ts';
-import ParamDetailsTab from './ParamDetailsTab.tsx';
+import LazyConsensusSettingsTab from './partials/LazyConsensusSettingsTab.tsx';
 import TabContent from './partials/TabContent.tsx';
 
 interface ExtensionInfoProps {
@@ -26,11 +28,30 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
     setActiveTab(id);
   };
 
+  const getSecondExtensionTab = () => {
+    switch (extensionData.extensionId) {
+      case Extension.VotingReputation:
+        return (
+          <LazyConsensusSettingsTab
+            extension={Extension.VotingReputation}
+            params={
+              (extensionData as InstalledExtensionData).params?.votingReputation
+            }
+          />
+        );
+      case Extension.MultisigPermissions:
+        return <MultiSigPageSetup extensionData={extensionData} />;
+      default:
+        return null;
+    }
+  };
+
   /* @TODO: handle case when more than one accordion in extension settings view will be visible */
 
   if (
     extensionData?.isInitialized &&
-    extensionData?.extensionId === Extension.VotingReputation
+    extensionData.extensionId &&
+    tabsItems[extensionData.extensionId] !== undefined
   ) {
     return (
       <Tabs
@@ -48,15 +69,7 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
               transition={{ duration: 0.15 }}
             >
               {activeTab === 0 && <TabContent extensionData={extensionData} />}
-              {activeTab === 1 && (
-                <ParamDetailsTab
-                  extension={Extension.VotingReputation}
-                  params={
-                    (extensionData as InstalledExtensionData).params
-                      ?.votingReputation
-                  }
-                />
-              )}
+              {activeTab === 1 && getSecondExtensionTab()}
             </motion.div>
           </AnimatePresence>
         </ul>

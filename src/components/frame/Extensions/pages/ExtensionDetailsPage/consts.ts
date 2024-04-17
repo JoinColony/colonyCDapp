@@ -3,6 +3,7 @@ import { Extension } from '@colony/colony-js';
 import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
 
 import LazyConsensusPageSetup from '../LazyConsensusPage/LazyConsensusPageSetup.tsx';
+import MultiSigPageSetup from '../MultiSigPage/MultiSigPageSetup.tsx';
 
 export const tabsItems: Partial<{
   [k in Extension]: TabItem[];
@@ -11,15 +12,21 @@ export const tabsItems: Partial<{
     { id: 0, title: 'Overview' },
     { id: 1, title: 'Extension settings' },
   ],
+  [Extension.MultisigPermissions]: [
+    { id: 0, title: 'Overview' },
+    { id: 1, title: 'Extension settings' },
+  ],
 };
 
 export const ExtensionsBadgeMap = {
   [Extension.VotingReputation]: 'governance',
+  [Extension.MultisigPermissions]: 'governance',
   [Extension.OneTxPayment]: 'payments',
 };
 
 export const SetupComponentMap = {
   [Extension.VotingReputation]: LazyConsensusPageSetup,
+  [Extension.MultisigPermissions]: MultiSigPageSetup,
 };
 
 enum GovernanceInitializationParams {

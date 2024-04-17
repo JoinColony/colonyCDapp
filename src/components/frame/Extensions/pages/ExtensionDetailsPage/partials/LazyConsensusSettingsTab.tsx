@@ -2,16 +2,19 @@ import { type Extension } from '@colony/colony-js';
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
-import { paramsMap } from './consts.ts';
+import { paramsMap } from '../consts.ts';
 
-interface ParamDetailsTabProps {
+interface LazyConsensusSettingsTabProps {
   extension: Extension;
   params?: Record<string, string> | null;
 }
 
-const displayName = 'pages.ExtensionDetailsPage.ParamDetailsTab';
+const displayName = 'pages.ExtensionDetailsPage.LazyConsensusSettingsTab';
 
-const ParamDetailsTab: FC<ParamDetailsTabProps> = ({ extension, params }) => {
+const LazyConsensusSettingsTab: FC<LazyConsensusSettingsTabProps> = ({
+  extension,
+  params,
+}) => {
   if (!params) {
     return null;
   }
@@ -54,6 +57,6 @@ const ParamDetailsTab: FC<ParamDetailsTabProps> = ({ extension, params }) => {
   );
 };
 
-ParamDetailsTab.displayName = displayName;
+LazyConsensusSettingsTab.displayName = displayName;
 
-export default ParamDetailsTab;
+export default LazyConsensusSettingsTab;
