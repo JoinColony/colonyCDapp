@@ -1,5 +1,6 @@
 import React, { type FC } from 'react';
 
+import { splitAddress } from '~utils/strings.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
@@ -13,7 +14,8 @@ const SimpleMemberCard: FC<SimpleMemberCardProps> = ({
   userAddress,
   meatBallMenuProps,
 }) => {
-  const userName = user?.profile?.displayName || userAddress;
+  const { header, start, end } = splitAddress(userAddress);
+  const userName = user?.profile?.displayName || `${header}${start}...${end}`;
 
   return (
     <div className="flex h-full w-full items-center justify-between gap-4 rounded-lg border border-gray-200 bg-gray-25 p-5">
