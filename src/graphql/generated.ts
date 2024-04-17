@@ -251,6 +251,11 @@ export type ColonyAction = {
   expenditure?: Maybe<Expenditure>;
   /** ID of the associated expenditure, if any */
   expenditureId?: Maybe<Scalars['ID']>;
+  /**
+   * Changes to the expenditure slots associated with the action, if any
+   * Applicable to `EDIT_EXPENDITURE` action only
+   */
+  expenditureSlotChanges?: Maybe<ExpenditureSlotChanges>;
   /** The source Domain of the action, if applicable */
   fromDomain?: Maybe<Domain>;
   /** The source Domain identifier, if applicable */
@@ -1115,6 +1120,7 @@ export type CreateColonyActionInput = {
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   expenditureId?: InputMaybe<Scalars['ID']>;
+  expenditureSlotChanges?: InputMaybe<ExpenditureSlotChangesInput>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   fromPotId?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -1993,6 +1999,17 @@ export type ExpenditureSlot = {
   payoutModifier?: Maybe<Scalars['Int']>;
   payouts?: Maybe<Array<ExpenditurePayout>>;
   recipientAddress?: Maybe<Scalars['String']>;
+};
+
+export type ExpenditureSlotChanges = {
+  __typename?: 'ExpenditureSlotChanges';
+  newSlots: Array<ExpenditureSlot>;
+  oldSlots: Array<ExpenditureSlot>;
+};
+
+export type ExpenditureSlotChangesInput = {
+  newSlots: Array<ExpenditureSlotInput>;
+  oldSlots: Array<ExpenditureSlotInput>;
 };
 
 export type ExpenditureSlotInput = {
@@ -7865,6 +7882,7 @@ export type UpdateColonyActionInput = {
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   expenditureId?: InputMaybe<Scalars['ID']>;
+  expenditureSlotChanges?: InputMaybe<ExpenditureSlotChangesInput>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   fromPotId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
