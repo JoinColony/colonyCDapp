@@ -1,5 +1,6 @@
 import { Extension, Id } from '@colony/colony-js';
 import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -19,6 +20,27 @@ interface ExtensionsTopRowProps {
 
 const displayName = 'pages.ExtensionDetailsPage.ExtensionTopRow';
 
+const MSG = defineMessages({
+  governance: {
+    id: `${displayName}.governance`,
+    defaultMessage: 'Governance',
+  },
+  payments: {
+    id: `${displayName}.payments`,
+    defaultMessage: 'Payments',
+  },
+  decisionMethod: {
+    id: `${displayName}.decisionMethod`,
+    defaultMessage: 'Decision method',
+  },
+});
+
+// For the time being we can fallback to payments so I don't have to guess what Extension.TokenSupplier would have as a message
+const extensionStatusTextMap = {
+  [Extension.VotingReputation]: MSG.governance,
+  [Extension.MultisigPermissions]: MSG.decisionMethod,
+};
+
 const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   extensionData,
   waitingForEnableConfirmation,
@@ -29,9 +51,6 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   // @ts-expect-error address will be undefined if the extension hasn't been installed / initialized yet
   const { neededColonyPermissions, address, isInitialized, isDeprecated } =
     extensionData;
-
-  const isVotingReputationExtension =
-    extensionData.extensionId === Extension.VotingReputation;
 
   // If the extension itself doesn't have the correct permissions, show the banner
   const showPermissionsBanner =
@@ -56,11 +75,9 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
             isSetupRoute={isSetupRoute}
             extensionData={extensionData}
             extensionStatusMode={ExtensionsBadgeMap[extensionData.extensionId]}
-            extensionStatusText={formatText({
-              id: isVotingReputationExtension
-                ? 'status.governance'
-                : 'status.payments',
-            })}
+            extensionStatusText={formatText(
+              extensionStatusTextMap[extensionData.extensionId] ?? MSG.payments,
+            )}
           />
         </div>
       </div>
