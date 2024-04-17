@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetExpenditureQuery } from '~gql';
+import { StreamingPaymentEndCondition, useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -14,6 +14,7 @@ import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelE
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
+import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
 import { type EditExpenditurePayload } from '~redux/sagas/expenditures/editExpenditure.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
@@ -173,6 +174,19 @@ const TmpAdvancedPayments = () => {
         tokenAddress: colony.nativeToken.tokenAddress,
       },
     ],
+  };
+
+  const createStreamingPaymentPayload: CreateStreamingPaymentPayload = {
+    colonyAddress: colony.colonyAddress,
+    createdInDomain: rootDomain,
+    amount: transactionAmount,
+    endCondition: StreamingPaymentEndCondition.FixedTime,
+    interval: 60,
+    recipientAddress: user?.walletAddress ?? '',
+    startTimestamp: Math.floor(Date.now() / 1000),
+    tokenAddress,
+    tokenDecimals: parseInt(decimalAmount, 10),
+    endTimestamp: Math.floor(Date.now() / 1000) + 120,
   };
 
   const handleLockExpenditure = async () => {
@@ -427,6 +441,12 @@ const TmpAdvancedPayments = () => {
           values={createStagedExpenditurePayload}
         >
           Create staged expenditure
+        </ActionButton>
+        <ActionButton
+          actionType={ActionTypes.STREAMING_PAYMENT_CREATE}
+          values={createStreamingPaymentPayload}
+        >
+          Create streaming payment
         </ActionButton>
       </div>
       <div className="flex gap-4">
