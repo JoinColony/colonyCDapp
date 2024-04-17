@@ -11,16 +11,15 @@ import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.p
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
 import reputationInterface from '~images/assets/extensions/reputation-interface.png';
+import streamingHero from '~images/assets/extensions/streaming-hero.png';
+import streamingInterface from '~images/assets/extensions/streaming-interface.png';
 import { type ExtensionConfig, ExtensionParamType } from '~types/extensions.ts';
 import {
   convertFractionToWei,
   convertPeriodToSeconds,
 } from '~utils/extensions.ts';
 import { toFinite } from '~utils/lodash.ts';
-
 // @BETA: Disabled for now
-// import streamingHero from '~images/assets/extensions/streaming-hero.png';
-// import streamingInterface from '~images/assets/extensions/streaming-interface.png';
 
 export enum ExtensionCategory {
   Payments = 'Payments',
@@ -538,16 +537,16 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1692048380000,
   },
-  // {
-  //   icon: 'extension-streaming-payments',
-  //   imageURLs: [streamingHero, streamingInterface],
-  //   category: ExtensionCategory.Expenditures,
-  //   extensionId: Extension.StreamingPayments,
-  //   name: MSG.streamingPaymentsName,
-  //   descriptionShort: MSG.streamingPaymentsDescriptionShort,
-  //   descriptionLong: MSG.streamingPaymentsDescriptionLong,
-  //   neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
-  //   uninstallable: true,
-  //   createdAt: 1692048380000,
-  // },
+  {
+    icon: ExtensionAdvancedPaymentsIcon,
+    imageURLs: [streamingHero, streamingInterface],
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StreamingPayments,
+    name: MSG.streamingPaymentsName,
+    descriptionShort: MSG.streamingPaymentsDescriptionShort,
+    descriptionLong: MSG.streamingPaymentsDescriptionLong,
+    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    uninstallable: true,
+    createdAt: 1692048380000,
+  },
 ];
