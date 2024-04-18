@@ -918,6 +918,7 @@
     "darkMode": "Dark",
     "help": "Help",
     "retry": "Retry",
+    "cancel": "Cancel",
     "menu": "Menu",
     "total.balance": "Total balance",
     "active": "Active",

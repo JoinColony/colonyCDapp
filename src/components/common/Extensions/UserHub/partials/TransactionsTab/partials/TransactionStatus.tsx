@@ -1,4 +1,9 @@
-import { SpinnerGap, CheckCircle, XCircle } from '@phosphor-icons/react';
+import {
+  SpinnerGap,
+  CheckCircle,
+  XCircle,
+  WarningCircle,
+} from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { type FC } from 'react';
@@ -10,7 +15,11 @@ import { type TransactionStatusProps } from '../types.ts';
 const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionStatus';
 
-const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
+const TransactionStatus: FC<TransactionStatusProps> = ({
+  status,
+  date,
+  hasError,
+}) => {
   const failed = status === TransactionStatusEnum.Failed;
   const succeeded = status === TransactionStatusEnum.Succeeded;
   const pending = status === TransactionStatusEnum.Pending;
@@ -31,7 +40,9 @@ const TransactionStatus: FC<TransactionStatusProps> = ({ status, date }) => {
         />
       )}
       {succeeded && <CheckCircle size={14} />}
-      {failed && <XCircle size={14} />}
+      {failed && (
+        <>{hasError ? <WarningCircle size={14} /> : <XCircle size={14} />}</>
+      )}
       {createdAt && (
         <span className="mt-1 block text-xs text-gray-400">{createdAt}</span>
       )}

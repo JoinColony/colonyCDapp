@@ -93,26 +93,42 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
             toggleCancelConfirmation={toggleCancelConfirmation}
           />
         ) : (
-          <TransactionStatus status={status} />
+          <TransactionStatus status={status} hasError={!!error} />
         )}
       </div>
       {failed && error && (
-        <div className="mt-2 md:max-w-[24rem]">
+        <div className="mt-2 md:mr-2">
           <NotificationBanner
             status="error"
+            callToActionClassName="w-full"
             callToAction={
-              <button type="button" onClick={handleRetryAction}>
-                <FormattedMessage id="retry" />
-              </button>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  onClick={handleRetryAction}
+                  className="underline hover:no-underline"
+                >
+                  <FormattedMessage id="retry" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancelTransaction}
+                  className="underline hover:no-underline"
+                >
+                  <FormattedMessage id="cancel" />
+                </button>
+              </div>
             }
           >
-            <FormattedMessage
-              {...MSG.failedTx}
-              values={{
-                type: error.type,
-                message: shortErrorMessage(error.message),
-              }}
-            />
+            <p className="text-sm font-normal">
+              <FormattedMessage
+                {...MSG.failedTx}
+                values={{
+                  type: error.type,
+                  message: shortErrorMessage(error.message),
+                }}
+              />
+            </p>
           </NotificationBanner>
         </div>
       )}
