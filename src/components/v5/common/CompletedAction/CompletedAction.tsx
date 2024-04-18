@@ -15,7 +15,7 @@ import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
 import MintTokens from './partials/MintTokens/index.ts';
-import PaymentBuilderWidget from './partials/PaymentBuilder/partials/PaymentBuilderWidget/index.ts';
+import PaymentBuilderWidget from './partials/PaymentBuilder/partials/PaymentBuilderWidget/PaymentBuilderWidget.tsx';
 import PaymentBuilder from './partials/PaymentBuilder/PaymentBuilder.tsx';
 import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
@@ -105,9 +105,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   return (
     <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
       <div
-        className={clsx('overflow-y-auto px-6 pb-6 pt-8', {
-          'w-full': !action.isMotion,
-          'w-full sm:w-[65%]': action.isMotion,
+        className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
+          'sm:w-[calc(100%-23.75rem)]': action.isMotion,
         })}
       >
         {getActionContent()}
@@ -122,7 +121,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             px-6
             py-8
             sm:h-full
-            sm:w-[35%]
+            sm:w-[23.75rem]
             sm:flex-shrink-0
             sm:overflow-y-auto
             sm:border-b-0

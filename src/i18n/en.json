@@ -1410,6 +1410,7 @@
     "actionSidebar.payments": "Payments",
     "actionSidebar.fundFrom": "Fund from",
     "table.column.claimDelay": "Claim delay",
+    "table.column.claimDelayField": "{hours} {hours, plural, =1 {Hour} other {Hours}}",
     "table.column.claimDelayFieldSuffix": "{hours, plural, =1 {Hour} other {Hours}}",
     "table.column.totalDelay": "Total delay",
     "errors.zeroTokens": "Please enter a value of tokens.",
@@ -1728,5 +1729,9 @@
     "expenditure.paymentStage.label": "Payment",
     "expenditure.paymentStage.info": "You are now able to pay funds to recipients who have passed their claim delay.",
     "expenditure.paymentStage.info.nextClaim": "Next claim in {counter}",
-    "expenditure.paymentStage.button": "Make payment"
+    "expenditure.paymentStage.button": "Make payment",
+    "expenditure.paymentOverview": "Payment overview",
+    "expenditure.paymentOverview.totalPayments": "Total payments",
+    "expenditure.paymentOverview.paid": "Paid",
+    "expenditure.paymentOverview.payableNow": "Payable now"
 }

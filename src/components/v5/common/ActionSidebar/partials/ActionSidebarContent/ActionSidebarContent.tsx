@@ -213,7 +213,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
       <div
         className={clsx('flex-grow pb-6 pt-8', {
           'w-full': !isMotion,
-          'w-full sm:w-[65%]': isMotion,
+          'w-full sm:w-[calc(100%-23.75rem)]': isMotion,
         })}
       >
         <ActionForm
@@ -242,13 +242,13 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             bg-gray-25
             px-6
             py-8
-            md:h-full
-            md:w-[35%]
-            md:flex-shrink-0
-            md:overflow-y-auto
-            md:border-b-0
-            md:border-l
-            md:border-l-gray-200
+            sm:h-full
+            sm:w-[23.75rem]
+            sm:flex-shrink-0
+            sm:overflow-y-auto
+            sm:border-b-0
+            sm:border-l
+            sm:border-l-gray-200
           "
         >
           {isMotion ? (

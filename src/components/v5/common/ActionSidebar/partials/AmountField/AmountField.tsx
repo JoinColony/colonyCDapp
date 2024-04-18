@@ -71,14 +71,12 @@ const AmountField: FC<AmountFieldProps> = ({
   };
 
   useEffect(() => {
-    if (value) {
-      const unformattedValue = unformatNumeral(value);
-
-      if (field.value !== unformattedValue) {
-        field.onChange(unformatNumeral(value));
-      }
+    if (!field.value || (value && field.value === unformatNumeral(value))) {
+      return;
     }
-  }, [value, field, formattingOptions]);
+
+    setValue(formatNumeral(field.value, formattingOptions));
+  }, [field.value, formattingOptions, value]);
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -148,7 +146,7 @@ const AmountField: FC<AmountFieldProps> = ({
         {isTokenSelectVisible && (
           <Portal>
             <MenuContainer
-              className="z-sidebar absolute w-full max-w-[calc(100%-2.25rem)] px-2 py-6 sm:w-auto sm:max-w-none"
+              className="absolute z-sidebar w-full max-w-[calc(100%-2.25rem)] px-2 py-6 sm:w-auto sm:max-w-none"
               hasShadow
               rounded="s"
               ref={(ref) => {

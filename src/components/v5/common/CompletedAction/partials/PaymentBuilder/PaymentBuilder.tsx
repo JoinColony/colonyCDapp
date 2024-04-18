@@ -36,10 +36,10 @@ import ActionTypeRow from '../rows/ActionType.tsx';
 import CreatedInRow from '../rows/CreatedIn.tsx';
 import DecisionMethodRow from '../rows/DecisionMethod.tsx';
 import DescriptionRow from '../rows/Description.tsx';
-import PaymentBuilderTable from '../rows/PaymentBuilderTable/index.ts';
 import TeamFromRow from '../rows/TeamFrom.tsx';
 
 import CancelModal from './partials/CancelModal/CancelModal.tsx';
+import PaymentBuilderTable from './partials/PaymentBuilderTable/PaymentBuilderTable.tsx';
 
 interface PaymentBuilderProps {
   action: ColonyAction;
@@ -83,7 +83,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     return null;
   }
 
-  const { slots = [], metadata } = expenditure;
+  const { slots = [], metadata, status, finalizedAt } = expenditure;
 
   const selectedTeam = findDomainByNativeId(
     metadata?.fundFromDomainNativeId,
@@ -207,7 +207,13 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!slots.length && <PaymentBuilderTable items={slots} />}
+      {!!slots.length && (
+        <PaymentBuilderTable
+          items={slots}
+          status={status}
+          finalizedTimestamp={finalizedAt}
+        />
+      )}
       <CancelModal
         isOpen={isCancelModalOpen}
         expenditure={expenditure}
