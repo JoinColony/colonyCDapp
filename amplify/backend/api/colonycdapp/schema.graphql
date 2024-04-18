@@ -1561,6 +1561,7 @@ enum ClientType {
   WrappedTokenClient
   VestingSimpleClient
   LightTokenClient
+  MultisigPermissionsClient
 }
 
 enum TransactionStatus {
