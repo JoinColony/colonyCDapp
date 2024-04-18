@@ -1,6 +1,7 @@
 import { SealCheck } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { splitAddress } from '~utils/strings.ts';
 import ContributorTypeWrapper from '~v5/shared/ContributorTypeWrapper/ContributorTypeWrapper.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
@@ -21,7 +22,8 @@ const MemberCard: FC<MemberCardProps> = ({
   contributorType,
   isVerified,
 }) => {
-  const userName = user?.profile?.displayName || userAddress;
+  const { header, start, end } = splitAddress(userAddress);
+  const userName = user?.profile?.displayName || `${header}${start}...${end}`;
 
   return (
     <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5">
