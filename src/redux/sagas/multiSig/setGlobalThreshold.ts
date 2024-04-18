@@ -39,7 +39,6 @@ function* setGlobalThresholdAction({
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<AllActions>({
         type: ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD_SUCCESS,
-        payload: {},
         meta,
       });
     }

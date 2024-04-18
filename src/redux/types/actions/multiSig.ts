@@ -8,7 +8,7 @@ import {
   type UniqueActionTypeWithoutPayload,
 } from './index.ts';
 
-export type MultisigActionTypes =
+export type MultiSigActionTypes =
   | UniqueActionType<
       ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD,
       {
