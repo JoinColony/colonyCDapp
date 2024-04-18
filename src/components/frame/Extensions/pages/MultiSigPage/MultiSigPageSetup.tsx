@@ -3,9 +3,12 @@ import { defineMessages } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
+import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
 interface MultiSigPageSetupProps {
   extensionData: AnyExtensionData;
@@ -70,6 +73,10 @@ enum MultiSigThresholdType {
 }
 
 const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+
   const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
     MultiSigThresholdType.MAJORITY_APPROVAL,
   );
@@ -101,6 +108,20 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
       navigate(pathname.split('/').slice(0, -1).join('/'));
     }
   }, [extensionData, pathname, navigate]);
+
+  const getSetThresholdPayload = () => {
+    if (thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL) {
+      return {
+        colonyAddress,
+        threshold: 0,
+      };
+    }
+
+    return {
+      colonyAddress,
+      threshold: fixedThreshold,
+    };
+  };
 
   if (!extensionData) {
     return (
@@ -165,6 +186,12 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
           )}
         </li>
       </ul>
+      <ActionButton
+        actionType={ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD}
+        values={getSetThresholdPayload()}
+      >
+        Save settings
+      </ActionButton>
     </div>
   );
 };
