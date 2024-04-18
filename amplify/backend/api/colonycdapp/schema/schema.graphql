@@ -1686,6 +1686,7 @@ enum ClientType {
   VotingReputationClient
   WhitelistClient
   LightTokenClient
+  MultisigPermissionsClient
 }
 
 enum TransactionStatus {
