@@ -232,6 +232,7 @@ export enum ClientType {
   FundingQueueClient = 'FundingQueueClient',
   LightTokenClient = 'LightTokenClient',
   MotionTargetClient = 'MotionTargetClient',
+  MultisigPermissionsClient = 'MultisigPermissionsClient',
   NetworkClient = 'NetworkClient',
   OneTxPaymentClient = 'OneTxPaymentClient',
   ReputationBootstrapperClient = 'ReputationBootstrapperClient',
@@ -2257,6 +2258,8 @@ export type ExtensionInstallationsCount = {
 /** Map of parameters that extensions are initialised with */
 export type ExtensionParams = {
   __typename?: 'ExtensionParams';
+  /** Params for MultiSig */
+  multiSig?: Maybe<MultiSigParams>;
   /** Initialization parameters for the `StakedExpenditure` extension */
   stakedExpenditure?: Maybe<StakedExpenditureParams>;
   /** Initialization parameters for the `VotingReputation` extension */
@@ -2264,6 +2267,7 @@ export type ExtensionParams = {
 };
 
 export type ExtensionParamsInput = {
+  multiSig?: InputMaybe<MultiSigParamsInput>;
   stakedExpenditure?: InputMaybe<StakedExpenditureParamsInput>;
   votingReputation?: InputMaybe<VotingReputationParamsInput>;
 };
@@ -4590,6 +4594,28 @@ export type MotionStateHistoryInput = {
   naySideFullyStakedAt?: InputMaybe<Scalars['AWSDateTime']>;
   /** The timestamp when the YAY side was fully staked */
   yaySideFullyStakedAt?: InputMaybe<Scalars['AWSDateTime']>;
+};
+
+export type MultiSigDomainConfig = {
+  __typename?: 'MultiSigDomainConfig';
+  domainId: Scalars['ID'];
+  domainThreshold: Scalars['Int'];
+};
+
+export type MultiSigDomainConfigInput = {
+  domainId: Scalars['ID'];
+  domainThreshold: Scalars['Int'];
+};
+
+export type MultiSigParams = {
+  __typename?: 'MultiSigParams';
+  colonyThreshold: Scalars['Int'];
+  domainThresholds?: Maybe<Array<Maybe<MultiSigDomainConfig>>>;
+};
+
+export type MultiSigParamsInput = {
+  colonyThreshold: Scalars['Int'];
+  domainThresholds?: InputMaybe<Array<InputMaybe<MultiSigDomainConfigInput>>>;
 };
 
 /** Root mutation type */
