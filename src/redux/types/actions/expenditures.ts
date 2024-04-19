@@ -191,9 +191,10 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         recipientAddress: Address;
         tokenAddress: Address;
+        tokenDecimals: number;
         amount: string;
-        startTime: number;
-        endTime?: number;
+        startTimestamp: number;
+        endTimestamp?: number;
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
