@@ -1,15 +1,10 @@
 import { UserFocus, UsersThree } from '@phosphor-icons/react';
-import React, { useEffect, type FC } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import {
-  CREATED_IN_FIELD_NAME,
-  DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
-import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -27,31 +22,12 @@ const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   useSimplePayment(getFormOptions);
 
-  const { setValue, watch } = useFormContext();
-  const selectedTeam = watch('from');
-  const createdIn = watch(CREATED_IN_FIELD_NAME);
-  const decisionMethod = watch(DECISION_METHOD_FIELD_NAME);
-
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
-  useEffect(() => {
-    if (decisionMethod !== DecisionMethod.Reputation) return;
+  const { watch } = useFormContext();
+  const selectedTeam = watch('from');
 
-    if (!selectedTeam && createdIn > 1) {
-      setValue('from', createdIn);
-      return;
-    }
-
-    if (!!selectedTeam && createdIn !== selectedTeam && createdIn !== 1) {
-      setValue(CREATED_IN_FIELD_NAME, selectedTeam);
-    }
-  }, [createdIn, decisionMethod, selectedTeam, setValue]);
-
-  const createdInFilterFn = (team: SearchSelectOption): boolean => {
-    if (!selectedTeam) return true;
-
-    return team.value === selectedTeam || !!team.isRoot;
-  };
+  const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
     <>

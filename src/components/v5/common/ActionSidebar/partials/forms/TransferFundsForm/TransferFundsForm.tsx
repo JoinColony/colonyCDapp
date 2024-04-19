@@ -1,10 +1,10 @@
-import { Id } from '@colony/colony-js';
 import { ArrowDownRight, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
@@ -25,6 +25,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const selectedTeam = watch('from');
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+  const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
     <>
@@ -70,13 +71,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       />
 
       <DecisionMethodField />
-      <CreatedIn
-        filterOptionsFn={(option) =>
-          (option.value === Id.RootDomain.toString() ||
-            option.value === selectedTeam) &&
-          !!option.isRoot
-        }
-      />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
     </>
   );

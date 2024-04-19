@@ -6,7 +6,6 @@ import {
   UserList,
 } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import {
   MAX_COLONY_DISPLAY_NAME,
@@ -15,6 +14,7 @@ import {
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
@@ -32,12 +32,11 @@ const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
 const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
-  const { watch } = useFormContext();
 
   useEditTeam(getFormOptions);
-  const selectedTeam = watch('team');
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+  const createdInFilterFn = useFilterCreatedInField('team');
 
   return (
     <>
@@ -127,12 +126,7 @@ const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamColorField name="domainColor" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn
-        filterOptionsFn={(option) =>
-          option.value === Id.RootDomain.toString() ||
-          option.value === selectedTeam
-        }
-      />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
     </>
   );
