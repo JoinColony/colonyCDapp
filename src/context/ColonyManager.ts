@@ -173,7 +173,7 @@ export default class ColonyManager {
       case ClientType.MultisigPermissionsClient: {
         if (!identifier)
           throw new Error(
-            'Need colony identifier to get the VotingReputationClient',
+            'Need colony identifier to get the MultisigPermissionsClient',
           );
         return this.getColonyExtensionClient(
           identifier,
