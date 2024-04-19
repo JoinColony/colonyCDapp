@@ -100,7 +100,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
         <div className="mt-2 md:mr-2">
           <NotificationBanner
             status="error"
-            callToActionClassName="w-full"
+            callToActionClassName="w-full no-underline"
             callToAction={
               <div className="flex justify-between">
                 <button
@@ -110,13 +110,11 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
                 >
                   <FormattedMessage id="retry" />
                 </button>
-                <button
-                  type="button"
-                  onClick={handleCancelTransaction}
-                  className="underline hover:no-underline"
-                >
-                  <FormattedMessage id="cancel" />
-                </button>
+                <CancelTransaction
+                  isShowingCancelConfirmation={isShowingCancelConfirmation}
+                  handleCancelTransaction={handleCancelTransaction}
+                  toggleCancelConfirmation={toggleCancelConfirmation}
+                />
               </div>
             }
           >
