@@ -29,6 +29,7 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
   };
 
   const getSecondExtensionTab = () => {
+    // @TODO get rid of this casting and typeguarrd this instead
     switch (extensionData.extensionId) {
       case Extension.VotingReputation:
         return (
@@ -40,7 +41,11 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
           />
         );
       case Extension.MultisigPermissions:
-        return <MultiSigPageSetup extensionData={extensionData} />;
+        return (
+          <MultiSigPageSetup
+            extensionData={extensionData as InstalledExtensionData}
+          />
+        );
       default:
         return null;
     }
@@ -50,7 +55,6 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
 
   if (
     extensionData?.isInitialized &&
-    extensionData.extensionId &&
     tabsItems[extensionData.extensionId] !== undefined
   ) {
     return (
