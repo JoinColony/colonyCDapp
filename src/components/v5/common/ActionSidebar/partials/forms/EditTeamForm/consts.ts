@@ -13,7 +13,11 @@ export const validationSchema = object()
       .trim()
       .max(MAX_COLONY_DISPLAY_NAME)
       .required(() => 'Team name required.'),
-    domainPurpose: string().trim().max(MAX_DOMAIN_PURPOSE_LENGTH).notRequired(),
+    domainPurpose: string()
+      .trim()
+      .max(MAX_DOMAIN_PURPOSE_LENGTH)
+      .notRequired()
+      .nullable(),
     domainColor: string().notRequired(),
     createdIn: number().defined(),
     decisionMethod: string().defined(),

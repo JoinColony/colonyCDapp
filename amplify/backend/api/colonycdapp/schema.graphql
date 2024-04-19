@@ -1823,7 +1823,7 @@ type DomainMetadata @model {
   """
   Description of the Domain
   """
-  description: String!
+  description: String
   """
   Color associated with the Domain
   """
@@ -1861,11 +1861,11 @@ type DomainMetadataChangelog {
   """
   Description of the Domain before the change
   """
-  oldDescription: String!
+  oldDescription: String
   """
   Description of the Domain after the change
   """
-  newDescription: String!
+  newDescription: String
 }
 
 """
