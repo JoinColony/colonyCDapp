@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -24,6 +25,8 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   const { watch } = useFormContext();
   const selectedTeam = watch('team');
+
+  const createdInFilterFn = useFilterCreatedInField('team');
 
   return (
     <>
@@ -73,7 +76,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       {currentToken && (
         <SplitPaymentRecipientsField
