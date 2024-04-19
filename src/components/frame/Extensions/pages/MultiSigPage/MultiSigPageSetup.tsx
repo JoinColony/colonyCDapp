@@ -5,13 +5,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { type AnyExtensionData } from '~types/extensions.ts';
+import { type InstalledExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
 interface MultiSigPageSetupProps {
-  extensionData: AnyExtensionData;
+  extensionData: InstalledExtensionData;
 }
 
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage.MultiSigSetup';
@@ -77,10 +77,16 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
     colony: { colonyAddress },
   } = useColonyContext();
 
+  const multiSigConfig = extensionData.params?.multiSig || null;
+
   const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
-    MultiSigThresholdType.MAJORITY_APPROVAL,
+    multiSigConfig && multiSigConfig.colonyThreshold > 0
+      ? MultiSigThresholdType.FIXED_THRESHOLD
+      : MultiSigThresholdType.MAJORITY_APPROVAL,
   );
-  const [fixedThreshold, setFixedThreshold] = useState(0);
+  const [fixedThreshold, setFixedThreshold] = useState(
+    multiSigConfig ? multiSigConfig.colonyThreshold : 0,
+  );
 
   const { pathname } = useLocation();
 

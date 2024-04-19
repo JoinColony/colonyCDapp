@@ -26,6 +26,13 @@ fragment Extension on ColonyExtension {
     stakedExpenditure {
       stakeFraction
     }
+    multiSig {
+      colonyThreshold
+      domainThresholds {
+        domainId
+        domainThreshold
+      }
+    }
   }
 }
 
