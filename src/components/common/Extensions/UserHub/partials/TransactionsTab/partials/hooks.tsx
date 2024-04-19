@@ -59,28 +59,6 @@ export const useGroupedTransactionContent = (
     }${methodName}.${methodContext ? `${methodContext}.` : ''}title`,
   };
 
-  /*
-   * Commenting this effect out for now.
-   * I believe it's only useful for the old flow where the gas station would pop open automatically.
-   */
-  // useEffect(() => {
-  //   if (!error) {
-  //     if (metatransaction) {
-  //       dispatch(transactionSend(id));
-  //     } else {
-  //       dispatch(transactionEstimateGas(id));
-  //     }
-  //   }
-  // }, [dispatch, id, error, metatransaction]);
-
-  // const transform = useCallback(() => withId(id), [id])();
-  // const asyncFunction = useAsyncFunction({
-  //   submit: ActionTypes.TRANSACTION_RETRY,
-  //   error: ActionTypes.TRANSACTION_ERROR,
-  //   success: ActionTypes.TRANSACTION_SENT,
-  //   transform,
-  // });
-
   const handleRetryAction = () => {
     dispatch(transactionRetry(id));
     dispatch(transactionEstimateGas(id));
