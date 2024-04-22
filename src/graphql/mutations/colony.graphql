@@ -1,9 +1,3 @@
-mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
-  createUniqueColony(input: $input) {
-    id
-  }
-}
-
 mutation CreateColonyEtherealMetadata(
   $input: CreateColonyEtherealMetadataInput!
 ) {

@@ -122,32 +122,6 @@ input ColonyStatusInput {
 }
 
 """
-Input data for creating a unique Colony within the Colony Network. Use this instead of the automatically generated `CreateColonyInput` input type
-"""
-input CreateUniqueColonyInput {
-  """
-  Unique identifier for the Colony. This is the Colony's contract address
-  """
-  colonyAddress: ID!
-  """
-  Unique identifier for the Colony's native token (this is its address)
-  """
-  tokenAddress: ID!
-  """
-  Type of the Colony (regular or MetaColony)
-  """
-  type: ColonyType
-  """
-  User id of creator to associate with further invite codes
-  """
-  initiatorAddress: ID!
-  """
-  The transaction hash of colony creation transaction
-  """
-  transactionHash: String!
-}
-
-"""
 Input data for creating a temporary colony metadata entry
 """
 input CreateColonyEtherealMetadataInput {
@@ -303,22 +277,6 @@ input UpdateExtensionByColonyAndHashInput {
 input GetSafeTransactionStatusInput {
   transactionHash: String!
   chainId: Int!
-}
-
-"""
-Input data to store the latest available version of the core Colony contract and available extensions
-
-The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
-"""
-input SetCurrentVersionInput {
-  """
-  COLONY for the Colony contract, extension hash for extensions
-  """
-  key: String!
-  """
-  Latest available version
-  """
-  version: Int!
 }
 
 """
@@ -873,21 +831,11 @@ type Mutation {
   createUniqueUser(input: CreateUniqueUserInput): User
     @function(name: "createUniqueUser-${env}")
   """
-  Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation
-  """
-  createUniqueColony(input: CreateUniqueColonyInput): Colony
-    @function(name: "createUniqueColony-${env}")
-  """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
   """
   createColonyEtherealMetadata(
     input: CreateColonyEtherealMetadataInput!
   ): ColonyMetadata @function(name: "createColonyEtherealMetadata-${env}")
-  """
-  Updates the latest available version of a Colony or an extension
-  """
-  setCurrentVersion(input: SetCurrentVersionInput): Boolean
-    @function(name: "setCurrentVersion-${env}")
 
   """
   Update contributors with reputation in the database for a colony

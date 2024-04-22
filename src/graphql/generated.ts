@@ -1505,20 +1505,6 @@ export type CreateTransactionInput = {
   titleValues?: InputMaybe<Scalars['String']>;
 };
 
-/** Input data for creating a unique Colony within the Colony Network. Use this instead of the automatically generated `CreateColonyInput` input type */
-export type CreateUniqueColonyInput = {
-  /** Unique identifier for the Colony. This is the Colony's contract address */
-  colonyAddress: Scalars['ID'];
-  /** User id of creator to associate with further invite codes */
-  initiatorAddress: Scalars['ID'];
-  /** Unique identifier for the Colony's native token (this is its address) */
-  tokenAddress: Scalars['ID'];
-  /** The transaction hash of colony creation transaction */
-  transactionHash: Scalars['String'];
-  /** Type of the Colony (regular or MetaColony) */
-  type?: InputMaybe<ColonyType>;
-};
-
 /** Input data for creating a unique user within the Colony Network Use this instead of the automatically generated `CreateUserInput` input type */
 export type CreateUniqueUserInput = {
   /** Unique identifier for the user. This is the user's wallet address */
@@ -4273,8 +4259,6 @@ export type Mutation = {
   createStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   createToken?: Maybe<Token>;
   createTransaction?: Maybe<Transaction>;
-  /** Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation */
-  createUniqueColony?: Maybe<Colony>;
   /** Create a unique user within the Colony Network. Use this instead of the automatically generated `createUser` mutation */
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
@@ -4320,8 +4304,6 @@ export type Mutation = {
   deleteUserTokens?: Maybe<UserTokens>;
   /** Removes the user from the colony whitelist */
   removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
-  /** Updates the latest available version of a Colony or an extension */
-  setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -4622,12 +4604,6 @@ export type MutationCreateTransactionArgs = {
 
 
 /** Root mutation type */
-export type MutationCreateUniqueColonyArgs = {
-  input?: InputMaybe<CreateUniqueColonyInput>;
-};
-
-
-/** Root mutation type */
 export type MutationCreateUniqueUserArgs = {
   input?: InputMaybe<CreateUniqueUserInput>;
 };
@@ -4923,12 +4899,6 @@ export type MutationDeleteUserTokensArgs = {
 /** Root mutation type */
 export type MutationRemoveMemberFromColonyWhitelistArgs = {
   input: RemoveMemberFromColonyWhitelistInput;
-};
-
-
-/** Root mutation type */
-export type MutationSetCurrentVersionArgs = {
-  input?: InputMaybe<SetCurrentVersionInput>;
 };
 
 
@@ -6739,18 +6709,6 @@ export type SearchableStringFilterInput = {
   wildcard?: InputMaybe<Scalars['String']>;
 };
 
-/**
- * Input data to store the latest available version of the core Colony contract and available extensions
- *
- * The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
- */
-export type SetCurrentVersionInput = {
-  /** COLONY for the Colony contract, extension hash for extensions */
-  key: Scalars['String'];
-  /** Latest available version */
-  version: Scalars['Int'];
-};
-
 export type SimpleTarget = {
   __typename?: 'SimpleTarget';
   id: Scalars['String'];
@@ -8502,13 +8460,6 @@ export type CreateAnnotationMutationVariables = Exact<{
 
 export type CreateAnnotationMutation = { __typename?: 'Mutation', createAnnotation?: { __typename?: 'Annotation', id: string } | null };
 
-export type CreateUniqueColonyMutationVariables = Exact<{
-  input: CreateUniqueColonyInput;
-}>;
-
-
-export type CreateUniqueColonyMutation = { __typename?: 'Mutation', createUniqueColony?: { __typename?: 'Colony', id: string } | null };
-
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
 }>;
@@ -9956,39 +9907,6 @@ export function useCreateAnnotationMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateAnnotationMutationHookResult = ReturnType<typeof useCreateAnnotationMutation>;
 export type CreateAnnotationMutationResult = Apollo.MutationResult<CreateAnnotationMutation>;
 export type CreateAnnotationMutationOptions = Apollo.BaseMutationOptions<CreateAnnotationMutation, CreateAnnotationMutationVariables>;
-export const CreateUniqueColonyDocument = gql`
-    mutation CreateUniqueColony($input: CreateUniqueColonyInput!) {
-  createUniqueColony(input: $input) {
-    id
-  }
-}
-    `;
-export type CreateUniqueColonyMutationFn = Apollo.MutationFunction<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
-
-/**
- * __useCreateUniqueColonyMutation__
- *
- * To run a mutation, you first call `useCreateUniqueColonyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUniqueColonyMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUniqueColonyMutation, { data, loading, error }] = useCreateUniqueColonyMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateUniqueColonyMutation(baseOptions?: Apollo.MutationHookOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>(CreateUniqueColonyDocument, options);
-      }
-export type CreateUniqueColonyMutationHookResult = ReturnType<typeof useCreateUniqueColonyMutation>;
-export type CreateUniqueColonyMutationResult = Apollo.MutationResult<CreateUniqueColonyMutation>;
-export type CreateUniqueColonyMutationOptions = Apollo.BaseMutationOptions<CreateUniqueColonyMutation, CreateUniqueColonyMutationVariables>;
 export const CreateColonyEtherealMetadataDocument = gql`
     mutation CreateColonyEtherealMetadata($input: CreateColonyEtherealMetadataInput!) {
   createColonyEtherealMetadata(input: $input) {

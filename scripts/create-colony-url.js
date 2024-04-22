@@ -2,9 +2,7 @@
  * @NOTE Copied from the temp-create-data.js script
  * This script spits out a link to create a colony using a newly created private invite code
  */
-const {
-  graphqlRequest,
-} = require('../amplify/backend/function/createUniqueColony/src/utils');
+const { graphqlRequest } = require('./utils/graphqlRequest');
 
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI =

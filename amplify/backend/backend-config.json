@@ -50,20 +50,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "createUniqueColony": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "colonycdappSSMAccess"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "createUniqueUser": {
       "build": true,
       "dependsOn": [
@@ -232,20 +218,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "setCurrentVersion": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "colonycdappSSMAccess"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "updateContributorsWithReputation": {
       "build": true,
       "dependsOn": [
@@ -324,22 +296,6 @@
         }
       ]
     },
-    "AMPLIFY_function_createUniqueColony_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "createUniqueColony"
-        }
-      ]
-    },
-    "AMPLIFY_function_createUniqueColony_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "createUniqueColony"
-        }
-      ]
-    },
     "AMPLIFY_function_createUniqueUser_deploymentBucketName": {
       "usedBy": [
         {
@@ -385,6 +341,22 @@
         {
           "category": "function",
           "resourceName": "fetchColonyNativeFundsClaim"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchExpenditureBalances_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchExpenditureBalances"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchExpenditureBalances_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchExpenditureBalances"
         }
       ]
     },
@@ -513,22 +485,6 @@
         {
           "category": "function",
           "resourceName": "qaSSMtest"
-        }
-      ]
-    },
-    "AMPLIFY_function_setCurrentVersion_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "setCurrentVersion"
-        }
-      ]
-    },
-    "AMPLIFY_function_setCurrentVersion_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "setCurrentVersion"
         }
       ]
     },
