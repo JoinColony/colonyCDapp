@@ -13,6 +13,7 @@ import { UserRole } from '~constants/permissions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
@@ -45,6 +46,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const team: string | undefined = useWatch({ name: 'team' });
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+  const createdInFilterFn = useFilterCreatedInField('team');
 
   const permissionSelectFooter = useCallback<
     Exclude<CardSelectProps<string>['footer'], React.ReactNode>
@@ -183,7 +185,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       {role !== RemoveRoleOptionValue.remove && (
         <PermissionsTable name="permissions" role={role} className="mt-7" />

@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
@@ -14,6 +15,8 @@ import DecisionMethodField from '../../DecisionMethodField/index.ts';
 const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
 
 const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
+  const createdInFilterFn = useFilterCreatedInField('from');
+
   return (
     <>
       <ActionFormRow
@@ -31,7 +34,7 @@ const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <ActionFormRow
         icon={Pencil}
         fieldName="description"

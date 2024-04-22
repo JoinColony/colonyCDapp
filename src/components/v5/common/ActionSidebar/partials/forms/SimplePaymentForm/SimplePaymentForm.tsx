@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -21,10 +22,12 @@ const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   useSimplePayment(getFormOptions);
 
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
+
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
 
-  const hasNoDecisionMethods = useHasNoDecisionMethods();
+  const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
     <>
@@ -69,7 +72,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         }}
       />
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       {/* Disabled for now */}
       {/* <TransactionTable name="payments" /> */}

@@ -83,7 +83,6 @@ export const useTransferFunds = (
     defaultValues: useMemo<DeepPartial<TransferFundsFormValues>>(
       () => ({
         createdIn: from || Id.RootDomain,
-        from: Id.RootDomain,
         tokenAddress: colony.nativeToken.tokenAddress,
       }),
       [from, colony.nativeToken.tokenAddress],

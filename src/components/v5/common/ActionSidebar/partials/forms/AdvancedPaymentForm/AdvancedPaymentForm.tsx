@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -17,6 +18,8 @@ const displayName = 'v5.common.ActionSidebar.partials.AdvancedPaymentForm';
 
 const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   useAdvancedPayment(getFormOptions);
+
+  const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
     <>
@@ -35,7 +38,7 @@ const AdvancedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       <AdvancedPaymentRecipientsField name="payments" />
     </>

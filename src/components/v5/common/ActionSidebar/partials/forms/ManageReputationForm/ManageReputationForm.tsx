@@ -15,6 +15,7 @@ import {
   TEAM_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -40,7 +41,7 @@ const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     modification: string;
     member: string;
   }>();
-  const { resetField } = useFormContext();
+  const { setValue, resetField } = useFormContext();
 
   useManageReputation(getFormOptions);
 
@@ -52,6 +53,11 @@ const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         : undefined,
   });
 
+  const createdInFilterFn = useFilterCreatedInField(
+    TEAM_FIELD_NAME,
+    modification === ModificationOption.AwardReputation,
+  );
+
   useEffect(() => {
     if (
       modification === ModificationOption.RemoveReputation &&
@@ -60,6 +66,12 @@ const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       resetField(MEMBER_FIELD_NAME);
     }
   }, [member, modification, resetField, usersOptions.options]);
+
+  useEffect(() => {
+    if (modification === ModificationOption.AwardReputation) {
+      setValue(TEAM_FIELD_NAME, Id.RootDomain);
+    }
+  }, [modification, setValue]);
 
   return (
     <>
@@ -130,6 +142,7 @@ const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           <TeamsSelect
             name={TEAM_FIELD_NAME}
             disabled={hasNoDecisionMethods}
+            readonly={modification === ModificationOption.AwardReputation}
             filterOptionsFn={
               modification === ModificationOption.AwardReputation
                 ? (option) => option.value === Id.RootDomain
@@ -139,15 +152,8 @@ const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         </ActionFormRow>
         <DecisionMethodField />
         <CreatedIn
-          filterOptionsFn={(option) => {
-            if (modification === ModificationOption.AwardReputation) {
-              return option.value === Id.RootDomain;
-            }
-
-            return (
-              option.value === Id.RootDomain || option.value === selectedTeam
-            );
-          }}
+          filterOptionsFn={createdInFilterFn}
+          readonly={modification === ModificationOption.AwardReputation}
         />
         <Description />
       </div>
