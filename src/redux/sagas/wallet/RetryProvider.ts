@@ -1,8 +1,12 @@
 import { type Block } from '@ethersproject/providers';
-import { providers } from 'ethers';
+import { providers, utils } from 'ethers';
 import { backOff } from 'exponential-backoff';
 
 import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants/index.ts';
+import {
+  RetryProviderMethod,
+  IColonyContractMethodSignature,
+} from '~types/rpcMethods.ts';
 
 type RetryProviderOptions = {
   attempts?: number;
@@ -17,15 +21,25 @@ const classFactory = (
 
     delay: number;
 
+    bypassedMethods: string[];
+
     constructor(options?: RetryProviderOptions) {
       super(isDev ? GANACHE_LOCAL_RPC_URL : window.ethereum);
       this.attempts = options?.attempts || 5;
       this.delay = options?.delay || 1000;
+      this.bypassedMethods = [
+        IColonyContractMethodSignature.Locked,
+        IColonyContractMethodSignature.Nonces,
+        IColonyContractMethodSignature.GetMetatransactionNonce,
+      ].map(RetryRpcProvider.generateBypassedMethodsHex);
+    }
+
+    private static generateBypassedMethodsHex(methodSignature: string) {
+      return utils.id(methodSignature).slice(0, 10);
     }
 
     attemptCheck(err, attemptNumber) {
-      // eslint-disable-next-line no-console
-      console.log('Retrying RPC request #', attemptNumber, err);
+      console.info('Retrying RPC request #', attemptNumber, err);
       if (attemptNumber === this.attempts) {
         return false;
       }
@@ -50,6 +64,15 @@ const classFactory = (
     // method is the method name (e.g. getBalance) and params is an
     // object with normalized values passed in, depending on the method
     perform(method, params) {
+      // These methods are methods that we call inside try-catches and expect
+      // to fail sometimes, so don't retry.
+      if (
+        method === RetryProviderMethod.Call &&
+        this.bypassedMethods.includes(params?.transaction?.data?.slice(0, 10))
+      ) {
+        return super.perform(method, params);
+      }
+
       return backOff(() => super.perform(method, params), {
         retry: this.attemptCheck,
         startingDelay: this.delay,
