@@ -2,6 +2,8 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { RootMotionMethodNames } from '~redux/index.ts';
+import { RootMultiSigMethodNames } from '~redux/types/actions/multiSig.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -12,7 +14,12 @@ export const getMintTokenPayload = (
   colony: Colony,
   values: MintTokenFormValues,
 ) => {
-  const { amount, description: annotationMessage, title } = values;
+  const {
+    amount,
+    description: annotationMessage,
+    title,
+    decisionMethod,
+  } = values;
 
   const WEIAmount = BigNumber.from(
     moveDecimal(
@@ -21,16 +28,34 @@ export const getMintTokenPayload = (
     ),
   );
 
-  return {
-    operationName: RootMotionMethodNames.MintTokens,
+  const commonPayload = {
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
     nativeTokenAddress: colony.nativeToken.tokenAddress,
-    motionParams: [WEIAmount],
-    amount: WEIAmount,
     annotationMessage: annotationMessage
       ? sanitizeHTML(annotationMessage)
       : undefined,
     customActionTitle: title,
+  };
+
+  if (decisionMethod === DecisionMethod.Reputation) {
+    return {
+      ...commonPayload,
+      operationName: RootMotionMethodNames.MintTokens,
+      motionParams: [WEIAmount],
+    };
+  }
+
+  if (decisionMethod === DecisionMethod.MultiSig) {
+    return {
+      ...commonPayload,
+      operationName: RootMultiSigMethodNames.MintTokens,
+      multiSigParams: [WEIAmount],
+    };
+  }
+
+  return {
+    ...commonPayload,
+    amount: WEIAmount,
   };
 };
