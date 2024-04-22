@@ -1,6 +1,7 @@
 import { DomainColor } from '~gql';
 
 export const hexMap: Record<DomainColor, string> = {
+  [DomainColor.Root]: '#2962FF',
   [DomainColor.Pink]: '#F5416E',
   [DomainColor.Black]: '#00284B',
   [DomainColor.LightPink]: '#FFBBDC',
