@@ -93,7 +93,7 @@ const AmountField: FC<AmountFieldProps> = ({
       />
       <span
         className={clsx('text-md', {
-          'text-gray-400': isDisabled,
+          'text-gray-300': isDisabled,
         })}
       >
         {selectedToken?.symbol || colonyTokens[0].symbol}
@@ -114,7 +114,8 @@ const AmountField: FC<AmountFieldProps> = ({
         readOnly={readonly || isDisabled}
         name={name}
         className={clsx('flex-shrink text-gray-900 outline-none outline-0', {
-          'placeholder:text-gray-400': !isError || isDisabled,
+          'placeholder:text-gray-400': !isError && !isDisabled,
+          'placeholder:text-gray-300': isDisabled,
           'text-negative-400 placeholder:text-negative-400':
             !isDisabled && isError,
         })}

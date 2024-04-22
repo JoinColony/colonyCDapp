@@ -1,8 +1,10 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { type SocialLinksTableModel } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
 export const useSocialLinksTableColumns = (): ColumnDef<
   SocialLinksTableModel,
@@ -12,6 +14,8 @@ export const useSocialLinksTableColumns = (): ColumnDef<
     () => createColumnHelper<SocialLinksTableModel>(),
     [],
   );
+
+  const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const columns: ColumnDef<SocialLinksTableModel, string>[] = useMemo(
     () => [
@@ -23,7 +27,14 @@ export const useSocialLinksTableColumns = (): ColumnDef<
           </span>
         ),
         cell: ({ getValue }) => (
-          <span className="text-gray-900 text-1">{getValue()}</span>
+          <span
+            className={clsx('text-1', {
+              'text-gray-900': !hasNoDecisionMethods,
+              'text-gray-300': hasNoDecisionMethods,
+            })}
+          >
+            {getValue()}
+          </span>
         ),
         size: 23,
       }),
@@ -35,14 +46,22 @@ export const useSocialLinksTableColumns = (): ColumnDef<
           </span>
         ),
         cell: ({ getValue }) => (
-          <span className="block overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal text-gray-700">
+          <span
+            className={clsx(
+              'block overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
+              {
+                'text-gray-700': !hasNoDecisionMethods,
+                'text-gray-300': hasNoDecisionMethods,
+              },
+            )}
+          >
             {getValue()}
           </span>
         ),
         size: 67,
       }),
     ],
-    [columnHelper],
+    [columnHelper, hasNoDecisionMethods],
   );
 
   return columns;

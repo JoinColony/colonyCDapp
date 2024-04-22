@@ -15,7 +15,7 @@ import { type TokenSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
-const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
+const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
   const [searchError, setSearchError] = useState(false);
   const {
     field,
@@ -63,8 +63,9 @@ const TokenSelect: FC<TokenSelectProps> = ({ name }) => {
             className={clsx(
               'flex text-md transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !isError,
+                'text-gray-400': !isError && !disabled,
                 'text-negative-400': isError,
+                'text-gray-300': disabled,
                 'pointer-events-none': isNativeToken,
               },
             )}

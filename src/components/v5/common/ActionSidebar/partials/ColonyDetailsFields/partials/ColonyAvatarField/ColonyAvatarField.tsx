@@ -57,8 +57,9 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
       {!readonly && (
         <button
           type="button"
-          className={clsx('text-gray-700 underline text-3', {
-            'md:hover:text-blue-400': !disabled,
+          className={clsx('underline text-3', {
+            'text-gray-700 md:hover:text-blue-400': !disabled,
+            'text-gray-300': disabled,
           })}
           onClick={() => {
             toggleAvatarModalOn();

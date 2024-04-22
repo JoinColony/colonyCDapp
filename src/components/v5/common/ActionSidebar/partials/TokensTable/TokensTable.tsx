@@ -64,6 +64,7 @@ const TokensTable: FC<TokensTableProps> = ({
           columns={columns}
           data={data}
           getMenuProps={getMenuProps}
+          isDisabled={isDisabled}
         />
       )}
       {!readonly && (

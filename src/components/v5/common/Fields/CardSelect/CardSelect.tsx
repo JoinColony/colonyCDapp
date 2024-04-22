@@ -99,7 +99,7 @@ function CardSelect<TValue = string>({
       {readonly || disabled ? (
         <span
           className={clsx('text-md', {
-            'text-gray-400': disabled,
+            'text-gray-300': disabled,
             'text-gray-900': readonly,
           })}
         >

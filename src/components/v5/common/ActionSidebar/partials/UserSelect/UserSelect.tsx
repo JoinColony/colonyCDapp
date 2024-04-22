@@ -87,7 +87,8 @@ const UserSelect: FC<UserSelectProps> = ({
       type="button"
       ref={relativeElementRef}
       className={clsx('flex items-center text-md transition-colors', {
-        'text-gray-400': !isError && !isUserSelectVisible,
+        'text-gray-400': !isError && !isUserSelectVisible && !disabled,
+        'text-gray-300': disabled,
         'text-negative-400': isError,
         'text-blue-400': isUserSelectVisible,
         'md:hover:text-blue-400': !disabled,
