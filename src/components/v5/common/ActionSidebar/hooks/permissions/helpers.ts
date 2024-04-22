@@ -6,6 +6,8 @@ import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 
+import { ModificationOption } from '../../partials/forms/ManageReputationForm/consts.ts';
+
 export const getPermissionsNeededForAction = (
   actionType: Action,
   formValues: Record<string, any>,
@@ -26,16 +28,19 @@ export const getPermissionsNeededForAction = (
     case Action.EditExistingTeam:
       return [ColonyRole.Architecture];
     case Action.ManageReputation:
-      /**
-       * @TODO: Once this action is wired, we'll need to tell if
-       * it's a smite or award action (most likely from `formValues`)
-       * If smite: Arbitration, else: Root
-       */
-      return undefined;
+      if (!formValues.modification) {
+        return [ColonyRole.Arbitration];
+      }
+      return formValues.modification === ModificationOption.RemoveReputation
+        ? [ColonyRole.Arbitration]
+        : [ColonyRole.Root];
     case Action.ManagePermissions: {
       return formValues.team === Id.RootDomain
         ? [ColonyRole.Root, ColonyRole.Architecture]
         : [ColonyRole.Architecture];
+    }
+    case Action.ManageVerifiedMembers: {
+      return [ColonyRole.Administration];
     }
     case Action.EditColonyDetails:
     case Action.ManageColonyObjectives:
@@ -50,7 +55,7 @@ export const getPermissionsNeededForAction = (
 };
 
 // Function returning the domain ID in which the user needs to have required permissions to create the action
-const getPermissionsDomainIdForAction = (
+export const getPermissionsDomainIdForAction = (
   actionType: Action,
   formValues: Record<string, any>,
 ) => {
