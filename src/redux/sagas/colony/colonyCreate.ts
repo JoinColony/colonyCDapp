@@ -274,6 +274,7 @@ function* colonyCreate({
       },
       {
         timeout: 30000,
+        retryLimit: 0,
       },
     );
 
@@ -335,6 +336,7 @@ function* colonyCreate({
         },
         {
           timeout: 30000,
+          retryLimit: 0,
         },
       );
 
