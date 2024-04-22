@@ -18,7 +18,7 @@ const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <ColonyVersionField />
       <DecisionMethodField />
-      <CreatedIn />
+      <CreatedIn readonly />
       <Description />
     </>
   );
