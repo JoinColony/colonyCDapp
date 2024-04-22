@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { WarningCircle } from '@phosphor-icons/react';
 import { formatNumeral, unformatNumeral } from 'cleave-zen';
 import clsx from 'clsx';
 import React, { useState, type ChangeEvent, type FC, useEffect } from 'react';
@@ -8,6 +9,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import TokenIcon from '~shared/TokenIcon/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -85,7 +87,11 @@ const AmountField: FC<AmountFieldProps> = ({
     top: 8,
   });
 
-  const selectedTokenContent = (
+  const isTokenInColony = colonyTokens.some(
+    (colonyToken) => colonyToken.tokenAddress === selectedToken?.tokenAddress,
+  );
+
+  const selectedTokenContent = isTokenInColony ? (
     <div className="flex items-center gap-1">
       <TokenIcon token={selectedToken || colonyTokens[0]} size="xxs" />
       <span
@@ -96,6 +102,21 @@ const AmountField: FC<AmountFieldProps> = ({
         {selectedToken?.symbol || colonyTokens[0].symbol}
       </span>
     </div>
+  ) : (
+    <Tooltip
+      trigger="hover"
+      popperOptions={{ placement: 'bottom' }}
+      tooltipContent={formatText({ id: 'actionSidebar.tokenErrorTooltip' })}
+    >
+      <div className="flex items-center gap-1 text-negative-400">
+        <WarningCircle size={16} />
+        <span className="text-md">
+          {formatText({
+            id: 'actionSidebar.tokenError',
+          })}
+        </span>
+      </div>
+    </Tooltip>
   );
 
   return (

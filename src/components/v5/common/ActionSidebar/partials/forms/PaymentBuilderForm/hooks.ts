@@ -9,6 +9,7 @@ import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
@@ -27,6 +28,10 @@ import {
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
+  const colonyTokens =
+    colony.tokens?.items
+      .filter(notNull)
+      .map((colonyToken) => colonyToken.token) || [];
   const {
     watch,
     trigger,
@@ -41,11 +46,15 @@ export const useValidationSchema = () => {
 
       const { payments = [] } = value || {};
 
-      payments.forEach((payment, index) => {
+      const paymentsArray = payments.map((payment, index) => {
         if (payment?.amount && payment.amount !== '') {
-          trigger(`payments.${index}.amount`);
+          return `payments.${index}.amount`;
         }
+
+        return null;
       });
+
+      trigger(paymentsArray.filter(notNull));
     });
 
     return () => unsubscribe();
@@ -123,8 +132,27 @@ export const useValidationSchema = () => {
             .defined()
             .required(),
         })
+        .test(
+          'is-in-colony',
+          formatText({ id: 'actionSidebar.tokenAddress.error' }),
+          (item) => {
+            const { payments } = item || {};
+
+            if (!payments) {
+              return false;
+            }
+
+            return payments.every((payment) => {
+              return colonyTokens.some(
+                (colonyToken) =>
+                  colonyToken.tokenAddress === payment.tokenAddress,
+              );
+            });
+          },
+        )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [colony],
   );
 };

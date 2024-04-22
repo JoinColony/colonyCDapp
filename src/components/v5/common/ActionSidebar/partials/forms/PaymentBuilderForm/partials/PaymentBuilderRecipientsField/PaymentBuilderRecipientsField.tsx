@@ -1,14 +1,25 @@
-import { Coins, CopySimple, Plus, Trash } from '@phosphor-icons/react';
+import {
+  Coins,
+  CopySimple,
+  Plus,
+  Trash,
+  UploadSimple,
+} from '@phosphor-icons/react';
+import { getPaginationRowModel } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import { type ParseResult } from 'papaparse';
+import React, { useState, type FC, useEffect } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useTablet } from '~hooks/index.ts';
+import { useMobile, useTablet } from '~hooks/index.ts';
+import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+
+import FileUploadModal from '../FileUploadModal/FileUploadModal.tsx';
 
 import { useRecipientsFieldTableColumns } from './hooks.tsx';
 import {
@@ -23,6 +34,9 @@ const displayName =
 const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   name,
 }) => {
+  const [paymentsFromFile, setPaymentsFromFile] = useState<
+    ParseResult<unknown> | undefined
+  >(undefined);
   const {
     colony: { nativeToken },
   } = useColonyContext();
@@ -31,6 +45,24 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   });
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
+  useEffect(() => {
+    if (paymentsFromFile) {
+      const formattedData = paymentsFromFile.data.slice(1).map((payment) => {
+        const [recipient, token, amount, delay] = payment;
+
+        return {
+          recipient,
+          amount,
+          tokenAddress: token,
+          delay,
+        };
+      });
+
+      fieldArrayMethods.replace(formattedData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentsFromFile]);
+
   const data: PaymentBuilderRecipientsTableModel[] =
     fieldArrayMethods.fields.map(({ id }) => ({
       key: id,
@@ -38,6 +70,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   const value: PaymentBuilderRecipientsFieldModel[] = useWatch({ name }) || [];
   const columns = useRecipientsFieldTableColumns(name, value);
   const isTablet = useTablet();
+  const isMobile = useMobile();
   const getMenuProps = ({ index }) => ({
     cardClassName: 'sm:min-w-[9.625rem]',
     items: [
@@ -77,6 +110,16 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
+  const [
+    isUploadModalOpen,
+    { toggleOff: toggleUploadModalOff, toggleOn: toggleUploadModalOn },
+  ] = useToggle();
+
+  const onUpload = (file: ParseResult<unknown>) => {
+    setPaymentsFromFile(file);
+    fieldArrayMethods.remove();
+  };
+
   return (
     <div>
       <h5 className="mb-3 mt-6 text-2">
@@ -100,25 +143,48 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           getMenuProps={getMenuProps}
           withBorder={false}
           renderCellWrapper={(_, content) => content}
+          initialState={{
+            pagination: {
+              pageSize: 7,
+            },
+          }}
+          getPaginationRowModel={getPaginationRowModel()}
         />
       )}
-      <Button
-        mode="primaryOutline"
-        icon={Plus}
-        size="small"
-        className="mt-6 w-full sm:w-auto"
-        onClick={() => {
-          fieldArrayMethods.append({
-            recipient: undefined,
-            amount: '',
-            tokenAddress: nativeToken?.tokenAddress || '',
-            delay: undefined,
-          });
-        }}
-        disabled={hasNoDecisionMethods}
-      >
-        {formatText({ id: 'button.addPayment' })}
-      </Button>
+      <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">
+        <Button
+          mode="primaryOutline"
+          icon={Plus}
+          size="small"
+          isFullSize={isMobile}
+          onClick={() => {
+            fieldArrayMethods.append({
+              recipient: undefined,
+              amount: '',
+              tokenAddress: nativeToken?.tokenAddress || '',
+              delay: undefined,
+            });
+          }}
+          disabled={hasNoDecisionMethods}
+        >
+          {formatText({ id: 'button.addPayment' })}
+        </Button>
+        <Button
+          mode="primaryOutline"
+          icon={UploadSimple}
+          isFullSize={isMobile}
+          size="small"
+          onClick={toggleUploadModalOn}
+          disabled={hasNoDecisionMethods}
+        >
+          {formatText({ id: 'button.uploadCSV' })}
+        </Button>
+      </div>
+      <FileUploadModal
+        isOpen={isUploadModalOpen}
+        onUpload={onUpload}
+        onClose={toggleUploadModalOff}
+      />
     </div>
   );
 };

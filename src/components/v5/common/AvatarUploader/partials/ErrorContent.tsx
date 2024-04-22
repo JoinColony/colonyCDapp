@@ -31,7 +31,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
       </div>
       <div className="flex w-full flex-col gap-1">
         <div className="flex items-center justify-between">
-          <span className="text-negative-400 text-1">
+          <span className="text-left text-negative-400 text-1">
             {formatMessage(errorMessage)}
           </span>
           <button
