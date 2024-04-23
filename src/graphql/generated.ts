@@ -9303,6 +9303,13 @@ export type GetColonyRootRolesQueryVariables = Exact<{
 
 export type GetColonyRootRolesQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', targetAddress: string, role_1?: boolean | null, domain: { __typename?: 'Domain', nativeId: number }, targetUser?: { __typename?: 'User', id: string } | null } | null> } | null } | null };
 
+export type GetColonyRootRolesQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+}>;
+
+
+export type GetColonyRootRolesQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', targetAddress: string, role_1?: boolean | null, domain: { __typename?: 'Domain', nativeId: number }, targetUser?: { __typename?: 'User', id: string } | null } | null> } | null } | null };
+
 export type GetColonyExtensionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
 }>;
