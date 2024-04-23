@@ -20,6 +20,7 @@ import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import FileUploadModal from '../FileUploadModal/FileUploadModal.tsx';
+import { type CSVFileItem } from '../FileUploadModal/types.ts';
 
 import { useRecipientsFieldTableColumns } from './hooks.tsx';
 import {
@@ -35,7 +36,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   name,
 }) => {
   const [paymentsFromFile, setPaymentsFromFile] = useState<
-    ParseResult<unknown> | undefined
+    CSVFileItem[] | undefined
   >(undefined);
   const {
     colony: { nativeToken },
@@ -47,14 +48,14 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
 
   useEffect(() => {
     if (paymentsFromFile) {
-      const formattedData = paymentsFromFile.data.slice(1).map((payment) => {
-        const [recipient, token, amount, delay] = payment;
+      const formattedData = paymentsFromFile.map((payment: CSVFileItem) => {
+        const { recipient, tokenContractAddress, amount, claimDelay } = payment;
 
         return {
           recipient,
           amount,
-          tokenAddress: token,
-          delay,
+          tokenAddress: tokenContractAddress,
+          delay: claimDelay,
         };
       });
 

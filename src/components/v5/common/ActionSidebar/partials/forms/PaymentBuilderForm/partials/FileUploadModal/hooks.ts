@@ -1,4 +1,3 @@
-import { isAddress } from 'ethers/lib/utils';
 import Papa, { type ParseResult } from 'papaparse';
 import { useState } from 'react';
 import { type FileRejection } from 'react-dropzone';
@@ -7,22 +6,23 @@ import { getFileRejectionErrors } from '~shared/FileUpload/utils.ts';
 import { type FileReaderFile } from '~utils/fileReader/types.ts';
 import { DropzoneErrors } from '~v5/common/AvatarUploader/utils.ts';
 
-const validateStructure = (file) => {
-  const isValidLength = file.every((row) => row.length === 4);
+import { type CSVFileItem } from './types.ts';
 
-  if (!isValidLength) {
-    return false;
-  }
-
-  const isValidRecipient = file.every(([recipient]) => isAddress(recipient));
-  const isValidToken = file.every(([, token]) => isAddress(token));
-
-  if (!isValidRecipient || !isValidToken) {
-    return false;
-  }
-
-  return true;
+const defaultValues = {
+  recipient: '0x0000000000000000000000000000000000000000',
+  tokenContractAddress: '0x0000000000000000000000000000000000000000',
+  amount: '0',
+  claimDelay: '0',
 };
+
+const validateStructure = (file: CSVFileItem[]) =>
+  file.map((item) => ({
+    recipient: item.recipient || defaultValues.recipient,
+    tokenContractAddress:
+      item.tokenContractAddress || defaultValues.tokenContractAddress,
+    amount: item.amount || defaultValues.amount,
+    claimDelay: item.claimDelay || defaultValues.claimDelay,
+  }));
 
 export const useUploadCSVFile = (
   handleFileUpload: (file: ParseResult<unknown>) => void,
@@ -30,13 +30,14 @@ export const useUploadCSVFile = (
   const [progress, setProgress] = useState(0);
   const [file, setFile] = useState<FileReaderFile | undefined>();
   const [parsedFileValue, setParsedFileValue] =
-    useState<ParseResult<unknown> | null>(null);
+    useState<ParseResult<CSVFileItem> | null>(null);
   const [fileError, setFileError] = useState<DropzoneErrors>();
 
   const handleFileRemove = async () => {
     setParsedFileValue(null);
     setFileError(undefined);
     setProgress(0);
+    setFile(undefined);
   };
 
   const handleFileAccept = (uploadedFile: FileReaderFile) => {
@@ -49,19 +50,20 @@ export const useUploadCSVFile = (
       setFile(uploadedFile);
 
       Papa.parse(uploadedFile.file, {
-        complete: (result: ParseResult<unknown>) => {
-          const isValid = validateStructure(result.data.slice(1));
+        complete: (result: ParseResult<CSVFileItem>) => {
+          const validResults = validateStructure(result.data);
 
-          if (!isValid) {
-            setFileError(DropzoneErrors.STRUCTURE);
-            setProgress(0);
-            return;
-          }
-
-          handleFileUpload(result);
+          handleFileUpload(validResults);
           handleFileRemove();
         },
-        header: false,
+        header: true,
+        transformHeader: (header: string) => {
+          return header
+            .toLowerCase()
+            .replace(/\([^)]*\)/g, '')
+            .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
+            .trim();
+        },
       });
     } catch (e) {
       setFileError(DropzoneErrors.DEFAULT);
