@@ -52,6 +52,15 @@ const TokenSelector = ({
 
   useEffect(() => {
     if (isFetchingAddress) {
+      setIsLoading(true);
+    }
+    if (data) {
+      setIsLoading(false);
+    }
+  }, [data, isFetchingAddress, setIsLoading]);
+
+  useEffect(() => {
+    if (isFetchingAddress) {
       return;
     }
 
