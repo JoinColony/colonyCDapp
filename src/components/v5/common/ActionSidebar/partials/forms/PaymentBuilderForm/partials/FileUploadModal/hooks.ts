@@ -37,7 +37,6 @@ export const useUploadCSVFile = (
     setParsedFileValue(null);
     setFileError(undefined);
     setProgress(0);
-    setFile(undefined);
   };
 
   const handleFileAccept = (uploadedFile: FileReaderFile) => {
