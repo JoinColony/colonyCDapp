@@ -21,7 +21,7 @@ const displayName = 'common.Extensions.UserNavigation';
 const MSG = defineMessages({
   wrongNetwork: {
     id: `${displayName}.unlockedToken`,
-    defaultMessage: `Your wallet is connected to a nework the app was not deployed to yet. ({networkName}).  Please switch your wallet to the "{correctNetworkName}" network.`,
+    defaultMessage: `Please switch your wallet to the {correctNetworkName} network. More chains will be supported in future.`,
   },
 });
 
@@ -74,7 +74,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
               networkInfo={networkInfo}
               error={networkInfo?.chainId !== DEFAULT_NETWORK_INFO.chainId}
               errorMessage={formatText(MSG.wrongNetwork, {
-                networkName: networkInfo?.name,
                 correctNetworkName: DEFAULT_NETWORK_INFO.name,
               })}
             />
