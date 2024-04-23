@@ -4,7 +4,9 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { type Token } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
 import { getNetworkByChainId } from '~utils/web3/index.ts';
 
 import { getInputError } from '../shared.ts';
@@ -34,6 +36,10 @@ const MSG = defineMessages({
     id: `${displayName}.definitelyCorrectMessage`,
     defaultMessage:
       'If you are certain that the token address is correct, it may not exist on the Gnosis Chain, try switching your wallet’s connected blockchain or continue to the next step.',
+  },
+  loadingToken: {
+    id: `${displayName}.loadingToken`,
+    defaultMessage: `Fetching your token's details ...`,
   },
 });
 
@@ -77,6 +83,15 @@ const TokenSelectorInput = ({
         setIsLoading={setIsLoading}
         isDecoratedError
       />
+
+      {isLoading && (
+        <div className="mt-[5px] text-sm text-gray-600">
+          <SpinnerLoader />
+          <span className="ml-2 align-text-bottom">
+            {formatText(MSG.loadingToken)}
+          </span>
+        </div>
+      )}
 
       {doesTokenExistError && isLoading === false && (
         <div className="mt-14 rounded border border-warning-200 bg-warning-100 px-6 py-3 text-gray-900">
