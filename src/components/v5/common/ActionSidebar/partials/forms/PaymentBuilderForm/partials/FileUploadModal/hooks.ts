@@ -64,7 +64,7 @@ export const useUploadCSVFile = (
             .trim();
         },
       });
-    } catch (e) {
+    } catch (error) {
       setFileError(DropzoneErrors.DEFAULT);
     } finally {
       setProgress(100);
@@ -73,6 +73,11 @@ export const useUploadCSVFile = (
 
   const handleFileReject = (rejectedFiles: FileRejection[]) => {
     const fileRejection = getFileRejectionErrors(rejectedFiles)[0][0];
+    if (fileRejection.code === 'file-invalid-type') {
+      setFileError(DropzoneErrors.STRUCTURE);
+      return;
+    }
+
     setFileError(fileRejection.code as DropzoneErrors);
   };
 

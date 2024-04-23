@@ -42,7 +42,9 @@ const ErrorContent: FC<ErrorContentProps> = ({
             <Trash size={18} />
           </button>
         </div>
-        <span className="text-sm text-gray-600">{fileRejections}</span>
+        <span className="text-left text-sm text-gray-600">
+          {fileRejections}
+        </span>
         <TextButton onClick={open} mode="underlined" isErrorColor>
           {formatMessage({ id: 'button.try.again' })}
           <input {...getInputProps()} />
