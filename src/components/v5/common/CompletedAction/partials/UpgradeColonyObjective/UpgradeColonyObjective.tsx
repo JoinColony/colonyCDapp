@@ -32,7 +32,7 @@ const MSG = defineMessages({
   },
   subtitle: {
     id: `${displayName}.subtitle`,
-    defaultMessage: 'Manage Colony Objective by {user}',
+    defaultMessage: 'Manage Objective by {user}',
   },
   objectiveTitle: {
     id: `${displayName}.objectiveTitle`,

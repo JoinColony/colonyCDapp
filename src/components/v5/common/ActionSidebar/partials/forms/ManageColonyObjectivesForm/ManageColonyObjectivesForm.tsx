@@ -1,6 +1,5 @@
 import React, { type FC } from 'react';
 
-import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
 import ColonyObjectiveFields from '~v5/common/ActionSidebar/partials/ColonyObjectiveFields/index.ts';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -23,7 +22,7 @@ const ManageColonyObjectivesForm: FC<ActionFormBaseProps> = ({
       <ColonyObjectiveFields />
       <DecisionMethodField />
       <CreatedIn readonly />
-      <Description maxDescriptionLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH} />
+      <Description />
     </>
   );
 };

@@ -1,8 +1,8 @@
 import { type InferType, number, object, string } from 'yup';
 
 import {
-  MAX_COLONY_DISPLAY_NAME,
   MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+  MAX_OBJECTIVE_TITLE,
 } from '~constants/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
@@ -11,7 +11,7 @@ export const validationSchema = object()
   .shape({
     colonyObjectiveTitle: string()
       .trim()
-      .max(MAX_COLONY_DISPLAY_NAME)
+      .max(MAX_OBJECTIVE_TITLE)
       .required(() => formatText({ id: 'errors.colonyObjective.title' })),
     colonyObjectiveDescription: string()
       .trim()

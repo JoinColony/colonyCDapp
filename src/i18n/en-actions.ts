@@ -51,7 +51,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeRawTransactionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteraction} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
-      ${ExtendedColonyActionType.UpdateColonyObjective} {Manage Colony Objective by {initiator}}
+      ${ExtendedColonyActionType.UpdateColonyObjective} {Manage Objective by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -68,8 +68,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateDomainMotion} {Create Team}
       ${ColonyActionType.VersionUpgrade} {Version Upgrade}
       ${ColonyActionType.VersionUpgradeMotion} {Version Upgrade}
-      ${ColonyActionType.ColonyEdit} {Manage Colony objective}
-      ${ColonyActionType.ColonyEditMotion} {Manage Colony objective}
+      ${ColonyActionType.ColonyEdit} {Manage objective}
+      ${ColonyActionType.ColonyEditMotion} {Manage objective}
       ${ColonyActionType.EditDomain} {Edit Team}
       ${ColonyActionType.EditDomainMotion} {Edit Team}
       ${ColonyActionType.SetUserRoles} {Permission Management}
