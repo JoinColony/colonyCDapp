@@ -1505,20 +1505,6 @@ export type CreateTransactionInput = {
   titleValues?: InputMaybe<Scalars['String']>;
 };
 
-/** Input data for creating a unique Colony within the Colony Network. Use this instead of the automatically generated `CreateColonyInput` input type */
-export type CreateUniqueColonyInput = {
-  /** Unique identifier for the Colony. This is the Colony's contract address */
-  colonyAddress: Scalars['ID'];
-  /** User id of creator to associate with further invite codes */
-  initiatorAddress: Scalars['ID'];
-  /** Unique identifier for the Colony's native token (this is its address) */
-  tokenAddress: Scalars['ID'];
-  /** The transaction hash of colony creation transaction */
-  transactionHash: Scalars['String'];
-  /** Type of the Colony (regular or MetaColony) */
-  type?: InputMaybe<ColonyType>;
-};
-
 /** Input data for creating a unique user within the Colony Network Use this instead of the automatically generated `CreateUserInput` input type */
 export type CreateUniqueUserInput = {
   /** Unique identifier for the user. This is the user's wallet address */
@@ -1801,7 +1787,7 @@ export enum DomainColor {
   PurpleGrey = 'PURPLE_GREY',
   /** A red color */
   Red = 'RED',
-  /** The default root domain color */
+  /** The default domain color for the root domain. Only used by the root by default and cannot be selected by the user. */
   Root = 'ROOT',
   /** A yellow color */
   Yellow = 'YELLOW'
@@ -4275,8 +4261,6 @@ export type Mutation = {
   createStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   createToken?: Maybe<Token>;
   createTransaction?: Maybe<Transaction>;
-  /** Create a unique Colony within the Colony Network. Use this instead of the automatically generated `createColony` mutation */
-  createUniqueColony?: Maybe<Colony>;
   /** Create a unique user within the Colony Network. Use this instead of the automatically generated `createUser` mutation */
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
@@ -4322,8 +4306,6 @@ export type Mutation = {
   deleteUserTokens?: Maybe<UserTokens>;
   /** Removes the user from the colony whitelist */
   removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
-  /** Updates the latest available version of a Colony or an extension */
-  setCurrentVersion?: Maybe<Scalars['Boolean']>;
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -4624,12 +4606,6 @@ export type MutationCreateTransactionArgs = {
 
 
 /** Root mutation type */
-export type MutationCreateUniqueColonyArgs = {
-  input?: InputMaybe<CreateUniqueColonyInput>;
-};
-
-
-/** Root mutation type */
 export type MutationCreateUniqueUserArgs = {
   input?: InputMaybe<CreateUniqueUserInput>;
 };
@@ -4925,12 +4901,6 @@ export type MutationDeleteUserTokensArgs = {
 /** Root mutation type */
 export type MutationRemoveMemberFromColonyWhitelistArgs = {
   input: RemoveMemberFromColonyWhitelistInput;
-};
-
-
-/** Root mutation type */
-export type MutationSetCurrentVersionArgs = {
-  input?: InputMaybe<SetCurrentVersionInput>;
 };
 
 
@@ -6739,18 +6709,6 @@ export type SearchableStringFilterInput = {
   range?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   regexp?: InputMaybe<Scalars['String']>;
   wildcard?: InputMaybe<Scalars['String']>;
-};
-
-/**
- * Input data to store the latest available version of the core Colony contract and available extensions
- *
- * The extension hash is generated like so: `keccak256(toUtf8Bytes(extensionName))`, where `extensionName` is the name of the extension contract file in the Colony Network (e.g. `VotingReputation`)
- */
-export type SetCurrentVersionInput = {
-  /** COLONY for the Colony contract, extension hash for extensions */
-  key: Scalars['String'];
-  /** Latest available version */
-  version: Scalars['Int'];
 };
 
 export type SimpleTarget = {
