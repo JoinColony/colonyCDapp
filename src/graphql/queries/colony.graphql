@@ -32,6 +32,24 @@ query GetMetacolony {
   }
 }
 
+query GetColonyRootRoles($colonyAddress: ID!) {
+  getColony(id: $colonyAddress) {
+    id
+    roles(filter: { role_1: { eq: true } }) {
+      items {
+        targetAddress
+        role_1
+        domain {
+          nativeId
+        }
+        targetUser {
+          id
+        }
+      }
+    }
+  }
+}
+
 query GetColonyExtensions($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
     id
