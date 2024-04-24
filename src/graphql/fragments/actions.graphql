@@ -120,7 +120,15 @@ fragment ColonyAction on ColonyAction {
   }
   members
   rootHash
+<<<<<<< HEAD
   expenditureId
+=======
+  isMultiSig
+  multiSigId
+  multiSigData {
+    ...ColonyMultiSig
+  }
+>>>>>>> f4c21898f (feat: implement dummy sidebar for multiSig, navigate after tx success)
 }
 
 fragment Annotation on Annotation {
@@ -244,4 +252,27 @@ fragment ColonyDecision on ColonyDecision {
   createdAt
   actionId
   colonyAddress
+}
+
+fragment MultiSigUserSignature on MultiSigUserSignature {
+  id
+  domainId
+  userAddress
+  vote
+  createdAt
+}
+
+fragment ColonyMultiSig on ColonyMultiSig {
+  id
+  nativeMultiSigId
+  multiSigDomainId
+  nativeMultiSigDomainId
+  requiredPermissions
+  transactionHash
+  isExecuted
+  isRejected
+  isDecision
+  signatures {
+    ...MultiSigUserSignature
+  }
 }
