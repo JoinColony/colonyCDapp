@@ -1,4 +1,4 @@
-import { Id } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import React from 'react';
 import { type FieldValues } from 'react-hook-form';
 import { type useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import {
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
+import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import {
@@ -208,4 +209,17 @@ export const mapExtensionActionPayload = (
     },
     {},
   );
+};
+
+export const getExtensionTabs = (extension: Extension): TabItem[] | null => {
+  switch (extension) {
+    case Extension.VotingReputation:
+    case Extension.MultisigPermissions:
+      return [
+        { id: 0, title: 'Overview' },
+        { id: 1, title: 'Extension settings' },
+      ];
+    default:
+      return null;
+  }
 };
