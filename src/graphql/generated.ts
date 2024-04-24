@@ -1787,6 +1787,8 @@ export enum DomainColor {
   PurpleGrey = 'PURPLE_GREY',
   /** A red color */
   Red = 'RED',
+  /** The default domain color for the root domain. Only used by the root by default and cannot be selected by the user. */
+  Root = 'ROOT',
   /** A yellow color */
   Yellow = 'YELLOW'
 }

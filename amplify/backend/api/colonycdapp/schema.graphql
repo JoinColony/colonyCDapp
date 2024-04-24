@@ -485,6 +485,10 @@ Variants of available domain colors as used in the dApp
 """
 enum DomainColor {
   """
+  The default domain color for the root domain. Only used by the root by default and cannot be selected by the user.
+  """
+  ROOT
+  """
   A light pink color
   """
   LIGHT_PINK
