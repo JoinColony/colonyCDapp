@@ -7,12 +7,13 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
 import TablePagination from './partials/TablePagination/index.ts';
+import { TableRow } from './partials/VirtualizedRow/VirtualizedRow.tsx';
 import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
 
@@ -42,6 +43,7 @@ const Table = <T,>({
   getRowCanExpand,
   withBorder = true,
   verticalLayout,
+  virtualizedProps,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -99,6 +101,19 @@ const Table = <T,>({
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
 
+  const tableRef = useRef<HTMLTableElement | null>(null);
+  const prevRowCount = useRef<number>(data.length);
+
+  useEffect(() => {
+    if (
+      tableRef.current &&
+      !!virtualizedProps &&
+      prevRowCount.current < data.length
+    ) {
+      tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [virtualizedProps, data.length]);
+
   return (
     <div
       className={clsx(
@@ -107,6 +122,7 @@ const Table = <T,>({
       )}
     >
       <table
+        ref={tableRef}
         className={`
           h-px
           w-full
@@ -136,8 +152,10 @@ const Table = <T,>({
                     const colSpan = rowWithMeatBallMenu ? undefined : 2;
 
                     return (
-                      <tr
+                      <TableRow
                         key={row.id + headerGroup.id + header.id}
+                        itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
+                        isEnabled={!!virtualizedProps}
                         className={clsx({
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
                             withBorder,
@@ -208,7 +226,7 @@ const Table = <T,>({
                             />
                           </td>
                         )}
-                      </tr>
+                      </TableRow>
                     );
                   }),
                 )}
@@ -291,7 +309,9 @@ const Table = <T,>({
 
                   return (
                     <React.Fragment key={row.id}>
-                      <tr
+                      <TableRow
+                        itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
+                        isEnabled={!!virtualizedProps}
                         className={clsx(getRowClassName(row), {
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
@@ -345,7 +365,7 @@ const Table = <T,>({
                             </td>
                           );
                         })}
-                      </tr>
+                      </TableRow>
                       {showExpandableContent && (
                         <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
                           <td colSpan={row.getVisibleCells().length}>

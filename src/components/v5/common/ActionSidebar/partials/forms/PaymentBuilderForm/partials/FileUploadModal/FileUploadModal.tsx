@@ -9,7 +9,7 @@ import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload.tsx';
 import ProgressContent from '~v5/common/AvatarUploader/partials/ProgressContent.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
-import { CSV } from './consts.ts';
+import { batchPaymentTemplate } from './consts.ts';
 import { useUploadCSVFile } from './hooks.ts';
 import { type FileUploadModalProps } from './types.ts';
 
@@ -19,7 +19,7 @@ const FileUploadModal: FC<FileUploadModalProps> = ({
   onClose,
 }) => {
   const fileDownloadUrl = useMemo(() => {
-    const blob = new Blob([CSV], { type: 'text/csv' });
+    const blob = new Blob([batchPaymentTemplate], { type: 'text/csv' });
     return URL.createObjectURL(blob);
   }, []);
 
@@ -95,7 +95,6 @@ const FileUploadModal: FC<FileUploadModalProps> = ({
             fileSize: '2MB',
           }}
           errorCode={fileError}
-          isProgressContentVisible={progress === 100}
           isAvatarUploaded={!!parsedFileValue}
         />
       )}

@@ -142,6 +142,7 @@ export const useRecipientsFieldTableColumns = (
       hasMoreThanOneToken,
       expendituresGlobalClaimDelayHours,
       name,
+      data.length,
       selectedTeam,
       dataRef,
     ]);

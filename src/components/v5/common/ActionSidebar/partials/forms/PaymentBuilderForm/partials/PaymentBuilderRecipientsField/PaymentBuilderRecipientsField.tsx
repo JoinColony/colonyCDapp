@@ -5,7 +5,6 @@ import {
   Trash,
   UploadSimple,
 } from '@phosphor-icons/react';
-import { getPaginationRowModel } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { type ParseResult } from 'papaparse';
 import React, { useState, type FC, useEffect } from 'react';
@@ -14,13 +13,13 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile, useTablet } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import FileUploadModal from '../FileUploadModal/FileUploadModal.tsx';
-import { type CSVFileItem } from '../FileUploadModal/types.ts';
 
 import { useRecipientsFieldTableColumns } from './hooks.tsx';
 import {
@@ -36,7 +35,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   name,
 }) => {
   const [paymentsFromFile, setPaymentsFromFile] = useState<
-    CSVFileItem[] | undefined
+    ExpenditurePayoutFieldValue[] | undefined
   >(undefined);
   const {
     colony: { nativeToken },
@@ -48,16 +47,19 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
 
   useEffect(() => {
     if (paymentsFromFile) {
-      const formattedData = paymentsFromFile.map((payment: CSVFileItem) => {
-        const { recipient, tokenContractAddress, amount, claimDelay } = payment;
+      const formattedData = paymentsFromFile.map(
+        (payment: ExpenditurePayoutFieldValue) => {
+          const { recipientAddress, tokenAddress, amount, claimDelay } =
+            payment;
 
-        return {
-          recipient,
-          amount,
-          tokenAddress: tokenContractAddress,
-          delay: claimDelay,
-        };
-      });
+          return {
+            recipient: recipientAddress,
+            amount,
+            tokenAddress,
+            delay: Number(claimDelay),
+          };
+        },
+      );
 
       fieldArrayMethods.replace(formattedData);
     }
@@ -128,6 +130,13 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
       </h5>
       {!!data.length && !hasNoDecisionMethods && (
         <Table<PaymentBuilderRecipientsTableModel>
+          virtualizedProps={
+            data.length > 10
+              ? {
+                  virtualizedRowHeight: isTablet ? 46 : 54,
+                }
+              : undefined
+          }
           className={clsx(
             '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
             {
@@ -135,6 +144,8 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
               '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
                 !isTablet,
               '!border-negative-400': !!fieldState.error,
+              'max-h-[50vh] overflow-y-scroll md:max-h-[29rem] md:[&_tfoot]:sticky md:[&_tfoot]:bottom-0 md:[&_tfoot]:z-base md:[&_tfoot]:bg-base-white [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-base':
+                data.length > 7,
             },
           )}
           verticalLayout={isTablet}
@@ -146,10 +157,9 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           renderCellWrapper={(_, content) => content}
           initialState={{
             pagination: {
-              pageSize: 7,
+              pageSize: 400,
             },
           }}
-          getPaginationRowModel={getPaginationRowModel()}
         />
       )}
       <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">

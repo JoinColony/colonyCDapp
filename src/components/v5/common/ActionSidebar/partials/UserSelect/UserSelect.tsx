@@ -58,10 +58,14 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
     userByAddress || selectedUserOption
       ? {
           profile: {
-            displayName: selectedUserOption?.label,
-            thumbnail: selectedUserOption?.thumbnail,
+            displayName:
+              selectedUserOption?.label || userByAddress?.profile?.displayName,
+            thumbnail:
+              selectedUserOption?.thumbnail ||
+              userByAddress?.profile?.thumbnail,
           },
-          walletAddress: selectedUserOption?.walletAddress,
+          walletAddress:
+            selectedUserOption?.walletAddress || userByAddress?.walletAddress,
           isVerified: selectedUserOption?.isVerified,
         }
       : undefined;

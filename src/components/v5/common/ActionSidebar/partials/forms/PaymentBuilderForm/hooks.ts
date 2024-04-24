@@ -28,10 +28,13 @@ import {
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
-  const colonyTokens =
-    colony.tokens?.items
-      .filter(notNull)
-      .map((colonyToken) => colonyToken.token) || [];
+  const colonyTokens = useMemo(
+    () =>
+      colony.tokens?.items
+        .filter(notNull)
+        .map((colonyToken) => colonyToken.token) || [],
+    [colony.tokens?.items],
+  );
   const {
     watch,
     trigger,
@@ -73,16 +76,18 @@ export const useValidationSchema = () => {
             .of(
               object()
                 .shape({
-                  recipient: string().required(({ path }) => {
-                    const index = getLastIndexFromPath(path);
-                    if (index === undefined) {
-                      return formatText({ id: 'errors.amount' });
-                    }
-                    return formatText(
-                      { id: 'errors.recipient.required' },
-                      { paymentIndex: index + 1 },
-                    );
-                  }),
+                  recipient: string()
+                    .required(({ path }) => {
+                      const index = getLastIndexFromPath(path);
+                      if (index === undefined) {
+                        return formatText({ id: 'errors.amount' });
+                      }
+                      return formatText(
+                        { id: 'errors.recipient.required' },
+                        { paymentIndex: index + 1 },
+                      );
+                    })
+                    .address(),
                   amount: string()
                     .required(formatText({ id: 'errors.amount' }))
                     .test(
@@ -152,8 +157,7 @@ export const useValidationSchema = () => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [colony],
+    [colony, colonyTokens],
   );
 };
 

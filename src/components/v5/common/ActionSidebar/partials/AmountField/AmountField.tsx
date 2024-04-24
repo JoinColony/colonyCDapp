@@ -91,6 +91,10 @@ const AmountField: FC<AmountFieldProps> = ({
     (colonyToken) => colonyToken.tokenAddress === selectedToken?.tokenAddress,
   );
 
+  useEffect(() => {
+    adjustInputWidth();
+  }, [adjustInputWidth]);
+
   const selectedTokenContent = isTokenInColony ? (
     <div className="flex items-center gap-1">
       <TokenIcon token={selectedToken || colonyTokens[0]} size="xxs" />
