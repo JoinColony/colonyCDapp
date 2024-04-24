@@ -120,6 +120,11 @@ fragment ColonyAction on ColonyAction {
   }
   members
   rootHash
+  isMultiSig
+  multiSigId
+  multiSigData {
+    ...ColonyMultiSig
+  }
 }
 
 fragment Annotation on Annotation {
@@ -243,4 +248,27 @@ fragment ColonyDecision on ColonyDecision {
   createdAt
   actionId
   colonyAddress
+}
+
+fragment MultiSigUserSignature on MultiSigUserSignature {
+  id
+  domainId
+  userAddress
+  vote
+  createdAt
+}
+
+fragment ColonyMultiSig on ColonyMultiSig {
+  id
+  nativeMultiSigId
+  multiSigDomainId
+  nativeMultiSigDomainId
+  requiredPermissions
+  transactionHash
+  isExecuted
+  isRejected
+  isDecision
+  signatures {
+    ...MultiSigUserSignature
+  }
 }
