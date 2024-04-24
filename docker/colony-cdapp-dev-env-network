@@ -43,7 +43,7 @@ RUN git checkout $NETWORK_HASH
 RUN git submodule update --init --recursive --depth 1
 
 # Install required network dependencies
-RUN npm i --build-from-source
+RUN npm ci
 
 # Initialize the justification tree cache
 # To avoid the error spewed by the miner at startup
