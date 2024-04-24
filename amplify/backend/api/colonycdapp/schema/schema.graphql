@@ -699,9 +699,17 @@ enum ColonyActionType {
   """
   PAYMENT_MOTION
   """
+  An action related to a payment that was created via multiSig within a Colony
+  """
+  PAYMENT_MULTISIG
+  """
   An action related to making multiple payments within a Colony
   """
   MULTIPLE_PAYMENT_MOTION
+  """
+  A multiSig action related to making multiple payments within a Colony
+  """
+  MULTIPLE_PAYMENT_MULTISIG
   """
   An action related to the recovery functionality of a Colony
   """
@@ -715,6 +723,10 @@ enum ColonyActionType {
   """
   MOVE_FUNDS_MOTION
   """
+  An action related to moving funds between domains via multiSig
+  """
+  MOVE_FUNDS_MULTISIG
+  """
   An action related to unlocking a token within a Colony
   """
   UNLOCK_TOKEN
@@ -722,6 +734,10 @@ enum ColonyActionType {
   An action related to unlocking a token within a Colony via a motion
   """
   UNLOCK_TOKEN_MOTION
+  """
+  An action related to unlocking a token within a Colony via multiSig
+  """
+  UNLOCK_TOKEN_MULTISIG
   """
   An action related to minting tokens within a Colony
   """
@@ -731,6 +747,10 @@ enum ColonyActionType {
   """
   MINT_TOKENS_MOTION
   """
+  An action related to minting tokens within a Colony via multiSig
+  """
+  MINT_TOKENS_MULTISIG
+  """
   An action related to creating a domain within a Colony
   """
   CREATE_DOMAIN
@@ -738,6 +758,10 @@ enum ColonyActionType {
   An action related to creating a domain within a Colony via a motion
   """
   CREATE_DOMAIN_MOTION
+  """
+  An action related to creating a domain within a Colony via multiSig
+  """
+  CREATE_DOMAIN_MULTISIG
   """
   An action related to upgrading a Colony's version
   """
@@ -747,6 +771,10 @@ enum ColonyActionType {
   """
   VERSION_UPGRADE_MOTION
   """
+  An action related to upgrading a Colony's version via multiSig
+  """
+  VERSION_UPGRADE_MULTISIG
+  """
   An action related to editing a Colony's details
   """
   COLONY_EDIT
@@ -754,6 +782,10 @@ enum ColonyActionType {
   An action related to editing a Colony's details via a motion
   """
   COLONY_EDIT_MOTION
+  """
+  An action related to editing a Colony's details via multiSig
+  """
+  COLONY_EDIT_MULTISIG
   """
   An action related to editing a domain's details
   """
@@ -763,6 +795,10 @@ enum ColonyActionType {
   """
   EDIT_DOMAIN_MOTION
   """
+  An action related to editing a domain's details via multiSig
+  """
+  EDIT_DOMAIN_MULTISIG
+  """
   An action related to setting user roles within a Colony
   """
   SET_USER_ROLES
@@ -770,6 +806,10 @@ enum ColonyActionType {
   An action related to setting user roles within a Colony via a motion
   """
   SET_USER_ROLES_MOTION
+  """
+  An action related to setting user roles within a Colony via multiSig
+  """
+  SET_USER_ROLES_MULTISIG
   """
   An action related to a domain reputation penalty within a Colony (smite)
   """
@@ -779,6 +819,10 @@ enum ColonyActionType {
   """
   EMIT_DOMAIN_REPUTATION_PENALTY_MOTION
   """
+  An action related to a domain reputation penalty within a Colony (smite) via multiSig
+  """
+  EMIT_DOMAIN_REPUTATION_PENALTY_MULTISIG
+  """
   An action related to a domain reputation reward within a Colony
   """
   EMIT_DOMAIN_REPUTATION_REWARD
@@ -787,13 +831,25 @@ enum ColonyActionType {
   """
   EMIT_DOMAIN_REPUTATION_REWARD_MOTION
   """
+  An action related to a domain reputation reward within a Colony via multiSig
+  """
+  EMIT_DOMAIN_REPUTATION_REWARD_MULTISIG
+  """
   An action related to a creating a Decision within a Colony via a motion
   """
   CREATE_DECISION_MOTION
   """
+  An action related to a creating a Decision within a Colony via multiSig
+  """
+  CREATE_DECISION_MULTISIG
+  """
   An action related to creating a motion for funding an expenditure
   """
   FUND_EXPENDITURE_MOTION
+  """
+  An action related to creating a multiSig for funding an expenditure
+  """
+  FUND_EXPENDITURE_MULTISIG
   """
   An action related to canceling an expenditure
   """
@@ -803,9 +859,17 @@ enum ColonyActionType {
   """
   CANCEL_EXPENDITURE_MOTION
   """
+  An action related to a multiSig to cancel a staked expenditure
+  """
+  CANCEL_STAKED_EXPENDITURE_MULTISIG
+  """
   An action related to creating a motion to release an expenditure stage
   """
   SET_EXPENDITURE_STATE_MOTION
+  """
+  An action related to creating a multiSig to release an expenditure stage
+  """
+  SET_EXPENDITURE_STATE_MULTISIG
   """
   An action related to editing an expenditure
   """
@@ -819,16 +883,19 @@ enum ColonyActionType {
   """
   MAKE_ARBITRARY_TRANSACTION
   MAKE_ARBITRARY_TRANSACTIONS_MOTION
+  MAKE_ARBITRARY_TRANSACTIONS_MULTISIG
   """
   An action related to adding verified members
   """
   ADD_VERIFIED_MEMBERS
   ADD_VERIFIED_MEMBERS_MOTION
+  ADD_VERIFIED_MEMBERS_MULTISIG
   """
   An action related to removing verified members
   """
   REMOVE_VERIFIED_MEMBERS
   REMOVE_VERIFIED_MEMBERS_MOTION
+  REMOVE_VERIFIED_MEMBERS_MULTISIG
   """
   An action related to creating an expenditure (advanced payment)
   """
@@ -1989,7 +2056,12 @@ type Domain @model {
   Native skill ID of the Domain
   The native skill ID is assigned to a domain from the contract on creation
   """
-  nativeSkillId: String!
+  nativeSkillId: Int!
+    @index(
+      name: "byNativeSkillId"
+      queryField: "getDomainByNativeSkillId"
+      sortKeyFields: ["nativeId"]
+    )
   """
   Indicates whether the Domain is the root domain (ID 1)
   """
@@ -2519,6 +2591,82 @@ type MotionStateHistory {
   finalizedAt: AWSDateTime
 }
 
+enum MultiSigVote {
+  None
+  Approve
+  Reject
+}
+
+type MultiSigUserSignature @model {
+  id: ID!
+  multiSigId: ID!
+    @index(
+      name: "byMultiSigId"
+      queryField: "getMultiSigUserSignatureByMultiSigId"
+    )
+  domainId: ID!
+  userAddress: ID!
+  user: User! @hasOne(fields: ["userAddress"])
+  vote: MultiSigVote!
+  createdAt: AWSDateTime!
+}
+
+"""
+Represents a MultiSig motion within a Colony
+"""
+type ColonyMultiSig @model {
+  """
+  The internal database id of the multiSig
+  To ensure uniqueness, we format as: `chainId-multiSigExtnAddress_nativeMultiSigId`
+  """
+  id: ID!
+  """
+  The on chain id of the multiSig
+  """
+  nativeMultiSigId: String!
+  """
+  Unique identifier of the multiSigs domain in the database
+  """
+  multiSigDomainId: ID!
+  """
+  Expanded domain in which the multiSig was created
+  """
+  multiSigDomain: Domain! @hasOne(fields: ["multiSigDomainId"])
+  """
+  The on chain id of the domain associated with the motion
+  """
+  nativeMultiSigDomainId: String! # native domain id
+  """
+  Signatures info
+  """
+  signatures: [MultiSigUserSignature]
+  """
+  Required role for signing
+  """
+  requiredPermissions: Int!
+  """
+  Whether the multiSig was executed or not
+  """
+  isExecuted: Boolean!
+  """
+  Whether the multiSig was cancelled or not
+  """
+  isRejected: Boolean!
+  """
+  Whether the multiSig is a Simple Decision
+  """
+  isDecision: Boolean!
+  """
+  The transaction hash of the creteMotion (multisig) action
+  """
+  transactionHash: ID!
+    @index(
+      name: "byTransactionHash"
+      queryField: "getMultiSigByTransactionHash"
+    )
+
+  action: ColonyAction @belongsTo(fields: ["transactionHash"])
+}
 """
 Represents a Motion within a Colony
 """
@@ -2933,6 +3081,19 @@ type ColonyAction @model @searchable {
   Expanded `ColonyMotion` for the corresponding `motionId`
   """
   motionData: ColonyMotion @hasOne(fields: ["motionId"])
+  """
+  Will be true if the action is a multiSig motion
+  """
+  isMultiSig: Boolean
+  """
+  The internal database id of the multiSig
+  """
+  multiSigId: ID
+    @index(name: "byMultiSigId", queryField: "getColonyActionByMultiSigId")
+  """
+  Expanded `ColonyMultiSig` for the corresponding `multiSigId`
+  """
+  multiSigData: ColonyMultiSig @hasOne(fields: ["multiSigId"])
   """
   Whether to show the motion in the actions list
   True for (forced) actions. True for motions if staked above 10%
