@@ -1,17 +1,20 @@
 #!/bin/bash
 
 cd colonyNetwork
+#TODO: remove this once the node version in the network is upgraded
+sed -i 's/v14.18.2/v16.20.2/g' package.json
 
 # Ganache
 
 # Uncomment the line below if you need ganache to run in verbose mode
 # sed -i 's/100000000000000000000" >\/dev\/null 2>&1/100000000000000000000" --verbose/g' scripts/start-blockchain-client.sh
-sed -i 's/--db $DBPATH/--db $DBPATH --server.host "0.0.0.0"/g' scripts/start-blockchain-client.sh
-yarn start:blockchain:client &
+# sed -i 's/--db $DBPATH/--db $DBPATH --server.host "0.0.0.0"/g' scripts/start-blockchain-client.sh
+npm run start:blockchain:client &
 
 # Colony Network Contracts
 
-DISABLE_DOCKER=true yarn truffle migrate
+npx hardhat compile
+npx hardhat deploy --network development
 
 # Export deployed addresses
 
@@ -24,7 +27,7 @@ BROADCASTER_ACCOUNT_PRIVKEY=$(jq -r '.private_keys | to_entries | .[17] | .value
 
 rm --recursive --force /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
 mkdir --parents /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
-cp -R ./build /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/
+cp -R ./artifacts /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/
 cp ./etherrouter-address.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json
 cp ./ganache-accounts.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json
 
@@ -32,7 +35,6 @@ cp ./ganache-accounts.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
 
 cd packages/reputation-miner
 node ./bin/index.js --minerAddress $MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &
-
 # Broadcaster Service
 
 cd ../metatransaction-broadcaster

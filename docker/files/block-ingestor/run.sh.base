@@ -4,4 +4,10 @@
 
 cd block-ingestor
 
+# Get etherrouter-address
+wget http://network-files:3006/etherrouter-address.json
+
+# Write to env file...
+echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> .env
+
 npm run start
