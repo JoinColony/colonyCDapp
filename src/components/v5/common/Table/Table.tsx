@@ -112,7 +112,9 @@ const Table = <T,>({
     ) {
       tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
-  }, [virtualizedProps, data.length]);
+
+    prevRowCount.current = data.length;
+  }, [data.length, virtualizedProps]);
 
   return (
     <div
