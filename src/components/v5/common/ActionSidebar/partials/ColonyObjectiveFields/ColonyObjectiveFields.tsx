@@ -51,12 +51,12 @@ const ColonyObjectiveFields: FC = () => {
         icon={Article}
         title={formatText(MSG.title)}
         fieldName="colonyObjectiveTitle"
+        isMultiLine
         isDisabled={hasNoDecisionMethods}
       >
-        <FormInputBase
+        <FormTextareaBase
           name="colonyObjectiveTitle"
           placeholder={formatText(MSG.titlePlaceholder)}
-          mode="secondary"
           maxLength={MAX_OBJECTIVE_TITLE}
           message={undefined}
           defaultValue={objective?.title}
@@ -74,7 +74,6 @@ const ColonyObjectiveFields: FC = () => {
           name="colonyObjectiveDescription"
           placeholder={formatText(MSG.descriptionPlaceholder)}
           maxLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
-          wrapperClassName="w-full"
           message={undefined}
           defaultValue={objective?.description}
           disabled={hasNoDecisionMethods}
