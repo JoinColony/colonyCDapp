@@ -219,6 +219,8 @@ export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
   [Network.GnosisFork]: GNOSIS_NETWORK,
   [Network.Goerli]: GOERLI_NETWORK,
   [Network.Mainnet]: ETHEREUM_NETWORK,
+  [Network.Polygon]: POLYGON_NETWORK,
+  [Network.Amoy]: AMOY_NETWORK,
   [Network.ArbitrumOne]: ARBITRUM_NETWORK,
   [Network.ArbitrumSepolia]: ARBITRUM_SEPOLIA_NETWORK,
 };
@@ -229,6 +231,8 @@ export const TOKEN_DATA = {
   [Network.GnosisFork]: XDAI_TOKEN,
   [Network.Goerli]: GOERLI_TOKEN,
   [Network.Mainnet]: ETHER_TOKEN,
+  [Network.Polygon]: POLYGON_TOKEN,
+  [Network.Amoy]: POLYGON_TOKEN,
   [Network.ArbitrumOne]: ETHER_TOKEN,
   [Network.ArbitrumSepolia]: ETHER_TOKEN,
 };
@@ -237,6 +241,8 @@ const GAS_LIMITS = {
   [Network.Ganache]: 6_721_975, // Default ganache gas limit. To verify, run web3.eth.getBlock("latest") in truffle console and inspect "gasLimit" field.
   [Network.Gnosis]: 30_000_000, // https://docs.gnosischain.com/specs/#general-information
   [Network.Mainnet]: 30_000_000, // https://ethereum.org/en/developers/docs/blocks/#:~:text=Each%20block%20has%20a%20target,(2x%20target%20block%20size).
+  [Network.Polygon]: 30_000_000, // https://polygonscan.com/chart/gaslimit
+  [Network.Amoy]: 30_000_000, // No source!
   [Network.ArbitrumOne]: 1_100_000_000_000_000, // https://arbiscan.io/block/195483212
   [Network.ArbitrumSepolia]: 1_100_000_000_000_000, // https://sepolia.arbiscan.io/block/28225149
 };
@@ -252,6 +258,8 @@ export const DEFAULT_GAS_LIMIT: number =
 export const NETWORK_AVAILABLE_CHAINS = {
   [Network.Ganache]: GANACHE_NETWORK,
   [Network.Gnosis]: GNOSIS_NETWORK,
+  [Network.Polygon]: POLYGON_NETWORK,
+  [Network.Amoy]: AMOY_NETWORK,
   [Network.ArbitrumOne]: ARBITRUM_NETWORK,
   [Network.ArbitrumSepolia]: ARBITRUM_SEPOLIA_NETWORK,
 };
