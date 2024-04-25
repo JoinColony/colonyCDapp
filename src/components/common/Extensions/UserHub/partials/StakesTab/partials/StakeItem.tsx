@@ -13,14 +13,17 @@ const displayName =
 const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
   const { formatMessage } = useIntl();
 
+  const stakeItemTitle =
+    stake.action?.metadata?.customTitle ||
+    stake.action?.decisionData?.title ||
+    stake.action?.type;
+
   return (
     <li className="flex flex-col border-b border-gray-100 py-3.5 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
       <div className="relative w-full">
         <div className="flex items-center justify-between">
           <div className="mr-2 flex min-w-0 items-center">
-            <p className="mr-2 min-w-0 truncate text-1">
-              {stake.action?.metadata?.customTitle ?? stake.action?.type}
-            </p>
+            <p className="mr-2 min-w-0 truncate text-1">{stakeItemTitle}</p>
             <span className="text-xs text-gray-400">
               <FormattedDate value={stake.createdAt} />
             </span>
