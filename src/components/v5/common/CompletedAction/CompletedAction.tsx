@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { CompletedActionProvider } from '~context/CompletedActionContext/CompletedActionContextProvider.tsx';
 import { ColonyActionType } from '~gql';
 import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
@@ -130,18 +129,17 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   return (
-    <CompletedActionProvider>
-      <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
-        <div
-          className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
-            'sm:w-[calc(100%-23.75rem)]': action.isMotion,
-          })}
-        >
-          {getActionContent()}
-        </div>
+    <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
+      <div
+        className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
+          'sm:w-[calc(100%-23.75rem)]': action.isMotion,
+        })}
+      >
+        {getActionContent()}
+      </div>
 
-        <div
-          className={`
+      <div
+        className={`
             w-full
             border-b
             border-b-gray-200
@@ -156,11 +154,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             sm:border-l
             sm:border-l-gray-200
           `}
-        >
-          {getSidebarWidgetContent()}
-        </div>
+      >
+        {getSidebarWidgetContent()}
       </div>
-    </CompletedActionProvider>
+    </div>
   );
 };
 

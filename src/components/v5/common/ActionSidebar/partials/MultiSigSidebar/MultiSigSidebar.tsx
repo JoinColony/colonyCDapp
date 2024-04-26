@@ -3,6 +3,7 @@ import { type FC } from 'react';
 import React from 'react';
 
 import useExtensionData from '~hooks/useExtensionData.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
@@ -21,7 +22,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
   );
 
   if (loadingAction || loadingExtension || !action) {
-    return <div>Loading</div>;
+    return <SpinnerLoader appearance={{ size: 'medium' }} />;
   }
 
   if (!action.multiSigData || !action.multiSigId) {
@@ -41,6 +42,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
       <MultiSigWidget
         multiSigData={action.multiSigData}
         actionType={action.type}
+        initiatorAddress={action.initiatorAddress}
       />
     </div>
   );
