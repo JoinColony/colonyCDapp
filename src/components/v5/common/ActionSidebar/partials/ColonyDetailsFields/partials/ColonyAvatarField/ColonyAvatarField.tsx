@@ -79,10 +79,16 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
         }}
         buttonMode="primarySolid"
         icon={Image}
-        confirmMessage={formatText({
-          id: 'button.confirmChange',
-        })}
-        closeMessage={formatText({ id: 'button.cancel' })}
+        confirmMessage={
+          avatarFileError
+            ? undefined
+            : formatText({
+                id: 'button.confirmChange',
+              })
+        }
+        closeMessage={
+          avatarFileError ? undefined : formatText({ id: 'button.cancel' })
+        }
       >
         <h5 className="mb-1.5 heading-5">
           {formatText({ id: 'editColonyLogo.modal.title' })}
