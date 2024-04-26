@@ -7,14 +7,12 @@ import { getRole, UserRole } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
-import {
-  Authority,
-  AVAILABLE_ROLES,
-} from '../partials/forms/ManagePermissionsForm/consts.ts';
+import { AVAILABLE_ROLES } from '../partials/forms/ManagePermissionsForm/consts.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
 

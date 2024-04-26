@@ -14,6 +14,7 @@ export interface EnabledExtensionData {
   isStakedExpenditureEnabled: boolean;
   isStagedExpenditureEnabled: boolean;
   isStreamingPaymentsEnabled: boolean;
+  isMultiSigEnabled: boolean;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
@@ -35,6 +36,9 @@ const useEnabledExtensions = (): EnabledExtensionData => {
   const streamingPaymentsExtension = installedExtensionsData.find(
     (extension) => extension.extensionId === Extension.StreamingPayments,
   );
+  const multiSigExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.MultisigPermissions,
+  );
 
   return {
     loading,
@@ -45,6 +49,7 @@ const useEnabledExtensions = (): EnabledExtensionData => {
     isStakedExpenditureEnabled: !!stakedExpenditureExtension?.isEnabled,
     isStagedExpenditureEnabled: !!stagedExpenditureExtension?.isEnabled,
     isStreamingPaymentsEnabled: !!streamingPaymentsExtension?.isEnabled,
+    isMultiSigEnabled: !!multiSigExtension?.isEnabled,
     shortPollExtensions,
   };
 };

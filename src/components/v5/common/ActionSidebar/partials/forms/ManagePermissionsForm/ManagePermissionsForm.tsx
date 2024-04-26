@@ -10,7 +10,9 @@ import React, { type FC, useCallback } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
+import { Authority } from '~types/authority.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
@@ -25,7 +27,7 @@ import Description from '../../Description/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
 
-import { AuthorityOptions, RemoveRoleOptionValue } from './consts.ts';
+import { RemoveRoleOptionValue } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
@@ -35,6 +37,7 @@ import { getRoleLabel } from './utils.ts';
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+  const { isMultiSigEnabled } = useEnabledExtensions();
   const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
   const [
     isPermissionsModalOpen,
@@ -79,6 +82,21 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       ),
     }),
   );
+
+  const AUTHORITY_OPTIONS = [
+    {
+      label: formatText({ id: 'actionSidebar.authority.own' }),
+      value: Authority.Own,
+    },
+    ...(isMultiSigEnabled
+      ? [
+          {
+            label: formatText({ id: 'actionSidebar.authority.viaMultiSig' }),
+            value: Authority.ViaMultiSig,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <>
@@ -175,7 +193,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <FormCardSelect
           disabled={isModeRoleSelected || hasNoDecisionMethods}
           name="authority"
-          options={AuthorityOptions}
+          options={AUTHORITY_OPTIONS}
           title={formatText({
             id: 'actionSidebar.managePermissions.authoritySelect.title',
           })}
