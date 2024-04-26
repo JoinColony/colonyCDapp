@@ -1080,6 +1080,8 @@
     "actionSidebar.selectTeamColor": "Select team colour",
     "actionSidebar.selectMember": "Select member",
     "actionSidebar.enterAmount": "Enter amount",
+    "actionSidebar.addressError": "Address error",
+    "actionSidebar.addressErrorTooltip": "The address is not valid. \n \n Click to manually select the user.",
     "actionSidebar.tokenError": "Token error",
     "actionSidebar.tokenErrorTooltip": "The token could not be found. \n \n Click to manually select the token.",
     "actionSidebar.simplePayment": "Simple Payment",

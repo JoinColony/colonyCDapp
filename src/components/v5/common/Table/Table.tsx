@@ -27,6 +27,7 @@ const Table = <T,>({
   canNextPage,
   canPreviousPage,
   previousPage,
+  isItemAdded,
   nextPage,
   showPageNumber = true,
   showTotalPagesNumber = true,
@@ -102,19 +103,12 @@ const Table = <T,>({
   const shouldShowEmptyContent = emptyContent && data.length === 0;
 
   const tableRef = useRef<HTMLTableElement | null>(null);
-  const prevRowCount = useRef<number>(data.length);
 
   useEffect(() => {
-    if (
-      tableRef.current &&
-      !!virtualizedProps &&
-      prevRowCount.current < data.length
-    ) {
+    if (tableRef.current && !!virtualizedProps && isItemAdded) {
       tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
-
-    prevRowCount.current = data.length;
-  }, [data.length, virtualizedProps]);
+  }, [data.length, virtualizedProps, isItemAdded]);
 
   return (
     <div

@@ -123,6 +123,15 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
     fieldArrayMethods.remove();
   };
 
+  const [isItemAdded, setIsItemAdded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsItemAdded(false);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [isItemAdded]);
+
   return (
     <div>
       <h5 className="mb-3 mt-6 text-2">
@@ -143,7 +152,8 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
               '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.125rem]': isTablet,
               '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
                 !isTablet,
-              '!border-negative-400': !!fieldState.error,
+              '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
+                !!fieldState.error,
               'max-h-[50vh] overflow-y-scroll md:max-h-[29rem] md:[&_tfoot]:sticky md:[&_tfoot]:bottom-0 md:[&_tfoot]:z-base md:[&_tfoot]:bg-base-white [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-base':
                 data.length > 7,
             },
@@ -152,6 +162,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
+          isItemAdded={isItemAdded}
           getMenuProps={getMenuProps}
           withBorder={false}
           renderCellWrapper={(_, content) => content}
@@ -169,6 +180,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           size="small"
           isFullSize={isMobile}
           onClick={() => {
+            setIsItemAdded(true);
             fieldArrayMethods.append({
               recipient: undefined,
               amount: '',
@@ -176,7 +188,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
               delay: undefined,
             });
           }}
-          disabled={hasNoDecisionMethods}
+          disabled={hasNoDecisionMethods || data.length === 400}
         >
           {formatText({ id: 'button.addPayment' })}
         </Button>

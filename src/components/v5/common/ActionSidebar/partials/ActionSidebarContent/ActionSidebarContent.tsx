@@ -218,6 +218,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
       >
         <ActionForm
           {...actionFormProps}
+          key={actionFormProps.mode}
           className="flex h-full flex-col"
           innerRef={formRef}
           onSuccess={() => {

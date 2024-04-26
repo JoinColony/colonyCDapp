@@ -1,6 +1,6 @@
 import { Id } from '@colony/colony-js';
-import { useEffect, useMemo } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 import { array, type InferType, number, object, string } from 'yup';
 
@@ -35,33 +35,6 @@ export const useValidationSchema = () => {
         .map((colonyToken) => colonyToken.token) || [],
     [colony.tokens?.items],
   );
-  const {
-    watch,
-    trigger,
-    formState: { isDirty },
-  } = useFormContext();
-
-  useEffect(() => {
-    const { unsubscribe } = watch((value, { name }) => {
-      if (!name?.startsWith('payments') || !isDirty) {
-        return;
-      }
-
-      const { payments = [] } = value || {};
-
-      const paymentsArray = payments.map((payment, index) => {
-        if (payment?.amount && payment.amount !== '') {
-          return `payments.${index}.amount`;
-        }
-
-        return null;
-      });
-
-      trigger(paymentsArray.filter(notNull));
-    });
-
-    return () => unsubscribe();
-  }, [isDirty, trigger, watch]);
 
   return useMemo(
     () =>
@@ -193,7 +166,19 @@ export const usePaymentBuilder = (
       decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.EXPENDITURE_CREATE
         : ActionTypes.STAKED_EXPENDITURE_CREATE,
-    getFormOptions,
+    getFormOptions: (formOptions, form) =>
+      getFormOptions(
+        {
+          ...formOptions,
+          mode: 'onSubmit',
+          reValidateMode: 'onSubmit',
+          actionType:
+            decisionMethod === DecisionMethod.Permissions
+              ? ActionTypes.EXPENDITURE_CREATE
+              : ActionTypes.STAKED_EXPENDITURE_CREATE,
+        },
+        form,
+      ),
     transform: mapPayload((payload: PaymentBuilderFormValues) => {
       return getPaymentBuilderPayload(colony, payload, networkInverseFee);
     }),

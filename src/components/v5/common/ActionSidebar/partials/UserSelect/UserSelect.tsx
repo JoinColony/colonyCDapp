@@ -1,6 +1,7 @@
 import { CircleWavyCheck, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { utils } from 'ethers';
+import { isAddress } from 'ethers/lib/utils';
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
@@ -8,6 +9,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
@@ -70,6 +72,42 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
         }
       : undefined;
 
+  const isUserAddressValid = isAddress(field.value);
+  const selectedUserContent = !isUserAddressValid ? (
+    <Tooltip
+      trigger="hover"
+      popperOptions={{ placement: 'bottom' }}
+      tooltipContent={formatText({ id: 'actionSidebar.addressErrorTooltip' })}
+    >
+      <div className="flex items-center gap-1 text-negative-400">
+        <WarningCircle size={16} />
+        <span className="text-md">
+          {formatText({
+            id: 'actionSidebar.addressError',
+          })}
+        </span>
+      </div>
+    </Tooltip>
+  ) : (
+    <>
+      <UserAvatar
+        user={selectedUser || field.value}
+        size="xs"
+        showUsername
+        className={clsx({
+          'text-warning-400': !selectedUser?.isVerified,
+          'text-gray-900': selectedUser?.isVerified,
+        })}
+      />
+      {selectedUser?.isVerified && (
+        <CircleWavyCheck
+          size={14}
+          className="ml-1 flex-shrink-0 text-blue-400"
+        />
+      )}
+    </>
+  );
+
   return (
     <div className="flex w-full items-center sm:relative">
       {readonly ? (
@@ -104,27 +142,9 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
             aria-label={formatText({ id: 'ariaLabel.selectUser' })}
             disabled={disabled}
           >
-            {selectedUser || field.value ? (
-              <>
-                <UserAvatar
-                  user={selectedUser || field.value}
-                  size="xs"
-                  showUsername
-                  className={clsx({
-                    'text-warning-400': !selectedUser?.isVerified,
-                    'text-gray-900': selectedUser?.isVerified,
-                  })}
-                />
-                {selectedUser?.isVerified && (
-                  <CircleWavyCheck
-                    size={14}
-                    className="ml-1 flex-shrink-0 text-blue-400"
-                  />
-                )}
-              </>
-            ) : (
-              formatText({ id: 'actionSidebar.selectMember' })
-            )}
+            {selectedUser || field.value
+              ? selectedUserContent
+              : formatText({ id: 'actionSidebar.selectMember' })}
           </button>
           {isUserSelectVisible && (
             <SearchSelect
@@ -145,7 +165,7 @@ const UserSelect: FC<UserSelectProps> = ({ name, disabled }) => {
               showEmptyContent={false}
             />
           )}
-          {!selectedUser?.isVerified && field.value && (
+          {!selectedUser?.isVerified && field.value && isUserAddressValid && (
             <UserPopover
               userName={userDisplayName}
               walletAddress={userWalletAddress}

@@ -11,34 +11,25 @@ import { type CSVFileItem } from './types.ts';
 
 const defaultValues = {
   recipient: '0x0000000000000000000000000000000000000000',
-  tokenContractAddress: '0x0000000000000000000000000000000000000000',
-  amount: '0',
-  claimDelay: '0',
+  tokenContractAddress: 'wrongToken',
+  amount: '',
+  claimDelay: '',
 };
 
 const isValueNumber = (value: string) =>
-  typeof value === 'string' &&
-  value.trim() !== '' &&
-  !Number.isNaN(Number(value));
+  typeof value === 'string' && !Number.isNaN(Number(value));
 
 const validateFile = (file: ExpenditurePayoutFieldValue[]) => {
-  const isRecipientValid = file.every((item) =>
-    item.recipientAddress.startsWith('0x'),
-  );
   const isAmountAndDelayNumber = file.every(
     (item) => isValueNumber(item.amount) && isValueNumber(item.claimDelay),
   );
   const hasWrongHeaders = file.every(
     (item) =>
       !item.recipientAddress ||
-      !item.recipientAddress ||
+      !item.tokenAddress ||
       !item.amount ||
       !item.claimDelay,
   );
-
-  if (!isRecipientValid) {
-    return DropzoneErrors.RECIPIENT;
-  }
 
   if (!isAmountAndDelayNumber || hasWrongHeaders) {
     return DropzoneErrors.STRUCTURE;
@@ -62,8 +53,13 @@ const prepareStructure = (file: CSVFileItem[]) => {
       recipientAddress: item.recipient || defaultValues.recipient,
       tokenAddress:
         item.tokenContractAddress || defaultValues.tokenContractAddress,
-      amount: item.amount.replace(',', '.') || defaultValues.amount,
-      claimDelay: item.claimDelay.replace('-', '') || defaultValues.claimDelay,
+      amount:
+        (item.amount.includes(',') ? defaultValues.amount : item.amount) ||
+        defaultValues.amount,
+      claimDelay:
+        (item.claimDelay.includes('-')
+          ? defaultValues.claimDelay
+          : item.claimDelay) || defaultValues.claimDelay,
     }));
 };
 
