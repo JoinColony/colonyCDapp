@@ -172,6 +172,7 @@ fragment ColonyRole on ColonyRole {
   role_3
   role_5
   role_6
+  isMultiSig
 }
 
 fragment Safe on Safe {

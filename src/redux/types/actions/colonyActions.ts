@@ -5,6 +5,7 @@ import { type RefObject } from 'react';
 import { type NetworkInfo } from '~constants/index.ts';
 import { type ExternalLink } from '~gql';
 import { type ActionTypes } from '~redux/index.ts';
+import { type Authority } from '~types/authority.ts';
 import {
   type DomainColor,
   type Domain,
@@ -167,6 +168,7 @@ export type ColonyActionsActionTypes =
         domainId: number;
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
+        authority: Authority;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
