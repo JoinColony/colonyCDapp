@@ -3209,7 +3209,7 @@ A snapshot of the current set of permissions a given address has in a given doma
 type ColonyRole @model {
   """
   Unique identifier for the role snapshot
-  Format: `<colonyAddress>_<domainNativeId>_<userAddress>_roles`
+  Format: `<colonyAddress>_<domainNativeId>_<userAddress>_roles` or `<colonyAddress>_<domainNativeId>_<userAddress>_multisig_roles`
   """
   id: ID! @index
   """
@@ -3286,6 +3286,10 @@ type ColonyRole @model {
   Administration role
   """
   role_6: Boolean
+  """
+  Will be true if the colony role is a multi sig role
+  """
+  isMultiSig: Boolean
 }
 
 """
@@ -3294,7 +3298,7 @@ Snapshot of the user's full roles/permissions at a specific block
 type ColonyHistoricRole @model {
   """
   Unique identifier for the role snapshot
-  Format: `colonyAddress_domainNativeId_userAddress_blockNumber_roles`
+  Format: `<colonyAddress>_<domainNativeId>_<userAddress>_<blockNumber>_roles`  or `<colonyAddress>_<domainNativeId>_<userAddress>_<blockNumber>_multisig_roles`
   """
   id: ID! #
   """
@@ -3386,6 +3390,10 @@ type ColonyHistoricRole @model {
   Timestamp at which the database entry was created
   """
   createdAt: AWSDateTime!
+  """
+  Will be true if the colony role is a multi sig role
+  """
+  isMultiSig: Boolean
 }
 
 """
