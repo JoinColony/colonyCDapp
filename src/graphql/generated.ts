@@ -8592,6 +8592,8 @@ export type ExpenditureStageFragment = { __typename?: 'ExpenditureStage', slotId
 
 export type ExpenditureBalanceFragment = { __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string };
 
+export type ExpenditureActionFragment = { __typename?: 'ColonyAction', id: string, initiatorAddress: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
+
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null };
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
@@ -9495,6 +9497,15 @@ export const ExpenditureBalanceFragmentDoc = gql`
   amount
 }
     `;
+export const ExpenditureActionFragmentDoc = gql`
+    fragment ExpenditureAction on ColonyAction {
+  id
+  initiatorAddress
+  initiatorUser {
+    ...User
+  }
+}
+    ${UserFragmentDoc}`;
 export const ExpenditureFragmentDoc = gql`
     fragment Expenditure on Expenditure {
   id
@@ -9529,11 +9540,7 @@ export const ExpenditureFragmentDoc = gql`
     filter: {type: {eq: LOCK_EXPENDITURE}, isMotionFinalization: {ne: true}}
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
     }
   }
   fundingActions: actions(
@@ -9551,33 +9558,21 @@ export const ExpenditureFragmentDoc = gql`
     filter: {type: {eq: FINALIZE_EXPENDITURE}, isMotionFinalization: {ne: true}}
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
     }
   }
   cancellingActions: actions(
     filter: {type: {eq: CANCEL_EXPENDITURE}, isMotionFinalization: {ne: true}}
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
     }
   }
   editingActions: actions(
     filter: {type: {eq: EDIT_EXPENDITURE}, isMotionFinalization: {ne: true}}
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
     }
   }
 }
@@ -9585,6 +9580,7 @@ export const ExpenditureFragmentDoc = gql`
 ${ExpenditureStageFragmentDoc}
 ${ColonyMotionFragmentDoc}
 ${ExpenditureBalanceFragmentDoc}
+${ExpenditureActionFragmentDoc}
 ${UserFragmentDoc}`;
 export const UserDisplayFragmentDoc = gql`
     fragment UserDisplay on User {
