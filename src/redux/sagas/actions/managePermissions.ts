@@ -8,6 +8,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
+import { Authority } from '~types/authority.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
@@ -35,6 +36,7 @@ function* managePermissionsAction({
     domainId,
     userAddress,
     roles,
+    authority,
     colonyName,
     annotationMessage,
     customActionTitle,
@@ -80,18 +82,30 @@ function* managePermissionsAction({
         if (roleId === ColonyRole.ArchitectureSubdomain) {
           return false;
         }
+        // Administration role cannot be set for multi sig
+        if (
+          authority === Authority.ViaMultiSig &&
+          roleId === ColonyRole.Administration
+        ) {
+          return false;
+        }
         if (!roles[roleId]) {
           return false;
         }
         return true;
       });
 
+    const contextMap = {
+      [Authority.Own]: ClientType.ColonyClient,
+      [Authority.ViaMultiSig]: ClientType.MultisigPermissionsClient,
+    };
+
     yield createGroupTransaction({
       channel: setUserRoles,
       batchKey,
       meta,
       config: {
-        context: ClientType.ColonyClient,
+        context: contextMap[authority],
         methodName: 'setUserRoles',
         identifier: colonyAddress,
         params: [],

@@ -72,13 +72,15 @@ export const getUserRolesForDomain = ({
   const userRolesInAnyDomain = colony.roles?.items.find(
     (domainRole) =>
       domainRole?.domain?.nativeId === domainId &&
-      domainRole?.targetAddress === userAddress,
+      domainRole?.targetAddress === userAddress &&
+      !domainRole.isMultiSig,
   );
 
   const userRolesInRootDomain = colony.roles?.items.find(
     (domainRole) =>
       domainRole?.domain?.nativeId === Id.RootDomain &&
-      domainRole?.targetAddress === userAddress,
+      domainRole?.targetAddress === userAddress &&
+      !domainRole.isMultiSig,
   );
 
   if (excludeInherited && userRolesInAnyDomain) {
@@ -111,7 +113,8 @@ export const getAllUserRoles = (
   if (!userAddress) return [];
 
   const userRolesInAnyDomain = colony.roles?.items.find(
-    (domainRole) => domainRole?.targetAddress === userAddress,
+    (domainRole) =>
+      domainRole?.targetAddress === userAddress && !domainRole.isMultiSig,
   );
 
   return Array.from(new Set([...convertRolesToArray(userRolesInAnyDomain)]));
