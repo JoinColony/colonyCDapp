@@ -80,6 +80,20 @@ fragment Expenditure on Expenditure {
       }
     }
   }
+  editingActions: actions(
+    filter: {
+      type: { eq: EDIT_EXPENDITURE }
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      id
+      initiatorAddress
+      initiatorUser {
+        ...User
+      }
+    }
+  }
 }
 
 fragment ExpenditureSlot on ExpenditureSlot {
