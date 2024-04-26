@@ -90,4 +90,5 @@ export const getManagePermissionsPayload = (
   colonyAddress: colony.colonyAddress,
   motionDomainId: Number(values.createdIn),
   roles: getPermissionsMap(values.permissions, values.role),
+  authority: values.authority,
 });
