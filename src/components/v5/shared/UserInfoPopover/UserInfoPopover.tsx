@@ -147,7 +147,6 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
               cardProps={{
                 rounded: 's',
                 className: clsx('bg-base-white', {
-                  'p-6': !isTopSectionWithBackground,
                   'overflow-hidden border-2 border-purple-200 ':
                     isTopSectionWithBackground,
                 }),

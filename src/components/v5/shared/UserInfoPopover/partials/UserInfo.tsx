@@ -37,9 +37,16 @@ const UserInfo: FC<UserInfoProps> = ({
       <div
         className={clsx({
           'bg-purple-100 p-6': isTopContributorType,
+          'px-6 pt-6': !isTopContributorType,
         })}
       >
-        <div className="mb-6">{userDetails}</div>
+        <div
+          className={clsx({
+            'mb-6': isTopContributorType,
+          })}
+        >
+          {userDetails}
+        </div>
         {isTopContributorType && domains && (
           <>
             <TitleLabel
@@ -65,99 +72,85 @@ const UserInfo: FC<UserInfoProps> = ({
           </>
         )}
       </div>
-      {aboutDescriptionText && (
-        <div
-          className={clsx({
-            'px-6 pt-6': isTopContributorType,
-          })}
-        >
-          <TitleLabel
-            className="mb-2"
-            text={formatText({ id: 'userInfo.about.section' })}
-          />
-          <p className="text-md text-gray-600">{aboutDescriptionText}</p>
-        </div>
-      )}
-      {additionalContent && (
-        <div
-          className={clsx({
-            'pt-6': aboutDescriptionText,
-            'px-6': isTopContributorType,
-          })}
-        >
-          {additionalContent}
-        </div>
-      )}
-      {domains?.length ? (
-        <div
-          className={clsx({
-            'px-6 pb-6': isTopContributorType,
-            'pt-6': !aboutDescriptionText && isTopContributorType,
-          })}
-        >
-          <div className="my-6 border-t border-gray-200" />
-          <TitleLabel
-            text={formatText({
-              id: 'userInfo.teamBreakdown.section',
-            })}
-          />
-          <ul className="flex flex-col gap-2 pt-2">
-            {domains.map(
-              ({
-                domainId,
-                domainName,
-                permissions,
-                reputationPercentage,
-                reputationRaw,
-              }) => {
-                const finalPermissions = permissions?.length
-                  ? permissions
-                  : domains
-                      .find(({ nativeId }) => nativeId === Id.RootDomain)
-                      ?.permissions.filter(
-                        (permission) =>
-                          permission !== ColonyRole.Root &&
-                          permission !== ColonyRole.Recovery,
-                      );
-                const permissionRole = finalPermissions?.length
-                  ? getRole(finalPermissions)
-                  : undefined;
+      <div className="flex flex-col gap-6 p-6">
+        {aboutDescriptionText && (
+          <div>
+            <TitleLabel
+              className="mb-2"
+              text={formatText({ id: 'userInfo.about.section' })}
+            />
+            <p className="text-md text-gray-600">{aboutDescriptionText}</p>
+          </div>
+        )}
+        {additionalContent && <div>{additionalContent}</div>}
+        {(aboutDescriptionText || additionalContent) && !!domains?.length && (
+          <div className="border-t border-gray-200" />
+        )}
+        {domains?.length ? (
+          <div>
+            <TitleLabel
+              text={formatText({
+                id: 'userInfo.teamBreakdown.section',
+              })}
+            />
+            <ul className="flex flex-col gap-2 pt-2">
+              {domains.map(
+                ({
+                  domainId,
+                  domainName,
+                  permissions,
+                  reputationPercentage,
+                  reputationRaw,
+                }) => {
+                  const finalPermissions = permissions?.length
+                    ? permissions
+                    : domains
+                        .find(({ nativeId }) => nativeId === Id.RootDomain)
+                        ?.permissions.filter(
+                          (permission) =>
+                            permission !== ColonyRole.Root &&
+                            permission !== ColonyRole.Recovery,
+                        );
+                  const permissionRole = finalPermissions?.length
+                    ? getRole(finalPermissions)
+                    : undefined;
 
-                return (
-                  <li
-                    key={domainId}
-                    className="grid grid-cols-[2fr,1fr] items-center font-medium"
-                  >
-                    <span className="truncate whitespace-nowrap text-md">
-                      {domainName}
-                    </span>
-                    <div className="flex justify-end">
-                      {permissionRole && (
-                        <PermissionsBadge
-                          text={permissionRole.name}
-                          icon={User} // @TODO: add UserTree icon for multiSig
-                        />
-                      )}
+                  return (
+                    <li
+                      key={domainId}
+                      className="grid grid-cols-[2fr,1fr] items-center font-medium"
+                    >
+                      <span className="truncate whitespace-nowrap text-md">
+                        {domainName}
+                      </span>
+                      <div className="flex justify-end">
+                        {permissionRole && (
+                          <PermissionsBadge
+                            text={permissionRole.name}
+                            icon={User} // @TODO: add UserTree icon for multiSig
+                          />
+                        )}
 
-                      <Tooltip
-                        className="flex min-w-[4.5rem] items-center justify-end text-sm text-blue-400"
-                        tooltipContent={
-                          <Numeral value={reputationRaw} suffix=" pts" />
-                        }
-                      >
-                        <Star size={12} />
-                        <span className="ml-1 inline-block">
-                          {reputationPercentage.toFixed(2)}%
-                        </span>
-                      </Tooltip>
-                    </div>
-                  </li>
-                );
-              },
-            )}
-          </ul>
-        </div>
-      ) : undefined}
+                        <Tooltip
+                          className="flex min-w-[4.5rem] items-center justify-end text-sm text-blue-400"
+                          tooltipContent={
+                            <Numeral value={reputationRaw} suffix=" pts" />
+                          }
+                        >
+                          <Star size={12} />
+                          <span className="ml-1 inline-block">
+                            {reputationPercentage.toFixed(2)}%
+                          </span>
+                        </Tooltip>
+                      </div>
+                    </li>
+                  );
+                },
+              )}
+            </ul>
+          </div>
+        ) : undefined}
+      </div>
     </div>
   );
 };
