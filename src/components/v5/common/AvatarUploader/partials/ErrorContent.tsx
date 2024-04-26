@@ -48,7 +48,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
         <TextButton
           onClick={open}
           isErrorColor
-          className="text-sm font-bold underline"
+          className="text-sm font-semibold underline"
         >
           {formatMessage({ id: 'button.try.again' })}
           <input {...getInputProps()} />
