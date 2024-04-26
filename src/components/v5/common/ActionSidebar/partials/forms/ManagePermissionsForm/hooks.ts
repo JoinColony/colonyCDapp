@@ -9,6 +9,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
@@ -86,6 +87,9 @@ export const useManagePermissions = (
       ) {
         return;
       }
+      if (isModeRoleSelected) {
+        setValue('authority', Authority.Own);
+      }
 
       configureFormRoles({
         colony,
@@ -107,6 +111,7 @@ export const useManagePermissions = (
     isSubmitted,
     trigger,
     watch,
+    isModeRoleSelected,
   ]);
 
   useActionFormBaseHook({
