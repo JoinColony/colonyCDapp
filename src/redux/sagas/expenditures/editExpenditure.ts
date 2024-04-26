@@ -1,5 +1,4 @@
 import { type AnyColonyClient, ClientType } from '@colony/colony-js';
-import { JsonRpcProvider, TransactionReceipt } from '@ethersproject/providers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context';
@@ -22,94 +21,6 @@ import {
   getMulticallDataForUpdatedPayouts,
   getResolvedPayouts,
 } from '../utils/index.ts';
-
-const processTrace = (sj: any, receipt: TransactionReceipt, input: any) => {
-  // const sj = JSON.parse(s);
-
-  const frames = sj.structLogs.filter((x) =>
-    // const frames = sj.result.structLogs.filter((x) =>
-    ['CALL', 'DELEGATECALL', 'STATICCALL', 'RETURN'].includes(x.op),
-  );
-
-  // get from, to, input from tx
-  const stack = {
-    from: receipt.from,
-    to: receipt.to,
-    input,
-    calls: [],
-  };
-
-  const callHistory = [];
-
-  let currentPositionInStack = stack;
-  // eslint-disable-next-line no-restricted-syntax
-  for (const f of frames) {
-    if (f.op === 'CALL') {
-      // console.log(`CALL to ${f.stack[f.stack.length - 2]}`);
-      const offset = parseInt(f.stack[f.stack.length - 4], 16);
-      const size = parseInt(f.stack[f.stack.length - 5], 16);
-      const data = f.memory.join('').slice(offset * 2, (offset + size) * 2);
-      // console.log(`with call data 0x${data}`);
-      // @ts-ignore
-      currentPositionInStack.calls.push({
-        from: currentPositionInStack.to,
-        to: `0x${f.stack[f.stack.length - 2].slice(-40)}`,
-        input: `0x${data}`,
-        calls: [],
-        type: 'CALL',
-      });
-      // @ts-ignore
-      callHistory.push(currentPositionInStack);
-      currentPositionInStack =
-        currentPositionInStack.calls[currentPositionInStack.calls.length - 1];
-    }
-    if (f.op === 'DELEGATECALL') {
-      // console.log(`DELEGATECALL to ${f.stack[f.stack.length - 2]}`);
-      const offset = parseInt(f.stack[f.stack.length - 3], 16);
-      const size = parseInt(f.stack[f.stack.length - 4], 16);
-      const data = f.memory.join('').slice(offset * 2, (offset + size) * 2);
-      // console.log(`with call data 0x${data}`);
-      // @ts-ignore
-      currentPositionInStack.calls.push({
-        from: currentPositionInStack.to,
-        to: `0x${f.stack[f.stack.length - 2].slice(-40)}`,
-        input: `0x${data}`,
-        calls: [],
-        type: 'DELEGATECALL',
-      });
-      // A delegate call shouldn't change where we call from in the future.
-    }
-    if (f.op === 'STATICCALL') {
-      // console.log(`STATICCALL to ${f.stack[f.stack.length - 2]}`);
-      const offset = parseInt(f.stack[f.stack.length - 3], 16);
-      const size = parseInt(f.stack[f.stack.length - 4], 16);
-      const data = f.memory.join('').slice(offset * 2, (offset + size) * 2);
-      // console.log(`with call data 0x${data}`);
-      // process.exit(1);
-      // @ts-ignore
-      currentPositionInStack.calls.push({
-        from: currentPositionInStack.to,
-        to: `0x${f.stack[f.stack.length - 2].slice(-40)}`,
-        input: `0x${data}`,
-        calls: [],
-        type: 'STATICCALL',
-      });
-      // @ts-ignore
-      callHistory.push(currentPositionInStack);
-      currentPositionInStack =
-        currentPositionInStack.calls[currentPositionInStack.calls.length - 1];
-    }
-    if (f.op === 'RETURN') {
-      if (callHistory.length === 0) {
-        break;
-      }
-      // @ts-ignore
-      currentPositionInStack = callHistory.pop();
-    }
-  }
-
-  console.log(JSON.stringify(stack, null, 2));
-};
 
 export type EditExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_EDIT>['payload'];
@@ -215,21 +126,6 @@ function* editExpenditureAction({
       editExpenditure.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
     );
-
-    const {
-      payload: { receipt },
-    } = yield takeFrom(
-      editExpenditure.channel,
-      ActionTypes.TRANSACTION_RECEIPT_RECEIVED,
-    );
-
-    const provider = new JsonRpcProvider();
-    const tx = yield provider.getTransaction(txHash);
-    console.log(tx);
-
-    const data = yield provider.send('debug_traceTransaction', [txHash]);
-    console.log(data);
-    processTrace(data, receipt, tx.data);
 
     yield waitForTxResult(editExpenditure.channel);
 

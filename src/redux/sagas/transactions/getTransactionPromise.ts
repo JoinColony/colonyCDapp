@@ -10,7 +10,7 @@ import { type TransactionRecord } from '../../immutable/index.ts';
  */
 async function getTransactionPromise(
   // @TODO this is not great but I feel like we will replace this anyways at some point
-  client: ContractClient & { clientType: string },
+  client: ContractClient,
   tx: TransactionRecord,
 ): Promise<TransactionResponse> {
   const {
@@ -29,14 +29,6 @@ async function getTransactionPromise(
     gasPrice: gasPriceOverride || gasPrice,
     ...restOptions,
   };
-
-  console.info('TX DEBUG', {
-    client: client?.clientType || 'unknownContractClient',
-    methodName,
-    params,
-    overrides: sendOptions,
-  });
-
   return client[methodName](...[...params, sendOptions]);
 }
 
