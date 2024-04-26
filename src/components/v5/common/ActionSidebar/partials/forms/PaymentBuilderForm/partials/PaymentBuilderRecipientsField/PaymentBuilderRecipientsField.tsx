@@ -56,7 +56,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
             recipient: recipientAddress,
             amount,
             tokenAddress,
-            delay: Number(claimDelay),
+            delay: claimDelay === '' ? undefined : claimDelay,
           };
         },
       );
