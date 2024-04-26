@@ -31,7 +31,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
       </div>
       <div className="flex w-full flex-col gap-1">
         <div className="flex items-center justify-between">
-          <span className="text-negative-400 text-1">
+          <span className=" text-left text-negative-400 text-1">
             {formatMessage(errorMessage)}
           </span>
           <button
@@ -42,8 +42,14 @@ const ErrorContent: FC<ErrorContentProps> = ({
             <Trash size={18} />
           </button>
         </div>
-        <span className="text-sm text-gray-600">{fileRejections}</span>
-        <TextButton onClick={open} mode="underlined" isErrorColor>
+        <span className="text-left text-sm text-gray-600">
+          {fileRejections}
+        </span>
+        <TextButton
+          onClick={open}
+          isErrorColor
+          className="text-sm font-bold underline"
+        >
           {formatMessage({ id: 'button.try.again' })}
           <input {...getInputProps()} />
         </TextButton>

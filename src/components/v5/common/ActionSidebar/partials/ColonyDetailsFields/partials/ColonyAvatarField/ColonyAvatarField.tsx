@@ -80,7 +80,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
         buttonMode="primarySolid"
         icon={Image}
         confirmMessage={formatText({
-          id: 'button.changeConfirm',
+          id: 'button.confirmChange',
         })}
         closeMessage={formatText({ id: 'button.cancel' })}
       >
