@@ -11110,6 +11110,7 @@ export const ColonyMultiSigFragmentDoc = gql`
   isExecuted
   isRejected
   isDecision
+  executedAt
   signatures {
     items {
       ...MultiSigUserSignature
