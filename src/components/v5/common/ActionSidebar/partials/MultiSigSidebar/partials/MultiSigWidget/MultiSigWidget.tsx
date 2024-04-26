@@ -106,6 +106,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
 
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigExecuted = multiSigData.isExecuted;
+  const isMultiSigRejected = multiSigData.isRejected;
 
   const combinedThreshold = thresholdPerRole
     ? Object.values(thresholdPerRole).reduce(
