@@ -36,6 +36,11 @@ function* lockExpenditureAction({
   try {
     yield fork(createTransaction, lockExpenditure.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'lockExpenditure',
       identifier: colonyAddress,
       params: [nativeExpenditureId],

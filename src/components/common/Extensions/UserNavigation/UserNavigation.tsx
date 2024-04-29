@@ -28,7 +28,7 @@ const MSG = defineMessages({
 const UserNavigation: FC<UserNavigationProps> = ({
   extra = null,
   userHub,
-  txButtons = null,
+  txButton = null,
 }) => {
   const { wallet, connectWallet } = useAppContext();
   const isMobile = useMobile();
@@ -65,7 +65,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   return (
     <div className="flex gap-1 md:relative">
-      {txButtons}
+      {txButton}
       {isWalletConnected ? (
         <div className="flex gap-1">
           {networkInfo && (

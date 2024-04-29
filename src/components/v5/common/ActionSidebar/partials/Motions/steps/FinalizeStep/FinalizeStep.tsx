@@ -12,7 +12,8 @@ import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
-import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
+import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
@@ -178,7 +179,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
               {canInteract && (
                 <>
                   {isPolling && (
-                    <TxButton
+                    <IconButton
                       className="w-full"
                       rounded="s"
                       text={{ id: 'button.pending' }}
@@ -187,6 +188,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                           <SpinnerGap size={14} className="animate-spin" />
                         </span>
                       }
+                      title={{ id: 'button.pending' }}
+                      ariaLabel={{ id: 'button.pending' }}
                     />
                   )}
                   {!isPolling &&

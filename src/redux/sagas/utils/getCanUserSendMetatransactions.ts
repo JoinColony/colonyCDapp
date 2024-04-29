@@ -31,8 +31,7 @@ export function* getCanUserSendMetatransactions() {
   });
 
   const userHasMetatransactionEnabled =
-    data.getUserByAddress?.items[0]?.profile?.meta?.metatransactionsEnabled ||
-    false;
+    !!data.getUserByAddress?.items[0]?.profile?.meta?.metatransactionsEnabled;
 
   return userHasMetatransactionEnabled;
 }

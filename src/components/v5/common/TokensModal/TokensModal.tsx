@@ -7,7 +7,8 @@ import Numeral from '~shared/Numeral/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput.tsx';
-import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
+import Button from '~v5/shared/Button/index.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import Modal from '../../shared/Modal/Modal.tsx';
@@ -112,7 +113,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                 isFullSize
               />
               {isSubmitting || isLoading ? (
-                <TxButton
+                <IconButton
                   className="w-full"
                   rounded="s"
                   text={{ id: 'button.pending' }}
@@ -121,6 +122,8 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                       <SpinnerGap className="animate-spin" size={14} />
                     </span>
                   }
+                  title={{ id: 'button.pending' }}
+                  ariaLabel={{ id: 'button.pending' }}
                 />
               ) : (
                 <Button

@@ -20,12 +20,12 @@ import { getChainIcon } from './utils.ts';
 const displayName = 'frame.Extensions.layouts.ColonyLayout.ColonySidebar';
 
 interface Props {
-  txButtons: ReactNode;
+  txButton: ReactNode;
   userHub: ReactNode;
   transactionId?: string;
 }
 
-const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
+const ColonySidebar = ({ txButton, userHub, transactionId }: Props) => {
   const { mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff: toggleOffMenu }] = mobileMenuToggle;
   const mainMenuItems = useMainMenuItems(!!transactionId);
@@ -43,7 +43,7 @@ const ColonySidebar = ({ txButtons, userHub, transactionId }: Props) => {
   return (
     <NavigationSidebar
       additionalMobileContent={
-        <UserNavigationWrapper txButtons={txButtons} userHub={userHub} />
+        <UserNavigationWrapper txButton={txButton} userHub={userHub} />
       }
       mobileBottomContent={
         <div className="flex w-full flex-col gap-6">

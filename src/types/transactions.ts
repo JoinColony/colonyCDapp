@@ -13,15 +13,16 @@ export type MethodParams = (MethodParam | MethodParam[] | MethodParam[][])[];
 
 export interface TxConfig {
   context: string;
-  group?: {
+  group: {
     key: string;
-    id: string | string[];
+    id: string;
     index: number;
     title?: MessageDescriptor;
     titleValues?: SimpleMessageValues;
     description?: MessageDescriptor;
     descriptionValues?: SimpleMessageValues;
   };
+  hash?: string;
   identifier?: string;
   methodContext?: string;
   methodName: string;
@@ -68,6 +69,7 @@ export enum TRANSACTION_METHODS {
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
+  CancelLockedExpenditure = 'cancelLockedExpenditure',
   CancelStakedExpenditure = 'cancelStakedExpenditure',
   ClaimColonyFunds = 'claimColonyFunds',
   ClaimExpenditure = 'claimExpenditure',

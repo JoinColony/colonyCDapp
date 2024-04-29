@@ -111,7 +111,7 @@ const UserHub: FC<UserHubProps> = ({
           </>
         )}
       </div>
-      <div className={clsx('relative h-full w-full')}>
+      <div className="relative h-full w-full">
         {selectedTab === UserHubTabs.Balance && (
           <ReputationTab onTabChange={handleTabChange} />
         )}

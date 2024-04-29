@@ -4,6 +4,7 @@ fragment Transaction on Transaction {
   createdAt
   from
   colonyAddress
+  identifier
   params
   groupId
   group {

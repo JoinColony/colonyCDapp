@@ -51,7 +51,6 @@ export interface TransactionDetailsProps {
 export interface GroupedTransactionProps {
   appearance?: Appearance;
   transactionGroup: TransactionType[];
-  groupId?: string;
   isContentOpened: boolean;
   onToggleExpand?: (id?: string) => void;
   hideSummary?: boolean;

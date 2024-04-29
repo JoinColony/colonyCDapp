@@ -4,10 +4,8 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import {
-  transactionAddParams,
-  transactionPending,
-} from '../../actionCreators/index.ts';
+import { transactionSetParams } from '../../../state/transactionState.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
@@ -119,17 +117,15 @@ function* createMoveFundsAction({
     const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
       yield getMoveFundsPermissionProofs(colonyAddress, fromPot, toPot);
 
-    yield put(
-      transactionAddParams(moveFunds.id, [
-        permissionDomainId,
-        fromChildSkillIndex,
-        toChildSkillIndex,
-        fromPot,
-        toPot,
-        amount,
-        tokenAddress,
-      ]),
-    );
+    yield transactionSetParams(moveFunds.id, [
+      permissionDomainId,
+      fromChildSkillIndex,
+      toChildSkillIndex,
+      fromPot,
+      toPot,
+      amount,
+      tokenAddress,
+    ]);
 
     yield initiateTransaction({ id: moveFunds.id });
 

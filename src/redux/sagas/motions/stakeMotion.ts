@@ -10,10 +10,8 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import {
-  transactionAddParams,
-  transactionPending,
-} from '../../actionCreators/index.ts';
+import { transactionSetParams } from '../../../state/transactionState.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
@@ -177,13 +175,11 @@ function* stakeMotion({
       motionId,
     );
 
-    yield put(
-      transactionAddParams(approveStake.id, [
-        votingReputationClient.address,
-        domainId,
-        amount,
-      ]),
-    );
+    yield transactionSetParams(approveStake.id, [
+      votingReputationClient.address,
+      domainId,
+      amount,
+    ]);
 
     if (activateTokens) {
       yield initiateTransaction({ id: approve.id });
@@ -223,19 +219,17 @@ function* stakeMotion({
         rootHash,
       );
 
-    yield put(
-      transactionAddParams(stakeMotionTransaction.id, [
-        motionId,
-        permissionDomainId,
-        childSkillIndex,
-        vote,
-        amount,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ]),
-    );
+    yield transactionSetParams(stakeMotionTransaction.id, [
+      motionId,
+      permissionDomainId,
+      childSkillIndex,
+      vote,
+      amount,
+      key,
+      value,
+      branchMask,
+      siblings,
+    ]);
 
     yield initiateTransaction({ id: stakeMotionTransaction.id });
 

@@ -1,10 +1,8 @@
 import { ClientType } from '@colony/colony-js';
-import { BigNumber, Contract, type ContractInterface } from 'ethers';
+import { BigNumber, type Contract } from 'ethers';
 import { call, put } from 'redux-saga/effects';
-// import abis from '@colony/colony-js/lib-esm/abis';
 
-import { ExtendedClientType } from '~types/transactions.ts';
-
+import { getTransaction } from '../../../state/transactionState.ts';
 import {
   transactionUpdateGas,
   transactionEstimateError,
@@ -12,18 +10,8 @@ import {
   transactionUpdateOptions,
 } from '../../actionCreators/index.ts';
 import { type ActionTypes } from '../../actionTypes.ts';
-import { type TransactionRecordProps } from '../../immutable/index.ts';
-import { oneTransaction } from '../../selectors/index.ts';
 import { type Action } from '../../types/actions/index.ts';
-import { selectAsJS, getGasPrices, getColonyManager } from '../utils/index.ts';
-
-/*
- * @TODO Refactor to support abis (either added to the app or from colonyJS)
- */
-const abis = {
-  WrappedToken: { default: { abi: {} } },
-  vestingSimple: { default: { abi: {} } },
-};
+import { getGasPrices, getColonyManager } from '../utils/index.ts';
 
 /*
  * @area: including a bit of buffer on the gas sent can be a good thing.
@@ -38,41 +26,13 @@ export default function* estimateGasCost({
 }: Action<ActionTypes.TRANSACTION_ESTIMATE_GAS>) {
   try {
     // Get the given transaction
-    const {
-      context,
-      methodName,
-      identifier,
-      params,
-      gasLimit,
-      options,
-    }: TransactionRecordProps = yield selectAsJS(oneTransaction, id);
+    const { context, methodName, identifier, params, gasLimit, options } =
+      yield getTransaction(id, 'cache-first');
     const colonyManager = yield getColonyManager();
 
     let contextClient: Contract;
     if (context === ClientType.TokenClient) {
       contextClient = yield colonyManager.getTokenClient(identifier as string);
-    } else if (
-      context ===
-      (ExtendedClientType.WrappedTokenClient as unknown as ClientType)
-    ) {
-      // @ts-ignore
-      const wrappedTokenAbi = abis.WrappedToken.default.abi;
-      contextClient = new Contract(
-        identifier || '',
-        wrappedTokenAbi as ContractInterface, // @TODO Refactor when refactoring abis
-        colonyManager.signer,
-      );
-    } else if (
-      context ===
-      (ExtendedClientType.VestingSimpleClient as unknown as ClientType)
-    ) {
-      // @ts-ignore
-      const vestingSimpleAbi = abis.vestingSimple.default.abi;
-      contextClient = new Contract(
-        identifier || '',
-        vestingSimpleAbi as ContractInterface, // @TODO Refactor when refactoring abis
-        colonyManager.signer,
-      );
     } else {
       contextClient = yield colonyManager.getClient(context, identifier);
     }
