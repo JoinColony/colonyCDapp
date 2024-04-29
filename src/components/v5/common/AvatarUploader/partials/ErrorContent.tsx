@@ -30,13 +30,13 @@ const ErrorContent: FC<ErrorContentProps> = ({
         </div>
       </div>
       <div className="flex w-full flex-col gap-1">
-        <div className="flex items-center justify-between">
+        <div className="items-top flex justify-between">
           <span className=" text-left text-negative-400 text-1">
             {formatMessage(errorMessage)}
           </span>
           <button
             type="button"
-            className="flex text-negative-400"
+            className="flex pt-[1px] text-negative-400 hover:text-blue-400"
             onClick={handleFileRemove}
           >
             <Trash size={18} />
