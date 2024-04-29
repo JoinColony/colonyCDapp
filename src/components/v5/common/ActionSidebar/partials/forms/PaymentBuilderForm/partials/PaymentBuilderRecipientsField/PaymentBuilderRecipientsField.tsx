@@ -123,15 +123,6 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
     fieldArrayMethods.remove();
   };
 
-  const [isItemAdded, setIsItemAdded] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsItemAdded(false);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [isItemAdded]);
-
   return (
     <div>
       <h5 className="mb-3 mt-6 text-2">
@@ -154,15 +145,14 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
                 !isTablet,
               '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
                 !!fieldState.error,
-              'max-h-[50vh] overflow-y-scroll md:max-h-[29rem] md:[&_tfoot]:sticky md:[&_tfoot]:bottom-0 md:[&_tfoot]:z-base md:[&_tfoot]:bg-base-white [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-base':
-                data.length > 7,
+              // 'max-h-[50vh] overflow-y-scroll md:max-h-[29rem] md:[&_tfoot]:sticky md:[&_tfoot]:bottom-0 md:[&_tfoot]:z-base md:[&_tfoot]:bg-base-white [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-base':
+              //   data.length > 7,
             },
           )}
           verticalLayout={isTablet}
           getRowId={({ key }) => key}
           columns={columns}
           data={data}
-          isItemAdded={isItemAdded}
           getMenuProps={getMenuProps}
           withBorder={false}
           renderCellWrapper={(_, content) => content}
@@ -180,7 +170,6 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           size="small"
           isFullSize={isMobile}
           onClick={() => {
-            setIsItemAdded(true);
             fieldArrayMethods.append({
               recipient: undefined,
               amount: '',

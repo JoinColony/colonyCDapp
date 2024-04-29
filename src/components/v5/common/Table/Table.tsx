@@ -7,7 +7,7 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
@@ -27,7 +27,6 @@ const Table = <T,>({
   canNextPage,
   canPreviousPage,
   previousPage,
-  isItemAdded,
   nextPage,
   showPageNumber = true,
   showTotalPagesNumber = true,
@@ -102,14 +101,6 @@ const Table = <T,>({
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
 
-  const tableRef = useRef<HTMLTableElement | null>(null);
-
-  useEffect(() => {
-    if (tableRef.current && !!virtualizedProps && isItemAdded) {
-      tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
-  }, [data.length, virtualizedProps, isItemAdded]);
-
   return (
     <div
       className={clsx(
@@ -118,7 +109,6 @@ const Table = <T,>({
       )}
     >
       <table
-        ref={tableRef}
         className={`
           h-px
           w-full
