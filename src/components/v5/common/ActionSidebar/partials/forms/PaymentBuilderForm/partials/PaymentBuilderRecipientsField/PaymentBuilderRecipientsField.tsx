@@ -145,8 +145,6 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
                 !isTablet,
               '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
                 !!fieldState.error,
-              // 'max-h-[50vh] overflow-y-scroll md:max-h-[29rem] md:[&_tfoot]:sticky md:[&_tfoot]:bottom-0 md:[&_tfoot]:z-base md:[&_tfoot]:bg-base-white [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-base':
-              //   data.length > 7,
             },
           )}
           verticalLayout={isTablet}

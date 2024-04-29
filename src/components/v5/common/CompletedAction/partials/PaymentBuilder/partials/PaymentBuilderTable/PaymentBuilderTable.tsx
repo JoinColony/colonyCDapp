@@ -132,6 +132,7 @@ const useGetPaymentBuilderColumns = (
     ],
     [
       claimablePayouts,
+      data.length,
       dataRef,
       fetchCurrentBlockTime,
       finalizedTimestamp,
@@ -183,6 +184,13 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
       <Table<PaymentBuilderTableModel>
+        virtualizedProps={
+          data.length > 10
+            ? {
+                virtualizedRowHeight: isTablet ? 46 : 54,
+              }
+            : undefined
+        }
         className={clsx(
           '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
@@ -196,6 +204,11 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         renderCellWrapper={(_, content) => content}
         verticalLayout={isTablet}
         withBorder={false}
+        initialState={{
+          pagination: {
+            pageSize: 400,
+          },
+        }}
       />
     </div>
   );
