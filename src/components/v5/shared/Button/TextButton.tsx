@@ -52,7 +52,8 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
               'text-md': mode === 'medium',
             },
             {
-              'text-xs underline hover:text-blue-400': mode === 'underlined',
+              'bold text-xs underline hover:text-blue-400':
+                mode === 'underlined',
               'pointer-events-none': disabled,
               'disabled:text-gray-400': !isErrorColor,
               'text-negative-400': isErrorColor,
