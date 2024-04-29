@@ -19,6 +19,11 @@ function* extensionUpgrade({
   try {
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: 'upgradeExtension',
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'upgradeExtension',
       identifier: colonyAddress,
       params: [getExtensionHash(extensionId), version],

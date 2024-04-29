@@ -3,10 +3,10 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
-import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { updateContributorVerifiedStatus } from '~utils/members.ts';
 
+import { transactionSetParams } from '../../../state/transactionState.ts';
 import {
   createTransaction,
   createTransactionChannels,
@@ -86,11 +86,9 @@ function* addVerifiedMembersAction({
       );
     }
 
-    yield put(
-      transactionAddParams(addVerifiedMembers.id, [
-        JSON.stringify(getAddVerifiedMembersOperation(members)),
-      ]),
-    );
+    yield transactionSetParams(addVerifiedMembers.id, [
+      JSON.stringify(getAddVerifiedMembersOperation(members)),
+    ]);
 
     yield initiateTransaction({ id: addVerifiedMembers.id });
 

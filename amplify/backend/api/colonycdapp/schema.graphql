@@ -1763,7 +1763,7 @@ type Transaction @model {
   """
   The id of the group to which the transaction belongs, if any
   """
-  groupId: ID
+  groupId: ID!
     @index(
       name: "byGroup"
       queryField: "getTransactionsByUserAndGroup"
@@ -1772,7 +1772,7 @@ type Transaction @model {
   """
   The group to which the transaction belongs, if any
   """
-  group: TransactionGroup
+  group: TransactionGroup!
   """
   The transaction hash
   """

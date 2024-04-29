@@ -3,10 +3,10 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
-import { transactionAddParams } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
+import { transactionSetParams } from '../../../state/transactionState.ts';
 import {
   type ChannelDefinition,
   createTransaction,
@@ -163,17 +163,16 @@ function* createStakedExpenditure({
     );
 
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-    yield put(
-      transactionAddParams(makeExpenditure.id, [
-        Id.RootDomain,
-        childSkillIndex,
-        createdInDomain.nativeId,
-        reputationKey,
-        reputationValue,
-        branchMask,
-        siblings,
-      ]),
-    );
+
+    yield transactionSetParams(makeExpenditure.id, [
+      Id.RootDomain,
+      childSkillIndex,
+      createdInDomain.nativeId,
+      reputationKey,
+      reputationValue,
+      branchMask,
+      siblings,
+    ]);
 
     if (annotationMessage) {
       yield takeFrom(
@@ -195,16 +194,14 @@ function* createStakedExpenditure({
       setExpenditureValues.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    yield put(
-      transactionAddParams(
-        setExpenditureValues.id,
-        getSetExpenditureValuesFunctionParams({
-          nativeExpenditureId: expenditureId,
-          payouts: payoutsWithSlotIds,
-          networkInverseFee,
-          isStaged,
-        }),
-      ),
+    yield transactionSetParams(
+      setExpenditureValues.id,
+      getSetExpenditureValuesFunctionParams({
+        nativeExpenditureId: expenditureId,
+        payouts: payoutsWithSlotIds,
+        networkInverseFee,
+        isStaged,
+      }),
     );
     yield initiateTransaction({ id: setExpenditureValues.id });
     yield waitForTxResult(setExpenditureValues.channel);
@@ -214,9 +211,10 @@ function* createStakedExpenditure({
         setExpenditureStaged.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
-      yield put(
-        transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
-      );
+      yield transactionSetParams(setExpenditureStaged.id, [
+        expenditureId,
+        true,
+      ]);
       yield initiateTransaction({ id: setExpenditureStaged.id });
       yield waitForTxResult(setExpenditureStaged.channel);
     }

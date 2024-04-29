@@ -16,10 +16,8 @@ import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 
-import {
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators/index.ts';
+import { transactionSetParams } from '../../../state/transactionState.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
@@ -121,19 +119,17 @@ function* editDomainAction({
       ColonyRole.Architecture,
     );
 
-    yield put(
-      transactionAddParams(editDomain.id, [
-        permissionDomainId,
-        childSkillIndex,
-        domain.nativeId,
-        /**
-         * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
-         * the second parameter must be non-empty.
-         * It will be replaced with the IPFS hash in due course.
-         */
-        '.',
-      ]),
-    );
+    transactionSetParams(editDomain.id, [
+      permissionDomainId,
+      childSkillIndex,
+      domain.nativeId,
+      /**
+       * @NOTE: In order for the DomainMetadata event (which is the only event associated with Edit Domain action) to be emitted,
+       * the second parameter must be non-empty.
+       * It will be replaced with the IPFS hash in due course.
+       */
+      '.',
+    ]);
 
     yield initiateTransaction({ id: editDomain.id });
 

@@ -16,7 +16,7 @@ import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { fill, omit } from '~utils/lodash.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
-import { transactionReady } from '../../actionCreators/index.ts';
+import { transactionSetReady } from '../../../state/transactionState.ts';
 import {
   createTransaction,
   createTransactionChannels,
@@ -111,7 +111,7 @@ function* initiateSafeTransactionAction({
       );
     }
 
-    yield put(transactionReady(initiateSafeTransaction.id));
+    yield transactionSetReady(initiateSafeTransaction.id);
 
     const {
       payload: {

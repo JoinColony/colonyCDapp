@@ -1,31 +1,20 @@
 import {
   Bank,
-  Check,
   FilePlus,
   GearSix,
   Layout,
   Plus,
-  SpinnerGap,
   User,
   Buildings,
   Handshake,
 } from '@phosphor-icons/react';
-import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { type TransactionOrMessageGroup } from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
-import { findNewestGroup } from '~common/Extensions/UserHubButton/utils.ts';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import {
-  TransactionGroupStates,
-  useUserTransactionContext,
-} from '~context/UserTransactionContext/UserTransactionContext.ts';
-import { TransactionStatus } from '~gql';
-import { useMobile } from '~hooks/index.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useTransformer from '~hooks/useTransformer.ts';
 import {
@@ -37,7 +26,6 @@ import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { type NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types.ts';
-import { TxButton } from '~v5/shared/Button/index.ts';
 import { type CalamityBannerItemProps } from '~v5/shared/CalamityBanner/types.ts';
 
 import {
@@ -391,72 +379,4 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
   }
 
   return mainMenuItems;
-};
-
-export const useGetTxButtons = () => {
-  const { groupState, transactionAndMessageGroups } =
-    useUserTransactionContext();
-  const firstGroup: TransactionOrMessageGroup | undefined = findNewestGroup(
-    transactionAndMessageGroups,
-  );
-
-  const signedTransactionsCount = firstGroup?.reduce((acc, tx) => {
-    if (tx.status === TransactionStatus.Succeeded) {
-      return acc + 1;
-    }
-    return acc;
-  }, 0);
-
-  const isMobile = useMobile();
-
-  const txButtons = (
-    <>
-      {groupState === TransactionGroupStates.SomePending && (
-        <TxButton
-          className={clsx({
-            '!min-w-0': isMobile,
-          })}
-          icon={
-            <span
-              className={clsx('flex shrink-0', {
-                'ml-1.5': !isMobile,
-              })}
-            >
-              <SpinnerGap className="animate-spin" size={14} />
-            </span>
-          }
-          data-openhubifclicked // see UserReputation for usage
-        >
-          {isMobile ? undefined : (
-            <span>
-              {formatText({ id: 'button.pending' })}{' '}
-              {firstGroup &&
-                firstGroup.length > 1 &&
-                `${signedTransactionsCount}/${firstGroup.length}`}
-            </span>
-          )}
-        </TxButton>
-      )}
-      {groupState === TransactionGroupStates.AllCompleted && (
-        <TxButton
-          text={isMobile ? undefined : { id: 'button.completed' }}
-          className={clsx({
-            '!min-w-0': isMobile,
-          })}
-          icon={
-            <span
-              className={clsx('flex shrink-0', {
-                'ml-1.5': !isMobile,
-              })}
-            >
-              <Check className="text-base-white" size={14} />
-            </span>
-          }
-          data-openhubifclicked // see UserReputation for usage
-        />
-      )}
-    </>
-  );
-
-  return txButtons;
 };

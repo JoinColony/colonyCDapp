@@ -2,12 +2,10 @@ import { ClientType, getPermissionProofs, ColonyRole } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
-import {
-  transactionAddParams,
-  transactionPending,
-} from '~redux/actionCreators/index.ts';
+import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
+import { transactionSetParams } from '../../../state/transactionState.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
@@ -119,23 +117,19 @@ function* manageReputationAction({
         ColonyRole.Arbitration,
       );
 
-      yield put(
-        transactionAddParams(manageReputation.id, [
-          permissionDomainId,
-          childSkillIndex,
-          domainId,
-          userAddress,
-          amount,
-        ]),
-      );
+      yield transactionSetParams(manageReputation.id, [
+        permissionDomainId,
+        childSkillIndex,
+        domainId,
+        userAddress,
+        amount,
+      ]);
     } else {
-      yield put(
-        transactionAddParams(manageReputation.id, [
-          domainId,
-          userAddress,
-          amount,
-        ]),
-      );
+      yield transactionSetParams(manageReputation.id, [
+        domainId,
+        userAddress,
+        amount,
+      ]);
     }
 
     yield initiateTransaction({ id: manageReputation.id });

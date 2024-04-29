@@ -19,6 +19,11 @@ export function* extensionUninstall({
   try {
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: 'uninstallExtension',
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'uninstallExtension',
       identifier: colonyAddress,
       params: [getExtensionHash(extensionId)],

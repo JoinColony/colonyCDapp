@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages } from 'react-intl';
-import { useSelector } from 'react-redux';
 
-import {
-  getGroupStatus,
-  findTransactionGroupByKey,
-  getGroupKey,
-  findNewestGroup,
-  type TransactionOrMessageGroups,
-} from '~common/Extensions/UserHub/partials/TransactionsTab/transactionGroup.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { TransactionStatus } from '~gql';
-import { groupedTransactionsAndMessages } from '~redux/selectors/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/types.ts';
 
+import {
+  findTransactionGroupByKey,
+  getGroupStatus,
+  useGroupedTransactions,
+} from '../../../../../state/transactionState.ts';
 import HeaderRow from '../HeaderRow.tsx';
 
 import ConfirmTransactions from './ConfirmTransactions.tsx';
@@ -54,11 +50,9 @@ const StepConfirmTransactions = ({ previousStep }: Props) => {
   ] = useState<boolean>(false);
   const { user, updateUser } = useAppContext();
 
-  const txGroups = useSelector(
-    groupedTransactionsAndMessages,
-  ).toJS() as TransactionOrMessageGroups;
+  const { transactions } = useGroupedTransactions();
 
-  const newestGroup = findNewestGroup(txGroups);
+  const newestGroup = transactions[0];
 
   useEffect(() => {
     /*
@@ -88,7 +82,7 @@ const StepConfirmTransactions = ({ previousStep }: Props) => {
   if (
     newestGroup &&
     getGroupStatus(newestGroup) === TransactionStatus.Succeeded &&
-    getGroupKey(newestGroup) === 'group.createColony'
+    newestGroup[0].group.key === 'group.createColony'
   ) {
     updateUser(user?.walletAddress, true);
   }
@@ -99,15 +93,17 @@ const StepConfirmTransactions = ({ previousStep }: Props) => {
     previousStep();
   }
 
-  const createColonyTxGroup = findTransactionGroupByKey(
-    txGroups,
-    'group.createColony',
+  const createColonyTxGroup = useMemo(
+    () => findTransactionGroupByKey(transactions, 'group.createColony'),
+    [transactions],
   );
 
   return (
     <>
       <HeaderRow heading={MSG.heading} description={MSG.description} />
-      <ConfirmTransactions transactionGroup={createColonyTxGroup} />
+      {createColonyTxGroup && (
+        <ConfirmTransactions transactions={createColonyTxGroup} />
+      )}
     </>
   );
 };

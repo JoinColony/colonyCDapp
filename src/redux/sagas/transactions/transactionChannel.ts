@@ -20,7 +20,7 @@ import {
   transactionHashReceived,
   transactionSucceeded,
 } from '../../actionCreators/index.ts';
-import { type TransactionRecord } from '../../immutable/index.ts';
+import { type TransactionType } from '../../immutable/index.ts';
 
 type TransactionResponseWithHash = RequireProps<TransactionResponse, 'hash'>;
 // @TODO typing here is not great but I have no idea how to improve it atm
@@ -61,7 +61,7 @@ const parseEventData = (
 };
 
 const channelSendTransaction = async (
-  { id, params }: TransactionRecord,
+  { id, params = [] }: TransactionType,
   txPromise: Promise<TransactionResponse>,
   emit,
 ) => {
@@ -92,12 +92,12 @@ const channelSendTransaction = async (
 };
 
 const channelGetTransactionReceipt = async ({
-  tx: { id, params },
+  tx: { id, params = [] },
   transactionResponseWithHash: { hash },
   provider,
   emit,
 }: {
-  tx: TransactionRecord;
+  tx: TransactionType;
   transactionResponseWithHash: TransactionResponseWithHash;
   provider: Provider;
   emit: any;
@@ -124,12 +124,12 @@ const channelGetTransactionReceipt = async ({
 };
 
 const channelGetEventData = async ({
-  tx: { id, params, metatransaction },
+  tx: { id, params = [], metatransaction },
   receipt,
   client,
   emit,
 }: {
-  tx: TransactionRecord;
+  tx: TransactionType;
   receipt: TransactionReceipt;
   client: ContractClient;
   emit: any;
@@ -160,7 +160,7 @@ const channelStart = async ({
   client,
   emit,
 }: {
-  tx: TransactionRecord;
+  tx: TransactionType;
   txPromise: Promise<TransactionResponse>;
   client: ContractClient;
   emit: any;
@@ -221,7 +221,7 @@ const channelStart = async ({
  */
 const transactionChannel = (
   txPromise: Promise<TransactionResponse>,
-  tx: TransactionRecord,
+  tx: TransactionType,
   client: ContractClient,
 ) =>
   eventChannel(

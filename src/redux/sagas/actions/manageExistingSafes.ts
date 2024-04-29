@@ -8,16 +8,14 @@ import {
   type UpdateColonyMetadataMutation,
   type UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import {
-  transactionReady,
-  transactionPending,
-} from '~redux/actionCreators/index.ts';
+import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type Safe } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { excludeTypenameKey } from '~utils/objects/index.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
+import { transactionSetReady } from '../../../state/transactionState.ts';
 import {
   createTransaction,
   createTransactionChannels,
@@ -118,7 +116,7 @@ function* manageExistingSafesAction({
       );
     }
 
-    yield put(transactionReady(manageExistingSafes.id));
+    yield transactionSetReady(manageExistingSafes.id);
 
     const {
       payload: {

@@ -12,10 +12,8 @@ import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { isEqual } from '~utils/lodash.ts';
 
-import {
-  transactionAddParams,
-  transactionPending,
-} from '../../actionCreators/index.ts';
+import { transactionSetParams } from '../../../state/transactionState.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,
@@ -143,10 +141,11 @@ function* editColonyAction({
 
     /**
      * @NOTE: In order for the ColonyMetadata event (which is the only event associated with Colony Edit action) to be emitted,
-     * the second parameter must be non-empty.
+     * the first parameter must be non-empty.
      * It will be replaced with the IPFS hash in due course.
      */
-    yield put(transactionAddParams(editColony.id, ['.']));
+    yield transactionSetParams(editColony.id, ['.']);
+
     yield initiateTransaction({ id: editColony.id });
 
     const {

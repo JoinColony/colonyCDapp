@@ -19,6 +19,11 @@ function* extensionDeprecate({
   try {
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: 'deprecatedExtension',
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'deprecateExtension',
       identifier: colonyAddress,
       params: [getExtensionHash(extensionId), isToDeprecate],

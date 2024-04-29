@@ -19,3 +19,6 @@ export { default as range } from 'lodash/range';
 export { default as merge } from 'lodash/merge';
 export { default as isPlainObject } from 'lodash/isPlainObject';
 export { default as pick } from 'lodash/pick';
+export { default as mapValues } from 'lodash/mapValues';
+export { default as orderBy } from 'lodash/orderBy';
+export { default as filter } from 'lodash/filter';

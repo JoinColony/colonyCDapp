@@ -1,23 +1,14 @@
 import { type ActionPattern } from '@redux-saga/types';
 import { type Channel } from 'redux-saga';
-import {
-  all,
-  call,
-  cancel,
-  fork,
-  put,
-  race,
-  take,
-  select,
-} from 'redux-saga/effects';
+import { all, call, cancel, fork, put, race, take } from 'redux-saga/effects';
 
 import {
   transactionEstimateGas,
-  transactionReady,
   transactionSend,
   messageSign,
 } from '~redux/actionCreators/index.ts';
 
+import { transactionSetReady } from '../../../state/transactionState.ts';
 import {
   type ErrorActionType,
   type TakeFilter,
@@ -80,16 +71,6 @@ export const raceError = (
   return call(raceErrorGenerator);
 };
 
-export function* selectAsJS(
-  selector: (...selectorArgs: any[]) => any,
-  ...args: any[]
-) {
-  const selected = yield select(selector, ...args);
-  return selected && typeof selected.toJS === 'function'
-    ? selected.toJS()
-    : selected;
-}
-
 export const takeLatestCancellable = (
   actionOrPattern: ActionPattern,
   cancelActionOrPattern: ActionPattern,
@@ -127,7 +108,7 @@ export function* initiateTransaction({
 }) {
   const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
 
-  yield put(transactionReady(id));
+  yield transactionSetReady(id);
 
   if (metatransaction ?? shouldSendMetatransaction) {
     yield put(transactionSend(id));

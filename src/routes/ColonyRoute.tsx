@@ -11,7 +11,6 @@ import MemberContextProvider from '~context/MemberContext/MemberContextProviderW
 import MemberModalProvider from '~context/MemberModalContext/MemberModalContextProvider.tsx';
 import TokensModalContextProvider from '~context/TokensModalContext/TokensModalContextProvider.tsx';
 import UserTokenBalanceProvider from '~context/UserTokenBalanceContext/UserTokenBalanceContextProvider.tsx';
-import UserTransactionContextProvider from '~context/UserTransactionContext/UserTransactionContextProvider.tsx';
 import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import { useGetFullColonyByNameQuery } from '~gql';
@@ -87,13 +86,11 @@ const ColonyRoute = () => {
             <UserTokenBalanceProvider>
               <MemberModalProvider>
                 <ColonyCreateModalProvider>
-                  <UserTransactionContextProvider>
-                    <TokensModalContextProvider>
-                      <ColonyLayout>
-                        <Outlet />
-                      </ColonyLayout>
-                    </TokensModalContextProvider>
-                  </UserTransactionContextProvider>
+                  <TokensModalContextProvider>
+                    <ColonyLayout>
+                      <Outlet />
+                    </ColonyLayout>
+                  </TokensModalContextProvider>
                 </ColonyCreateModalProvider>
               </MemberModalProvider>
             </UserTokenBalanceProvider>

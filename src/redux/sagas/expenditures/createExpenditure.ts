@@ -2,10 +2,10 @@ import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
-import { transactionAddParams } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
+import { transactionSetParams } from '../../../state/transactionState.ts';
 import {
   type ChannelDefinition,
   createTransaction,
@@ -193,7 +193,7 @@ function* createExpenditure({
       );
     });
 
-    yield put(transactionAddParams(setExpenditureValues.id, [multicallData]));
+    yield transactionSetParams(setExpenditureValues.id, [multicallData]);
     yield initiateTransaction({ id: setExpenditureValues.id });
     yield waitForTxResult(setExpenditureValues.channel);
 
@@ -206,9 +206,10 @@ function* createExpenditure({
         setExpenditureStaged.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
-      yield put(
-        transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
-      );
+      yield transactionSetParams(setExpenditureStaged.id, [
+        expenditureId,
+        true,
+      ]);
       yield initiateTransaction({ id: setExpenditureStaged.id });
       yield waitForTxResult(setExpenditureStaged.channel);
     }

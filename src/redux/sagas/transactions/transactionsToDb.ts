@@ -1,33 +1,21 @@
 import { type ApolloQueryResult } from '@apollo/client';
+import { type TxOverrides } from '@colony/colony-js';
 import { utils } from 'ethers';
 import { type Channel, buffers, channel } from 'redux-saga';
 import { call, cancel, fork, put, take } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
-  type ClientType,
-  CreateTransactionDocument,
-  type CreateTransactionMutation,
-  type CreateTransactionMutationVariables,
-  GetTransactionDocument,
   type GetTransactionQuery,
-  type GetTransactionQueryVariables,
   GetTransactionsByGroupDocument,
   type GetTransactionsByGroupQuery,
   type GetTransactionsByGroupQueryVariables,
   TransactionStatus,
-  UpdateTransactionDocument,
-  type UpdateTransactionMutation,
-  type UpdateTransactionMutationVariables,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
-  type CreateTransactionActionType,
-  type Meta,
+  type TransactionOptionsUpdatePayload,
   type TransactionActionTypes,
-  type TransactionAddIdentifierPayload,
-  type TransactionAddParamsPayload,
-  type TransactionCreatedPayload,
   type TransactionErrorPayload,
   type TransactionGasUpdatePayload,
   type TransactionHashReceivedPayload,
@@ -35,8 +23,12 @@ import {
   type TransactionReceiptReceivedPayload,
   type TransactionSucceededPayload,
 } from '~redux/types/actions/transaction.ts';
-import { type ActionTypeWithPayloadAndMeta } from '~redux/types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
+
+import {
+  fetchTransaction,
+  updateTransaction,
+} from '../../../state/transactionState.ts';
 
 const pendingTransactions = new Set();
 
@@ -63,112 +55,6 @@ const onTransactionResolved = (id: string) => {
   }
 };
 
-export function* addTransactionToDb({
-  meta: { id },
-  payload: {
-    context,
-    createdAt,
-    from,
-    group,
-    identifier,
-    methodContext,
-    methodName,
-    options,
-    params,
-    status,
-    gasPrice,
-    gasLimit,
-    title,
-    titleValues,
-    metatransaction,
-  },
-}: ActionTypeWithPayloadAndMeta<
-  ActionTypes.TRANSACTION_CREATED,
-  TransactionCreatedPayload,
-  Meta
->) {
-  let colonyAddress = '0x';
-  try {
-    colonyAddress = getContext(ContextModule.CurrentColonyAddress);
-  } catch {
-    // If we don't have a colony address, we're creating a colony.
-    // The correct address will be added to the transactions in the colony create saga
-  }
-
-  const txGroup = group
-    ? {
-        id: `${group.id}-${group.index}`,
-        groupId: group.id.toString(),
-        index: group.index,
-        key: group.key,
-        description: JSON.stringify(group.description),
-        descriptionValues: JSON.stringify(group.descriptionValues),
-        title: JSON.stringify(group.title),
-        titleValues: JSON.stringify(group.titleValues),
-      }
-    : undefined;
-
-  const txCreatedAt = createdAt.toISOString();
-  const txParams = JSON.stringify(params);
-
-  const apollo = getContext(ContextModule.ApolloClient);
-
-  yield apollo.mutate<
-    CreateTransactionMutation,
-    CreateTransactionMutationVariables
-  >({
-    mutation: CreateTransactionDocument,
-    variables: {
-      input: {
-        id,
-        context: context as string as ClientType,
-        createdAt: txCreatedAt,
-        from,
-        colonyAddress,
-        groupId: group?.id?.toString(),
-        group: txGroup,
-        methodContext,
-        methodName,
-        status,
-        metatransaction,
-        title: JSON.stringify(title),
-        titleValues: JSON.stringify(titleValues),
-        gasPrice: gasPrice?.toString(),
-        params: txParams,
-        identifier,
-        gasLimit: gasLimit?.toString(),
-        options: JSON.stringify(options ?? '{}'),
-      },
-    },
-  });
-
-  yield put({ type: ActionTypes.TRANSACTION_SAVED_TO_DB, meta: { id } });
-}
-
-export const updateTransaction = async (
-  input: UpdateTransactionMutationVariables['input'],
-) => {
-  const apollo = getContext(ContextModule.ApolloClient);
-
-  await apollo.mutate<
-    UpdateTransactionMutation,
-    UpdateTransactionMutationVariables
-  >({
-    mutation: UpdateTransactionDocument,
-    variables: {
-      input,
-    },
-  });
-};
-
-const fetchTransaction = async ({ id }) => {
-  const apollo = getContext(ContextModule.ApolloClient);
-  return apollo.query<GetTransactionQuery, GetTransactionQueryVariables>({
-    query: GetTransactionDocument,
-    variables: { id },
-  });
-};
-
 function* updateTransactionInDb({
   type,
   meta: { id },
@@ -180,37 +66,18 @@ function* updateTransactionInDb({
 
   try {
     switch (type) {
+      case ActionTypes.TRANSACTION_READY: {
+        // This is handled in transactionSetReady
+        break;
+      }
+
       case ActionTypes.TRANSACTION_ADD_IDENTIFIER: {
-        const { identifier } = payload as TransactionAddIdentifierPayload;
-        yield updateTransaction({ id, identifier, from: walletAddress });
+        // This is handled in transactionAddIdentifier
         break;
       }
 
       case ActionTypes.TRANSACTION_ADD_PARAMS: {
-        const { params } = payload as TransactionAddParamsPayload;
-        const { data }: ApolloQueryResult<GetTransactionQuery> =
-          yield fetchTransaction({ id });
-
-        if (!data.getTransaction) {
-          throw new Error(`Transaction with id ${id} not found in db`);
-        }
-
-        const oldParams = JSON.parse(data.getTransaction?.params ?? '[]');
-        yield updateTransaction({
-          id,
-          params: JSON.stringify([...oldParams, ...params]),
-          from: walletAddress,
-        });
-
-        break;
-      }
-
-      case ActionTypes.TRANSACTION_READY: {
-        yield updateTransaction({
-          id,
-          status: TransactionStatus.Ready,
-          from: walletAddress,
-        });
+        // This is handled in transactionAddParams
         break;
       }
 
@@ -270,6 +137,31 @@ function* updateTransactionInDb({
         break;
       }
 
+      case ActionTypes.TRANSACTION_OPTIONS_UPDATE: {
+        const { options: newOpts } = payload as TransactionOptionsUpdatePayload;
+        const tx = yield fetchTransaction({ id });
+        let oldOpts: TxOverrides = {};
+        try {
+          if (typeof tx.data.getTransaction?.options == 'string') {
+            oldOpts = JSON.parse(tx.data.getTransaction?.options);
+          }
+        } catch {
+          // Do nothing
+        }
+
+        const options = JSON.stringify({
+          ...oldOpts,
+          ...newOpts,
+        });
+
+        yield updateTransaction({
+          id,
+          options,
+          from: walletAddress,
+        });
+        break;
+      }
+
       case ActionTypes.TRANSACTION_SENT: {
         onTransactionPending(id);
         yield updateTransaction({
@@ -294,6 +186,7 @@ function* updateTransactionInDb({
         onTransactionResolved(id);
         const { eventData, deployedContractAddress } =
           payload as TransactionSucceededPayload;
+
         yield updateTransaction({
           id,
           status: TransactionStatus.Succeeded,
@@ -379,7 +272,7 @@ function* updateTransactionInDb({
 }
 
 function* listenForTransactionUpdates(
-  createAction: CreateTransactionActionType,
+  id: string,
   actionChannel: Channel<TransactionActionTypes>,
 ) {
   const transactionUpdateActions = new Set([
@@ -402,8 +295,7 @@ function* listenForTransactionUpdates(
   while (true) {
     const updateAction = yield take(
       (action) =>
-        transactionUpdateActions.has(action.type) &&
-        action.meta.id === createAction.meta.id,
+        transactionUpdateActions.has(action.type) && action.meta.id === id,
     );
     yield put(actionChannel, updateAction);
     /*
@@ -441,39 +333,22 @@ function* handleTransactionUpdates(
   }
 }
 
-export function* syncTransactionWithDb(
-  createAction: CreateTransactionActionType,
-) {
+export function* syncTransactionWithDb(id: string) {
   try {
-    // Add tx to db in a separate process
-    yield fork(addTransactionToDb, createAction);
-
     // Create a queue for action updates
     const actionChannel = channel(
       buffers.expanding<TransactionActionTypes>(10),
     );
     // Add actions to the queue in a separate process
-    yield fork(listenForTransactionUpdates, createAction, actionChannel);
+    yield fork(listenForTransactionUpdates, id, actionChannel);
 
-    while (true) {
-      // Wait for the tx to exist in the db
-      yield take(
-        (action) =>
-          action.type === ActionTypes.TRANSACTION_SAVED_TO_DB &&
-          action.meta.id === createAction.meta.id,
-      );
+    // Once the tx exists, process updates to it.
+    // Ensures we don't miss updates or try to update a tx that doesn't yet exist in the db.
+    yield call(handleTransactionUpdates, actionChannel);
 
-      // Once the tx exists, process updates to it.
-      // Ensures we don't miss updates or try to update a tx that doesn't yet exist in the db.
-      yield call(handleTransactionUpdates, actionChannel);
-
-      // Cancel the process once we've finished processing updates to the transaction.
-      yield cancel();
-    }
+    // Cancel the process once we've finished processing updates to the transaction.
+    yield cancel();
   } catch (e) {
-    console.error(
-      `Unable to sync transaction ${createAction.meta.id} with db. Reason: `,
-      e,
-    );
+    console.error(`Unable to sync transaction ${id} with db. Reason: `, e);
   }
 }
