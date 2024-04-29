@@ -55,6 +55,7 @@
     "@import-meta-env/unplugin": "^0.5.1",
     "@jackfranklin/test-data-bot": "^1.4.0",
     "@jest/globals": "^29.0.2",
+    "@rollup/rollup-linux-x64-gnu": "^4.17.1",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.0.0",
     "@storybook/addon-links": "^8.0.0",
