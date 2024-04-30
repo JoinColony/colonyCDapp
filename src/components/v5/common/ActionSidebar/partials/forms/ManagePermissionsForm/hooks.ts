@@ -49,21 +49,26 @@ export const useManagePermissions = (
   }, [isModeRoleSelected, setValue]);
 
   useEffect(() => {
-    const { unsubscribe } = watch(({ member, team }, { name }) => {
+    const { unsubscribe } = watch(({ member, team, authority }, { name }) => {
       if (
         !name ||
-        !['team', 'member'].includes(name) ||
+        !['team', 'member', 'authority'].includes(name) ||
         !notMaybe(team) ||
-        !notMaybe(member)
+        !notMaybe(member) ||
+        !notMaybe(authority)
       ) {
         return;
       }
+      const isMultiSig = authority === Authority.ViaMultiSig;
 
       const userPermissions = getUserRolesForDomain({
         colony,
         userAddress: member,
         domainId: Number(team),
+        excludeInherited: true,
+        isMultiSig,
       });
+
       const userRole = getRole(userPermissions);
 
       setValue('role', userRole.permissions.length ? userRole.role : undefined);
