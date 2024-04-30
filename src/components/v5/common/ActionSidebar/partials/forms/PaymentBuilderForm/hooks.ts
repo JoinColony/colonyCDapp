@@ -83,7 +83,7 @@ export const useValidationSchema = () => {
                     .test('tokens-sum-exceeded', '', (value, context) =>
                       allTokensAmountValidation(value, context, colony),
                     ),
-                  tokenAddress: string().address().required(),
+                  tokenAddress: string().required(),
                   delay: number()
                     .max(99999, ({ path }) => {
                       const index = getLastIndexFromPath(path);
@@ -102,7 +102,16 @@ export const useValidationSchema = () => {
                         { paymentIndex: index + 1, max: 99999 },
                       );
                     })
-                    .defined(),
+                    .required(({ path }) => {
+                      const index = getLastIndexFromPath(path);
+                      if (index === undefined) {
+                        return formatText({ id: 'errors.delay.empty' });
+                      }
+                      return formatText(
+                        { id: 'errors.delay.emptyIndex' },
+                        { paymentIndex: index + 1 },
+                      );
+                    }),
                 })
                 .defined()
                 .required(),

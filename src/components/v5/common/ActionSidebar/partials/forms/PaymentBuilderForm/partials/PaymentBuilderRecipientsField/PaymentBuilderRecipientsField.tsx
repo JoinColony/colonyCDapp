@@ -15,6 +15,7 @@ import { useMobile, useTablet } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
+import { convertEnotationToNumber } from '~utils/numbers.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -54,7 +55,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
 
           return {
             recipient: recipientAddress,
-            amount,
+            amount: amount ? convertEnotationToNumber(amount) : '',
             tokenAddress,
             delay: claimDelay === '' ? undefined : claimDelay,
           };
