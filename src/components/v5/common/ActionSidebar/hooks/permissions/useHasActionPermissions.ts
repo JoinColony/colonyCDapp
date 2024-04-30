@@ -2,6 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
 import { DecisionMethod } from '~types/actions.ts';
 
 import {
@@ -15,6 +16,8 @@ const useHasActionPermissions = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
+  const { isMultiSigEnabled } = useEnabledExtensions();
+
   const { watch } = useFormContext();
   const formValues = watch();
 
@@ -22,7 +25,11 @@ const useHasActionPermissions = () => {
     [ACTION_TYPE_FIELD_NAME]: actionType,
     [DECISION_METHOD_FIELD_NAME]: decisionMethod,
   } = formValues;
-  if (!actionType || decisionMethod !== DecisionMethod.Permissions) {
+  if (
+    !actionType ||
+    (!isMultiSigEnabled && decisionMethod !== DecisionMethod.Permissions) ||
+    (isMultiSigEnabled && decisionMethod !== DecisionMethod.MultiSig)
+  ) {
     return undefined;
   }
 
@@ -33,7 +40,23 @@ const useHasActionPermissions = () => {
     formValues,
   });
 
-  return hasPermissions;
+  if (decisionMethod === DecisionMethod.Permissions) {
+    return hasPermissions;
+  }
+
+  const hasMultiSigPermissions = getHasActionPermissions(
+    colony,
+    user?.walletAddress ?? '',
+    actionType,
+    formValues,
+    true,
+  );
+
+  if (decisionMethod === DecisionMethod.MultiSig) {
+    return hasMultiSigPermissions;
+  }
+
+  return hasPermissions || hasMultiSigPermissions;
 };
 
 export default useHasActionPermissions;

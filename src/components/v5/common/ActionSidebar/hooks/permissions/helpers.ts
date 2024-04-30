@@ -79,13 +79,15 @@ export const getHasActionPermissions = ({
   userAddress,
   actionType,
   formValues,
+  isMultiSig = false,
 }: {
   colony: Colony;
   userAddress: Address;
   actionType: Action;
   formValues: Record<string, any>;
+  isMultiSig?: boolean;
 }) => {
-  const allUserRoles = getAllUserRoles(colony, userAddress);
+  const allUserRoles = getAllUserRoles(colony, userAddress, isMultiSig);
   if (allUserRoles.length === 0) {
     return false;
   }
@@ -105,6 +107,7 @@ export const getHasActionPermissions = ({
     requiredRolesDomains: [relevantDomainId],
     colony,
     address: userAddress,
+    isMultiSig,
   });
 
   return hasPermissions;
