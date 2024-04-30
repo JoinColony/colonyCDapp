@@ -11,11 +11,13 @@ export const addressHasRoles = ({
   colony,
   address,
   requiredRoles,
+  isMultiSig = false,
 }: {
   requiredRolesDomains: number[];
   colony: Colony;
   address: string;
   requiredRoles: ColonyRole[];
+  isMultiSig: boolean;
 }) => {
   return requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain({
@@ -24,7 +26,20 @@ export const addressHasRoles = ({
       domainId,
     });
 
-    return requiredRoles.every((role) => userHasRole(userDomainRoles, role));
+    const userMultiSigDomainRoles = getUserRolesForDomain(
+      colony,
+      address || '',
+      domainId,
+      false,
+      true,
+    );
+
+    return requiredRoles.every((role) => {
+      return (
+        userDomainRoles.includes(role) ||
+        (isMultiSig && userMultiSigDomainRoles.includes(role))
+      );
+    });
   });
 };
 
