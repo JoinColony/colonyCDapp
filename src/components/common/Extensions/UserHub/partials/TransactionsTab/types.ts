@@ -63,6 +63,7 @@ export interface TransactionStatusProps {
   status: TransactionStatus;
   loadingRelated?: boolean;
   date?: Date;
+  hasError?: boolean;
 }
 
 export interface CancelTransactionProps {

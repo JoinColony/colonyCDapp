@@ -91,7 +91,7 @@ export function* createTransaction(id: string, config: TxConfig) {
 }
 
 export function* getTxChannel(id: string) {
-  return yield actionChannel(filterUniqueAction(id), buffers.fixed());
+  return yield actionChannel(filterUniqueAction(id), buffers.expanding());
 }
 
 export interface ChannelDefinition {

@@ -1,3 +1,3 @@
 export const shortErrorMessage = (message: string) => {
-  return `${message.substring(0, 30)}${message.length > 20 ? '...' : ''}`;
+  return message.length > 120 ? `${message.substring(0, 117)}...` : message;
 };

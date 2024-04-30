@@ -58,7 +58,7 @@ const UserHubButton: FC = () => {
     },
   });
 
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+  const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
     usePopperTooltip(
       {
         delayShow: isMobile ? 0 : 200,
@@ -80,6 +80,14 @@ const UserHubButton: FC = () => {
         ],
       },
     );
+
+  // If visible is not true, then clicking buttons within the popover will close it
+  // So if isUserHubOpen is true, trigger a triggerRef click to ensure visible is true
+  useEffect(() => {
+    if (isUserHubOpen && !visible) {
+      triggerRef?.click();
+    }
+  }, [isUserHubOpen, visible, triggerRef]);
 
   useDisableBodyScroll(visible && isMobile);
 

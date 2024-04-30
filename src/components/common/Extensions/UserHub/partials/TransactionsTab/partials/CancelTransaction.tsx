@@ -36,7 +36,11 @@ const CancelTransaction: FC<CancelTransactionProps> = ({
           </TextButton>
         </div>
       ) : (
-        <TextButton type="button" onClick={toggleCancelConfirmation}>
+        <TextButton
+          type="button"
+          onClick={toggleCancelConfirmation}
+          className="text-xs underline hover:text-gray-900 hover:no-underline"
+        >
           {formatMessage({ id: 'button.cancel' })}
         </TextButton>
       )}

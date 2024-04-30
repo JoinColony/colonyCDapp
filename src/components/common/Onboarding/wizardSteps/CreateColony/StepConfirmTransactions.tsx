@@ -12,10 +12,12 @@ import {
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { TransactionStatus } from '~gql';
 import { groupedTransactionsAndMessages } from '~redux/selectors/index.ts';
+import { type WizardStepProps } from '~shared/Wizard/types.ts';
 
 import HeaderRow from '../HeaderRow.tsx';
 
 import ConfirmTransactions from './ConfirmTransactions.tsx';
+import { type FormValues } from './types.ts';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
 
@@ -43,7 +45,9 @@ const getContractDeploymentStatus = (newestGroup: NewestGroup) =>
       status === TransactionStatus.Succeeded,
   );
 
-const StepConfirmTransactions = () => {
+type Props = Pick<WizardStepProps<FormValues>, 'previousStep'>;
+
+const StepConfirmTransactions = ({ previousStep }: Props) => {
   const [
     existsRecoverableDeploymentError,
     setExistsRecoverableDeploymentError,
@@ -61,6 +65,7 @@ const StepConfirmTransactions = () => {
      * Find out if the deployment failed, and we can actually recover it
      * Show an error message based on that
      */
+    if (!newestGroup) return;
     const colonyContractWasDeployed = getContractDeploymentStatus(
       newestGroup as unknown as NewestGroup,
     );
@@ -81,10 +86,17 @@ const StepConfirmTransactions = () => {
   // @TODO: Move the following to the colonyCreate saga
   // Redirect to the colony if a successful creteColony tx group is found
   if (
+    newestGroup &&
     getGroupStatus(newestGroup) === TransactionStatus.Succeeded &&
     getGroupKey(newestGroup) === 'group.createColony'
   ) {
     updateUser(user?.walletAddress, true);
+  }
+
+  // If the create colony transaction is cancelled at the first stage
+  // there will be no newest group and we should go back to the confirm all inputs step
+  if (!newestGroup) {
+    previousStep();
   }
 
   const createColonyTxGroup = findTransactionGroupByKey(

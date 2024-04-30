@@ -13,6 +13,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
   description,
   callToAction,
   descriptionClassName,
+  callToActionClassName,
 }) => {
   return (
     <div
@@ -39,7 +40,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
           })}
         />
       ) : null}
-      <div className="flex flex-1 flex-col items-start gap-3 @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center">
+      <div className="flex flex-1 flex-col items-start gap-2 @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center">
         <div className="flex flex-1 flex-col items-start gap-2 text-md break-word">
           {children}
           {description ? (
@@ -54,6 +55,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
           <div
             className={clsx(
               'flex-shrink-0 text-xs font-medium underline md:hover:no-underline',
+              callToActionClassName,
             )}
           >
             {callToAction}
