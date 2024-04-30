@@ -62,26 +62,30 @@ export const getUserRolesForDomain = ({
   domainId,
   excludeInherited = false,
   intersectingRoles = false,
+  isMultiSig = false,
 }: {
   colony: ColonyFragment;
   userAddress: Address;
   domainId: number;
   excludeInherited?: boolean;
   intersectingRoles?: boolean;
+  isMultiSig?: boolean;
 }): ColonyRole[] => {
-  const userRolesInAnyDomain = colony.roles?.items.find(
-    (domainRole) =>
-      domainRole?.domain?.nativeId === domainId &&
-      domainRole?.targetAddress === userAddress &&
-      !domainRole.isMultiSig,
-  );
+  const userRolesInAnyDomain = colony.roles?.items.find((domainRole) => {
+    const isMatchingDomain = domainRole?.domain?.nativeId === domainId;
+    const isMatchingUser = domainRole?.targetAddress === userAddress;
+    const isMatchingMultiSig = isMultiSig === !!domainRole?.isMultiSig;
 
-  const userRolesInRootDomain = colony.roles?.items.find(
-    (domainRole) =>
-      domainRole?.domain?.nativeId === Id.RootDomain &&
-      domainRole?.targetAddress === userAddress &&
-      !domainRole.isMultiSig,
-  );
+    return isMatchingDomain && isMatchingUser && isMatchingMultiSig;
+  });
+
+  const userRolesInRootDomain = colony.roles?.items.find((domainRole) => {
+    const isRootDomain = domainRole?.domain?.nativeId === Id.RootDomain;
+    const isMatchingUser = domainRole?.targetAddress === userAddress;
+    const isMatchingMultiSig = isMultiSig === !!domainRole?.isMultiSig;
+
+    return isRootDomain && isMatchingUser && isMatchingMultiSig;
+  });
 
   if (excludeInherited && userRolesInAnyDomain) {
     return convertRolesToArray(userRolesInAnyDomain);
