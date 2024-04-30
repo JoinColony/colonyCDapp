@@ -13,7 +13,7 @@ import {
 } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
-import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
+import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
@@ -116,6 +116,11 @@ const SetUserRoles = ({ action }: Props) => {
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
 
+  const parsedIndividualEvents = JSON.parse(action.individualEvents ?? '');
+
+  const isMultiSigAuthority =
+    parsedIndividualEvents[0].type === 'MultisigRoleSet';
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -202,7 +207,11 @@ const SetUserRoles = ({ action }: Props) => {
         />
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
-          rowContent={AUTHORITY_OPTIONS[0].label}
+          rowContent={
+            isMultiSigAuthority
+              ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
+              : formatText({ id: 'actionSidebar.authority.own' })
+          }
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.authority',
           })}
