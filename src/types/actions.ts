@@ -171,4 +171,5 @@ export enum SystemMessages {
 export enum DecisionMethod {
   Permissions = 'Permissions',
   Reputation = 'Reputation',
+  MultiSig = 'MultiSig',
 }

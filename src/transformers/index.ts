@@ -109,13 +109,16 @@ export const getUserRolesForDomain = ({
 export const getAllUserRoles = (
   colony: ColonyFragment,
   userAddress: Address | undefined,
+  isMultiSig = false,
 ): ColonyRole[] => {
   if (!userAddress) return [];
 
-  const userRolesInAnyDomain = colony.roles?.items.find(
-    (domainRole) =>
-      domainRole?.targetAddress === userAddress && !domainRole.isMultiSig,
-  );
+  const userRolesInAnyDomain = colony.roles?.items.find((domainRole) => {
+    const isMatchingUser = domainRole?.targetAddress === userAddress;
+    const isMatchingMultiSig = isMultiSig === !!domainRole?.isMultiSig;
+
+    return isMatchingUser && isMatchingMultiSig;
+  });
 
   return Array.from(new Set([...convertRolesToArray(userRolesInAnyDomain)]));
 };
