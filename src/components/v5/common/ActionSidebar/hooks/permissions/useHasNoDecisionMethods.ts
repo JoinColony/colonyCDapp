@@ -19,7 +19,8 @@ import {
 const useHasNoDecisionMethods = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isMultiSigEnabled } =
+    useEnabledExtensions();
 
   const { watch } = useFormContext() || {};
 
@@ -55,16 +56,34 @@ const useHasNoDecisionMethods = () => {
     domainId: Id.RootDomain,
   });
 
+  const userRootMultiSigRoles = getUserRolesForDomain(
+    colony,
+    user.walletAddress,
+    Id.RootDomain,
+    false,
+    true,
+  );
+
   const userRoles = getAllUserRoles(colony, user.walletAddress);
+
+  const userMultiSigRoles = getAllUserRoles(colony, user.walletAddress, true);
 
   if (
     !requiredPermissions.every((role) => {
       // If the requiredRolesDomain is root, check the user has the required permissions in root
       if (requiredRolesDomain === Id.RootDomain) {
-        return userRootRoles.includes(role);
+        return (
+          userRootRoles.includes(role) ||
+          // If multiSig is enabled, check if the user has the required multiSig permissions in root
+          (isMultiSigEnabled && userRootMultiSigRoles.includes(role))
+        );
       }
       // Otherwise, check the user has the required permissions in any domain
-      return userRoles.includes(role);
+      return (
+        userRoles.includes(role) ||
+        // If multiSig is enabled, check if the user has the required multiSig permissions
+        (isMultiSigEnabled && userMultiSigRoles.includes(role))
+      );
     })
   ) {
     return true;
