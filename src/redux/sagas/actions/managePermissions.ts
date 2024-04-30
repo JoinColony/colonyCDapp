@@ -84,13 +84,14 @@ function* managePermissionsAction({
         if (roleId === ColonyRole.ArchitectureSubdomain) {
           return false;
         }
+        // @TODO: confirm this is definitely the case - removed for now
         // Administration role cannot be set for multi sig
-        if (
-          authority === Authority.ViaMultiSig &&
-          roleId === ColonyRole.Administration
-        ) {
-          return false;
-        }
+        // if (
+        //   authority === Authority.ViaMultiSig &&
+        //   roleId === ColonyRole.Administration
+        // ) {
+        //   return false;
+        // }
         if (!roles[roleId]) {
           return false;
         }
