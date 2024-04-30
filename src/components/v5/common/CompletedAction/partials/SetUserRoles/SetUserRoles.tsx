@@ -7,7 +7,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyActionRoles } from '~gql';
 import { type ColonyAction } from '~types/graphql.ts';
-import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
+import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
@@ -74,6 +74,11 @@ const SetUserRoles = ({ action }: Props) => {
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
 
+  const parsedIndividualEvents = JSON.parse(action.individualEvents ?? '');
+
+  const isMultiSigAuthority =
+    parsedIndividualEvents[0].type === 'MultisigRoleSet';
+
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
@@ -133,7 +138,11 @@ const SetUserRoles = ({ action }: Props) => {
         />
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
-          rowContent={AUTHORITY_OPTIONS[0].label}
+          rowContent={
+            isMultiSigAuthority
+              ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
+              : formatText({ id: 'actionSidebar.authority.own' })
+          }
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.authority',
           })}

@@ -47,6 +47,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     },
   ] = useToggle();
   const team: string | undefined = useWatch({ name: 'team' });
+  const authority: string | undefined = useWatch({ name: 'authority' });
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
@@ -77,9 +78,15 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const ALLOWED_PERMISSION_OPTIONS = PermissionsOptions.map(
     ({ options, ...rest }) => ({
       ...rest,
-      options: options.filter(({ value }) =>
-        value === UserRole.Owner ? Number(team) === Id.RootDomain : true,
-      ),
+      options: options.filter(({ value }) => {
+        if (value === UserRole.Owner) {
+          return team === undefined || Number(team) === Id.RootDomain;
+        }
+        if (value === UserRole.Mod) {
+          return authority !== Authority.ViaMultiSig;
+        }
+        return true;
+      }),
     }),
   );
 
