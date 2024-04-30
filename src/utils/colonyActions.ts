@@ -18,7 +18,6 @@ import {
 import { type Address } from '~types/index.ts';
 import { type CustomPermissionTableModel } from '~types/permissions.ts';
 import { isEmpty, isEqual } from '~utils/lodash.ts';
-import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 import { type MotionVote } from './colonyMotions.ts';
 import { formatText } from './intl.ts';
@@ -639,18 +638,6 @@ export const AUTHORITY = {
   ViaMultiSig: 'via-multi-sig',
   Own: 'own',
 } as const;
-
-export const AUTHORITY_OPTIONS: CardSelectOption<string>[] = [
-  // @TODO: Uncomment when multi-sig is ready
-  // {
-  //   label: formatText({ id: 'actionSidebar.authority.viaMultiSig' }),
-  //   value: AUTHORITY.ViaMultiSig,
-  // },
-  {
-    label: formatText({ id: 'actionSidebar.authority.own' }),
-    value: AUTHORITY.Own,
-  },
-];
 
 export const CUSTOM_PERMISSION_TABLE_CONTENT: CustomPermissionTableModel[] = [
   {
