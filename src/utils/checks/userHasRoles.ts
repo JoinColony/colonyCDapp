@@ -17,7 +17,7 @@ export const addressHasRoles = ({
   colony: Colony;
   address: string;
   requiredRoles: ColonyRole[];
-  isMultiSig: boolean;
+  isMultiSig?: boolean;
 }) => {
   return requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain({
