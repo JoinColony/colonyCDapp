@@ -4,7 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
-import { UserRole } from '~constants/permissions.ts';
+import { getRole, UserRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -16,11 +16,11 @@ import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormB
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import {
-  Authority,
   type ManagePermissionsFormValues,
   validationSchema,
 } from './consts.ts';
 import { configureFormRoles, getManagePermissionsPayload } from './utils.ts';
+import { getUserRolesForDomain } from '~transformers';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -77,36 +77,57 @@ export const useManagePermissions = (
   }, [isModRoleSelected, setValue]);
 
   useEffect(() => {
-    const { unsubscribe } = watch(({ member, team, role }, { name }) => {
-      if (isSubmitted) {
-        if (role === UserRole.Custom) {
-          trigger('permissions');
-        } else {
-          clearErrors('permissions');
+    const { unsubscribe } = watch(
+      ({ member, team, authority, role }, { name }) => {
+        if (isSubmitted) {
+          if (role === UserRole.Custom) {
+            trigger('permissions');
+          } else {
+            clearErrors('permissions');
+          }
+
+          if (
+            !name ||
+            !['team', 'member', 'authority'].includes(name) ||
+            !notMaybe(team) ||
+            !notMaybe(member) ||
+            !notMaybe(authority)
+          ) {
+            return;
+          }
+
+          const isMultiSig = authority === Authority.ViaMultiSig;
+
+          const userPermissions = getUserRolesForDomain({
+            colony,
+            userAddress: member,
+            domainId: Number(team),
+            excludeInherited: true,
+            isMultiSig,
+          });
+
+          const userRole = getRole(userPermissions);
+
+          setValue(
+            'role',
+            userRole.permissions.length ? userRole.role : undefined,
+          );
+
+          if (userRole.role !== UserRole.Custom) {
+            return;
+          }
+
+          configureFormRoles({
+            colony,
+            isSubmitted,
+            member,
+            role,
+            setValue,
+            team,
+          });
         }
-      }
-
-      if (
-        !name ||
-        !['team', 'member'].includes(name) ||
-        !notMaybe(team) ||
-        !notMaybe(member)
-      ) {
-        return;
-      }
-      if (isModeRoleSelected) {
-        setValue('authority', Authority.Own);
-      }
-
-      configureFormRoles({
-        colony,
-        isSubmitted,
-        member,
-        role,
-        setValue,
-        team,
-      });
-    });
+      },
+    );
 
     return () => unsubscribe();
   }, [
@@ -118,7 +139,6 @@ export const useManagePermissions = (
     isSubmitted,
     trigger,
     watch,
-    isModeRoleSelected,
   ]);
 
   useActionFormBaseHook({
