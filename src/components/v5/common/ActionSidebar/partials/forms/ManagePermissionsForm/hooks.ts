@@ -71,7 +71,9 @@ export const useManagePermissions = (
 
       const userRole = getRole(userPermissions);
 
-      setValue('role', userRole.permissions.length ? userRole.role : undefined);
+      if (userRole.permissions.length) {
+        setValue('role', userRole.role);
+      }
 
       if (userRole.role !== UserRole.Custom) {
         return;
