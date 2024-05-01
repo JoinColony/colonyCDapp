@@ -3,7 +3,7 @@ import { type Icon } from '@phosphor-icons/react';
 import { NETWORK_DATA } from '~constants/index.ts';
 import { type NavigationSidebarLinksListItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarLinksList/types.ts';
 
-export const getChainIcon = (chainId: number | undefined): Icon | undefined =>
+export const getChainIcon = (chainId: string | undefined): Icon | undefined =>
   Object.values(NETWORK_DATA).find(({ chainId: id }) => id === chainId)?.icon;
 
 export const checkIfIsActive = (

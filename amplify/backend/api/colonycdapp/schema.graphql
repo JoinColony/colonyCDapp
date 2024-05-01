@@ -60,34 +60,6 @@ input ProfileMetadataInput {
 }
 
 """
-Input data for relevant chain metadata of a Colony (if applicable)
-"""
-input ChainMetadataInput {
-  """
-  The network the Colony is deployed on
-  """
-  network: Network
-  """
-  The chain ID of the network
-  """
-  chainId: Int!
-  """
-  The transaction hash of the creation transaction
-  """
-  transactionHash: String
-  """
-  The log index of the creation transaction
-  """
-  logIndex: Int
-  """
-  The block number of the creation transaction
-  """
-  blockNumber: Int
-}
-
-"""
-Input data for the status of a Colony's native token
-
 Colonies can have different types of native tokens in various modes. Here we define some important properties that the dApp uses to enable or disable certain features or views. This is set when a Colony is created and can be changed later
 """
 input NativeTokenStatusInput {
@@ -276,7 +248,7 @@ input UpdateExtensionByColonyAndHashInput {
 
 input GetSafeTransactionStatusInput {
   transactionHash: String!
-  chainId: Int!
+  chainId: String!
 }
 
 """
@@ -983,7 +955,7 @@ type ChainMetadata {
   """
   The chain ID of the event
   """
-  chainId: Int!
+  chainId: String!
   """
   The transaction hash of the event
   """
@@ -1818,7 +1790,7 @@ type Domain @model {
   Native skill ID of the Domain
   The native skill ID is assigned to a domain from the contract on creation
   """
-  nativeSkillId: Int!
+  nativeSkillId: String!
   """
   Indicates whether the Domain is the root domain (ID 1)
   """
@@ -3413,7 +3385,7 @@ type SafeTransactionData @model {
 type Safe {
   name: String!
   address: String!
-  chainId: Int!
+  chainId: String!
   moduleContractAddress: String!
 }
 

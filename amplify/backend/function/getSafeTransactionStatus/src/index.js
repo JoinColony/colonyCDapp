@@ -37,9 +37,8 @@ exports.handler = async (event) => {
   }
 
   const provider = new providers.JsonRpcProvider(rpcURL);
-  const transactionReceipt = await provider.getTransactionReceipt(
-    transactionHash,
-  );
+  const transactionReceipt =
+    await provider.getTransactionReceipt(transactionHash);
 
   const networkApiURI =
     SUPPORTED_SAFE_NETWORKS.find((network) => network.chainId === chainId)
@@ -59,7 +58,7 @@ exports.handler = async (event) => {
         foreignAMBContract,
         networkApiURI,
         messageId,
-        chainId.toString(),
+        chainId,
       );
 
       // @NOTE: Safe transactions will always be executed automatically on the local env

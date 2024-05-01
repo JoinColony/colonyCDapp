@@ -1,7 +1,5 @@
 import { type PropsGetterArgs } from 'react-popper-tooltip';
 
-import { type NetworkInfo } from '~constants/index.ts';
-
 export interface UserMenuProps {
   tooltipProps: (args?: PropsGetterArgs) => {
     'data-popper-interactive'?: boolean;
@@ -9,7 +7,6 @@ export interface UserMenuProps {
   };
   setTooltipRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   isVerified?: boolean;
-  nativeToken?: NetworkInfo;
   hideColonies?: boolean;
 }
 

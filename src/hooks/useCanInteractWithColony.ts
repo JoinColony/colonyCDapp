@@ -4,6 +4,7 @@ import { useGetColonyContributorQuery } from '~gql';
 import { type Colony } from '~types/graphql.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
 import { isChainSupported } from '~utils/autoLogin.ts';
+import { getChainIdFromHex } from '~utils/chainId.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 
 export const useUserAccountRegistered = (): boolean => {
@@ -45,11 +46,11 @@ const isUserAndColonyOnSameChain = (
    * Check if connected to the same chain
    */
   const [{ id: walletHexChainId }] = wallet.chains;
-  const colonyChain =
+  const colonyChainId =
     colony?.chainMetadata?.chainId || DEFAULT_NETWORK_INFO.chainId;
-  const userWalletChain = parseInt(walletHexChainId.slice(2), 16);
+  const userWalletChainId = getChainIdFromHex(walletHexChainId);
 
-  return colonyChain === userWalletChain;
+  return colonyChainId === userWalletChainId;
 };
 
 /*

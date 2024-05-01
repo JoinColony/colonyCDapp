@@ -113,7 +113,7 @@ function* manageExistingSafesAction({
           !safes.some(
             (removedSafe) =>
               removedSafe.address === safe.address &&
-              Number(removedSafe.chainId) === safe.chainId,
+              removedSafe.chainId === safe.chainId,
           ),
       );
     }

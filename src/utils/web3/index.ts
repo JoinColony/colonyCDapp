@@ -60,9 +60,11 @@ export const generateMetatransactionErrorMessage = (
   } at ${emmitentClient.address}`;
 
 export const generateMetamaskTypedDataSignatureErrorMessage = (
-  chainId: number,
-) =>
-  `Please switch your wallet's network to ${NETWORK_DATA?.[chainId]?.name} in order to sign this typed data`;
+  chainId: string,
+) => {
+  const chainName = getNetworkByChainId(chainId)?.name;
+  return `Please switch your wallet's network to ${chainName} in order to sign this typed data`;
+};
 
 export function intArrayToBytes32(arr: Array<number>) {
   return `0x${new BN(
@@ -125,7 +127,7 @@ export const isMetatransactionErrorFromColonyContract = (
   return isCorrectClient;
 };
 
-export function getNetworkByChainId(chainId: number) {
+export function getNetworkByChainId(chainId: string) {
   const matchedNetwork = Object.values(NETWORK_DATA).find(
     (network) => network.chainId === chainId,
   );

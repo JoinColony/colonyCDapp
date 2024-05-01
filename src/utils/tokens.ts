@@ -106,7 +106,7 @@ export const getSelectedToken = (colony: Colony, tokenAddress: string) => {
 // Ideally we would get a union type of all chain Id's in our
 // defined NetworkInfo types here but I have yet to figure out
 // how to do that
-export const getNativeTokenByChainId = (chainId: number): Token => {
+export const getNativeTokenByChainId = (chainId: string): Token => {
   const selectedNetwork = SUPPORTED_SAFE_NETWORKS.find(
     (network) => network.chainId === chainId,
   );
