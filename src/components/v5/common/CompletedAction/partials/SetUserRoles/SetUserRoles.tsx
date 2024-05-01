@@ -66,6 +66,7 @@ const transformActionRolesToColonyRoles = (
 };
 
 const SetUserRoles = ({ action }: Props) => {
+<<<<<<< HEAD
   const {
     customTitle = formatText(
       { id: 'action.type' },
@@ -82,14 +83,13 @@ const SetUserRoles = ({ action }: Props) => {
     isMotion,
     annotation,
   } = action;
+=======
+  const { customTitle = formatText(MSG.defaultTitle) } = action.metadata || {};
+  const { initiatorUser, recipientUser, roles, rolesAreMultiSig } = action;
+>>>>>>> 8ae12f03b (Feat: Add rolesAreMultiSig field to ColonyAction model)
   const userColonyRoles = transformActionRolesToColonyRoles(roles);
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
-
-  const parsedIndividualEvents = JSON.parse(action.individualEvents ?? '');
-
-  const isMultiSigAuthority =
-    parsedIndividualEvents[0].type === 'MultisigRoleSet';
 
   return (
     <>
@@ -178,7 +178,7 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
           rowContent={
-            isMultiSigAuthority
+            rolesAreMultiSig
               ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
               : formatText({ id: 'actionSidebar.authority.own' })
           }
