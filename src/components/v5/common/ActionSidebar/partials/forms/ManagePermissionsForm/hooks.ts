@@ -40,13 +40,13 @@ export const useManagePermissions = (
   const role: UserRole | RemoveRoleOptionValue | undefined = useWatch({
     name: 'role',
   });
-  const isModeRoleSelected = role === UserRole.Mod;
+  const isModRoleSelected = role === UserRole.Mod;
 
   useEffect(() => {
-    if (isModeRoleSelected) {
+    if (isModRoleSelected) {
       setValue('authority', Authority.Own);
     }
-  }, [isModeRoleSelected, setValue]);
+  }, [isModRoleSelected, setValue]);
 
   useEffect(() => {
     const { unsubscribe } = watch(({ member, team, authority }, { name }) => {
@@ -117,6 +117,6 @@ export const useManagePermissions = (
 
   return {
     role,
-    isModeRoleSelected,
+    isModRoleSelected,
   };
 };
