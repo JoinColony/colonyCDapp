@@ -49,8 +49,13 @@ export const useManagePermissions = (
     control,
     name: 'role',
   });
+  const isModRoleSelected = formRole === UserRole.Mod;
 
-  const isModeRoleSelected = formRole === UserRole.Mod;
+  useEffect(() => {
+    if (isModRoleSelected) {
+      setValue('authority', Authority.Own);
+    }
+  }, [isModRoleSelected, setValue]);
 
   useEffect(() => {
     /**
@@ -90,9 +95,6 @@ export const useManagePermissions = (
           !notMaybe(authority)
         ) {
           return;
-        }
-        if (isModeRoleSelected) {
-          setValue('authority', Authority.Own);
         }
 
         const isMultiSig = authority === Authority.ViaMultiSig;
@@ -137,7 +139,7 @@ export const useManagePermissions = (
     isSubmitted,
     trigger,
     watch,
-    isModeRoleSelected,
+    isModRoleSelected,
   ]);
 
   useActionFormBaseHook({
@@ -167,6 +169,6 @@ export const useManagePermissions = (
 
   return {
     role: formRole,
-    isModeRoleSelected,
+    isModRoleSelected,
   };
 };
