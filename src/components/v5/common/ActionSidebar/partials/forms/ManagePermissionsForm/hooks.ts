@@ -8,6 +8,7 @@ import { getRole, UserRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { getUserRolesForDomain } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
@@ -21,7 +22,6 @@ import {
   validationSchema,
 } from './consts.ts';
 import { configureFormRoles, getManagePermissionsPayload } from './utils.ts';
-import { getUserRolesForDomain } from '~transformers';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
