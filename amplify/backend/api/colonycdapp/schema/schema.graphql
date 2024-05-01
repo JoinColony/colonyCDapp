@@ -3046,6 +3046,10 @@ type ColonyAction @model @searchable {
   """
   roles: ColonyActionRoles
   """
+  Colony roles that are associated with the action are multi sig roles
+  """
+  rolesAreMultiSig: Boolean
+  """
   Members impacted by the action (used for add/remove verified members)
   """
   members: [ID!]
