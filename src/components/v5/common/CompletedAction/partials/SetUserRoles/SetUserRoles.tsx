@@ -69,15 +69,10 @@ const transformActionRolesToColonyRoles = (
 
 const SetUserRoles = ({ action }: Props) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action.metadata || {};
-  const { initiatorUser, recipientUser, roles } = action;
+  const { initiatorUser, recipientUser, roles, rolesAreMultiSig } = action;
   const userColonyRoles = transformActionRolesToColonyRoles(roles);
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
-
-  const parsedIndividualEvents = JSON.parse(action.individualEvents ?? '');
-
-  const isMultiSigAuthority =
-    parsedIndividualEvents[0].type === 'MultisigRoleSet';
 
   return (
     <>
@@ -139,7 +134,7 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
           rowContent={
-            isMultiSigAuthority
+            rolesAreMultiSig
               ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
               : formatText({ id: 'actionSidebar.authority.own' })
           }
