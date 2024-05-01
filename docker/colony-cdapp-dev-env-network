@@ -1,26 +1,11 @@
-FROM node:16.20.2
+FROM colony-cdapp-dev-env/base:latest
 
-# Update the apt cache
-RUN apt-get clean
-RUN apt-get update
-
-# Adding various nicities and libraries we use through the container
-RUN apt-get install -y \
-  apt-utils \
-  locales \
-  build-essential \
-  curl \
-  file \
-  zip \
-  jq \
-  netcat \
-  libusb-1.0-0-dev \
-  libudev-dev
-
-ENV NETWORK_HASH=0cf80f156bd2160ba83ee40a36db2ffc4298aeaf
+ENV NETWORK_HASH=9d692e2bb16c47f89f83e7b2c667f99baf2d57cb
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]
+
+RUN npm i -g pnpm@8.14.1
 
 #
 # Colony Network
@@ -43,7 +28,7 @@ RUN git checkout $NETWORK_HASH
 RUN git submodule update --init --recursive --depth 1
 
 # Install required network dependencies
-RUN npm i --build-from-source
+RUN pnpm i --frozen-lockfile
 
 # Initialize the justification tree cache
 # To avoid the error spewed by the miner at startup
