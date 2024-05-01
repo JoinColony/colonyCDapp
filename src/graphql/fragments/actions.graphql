@@ -75,6 +75,7 @@ fragment ColonyAction on ColonyAction {
     role_5
     role_6
   }
+  rolesAreMultiSig
   individualEvents
   isMotion
   payments {

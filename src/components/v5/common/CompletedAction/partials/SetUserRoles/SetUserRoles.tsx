@@ -112,7 +112,6 @@ const SetUserRoles = ({ action }: Props) => {
 
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
-
   const roleAuthority = rolesAreMultiSig
     ? Authority.ViaMultiSig
     : Authority.Own;
@@ -204,7 +203,7 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
           rowContent={
-            isMultiSigAuthority
+            rolesAreMultiSig
               ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
               : formatText({ id: 'actionSidebar.authority.own' })
           }
