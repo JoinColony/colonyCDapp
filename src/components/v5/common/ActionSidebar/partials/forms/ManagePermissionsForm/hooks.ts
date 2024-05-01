@@ -48,7 +48,6 @@ export const useManagePermissions = (
     control,
     name: 'role',
   });
-
   const isModRoleSelected = formRole === UserRole.Mod;
 
   useEffect(() => {
