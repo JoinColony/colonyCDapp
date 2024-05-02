@@ -4,6 +4,7 @@ import { type BigNumber } from 'ethers';
 import { type NetworkInfo } from '~constants/index.ts';
 import { type ExternalLink } from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
+import { type Authority } from '~types/authority.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import {
   type Expenditure,
@@ -236,6 +237,7 @@ export type MotionActionTypes =
         domainId: number;
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
+        authority: Authority;
         motionDomainId: string;
         annotationMessage?: string;
       },
