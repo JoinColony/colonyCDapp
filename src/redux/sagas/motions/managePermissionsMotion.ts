@@ -10,6 +10,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { Authority } from '~types/authority.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
@@ -32,6 +33,7 @@ function* managePermissionsMotion({
     domainId,
     userAddress,
     roles,
+    authority,
     colonyName,
     annotationMessage,
     motionDomainId,
@@ -49,6 +51,10 @@ function* managePermissionsMotion({
     );
     const votingReputationClient = yield colonyManager.getClient(
       ClientType.VotingReputationClient,
+      colonyAddress,
+    );
+    const multiSigClient = yield colonyManager.getClient(
+      ClientType.MultisigPermissionsClient,
       colonyAddress,
     );
 
@@ -114,6 +120,11 @@ function* managePermissionsMotion({
       ],
     );
 
+    const altTargetMap = {
+      [Authority.Own]: ADDRESS_ZERO,
+      [Authority.ViaMultiSig]: multiSigClient.address,
+    };
+
     // create transactions
     yield fork(createTransaction, createMotion.id, {
       context: ClientType.VotingReputationClient,
@@ -122,7 +133,7 @@ function* managePermissionsMotion({
       params: [
         motionDomainId,
         motionChildSkillIndex,
-        ADDRESS_ZERO,
+        altTargetMap[authority],
         encodedAction,
         key,
         value,
