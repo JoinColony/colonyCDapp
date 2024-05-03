@@ -253,12 +253,12 @@ const TmpAdvancedPayments = () => {
     createdInDomain: rootDomain,
     amount: transactionAmount,
     endCondition: StreamingPaymentEndCondition.FixedTime,
-    interval: 60,
+    interval: 1000,
     recipientAddress: user?.walletAddress ?? '',
     startTimestamp: Math.floor(Date.now() / 1000),
     tokenAddress,
     tokenDecimals: parseInt(decimalAmount, 10),
-    endTimestamp: Math.floor(Date.now() / 1000) + 120000000,
+    endTimestamp: Math.floor(Date.now() / 1000) + 10000,
   };
 
   const handleLockExpenditure = async () => {
