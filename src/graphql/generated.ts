@@ -11627,6 +11627,7 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 }>;
 
 
+<<<<<<< HEAD
 export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null };
 
 export type GetStreamingPaymentQueryVariables = Exact<{
@@ -11635,6 +11636,9 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 
 
 export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, isCancelled?: boolean | null, isWaived?: boolean | null, createdAt: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null };
+=======
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null } | null };
+>>>>>>> aca88e004 (Create claim streaming payment saga)
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -11770,13 +11774,6 @@ export type GetStreamingPaymentsByColonyQueryVariables = Exact<{
 
 
 export type GetStreamingPaymentsByColonyQuery = { __typename?: 'Query', getStreamingPaymentsByColony?: { __typename?: 'ModelStreamingPaymentConnection', nextToken?: string | null, items: Array<{ __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, isCancelled?: boolean | null, isWaived?: boolean | null, createdAt: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null> } | null };
-
-export type GetStreamingPaymentQueryVariables = Exact<{
-  streamingPaymentId: Scalars['ID'];
-}>;
-
-
-export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -16453,6 +16450,7 @@ export type GetUserStakesQueryHookResult = ReturnType<typeof useGetUserStakesQue
 export type GetUserStakesLazyQueryHookResult = ReturnType<typeof useGetUserStakesLazyQuery>;
 export type GetUserStakesQueryResult = Apollo.QueryResult<GetUserStakesQuery, GetUserStakesQueryVariables>;
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const GetStreamingPaymentsByColonyDocument = gql`
     query GetStreamingPaymentsByColony($colonyId: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String, $recipientAddress: String!) {
   getStreamingPaymentsByColony(
@@ -16534,6 +16532,8 @@ export type GetStreamingPaymentQueryHookResult = ReturnType<typeof useGetStreami
 export type GetStreamingPaymentLazyQueryHookResult = ReturnType<typeof useGetStreamingPaymentLazyQuery>;
 export type GetStreamingPaymentQueryResult = Apollo.QueryResult<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>;
 >>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
+=======
+>>>>>>> aca88e004 (Create claim streaming payment saga)
 export const GetTokenByAddressDocument = gql`
     query GetTokenByAddress($address: ID!) {
   getTokenByAddress(id: $address) {
