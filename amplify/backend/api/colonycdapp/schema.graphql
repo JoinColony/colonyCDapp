@@ -3279,6 +3279,10 @@ type Expenditure @model {
   User stake associated with the expenditure, if any
   """
   userStake: UserStake @hasOne(fields: ["userStakeId"])
+  """
+  Hash of the first transaction that contained ExpenditurePayoutSet event
+  """
+  firstEditTransactionHash: String
 }
 
 """
