@@ -816,6 +816,10 @@ enum ColonyActionType {
   """
   FINALIZE_EXPENDITURE_MOTION
   """
+  An action related to cancelling a streaming payment
+  """
+  CANCEL_STREAMING_PAYMENT
+  """
   An action related to adding / removing approved colony tokens
   """
   MANAGE_TOKENS
@@ -2529,7 +2533,8 @@ type ColonyMotion @model {
   """
   List of other rewards users will be receiving for a motion, such as voting
   """
-  voterRewards: [VoterRewardsHistory!] @hasMany(indexName: "byMotionId", fields: ["id"])
+  voterRewards: [VoterRewardsHistory!]
+    @hasMany(indexName: "byMotionId", fields: ["id"])
   """
   Staked sides of a motion
   """
@@ -3134,6 +3139,18 @@ type ApprovedTokenChanges {
 type ExpenditureSlotChanges {
   oldSlots: [ExpenditureSlot!]!
   newSlots: [ExpenditureSlot!]!
+  """
+  ID of the associated streaming payment, if any
+  """
+  streamingPaymentId: ID
+    @index(
+      name: "byStreamingPaymentId"
+      queryField: "getActionByStreamingPaymentId"
+    )
+  """
+  Streaming payment associated with the action, if any
+  """
+  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
 }
 
 type ColonyActionMetadata @model {
