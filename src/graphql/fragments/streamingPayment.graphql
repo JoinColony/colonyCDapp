@@ -1,0 +1,16 @@
+fragment StreamingPayment on StreamingPayment {
+  id
+  nativeId
+  recipientAddress
+  nativeDomainId
+  startTime
+  endTime
+  interval
+  payouts {
+    ...ExpenditurePayout
+  }
+  metadata {
+    endCondition
+    limitAmount
+  }
+}
