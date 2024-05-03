@@ -1,6 +1,12 @@
-import { ClientType, type AnyVotingReputationClient } from '@colony/colony-js';
-import { utils } from 'ethers';
+import {
+  ClientType,
+  type AnyVotingReputationClient,
+  Extension,
+} from '@colony/colony-js';
+import { utils, providers } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
+
+import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
@@ -11,12 +17,8 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions/index.ts';
-import {
-  putError,
-  takeFrom,
-  getColonyManager,
-  initiateTransaction,
-} from '../utils/index.ts';
+import getNetworkClient from '../utils/getNetworkClient.ts';
+import { putError, takeFrom, initiateTransaction } from '../utils/index.ts';
 
 export type RevealMotionPayload =
   Action<ActionTypes.MOTION_REVEAL_VOTE>['payload'];
@@ -27,16 +29,25 @@ function* revealVoteMotion({
 }: Action<ActionTypes.MOTION_REVEAL_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
-    const colonyManager = yield getColonyManager();
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
+    /*
+     * We need to set up a non-retry provider when revealing votes
+     * This is because we gas estimate both sides, and one will always fail
+     * The retry provider is designed to retry the failing estimate or transaction
+     * meaning it will never actually catch the error
+     */
+    const provider = (() => {
+      if (isDev) {
+        return new providers.JsonRpcProvider(GANACHE_LOCAL_RPC_URL);
+      }
+      return new providers.Web3Provider(window.ethereum!);
+    })();
+
+    const networkClient = yield call(getNetworkClient, provider);
+
+    const colonyClient = yield networkClient.getColonyClient(colonyAddress);
+
     const votingReputationClient: AnyVotingReputationClient =
-      yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
+      yield colonyClient.getExtensionClient(Extension.VotingReputation);
 
     const { domainId, rootHash } =
       yield votingReputationClient.getMotion(motionId);
@@ -78,6 +89,7 @@ function* revealVoteMotion({
         value,
         branchMask,
         siblings,
+        { from: userAddress },
       );
       sideVoted = 0;
     } catch (error) {
@@ -98,11 +110,13 @@ function* revealVoteMotion({
         value,
         branchMask,
         siblings,
+        { from: userAddress },
       );
       sideVoted = 1;
     } catch (error) {
       // Same as above. Silent error
     }
+
     if (sideVoted !== undefined) {
       const { revealVoteMotionTransaction } = yield createTransactionChannels(
         meta.id,
