@@ -258,4 +258,20 @@ export type ExpendituresActionTypes =
       ActionTypes.STREAMING_PAYMENT_CANCEL_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CLAIM,
+      {
+        colonyAddress: Address;
+        streamingPaymentsAddress: Address;
+        streamingPayment: StreamingPayment;
+        tokenAddress: Address;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
+      object,
+      object
     >;
