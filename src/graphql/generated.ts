@@ -553,6 +553,7 @@ export type ColonyAction = {
   streamingPayment?: Maybe<StreamingPayment>;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   /**
@@ -570,6 +571,8 @@ export type ColonyAction = {
 =======
   streamingPaymentChanges?: Maybe<StreamingPaymentChangeSet>;
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
+=======
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
   /** ID of the associated streaming payment, if any */
   streamingPaymentId?: Maybe<Scalars['ID']>;
   /** The target Domain of the action, if applicable */
@@ -663,8 +666,10 @@ export enum ColonyActionType {
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
   CancelExpenditureMotion = 'CANCEL_EXPENDITURE_MOTION',
+<<<<<<< HEAD
   /** An action related to a multiSig to cancel a staked expenditure */
   CancelStakedExpenditureMultisig = 'CANCEL_STAKED_EXPENDITURE_MULTISIG',
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /** An action related to cancelling a streaming payment */
@@ -674,9 +679,12 @@ export enum ColonyActionType {
 <<<<<<< HEAD
 =======
 =======
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
+=======
   /** An action related to cancelling a streaming payment */
   CancelStreamingPayment = 'CANCEL_STREAMING_PAYMENT',
 >>>>>>> 93bc8196f (Feat: Cancel streams using permissions)
+<<<<<<< HEAD
 >>>>>>> ce1397c62 (Feat: Cancel streams using permissions)
 =======
   /** An action related to cancelling a streaming payment */
@@ -684,6 +692,8 @@ export enum ColonyActionType {
 >>>>>>> 881864577 (Add timestamp to streaming payment claims and code cleanup)
 =======
 >>>>>>> 30262a729 (feat: fix permission proof for StreamingPayment cancel)
+=======
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
   /** An action related to editing a Colony's details */
   ColonyEdit = 'COLONY_EDIT',
   /** An action related to editing a Colony's details via a motion */
@@ -1587,6 +1597,7 @@ export type CreateColonyActionInput = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
 =======
 >>>>>>> ce1397c62 (Feat: Cancel streams using permissions)
@@ -1598,6 +1609,8 @@ export type CreateColonyActionInput = {
 =======
   streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
+=======
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
   streamingPaymentId?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
@@ -10159,6 +10172,7 @@ export type UpdateColonyActionInput = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
 =======
 >>>>>>> ce1397c62 (Feat: Cancel streams using permissions)
@@ -10170,6 +10184,8 @@ export type UpdateColonyActionInput = {
 =======
   streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
+=======
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
   streamingPaymentId?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
@@ -11064,6 +11080,8 @@ export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: st
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null };
+
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
 export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, inactiveBalance?: string | null, lockedBalance?: string | null, activeBalance?: string | null, pendingBalance?: string | null };
@@ -11752,6 +11770,13 @@ export type GetStreamingPaymentsByColonyQueryVariables = Exact<{
 
 
 export type GetStreamingPaymentsByColonyQuery = { __typename?: 'Query', getStreamingPaymentsByColony?: { __typename?: 'ModelStreamingPaymentConnection', nextToken?: string | null, items: Array<{ __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, isCancelled?: boolean | null, isWaived?: boolean | null, createdAt: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null> } | null };
+
+export type GetStreamingPaymentQueryVariables = Exact<{
+  streamingPaymentId: Scalars['ID'];
+}>;
+
+
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null } | null };
 
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -13034,6 +13059,7 @@ export const StreamingPaymentFragmentDoc = gql`
   interval
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   tokenAddress
   token {
     ...Token
@@ -13113,6 +13139,17 @@ export const StreamingPaymentChangesFragmentDoc = gql`
 }
     `;
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
+=======
+  payouts {
+    ...ExpenditurePayout
+  }
+  metadata {
+    endCondition
+    limitAmount
+  }
+}
+    ${ExpenditurePayoutFragmentDoc}`;
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
@@ -16415,6 +16452,7 @@ export function useGetUserStakesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetUserStakesQueryHookResult = ReturnType<typeof useGetUserStakesQuery>;
 export type GetUserStakesLazyQueryHookResult = ReturnType<typeof useGetUserStakesLazyQuery>;
 export type GetUserStakesQueryResult = Apollo.QueryResult<GetUserStakesQuery, GetUserStakesQueryVariables>;
+<<<<<<< HEAD
 export const GetStreamingPaymentsByColonyDocument = gql`
     query GetStreamingPaymentsByColony($colonyId: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String, $recipientAddress: String!) {
   getStreamingPaymentsByColony(
@@ -16428,20 +16466,34 @@ export const GetStreamingPaymentsByColonyDocument = gql`
       ...StreamingPayment
     }
     nextToken
+=======
+export const GetStreamingPaymentDocument = gql`
+    query GetStreamingPayment($streamingPaymentId: ID!) {
+  getStreamingPayment(id: $streamingPaymentId) {
+    ...StreamingPayment
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
   }
 }
     ${StreamingPaymentFragmentDoc}`;
 
 /**
+<<<<<<< HEAD
  * __useGetStreamingPaymentsByColonyQuery__
  *
  * To run a query within a React component, call `useGetStreamingPaymentsByColonyQuery` and pass it any options that fit your needs.
  * When your component renders, `useGetStreamingPaymentsByColonyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+=======
+ * __useGetStreamingPaymentQuery__
+ *
+ * To run a query within a React component, call `useGetStreamingPaymentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStreamingPaymentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
+<<<<<<< HEAD
  * const { data, loading, error } = useGetStreamingPaymentsByColonyQuery({
  *   variables: {
  *      colonyId: // value for 'colonyId'
@@ -16463,6 +16515,25 @@ export function useGetStreamingPaymentsByColonyLazyQuery(baseOptions?: Apollo.La
 export type GetStreamingPaymentsByColonyQueryHookResult = ReturnType<typeof useGetStreamingPaymentsByColonyQuery>;
 export type GetStreamingPaymentsByColonyLazyQueryHookResult = ReturnType<typeof useGetStreamingPaymentsByColonyLazyQuery>;
 export type GetStreamingPaymentsByColonyQueryResult = Apollo.QueryResult<GetStreamingPaymentsByColonyQuery, GetStreamingPaymentsByColonyQueryVariables>;
+=======
+ * const { data, loading, error } = useGetStreamingPaymentQuery({
+ *   variables: {
+ *      streamingPaymentId: // value for 'streamingPaymentId'
+ *   },
+ * });
+ */
+export function useGetStreamingPaymentQuery(baseOptions: Apollo.QueryHookOptions<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>(GetStreamingPaymentDocument, options);
+      }
+export function useGetStreamingPaymentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>(GetStreamingPaymentDocument, options);
+        }
+export type GetStreamingPaymentQueryHookResult = ReturnType<typeof useGetStreamingPaymentQuery>;
+export type GetStreamingPaymentLazyQueryHookResult = ReturnType<typeof useGetStreamingPaymentLazyQuery>;
+export type GetStreamingPaymentQueryResult = Apollo.QueryResult<GetStreamingPaymentQuery, GetStreamingPaymentQueryVariables>;
+>>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
 export const GetTokenByAddressDocument = gql`
     query GetTokenByAddress($address: ID!) {
   getTokenByAddress(id: $address) {
