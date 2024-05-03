@@ -109,3 +109,28 @@ fragment ExpenditureBalance on ExpenditureBalance {
   tokenAddress
   amount
 }
+
+fragment StreamingPayment on StreamingPayment {
+  id
+  createdAt
+  endTime
+  interval
+  nativeDomainId
+  nativeId
+  recipientAddress
+  startTime
+  updatedAt
+  metadata {
+    endCondition
+    createdAt
+    id
+    limitAmount
+    updatedAt
+  }
+  payouts {
+    amount
+    tokenAddress
+    networkFee
+    isClaimed
+  }
+}
