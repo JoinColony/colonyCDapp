@@ -11,7 +11,11 @@ import {
   type ExpenditurePayoutFieldValue,
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
-import { type Domain, type Expenditure } from '~types/graphql.ts';
+import {
+  type StreamingPayment,
+  type Domain,
+  type Expenditure,
+} from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
 import {
@@ -27,6 +31,13 @@ export type ExpenditureFundPayload = {
   colonyDomains: Domain[];
   colonyRoles: ColonyRoleFragment[];
   annotationMessage?: string;
+};
+
+export type CancelStreamingPaymentPayload = {
+  colonyAddress: Address;
+  streamingPayment: StreamingPayment;
+  annotationMessage?: string;
+  userAddress: Address;
 };
 
 export type CancelStakedExpenditurePayload = {
@@ -236,4 +247,15 @@ export type ExpendituresActionTypes =
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.SET_STAKE_FRACTION_ERROR, object>
-  | UniqueActionType<ActionTypes.SET_STAKE_FRACTION_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.SET_STAKE_FRACTION_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CANCEL,
+      CancelStreamingPaymentPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CANCEL_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CANCEL_SUCCESS,
+      object,
+      object
+    >;
