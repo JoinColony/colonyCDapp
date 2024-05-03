@@ -70,9 +70,11 @@ export const authenticateWallet = async (): Promise<void> => {
 
     const signature = await signer.signMessage(message);
 
-    await authProxyRequest('auth', {
+    return authProxyRequest('auth', {
       method: 'POST',
       body: JSON.stringify({ message, signature }),
     });
   }
+
+  return authCheck;
 };
