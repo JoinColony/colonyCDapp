@@ -2,6 +2,7 @@ import { all, call } from 'redux-saga/effects';
 
 import cancelExpenditureSaga from './cancelExpenditure.ts';
 import cancelStakedExpenditureSaga from './cancelStakedExpenditure.ts';
+import cancelStreamingPaymentSaga from './cancelStreamingPayment.ts';
 import claimExpenditureSaga from './claimExpenditure.ts';
 import createExpenditureSaga from './createExpenditure.ts';
 import createStakedExpenditureSaga from './createStakedExpenditure.ts';
@@ -27,5 +28,6 @@ export default function* expendituresSagas() {
     call(releaseExpenditureStageSaga),
     call(cancelStakedExpenditureSaga),
     call(createStreamingPaymentSaga),
+    call(cancelStreamingPaymentSaga),
   ]);
 }
