@@ -15,9 +15,11 @@ import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
+import useStreamingPayments from '~hooks/useStreamingPayments.ts';
 import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelExpenditure.ts';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
+import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
@@ -38,7 +40,10 @@ import {
   type ExpenditureFundMotionPayload,
   type ExpenditureCancelMotionPayload,
 } from '~redux/types/actions/motion.ts';
-import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
+import {
+  getExpenditureDatabaseId,
+  getStreamingPaymentDatabaseId,
+} from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
@@ -62,10 +67,14 @@ const TmpAdvancedPayments = () => {
   const [expenditureId, setExpenditureId] = useState('');
   const [releaseStage, setReleaseStage] = useState('');
 
+  const [streamingPaymentId, setStreamingPaymentId] = useState('');
+
   const tokenDecimalAmount = parseFloat(decimalAmount);
 
   const { stakeAmount = '0', stakedExpenditureAddress = '' } =
     useExpenditureStaking();
+
+  const { streamingPaymentsAddress = '' } = useStreamingPayments();
 
   const { data, refetch } = useGetExpenditureQuery({
     variables: {
@@ -82,12 +91,12 @@ const TmpAdvancedPayments = () => {
   const { data: streamingPaymentData, refetch: refetchStreamingPayment } =
     useGetStreamingPaymentQuery({
       variables: {
-        streamingPaymentId: getExpenditureDatabaseId(
+        streamingPaymentId: getStreamingPaymentDatabaseId(
           colony.colonyAddress,
-          Number(expenditureId),
+          Number(streamingPaymentId),
         ),
       },
-      skip: Number.isNaN(expenditureId),
+      skip: Number.isNaN(streamingPaymentId),
       fetchPolicy: 'network-only',
     });
   const streamingPayment = streamingPaymentData?.getStreamingPayment;
@@ -171,6 +180,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.STREAMING_PAYMENT_CANCEL,
     error: ActionTypes.STREAMING_PAYMENT_CANCEL_ERROR,
     success: ActionTypes.STREAMING_PAYMENT_CANCEL_SUCCESS,
+  });
+  const claimStreamingPayment = useAsyncFunction({
+    submit: ActionTypes.STREAMING_PAYMENT_CLAIM,
+    error: ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR,
+    success: ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
   });
 
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
@@ -536,6 +550,21 @@ const TmpAdvancedPayments = () => {
     await cancelStreamingPayment(payload);
   };
 
+  const handleClaimStreamingPayment = async () => {
+    if (!streamingPayment || !blockTime) {
+      return;
+    }
+
+    const claimPayload: ClaimStreamingPaymentPayload = {
+      colonyAddress: colony.colonyAddress,
+      streamingPaymentsAddress,
+      streamingPayment,
+      tokenAddress,
+    };
+
+    await claimStreamingPayment(claimPayload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -576,13 +605,14 @@ const TmpAdvancedPayments = () => {
           Create streaming payment
         </ActionButton>
       </div>
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4 rounded-lg bg-gray-100 p-3">
+        <h2 className="block w-full font-bold">Expenditures</h2>
         <InputBase
           value={expenditureId}
           onChange={(e) => setExpenditureId(e.currentTarget.value)}
           placeholder="Expenditure ID"
         />
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 ">
           <Button onClick={handleLockExpenditure}>Lock</Button>
           <Button onClick={handleFundExpenditure} disabled={!expenditure}>
             Fund
@@ -610,8 +640,22 @@ const TmpAdvancedPayments = () => {
             Refetch streaming payment
           </Button>
         </div>
+        <div className="flex w-full gap-4">
+          <InputBase
+            value={releaseStage}
+            onChange={(e) => setReleaseStage(e.currentTarget.value)}
+            placeholder="Stage to release"
+          />
+          <Button
+            onClick={handleReleaseExpenditureStageMotion}
+            disabled={!expenditure}
+          >
+            Release Expenditure Stage Motion
+          </Button>
+        </div>
       </div>
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4 rounded-lg bg-gray-100 p-3">
+        <h2 className="block w-full font-bold">Streaming Payments</h2>
         <InputBase
           value={releaseStage}
           onChange={(e) => setReleaseStage(e.currentTarget.value)}
@@ -626,6 +670,20 @@ const TmpAdvancedPayments = () => {
         >
           Release Expenditure Stage Motion
         </Button>
+        <InputBase
+          value={streamingPaymentId}
+          onChange={(e) => setStreamingPaymentId(e.currentTarget.value)}
+          placeholder="Streaming Payment ID"
+        />
+        <div className="flex flex-wrap gap-4 ">
+          <Button
+            onClick={handleClaimStreamingPayment}
+            disabled={!streamingPayment}
+          >
+            Claim
+          </Button>
+          <Button onClick={() => refetchStreamingPayment()}>Refetch</Button>
+        </div>
       </div>
     </div>
   );
