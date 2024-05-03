@@ -40,7 +40,7 @@ function* claimStreamingPayment({
         colonyClient.networkClient,
         colonyClient,
         streamingPayment.nativeDomainId,
-        ColonyRole.Arbitration,
+        [ColonyRole.Funding, ColonyRole.Administration],
         streamingPaymentsAddress,
       );
 
@@ -53,7 +53,7 @@ function* claimStreamingPayment({
         extensionChildSkillIndex,
         extensionChildSkillIndex,
         extensionChildSkillIndex,
-        streamingPayment.id,
+        streamingPayment.nativeId,
         [tokenAddress],
       ],
     });
