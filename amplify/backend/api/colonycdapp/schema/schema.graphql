@@ -3639,6 +3639,18 @@ type ApprovedTokenChanges {
 type ExpenditureSlotChanges {
   oldSlots: [ExpenditureSlot!]!
   newSlots: [ExpenditureSlot!]!
+  """
+  ID of the associated streaming payment, if any
+  """
+  streamingPaymentId: ID
+    @index(
+      name: "byStreamingPaymentId"
+      queryField: "getActionByStreamingPaymentId"
+    )
+  """
+  Streaming payment associated with the action, if any
+  """
+  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
 }
 
 type ColonyActionMetadata @model {

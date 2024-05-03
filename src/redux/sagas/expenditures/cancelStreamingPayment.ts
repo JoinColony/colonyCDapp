@@ -34,6 +34,10 @@ function* cancelStreamingPaymentAction({
   const batchKey = 'cancelStreamingPayment';
 
   const colonyManager: ColonyManager = yield getColonyManager();
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
 
   const {
     cancelStreamingPayment,
@@ -61,11 +65,6 @@ function* cancelStreamingPaymentAction({
         'The stream recipient address should be the same as the current user address',
       );
     }
-
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient.networkClient,
@@ -105,7 +104,13 @@ function* cancelStreamingPaymentAction({
         },
         ready: false,
       });
+    }
 
+    yield takeFrom(
+      cancelStreamingPayment.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+    if (annotationMessage) {
       yield takeFrom(
         annotateCancelStreamingPayment.channel,
         ActionTypes.TRANSACTION_CREATED,

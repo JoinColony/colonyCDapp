@@ -10,6 +10,9 @@ fragment StreamingPayment on StreamingPayment {
   token {
     ...Token
   }
+  payouts {
+    ...ExpenditurePayout
+  }
   amount
   metadata {
     endCondition
@@ -18,6 +21,7 @@ fragment StreamingPayment on StreamingPayment {
       oldEndCondition
       newEndCondition
     }
+    limitAmount
   }
   claims {
     amount
