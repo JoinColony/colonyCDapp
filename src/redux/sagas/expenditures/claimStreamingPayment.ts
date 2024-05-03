@@ -18,7 +18,12 @@ export type ClaimStreamingPaymentPayload =
   Action<ActionTypes.STREAMING_PAYMENT_CLAIM>['payload'];
 
 function* claimStreamingPayment({
-  payload: { colonyAddress, streamingPaymentsAddress, streamingPayment },
+  payload: {
+    colonyAddress,
+    streamingPaymentsAddress,
+    streamingPayment,
+    tokenAddress,
+  },
   meta,
 }: Action<ActionTypes.STREAMING_PAYMENT_CLAIM>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -49,6 +54,7 @@ function* claimStreamingPayment({
         extensionChildSkillIndex,
         extensionChildSkillIndex,
         streamingPayment.nativeId,
+        [tokenAddress],
       ],
       group: {
         key: 'claimStreamingPayment',
