@@ -1,7 +1,9 @@
 import { Cardholder, GearSix, List, X } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
@@ -15,6 +17,13 @@ import UserMenu from './partials/UserMenu/index.ts';
 import { type UserNavigationProps } from './types.ts';
 
 const displayName = 'common.Extensions.UserNavigation';
+
+const MSG = defineMessages({
+  wrongNetwork: {
+    id: `${displayName}.unlockedToken`,
+    defaultMessage: `Please switch your wallet to the {correctNetworkName} network. More chains will be supported in future.`,
+  },
+});
 
 const UserNavigation: FC<UserNavigationProps> = ({
   extra = null,
@@ -60,7 +69,14 @@ const UserNavigation: FC<UserNavigationProps> = ({
       {isWalletConnected ? (
         <div className="flex gap-1">
           {networkInfo && (
-            <NetworkName size={isMobile ? 18 : 16} networkInfo={networkInfo} />
+            <NetworkName
+              size={isMobile ? 18 : 16}
+              networkInfo={networkInfo}
+              error={networkInfo?.chainId !== DEFAULT_NETWORK_INFO.chainId}
+              errorMessage={formatText(MSG.wrongNetwork, {
+                correctNetworkName: DEFAULT_NETWORK_INFO.name,
+              })}
+            />
           )}
           {userHub}
         </div>
