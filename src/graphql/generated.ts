@@ -8981,6 +8981,11 @@ export type GetMotionTimeoutPeriodsQueryVariables = Exact<{
 
 export type GetMotionTimeoutPeriodsQuery = { __typename?: 'Query', getMotionTimeoutPeriods?: { __typename?: 'GetMotionTimeoutPeriodsReturn', timeLeftToStake: string, timeLeftToVote: string, timeLeftToReveal: string, timeLeftToEscalate: string } | null };
 
+export type GetListColonyMotionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetListColonyMotionsQuery = { __typename?: 'Query', listColonyMotions?: { __typename?: 'ModelColonyMotionConnection', items: Array<{ __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, rootHash: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, gasEstimate: string, transactionHash: string, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: number, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description: string, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription: string, newDescription: string }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null> } | null };
+
 export type GetCurrentNetworkInverseFeeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -12056,6 +12061,42 @@ export function useGetMotionTimeoutPeriodsLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetMotionTimeoutPeriodsQueryHookResult = ReturnType<typeof useGetMotionTimeoutPeriodsQuery>;
 export type GetMotionTimeoutPeriodsLazyQueryHookResult = ReturnType<typeof useGetMotionTimeoutPeriodsLazyQuery>;
 export type GetMotionTimeoutPeriodsQueryResult = Apollo.QueryResult<GetMotionTimeoutPeriodsQuery, GetMotionTimeoutPeriodsQueryVariables>;
+export const GetListColonyMotionsDocument = gql`
+    query GetListColonyMotions {
+  listColonyMotions {
+    items {
+      ...ColonyMotion
+    }
+  }
+}
+    ${ColonyMotionFragmentDoc}`;
+
+/**
+ * __useGetListColonyMotionsQuery__
+ *
+ * To run a query within a React component, call `useGetListColonyMotionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetListColonyMotionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetListColonyMotionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetListColonyMotionsQuery(baseOptions?: Apollo.QueryHookOptions<GetListColonyMotionsQuery, GetListColonyMotionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetListColonyMotionsQuery, GetListColonyMotionsQueryVariables>(GetListColonyMotionsDocument, options);
+      }
+export function useGetListColonyMotionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetListColonyMotionsQuery, GetListColonyMotionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetListColonyMotionsQuery, GetListColonyMotionsQueryVariables>(GetListColonyMotionsDocument, options);
+        }
+export type GetListColonyMotionsQueryHookResult = ReturnType<typeof useGetListColonyMotionsQuery>;
+export type GetListColonyMotionsLazyQueryHookResult = ReturnType<typeof useGetListColonyMotionsLazyQuery>;
+export type GetListColonyMotionsQueryResult = Apollo.QueryResult<GetListColonyMotionsQuery, GetListColonyMotionsQueryVariables>;
 export const GetCurrentNetworkInverseFeeDocument = gql`
     query GetCurrentNetworkInverseFee {
   listCurrentNetworkInverseFees(limit: 1) {

@@ -1737,6 +1737,7 @@
     "expenditure.reviewStage.tooltip": "Payment is currently in review. The payment creator can make changes freely until details are confirmed.",
     "expenditure.reviewStage.confirmDetails.info": "If all details are correct, confirm the payment details to move onto funding. Changing after this point will require a governance process.",
     "expenditure.reviewStage.confirmDetails.button": "Confirm details",
+    "expenditure.fundingRequest.title": "Funding requests",
     "expenditure.fundingStage.label": "Funding",
     "expenditure.fundingStage.info": "You need collective approval in order to fund the payment, click “Fund” to start the process.",
     "expenditure.fundingStage.button": "Fund",

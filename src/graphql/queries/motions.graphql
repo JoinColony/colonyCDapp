@@ -26,3 +26,11 @@ query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
     timeLeftToEscalate
   }
 }
+
+query GetListColonyMotions {
+  listColonyMotions {
+    items {
+      ...ColonyMotion
+    }
+  }
+}
