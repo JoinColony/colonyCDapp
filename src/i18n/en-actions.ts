@@ -64,8 +64,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.UnlockTokenMotion} {Unlock Token}
       ${ColonyActionType.MintTokens} {Mint Tokens}
       ${ColonyActionType.MintTokensMotion} {Mint Tokens}
-      ${ColonyActionType.CreateDomain} {Create Team}
-      ${ColonyActionType.CreateDomainMotion} {Create Team}
+      ${ColonyActionType.CreateDomain} {Create new team}
+      ${ColonyActionType.CreateDomainMotion} {Create new team}
       ${ColonyActionType.VersionUpgrade} {Version Upgrade}
       ${ColonyActionType.VersionUpgradeMotion} {Version Upgrade}
       ${ColonyActionType.ColonyEdit} {Manage objective}
