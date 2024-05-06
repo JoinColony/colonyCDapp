@@ -38,7 +38,6 @@ export const ManagePermissionsDescription = () => {
     {},
   );
   const rolesTitle = formatRolesTitle(memberRoles);
-
   const recipientUser = member ? (
     <RecipientUser
       userAddress={member}
@@ -52,14 +51,30 @@ export const ManagePermissionsDescription = () => {
     })
   );
 
+  if (!role) {
+    return (
+      <FormattedMessage
+        id="actionSidebar.metadataDescription.managePermissionsPlaceholder"
+        values={{
+          initiator: <CurrentUser />,
+          recipient: recipientUser,
+          team: selectedDomain?.metadata
+            ? selectedDomain.metadata.name
+            : formatText({
+                id: 'actionSidebar.metadataDescription.team',
+              }),
+        }}
+      />
+    );
+  }
+
   return (
     <FormattedMessage
       id="action.title"
       values={{
         actionType: ColonyActionType.SetUserRoles,
         recipient: recipientUser,
-        direction: rolesTitle.direction,
-        rolesChanged: rolesTitle.roleTitle,
+        direction: rolesTitle,
         fromDomain: selectedDomain?.metadata
           ? selectedDomain.metadata.name
           : formatText({
