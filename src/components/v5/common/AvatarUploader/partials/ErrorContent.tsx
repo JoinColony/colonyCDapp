@@ -13,7 +13,6 @@ const ErrorContent: FC<ErrorContentProps> = ({
   errorCode,
   handleFileRemove,
   open,
-  getInputProps,
   fileRejections,
 }) => {
   const { formatMessage } = useIntl();
@@ -47,7 +46,6 @@ const ErrorContent: FC<ErrorContentProps> = ({
         </span>
         <TextButton onClick={open} mode="underlined" isErrorColor>
           {formatMessage({ id: 'button.try.again' })}
-          <input {...getInputProps()} />
         </TextButton>
       </div>
     </div>

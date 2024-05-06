@@ -207,13 +207,12 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!slots.length && (
-        <PaymentBuilderTable
-          items={slots}
-          status={status}
-          finalizedTimestamp={finalizedAt}
-        />
-      )}
+      <PaymentBuilderTable
+        items={slots}
+        status={status}
+        finalizedTimestamp={finalizedAt}
+        isLoading={!slots.length}
+      />
       <CancelModal
         isOpen={isCancelModalOpen}
         expenditure={expenditure}

@@ -199,7 +199,36 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
               !isTablet,
           },
         )}
-        data={data}
+        data={
+          !data.length
+            ? [
+                {
+                  recipient: '0x000',
+                  claimDelay: '0',
+                  amount: '0',
+                  tokenAddress: '0x000',
+                  isClaimed: false,
+                  id: 0,
+                },
+                {
+                  recipient: '0x000',
+                  claimDelay: '0',
+                  amount: '0',
+                  tokenAddress: '0x000',
+                  isClaimed: false,
+                  id: 1,
+                },
+                {
+                  recipient: '0x000',
+                  claimDelay: '0',
+                  amount: '0',
+                  tokenAddress: '0x000',
+                  isClaimed: false,
+                  id: 2,
+                },
+              ]
+            : data
+        }
         columns={columns}
         renderCellWrapper={(_, content) => content}
         verticalLayout={isTablet}
