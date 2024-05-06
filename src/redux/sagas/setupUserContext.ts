@@ -12,6 +12,7 @@ import {
 } from '~utils/autoLogin.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
+import { failPendingTransactions } from '../../state/transactionState.ts';
 import { ActionTypes } from '../actionTypes.ts';
 import { type AllActions } from '../types/actions/index.ts';
 
@@ -75,6 +76,7 @@ function* initializeFullWallet(lastWallet: LastWallet | null) {
   setContext(ContextModule.Wallet, wallet);
   yield call(getGasPrices);
   yield call(authenticateWallet);
+  yield call(failPendingTransactions);
 }
 
 /*
