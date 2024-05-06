@@ -39,7 +39,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
       <>
         <Icon
           size={14}
-          className={clsx({
+          className={clsx('mt-[0.125rem] sm:mt-0', {
             'text-negative-400': !isDisabled && isError,
             'text-gray-900': !isDisabled && !isError,
             'text-gray-300': isDisabled,
@@ -90,7 +90,7 @@ const ActionFormRow = React.forwardRef<HTMLDivElement, ActionFormRowProps>(
       </button>
     ) : (
       <div
-        className={clsx('flex items-center', {
+        className={clsx('flex sm:items-center', {
           'text-negative-400': isError,
           'text-gray-600': !isError,
         })}

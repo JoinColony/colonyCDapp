@@ -3,7 +3,10 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants';
+import {
+  MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+  MAX_OBJECTIVE_TITLE,
+} from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
@@ -29,7 +32,7 @@ const MSG = defineMessages({
   },
   descriptionPlaceholder: {
     id: `${displayName}.descriptionPlaceholder`,
-    defaultMessage: 'Short objective overview',
+    defaultMessage: 'Enter short description',
   },
   progress: {
     id: `${displayName}.progress`,
@@ -49,12 +52,13 @@ const ColonyObjectiveFields: FC = () => {
         icon={Article}
         title={formatText(MSG.title)}
         fieldName="colonyObjectiveTitle"
+        isMultiLine
         isDisabled={hasNoDecisionMethods}
       >
-        <FormInputBase
+        <FormTextareaBase
           name="colonyObjectiveTitle"
           placeholder={formatText(MSG.titlePlaceholder)}
-          mode="secondary"
+          maxLength={MAX_OBJECTIVE_TITLE}
           message={undefined}
           defaultValue={objective?.title}
           disabled={hasNoDecisionMethods}
@@ -71,7 +75,6 @@ const ColonyObjectiveFields: FC = () => {
           name="colonyObjectiveDescription"
           placeholder={formatText(MSG.descriptionPlaceholder)}
           maxLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
-          wrapperClassName="w-full"
           message={undefined}
           defaultValue={objective?.description}
           disabled={hasNoDecisionMethods}
