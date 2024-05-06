@@ -27,6 +27,7 @@ fragment Expenditure on Expenditure {
   balances {
     ...ExpenditureBalance
   }
+  # @NOTE: If querying actions field multiple times proves slow, we could query it once and filter on the client
   lockingActions: actions(
     filter: {
       type: { eq: LOCK_EXPENDITURE }
@@ -34,11 +35,7 @@ fragment Expenditure on Expenditure {
     }
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
     }
   }
   fundingActions: actions(
@@ -59,11 +56,7 @@ fragment Expenditure on Expenditure {
     }
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
     }
   }
   cancellingActions: actions(
@@ -73,11 +66,17 @@ fragment Expenditure on Expenditure {
     }
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
+    }
+  }
+  editingActions: actions(
+    filter: {
+      type: { eq: EDIT_EXPENDITURE }
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      ...ExpenditureAction
     }
   }
 }
@@ -108,4 +107,12 @@ fragment ExpenditureStage on ExpenditureStage {
 fragment ExpenditureBalance on ExpenditureBalance {
   tokenAddress
   amount
+}
+
+fragment ExpenditureAction on ColonyAction {
+  id
+  initiatorAddress
+  initiatorUser {
+    ...User
+  }
 }

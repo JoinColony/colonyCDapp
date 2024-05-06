@@ -729,9 +729,13 @@ enum ColonyActionType {
   """
   SET_EXPENDITURE_STATE_MOTION
   """
+  An action related to editing an expenditure
+  """
+  EDIT_EXPENDITURE
+  """
   An action related to creating a motion to edit an expenditure
   """
-  EDIT_LOCKED_EXPENDITURE_MOTION
+  EDIT_EXPENDITURE_MOTION
   """
   An action related to the creation of safe transactions via Safe Control
   """
@@ -2934,6 +2938,16 @@ type ColonyAction @model @searchable {
   @TODO: Make this field non-nullable
   """
   isMotionFinalization: Boolean
+  """
+  Changes to the expenditure slots associated with the action, if any
+  Applicable to `EDIT_EXPENDITURE` action only
+  """
+  expenditureSlotChanges: ExpenditureSlotChanges
+}
+
+type ExpenditureSlotChanges {
+  oldSlots: [ExpenditureSlot!]!
+  newSlots: [ExpenditureSlot!]!
 }
 
 type ColonyActionMetadata @model {
@@ -3273,6 +3287,10 @@ type Expenditure @model {
   User stake associated with the expenditure, if any
   """
   userStake: UserStake @hasOne(fields: ["userStakeId"])
+  """
+  Hash of the first transaction that contained ExpenditurePayoutSet event
+  """
+  firstEditTransactionHash: String
 }
 
 """
