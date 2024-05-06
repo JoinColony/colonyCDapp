@@ -6,6 +6,7 @@ import useToggle from '~hooks/useToggle/index.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
@@ -16,8 +17,10 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/FinalizeWithPermissionsInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
+import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
+import RequestBox from '../RequestBox/RequestBox.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
@@ -156,10 +159,28 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ) : (
           // @todo: please update this element when other decisions methods for funding will be implemented
           <>
-            {fundingActionsItems?.length === 1 && (
-              <FinalizeWithPermissionsInfo
-                userAdddress={fundingActionsItems[0]?.initiatorAddress}
-              />
+            {expenditure?.motions?.items?.length ? (
+              <div className="flex flex-col gap-2">
+                <RequestBox
+                  title={formatText({ id: 'expenditure.fundingRequest.title' })}
+                  items={[
+                    {
+                      date: '24 April 2024',
+                      motionState: MotionState.Staking,
+                      transactionHash:
+                        '0x5039c871af2f2068af4e1ab6e2379d8e164aeb8c44e9a81e9e25da6f8d8d9347',
+                      key: '1',
+                    },
+                  ]}
+                />
+                <MotionBox transactionId={action.transactionHash} />
+              </div>
+            ) : (
+              fundingActionsItems?.length === 1 && (
+                <FinalizeWithPermissionsInfo
+                  userAdddress={fundingActionsItems[0]?.initiatorAddress}
+                />
+              )
             )}
           </>
         ),

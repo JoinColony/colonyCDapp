@@ -21,6 +21,7 @@ import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpen
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
 import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
+import { type FundMotionExpenditurePayload } from '~redux/sagas/motions/expenditures/fundExpenditureMotion.ts';
 import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import { type ExpenditureCancelMotionPayload } from '~redux/types/actions/motion.ts';
@@ -77,6 +78,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.EXPENDITURE_FUND,
     error: ActionTypes.EXPENDITURE_FUND_ERROR,
     success: ActionTypes.EXPENDITURE_FUND_SUCCESS,
+  });
+  const fundMotionExpenditure = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FUND,
+    error: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
   });
   const finalizeExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_FINALIZE,
@@ -196,6 +202,22 @@ const TmpAdvancedPayments = () => {
     };
 
     await fundExpenditure(payload);
+  };
+
+  const handleFundMotionExpenditure = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: FundMotionExpenditurePayload = {
+      colony,
+      fromDomainId: 1,
+      motionDomainId: expenditure.nativeDomainId,
+      expenditure,
+      fromDomainFundingPotId: 1,
+    };
+
+    await fundMotionExpenditure(payload);
   };
 
   const handleFinalizeExpenditure = async () => {
@@ -439,6 +461,9 @@ const TmpAdvancedPayments = () => {
           <Button onClick={handleLockExpenditure}>Lock</Button>
           <Button onClick={handleFundExpenditure} disabled={!expenditure}>
             Fund
+          </Button>
+          <Button onClick={handleFundMotionExpenditure} disabled={!expenditure}>
+            Fund Motion
           </Button>
           <Button onClick={handleFinalizeExpenditure}>Finalize</Button>
           <Button onClick={handleClaimExpenditure}>Claim</Button>

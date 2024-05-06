@@ -25,6 +25,9 @@ import {
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 
+export type FundMotionExpenditurePayload =
+  Action<ActionTypes.MOTION_EXPENDITURE_FUND>['payload'];
+
 function* fundExpenditureMotion({
   payload: {
     colony: { colonyAddress, version: colonyVersion },
