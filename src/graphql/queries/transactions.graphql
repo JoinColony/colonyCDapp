@@ -32,3 +32,14 @@ query GetTransaction($id: ID!) {
     ...Transaction
   }
 }
+
+query GetPendingTransactions($userAddress: ID!) {
+  getTransactionsByUser(
+    from: $userAddress
+    filter: { status: { eq: PENDING } }
+  ) {
+    items {
+      id
+    }
+  }
+}

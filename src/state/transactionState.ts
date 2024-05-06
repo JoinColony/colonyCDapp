@@ -21,6 +21,9 @@ import {
   type GetUserTransactionsQuery,
   type GetUserTransactionsQueryVariables,
   GetUserTransactionsDocument,
+  type GetPendingTransactionsQuery,
+  type GetPendingTransactionsQueryVariables,
+  GetPendingTransactionsDocument,
 } from '~gql';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { type TransactionCreatedPayload } from '~redux/types/actions/transaction.ts';
@@ -30,6 +33,7 @@ import {
   type MethodParams,
   type ExtendedClientType,
 } from '~types/transactions.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { filter, groupBy, mapValues, orderBy } from '~utils/lodash.ts';
 
 export const TX_PAGE_SIZE = 20;
@@ -424,4 +428,45 @@ export const transactionSetParams = async (
     ...input,
     status: TransactionStatus.Pending,
   });
+};
+
+export const failPendingTransactions = async () => {
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
+  const apollo = getContext(ContextModule.ApolloClient);
+
+  const { data } = await apollo.query<
+    GetPendingTransactionsQuery,
+    GetPendingTransactionsQueryVariables
+  >({
+    query: GetPendingTransactionsDocument,
+    variables: {
+      userAddress: walletAddress,
+    },
+  });
+
+  const promises = data.getTransactionsByUser?.items
+    .filter(notNull)
+    .map((tx) => {
+      return updateTransaction(
+        {
+          id: tx.id,
+          from: walletAddress,
+          status: TransactionStatus.Failed,
+        },
+        // Optimisitc response, for quick UI updates
+        {
+          id: tx.id,
+          status: TransactionStatus.Failed,
+          params: null,
+          identifier: null,
+        },
+      );
+    });
+
+  if (!promises) {
+    return;
+  }
+
+  await Promise.allSettled(promises);
 };
