@@ -90,17 +90,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     colony,
   );
 
-  const recipientCounts = slots.reduce((uniqueAddresses: string[], item) => {
-    const address = item.recipientAddress;
-    if (address) {
-      if (!uniqueAddresses.includes(address)) {
-        uniqueAddresses.push(address);
-      }
-    }
-
-    return uniqueAddresses;
-  }, []).length;
-
   const tokensCount = slots.reduce((uniqueTokens: string[], item) => {
     const token = item.payouts?.[0].tokenAddress;
 
@@ -171,7 +160,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           { id: 'action.title' },
           {
             actionType: ColonyActionType.CreateExpenditure,
-            recipientsNumber: recipientCounts,
+            recipientsNumber: slots.length,
             tokensNumber: tokensCount,
             initiator: initiatorUser ? (
               <UserPopover
