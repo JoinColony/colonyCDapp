@@ -63,6 +63,7 @@
     "@storybook/blocks": "^8.0.0",
     "@storybook/react-vite": "^8.0.0",
     "@storybook/test": "^8.0.0",
+    "@swc/core": "^1.4.17",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.9",
     "@testing-library/cypress": "^8.0.2",
