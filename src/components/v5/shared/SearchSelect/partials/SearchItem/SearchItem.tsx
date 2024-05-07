@@ -38,6 +38,7 @@ const SearchItem: FC<SearchItemProps> = ({
           label,
           value,
           isDisabled,
+          isComingSoon,
           avatar,
           showAvatar,
           color,
@@ -45,9 +46,7 @@ const SearchItem: FC<SearchItemProps> = ({
           token,
           isVerified,
         }) => {
-          const firstDisabledOption = options.filter(
-            (option) => option.isDisabled,
-          )[0];
+          const comingSoonOption = isComingSoon || (isDisabled && isComingSoon);
           const labelText = formatText(label || '');
 
           const hasAvatar = showAvatar || !!color || !!token;
@@ -122,7 +121,7 @@ const SearchItem: FC<SearchItemProps> = ({
                     />
                   )}
                   {!label && <span className="truncate">{walletAddress}</span>}
-                  {firstDisabledOption?.value === value && (
+                  {comingSoonOption && (
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
                       <ExtensionsStatusBadge
                         mode="coming-soon"
