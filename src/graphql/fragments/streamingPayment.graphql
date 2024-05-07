@@ -13,4 +13,8 @@ fragment StreamingPayment on StreamingPayment {
     endCondition
     limitAmount
   }
+  claims {
+    amount
+    tokenAddress
+  }
 }
