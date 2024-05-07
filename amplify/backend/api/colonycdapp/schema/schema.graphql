@@ -4253,6 +4253,11 @@ type StreamingPaymentClaim {
   timestamp: String!
 }
 
+type StreamingPaymentClaim {
+  tokenAddress: ID!
+  amount: String!
+}
+
 """
 Defines an annotation for actions, motions and decisions
 """
