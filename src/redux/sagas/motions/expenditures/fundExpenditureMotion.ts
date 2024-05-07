@@ -9,7 +9,7 @@ import {
 import { constants } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ADDRESS_ZERO, APP_URL } from '~constants/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createGroupTransaction,
@@ -191,6 +191,14 @@ function* fundExpenditureMotion({
         type: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
         meta,
       });
+
+      // @TODO: Remove during advanced payments UI wiring
+      // eslint-disable-next-line no-console
+      console.log(
+        `Fund Expenditure Motion URL: ${APP_URL}${window.location.pathname.slice(
+          1,
+        )}?tx=${txHash}`,
+      );
     }
   } catch (e) {
     console.error(e);
