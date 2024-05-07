@@ -832,6 +832,11 @@ export type ColonyMotion = {
   createdBy: Scalars['String'];
   /** Edited expenditure slots associated with the motion, if any */
   editedExpenditureSlots?: Maybe<Array<ExpenditureSlot>>;
+  /**
+   * In case of multicall motion funding an expenditure, array containing
+   * the details of tokens and amounts to be funded
+   */
+  expenditureFunding?: Maybe<Array<ExpenditureFundingItem>>;
   /** Expenditure associated with the motion, if any */
   expenditureId?: Maybe<Scalars['ID']>;
   /** Id of the expenditure stage payment to be released if the motion pass, if any */
@@ -1288,6 +1293,7 @@ export type CreateColonyMetadataInput = {
 export type CreateColonyMotionInput = {
   createdBy: Scalars['String'];
   editedExpenditureSlots?: InputMaybe<Array<ExpenditureSlotInput>>;
+  expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotId?: InputMaybe<Scalars['Int']>;
   gasEstimate: Scalars['String'];
@@ -1979,6 +1985,19 @@ export type ExpenditureBalance = {
 export type ExpenditureBalanceInput = {
   amount: Scalars['String'];
   tokenAddress: Scalars['ID'];
+};
+
+export type ExpenditureFundingItem = {
+  __typename?: 'ExpenditureFundingItem';
+  /** The amount of the token to be funded */
+  amount: Scalars['String'];
+  /** The token address of the token to be funded */
+  tokenAddress: Scalars['String'];
+};
+
+export type ExpenditureFundingItemInput = {
+  amount: Scalars['String'];
+  tokenAddress: Scalars['String'];
 };
 
 export type ExpenditureMetadata = {
@@ -7956,6 +7975,7 @@ export type UpdateColonyMetadataInput = {
 export type UpdateColonyMotionInput = {
   createdBy?: InputMaybe<Scalars['String']>;
   editedExpenditureSlots?: InputMaybe<Array<ExpenditureSlotInput>>;
+  expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotId?: InputMaybe<Scalars['Int']>;
   gasEstimate?: InputMaybe<Scalars['String']>;
