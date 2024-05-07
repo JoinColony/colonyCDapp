@@ -3,6 +3,7 @@ import React from 'react';
 
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
+import { tw } from '~utils/css/index.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { type RenderCellWrapper } from '~v5/common/Table/types.ts';
@@ -11,14 +12,22 @@ import Link from '~v5/shared/Link/index.ts';
 const useRenderRowLink = (
   loading: boolean,
 ): RenderCellWrapper<ActivityFeedColonyAction> => {
-  const cellWrapperClassName = '!pt-[.5625rem] !pb-2';
+  const cellClassName = tw(
+    'flex h-full flex-col justify-center py-1 text-md text-gray-500',
+  );
 
-  return (className, content, { cell, row }) =>
+  return (_, content, { cell, row }) =>
     cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID || loading ? (
-      <div className={clsx(className, cellWrapperClassName)}>{content}</div>
+      <div
+        className={clsx(cellClassName, {
+          'items-end': cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID,
+        })}
+      >
+        {content}
+      </div>
     ) : (
       <Link
-        className={clsx(className, cellWrapperClassName)}
+        className={clsx(cellClassName, 'items-start')}
         to={setQueryParamOnUrl(
           window.location.search,
           TX_SEARCH_PARAM,
