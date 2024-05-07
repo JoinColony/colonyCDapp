@@ -1491,6 +1491,7 @@ export type CreateSafeTransactionInput = {
 };
 
 export type CreateStreamingPaymentInput = {
+  claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime: Scalars['AWSTimestamp'];
   id?: InputMaybe<Scalars['ID']>;
@@ -6881,6 +6882,7 @@ export type StakerRewardsInput = {
 
 export type StreamingPayment = {
   __typename?: 'StreamingPayment';
+  claims?: Maybe<Array<StreamingPaymentClaim>>;
   createdAt: Scalars['AWSDateTime'];
   endTime: Scalars['AWSTimestamp'];
   id: Scalars['ID'];
@@ -6892,6 +6894,17 @@ export type StreamingPayment = {
   recipientAddress: Scalars['String'];
   startTime: Scalars['AWSTimestamp'];
   updatedAt: Scalars['AWSDateTime'];
+};
+
+export type StreamingPaymentClaim = {
+  __typename?: 'StreamingPaymentClaim';
+  amount: Scalars['String'];
+  tokenAddress: Scalars['ID'];
+};
+
+export type StreamingPaymentClaimInput = {
+  amount: Scalars['String'];
+  tokenAddress: Scalars['ID'];
 };
 
 export enum StreamingPaymentEndCondition {
@@ -8187,6 +8200,7 @@ export type UpdateSafeTransactionInput = {
 };
 
 export type UpdateStreamingPaymentInput = {
+  claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime?: InputMaybe<Scalars['AWSTimestamp']>;
   id: Scalars['ID'];
@@ -8528,7 +8542,7 @@ export type ExpenditureStageFragment = { __typename?: 'ExpenditureStage', slotId
 
 export type ExpenditureBalanceFragment = { __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string };
 
-export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, createdAt: string, endTime: number, interval: string, nativeDomainId: number, nativeId: number, recipientAddress: string, startTime: number, updatedAt: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, createdAt: string, id: string, limitAmount?: string | null, updatedAt: string } | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', amount: string, tokenAddress: string, networkFee?: string | null, isClaimed: boolean }> | null };
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, createdAt: string, endTime: number, interval: string, nativeDomainId: number, nativeId: number, recipientAddress: string, startTime: number, updatedAt: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, createdAt: string, id: string, limitAmount?: string | null, updatedAt: string } | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', amount: string, tokenAddress: string, networkFee?: string | null, isClaimed: boolean }> | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string }> | null };
 
 export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null };
 
@@ -8925,7 +8939,7 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 }>;
 
 
-export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, createdAt: string, endTime: number, interval: string, nativeDomainId: number, nativeId: number, recipientAddress: string, startTime: number, updatedAt: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, createdAt: string, id: string, limitAmount?: string | null, updatedAt: string } | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', amount: string, tokenAddress: string, networkFee?: string | null, isClaimed: boolean }> | null } | null };
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, createdAt: string, endTime: number, interval: string, nativeDomainId: number, nativeId: number, recipientAddress: string, startTime: number, updatedAt: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, createdAt: string, id: string, limitAmount?: string | null, updatedAt: string } | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', amount: string, tokenAddress: string, networkFee?: string | null, isClaimed: boolean }> | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string }> | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -9544,6 +9558,10 @@ export const StreamingPaymentFragmentDoc = gql`
     tokenAddress
     networkFee
     isClaimed
+  }
+  claims {
+    amount
+    tokenAddress
   }
 }
     `;

@@ -133,4 +133,8 @@ fragment StreamingPayment on StreamingPayment {
     networkFee
     isClaimed
   }
+  claims {
+    amount
+    tokenAddress
+  }
 }
