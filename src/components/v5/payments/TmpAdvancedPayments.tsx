@@ -24,7 +24,10 @@ import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expendit
 import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
 import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
-import { type ExpenditureCancelMotionPayload } from '~redux/types/actions/motion.ts';
+import {
+  type ExpenditureFundMotionPayload,
+  type ExpenditureCancelMotionPayload,
+} from '~redux/types/actions/motion.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
@@ -128,6 +131,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.MOTION_EXPENDITURE_FINALIZE,
     error: ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR,
     success: ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
+  });
+  const fundExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FUND,
+    error: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
   });
 
   const blockTime = useCurrentBlockTime();
@@ -349,6 +357,22 @@ const TmpAdvancedPayments = () => {
     await cancelExpenditure(payload);
   };
 
+  const handleFundViaMotion = async () => {
+    if (!expenditure || !votingReputationAddress) {
+      return;
+    }
+
+    const payload: ExpenditureFundMotionPayload = {
+      colony,
+      expenditure,
+      motionDomainId: Id.RootDomain,
+      fromDomainFundingPotId: 1,
+      fromDomainId: 1,
+    };
+
+    await fundExpenditureViaMotion(payload);
+  };
+
   const handleEditViaMotion = async () => {
     if (!expenditure) {
       return;
@@ -468,6 +492,7 @@ const TmpAdvancedPayments = () => {
           </Button>
           <Button onClick={handleEdit}>Edit</Button>
           <Button onClick={handleCancel}>Cancel</Button>
+          <Button onClick={handleFundViaMotion}>Fund via motion</Button>
           <Button onClick={handleCancelViaMotion}>Cancel via motion</Button>
           <Button onClick={handleEditViaMotion}>Edit via motion</Button>
           <Button onClick={handleFinalizeViaMotion}>Finalize via motion</Button>
