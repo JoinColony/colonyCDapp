@@ -2472,6 +2472,23 @@ type ColonyMotion @model {
   Edited expenditure slots associated with the motion, if any
   """
   editedExpenditureSlots: [ExpenditureSlot!]
+
+  """
+  In case of multicall motion funding an expenditure, array containing
+  the details of tokens and amounts to be funded
+  """
+  expenditureFunding: [ExpenditureFundingItem!]
+}
+
+type ExpenditureFundingItem {
+  """
+  The amount of the token to be funded
+  """
+  amount: String!
+  """
+  The token address of the token to be funded
+  """
+  tokenAddress: String!
 }
 
 """
