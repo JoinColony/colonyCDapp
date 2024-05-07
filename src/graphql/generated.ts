@@ -1924,9 +1924,13 @@ export type CreateSafeTransactionInput = {
 };
 
 export type CreateStreamingPaymentInput = {
+<<<<<<< HEAD
   amount: Scalars['String'];
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId: Scalars['ID'];
+=======
+  claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
+>>>>>>> e64580ff0 (Add streaming payment claims)
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   creatorAddress: Scalars['ID'];
   endTime: Scalars['String'];
@@ -8658,6 +8662,7 @@ export type StreamingPayment = {
   __typename?: 'StreamingPayment';
   actions?: Maybe<ModelColonyActionConnection>;
 <<<<<<< HEAD
+<<<<<<< HEAD
   amount: Scalars['String'];
   claims?: Maybe<Array<StreamingPaymentClaim>>;
   /** The Colony to which the expenditure belongs */
@@ -8666,6 +8671,9 @@ export type StreamingPayment = {
   colonyId: Scalars['ID'];
 =======
 >>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
+=======
+  claims?: Maybe<Array<StreamingPaymentClaim>>;
+>>>>>>> e64580ff0 (Add streaming payment claims)
   createdAt: Scalars['AWSDateTime'];
   /** Address of the stream creator, can be a user or an extension */
   creatorAddress: Scalars['ID'];
@@ -8699,6 +8707,7 @@ export type StreamingPaymentActionsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 export type StreamingPaymentMotionsArgs = {
@@ -8740,15 +8749,27 @@ export type StreamingPaymentClaim = {
   __typename?: 'StreamingPaymentClaim';
   amount: Scalars['String'];
   timestamp: Scalars['String'];
+=======
+export type StreamingPaymentClaim = {
+  __typename?: 'StreamingPaymentClaim';
+  amount: Scalars['String'];
+  tokenAddress: Scalars['ID'];
+>>>>>>> e64580ff0 (Add streaming payment claims)
 };
 
 export type StreamingPaymentClaimInput = {
   amount: Scalars['String'];
+<<<<<<< HEAD
   timestamp: Scalars['String'];
 };
 
 =======
 >>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
+=======
+  tokenAddress: Scalars['ID'];
+};
+
+>>>>>>> e64580ff0 (Add streaming payment claims)
 export enum StreamingPaymentEndCondition {
   FixedTime = 'FIXED_TIME',
   LimitReached = 'LIMIT_REACHED',
@@ -10277,9 +10298,13 @@ export type UpdateSafeTransactionInput = {
 };
 
 export type UpdateStreamingPaymentInput = {
+<<<<<<< HEAD
   amount?: InputMaybe<Scalars['String']>;
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId?: InputMaybe<Scalars['ID']>;
+=======
+  claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
+>>>>>>> e64580ff0 (Add streaming payment claims)
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   creatorAddress?: InputMaybe<Scalars['ID']>;
   endTime?: InputMaybe<Scalars['String']>;
@@ -10713,7 +10738,7 @@ export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: st
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
-export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null };
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string }> | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -11243,7 +11268,7 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 }>;
 
 
-export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null } | null };
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string }> | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -12674,6 +12699,10 @@ export const StreamingPaymentChangesFragmentDoc = gql`
   metadata {
     endCondition
     limitAmount
+  }
+  claims {
+    amount
+    tokenAddress
   }
 }
     ${ExpenditurePayoutFragmentDoc}`;

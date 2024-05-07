@@ -4106,6 +4106,7 @@ type StreamingPayment @model @searchable {
   tokenAddress: ID!
   token: Token @hasOne(fields: ["tokenAddress"])
   amount: String!
+  payouts: [ExpenditurePayout!]
   claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
   """
@@ -4162,6 +4163,11 @@ type StreamingPaymentMetadataChangelog {
 type StreamingPaymentClaim {
   amount: String!
   timestamp: String!
+}
+
+type StreamingPaymentClaim {
+  tokenAddress: ID!
+  amount: String!
 }
 
 """
