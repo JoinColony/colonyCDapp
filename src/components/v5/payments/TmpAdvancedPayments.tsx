@@ -15,6 +15,7 @@ import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
+import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLeft.ts';
 import useStreamingPayments from '~hooks/useStreamingPayments.ts';
 import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelExpenditure.ts';
@@ -40,6 +41,8 @@ import {
   type ExpenditureFundMotionPayload,
   type ExpenditureCancelMotionPayload,
 } from '~redux/types/actions/motion.ts';
+import { getFormattedNumeralValue } from '~shared/Numeral/helpers.tsx';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import {
   getExpenditureDatabaseId,
   getStreamingPaymentDatabaseId,
@@ -189,6 +192,12 @@ const TmpAdvancedPayments = () => {
 
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
+  const { amountsAvailableToClaim, amountsClaimedToDate } =
+    useStreamingPaymentAmountsLeft(
+      streamingPayment,
+      Math.floor(blockTime ?? Date.now() / 1000),
+    );
+
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   if (!rootDomain) {
     return null;
@@ -253,12 +262,12 @@ const TmpAdvancedPayments = () => {
     createdInDomain: rootDomain,
     amount: transactionAmount,
     endCondition: StreamingPaymentEndCondition.FixedTime,
-    interval: 10000,
+    interval: 86400, // One day
     recipientAddress: user?.walletAddress ?? '',
-    startTimestamp: Math.floor(Date.now() / 1000) + 7430488, // Add this weird number to match the block time in dev.
+    startTimestamp: (blockTime ?? Math.floor(Date.now() / 1000)) - 604800, // One week ago
     tokenAddress,
     tokenDecimals: parseInt(decimalAmount, 10),
-    endTimestamp: Math.floor(Date.now() / 1000) + 30000 + 7430488, // Add this weird number to match the block time in dev.
+    endTimestamp: (blockTime ?? Math.floor(Date.now() / 1000)) + 604800, // Next week
   };
 
   const handleLockExpenditure = async () => {
@@ -551,7 +560,7 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleClaimStreamingPayment = async () => {
-    if (!streamingPayment || !blockTime) {
+    if (!streamingPayment) {
       return;
     }
 
@@ -564,6 +573,26 @@ const TmpAdvancedPayments = () => {
 
     await claimStreamingPayment(claimPayload);
   };
+
+  const amountClaimed = amountsClaimedToDate[tokenAddress] ?? 0;
+  const convertedAmountClaimed = convertToDecimal(
+    amountClaimed,
+    parseInt(decimalAmount, 10) || 0,
+  );
+  const formattedAmountClaimed = getFormattedNumeralValue(
+    convertedAmountClaimed,
+    amountClaimed,
+  );
+
+  const amountAvailable = amountsAvailableToClaim[tokenAddress] ?? 0;
+  const convertedAmountAvailable = convertToDecimal(
+    amountAvailable,
+    parseInt(decimalAmount, 10) || 0,
+  );
+  const formattedAmountAvailable = getFormattedNumeralValue(
+    convertedAmountAvailable,
+    amountAvailable,
+  );
 
   return (
     <div className="flex flex-col gap-8">
@@ -675,6 +704,16 @@ const TmpAdvancedPayments = () => {
           onChange={(e) => setStreamingPaymentId(e.currentTarget.value)}
           placeholder="Streaming Payment ID"
         />
+        {streamingPayment && (
+          <div className="flex w-full flex-col gap-4">
+            <p>
+              Amount claimed to date: <b>{formattedAmountClaimed}</b>
+            </p>
+            <p>
+              Available to claim: <b>{formattedAmountAvailable}</b>
+            </p>
+          </div>
+        )}
         <div className="flex flex-wrap gap-4 ">
           <Button
             onClick={handleClaimStreamingPayment}
