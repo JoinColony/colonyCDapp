@@ -4004,6 +4004,7 @@ type StreamingPayment @model {
   endTime: AWSTimestamp!
   interval: String!
   payouts: [ExpenditurePayout!]
+  claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
   """
   Actions associated with the streaming payment
@@ -4020,6 +4021,11 @@ type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
   limitAmount: String
+}
+
+type StreamingPaymentClaim {
+  tokenAddress: ID!
+  amount: String!
 }
 
 """
