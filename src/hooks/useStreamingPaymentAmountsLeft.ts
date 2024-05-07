@@ -42,7 +42,7 @@ const useStreamingPaymentAmountsLeft = (
           return { amounts, [payout.tokenAddress]: newAmount };
         }
 
-        let amountAvailableSinceStart = BigNumber.from(payout.amount)
+        const amountAvailableSinceStart = BigNumber.from(payout.amount)
           .mul(
             BigNumber.from(
               BigNumber.from(durationToClaim)
@@ -52,19 +52,18 @@ const useStreamingPaymentAmountsLeft = (
           )
           .div(BigNumber.from(10).pow(18));
 
-        amountAvailableSinceStart = amountAvailableSinceStart.lt(0)
-          ? BigNumber.from(0)
-          : amountAvailableSinceStart;
-
         const amountClaimedToDate = BigNumber.from(
           amountsClaimedToDate[payout.tokenAddress] || 0,
         );
 
         newAmount = amountAvailableSinceStart.sub(amountClaimedToDate);
 
-        return amounts;
+        newAmount = newAmount.lt(0) ? BigNumber.from(0) : newAmount;
+
+        return { amounts, [payout.tokenAddress]: newAmount };
       }, {})
     : {};
+
   return {
     amountsClaimedToDate,
     amountsAvailableToClaim,
