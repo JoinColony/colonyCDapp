@@ -31,6 +31,7 @@ const useGetPaymentBuilderColumns = (
   status: ExpenditureStatus,
   slots: ExpenditureSlotFragment[],
   finalizedTimestamp?: number | null,
+  isLoading?: boolean,
 ) => {
   const isTablet = useTablet();
   const dataRef = useWrapWithRef(data);
@@ -48,7 +49,12 @@ const useGetPaymentBuilderColumns = (
       paymentBuilderColumnHelper.accessor('recipient', {
         enableSorting: false,
         header: formatText({ id: 'table.row.recipient' }),
-        cell: ({ row }) => <RecipientField address={row.original.recipient} />,
+        cell: ({ row }) => (
+          <RecipientField
+            isLoading={isLoading}
+            address={row.original.recipient}
+          />
+        ),
         footer: hasMoreThanOneToken
           ? () => (
               <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
@@ -76,6 +82,7 @@ const useGetPaymentBuilderColumns = (
           : undefined,
         cell: ({ row }) => (
           <AmountField
+            isLoading={isLoading}
             amount={row.original.amount}
             tokenAddress={row.original.tokenAddress}
           />
@@ -91,7 +98,7 @@ const useGetPaymentBuilderColumns = (
             Number(row.original.claimDelay) / 3600,
           );
 
-          return (
+          return !isLoading ? (
             <span className="text-md text-gray-900">
               {formatText(
                 { id: 'table.column.claimDelayField' },
@@ -100,6 +107,10 @@ const useGetPaymentBuilderColumns = (
                 },
               )}
             </span>
+          ) : (
+            <div className="flex w-[4rem] items-center">
+              <div className="h-4 w-full overflow-hidden rounded skeleton" />
+            </div>
           );
         },
       }),
@@ -137,6 +148,7 @@ const useGetPaymentBuilderColumns = (
       fetchCurrentBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,
+      isLoading,
       isTablet,
       status,
     ],
@@ -176,6 +188,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     status,
     items,
     finalizedTimestamp,
+    !data.length,
   );
 
   return (
