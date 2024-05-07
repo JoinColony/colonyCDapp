@@ -27,7 +27,7 @@ import { type Action } from '~redux/types/index.ts';
 
 function* fundExpenditureMotion({
   payload: {
-    colony: { colonyAddress, version: colonyVersion },
+    colony: { colonyAddress },
     expenditure,
     fromDomainFundingPotId,
     motionDomainId,
@@ -100,11 +100,6 @@ function* fundExpenditureMotion({
 
     const balances = getExpenditureBalancesByTokenAddress(expenditure);
 
-    const isOldVersion = colonyVersion <= 6;
-    const contractMethod = isOldVersion
-      ? 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
-      : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
-
     const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
       getPermissionProofs,
       colonyClient.networkClient,
@@ -131,18 +126,20 @@ function* fundExpenditureMotion({
 
     const encodedFundingPotActions = [...balances.entries()].map(
       ([tokenAddress, amount]) =>
-        colonyClient.interface.encodeFunctionData(contractMethod, [
-          ...(isOldVersion
-            ? []
-            : [fromPermissionDomainId, constants.MaxUint256]),
-          fromPermissionDomainId,
-          fromChildSkillIndex,
-          toChildSkillIndex,
-          fromDomainFundingPotId,
-          expenditureFundingPotId,
-          amount,
-          tokenAddress,
-        ]),
+        colonyClient.interface.encodeFunctionData(
+          'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
+          [
+            fromPermissionDomainId,
+            constants.MaxUint256,
+            fromPermissionDomainId,
+            fromChildSkillIndex,
+            toChildSkillIndex,
+            fromDomainFundingPotId,
+            expenditureFundingPotId,
+            amount,
+            tokenAddress,
+          ],
+        ),
     );
 
     const encodedMulticallAction = colonyClient.interface.encodeFunctionData(
