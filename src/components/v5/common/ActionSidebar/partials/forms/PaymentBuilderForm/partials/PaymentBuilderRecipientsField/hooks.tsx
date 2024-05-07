@@ -52,7 +52,12 @@ export const useRecipientsFieldTableColumns = (
           footer: hasMoreThanOneToken
             ? () => (
                 <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
-                  {formatText({ id: 'table.footer.total' })}
+                  {data.length <= 7
+                    ? formatText({ id: 'table.footer.total' })
+                    : formatText(
+                        { id: 'table.footer.totalPayments' },
+                        { payments: data.length },
+                      )}
                 </span>
               )
             : undefined,
@@ -137,6 +142,7 @@ export const useRecipientsFieldTableColumns = (
       hasMoreThanOneToken,
       expendituresGlobalClaimDelayHours,
       name,
+      data.length,
       selectedTeam,
       dataRef,
     ]);

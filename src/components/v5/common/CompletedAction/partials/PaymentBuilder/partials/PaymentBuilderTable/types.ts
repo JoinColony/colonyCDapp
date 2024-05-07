@@ -7,6 +7,7 @@ export interface PaymentBuilderTableProps {
   items: ExpenditureSlot[];
   status: ExpenditureStatus;
   finalizedTimestamp?: number | null;
+  isLoading?: boolean;
 }
 
 export interface PaymentBuilderTableModel extends AmountFieldProps {

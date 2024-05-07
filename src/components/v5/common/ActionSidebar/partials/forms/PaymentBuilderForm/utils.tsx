@@ -86,6 +86,7 @@ import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { convertPeriodToSeconds } from '~utils/extensions.ts';
+import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { groupBy } from '~utils/lodash.ts';
 import {
@@ -180,6 +181,31 @@ export const allTokensAmountValidation = (
     fieldTokenAddress,
     from || Id.RootDomain,
   );
+
+  const index = getLastIndexFromPath(path);
+
+  if (index === undefined) {
+    return context.createError({
+      message: formatText({
+        id: 'errors.token.empty',
+      }),
+      path,
+    });
+  }
+
+  if (!token) {
+    return context.createError({
+      message: formatText(
+        {
+          id: 'errors.token.notValid',
+        },
+        {
+          paymentIndex: index + 1,
+        },
+      ),
+      path,
+    });
+  }
 
   if (!tokenAmountSum.lte(tokenBalance)) {
     return context.createError({

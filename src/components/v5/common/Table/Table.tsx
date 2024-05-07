@@ -13,6 +13,7 @@ import { formatText } from '~utils/intl.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
 import TablePagination from './partials/TablePagination/index.ts';
+import { TableRow } from './partials/VirtualizedRow/VirtualizedRow.tsx';
 import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
 
@@ -42,6 +43,7 @@ const Table = <T,>({
   getRowCanExpand,
   withBorder = true,
   verticalLayout,
+  virtualizedProps,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -136,8 +138,10 @@ const Table = <T,>({
                     const colSpan = rowWithMeatBallMenu ? undefined : 2;
 
                     return (
-                      <tr
+                      <TableRow
                         key={row.id + headerGroup.id + header.id}
+                        itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
+                        isEnabled={!!virtualizedProps}
                         className={clsx({
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
                             withBorder,
@@ -208,7 +212,7 @@ const Table = <T,>({
                             />
                           </td>
                         )}
-                      </tr>
+                      </TableRow>
                     );
                   }),
                 )}
@@ -291,7 +295,9 @@ const Table = <T,>({
 
                   return (
                     <React.Fragment key={row.id}>
-                      <tr
+                      <TableRow
+                        itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
+                        isEnabled={!!virtualizedProps}
                         className={clsx(getRowClassName(row), {
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
@@ -345,7 +351,7 @@ const Table = <T,>({
                             </td>
                           );
                         })}
-                      </tr>
+                      </TableRow>
                       {showExpandableContent && (
                         <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
                           <td colSpan={row.getVisibleCells().length}>

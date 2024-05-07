@@ -31,6 +31,7 @@ const useGetPaymentBuilderColumns = (
   status: ExpenditureStatus,
   slots: ExpenditureSlotFragment[],
   finalizedTimestamp?: number | null,
+  isLoading?: boolean,
 ) => {
   const isTablet = useTablet();
   const dataRef = useWrapWithRef(data);
@@ -48,11 +49,21 @@ const useGetPaymentBuilderColumns = (
       paymentBuilderColumnHelper.accessor('recipient', {
         enableSorting: false,
         header: formatText({ id: 'table.row.recipient' }),
-        cell: ({ row }) => <RecipientField address={row.original.recipient} />,
+        cell: ({ row }) => (
+          <RecipientField
+            isLoading={isLoading}
+            address={row.original.recipient}
+          />
+        ),
         footer: hasMoreThanOneToken
           ? () => (
               <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
-                {formatText({ id: 'table.footer.total' })}
+                {data.length <= 7
+                  ? formatText({ id: 'table.footer.total' })
+                  : formatText(
+                      { id: 'table.footer.totalPayments' },
+                      { payments: data.length },
+                    )}
               </span>
             )
           : undefined,
@@ -71,6 +82,7 @@ const useGetPaymentBuilderColumns = (
           : undefined,
         cell: ({ row }) => (
           <AmountField
+            isLoading={isLoading}
             amount={row.original.amount}
             tokenAddress={row.original.tokenAddress}
           />
@@ -86,7 +98,7 @@ const useGetPaymentBuilderColumns = (
             Number(row.original.claimDelay) / 3600,
           );
 
-          return (
+          return !isLoading ? (
             <span className="text-md text-gray-900">
               {formatText(
                 { id: 'table.column.claimDelayField' },
@@ -95,6 +107,10 @@ const useGetPaymentBuilderColumns = (
                 },
               )}
             </span>
+          ) : (
+            <div className="flex w-[4rem] items-center">
+              <div className="h-4 w-full overflow-hidden rounded skeleton" />
+            </div>
           );
         },
       }),
@@ -127,10 +143,12 @@ const useGetPaymentBuilderColumns = (
     ],
     [
       claimablePayouts,
+      data.length,
       dataRef,
       fetchCurrentBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,
+      isLoading,
       isTablet,
       status,
     ],
@@ -170,6 +188,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     status,
     items,
     finalizedTimestamp,
+    !data.length,
   );
 
   return (
@@ -178,6 +197,13 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
       <Table<PaymentBuilderTableModel>
+        virtualizedProps={
+          data.length > 10
+            ? {
+                virtualizedRowHeight: isTablet ? 46 : 54,
+              }
+            : undefined
+        }
         className={clsx(
           '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
@@ -186,11 +212,45 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
               !isTablet,
           },
         )}
-        data={data}
+        data={
+          !data.length
+            ? [
+                {
+                  recipient: '0x000',
+                  claimDelay: '0',
+                  amount: '0',
+                  tokenAddress: '0x000',
+                  isClaimed: false,
+                  id: 0,
+                },
+                {
+                  recipient: '0x000',
+                  claimDelay: '0',
+                  amount: '0',
+                  tokenAddress: '0x000',
+                  isClaimed: false,
+                  id: 1,
+                },
+                {
+                  recipient: '0x000',
+                  claimDelay: '0',
+                  amount: '0',
+                  tokenAddress: '0x000',
+                  isClaimed: false,
+                  id: 2,
+                },
+              ]
+            : data
+        }
         columns={columns}
         renderCellWrapper={(_, content) => content}
         verticalLayout={isTablet}
         withBorder={false}
+        initialState={{
+          pagination: {
+            pageSize: 400,
+          },
+        }}
       />
     </div>
   );

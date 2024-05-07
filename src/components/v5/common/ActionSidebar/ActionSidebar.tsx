@@ -38,7 +38,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 }) => {
   const {
     action,
-    defaultValues,
     loadingAction,
     isMotion,
     motionState,
@@ -89,7 +88,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         key={transactionId}
         transactionId={transactionId}
         formRef={formRef}
-        defaultValues={defaultValues || initialValues}
+        defaultValues={initialValues}
         isMotion={!!isMotion}
       />
     );
