@@ -1,5 +1,5 @@
 import { gql, useLazyQuery } from '@apollo/client';
-import { Id } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
 
@@ -12,15 +12,18 @@ import {
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLeft.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
 import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
+import { type EditStreamingPaymentPayload } from '~redux/sagas/expenditures/editStreamingPayment.ts';
 import { type CancelStreamingPaymentPayload } from '~redux/types/actions/expenditures.ts';
 import { type StreamingPaymentsMotionCancelPayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -56,6 +59,8 @@ const TmpStreamingPayments = () => {
   const [limit, setLimit] = useState('0');
   const [streamingPaymentId, setStreamingPaymentId] = useState('');
 
+  const { extensionData } = useExtensionData(Extension.StreamingPayments);
+
   const { data, refetch } = useGetStreamingPaymentQuery({
     variables: {
       streamingPaymentId: getStreamingPaymentDatabaseId(
@@ -77,6 +82,11 @@ const TmpStreamingPayments = () => {
     submit: ActionTypes.STREAMING_PAYMENT_CLAIM,
     error: ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR,
     success: ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
+  });
+  const editStreamingPayment = useAsyncFunction({
+    submit: ActionTypes.STREAMING_PAYMENT_EDIT,
+    error: ActionTypes.STREAMING_PAYMENT_EDIT_ERROR,
+    success: ActionTypes.STREAMING_PAYMENT_EDIT_SUCCESS,
   });
   const cancelMotion = useAsyncFunction({
     submit: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
@@ -178,6 +188,34 @@ const TmpStreamingPayments = () => {
         }
       },
     });
+  };
+
+  const handleEdit = async () => {
+    if (
+      !streamingPayment ||
+      !extensionData ||
+      !isInstalledExtensionData(extensionData)
+    ) {
+      return;
+    }
+
+    const payload: EditStreamingPaymentPayload = {
+      colonyAddress: colony.colonyAddress,
+      streamingPayment,
+      streamingPaymentsAddress: extensionData.address,
+      createdInDomain: rootDomain,
+      amount: transactionAmount,
+      endCondition: StreamingPaymentEndCondition.FixedTime,
+      interval: 604800, // One week
+      startTimestamp: streamingPayment.startTime,
+      tokenAddress,
+      tokenDecimals: parseInt(decimalAmount, 10),
+      endTimestamp: BigNumber.from(
+        (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 3,
+      ).toString(), // Three weeks away
+    };
+
+    await editStreamingPayment(payload);
   };
 
   return (
@@ -283,6 +321,9 @@ const TmpStreamingPayments = () => {
             }}
           >
             Refetch
+          </Button>
+          <Button onClick={() => handleEdit()} disabled={!streamingPayment}>
+            Edit
           </Button>
           <Button
             onClick={() => handleCancel({ shouldWaive: false })}
