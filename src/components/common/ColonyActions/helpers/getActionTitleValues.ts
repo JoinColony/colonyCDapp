@@ -28,7 +28,6 @@ export enum ActionTitleMessageKeys {
   Recipient = 'recipient',
   ReputationChange = 'reputationChange',
   ReputationChangeNumeral = 'reputationChangeNumeral',
-  RolesChanged = 'rolesChanged',
   ToDomain = 'toDomain',
   TokenSymbol = 'tokenSymbol',
   ChainName = 'chainName',
@@ -101,7 +100,6 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       ];
     case actionType.includes(ColonyActionType.SetUserRoles):
       return [
-        ActionTitleMessageKeys.RolesChanged,
         ActionTitleMessageKeys.Direction,
         ActionTitleMessageKeys.FromDomain,
         ActionTitleMessageKeys.Recipient,

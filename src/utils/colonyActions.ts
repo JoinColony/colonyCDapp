@@ -549,28 +549,22 @@ export const normalizeRolesForAction = (
 
 export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
   if (!roles) {
-    return {
-      direction: '',
-      roleTitle: '',
-    };
+    return '';
   }
 
   const normalizedRoles = normalizeRolesForAction(roles);
   const assignedRoles = normalizedRoles.filter((role) => role.setTo);
 
   if (isEmpty(assignedRoles)) {
-    return {
-      direction: formatText({ id: 'action.title.rolesDirection.remove' }),
-      roleTitle: '',
-    };
+    return formatText({ id: 'action.title.rolesDirection.remove' });
   }
 
   const role = getRole(assignedRoles.map(({ id }) => id));
 
-  return {
-    direction: formatText({ id: 'action.title.rolesDirection.assign' }),
-    roleTitle: role.name,
-  };
+  return formatText(
+    { id: 'action.title.rolesDirection.assign' },
+    { roleName: role.name },
+  );
 };
 
 const getChangelogItem = (

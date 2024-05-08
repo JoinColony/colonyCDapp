@@ -159,7 +159,7 @@ export const mapColonyActionToExpectedFormat = (
       ActionTitleMessageKeys.Amount,
       notMaybe(actionData?.amount),
     ),
-    [ActionTitleMessageKeys.Direction]: formattedRolesTitle.direction,
+    [ActionTitleMessageKeys.Direction]: formattedRolesTitle,
     [ActionTitleMessageKeys.FromDomain]: getFormattedValueWithFallback(
       getDomainNameFromChangelog(
         actionData.transactionHash,
@@ -213,7 +213,6 @@ export const mapColonyActionToExpectedFormat = (
       ActionTitleMessageKeys.ReputationChange,
       !!actionData.amount,
     ),
-    [ActionTitleMessageKeys.RolesChanged]: formattedRolesTitle.roleTitle,
     [ActionTitleMessageKeys.NewVersion]: getFormattedValueWithFallback(
       actionData.newColonyVersion,
       ActionTitleMessageKeys.NewVersion,
