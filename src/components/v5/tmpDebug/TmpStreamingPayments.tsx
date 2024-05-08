@@ -106,6 +106,8 @@ const TmpStreamingPayments = () => {
 
   const { extensionData } = useExtensionData(Extension.StreamingPayments);
 
+  const { extensionData } = useExtensionData(Extension.StreamingPayments);
+
   const { data, refetch } = useGetStreamingPaymentQuery({
     variables: {
       streamingPaymentId: getStreamingPaymentDatabaseId(
