@@ -1,4 +1,4 @@
-import { PaintBucket, Rocket, UserList } from '@phosphor-icons/react';
+import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -18,6 +18,7 @@ import {
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
+  TeamPurpose,
 } from '../rows/index.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.ManageTeam';
@@ -81,18 +82,9 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
           })}
           RowIcon={UserList}
         />
-        <ActionData
-          rowLabel={formatText({ id: 'actionSidebar.teamPurpose' })}
-          rowContent={
-            <span className="break-word">
-              {actionDomainMetadata?.description}
-            </span>
-          }
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.createNewTeam.team.purpose',
-          })}
-          RowIcon={Rocket}
-        />
+        {actionDomainMetadata?.description && (
+          <TeamPurpose description={actionDomainMetadata.description} />
+        )}
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.teamColour' })}
           rowContent={
