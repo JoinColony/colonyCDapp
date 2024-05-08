@@ -1,5 +1,5 @@
 import { gql, useLazyQuery } from '@apollo/client';
-import { Id } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import React, { useState } from 'react';
@@ -14,6 +14,7 @@ import {
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLeft.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
@@ -100,6 +101,8 @@ const TmpStreamingPayments = () => {
   const [updateInterval, setUpdateInterval] = useState(false);
   const [updateEndCondition, setUpdateEndCondition] = useState(false);
   const [updateLimit, setUpdateLimit] = useState(false);
+
+  const { extensionData } = useExtensionData(Extension.StreamingPayments);
 
   const { data, refetch } = useGetStreamingPaymentQuery({
     variables: {
@@ -675,6 +678,9 @@ const TmpStreamingPayments = () => {
             }}
           >
             Refetch
+          </Button>
+          <Button onClick={() => handleEdit()} disabled={!streamingPayment}>
+            Edit
           </Button>
           <Button
             onClick={() => handleCancel({ shouldWaive: false })}
