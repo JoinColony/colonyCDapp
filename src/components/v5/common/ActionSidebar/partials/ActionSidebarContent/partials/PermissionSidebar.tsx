@@ -1,4 +1,6 @@
+import { isToday, isYesterday } from 'date-fns';
 import React, { type FC } from 'react';
+import { FormattedDate, defineMessages } from 'react-intl';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -9,10 +11,63 @@ import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { type PermissionSidebarProps } from '../types.ts';
 
+const displayName = 'v5.PermissionSidebar';
+
+const MSG = defineMessages({
+  todayAt: {
+    id: `${displayName}.todayAt`,
+    defaultMessage: 'Today at',
+  },
+  yestardayAt: {
+    id: `${displayName}.yestardayAt`,
+    defaultMessage: 'Yesterday at',
+  },
+  at: {
+    id: `${displayName}.at`,
+    defaultMessage: 'at',
+  },
+});
+
+const formatDate = (value: string | undefined) => {
+  if (!value) {
+    return undefined;
+  }
+
+  const date = new Date(value);
+
+  if (isToday(date)) {
+    return (
+      <>
+        {formatText(MSG.todayAt)}{' '}
+        <FormattedDate value={date} hour="numeric" minute="numeric" />
+      </>
+    );
+  }
+
+  if (isYesterday(date)) {
+    return (
+      <>
+        {formatText(MSG.yestardayAt)}{' '}
+        <FormattedDate value={date} hour="numeric" minute="numeric" />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <FormattedDate value={date} day="numeric" month="short" year="numeric" />{' '}
+      {formatText(MSG.at)}{' '}
+      <FormattedDate value={date} hour="numeric" minute="numeric" />
+    </>
+  );
+};
+
 const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
   const { action } = useGetColonyAction(transactionId);
 
-  const { initiatorAddress } = action || {};
+  const { initiatorAddress, createdAt } = action || {};
+
+  const formattedDate = formatDate(createdAt);
 
   return (
     <MenuWithStatusText
@@ -55,6 +110,16 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                     })}
                   </span>
                   <PermissionRow contributorAddress={initiatorAddress} />
+                </div>
+              )}
+              {createdAt && (
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <span className="text-sm text-gray-600">
+                    {formatText({
+                      id: 'action.executed.permissions.date',
+                    })}
+                  </span>
+                  <span className="text-sm text-gray-900">{formattedDate}</span>
                 </div>
               )}
             </>
