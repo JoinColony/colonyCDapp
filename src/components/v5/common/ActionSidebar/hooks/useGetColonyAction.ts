@@ -1,4 +1,7 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import {
+  Extension,
+  MotionState as NetworkMotionState,
+} from '@colony/colony-js';
 import { useEffect, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -9,6 +12,7 @@ import {
   useGetColonyActionQuery,
   useGetMotionStateQuery,
 } from '~gql';
+import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
 import noop from '~utils/noop.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -28,6 +32,13 @@ const useGetColonyAction = (transactionHash?: string) => {
     refetchColony,
   } = useColonyContext();
   const { refetchTokenBalances } = useUserTokenBalanceContext();
+  const { installedExtensionsData } = useExtensionsData();
+
+  const votingReputationExtensionData = installedExtensionsData.find(
+    ({ extensionId }) => extensionId === Extension.VotingReputation,
+  );
+
+  const { isDeleted, isDeprecated } = votingReputationExtensionData || {};
   const isInvalidTx = !isTransactionFormat(transactionHash);
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
   const [isPolling, setIsPolling] = useState(!isInvalidTx);
@@ -115,9 +126,17 @@ const useGetColonyAction = (transactionHash?: string) => {
    */
   const networkMotionState = (motionStateData?.getMotionState ??
     NetworkMotionState.Null) as NetworkMotionState;
-  const motionState = action?.motionData
-    ? getMotionState(networkMotionState, action?.motionData)
+  const alternativeMotionState = isDeleted
+    ? MotionState.Uninstalled
     : MotionState.Invalid;
+  const motionState = action?.motionData
+    ? getMotionState(
+        networkMotionState,
+        action?.motionData,
+        isDeprecated || (!networkMotionState && !!action?.motionData),
+        isDeleted,
+      )
+    : alternativeMotionState;
 
   /* Ensures motion state is kept in sync with motion data */
   useEffect(() => {

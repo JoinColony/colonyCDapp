@@ -12,6 +12,8 @@ export const MOTION_STATE_TO_CLASSNAME_MAP: Record<MotionState, string> = {
   [MotionState.Passed]: 'text-success-400 bg-success-100',
   [MotionState.FailedNotFinalizable]: 'text-negative-400 bg-negative-100',
   [MotionState.Invalid]: 'text-negative-400 bg-negative-100',
+  [MotionState.Uninstalled]: 'text-negative-400 bg-negative-100',
+  [MotionState.ExtensionDeprecated]: 'text-negative-400 bg-negative-100',
   [MotionState.Escalated]: 'text-blue-400 bg-blue-100',
   [MotionState.Forced]: 'text-teams-blue-400 bg-teams-blue-50',
   [MotionState.Draft]: 'text-teams-grey-500 bg-teams-grey-50',

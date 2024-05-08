@@ -13,6 +13,8 @@ const motionStatesMessageDescriptors = {
       ${MotionState.Passed} {Passed}
       ${MotionState.FailedNotFinalizable} {Failed}
       ${MotionState.Invalid} {Invalid}
+      ${MotionState.Uninstalled} {Uninstalled}
+      ${MotionState.ExtensionDeprecated} {Deprecated}
       ${MotionState.Escalated} {Escalated}
       ${MotionState.Forced} {Forced}
       ${MotionState.Draft} {Draft}

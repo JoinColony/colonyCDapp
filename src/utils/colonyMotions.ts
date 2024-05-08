@@ -27,6 +27,8 @@ export enum MotionState {
   Forced = 'Forced',
   Draft = 'Draft',
   Unknown = 'Unknown',
+  Uninstalled = 'Uninstalled',
+  ExtensionDeprecated = 'ExtensionDeprecated',
 }
 
 export const getMotionDatabaseId = (
@@ -46,6 +48,8 @@ export const getMotionState = (
       raw: { yay: yayVotes, nay: nayVotes },
     },
   }: Pick<ColonyMotion, 'motionStakes' | 'requiredStake' | 'revealedVotes'>,
+  isVotingExtensionDeprecated?: boolean,
+  isVotingExtensionDeleted?: boolean,
 ) => {
   switch (motionState) {
     case NetworkMotionState.Staking: {
@@ -93,8 +97,17 @@ export const getMotionState = (
     }
     case NetworkMotionState.Failed:
       return MotionState.FailedNotFinalizable;
-    default:
+    default: {
+      if (isVotingExtensionDeprecated) {
+        return MotionState.ExtensionDeprecated;
+      }
+
+      if (isVotingExtensionDeleted) {
+        return MotionState.Uninstalled;
+      }
+
       return MotionState.Invalid;
+    }
   }
 };
 
