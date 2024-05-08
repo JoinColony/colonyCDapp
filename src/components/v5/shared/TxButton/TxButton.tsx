@@ -49,12 +49,12 @@ const TxButton: FC = () => {
       setTimeout(() => {
         setShowCompleted(false);
       }, 5000);
-    } else if (groupState === TransactionGroupStatus.SomePending) {
+    } else if (
+      groupState === TransactionGroupStatus.SomePending ||
+      groupState === TransactionGroupStatus.NonePending
+    ) {
       setShowCompleted(false);
       setShowPending(true);
-      setTimeout(() => {
-        setShowPending(false);
-      }, 3000);
     }
   }, [groupState, prevGroupState]);
 
