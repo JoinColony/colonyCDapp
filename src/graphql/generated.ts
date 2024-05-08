@@ -10594,6 +10594,13 @@ export type CreateStreamingPaymentMetadataMutationVariables = Exact<{
 
 export type CreateStreamingPaymentMetadataMutation = { __typename?: 'Mutation', createStreamingPaymentMetadata?: { __typename?: 'StreamingPaymentMetadata', id: string } | null };
 
+export type UpdateStreamingPaymentMetadataMutationVariables = Exact<{
+  input: UpdateStreamingPaymentMetadataInput;
+}>;
+
+
+export type UpdateStreamingPaymentMetadataMutation = { __typename?: 'Mutation', updateStreamingPaymentMetadata?: { __typename?: 'StreamingPaymentMetadata', id: string } | null };
+
 export type CreateSafeTransactionMutationVariables = Exact<{
   input: CreateSafeTransactionInput;
 }>;
@@ -13039,6 +13046,39 @@ export function useCreateStreamingPaymentMetadataMutation(baseOptions?: Apollo.M
 export type CreateStreamingPaymentMetadataMutationHookResult = ReturnType<typeof useCreateStreamingPaymentMetadataMutation>;
 export type CreateStreamingPaymentMetadataMutationResult = Apollo.MutationResult<CreateStreamingPaymentMetadataMutation>;
 export type CreateStreamingPaymentMetadataMutationOptions = Apollo.BaseMutationOptions<CreateStreamingPaymentMetadataMutation, CreateStreamingPaymentMetadataMutationVariables>;
+export const UpdateStreamingPaymentMetadataDocument = gql`
+    mutation UpdateStreamingPaymentMetadata($input: UpdateStreamingPaymentMetadataInput!) {
+  updateStreamingPaymentMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateStreamingPaymentMetadataMutationFn = Apollo.MutationFunction<UpdateStreamingPaymentMetadataMutation, UpdateStreamingPaymentMetadataMutationVariables>;
+
+/**
+ * __useUpdateStreamingPaymentMetadataMutation__
+ *
+ * To run a mutation, you first call `useUpdateStreamingPaymentMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStreamingPaymentMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateStreamingPaymentMetadataMutation, { data, loading, error }] = useUpdateStreamingPaymentMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateStreamingPaymentMetadataMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStreamingPaymentMetadataMutation, UpdateStreamingPaymentMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateStreamingPaymentMetadataMutation, UpdateStreamingPaymentMetadataMutationVariables>(UpdateStreamingPaymentMetadataDocument, options);
+      }
+export type UpdateStreamingPaymentMetadataMutationHookResult = ReturnType<typeof useUpdateStreamingPaymentMetadataMutation>;
+export type UpdateStreamingPaymentMetadataMutationResult = Apollo.MutationResult<UpdateStreamingPaymentMetadataMutation>;
+export type UpdateStreamingPaymentMetadataMutationOptions = Apollo.BaseMutationOptions<UpdateStreamingPaymentMetadataMutation, UpdateStreamingPaymentMetadataMutationVariables>;
 export const CreateSafeTransactionDocument = gql`
     mutation CreateSafeTransaction($input: CreateSafeTransactionInput!) {
   createSafeTransaction(input: $input) {
