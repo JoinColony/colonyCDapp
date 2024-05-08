@@ -14,7 +14,6 @@ import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLeft.ts';
-import useStreamingPayments from '~hooks/useStreamingPayments.ts';
 import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelExpenditure.ts';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
@@ -50,8 +49,11 @@ import { ActionButton } from '~v5/shared/Button/index.ts';
 const TmpAdvancedPayments = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { votingReputationAddress, stagedExpenditureAddress } =
-    useEnabledExtensions();
+  const {
+    votingReputationAddress,
+    stagedExpenditureAddress,
+    streamingPaymentsAddress,
+  } = useEnabledExtensions();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
 
   const [tokenAddress, setTokenAddress] = useState(
@@ -68,8 +70,6 @@ const TmpAdvancedPayments = () => {
 
   const { stakeAmount = '0', stakedExpenditureAddress = '' } =
     useExpenditureStaking();
-
-  const { streamingPaymentsAddress = '' } = useStreamingPayments();
 
   const { data, refetch } = useGetExpenditureQuery({
     variables: {
@@ -479,7 +479,7 @@ const TmpAdvancedPayments = () => {
 
     const claimPayload: ClaimStreamingPaymentPayload = {
       colonyAddress: colony.colonyAddress,
-      streamingPaymentsAddress,
+      streamingPaymentsAddress: streamingPaymentsAddress ?? '',
       streamingPayment,
       tokenAddress,
     };
