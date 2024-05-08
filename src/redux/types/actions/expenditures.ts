@@ -274,4 +274,28 @@ export type ExpendituresActionTypes =
       ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
       object,
       object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_EDIT,
+      {
+        colonyAddress: Address;
+        streamingPayment: StreamingPayment;
+        streamingPaymentsAddress: string;
+        createdInDomain: Domain;
+        tokenAddress: Address;
+        tokenDecimals: number;
+        amount: string;
+        startTimestamp: string;
+        endTimestamp?: string;
+        interval: number;
+        endCondition: StreamingPaymentEndCondition;
+        limitAmount?: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_EDIT_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_EDIT_SUCCESS,
+      object,
+      object
     >;
