@@ -13,7 +13,6 @@ fragment Expenditure on Expenditure {
     stages {
       ...ExpenditureStage
     }
-    stakeAmount
   }
   finalizedAt
   motions {
