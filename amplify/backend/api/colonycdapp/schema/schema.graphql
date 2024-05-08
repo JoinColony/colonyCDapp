@@ -4005,6 +4005,15 @@ type StreamingPayment @model {
   interval: String!
   payouts: [ExpenditurePayout!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
+  """
+  Actions associated with the streaming payment
+  """
+  actions: [ColonyAction!]
+    @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
+  """
+  Is the stream cancelled?
+  """
+  isCancelled: Boolean
 }
 
 type StreamingPaymentMetadata @model {
