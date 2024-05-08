@@ -128,6 +128,9 @@ export const getBaseSearchActionsFilterVariable = (
   colonyDecisionId: {
     exists: false,
   },
+  isMotionFinalization: {
+    eq: false,
+  },
 });
 
 export const getSearchActionsFilterVariable = (
