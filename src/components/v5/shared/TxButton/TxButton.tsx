@@ -41,7 +41,8 @@ const TxButton: FC = () => {
   // - Shows the "Pending" message after one transaction but before the next to "bridge the gap"
   useEffect(() => {
     if (
-      groupState === TransactionGroupStatus.NonePending &&
+      (groupState === TransactionGroupStatus.NonePending ||
+        groupState === TransactionGroupStatus.AllCompleted) &&
       prevGroupState === TransactionGroupStatus.SomePending
     ) {
       setShowPending(false);

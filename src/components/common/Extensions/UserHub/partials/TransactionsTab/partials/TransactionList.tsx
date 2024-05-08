@@ -1,4 +1,4 @@
-import React, { type FC, useCallback, useState } from 'react';
+import React, { type FC, useCallback, useState, useEffect } from 'react';
 
 import { type TransactionType } from '~redux/immutable/Transaction.ts';
 
@@ -19,16 +19,11 @@ const TransactionList: FC<TransactionListProps> = ({ transactions }) => {
 
   const [selectedGroupId, setGroupId] = useState<string | undefined>(undefined);
 
-  const handleSelectElement = useCallback(
-    (id: string) => {
-      if (groupId === id) {
-        setGroupId(undefined);
-      } else {
-        setGroupId(id);
-      }
-    },
-    [groupId],
-  );
+  const handleSelectElement = useCallback((id: string) => setGroupId(id), []);
+
+  useEffect(() => {
+    setGroupId(groupId);
+  }, [groupId]);
 
   return (
     <ul>
