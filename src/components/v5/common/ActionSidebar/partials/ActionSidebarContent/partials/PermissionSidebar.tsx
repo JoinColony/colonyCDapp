@@ -9,10 +9,14 @@ import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { type PermissionSidebarProps } from '../types.ts';
 
+import { formatDate } from './utils.ts';
+
 const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
   const { action } = useGetColonyAction(transactionId);
 
-  const { initiatorAddress } = action || {};
+  const { initiatorAddress, createdAt } = action || {};
+
+  const formattedDate = formatDate(createdAt);
 
   return (
     <MenuWithStatusText
@@ -55,6 +59,16 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                     })}
                   </span>
                   <PermissionRow contributorAddress={initiatorAddress} />
+                </div>
+              )}
+              {formattedDate && (
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <span className="text-sm text-gray-600">
+                    {formatText({
+                      id: 'action.executed.permissions.date',
+                    })}
+                  </span>
+                  <span className="text-sm text-gray-600">{formattedDate}</span>
                 </div>
               )}
             </>
