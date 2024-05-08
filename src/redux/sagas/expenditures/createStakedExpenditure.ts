@@ -233,7 +233,6 @@ function* createStakedExpenditure({
       expenditureId,
       fundFromDomainId,
       stages: isStaged ? stages : undefined,
-      stakeAmount,
     });
 
     yield put<AllActions>({

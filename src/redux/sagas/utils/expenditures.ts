@@ -146,7 +146,6 @@ export function* saveExpenditureMetadata({
   expenditureId,
   fundFromDomainId,
   stages,
-  stakeAmount,
 }: SaveExpenditureMetadataParams) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -164,7 +163,6 @@ export function* saveExpenditureMetadata({
           slotId: index + 1,
           isReleased: false,
         })),
-        stakeAmount,
       },
     },
   });
