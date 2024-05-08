@@ -17,6 +17,7 @@ export const useMembersPage = () => {
     moreContributors,
     loadMoreMembers,
     moreMembers,
+    totalMemberCount,
   } = useMemberContext();
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
@@ -32,7 +33,9 @@ export const useMembersPage = () => {
   );
 
   const sortedContributorCount = filteredContributors.length;
-  const sortedMemberCount = filteredMembers.length;
+  const sortedMemberCount = !selectedDomain?.nativeId
+    ? totalMemberCount
+    : filteredMembers.length;
 
   return {
     contributorsList,

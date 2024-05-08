@@ -22,7 +22,7 @@ const generateCreateColonyUrl = async () => {
   const inviteMutation = await graphqlRequest(
     createPrivateBetaInviteCode,
     {
-      input: { shareableInvites: 2 },
+      input: { shareableInvites: 99 },
     },
     GRAPHQL_URI,
     API_KEY,
