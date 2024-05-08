@@ -6,26 +6,25 @@ const useStreamingPaymentAmountsLeft = (
   streamingPayment: StreamingPayment | null | undefined,
   currentTimestamp: number,
 ) => {
-  if (!streamingPayment)
+  if (!streamingPayment) {
     return {
       amountsClaimedToDate: {},
       amountsAvailableToClaim: {},
     };
+  }
 
   const amountsClaimedToDate: { [tokenAddress: string]: BigNumber } =
-    streamingPayment.claims
-      ? streamingPayment.claims.reduce((amounts, claim) => {
-          let newAmount = BigNumber.from(claim.amount);
+    streamingPayment.claims?.reduce((amounts, claim) => {
+      let newAmount = BigNumber.from(claim.amount);
 
-          if (amounts[claim.tokenAddress]) {
-            newAmount = BigNumber.from(claim.amount).add(
-              amounts[claim.tokenAddress],
-            );
-          }
+      if (amounts[claim.tokenAddress]) {
+        newAmount = BigNumber.from(claim.amount).add(
+          amounts[claim.tokenAddress],
+        );
+      }
 
-          return { ...amounts, [claim.tokenAddress]: newAmount };
-        }, {})
-      : {};
+      return { ...amounts, [claim.tokenAddress]: newAmount };
+    }, {}) ?? {};
 
   const amountsAvailableToClaim = streamingPayment.payouts
     ? streamingPayment.payouts.reduce((amounts, payout) => {
