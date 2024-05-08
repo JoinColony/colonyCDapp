@@ -68,7 +68,7 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                       id: 'action.executed.permissions.date',
                     })}
                   </span>
-                  <span className="text-sm text-gray-600">{formattedDate}</span>
+                  <span className="text-sm text-gray-900">{formattedDate}</span>
                 </div>
               )}
             </>
