@@ -30,6 +30,7 @@ fragment StreamingPayment on StreamingPayment {
     amount
     timestamp
     tokenAddress
+    timestamp
   }
 }
 
