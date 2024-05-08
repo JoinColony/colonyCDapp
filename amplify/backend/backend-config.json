@@ -344,22 +344,6 @@
         }
       ]
     },
-    "AMPLIFY_function_fetchExpenditureBalances_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "fetchExpenditureBalances"
-        }
-      ]
-    },
-    "AMPLIFY_function_fetchExpenditureBalances_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "fetchExpenditureBalances"
-        }
-      ]
-    },
     "AMPLIFY_function_fetchMotionState_deploymentBucketName": {
       "usedBy": [
         {
