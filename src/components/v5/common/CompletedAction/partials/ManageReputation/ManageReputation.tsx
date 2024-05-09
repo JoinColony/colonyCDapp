@@ -4,14 +4,25 @@ import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 
 import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/Numeral.tsx';
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
+  TEAM_FIELD_NAME,
+  AMOUNT_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
+import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
@@ -20,6 +31,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -29,6 +41,7 @@ import {
   ModificationRow,
   TeamFromRow,
 } from '../rows/index.ts';
+import { getFormattedTokenAmount } from '../utils.ts';
 
 import ManageReputationTableCompletedState from './partials/ManageReputationTableCompletedState/index.ts';
 import ManageReputationTableInMotion from './partials/ManageReputationTableInMotion/index.ts';
@@ -48,6 +61,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     recipientAddress,
     amount,
     fromDomain,
+    annotation,
   } = action;
   const { networkMotionState } = useGetActionData(transactionHash);
   const motionFinished =
@@ -63,12 +77,36 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     .abs()
     .toString();
 
+  const formattedAmount = getFormattedTokenAmount(
+    positiveAmountValue,
+    DEFAULT_TOKEN_DECIMALS,
+  );
+
   return (
     <>
-      <ActionTitle>
-        {metadata?.customTitle ||
-          formatText({ id: 'actions.manageReputation' })}
-      </ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>
+          {metadata?.customTitle ||
+            formatText({ id: 'actions.manageReputation' })}
+        </ActionTitle>
+        <MeatballMenu
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: metadata?.customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManageReputation,
+            member: recipientAddress,
+            modification: isSmite
+              ? ModificationOption.RemoveReputation
+              : ModificationOption.AwardReputation,
+            [TEAM_FIELD_NAME]: fromDomain?.nativeId,
+            [AMOUNT_FIELD_NAME]: formattedAmount,
+            [DECISION_METHOD_FIELD_NAME]: isMotion
+              ? DecisionMethod.Reputation
+              : DecisionMethod.Permissions,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(
           {

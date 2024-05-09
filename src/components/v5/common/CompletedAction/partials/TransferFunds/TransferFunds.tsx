@@ -2,8 +2,21 @@ import { ArrowDownRight } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Action } from '~constants/actions.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  AMOUNT_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  FROM_FIELD_NAME,
+  TITLE_FIELD_NAME,
+  TOKEN_FIELD_NAME,
+  TO_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
@@ -12,6 +25,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -43,7 +57,19 @@ const MSG = defineMessages({
 
 const TransferFunds = ({ action }: TransferFundsProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { amount, initiatorUser, token } = action;
+  const {
+    amount,
+    initiatorUser,
+    token,
+    transactionHash,
+    fromDomain,
+    toDomain,
+    isMotion,
+    motionData,
+    annotation,
+  } = action;
+
+  const { motionDomain } = motionData || {};
 
   const formattedAmount = getFormattedTokenAmount(
     amount || '1',
@@ -52,7 +78,27 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
+            [FROM_FIELD_NAME]: fromDomain?.nativeId,
+            [TO_FIELD_NAME]: toDomain?.nativeId,
+            [AMOUNT_FIELD_NAME]: formattedAmount,
+            [TOKEN_FIELD_NAME]: token?.tokenAddress,
+            [DECISION_METHOD_FIELD_NAME]: isMotion
+              ? DecisionMethod.Reputation
+              : DecisionMethod.Permissions,
+            [CREATED_IN_FIELD_NAME]: isMotion
+              ? motionDomain?.nativeId
+              : fromDomain?.nativeId,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           amount: formattedAmount,

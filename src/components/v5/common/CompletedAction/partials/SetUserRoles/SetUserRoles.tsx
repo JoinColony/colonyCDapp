@@ -3,12 +3,21 @@ import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { ADDRESS_ZERO } from '~constants';
+import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import { ColonyActionType, type ColonyActionRoles } from '~gql';
+import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TEAM_FIELD_NAME,
+  TITLE_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
@@ -17,6 +26,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -62,14 +72,40 @@ const SetUserRoles = ({ action }: Props) => {
       { actionType: ColonyActionType.SetUserRoles },
     ),
   } = action.metadata || {};
-  const { initiatorUser, recipientUser, roles, recipientAddress } = action;
+  const {
+    initiatorUser,
+    recipientUser,
+    roles,
+    recipientAddress,
+    transactionHash,
+    fromDomain,
+    isMotion,
+    annotation,
+  } = action;
   const userColonyRoles = transformActionRolesToColonyRoles(roles);
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+            member: recipientAddress,
+            authority: AUTHORITY_OPTIONS[0].value,
+            role,
+            [TEAM_FIELD_NAME]: fromDomain?.nativeId,
+            [DECISION_METHOD_FIELD_NAME]: isMotion
+              ? DecisionMethod.Reputation
+              : DecisionMethod.Permissions,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(
           { id: 'action.title' },
