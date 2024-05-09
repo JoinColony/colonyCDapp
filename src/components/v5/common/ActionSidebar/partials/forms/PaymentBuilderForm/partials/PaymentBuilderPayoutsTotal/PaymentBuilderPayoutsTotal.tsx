@@ -9,10 +9,10 @@ import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import TokenIcon from '~shared/TokenIcon/index.ts';
 import { type ExpenditurePayout } from '~types/graphql.ts';
 import { sortPayouts } from '~utils/sortPayouts.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { type PaymentBuilderPayoutsTotalProps } from './types.ts';
 
@@ -73,16 +73,18 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
       return sortPayouts(summedTokens);
     }, [colony, data, moveDecimals]) || [];
 
-  const getItem = (token: ExpenditurePayout) => {
-    const tokenData = getSelectedToken(colony, token.tokenAddress);
+  const getItem = (payout: ExpenditurePayout) => {
+    const tokenData = getSelectedToken(colony, payout.tokenAddress);
 
     return tokenData ? (
       <div className="flex items-center gap-3 text-gray-900 text-1">
-        <Numeral value={token.amount} decimals={tokenData?.decimals} />
+        <Numeral value={payout.amount} decimals={tokenData?.decimals} />
         <div className="flex items-center gap-1">
-          <TokenIcon
-            token={tokenData}
-            size="xxs"
+          <TokenAvatar
+            tokenAddress={tokenData.tokenAddress}
+            tokenAvatarSrc={tokenData.avatar ?? undefined}
+            tokenName={tokenData.name}
+            size={18}
             className="flex-shrink-0 text-gray-900"
           />
           <span>{tokenData?.symbol}</span>
