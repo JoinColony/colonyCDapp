@@ -5786,6 +5786,7 @@ export type Query = {
   getTransaction?: Maybe<Transaction>;
   getTransactionsByUser?: Maybe<ModelTransactionConnection>;
   getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
+  getTransactionsByUserAndStatus?: Maybe<ModelTransactionConnection>;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByBridgeCustomerId?: Maybe<ModelUserConnection>;
@@ -6401,6 +6402,17 @@ export type QueryGetTransactionsByUserAndGroupArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetTransactionsByUserAndStatusArgs = {
+  filter?: InputMaybe<ModelTransactionFilterInput>;
+  from?: InputMaybe<ModelIdKeyConditionInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  status: TransactionStatus;
 };
 
 
@@ -9495,7 +9507,7 @@ export type GetUserTransactionsQueryVariables = Exact<{
 export type GetUserTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null> } | null };
 
 export type GetTransactionsByGroupQueryVariables = Exact<{
-  from: Scalars['ID'];
+  userAddress: Scalars['ID'];
   groupId: Scalars['ID'];
 }>;
 
@@ -9514,7 +9526,7 @@ export type GetPendingTransactionsQueryVariables = Exact<{
 }>;
 
 
-export type GetPendingTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string } | null> } | null };
+export type GetPendingTransactionsQuery = { __typename?: 'Query', getTransactionsByUserAndStatus?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string } | null> } | null };
 
 export type GetUserByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -13217,8 +13229,8 @@ export type GetUserTransactionsQueryHookResult = ReturnType<typeof useGetUserTra
 export type GetUserTransactionsLazyQueryHookResult = ReturnType<typeof useGetUserTransactionsLazyQuery>;
 export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>;
 export const GetTransactionsByGroupDocument = gql`
-    query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
-  getTransactionsByUserAndGroup(groupId: $groupId, from: {eq: $from}) {
+    query GetTransactionsByGroup($userAddress: ID!, $groupId: ID!) {
+  getTransactionsByUserAndGroup(from: {eq: $userAddress}, groupId: $groupId) {
     items {
       ...Transaction
     }
@@ -13238,7 +13250,7 @@ export const GetTransactionsByGroupDocument = gql`
  * @example
  * const { data, loading, error } = useGetTransactionsByGroupQuery({
  *   variables: {
- *      from: // value for 'from'
+ *      userAddress: // value for 'userAddress'
  *      groupId: // value for 'groupId'
  *   },
  * });
@@ -13291,7 +13303,7 @@ export type GetTransactionLazyQueryHookResult = ReturnType<typeof useGetTransact
 export type GetTransactionQueryResult = Apollo.QueryResult<GetTransactionQuery, GetTransactionQueryVariables>;
 export const GetPendingTransactionsDocument = gql`
     query GetPendingTransactions($userAddress: ID!) {
-  getTransactionsByUser(from: $userAddress, filter: {status: {eq: PENDING}}) {
+  getTransactionsByUserAndStatus(from: {eq: $userAddress}, status: PENDING) {
     items {
       id
     }

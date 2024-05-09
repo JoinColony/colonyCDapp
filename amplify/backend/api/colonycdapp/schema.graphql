@@ -1803,6 +1803,11 @@ type Transaction @model {
   The current status of the transaction
   """
   status: TransactionStatus!
+    @index(
+      name: "byStatus"
+      queryField: "getTransactionsByUserAndStatus"
+      sortKeyFields: ["from"]
+    )
   """
   True if the transaction is a metatransaction
   """

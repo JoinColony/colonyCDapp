@@ -168,7 +168,11 @@ export const transactionCount = (transactions: TransactionType[]) =>
 export const useGroupedTransactions = () => {
   const { user } = useAppContext();
   const userAddress = utils.getAddress(user?.walletAddress as string);
-  const { data, loading } = useGetUserTransactionsQuery({
+  const {
+    data,
+    loading,
+    fetchMore: fetchMoreApollo,
+  } = useGetUserTransactionsQuery({
     variables: {
       userAddress,
       limit: TX_PAGE_SIZE,
@@ -199,7 +203,24 @@ export const useGroupedTransactions = () => {
 
   const groupState = getGroupStatusAll(transactions, loading);
 
-  return { groupState, transactions, loading };
+  const fetchMore = async () => {
+    const nextToken = data?.getTransactionsByUser?.nextToken;
+    if (!nextToken) {
+      return;
+    }
+    await fetchMoreApollo({
+      variables: {
+        nextToken,
+      },
+    });
+  };
+
+  return {
+    canFetchMore: !!data?.getTransactionsByUser?.nextToken,
+    fetchMore,
+    groupState,
+    transactions,
+  };
 };
 
 export const getTransaction = async (id: string, fetchPolicy?: FetchPolicy) => {
@@ -527,7 +548,7 @@ export const failPendingTransactions = async () => {
     },
   });
 
-  const promises = data.getTransactionsByUser?.items
+  const promises = data.getTransactionsByUserAndStatus?.items
     .filter(notNull)
     .map((tx) => {
       return updateTransaction(
