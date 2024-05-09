@@ -17,6 +17,9 @@ const UserPopover: FC<UserPopoverProps> = ({
   size,
   popperOptions,
   walletAddress,
+  withVerifiedBadge,
+  additionalContent,
+  className,
 }) => {
   const {
     colony: { colonyAddress },
@@ -38,8 +41,10 @@ const UserPopover: FC<UserPopoverProps> = ({
       user={user}
       className={clsx({
         'flex-1 skeleton': loading,
+        className,
       })}
       popperOptions={popperOptions}
+      withVerifiedBadge={withVerifiedBadge}
     >
       <div className="flex items-center">
         <UserAvatar
@@ -56,6 +61,7 @@ const UserPopover: FC<UserPopoverProps> = ({
             />
           )}
         </p>
+        {additionalContent}
       </div>
     </UserInfoPopover>
   );
