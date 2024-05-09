@@ -2,9 +2,9 @@ import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
-import TokenIcon from '~shared/TokenIcon/TokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
+import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { type TokenItemProps } from './types.ts';
 
@@ -21,7 +21,12 @@ const TokenItem: FC<TokenItemProps> = ({
       {token && (
         <div>
           <div className="flex items-center gap-1 text-3">
-            <TokenIcon token={token} size="xxs" />
+            <TokenAvatar
+              tokenAddress={token.tokenAddress}
+              tokenAvatarSrc={token.avatar ?? undefined}
+              tokenName={token.name}
+              size={18}
+            />
             {token.name}
           </div>
           <span className="mt-1 text-xs text-gray-600">
