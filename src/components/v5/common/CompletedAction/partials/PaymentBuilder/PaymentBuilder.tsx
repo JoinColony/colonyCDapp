@@ -175,13 +175,10 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
             tokensNumber: tokensCount,
             initiator: initiatorUser ? (
               <UserPopover
-                userName={initiatorUser.profile?.displayName}
+                size={18}
                 walletAddress={initiatorUser.walletAddress}
-                user={initiatorUser}
                 withVerifiedBadge={false}
-              >
-                {initiatorUser.profile?.displayName}
-              </UserPopover>
+              />
             ) : null,
           },
         )}
