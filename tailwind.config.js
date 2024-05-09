@@ -145,6 +145,7 @@ module.exports = {
         base: '1',
         mid: '2',
         sidebar: '10',
+        header: '100',
         top: '1000',
       },
     },

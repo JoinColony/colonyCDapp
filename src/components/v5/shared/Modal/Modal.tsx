@@ -61,7 +61,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
       {!isMobile && shouldShowHeader && (
-        <div className="fixed right-4 top-9">
+        <div className="fixed right-4 top-9 z-top">
           <div className="relative">
             <UserNavigationWrapper
               txButtons={txButtons}
