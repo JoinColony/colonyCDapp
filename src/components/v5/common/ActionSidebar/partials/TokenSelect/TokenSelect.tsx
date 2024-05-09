@@ -4,6 +4,7 @@ import React, { type FC, useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -16,6 +17,7 @@ import { type TokenSelectProps } from './types.ts';
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
 const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
+  const { colony } = useColonyContext();
   const [searchError, setSearchError] = useState(false);
   const {
     field,
@@ -37,7 +39,6 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
     isRemoteTokenAddress,
     renderButtonContent,
     isNativeToken,
-    colonyTokens,
   } = useTokenSelect(field.value);
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
@@ -91,9 +92,8 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
                 ) : undefined
               }
               onSearch={(query) => {
-                const isColonyNativeToken = colonyTokens.some(
-                  (token) => token?.token.tokenAddress === query,
-                );
+                const isColonyNativeToken =
+                  colony.nativeToken?.tokenAddress === query;
                 setSearchError(isColonyNativeToken);
 
                 if (isColonyNativeToken) {

@@ -16,3 +16,13 @@ export enum RpcMethods {
   SignTypedDataV4 = 'eth_signTypedData_v4', // Only available via Metamask
   WatchAsset = 'wallet_watchAsset', // Metamask method
 }
+
+export enum RetryProviderMethod {
+  Call = 'call',
+}
+
+export enum IColonyContractMethodSignature {
+  Locked = 'locked()',
+  Nonces = 'nonces(address)',
+  GetMetatransactionNonce = 'getMetatransactionNonce(address)',
+}

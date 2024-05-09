@@ -17,10 +17,7 @@ export const useTokenSelect = (inputValue: string) => {
   const predefinedTokens = getNetworkTokenList();
   const allTokens = useGetAllTokens();
   const { colony } = useColonyContext();
-  const colonyTokens = colony.tokens?.items || [];
-  const isNativeToken = colonyTokens.some(
-    (token) => token?.token.tokenAddress === inputValue,
-  );
+  const isNativeToken = colony.nativeToken?.tokenAddress === inputValue;
 
   const tokenOptions: SearchSelectOptionProps = {
     key: 'tokens',
@@ -94,6 +91,5 @@ export const useTokenSelect = (inputValue: string) => {
     isRemoteTokenAddress,
     renderButtonContent,
     isNativeToken,
-    colonyTokens,
   };
 };
