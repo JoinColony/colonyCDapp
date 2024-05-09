@@ -615,16 +615,7 @@ const TmpAdvancedPayments = () => {
           <Button onClick={handleCancelViaMotion}>Cancel via motion</Button>
           <Button onClick={handleEditViaMotion}>Edit via motion</Button>
           <Button onClick={handleFinalizeViaMotion}>Finalize via motion</Button>
-          <Button
-            onClick={handleCancelStreamingPayment}
-            disabled={!streamingPayment}
-          >
-            Cancel streaming payment
-          </Button>
           <Button onClick={() => refetch()}>Refetch</Button>
-          <Button onClick={() => refetchStreamingPayment()}>
-            Refetch streaming payment
-          </Button>
         </div>
         <div className="flex w-full gap-4">
           <InputBase
@@ -665,6 +656,12 @@ const TmpAdvancedPayments = () => {
             Claim
           </Button>
           <Button onClick={() => refetchStreamingPayment()}>Refetch</Button>
+          <Button
+            onClick={handleCancelStreamingPayment}
+            disabled={!streamingPayment}
+          >
+            Cancel
+          </Button>
         </div>
       </div>
     </div>
