@@ -3513,6 +3513,18 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
+  """
+  ID of the associated streaming payment, if any
+  """
+  streamingPaymentId: ID
+    @index(
+      name: "byStreamingPaymentId"
+      queryField: "getActionByStreamingPaymentId"
+    )
+  """
+  Streaming payment associated with the action, if any
+  """
+  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
 }
 
 """
@@ -3527,18 +3539,6 @@ type ApprovedTokenChanges {
 type ExpenditureSlotChanges {
   oldSlots: [ExpenditureSlot!]!
   newSlots: [ExpenditureSlot!]!
-  """
-  ID of the associated streaming payment, if any
-  """
-  streamingPaymentId: ID
-    @index(
-      name: "byStreamingPaymentId"
-      queryField: "getActionByStreamingPaymentId"
-    )
-  """
-  Streaming payment associated with the action, if any
-  """
-  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
 }
 
 type ColonyActionMetadata @model {
