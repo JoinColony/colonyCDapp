@@ -48,7 +48,7 @@ export const useSocialLinksTableColumns = (): ColumnDef<
         cell: ({ getValue }) => (
           <span
             className={clsx(
-              'block overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
+              'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
               {
                 'text-gray-700': !hasNoDecisionMethods,
                 'text-gray-300': hasNoDecisionMethods,
