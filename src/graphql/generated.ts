@@ -1933,7 +1933,10 @@ export type CreateStreamingPaymentInput = {
   id?: InputMaybe<Scalars['ID']>;
   interval: Scalars['String'];
   isCancelled?: InputMaybe<Scalars['Boolean']>;
+<<<<<<< HEAD
   isWaived?: InputMaybe<Scalars['Boolean']>;
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
   nativeDomainId: Scalars['Int'];
   nativeId: Scalars['Int'];
   recipientAddress: Scalars['String'];
@@ -4194,7 +4197,10 @@ export type ModelStreamingPaymentConditionInput = {
   endTime?: InputMaybe<ModelStringInput>;
   interval?: InputMaybe<ModelStringInput>;
   isCancelled?: InputMaybe<ModelBooleanInput>;
+<<<<<<< HEAD
   isWaived?: InputMaybe<ModelBooleanInput>;
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
   nativeDomainId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelStreamingPaymentConditionInput>;
@@ -4225,7 +4231,10 @@ export type ModelStreamingPaymentFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   interval?: InputMaybe<ModelStringInput>;
   isCancelled?: InputMaybe<ModelBooleanInput>;
+<<<<<<< HEAD
   isWaived?: InputMaybe<ModelBooleanInput>;
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
   nativeDomainId?: InputMaybe<ModelIntInput>;
   nativeId?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelStreamingPaymentFilterInput>;
@@ -4787,7 +4796,10 @@ export type ModelSubscriptionStreamingPaymentFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   interval?: InputMaybe<ModelSubscriptionStringInput>;
   isCancelled?: InputMaybe<ModelSubscriptionBooleanInput>;
+<<<<<<< HEAD
   isWaived?: InputMaybe<ModelSubscriptionBooleanInput>;
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
   nativeDomainId?: InputMaybe<ModelSubscriptionIntInput>;
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
@@ -8645,12 +8657,15 @@ export type StakerRewardsInput = {
 export type StreamingPayment = {
   __typename?: 'StreamingPayment';
   actions?: Maybe<ModelColonyActionConnection>;
+<<<<<<< HEAD
   amount: Scalars['String'];
   claims?: Maybe<Array<StreamingPaymentClaim>>;
   /** The Colony to which the expenditure belongs */
   colony: Colony;
   /** Colony ID (address) to which the expenditure belongs */
   colonyId: Scalars['ID'];
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
   createdAt: Scalars['AWSDateTime'];
   /** Address of the stream creator, can be a user or an extension */
   creatorAddress: Scalars['ID'];
@@ -8659,8 +8674,11 @@ export type StreamingPayment = {
   interval: Scalars['String'];
   /** Is the stream cancelled? */
   isCancelled?: Maybe<Scalars['Boolean']>;
+<<<<<<< HEAD
   /** Is the stream waived? */
   isWaived?: Maybe<Scalars['Boolean']>;
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
   metadata?: Maybe<StreamingPaymentMetadata>;
   motions?: Maybe<ModelColonyMotionConnection>;
   nativeDomainId: Scalars['Int'];
@@ -8681,6 +8699,7 @@ export type StreamingPaymentActionsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+<<<<<<< HEAD
 
 export type StreamingPaymentMotionsArgs = {
   filter?: InputMaybe<ModelColonyMotionFilterInput>;
@@ -8728,6 +8747,8 @@ export type StreamingPaymentClaimInput = {
   timestamp: Scalars['String'];
 };
 
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
 export enum StreamingPaymentEndCondition {
   FixedTime = 'FIXED_TIME',
   LimitReached = 'LIMIT_REACHED',
@@ -10265,7 +10286,10 @@ export type UpdateStreamingPaymentInput = {
   id: Scalars['ID'];
   interval?: InputMaybe<Scalars['String']>;
   isCancelled?: InputMaybe<Scalars['Boolean']>;
+<<<<<<< HEAD
   isWaived?: InputMaybe<Scalars['Boolean']>;
+=======
+>>>>>>> e5724cd0d (Merge pull request #2321 from JoinColony/feat/2215-cancel-streams-using-permissions)
   nativeDomainId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
   recipientAddress?: InputMaybe<Scalars['String']>;
