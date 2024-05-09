@@ -60,7 +60,7 @@ function* createStreamingPaymentAction({
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  const batchKey = TRANSACTION_METHODS.CreateStreamingPayment;
+  const batchKey = 'createStreamingPayment';
 
   const {
     createStreamingPayment,

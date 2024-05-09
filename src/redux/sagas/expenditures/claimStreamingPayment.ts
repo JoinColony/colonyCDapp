@@ -56,9 +56,14 @@ function* claimStreamingPayment({
         streamingPayment.nativeId,
         [tokenAddress],
       ],
+      group: {
+        key: 'claimStreamingPayment',
+        id: meta.id,
+        index: 0,
+      },
     });
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     yield waitForTxResult(txChannel);
 
