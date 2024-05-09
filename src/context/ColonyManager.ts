@@ -160,11 +160,11 @@ export default class ColonyManager {
           Extension.OneTxPayment,
         );
       }
-      case ClientType.CoinMachineClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get CoinMachineClient');
-        return this.getColonyExtensionClient(identifier, Extension.CoinMachine);
-      }
+      // case ClientType.CoinMachineClient: {
+      //   if (!identifier)
+      //     throw new Error('Need colony identifier to get CoinMachineClient');
+      //   return this.getColonyExtensionClient(identifier, Extension.CoinMachine);
+      // }
       case ClientType.VotingReputationClient: {
         if (!identifier)
           throw new Error(
@@ -175,11 +175,11 @@ export default class ColonyManager {
           Extension.VotingReputation,
         );
       }
-      case ClientType.WhitelistClient: {
-        if (!identifier)
-          throw new Error('Need colony identifier to get the WhitelistClient');
-        return this.getColonyExtensionClient(identifier, Extension.Whitelist);
-      }
+      // case ClientType.WhitelistClient: {
+      //   if (!identifier)
+      //     throw new Error('Need colony identifier to get the WhitelistClient');
+      //   return this.getColonyExtensionClient(identifier, Extension.Whitelist);
+      // }
       case ClientType.StakedExpenditureClient: {
         if (!identifier)
           throw new Error(

@@ -148,7 +148,7 @@ const AmountField: FC<AmountFieldProps> = ({
         {isTokenSelectVisible && (
           <Portal>
             <MenuContainer
-              className="z-sidebar absolute w-full max-w-[calc(100%-2.25rem)] px-2 py-6 sm:w-auto sm:max-w-none"
+              className="absolute z-sidebar w-full max-w-[calc(100%-2.25rem)] px-2 py-6 sm:w-auto sm:max-w-none"
               hasShadow
               rounded="s"
               ref={(ref) => {

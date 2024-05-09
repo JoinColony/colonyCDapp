@@ -386,6 +386,8 @@
     "transaction.group.finalizeExpenditure.description": "Finalize Expenditure",
     "transaction.group.cancelStakedExpenditure.title": "Cancel Staked Expenditure",
     "transaction.group.cancelStakedExpenditure.description": "Cancel Staked Expenditure",
+    "transaction.group.cancelStreamingPayment.title": "Cancel Streaming Payment",
+    "transaction.group.cancelStreamingPayment.description": "Cancel Streaming Payment",
     "transaction.ColonyClient.cancelExpenditureViaArbitration.title": "Cancel Expenditure",
     "transaction.ColonyClient.cancelExpenditureViaArbitration.description": "Cancel Expenditure",
     "transaction.StakedExpenditureClient.makeExpenditureWithStake.title": "Make Expenditure With Stake",

@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { StreamingPaymentEndCondition, useGetExpenditureQuery } from '~gql';
+import {
+  StreamingPaymentEndCondition,
+  useGetExpenditureQuery,
+  useGetStreamingPaymentQuery,
+} from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -23,7 +27,10 @@ import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/r
 import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
 import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
 import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
-import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
+import {
+  type CancelStreamingPaymentPayload,
+  type CancelStakedExpenditurePayload,
+} from '~redux/types/actions/expenditures.ts';
 import { type ExpenditureCancelMotionPayload } from '~redux/types/actions/motion.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -63,6 +70,19 @@ const TmpAdvancedPayments = () => {
     fetchPolicy: 'network-only',
   });
   const expenditure = data?.getExpenditure;
+
+  const { data: streamingPaymentData, refetch: refetchStreamingPayment } =
+    useGetStreamingPaymentQuery({
+      variables: {
+        streamingPaymentId: getExpenditureDatabaseId(
+          colony.colonyAddress,
+          Number(expenditureId),
+        ),
+      },
+      skip: Number.isNaN(expenditureId),
+      fetchPolicy: 'network-only',
+    });
+  const streamingPayment = streamingPaymentData?.getStreamingPayment;
 
   const createStakedExpenditure = useAsyncFunction({
     submit: ActionTypes.STAKED_EXPENDITURE_CREATE,
@@ -129,6 +149,11 @@ const TmpAdvancedPayments = () => {
     error: ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR,
     success: ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
   });
+  const cancelStreamingPayment = useAsyncFunction({
+    submit: ActionTypes.STREAMING_PAYMENT_CANCEL,
+    error: ActionTypes.STREAMING_PAYMENT_CANCEL_ERROR,
+    success: ActionTypes.STREAMING_PAYMENT_CANCEL_SUCCESS,
+  });
 
   const blockTime = useCurrentBlockTime();
 
@@ -186,7 +211,7 @@ const TmpAdvancedPayments = () => {
     startTimestamp: Math.floor(Date.now() / 1000),
     tokenAddress,
     tokenDecimals: parseInt(decimalAmount, 10),
-    endTimestamp: Math.floor(Date.now() / 1000) + 120,
+    endTimestamp: Math.floor(Date.now() / 1000) + 120000000,
   };
 
   const handleLockExpenditure = async () => {
@@ -409,6 +434,20 @@ const TmpAdvancedPayments = () => {
     await finalizeExpenditureViaMotion(payload);
   };
 
+  const handleCancelStreamingPayment = async () => {
+    if (!streamingPayment) {
+      return;
+    }
+
+    const payload: CancelStreamingPaymentPayload = {
+      colonyAddress: colony.colonyAddress,
+      streamingPayment,
+      userAddress: user?.walletAddress ?? '',
+    };
+
+    await cancelStreamingPayment(payload);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -471,7 +510,16 @@ const TmpAdvancedPayments = () => {
           <Button onClick={handleCancelViaMotion}>Cancel via motion</Button>
           <Button onClick={handleEditViaMotion}>Edit via motion</Button>
           <Button onClick={handleFinalizeViaMotion}>Finalize via motion</Button>
+          <Button
+            onClick={handleCancelStreamingPayment}
+            disabled={!streamingPayment}
+          >
+            Cancel streaming payment
+          </Button>
           <Button onClick={() => refetch()}>Refetch</Button>
+          <Button onClick={() => refetchStreamingPayment()}>
+            Refetch streaming payment
+          </Button>
         </div>
       </div>
       <div className="flex gap-4">
