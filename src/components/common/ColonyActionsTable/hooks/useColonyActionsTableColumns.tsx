@@ -53,7 +53,7 @@ const useColonyActionsTableColumns = (
       }),
       helper.display({
         id: 'team',
-        staticSize: '7.8125rem',
+        staticSize: '8.125rem',
         header: formatText({
           id: 'activityFeedTable.table.header.team',
         }),
@@ -79,7 +79,7 @@ const useColonyActionsTableColumns = (
         },
       }),
       helper.accessor('createdAt', {
-        staticSize: '10.3125rem',
+        staticSize: '8rem',
         header: formatText({
           id: 'activityFeedTable.table.header.date',
         }),

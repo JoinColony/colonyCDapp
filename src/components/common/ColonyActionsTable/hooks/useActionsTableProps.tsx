@@ -130,9 +130,13 @@ export const useActionsTableProps = (
   );
   const tableProps: TableProps<ColonyAction> = merge(
     {
-      className: clsx(className, {
-        'sm:[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
-      }),
+      className: clsx(
+        className,
+        'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:h-[3.625rem] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
+        {
+          'sm:[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
+        },
+      ),
       enableSortingRemoval: false,
       renderCellWrapper: isMobile ? undefined : renderRowLink,
       verticalOnMobile: false,
@@ -159,7 +163,7 @@ export const useActionsTableProps = (
         : additionalPaginationButtonsContent,
       onSortingChange: setSorting,
       getRowId: (row) => row.transactionHash,
-      meatBallMenuStaticSize: '3.75rem',
+      meatBallMenuStaticSize: '3rem',
       getMenuProps,
       columns,
       data,
