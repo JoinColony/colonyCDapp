@@ -2966,11 +2966,6 @@ type ColonyAction @model @searchable {
   Applicable to `EDIT_EXPENDITURE` action only
   """
   expenditureSlotChanges: ExpenditureSlotChanges
-}
-
-type ExpenditureSlotChanges {
-  oldSlots: [ExpenditureSlot!]!
-  newSlots: [ExpenditureSlot!]!
   """
   ID of the associated streaming payment, if any
   """
@@ -2983,6 +2978,11 @@ type ExpenditureSlotChanges {
   Streaming payment associated with the action, if any
   """
   streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
+}
+
+type ExpenditureSlotChanges {
+  oldSlots: [ExpenditureSlot!]!
+  newSlots: [ExpenditureSlot!]!
 }
 
 type ColonyActionMetadata @model {
