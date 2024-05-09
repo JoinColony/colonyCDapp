@@ -9,6 +9,7 @@ import {
   transactionUpdateGas,
   transactionEstimateError,
   transactionSend,
+  transactionUpdateOptions,
 } from '../../actionCreators/index.ts';
 import { type ActionTypes } from '../../actionTypes.ts';
 import { type TransactionRecordProps } from '../../immutable/index.ts';
@@ -90,7 +91,8 @@ export default function* estimateGasCost({
       .div(SAFE_GAS_LIMIT_MULTIPLIER)
       .add(estimatedGas);
 
-    const { network, suggested } = yield call(getGasPrices);
+    const { network, suggested, maxFeePerGas, maxPriorityFeePerGas } =
+      yield call(getGasPrices);
 
     const gasPrice = suggested || network;
 
@@ -112,6 +114,17 @@ export default function* estimateGasCost({
         gasPrice,
       }),
     );
+
+    if (maxFeePerGas && maxPriorityFeePerGas) {
+      yield put(
+        transactionUpdateOptions(id, {
+          options: {
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+          },
+        }),
+      );
+    }
 
     yield put(transactionSend(id));
   } catch (error) {
