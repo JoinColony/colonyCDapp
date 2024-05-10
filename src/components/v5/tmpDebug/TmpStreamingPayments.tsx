@@ -1,5 +1,5 @@
 import { gql, useLazyQuery } from '@apollo/client';
-import { Extension, Id } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
 
@@ -12,7 +12,6 @@ import {
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
-import useExtensionData from '~hooks/useExtensionData.ts';
 import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLeft.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
@@ -23,7 +22,6 @@ import { type StreamingPaymentsMotionCancelPayload } from '~redux/types/actions/
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -58,8 +56,6 @@ const TmpStreamingPayments = () => {
   );
   const [limit, setLimit] = useState('0');
   const [streamingPaymentId, setStreamingPaymentId] = useState('');
-
-  const { extensionData } = useExtensionData(Extension.StreamingPayments);
 
   const { data, refetch } = useGetStreamingPaymentQuery({
     variables: {
@@ -191,18 +187,14 @@ const TmpStreamingPayments = () => {
   };
 
   const handleEdit = async () => {
-    if (
-      !streamingPayment ||
-      !extensionData ||
-      !isInstalledExtensionData(extensionData)
-    ) {
+    if (!streamingPayment || !streamingPaymentsAddress) {
       return;
     }
 
     const payload: EditStreamingPaymentPayload = {
       colonyAddress: colony.colonyAddress,
       streamingPayment,
-      streamingPaymentsAddress: extensionData.address,
+      streamingPaymentsAddress,
       createdInDomain: rootDomain,
       amount: transactionAmount,
       endCondition: StreamingPaymentEndCondition.FixedTime,
