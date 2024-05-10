@@ -11,7 +11,7 @@ import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ExpenditureStatus } from '~gql';
-import { useMobile } from '~hooks/index.ts';
+import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
@@ -38,7 +38,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 }) => {
   const {
     action,
-    defaultValues,
     loadingAction,
     isMotion,
     motionState,
@@ -63,7 +62,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   }, [toggleOn]);
 
   const { formRef, closeSidebarClick } = useCloseSidebarClick();
-  const isMobile = useMobile();
+  const isTablet = useTablet();
 
   useDisableBodyScroll(isActionSidebarOpen);
   useRemoveTxParamOnClose();
@@ -89,7 +88,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         key={transactionId}
         transactionId={transactionId}
         formRef={formRef}
-        defaultValues={defaultValues || initialValues}
+        defaultValues={initialValues}
         isMotion={!!isMotion}
       />
     );
@@ -122,22 +121,22 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           bg-base-white
           shadow-default
           transition-[max-width]
-          sm:bottom-0
-          sm:top-4
-          sm:h-[calc(100vh-2rem)]
-          sm:w-[calc(100vw-8.125rem)]
-          sm:rounded-l-lg
+          md:bottom-0
+          md:top-4
+          md:h-[calc(100vh-2rem)]
+          md:w-[calc(100vw-8.125rem)]
+          md:rounded-l-lg
         `,
         {
-          'sm:max-w-full': isSidebarFullscreen,
-          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
-          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
+          'md:max-w-full': isSidebarFullscreen,
+          'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
+          'md:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
         },
       )}
       ref={registerContainerRef}
     >
       <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
-        {isMobile ? (
+        {isTablet ? (
           <button
             type="button"
             className="flex items-center justify-center py-2.5 text-gray-400"

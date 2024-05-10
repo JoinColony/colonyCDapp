@@ -47,7 +47,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     stopPolling,
   } = useGetExpenditureData(expenditureId);
 
-  const { fundingActions, finalizingActions, cancellingActions } =
+  const { fundingActions, finalizingActions, cancellingActions, finalizedAt } =
     expenditure || {};
   const { items: fundingActionsItems } = fundingActions || {};
 
@@ -64,7 +64,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     setActiveStepKey(expenditureStatus);
 
     return () => stopPolling();
-  }, [expenditureStatus, startPolling, stopPolling]);
+  }, [expenditureStatus, startPolling, stopPolling, expenditure]);
 
   const lockExpenditurePayload: LockExpenditurePayload | null = expenditure
     ? {
@@ -184,15 +184,28 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             }
           />
         ) : (
-          <FinalizeWithPermissionsInfo
-            userAdddress={finalizingActions?.items[0]?.initiatorAddress}
-          />
+          <>
+            {finalizedAt ? (
+              <FinalizeWithPermissionsInfo
+                userAdddress={finalizingActions?.items[0]?.initiatorAddress}
+              />
+            ) : (
+              <div />
+            )}
+          </>
         ),
     },
     {
       key: ExpenditureStep.Payment,
       heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
-      content: <PaymentStepDetailsBlock />,
+      content: (
+        <PaymentStepDetailsBlock
+          expenditure={expenditure}
+          refetchExpenditure={() =>
+            refetchExpenditure({ expenditureId: expenditureId ?? undefined })
+          }
+        />
+      ),
     },
   ];
 

@@ -29,12 +29,11 @@ export const PaymentBuilderDescription = () => {
   const paymentsTokensAndRecipients = payments.reduce(
     (
       result: {
-        recipients: string[];
         tokens: string[];
       },
       payment,
     ) => {
-      const { recipient, tokenAddress = '' } = payment;
+      const { tokenAddress = '' } = payment;
 
       if (
         typeof tokenAddress === 'string' &&
@@ -43,18 +42,10 @@ export const PaymentBuilderDescription = () => {
         result.tokens.push(tokenAddress);
       }
 
-      if (
-        typeof recipient === 'string' &&
-        !result.recipients.includes(recipient)
-      ) {
-        result.recipients.push(recipient);
-      }
-
       return result;
     },
     {
       tokens: [],
-      recipients: [],
     },
   );
 
@@ -63,7 +54,7 @@ export const PaymentBuilderDescription = () => {
       id="action.title"
       values={{
         actionType: ColonyActionType.CreateExpenditure,
-        recipientsNumber: paymentsTokensAndRecipients.recipients.length,
+        recipientsNumber: payments.length,
         tokensNumber: paymentsTokensAndRecipients.tokens.length,
         initiator: <CurrentUser />,
       }}
