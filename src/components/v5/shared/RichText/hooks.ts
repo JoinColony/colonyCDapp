@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
+import { stripAndremoveHeadingsFromHTML } from '~utils/strings.ts';
 
 export const useRichText = (
   name: string,
@@ -119,8 +120,11 @@ export const useRichText = (
   useEffect(() => {
     if (field.value && editor && !isDecriptionFieldExpanded) {
       editor?.setEditable(false);
+
+      const strippedContent = stripAndremoveHeadingsFromHTML(editor.getHTML());
+
       setNotFormattedContent(
-        editor?.getText() || formatText({ id: 'placeholder.enterDescription' }),
+        strippedContent || formatText({ id: 'placeholder.enterDescription' }),
       );
     }
   }, [editor, isDecriptionFieldExpanded, field.value]);
@@ -146,13 +150,16 @@ export const useRichText = (
   }, [editor, field.value, name]);
 
   useEffect(() => {
-    if (editor?.getHTML() === field.value) {
+    if (!editor || editor.getHTML() === field.value) {
       return;
     }
 
-    editor?.commands.setContent(field.value);
+    editor.commands.setContent(field.value);
+
+    const strippedContent = stripAndremoveHeadingsFromHTML(editor.getHTML());
+
     setNotFormattedContent(
-      editor?.getText() || formatText({ id: 'placeholder.enterDescription' }),
+      strippedContent || formatText({ id: 'placeholder.enterDescription' }),
     );
   }, [editor, field.value]);
 
