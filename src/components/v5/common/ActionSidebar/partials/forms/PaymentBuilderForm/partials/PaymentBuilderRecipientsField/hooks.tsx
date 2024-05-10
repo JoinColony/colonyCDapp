@@ -52,7 +52,12 @@ export const useRecipientsFieldTableColumns = (
           footer: hasMoreThanOneToken
             ? () => (
                 <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
-                  {formatText({ id: 'table.footer.total' })}
+                  {data.length <= 7
+                    ? formatText({ id: 'table.footer.total' })
+                    : formatText(
+                        { id: 'table.footer.totalPayments' },
+                        { payments: data.length },
+                      )}
                 </span>
               )
             : undefined,
@@ -74,6 +79,8 @@ export const useRecipientsFieldTableColumns = (
                 <PaymentBuilderPayoutsTotal
                   data={dataRef.current}
                   moveDecimals
+                  itemClassName="justify-end md:justify-start"
+                  buttonClassName="justify-end md:justify-start"
                 />
               )
             : undefined,
@@ -118,9 +125,8 @@ export const useRecipientsFieldTableColumns = (
 
                   return (
                     <span className="text-gray-300">
-                      {totalHours}{' '}
                       {formatText(
-                        { id: 'table.column.claimDelayFieldSuffix' },
+                        { id: 'table.column.claimDelayField' },
                         {
                           hours: totalHours,
                         },
@@ -136,6 +142,7 @@ export const useRecipientsFieldTableColumns = (
       hasMoreThanOneToken,
       expendituresGlobalClaimDelayHours,
       name,
+      data.length,
       selectedTeam,
       dataRef,
     ]);
