@@ -24,7 +24,7 @@ export const isValidURL = (url: string) => {
 };
 
 async function validateCustomRPC(rpcURL: string, expectedChainId: string) {
-  const provider = new ethers.providers.JsonRpcProvider(rpcURL);
+  const provider = new ethers.providers.StaticJsonRpcProvider(rpcURL);
   try {
     const chainId = await provider.send('net_version', []);
     if (chainId === expectedChainId) {
