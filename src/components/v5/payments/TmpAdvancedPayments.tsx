@@ -138,7 +138,7 @@ const TmpAdvancedPayments = () => {
     success: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
   });
 
-  const blockTime = useCurrentBlockTime();
+  const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   if (!rootDomain) {

@@ -26,10 +26,6 @@ export const amountGreaterThanZeroValidation = (
     tokenAddress || tokenAddressFieldValue,
   );
 
-  if (!selectedToken?.tokenAddress) {
-    return false;
-  }
-
   return BigNumber.from(
     moveDecimal(
       value === '' ? '0' : value,

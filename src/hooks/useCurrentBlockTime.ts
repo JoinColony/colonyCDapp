@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 
@@ -7,26 +7,26 @@ const useCurrentBlockTime = () => {
 
   const [currentBlockTime, setCurrentBlockTime] = useState<number | null>(null);
 
-  useEffect(() => {
+  const fetchCurrentBlockTime = useCallback(async () => {
     if (!wallet) {
       return;
     }
 
-    const fetchCurrentBlockTime = async () => {
-      const { ethersProvider } = wallet;
+    const { ethersProvider } = wallet;
 
-      const block = await ethersProvider?.getBlock('latest');
-      if (!block) {
-        return;
-      }
+    const block = await ethersProvider?.getBlock('latest');
+    if (!block) {
+      return;
+    }
 
-      setCurrentBlockTime(block.timestamp);
-    };
-
-    fetchCurrentBlockTime();
+    setCurrentBlockTime(block.timestamp);
   }, [wallet]);
 
-  return currentBlockTime;
+  useEffect(() => {
+    fetchCurrentBlockTime();
+  }, [fetchCurrentBlockTime]);
+
+  return { currentBlockTime, fetchCurrentBlockTime };
 };
 
 export default useCurrentBlockTime;

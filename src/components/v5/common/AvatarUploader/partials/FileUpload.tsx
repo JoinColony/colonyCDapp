@@ -70,7 +70,6 @@ const FileUpload: FC<FileUploadProps> = ({
       errorCode={errorCode}
       handleFileRemove={handleFileRemove}
       open={open}
-      getInputProps={getInputProps}
       fileRejections={fileRejections?.[0]?.file?.name}
     />
   );

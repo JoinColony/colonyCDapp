@@ -1,6 +1,7 @@
 import { CircleWavyCheck, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { utils } from 'ethers';
+import { isAddress } from 'ethers/lib/utils';
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
@@ -8,12 +9,11 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
-import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import { useUserSelect } from './hooks.ts';
 import { type UserSelectProps } from './types.ts';
@@ -62,10 +62,15 @@ const UserSelect: FC<UserSelectProps> = ({
     userByAddress || selectedUserOption
       ? {
           profile: {
-            displayName: selectedUserOption?.label,
+            displayName:
+              selectedUserOption?.label || userByAddress?.profile?.displayName,
+            thumbnail:
+              selectedUserOption?.thumbnail ||
+              userByAddress?.profile?.thumbnail,
             avatar: selectedUserOption?.thumbnail,
           },
-          walletAddress: selectedUserOption?.walletAddress,
+          walletAddress:
+            selectedUserOption?.walletAddress || userByAddress?.walletAddress,
           isVerified: selectedUserOption?.isVerified,
         }
       : undefined;
@@ -81,6 +86,7 @@ const UserSelect: FC<UserSelectProps> = ({
   };
 
   const userName = getUserName();
+  const isUserAddressValid = isAddress(field.value);
 
   const toggler = (
     <button
@@ -99,33 +105,79 @@ const UserSelect: FC<UserSelectProps> = ({
     >
       {selectedUser || field.value ? (
         <>
-          <UserAvatar
-            userName={
-              selectedUser?.profile?.displayName?.toString() ?? undefined
-            }
-            userAddress={userWalletAddress}
-            userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
-            size={20}
-          />
-          <p
-            className={clsx('ml-2 truncate text-md font-medium', {
-              'text-warning-400': !selectedUser?.isVerified,
-              'text-gray-900': selectedUser?.isVerified,
-            })}
-          >
-            {formatText(userName || '')}
-          </p>
-          {selectedUser?.isVerified && (
-            <CircleWavyCheck
-              size={14}
-              className="ml-1 flex-shrink-0 text-blue-400"
-            />
+          {isUserAddressValid ? (
+            <>
+              <UserAvatar
+                userName={
+                  selectedUser?.profile?.displayName?.toString() ?? undefined
+                }
+                userAddress={userWalletAddress}
+                userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+                size={20}
+              />
+              <p
+                className={clsx('ml-2 truncate text-md font-medium', {
+                  'text-warning-400': !selectedUser?.isVerified,
+                  'text-gray-900': selectedUser?.isVerified,
+                })}
+              >
+                {formatText(userName || '')}
+              </p>
+              {selectedUser?.isVerified && (
+                <CircleWavyCheck
+                  size={14}
+                  className="ml-1 flex-shrink-0 text-blue-400"
+                />
+              )}
+              {!selectedUser?.isVerified && (
+                <WarningCircle
+                  size={14}
+                  className="ml-1 flex-shrink-0 text-warning-400"
+                />
+              )}
+            </>
+          ) : (
+            <div className="flex items-center gap-1 text-negative-400">
+              <WarningCircle size={16} />
+              <span className="text-md">
+                {formatText({
+                  id: 'actionSidebar.addressError',
+                })}
+              </span>
+            </div>
           )}
         </>
       ) : (
         formatText({ id: 'actionSidebar.selectMember' })
       )}
     </button>
+  );
+
+  const selectedUserContent = (
+    <>
+      {tooltipContent || !isUserAddressValid ? (
+        <Tooltip
+          tooltipContent={
+            isUserAddressValid
+              ? tooltipContent
+              : formatText({ id: 'actionSidebar.addressErrorTooltip' })
+          }
+          // selectTriggerRef={(triggerRef) => {
+          //   if (!triggerRef) {
+          //     return null;
+          //   }
+
+          //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
+          // }}
+          trigger={!isUserAddressValid ? 'hover' : undefined}
+          placement={isUserAddressValid ? 'top' : 'bottom'}
+        >
+          {toggler}
+        </Tooltip>
+      ) : (
+        toggler
+      )}
+    </>
   );
 
   return (
@@ -156,23 +208,7 @@ const UserSelect: FC<UserSelectProps> = ({
         </>
       ) : (
         <>
-          {tooltipContent ? (
-            <Tooltip
-              tooltipContent={tooltipContent}
-              // selectTriggerRef={(triggerRef) => {
-              //   if (!triggerRef) {
-              //     return null;
-              //   }
-
-              //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
-              // }}
-              placement="top"
-            >
-              {toggler}
-            </Tooltip>
-          ) : (
-            toggler
-          )}
+          {selectedUserContent}
           {isUserSelectVisible && (
             <SearchSelect
               items={[options || usersOptions]}
@@ -191,17 +227,6 @@ const UserSelect: FC<UserSelectProps> = ({
               className="z-sidebar"
               showEmptyContent={false}
             />
-          )}
-          {!selectedUser?.isVerified && field.value && (
-            <UserInfoPopover
-              walletAddress={userWalletAddress}
-              user={userByAddress}
-              className="ml-1 text-warning-400"
-            >
-              <span className="ml-2 flex text-warning-400">
-                <WarningCircle size={20} />
-              </span>
-            </UserInfoPopover>
           )}
         </>
       )}

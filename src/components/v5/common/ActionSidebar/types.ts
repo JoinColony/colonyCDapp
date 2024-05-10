@@ -18,7 +18,12 @@ export type UseActionFormBaseHook = (
     getFormOptions: ActionFormBaseProps['getFormOptions'];
   } & Pick<
     ActionFormProps<any>,
-    'transform' | 'actionType' | 'defaultValues' | 'validationSchema'
+    | 'transform'
+    | 'actionType'
+    | 'defaultValues'
+    | 'validationSchema'
+    | 'mode'
+    | 'reValidateMode'
   >,
 ) => void;
 

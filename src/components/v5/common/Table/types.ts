@@ -38,4 +38,7 @@ export interface TableProps<T>
   getRowCanExpand?: (row: Row<T>) => boolean;
   withBorder?: boolean;
   isDisabled?: boolean;
+  virtualizedProps?: {
+    virtualizedRowHeight?: number;
+  };
 }

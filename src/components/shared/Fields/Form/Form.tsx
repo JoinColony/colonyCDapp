@@ -42,6 +42,7 @@ export interface FormProps<FormData extends FieldValues> {
   validationSchema?: Schema<FormData>;
   defaultValues?: UseFormProps<FormData>['defaultValues'];
   mode?: UseFormProps<FormData>['mode'];
+  reValidateMode?: UseFormProps<FormData>['reValidateMode'];
   options?: UseFormProps<FormData> & AdditionalFormOptionsContextValue;
   /** Pass true to reset the default values to latest values on form submission. This will reset the isDirty prop. */
   resetOnSubmit?: boolean;
@@ -53,6 +54,7 @@ const Form = <FormData extends FieldValues>({
   children,
   defaultValues,
   mode = 'onTouched',
+  reValidateMode = 'onChange',
   onSubmit,
   onError,
   options,
@@ -84,6 +86,7 @@ const Form = <FormData extends FieldValues>({
     resolver,
     defaultValues,
     mode,
+    reValidateMode,
     ...formOptions,
   });
 

@@ -1,6 +1,6 @@
 import { Id } from '@colony/colony-js';
-import { useEffect, useMemo } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 import { array, type InferType, number, object, string } from 'yup';
 
@@ -9,6 +9,7 @@ import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
@@ -27,29 +28,13 @@ import {
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
-  const {
-    watch,
-    trigger,
-    formState: { isDirty },
-  } = useFormContext();
-
-  useEffect(() => {
-    const { unsubscribe } = watch((value, { name }) => {
-      if (!name?.startsWith('payments') || !isDirty) {
-        return;
-      }
-
-      const { payments = [] } = value || {};
-
-      payments.forEach((payment, index) => {
-        if (payment?.amount && payment.amount !== '') {
-          trigger(`payments.${index}.amount`);
-        }
-      });
-    });
-
-    return () => unsubscribe();
-  }, [isDirty, trigger, watch]);
+  const colonyTokens = useMemo(
+    () =>
+      colony.tokens?.items
+        .filter(notNull)
+        .map((colonyToken) => colonyToken.token) || [],
+    [colony.tokens?.items],
+  );
 
   return useMemo(
     () =>
@@ -64,16 +49,18 @@ export const useValidationSchema = () => {
             .of(
               object()
                 .shape({
-                  recipient: string().required(({ path }) => {
-                    const index = getLastIndexFromPath(path);
-                    if (index === undefined) {
-                      return formatText({ id: 'errors.amount' });
-                    }
-                    return formatText(
-                      { id: 'errors.recipient.required' },
-                      { paymentIndex: index + 1 },
-                    );
-                  }),
+                  recipient: string()
+                    .required(({ path }) => {
+                      const index = getLastIndexFromPath(path);
+                      if (index === undefined) {
+                        return formatText({ id: 'errors.amount' });
+                      }
+                      return formatText(
+                        { id: 'errors.recipient.required' },
+                        { paymentIndex: index + 1 },
+                      );
+                    })
+                    .address(),
                   amount: string()
                     .required(formatText({ id: 'errors.amount' }))
                     .test(
@@ -96,7 +83,7 @@ export const useValidationSchema = () => {
                     .test('tokens-sum-exceeded', '', (value, context) =>
                       allTokensAmountValidation(value, context, colony),
                     ),
-                  tokenAddress: string().address().required(),
+                  tokenAddress: string().required(),
                   delay: number()
                     .max(99999, ({ path }) => {
                       const index = getLastIndexFromPath(path);
@@ -115,7 +102,16 @@ export const useValidationSchema = () => {
                         { paymentIndex: index + 1, max: 99999 },
                       );
                     })
-                    .defined(),
+                    .required(({ path }) => {
+                      const index = getLastIndexFromPath(path);
+                      if (index === undefined) {
+                        return formatText({ id: 'errors.delay.empty' });
+                      }
+                      return formatText(
+                        { id: 'errors.delay.emptyIndex' },
+                        { paymentIndex: index + 1 },
+                      );
+                    }),
                 })
                 .defined()
                 .required(),
@@ -123,9 +119,27 @@ export const useValidationSchema = () => {
             .defined()
             .required(),
         })
+        .test(
+          'is-in-colony',
+          formatText({ id: 'actionSidebar.tokenAddress.error' }),
+          (item) => {
+            const { payments } = item || {};
+
+            if (!payments) {
+              return false;
+            }
+
+            return payments.every((payment) => {
+              return colonyTokens.some(
+                (colonyToken) =>
+                  colonyToken.tokenAddress === payment.tokenAddress,
+              );
+            });
+          },
+        )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony],
+    [colony, colonyTokens],
   );
 };
 
@@ -161,7 +175,19 @@ export const usePaymentBuilder = (
       decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.EXPENDITURE_CREATE
         : ActionTypes.STAKED_EXPENDITURE_CREATE,
-    getFormOptions,
+    getFormOptions: (formOptions, form) =>
+      getFormOptions(
+        {
+          ...formOptions,
+          mode: 'onSubmit',
+          reValidateMode: 'onSubmit',
+          actionType:
+            decisionMethod === DecisionMethod.Permissions
+              ? ActionTypes.EXPENDITURE_CREATE
+              : ActionTypes.STAKED_EXPENDITURE_CREATE,
+        },
+        form,
+      ),
     transform: mapPayload((payload: PaymentBuilderFormValues) => {
       return getPaymentBuilderPayload(colony, payload, networkInverseFee);
     }),

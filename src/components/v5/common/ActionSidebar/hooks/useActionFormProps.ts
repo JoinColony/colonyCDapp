@@ -34,6 +34,16 @@ const useActionFormProps = (
       }
 
       const { defaultValues: formDefaultValues, transform } = formOptions;
+      const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
+
+      const formOptionsWithDefaults = {
+        ...(typeof formDefaultValues === 'function'
+          ? await formDefaultValues()
+          : formDefaultValues || {}),
+        ...(defaultValues || {}),
+        title,
+        [ACTION_TYPE_FIELD_NAME]: actionType,
+      };
 
       setActionFormProps({
         ...formOptions,
@@ -66,10 +76,9 @@ const useActionFormProps = (
           readonly: isReadonly,
           ...formOptions.options,
         },
+        defaultValues: formOptionsWithDefaults,
         children: undefined,
       });
-
-      const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
 
       if (prevActionTypeRef.current === actionType) {
         return;
@@ -77,19 +86,9 @@ const useActionFormProps = (
 
       prevActionTypeRef.current = actionType;
 
-      form.reset(
-        {
-          ...(typeof formDefaultValues === 'function'
-            ? await formDefaultValues()
-            : formDefaultValues || {}),
-          ...(defaultValues || {}),
-          title,
-          [ACTION_TYPE_FIELD_NAME]: actionType,
-        },
-        {
-          keepDirtyValues: true,
-        },
-      );
+      form.reset(formOptionsWithDefaults, {
+        keepDirtyValues: true,
+      });
     },
     [isReadonly, defaultValues, navigate],
   );

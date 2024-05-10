@@ -137,7 +137,7 @@ module.exports = {
       },
       screens: {
         sm: '48rem',
-        md: '64rem',
+        md: '64.0625rem',
         lg: '80rem',
         xl: 'calc(90rem + 1px)',
       },

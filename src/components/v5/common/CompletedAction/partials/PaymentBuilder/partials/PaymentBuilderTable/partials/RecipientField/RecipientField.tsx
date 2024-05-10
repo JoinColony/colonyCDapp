@@ -1,4 +1,3 @@
-import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -15,24 +14,19 @@ const RecipientField: FC<RecipientFieldProps> = ({ address }) => {
 
   return (
     <>
-      {!loading && recipientMember?.user && (
+      {!loading && (
         <div className="flex items-center">
           <UserPopover
             size={18}
-            walletAddress={recipientMember.contributorAddress}
-            withVerifiedBadge={recipientMember.isVerified}
+            walletAddress={
+              recipientMember ? recipientMember.contributorAddress : address
+            }
+            withVerifiedBadge={!!recipientMember?.isVerified}
             className={clsx('flex items-center sm:hover:text-blue-400', {
               'pointer-events-none': loading,
               'text-warning-400': !recipientMember?.isVerified,
               'text-gray-900': recipientMember?.isVerified,
             })}
-            additionalContent={
-              !recipientMember?.isVerified ? (
-                <span className="ml-1">
-                  <WarningCircle size={14} className="text-warning-400" />
-                </span>
-              ) : undefined
-            }
           />
         </div>
       )}

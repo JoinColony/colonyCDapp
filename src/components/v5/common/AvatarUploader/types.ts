@@ -1,6 +1,5 @@
 import {
   type DropEvent,
-  type DropzoneInputProps,
   type DropzoneOptions,
   type FileRejection,
 } from 'react-dropzone';
@@ -20,7 +19,6 @@ export interface ErrorContentProps
   extends Pick<FileUploadProps, 'handleFileRemove' | 'errorCode'> {
   fileRejections?: string;
   open: () => void;
-  getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
 }
 
 export interface FileUploadOptions {
