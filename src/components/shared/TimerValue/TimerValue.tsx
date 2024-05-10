@@ -20,20 +20,47 @@ const MSG = defineMessages({
   },
 });
 
+interface SplitTime {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
 export interface TimerValueProps {
-  splitTime?: {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-  };
+  splitTime?: SplitTime;
+  showSingleValue?: boolean;
 }
 
 const displayName = 'TimerValue';
 
-const TimerValue = ({ splitTime }: TimerValueProps) => {
+const splitTimeUnitsOrder: (keyof SplitTime)[] = [
+  'days',
+  'hours',
+  'minutes',
+  'seconds',
+];
+
+const TimerValue = ({ splitTime, showSingleValue }: TimerValueProps) => {
   if (!splitTime) {
     return null;
+  }
+
+  if (showSingleValue) {
+    const splitTimeUnit = splitTimeUnitsOrder.find(
+      (unit) => splitTime[unit] > 0,
+    );
+
+    if (!splitTimeUnit) {
+      return null;
+    }
+
+    return (
+      <FormattedMessage
+        {...MSG[splitTimeUnit]}
+        values={{ [splitTimeUnit]: splitTime[splitTimeUnit] }}
+      />
+    );
   }
 
   return (

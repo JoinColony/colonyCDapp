@@ -39,7 +39,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 }) => {
   const {
     action,
-    defaultValues,
     loadingAction,
     isMotion,
     motionState,
@@ -90,7 +89,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         key={transactionId}
         transactionId={transactionId}
         formRef={formRef}
-        defaultValues={defaultValues || initialValues}
+        defaultValues={initialValues}
         isMotion={!!isMotion}
       />
     );
@@ -123,16 +122,16 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           bg-base-white
           shadow-default
           transition-[max-width]
-          sm:bottom-0
-          sm:top-4
-          sm:h-[calc(100vh-2rem)]
-          sm:w-[calc(100vw-8.125rem)]
-          sm:rounded-l-lg
+          md:bottom-0
+          md:top-4
+          md:h-[calc(100vh-2rem)]
+          md:w-[calc(100vw-8.125rem)]
+          md:rounded-l-lg
         `,
         {
-          'sm:max-w-full': isSidebarFullscreen,
-          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
-          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
+          'md:max-w-full': isSidebarFullscreen,
+          'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
+          'md:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
         },
       )}
       ref={registerContainerRef}
@@ -148,22 +147,19 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <X size={18} />
           </button>
           {!isMobile && (
-            <button
-              type="button"
-              className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-              onClick={toggleIsSidebarFullscreen}
-              aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
-            >
-              {isSidebarFullscreen ? (
-                <ArrowLineRight size={18} />
-              ) : (
-                <ArrowsOutSimple size={18} />
-              )}
-            </button>
-          )}
-          {/* @TODO: Handle payment builder action when it will be merged */}
-          {!isMobile && (
-            <>
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
+                onClick={toggleIsSidebarFullscreen}
+                aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
+              >
+                {isSidebarFullscreen ? (
+                  <ArrowLineRight size={18} />
+                ) : (
+                  <ArrowsOutSimple size={18} />
+                )}
+              </button>
               {action && !isMotion && (
                 <PillsBase
                   className="bg-success-100 text-success-400"
@@ -176,7 +172,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                 <ExpenditureBadge status={expenditure.status} />
               )}
               <MotionOutcomeBadge motionState={motionState} />
-            </>
+            </div>
           )}
         </div>
         <div>{children}</div>

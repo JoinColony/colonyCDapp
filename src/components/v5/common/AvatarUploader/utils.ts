@@ -25,6 +25,14 @@ const MSG = defineMessages({
     id: `${displayName}.customError`,
     defaultMessage: 'Upload failed, please try again',
   },
+  wrongStructure: {
+    id: `${displayName}.wrongStructure`,
+    defaultMessage: 'File structure is incorrect, please try again',
+  },
+  wrongRecipient: {
+    id: `${displayName}.wrongRecipient`,
+    defaultMessage: 'Recipient address is incorrect, please try again',
+  },
 });
 
 /**
@@ -37,6 +45,7 @@ export enum DropzoneErrors {
   TOO_LARGE = 'file-too-large',
   // TOO_SMALL = 'file-too-small', // wire in as needed
   // TOO_MANY = 'too-many-files',
+  STRUCTURE = 'wrong-structure',
   CUSTOM = 'custom-error',
   DEFAULT = 'default',
 }
@@ -56,6 +65,9 @@ export const getErrorMessage = (errorCode: DropzoneErrors) => {
     }
     case DropzoneErrors.CUSTOM: {
       return MSG.customError;
+    }
+    case DropzoneErrors.STRUCTURE: {
+      return MSG.wrongStructure;
     }
 
     /* Extend here with too-small and too-many as needed */
