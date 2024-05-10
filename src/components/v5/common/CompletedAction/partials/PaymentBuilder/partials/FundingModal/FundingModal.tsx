@@ -11,7 +11,7 @@ import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
-import DecisionMethodSelect from '../DecisionMethodSelect/index.ts';
+import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 
 import {
   fundingDecisionMethodDescriptions,
