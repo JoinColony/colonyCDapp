@@ -39,7 +39,7 @@ export const useStakingForm = () => {
   const { colony, motionData } = motionAction || {};
   const { nativeToken } = colony || {};
   const { nativeTokenDecimals, tokenAddress } = nativeToken || {};
-  const tokenDecimals = nativeTokenDecimals || 18;
+  const tokenDecimals = getTokenDecimalsWithFallback(nativeTokenDecimals);
 
   const { motionId, remainingStakes } = motionData;
   const [opposeRemaining, supportRemaining] = remainingStakes || [];
@@ -59,9 +59,7 @@ export const useStakingForm = () => {
             }
 
             try {
-              const amount = BigNumber.from(
-                moveDecimal(value, getTokenDecimalsWithFallback(tokenDecimals)),
-              );
+              const amount = BigNumber.from(moveDecimal(value, tokenDecimals));
 
               return amount.gt(0);
             } catch {
@@ -83,9 +81,7 @@ export const useStakingForm = () => {
                 : opposeRemaining;
 
             try {
-              const amount = BigNumber.from(
-                moveDecimal(value, getTokenDecimalsWithFallback(tokenDecimals)),
-              );
+              const amount = BigNumber.from(moveDecimal(value, tokenDecimals));
 
               return amount.lte(remainingTokens);
             } catch {
@@ -102,9 +98,7 @@ export const useStakingForm = () => {
             }
 
             try {
-              const amount = BigNumber.from(
-                moveDecimal(value, getTokenDecimalsWithFallback(tokenDecimals)),
-              );
+              const amount = BigNumber.from(moveDecimal(value, tokenDecimals));
 
               return amount.lte(userAvailableTokens);
             } catch {
