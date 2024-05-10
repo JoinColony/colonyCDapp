@@ -1,4 +1,4 @@
-import { Extension, Id } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
 
@@ -10,7 +10,6 @@ import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
-import useExtensionData from '~hooks/useExtensionData.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelExpenditure.ts';
@@ -18,7 +17,6 @@ import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExp
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type EditExpenditurePayload } from '~redux/sagas/expenditures/editExpenditure.ts';
-import { type EditStreamingPaymentPayload } from '~redux/sagas/expenditures/editStreamingPayment.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
@@ -35,7 +33,6 @@ import {
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import { ActionButton } from '~v5/shared/Button/index.ts';
@@ -61,8 +58,6 @@ const TmpAdvancedPayments = () => {
 
   const { stakeAmount = '0', stakedExpenditureAddress = '' } =
     useExpenditureStaking();
-
-  const { extensionData } = useExtensionData(Extension.StreamingPayments);
 
   const { data, refetch } = useGetExpenditureQuery({
     variables: {
