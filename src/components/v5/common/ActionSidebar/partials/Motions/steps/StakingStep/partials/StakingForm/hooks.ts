@@ -36,11 +36,10 @@ export const useStakingForm = () => {
   const { motionAction, setIsRefetching, startPollingAction } =
     useMotionContext();
 
-  const { token, colony, motionData } = motionAction || {};
-  const { decimals } = token || {};
+  const { colony, motionData } = motionAction || {};
   const { nativeToken } = colony || {};
   const { nativeTokenDecimals, tokenAddress } = nativeToken || {};
-  const tokenDecimals = decimals || nativeTokenDecimals || 0;
+  const tokenDecimals = nativeTokenDecimals || 18;
 
   const { motionId, remainingStakes } = motionData;
   const [opposeRemaining, supportRemaining] = remainingStakes || [];
