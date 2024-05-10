@@ -90,7 +90,7 @@ jobs:
       NAMESPACE: cdapp
       CLUSTER_NAME: qa-cluster
       # Tagging image based on whether we are deploying to gnosis or arbitrum
-      ENVIRONMENT_TAG: ${{ (github.ref == 'refs/heads/master' && 'qa') || (github.ref == 'refs/heads/master-arbitrum' && 'qa-arbitrum-sepolia') }}
+      ENVIRONMENT_TAG: ${{ (github.ref == 'refs/heads/master' && 'qa') || (github.ref == 'refs/heads/master-arbitrum' && 'qa-arbitrum-sepolia') || (github.ref == 'refs/heads/feat/advanced-payments-arbitrum' && 'qa-arbitrum-sepolia') }}
       REPOSITORY_NAME: cdapp/frontend
 
     steps:
