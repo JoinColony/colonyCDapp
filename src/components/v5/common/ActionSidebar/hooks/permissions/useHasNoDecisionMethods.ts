@@ -22,7 +22,12 @@ const useHasNoDecisionMethods = () => {
   const { user } = useAppContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  const { watch } = useFormContext();
+  const { watch } = useFormContext() || {};
+
+  if (!watch) {
+    return false;
+  }
+
   const actionType = watch(ACTION_TYPE_FIELD_NAME);
 
   if (!user) {
