@@ -36,7 +36,7 @@ exports.handler = async (event) => {
     return [];
   }
 
-  const provider = new providers.JsonRpcProvider(rpcURL);
+  const provider = new providers.StaticJsonRpcProvider(rpcURL);
   const transactionReceipt =
     await provider.getTransactionReceipt(transactionHash);
 

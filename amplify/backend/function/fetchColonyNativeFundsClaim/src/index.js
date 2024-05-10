@@ -18,7 +18,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     throw new Error('Unable to set environment variables. Reason:', e);
   }
 
-  const provider = new providers.JsonRpcProvider(rpcURL);
+  const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
   const providerNetwork = await provider.getNetwork();
   const chainId = String(providerNetwork.chainId);

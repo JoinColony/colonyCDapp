@@ -83,7 +83,7 @@ exports.handler = async (event) => {
       return true;
     }
 
-    const provider = new providers.JsonRpcProvider(rpcURL);
+    const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
     const networkClient = getColonyNetworkClient(network, provider, {
       networkAddress,
