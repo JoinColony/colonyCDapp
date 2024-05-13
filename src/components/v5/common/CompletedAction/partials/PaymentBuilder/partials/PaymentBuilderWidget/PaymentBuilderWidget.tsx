@@ -15,6 +15,7 @@ import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/FinalizeWithPermissionsInfo.tsx';
+import FinalizeWithStakingInfo from '../FinalizeWithStakingInfo/FinalizeWithStakingInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
@@ -47,8 +48,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     stopPolling,
   } = useGetExpenditureData(expenditureId);
 
-  const { fundingActions, finalizingActions, cancellingActions, finalizedAt } =
-    expenditure || {};
+  const {
+    fundingActions,
+    finalizingActions,
+    cancellingActions,
+    finalizedAt,
+    isStaked,
+    userStake,
+  } = expenditure || {};
+  const { amount: stakeAmount = '' } = userStake || {};
   const { items: fundingActionsItems } = fundingActions || {};
 
   const expenditureStatus = getExpenditureStep(expenditure);
@@ -91,7 +99,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Create,
       heading: { label: formatText({ id: 'expenditure.createStage.label' }) },
-      content: (
+      content: isStaked ? (
+        <FinalizeWithStakingInfo
+          userAdddress={expenditure?.ownerAddress}
+          stakeAmount={stakeAmount ?? ''}
+        />
+      ) : (
         <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
       ),
     },
@@ -129,9 +142,18 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             }
           />
         ) : (
-          <FinalizeWithPermissionsInfo
-            userAdddress={expenditure?.ownerAddress}
-          />
+          <>
+            {isStaked ? (
+              <FinalizeWithStakingInfo
+                userAdddress={expenditure?.ownerAddress}
+                stakeAmount={stakeAmount ?? ''}
+              />
+            ) : (
+              <FinalizeWithPermissionsInfo
+                userAdddress={expenditure?.ownerAddress}
+              />
+            )}
+          </>
         ),
     },
     {

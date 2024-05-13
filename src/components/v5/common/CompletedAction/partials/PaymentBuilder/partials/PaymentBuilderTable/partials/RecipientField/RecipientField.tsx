@@ -14,7 +14,12 @@ const RecipientField: FC<RecipientFieldProps> = ({ address }) => {
 
   return (
     <>
-      {!loading && (
+      {loading ? (
+        <div className="flex w-[11.25rem] items-center">
+          <div className="mr-2 h-5 w-5 overflow-hidden rounded-full skeleton" />
+          <div className="h-4 w-1/2 overflow-hidden rounded skeleton" />
+        </div>
+      ) : (
         <div className="flex items-center">
           <UserPopover
             size={18}

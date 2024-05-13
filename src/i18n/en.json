@@ -1117,6 +1117,7 @@
     "actionSidebar.cancelModal.subtitle": "All content and settings will be lost.",
     "actionSidebar.changeActionModal.title": "Do you wish to change the action?",
     "actionSidebar.method.reputation": "Reputation",
+    "actionSidebar.method.staking": "Staking",
     "actionSidebar.method.multisig": "Multi-Sig Permissions",
     "actionSidebar.method.permissions": "Permissions",
     "actionSidebar.option.addMembers": "Add members",

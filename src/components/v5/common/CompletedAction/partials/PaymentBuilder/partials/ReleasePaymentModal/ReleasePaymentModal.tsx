@@ -6,7 +6,9 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -39,6 +41,12 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
     success: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
   });
 
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+  });
+
   const handleFinalizeExpenditure = async () => {
     setIsSubmitting(true);
     try {
@@ -53,6 +61,20 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
       };
 
       await finalizeExpenditure(finalizePayload);
+
+      const claimablePayouts = getClaimableExpenditurePayouts(
+        expenditure.slots,
+      );
+
+      if (expenditure.isStaked && !!claimablePayouts.length) {
+        const payload: ReclaimExpenditureStakePayload = {
+          colonyAddress: colony.colonyAddress,
+          nativeExpenditureId: expenditure.nativeId,
+        };
+
+        await reclaimExpenditureStake(payload);
+      }
+
       await refetchExpenditure({ expenditureId: expenditure.id });
       setIsSubmitting(false);
       onClose();
