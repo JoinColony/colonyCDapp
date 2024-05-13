@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { sanitizeHTML, stripHTML } from '~utils/strings.ts';
+import {
+  stripAndremoveHeadingsFromHTML,
+  sanitizeHTML,
+} from '~utils/strings.ts';
 
 import styles from './RichTextDisplay.module.css';
 
@@ -22,7 +25,7 @@ const RichTextDisplay = ({
 }: RichTextDisplayProps) => {
   const cleanContent = shouldFormat
     ? sanitizeHTML(content)
-    : stripHTML(content);
+    : stripAndremoveHeadingsFromHTML(content);
 
   return (
     <div

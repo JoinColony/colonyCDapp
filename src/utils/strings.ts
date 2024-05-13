@@ -168,3 +168,25 @@ export const sanitizeHTML = (content: string) => DOMPurify.sanitize(content);
 
 export const stripHTML = (content: string) =>
   DOMPurify.sanitize(content, { ALLOWED_TAGS: [], KEEP_CONTENT: true });
+
+export const stripAndremoveHeadingsFromHTML = (content: string) => {
+  // When stripHTML is called, it removes all of the HTML tags, but does not leave a space between the content of paragraphs.
+  // This hook ensures that there is a space between paragraphs.
+  DOMPurify.addHook('uponSanitizeElement', (node) => {
+    if (node.tagName?.toLowerCase() === 'p') {
+      // eslint-disable-next-line no-param-reassign
+      node.innerHTML = !node.innerHTML ? '' : `${node.innerHTML} `;
+    }
+  });
+
+  const string = stripHTML(
+    DOMPurify.sanitize(content, {
+      FORBID_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      KEEP_CONTENT: false,
+    }),
+  );
+
+  DOMPurify.removeHook('uponSanitizeElement');
+
+  return string;
+};
