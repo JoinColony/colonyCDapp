@@ -127,17 +127,16 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       ref={registerContainerRef}
     >
       <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
-        {isMobile ? (
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            className="flex items-center justify-center py-2.5 text-gray-400"
+            className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
             onClick={closeSidebarClick}
             aria-label={formatText({ id: 'ariaLabel.closeModal' })}
           >
             <X size={18} />
           </button>
-        ) : (
-          <>
+          {!isMobile && (
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
@@ -150,10 +149,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                 <ArrowsOutSimple size={18} />
               )}
             </button>
-
-            <MotionOutcomeBadge motionState={motionState} />
-          </>
-        )}
+          )}
+        </div>
+        {!isMobile && <MotionOutcomeBadge motionState={motionState} />}
         <div>{children}</div>
       </div>
       {getSidebarContent()}
