@@ -12,8 +12,8 @@ const displayName = 'v5.common.CompletedAction.partials.ActionData';
 interface Props {
   rowLabel: Message;
   rowContent: React.ReactNode;
-  tooltipContent: Message;
   RowIcon: Icon;
+  tooltipContent?: Message;
 }
 
 const ActionData = ({
@@ -22,18 +22,26 @@ const ActionData = ({
   rowContent,
   RowIcon,
 }: Props) => {
+  const content = (
+    <div className="flex items-center gap-2">
+      <RowIcon size={ICON_SIZE} />
+      <span>{formatText(rowLabel)}</span>
+    </div>
+  );
+
   return (
     <>
       <div>
-        <Tooltip
-          placement={DEFAULT_TOOLTIP_POSITION}
-          tooltipContent={formatText(tooltipContent)}
-        >
-          <div className="flex items-center gap-2">
-            <RowIcon size={ICON_SIZE} />
-            <span>{formatText(rowLabel)}</span>
-          </div>
-        </Tooltip>
+        {tooltipContent ? (
+          <Tooltip
+            placement={DEFAULT_TOOLTIP_POSITION}
+            tooltipContent={formatText(tooltipContent)}
+          >
+            {content}
+          </Tooltip>
+        ) : (
+          content
+        )}
       </div>
       <div>{rowContent}</div>
     </>

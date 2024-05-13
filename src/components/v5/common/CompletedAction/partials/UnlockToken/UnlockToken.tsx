@@ -1,6 +1,8 @@
+import { CoinVertical } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
@@ -11,6 +13,7 @@ import {
   ActionTitle,
 } from '../Blocks/index.ts';
 import {
+  ActionData,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -35,6 +38,9 @@ const MSG = defineMessages({
 });
 
 const UnlockToken = ({ action }: UnlockTokenProps) => {
+  const { colony } = useColonyContext();
+  const { nativeToken } = colony;
+  const { name, symbol } = nativeToken;
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser } = action;
 
@@ -56,6 +62,12 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
+
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.token' })}
+          rowContent={`${name} (${symbol})`}
+          RowIcon={CoinVertical}
+        />
 
         <DecisionMethodRow isMotion={action.isMotion || false} />
 
