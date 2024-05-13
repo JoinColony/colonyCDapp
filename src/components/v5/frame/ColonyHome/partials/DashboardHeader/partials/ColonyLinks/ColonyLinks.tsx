@@ -1,12 +1,14 @@
 import { CopySimple, ShareNetwork } from '@phosphor-icons/react';
-import React from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMobile } from '~hooks';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import { type TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
 import { formatText } from '~utils/intl.ts';
 import DropdownMenu from '~v5/common/DropdownMenu/index.ts';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
@@ -15,6 +17,37 @@ import { sortExternalLinks } from './helpers.ts';
 import { useHeaderLinks } from './useHeaderLinks.ts';
 
 const displayName = 'v5.common.ColonyDashboardHeader.partials.ColonyLinks';
+
+interface ColonyLinkWrapperProps
+  extends Pick<TooltipProps, 'tooltipContent' | 'isOpen' | 'isSuccess'> {
+  isCopy?: boolean;
+}
+
+const ColonyLinkWrapper: FC<PropsWithChildren<ColonyLinkWrapperProps>> = ({
+  children,
+  tooltipContent,
+  isOpen,
+  isSuccess,
+  isCopy,
+}) => {
+  const isMobile = useMobile();
+
+  if (isMobile && !isCopy) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Tooltip
+      isOpen={isOpen}
+      isSuccess={isSuccess}
+      placement="top"
+      tooltipContent={tooltipContent}
+      trigger={isMobile ? undefined : 'hover'}
+    >
+      {children}
+    </Tooltip>
+  );
+};
 
 const ColonyLinks = () => {
   const { colony } = useColonyContext();
@@ -46,23 +79,31 @@ const ColonyLinks = () => {
 
         return (
           <li key={name}>
-            <ExternalLink
-              href={link}
-              className="text-gray-900 md:hover:text-blue-400"
+            <ColonyLinkWrapper
+              tooltipContent={formatText({
+                id: 'colony.tooltip.goToExternalLink',
+              })}
             >
-              <LinkIcon size={16} />
-            </ExternalLink>
+              <ExternalLink
+                href={link}
+                className="text-gray-900 md:hover:text-blue-400"
+              >
+                <LinkIcon size={16} />
+              </ExternalLink>
+            </ColonyLinkWrapper>
           </li>
         );
       })}
       <li>
-        <Tooltip
-          isOpen={isColonyAddressCopied}
-          isSuccess
-          placement="right"
+        <ColonyLinkWrapper
+          isOpen={isColonyAddressCopied || undefined}
+          isSuccess={isColonyAddressCopied}
           tooltipContent={formatText({
-            id: 'colony.tooltip.url.copied',
+            id: isColonyAddressCopied
+              ? 'colony.tooltip.url.copied'
+              : 'colony.tooltip.contractAddress.copy',
           })}
+          isCopy
         >
           <button
             type="button"
@@ -71,16 +112,18 @@ const ColonyLinks = () => {
           >
             <CopySimple size={16} />
           </button>
-        </Tooltip>
+        </ColonyLinkWrapper>
       </li>
       <li>
-        <Tooltip
-          isOpen={isShareUrlCopied}
-          isSuccess
-          placement="right"
+        <ColonyLinkWrapper
+          isOpen={isShareUrlCopied || undefined}
+          isSuccess={isShareUrlCopied}
           tooltipContent={formatText({
-            id: 'colony.tooltip.url.copied',
+            id: isShareUrlCopied
+              ? 'colony.tooltip.url.copied'
+              : 'colony.tooltip.colonyAddress.copy',
           })}
+          isCopy
         >
           <button
             type="button"
@@ -89,7 +132,7 @@ const ColonyLinks = () => {
           >
             <ShareNetwork size={16} />
           </button>
-        </Tooltip>
+        </ColonyLinkWrapper>
       </li>
       <li>
         <DropdownMenu {...dropdownMenuProps} />
