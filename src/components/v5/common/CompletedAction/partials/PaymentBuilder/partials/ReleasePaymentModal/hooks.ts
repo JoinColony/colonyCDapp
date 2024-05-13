@@ -1,5 +1,4 @@
 import { ColonyRole } from '@colony/colony-js';
-import { object, string } from 'yup';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -16,6 +15,8 @@ export const useGetReleaseDecisionMethodItems = (
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
+  const userIsCreator = user?.walletAddress === expenditure.ownerAddress;
+
   if (!user) {
     return [];
   }
@@ -29,23 +30,17 @@ export const useGetReleaseDecisionMethodItems = (
 
   return [
     {
-      label: 'Permissions',
+      label: formatText({ id: 'actionSidebar.method.permissions' }),
       value: DecisionMethod.Permissions,
       isDisabled: !isPermissionsEnabled,
     },
+    ...(userIsCreator
+      ? [
+          {
+            label: formatText({ id: 'actionSidebar.method.paymentCreator' }),
+            value: DecisionMethod.PaymentCreator,
+          },
+        ]
+      : []),
   ];
 };
-
-export const releaseDecisionMethodDescriptions = {
-  [DecisionMethod.Permissions]: formatText({
-    id: 'releaseModal.permissionsDescription',
-  }),
-};
-
-export const validationSchema = object()
-  .shape({
-    decisionMethod: object().shape({
-      value: string().required(),
-    }),
-  })
-  .defined();

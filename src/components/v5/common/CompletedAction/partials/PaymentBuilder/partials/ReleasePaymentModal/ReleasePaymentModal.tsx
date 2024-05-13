@@ -16,10 +16,10 @@ import Modal from '~v5/shared/Modal/index.ts';
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 
 import {
-  useGetReleaseDecisionMethodItems,
   releaseDecisionMethodDescriptions,
   validationSchema,
-} from './hooks.ts';
+} from './consts.ts';
+import { useGetReleaseDecisionMethodItems } from './hooks.ts';
 import { type ReleasePaymentModalProps } from './types.ts';
 
 const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
@@ -108,7 +108,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                   options={releaseDecisionMethodItems}
                   name="decisionMethod"
                 />
-                {method && method.value && (
+                {method?.value && (
                   <div className="mt-4 rounded border border-warning-200 bg-warning-100 px-6 py-3">
                     <p className="text-sm text-gray-900">
                       {releaseDecisionMethodDescriptions[method.value]}
