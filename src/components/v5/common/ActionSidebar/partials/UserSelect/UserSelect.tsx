@@ -173,8 +173,11 @@ const UserSelect: FC<UserSelectProps> = ({
       {tooltipContent ? (
         <Tooltip
           tooltipContent={tooltipContent}
-          trigger="hover"
-          placement="top"
+          trigger={!isUserAddressValid ? 'hover' : undefined}
+          placement={isUserAddressValid ? 'top' : 'bottom'}
+          popperOptions={{
+            strategy: 'fixed',
+          }}
         >
           {toggler}
         </Tooltip>
