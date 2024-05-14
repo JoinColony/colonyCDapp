@@ -20,7 +20,6 @@ import { getSummedTokens } from './utils.ts';
 
 const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
   expenditure,
-  refetchExpenditure,
 }) => {
   const { colony } = useColonyContext();
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
@@ -145,7 +144,6 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
                 onSuccess={() => {
-                  refetchExpenditure();
                   fetchCurrentBlockTime();
                 }}
               />
