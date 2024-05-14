@@ -1,5 +1,6 @@
+import { format } from 'date-fns';
 import React, { type FC } from 'react';
-import { FormattedDate, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { getActionTitleValues } from '~common/ColonyActions/index.ts';
@@ -40,7 +41,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
             <div className="mr-2 flex min-w-0 items-center">
               <p className="mr-2 min-w-0 truncate text-1">{stakeItemTitle}</p>
               <span className="text-xs text-gray-400">
-                <FormattedDate value={stake.createdAt} />
+                {format(new Date(stake.createdAt), 'dd MMMM yyyy')}
               </span>
             </div>
             <UserStakeStatusBadge status={stake.status} />
