@@ -5,7 +5,9 @@ import { defineMessages } from 'react-intl';
 import { Action } from '~constants/actions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   AMOUNT_FIELD_NAME,
@@ -75,6 +77,10 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     amount || '1',
     token?.decimals,
   );
+  const convertedValue = convertToDecimal(
+    amount || '',
+    getTokenDecimalsWithFallback(token?.decimals),
+  );
 
   return (
     <>
@@ -87,7 +93,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
             [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
             [FROM_FIELD_NAME]: fromDomain?.nativeId,
             [TO_FIELD_NAME]: toDomain?.nativeId,
-            [AMOUNT_FIELD_NAME]: formattedAmount,
+            [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
             [DECISION_METHOD_FIELD_NAME]: isMotion
               ? DecisionMethod.Reputation

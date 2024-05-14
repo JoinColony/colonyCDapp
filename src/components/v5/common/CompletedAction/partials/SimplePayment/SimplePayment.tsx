@@ -6,8 +6,10 @@ import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
@@ -77,6 +79,10 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
     amount || '1',
     token?.decimals,
   );
+  const convertedValue = convertToDecimal(
+    amount || '',
+    getTokenDecimalsWithFallback(token?.decimals),
+  );
 
   return (
     <>
@@ -89,7 +95,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
             [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
             [FROM_FIELD_NAME]: fromDomain?.nativeId,
             [RECIPIENT_FIELD_NAME]: recipientAddress,
-            [AMOUNT_FIELD_NAME]: formattedAmount,
+            [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
             [DECISION_METHOD_FIELD_NAME]: isMotion
               ? DecisionMethod.Reputation
