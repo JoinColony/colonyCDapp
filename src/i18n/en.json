@@ -1057,6 +1057,7 @@
     "actionSidebar.actionType": "Action type",
     "actionSidebar.from": "From",
     "actionSidebar.to": "To",
+    "actionSidebar.token": "Token",
     "actionSidebar.colonyLogo": "Colony logo",
     "actionSidebar.colonyDescription": "Colony description",
     "actionSidebar.colonyDescription.placeholder": "Enter short colony description",
