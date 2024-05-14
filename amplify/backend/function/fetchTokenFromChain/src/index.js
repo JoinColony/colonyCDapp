@@ -104,9 +104,24 @@ exports.handler = async (event) => {
         basicTokenAbi,
         provider,
       );
-      const name = await tokenFromChain.name();
-      const symbol = await tokenFromChain.symbol();
-      const decimals = await tokenFromChain.decimals();
+      let name = checksummedAddress;
+      let symbol = checksummedAddress.slice(0, 6);
+      let decimals = 0;
+      try {
+        name = await tokenFromChain.name();
+      } catch (error) {
+        console.log(`TOKEN NAME NOT AVAILABLE, FALLING BACK TO: "${name}"`, error);
+      }
+      try {
+        symbol = await tokenFromChain.symbol();
+      } catch (error) {
+        console.log(`TOKEN SYMBOL NOT AVAILABLE, FALLING BACK TO: "${symbol}"`, error);
+      }
+      try {
+        decimals = await tokenFromChain.decimals();
+      } catch (error) {
+        console.log(`TOKEN DECIMALS NOT AVAILABLE, FALLING BACK TO: "${decimals}"`, error);
+      }
       const type = await getTokenType(tokenFromChain);
       const chainId = String((await provider.getNetwork()).chainId);
 
