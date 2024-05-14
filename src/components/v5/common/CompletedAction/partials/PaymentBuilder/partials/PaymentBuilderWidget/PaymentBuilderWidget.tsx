@@ -45,13 +45,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const { expenditureId } = action;
 
-  const {
-    expenditure,
-    loadingExpenditure,
-    refetchExpenditure,
-    startPolling,
-    stopPolling,
-  } = useGetExpenditureData(expenditureId);
+  const { expenditure, loadingExpenditure, startPolling, stopPolling } =
+    useGetExpenditureData(expenditureId);
 
   const {
     fundingActions,
@@ -228,14 +223,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Payment,
       heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
-      content: (
-        <PaymentStepDetailsBlock
-          expenditure={expenditure}
-          refetchExpenditure={() =>
-            refetchExpenditure({ expenditureId: expenditureId ?? undefined })
-          }
-        />
-      ),
+      content: <PaymentStepDetailsBlock expenditure={expenditure} />,
     },
   ];
 
