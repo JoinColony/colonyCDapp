@@ -1,6 +1,6 @@
 import { Wallet } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
-import React, { useState, type FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
@@ -27,7 +27,6 @@ const FundingModal: FC<FundingModalProps> = ({
   onSuccess,
   ...rest
 }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { colony } = useColonyContext();
 
   const fundingItems = expenditure.slots.reduce<TokenItemProps[]>(
@@ -67,7 +66,6 @@ const FundingModal: FC<FundingModalProps> = ({
   });
 
   const handleFundExpenditure = async () => {
-    setIsSubmitting(true);
     try {
       if (!expenditure) {
         return;
@@ -81,11 +79,9 @@ const FundingModal: FC<FundingModalProps> = ({
 
       await fundExpenditure(payload);
 
-      setIsSubmitting(false);
       onSuccess();
       onClose();
     } catch (err) {
-      setIsSubmitting(false);
       onClose();
     }
   };
@@ -98,7 +94,7 @@ const FundingModal: FC<FundingModalProps> = ({
         validationSchema={validationSchema}
         defaultValues={{ decisionMethod: {} }}
       >
-        {({ watch }) => {
+        {({ watch, formState: { isSubmitting } }) => {
           const method = watch('decisionMethod');
 
           return (
