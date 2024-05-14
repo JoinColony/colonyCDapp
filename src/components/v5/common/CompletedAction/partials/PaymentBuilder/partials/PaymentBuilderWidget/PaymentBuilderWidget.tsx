@@ -27,6 +27,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { walletAddress } = user || {};
+  const [isLoading, setIsLoading] = useState(false);
 
   const [
     isFundingModalOpen,
@@ -39,13 +40,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const { expenditureId } = action;
 
-  const {
-    expenditure,
-    loadingExpenditure,
-    refetchExpenditure,
-    startPolling,
-    stopPolling,
-  } = useGetExpenditureData(expenditureId);
+  const { expenditure, loadingExpenditure, startPolling, stopPolling } =
+    useGetExpenditureData(expenditureId);
 
   const { fundingActions, finalizingActions, cancellingActions, finalizedAt } =
     expenditure || {};
@@ -56,12 +52,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const [activeStepKey, setActiveStepKey] =
     useState<ExpenditureStep>(expenditureStatus);
 
-  const [isRefetching, setIsRefetching] = useState(false);
-
   useEffect(() => {
     startPolling(getSafePollingInterval());
 
     setActiveStepKey(expenditureStatus);
+
+    setIsLoading(false);
 
     return () => stopPolling();
   }, [expenditureStatus, startPolling, stopPolling, expenditure]);
@@ -85,6 +81,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     ),
     isHidden: expenditureStatus !== ExpenditureStep.Cancel,
   };
+
   const isExpenditureCanceled = expenditureStatus === ExpenditureStep.Cancel;
 
   const items: StepperItem<ExpenditureStep>[] = [
@@ -110,12 +107,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                   !expenditure?.ownerAddress ||
                   walletAddress !== expenditure?.ownerAddress
                 }
-                onSuccess={async () => {
-                  setIsRefetching(true);
-                  await refetchExpenditure({
-                    expenditureId: expenditureId || '',
-                  });
-                  setIsRefetching(false);
+                onSuccess={() => {
+                  setIsLoading(true);
                 }}
                 text={formatText({
                   id: 'expenditure.reviewStage.confirmDetails.button',
@@ -124,7 +117,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 actionType={ActionTypes.EXPENDITURE_LOCK}
                 mode="primarySolid"
                 className="w-full"
-                isLoading={isRefetching}
+                isLoading={isLoading}
               />
             }
           />
@@ -150,6 +143,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 text={formatText({
                   id: 'expenditure.fundingStage.button',
                 })}
+                loading={isLoading}
               />
             }
           />
@@ -180,6 +174,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 text={formatText({
                   id: 'expenditure.releaseStage.button',
                 })}
+                loading={isLoading}
               />
             }
           />
@@ -198,14 +193,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Payment,
       heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
-      content: (
-        <PaymentStepDetailsBlock
-          expenditure={expenditure}
-          refetchExpenditure={() =>
-            refetchExpenditure({ expenditureId: expenditureId ?? undefined })
-          }
-        />
-      ),
+      content: <PaymentStepDetailsBlock expenditure={expenditure} />,
     },
   ];
 
@@ -232,13 +220,17 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             expenditure={expenditure}
             isOpen={isReleasePaymentModalOpen}
             onClose={hideReleasePaymentModal}
-            refetchExpenditure={refetchExpenditure}
+            onSuccess={() => {
+              setIsLoading(true);
+            }}
           />
           <FundingModal
             isOpen={isFundingModalOpen}
             onClose={hideFundingModal}
             expenditure={expenditure}
-            refetchExpenditure={refetchExpenditure}
+            onSuccess={() => {
+              setIsLoading(true);
+            }}
           />
         </>
       )}
