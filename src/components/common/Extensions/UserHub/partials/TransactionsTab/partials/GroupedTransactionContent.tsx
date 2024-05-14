@@ -76,7 +76,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
         'font-semibold': selected,
       })}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <h4 className="text-gray-900">
           {`${(group?.index || idx) + 1}. `}{' '}
           <FormattedMessage

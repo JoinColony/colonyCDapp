@@ -38,7 +38,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
     <div
       className={clsx(
         styles.stakesListContainer,
-        'h-[60vh] w-full overflow-auto sm:max-h-[calc(22rem-1px)]',
+        'h-[60vh] w-full overflow-auto py-2 sm:max-h-[calc(22rem-1px)] sm:px-0 sm:py-0',
       )}
     >
       {stakes.map((stake) => (

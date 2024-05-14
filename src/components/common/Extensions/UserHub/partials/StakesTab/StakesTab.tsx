@@ -43,8 +43,8 @@ const StakesTab = () => {
   const claimableStakes = stakesByFilterType.claimable;
 
   return (
-    <div>
-      <div className="mb-4 flex items-center justify-between px-6 pt-6">
+    <div className="p-6 sm:p-0">
+      <div className="mb-4 flex items-center justify-between sm:px-6 sm:pt-6">
         <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
         {!isMobile && (
           <ClaimAllButton
@@ -58,7 +58,7 @@ const StakesTab = () => {
         items={tabItems}
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
-        upperContainerClassName="px-6"
+        upperContainerClassName="sm:px-6"
       >
         <ul className="flex flex-col">
           <AnimatePresence>

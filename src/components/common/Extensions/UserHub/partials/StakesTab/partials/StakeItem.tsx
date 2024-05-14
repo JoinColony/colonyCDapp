@@ -22,10 +22,10 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
     stake.action?.type;
 
   return (
-    <li className="flex flex-col border-b border-gray-100  sm:last:border-none sm:hover:bg-gray-50">
+    <li className="flex flex-col border-b border-gray-100 sm:last:border-none sm:hover:bg-gray-50">
       <button
         type="button"
-        className="px-6 py-3.5"
+        className="py-3.5 sm:px-6"
         onClick={() =>
           navigate(
             `${window.location.pathname}?${TX_SEARCH_PARAM}=${stake.action?.transactionHash}`,

@@ -6,6 +6,7 @@ import React, { type FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { useMobile } from '~hooks';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -32,6 +33,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   hideButton = false,
 }) => {
   const { formatMessage } = useIntl();
+  const isMobile = useMobile();
 
   const groupKey = getGroupKey(transactionGroup);
   const status = getGroupStatus(transactionGroup);
@@ -79,51 +81,54 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
         'list-none': hideButton,
       })}
     >
-      <div className="px-6 py-3.5 hover:bg-gray-25">
+      <div className="flex flex-col items-start gap-1 py-3.5 hover:bg-gray-25 sm:px-6">
         {!hideButton && (
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex flex-col items-start">
-              <div className="flex items-center gap-1.5">
-                <h4 className="text-1">{value}</h4>
-                {createdAt && (
-                  <span className="mt-0.5 block text-xs text-gray-400">
-                    {createdAt}
-                  </span>
-                )}
-              </div>
-              <p className="text-left text-xs text-gray-600">
-                <FormattedMessage
-                  {...defaultTransactionGroupMessageDescriptorDescriptionId}
-                  {...values.group?.description}
-                  values={
-                    values.group?.descriptionValues || {
-                      ...arrayToObject(values.params),
-                      ...titleValues,
-                    }
-                  }
-                />
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <GroupedTransactionStatus status={status} />
-              <button
-                type="button"
-                aria-label={formatMessage({
-                  id: 'handle.unselect.transaction',
-                })}
-                className="flex w-6 items-center justify-center"
-                onClick={() => onToggleExpand && onToggleExpand(groupId)}
-              >
-                <span className="pointer">
-                  {isContentOpened ? (
-                    <CaretUp size={12} />
-                  ) : (
-                    <CaretDown size={12} />
+          <>
+            {isMobile && <GroupedTransactionStatus status={status} />}
+            <div className="flex w-full items-center justify-between gap-4">
+              <div className="flex flex-col items-start">
+                <div className="flex items-center gap-1.5">
+                  <h4 className="text-1">{value}</h4>
+                  {createdAt && (
+                    <span className="mt-0.5 block text-xs text-gray-400">
+                      {createdAt}
+                    </span>
                   )}
-                </span>
-              </button>
+                </div>
+                <p className="text-left text-xs text-gray-600">
+                  <FormattedMessage
+                    {...defaultTransactionGroupMessageDescriptorDescriptionId}
+                    {...values.group?.description}
+                    values={
+                      values.group?.descriptionValues || {
+                        ...arrayToObject(values.params),
+                        ...titleValues,
+                      }
+                    }
+                  />
+                </p>
+              </div>
+              <div className="flex gap-2">
+                {!isMobile && <GroupedTransactionStatus status={status} />}
+                <button
+                  type="button"
+                  aria-label={formatMessage({
+                    id: 'handle.unselect.transaction',
+                  })}
+                  className="flex w-6 items-center justify-center"
+                  onClick={() => onToggleExpand && onToggleExpand(groupId)}
+                >
+                  <span className="pointer">
+                    {isContentOpened ? (
+                      <CaretUp size={12} />
+                    ) : (
+                      <CaretDown size={12} />
+                    )}
+                  </span>
+                </button>
+              </div>
             </div>
-          </div>
+          </>
         )}
 
         <AnimatePresence>
@@ -135,7 +140,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               exit="hidden"
               variants={accordionAnimation}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="overflow-hidden text-md text-gray-600"
+              className="w-full overflow-hidden text-md text-gray-600"
             >
               <ul className="pt-1.5">
                 {transactionGroup.map((transaction, idx) => (
