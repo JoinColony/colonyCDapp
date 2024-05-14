@@ -24,7 +24,7 @@ const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
 
   // @TODO: handle empty state <EmptyContent />
   return (
-    <div>
+    <div className="p-6">
       <p className="mb-6 heading-5 md:mb-4">
         {formatMessage({ id: 'userHub.reputation' })}
       </p>

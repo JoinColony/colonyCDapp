@@ -14,4 +14,5 @@ export interface TabsProps {
   activeTab: number;
   onTabClick: (_: React.BaseSyntheticEvent, id: number) => void;
   className?: string;
+  upperContainerClassName?: string;
 }

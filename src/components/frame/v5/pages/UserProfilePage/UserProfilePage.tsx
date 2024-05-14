@@ -74,6 +74,7 @@ const UserProfilePage: FC = () => {
   return (
     <Tabs
       activeTab={activeTab}
+      className="pt-6"
       onTabClick={(_, id) => navigate(tabRoutes[id])}
       items={[
         {

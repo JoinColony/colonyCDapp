@@ -1,4 +1,6 @@
+import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
+import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -17,7 +19,7 @@ import {
 import { type GroupedTransactionProps } from '../types.ts';
 
 import GroupedTransactionContent from './GroupedTransactionContent.tsx';
-import TransactionStatus from './TransactionStatus.tsx';
+import GroupedTransactionStatus from './GroupedTransactionStatus.tsx';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';
@@ -26,7 +28,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   transactionGroup,
   groupId,
   isContentOpened,
-  onClick,
+  onToggleExpand,
   hideButton = false,
 }) => {
   const { formatMessage } = useIntl();
@@ -67,23 +69,29 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     },
   );
 
+  const createdAt =
+    transactionGroup?.[0].createdAt &&
+    format(new Date(transactionGroup[0].createdAt), 'dd MMMM yyyy');
+
   return (
     <li
-      className={clsx(`border-b border-gray-200 last:border-none`, {
+      className={clsx(`border-b border-gray-200  last:border-none`, {
         'list-none': hideButton,
       })}
     >
-      {!hideButton && (
-        <button
-          type="button"
-          aria-label={formatMessage({ id: 'handle.unselect.transaction' })}
-          className="w-full"
-          onClick={() => onClick && onClick(groupId)}
-        >
-          <div className="flex items-center justify-between py-3.5">
+      <div className="px-6 py-3.5 hover:bg-gray-25">
+        {!hideButton && (
+          <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col items-start">
-              <h4 className="text-1">{value}</h4>
-              <p className="text-xs text-gray-600">
+              <div className="flex items-center gap-1.5">
+                <h4 className="text-1">{value}</h4>
+                {createdAt && (
+                  <span className="mt-0.5 block text-xs text-gray-400">
+                    {createdAt}
+                  </span>
+                )}
+              </div>
+              <p className="text-left text-xs text-gray-600">
                 <FormattedMessage
                   {...defaultTransactionGroupMessageDescriptorDescriptionId}
                   {...values.group?.description}
@@ -96,39 +104,53 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                 />
               </p>
             </div>
-            <TransactionStatus
-              groupCount={transactionGroup.length}
-              status={status}
-              date={transactionGroup?.[0].createdAt}
-            />
+            <div className="flex gap-2">
+              <GroupedTransactionStatus status={status} />
+              <button
+                type="button"
+                aria-label={formatMessage({
+                  id: 'handle.unselect.transaction',
+                })}
+                className="flex w-6 items-center justify-center"
+                onClick={() => onToggleExpand && onToggleExpand(groupId)}
+              >
+                <span className="pointer">
+                  {isContentOpened ? (
+                    <CaretUp size={12} />
+                  ) : (
+                    <CaretDown size={12} />
+                  )}
+                </span>
+              </button>
+            </div>
           </div>
-        </button>
-      )}
-
-      <AnimatePresence>
-        {isContentOpened && (
-          <motion.div
-            key="accordion-content"
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={accordionAnimation}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="-mt-1.5 overflow-hidden text-md text-gray-600"
-          >
-            <ul>
-              {transactionGroup.map((transaction, idx) => (
-                <GroupedTransactionContent
-                  key={transaction.id}
-                  idx={idx}
-                  transaction={transaction}
-                  selected={idx === selectedTransactionIdx}
-                />
-              ))}
-            </ul>
-          </motion.div>
         )}
-      </AnimatePresence>
+
+        <AnimatePresence>
+          {isContentOpened && (
+            <motion.div
+              key="accordion-content"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={accordionAnimation}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="overflow-hidden text-md text-gray-600"
+            >
+              <ul className="pt-1.5">
+                {transactionGroup.map((transaction, idx) => (
+                  <GroupedTransactionContent
+                    key={transaction.id}
+                    idx={idx}
+                    transaction={transaction}
+                    selected={idx === selectedTransactionIdx}
+                  />
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </li>
   );
 };

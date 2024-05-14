@@ -35,7 +35,7 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
     return (
       <Tabs
         items={tabsItems[extensionData.extensionId] ?? []}
-        className="pt-0"
+        className="pt-6"
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
       >

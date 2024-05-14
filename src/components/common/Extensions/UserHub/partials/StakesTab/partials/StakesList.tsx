@@ -17,7 +17,7 @@ const displayName =
 const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
   if (loading) {
     return (
-      <div className="mx-auto w-fit">
+      <div className="mx-auto w-fit pt-6">
         <SpinnerLoader appearance={{ size: 'small' }} />
       </div>
     );
@@ -29,6 +29,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
         title={{ id: 'empty.content.title.stakes' }}
         description={{ id: 'empty.content.subtitle.stakes' }}
         icon={Binoculars}
+        className="pt-6"
       />
     );
   }
@@ -37,7 +38,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
     <div
       className={clsx(
         styles.stakesListContainer,
-        'h-[60vh] w-full overflow-x-hidden overflow-y-scroll pr-1 sm:max-h-[22.25rem]',
+        'h-[60vh] w-full overflow-auto sm:max-h-[calc(22rem-1px)]',
       )}
     >
       {stakes.map((stake) => (

@@ -18,13 +18,18 @@ const displayName =
 const TransactionList: FC = () => {
   const { transactionAndMessageGroups } = useUserTransactionContext();
 
-  const [groupId, setGroupId] = useState<string | undefined>(
-    getGroupId(transactionAndMessageGroups[0]),
-  );
+  const [groupId, setGroupId] = useState<string | undefined>(undefined);
 
-  const handleSelectElement = useCallback((id: string) => {
-    setGroupId(id);
-  }, []);
+  const handleSelectElement = useCallback(
+    (id: string) => {
+      if (groupId === id) {
+        setGroupId(undefined);
+      } else {
+        setGroupId(id);
+      }
+    },
+    [groupId],
+  );
 
   return (
     <ul>
@@ -35,7 +40,7 @@ const TransactionList: FC = () => {
               key={getGroupId(transactionOrMessageGroup)}
               groupId={getGroupId(transactionOrMessageGroup)}
               transactionGroup={transactionOrMessageGroup}
-              onClick={handleSelectElement}
+              onToggleExpand={handleSelectElement}
               isContentOpened={
                 groupId === getGroupId(transactionOrMessageGroup)
               }
