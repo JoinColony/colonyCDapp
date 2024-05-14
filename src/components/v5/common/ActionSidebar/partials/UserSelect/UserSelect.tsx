@@ -173,7 +173,6 @@ const UserSelect: FC<UserSelectProps> = ({
       {tooltipContent ? (
         <Tooltip
           tooltipContent={tooltipContent}
-          placement="top"
           // selectTriggerRef={(triggerRef) => {
           //   if (!triggerRef) {
           //     return null;
@@ -181,6 +180,11 @@ const UserSelect: FC<UserSelectProps> = ({
 
           //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
           // }}
+          trigger={!isUserAddressValid ? 'hover' : undefined}
+          placement={isUserAddressValid ? 'top' : 'bottom'}
+          popperOptions={{
+            strategy: 'fixed',
+          }}
         >
           {toggler}
         </Tooltip>
