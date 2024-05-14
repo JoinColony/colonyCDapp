@@ -2,7 +2,7 @@ import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect, useRef, useState, type FC } from 'react';
+import React, { type FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -45,25 +45,13 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   const isMobile = useMobile();
   const navigate = useNavigate();
 
-  const containerRef = useRef<HTMLLIElement>(null);
-
   const groupKey = getGroupKey(transactionGroup);
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
 
-  const [closedContainerHeight, setClosedContainerHeight] = useState<
-    number | null
-  >(null);
-
   const canLinkToAction =
     values.group?.key &&
     !GROUP_KEYS_WHICH_CANNOT_LINK.includes(values.group.key);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      setClosedContainerHeight(containerRef.current.clientHeight);
-    }
-  }, []);
 
   const defaultTransactionGroupMessageDescriptorTitleId = {
     id: `${
@@ -114,53 +102,76 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   return (
     <li
-      className={clsx(`relative border-b border-gray-200 last:border-none`, {
+      className={clsx(`border-b border-gray-200 last:border-none`, {
         'list-none': hideSummary,
       })}
-      ref={containerRef}
     >
-      <button
-        type="button"
-        onClick={handleNavigateToAction}
-        disabled={!canLinkToAction || hideSummary}
-        className={clsx(
-          'flex w-full flex-col items-start gap-1 py-3.5  sm:px-6',
-          {
-            'hover:bg-gray-25': !!canLinkToAction,
-            'cursor-default': !canLinkToAction,
-          },
-        )}
-      >
+      <div className="flex w-full flex-col items-start">
         {!hideSummary && (
-          <div className="flex w-full flex-col items-start gap-1">
-            {isMobile && <GroupedTransactionStatus status={status} />}
-            <div className="flex w-full items-center justify-between gap-4">
-              <div className="flex flex-col items-start">
-                <div className="flex items-center gap-1.5">
-                  <h4 className="text-1">{value}</h4>
-                  {createdAt && (
-                    <span className="mt-0.5 block text-xs text-gray-400">
-                      {createdAt}
-                    </span>
-                  )}
-                </div>
-                <p className="text-left text-xs text-gray-600 break-word">
-                  <FormattedMessage
-                    {...defaultTransactionGroupMessageDescriptorDescriptionId}
-                    {...values.group?.description}
-                    values={
-                      values.group?.descriptionValues || {
-                        ...arrayToObject(values.params),
-                        ...titleValues,
+          <div className="relative">
+            <button
+              type="button"
+              onClick={handleNavigateToAction}
+              disabled={!canLinkToAction || hideSummary}
+              className={clsx(
+                'flex w-full flex-col items-start gap-1 py-3.5 sm:px-6',
+                {
+                  'hover:bg-gray-25': !!canLinkToAction,
+                  'cursor-default': !canLinkToAction,
+                },
+              )}
+            >
+              {isMobile && <GroupedTransactionStatus status={status} />}
+              <div className="flex w-full items-center justify-between gap-4">
+                <div className="flex flex-col items-start">
+                  <div className="flex items-center gap-1.5">
+                    <h4 className="text-1">{value}</h4>
+                    {createdAt && (
+                      <span className="mt-0.5 block text-xs text-gray-400">
+                        {createdAt}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-left text-xs text-gray-600 break-word">
+                    <FormattedMessage
+                      {...defaultTransactionGroupMessageDescriptorDescriptionId}
+                      {...values.group?.description}
+                      values={
+                        values.group?.descriptionValues || {
+                          ...arrayToObject(values.params),
+                          ...titleValues,
+                        }
                       }
-                    }
-                  />
-                </p>
+                    />
+                  </p>
+                </div>
+                <div className="flex gap-2 pr-8">
+                  {!isMobile && <GroupedTransactionStatus status={status} />}
+                </div>
               </div>
-              <div className="flex gap-2 pr-8">
-                {!isMobile && <GroupedTransactionStatus status={status} />}
-              </div>
-            </div>
+            </button>
+            <button
+              type="button"
+              aria-label={formatMessage({
+                id: 'handle.unselect.transaction',
+              })}
+              className="absolute right-0 flex w-6 -translate-y-1/2 items-center justify-center sm:right-6"
+              style={{
+                top: '50%',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                return onToggleExpand && onToggleExpand(groupId);
+              }}
+            >
+              <span className="pointer">
+                {isContentOpened ? (
+                  <CaretUp size={16} />
+                ) : (
+                  <CaretDown size={16} />
+                )}
+              </span>
+            </button>
           </div>
         )}
 
@@ -173,9 +184,9 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               exit="hidden"
               variants={accordionAnimation}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="w-full overflow-hidden text-md text-gray-600"
+              className="w-full overflow-hidden text-md text-gray-600 "
             >
-              <ul className="pt-1.5">
+              <ul className="pb-3.5 pt-1.5 sm:px-6">
                 {transactionGroup.map((transaction, idx) => (
                   <GroupedTransactionContent
                     key={transaction.id}
@@ -188,25 +199,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
             </motion.div>
           )}
         </AnimatePresence>
-      </button>
-      {!hideSummary && (
-        <button
-          type="button"
-          aria-label={formatMessage({
-            id: 'handle.unselect.transaction',
-          })}
-          className="absolute right-0 flex w-6 -translate-y-1/2 items-center justify-center sm:right-6"
-          style={{ top: closedContainerHeight ? closedContainerHeight / 2 : 0 }}
-          onClick={(e) => {
-            e.stopPropagation();
-            return onToggleExpand && onToggleExpand(groupId);
-          }}
-        >
-          <span className="pointer">
-            {isContentOpened ? <CaretUp size={16} /> : <CaretDown size={16} />}
-          </span>
-        </button>
-      )}
+      </div>
     </li>
   );
 };
