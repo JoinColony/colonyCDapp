@@ -12,7 +12,6 @@ import { type TransactionType } from '~redux/immutable/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
 import {
   getActiveTransactionIdx,
@@ -27,6 +26,13 @@ import GroupedTransactionStatus from './GroupedTransactionStatus.tsx';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';
+
+const GROUP_KEYS_WHICH_CANNOT_LINK = [
+  'stakeMotion',
+  'finalizeMotion',
+  'escalateMotion',
+  'enableExtension',
+];
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({
   transactionGroup,
@@ -45,11 +51,13 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
 
-  const { action } = useGetColonyAction(values.hash);
-
   const [closedContainerHeight, setClosedContainerHeight] = useState<
     number | null
   >(null);
+
+  const canLinkToAction =
+    values.group?.key &&
+    !GROUP_KEYS_WHICH_CANNOT_LINK.includes(values.group.key);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -94,7 +102,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     format(new Date(transactionGroup[0].createdAt), 'dd MMMM yyyy');
 
   const handleNavigateToAction = () => {
-    if (action) {
+    if (canLinkToAction) {
       navigate(
         `${window.location.pathname}?${TX_SEARCH_PARAM}=${values.hash}`,
         {
@@ -114,14 +122,17 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
       <button
         type="button"
         onClick={handleNavigateToAction}
-        disabled={hideSummary}
+        disabled={!canLinkToAction || hideSummary}
         className={clsx(
           'flex w-full flex-col items-start gap-1 py-3.5  sm:px-6',
-          { 'hover:bg-gray-25': !!action, 'cursor-default': !action },
+          {
+            'hover:bg-gray-25': !!canLinkToAction,
+            'cursor-default': !canLinkToAction,
+          },
         )}
       >
         {!hideSummary && (
-          <div className="w-full">
+          <div className="flex w-full flex-col items-start gap-1">
             {isMobile && <GroupedTransactionStatus status={status} />}
             <div className="flex w-full items-center justify-between gap-4">
               <div className="flex flex-col items-start">
@@ -184,7 +195,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
           aria-label={formatMessage({
             id: 'handle.unselect.transaction',
           })}
-          className="absolute right-6 flex w-6 -translate-y-1/2 items-center justify-center"
+          className="absolute right-0 flex w-6 -translate-y-1/2 items-center justify-center sm:right-6"
           style={{ top: closedContainerHeight ? closedContainerHeight / 2 : 0 }}
           onClick={(e) => {
             e.stopPropagation();
