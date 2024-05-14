@@ -1,4 +1,3 @@
-import { CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
@@ -102,9 +101,6 @@ const UserHub: FC<UserHubProps> = ({
                         </span>
                         {formatText(label)}
                       </div>
-                      <span className="flex shrink-0 transition-transform duration-normal">
-                        <CaretRight size={12} />
-                      </span>
                     </button>
                   </li>
                 ))}
