@@ -28,6 +28,9 @@ import GroupedTransactionStatus from './GroupedTransactionStatus.tsx';
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';
 
+// When the user clicks on a transaction, we want to use the hash to navigate to the associated action
+// in the action sidebar. For some grouped transactions, we don't have a hash which is associated with
+// an action. Any grouped transaction with a key in the below list cannot be linked to an action.
 const GROUP_KEYS_WHICH_CANNOT_LINK = [
   BatchKeys.StakeMotion,
   BatchKeys.FinalizeMotion,
