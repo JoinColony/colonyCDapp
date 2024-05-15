@@ -94,7 +94,7 @@ export const initialExtensionContent = [
           name: 'params.totalStakeFraction',
           min: 1,
           max: 50,
-          step: 1,
+          step: 'any',
         },
         accordionItem: [
           {
