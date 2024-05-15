@@ -1,5 +1,5 @@
 import { Wallet } from '@phosphor-icons/react';
-import React, { useState, type FC } from 'react';
+import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -24,12 +24,11 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   expenditure,
   isOpen,
   onClose,
-  refetchExpenditure,
+  onSuccess,
   ...rest
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const releaseDecisionMethodItems =
     useGetReleaseDecisionMethodItems(expenditure);
 
@@ -40,7 +39,6 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   });
 
   const handleFinalizeExpenditure = async () => {
-    setIsSubmitting(true);
     try {
       if (!expenditure) {
         return;
@@ -53,11 +51,11 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
       };
 
       await finalizeExpenditure(finalizePayload);
-      await refetchExpenditure({ expenditureId: expenditure.id });
-      setIsSubmitting(false);
+
+      onSuccess();
+
       onClose();
     } catch (err) {
-      setIsSubmitting(false);
       onClose();
     }
   };
@@ -70,7 +68,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
         validationSchema={validationSchema}
         defaultValues={{ decisionMethod: {} }}
       >
-        {({ watch }) => {
+        {({ watch, formState: { isSubmitting } }) => {
           const method = watch('decisionMethod');
 
           return (
