@@ -132,7 +132,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                       )}
                     </p>
                   ),
-                  className: 'bg-negative-100 text-negative-400',
+                  className: 'bg-negative-100 text-negative-400 !py-3',
                 },
               ]
             : []),
@@ -143,33 +143,36 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                 {
                   key: '1',
                   content: <NotEnoughTokensInfo />,
-                  className: 'bg-negative-100 text-negative-400',
+                  className: 'bg-negative-100 text-negative-400 !py-3',
                 },
               ]
             : []),
           {
             key: '2',
-            content:
-              isFullyStaked || !isActive ? (
-                <StakingChart
-                  chartProps={{
-                    percentageVotesAgainst: objectingStakesPercentageValue,
-                    percentageVotesFor: supportingStakesPercentageValue,
-                  }}
-                  tokenDecimals={decimals || nativeTokenDecimals}
-                  tokenSymbol={symbol || nativeTokenSymbol}
-                  requiredStake={requiredStake}
-                />
-              ) : (
-                <StakingForm
-                  disableForm={
-                    !enoughReputationToStakeMinimum ||
-                    !enoughTokensToStakeMinimum
-                  }
-                  userActivatedTokens={userActivatedTokens}
-                  userInactivatedTokens={userInactivatedTokens}
-                />
-              ),
+            content: (
+              <div className={clsx({ 'mb-1.5': isStaked })}>
+                {isFullyStaked || !isActive ? (
+                  <StakingChart
+                    chartProps={{
+                      percentageVotesAgainst: objectingStakesPercentageValue,
+                      percentageVotesFor: supportingStakesPercentageValue,
+                    }}
+                    tokenDecimals={decimals || nativeTokenDecimals}
+                    tokenSymbol={symbol || nativeTokenSymbol}
+                    requiredStake={requiredStake}
+                  />
+                ) : (
+                  <StakingForm
+                    disableForm={
+                      !enoughReputationToStakeMinimum ||
+                      !enoughTokensToStakeMinimum
+                    }
+                    userActivatedTokens={userActivatedTokens}
+                    userInactivatedTokens={userInactivatedTokens}
+                  />
+                )}
+              </div>
+            ),
           },
           ...(isStaked
             ? [

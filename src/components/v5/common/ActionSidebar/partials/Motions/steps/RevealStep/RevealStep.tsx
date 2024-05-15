@@ -105,7 +105,7 @@ const RevealStep: FC<RevealStepProps> = ({
               onSuccess={handleSuccess}
             >
               {hasUserVoted ? (
-                <>
+                <div className="mb-1.5">
                   <div className={clsx({ 'mb-6': !userVoteRevealed })}>
                     <div className="mb-2 flex items-center justify-between gap-2">
                       <h4 className="text-2">
@@ -132,13 +132,13 @@ const RevealStep: FC<RevealStepProps> = ({
                       text={formatText({ id: 'motion.revealStep.submit' })}
                     />
                   )}
-                </>
+                </div>
               ) : (
                 <>
                   <h4 className="mb-2 text-1">
                     {formatText({ id: 'motion.revealStep.emptyTitle' })}
                   </h4>
-                  <p className="text-sm text-gray-600">
+                  <p className="mb-1.5 text-sm text-gray-600">
                     {formatText({ id: 'motion.revealStep.emptyDescription' })}
                   </p>
                 </>
