@@ -3,6 +3,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
@@ -73,7 +74,7 @@ function* createRootMotionSaga({
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
-    const batchKey = 'createMotion';
+    const batchKey = BatchKeys.CreateMotion;
 
     const { createMotion, annotateRootMotion } =
       yield createTransactionChannels(metaId, [

@@ -2,6 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 
 import {
   createGroupTransaction,
@@ -27,7 +28,8 @@ function* tokenUnlockAction({
   try {
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = 'tokenUnlockAction';
+    const batchKey = BatchKeys.TokenUnlockAction;
+
     const {
       tokenUnlockAction: tokenUnlock,
       annotateTokenUnlockAction: annotateTokenUnlock,

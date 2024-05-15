@@ -33,6 +33,7 @@ import {
   type GetFullColonyByNameQueryVariables,
 } from '~gql';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
 import {
@@ -103,7 +104,7 @@ function* colonyCreate({
 
   const { createColony, deployOneTx, setOneTxRoles, setOwner } = channels;
 
-  const batchKey = 'createColony';
+  const batchKey = BatchKeys.CreateColony;
 
   if (!givenTokenAddress && (!tokenName || !tokenSymbol)) {
     throw new Error(

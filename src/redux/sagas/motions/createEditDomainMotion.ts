@@ -15,6 +15,7 @@ import {
   type CreateDomainMetadataMutationVariables,
   DomainColor,
 } from '~gql';
+import { BatchKeys } from '~types/transactions.ts';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
@@ -115,7 +116,7 @@ function* createEditDomainMotion({
     );
 
     // setup batch ids and channels
-    const batchKey = 'createMotion';
+    const batchKey = BatchKeys.CreateMotion;
 
     const { createMotion, annotateMotion } = yield createTransactionChannels(
       metaId,

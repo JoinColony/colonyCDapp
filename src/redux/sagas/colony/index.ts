@@ -1,6 +1,8 @@
 import { ClientType } from '@colony/colony-js';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { BatchKeys } from '~types/transactions.ts';
+
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
@@ -18,7 +20,9 @@ function* colonyClaimToken({
   meta,
 }: Action<ActionTypes.CLAIM_TOKEN>) {
   let txChannels: TransactionChannelMap = {};
-  const batchKey = 'claimColonyFunds';
+
+  const batchKey = BatchKeys.ClaimColonyFunds;
+
   const uniqueTokenAddresses = [...new Set(tokenAddresses)];
   try {
     txChannels = yield call(

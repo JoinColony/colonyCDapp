@@ -10,6 +10,8 @@ import { AddressZero } from '@ethersproject/constants';
 import { constants } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { BatchKeys } from '~types/transactions.ts';
+
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
@@ -102,7 +104,7 @@ function* moveFundsMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
-    const batchKey = 'createMotion';
+    const batchKey = BatchKeys.CreateMotion;
 
     const { createMotion, annotateMoveFundsMotion } =
       yield createTransactionChannels(metaId, [

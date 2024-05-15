@@ -10,6 +10,7 @@ import {
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
 import { isEqual } from '~utils/lodash.ts';
 
@@ -78,7 +79,7 @@ function* editColonyMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
-    const batchKey = 'createMotion';
+    const batchKey = BatchKeys.CreateMotion;
 
     const { createMotion, annotateEditColonyMotion } =
       yield createTransactionChannels(metaId, [

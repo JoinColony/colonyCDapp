@@ -21,6 +21,7 @@ import {
   transactionPending,
 } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 
@@ -67,7 +68,7 @@ function* createDomainAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = 'createDomainAction';
+    const batchKey = BatchKeys.CreateDomainAction;
     const {
       createDomainAction: createDomain,
       annotateCreateDomainAction: annotateCreateDomain,

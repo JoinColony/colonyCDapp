@@ -10,6 +10,7 @@ import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
+import { BatchKeys } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -28,10 +29,10 @@ const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';
 
 const GROUP_KEYS_WHICH_CANNOT_LINK = [
-  'stakeMotion',
-  'finalizeMotion',
-  'escalateMotion',
-  'enableExtension',
+  BatchKeys.StakeMotion,
+  BatchKeys.FinalizeMotion,
+  BatchKeys.EscalateMotion,
+  BatchKeys.EnableExtension,
 ];
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({
@@ -51,7 +52,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   const canLinkToAction =
     values.group?.key &&
-    !GROUP_KEYS_WHICH_CANNOT_LINK.includes(values.group.key);
+    !GROUP_KEYS_WHICH_CANNOT_LINK.includes(values.group.key as BatchKeys);
 
   const defaultTransactionGroupMessageDescriptorTitleId = {
     id: `${

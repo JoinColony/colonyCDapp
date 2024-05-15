@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { DEFAULT_GAS_LIMIT } from '~constants/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 
 import { transactionUpdateGas } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
@@ -26,7 +27,7 @@ function* finalizeMotion({
       ['finalizeMotionTransaction'],
     );
 
-    const batchKey = 'finalizeMotion';
+    const batchKey = BatchKeys.FinalizeMotion;
 
     yield createGroupTransaction(finalizeMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,

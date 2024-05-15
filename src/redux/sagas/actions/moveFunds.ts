@@ -2,6 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 
 import {
   transactionAddParams,
@@ -68,7 +69,7 @@ function* createMoveFundsAction({
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
-    const batchKey = 'moveFunds';
+    const batchKey = BatchKeys.MoveFunds;
 
     const { moveFunds, annotateMoveFunds } = yield createTransactionChannels(
       metaId,

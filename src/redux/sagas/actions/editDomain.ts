@@ -13,6 +13,7 @@ import {
   type UpdateDomainMetadataMutationVariables,
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 
 import {
@@ -60,7 +61,8 @@ function* editDomainAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = 'editDomainAction';
+    const batchKey = BatchKeys.EditDomainAction;
+
     const {
       editDomainAction: editDomain,
       annotateEditDomainAction: annotateEditDomain,

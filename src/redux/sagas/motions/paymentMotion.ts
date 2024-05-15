@@ -7,6 +7,8 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { BatchKeys } from '~types/transactions.ts';
+
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import { sortAndCombinePayments } from '../actions/payment.ts';
@@ -153,7 +155,7 @@ function* createPaymentMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
-    const batchKey = 'createMotion';
+    const batchKey = BatchKeys.CreateMotion;
 
     const { createMotion, annotatePaymentMotion } =
       yield createTransactionChannels(metaId, [

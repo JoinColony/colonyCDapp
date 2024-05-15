@@ -12,6 +12,7 @@ import {
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 import { fill, omit } from '~utils/lodash.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
@@ -56,7 +57,7 @@ function* initiateSafeTransactionAction({
       homeBridge,
     );
 
-    const batchKey = 'initiateSafeTransaction';
+    const batchKey = BatchKeys.InitiateSafeTransaction;
 
     const { initiateSafeTransaction, annotateInitiateSafeTransaction } =
       yield createTransactionChannels(metaId, [

@@ -6,6 +6,7 @@ import {
   transactionPending,
 } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { BatchKeys } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -35,7 +36,7 @@ function* fundExpenditure({
 }: Action<ActionTypes.EXPENDITURE_FUND>) {
   const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
 
-  const batchKey = 'fundExpenditure';
+  const batchKey = BatchKeys.FundExpenditure;
 
   // Create a map between token addresses and the total amount of the payouts for each token
   // We will call one moveFunds method for each token address instead of each payout to save gas
