@@ -17,6 +17,7 @@ const UserPopover: FC<UserPopoverProps> = ({
   size,
   popperOptions,
   walletAddress,
+  textClassName = 'text-md',
 }) => {
   const {
     colony: { colonyAddress },
@@ -48,11 +49,11 @@ const UserPopover: FC<UserPopoverProps> = ({
           userName={displayName ?? undefined}
           userAddress={walletAddress}
         />
-        <p className="ml-2 truncate text-md font-medium">
+        <p className={clsx('ml-2 truncate font-medium', textClassName)}>
           {userDisplayName ?? (
             <MaskedAddress
               address={walletAddress}
-              className="!text-md !font-medium"
+              className={`!${textClassName} !font-medium`}
             />
           )}
         </p>
