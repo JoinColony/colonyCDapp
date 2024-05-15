@@ -60,19 +60,20 @@ const AmountField: FC<AmountFieldProps> = ({
   } = useAmountField(tokenAddressController.value, maxWidth);
 
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const unformattedValue = unformatNumeral(e.target.value);
+
+    field.onChange(unformattedValue);
     setValue(formatNumeral(e.target.value, formattingOptions));
     adjustInputWidth();
   };
 
   useEffect(() => {
-    if (value) {
-      const unformattedValue = unformatNumeral(value);
-
-      if (field.value !== unformattedValue) {
-        field.onChange(unformatNumeral(value));
-      }
+    if (!field.value || (value && field.value === unformatNumeral(value))) {
+      return;
     }
-  }, [value, field]);
+
+    setValue(formatNumeral(field.value, formattingOptions));
+  }, [field.value, formattingOptions, value]);
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,

@@ -1,8 +1,20 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Action } from '~constants/actions.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  AMOUNT_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
+  TOKEN_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import {
@@ -10,6 +22,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionTypeRow,
   AmountRow,
@@ -38,15 +51,42 @@ const MSG = defineMessages({
 
 const MintTokens = ({ action }: MintTokensProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { amount, initiatorUser, token } = action;
+  const {
+    amount,
+    initiatorUser,
+    token,
+    transactionHash,
+    isMotion,
+    annotation,
+  } = action;
+
   const formattedAmount = getFormattedTokenAmount(
     amount || '1',
     token?.decimals,
   );
+  const convertedValue = convertToDecimal(
+    amount || '',
+    getTokenDecimalsWithFallback(token?.decimals),
+  );
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+            [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
+            [TOKEN_FIELD_NAME]: token?.tokenAddress,
+            [DECISION_METHOD_FIELD_NAME]: isMotion
+              ? DecisionMethod.Reputation
+              : DecisionMethod.Permissions,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           amount: formattedAmount,

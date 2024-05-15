@@ -844,6 +844,8 @@
     "loading.permissionsPage": "Loading Permissions",
     "loading.reputationPage": "Loading Reputation",
     "loading.data": "Loading data",
+    "completedAction.redoAction": "Redo action",
+    "completedAction.view": "View on {blockExplorerName}",
     "extensionDetailsPage.unsupportedExtension": "This extension is not supported.",
     "extensionUninstall.toast.title.success": "Extension uninstalled successfully",
     "extensionUninstall.toast.description.success": "You can reinstall the extension at anytime",
