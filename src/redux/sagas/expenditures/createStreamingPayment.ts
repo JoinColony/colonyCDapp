@@ -14,7 +14,7 @@ import {
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 
@@ -56,7 +56,7 @@ function* createStreamingPaymentAction({
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  const batchKey = BatchKeys.CreateStreamingPayment;
+  const batchKey = TRANSACTION_METHODS.CreateStreamingPayment;
 
   const {
     createStreamingPayment,

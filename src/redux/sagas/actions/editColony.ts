@@ -9,7 +9,7 @@ import {
   type UpdateColonyMetadataMutationVariables,
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { isEqual } from '~utils/lodash.ts';
 
 import {
@@ -59,7 +59,7 @@ function* editColonyAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = BatchKeys.EditColonyAction;
+    const batchKey = TRANSACTION_METHODS.EditColonyAction;
 
     const {
       editColonyAction: editColony,

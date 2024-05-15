@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -47,7 +47,7 @@ function* createVersionUpgradeAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = BatchKeys.Upgrade;
+    const batchKey = TRANSACTION_METHODS.Upgrade;
 
     const { upgrade, annotateUpgrade } = yield createTransactionChannels(
       metaId,

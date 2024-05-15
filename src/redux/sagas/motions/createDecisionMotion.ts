@@ -13,7 +13,7 @@ import {
   type CreateColonyDecisionMutationVariables,
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {
@@ -77,7 +77,7 @@ function* createDecisionMotion({
     );
 
     // setup batch ids and channels
-    const batchKey = BatchKeys.CreateMotion;
+    const batchKey = TRANSACTION_METHODS.CreateMotion;
 
     const { createMotion /* annotateMotion */ } = yield call(
       createTransactionChannels,

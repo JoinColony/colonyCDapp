@@ -65,14 +65,8 @@ export enum MetamaskRpcErrors {
 }
 
 export enum TRANSACTION_METHODS {
-  DeployToken = 'deployToken',
-  DeployTokenViaNetwork = 'deployTokenViaNetwork',
-  DeployTokenAuthority = 'deployTokenAuthority',
-  Approve = 'approve',
-}
-
-export enum BatchKeys {
   AddVerifiedMembers = 'addVerifiedMembers',
+  Approve = 'approve',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
   CancelStakedExpenditure = 'cancelStakedExpenditure',
   ClaimColonyFunds = 'claimColonyFunds',
@@ -82,6 +76,9 @@ export enum BatchKeys {
   CreateExpenditure = 'createExpenditure',
   CreateMotion = 'createMotion',
   CreateStreamingPayment = 'createStreamingPayment',
+  DeployToken = 'deployToken',
+  DeployTokenViaNetwork = 'deployTokenViaNetwork',
+  DeployTokenAuthority = 'deployTokenAuthority',
   Deposit = 'deposit',
   EditColonyAction = 'editColonyAction',
   EditDomainAction = 'editDomainAction',

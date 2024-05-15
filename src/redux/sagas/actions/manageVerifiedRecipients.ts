@@ -18,7 +18,7 @@ import {
   type UpdateColonyMetadataMutationVariables,
 } from '~gql';
 import { type Action, type AllActions, ActionTypes } from '~redux/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 
 import {
@@ -69,7 +69,7 @@ function* manageVerifiedRecipients({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = BatchKeys.EditColonyAction;
+    const batchKey = TRANSACTION_METHODS.EditColonyAction;
 
     const {
       editColonyAction: editColony,

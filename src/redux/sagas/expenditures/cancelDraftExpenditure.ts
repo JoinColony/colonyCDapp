@@ -3,7 +3,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -34,7 +34,7 @@ function* cancelDraftExpenditure({
     colonyAddress,
   );
 
-  const batchKey = BatchKeys.CancelDraftExpenditure;
+  const batchKey = TRANSACTION_METHODS.CancelDraftExpenditure;
 
   const {
     cancelExpenditure,

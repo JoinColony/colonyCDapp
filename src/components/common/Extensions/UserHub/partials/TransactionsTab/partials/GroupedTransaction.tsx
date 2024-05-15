@@ -10,7 +10,7 @@ import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -32,10 +32,10 @@ const displayName =
 // in the action sidebar. For some grouped transactions, we don't have a hash which is associated with
 // an action. Any grouped transaction with a key in the below list cannot be linked to an action.
 const GROUP_KEYS_WHICH_CANNOT_LINK = [
-  BatchKeys.StakeMotion,
-  BatchKeys.FinalizeMotion,
-  BatchKeys.EscalateMotion,
-  BatchKeys.EnableExtension,
+  TRANSACTION_METHODS.StakeMotion,
+  TRANSACTION_METHODS.FinalizeMotion,
+  TRANSACTION_METHODS.EscalateMotion,
+  TRANSACTION_METHODS.EnableExtension,
 ];
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({
@@ -55,7 +55,9 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   const canLinkToAction =
     values.group?.key &&
-    !GROUP_KEYS_WHICH_CANNOT_LINK.includes(values.group.key as BatchKeys);
+    !GROUP_KEYS_WHICH_CANNOT_LINK.includes(
+      values.group.key as TRANSACTION_METHODS,
+    );
 
   const defaultTransactionGroupMessageDescriptorTitleId = {
     id: `${

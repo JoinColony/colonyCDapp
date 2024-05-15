@@ -3,7 +3,7 @@ import { takeEvery, fork, put, all } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type ExpenditurePayout } from '~types/graphql.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -26,7 +26,7 @@ function* claimExpenditure({
   meta,
   payload: { colonyAddress, nativeExpenditureId, claimableSlots },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
-  const batchKey = BatchKeys.ClaimExpenditure;
+  const batchKey = TRANSACTION_METHODS.ClaimExpenditure;
 
   const payoutsWithSlotIds = claimableSlots.flatMap(
     (slot) =>

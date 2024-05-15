@@ -4,7 +4,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -30,7 +30,7 @@ function* editExpenditureAction({
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
-  const batchKey = BatchKeys.CreateExpenditure;
+  const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
   const payoutsWithSlotIds = payouts.map((payout, index) => ({
     ...payout,

@@ -14,7 +14,7 @@ import {
   GetUserByNameDocument,
 } from '~gql';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { clearLastWallet } from '~utils/autoLogin.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
@@ -198,7 +198,7 @@ function* userDepositToken({
         colonyAddress,
       );
 
-    const batchKey = BatchKeys.Deposit;
+    const batchKey = TRANSACTION_METHODS.Deposit;
 
     const { approve, deposit } = yield createTransactionChannels(meta.id, [
       'approve',

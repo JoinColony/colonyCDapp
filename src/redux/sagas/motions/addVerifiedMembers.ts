@@ -9,7 +9,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -76,7 +76,7 @@ function* addVerifiedMembersMotion({
       AddressZero,
     );
 
-    const batchKey = BatchKeys.CreateMotion;
+    const batchKey = TRANSACTION_METHODS.CreateMotion;
 
     const { createMotion, annotateAddVerifiedMembersMotion } =
       yield createTransactionChannels(metaId, [

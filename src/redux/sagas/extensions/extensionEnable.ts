@@ -7,7 +7,7 @@ import {
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
@@ -42,7 +42,7 @@ function* extensionEnable({
     },
   },
 }: Action<ActionTypes.EXTENSION_ENABLE>) {
-  const batchKey = BatchKeys.EnableExtension;
+  const batchKey = TRANSACTION_METHODS.EnableExtension;
   let txIndex = 0;
 
   yield removeOldExtensionClients(colonyAddress, extensionId);

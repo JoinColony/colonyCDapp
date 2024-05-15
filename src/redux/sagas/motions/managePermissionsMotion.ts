@@ -10,7 +10,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {
@@ -83,7 +83,7 @@ function* managePermissionsMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
-    const batchKey = BatchKeys.CreateMotion;
+    const batchKey = TRANSACTION_METHODS.CreateMotion;
 
     const { createMotion, annotateSetUserRolesMotion } =
       yield createTransactionChannels(metaId, [

@@ -12,7 +12,7 @@ import {
   transactionAddParams,
   transactionPending,
 } from '~redux/actionCreators/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
@@ -58,7 +58,7 @@ function* escalateMotion({
       ['escalateMotionTransaction'],
     );
 
-    const batchKey = BatchKeys.EscalateMotion;
+    const batchKey = TRANSACTION_METHODS.EscalateMotion;
 
     yield createGroupTransaction(escalateMotionTransaction, batchKey, meta, {
       context: ClientType.VotingReputationClient,

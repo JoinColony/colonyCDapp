@@ -8,7 +8,7 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
@@ -109,7 +109,7 @@ function* manageReputationMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
-    const batchKey = BatchKeys.CreateMotion;
+    const batchKey = TRANSACTION_METHODS.CreateMotion;
 
     const { createMotion, annotateManageReputationMotion } =
       yield createTransactionChannels(metaId, [

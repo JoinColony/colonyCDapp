@@ -4,7 +4,7 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { transactionAddParams } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -44,7 +44,7 @@ function* createExpenditure({
     colonyAddress,
   );
 
-  const batchKey = BatchKeys.CreateExpenditure;
+  const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
   // Add slot id to each payout
   const payoutsWithSlotIds = payouts.map((payout, index) => ({

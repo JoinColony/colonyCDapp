@@ -5,7 +5,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
-import { BatchKeys } from '~types/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   transactionPending,
@@ -80,7 +80,7 @@ function* createPaymentAction({
     /*
      * setup batch ids and channels
      */
-    const batchKey = BatchKeys.PaymentAction;
+    const batchKey = TRANSACTION_METHODS.PaymentAction;
 
     const { paymentAction, annotatePaymentAction } =
       yield createTransactionChannels(metaId, [
