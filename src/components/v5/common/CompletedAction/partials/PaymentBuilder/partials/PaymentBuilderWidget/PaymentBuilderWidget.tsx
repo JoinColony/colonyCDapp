@@ -106,6 +106,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     ),
     isHidden: expenditureStep !== ExpenditureStep.Cancel,
   };
+
   const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
 
   const items: StepperItem<ExpenditureStep>[] = [
