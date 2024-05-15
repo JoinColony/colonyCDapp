@@ -71,18 +71,20 @@ const RevealStep: FC<RevealStepProps> = ({
         textClassName: 'text-4',
         content: (
           <div className="mt-1 flex flex-col gap-2">
-            <ProgressBar
-              progress={revealProgress}
-              max={totalVoters}
-              additionalText={formatText({
-                id:
-                  revealProgress === 1
-                    ? 'motion.revealStep.voteRevealed'
-                    : 'motion.revealStep.votesRevealed',
-              })}
-              className="ml-1"
-              isTall
-            />
+            <div className="ml-[1.375rem]">
+              <ProgressBar
+                progress={revealProgress}
+                max={totalVoters}
+                additionalText={formatText({
+                  id:
+                    revealProgress === 1
+                      ? 'motion.revealStep.voteRevealed'
+                      : 'motion.revealStep.votesRevealed',
+                })}
+                className="ml-1"
+                isTall
+              />
+            </div>
             {!revealPhaseEnded && canInteract && (
               <StatusText
                 status={StatusTypes.Warning}
