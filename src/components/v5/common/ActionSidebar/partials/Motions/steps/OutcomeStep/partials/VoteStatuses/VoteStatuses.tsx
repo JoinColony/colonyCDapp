@@ -36,14 +36,14 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
               <Icon
                 className={clsx('h-[1em] w-[1em] text-[1.125rem]', {
                   'text-purple-400': status === MotionVote.Yay,
-                  'text-red-400': status === MotionVote.Nay,
+                  'text-negative-400': status === MotionVote.Nay,
                 })}
                 size={20}
               />
               <span
                 className={clsx('text-3', {
                   'text-purple-400': status === MotionVote.Yay,
-                  'text-red-400': status === MotionVote.Nay,
+                  'text-negative-400': status === MotionVote.Nay,
                 })}
               >
                 {label}
@@ -55,7 +55,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
               additionalText="%"
               barClassName={clsx({
                 'bg-purple-200': status === MotionVote.Yay,
-                'bg-red-300': status === MotionVote.Nay,
+                'bg-negative-300': status === MotionVote.Nay,
               })}
             />
           </div>
