@@ -922,6 +922,12 @@ enum StreamingPaymentEndCondition {
   FIXED_TIME
 }
 
+enum SplitPaymentDistributionType {
+  EQUAL
+  UNEQUAL
+  REPUTATION
+}
+
 """
 The types of contributor a user can be in a colony
 """
@@ -3535,6 +3541,11 @@ type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   fundFromDomainNativeId: Int!
   stages: [ExpenditureStage!]
+  """
+  Specifies the distribution type selected when creating a split payment
+  Will be null for other payment types
+  """
+  distributionType: SplitPaymentDistributionType
 }
 
 type ExpenditureBalance {
