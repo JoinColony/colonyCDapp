@@ -26,7 +26,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
     <li className="flex flex-col border-b border-gray-100 sm:last:border-none sm:hover:bg-gray-50">
       <button
         type="button"
-        className="py-3.5 sm:px-6"
+        className="flex items-center py-3.5 sm:px-6"
         onClick={() =>
           navigate(
             `${window.location.pathname}?${TX_SEARCH_PARAM}=${stake.action?.transactionHash}`,
@@ -40,21 +40,20 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
           <div className="flex items-center justify-between">
             <div className="mr-2 flex min-w-0 items-center">
               <p className="mr-2 min-w-0 truncate text-1">{stakeItemTitle}</p>
-              <span className="text-xs text-gray-400">
+              <span className="mt-0.5 text-xs text-gray-400">
                 {format(new Date(stake.createdAt), 'dd MMMM yyyy')}
               </span>
             </div>
-            <UserStakeStatusBadge status={stake.status} />
           </div>
           <div className="flex text-xs">
-            <div className="mr-2 font-medium">
+            <div className="mr-2 font-medium text-gray-500">
               <Numeral
                 value={stake.amount}
                 decimals={nativeToken.decimals}
                 suffix={` ${nativeToken.symbol}`}
               />
             </div>
-            <div className="text-gray-600">
+            <div className="text-gray-500">
               {stake.action
                 ? formatMessage(
                     { id: 'action.title' },
@@ -64,6 +63,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
             </div>
           </div>
         </div>
+        <UserStakeStatusBadge status={stake.status} />
       </button>
     </li>
   );
