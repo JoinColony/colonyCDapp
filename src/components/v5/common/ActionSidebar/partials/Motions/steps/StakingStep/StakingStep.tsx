@@ -112,8 +112,9 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
             </StatusText>
           ) : undefined,
           status:
-            objectingStakesPercentageValue === 100 ||
-            supportingStakesPercentageValue === 100
+            (objectingStakesPercentageValue === 100 ||
+              supportingStakesPercentageValue === 100) &&
+            !isFullyStaked
               ? StatusTypes.Warning
               : StatusTypes.Info,
         }}
