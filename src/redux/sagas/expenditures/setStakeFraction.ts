@@ -19,8 +19,6 @@ function* setStakeFractionAction({
   payload: { colonyAddress, stakeFraction },
   meta,
 }: Action<ActionTypes.SET_STAKE_FRACTION>) {
-  // const apolloClient = getContext(ContextModule.ApolloClient);
-
   const batchKey = 'setStakeFraction';
 
   const { setStakeFraction }: Record<string, ChannelDefinition> =
