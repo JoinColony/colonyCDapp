@@ -1,4 +1,7 @@
-import { type StreamingPaymentEndCondition } from '~gql';
+import {
+  type SplitPaymentDistributionType,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   type ExpenditurePayoutWithSlotId,
@@ -52,6 +55,7 @@ export type ExpendituresActionTypes =
         networkInverseFee: string;
         annotationMessage?: string;
         customActionTitle?: string;
+        distributionType?: SplitPaymentDistributionType;
       },
       MetaWithSetter<object>
     >
@@ -133,6 +137,7 @@ export type ExpendituresActionTypes =
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
+        distributionType?: SplitPaymentDistributionType;
       },
       MetaWithSetter<object>
     >

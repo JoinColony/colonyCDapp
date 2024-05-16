@@ -5,6 +5,7 @@ import { fork } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateExpenditureMetadataDocument,
+  type SplitPaymentDistributionType,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
 } from '~gql';
@@ -138,7 +139,7 @@ interface SaveExpenditureMetadataParams {
   expenditureId: number;
   fundFromDomainId: number;
   stages?: ExpenditureStageFieldValue[];
-  stakeAmount?: string;
+  distributionType?: SplitPaymentDistributionType;
 }
 
 export function* saveExpenditureMetadata({
@@ -146,6 +147,7 @@ export function* saveExpenditureMetadata({
   expenditureId,
   fundFromDomainId,
   stages,
+  distributionType,
 }: SaveExpenditureMetadataParams) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -163,6 +165,7 @@ export function* saveExpenditureMetadata({
           slotId: index + 1,
           isReleased: false,
         })),
+        distributionType,
       },
     },
   });
