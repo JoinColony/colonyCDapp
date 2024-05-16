@@ -4,4 +4,5 @@ export interface UserPopoverProps {
   size: number;
   walletAddress: string;
   popperOptions?: PopperOptions;
+  textClassName?: string;
 }

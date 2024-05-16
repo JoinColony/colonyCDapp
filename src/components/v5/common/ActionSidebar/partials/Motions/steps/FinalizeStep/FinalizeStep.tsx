@@ -147,7 +147,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                 content: (
                   <p className="text-sm">{formatText(MSG.finalizeError)}</p>
                 ),
-                className: 'bg-negative-100 text-negative-400',
+                className: 'bg-negative-100 text-negative-400 !py-3',
               },
             ]
           : []),

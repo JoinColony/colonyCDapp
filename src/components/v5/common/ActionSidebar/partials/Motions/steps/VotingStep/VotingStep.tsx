@@ -74,14 +74,16 @@ const VotingStep: FC<VotingStepProps> = ({
         textClassName: 'text-4',
         iconAlignment: 'top',
         content: (
-          <ProgressBar
-            progress={currentReputationPercent}
-            threshold={thresholdPercent}
-            additionalText={formatText({
-              id: 'motion.votingStep.additionalText',
-            })}
-            isTall
-          />
+          <div className="ml-[1.375rem] mt-1">
+            <ProgressBar
+              progress={currentReputationPercent}
+              threshold={thresholdPercent}
+              additionalText={formatText({
+                id: 'motion.votingStep.additionalText',
+              })}
+              isTall
+            />
+          </div>
         ),
       }}
       sections={[
