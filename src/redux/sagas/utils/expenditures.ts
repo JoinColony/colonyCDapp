@@ -13,6 +13,7 @@ import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
   CreateExpenditureMetadataDocument,
   type GetUserByAddressQuery,
+  type SplitPaymentDistributionType,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
   type GetUserByAddressQueryVariables,
@@ -153,7 +154,7 @@ interface SaveExpenditureMetadataParams {
   expenditureId: number;
   fundFromDomainId: number;
   stages?: ExpenditureStageFieldValue[];
-  stakeAmount?: string;
+  distributionType?: SplitPaymentDistributionType;
 }
 
 export function* saveExpenditureMetadata({
@@ -161,6 +162,7 @@ export function* saveExpenditureMetadata({
   expenditureId,
   fundFromDomainId,
   stages,
+  distributionType,
 }: SaveExpenditureMetadataParams) {
   yield apolloClient.mutate<
     CreateExpenditureMetadataMutation,
@@ -176,6 +178,7 @@ export function* saveExpenditureMetadata({
           slotId: index + 1,
           isReleased: false,
         })),
+        distributionType,
       },
     },
   });
