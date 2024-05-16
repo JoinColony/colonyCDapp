@@ -1,9 +1,7 @@
-import { Binoculars } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
 import { type StakesListProps } from '../types.ts';
 
@@ -20,17 +18,6 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
       <div className="mx-auto w-fit pt-6">
         <SpinnerLoader appearance={{ size: 'small' }} />
       </div>
-    );
-  }
-
-  if (!stakes.length) {
-    return (
-      <EmptyContent
-        title={{ id: 'empty.content.title.stakes' }}
-        description={{ id: 'empty.content.subtitle.stakes' }}
-        icon={Binoculars}
-        className="pt-6"
-      />
     );
   }
 

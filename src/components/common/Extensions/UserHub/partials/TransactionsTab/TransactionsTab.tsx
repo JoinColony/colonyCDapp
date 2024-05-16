@@ -68,6 +68,7 @@ const TransactionsTab: FC<TransactionsProps> = () =>
               title={{ id: 'empty.content.title.transactions' }}
               description={{ id: 'empty.content.subtitle.transactions' }}
               icon={Binoculars}
+              className="h-full"
             />
           ) : (
             <TransactionList />

@@ -114,7 +114,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     >
       <div className="flex w-full flex-col items-start">
         {!hideSummary && (
-          <div className="relative">
+          <div className="relative w-full">
             <button
               type="button"
               onClick={handleNavigateToAction}
