@@ -1686,6 +1686,7 @@ export type CreateExpenditureInput = {
 };
 
 export type CreateExpenditureMetadataInput = {
+  distributionType?: InputMaybe<SplitPaymentDistributionType>;
   expectedNumberOfPayouts?: InputMaybe<Scalars['Int']>;
   expectedNumberOfTokens?: InputMaybe<Scalars['Int']>;
   fundFromDomainNativeId: Scalars['Int'];
@@ -2304,6 +2305,11 @@ export type ExpenditureFundingItemInput = {
 export type ExpenditureMetadata = {
   __typename?: 'ExpenditureMetadata';
   createdAt: Scalars['AWSDateTime'];
+  /**
+   * Specifies the distribution type selected when creating a split payment
+   * Will be null for other payment types
+   */
+  distributionType?: Maybe<SplitPaymentDistributionType>;
   expectedNumberOfPayouts?: Maybe<Scalars['Int']>;
   expectedNumberOfTokens?: Maybe<Scalars['Int']>;
   fundFromDomainNativeId: Scalars['Int'];
@@ -3475,6 +3481,7 @@ export type ModelExpenditureFilterInput = {
 
 export type ModelExpenditureMetadataConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataConditionInput>>>;
+  distributionType?: InputMaybe<ModelSplitPaymentDistributionTypeInput>;
   expectedNumberOfPayouts?: InputMaybe<ModelIntInput>;
   expectedNumberOfTokens?: InputMaybe<ModelIntInput>;
   fundFromDomainNativeId?: InputMaybe<ModelIntInput>;
@@ -3490,6 +3497,7 @@ export type ModelExpenditureMetadataConnection = {
 
 export type ModelExpenditureMetadataFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExpenditureMetadataFilterInput>>>;
+  distributionType?: InputMaybe<ModelSplitPaymentDistributionTypeInput>;
   expectedNumberOfPayouts?: InputMaybe<ModelIntInput>;
   expectedNumberOfTokens?: InputMaybe<ModelIntInput>;
   fundFromDomainNativeId?: InputMaybe<ModelIntInput>;
@@ -3879,6 +3887,11 @@ export enum ModelSortDirection {
   Asc = 'ASC',
   Desc = 'DESC'
 }
+
+export type ModelSplitPaymentDistributionTypeInput = {
+  eq?: InputMaybe<SplitPaymentDistributionType>;
+  ne?: InputMaybe<SplitPaymentDistributionType>;
+};
 
 export type ModelStreamingPaymentConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
@@ -4285,6 +4298,7 @@ export type ModelSubscriptionExpenditureFilterInput = {
 
 export type ModelSubscriptionExpenditureMetadataFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureMetadataFilterInput>>>;
+  distributionType?: InputMaybe<ModelSubscriptionStringInput>;
   expectedNumberOfPayouts?: InputMaybe<ModelSubscriptionIntInput>;
   expectedNumberOfTokens?: InputMaybe<ModelSubscriptionIntInput>;
   fundFromDomainNativeId?: InputMaybe<ModelSubscriptionIntInput>;
@@ -7885,6 +7899,12 @@ export enum SortingMethod {
   ByMorePermissions = 'BY_MORE_PERMISSIONS'
 }
 
+export enum SplitPaymentDistributionType {
+  Equal = 'EQUAL',
+  Reputation = 'REPUTATION',
+  Unequal = 'UNEQUAL'
+}
+
 export type StakedExpenditureParams = {
   __typename?: 'StakedExpenditureParams';
   stakeFraction: Scalars['String'];
@@ -9216,6 +9236,7 @@ export type UpdateExpenditureInput = {
 };
 
 export type UpdateExpenditureMetadataInput = {
+  distributionType?: InputMaybe<SplitPaymentDistributionType>;
   expectedNumberOfPayouts?: InputMaybe<Scalars['Int']>;
   expectedNumberOfTokens?: InputMaybe<Scalars['Int']>;
   fundFromDomainNativeId?: InputMaybe<Scalars['Int']>;
