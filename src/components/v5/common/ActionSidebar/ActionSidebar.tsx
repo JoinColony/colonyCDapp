@@ -18,6 +18,7 @@ import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
+import PillsBase from '../Pills/PillsBase.tsx';
 
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
@@ -150,8 +151,17 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               )}
             </button>
           )}
+          {/* @TODO: Handle payment builder action when it will be merged */}
+          {!isMobile && action && !isMotion && (
+            <PillsBase
+              className="bg-success-100 text-success-400"
+              isCapitalized={false}
+            >
+              {formatText({ id: 'action.passed' })}
+            </PillsBase>
+          )}
+          {!isMobile && <MotionOutcomeBadge motionState={motionState} />}
         </div>
-        {!isMobile && <MotionOutcomeBadge motionState={motionState} />}
         <div>{children}</div>
       </div>
       {getSidebarContent()}
