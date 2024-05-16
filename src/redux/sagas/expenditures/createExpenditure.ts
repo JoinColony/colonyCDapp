@@ -43,6 +43,7 @@ function* createExpenditure({
     networkInverseFee,
     annotationMessage,
     customActionTitle,
+    distributionType,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -245,6 +246,7 @@ function* createExpenditure({
       stages: isStaged ? stages : undefined,
       numberOfPayouts: payouts.length,
       numberOfTokens,
+      distributionType,
     });
 
     yield put<AllActions>({
