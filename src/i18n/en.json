@@ -270,6 +270,8 @@
     "transaction.group.installExtension.description": "Add Extension to Colony",
     "transaction.group.lockExpenditure.title": "Lock Expenditure",
     "transaction.group.lockExpenditure.description": "Lock Expenditure",
+    "transaction.group.setStakeFraction.title": "Set Stake Fraction",
+    "transaction.group.setStakeFraction.description": "Set Stake Fraction",
     "transaction.group.makeArbitraryTransaction.title": "Make arbitrary transaction",
     "transaction.group.makeArbitraryTransaction.description": "Make arbitrary transaction",
     "transaction.group.mintTokens.title": "Mint Tokens",
@@ -369,6 +371,7 @@
     "transaction.StakedExpenditureClient.initialise.title": "Initialize Staked Expenditure Extension",
     "transaction.StakedExpenditureClient.makeExpenditureWithStake.title": "Make Expenditure With Stake",
     "transaction.StakedExpenditureClient.reclaimStake.title": "Reclaim Stake",
+    "transaction.StakedExpenditureClient.setStakeFraction.title": "Set Stake Fraction",
     "transaction.StagedExpenditureClient.releaseStagedPayment.title": "Release Staged Payment",
     "transaction.StagedExpenditureClient.setExpenditureStaged.title": "Set Expenditure as Staged",
 

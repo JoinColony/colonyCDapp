@@ -216,4 +216,14 @@ export type ExpendituresActionTypes =
       ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
       object,
       object
-    >;
+    >
+  | UniqueActionType<
+      ActionTypes.SET_STAKE_FRACTION,
+      {
+        colonyAddress: Address;
+        stakeFraction: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.SET_STAKE_FRACTION_ERROR, object>
+  | UniqueActionType<ActionTypes.SET_STAKE_FRACTION_SUCCESS, object, object>;
