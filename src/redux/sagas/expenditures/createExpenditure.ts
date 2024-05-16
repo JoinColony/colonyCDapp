@@ -37,6 +37,7 @@ function* createExpenditure({
     stages,
     networkInverseFee,
     annotationMessage,
+    distributionType,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -187,6 +188,7 @@ function* createExpenditure({
       expenditureId,
       fundFromDomainId,
       stages: isStaged ? stages : undefined,
+      distributionType,
     });
 
     yield put<AllActions>({
