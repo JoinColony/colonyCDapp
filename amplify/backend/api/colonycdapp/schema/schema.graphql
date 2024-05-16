@@ -934,6 +934,12 @@ enum StreamingPaymentEndCondition {
   FIXED_TIME
 }
 
+enum SplitPaymentDistributionType {
+  EQUAL
+  UNEQUAL
+  REPUTATION
+}
+
 """
 The types of contributor a user can be in a colony
 """
@@ -2646,10 +2652,7 @@ type ColonyMultiSig @model {
   Colony address the multiSig belongs to
   """
   colonyAddress: ID!
-    @index(
-      name: "byColonyAddress"
-      queryField: "getMultiSigByColonyAddress"
-    )
+    @index(name: "byColonyAddress", queryField: "getMultiSigByColonyAddress")
   """
   The on chain id of the multiSig
   """
@@ -2669,7 +2672,8 @@ type ColonyMultiSig @model {
   """
   Signatures info
   """
-  signatures: [MultiSigUserSignature] @hasMany(indexName: "byMultiSigId", fields: ["id"])
+  signatures: [MultiSigUserSignature]
+    @hasMany(indexName: "byMultiSigId", fields: ["id"])
   """
   Required role for signing
   """
@@ -2753,7 +2757,8 @@ type ColonyMotion @model {
   """
   List of other rewards users will be receiving for a motion, such as voting
   """
-  voterRewards: [VoterRewardsHistory!] @hasMany(indexName: "byMotionId", fields: ["id"])
+  voterRewards: [VoterRewardsHistory!]
+    @hasMany(indexName: "byMotionId", fields: ["id"])
   """
   Staked sides of a motion
   """
@@ -3778,6 +3783,11 @@ type ExpenditureMetadata @model {
   stages: [ExpenditureStage!]
   expectedNumberOfPayouts: Int
   expectedNumberOfTokens: Int
+  """
+  Specifies the distribution type selected when creating a split payment
+  Will be null for other payment types
+  """
+  distributionType: SplitPaymentDistributionType
 }
 
 type ExpenditureBalance {
