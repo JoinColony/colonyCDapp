@@ -71,6 +71,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective by {initiator}}
+      ${ExtendedColonyActionType.SplitPayment} {Split Payment **change me**}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
