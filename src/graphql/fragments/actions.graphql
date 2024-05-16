@@ -132,6 +132,11 @@ fragment ColonyAction on ColonyAction {
   approvedTokenChanges {
     ...ApprovedTokenChanges
   }
+  expenditure {
+    metadata {
+      distributionType
+    }
+  }
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
