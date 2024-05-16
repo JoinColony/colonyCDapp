@@ -1,9 +1,14 @@
 import { ColonyRole, Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/index.ts';
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import { ActionTypes } from '~redux';
+import { type SetStakeFractionPayload } from '~redux/sagas/expenditures/setStakeFraction.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
@@ -43,6 +48,25 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
     extensionData.uninstallable
   );
 
+  const setStakeFraction = useAsyncFunction({
+    submit: ActionTypes.SET_STAKE_FRACTION,
+    error: ActionTypes.SET_STAKE_FRACTION_ERROR,
+    success: ActionTypes.SET_STAKE_FRACTION_SUCCESS,
+  });
+
+  const handleSetStakeFraction = async () => {
+    const DEFAULT_STAKE_FRACTION = BigNumber.from(2)
+      .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
+      .div(100); // 2% in wei
+
+    const payload: SetStakeFractionPayload = {
+      colonyAddress: colony.colonyAddress,
+      stakeFraction: DEFAULT_STAKE_FRACTION.toString(),
+    };
+
+    await setStakeFraction(payload);
+  };
+
   return (
     <div>
       <SpecificSidePanel extensionData={extensionData} />
@@ -53,6 +77,9 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
         {canExtensionBeUninstalled && (
           <UninstallButton extensionData={extensionData} />
         )}
+        <button type="button" onClick={handleSetStakeFraction}>
+          Do cool stuff
+        </button>
       </div>
     </div>
   );
