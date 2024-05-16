@@ -16,6 +16,7 @@ import {
 } from '../transactions/index.ts';
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import {
+  getMoveFundsPermissionProofs,
   initiateTransaction,
   putError,
   takeFrom,
@@ -58,7 +59,7 @@ function* fundExpenditure({
         fork(createTransaction, channels[tokenAddress].id, {
           context: ClientType.ColonyClient,
           methodName:
-            'moveFundsBetweenPotsWithProofs(uint256,uint256,uint256,address)',
+            'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
           identifier: colonyAddress,
           group: {
             key: batchKey,
@@ -98,8 +99,20 @@ function* fundExpenditure({
       }
 
       yield put(transactionPending(channels[tokenAddress].id));
+
+      const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
+        yield getMoveFundsPermissionProofs(
+          colonyAddress,
+          fromDomainFundingPotId,
+          expenditureFundingPotId,
+        );
       yield put(
         transactionAddParams(channels[tokenAddress].id, [
+          permissionDomainId,
+          fromChildSkillIndex,
+          permissionDomainId,
+          fromChildSkillIndex,
+          toChildSkillIndex,
           fromDomainFundingPotId,
           expenditureFundingPotId,
           amount,
