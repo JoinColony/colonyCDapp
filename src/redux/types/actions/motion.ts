@@ -373,6 +373,7 @@ export type MotionActionTypes =
         slotId: number;
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
+        votingReputationAddress: Address;
         motionDomainId: number;
       },
       MetaWithSetter<object>
