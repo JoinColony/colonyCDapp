@@ -4,6 +4,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { updateContributorVerifiedStatus } from '~utils/members.ts';
 
 import {
@@ -31,7 +32,7 @@ function* removeVerifiedMembersAction({
   meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS>) {
-  const batchKey = 'removeVerifiedMembers';
+  const batchKey = TRANSACTION_METHODS.RemoveVerifiedMembers;
 
   const { removeVerifiedMembers, annotateRemoveVerifiedMembers } =
     yield createTransactionChannels(metaId, [

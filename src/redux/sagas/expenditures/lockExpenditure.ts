@@ -2,6 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -23,7 +24,7 @@ function* lockExpenditureAction({
   payload: { colonyAddress, nativeExpenditureId, annotationMessage },
   meta,
 }: Action<ActionTypes.EXPENDITURE_LOCK>) {
-  const batchKey = 'lockExpenditure';
+  const batchKey = TRANSACTION_METHODS.LockExpenditure;
 
   const {
     lockExpenditure,

@@ -8,6 +8,7 @@ import {
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   transactionAddParams,
@@ -80,7 +81,7 @@ function* stakeMotion({
       'annotateStaking',
     ]);
 
-    const batchKey = 'stakeMotion';
+    const batchKey = TRANSACTION_METHODS.StakeMotion;
 
     if (activateTokens) {
       const missingActiveTokens = amount.sub(activeAmount);

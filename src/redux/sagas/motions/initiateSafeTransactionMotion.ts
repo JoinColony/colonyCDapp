@@ -13,6 +13,7 @@ import {
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { fill, omit } from '~utils/lodash.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
@@ -90,7 +91,7 @@ function* initiateSafeTransactionMotion({
     );
 
     // setup batch ids and channels
-    const batchKey = 'createMotion';
+    const batchKey = TRANSACTION_METHODS.CreateMotion;
 
     const { createMotion, annotateInitiateSafeTransaction } =
       yield createTransactionChannels(metaId, [

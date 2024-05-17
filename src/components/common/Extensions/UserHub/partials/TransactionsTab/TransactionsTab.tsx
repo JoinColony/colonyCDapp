@@ -55,16 +55,20 @@ const TransactionsTab: FC<TransactionsProps> = () =>
     useTransactionsListObserver();
 
     return (
-      <div className="flex h-full w-full flex-col">
-        <p className="mb-2.5 heading-5 sm:mb-0.5">
+      <div className="flex h-full w-full flex-col overflow-auto">
+        <p className="px-6 pt-6 heading-5">
           {formatText({ id: 'transactions' })}
         </p>
-        <div className="h-full w-full" id="transactionsListContainer">
+        <div
+          className="h-full w-full px-6 sm:px-0"
+          id="transactionsListContainer"
+        >
           {isEmpty ? (
             <EmptyContent
               title={{ id: 'empty.content.title.transactions' }}
               description={{ id: 'empty.content.subtitle.transactions' }}
               icon={Binoculars}
+              className="h-full"
             />
           ) : (
             <TransactionList />

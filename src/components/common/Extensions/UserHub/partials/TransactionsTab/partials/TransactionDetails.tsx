@@ -21,7 +21,7 @@ const TransactionDetails: FC<TransactionDetailsProps> = ({
     <ul>
       <GroupedTransaction
         transactionGroup={transactionGroup}
-        onClick={handleSelectElement}
+        onToggleExpand={handleSelectElement}
         isContentOpened={groupId === getGroupId(transactionGroup)}
       />
     </ul>

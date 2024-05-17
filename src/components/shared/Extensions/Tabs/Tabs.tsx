@@ -15,14 +15,17 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
   activeTab,
   onTabClick,
   className,
+  upperContainerClassName,
   children,
 }) => (
   <>
     <ReactTabs
       activeTab={activeTab}
       onTabClick={onTabClick}
-      tabsUpperContainerClassName={`relative flex items-center w-full font-semibold before:absolute before:bottom-0
-       before:left-0 before:w-full before:bg-gray-200 before:block before:h-px before:content-[" "] p-0`}
+      tabsUpperContainerClassName={clsx(
+        'before:content-[" "] relative flex w-full items-center p-0 font-semibold before:absolute before:bottom-0 before:left-0 before:block before:h-px before:w-full before:bg-gray-200',
+        upperContainerClassName,
+      )}
       leftNavBtnClassName="absolute top-[50%] translate-y-[-50%] left-0 z-base"
       rightNavBtnClassName="z-base"
       // @ts-ignore - react-tabs-scrollable has invalid type for this prop
@@ -47,7 +50,7 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
     </ReactTabs>
     {items.map(({ id, content }) => (
       <TabScreen
-        className={clsx('pt-6', className)}
+        className={clsx(className)}
         key={id}
         activeTab={activeTab}
         index={id}

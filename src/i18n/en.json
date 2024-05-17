@@ -940,6 +940,7 @@
     "userHub.reputationNextUpdate": "Next update",
     "userHub.reputationDecayLabel": "Reputation decay",
     "userHub.reputationDecayValue": "{points} {points, plural, one {pt} other {pts}} in next day",
+    "userHub.stake": "Stake: ",
     "your.dashboard": "Your dashboard",
     "your.colony.overview": "Your colony overview",
     "helpAndAccount": "Help & account",

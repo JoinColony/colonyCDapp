@@ -1,23 +1,16 @@
-import {
-  SpinnerGap,
-  CheckCircle,
-  XCircle,
-  WarningCircle,
-} from '@phosphor-icons/react';
+import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { TransactionStatus as TransactionStatusEnum } from '~gql';
+import PillsBase from '~v5/common/Pills/index.ts';
 
 import { type TransactionStatusProps } from '../types.ts';
 
 const displayName =
-  'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionStatus';
+  'common.Extensions.UserHub.partials.TransactionTab.partials.GroupedTransactionStatus';
 
-const TransactionStatus: FC<TransactionStatusProps> = ({
-  status,
-  hasError,
-}) => {
+const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
   const failed = status === TransactionStatusEnum.Failed;
   const succeeded = status === TransactionStatusEnum.Succeeded;
   const pending = status === TransactionStatusEnum.Pending;
@@ -35,14 +28,19 @@ const TransactionStatus: FC<TransactionStatusProps> = ({
           size={14}
         />
       )}
-      {succeeded && <CheckCircle size={14} />}
-      {failed && (
-        <>{hasError ? <WarningCircle size={14} /> : <XCircle size={14} />}</>
-      )}
+      <PillsBase
+        className={clsx({
+          'bg-success-100 text-success-400': succeeded,
+          'bg-negative-100 text-negative-400': failed,
+          'bg-gray-100 text-gray-500': !succeeded && !failed,
+        })}
+      >
+        {status.toLowerCase()}
+      </PillsBase>
     </div>
   );
 };
 
-TransactionStatus.displayName = displayName;
+GroupedTransactionStatus.displayName = displayName;
 
-export default TransactionStatus;
+export default GroupedTransactionStatus;

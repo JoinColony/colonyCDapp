@@ -3,6 +3,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -29,7 +30,7 @@ function* releaseExpenditureStage({
   },
   meta,
 }: Action<ActionTypes.RELEASE_EXPENDITURE_STAGE>) {
-  const batchKey = 'releaseExpenditure';
+  const batchKey = TRANSACTION_METHODS.ReleaseExpenditure;
 
   const {
     releaseExpenditure,

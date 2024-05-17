@@ -3,6 +3,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -28,7 +29,7 @@ function* cancelStakedExpenditureAction({
     annotationMessage,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CANCEL>) {
-  const batchKey = 'cancelStakedExpenditure';
+  const batchKey = TRANSACTION_METHODS.CancelStakedExpenditure;
 
   const colonyManager: ColonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(

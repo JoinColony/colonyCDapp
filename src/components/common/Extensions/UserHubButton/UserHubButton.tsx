@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC, useState, useEffect } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
+import { useSearchParams } from 'react-router-dom';
 
 import UserHub from '~common/Extensions/UserHub/index.ts';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
@@ -13,6 +14,8 @@ import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import usePrevious from '~hooks/usePrevious.ts';
+import { TX_SEARCH_PARAM } from '~routes';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -37,6 +40,9 @@ const UserHubButton: FC = () => {
   const [prevGroupStatus, setPrevGroupStatus] = useState<
     TransactionStatus | undefined
   >();
+  const [searchParams] = useSearchParams();
+  const transactionId = searchParams?.get(TX_SEARCH_PARAM);
+  const previousTransactionId = usePrevious(transactionId);
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
@@ -88,6 +94,19 @@ const UserHubButton: FC = () => {
       triggerRef?.click();
     }
   }, [isUserHubOpen, visible, triggerRef]);
+
+  useEffect(() => {
+    if (transactionId !== previousTransactionId && (visible || isUserHubOpen)) {
+      triggerRef?.click();
+      setIsUserHubOpen(false);
+    }
+  }, [
+    transactionId,
+    triggerRef,
+    previousTransactionId,
+    visible,
+    isUserHubOpen,
+  ]);
 
   useDisableBodyScroll(visible && isMobile);
 
