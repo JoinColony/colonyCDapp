@@ -841,6 +841,10 @@ enum ColonyActionType {
   """
   EDIT_EXPENDITURE_MOTION
   """
+  An action related to a motion to release a staged payment
+  """
+  RELEASE_STAGED_PAYMENT_MOTION
+  """
   An action related to the creation of safe transactions via Safe Control
   """
   MAKE_ARBITRARY_TRANSACTION

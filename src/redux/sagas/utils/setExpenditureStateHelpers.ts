@@ -22,51 +22,6 @@ const EXPENDITURESLOTS_SLOT = toB32(BigNumber.from(26));
 const EXPENDITURESLOT_RECIPIENT = toB32(BigNumber.from(0));
 const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
 
-const MAPPING = false;
-const ARRAY = true;
-
-export const getMulticallDataForStageRelease = ({
-  expenditure,
-  slotId,
-  colonyClient,
-  permissionDomainId,
-  childSkillIndex,
-  tokenAddresses,
-}: {
-  expenditure: Expenditure;
-  slotId: number;
-  colonyClient: AnyColonyClient;
-  permissionDomainId: BigNumber;
-  childSkillIndex: BigNumber;
-  tokenAddresses: string[];
-}) => {
-  const encodedMulticallData: string[] = [];
-
-  encodedMulticallData.push(
-    colonyClient.interface.encodeFunctionData('setExpenditureState', [
-      permissionDomainId,
-      childSkillIndex,
-      expenditure.nativeId,
-      EXPENDITURESLOTS_SLOT,
-      [MAPPING, ARRAY],
-      [toB32(slotId), EXPENDITURESLOT_CLAIMDELAY],
-      toB32(0),
-    ]),
-  );
-
-  for (const tokenAddress of tokenAddresses) {
-    encodedMulticallData.push(
-      colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
-        expenditure.nativeId,
-        slotId,
-        tokenAddress,
-      ]),
-    );
-  }
-
-  return encodedMulticallData;
-};
-
 /**
  * Helper function returning an array of encoded multicall data containing transactions
  * needed to update expenditure payouts
