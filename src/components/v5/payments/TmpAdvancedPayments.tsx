@@ -164,7 +164,22 @@ const TmpAdvancedPayments = () => {
   };
 
   const createStagedExpenditurePayload: CreateExpenditurePayload = {
-    payouts,
+    payouts: [
+      {
+        amount: transactionAmount,
+        tokenAddress,
+        recipientAddress: user?.walletAddress ?? '',
+        claimDelay: '0',
+        tokenDecimals: tokenDecimalAmount,
+      },
+      {
+        amount: '500',
+        tokenAddress,
+        recipientAddress: user?.walletAddress ?? '',
+        claimDelay: '0',
+        tokenDecimals: tokenDecimalAmount,
+      },
+    ],
     colonyAddress: colony.colonyAddress,
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
@@ -296,18 +311,24 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleReleaseExpenditureStageMotion = async () => {
-    if (!expenditure || !releaseStage || !stagedExpenditureAddress) {
+    if (
+      !expenditure ||
+      !releaseStage ||
+      !stagedExpenditureAddress ||
+      !votingReputationAddress
+    ) {
       return;
     }
 
     const payload: ReleaseExpenditureStageMotionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyName: colony.name,
+      stagedExpenditureAddress,
+      votingReputationAddress,
       expenditure,
       slotId: Number(releaseStage),
       motionDomainId: expenditure.nativeDomainId,
       tokenAddresses: [colony.nativeToken.tokenAddress],
-      stagedExpenditureAddress,
     };
 
     await releaseExpenditureStageMotion(payload);
