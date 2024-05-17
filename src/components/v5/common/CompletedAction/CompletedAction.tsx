@@ -136,11 +136,13 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.SetUserRolesMotion:
       case ColonyActionType.ColonyEditMotion:
       case ColonyActionType.ManageTokensMotion:
-      case ColonyActionType.EditExpenditureMotion:
-      case ColonyActionType.FundExpenditureMotion:
       case ColonyActionType.EmitDomainReputationRewardMotion:
       case ColonyActionType.EmitDomainReputationPenaltyMotion:
       case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
+      case ColonyActionType.ReleaseStagedPaymentMotion:
+      case ColonyActionType.EditExpenditureMotion:
+      case ColonyActionType.FundExpenditureMotion:
+        // @NOTE: Enabling the expenditure motions temporarily
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:
         return <PaymentBuilderWidget action={action} />;

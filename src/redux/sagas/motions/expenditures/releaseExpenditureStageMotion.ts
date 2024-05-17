@@ -1,9 +1,9 @@
 import {
-  type AnyVotingReputationClient,
   ClientType,
   ColonyRole,
   getPermissionProofs,
   Id,
+  getChildIndex,
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
@@ -16,7 +16,6 @@ import {
   waitForTxResult,
 } from '~redux/sagas/transactions/index.ts';
 import {
-  getMulticallDataForStageRelease,
   getColonyManager,
   initiateTransaction,
 } from '~redux/sagas/utils/index.ts';
@@ -29,6 +28,8 @@ function* releaseExpenditureStageMotion({
   payload: {
     colonyAddress,
     colonyName,
+    stagedExpenditureAddress,
+    votingReputationAddress,
     expenditure,
     slotId,
     motionDomainId,
@@ -49,25 +50,34 @@ function* releaseExpenditureStageMotion({
   );
 
   try {
+    const stagedExpenditureClient = yield colonyManager.getClient(
+      ClientType.StagedExpenditureClient,
+      colonyAddress,
+    );
+
     if (expenditure.status !== ExpenditureStatus.Finalized) {
       throw new Error(
         'Expenditure must be finalized in order to release expenditure stage',
       );
     }
 
-    const votingReputationClient: AnyVotingReputationClient = yield call(
-      [colonyManager, colonyManager.getClient],
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
+    const [userPermissionDomainId, userChildSkillIndex] =
+      yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditure.nativeDomainId,
+        ColonyRole.Arbitration,
+        votingReputationAddress,
+      );
 
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      expenditure.nativeDomainId,
-      ColonyRole.Arbitration,
-      votingReputationClient.address,
-    );
+    const [extensionPermissionDomainId, extensionChildSkillIndex] =
+      yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditure.nativeDomainId,
+        ColonyRole.Arbitration,
+        stagedExpenditureAddress,
+      );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
@@ -80,21 +90,28 @@ function* releaseExpenditureStageMotion({
       ADDRESS_ZERO,
     );
 
-    const encodedMulticallData: string[] = getMulticallDataForStageRelease({
-      expenditure,
-      slotId,
+    const childSkillIndex = yield call(
+      getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
-      permissionDomainId,
-      childSkillIndex,
-      tokenAddresses,
-    });
+      motionDomainId,
+      expenditure.nativeDomainId,
+    );
 
-    const encodedReleaseStagedPaymentAction =
-      yield colonyClient.interface.encodeFunctionData('multicall', [
-        encodedMulticallData,
-      ]);
+    const encodedAction = stagedExpenditureClient.interface.encodeFunctionData(
+      'releaseStagedPaymentViaArbitration',
+      [
+        userPermissionDomainId,
+        userChildSkillIndex,
+        extensionPermissionDomainId,
+        extensionChildSkillIndex,
+        expenditure.nativeId,
+        slotId,
+        tokenAddresses,
+      ],
+    );
 
-    const batchKey = 'motion-release-expenditure-stage';
+    const batchKey = 'createMotion';
 
     yield createGroupTransaction({
       channel: createMotion,
@@ -107,18 +124,17 @@ function* releaseExpenditureStageMotion({
         params: [
           motionDomainId,
           childSkillIndex,
-          ADDRESS_ZERO,
-          encodedReleaseStagedPaymentAction,
+          stagedExpenditureAddress,
+          encodedAction,
           key,
           value,
           branchMask,
           siblings,
         ],
         group: {
-          title: { id: 'transaction.group.createMotion.title' },
-          description: {
-            id: 'transaction.group.createMotion.description',
-          },
+          key: batchKey,
+          id: meta.id,
+          index: 1,
         },
       },
     });
