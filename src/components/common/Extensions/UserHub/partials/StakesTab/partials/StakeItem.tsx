@@ -3,7 +3,6 @@ import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { getActionTitleValues } from '~common/ColonyActions/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
 import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge/index.ts';
@@ -13,7 +12,7 @@ import { type StakeItemProps } from '../types.ts';
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';
 
-const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
+const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
     <li className="flex flex-col border-b border-gray-100 sm:last:border-none sm:hover:bg-gray-50">
       <button
         type="button"
-        className="flex items-center py-3.5 sm:px-6"
+        className="flex items-center gap-2 py-3.5 sm:px-6"
         onClick={() =>
           navigate(
             `${window.location.pathname}?${TX_SEARCH_PARAM}=${stake.action?.transactionHash}`,
@@ -46,20 +45,13 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
             </div>
           </div>
           <div className="flex text-xs">
-            <div className="mr-2 font-medium text-gray-500">
+            <div className="mr-3 text-left font-normal text-gray-500">
+              {formatMessage({ id: 'userHub.stake' })}
               <Numeral
                 value={stake.amount}
                 decimals={nativeToken.decimals}
                 suffix={` ${nativeToken.symbol}`}
               />
-            </div>
-            <div className="text-gray-500">
-              {stake.action
-                ? formatMessage(
-                    { id: 'action.title' },
-                    getActionTitleValues(stake.action, colony),
-                  )
-                : '-'}
             </div>
           </div>
         </div>

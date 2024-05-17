@@ -108,8 +108,9 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   return (
     <li
-      className={clsx(`border-b border-gray-100 last:border-none`, {
+      className={clsx(`border-b border-gray-100 py-3.5 last:border-none`, {
         'list-none': hideSummary,
+        'hover:bg-gray-25': !!canLinkToAction,
       })}
     >
       <div className="flex w-full flex-col items-start">
@@ -120,9 +121,8 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               onClick={handleNavigateToAction}
               disabled={!canLinkToAction || hideSummary}
               className={clsx(
-                'flex w-full flex-col items-start gap-1 py-3.5 sm:px-6',
+                'flex w-full flex-col items-start gap-1  sm:px-6',
                 {
-                  'hover:bg-gray-25': !!canLinkToAction,
                   'cursor-default': !canLinkToAction,
                 },
               )}
@@ -190,9 +190,9 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               exit="hidden"
               variants={accordionAnimation}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="w-full overflow-hidden text-md text-gray-600 "
+              className="w-full overflow-hidden pt-2 text-md text-gray-600"
             >
-              <ul className="pb-3.5 pt-1.5 sm:px-6">
+              <ul className="sm:px-6">
                 {transactionGroup.map((transaction, idx) => (
                   <GroupedTransactionContent
                     key={transaction.id}
