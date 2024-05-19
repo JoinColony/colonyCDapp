@@ -364,6 +364,8 @@
     "transaction.group.createExpenditure.description": "Create Expenditure",
     "transaction.ColonyClient.makeExpenditure.title": "Make Expenditure",
     "transaction.ColonyClient.makeExpenditure.description": "Make Expenditure",
+    "transaction.ColonyClient.multicall.title": "Multicall",
+    "transaction.ColonyClient.multicall.description": "Multicall",
     "transaction.ColonyClient.setExpenditureValues.title": "Set Expenditure Values",
     "transaction.ColonyClient.setExpenditureValues.description": "Set Expenditure Values",
     "transaction.ColonyClient.lockExpenditure.title": "Lock Expenditure",

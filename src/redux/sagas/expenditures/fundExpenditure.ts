@@ -1,10 +1,7 @@
 import { ClientType } from '@colony/colony-js';
-import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { fork, put, takeEvery } from 'redux-saga/effects';
 
-import {
-  transactionAddParams,
-  transactionPending,
-} from '~redux/actionCreators/index.ts';
+import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
@@ -16,6 +13,7 @@ import {
 } from '../transactions/index.ts';
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import {
+  getColonyManager,
   getMoveFundsPermissionProofs,
   initiateTransaction,
   putError,
@@ -35,6 +33,12 @@ function* fundExpenditure({
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_FUND>) {
+  const colonyManager = yield getColonyManager();
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
+
   const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
 
   const batchKey = TRANSACTION_METHODS.FundExpenditure;
@@ -47,29 +51,51 @@ function* fundExpenditure({
   // Create channel for each token, using its address as channel id
   const {
     annotateFundExpenditure,
-    ...channels
+    fundMulticall,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    [...balancesByTokenAddresses.keys(), 'annotateFundExpenditure'],
+    ['fundMulticall', 'annotateFundExpenditure'],
   );
 
   try {
-    yield all(
-      [...balancesByTokenAddresses.keys()].map((tokenAddress, index) =>
-        fork(createTransaction, channels[tokenAddress].id, {
-          context: ClientType.ColonyClient,
-          methodName:
-            'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
-          identifier: colonyAddress,
-          group: {
-            key: batchKey,
-            id: meta.id,
-            index,
-          },
-          ready: false,
-        }),
-      ),
+    const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
+      yield getMoveFundsPermissionProofs(
+        colonyAddress,
+        fromDomainFundingPotId,
+        expenditureFundingPotId,
+      );
+
+    const multicallData = [...balancesByTokenAddresses.entries()].map(
+      ([tokenAddress, amount]) =>
+        colonyClient.interface.encodeFunctionData(
+          'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
+          [
+            permissionDomainId,
+            fromChildSkillIndex,
+            permissionDomainId,
+            fromChildSkillIndex,
+            toChildSkillIndex,
+            fromDomainFundingPotId,
+            expenditureFundingPotId,
+            amount,
+            tokenAddress,
+          ],
+        ),
     );
+
+    yield fork(createTransaction, fundMulticall.id, {
+      context: ClientType.ColonyClient,
+      methodName: 'multicall',
+      identifier: colonyAddress,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
+      ready: false,
+      params: [multicallData],
+    });
+
     if (annotationMessage) {
       yield fork(createTransaction, annotateFundExpenditure.id, {
         context: ClientType.ColonyClient,
@@ -78,66 +104,39 @@ function* fundExpenditure({
         group: {
           key: batchKey,
           id: meta.id,
-          index: Object.keys(balancesByTokenAddresses).length,
+          index: 1,
         },
         ready: false,
       });
     }
 
-    for (const [tokenAddress, amount] of [
-      ...balancesByTokenAddresses.entries(),
-    ]) {
+    yield takeFrom(fundMulticall.channel, ActionTypes.TRANSACTION_CREATED);
+    if (annotationMessage) {
       yield takeFrom(
-        channels[tokenAddress].channel,
+        annotateFundExpenditure.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
-      if (annotationMessage) {
-        yield takeFrom(
-          annotateFundExpenditure.channel,
-          ActionTypes.TRANSACTION_CREATED,
-        );
-      }
+    }
 
-      yield put(transactionPending(channels[tokenAddress].id));
+    yield put(transactionPending(fundMulticall.id));
 
-      const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
-        yield getMoveFundsPermissionProofs(
-          colonyAddress,
-          fromDomainFundingPotId,
-          expenditureFundingPotId,
-        );
-      yield put(
-        transactionAddParams(channels[tokenAddress].id, [
-          permissionDomainId,
-          fromChildSkillIndex,
-          permissionDomainId,
-          fromChildSkillIndex,
-          toChildSkillIndex,
-          fromDomainFundingPotId,
-          expenditureFundingPotId,
-          amount,
-          tokenAddress,
-        ]),
-      );
+    yield initiateTransaction({ id: fundMulticall.id });
 
-      yield initiateTransaction({ id: channels[tokenAddress].id });
+    const {
+      payload: { hash: txHash },
+    } = yield takeFrom(
+      fundMulticall.channel,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+    );
 
-      const {
-        payload: { hash: txHash },
-      } = yield takeFrom(
-        channels[tokenAddress].channel,
-        ActionTypes.TRANSACTION_HASH_RECEIVED,
-      );
+    yield waitForTxResult(fundMulticall.channel);
 
-      yield waitForTxResult(channels[tokenAddress].channel);
-
-      if (annotationMessage) {
-        yield uploadAnnotation({
-          txChannel: annotateFundExpenditure,
-          message: annotationMessage,
-          txHash,
-        });
-      }
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateFundExpenditure,
+        message: annotationMessage,
+        txHash,
+      });
     }
 
     yield put<AllActions>({
@@ -148,9 +147,7 @@ function* fundExpenditure({
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_FUND_ERROR, error, meta);
   } finally {
-    [...balancesByTokenAddresses.keys()].forEach((tokenAddress) =>
-      channels[tokenAddress].channel.close(),
-    );
+    fundMulticall.channel.close();
     annotateFundExpenditure.channel.close();
   }
 
