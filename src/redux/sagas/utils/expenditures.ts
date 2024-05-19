@@ -203,31 +203,35 @@ export function* claimExpenditurePayouts({
     'claimPayouts',
   ]);
 
-  const multicallData = claimablePayouts.map((payout) =>
-    colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
-      nativeExpenditureId,
-      payout.slotId,
-      payout.tokenAddress,
-    ]),
-  );
+  try {
+    const multicallData = claimablePayouts.map((payout) =>
+      colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
+        nativeExpenditureId,
+        payout.slotId,
+        payout.tokenAddress,
+      ]),
+    );
 
-  yield fork(createTransaction, claimPayouts.id, {
-    context: ClientType.ColonyClient,
-    methodName: 'multicall',
-    identifier: colonyAddress,
-    params: [multicallData],
-    group: {
-      key: batchKey,
-      id: metaId,
-      index: 0,
-    },
-    ready: false,
-  });
+    yield fork(createTransaction, claimPayouts.id, {
+      context: ClientType.ColonyClient,
+      methodName: 'multicall',
+      identifier: colonyAddress,
+      params: [multicallData],
+      group: {
+        key: batchKey,
+        id: metaId,
+        index: 0,
+      },
+      ready: false,
+    });
 
-  yield takeFrom(claimPayouts.channel, ActionTypes.TRANSACTION_CREATED);
+    yield takeFrom(claimPayouts.channel, ActionTypes.TRANSACTION_CREATED);
 
-  yield initiateTransaction({ id: claimPayouts.id });
-  yield waitForTxResult(claimPayouts.channel);
+    yield initiateTransaction({ id: claimPayouts.id });
+    yield waitForTxResult(claimPayouts.channel);
+  } finally {
+    claimPayouts.channel.close();
+  }
 }
 
 /**
