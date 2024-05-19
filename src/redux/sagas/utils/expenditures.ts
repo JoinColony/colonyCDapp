@@ -1,6 +1,6 @@
-import { ClientType } from '@colony/colony-js';
+import { type AnyColonyClient, ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
-import { all, fork } from 'redux-saga/effects';
+import { fork } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -177,14 +177,12 @@ export const getPayoutsWithSlotIds = (
   }));
 };
 
-const getPayoutChannelId = (payout: ExpenditurePayoutWithSlotId) =>
-  `${payout.slotId}-${payout.tokenAddress}`;
-
 interface ClaimExpendituresPayoutsParams {
   colonyAddress: Address;
   nativeExpenditureId: number;
   claimablePayouts: ExpenditurePayoutWithSlotId[];
   metaId: string;
+  colonyClient: AnyColonyClient;
 }
 
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
@@ -193,6 +191,7 @@ export function* claimExpenditurePayouts({
   claimablePayouts,
   nativeExpenditureId,
   metaId,
+  colonyClient,
 }: ClaimExpendituresPayoutsParams) {
   if (claimablePayouts.length === 0) {
     return;
@@ -200,45 +199,35 @@ export function* claimExpenditurePayouts({
 
   const batchKey = 'claimExpenditurePayouts';
 
-  const channels = yield createTransactionChannels(
-    metaId,
-    claimablePayouts.map(getPayoutChannelId),
+  const { claimPayouts } = yield createTransactionChannels(metaId, [
+    'claimPayouts',
+  ]);
+
+  const multicallData = claimablePayouts.map((payout) =>
+    colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
+      nativeExpenditureId,
+      payout.slotId,
+      payout.tokenAddress,
+    ]),
   );
 
-  // Create one claim transaction for each slot
-  yield all(
-    claimablePayouts.map((payout, index) =>
-      fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
-        context: ClientType.ColonyClient,
-        methodName: 'claimExpenditurePayout',
-        identifier: colonyAddress,
-        params: [nativeExpenditureId, payout.slotId, payout.tokenAddress],
-        group: {
-          key: batchKey,
-          id: metaId,
-          index,
-        },
-        ready: false,
-      }),
-    ),
-  );
+  yield fork(createTransaction, claimPayouts.id, {
+    context: ClientType.ColonyClient,
+    methodName: 'multicall',
+    identifier: colonyAddress,
+    params: [multicallData],
+    group: {
+      key: batchKey,
+      id: metaId,
+      index: 0,
+    },
+    ready: false,
+  });
 
-  for (const payout of claimablePayouts) {
-    const payoutChannelId = getPayoutChannelId(payout);
+  yield takeFrom(claimPayouts.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield takeFrom(
-      channels[payoutChannelId].channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
-
-    yield initiateTransaction({ id: channels[payoutChannelId].id });
-    yield waitForTxResult(channels[payoutChannelId].channel);
-  }
-
-  for (const payout of claimablePayouts) {
-    const payoutChannelId = getPayoutChannelId(payout);
-    channels[payoutChannelId].channel.close();
-  }
+  yield initiateTransaction({ id: claimPayouts.id });
+  yield waitForTxResult(claimPayouts.channel);
 }
 
 /**
