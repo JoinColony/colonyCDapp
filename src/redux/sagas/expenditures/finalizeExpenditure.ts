@@ -95,6 +95,7 @@ function* finalizeExpenditureAction({
       claimablePayouts,
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
+      colonyClient,
     });
 
     yield put<AllActions>({

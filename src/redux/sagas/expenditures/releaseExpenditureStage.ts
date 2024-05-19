@@ -132,6 +132,7 @@ function* releaseExpenditureStage({
       claimablePayouts: payoutsWithSlotIds,
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
+      colonyClient,
     });
 
     yield put<AllActions>({
