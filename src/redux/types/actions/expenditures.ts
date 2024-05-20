@@ -51,6 +51,7 @@ export type ExpendituresActionTypes =
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
+        customActionTitle?: string;
       },
       MetaWithSetter<object>
     >

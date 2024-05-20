@@ -20,6 +20,7 @@ import {
   uploadAnnotation,
   getPayoutsWithSlotIds,
   getPayoutAmount,
+  createActionMetadataInDB,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -37,6 +38,7 @@ function* createExpenditure({
     stages,
     networkInverseFee,
     annotationMessage,
+    customActionTitle,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -191,6 +193,10 @@ function* createExpenditure({
     yield put(transactionAddParams(setExpenditureValues.id, [multicallData]));
     yield initiateTransaction({ id: setExpenditureValues.id });
     yield waitForTxResult(setExpenditureValues.channel);
+
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
 
     if (isStaged) {
       yield takeFrom(
