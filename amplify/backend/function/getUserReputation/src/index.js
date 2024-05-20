@@ -48,7 +48,7 @@ exports.handler = async (event) => {
   const domainId = input?.domainId;
   const rootHash = input?.rootHash;
 
-  const provider = new providers.JsonRpcProvider(rpcURL);
+  const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,

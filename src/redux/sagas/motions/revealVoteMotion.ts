@@ -37,7 +37,7 @@ function* revealVoteMotion({
      */
     const provider = (() => {
       if (isDev) {
-        return new providers.JsonRpcProvider(GANACHE_LOCAL_RPC_URL);
+        return new providers.StaticJsonRpcProvider(GANACHE_LOCAL_RPC_URL);
       }
       return new providers.Web3Provider(window.ethereum!);
     })();

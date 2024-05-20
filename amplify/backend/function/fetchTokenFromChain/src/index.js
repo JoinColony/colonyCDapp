@@ -98,7 +98,7 @@ exports.handler = async (event) => {
        * Attempt to fetch it from the chain
        */
       const checksummedAddress = utils.getAddress(tokenAddress);
-      const provider = new providers.JsonRpcProvider(rpcURL);
+      const provider = new providers.StaticJsonRpcProvider(rpcURL);
       const tokenFromChain = new Contract(
         checksummedAddress,
         basicTokenAbi,

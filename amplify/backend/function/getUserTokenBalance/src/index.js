@@ -53,7 +53,7 @@ const setEnvVariables = async () => {
 
     const { walletAddress, tokenAddress, colonyAddress } =
       event.arguments?.input || {};
-    const provider = new providers.JsonRpcProvider(rpcURL);
+    const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
     if (tokenAddress === constants.AddressZero) {
       // Get chain native token balance

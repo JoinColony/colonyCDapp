@@ -41,7 +41,7 @@ exports.handler = async (event) => {
   } catch (e) {
     throw Error('Unable to set environment variables. Reason:', e);
   }
-  const provider = new providers.JsonRpcProvider(rpcURL);
+  const provider = new providers.StaticJsonRpcProvider(rpcURL);
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
     reputationOracleEndpoint,

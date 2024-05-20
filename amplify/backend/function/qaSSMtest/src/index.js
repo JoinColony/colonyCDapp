@@ -41,7 +41,7 @@ const setEnvVariables = async () => {
 
 exports.handler = async ({ walletAddress, colonyAddress }) => {
   await setEnvVariables();
-  const provider = new providers.JsonRpcProvider(rpcURL);
+  const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,

@@ -144,7 +144,7 @@ const getHomeProvider = async () => {
     [rpcURL] = await getParams(['chainRpcEndpoint']);
   }
 
-  return new providers.JsonRpcProvider(rpcURL);
+  return new providers.StaticJsonRpcProvider(rpcURL);
 };
 
 const getForeignProvider = (safeChainId) => {
@@ -158,7 +158,7 @@ const getForeignProvider = (safeChainId) => {
     );
   }
 
-  return new providers.JsonRpcProvider(
+  return new providers.StaticJsonRpcProvider(
     isDev ? LOCAL_FOREIGN_CHAIN : network.rpcUrl,
   );
 };
