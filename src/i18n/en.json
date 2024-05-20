@@ -605,6 +605,8 @@
     "metatransaction.group.finalizeExpenditure.description": "Finalize Expenditure",
     "metatransaction.group.claimExpenditurePayouts.title": "Claim Expenditure Payouts",
     "metatransaction.group.claimExpenditurePayouts.description": "Claim Expenditure Payouts",
+    "metatransaction.StakedExpenditureClient.initialise.title": "Initialize Staked Expenditure Extension",
+    "metatransaction.StakedExpenditureClient.initialise.description": "Initialize Staked Expenditure Extension",
     "message.generic.title": "Generic Message",
     "message.generic.description": "This needs your wallet's signature",
     "message.metaMintTokens.title": "Mint Tokens Signature",
