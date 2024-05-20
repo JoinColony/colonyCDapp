@@ -1,8 +1,13 @@
+import { ClientType } from '@colony/colony-js';
 import { takeEvery, put } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
-import { claimExpenditurePayouts, putError } from '../utils/index.ts';
+import {
+  claimExpenditurePayouts,
+  getColonyManager,
+  putError,
+} from '../utils/index.ts';
 
 export type ClaimExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CLAIM>['payload'];
@@ -12,11 +17,18 @@ export function* claimExpenditure({
   payload: { colonyAddress, nativeExpenditureId, claimablePayouts },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
   try {
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
     yield claimExpenditurePayouts({
       colonyAddress,
       claimablePayouts,
       metaId: meta.id,
       nativeExpenditureId,
+      colonyClient,
     });
 
     yield put<AllActions>({
