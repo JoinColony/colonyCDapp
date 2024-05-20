@@ -156,9 +156,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ) : (
           // @todo: please update this element when other decisions methods for funding will be implemented
           <>
-            {fundingActionsItems?.length === 1 && (
+            {fundingActionsItems?.[0] && (
               <FinalizeWithPermissionsInfo
-                userAdddress={fundingActionsItems[0]?.initiatorAddress}
+                userAdddress={fundingActionsItems[0].initiatorAddress}
               />
             )}
           </>
