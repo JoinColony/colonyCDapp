@@ -8,7 +8,7 @@ import {
   colonyRoles2Hex,
   type AnyColonyClient,
 } from '@colony/colony-js';
-import { BigNumber, utils } from 'ethers';
+import { /* BigNumber */ utils } from 'ethers';
 import { poll } from 'ethers/lib/utils';
 import { all, call, put } from 'redux-saga/effects';
 
@@ -92,7 +92,7 @@ function* colonyCreate({
 
   channelNames.push('installExtensions');
   channelNames.push('setExtensionsRoles');
-  channelNames.push('enableStakedExpenditure');
+  // channelNames.push('enableStakedExpenditure');
 
   /*
    * Define a manifest of transaction ids and their respective channels.
@@ -109,7 +109,7 @@ function* colonyCreate({
     installExtensions,
     setExtensionsRoles,
     setOwner,
-    enableStakedExpenditure,
+    // enableStakedExpenditure,
   } = channels;
 
   const batchKey = TRANSACTION_METHODS.CreateColony;
@@ -156,13 +156,13 @@ function* colonyCreate({
       });
     }
 
-    if (enableStakedExpenditure) {
-      yield createGroupTransaction(enableStakedExpenditure, batchKey, meta, {
-        context: ClientType.StakedExpenditureClient,
-        methodName: 'initialise',
-        ready: false,
-      });
-    }
+    // if (enableStakedExpenditure) {
+    //   yield createGroupTransaction(enableStakedExpenditure, batchKey, meta, {
+    //     context: ClientType.StakedExpenditureClient,
+    //     methodName: 'initialise',
+    //     ready: false,
+    //   });
+    // }
 
     /*
      * Wait until all transactions are created.
@@ -300,7 +300,7 @@ function* colonyCreate({
      * Add a colonyAddress identifier to all pending transactions.
      */
     yield all(
-      [installExtensions, setExtensionsRoles, enableStakedExpenditure]
+      [installExtensions, setExtensionsRoles /* , enableStakedExpenditure */]
         .filter(Boolean)
         .map(({ id }) => put(transactionAddIdentifier(id, colonyAddress))),
     );
@@ -320,7 +320,7 @@ function* colonyCreate({
       yield deployExtensions(colonyClient, {
         installExtensions,
         setExtensionsRoles,
-        enableStakedExpenditure,
+        // enableStakedExpenditure,
       });
     }
 
@@ -388,16 +388,18 @@ function* colonyCreate({
   }
 }
 
-const DEFAULT_STAKE_FRACTION = BigNumber.from(1)
-  .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
-  .div(100); // 1% in wei
+// const DEFAULT_STAKE_FRACTION = BigNumber.from(1)
+//   .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
+//   .div(100); // 1% in wei
 
 function* deployExtensions(
   colonyClient: AnyColonyClient,
   channels: Record<string, ChannelDefinition>,
 ) {
-  const { installExtensions, setExtensionsRoles, enableStakedExpenditure } =
-    channels;
+  const {
+    installExtensions,
+    setExtensionsRoles /* enableStakedExpenditure */,
+  } = channels;
 
   /*
    * Install OneTxPayment and StakedExpenditure extensions using multicall
@@ -406,11 +408,11 @@ function* deployExtensions(
 
   const oneTxHash = getExtensionHash(Extension.OneTxPayment);
   const oneTxVersion = yield call(getExtensionVersion, Extension.OneTxPayment);
-  const stakedExpenditureHash = getExtensionHash(Extension.StakedExpenditure);
-  const stakedExpenditureVersion = yield call(
-    getExtensionVersion,
-    Extension.StakedExpenditure,
-  );
+  // const stakedExpenditureHash = getExtensionHash(Extension.StakedExpenditure);
+  // const stakedExpenditureVersion = yield call(
+  //   getExtensionVersion,
+  //   Extension.StakedExpenditure,
+  // );
 
   const installMulticallData: string[] = [];
   installMulticallData.push(
@@ -419,12 +421,12 @@ function* deployExtensions(
       oneTxVersion,
     ]),
   );
-  installMulticallData.push(
-    colonyClient.interface.encodeFunctionData('installExtension', [
-      stakedExpenditureHash,
-      stakedExpenditureVersion,
-    ]),
-  );
+  // installMulticallData.push(
+  //   colonyClient.interface.encodeFunctionData('installExtension', [
+  //     stakedExpenditureHash,
+  //     stakedExpenditureVersion,
+  //   ]),
+  // );
 
   yield put(transactionAddParams(installExtensions.id, [installMulticallData]));
   yield initiateTransaction({ id: installExtensions.id });
@@ -437,7 +439,7 @@ function* deployExtensions(
    * This might happen if using different RPC endpoints which are at different block
    * heights from one another
    */
-  const [oneTxClient, stakedExpenditureClient] = yield all([
+  const [oneTxClient /* stakedExpenditureClient */] = yield all([
     poll(
       async () => {
         try {
@@ -454,22 +456,22 @@ function* deployExtensions(
         retryLimit: 0,
       },
     ),
-    poll(
-      async () => {
-        try {
-          const client = await colonyClient.getExtensionClient(
-            Extension.StakedExpenditure,
-          );
-          return client;
-        } catch (err) {
-          return undefined;
-        }
-      },
-      {
-        timeout: 30000,
-        retryLimit: 0,
-      },
-    ),
+    // poll(
+    //   async () => {
+    //     try {
+    //       const client = await colonyClient.getExtensionClient(
+    //         Extension.StakedExpenditure,
+    //       );
+    //       return client;
+    //     } catch (err) {
+    //       return undefined;
+    //     }
+    //   },
+    //   {
+    //     timeout: 30000,
+    //     retryLimit: 0,
+    //   },
+    // ),
   ]);
 
   /*
@@ -489,9 +491,9 @@ function* deployExtensions(
   const oneTxConfig = supportedExtensionsConfig.find(
     (config) => config.extensionId === Extension.OneTxPayment,
   );
-  const stakedExpenditureConfig = supportedExtensionsConfig.find(
-    (config) => config.extensionId === Extension.StakedExpenditure,
-  );
+  // const stakedExpenditureConfig = supportedExtensionsConfig.find(
+  //   (config) => config.extensionId === Extension.StakedExpenditure,
+  // );
 
   setRolesMulticallData.push(
     colonyClient.interface.encodeFunctionData('setUserRoles', [
@@ -502,15 +504,15 @@ function* deployExtensions(
       colonyRoles2Hex(oneTxConfig?.neededColonyPermissions ?? []),
     ]),
   );
-  setRolesMulticallData.push(
-    colonyClient.interface.encodeFunctionData('setUserRoles', [
-      permissionDomainId,
-      childSkillIndex,
-      stakedExpenditureClient.address,
-      Id.RootDomain,
-      colonyRoles2Hex(stakedExpenditureConfig?.neededColonyPermissions ?? []),
-    ]),
-  );
+  // setRolesMulticallData.push(
+  //   colonyClient.interface.encodeFunctionData('setUserRoles', [
+  //     permissionDomainId,
+  //     childSkillIndex,
+  //     stakedExpenditureClient.address,
+  //     Id.RootDomain,
+  //     colonyRoles2Hex(stakedExpenditureConfig?.neededColonyPermissions ?? []),
+  //   ]),
+  // );
 
   yield put(
     transactionAddParams(setExtensionsRoles.id, [setRolesMulticallData]),
@@ -522,14 +524,14 @@ function* deployExtensions(
   /**
    * Enable Staked Expenditure
    */
-  yield put(transactionPending(enableStakedExpenditure.id));
+  // yield put(transactionPending(enableStakedExpenditure.id));
 
-  yield put(
-    transactionAddParams(enableStakedExpenditure.id, [DEFAULT_STAKE_FRACTION]),
-  );
+  // yield put(
+  //   transactionAddParams(enableStakedExpenditure.id, [DEFAULT_STAKE_FRACTION]),
+  // );
 
-  yield initiateTransaction({ id: enableStakedExpenditure.id });
-  yield waitForTxResult(enableStakedExpenditure.channel);
+  // yield initiateTransaction({ id: enableStakedExpenditure.id });
+  // yield waitForTxResult(enableStakedExpenditure.channel);
 }
 
 export default function* colonyCreateSaga() {
