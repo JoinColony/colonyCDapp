@@ -51,20 +51,28 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     expenditure || {};
   const { items: fundingActionsItems } = fundingActions || {};
 
-  const expenditureStatus = getExpenditureStep(expenditure);
+  const expenditureStep = getExpenditureStep(expenditure);
 
   const [activeStepKey, setActiveStepKey] =
-    useState<ExpenditureStep>(expenditureStatus);
-
-  const [isRefetching, setIsRefetching] = useState(false);
+    useState<ExpenditureStep>(expenditureStep);
+  const [expectedStepKey, setExpectedStepKey] =
+    useState<ExpenditureStep | null>(null);
 
   useEffect(() => {
     startPolling(getSafePollingInterval());
 
-    setActiveStepKey(expenditureStatus);
-
     return () => stopPolling();
-  }, [expenditureStatus, startPolling, stopPolling, expenditure]);
+  }, [startPolling, stopPolling]);
+
+  useEffect(() => {
+    setActiveStepKey(expenditureStep);
+  }, [expenditureStep]);
+
+  useEffect(() => {
+    if (expectedStepKey === expenditureStep) {
+      setExpectedStepKey(null);
+    }
+  }, [expectedStepKey, expenditureStep]);
 
   const lockExpenditurePayload: LockExpenditurePayload | null = expenditure
     ? {
@@ -83,9 +91,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         userAdddress={cancellingActions?.items[0]?.initiatorAddress}
       />
     ),
-    isHidden: expenditureStatus !== ExpenditureStep.Cancel,
+    isHidden: expenditureStep !== ExpenditureStep.Cancel,
   };
-  const isExpenditureCanceled = expenditureStatus === ExpenditureStep.Cancel;
+  const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -99,7 +107,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       key: ExpenditureStep.Review,
       heading: { label: formatText({ id: 'expenditure.reviewStage.label' }) },
       content:
-        expenditureStatus === ExpenditureStep.Review ? (
+        expenditureStep === ExpenditureStep.Review ? (
           <StepDetailsBlock
             text={formatText({
               id: 'expenditure.reviewStage.confirmDetails.info',
@@ -110,12 +118,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                   !expenditure?.ownerAddress ||
                   walletAddress !== expenditure?.ownerAddress
                 }
-                onSuccess={async () => {
-                  setIsRefetching(true);
-                  await refetchExpenditure({
-                    expenditureId: expenditureId || '',
-                  });
-                  setIsRefetching(false);
+                onSuccess={() => {
+                  setExpectedStepKey(ExpenditureStep.Funding);
                 }}
                 text={formatText({
                   id: 'expenditure.reviewStage.confirmDetails.button',
@@ -124,7 +128,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 actionType={ActionTypes.EXPENDITURE_LOCK}
                 mode="primarySolid"
                 className="w-full"
-                isLoading={isRefetching}
+                isLoading={expectedStepKey === ExpenditureStep.Funding}
               />
             }
           />
@@ -138,7 +142,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       key: ExpenditureStep.Funding,
       heading: { label: formatText({ id: 'expenditure.fundingStage.label' }) },
       content:
-        expenditureStatus === ExpenditureStep.Funding ? (
+        expenditureStep === ExpenditureStep.Funding ? (
           <StepDetailsBlock
             text={formatText({
               id: 'expenditure.fundingStage.info',
@@ -150,6 +154,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 text={formatText({
                   id: 'expenditure.fundingStage.button',
                 })}
+                loading={expectedStepKey === ExpenditureStep.Release}
               />
             }
           />
@@ -168,7 +173,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       key: ExpenditureStep.Release,
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
       content:
-        expenditureStatus === ExpenditureStep.Release ? (
+        expenditureStep === ExpenditureStep.Release ? (
           <StepDetailsBlock
             text={formatText({
               id: 'expenditure.releaseStage.info',
@@ -180,6 +185,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 text={formatText({
                   id: 'expenditure.releaseStage.button',
                 })}
+                loading={expectedStepKey === ExpenditureStep.Payment}
               />
             }
           />
@@ -232,13 +238,17 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             expenditure={expenditure}
             isOpen={isReleasePaymentModalOpen}
             onClose={hideReleasePaymentModal}
-            refetchExpenditure={refetchExpenditure}
+            onSuccess={() => {
+              setExpectedStepKey(ExpenditureStep.Payment);
+            }}
           />
           <FundingModal
             isOpen={isFundingModalOpen}
             onClose={hideFundingModal}
             expenditure={expenditure}
-            refetchExpenditure={refetchExpenditure}
+            onSuccess={() => {
+              setExpectedStepKey(ExpenditureStep.Release);
+            }}
           />
         </>
       )}

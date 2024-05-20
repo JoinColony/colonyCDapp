@@ -24,7 +24,7 @@ import { type FundingModalProps, type TokenItemProps } from './types.ts';
 const FundingModal: FC<FundingModalProps> = ({
   onClose,
   expenditure,
-  refetchExpenditure,
+  onSuccess,
   ...rest
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,11 +80,9 @@ const FundingModal: FC<FundingModalProps> = ({
       };
 
       await fundExpenditure(payload);
-      await refetchExpenditure({
-        expenditureId: expenditure.id,
-      });
 
       setIsSubmitting(false);
+      onSuccess();
       onClose();
     } catch (err) {
       setIsSubmitting(false);
