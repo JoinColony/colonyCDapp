@@ -36,11 +36,11 @@ function* setThresholds({
       ]),
     );
 
-    for (const skillId of Object.keys(domainThresholds)) {
+    for (const { skillId, threshold } of domainThresholds) {
       encodedMulticallData.push(
         multiSigClient.interface.encodeFunctionData('setDomainSkillThreshold', [
           skillId,
-          domainThresholds[skillId],
+          threshold,
         ]),
       );
     }
