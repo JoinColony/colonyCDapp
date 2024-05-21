@@ -21,7 +21,7 @@ const TokenFilters: FC = () => {
           tokenAddress={token.tokenAddress}
           tokenAvatarSrc={token.avatar ?? undefined}
         />
-        {token.symbol}
+        <span className="token-symbol">{token.symbol}</span>
       </div>
     ),
     name: token?.tokenAddress || '',

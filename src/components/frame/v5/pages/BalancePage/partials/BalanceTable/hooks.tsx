@@ -22,6 +22,7 @@ import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
 import TokenCell from '../TokenCell/index.ts';
 
 import { useFiltersContext } from './Filters/FiltersContext/FiltersContext.ts';
+import { formattedTokenSymbol } from './helpers.ts';
 import { type BalanceTableFieldModel } from './types.ts';
 
 export const useBalancesData = (): BalanceTableFieldModel[] => {
@@ -130,7 +131,9 @@ export const useBalanceTableColumns = (
         header: () => formatText({ id: 'table.row.symbol' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
         cell: ({ row }) => (
-          <span className="text-gray-600">{row.original.token?.symbol}</span>
+          <span className="text-gray-600 token-symbol">
+            {formattedTokenSymbol(row.original.token?.symbol)}
+          </span>
         ),
       }),
       columnHelper.display({
@@ -170,7 +173,7 @@ export const useBalanceTableColumns = (
                   row.original.token?.decimals,
                 )}
                 className="block text-gray-900 text-1"
-                suffix={` ${row.original.token?.symbol}`}
+                suffix={` ${formattedTokenSymbol(row.original.token?.symbol)}`}
               />
               <CurrencyConversion
                 tokenBalance={currentTokenBalance}

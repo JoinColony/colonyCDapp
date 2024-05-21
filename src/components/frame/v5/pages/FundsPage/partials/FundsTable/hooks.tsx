@@ -154,7 +154,7 @@ export const useFundsTable = (): UseFundsTableProps => {
           tokenAddress={token.tokenAddress}
           tokenAvatarSrc={token.avatar ?? undefined}
         />
-        {token.symbol}
+        <span className="token-symbol">{token.symbol}</span>
       </div>
     ),
   }));
