@@ -13,6 +13,7 @@ import {
   type User,
   type ColonyExtension,
   type Token,
+  type Expenditure,
 } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
@@ -133,6 +134,7 @@ export const mapColonyActionToExpectedFormat = (
   keyFallbackValues: Partial<
     Record<ActionTitleMessageKeys, React.ReactNode>
   > = {},
+  expenditureData?: Expenditure,
 ) => {
   //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
   const formattedRolesTitle = formatRolesTitle(actionData.roles);
@@ -235,5 +237,13 @@ export const mapColonyActionToExpectedFormat = (
         notMaybe(actionData.metadata?.customTitle),
       ),
     [ActionTitleMessageKeys.Members]: actionData.members?.length || 0,
+    [ActionTitleMessageKeys.RecipientsNumber]: new Set(
+      expenditureData?.slots.map((slot) => slot.recipientAddress),
+    ).size,
+    [ActionTitleMessageKeys.TokensNumber]: new Set(
+      expenditureData?.slots?.flatMap(
+        (slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [],
+      ),
+    ).size,
   };
 };

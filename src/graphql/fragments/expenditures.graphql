@@ -13,7 +13,6 @@ fragment Expenditure on Expenditure {
     stages {
       ...ExpenditureStage
     }
-    stakeAmount
   }
   finalizedAt
   motions {
@@ -26,6 +25,58 @@ fragment Expenditure on Expenditure {
   isStaked
   balances {
     ...ExpenditureBalance
+  }
+  # @NOTE: If querying actions field multiple times proves slow, we could query it once and filter on the client
+  lockingActions: actions(
+    filter: {
+      type: { eq: LOCK_EXPENDITURE }
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      ...ExpenditureAction
+    }
+  }
+  fundingActions: actions(
+    filter: { type: { eq: MOVE_FUNDS }, isMotionFinalization: { ne: true } }
+  ) {
+    items {
+      id
+      initiatorAddress
+      initiatorUser {
+        ...User
+      }
+    }
+  }
+  finalizingActions: actions(
+    filter: {
+      type: { eq: FINALIZE_EXPENDITURE }
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      ...ExpenditureAction
+    }
+  }
+  cancellingActions: actions(
+    filter: {
+      type: { eq: CANCEL_EXPENDITURE }
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      ...ExpenditureAction
+    }
+  }
+  editingActions: actions(
+    filter: {
+      type: { eq: EDIT_EXPENDITURE }
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      ...ExpenditureAction
+    }
   }
 }
 
@@ -55,4 +106,12 @@ fragment ExpenditureStage on ExpenditureStage {
 fragment ExpenditureBalance on ExpenditureBalance {
   tokenAddress
   amount
+}
+
+fragment ExpenditureAction on ColonyAction {
+  id
+  initiatorAddress
+  initiatorUser {
+    ...User
+  }
 }

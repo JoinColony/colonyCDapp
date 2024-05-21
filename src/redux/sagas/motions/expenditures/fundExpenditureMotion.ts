@@ -9,7 +9,7 @@ import {
 import { constants } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ADDRESS_ZERO, APP_URL } from '~constants/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createGroupTransaction,
@@ -27,7 +27,7 @@ import { type Action } from '~redux/types/index.ts';
 
 function* fundExpenditureMotion({
   payload: {
-    colony: { colonyAddress, version: colonyVersion },
+    colony: { colonyAddress },
     expenditure,
     fromDomainFundingPotId,
     motionDomainId,
@@ -37,7 +37,6 @@ function* fundExpenditureMotion({
   meta: { setTxHash, id },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_FUND>) {
-  const batchId = 'motion-fund-expenditures';
   const { createMotion /* annotationMessage */ } = yield call(
     createTransactionChannels,
     id,
@@ -101,11 +100,6 @@ function* fundExpenditureMotion({
 
     const balances = getExpenditureBalancesByTokenAddress(expenditure);
 
-    const isOldVersion = colonyVersion <= 6;
-    const contractMethod = isOldVersion
-      ? 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
-      : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
-
     const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
       getPermissionProofs,
       colonyClient.networkClient,
@@ -132,18 +126,20 @@ function* fundExpenditureMotion({
 
     const encodedFundingPotActions = [...balances.entries()].map(
       ([tokenAddress, amount]) =>
-        colonyClient.interface.encodeFunctionData(contractMethod, [
-          ...(isOldVersion
-            ? []
-            : [fromPermissionDomainId, constants.MaxUint256]),
-          fromPermissionDomainId,
-          fromChildSkillIndex,
-          toChildSkillIndex,
-          fromDomainFundingPotId,
-          expenditureFundingPotId,
-          amount,
-          tokenAddress,
-        ]),
+        colonyClient.interface.encodeFunctionData(
+          'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
+          [
+            fromPermissionDomainId,
+            constants.MaxUint256,
+            fromPermissionDomainId,
+            fromChildSkillIndex,
+            toChildSkillIndex,
+            fromDomainFundingPotId,
+            expenditureFundingPotId,
+            amount,
+            tokenAddress,
+          ],
+        ),
     );
 
     const encodedMulticallAction = colonyClient.interface.encodeFunctionData(
@@ -151,7 +147,9 @@ function* fundExpenditureMotion({
       [encodedFundingPotActions],
     );
 
-    yield createGroupTransaction(createMotion, batchId, meta, {
+    const batchKey = 'createMotion';
+
+    yield createGroupTransaction(createMotion, batchKey, meta, {
       context: ClientType.VotingReputationClient,
       methodName: 'createMotion',
       identifier: colonyAddress,
@@ -166,10 +164,9 @@ function* fundExpenditureMotion({
         siblings,
       ],
       group: {
-        title: { id: 'transaction.group.createMotion.title' },
-        description: {
-          id: 'transaction.group.createMotion.description',
-        },
+        key: batchKey,
+        id: meta.id,
+        index: 1,
       },
     });
 
@@ -191,6 +188,14 @@ function* fundExpenditureMotion({
         type: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
         meta,
       });
+
+      // @TODO: Remove during advanced payments UI wiring
+      // eslint-disable-next-line no-console
+      console.log(
+        `Fund Expenditure Motion URL: ${APP_URL}${window.location.pathname.slice(
+          1,
+        )}?tx=${txHash}`,
+      );
     }
   } catch (e) {
     console.error(e);

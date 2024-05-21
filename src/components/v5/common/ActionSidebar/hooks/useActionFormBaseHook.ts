@@ -9,6 +9,8 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
   transform,
   defaultValues,
   actionType,
+  mode = 'onChange',
+  reValidateMode = 'onChange',
   getFormOptions,
 }) => {
   const form = useFormContext();
@@ -20,6 +22,8 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
         actionType,
         validationSchema,
         defaultValues,
+        mode,
+        reValidateMode,
       },
       form,
     );

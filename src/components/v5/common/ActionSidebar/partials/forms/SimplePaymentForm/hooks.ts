@@ -12,6 +12,7 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { toFinite } from '~utils/lodash.ts';
+import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
@@ -32,11 +33,24 @@ export const useValidationSchema = () => {
     () =>
       object()
         .shape({
-          amount: number()
+          amount: string()
             .required(() => formatText({ id: 'errors.amount' }))
-            .transform((value) => toFinite(value))
-            .moreThan(0, () =>
-              formatText({ id: 'errors.amount.greaterThanZero' }),
+            .test(
+              'more-than-zero',
+              ({ path }) => {
+                const index = getLastIndexFromPath(path);
+                if (index === undefined) {
+                  return formatText({
+                    id: 'errors.amount.greaterThanZero',
+                  });
+                }
+                return formatText(
+                  { id: 'errors.amount.greaterThanZeroIn' },
+                  { paymentIndex: index + 1 },
+                );
+              },
+              (value, context) =>
+                amountGreaterThanZeroValidation(value, context, colony),
             )
             .test(
               'enough-tokens',

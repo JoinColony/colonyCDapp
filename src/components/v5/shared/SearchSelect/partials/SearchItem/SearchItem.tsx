@@ -46,7 +46,6 @@ const SearchItem: FC<SearchItemProps> = ({
           token,
           isVerified,
         }) => {
-          const comingSoonOption = isComingSoon || (isDisabled && isComingSoon);
           const labelText = formatText(label || '');
 
           const hasAvatar = showAvatar || !!color || !!token;
@@ -114,14 +113,14 @@ const SearchItem: FC<SearchItemProps> = ({
                     />
                   )}
                   {isLabelVisible && labelText}
+                  {!label && <span className="truncate">{walletAddress}</span>}
                   {isVerified && (
                     <CircleWavyCheck
                       size={14}
                       className="ml-1 flex-shrink-0 text-blue-400"
                     />
                   )}
-                  {!label && <span className="truncate">{walletAddress}</span>}
-                  {comingSoonOption && (
+                  {isComingSoon && (
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
                       <ExtensionsStatusBadge
                         mode="coming-soon"

@@ -1,8 +1,9 @@
-import { ClientType } from '@colony/colony-js';
+import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
+import type ColonyManager from '~context/ColonyManager.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 
 import {
   type ChannelDefinition,
@@ -11,20 +12,23 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  getColonyManager,
+  claimExpenditurePayouts,
   initiateTransaction,
   putError,
   takeFrom,
-  uploadAnnotation,
 } from '../utils/index.ts';
 
 export type FinalizeExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_FINALIZE>['payload'];
 
 function* finalizeExpenditureAction({
-  payload: { colonyAddress, nativeExpenditureId, annotationMessage },
+  payload: { colonyAddress, expenditure, userAddress },
   meta,
 }: Action<ActionTypes.EXPENDITURE_FINALIZE>) {
-  const batchKey = TRANSACTION_METHODS.FinalizeExpenditure;
+  const batchKey = 'finalizeExpenditure';
+  const { nativeId: expenditureId, nativeDomainId: expenditureDomainId } =
+    expenditure;
 
   const {
     finalizeExpenditure,
@@ -35,29 +39,45 @@ function* finalizeExpenditureAction({
   );
 
   try {
-    yield fork(createTransaction, finalizeExpenditure.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'finalizeExpenditure',
-      identifier: colonyAddress,
-      params: [nativeExpenditureId],
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 0,
-      },
-    });
+    const colonyManager: ColonyManager = yield getColonyManager();
 
-    if (annotationMessage) {
-      yield fork(createTransaction, annotateFinalizeExpenditure.id, {
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
+    if (expenditure.ownerAddress === userAddress) {
+      yield fork(createTransaction, finalizeExpenditure.id, {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: 'finalizeExpenditure',
         identifier: colonyAddress,
+        params: [expenditureId],
         group: {
           key: batchKey,
           id: meta.id,
-          index: 1,
+          index: 0,
         },
-        ready: false,
+      });
+    } else {
+      const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditureDomainId,
+        ColonyRole.Arbitration,
+      );
+
+      const params = [permissionDomainId, childSkillIndex, expenditureId];
+
+      yield fork(createTransaction, finalizeExpenditure.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'finalizeExpenditureViaArbitration',
+        identifier: colonyAddress,
+        params,
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
       });
     }
 
@@ -65,30 +85,18 @@ function* finalizeExpenditureAction({
       finalizeExpenditure.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateFinalizeExpenditure.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
-
     yield initiateTransaction({ id: finalizeExpenditure.id });
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      finalizeExpenditure.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
     yield waitForTxResult(finalizeExpenditure.channel);
 
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateFinalizeExpenditure,
-        message: annotationMessage,
-        txHash,
-      });
-    }
+    const claimablePayouts = getClaimableExpenditurePayouts(expenditure.slots);
+
+    yield claimExpenditurePayouts({
+      colonyAddress,
+      claimablePayouts,
+      metaId: meta.id,
+      nativeExpenditureId: expenditure.nativeId,
+      colonyClient,
+    });
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
@@ -96,13 +104,11 @@ function* finalizeExpenditureAction({
       meta,
     });
   } catch (error) {
-    return yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
+    yield putError(ActionTypes.EXPENDITURE_FINALIZE_ERROR, error, meta);
   }
   [finalizeExpenditure, annotateFinalizeExpenditure].forEach((channel) =>
     channel.channel.close(),
   );
-
-  return null;
 }
 
 export default function* finalizeExpenditureSaga() {

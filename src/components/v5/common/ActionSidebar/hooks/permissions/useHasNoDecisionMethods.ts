@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
@@ -38,7 +38,8 @@ const useHasNoDecisionMethods = () => {
     return true;
   }
 
-  if (isVotingReputationEnabled) {
+  // User can't use reputation to create Payment builder action
+  if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
     return false;
   }
 

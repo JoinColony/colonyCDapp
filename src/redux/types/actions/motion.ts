@@ -2,8 +2,10 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type Expenditure, type ExternalLink } from '~gql';
+import { type ExternalLink } from '~gql';
+import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import {
+  type Expenditure,
   type Colony,
   type ColonyObjective,
   type Domain,
@@ -19,6 +21,7 @@ import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
   type ExpenditureFundPayload,
   type CancelStakedExpenditurePayload,
+  type CancelExpenditurePayload,
 } from './expenditures.ts';
 import {
   type ErrorActionType,
@@ -34,21 +37,29 @@ export enum RootMotionMethodNames {
   UnlockToken = 'unlockToken',
 }
 
-type MotionExpenditureBase = {
-  fromDomainId: number;
-  motionDomainId: number;
-};
 export type ExpenditureFundMotionPayload = Omit<
   ExpenditureFundPayload,
   'colonyAddress'
-> &
-  MotionExpenditureBase & {
-    colony: Colony;
-  };
+> & {
+  fromDomainId: number;
+  motionDomainId: number;
+  colony: Colony;
+};
 
 export type StakedExpenditureCancelMotionPayload =
-  CancelStakedExpenditurePayload &
-    MotionExpenditureBase & { colonyName: string };
+  CancelStakedExpenditurePayload & {
+    colonyName: string;
+    motionDomainId: number;
+  };
+
+export type ExpenditureCancelMotionPayload = Omit<
+  CancelExpenditurePayload,
+  'colonyAddress'
+> & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+  colony: Colony;
+};
 
 export type MotionFinalizePayload = {
   userAddress: Address;
@@ -312,6 +323,16 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_CANCEL,
+      ExpenditureCancelMotionPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_CANCEL_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
       ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL,
       StakedExpenditureCancelMotionPayload,
       MetaWithSetter<object>
@@ -356,5 +377,37 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE,
+      {
+        colonyAddress: Address;
+        expenditure: Expenditure;
+        payouts: ExpenditurePayoutFieldValue[];
+        networkInverseFee: string;
+        annotationMessage?: string;
+        motionDomainId: number;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_EXPENDITURE_FINALIZE,
+      {
+        colony: Colony;
+        expenditure: Expenditure;
+        votingReputationAddress: Address;
+        motionDomainId: number;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
       MetaWithSetter<object>
     >;

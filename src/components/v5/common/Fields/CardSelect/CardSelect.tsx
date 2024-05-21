@@ -141,7 +141,7 @@ function CardSelect<TValue = string>({
                 }}
                 className={clsx(
                   cardClassName,
-                  'absolute z-sidebar w-full max-w-[calc(100%-2.25rem)] overflow-auto px-2 py-4 sm:w-auto sm:max-w-none',
+                  'absolute z-dropdown w-full max-w-[calc(100%-2.25rem)] overflow-auto px-2 py-4 sm:w-auto sm:max-w-none',
                 )}
                 hasShadow
                 rounded="s"

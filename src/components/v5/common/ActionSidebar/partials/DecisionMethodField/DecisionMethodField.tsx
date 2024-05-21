@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -12,7 +12,10 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 
-import { type DecisionMethodFieldProps } from './types.ts';
+import {
+  type DecisionMethodOption,
+  type DecisionMethodFieldProps,
+} from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DecisionMethodField';
 
@@ -20,6 +23,7 @@ const DecisionMethodField = ({
   reputationOnly,
   disabled,
   tooltipContent = 'actionSidebar.tooltip.decisionMethod',
+  filterOptionsFn,
 }: DecisionMethodFieldProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -31,24 +35,32 @@ const DecisionMethodField = ({
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
 
-  const decisionMethods = [
-    ...(shouldShowPermissions
-      ? [
-          {
-            label: formatText({ id: 'actionSidebar.method.permissions' }),
-            value: DecisionMethod.Permissions,
-          },
-        ]
-      : []),
-    ...(isVotingReputationEnabled
-      ? [
-          {
-            label: formatText({ id: 'actionSidebar.method.reputation' }),
-            value: DecisionMethod.Reputation,
-          },
-        ]
-      : []),
-  ];
+  const getDecisionMethods = () => {
+    const decisionMethods: DecisionMethodOption[] = [
+      ...(shouldShowPermissions
+        ? [
+            {
+              label: formatText({ id: 'actionSidebar.method.permissions' }),
+              value: DecisionMethod.Permissions,
+            },
+          ]
+        : []),
+      ...(isVotingReputationEnabled
+        ? [
+            {
+              label: formatText({ id: 'actionSidebar.method.reputation' }),
+              value: DecisionMethod.Reputation,
+            },
+          ]
+        : []),
+    ];
+
+    if (filterOptionsFn) {
+      return decisionMethods?.filter(filterOptionsFn);
+    }
+
+    return decisionMethods;
+  };
 
   return (
     <ActionFormRow
@@ -66,7 +78,7 @@ const DecisionMethodField = ({
     >
       <FormCardSelect
         name="decisionMethod"
-        options={decisionMethods}
+        options={getDecisionMethods()}
         title={formatText({ id: 'actionSidebar.availableDecisions' })}
         placeholder={formatText({
           id: 'actionSidebar.decisionMethod.placeholder',

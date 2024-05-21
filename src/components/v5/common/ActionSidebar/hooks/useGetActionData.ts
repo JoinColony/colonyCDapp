@@ -8,7 +8,11 @@ import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
+import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import {
@@ -17,10 +21,14 @@ import {
 } from '../partials/forms/ManagePermissionsForm/consts.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
+import { useGetExpenditureData } from './useGetExpenditureData.ts';
 
 const useGetActionData = (transactionId: string | undefined) => {
   const { action, loadingAction, networkMotionState, motionState } =
     useGetColonyAction(transactionId);
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action?.expenditureId,
+  );
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -43,6 +51,8 @@ const useGetActionData = (transactionId: string | undefined) => {
       roles,
       colony,
     } = action;
+
+    const { metadata: expenditureMetadata, slots } = expenditure || {};
 
     const extendedType = getExtendedActionType(action, colony.metadata);
     const { metadata } = colony;
@@ -238,6 +248,35 @@ const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
           ...repeatableFields,
         };
+      case ColonyActionType.CreateExpenditure: {
+        return {
+          [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
+          from: expenditureMetadata?.fundFromDomainNativeId,
+          payments: slots?.map((slot) => {
+            if (!slot) {
+              return undefined;
+            }
+            const currentToken = getSelectedToken(
+              colony,
+              slot.payouts?.[0].tokenAddress || '',
+            );
+
+            const currentAmount = getFormattedTokenAmount(
+              slot?.payouts?.[0].amount || '0',
+              currentToken?.decimals,
+            );
+
+            return {
+              recipient: slot.recipientAddress,
+              amount: currentAmount.toString(),
+              tokenAddress: slot.payouts?.[0].tokenAddress,
+              delay:
+                slot.claimDelay && Math.floor(Number(slot.claimDelay) / 3600),
+            };
+          }),
+          ...repeatableFields,
+        };
+      }
       case ColonyActionType.SetUserRoles:
       case ColonyActionType.SetUserRolesMotion: {
         const rolesList = convertRolesToArray(roles);
@@ -265,7 +304,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action]);
+  }, [action, expenditure]);
 
   return {
     action,
@@ -274,6 +313,8 @@ const useGetActionData = (transactionId: string | undefined) => {
     isMotion: !!action?.isMotion,
     networkMotionState,
     motionState,
+    expenditure,
+    loadingExpenditure,
   };
 };
 

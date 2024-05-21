@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { type ExternalLink } from '~gql';
+import { useMobile } from '~hooks/index.ts';
 import { useSocialLinksTableColumns } from '~hooks/useSocialLinksTableColumns.tsx';
 import { type SocialLinksTableModel } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const SocialLinksTable = ({ socialLinks }: Props) => {
+  const isMobile = useMobile();
   const columns = useSocialLinksTableColumns();
   const data: SocialLinksTableModel[] = socialLinks.map(({ name, link }) => ({
     key: `${name}-${link}`,
@@ -33,6 +35,7 @@ const SocialLinksTable = ({ socialLinks }: Props) => {
             getRowId={({ key }) => key}
             columns={columns}
             data={data}
+            verticalLayout={isMobile}
           />
         </>
       )}

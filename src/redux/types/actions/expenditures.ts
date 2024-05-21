@@ -1,14 +1,11 @@
 import { type StreamingPaymentEndCondition } from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
+  type ExpenditurePayoutWithSlotId,
   type ExpenditurePayoutFieldValue,
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
-import {
-  type Domain,
-  type Expenditure,
-  type ExpenditureSlot,
-} from '~types/graphql.ts';
+import { type Domain, type Expenditure } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
 import {
@@ -32,6 +29,14 @@ export type CancelStakedExpenditurePayload = {
   annotationMessage?: string;
 };
 
+export type CancelExpenditurePayload = {
+  colonyAddress: Address;
+  expenditure: Expenditure;
+  stakedExpenditureAddress?: Address;
+  annotationMessage?: string;
+  userAddress: Address;
+};
+
 export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CREATE,
@@ -46,6 +51,7 @@ export type ExpendituresActionTypes =
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
+        customActionTitle?: string;
       },
       MetaWithSetter<object>
     >
@@ -66,8 +72,8 @@ export type ExpendituresActionTypes =
       ActionTypes.EXPENDITURE_FINALIZE,
       {
         colonyAddress: Address;
-        nativeExpenditureId: number;
-        annotationMessage?: string;
+        expenditure: Expenditure;
+        userAddress: Address;
       },
       MetaWithSetter<object>
     >
@@ -88,35 +94,27 @@ export type ExpendituresActionTypes =
         payouts: ExpenditurePayoutFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
+        userAddress: Address;
       },
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_EDIT_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_EDIT_SUCCESS, object, object>
   | UniqueActionType<
-      ActionTypes.EXPENDITURE_DRAFT_CANCEL,
-      {
-        colonyAddress: Address;
-        expenditure: Expenditure;
-        stakedExpenditureAddress?: Address;
-        annotationMessage?: string;
-      },
+      ActionTypes.EXPENDITURE_CANCEL,
+      CancelExpenditurePayload,
       object
     >
-  | ErrorActionType<ActionTypes.EXPENDITURE_DRAFT_CANCEL_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.EXPENDITURE_DRAFT_CANCEL_SUCCESS,
-      object,
-      object
-    >
+  | ErrorActionType<ActionTypes.EXPENDITURE_CANCEL_ERROR, object>
+  | UniqueActionType<ActionTypes.EXPENDITURE_CANCEL_SUCCESS, object, object>
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CLAIM,
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
-        claimableSlots: ExpenditureSlot[];
+        claimablePayouts: ExpenditurePayoutWithSlotId[];
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.EXPENDITURE_CLAIM_ERROR, object>
   | UniqueActionType<ActionTypes.EXPENDITURE_CLAIM_SUCCESS, object, object>
@@ -194,9 +192,10 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         recipientAddress: Address;
         tokenAddress: Address;
+        tokenDecimals: number;
         amount: string;
-        startTime: number;
-        endTime?: number;
+        startTimestamp: number;
+        endTimestamp?: number;
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;

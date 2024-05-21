@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { WarningCircle } from '@phosphor-icons/react';
 import { formatNumeral, unformatNumeral } from 'cleave-zen';
 import clsx from 'clsx';
 import React, { useState, type ChangeEvent, type FC, useEffect } from 'react';
@@ -8,6 +9,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -29,6 +31,8 @@ const AmountField: FC<AmountFieldProps> = ({
   maxWidth,
   domainId,
   isDisabled,
+  placeholder,
+  tokenAddressFieldName = 'tokenAddress',
 }) => {
   const {
     field,
@@ -40,7 +44,7 @@ const AmountField: FC<AmountFieldProps> = ({
     field: tokenAddressController,
     fieldState: { error: tokenAddressError },
   } = useController({
-    name: 'tokenAddress',
+    name: tokenAddressFieldName,
   });
   const [value, setValue] = useState<string | undefined>(undefined);
   const isError = !!error || !!tokenAddressError;
@@ -56,6 +60,7 @@ const AmountField: FC<AmountFieldProps> = ({
     formattingOptions,
     selectedToken,
     inputRef,
+    dropdownRef,
     adjustInputWidth,
   } = useAmountField(tokenAddressController.value, maxWidth);
 
@@ -84,8 +89,16 @@ const AmountField: FC<AmountFieldProps> = ({
 
   const activeToken = selectedToken || colonyTokens[0];
 
-  const selectedTokenContent = (
-    <>
+  const isTokenInColony = colonyTokens.some(
+    (colonyToken) => colonyToken.tokenAddress === selectedToken?.tokenAddress,
+  );
+
+  useEffect(() => {
+    adjustInputWidth();
+  }, [adjustInputWidth]);
+
+  const selectedTokenContent = isTokenInColony ? (
+    <div className="flex items-center gap-1">
       <TokenAvatar
         size={18}
         tokenName={activeToken.name}
@@ -97,9 +110,24 @@ const AmountField: FC<AmountFieldProps> = ({
           'text-gray-300': isDisabled,
         })}
       >
-        {selectedToken?.symbol || colonyTokens[0].symbol}
+        {activeToken.symbol}
       </span>
-    </>
+    </div>
+  ) : (
+    <Tooltip
+      trigger="hover"
+      popperOptions={{ placement: 'bottom' }}
+      tooltipContent={formatText({ id: 'actionSidebar.tokenErrorTooltip' })}
+    >
+      <div className="flex items-center gap-1 text-negative-400">
+        <WarningCircle size={16} />
+        <span className="text-md">
+          {formatText({
+            id: 'actionSidebar.tokenError',
+          })}
+        </span>
+      </div>
+    </Tooltip>
   );
 
   return (
@@ -109,7 +137,7 @@ const AmountField: FC<AmountFieldProps> = ({
     >
       <input
         ref={(ref) => {
-          inputRef.current = ref || undefined;
+          inputRef.current = ref;
           adjustInputWidth();
         }}
         readOnly={readonly || isDisabled}
@@ -120,14 +148,17 @@ const AmountField: FC<AmountFieldProps> = ({
           'text-negative-400 placeholder:text-negative-400':
             !isDisabled && isError,
         })}
-        placeholder={formatText({
-          id: 'actionSidebar.enterAmount',
-        })}
+        placeholder={
+          placeholder ||
+          formatText({
+            id: 'actionSidebar.enterAmount',
+          })
+        }
         value={value}
         autoComplete="off"
         onChange={handleFieldChange}
       />
-      <div className="w-full sm:relative">
+      <div className="flex-shrink-0 sm:relative" ref={dropdownRef}>
         <button
           type="button"
           ref={relativeElementRef}

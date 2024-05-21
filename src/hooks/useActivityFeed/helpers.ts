@@ -1,6 +1,6 @@
 import { isHexString } from 'ethers/lib/utils';
 
-import { type ColonyFragment } from '~gql';
+import { ColonyActionType, type ColonyFragment } from '~gql';
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
 import { type AnyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
@@ -93,11 +93,27 @@ export const filterBySearch = (
   });
 };
 
+const ACTION_TYPES_TO_HIDE = [
+  ColonyActionType.CancelExpenditure,
+  ColonyActionType.CancelExpenditureMotion,
+  ColonyActionType.LockExpenditure,
+  ColonyActionType.FinalizeExpenditure,
+  ColonyActionType.FinalizeExpenditureMotion,
+  ColonyActionType.FundExpenditureMotion,
+  ColonyActionType.SetExpenditureStateMotion,
+  ColonyActionType.EditExpenditure,
+  ColonyActionType.EditExpenditureMotion,
+];
+
 export const filterByActionTypes = (
   action: ActivityFeedColonyAction,
   colony: ColonyFragment | undefined,
   actionTypes?: AnyActionType[],
 ) => {
+  if (ACTION_TYPES_TO_HIDE.includes(action.type)) {
+    return false;
+  }
+
   if (!actionTypes || !colony || !actionTypes.length) {
     return true;
   }
@@ -127,6 +143,9 @@ export const getBaseSearchActionsFilterVariable = (
   },
   colonyDecisionId: {
     exists: false,
+  },
+  isMotionFinalization: {
+    eq: false,
   },
 });
 

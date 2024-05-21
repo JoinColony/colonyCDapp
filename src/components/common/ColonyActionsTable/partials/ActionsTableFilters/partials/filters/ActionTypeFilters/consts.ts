@@ -6,11 +6,11 @@ export const ACTION_TYPES_FILTERS = [
     label: formatText({ id: 'actions.simplePayment' }),
     name: Action.SimplePayment,
   },
+  {
+    label: formatText({ id: 'actions.paymentBuilder' }),
+    name: Action.PaymentBuilder,
+  },
   // @BETA: Disabled for now
-  // {
-  //   label:formatText({ id: 'actions.advancedPayment' }),
-  //   name: Action.AdvancedPayment,
-  // },
   // {
   //   label:formatText({ id: 'actions.batchPayment' }),
   //   name: Action.BatchPayment,

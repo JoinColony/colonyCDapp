@@ -65,6 +65,7 @@ const TokensTable: FC<TokensTableProps> = ({
           data={data}
           getMenuProps={getMenuProps}
           isDisabled={isDisabled}
+          verticalLayout={isMobile}
         />
       )}
       {!readonly && (
@@ -72,7 +73,7 @@ const TokensTable: FC<TokensTableProps> = ({
           mode="primaryOutline"
           icon={Plus}
           size="small"
-          isFullSize={isMobile}
+          className="w-full sm:w-auto"
           onClick={() => {
             fieldArrayMethods.append({});
           }}

@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
+import { useMobile } from '~hooks/index.ts';
 import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
 import {
   type PermissionsTableModel,
@@ -22,6 +23,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   role,
   className,
 }) => {
+  const isMobile = useMobile();
   const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
   const permissionsTableProps = usePermissionsTableProps(role);
   const { fieldState } = useController({ name });
@@ -41,10 +43,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   return (
     <div className={className}>
       {role !== UserRole.Custom ? (
-        <Table<PermissionsTableModel>
-          verticalOnMobile={false}
-          {...permissionsTableProps}
-        />
+        <Table<PermissionsTableModel> {...permissionsTableProps} />
       ) : (
         <Table<CustomPermissionTableModel>
           className={clsx(
@@ -55,6 +54,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
           )}
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
+          verticalLayout={isMobile}
         />
       )}
     </div>

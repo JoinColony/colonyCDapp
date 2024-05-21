@@ -9,10 +9,11 @@ import {
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Button from '~v5/shared/Button/index.ts';
+import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
+import TablePagination from './partials/TablePagination/index.ts';
+import { TableRow } from './partials/VirtualizedRow/VirtualizedRow.tsx';
 import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
 
@@ -22,8 +23,6 @@ const Table = <T,>({
   className,
   getCoreRowModel,
   getRowClassName = () => undefined,
-  verticalOnMobile = true,
-  hasPagination = false,
   sizeUnit = 'px',
   canNextPage,
   canPreviousPage,
@@ -37,28 +36,28 @@ const Table = <T,>({
   emptyContent,
   data,
   getMenuProps,
-  meatBallMenuSize,
+  meatBallMenuSize = 60,
   meatBallMenuStaticSize,
   columns,
   renderSubComponent,
   getRowCanExpand,
   withBorder = true,
   isDisabled = false,
+  verticalLayout,
+  virtualizedProps,
   ...rest
 }: TableProps<T>) => {
-  const isMobile = useMobile();
   const helper = useMemo(() => createColumnHelper<T>(), []);
 
   const columnsWithMenu = useMemo(
     () => [
       ...columns,
-      ...(getMenuProps
+      ...(getMenuProps && !verticalLayout
         ? [
             makeMenuColumn<T>(
               helper,
               getMenuProps,
               meatBallMenuSize,
-              verticalOnMobile,
               meatBallMenuStaticSize,
             ),
           ]
@@ -66,10 +65,10 @@ const Table = <T,>({
     ],
     [
       columns,
-      helper,
       getMenuProps,
+      verticalLayout,
+      helper,
       meatBallMenuSize,
-      verticalOnMobile,
       meatBallMenuStaticSize,
     ],
   );
@@ -99,6 +98,8 @@ const Table = <T,>({
     canPreviousPage === undefined
       ? table.getCanPreviousPage()
       : canPreviousPage;
+  const pageCount = table.getPageCount();
+  const hasPagination = pageCount > 1 || canGoToNextPage || canGoToPreviousPage;
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
 
@@ -120,68 +121,102 @@ const Table = <T,>({
         cellPadding="0"
         cellSpacing="0"
       >
-        {isMobile && verticalOnMobile ? (
+        {verticalLayout ? (
           rows.map((row) => {
             const cells = row.getVisibleCells();
-            const columnsCount = cells.length - 1;
 
             return (
               <tbody
                 key={row.id}
                 className={clsx(
                   getRowClassName(row),
-                  '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b',
-                  {
-                    'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
-                      getMenuProps,
-                  },
+                  '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b [&_tr:first-child_td]:pt-2 [&_tr:first-child_th]:h-[2.875rem] [&_tr:first-child_th]:pt-2 [&_tr:last-child_td]:pb-2 [&_tr:last-child_th]:h-[2.875rem] [&_tr:last-child_th]:pb-2',
                 )}
               >
                 {headerGroups.map((headerGroup) =>
-                  headerGroup.headers.map((header, index) => (
-                    <tr
-                      key={row.id + headerGroup.id + header.id}
-                      className={clsx({
-                        '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
-                          withBorder,
-                      })}
-                    >
-                      <th
-                        className={`
-                          border-r
-                          border-gray-200
-                          bg-gray-50
-                          p-4
-                          text-left
-                          text-sm
-                          font-normal
-                        `}
-                        style={{
-                          width:
-                            header.column.columnDef.staticSize ||
-                            (header.getSize() !== 150
-                              ? `${header.column.getSize()}${sizeUnit}`
-                              : undefined),
-                        }}
+                  headerGroup.headers.map((header, index) => {
+                    const rowWithMeatBallMenu = index === 0 && getMenuProps;
+                    const meatBallMenuProps = getMenuProps?.(row);
+                    const colSpan = rowWithMeatBallMenu ? undefined : 2;
+
+                    return (
+                      <TableRow
+                        key={row.id + headerGroup.id + header.id}
+                        itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
+                        isEnabled={!!virtualizedProps}
+                        className={clsx({
+                          '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
+                            withBorder,
+                        })}
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </th>
-                      <td
-                        className="h-full p-4 text-left text-sm font-normal"
-                        colSpan={columnsCount}
-                      >
-                        {flexRender(
-                          header.column.columnDef.cell,
-                          cells[index].getContext(),
+                        <th
+                          className={`
+                            h-[2.625rem]
+                            border-r
+                            border-r-gray-200
+                            bg-gray-50
+                            px-4
+                            py-1
+                            text-left
+                            text-sm
+                            font-normal
+                          `}
+                          style={{
+                            width:
+                              header.column.columnDef.staticSize ||
+                              (header.getSize() !== 150
+                                ? `${header.column.getSize()}${sizeUnit}`
+                                : undefined),
+                          }}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </th>
+                        <td
+                          className={clsx(
+                            'h-full text-left text-sm font-normal',
+                            {
+                              'py-1 pl-4': rowWithMeatBallMenu,
+                              'px-4 py-1': !rowWithMeatBallMenu,
+                            },
+                          )}
+                          colSpan={meatBallMenuProps ? colSpan : undefined}
+                        >
+                          {flexRender(
+                            header.column.columnDef.cell,
+                            cells[index].getContext(),
+                          )}
+                        </td>
+                        {rowWithMeatBallMenu && meatBallMenuProps && (
+                          <td
+                            className="px-4"
+                            style={
+                              meatBallMenuSize || meatBallMenuStaticSize
+                                ? {
+                                    width: `${
+                                      meatBallMenuSize || meatBallMenuStaticSize
+                                    }${sizeUnit}`,
+                                  }
+                                : undefined
+                            }
+                          >
+                            <MeatBallMenu
+                              {...meatBallMenuProps}
+                              buttonClassName="ml-auto"
+                              contentWrapperClassName={clsx(
+                                meatBallMenuProps?.contentWrapperClassName,
+                                '!left-6 right-6 !z-[65] sm:!left-auto',
+                              )}
+                            />
+                          </td>
                         )}
-                      </td>
-                    </tr>
-                  )),
+                      </TableRow>
+                    );
+                  }),
                 )}
               </tbody>
             );
@@ -262,12 +297,15 @@ const Table = <T,>({
 
                   return (
                     <React.Fragment key={row.id}>
-                      <tr
+                      <TableRow
+                        itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
+                        isEnabled={!!virtualizedProps}
                         className={clsx(getRowClassName(row), {
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
-                            !showExpandableContent || withBorder,
+                            (!showExpandableContent && row.getCanExpand()) ||
+                            withBorder,
                           'expanded-below': showExpandableContent,
                         })}
                       >
@@ -319,7 +357,7 @@ const Table = <T,>({
                             </td>
                           );
                         })}
-                      </tr>
+                      </TableRow>
                       {showExpandableContent && (
                         <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
                           <td colSpan={row.getVisibleCells().length}>
@@ -341,7 +379,12 @@ const Table = <T,>({
                 {footerGroup.headers.map((column) => (
                   <td
                     key={column.id}
-                    className="h-full border-gray-200 px-[1.125rem] text-md text-gray-500 sm:border-t"
+                    className={clsx(
+                      'h-full px-[1.1rem] text-md text-gray-500',
+                      {
+                        'border-t border-gray-200': !verticalLayout,
+                      },
+                    )}
                   >
                     {flexRender(
                       column.column.columnDef.footer,
@@ -357,68 +400,26 @@ const Table = <T,>({
       {hasPagination &&
         showPageNumber &&
         (canGoToPreviousPage || canGoToNextPage) && (
-          <div
-            className={clsx(
-              'grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-[1.125rem] pb-[1.4375rem] pt-2',
+          <TablePagination
+            onNextClick={goToNextPage}
+            onPrevClick={goToPreviousPage}
+            canGoToNextPage={canGoToNextPage}
+            canGoToPreviousPage={canGoToPreviousPage}
+            pageNumberLabel={formatText(
               {
-                'sm:grid-cols-[1fr_auto_auto]':
-                  canGoToNextPage ||
-                  (additionalPaginationButtonsContent && isMobile),
-                'sm:grid-cols-[1fr_auto]': !(
-                  canGoToNextPage ||
-                  (additionalPaginationButtonsContent && isMobile)
-                ),
+                id: showTotalPagesNumber
+                  ? 'table.pageNumberWithTotal'
+                  : 'table.pageNumber',
+              },
+              {
+                actualPage: table.getState().pagination.pageIndex + 1,
+                pageNumber: table.getPageCount(),
               },
             )}
+            disabled={paginationDisabled}
           >
-            {(canGoToPreviousPage ||
-              (additionalPaginationButtonsContent && !isMobile)) && (
-              <div className="col-start-1 row-start-1 flex items-center justify-start gap-3 sm:col-start-2">
-                {!isMobile && additionalPaginationButtonsContent}
-                {canGoToPreviousPage && (
-                  <Button
-                    onClick={goToPreviousPage}
-                    size="small"
-                    mode="primaryOutline"
-                    disabled={paginationDisabled}
-                  >
-                    {formatText({ id: 'table.previous' })}
-                  </Button>
-                )}
-              </div>
-            )}
-            {showPageNumber && (
-              <p className="col-start-2 row-start-1 w-full text-center text-gray-700 text-3 sm:col-start-1 sm:w-auto sm:text-left">
-                {formatText(
-                  {
-                    id: showTotalPagesNumber
-                      ? 'table.pageNumberWithTotal'
-                      : 'table.pageNumber',
-                  },
-                  {
-                    actualPage: table.getState().pagination.pageIndex + 1,
-                    pageNumber: table.getPageCount(),
-                  },
-                )}
-              </p>
-            )}
-            {(canGoToNextPage ||
-              (additionalPaginationButtonsContent && isMobile)) && (
-              <div className="col-start-3 row-start-1 flex items-center justify-end gap-3">
-                {isMobile && additionalPaginationButtonsContent}
-                {canGoToNextPage && (
-                  <Button
-                    onClick={goToNextPage}
-                    size="small"
-                    mode="primaryOutline"
-                    disabled={paginationDisabled}
-                  >
-                    {formatText({ id: 'table.next' })}
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
+            {additionalPaginationButtonsContent}
+          </TablePagination>
         )}
     </div>
   );

@@ -1,77 +1,35 @@
 import { ClientType } from '@colony/colony-js';
-import { takeEvery, fork, put, all } from 'redux-saga/effects';
+import { takeEvery, put } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { type ExpenditurePayout } from '~types/graphql.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
-  createTransaction,
-  createTransactionChannels,
-  waitForTxResult,
-} from '../transactions/index.ts';
-import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
+  claimExpenditurePayouts,
+  getColonyManager,
+  putError,
+} from '../utils/index.ts';
 
 export type ClaimExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CLAIM>['payload'];
 
-type PayoutWithSlotId = ExpenditurePayout & {
-  slotId: number;
-};
-
-const getPayoutChannelId = (payout: PayoutWithSlotId) =>
-  `${payout.slotId}-${payout.tokenAddress}`;
-
-function* claimExpenditure({
+export function* claimExpenditure({
   meta,
-  payload: { colonyAddress, nativeExpenditureId, claimableSlots },
+  payload: { colonyAddress, nativeExpenditureId, claimablePayouts },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
-  const batchKey = TRANSACTION_METHODS.ClaimExpenditure;
-
-  const payoutsWithSlotIds = claimableSlots.flatMap(
-    (slot) =>
-      slot.payouts
-        ?.filter((payout) => payout.amount !== '0')
-        .map((payout) => ({
-          ...payout,
-          slotId: slot.id,
-        })) ?? [],
-  );
-
-  const channels = yield createTransactionChannels(meta.id, [
-    ...payoutsWithSlotIds.map(getPayoutChannelId),
-  ]);
-
   try {
-    // Create one claim transaction for each slot
-    yield all(
-      payoutsWithSlotIds.map((payout, index) =>
-        fork(createTransaction, channels[getPayoutChannelId(payout)].id, {
-          context: ClientType.ColonyClient,
-          methodName: 'claimExpenditurePayout',
-          identifier: colonyAddress,
-          params: [nativeExpenditureId, payout.slotId, payout.tokenAddress],
-          group: {
-            key: batchKey,
-            id: meta.id,
-            index,
-          },
-          ready: false,
-        }),
-      ),
+    const colonyManager = yield getColonyManager();
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
     );
 
-    for (const payout of payoutsWithSlotIds) {
-      const payoutChannelId = getPayoutChannelId(payout);
-
-      yield takeFrom(
-        channels[payoutChannelId].channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-
-      yield initiateTransaction({ id: channels[payoutChannelId].id });
-      yield waitForTxResult(channels[payoutChannelId].channel);
-    }
+    yield claimExpenditurePayouts({
+      colonyAddress,
+      claimablePayouts,
+      metaId: meta.id,
+      nativeExpenditureId,
+      colonyClient,
+    });
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_CLAIM_SUCCESS,
@@ -80,14 +38,7 @@ function* claimExpenditure({
     });
   } catch (error) {
     yield putError(ActionTypes.EXPENDITURE_CLAIM_ERROR, error, meta);
-  } finally {
-    for (const payout of payoutsWithSlotIds) {
-      const payoutChannelId = getPayoutChannelId(payout);
-      channels[payoutChannelId].channel.close();
-    }
   }
-
-  return null;
 }
 
 export default function* claimExpenditureSaga() {

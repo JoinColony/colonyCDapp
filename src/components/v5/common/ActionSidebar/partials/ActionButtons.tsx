@@ -86,7 +86,10 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
         justify-between gap-6 border-t border-gray-200 px-6 pt-6 sm:flex-row"
     >
       {createDecisionActionSelected && <SaveDraftButton />}
-      <div className="flex w-full flex-col-reverse items-center justify-end gap-2 sm:flex-row">
+      <div
+        className="ml-auto flex w-full flex-col-reverse items-center gap-2
+        sm:w-auto sm:flex-row"
+      >
         <Button
           mode="primaryOutline"
           text={{ id: 'button.cancel' }}

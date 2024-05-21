@@ -5,4 +5,7 @@ export interface UserPopoverProps {
   walletAddress: string;
   popperOptions?: PopperOptions;
   textClassName?: string;
+  withVerifiedBadge?: boolean;
+  additionalContent?: JSX.Element;
+  className?: string;
 }

@@ -21,6 +21,7 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
+  getPayoutsWithSlotIds,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -49,11 +50,7 @@ function* createStakedExpenditure({
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
-  // Add slot id to each payout
-  const payoutsWithSlotIds = payouts.map((payout, index) => ({
-    ...payout,
-    slotId: index + 1,
-  }));
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   const {
     approveStake,
@@ -204,6 +201,7 @@ function* createStakedExpenditure({
           expenditureId,
           payoutsWithSlotIds,
           networkInverseFee,
+          isStaged,
         ),
       ),
     );
@@ -235,7 +233,6 @@ function* createStakedExpenditure({
       expenditureId,
       fundFromDomainId,
       stages: isStaged ? stages : undefined,
-      stakeAmount,
     });
 
     yield put<AllActions>({

@@ -19,8 +19,7 @@ export interface TableProps<T>
   getCoreRowModel?: TableOptions<T>['getCoreRowModel'];
   className?: string;
   getRowClassName?: (row: Row<T>) => string | undefined;
-  verticalOnMobile?: boolean;
-  hasPagination?: boolean;
+  verticalLayout?: boolean;
   sizeUnit?: 'px' | 'rem' | 'em' | '%';
   canNextPage?: boolean;
   canPreviousPage?: boolean;
@@ -39,4 +38,7 @@ export interface TableProps<T>
   getRowCanExpand?: (row: Row<T>) => boolean;
   withBorder?: boolean;
   isDisabled?: boolean;
+  virtualizedProps?: {
+    virtualizedRowHeight?: number;
+  };
 }

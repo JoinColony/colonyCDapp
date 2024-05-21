@@ -236,10 +236,10 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           },
           // {
           //   key: '2',
-          //   label: formatText({ id: 'actions.advancedPayment' }),
+          //   label: formatText({ id: 'actions.paymentBuilder' }),
           //   onClick: () =>
           //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.AdvancedPayment,
+          //       [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
           //     }),
           // },
           // {

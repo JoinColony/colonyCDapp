@@ -8,6 +8,7 @@ export interface InputBaseProps
     BaseFieldProps {
   className?: string;
   wrapperClassName?: string;
+  inputWrapperClassName?: string;
   suffix?: React.ReactNode;
   prefix?: React.ReactNode;
   mode?: 'primary' | 'secondary';
@@ -26,7 +27,6 @@ export interface FormattedInputProps extends Omit<InputBaseProps, 'prefix'> {
   buttonProps?: React.HTMLAttributes<HTMLButtonElement> & {
     label: string;
   };
-  wrapperClassName?: string;
   messageClassName?: string;
   customPrefix?: React.ReactNode;
 }

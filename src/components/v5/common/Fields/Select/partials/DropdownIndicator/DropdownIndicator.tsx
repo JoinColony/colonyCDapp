@@ -9,7 +9,7 @@ function DropdownIndicator<TValue>(
 ): JSX.Element {
   return (
     <components.DropdownIndicator {...props}>
-      <CaretDown size={12} />
+      <CaretDown size={18} />
     </components.DropdownIndicator>
   );
 }

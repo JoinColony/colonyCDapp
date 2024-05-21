@@ -191,8 +191,6 @@ const BalanceTable: FC = () => {
         </Button>
       </TableHeader>
       <Table<BalanceTableFieldModel>
-        verticalOnMobile={false}
-        hasPagination
         getRowId={({ token }) => (token ? token.tokenAddress : uniqueId())}
         columns={columns}
         data={data || []}

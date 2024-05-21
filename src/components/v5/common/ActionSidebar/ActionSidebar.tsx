@@ -10,6 +10,7 @@ import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { ExpenditureStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -25,6 +26,7 @@ import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import ExpenditureBadge from './partials/ExpenditureBadge/ExpenditureBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 
@@ -35,8 +37,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   initialValues,
   transactionId,
 }) => {
-  const { action, defaultValues, loadingAction, isMotion, motionState } =
-    useGetActionData(transactionId);
+  const {
+    action,
+    loadingAction,
+    isMotion,
+    motionState,
+    expenditure,
+    loadingExpenditure,
+  } = useGetActionData(transactionId);
 
   const {
     actionSidebarToggle: [
@@ -61,7 +69,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   useRemoveTxParamOnClose();
 
   const getSidebarContent = () => {
-    if (loadingAction) {
+    if (loadingAction || loadingExpenditure) {
       return (
         <div className="flex h-full flex-col items-center justify-center gap-4">
           <SpinnerLoader appearance={{ size: 'huge' }} />
@@ -81,7 +89,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         key={transactionId}
         transactionId={transactionId}
         formRef={formRef}
-        defaultValues={defaultValues || initialValues}
+        defaultValues={initialValues}
         isMotion={!!isMotion}
       />
     );
@@ -102,6 +110,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           bottom-4
           right-0
           top-0
+          isolate
           z-sidebar
           flex
           h-full
@@ -113,16 +122,16 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           bg-base-white
           shadow-default
           transition-[max-width]
-          sm:bottom-0
-          sm:top-4
-          sm:h-[calc(100vh-2rem)]
-          sm:w-[calc(100vw-8.125rem)]
-          sm:rounded-l-lg
+          md:bottom-0
+          md:top-4
+          md:h-[calc(100vh-2rem)]
+          md:w-[calc(100vw-8.125rem)]
+          md:rounded-l-lg
         `,
         {
-          'sm:max-w-full': isSidebarFullscreen,
-          'sm:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
-          'sm:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
+          'md:max-w-full': isSidebarFullscreen,
+          'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
+          'md:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
         },
       )}
       ref={registerContainerRef}
@@ -138,29 +147,33 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <X size={18} />
           </button>
           {!isMobile && (
-            <button
-              type="button"
-              className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-              onClick={toggleIsSidebarFullscreen}
-              aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
-            >
-              {isSidebarFullscreen ? (
-                <ArrowLineRight size={18} />
-              ) : (
-                <ArrowsOutSimple size={18} />
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
+                onClick={toggleIsSidebarFullscreen}
+                aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
+              >
+                {isSidebarFullscreen ? (
+                  <ArrowLineRight size={18} />
+                ) : (
+                  <ArrowsOutSimple size={18} />
+                )}
+              </button>
+              {action && !isMotion && (
+                <PillsBase
+                  className="bg-success-100 text-success-400"
+                  isCapitalized={false}
+                >
+                  {formatText({ id: 'action.passed' })}
+                </PillsBase>
               )}
-            </button>
+              {expenditure?.status === ExpenditureStatus.Draft && (
+                <ExpenditureBadge status={expenditure.status} />
+              )}
+              <MotionOutcomeBadge motionState={motionState} />
+            </div>
           )}
-          {/* @TODO: Handle payment builder action when it will be merged */}
-          {!isMobile && action && !isMotion && (
-            <PillsBase
-              className="bg-success-100 text-success-400"
-              isCapitalized={false}
-            >
-              {formatText({ id: 'action.passed' })}
-            </PillsBase>
-          )}
-          {!isMobile && <MotionOutcomeBadge motionState={motionState} />}
         </div>
         <div>{children}</div>
       </div>

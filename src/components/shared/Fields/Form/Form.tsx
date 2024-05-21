@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   type Ref,
+  useMemo,
 } from 'react';
 import {
   useForm,
@@ -12,6 +13,7 @@ import {
   type UseFormReturn,
   type FieldValues,
   type FieldErrors,
+  type Resolver,
 } from 'react-hook-form';
 import { type Schema } from 'yup';
 
@@ -40,6 +42,7 @@ export interface FormProps<FormData extends FieldValues> {
   validationSchema?: Schema<FormData>;
   defaultValues?: UseFormProps<FormData>['defaultValues'];
   mode?: UseFormProps<FormData>['mode'];
+  reValidateMode?: UseFormProps<FormData>['reValidateMode'];
   options?: UseFormProps<FormData> & AdditionalFormOptionsContextValue;
   /** Pass true to reset the default values to latest values on form submission. This will reset the isDirty prop. */
   resetOnSubmit?: boolean;
@@ -51,6 +54,7 @@ const Form = <FormData extends FieldValues>({
   children,
   defaultValues,
   mode = 'onTouched',
+  reValidateMode = 'onChange',
   onSubmit,
   onError,
   options,
@@ -60,10 +64,29 @@ const Form = <FormData extends FieldValues>({
   innerRef,
 }: FormProps<FormData>) => {
   const { readonly, ...formOptions } = options || {};
+  // Resolver updated to have the access to all of the form values inside a field validator context
+  const resolver = useMemo<Resolver<FormData> | undefined>(() => {
+    if (!validationSchema) {
+      return undefined;
+    }
+
+    const yupSchemaResolver = yupResolver(validationSchema);
+
+    return async (values, context = {}, resolverOptions) => {
+      const result = await yupSchemaResolver(
+        values,
+        { ...context, formValues: values },
+        resolverOptions,
+      );
+
+      return result;
+    };
+  }, [validationSchema]);
   const formHelpers = useForm({
-    resolver: validationSchema ? yupResolver(validationSchema) : undefined,
+    resolver,
     defaultValues,
     mode,
+    reValidateMode,
     ...formOptions,
   });
 

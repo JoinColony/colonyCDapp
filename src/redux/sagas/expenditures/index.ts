@@ -1,6 +1,6 @@
 import { all, call } from 'redux-saga/effects';
 
-import cancelDraftExpenditureSaga from './cancelDraftExpenditure.ts';
+import cancelExpenditureSaga from './cancelExpenditure.ts';
 import cancelStakedExpenditureSaga from './cancelStakedExpenditure.ts';
 import claimExpenditureSaga from './claimExpenditure.ts';
 import createExpenditureSaga from './createExpenditure.ts';
@@ -20,7 +20,7 @@ export default function* expendituresSagas() {
     call(finalizeExpenditureSaga),
     call(fundExpenditureSaga),
     call(editExpenditureSaga),
-    call(cancelDraftExpenditureSaga),
+    call(cancelExpenditureSaga),
     call(claimExpenditureSaga),
     call(createStakedExpenditureSaga),
     call(reclaimExpenditureStakeSaga),
