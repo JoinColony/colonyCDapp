@@ -43,10 +43,9 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         contentRect: { height },
       } = entry;
 
-      wrapperRef?.current?.style.setProperty(
-        '--top-content-height',
-        `${height}px`,
-      );
+      // Must set this css variable on the body so that any elements rendered in portals outside of the
+      // wrapper in the DOM will still have the correct variable value.
+      document.body.style.setProperty('--top-content-height', `${height}px`);
     });
 
     observer.observe(topContentWrapperRef.current);
