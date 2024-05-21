@@ -1,10 +1,11 @@
 import { type ApolloQueryResult } from '@apollo/client';
 import {
   ClientType,
+  ColonyRole,
   Extension,
   Id,
-  getChildIndex,
   getExtensionHash,
+  getPermissionProofs,
 } from '@colony/colony-js';
 import { call, takeEvery, fork, put, all } from 'redux-saga/effects';
 
@@ -83,12 +84,11 @@ function* handleMultiSigInstall(colonyAddress: string, metaId: string) {
     colonyAddress,
   );
 
-  const childSkillIndex = yield call(
-    getChildIndex,
+  const [, childSkillIndex] = yield getPermissionProofs(
     colonyClient.networkClient,
     colonyClient,
     Id.RootDomain,
-    Id.RootDomain,
+    ColonyRole.Architecture,
   );
 
   const { data }: ApolloQueryResult<GetColonyRootRolesQuery> =
