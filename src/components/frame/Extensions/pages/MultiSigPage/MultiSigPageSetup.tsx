@@ -130,7 +130,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
         let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
 
         if (
-          existingThreshold !== null &&
+          existingThreshold != null &&
           existingThreshold !== colonyThreshold
         ) {
           if (existingThreshold === 0) {
