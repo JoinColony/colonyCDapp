@@ -41,6 +41,7 @@ export const TX_PAGE_SIZE = 20;
 const convertTransactionType = ({
   context,
   createdAt,
+  error,
   from,
   group,
   groupId,
@@ -71,6 +72,7 @@ const convertTransactionType = ({
   return {
     context: context as ClientTypeTokens | ExtendedClientType,
     createdAt: new Date(createdAt),
+    error: error ?? undefined,
     from,
     id,
     identifier: identifier as AddressOrENSName,
@@ -116,30 +118,21 @@ export const getGroupStatus = (txGroup: TransactionType[]) => {
   return TransactionStatus.Created;
 };
 
-// Get the joint status of all transaction groups
+// Get the joint status of all transaction groups (here it's only relevant if some are pending or not)
 export const getGroupStatusAll = (
   txGroup: TransactionType[][],
   loading: boolean,
 ) => {
-  if (loading) return TransactionGroupStatus.Loading;
-  if (
-    txGroup.some((group) =>
-      group.some((tx) => tx.status === TransactionStatus.Failed),
-    )
-  )
-    return TransactionGroupStatus.SomeFailed;
+  if (loading) {
+    return TransactionGroupStatus.Loading;
+  }
   if (
     txGroup.some((group) =>
       group.some((tx) => tx.status === TransactionStatus.Pending),
     )
-  )
+  ) {
     return TransactionGroupStatus.SomePending;
-  if (
-    txGroup.every((group) =>
-      group.every((tx) => tx.status === TransactionStatus.Succeeded),
-    )
-  )
-    return TransactionGroupStatus.AllCompleted;
+  }
   return TransactionGroupStatus.NonePending;
 };
 
@@ -177,9 +170,10 @@ export const transactionCount = (transactions: TransactionType[]) =>
 
 export const useGroupedTransactions = () => {
   const { user } = useAppContext();
+  const userAddress = utils.getAddress(user?.walletAddress as string);
   const { data, loading } = useGetUserTransactionsQuery({
     variables: {
-      userAddress: user?.walletAddress as string,
+      userAddress,
       limit: TX_PAGE_SIZE,
     },
     skip: !user,
@@ -265,6 +259,8 @@ export const addTransactionToDb = async (
     // The correct address will be added to the transactions in the colony create saga
   }
 
+  const fromAddress = utils.getAddress(from);
+
   // Apollo needs the null values to be there (for the optimistic response - it doesn't like undefined)
   const txGroup = {
     id: `${group.id}-${group.index}`,
@@ -286,7 +282,8 @@ export const addTransactionToDb = async (
     id,
     context: context as ClientType,
     createdAt: txCreatedAt,
-    from,
+    error: null,
+    from: fromAddress,
     colonyAddress,
     groupId: group.id,
     group: txGroup,
@@ -324,7 +321,7 @@ export const addTransactionToDb = async (
         {
           query: GetUserTransactionsDocument,
           variables: {
-            userAddress: from,
+            userAddress: fromAddress,
             limit: TX_PAGE_SIZE,
           },
         },
@@ -332,6 +329,7 @@ export const addTransactionToDb = async (
           if (!result?.getTransactionsByUser) {
             return result;
           }
+
           return {
             ...result,
             getTransactionsByUser: {
@@ -346,6 +344,10 @@ export const addTransactionToDb = async (
       createTransaction: {
         __typename: 'Transaction',
         ...input,
+        group: {
+          __typename: 'TransactionGroup',
+          ...input.group,
+        },
       },
     },
   });
@@ -368,7 +370,9 @@ export const updateTransaction = async (
   if (optimisticResponse) {
     mutationOpts.optimisticResponse = {
       updateTransaction: {
+        __typename: 'Transaction',
         // null values for optimistic response
+        error: null,
         identifier: null,
         params: null,
         ...optimisticResponse,
@@ -432,7 +436,7 @@ export const transactionSetParams = async (
 
 export const failPendingTransactions = async () => {
   const wallet = getContext(ContextModule.Wallet);
-  const walletAddress = utils.getAddress(wallet.address);
+  const userAddress = utils.getAddress(wallet.address);
   const apollo = getContext(ContextModule.ApolloClient);
 
   const { data } = await apollo.query<
@@ -441,7 +445,7 @@ export const failPendingTransactions = async () => {
   >({
     query: GetPendingTransactionsDocument,
     variables: {
-      userAddress: walletAddress,
+      userAddress,
     },
   });
 
@@ -451,7 +455,7 @@ export const failPendingTransactions = async () => {
       return updateTransaction(
         {
           id: tx.id,
-          from: walletAddress,
+          from: userAddress,
           status: TransactionStatus.Failed,
         },
         // Optimisitc response, for quick UI updates

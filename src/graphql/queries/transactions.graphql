@@ -1,12 +1,6 @@
-query GetUserTransactions(
-  $userAddress: ID!
-  $transactionsOlderThan: String
-  $nextToken: String
-  $limit: Int
-) {
+query GetUserTransactions($userAddress: ID!, $nextToken: String, $limit: Int) {
   getTransactionsByUser(
     from: $userAddress
-    createdAt: { lt: $transactionsOlderThan }
     filter: { deleted: { ne: true } }
     sortDirection: DESC
     nextToken: $nextToken
