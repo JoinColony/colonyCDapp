@@ -198,7 +198,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
   }, [extensionData, pathname, navigate]);
 
   const getSetThresholdsPayload = () => {
-    const domainThresholds = domainSettings.reduce((acc, domain) => {
+    const domainThresholds = domainSettings.map((domain) => {
       let threshold = 0;
 
       if (
@@ -211,10 +211,11 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
       if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
         threshold = domain.threshold;
       }
-
-      acc[domain.nativeSkillId] = threshold;
-      return acc;
-    }, {});
+      return {
+        skillId: domain.nativeSkillId,
+        threshold,
+      };
+    });
 
     return {
       colonyAddress,
