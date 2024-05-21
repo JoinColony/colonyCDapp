@@ -47,7 +47,9 @@ const TeamsSelect: FC<TeamSelectProps> = ({
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
-  >([isTeamSelectVisible]);
+  >([isTeamSelectVisible], {
+    top: 8,
+  });
 
   useEffect(() => {
     if (!selectedOption && field.value) {

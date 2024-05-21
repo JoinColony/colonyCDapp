@@ -43,7 +43,9 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
-  >([isTokenSelectVisible]);
+  >([isTokenSelectVisible], {
+    top: 8,
+  });
   const { readonly } = useAdditionalFormOptionsContext();
 
   useEffect(() => {

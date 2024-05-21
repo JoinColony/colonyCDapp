@@ -38,7 +38,9 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
-  >([isSelectVisible]);
+  >([isSelectVisible], {
+    top: 8,
+  });
   const { formState, reset, watch } = useFormContext();
   const { readonly } = useAdditionalFormOptionsContext();
 
