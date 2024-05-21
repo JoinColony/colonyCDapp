@@ -8,15 +8,15 @@ import { type UserHubTabList, UserHubTabs } from './types.ts';
 export const menuMessages = defineMessages({
   balance: {
     id: 'UserSubmenu.balance',
-    defaultMessage: 'Your balance',
+    defaultMessage: 'Balance',
   },
   stakes: {
     id: 'UserSubmenu.stakes',
-    defaultMessage: 'Stakes',
+    defaultMessage: 'All stakes',
   },
   transactions: {
     id: 'UserSubmenu.transactions',
-    defaultMessage: 'Transactions',
+    defaultMessage: 'All transactions',
   },
 });
 
