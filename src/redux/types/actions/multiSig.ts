@@ -17,6 +17,10 @@ export enum RootMultiSigMethodNames {
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
 }
+type DomainThreshold = {
+  skillId: number;
+  threshold: number;
+};
 
 export type MultiSigActionTypes =
   | UniqueActionType<
@@ -24,7 +28,7 @@ export type MultiSigActionTypes =
       {
         colonyAddress: Address;
         globalThreshold: number;
-        domainThresholds: Record<number, number>;
+        domainThresholds: DomainThreshold[];
       },
       object
     >
