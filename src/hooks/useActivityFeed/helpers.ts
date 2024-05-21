@@ -145,7 +145,7 @@ export const getBaseSearchActionsFilterVariable = (
     exists: false,
   },
   isMotionFinalization: {
-    eq: false,
+    ne: true,
   },
 });
 
