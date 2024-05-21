@@ -49,7 +49,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   return (
     <div className="flex w-full items-center gap-2 sm:gap-4">
       {loading ? (
-        <div className="aspect-square h-[26px] w-[26px] rounded-full skeleton before:rounded-full" />
+        <div className="aspect-square h-[26px] w-auto rounded-full skeleton before:rounded-full" />
       ) : (
         <UserAvatar
           size={26}
