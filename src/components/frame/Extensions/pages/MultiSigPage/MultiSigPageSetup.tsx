@@ -65,16 +65,33 @@ const MSG = defineMessages({
     id: `${displayName}.thresholdFixedFormApprovals`,
     defaultMessage: 'Approvals',
   },
+  thresholdInherit: {
+    id: `${displayName}.thresholdInherit`,
+    defaultMessage: 'Inherit from colony wide',
+  },
+  domainSettingsHeading: {
+    id: `${displayName}.domainSettingsHeading`,
+    defaultMessage: 'Customize thresholds per team',
+  },
 });
 
 enum MultiSigThresholdType {
   MAJORITY_APPROVAL = 'majorityApproval',
   FIXED_THRESHOLD = 'fixedThreshold',
+  INHERIT_FROM_COLONY = 'inheritFromColony',
+}
+
+interface DomainThresholdSettings {
+  id: string;
+  nativeSkillId: number;
+  type: MultiSigThresholdType;
+  name: string;
+  threshold: number;
 }
 
 const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
   const {
-    colony: { colonyAddress },
+    colony: { colonyAddress, domains },
   } = useColonyContext();
 
   const multiSigConfig = extensionData.params?.multiSig || null;
@@ -87,6 +104,52 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
   const [fixedThreshold, setFixedThreshold] = useState(
     multiSigConfig ? multiSigConfig.colonyThreshold : 0,
   );
+
+  const [domainSettings, setDomainSettings] = useState<
+    DomainThresholdSettings[]
+  >([]);
+
+  useEffect(() => {
+    if (!domains || !domains.items || !multiSigConfig) {
+      return;
+    }
+
+    const domainsExcludingRoot = domains.items.filter(
+      (domain): domain is NonNullable<typeof domain> =>
+        domain !== null && !domain.isRoot,
+    );
+
+    setDomainSettings(
+      domainsExcludingRoot.map((domain) => {
+        const { colonyThreshold } = multiSigConfig;
+        const existingThreshold = multiSigConfig.domainThresholds?.find(
+          (item) => {
+            return Number(item?.domainId) === domain.nativeId;
+          },
+        )?.domainThreshold;
+        let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
+
+        if (
+          existingThreshold !== null &&
+          existingThreshold !== colonyThreshold
+        ) {
+          if (existingThreshold === 0) {
+            type = MultiSigThresholdType.MAJORITY_APPROVAL;
+          } else {
+            type = MultiSigThresholdType.FIXED_THRESHOLD;
+          }
+        }
+
+        return {
+          id: domain.id,
+          nativeSkillId: domain.nativeSkillId,
+          type,
+          name: domain.metadata?.name || '',
+          threshold: existingThreshold || colonyThreshold || 0,
+        };
+      }),
+    );
+  }, [domains, multiSigConfig]);
 
   const { pathname } = useLocation();
 
@@ -105,6 +168,25 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
     setThresholdType(newThresholdType);
   };
 
+  const handleDomainThresholdTypeChange = (
+    id: string,
+    newType: MultiSigThresholdType,
+  ) => {
+    setDomainSettings((prevDomainSettings) =>
+      prevDomainSettings.map((domain) =>
+        domain.id === id ? { ...domain, type: newType } : domain,
+      ),
+    );
+  };
+
+  const handleDomainThresholdChange = (id: string, newThreshold: number) => {
+    setDomainSettings((prevDomainSettings) =>
+      prevDomainSettings.map((domain) =>
+        domain.id === id ? { ...domain, threshold: newThreshold } : domain,
+      ),
+    );
+  };
+
   /*
    * If we arrive here but the extension is not installed go back to main extension details page
    */
@@ -115,17 +197,32 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
     }
   }, [extensionData, pathname, navigate]);
 
-  const getSetThresholdPayload = () => {
-    if (thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL) {
-      return {
-        colonyAddress,
-        threshold: 0,
-      };
-    }
+  const getSetThresholdsPayload = () => {
+    const domainThresholds = domainSettings.reduce((acc, domain) => {
+      let threshold = 0;
+
+      if (
+        domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
+        thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
+      ) {
+        threshold = fixedThreshold;
+      }
+
+      if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
+        threshold = domain.threshold;
+      }
+
+      acc[domain.nativeSkillId] = threshold;
+      return acc;
+    }, {});
 
     return {
       colonyAddress,
-      threshold: fixedThreshold,
+      globalThreshold:
+        thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
+          ? 0
+          : fixedThreshold,
+      domainThresholds,
     };
   };
 
@@ -192,9 +289,65 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
           )}
         </li>
       </ul>
+      <div>
+        <h5 className="mb-3 mt-4 text-md font-semibold text-gray-900">
+          {formatText(MSG.domainSettingsHeading)}
+        </h5>
+        <div className="flex flex-col gap-6">
+          {domainSettings.map((domain) => (
+            <div key={domain.id}>
+              <div className="flex items-center justify-between">
+                <p className="text-md font-medium">{domain.name}</p>
+                <select
+                  value={domain.type}
+                  onChange={(e) =>
+                    handleDomainThresholdTypeChange(
+                      domain.id,
+                      e.target.value as MultiSigThresholdType,
+                    )
+                  }
+                  className="h-11 border"
+                >
+                  <option value={MultiSigThresholdType.INHERIT_FROM_COLONY}>
+                    {formatText(MSG.thresholdInherit)}
+                  </option>
+                  {thresholdType !==
+                    MultiSigThresholdType.MAJORITY_APPROVAL && (
+                    <option value={MultiSigThresholdType.MAJORITY_APPROVAL}>
+                      {formatText(MSG.thresholdMajorityApprovalTitle)}
+                    </option>
+                  )}
+                  <option value={MultiSigThresholdType.FIXED_THRESHOLD}>
+                    {formatText(MSG.thresholdFixedTitle)}
+                  </option>
+                </select>
+              </div>
+              {domain.type === MultiSigThresholdType.FIXED_THRESHOLD && (
+                <div className="flex items-center justify-between border-b pb-6 pt-4">
+                  <p>{formatText(MSG.thresholdFixedTitle)}</p>
+                  <div>
+                    <input
+                      className="h-11 border"
+                      value={domain.threshold}
+                      onChange={(e) =>
+                        handleDomainThresholdChange(
+                          domain.id,
+                          Number(e.target.value),
+                        )
+                      }
+                      type="number"
+                    />
+                    <span>{formatText(MSG.thresholdFixedFormApprovals)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
       <ActionButton
-        actionType={ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD}
-        values={getSetThresholdPayload()}
+        actionType={ActionTypes.MULTISIG_SET_THRESHOLDS}
+        values={getSetThresholdsPayload()}
       >
         Save settings
       </ActionButton>
