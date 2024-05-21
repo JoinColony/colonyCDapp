@@ -7,4 +7,5 @@ export interface AmountFieldProps {
   domainId?: number;
   isDisabled?: boolean;
   placeholder?: string;
+  isTokenSelectionDisabled?: boolean;
 }

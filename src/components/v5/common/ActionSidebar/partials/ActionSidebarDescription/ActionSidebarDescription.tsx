@@ -1,9 +1,8 @@
 import React from 'react';
-import { useWatch } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
+import { useActiveActionType } from '../../hooks/useActiveActionType.ts';
 
 import CreateDecisionDescription from './partials/CreateDecisionDescription.tsx';
 import CreateNewDomainDescription from './partials/CreateNewDomainDescription.tsx';
@@ -26,9 +25,7 @@ const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';
 
 const ActionSidebarDescription = () => {
-  const selectedAction: Action | undefined = useWatch({
-    name: ACTION_TYPE_FIELD_NAME,
-  });
+  const selectedAction = useActiveActionType();
 
   switch (selectedAction) {
     case Action.MintTokens:
