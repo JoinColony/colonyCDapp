@@ -20,14 +20,15 @@ export enum RootMultiSigMethodNames {
 
 export type MultiSigActionTypes =
   | UniqueActionType<
-      ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD,
+      ActionTypes.MULTISIG_SET_THRESHOLDS,
       {
         colonyAddress: Address;
-        threshold: number;
+        globalThreshold: number;
+        domainThresholds: Record<number, number>;
       },
       object
     >
-  | ErrorActionType<ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD_ERROR, object>
+  | ErrorActionType<ActionTypes.MULTISIG_SET_THRESHOLDS_ERROR, object>
   | UniqueActionTypeWithoutPayload<
       ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD_SUCCESS,
       object
