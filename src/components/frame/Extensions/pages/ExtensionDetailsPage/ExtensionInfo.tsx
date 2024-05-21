@@ -11,9 +11,9 @@ import {
 
 import MultiSigPageSetup from '../MultiSigPage/MultiSigPageSetup.tsx';
 
-import { tabsItems } from './consts.ts';
 import LazyConsensusSettingsTab from './partials/LazyConsensusSettingsTab.tsx';
 import TabContent from './partials/TabContent.tsx';
+import { getExtensionTabs } from './utils.tsx';
 
 interface ExtensionInfoProps {
   extensionData: AnyExtensionData;
@@ -52,14 +52,12 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
   };
 
   /* @TODO: handle case when more than one accordion in extension settings view will be visible */
+  const extensionTabs = getExtensionTabs(extensionData.extensionId);
 
-  if (
-    extensionData?.isInitialized &&
-    tabsItems[extensionData.extensionId] !== undefined
-  ) {
+  if (extensionData?.isInitialized && extensionTabs !== null) {
     return (
       <Tabs
-        items={tabsItems[extensionData.extensionId] ?? []}
+        items={extensionTabs}
         className="pt-6"
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
