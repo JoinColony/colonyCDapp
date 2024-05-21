@@ -191,6 +191,19 @@ export const stripAndremoveHeadingsFromHTML = (content: string) => {
   return string;
 };
 
+/**
+ * To be used specifically for token symbols.
+ *
+ * If a token symbol exceeds 5 characters, it truncates the symbol
+ * to 5 characters followed by an ellipsis.
+ * *
+ * @method truncateTokenSymbol
+ *
+ * @param {string} tokenSymbol The token symbol to conditionally truncate
+ *
+ * @return {string} If the string is more than 5 characters i.e. TOKENSYMBOL, it returns "TOKEN..."
+ * Otherwise, it will return what was passed.
+ */
 export const truncateTokenSymbol = (tokenSymbol?: string) => {
   if (tokenSymbol) {
     return tokenSymbol.length > 5
