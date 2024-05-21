@@ -27,18 +27,11 @@ const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
               { id: 'role.description' },
               { role: permissionRole.name },
             )}
-            <ul className="mb-4 list-disc pl-4 font-medium">
+            <ul className="list-disc pl-4 font-medium">
               {permissionRole.permissions.map((permission) => (
                 <li key={permission}>{ColonyRole[permission]}</li>
               ))}
             </ul>
-            <a
-              href="https://docs.colony.io/learn/advanced-concepts/permissions"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {formatText({ id: 'learn.more' })}
-            </a>
           </>
         }
       >
