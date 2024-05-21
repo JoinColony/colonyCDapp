@@ -6,9 +6,13 @@ mutation CreateTransaction($input: CreateTransactionInput!) {
 
 mutation UpdateTransaction($input: UpdateTransactionInput!) {
   updateTransaction(input: $input) {
+    error {
+      type
+      message
+    }
     id
-    status
     identifier
     params
+    status
   }
 }

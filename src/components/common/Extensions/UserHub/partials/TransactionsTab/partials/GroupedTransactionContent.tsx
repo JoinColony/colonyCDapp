@@ -12,8 +12,10 @@ import transactionsItemClasses from './TransactionsItem/TransactionsItem.styles.
 import TransactionStatus from './TransactionStatus.tsx';
 import { shortErrorMessage } from './utils.ts';
 
+const TX_RETRY_TIMEOUT = 1000 * 60 * 10;
+
 const displayName =
-  'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';
+  'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionContent';
 
 const MSG = defineMessages({
   failedTx: {
@@ -33,6 +35,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   idx,
   selected,
   transaction: {
+    createdAt,
     context,
     error,
     id,
@@ -66,6 +69,10 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     selected,
   });
 
+  // Whether a retry of the transaction is possible
+  const retryable =
+    createdAt.valueOf() > new Date().valueOf() - TX_RETRY_TIMEOUT;
+
   return (
     <li
       className={clsx(`${transactionsItemClasses.listItem}`, {
@@ -95,7 +102,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
           <TransactionStatus status={status} hasError={!!error} />
         )}
       </div>
-      {failed && error && (
+      {failed && error && retryable && (
         <div className="mt-2 md:mr-2">
           <NotificationBanner
             status="error"

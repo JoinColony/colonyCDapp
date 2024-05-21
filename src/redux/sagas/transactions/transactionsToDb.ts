@@ -201,10 +201,10 @@ function* updateTransactionInDb({
         onTransactionResolved(id);
         const { error } = payload as TransactionErrorPayload;
         yield updateTransaction({
-          id,
-          status: TransactionStatus.Failed,
           error,
           from: walletAddress,
+          id,
+          status: TransactionStatus.Failed,
         });
         break;
       }
