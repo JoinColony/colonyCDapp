@@ -233,9 +233,6 @@ module.exports = {
         '.description-1': {
           '@apply text-sm text-gray-700': {},
         },
-        '.token-symbol': {
-          '@apply max-w-[7ch] overflow-hidden text-ellipsis': {},
-        },
         '.skeleton': {
           position: 'relative',
           'pointer-events': 'none',

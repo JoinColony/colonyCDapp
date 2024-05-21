@@ -12,6 +12,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { type NativeTokenStatus, type Token } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { truncateTokenSymbol } from '~utils/strings.ts';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
@@ -22,7 +23,6 @@ import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
 import TokenCell from '../TokenCell/index.ts';
 
 import { useFiltersContext } from './Filters/FiltersContext/FiltersContext.ts';
-import { formattedTokenSymbol } from './helpers.ts';
 import { type BalanceTableFieldModel } from './types.ts';
 
 export const useBalancesData = (): BalanceTableFieldModel[] => {
@@ -131,8 +131,8 @@ export const useBalanceTableColumns = (
         header: () => formatText({ id: 'table.row.symbol' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
         cell: ({ row }) => (
-          <span className="text-gray-600 token-symbol">
-            {formattedTokenSymbol(row.original.token?.symbol)}
+          <span className="text-gray-600">
+            {truncateTokenSymbol(row.original.token?.symbol)}
           </span>
         ),
       }),
@@ -173,7 +173,7 @@ export const useBalanceTableColumns = (
                   row.original.token?.decimals,
                 )}
                 className="block text-gray-900 text-1"
-                suffix={` ${formattedTokenSymbol(row.original.token?.symbol)}`}
+                suffix={` ${truncateTokenSymbol(row.original.token?.symbol)}`}
               />
               <CurrencyConversion
                 tokenBalance={currentTokenBalance}

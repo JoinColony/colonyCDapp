@@ -1,6 +1,7 @@
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
+import { truncateTokenSymbol } from '~utils/strings.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
@@ -21,7 +22,7 @@ const TokenFilters: FC = () => {
           tokenAddress={token.tokenAddress}
           tokenAvatarSrc={token.avatar ?? undefined}
         />
-        <span className="token-symbol">{token.symbol}</span>
+        {truncateTokenSymbol(token.symbol)}
       </div>
     ),
     name: token?.tokenAddress || '',
