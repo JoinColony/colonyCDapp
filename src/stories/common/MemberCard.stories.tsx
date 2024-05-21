@@ -16,6 +16,7 @@ const memberCardMeta: Meta<typeof MemberCard> = {
       },
       walletAddress: '',
     },
+    userAddress: '',
     meatBallMenuProps: {
       items: [
         {
