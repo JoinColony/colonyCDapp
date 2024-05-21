@@ -1,8 +1,7 @@
 import { all, call } from 'redux-saga/effects';
 
-import createRootMultiSig from './createRootMultiSig.ts';
-import setGlobalThresholdSaga from './setGlobalThreshold.ts';
+import setThresholds from './setThresholds.ts';
 
 export default function* multiSigSagas() {
-  yield all([call(setGlobalThresholdSaga), call(createRootMultiSig)]);
+  yield all([call(setThresholds)]);
 }
