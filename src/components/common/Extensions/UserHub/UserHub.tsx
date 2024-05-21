@@ -25,9 +25,9 @@ const MSG = defineMessages({
     id: `${displayName}.buttonYourDashboard`,
     defaultMessage: 'Your dashboard',
   },
-  titleUserHub: {
-    id: `${displayName}.titleUserHub`,
-    defaultMessage: 'User hub',
+  titleYourOverview: {
+    id: `${displayName}.titleYourOverview`,
+    defaultMessage: 'Your overview',
   },
 });
 
@@ -70,7 +70,7 @@ const UserHub: FC<UserHubProps> = ({
             <div>
               <TitleLabel
                 className="pb-5"
-                text={formatText(MSG.titleUserHub)}
+                text={formatText(MSG.titleYourOverview)}
               />
               <ul className="-ml-4 flex w-[calc(100%+2rem)] flex-col">
                 {tabList.map(({ value, id, icon: Icon, label }) => (

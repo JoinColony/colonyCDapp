@@ -13,11 +13,11 @@ export const menuMessages = defineMessages({
   },
   stakes: {
     id: 'UserSubmenu.stakes',
-    defaultMessage: 'All stakes',
+    defaultMessage: 'Stakes',
   },
   transactions: {
     id: 'UserSubmenu.transactions',
-    defaultMessage: 'All transactions',
+    defaultMessage: 'Transactions',
   },
 });
 
