@@ -17,7 +17,7 @@ const calculateTotalFunds = async (
     ?.filter(notNull)
     .filter(({ domain }) => !!domain?.isRoot)
     .reduce(
-      async (total, { balance, token: { tokenAddress } }) => {
+      async (total, { balance, token: { tokenAddress, decimals } }) => {
         const currentPrice = await fetchCurrentPrice({
           contractAddress: tokenAddress,
           conversionDenomination: currency,
@@ -27,7 +27,11 @@ const calculateTotalFunds = async (
           isError = true;
         }
 
-        return (await total).add(new Decimal(balance).mul(currentPrice ?? 0));
+        const balanceInWeiToToken = new Decimal(balance).div(10 ** decimals);
+
+        return (await total).add(
+          new Decimal(balanceInWeiToToken).mul(currentPrice ?? 0),
+        );
       },
       Promise.resolve(new Decimal(0)),
     );
