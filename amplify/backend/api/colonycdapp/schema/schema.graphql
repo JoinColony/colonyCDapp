@@ -2031,7 +2031,7 @@ type Domain @model {
   Native skill ID of the Domain
   The native skill ID is assigned to a domain from the contract on creation
   """
-  nativeSkillId: Int!
+  nativeSkillId: String!
     @index(
       name: "byNativeSkillId"
       queryField: "getDomainByNativeSkillId"
