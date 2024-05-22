@@ -120,15 +120,12 @@ fragment ColonyAction on ColonyAction {
   }
   members
   rootHash
-<<<<<<< HEAD
   expenditureId
-=======
   isMultiSig
   multiSigId
   multiSigData {
     ...ColonyMultiSig
   }
->>>>>>> f4c21898f (feat: implement dummy sidebar for multiSig, navigate after tx success)
 }
 
 fragment Annotation on Annotation {

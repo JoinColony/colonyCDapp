@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 
 import {
