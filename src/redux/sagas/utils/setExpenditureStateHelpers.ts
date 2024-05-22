@@ -111,3 +111,62 @@ export const getMulticallDataForUpdatedPayouts = async ({
 
   return encodedMulticallData;
 };
+
+interface GetExpenditureValuesMulticallDataParams {
+  colonyClient: AnyColonyClient;
+  expenditureId: number;
+  payoutsWithSlotIds: ExpenditurePayoutFieldValue[];
+  networkInverseFee: string;
+}
+
+/**
+ * Helper function returning an array of encoded multicall data to set
+ * expenditure values when creating or editing expenditures
+ */
+export const getExpenditureValuesMulticallData = ({
+  colonyClient,
+  expenditureId,
+  payoutsWithSlotIds,
+  networkInverseFee,
+}: GetExpenditureValuesMulticallDataParams) => {
+  const encodedMulticallData: string[] = [];
+  encodedMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setExpenditureRecipients', [
+      expenditureId,
+      payoutsWithSlotIds.map((payout) => payout.slotId!),
+      payoutsWithSlotIds.map((payout) => payout.recipientAddress),
+    ]),
+  );
+
+  encodedMulticallData.push(
+    colonyClient.interface.encodeFunctionData('setExpenditureClaimDelays', [
+      expenditureId,
+      payoutsWithSlotIds.map((payout) => payout.slotId!),
+      payoutsWithSlotIds.map((payout) => payout.claimDelay),
+    ]),
+  );
+
+  const tokenAddresses = new Set(
+    payoutsWithSlotIds.map((payout) => payout.tokenAddress),
+  );
+
+  tokenAddresses.forEach((tokenAddress) => {
+    const tokenPayouts = payoutsWithSlotIds.filter(
+      (payout) => payout.tokenAddress === tokenAddress,
+    );
+    const tokenAmounts = tokenPayouts.map((payout) =>
+      getPayoutAmount(payout, networkInverseFee),
+    );
+
+    encodedMulticallData.push(
+      colonyClient.interface.encodeFunctionData('setExpenditurePayouts', [
+        expenditureId,
+        tokenPayouts.map((payout) => payout.slotId!),
+        tokenAddress,
+        tokenAmounts,
+      ]),
+    );
+  });
+
+  return encodedMulticallData;
+};

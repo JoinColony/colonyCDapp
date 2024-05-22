@@ -17,12 +17,12 @@ import {
   getColonyManager,
   putError,
   takeFrom,
-  getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
   getPayoutsWithSlotIds,
   adjustPayoutsAddresses,
+  getExpenditureValuesMulticallData,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -101,7 +101,7 @@ function* createStakedExpenditure({
 
     yield fork(createTransaction, setExpenditureValues.id, {
       context: ClientType.ColonyClient,
-      methodName: 'setExpenditureValues',
+      methodName: 'multicall',
       identifier: colonyAddress,
       group: {
         key: batchKey,
@@ -195,15 +195,15 @@ function* createStakedExpenditure({
       setExpenditureValues.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    yield transactionSetParams(
-      setExpenditureValues.id,
-      getSetExpenditureValuesFunctionParams({
-        nativeExpenditureId: expenditureId,
-        payouts: payoutsWithSlotIds,
-        networkInverseFee,
-        isStaged,
-      }),
-    );
+
+    const multicallData = getExpenditureValuesMulticallData({
+      colonyClient,
+      expenditureId,
+      payoutsWithSlotIds,
+      networkInverseFee,
+    });
+
+    yield transactionSetParams(setExpenditureValues.id, [multicallData]);
     yield initiateTransaction(setExpenditureValues.id);
     yield waitForTxResult(setExpenditureValues.channel);
 
