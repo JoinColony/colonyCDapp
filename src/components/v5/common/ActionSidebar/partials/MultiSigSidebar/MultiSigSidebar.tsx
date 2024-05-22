@@ -3,6 +3,9 @@ import React from 'react';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
 
+import Signees from './partials/Signees/Signees.tsx';
+import VoteButton from './partials/VoteButton/VoteButton.tsx';
+
 const displayName = 'v5.common.ActionSidebar.partials.MultiSig';
 interface MultiSigSidebarProps {
   transactionId: string;
@@ -14,7 +17,22 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
     return <div>Loading</div>;
   }
 
-  return <div>MultiSig action</div>;
+  if (!action.multiSigData || !action.multiSigId) {
+    console.warn('Not a multisig action');
+    return null;
+  }
+
+  return (
+    <div>
+      <Signees signees={[]} />
+      <VoteButton
+        actionType={action.type}
+        multiSigColonyAddress={action.colonyAddress}
+        multiSigId={action.multiSigData.nativeMultiSigId}
+        multiSigDomainId={Number(action.multiSigData.nativeMultiSigDomainId)}
+      />
+    </div>
+  );
 };
 
 MultiSigSidebar.displayName = displayName;
