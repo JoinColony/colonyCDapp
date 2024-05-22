@@ -10,7 +10,7 @@ import React, { type FC, useCallback } from 'react';
 import { useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.tsx';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { Authority } from '~types/authority.ts';
 import { formatText } from '~utils/intl.ts';
