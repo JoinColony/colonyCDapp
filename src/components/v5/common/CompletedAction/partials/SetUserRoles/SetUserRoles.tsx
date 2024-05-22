@@ -7,6 +7,7 @@ import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import { ColonyActionType, type ColonyActionRoles } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -66,7 +67,6 @@ const transformActionRolesToColonyRoles = (
 };
 
 const SetUserRoles = ({ action }: Props) => {
-<<<<<<< HEAD
   const {
     customTitle = formatText(
       { id: 'action.type' },
@@ -82,14 +82,15 @@ const SetUserRoles = ({ action }: Props) => {
     fromDomain,
     isMotion,
     annotation,
+    rolesAreMultiSig,
   } = action;
-=======
-  const { customTitle = formatText(MSG.defaultTitle) } = action.metadata || {};
-  const { initiatorUser, recipientUser, roles, rolesAreMultiSig } = action;
->>>>>>> 8ae12f03b (Feat: Add rolesAreMultiSig field to ColonyAction model)
   const userColonyRoles = transformActionRolesToColonyRoles(roles);
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
+
+  const roleAuthority = rolesAreMultiSig
+    ? Authority.ViaMultiSig
+    : Authority.Own;
 
   return (
     <>
@@ -101,7 +102,7 @@ const SetUserRoles = ({ action }: Props) => {
             [TITLE_FIELD_NAME]: customTitle,
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
-            authority: AUTHORITY_OPTIONS[0].value,
+            authority: roleAuthority,
             role,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: isMotion
