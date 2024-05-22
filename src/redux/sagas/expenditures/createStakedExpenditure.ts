@@ -179,14 +179,12 @@ function* createStakedExpenditure({
       );
     }
     yield initiateTransaction({ id: makeExpenditure.id });
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      makeExpenditure.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
 
-    yield waitForTxResult(makeExpenditure.channel);
+    const {
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(makeExpenditure.channel);
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
 

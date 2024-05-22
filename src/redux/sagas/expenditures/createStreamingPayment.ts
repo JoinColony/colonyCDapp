@@ -153,14 +153,12 @@ function* createStreamingPaymentAction({
     }
 
     yield initiateTransaction({ id: createStreamingPayment.id });
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createStreamingPayment.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
 
-    yield waitForTxResult(createStreamingPayment.channel);
+    const {
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createStreamingPayment.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({

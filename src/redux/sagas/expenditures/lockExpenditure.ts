@@ -13,7 +13,6 @@ import {
 import {
   initiateTransaction,
   putError,
-  takeFrom,
   uploadAnnotation,
 } from '../utils/index.ts';
 
@@ -56,14 +55,12 @@ function* lockExpenditureAction({
     }
 
     yield initiateTransaction({ id: lockExpenditure.id });
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      lockExpenditure.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
 
-    yield waitForTxResult(lockExpenditure.channel);
+    const {
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(lockExpenditure.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({

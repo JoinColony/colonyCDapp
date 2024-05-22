@@ -140,13 +140,6 @@ function* editLockedExpenditureMotion({
       });
     }
 
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
     if (annotationMessage) {
       yield takeFrom(
         annotateEditLockedExpenditure.channel,
@@ -154,9 +147,12 @@ function* editLockedExpenditureMotion({
       );
     }
 
-    setTxHash?.(txHash);
+    const {
+      type,
+      payload: { transactionHash: txHash },
+    } = yield call(waitForTxResult, createMotion.channel);
 
-    const { type } = yield call(waitForTxResult, createMotion.channel);
+    setTxHash?.(txHash);
 
     if (annotationMessage) {
       yield uploadAnnotation({

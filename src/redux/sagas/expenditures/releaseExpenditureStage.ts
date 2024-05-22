@@ -104,14 +104,12 @@ function* releaseExpenditureStage({
     }
 
     yield initiateTransaction({ id: releaseExpenditure.id });
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      releaseExpenditure.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
 
-    yield waitForTxResult(releaseExpenditure.channel);
+    const {
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(releaseExpenditure.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({

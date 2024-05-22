@@ -21,7 +21,6 @@ import {
   createInvalidParamsError,
   getColonyManager,
   initiateTransaction,
-  takeFrom,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 
@@ -173,15 +172,13 @@ function* fundExpenditureMotion({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      type,
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield call(waitForTxResult, createMotion.channel);
 
     setTxHash?.(txHash);
-
-    const { type } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS>>({

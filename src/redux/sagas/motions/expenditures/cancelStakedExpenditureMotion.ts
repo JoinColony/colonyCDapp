@@ -18,15 +18,13 @@ import {
   createInvalidParamsError,
   getColonyManager,
   initiateTransaction,
-  takeFrom,
 } from '~redux/sagas/utils/index.ts';
 
 function* cancelStakedExpenditureMotion({
   meta,
-  meta: { navigate, setTxHash },
+  meta: { setTxHash },
   payload: {
     colonyAddress,
-    colonyName,
     stakedExpenditureAddress,
     shouldPunish,
     expenditure,
@@ -145,27 +143,17 @@ function* cancelStakedExpenditureMotion({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      type,
+      payload: { transactionHash: txHash },
+    } = yield call(waitForTxResult, createMotion.channel);
 
     setTxHash?.(txHash);
-
-    const { type, payload } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put<Action<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS>>({
         type: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
         meta,
       });
-
-      if (colonyName && navigate) {
-        navigate(`/${colonyName}?tx=${payload.transaction.hash}`, {
-          state: { isRedirect: true },
-        });
-      }
     }
   } catch (e) {
     console.error(e);

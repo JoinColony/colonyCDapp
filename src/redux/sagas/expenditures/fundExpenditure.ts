@@ -123,13 +123,10 @@ function* fundExpenditure({
     yield initiateTransaction({ id: fundMulticall.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      fundMulticall.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    yield waitForTxResult(fundMulticall.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(fundMulticall.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({

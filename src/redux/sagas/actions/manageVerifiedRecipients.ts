@@ -134,15 +134,12 @@ function* manageVerifiedRecipients({
     yield initiateTransaction({ id: editColony.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      editColony.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(editColony.channel);
 
     setTxHash?.(txHash);
-
-    yield waitForTxResult(editColony.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

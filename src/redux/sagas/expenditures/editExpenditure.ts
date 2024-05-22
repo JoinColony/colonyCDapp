@@ -120,14 +120,12 @@ function* editExpenditureAction({
     }
 
     yield initiateTransaction({ id: editExpenditure.id });
-    const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      editExpenditure.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
 
-    yield waitForTxResult(editExpenditure.channel);
+    const {
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(editExpenditure.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({

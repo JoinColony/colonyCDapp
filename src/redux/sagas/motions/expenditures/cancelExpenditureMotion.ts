@@ -17,7 +17,6 @@ import {
   getColonyManager,
   initiateTransaction,
   putError,
-  takeFrom,
 } from '~redux/sagas/utils/index.ts';
 
 function* cancelExpenditureMotion({
@@ -102,15 +101,13 @@ function* cancelExpenditureMotion({
     yield initiateTransaction({ id: createMotion.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      createMotion.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
+      type,
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield call(waitForTxResult, createMotion.channel);
 
     setTxHash?.(txHash);
-
-    const { type } = yield call(waitForTxResult, createMotion.channel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put({

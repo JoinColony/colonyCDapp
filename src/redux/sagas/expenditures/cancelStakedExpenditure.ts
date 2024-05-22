@@ -110,13 +110,10 @@ function* cancelStakedExpenditureAction({
     yield initiateTransaction({ id: cancelStakedExpenditure.id });
 
     const {
-      payload: { hash: txHash },
-    } = yield takeFrom(
-      cancelStakedExpenditure.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
-
-    yield waitForTxResult(cancelStakedExpenditure.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(cancelStakedExpenditure.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({
