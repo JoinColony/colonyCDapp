@@ -9,9 +9,11 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 
-import { tabsItems } from './consts.ts';
-import ParamDetailsTab from './ParamDetailsTab.tsx';
+import MultiSigPageSetup from '../MultiSigPage/MultiSigPageSetup.tsx';
+
+import LazyConsensusSettingsTab from './partials/LazyConsensusSettingsTab.tsx';
 import TabContent from './partials/TabContent.tsx';
+import { getExtensionTabs } from './utils.tsx';
 
 interface ExtensionInfoProps {
   extensionData: AnyExtensionData;
@@ -26,15 +28,36 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
     setActiveTab(id);
   };
 
-  /* @TODO: handle case when more than one accordion in extension settings view will be visible */
+  const getSecondExtensionTab = () => {
+    // @TODO get rid of this casting and typeguarrd this instead
+    switch (extensionData.extensionId) {
+      case Extension.VotingReputation:
+        return (
+          <LazyConsensusSettingsTab
+            extension={Extension.VotingReputation}
+            params={
+              (extensionData as InstalledExtensionData).params?.votingReputation
+            }
+          />
+        );
+      case Extension.MultisigPermissions:
+        return (
+          <MultiSigPageSetup
+            extensionData={extensionData as InstalledExtensionData}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
-  if (
-    extensionData?.isInitialized &&
-    extensionData?.extensionId === Extension.VotingReputation
-  ) {
+  /* @TODO: handle case when more than one accordion in extension settings view will be visible */
+  const extensionTabs = getExtensionTabs(extensionData.extensionId);
+
+  if (extensionData?.isInitialized && extensionTabs !== null) {
     return (
       <Tabs
-        items={tabsItems[extensionData.extensionId] ?? []}
+        items={extensionTabs}
         className="pt-0"
         activeTab={activeTab}
         onTabClick={handleOnTabClick}
@@ -48,15 +71,7 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
               transition={{ duration: 0.15 }}
             >
               {activeTab === 0 && <TabContent extensionData={extensionData} />}
-              {activeTab === 1 && (
-                <ParamDetailsTab
-                  extension={Extension.VotingReputation}
-                  params={
-                    (extensionData as InstalledExtensionData).params
-                      ?.votingReputation
-                  }
-                />
-              )}
+              {activeTab === 1 && getSecondExtensionTab()}
             </motion.div>
           </AnimatePresence>
         </ul>

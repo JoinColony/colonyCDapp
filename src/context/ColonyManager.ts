@@ -170,6 +170,16 @@ export default class ColonyManager {
           Extension.VotingReputation,
         );
       }
+      case ClientType.MultisigPermissionsClient: {
+        if (!identifier)
+          throw new Error(
+            'Need colony identifier to get the MultisigPermissionsClient',
+          );
+        return this.getColonyExtensionClient(
+          identifier,
+          Extension.MultisigPermissions,
+        );
+      }
       case ClientType.StakedExpenditureClient: {
         if (!identifier)
           throw new Error(

@@ -1558,6 +1558,7 @@ enum ClientType {
   WrappedTokenClient
   VestingSimpleClient
   LightTokenClient
+  MultisigPermissionsClient
 }
 
 enum TransactionStatus {
@@ -2557,6 +2558,16 @@ type VotingReputationParams {
   escalationPeriod: String!
 }
 
+type MultiSigDomainConfig {
+  domainId: ID!
+  domainThreshold: Int!
+}
+
+type MultiSigParams {
+  colonyThreshold: Int!
+  domainThresholds: [MultiSigDomainConfig]
+}
+
 type StakedExpenditureParams {
   stakeFraction: String!
 }
@@ -2573,6 +2584,10 @@ type ExtensionParams {
   Initialization parameters for the `StakedExpenditure` extension
   """
   stakedExpenditure: StakedExpenditureParams
+  """
+  Params for MultiSig
+  """
+  multiSig: MultiSigParams
 }
 
 """
