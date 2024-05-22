@@ -10,6 +10,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { getUserRolesForDomain } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
@@ -18,7 +19,6 @@ import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import {
-  Authority,
   AVAILABLE_ROLES,
   type ManagePermissionsFormValues,
   type RemoveRoleOptionValue,
@@ -40,33 +40,41 @@ export const useManagePermissions = (
   const role: UserRole | RemoveRoleOptionValue | undefined = useWatch({
     name: 'role',
   });
-  const isModeRoleSelected = role === UserRole.Mod;
+  const isModRoleSelected = role === UserRole.Mod;
 
   useEffect(() => {
-    if (isModeRoleSelected) {
+    if (isModRoleSelected) {
       setValue('authority', Authority.Own);
     }
-  }, [isModeRoleSelected, setValue]);
+  }, [isModRoleSelected, setValue]);
 
   useEffect(() => {
-    const { unsubscribe } = watch(({ member, team }, { name }) => {
+    const { unsubscribe } = watch(({ member, team, authority }, { name }) => {
       if (
         !name ||
-        !['team', 'member'].includes(name) ||
+        !['team', 'member', 'authority'].includes(name) ||
         !notMaybe(team) ||
-        !notMaybe(member)
+        !notMaybe(member) ||
+        !notMaybe(authority)
       ) {
         return;
       }
+
+      const isMultiSig = authority === Authority.ViaMultiSig;
 
       const userPermissions = getUserRolesForDomain(
         colony,
         member,
         Number(team),
+        true,
+        isMultiSig,
       );
+
       const userRole = getRole(userPermissions);
 
-      setValue('role', userRole.permissions.length ? userRole.role : undefined);
+      if (userRole.permissions.length) {
+        setValue('role', userRole.role);
+      }
 
       if (userRole.role !== UserRole.Custom) {
         return;
@@ -109,6 +117,6 @@ export const useManagePermissions = (
 
   return {
     role,
-    isModeRoleSelected,
+    isModRoleSelected,
   };
 };

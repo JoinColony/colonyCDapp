@@ -3,6 +3,7 @@ import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
 import { type Expenditure, type ExternalLink } from '~gql';
+import { type Authority } from '~types/authority.ts';
 import {
   type Colony,
   type ColonyObjective,
@@ -224,6 +225,7 @@ export type MotionActionTypes =
         domainId: number;
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
+        authority: Authority;
         motionDomainId: string;
         annotationMessage?: string;
       },
