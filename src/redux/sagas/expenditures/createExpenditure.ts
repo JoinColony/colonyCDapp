@@ -20,8 +20,8 @@ import {
   initiateTransaction,
   uploadAnnotation,
   getPayoutsWithSlotIds,
-  getPayoutAmount,
   createActionMetadataInDB,
+  getExpenditureValuesMulticallData,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -152,43 +152,11 @@ function* createExpenditure({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    const multicallData: string[] = [];
-    multicallData.push(
-      colonyClient.interface.encodeFunctionData('setExpenditureRecipients', [
-        expenditureId,
-        payoutsWithSlotIds.map((payout) => payout.slotId),
-        payoutsWithSlotIds.map((payout) => payout.recipientAddress),
-      ]),
-    );
-
-    multicallData.push(
-      colonyClient.interface.encodeFunctionData('setExpenditureClaimDelays', [
-        expenditureId,
-        payoutsWithSlotIds.map((payout) => payout.slotId),
-        payoutsWithSlotIds.map((payout) => payout.claimDelay),
-      ]),
-    );
-
-    const tokenAddresses = new Set(
-      payoutsWithSlotIds.map((payout) => payout.tokenAddress),
-    );
-
-    tokenAddresses.forEach((tokenAddress) => {
-      const tokenPayouts = payoutsWithSlotIds.filter(
-        (payout) => payout.tokenAddress === tokenAddress,
-      );
-      const tokenAmounts = tokenPayouts.map((payout) =>
-        getPayoutAmount(payout, networkInverseFee),
-      );
-
-      multicallData.push(
-        colonyClient.interface.encodeFunctionData('setExpenditurePayouts', [
-          expenditureId,
-          tokenPayouts.map((payout) => payout.slotId),
-          tokenAddress,
-          tokenAmounts,
-        ]),
-      );
+    const multicallData = getExpenditureValuesMulticallData({
+      colonyClient,
+      expenditureId,
+      payoutsWithSlotIds,
+      networkInverseFee,
     });
 
     yield put(transactionAddParams(setExpenditureValues.id, [multicallData]));
