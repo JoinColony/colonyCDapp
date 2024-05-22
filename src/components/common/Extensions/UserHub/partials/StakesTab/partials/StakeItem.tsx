@@ -34,7 +34,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
           )
         }
       >
-        <div className="relative w-full sm:hover:bg-gray-50">
+        <div className="relative w-full py-3.5 sm:px-6 sm:hover:bg-gray-50">
           <div className="flex items-center justify-between">
             <div className="mr-2 flex min-w-0 items-center">
               <p className="mr-2 min-w-0 truncate text-1">{stakeItemTitle}</p>
