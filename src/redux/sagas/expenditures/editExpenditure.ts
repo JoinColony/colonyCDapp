@@ -2,7 +2,6 @@ import { type AnyColonyClient, ClientType } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context';
-import { ExpenditureStatus, ExpenditureType } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
@@ -13,13 +12,13 @@ import {
 } from '../transactions/index.ts';
 import {
   putError,
-  getSetExpenditureValuesFunctionParams,
   initiateTransaction,
   takeFrom,
   uploadAnnotation,
   getColonyManager,
-  getMulticallDataForUpdatedPayouts,
   getResolvedPayouts,
+  getExpenditureValuesMulticallData,
+  getPayoutsWithSlotIds,
 } from '../utils/index.ts';
 
 export type EditExpenditurePayload =
@@ -32,7 +31,6 @@ function* editExpenditureAction({
     payouts,
     networkInverseFee,
     annotationMessage,
-    userAddress,
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
@@ -55,47 +53,26 @@ function* editExpenditureAction({
   );
 
   try {
-    if (
-      expenditure.ownerAddress === userAddress &&
-      expenditure.status === ExpenditureStatus.Draft
-    ) {
-      // `setExpenditureValues` can only be used if the user is the owner and the expenditure is draft
-      yield fork(createTransaction, editExpenditure.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'setExpenditureValues',
-        identifier: colonyAddress,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 0,
-        },
-        params: getSetExpenditureValuesFunctionParams({
-          nativeExpenditureId: expenditure.nativeId,
-          payouts: resolvedPayouts,
-          networkInverseFee,
-          isStaged: expenditure.type === ExpenditureType.Staged,
-        }),
-      });
-    } else {
-      const multicallData = yield getMulticallDataForUpdatedPayouts({
-        expenditure,
-        payouts: resolvedPayouts,
-        colonyClient,
-        networkInverseFee,
-      });
+    const resolvedPayoutsWithSlotIds = getPayoutsWithSlotIds(resolvedPayouts);
 
-      yield fork(createTransaction, editExpenditure.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'multicall',
-        identifier: colonyAddress,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 0,
-        },
-        params: [multicallData],
-      });
-    }
+    const multicallData = getExpenditureValuesMulticallData({
+      colonyClient,
+      expenditureId: expenditure.nativeId,
+      payoutsWithSlotIds: resolvedPayoutsWithSlotIds,
+      networkInverseFee,
+    });
+
+    yield fork(createTransaction, editExpenditure.id, {
+      context: ClientType.ColonyClient,
+      methodName: 'multicall',
+      identifier: colonyAddress,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
+      params: [multicallData],
+    });
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateEditExpenditure.id, {
