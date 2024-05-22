@@ -1,5 +1,6 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -16,6 +17,21 @@ import { type DecisionMethodFieldProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DecisionMethodField';
 
+const MSG = defineMessages({
+  permissions: {
+    id: `${displayName}.permissions`,
+    defaultMessage: 'Permissions',
+  },
+  reputation: {
+    id: `${displayName}.reputation`,
+    defaultMessage: 'Reputation',
+  },
+  multiSig: {
+    id: `${displayName}.multiSig`,
+    defaultMessage: 'Multi-Sig',
+  },
+});
+
 const DecisionMethodField = ({
   reputationOnly,
   disabled,
@@ -24,18 +40,22 @@ const DecisionMethodField = ({
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const userRoles = getAllUserRoles(colony, user?.walletAddress);
+  const userMultiSigRoles = getAllUserRoles(colony, user?.walletAddress, true);
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isMultiSigEnabled } =
+    useEnabledExtensions();
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
+  const shouldShowMultiSig =
+    !reputationOnly && isMultiSigEnabled && userMultiSigRoles.length > 0;
 
   const decisionMethods = [
     ...(shouldShowPermissions
       ? [
           {
-            label: formatText({ id: 'actionSidebar.method.permissions' }),
+            label: formatText(MSG.permissions),
             value: DecisionMethod.Permissions,
           },
         ]
@@ -43,8 +63,16 @@ const DecisionMethodField = ({
     ...(isVotingReputationEnabled
       ? [
           {
-            label: formatText({ id: 'actionSidebar.method.reputation' }),
+            label: formatText(MSG.reputation),
             value: DecisionMethod.Reputation,
+          },
+        ]
+      : []),
+    ...(shouldShowMultiSig
+      ? [
+          {
+            label: formatText(MSG.multiSig),
+            value: DecisionMethod.MultiSig,
           },
         ]
       : []),
