@@ -142,7 +142,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
 
         return {
           id: domain.id,
-          nativeSkillId: domain.nativeSkillId,
+          nativeSkillId: Number(domain.nativeSkillId),
           type,
           name: domain.metadata?.name || '',
           threshold: existingThreshold || colonyThreshold || 0,
