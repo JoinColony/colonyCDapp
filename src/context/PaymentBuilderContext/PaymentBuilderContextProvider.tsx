@@ -1,4 +1,9 @@
-import React, { type FC, type PropsWithChildren, useMemo } from 'react';
+import React, {
+  type FC,
+  type PropsWithChildren,
+  useMemo,
+  useState,
+} from 'react';
 
 import useToggle from '~hooks/useToggle/index.ts';
 
@@ -13,6 +18,7 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     isReleaseModalOpen,
     { toggleOn: toggleOnReleaseModal, toggleOff: toggleOffReleaseModal },
   ] = useToggle();
+  const [selectedTransaction, setSelectedTransaction] = useState<string>('');
 
   const value = useMemo(
     () => ({
@@ -22,6 +28,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       isReleaseModalOpen,
+      selectedTransaction,
+      setSelectedTransaction,
     }),
     [
       toggleOnFundingModal,
@@ -30,6 +38,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       isReleaseModalOpen,
+      selectedTransaction,
+      setSelectedTransaction,
     ],
   );
 

@@ -3,13 +3,16 @@ import React, { useState, type FC, useEffect } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { useGetColonyExpendituresQuery } from '~gql';
+import { useGetColonyExpendituresQuery, ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
+import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
+import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
@@ -17,8 +20,10 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/FinalizeWithPermissionsInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
+import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
+import RequestBox from '../RequestBox/RequestBox.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
@@ -54,6 +59,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     cancellingActions,
     finalizedAt,
     createdAt,
+    motions,
   } = expenditure || {};
   const { items: fundingActionsItems } = fundingActions || {};
 
@@ -108,6 +114,48 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   };
 
   const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
+  const isFundingMotion =
+    motions?.items?.length &&
+    motions.items?.[0]?.action?.type === ColonyActionType.FundExpenditureMotion;
+  const fundingMotions =
+    motions?.items
+      .filter(notNull)
+      .filter(
+        (motion) =>
+          motion?.action?.type === ColonyActionType.FundExpenditureMotion,
+      ) || [];
+
+  const { selectedTransaction } = usePaymentBuilderContext();
+
+  const {
+    action: motionAction,
+    motionState,
+    refetchMotionState,
+  } = useGetColonyAction(
+    selectedTransaction || fundingMotions?.[0]?.transactionHash,
+  );
+
+  const selectedMotion = fundingMotions.find(
+    (motion) => motion?.transactionHash === selectedTransaction,
+  );
+
+  const { motionId = '', motionStakes } = motionAction?.motionData || {};
+  const isFundingClaimed = selectedMotion
+    ? selectedMotion?.stakerRewards &&
+      selectedMotion?.stakerRewards.length > 0 &&
+      selectedMotion?.stakerRewards.every((reward) => reward.isClaimed)
+    : fundingMotions?.[0]?.stakerRewards &&
+      fundingMotions?.[0].stakerRewards.length > 0 &&
+      fundingMotions[0].stakerRewards.every((reward) => reward.isClaimed);
+
+  const isFundingMotionFailed = selectedMotion
+    ? selectedMotion?.motionStateHistory.hasFailed ||
+      selectedMotion?.motionStateHistory.hasFailedNotFinalizable
+    : fundingMotions?.[0]?.motionStateHistory.hasFailed ||
+      fundingMotions?.[0]?.motionStateHistory.hasFailedNotFinalizable;
+  const hasMotionPassed = selectedMotion
+    ? selectedMotion?.motionStateHistory.hasPassed
+    : fundingMotions?.[0]?.motionStateHistory.hasPassed;
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -159,31 +207,90 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     },
     {
       key: ExpenditureStep.Funding,
-      heading: { label: formatText({ id: 'expenditure.fundingStage.label' }) },
+      heading: {
+        label: formatText({ id: 'expenditure.fundingStage.label' }),
+        decor:
+          isFundingMotion &&
+          !hasMotionPassed &&
+          !isFundingMotionFailed &&
+          motionState &&
+          motionStakes ? (
+            <MotionCountDownTimer
+              key={motionAction?.transactionHash}
+              motionState={motionState}
+              motionId={motionId}
+              motionStakes={motionStakes}
+              refetchMotionState={refetchMotionState}
+            />
+          ) : null,
+      },
       content:
         expenditureStep === ExpenditureStep.Funding ? (
-          <StepDetailsBlock
-            text={formatText({
-              id: 'expenditure.fundingStage.info',
-            })}
-            content={
-              <Button
-                className="w-full"
-                onClick={showFundingModal}
-                text={formatText({
-                  id: 'expenditure.fundingStage.button',
-                })}
-                loading={expectedStepKey === ExpenditureStep.Release}
-              />
-            }
-          />
-        ) : (
-          // @todo: please update this element when other decisions methods for funding will be implemented
           <>
-            {fundingActionsItems?.[0] && (
+            {isFundingMotion && !isFundingMotionFailed && !isFundingClaimed ? (
+              <div className="flex flex-col gap-2">
+                <RequestBox
+                  title={formatText({ id: 'expenditure.fundingRequest.title' })}
+                  motions={fundingMotions}
+                />
+                <MotionBox
+                  transactionId={
+                    selectedTransaction ||
+                    motions?.items[0]?.transactionHash ||
+                    ''
+                  }
+                />
+              </div>
+            ) : (
+              <StepDetailsBlock
+                text={formatText({
+                  id: 'expenditure.fundingStage.info',
+                })}
+                content={
+                  <>
+                    {fundingMotions && fundingMotions.length > 0 && (
+                      <RequestBox
+                        withoutPadding
+                        title={formatText({
+                          id: 'expenditure.fundingRequest.title',
+                        })}
+                        motions={fundingMotions}
+                      />
+                    )}
+                    <Button
+                      className="w-full"
+                      onClick={showFundingModal}
+                      text={formatText({
+                        id: 'expenditure.fundingStage.button',
+                      })}
+                      loading={expectedStepKey === ExpenditureStep.Release}
+                    />
+                  </>
+                }
+              />
+            )}
+          </>
+        ) : (
+          <>
+            {isFundingMotion ? (
+              <div className="flex flex-col gap-2">
+                <RequestBox
+                  title={formatText({ id: 'expenditure.fundingRequest.title' })}
+                  motions={fundingMotions}
+                />
+                <MotionBox
+                  transactionId={
+                    selectedTransaction ||
+                    motions?.items[0]?.transactionHash ||
+                    ''
+                  }
+                />
+              </div>
+            ) : undefined}
+            {fundingActionsItems?.length === 1 && (
               <FinalizeWithPermissionsInfo
-                userAdddress={fundingActionsItems[0].initiatorAddress}
-                createdAt={fundingActionsItems[0].createdAt}
+                userAdddress={fundingActionsItems[0]?.initiatorAddress}
+                createdAt={fundingActionsItems[0]?.createdAt}
               />
             )}
           </>

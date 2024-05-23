@@ -1,4 +1,4 @@
-import { ArrowsClockwise, SpinnerGap } from '@phosphor-icons/react';
+import { ArrowsClockwise } from '@phosphor-icons/react';
 import React, { type FC, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -8,7 +8,6 @@ import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExp
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
@@ -144,18 +143,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                 disabled={!claimablePayouts.length || !blockTime}
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
-                loadingContent={
-                  <TxButton
-                    className="mt-4 max-h-[2.5rem] w-full !text-md"
-                    rounded="s"
-                    text={{ id: 'button.pending' }}
-                    icon={
-                      <span className="ml-1.5 flex shrink-0">
-                        <SpinnerGap className="animate-spin" size={14} />
-                      </span>
-                    }
-                  />
-                }
+                useTxLoader
                 onSuccess={() => {
                   fetchCurrentBlockTime();
                 }}
