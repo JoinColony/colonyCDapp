@@ -863,6 +863,7 @@ enum ExpenditureStatus {
   DRAFT
   LOCKED
   FINALIZED
+  FUNDING
   CANCELLED
 }
 
