@@ -1,4 +1,4 @@
-import { Wallet } from '@phosphor-icons/react';
+import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -9,6 +9,7 @@ import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/final
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+import TxButton from '~v5/shared/Button/TxButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
@@ -90,8 +91,11 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                   name="decisionMethod"
                 />
                 {method && method.value && (
-                  <div className="mt-4 rounded border border-warning-200 bg-warning-100 px-6 py-3">
+                  <div className="mt-4 rounded border border-gray-300 bg-base-bg p-[1.125rem]">
                     <p className="text-sm text-gray-900">
+                      <span className="font-medium">
+                        {formatText({ id: 'fundingModal.note' })}
+                      </span>
                       {releaseDecisionMethodDescriptions[method.value]}
                     </p>
                   </div>
@@ -102,14 +106,22 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                   {formatText({ id: 'button.cancel' })}
                 </Button>
                 <div className="flex w-full justify-center">
-                  <Button
-                    type="submit"
-                    mode="primarySolid"
-                    isFullSize
-                    loading={isSubmitting}
-                  >
-                    {formatText({ id: 'releaseModal.accept' })}
-                  </Button>
+                  {isSubmitting ? (
+                    <TxButton
+                      className="max-h-[2.5rem] w-full !text-md"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button type="submit" mode="primarySolid" isFullSize>
+                      {formatText({ id: 'releaseModal.accept' })}
+                    </Button>
+                  )}
                 </div>
               </div>
             </>
