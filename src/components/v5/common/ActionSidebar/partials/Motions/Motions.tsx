@@ -224,9 +224,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
             formatText({ id: 'motion.outcome.label' }) ||
             '',
           className: clsx({
-            'border-purple-400 bg-base-white text-purple-400':
+            'border-purple-400 bg-base-white text-purple-400 md:enabled:hover:border-purple-400 md:enabled:hover:bg-purple-400 md:enabled:hover:text-base-white':
               motionStateHistory?.hasPassed,
-            'border-negative-400 bg-base-white text-negative-400':
+            'border-negative-400 bg-base-white text-negative-400 md:enabled:hover:border-negative-400 md:enabled:hover:bg-negative-400 md:enabled:hover:text-base-white':
               motionStateHistory?.hasFailed ||
               motionStateHistory?.hasFailedNotFinalizable,
           }),
@@ -247,9 +247,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
               formatText({ id: 'motion.oppose.wins.label' })
             : formatText({ id: 'motion.outcome.label' }) || '',
           className: clsx('z-base', {
-            'border-purple-400 bg-base-white text-purple-400 lg:enabled:hover:border-purple-400 lg:enabled:hover:bg-purple-400 lg:enabled:hover:text-base-white':
+            'border-purple-400 bg-base-white text-purple-400 md:enabled:hover:border-purple-400 md:enabled:hover:bg-purple-400 md:enabled:hover:text-base-white':
               motionFinished && hasVotedMotionPassed,
-            'border-negative-400 bg-base-white text-negative-400 lg:enabled:hover:border-negative-400 lg:enabled:hover:bg-negative-400 lg:enabled:hover:text-base-white':
+            'border-negative-400 bg-base-white text-negative-400 md:enabled:hover:border-negative-400 md:enabled:hover:bg-negative-400 md:enabled:hover:text-base-white':
               motionFinished && !hasVotedMotionPassed,
           }),
           highlightedClassName: clsx({

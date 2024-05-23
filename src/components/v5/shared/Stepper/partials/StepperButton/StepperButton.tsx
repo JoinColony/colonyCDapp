@@ -49,9 +49,9 @@ const StepperButton: React.FC<StepperButtonProps> = ({
           py-1
           transition
           text-4
-          lg:enabled:hover:border-gray-900
-          lg:enabled:hover:bg-gray-900
-          lg:enabled:hover:text-base-white
+          md:enabled:hover:border-blue-400
+          md:enabled:hover:bg-blue-400
+          md:enabled:hover:text-base-white
         `,
         {
           'border-gray-900 bg-base-white text-gray-900':
