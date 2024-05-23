@@ -34,7 +34,7 @@ export type MultiSigActionTypes =
     >
   | ErrorActionType<ActionTypes.MULTISIG_SET_THRESHOLDS_ERROR, object>
   | UniqueActionTypeWithoutPayload<
-      ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD_SUCCESS,
+      ActionTypes.MULTISIG_SET_THRESHOLDS_SUCCESS,
       object
     >
   | UniqueActionType<
