@@ -1,3 +1,4 @@
+import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -12,6 +13,7 @@ import { getSafePollingInterval } from '~utils/queries.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
+import TxButton from '~v5/shared/Button/TxButton.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
@@ -138,6 +140,18 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 onSuccess={() => {
                   setExpectedStepKey(ExpenditureStep.Funding);
                 }}
+                loadingContent={
+                  <TxButton
+                    className="max-h-[2.5rem] w-full !text-md"
+                    rounded="s"
+                    text={{ id: 'button.pending' }}
+                    icon={
+                      <span className="ml-1.5 flex shrink-0">
+                        <SpinnerGap className="animate-spin" size={14} />
+                      </span>
+                    }
+                  />
+                }
                 text={formatText({
                   id: 'expenditure.reviewStage.confirmDetails.button',
                 })}
@@ -166,14 +180,26 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               id: 'expenditure.fundingStage.info',
             })}
             content={
-              <Button
-                className="w-full"
-                onClick={showFundingModal}
-                text={formatText({
-                  id: 'expenditure.fundingStage.button',
-                })}
-                loading={expectedStepKey === ExpenditureStep.Release}
-              />
+              expectedStepKey === ExpenditureStep.Release ? (
+                <TxButton
+                  className="w-full"
+                  rounded="s"
+                  text={{ id: 'button.pending' }}
+                  icon={
+                    <span className="ml-1.5 flex shrink-0">
+                      <SpinnerGap className="animate-spin" size={14} />
+                    </span>
+                  }
+                />
+              ) : (
+                <Button
+                  className="w-full"
+                  onClick={showFundingModal}
+                  text={formatText({
+                    id: 'expenditure.fundingStage.button',
+                  })}
+                />
+              )
             }
           />
         ) : (
@@ -198,14 +224,26 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               id: 'expenditure.releaseStage.info',
             })}
             content={
-              <Button
-                className="w-full"
-                onClick={showReleasePaymentModal}
-                text={formatText({
-                  id: 'expenditure.releaseStage.button',
-                })}
-                loading={expectedStepKey === ExpenditureStep.Payment}
-              />
+              expectedStepKey === ExpenditureStep.Payment ? (
+                <TxButton
+                  className="max-h-[2.5rem] w-full !text-md"
+                  rounded="s"
+                  text={{ id: 'button.pending' }}
+                  icon={
+                    <span className="ml-1.5 flex shrink-0">
+                      <SpinnerGap className="animate-spin" size={14} />
+                    </span>
+                  }
+                />
+              ) : (
+                <Button
+                  className="w-full"
+                  onClick={showReleasePaymentModal}
+                  text={formatText({
+                    id: 'expenditure.releaseStage.button',
+                  })}
+                />
+              )
             }
           />
         ) : (
