@@ -19,10 +19,8 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
-  getPayoutsWithSlotIds,
   createActionMetadataInDB,
-  adjustPayoutsAddresses,
-  getExpenditureValuesMulticallData,
+  getEditDraftExpenditureMulticallData,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -49,12 +47,7 @@ function* createExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
-  const { network } = colonyManager.networkClient;
-
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
-
-  const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(adjustedPayouts);
 
   const {
     makeExpenditure,
@@ -155,10 +148,10 @@ function* createExpenditure({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    const multicallData = getExpenditureValuesMulticallData({
-      colonyClient,
+    const multicallData = getEditDraftExpenditureMulticallData({
       expenditureId,
-      payoutsWithSlotIds,
+      payouts,
+      colonyClient,
       networkInverseFee,
     });
 
