@@ -19,9 +19,8 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
-  getPayoutsWithSlotIds,
   createActionMetadataInDB,
-  getExpenditureValuesMulticallData,
+  getEditDraftExpenditureMulticallData,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -50,8 +49,6 @@ function* createExpenditure({
   );
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
-
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   const {
     makeExpenditure,
@@ -152,10 +149,10 @@ function* createExpenditure({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    const multicallData = getExpenditureValuesMulticallData({
-      colonyClient,
+    const multicallData = getEditDraftExpenditureMulticallData({
       expenditureId,
-      payoutsWithSlotIds,
+      payouts,
+      colonyClient,
       networkInverseFee,
     });
 

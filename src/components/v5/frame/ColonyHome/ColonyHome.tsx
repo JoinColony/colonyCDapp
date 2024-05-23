@@ -14,6 +14,7 @@ import {
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
+import TmpAdvancedPayments from '~v5/payments/TmpAdvancedPayments.tsx';
 import Link from '~v5/shared/Link/index.ts';
 
 import Agreements from './partials/Agreements/index.ts';
@@ -44,8 +45,11 @@ const ColonyHome = () => {
           <TokenBalance />
         </div>
       </div>
-      <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-[39%_1fr]">
-        <div className="flex w-full flex-1 flex-col gap-6 sm:grid sm:grid-cols-2 sm:gap-[1.125rem] lg:flex lg:flex-col lg:gap-[1.125rem]">
+      <div className="mx-auto">
+        <TmpAdvancedPayments />
+      </div>
+      <div className="flex w-full flex-col gap-6 lg:grid lg:grid-cols-[39%_1fr]">
+        <div className="flex w-full flex-col gap-6 sm:grid sm:grid-cols-2 sm:gap-[1.125rem] lg:flex lg:flex-col lg:gap-[1.125rem]">
           <Objective />
           <ReputationChart />
           <Agreements />
