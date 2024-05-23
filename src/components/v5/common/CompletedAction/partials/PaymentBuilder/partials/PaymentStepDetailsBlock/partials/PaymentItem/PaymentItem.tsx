@@ -29,7 +29,7 @@ const PaymentItem: FC<PaymentItemProps> = ({ payouts }) => {
       <Numeral
         value={token.amount}
         decimals={tokenData?.decimals}
-        suffix={tokenData?.symbol}
+        suffix={` ${tokenData?.symbol}`}
       />
     ) : null;
   };
