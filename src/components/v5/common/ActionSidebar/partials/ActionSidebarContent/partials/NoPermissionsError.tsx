@@ -1,12 +1,11 @@
 import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
-import { useWatch } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import { useActiveActionType } from '~v5/common/ActionSidebar/hooks/useActiveActionType.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName =
@@ -22,9 +21,7 @@ const MSG = defineMessages({
 const NoPermissionsError = () => {
   const { formatMessage } = useIntl();
 
-  const actionType: Action | undefined = useWatch({
-    name: ACTION_TYPE_FIELD_NAME,
-  });
+  const actionType = useActiveActionType();
 
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();

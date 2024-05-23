@@ -1,6 +1,5 @@
 import { Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
-import { useWatch } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -10,7 +9,7 @@ import { canColonyBeUpgraded } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
+import { useActiveActionType } from '../hooks/useActiveActionType.ts';
 
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.PaymentBuilder]: 'button.createPayment',
@@ -37,9 +36,7 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
 };
 
 export const useSubmitButtonText = () => {
-  const selectedAction: Action | undefined = useWatch({
-    name: ACTION_TYPE_FIELD_NAME,
-  });
+  const selectedAction = useActiveActionType();
   const selectedActionText =
     selectedAction && SUBMIT_BUTTON_TEXT_MAP[selectedAction];
 
@@ -58,9 +55,7 @@ export const useSubmitButtonDisabled = () => {
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 
   const isNativeTokenUnlocked = !!colony.status?.nativeToken?.unlocked;
-  const selectedAction: Action | undefined = useWatch({
-    name: ACTION_TYPE_FIELD_NAME,
-  });
+  const selectedAction = useActiveActionType();
 
   switch (selectedAction) {
     case Action.UnlockToken:
@@ -74,9 +69,7 @@ export const useSubmitButtonDisabled = () => {
 
 export const useIsFieldDisabled = () => {
   const { extensionData } = useExtensionData(Extension.VotingReputation);
-  const selectedAction: Action | undefined = useWatch({
-    name: ACTION_TYPE_FIELD_NAME,
-  });
+  const selectedAction = useActiveActionType();
   const isExtensionEnabled =
     extensionData &&
     isInstalledExtensionData(extensionData) &&

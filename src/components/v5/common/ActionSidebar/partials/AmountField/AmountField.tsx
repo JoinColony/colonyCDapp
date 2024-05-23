@@ -33,6 +33,7 @@ const AmountField: FC<AmountFieldProps> = ({
   isDisabled,
   placeholder,
   tokenAddressFieldName = 'tokenAddress',
+  isTokenSelectionDisabled,
 }) => {
   const {
     field,
@@ -167,12 +168,12 @@ const AmountField: FC<AmountFieldProps> = ({
             {
               'text-gray-900': selectedToken?.symbol,
               'text-gray-500': !selectedToken?.symbol,
-              'md:hover:text-blue-400': !readonly,
+              'md:hover:text-blue-400': !readonly && !isTokenSelectionDisabled,
             },
           )}
           onClick={toggleTokenSelect}
           aria-label={formatText({ id: 'ariaLabel.selectToken' })}
-          disabled={readonly || isDisabled}
+          disabled={readonly || isDisabled || isTokenSelectionDisabled}
         >
           {selectedTokenContent}
         </button>

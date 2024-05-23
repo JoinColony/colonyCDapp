@@ -1,6 +1,8 @@
-export const translateAction = (action: string) => {
+import { type Action } from '~constants/actions.ts';
+
+export const translateAction = (action?: Action) => {
   const actionName = action
-    .split('-')
+    ?.split('-')
     .map((word, index) => {
       if (index === 0) {
         return word.toLowerCase();

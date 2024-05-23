@@ -1,7 +1,7 @@
 import { FilePlus, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
-import { useController, useFormContext, useWatch } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
@@ -14,6 +14,7 @@ import ActionFormRow from '../ActionFormRow/index.ts';
 
 import { ACTION_TYPE_FIELD_NAME, NON_RESETTABLE_FIELDS } from './consts.ts';
 import useActionsList from './hooks/useActionsList.ts';
+import { useActiveActionType } from './hooks/useActiveActionType.ts';
 import { translateAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionTypeSelect';
@@ -31,7 +32,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
     isSelectVisible,
     { toggle: toggleSelect, toggleOff: toggleSelectOff, registerContainerRef },
   ] = useToggle();
-  const actionType = useWatch({ name: ACTION_TYPE_FIELD_NAME });
+  const actionType = useActiveActionType();
   const {
     field: { onChange },
   } = useController({ name: ACTION_TYPE_FIELD_NAME });
