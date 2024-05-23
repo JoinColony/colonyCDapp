@@ -29,7 +29,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   disabled,
   buttonMode = 'secondarySolid',
   isTopSectionWithBackground,
-  shouldShowHeader = false,
+  showHeaderProps = {},
   ...props
 }) => {
   const { formatMessage } = useIntl();
@@ -60,8 +60,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         onClick={onClose}
         className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
-      {!isMobile && shouldShowHeader && (
-        <div className="fixed right-4 top-9 z-top">
+      {!isMobile && showHeaderProps && (
+        <div className={clsx(showHeaderProps.className, 'fixed z-top')}>
           <div className="relative">
             <UserNavigationWrapper
               txButtons={txButtons}
