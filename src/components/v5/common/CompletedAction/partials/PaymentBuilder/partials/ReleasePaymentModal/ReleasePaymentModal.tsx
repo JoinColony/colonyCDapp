@@ -60,7 +60,13 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} icon={Wallet} {...rest}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      shouldShowHeader
+      icon={Wallet}
+      {...rest}
+    >
       <Form
         className="flex h-full flex-col"
         onSubmit={handleFinalizeExpenditure}
