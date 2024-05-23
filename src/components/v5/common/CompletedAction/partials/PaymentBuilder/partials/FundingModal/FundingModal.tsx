@@ -196,7 +196,12 @@ const FundingModal: FC<FundingModalProps> = ({
   const validationSchema = getValidationSchema(selectedTeam?.nativeId, colony);
 
   return (
-    <Modal {...rest} onClose={onClose} icon={Wallet}>
+    <Modal
+      {...rest}
+      onClose={onClose}
+      showHeaderProps={{ className: 'right-6 top-[2.0625rem]' }}
+      icon={Wallet}
+    >
       <Form
         className="flex h-full flex-col"
         onSubmit={handleFundExpenditure}
