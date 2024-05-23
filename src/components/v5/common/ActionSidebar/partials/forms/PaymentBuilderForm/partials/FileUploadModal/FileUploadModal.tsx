@@ -72,7 +72,7 @@ const FileUploadModal: FC<FileUploadModalProps> = ({
         </p>
         <ExternalLink
           href={fileDownloadUrl}
-          download="expenditures_batch.csv"
+          download="colony_payment_template.csv"
           className="underline transition-colors text-3 hover:text-blue-400"
         >
           {formatText({ id: 'fileUploadModal.downloadTemplate' })}
