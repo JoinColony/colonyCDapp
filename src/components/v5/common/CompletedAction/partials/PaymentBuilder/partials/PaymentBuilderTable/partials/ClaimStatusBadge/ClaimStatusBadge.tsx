@@ -67,6 +67,7 @@ const ClaimStatusBadge: FC<ClaimStatusBadgeProps> = ({
   return (
     <PillsBase
       text={getPillLabelAndClassName().text}
+      isCapitalized={false}
       className={clsx(
         getPillLabelAndClassName().className,
         'whitespace-nowrap',
