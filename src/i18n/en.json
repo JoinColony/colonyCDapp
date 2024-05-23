@@ -225,6 +225,8 @@
     "transaction.ColonyClient.registerColonyLabel.description": "Create Colony Name",
     "transaction.ColonyClient.makeArbitraryTransaction.title": "Make arbitrary transaction",
     "transaction.ColonyClient.makeArbitraryTransaction.description": "Make arbitrary transaction",
+    "transaction.ColonyClient.installExtension.title": "Add Extension to Colony",
+    "transaction.ColonyClient.installExtension.description": "Add Extension to Colony",
     "transaction.ColonyClient.multicall.installExtensions.title": "Add Extensions to Colony",
     "transaction.ColonyClient.multicall.installExtensions.description": "Add Extensions to Colony",
     "transaction.TokenClient.setOwner.title": "Set Token Owner",
