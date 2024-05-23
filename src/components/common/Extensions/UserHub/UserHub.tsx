@@ -27,7 +27,7 @@ const MSG = defineMessages({
   },
   titleColonyOverview: {
     id: `${displayName}.titleColonyOverview`,
-    defaultMessage: 'Your Colony overview',
+    defaultMessage: 'Your overview',
   },
 });
 

@@ -1,4 +1,4 @@
-import { CoinVertical, Receipt, User } from '@phosphor-icons/react';
+import { CoinVertical, Receipt, Invoice } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
@@ -8,7 +8,7 @@ import { type UserHubTabList, UserHubTabs } from './types.ts';
 export const menuMessages = defineMessages({
   balance: {
     id: 'UserSubmenu.balance',
-    defaultMessage: 'Your balance',
+    defaultMessage: 'Balance',
   },
   stakes: {
     id: 'UserSubmenu.stakes',
@@ -25,7 +25,7 @@ export const tabList: UserHubTabList = [
     id: UserHubTabs.Balance,
     label: formatText(menuMessages.balance),
     value: UserHubTabs.Balance,
-    icon: User,
+    icon: Invoice,
   },
   {
     id: UserHubTabs.Stakes,
