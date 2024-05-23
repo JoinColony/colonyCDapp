@@ -91,7 +91,6 @@ const UserSelect: FC<UserSelectProps> = ({
 
   const userName = getUserName();
   const isUserAddressValid = isAddress(field.value);
-
   const toggler = (
     <>
       <button
