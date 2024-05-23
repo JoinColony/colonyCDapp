@@ -39,7 +39,7 @@
 }
 
 .menu :global(.select__option) {
-  @apply cursor-pointer rounded-e rounded-s p-2 text-gray-900 transition-all;
+  @apply cursor-pointer rounded-e rounded-s p-2 text-md font-normal text-gray-900 transition-all;
 }
 
 .menu :global(.select__option--is-selected) {
