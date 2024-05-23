@@ -816,6 +816,10 @@ enum ColonyActionType {
   """
   FINALIZE_EXPENDITURE_MOTION
   """
+  An action related to creating a streaming payment
+  """
+  CREATE_STREAMING_PAYMENT
+  """
   An action related to cancelling a streaming payment
   """
   CANCEL_STREAMING_PAYMENT
