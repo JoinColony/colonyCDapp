@@ -2,8 +2,8 @@ import React, { useState, type FC, useEffect } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { useGetColonyExpendituresQuery } from '~gql';
-import useToggle from '~hooks/useToggle/index.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -34,14 +34,14 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { user } = useAppContext();
   const { walletAddress } = user || {};
 
-  const [
+  const {
     isFundingModalOpen,
-    { toggleOn: showFundingModal, toggleOff: hideFundingModal },
-  ] = useToggle();
-  const [
-    isReleasePaymentModalOpen,
-    { toggleOn: showReleasePaymentModal, toggleOff: hideReleasePaymentModal },
-  ] = useToggle();
+    toggleOffFundingModal: hideFundingModal,
+    toggleOnFundingModal: showFundingModal,
+    isReleaseModalOpen: isReleasePaymentModalOpen,
+    toggleOffReleaseModal: hideReleasePaymentModal,
+    toggleOnReleaseModal: showReleasePaymentModal,
+  } = usePaymentBuilderContext();
 
   const { expenditureId } = action;
 
