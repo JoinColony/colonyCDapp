@@ -27,10 +27,10 @@ const calculateTotalFunds = async (
           isError = true;
         }
 
-        const balanceInWeiToToken = new Decimal(balance).div(10 ** decimals);
+        const balanceInWeiToEth = new Decimal(balance).div(10 ** decimals);
 
         return (await total).add(
-          new Decimal(balanceInWeiToToken).mul(currentPrice ?? 0),
+          new Decimal(balanceInWeiToEth).mul(currentPrice ?? 0),
         );
       },
       Promise.resolve(new Decimal(0)),
