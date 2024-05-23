@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import React, { useEffect, type FC } from 'react';
@@ -6,9 +7,12 @@ import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
+import { type ExpenditureFundMotionPayload } from '~redux/types/actions/motion.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -19,8 +23,8 @@ import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.t
 
 import {
   fundingDecisionMethodDescriptions,
-  fundingDecisionMethodItems,
   getValidationSchema,
+  getFundingDecisionMethodItems,
 } from './consts.ts';
 import TokenItem from './TokenItem.tsx';
 import {
@@ -51,6 +55,12 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
     trigger,
   } = useFormContext();
   const method = watch('decisionMethod');
+
+  const { isVotingReputationEnabled } = useEnabledExtensions();
+
+  const fundingDecisionMethodItems = getFundingDecisionMethodItems(
+    isVotingReputationEnabled,
+  );
 
   useEffect(() => {
     trigger('fundingItems');
@@ -180,11 +190,26 @@ const FundingModal: FC<FundingModalProps> = ({
     success: ActionTypes.EXPENDITURE_FUND_SUCCESS,
   });
 
-  const handleFundExpenditure = async () => {
+  const fundExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FUND,
+    error: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleFundExpenditure = async ({ decisionMethod, ...restValues }) => {
     try {
       if (!expenditure) {
         return;
       }
+
+      const motionPayload: ExpenditureFundMotionPayload = {
+        colony,
+        expenditure,
+        motionDomainId: Id.RootDomain,
+        fromDomainFundingPotId: Id.RootDomain,
+        fromDomainId: Id.RootDomain,
+      };
 
       const payload: FundExpenditurePayload = {
         colonyAddress: colony.colonyAddress,
@@ -192,9 +217,17 @@ const FundingModal: FC<FundingModalProps> = ({
         fromDomainFundingPotId: 1,
       };
 
-      await fundExpenditure(payload);
+      if (
+        decisionMethod &&
+        decisionMethod.value === DecisionMethod.Reputation
+      ) {
+        await fundExpenditureViaMotion(motionPayload);
+      } else {
+        await fundExpenditure(payload);
+      }
 
       onSuccess();
+
       onClose();
     } catch (err) {
       onClose();
