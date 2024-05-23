@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
-import { truncateTokenSymbol } from '~utils/strings.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
@@ -22,7 +22,7 @@ const TokenFilters: FC = () => {
           tokenAddress={token.tokenAddress}
           tokenAvatarSrc={token.avatar ?? undefined}
         />
-        {truncateTokenSymbol(token.symbol)}
+        {multiLineTextEllipsis(token.symbol, 5)}
       </div>
     ),
     name: token?.tokenAddress || '',

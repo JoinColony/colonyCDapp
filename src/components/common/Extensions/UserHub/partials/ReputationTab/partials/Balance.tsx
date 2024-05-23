@@ -13,7 +13,7 @@ import { useGetUserTokenBalanceQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { truncateTokenSymbol } from '~utils/strings.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -85,7 +85,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
             className={reputationTabClasses.numeral}
             value={tokenBalanceData?.balance ?? 0}
             decimals={tokenDecimals}
-            suffix={` ${truncateTokenSymbol(nativeToken?.symbol) || 'CLNY'}`}
+            suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? '', 5) || 'CLNY'}`}
             appearance={{ size: 'small' }}
           />
         </div>
@@ -127,7 +127,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               className={reputationTabClasses.numeral}
               value={tokenBalanceData?.activeBalance ?? 0}
               decimals={tokenDecimals}
-              suffix={` ${truncateTokenSymbol(nativeToken?.symbol) || 'CLNY'}`}
+              suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? '', 5) || 'CLNY'}`}
               appearance={{ size: 'small' }}
             />
           </div>
@@ -178,7 +178,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               className={reputationTabClasses.numeral}
               value={tokenBalanceData?.lockedBalance ?? 0}
               decimals={tokenDecimals}
-              suffix={` ${truncateTokenSymbol(nativeToken?.symbol) || 'CLNY'}`}
+              suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? '', 5) || 'CLNY'}`}
               appearance={{ size: 'small' }}
             />
           </div>

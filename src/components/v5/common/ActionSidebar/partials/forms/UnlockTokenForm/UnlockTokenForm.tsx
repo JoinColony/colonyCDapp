@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { truncateTokenSymbol } from '~utils/strings.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -35,7 +35,7 @@ const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         title={formatText({ id: 'actionSidebar.token' })}
       >
         <span className="text-md text-gray-900">
-          {name} ({truncateTokenSymbol(symbol)})
+          {name} ({multiLineTextEllipsis(symbol, 5)})
         </span>
       </ActionFormRow>
       <DecisionMethodField />

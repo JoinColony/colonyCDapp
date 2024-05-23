@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
-import { truncateTokenSymbol } from '~utils/strings.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 
 import { type TokenSymbolProps } from './types.ts';
 
@@ -24,7 +24,7 @@ const TokenSymbol: FC<TokenSymbolProps> = ({ address, disabled = false }) => {
 
   return (
     <span className={clsx('text-md', { 'text-gray-300': disabled })}>
-      {truncateTokenSymbol(symbol)}
+      {multiLineTextEllipsis(symbol, 5)}
     </span>
   );
 };

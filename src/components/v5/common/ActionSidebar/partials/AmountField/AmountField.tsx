@@ -12,7 +12,7 @@ import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { truncateTokenSymbol } from '~utils/strings.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
@@ -112,7 +112,7 @@ const AmountField: FC<AmountFieldProps> = ({
           'text-gray-300': isDisabled,
         })}
       >
-        {truncateTokenSymbol(activeToken.symbol)}
+        {multiLineTextEllipsis(activeToken.symbol, 5)}
       </span>
     </div>
   ) : (
@@ -226,7 +226,7 @@ const AmountField: FC<AmountFieldProps> = ({
                               tokenAvatarSrc={colonyToken.avatar ?? undefined}
                             />
                             <span className="text-md">
-                              {truncateTokenSymbol(colonyToken.symbol)}
+                              {multiLineTextEllipsis(colonyToken.symbol, 5)}
                             </span>
                           </div>
                           {tokenBalance && (
@@ -241,7 +241,7 @@ const AmountField: FC<AmountFieldProps> = ({
                                   colonyToken?.decimals,
                                 )}
                               />{' '}
-                              {truncateTokenSymbol(colonyToken.symbol)}
+                              {multiLineTextEllipsis(colonyToken.symbol, 5)}
                             </span>
                           )}
                         </button>
