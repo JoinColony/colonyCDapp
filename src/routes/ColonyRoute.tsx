@@ -9,6 +9,7 @@ import ColonyCreateModalProvider from '~context/ColonyCreateModalContext/ColonyC
 import ColonyDecisionProvider from '~context/ColonyDecisionContext/ColonyDecisionContextProvider.tsx';
 import MemberContextProvider from '~context/MemberContext/MemberContextProviderWithSearchAndFilter.tsx';
 import MemberModalProvider from '~context/MemberModalContext/MemberModalContextProvider.tsx';
+import PaymentBuilderContextProvider from '~context/PaymentBuilderContext/PaymentBuilderContextProvider.tsx';
 import TokensModalContextProvider from '~context/TokensModalContext/TokensModalContextProvider.tsx';
 import UserTokenBalanceProvider from '~context/UserTokenBalanceContext/UserTokenBalanceContextProvider.tsx';
 import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
@@ -87,9 +88,11 @@ const ColonyRoute = () => {
               <MemberModalProvider>
                 <ColonyCreateModalProvider>
                   <TokensModalContextProvider>
-                    <ColonyLayout>
-                      <Outlet />
-                    </ColonyLayout>
+                    <PaymentBuilderContextProvider>
+                      <ColonyLayout>
+                        <Outlet />
+                      </ColonyLayout>
+                    </PaymentBuilderContextProvider>
                   </TokensModalContextProvider>
                 </ColonyCreateModalProvider>
               </MemberModalProvider>
