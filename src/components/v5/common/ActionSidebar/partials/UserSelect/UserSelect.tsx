@@ -52,7 +52,9 @@ const UserSelect: FC<UserSelectProps> = ({
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
-  >([isUserSelectVisible]);
+  >([isUserSelectVisible], {
+    top: 8,
+  });
 
   const selectedUserOption = (options || usersOptions).options.find(
     (option) => option.value === field.value,

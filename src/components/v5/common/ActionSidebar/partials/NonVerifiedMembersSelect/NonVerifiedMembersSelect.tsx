@@ -51,6 +51,7 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
     withMaxHeight: false,
     withAutoTopPlacement: true,
     withLeftPosition: !isMobile,
+    top: 8,
   });
   const { getValues, setValue } = useFormContext();
   const checkedItems = getValues('members')
