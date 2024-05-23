@@ -22,7 +22,7 @@ import {
   uploadAnnotation,
   getPayoutsWithSlotIds,
   adjustPayoutsAddresses,
-  getExpenditureValuesMulticallData,
+  getEditDraftExpenditureMulticallData,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -196,10 +196,10 @@ function* createStakedExpenditure({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    const multicallData = getExpenditureValuesMulticallData({
-      colonyClient,
+    const multicallData = getEditDraftExpenditureMulticallData({
       expenditureId,
-      payoutsWithSlotIds,
+      payouts: payoutsWithSlotIds,
+      colonyClient,
       networkInverseFee,
     });
 
