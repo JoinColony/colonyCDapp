@@ -84,7 +84,6 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
           </div>
         ))}
       </div>
-
       <div className="mb-8">
         <DecisionMethodSelect
           options={fundingDecisionMethodItems}

@@ -90,8 +90,11 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                   name="decisionMethod"
                 />
                 {method && method.value && (
-                  <div className="mt-4 rounded border border-warning-200 bg-warning-100 px-6 py-3">
+                  <div className="mt-4 rounded border border-gray-300 bg-base-bg p-[1.125rem]">
                     <p className="text-sm text-gray-900">
+                      <span className="font-medium">
+                        {formatText({ id: 'fundingModal.note' })}
+                      </span>
                       {releaseDecisionMethodDescriptions[method.value]}
                     </p>
                   </div>

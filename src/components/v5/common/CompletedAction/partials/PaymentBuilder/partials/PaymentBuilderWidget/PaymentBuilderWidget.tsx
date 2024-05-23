@@ -138,6 +138,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 onSuccess={() => {
                   setExpectedStepKey(ExpenditureStep.Funding);
                 }}
+                useTxLoader
                 text={formatText({
                   id: 'expenditure.reviewStage.confirmDetails.button',
                 })}
