@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 
 import { MotionState } from '~utils/colonyMotions.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
-import ExpenditureBadge from '~v5/common/ActionSidebar/partials/ExpenditureBadge/ExpenditureBadge.tsx';
+import ExpenditureActionStatusBadge from '~v5/common/ActionSidebar/partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 
 import { type ActionBadgeProps } from './types.ts';
@@ -19,9 +19,9 @@ const ActionBadge: FC<ActionBadgeProps> = ({
 
   const isLoading = loading || loadingExpenditure;
 
-  return expenditureId ? (
-    <ExpenditureBadge
-      status={expenditure?.status}
+  return expenditure ? (
+    <ExpenditureActionStatusBadge
+      expenditure={expenditure}
       className={clsx(className, {
         skeleton: isLoading,
       })}
