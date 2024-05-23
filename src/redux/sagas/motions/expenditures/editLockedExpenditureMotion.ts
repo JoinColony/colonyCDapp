@@ -19,7 +19,7 @@ import {
 import {
   getColonyManager,
   initiateTransaction,
-  getMulticallDataForUpdatedPayouts,
+  getEditLockedExpenditureMulticallData,
   uploadAnnotation,
   getResolvedPayouts,
 } from '~redux/sagas/utils/index.ts';
@@ -88,7 +88,7 @@ function* editLockedExpenditureMotion({
     );
 
     const encodedMulticallData: string[] =
-      yield getMulticallDataForUpdatedPayouts({
+      yield getEditLockedExpenditureMulticallData({
         expenditure,
         payouts: resolvedPayouts,
         colonyClient,
