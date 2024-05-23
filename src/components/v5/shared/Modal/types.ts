@@ -22,5 +22,6 @@ export interface ModalProps extends ModalBaseProps {
   closeMessage?: string;
   disabled?: boolean;
   buttonMode?: ButtonMode;
+  isTopSectionWithBackground?: boolean;
   shouldShowHeader?: boolean;
 }
