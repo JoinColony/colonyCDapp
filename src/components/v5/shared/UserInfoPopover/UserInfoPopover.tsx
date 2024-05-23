@@ -142,7 +142,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
-              classNames="max-w-[20rem]"
+              classNames="max-w-[20rem] w-full"
               withTooltipStyles={false}
               cardProps={{
                 rounded: 's',
