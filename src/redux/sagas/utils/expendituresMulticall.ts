@@ -8,7 +8,7 @@ import { type BigNumberish, utils, BigNumber } from 'ethers';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
 
-import { getPayoutAmount } from './expenditures.ts';
+import { getPayoutAmount, getPayoutsWithSlotIds } from './expenditures.ts';
 
 export const toB32 = (input: BigNumberish) =>
   utils.hexZeroPad(utils.hexlify(input), 32);
@@ -24,9 +24,10 @@ const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
 
 /**
  * Helper function returning an array of encoded multicall data containing transactions
- * needed to update expenditure payouts
+ * needed to update expenditure payouts using `setExpenditureState`
+ * This allows non-owners to edit expenditures or owners to edit locked expenditures
  */
-export const getMulticallDataForUpdatedPayouts = async (
+export const getEditLockedExpenditureMulticallData = async (
   expenditure: Expenditure,
   payouts: ExpenditurePayoutFieldValue[],
   colonyClient: AnyColonyClient,
@@ -109,14 +110,17 @@ export const getMulticallDataForUpdatedPayouts = async (
 
 /**
  * Helper function returning an array of encoded multicall data to set
- * expenditure values when creating or editing expenditures
+ * expenditure values when creating or editing expenditure as its owner
+ * The expenditure must be in draft status
  */
-export const getExpenditureValuesMulticallData = (
-  colonyClient: any,
-  expenditureId: any,
-  payoutsWithSlotIds: ExpenditurePayoutFieldValue[],
+export const getEditDraftExpenditureMulticallData = (
+  expenditureId: number,
+  payouts: ExpenditurePayoutFieldValue[],
+  colonyClient: AnyColonyClient,
   networkInverseFee: string,
 ) => {
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
+
   const encodedMulticallData: string[] = [];
   encodedMulticallData.push(
     colonyClient.interface.encodeFunctionData('setExpenditureRecipients', [
