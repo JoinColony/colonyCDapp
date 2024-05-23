@@ -1,6 +1,7 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { useCallback, type FC } from 'react';
 import { useController } from 'react-hook-form';
+import { type Props as ReactSelectProps, type SingleValue } from 'react-select';
 
 import { formatText } from '~utils/intl.ts';
 import {
@@ -8,13 +9,17 @@ import {
   SelectBase,
 } from '~v5/common/Fields/Select/index.ts';
 
-import { type DecisionMethodSelectProps } from './types.ts';
+import {
+  type DecisionMethodOption,
+  type DecisionMethodSelectProps,
+} from './types.ts';
 
 import styles from './DecisionMethodSelect.module.css';
 
 const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
   options,
   name,
+  onChange: onChangeProp,
 }) => {
   const {
     field: { onChange, value },
@@ -22,6 +27,20 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
   } = useController({
     name,
   });
+
+  const handleChange = useCallback<
+    Exclude<ReactSelectProps<DecisionMethodOption>['onChange'], undefined>
+  >(
+    (newValue, actionMeta) => {
+      if (Array.isArray(newValue)) {
+        return;
+      }
+
+      onChange(newValue as SingleValue<DecisionMethodOption>, actionMeta);
+      onChangeProp?.(newValue as SingleValue<DecisionMethodOption>, actionMeta);
+    },
+    [onChange, onChangeProp],
+  );
 
   return (
     <>
@@ -46,7 +65,7 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
         placeholder={formatText({
           id: 'decisionMethodSelect.placeholder',
         })}
-        onChange={onChange}
+        onChange={handleChange}
         value={value.value}
         defaultValue={value.value}
       />
