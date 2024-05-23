@@ -1,4 +1,4 @@
-import { Wallet } from '@phosphor-icons/react';
+import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import React, { useEffect, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -12,6 +12,7 @@ import { Form } from '~shared/Fields/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+import TxButton from '~v5/shared/Button/TxButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
@@ -83,7 +84,6 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
           </div>
         ))}
       </div>
-
       <div className="mb-8">
         <DecisionMethodSelect
           options={fundingDecisionMethodItems}
@@ -112,14 +112,22 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
           {formatText({ id: 'button.cancel' })}
         </Button>
         <div className="flex w-full justify-center">
-          <Button
-            mode="primarySolid"
-            isFullSize
-            type="submit"
-            loading={isSubmitting}
-          >
-            {formatText({ id: 'fundingModal.accept' })}
-          </Button>
+          {isSubmitting ? (
+            <TxButton
+              className="max-h-[2.5rem] w-full !text-md"
+              rounded="s"
+              text={{ id: 'button.pending' }}
+              icon={
+                <span className="ml-1.5 flex shrink-0">
+                  <SpinnerGap className="animate-spin" size={14} />
+                </span>
+              }
+            />
+          ) : (
+            <Button mode="primarySolid" isFullSize type="submit">
+              {formatText({ id: 'fundingModal.accept' })}
+            </Button>
+          )}
         </div>
       </div>
     </>
