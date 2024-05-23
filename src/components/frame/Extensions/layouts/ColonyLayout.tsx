@@ -19,6 +19,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/ColonyCreatedModalContext.ts';
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
@@ -68,6 +69,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   // const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
   //   useState(false);
   const { isTokensModalOpen } = useTokensModalContext();
+  const { isFundingModalOpen, isReleaseModalOpen } = usePaymentBuilderContext();
 
   const { calamityBannerItems, canUpgrade } = useCalamityBannerInfo();
 
@@ -92,7 +94,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const getUserNavigation = useCallback(
     (isHidden?: boolean) =>
-      !isTokensModalOpen ? (
+      !isTokensModalOpen || !isFundingModalOpen || !isReleaseModalOpen ? (
         <UserNavigationWrapper
           txButtons={txButtons}
           userHub={userHub}
@@ -115,7 +117,13 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           }
         />
       ) : null,
-    [isTokensModalOpen, txButtons, userHub],
+    [
+      isFundingModalOpen,
+      isReleaseModalOpen,
+      isTokensModalOpen,
+      txButtons,
+      userHub,
+    ],
   );
 
   return (
