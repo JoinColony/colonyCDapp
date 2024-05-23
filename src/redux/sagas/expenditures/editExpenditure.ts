@@ -2,7 +2,9 @@ import { type AnyColonyClient, ClientType } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context';
+import { ExpenditureStatus } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 
 import {
   type ChannelDefinition,
@@ -17,8 +19,8 @@ import {
   uploadAnnotation,
   getColonyManager,
   getResolvedPayouts,
-  getExpenditureValuesMulticallData,
-  getPayoutsWithSlotIds,
+  getEditDraftExpenditureMulticallData,
+  getEditLockedExpenditureMulticallData,
 } from '../utils/index.ts';
 
 export type EditExpenditurePayload =
@@ -31,6 +33,7 @@ function* editExpenditureAction({
     payouts,
     networkInverseFee,
     annotationMessage,
+    userAddress,
   },
   meta,
 }: Action<ActionTypes.EXPENDITURE_EDIT>) {
@@ -53,15 +56,6 @@ function* editExpenditureAction({
   );
 
   try {
-    const resolvedPayoutsWithSlotIds = getPayoutsWithSlotIds(resolvedPayouts);
-
-    const multicallData = getExpenditureValuesMulticallData({
-      colonyClient,
-      expenditureId: expenditure.nativeId,
-      payoutsWithSlotIds: resolvedPayoutsWithSlotIds,
-      networkInverseFee,
-    });
-
     yield fork(createTransaction, editExpenditure.id, {
       context: ClientType.ColonyClient,
       methodName: 'multicall',
@@ -71,7 +65,7 @@ function* editExpenditureAction({
         id: meta.id,
         index: 0,
       },
-      params: [multicallData],
+      ready: false,
     });
 
     if (annotationMessage) {
@@ -94,6 +88,29 @@ function* editExpenditureAction({
         annotateEditExpenditure.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
+    }
+
+    if (
+      expenditure.ownerAddress === userAddress &&
+      expenditure.status === ExpenditureStatus.Draft
+    ) {
+      const multicallData = yield getEditDraftExpenditureMulticallData({
+        expenditureId: expenditure.nativeId,
+        payouts: resolvedPayouts,
+        colonyClient,
+        networkInverseFee,
+      });
+
+      yield transactionSetParams(editExpenditure.id, [multicallData]);
+    } else {
+      const multicallData = yield getEditLockedExpenditureMulticallData({
+        expenditure,
+        payouts: resolvedPayouts,
+        colonyClient,
+        networkInverseFee,
+      });
+
+      yield transactionSetParams(editExpenditure.id, [multicallData]);
     }
 
     yield initiateTransaction(editExpenditure.id);
