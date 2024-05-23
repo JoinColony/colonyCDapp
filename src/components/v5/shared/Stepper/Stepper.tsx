@@ -111,7 +111,11 @@ function Stepper<TKey extends React.Key>({
         >
           {items.map(
             ({ key, content, isSkipped, isHidden, heading }, index) => {
-              const { decor, ...restHeading } = heading;
+              const {
+                decor,
+                className: headingClassName,
+                ...restHeading
+              } = heading;
               const isNextStepOptional = items[index + 1]?.isOptional;
               const isNextStepSkipped = items[index + 1]?.isSkipped;
               const itemDisabled = index > activeItemIndex || isSkipped;
@@ -191,7 +195,7 @@ function Stepper<TKey extends React.Key>({
                           setActiveStepKey(key);
                         }
                       }}
-                      className="relative z-base"
+                      className={clsx(headingClassName, 'relative z-base')}
                       disabled={itemDisabled}
                       isHighlighted={index === openItemIndex && !isSkipped}
                       {...restHeading}
