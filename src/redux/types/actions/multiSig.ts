@@ -17,19 +17,24 @@ export enum RootMultiSigMethodNames {
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
 }
+type DomainThreshold = {
+  skillId: number;
+  threshold: number;
+};
 
 export type MultiSigActionTypes =
   | UniqueActionType<
-      ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD,
+      ActionTypes.MULTISIG_SET_THRESHOLDS,
       {
         colonyAddress: Address;
-        threshold: number;
+        globalThreshold: number;
+        domainThresholds: DomainThreshold[];
       },
       object
     >
-  | ErrorActionType<ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD_ERROR, object>
+  | ErrorActionType<ActionTypes.MULTISIG_SET_THRESHOLDS_ERROR, object>
   | UniqueActionTypeWithoutPayload<
-      ActionTypes.MULTISIG_SET_GLOBAL_THRESHOLD_SUCCESS,
+      ActionTypes.MULTISIG_SET_THRESHOLDS_SUCCESS,
       object
     >
   | UniqueActionType<
