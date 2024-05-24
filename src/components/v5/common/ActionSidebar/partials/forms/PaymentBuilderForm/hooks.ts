@@ -23,6 +23,7 @@ import { type ActionFormBaseProps } from '../../../types.ts';
 
 import {
   allTokensAmountValidation,
+  delayGreaterThanZeroValidation,
   getPaymentBuilderPayload,
 } from './utils.tsx';
 
@@ -94,6 +95,9 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                     ),
                   tokenAddress: string().required(),
                   delay: number()
+                    .test('less-than-zero', '', (value, context) =>
+                      delayGreaterThanZeroValidation(value, context),
+                    )
                     .max(99999, ({ path }) => {
                       const index = getLastIndexFromPath(path);
                       if (index === undefined) {
