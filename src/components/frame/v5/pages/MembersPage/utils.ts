@@ -42,6 +42,18 @@ export const getMembersList = (
         ? getRole(allRolesFiltered)
         : undefined;
 
+    const allMultiSigRoles = getAllUserRoles(colony, contributorAddress, true);
+    const allMultiSigRolesFiltered =
+      hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
+        ? allMultiSigRoles
+        : allMultiSigRoles?.filter(
+            (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
+          );
+    const permissionMultiSigRole =
+      hasRoleInTeam && allMultiSigRolesFiltered?.length
+        ? getRole(allMultiSigRolesFiltered)
+        : undefined;
+
     return {
       user,
       walletAddress: contributorAddress,
@@ -53,6 +65,7 @@ export const getMembersList = (
           })?.reputationPercentage
         : colonyReputationPercentage,
       role: permissionRole,
+      multiSigRole: permissionMultiSigRole,
       contributorType: type ?? undefined,
     };
   });
