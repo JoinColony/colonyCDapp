@@ -7,4 +7,5 @@ export interface DomainWithPermissionsAndReputation {
   reputationPercentage: number;
   reputationRaw: string;
   permissions: AvailablePermission[];
+  multiSigPermissions: AvailablePermission[];
 }

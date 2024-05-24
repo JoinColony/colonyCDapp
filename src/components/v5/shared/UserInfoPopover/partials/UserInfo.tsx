@@ -1,5 +1,5 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import { Star, User } from '@phosphor-icons/react';
+import { Signature, Star, User } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -23,6 +23,7 @@ const UserInfo: FC<UserInfoProps> = ({
   domains,
   userDetails,
   additionalContent,
+  showMultiSigPermissions = false,
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
   const isTopContributorType = contributorType === ContributorType.Top;
@@ -99,11 +100,15 @@ const UserInfo: FC<UserInfoProps> = ({
                   domainId,
                   domainName,
                   permissions,
+                  multiSigPermissions,
                   reputationPercentage,
                   reputationRaw,
                 }) => {
-                  const finalPermissions = permissions?.length
-                    ? permissions
+                  const relevantPermissions = showMultiSigPermissions
+                    ? multiSigPermissions
+                    : permissions;
+                  const finalPermissions = relevantPermissions?.length
+                    ? relevantPermissions
                     : domains
                         .find(({ nativeId }) => nativeId === Id.RootDomain)
                         ?.permissions.filter(
@@ -127,7 +132,7 @@ const UserInfo: FC<UserInfoProps> = ({
                         {permissionRole && (
                           <PermissionsBadge
                             text={permissionRole.name}
-                            icon={User} // @TODO: add UserTree icon for multiSig
+                            icon={!showMultiSigPermissions ? User : Signature}
                           />
                         )}
 
