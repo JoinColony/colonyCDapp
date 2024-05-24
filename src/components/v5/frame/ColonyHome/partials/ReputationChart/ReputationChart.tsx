@@ -75,7 +75,7 @@ const ReputationChart = () => {
           actionTitle={formatText({
             id: 'dashboard.team.widget.createTeam',
           })}
-          className="px-[1.8rem] py-[2.3rem]"
+          className="h-full p-2"
           onClick={openCreateNewTeam}
         />
       );

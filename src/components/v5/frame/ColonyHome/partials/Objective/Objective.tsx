@@ -67,7 +67,7 @@ const Objective = () => {
             actionTitle={formatText({
               id: 'dashboard.objective.widget.createObjective',
             })}
-            className="p-[2.7rem]"
+            className="h-full p-6"
             onClick={openManageObjectives}
           />
         )
