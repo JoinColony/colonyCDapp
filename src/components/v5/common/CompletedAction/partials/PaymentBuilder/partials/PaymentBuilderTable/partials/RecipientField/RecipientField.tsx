@@ -6,7 +6,7 @@ import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import { type RecipientFieldProps } from './types.ts';
 
-const RecipientField: FC<RecipientFieldProps> = ({ address }) => {
+const RecipientField: FC<RecipientFieldProps> = ({ address, isLoading }) => {
   const { totalMembers, loading } = useMemberContext();
   const recipientMember = totalMembers.find(
     (member) => member.contributorAddress === address,
@@ -14,7 +14,7 @@ const RecipientField: FC<RecipientFieldProps> = ({ address }) => {
 
   return (
     <>
-      {!loading && (
+      {!loading && !isLoading ? (
         <div className="flex items-center">
           <UserPopover
             size={18}
@@ -28,6 +28,11 @@ const RecipientField: FC<RecipientFieldProps> = ({ address }) => {
               'text-gray-900': recipientMember?.isVerified,
             })}
           />
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+          <div className="h-[1.125rem] w-[1.125rem] overflow-hidden rounded-full skeleton" />
+          <div className="h-4 w-16 overflow-hidden rounded skeleton" />
         </div>
       )}
     </>
