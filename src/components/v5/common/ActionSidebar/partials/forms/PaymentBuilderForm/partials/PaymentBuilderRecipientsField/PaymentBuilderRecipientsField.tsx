@@ -124,6 +124,14 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
     fieldArrayMethods.remove();
   };
 
+  const isDataEmpty = value.every(
+    (item) =>
+      !item.recipient &&
+      !item.amount &&
+      !item.delay &&
+      item.tokenAddress === nativeToken?.tokenAddress,
+  );
+
   return (
     <div>
       <h5 className="mb-3 mt-6 text-2">
@@ -195,6 +203,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
         isOpen={isUploadModalOpen}
         onUpload={onUpload}
         onClose={toggleUploadModalOff}
+        isDataEmpty={isDataEmpty}
       />
     </div>
   );

@@ -1793,7 +1793,7 @@
     "fileUploadModal.uploadFile": "Upload CSV File",
     "fileUploadModal.downloadTemplate": "Download .CSV template",
     "fileUploadModal.warningImportant": "Important: ",
-    "fileUploadModal.warningText": "Uploading another file will replace all current rows.",
+    "fileUploadModal.warningText": "Uploading a CSV file now will replace all existing rows.",
     "view.extension": "View extension",
     "calendar.from": "From",
     "calendar.to": "To",
