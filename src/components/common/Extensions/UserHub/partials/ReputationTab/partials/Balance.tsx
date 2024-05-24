@@ -85,7 +85,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
             className={reputationTabClasses.numeral}
             value={tokenBalanceData?.balance ?? 0}
             decimals={tokenDecimals}
-            suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? '', 5) || 'CLNY'}`}
+            suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
             appearance={{ size: 'small' }}
           />
         </div>
@@ -127,7 +127,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               className={reputationTabClasses.numeral}
               value={tokenBalanceData?.activeBalance ?? 0}
               decimals={tokenDecimals}
-              suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? '', 5) || 'CLNY'}`}
+              suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
               appearance={{ size: 'small' }}
             />
           </div>
@@ -178,7 +178,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               className={reputationTabClasses.numeral}
               value={tokenBalanceData?.lockedBalance ?? 0}
               decimals={tokenDecimals}
-              suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? '', 5) || 'CLNY'}`}
+              suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
               appearance={{ size: 'small' }}
             />
           </div>
