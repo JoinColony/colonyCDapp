@@ -141,11 +141,6 @@ export const transactionEstimateGas = (id: string): AllActions => ({
   meta: { id },
 });
 
-export const transactionRetry = (id: string): AllActions => ({
-  type: ActionTypes.TRANSACTION_RETRY,
-  meta: { id },
-});
-
 export const transactionUpdateGas = (
   id: string,
   data: { gasLimit?: string; gasPrice?: string },

@@ -434,6 +434,19 @@ export const transactionSetParams = async (
   });
 };
 
+// Set the transaction back to pending, remove any error
+export const transactionRetry = async (id: string) => {
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
+  const input = {
+    id,
+    from: walletAddress,
+    status: TransactionStatus.Pending,
+    error: null,
+  };
+  return updateTransaction(input, input);
+};
+
 export const failPendingTransactions = async () => {
   const wallet = getContext(ContextModule.Wallet);
   const userAddress = utils.getAddress(wallet.address);
