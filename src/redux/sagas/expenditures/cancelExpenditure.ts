@@ -132,7 +132,7 @@ function* cancelDraftExpenditure({
     });
   }
 
-  yield initiateTransaction({ id: meta.id });
+  yield initiateTransaction(meta.id);
 }
 
 function* cancelLockedExpenditure({
@@ -164,7 +164,7 @@ function* cancelLockedExpenditure({
     params,
   });
 
-  yield initiateTransaction({ id: meta.id });
+  yield initiateTransaction(meta.id);
 }
 
 export default function* cancelExpenditureSaga() {

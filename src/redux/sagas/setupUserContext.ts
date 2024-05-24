@@ -23,6 +23,7 @@ import expendituresSagas from './expenditures/index.ts';
 import extensionSagas from './extensions/index.ts';
 import motionSagas from './motions/index.ts';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
+import setupTransactionsSaga from './transactions/transactionsToDb.ts';
 import { disconnectWallet, setupUsersSagas } from './users/index.ts';
 import { getGasPrices, putError } from './utils/index.ts';
 import { getBasicWallet, getWallet } from './wallet/index.ts';
@@ -58,6 +59,7 @@ function* setupContextDependentSagas() {
     // call(vestingSagas),
     call(setupUsersSagas),
     call(expendituresSagas),
+    call(setupTransactionsSaga),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
      * all the app's routes
