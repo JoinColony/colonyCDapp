@@ -9,6 +9,7 @@ import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import TokenInfo from '~shared/TokenInfo/index.ts';
 import { type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
@@ -63,7 +64,7 @@ const NativeTokenPill = ({
             'text-blue-400': isTokenInfoShown,
           })}
         >
-          {token.symbol}
+          {multiLineTextEllipsis(token.symbol, 5)}
         </span>
         {isLocked && (
           <Tooltip
