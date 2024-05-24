@@ -23,7 +23,6 @@ import { takeFrom, getCanUserSendMetatransactions } from '../utils/index.ts';
 
 import estimateGasCost from './estimateGasCost.ts';
 import sendTransaction from './sendTransaction.ts';
-import { syncTransactionWithDb } from './transactionsToDb.ts';
 
 export function* createTransaction(id: string, config: TxConfig) {
   const { address: walletAddress } = getContext(ContextModule.Wallet);
@@ -57,8 +56,6 @@ export function* createTransaction(id: string, config: TxConfig) {
     title: config.title,
     titleValues: config.titleValues,
   });
-
-  yield fork(syncTransactionWithDb, id);
 
   if (shouldSendMetatransaction) {
     yield put(

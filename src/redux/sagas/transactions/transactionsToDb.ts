@@ -1,8 +1,7 @@
 import { type ApolloQueryResult } from '@apollo/client';
 import { type TxOverrides } from '@colony/colony-js';
 import { utils } from 'ethers';
-import { type Channel, buffers, channel } from 'redux-saga';
-import { call, cancel, fork, put, take } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -66,21 +65,6 @@ function* updateTransactionInDb({
 
   try {
     switch (type) {
-      case ActionTypes.TRANSACTION_READY: {
-        // This is handled in transactionSetReady
-        break;
-      }
-
-      case ActionTypes.TRANSACTION_ADD_IDENTIFIER: {
-        // This is handled in transactionAddIdentifier
-        break;
-      }
-
-      case ActionTypes.TRANSACTION_ADD_PARAMS: {
-        // This is handled in transactionAddParams
-        break;
-      }
-
       case ActionTypes.TRANSACTION_PENDING: {
         onTransactionPending(id);
         yield updateTransaction({
@@ -271,84 +255,21 @@ function* updateTransactionInDb({
   }
 }
 
-function* listenForTransactionUpdates(
-  id: string,
-  actionChannel: Channel<TransactionActionTypes>,
-) {
-  const transactionUpdateActions = new Set([
-    ActionTypes.TRANSACTION_ADD_IDENTIFIER,
-    ActionTypes.TRANSACTION_ADD_PARAMS,
-    ActionTypes.TRANSACTION_RETRY,
-    ActionTypes.TRANSACTION_SEND,
-    ActionTypes.TRANSACTION_SENT,
-    ActionTypes.TRANSACTION_RECEIPT_RECEIVED,
-    ActionTypes.TRANSACTION_SUCCEEDED,
-    ActionTypes.TRANSACTION_ERROR,
-    ActionTypes.TRANSACTION_CANCEL,
-    ActionTypes.TRANSACTION_LOAD_RELATED,
-    ActionTypes.TRANSACTION_HASH_RECEIVED,
-    ActionTypes.TRANSACTION_READY,
-    ActionTypes.TRANSACTION_PENDING,
-    ActionTypes.TRANSACTION_GAS_UPDATE,
-  ]);
-
-  while (true) {
-    const updateAction = yield take(
-      (action) =>
-        transactionUpdateActions.has(action.type) && action.meta.id === id,
-    );
-    yield put(actionChannel, updateAction);
-    /*
-     * Once we reach a terminal state, i.e. the transaction has either succeeded, failed, or been cancelled,
-     * we can stop listening for updates.
-     */
-    if (
-      updateAction.type === ActionTypes.TRANSACTION_SUCCEEDED ||
-      updateAction.type === ActionTypes.TRANSACTION_ERROR ||
-      updateAction.type === ActionTypes.TRANSACTION_CANCEL
-    ) {
-      yield cancel();
-    }
-  }
-}
-
-function* handleTransactionUpdates(
-  actionChannel: Channel<TransactionActionTypes>,
-) {
-  while (true) {
-    const updateAction = yield take(actionChannel);
-    yield call(updateTransactionInDb, updateAction);
-    /*
-     * Once we reach a terminal state, i.e. the transaction has either succeeded, failed, or been cancelled,
-     * we can stop processing updates.
-     */
-    if (
-      updateAction.type === ActionTypes.TRANSACTION_SUCCEEDED ||
-      updateAction.type === ActionTypes.TRANSACTION_ERROR ||
-      updateAction.type === ActionTypes.TRANSACTION_CANCEL
-    ) {
-      actionChannel.close();
-      yield cancel();
-    }
-  }
-}
-
-export function* syncTransactionWithDb(id: string) {
-  try {
-    // Create a queue for action updates
-    const actionChannel = channel(
-      buffers.expanding<TransactionActionTypes>(10),
-    );
-    // Add actions to the queue in a separate process
-    yield fork(listenForTransactionUpdates, id, actionChannel);
-
-    // Once the tx exists, process updates to it.
-    // Ensures we don't miss updates or try to update a tx that doesn't yet exist in the db.
-    yield call(handleTransactionUpdates, actionChannel);
-
-    // Cancel the process once we've finished processing updates to the transaction.
-    yield cancel();
-  } catch (e) {
-    console.error(`Unable to sync transaction ${id} with db. Reason: `, e);
-  }
+export default function* setupTransactionsSaga() {
+  yield takeEvery(
+    [
+      // TRANSACTION_READY, TRANSACTION_ADD_IDENTIFIER, TRANSACTION_ADD_PARAMS are handled separately
+      ActionTypes.TRANSACTION_SEND,
+      ActionTypes.TRANSACTION_SENT,
+      ActionTypes.TRANSACTION_RECEIPT_RECEIVED,
+      ActionTypes.TRANSACTION_SUCCEEDED,
+      ActionTypes.TRANSACTION_ERROR,
+      ActionTypes.TRANSACTION_CANCEL,
+      ActionTypes.TRANSACTION_LOAD_RELATED,
+      ActionTypes.TRANSACTION_HASH_RECEIVED,
+      ActionTypes.TRANSACTION_PENDING,
+      ActionTypes.TRANSACTION_GAS_UPDATE,
+    ],
+    updateTransactionInDb,
+  );
 }
