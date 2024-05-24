@@ -11,6 +11,7 @@ export interface UserInfoProps {
   additionalContent?: JSX.Element | null;
   userDetails: JSX.Element;
   contributorType?: ContributorType;
+  showMultiSigPermissions?: boolean;
 }
 
 export interface UserInfoPopoverProps {
@@ -20,4 +21,5 @@ export interface UserInfoPopoverProps {
   popperOptions?: PopperOptions;
   withVerifiedBadge?: boolean;
   children?: ((user?: UserFragment) => React.ReactNode) | React.ReactNode;
+  showMultiSigPermissions?: boolean;
 }
