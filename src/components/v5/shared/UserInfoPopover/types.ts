@@ -12,6 +12,7 @@ export interface UserInfoProps {
   additionalContent?: JSX.Element | null;
   userDetails: JSX.Element;
   contributorType?: ContributorType;
+  showMultiSigPermissions?: boolean;
 }
 
 export type UserInfoPopoverProps = PropsWithChildren<{
@@ -20,4 +21,5 @@ export type UserInfoPopoverProps = PropsWithChildren<{
   user?: User | null;
   popperOptions?: PopperOptions;
   withVerifiedBadge?: boolean;
+  showMultiSigPermissions?: boolean;
 }>;

@@ -10,6 +10,7 @@ import {
   useSetPageBreadcrumbs,
   useSetPageHeadingTitle,
 } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import {
   COLONY_MULTISIG_ROUTE,
@@ -25,16 +26,21 @@ const displayName = 'frame.Extensions.pages.PermissionsPage';
 
 const PermissionsPage: FC = () => {
   const navigate = useNavigate();
+  const { isMultiSigEnabled } = useEnabledExtensions();
   const { pathname } = useLocation();
   const resolvedPermissionsPath = useResolvedPath(COLONY_PERMISSIONS_ROUTE);
   const resolvedMultisigPath = useResolvedPath(COLONY_MULTISIG_ROUTE);
   const [activeTab, setActiveTab] = useState(PermissionType.Individual);
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
-  const { itemsByRole, isLoading } = useGetMembersForPermissions();
+  const { itemsByRole, itemsByMultiSigRole, isLoading } =
+    useGetMembersForPermissions();
   const individualMembersCount = Object.values(itemsByRole).reduce(
     (acc, members) => acc + members.length,
     0,
   );
+  const individualMembersWithMultiSigCount = Object.values(
+    itemsByMultiSigRole,
+  ).reduce((acc, members) => acc + members.length, 0);
 
   useEffect(() => {
     if (pathname === resolvedPermissionsPath.pathname) {
@@ -69,16 +75,18 @@ const PermissionsPage: FC = () => {
           content: <Outlet />,
           notificationNumber: isLoading ? undefined : individualMembersCount,
         },
-        // {
-        //   id: PermissionType.MultiSig,
-        //   title: formatText({ id: 'permissionsPage.multisig' }),
-        //   content: (
-        //     <PermissionsPageContent>
-        //       <Outlet />
-        //     </PermissionsPageContent>
-        //   ),
-        //   notificationNumber: individualMembersCount,
-        // },
+        ...(isMultiSigEnabled
+          ? [
+              {
+                id: PermissionType.MultiSig,
+                title: formatText({ id: 'permissionsPage.multisig' }),
+                content: <Outlet />,
+                notificationNumber: isLoading
+                  ? undefined
+                  : individualMembersWithMultiSigCount,
+              },
+            ]
+          : []),
       ]}
     />
   );
