@@ -19,6 +19,7 @@ const SimpleMemberCard: FC<SimpleMemberCardProps> = ({
   userAddress,
   meatBallMenuProps,
   showInheritedLabel,
+  showMultiSigPermissions = false,
 }) => {
   const { header, start, end } = splitAddress(userAddress);
   const userName = user?.profile?.displayName || `${header}${start}...${end}`;
@@ -32,6 +33,7 @@ const SimpleMemberCard: FC<SimpleMemberCardProps> = ({
           placement: 'bottom-start',
         }}
         className="flex min-w-0 flex-1 flex-grow items-center text-gray-900"
+        showMultiSigPermissions={showMultiSigPermissions}
       >
         <UserAvatar
           userAvatarSrc={user?.profile?.avatar ?? undefined}
