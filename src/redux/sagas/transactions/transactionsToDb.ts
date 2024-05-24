@@ -97,17 +97,6 @@ function* updateTransactionInDb({
         break;
       }
 
-      case ActionTypes.TRANSACTION_SEND:
-      case ActionTypes.TRANSACTION_RETRY: {
-        yield updateTransaction({
-          id,
-          error: null,
-          status: TransactionStatus.Ready,
-          from: walletAddress,
-        });
-        break;
-      }
-
       case ActionTypes.TRANSACTION_HASH_RECEIVED: {
         const { blockHash, blockNumber, hash } =
           payload as TransactionHashReceivedPayload;

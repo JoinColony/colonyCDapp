@@ -7,11 +7,12 @@ import { TransactionStatus } from '~gql';
 import {
   transactionEstimateGas,
   transactionCancel,
-  transactionRetry,
 } from '~redux/actionCreators/index.ts';
 import { type TransactionId } from '~redux/immutable/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type ExtendedClientType } from '~types/transactions.ts';
+
+import { transactionRetry } from '../../../../../../../state/transactionState.ts';
 
 export const useGroupedTransactionContent = ({
   id,
@@ -69,8 +70,8 @@ export const useGroupedTransactionContent = ({
     }${methodName}.${methodContext ? `${methodContext}.` : ''}title`,
   };
 
-  const handleRetryAction = () => {
-    dispatch(transactionRetry(id));
+  const handleRetryAction = async () => {
+    await transactionRetry(id);
     dispatch(transactionEstimateGas(id));
   };
 
