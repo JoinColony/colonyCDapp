@@ -9151,7 +9151,7 @@ export type UpdateTransactionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'Transaction', id: string, identifier?: string | null, params?: string | null, status: TransactionStatus, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null } | null };
+export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'Transaction', deleted?: boolean | null, id: string, identifier?: string | null, params?: string | null, status: TransactionStatus, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null } | null };
 
 export type CreateUniqueUserMutationVariables = Exact<{
   input: CreateUniqueUserInput;
@@ -11378,6 +11378,7 @@ export type CreateTransactionMutationOptions = Apollo.BaseMutationOptions<Create
 export const UpdateTransactionDocument = gql`
     mutation UpdateTransaction($input: UpdateTransactionInput!) {
   updateTransaction(input: $input) {
+    deleted
     error {
       type
       message
