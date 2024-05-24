@@ -1596,6 +1596,8 @@
     "errors.amount.notEnoughTokensIn": "Not enough tokens in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
     "errors.amount.greaterThanZero": "Amount must be greater than zero",
     "errors.amount.greaterThanZeroIn": "Amount must be greater than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
+    "errors.amount.smallerThanZero": "Claim delay can't be smaller than zero",
+    "errors.amount.smallerThanZeroIn": "Claim delay can't be smaller than zero in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
     "errors.amount.smallerThan": "Claim delay must be smaller than {max}",
     "errors.amount.smallerThanIn": "Claim delay must be smaller than {max} in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
     "errors.delay.max": "Claim delay must be less than or equal to {max} in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
