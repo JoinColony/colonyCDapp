@@ -94,6 +94,7 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
                       user={item.data.member.user ?? undefined}
                       meatBallMenuProps={item.data.meatBallMenuProps}
                       showInheritedLabel={item.data.member.isRoleInherited}
+                      showMultiSigPermissions={isMultiSig}
                     />
                   );
                 })}

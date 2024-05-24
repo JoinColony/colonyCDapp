@@ -50,21 +50,6 @@ export const getMembersList = (
     const teamReputationPercentage = reputation?.items?.find(
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
-
-    const parentRole = allPermissions.length
-      ? getRole(
-          allPermissions.filter((role) =>
-            selectedTeamId !== Id.RootDomain && !isAllTeamsSelected
-              ? role !== ColonyRole.Root && role !== ColonyRole.Recovery
-              : true,
-          ),
-        )
-      : undefined;
-
-    const roleTest = permissionsInTeam.length
-      ? getRole(permissionsInTeam)
-      : parentRole;
-
     const allMultiSigRoles = getAllUserRoles(
       extractColonyRoles(colony.roles),
       contributorAddress,
@@ -80,6 +65,20 @@ export const getMembersList = (
       hasRoleInTeam && allMultiSigRolesFiltered?.length
         ? getRole(allMultiSigRolesFiltered)
         : undefined;
+
+    const parentRole = allPermissions.length
+      ? getRole(
+          allPermissions.filter((role) =>
+            selectedTeamId !== Id.RootDomain && !isAllTeamsSelected
+              ? role !== ColonyRole.Root && role !== ColonyRole.Recovery
+              : true,
+          ),
+        )
+      : undefined;
+
+    const roleTest = permissionsInTeam.length
+      ? getRole(permissionsInTeam)
+      : parentRole;
 
     return {
       user,
