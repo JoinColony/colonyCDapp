@@ -82,10 +82,10 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
         key: 'add-token',
         onClick: () =>
           fieldArrayMethods.insert(index + 1, {
-            recipient: undefined,
+            recipient: '',
             amount: '',
             tokenAddress: nativeToken?.tokenAddress || '',
-            delay: undefined,
+            delay: '',
           }),
         label: formatText({ id: 'button.addRow' }),
         icon: Coins,
@@ -144,7 +144,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
               '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.125rem]': isTablet,
               '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
                 !isTablet,
-              '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
+              '[&_table]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
                 !!fieldState.error,
             },
           )}
@@ -170,10 +170,10 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           isFullSize={isMobile}
           onClick={() => {
             fieldArrayMethods.append({
-              recipient: undefined,
+              recipient: '',
               amount: '',
               tokenAddress: nativeToken?.tokenAddress || '',
-              delay: undefined,
+              delay: '',
             });
           }}
           disabled={hasNoDecisionMethods || data.length === 400}

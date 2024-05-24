@@ -1,4 +1,7 @@
 import { Id } from '@colony/colony-js';
+import { unformatNumeral } from 'cleave-zen';
+import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
@@ -21,10 +24,11 @@ import {
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
+import { CLAIM_DELAY_MAX_VALUE } from './partials/ClaimDelayField/consts.ts';
 import {
   allTokensAmountValidation,
   getPaymentBuilderPayload,
-} from './utils.tsx';
+} from './utils.ts';
 
 export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
@@ -93,24 +97,32 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                       }),
                     ),
                   tokenAddress: string().required(),
-                  delay: number()
-                    .max(99999, ({ path }) => {
-                      const index = getLastIndexFromPath(path);
-                      if (index === undefined) {
+                  delay: string()
+                    .test(
+                      'is-bigger-than-max',
+                      ({ path }) => {
+                        const index = getLastIndexFromPath(path);
+
                         return formatText(
+                          { id: 'errors.delay.max' },
                           {
-                            id: 'errors.amount.smallerThan',
-                          },
-                          {
-                            max: 99999,
+                            paymentIndex: index === undefined ? 1 : index + 1,
+                            max: CLAIM_DELAY_MAX_VALUE,
                           },
                         );
-                      }
-                      return formatText(
-                        { id: 'errors.amount.smallerThanIn' },
-                        { paymentIndex: index + 1, max: 99999 },
-                      );
-                    })
+                      },
+                      (value) => {
+                        if (!value) {
+                          return true;
+                        }
+
+                        const unformattedValue = unformatNumeral(value);
+
+                        return BigNumber.from(
+                          moveDecimal(unformattedValue, 4),
+                        ).lte(moveDecimal(CLAIM_DELAY_MAX_VALUE, 4));
+                      },
+                    )
                     .required(({ path }) => {
                       const index = getLastIndexFromPath(path);
                       if (index === undefined) {

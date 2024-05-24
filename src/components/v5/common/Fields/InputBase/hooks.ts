@@ -8,6 +8,7 @@ import { addWidthProperty } from './utils.ts';
 export const useAdjustInputWidth = (
   autoWidth: boolean,
   externalInputRef: React.ForwardedRef<HTMLInputElement>,
+  maxWidth?: number,
 ) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -26,7 +27,12 @@ export const useAdjustInputWidth = (
 
     const input = inputRef.current;
     const changeHandler = () => {
-      input.style.width = `${getInputTextWidth(input, { usePlaceholderAsFallback: true })}px`;
+      input.style.width = `${Math.min(
+        getInputTextWidth(input, {
+          usePlaceholderAsFallback: true,
+        }),
+        maxWidth || 120,
+      )}px`;
     };
 
     input.addEventListener('input', changeHandler);
@@ -36,7 +42,7 @@ export const useAdjustInputWidth = (
       input.removeEventListener('input', changeHandler);
       input.style.width = '';
     };
-  }, [autoWidth]);
+  }, [autoWidth, maxWidth]);
 
   return inputRef;
 };

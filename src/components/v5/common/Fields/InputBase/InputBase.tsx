@@ -31,6 +31,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       maxLength,
       onBlur,
       shouldFocus,
+      maxWidth,
       ...rest
     },
     ref,
@@ -44,7 +45,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       stateClassNamesProp,
     );
 
-    const inputRef = useAdjustInputWidth(autoWidth, ref);
+    const inputRef = useAdjustInputWidth(autoWidth, ref, maxWidth);
     const id = idProp || defaultId;
 
     useLayoutEffect(() => {
@@ -74,6 +75,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
         id={id}
         value={value}
         onBlur={onBlur}
+        maxLength={maxLength}
         {...rest}
       />
     );

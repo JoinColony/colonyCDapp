@@ -130,7 +130,8 @@ const Form = <FormData extends FieldValues>({
   return (
     <AdditionalFormOptionsContextProvider value={{ readonly }}>
       <FormProvider {...formHelpers}>
-        <form className={className} onSubmit={submitHandler}>
+        {/* noValidate attribute added to hide native browser validation */}
+        <form className={className} onSubmit={submitHandler} noValidate>
           {typeof children === 'function' ? children(formHelpers) : children}
         </form>
       </FormProvider>

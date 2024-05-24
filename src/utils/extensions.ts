@@ -95,3 +95,12 @@ export const convertPeriodToSeconds = (periodInHours: number) =>
     .mul(3600)
     .toFixed(0, Decimal.ROUND_HALF_UP)
     .toString();
+
+/**
+ * This function converts seconds to hours.
+ */
+export const convertPeriodToHours = (periodInSeconds: string) =>
+  new Decimal(periodInSeconds)
+    .div(3600)
+    .toDecimalPlaces(4, Decimal.ROUND_HALF_UP)
+    .toString();
