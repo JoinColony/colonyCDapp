@@ -1815,7 +1815,7 @@
     "teamsPage.filter.filterButton": "All filters",
     "teamsPage.empty.title": "No results to display",
     "teamsPage.empty.description": "There are teams in the Colony that match your search. Try searching again",
-    "expenditure.description.placeholder": "Payment with multiple recipients and tokens by {initiator}",
+    "expenditure.description.placeholder": "Payment to multiple recipients by {initiator}",
     "expenditure.createStage.label": "Create",
     "expenditure.cancelStage.label": "Cancel",
     "expenditure.reviewStage.label": "Review",
