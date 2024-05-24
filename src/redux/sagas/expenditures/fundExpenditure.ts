@@ -120,7 +120,7 @@ function* fundExpenditure({
 
     yield put(transactionPending(fundMulticall.id));
 
-    yield initiateTransaction({ id: fundMulticall.id });
+    yield initiateTransaction(fundMulticall.id);
 
     const {
       payload: {

@@ -182,16 +182,16 @@ function* stakeMotion({
     ]);
 
     if (activateTokens) {
-      yield initiateTransaction({ id: approve.id });
+      yield initiateTransaction(approve.id);
 
       yield waitForTxResult(approve.channel);
 
-      yield initiateTransaction({ id: deposit.id });
+      yield initiateTransaction(deposit.id);
 
       yield waitForTxResult(deposit.channel);
     }
 
-    yield initiateTransaction({ id: approveStake.id });
+    yield initiateTransaction(approveStake.id);
 
     yield waitForTxResult(approveStake.channel);
 
@@ -231,7 +231,7 @@ function* stakeMotion({
       siblings,
     ]);
 
-    yield initiateTransaction({ id: stakeMotionTransaction.id });
+    yield initiateTransaction(stakeMotionTransaction.id);
 
     const {
       payload: {

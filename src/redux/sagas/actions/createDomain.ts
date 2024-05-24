@@ -131,7 +131,7 @@ function* createDomainAction({
       parentId,
     ]);
 
-    yield initiateTransaction({ id: createDomain.id });
+    yield initiateTransaction(createDomain.id);
 
     const {
       payload: {

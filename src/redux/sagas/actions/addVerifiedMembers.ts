@@ -90,7 +90,7 @@ function* addVerifiedMembersAction({
       JSON.stringify(getAddVerifiedMembersOperation(members)),
     ]);
 
-    yield initiateTransaction({ id: addVerifiedMembers.id });
+    yield initiateTransaction(addVerifiedMembers.id);
 
     const {
       payload: {

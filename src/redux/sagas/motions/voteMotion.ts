@@ -88,7 +88,7 @@ function* voteMotion({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    yield initiateTransaction({ id: voteMotionTransaction.id });
+    yield initiateTransaction(voteMotionTransaction.id);
 
     yield waitForTxResult(voteMotionTransaction.channel);
 

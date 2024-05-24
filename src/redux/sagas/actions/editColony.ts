@@ -146,7 +146,7 @@ function* editColonyAction({
      */
     yield transactionSetParams(editColony.id, ['.']);
 
-    yield initiateTransaction({ id: editColony.id });
+    yield initiateTransaction(editColony.id);
 
     const {
       payload: {

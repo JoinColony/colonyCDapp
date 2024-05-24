@@ -226,8 +226,7 @@ function* colonyCreate({
       '', // store colonies on chain without a name
       '', // we aren't using ipfs to store metadata in the CDapp
     ]);
-
-    yield initiateTransaction({ id: createColony.id });
+    yield initiateTransaction(createColony.id);
 
     const {
       payload: { hash: colonyCreationTransactionHash },
@@ -331,7 +330,7 @@ function* colonyCreate({
 
     if (setOwner) {
       yield transactionSetParams(setOwner.id, [colonyAddress]);
-      yield initiateTransaction({ id: setOwner.id });
+      yield initiateTransaction(setOwner.id);
       yield waitForTxResult(setOwner.channel);
     }
 
@@ -448,7 +447,7 @@ function* deployExtensions(
   // );
 
   yield transactionSetParams(installExtensions.id, [installMulticallData]);
-  yield initiateTransaction({ id: installExtensions.id });
+  yield initiateTransaction(installExtensions.id);
   yield waitForTxResult(installExtensions.channel);
 
   /*
@@ -535,7 +534,7 @@ function* deployExtensions(
 
   yield transactionSetParams(setExtensionsRoles.id, [setRolesMulticallData]);
 
-  yield initiateTransaction({ id: setExtensionsRoles.id });
+  yield initiateTransaction(setExtensionsRoles.id);
   yield waitForTxResult(setExtensionsRoles.channel);
 
   /**
@@ -543,7 +542,9 @@ function* deployExtensions(
    */
   // yield put(transactionPending(enableStakedExpenditure.id));
 
-  // yield transactionSetParams(enableStakedExpenditure.id, [DEFAULT_STAKE_FRACTION]);
+  // yield put(
+  //   transactionAddParams(enableStakedExpenditure.id, [DEFAULT_STAKE_FRACTION]),
+  // );
 
   // yield initiateTransaction({ id: enableStakedExpenditure.id });
   // yield waitForTxResult(enableStakedExpenditure.channel);

@@ -34,7 +34,7 @@ export function* extensionInstall({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     const { type } = yield waitForTxResult(txChannel);
 

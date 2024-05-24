@@ -127,7 +127,7 @@ function* createMoveFundsAction({
       tokenAddress,
     ]);
 
-    yield initiateTransaction({ id: moveFunds.id });
+    yield initiateTransaction(moveFunds.id);
 
     const {
       payload: {

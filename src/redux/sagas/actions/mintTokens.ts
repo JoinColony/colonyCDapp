@@ -100,7 +100,7 @@ function* createMintTokensAction({
       );
     }
 
-    yield initiateTransaction({ id: mintTokens.id });
+    yield initiateTransaction(mintTokens.id);
 
     const {
       payload: {
@@ -108,7 +108,7 @@ function* createMintTokensAction({
       },
     } = yield waitForTxResult(mintTokens.channel);
 
-    yield initiateTransaction({ id: claimColonyFunds.id });
+    yield initiateTransaction(claimColonyFunds.id);
 
     yield waitForTxResult(claimColonyFunds.channel);
 

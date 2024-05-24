@@ -107,7 +107,7 @@ function* cancelStakedExpenditureAction({
       );
     }
 
-    yield initiateTransaction({ id: cancelStakedExpenditure.id });
+    yield initiateTransaction(cancelStakedExpenditure.id);
 
     const {
       payload: {

@@ -147,9 +147,7 @@ function* claimAllMotionRewards({
     );
 
     yield all(
-      Object.keys(channels).map((id) =>
-        initiateTransaction({ id: channels[id].id }),
-      ),
+      Object.keys(channels).map((id) => initiateTransaction(channels[id].id)),
     );
 
     yield all(

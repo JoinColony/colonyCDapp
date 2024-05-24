@@ -76,7 +76,7 @@ export function* uploadAnnotation({
 
   yield transactionSetParams(txChannel.id, [txHash, ipfsHash]);
 
-  yield initiateTransaction({ id: txChannel.id });
+  yield initiateTransaction(txChannel.id);
 
   yield waitForTxResult(txChannel.channel);
 }

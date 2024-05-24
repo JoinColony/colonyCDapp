@@ -136,7 +136,7 @@ function* createExpenditure({
       );
     }
 
-    yield initiateTransaction({ id: makeExpenditure.id });
+    yield initiateTransaction(makeExpenditure.id);
 
     const {
       payload: {
@@ -191,7 +191,7 @@ function* createExpenditure({
     });
 
     yield transactionSetParams(setExpenditureValues.id, [multicallData]);
-    yield initiateTransaction({ id: setExpenditureValues.id });
+    yield initiateTransaction(setExpenditureValues.id);
     yield waitForTxResult(setExpenditureValues.channel);
 
     if (customActionTitle) {
@@ -207,7 +207,7 @@ function* createExpenditure({
         expenditureId,
         true,
       ]);
-      yield initiateTransaction({ id: setExpenditureStaged.id });
+      yield initiateTransaction(setExpenditureStaged.id);
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 

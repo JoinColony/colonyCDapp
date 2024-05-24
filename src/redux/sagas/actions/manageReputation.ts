@@ -132,7 +132,7 @@ function* manageReputationAction({
       ]);
     }
 
-    yield initiateTransaction({ id: manageReputation.id });
+    yield initiateTransaction(manageReputation.id);
 
     const {
       payload: {

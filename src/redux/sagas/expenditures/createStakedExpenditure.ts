@@ -136,7 +136,7 @@ function* createStakedExpenditure({
     }
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
-    yield initiateTransaction({ id: approveStake.id });
+    yield initiateTransaction(approveStake.id);
     yield waitForTxResult(approveStake.channel);
 
     // Find a chill skill index as a proof the extension has permissions in the selected domain
@@ -177,7 +177,7 @@ function* createStakedExpenditure({
         ActionTypes.TRANSACTION_CREATED,
       );
     }
-    yield initiateTransaction({ id: makeExpenditure.id });
+    yield initiateTransaction(makeExpenditure.id);
 
     const {
       payload: {
@@ -200,7 +200,7 @@ function* createStakedExpenditure({
         isStaged,
       }),
     );
-    yield initiateTransaction({ id: setExpenditureValues.id });
+    yield initiateTransaction(setExpenditureValues.id);
     yield waitForTxResult(setExpenditureValues.channel);
 
     if (isStaged) {
@@ -212,7 +212,7 @@ function* createStakedExpenditure({
         expenditureId,
         true,
       ]);
-      yield initiateTransaction({ id: setExpenditureStaged.id });
+      yield initiateTransaction(setExpenditureStaged.id);
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 

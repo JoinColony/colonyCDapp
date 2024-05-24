@@ -159,7 +159,7 @@ function* createPaymentAction({
       0,
     ]);
 
-    yield initiateTransaction({ id: paymentAction.id });
+    yield initiateTransaction(paymentAction.id);
 
     const {
       payload: {
