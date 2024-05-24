@@ -354,17 +354,23 @@ export const addTransactionToDb = async (
 };
 
 export const updateTransaction = async (
-  input: UpdateTransactionMutationVariables['input'],
+  input: Omit<UpdateTransactionMutationVariables['input'], 'from'>,
   optimisticResponse?: UpdateTransactionMutation['updateTransaction'],
 ) => {
   const apollo = getContext(ContextModule.ApolloClient);
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
+
   const mutationOpts: MutationOptions<
     UpdateTransactionMutation,
     UpdateTransactionMutationVariables
   > = {
     mutation: UpdateTransactionDocument,
     variables: {
-      input,
+      input: {
+        ...input,
+        from: walletAddress,
+      },
     },
   };
   if (optimisticResponse) {
@@ -375,6 +381,7 @@ export const updateTransaction = async (
         error: null,
         identifier: null,
         params: null,
+        deleted: false,
         ...optimisticResponse,
       },
     };
@@ -384,6 +391,71 @@ export const updateTransaction = async (
     UpdateTransactionMutation,
     UpdateTransactionMutationVariables
   >(mutationOpts);
+};
+
+export const deleteTransaction = async (id: string) => {
+  const apollo = getContext(ContextModule.ApolloClient);
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
+  await apollo.mutate<
+    UpdateTransactionMutation,
+    UpdateTransactionMutationVariables
+  >({
+    mutation: UpdateTransactionDocument,
+    variables: {
+      input: {
+        id,
+        from: walletAddress,
+        deleted: true,
+      },
+    },
+    optimisticResponse: {
+      updateTransaction: {
+        __typename: 'Transaction',
+        id,
+        // null values for optimistic response
+        error: null,
+        identifier: null,
+        params: null,
+        status: TransactionStatus.Pending,
+      },
+    },
+    update: (cache, { data }) => {
+      const newTx = data?.updateTransaction;
+
+      if (!newTx) {
+        return;
+      }
+
+      cache.updateQuery<
+        GetUserTransactionsQuery,
+        GetUserTransactionsQueryVariables
+      >(
+        {
+          query: GetUserTransactionsDocument,
+          variables: {
+            userAddress: walletAddress,
+            limit: TX_PAGE_SIZE,
+          },
+        },
+        (result) => {
+          if (!result?.getTransactionsByUser) {
+            return result;
+          }
+
+          return {
+            ...result,
+            getTransactionsByUser: {
+              ...result.getTransactionsByUser,
+              items: result.getTransactionsByUser.items.filter(
+                (tx) => tx?.id !== id,
+              ),
+            },
+          };
+        },
+      );
+    },
+  });
 };
 
 // Update the transaction status to ready in the database (important before sending it!)
@@ -468,7 +540,6 @@ export const failPendingTransactions = async () => {
       return updateTransaction(
         {
           id: tx.id,
-          from: userAddress,
           status: TransactionStatus.Failed,
         },
         // Optimisitc response, for quick UI updates

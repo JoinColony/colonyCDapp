@@ -25,6 +25,7 @@ interface TransactionRecordProps {
   context: ClientType | ExtendedClientType;
   createdAt: Date;
   deployedContractAddress?: string;
+  deleted?: boolean;
   error?: TransactionError;
   eventData?: object;
   from: string;

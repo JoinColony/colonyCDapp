@@ -25,6 +25,7 @@ import {
 import { notNull } from '~utils/arrays/index.ts';
 
 import {
+  deleteTransaction,
   fetchTransaction,
   updateTransaction,
 } from '../../../state/transactionState.ts';
@@ -60,8 +61,6 @@ function* updateTransactionInDb({
   payload,
 }: TransactionActionTypes & { payload?: any }) {
   const apollo = getContext(ContextModule.ApolloClient);
-  const wallet = getContext(ContextModule.Wallet);
-  const walletAddress = utils.getAddress(wallet.address);
 
   try {
     switch (type) {
@@ -70,7 +69,6 @@ function* updateTransactionInDb({
         yield updateTransaction({
           id,
           status: TransactionStatus.Pending,
-          from: walletAddress,
         });
 
         break;
@@ -81,7 +79,6 @@ function* updateTransactionInDb({
         yield updateTransaction({
           id,
           loadingRelated: loading,
-          from: walletAddress,
         });
         break;
       }
@@ -92,7 +89,6 @@ function* updateTransactionInDb({
           id,
           gasLimit: gasLimit?.toString(),
           gasPrice: gasPrice?.toString(),
-          from: walletAddress,
         });
         break;
       }
@@ -105,7 +101,6 @@ function* updateTransactionInDb({
           blockHash,
           blockNumber,
           hash,
-          from: walletAddress,
         });
         break;
       }
@@ -130,7 +125,6 @@ function* updateTransactionInDb({
         yield updateTransaction({
           id,
           options,
-          from: walletAddress,
         });
         break;
       }
@@ -140,7 +134,6 @@ function* updateTransactionInDb({
         yield updateTransaction({
           id,
           status: TransactionStatus.Pending,
-          from: walletAddress,
         });
         break;
       }
@@ -150,7 +143,6 @@ function* updateTransactionInDb({
         yield updateTransaction({
           id,
           receipt: JSON.stringify(receipt),
-          from: walletAddress,
         });
         break;
       }
@@ -165,7 +157,6 @@ function* updateTransactionInDb({
           status: TransactionStatus.Succeeded,
           deployedContractAddress,
           eventData: JSON.stringify(eventData ?? {}),
-          from: walletAddress,
         });
         break;
       }
@@ -175,7 +166,6 @@ function* updateTransactionInDb({
         const { error } = payload as TransactionErrorPayload;
         yield updateTransaction({
           error,
-          from: walletAddress,
           id,
           status: TransactionStatus.Failed,
         });
@@ -191,43 +181,29 @@ function* updateTransactionInDb({
           throw new Error(`Transaction with id ${id} not found in db`);
         }
 
-        const { group: txGroup, from } = data.getTransaction ?? {};
+        const { groupId, from } = data.getTransaction ?? {};
 
-        /*
-         * If tx belongs to a group, (soft) delete this tx and all txs made after this one
-         */
-        if (txGroup) {
-          const {
-            data: response,
-          }: ApolloQueryResult<GetTransactionsByGroupQuery> =
-            yield apollo.query<
-              GetTransactionsByGroupQuery,
-              GetTransactionsByGroupQueryVariables
-            >({
-              query: GetTransactionsByGroupDocument,
-              // group ids are unique, but check "from" is the same, just to be sure
-              variables: {
-                from,
-                groupId: txGroup.id,
-              },
-            });
+        const {
+          data: response,
+        }: ApolloQueryResult<GetTransactionsByGroupQuery> = yield apollo.query<
+          GetTransactionsByGroupQuery,
+          GetTransactionsByGroupQueryVariables
+        >({
+          query: GetTransactionsByGroupDocument,
+          // group ids are unique, but check "from" is the same, just to be sure
+          variables: {
+            from: utils.getAddress(from),
+            groupId,
+          },
+        });
 
-          yield Promise.all(
-            response.getTransactionsByUserAndGroup?.items
-              .filter(notNull)
-              // Higher index means it comes later in the group
-              .filter(({ group }) => group && group.index >= txGroup.index)
-              .map(async ({ id: txId }) => {
-                await updateTransaction({
-                  id: txId,
-                  deleted: true,
-                  from: walletAddress,
-                });
-              }) ?? [],
-          );
-        } else {
-          yield updateTransaction({ id, deleted: true, from: walletAddress });
-        }
+        yield Promise.all(
+          response.getTransactionsByUserAndGroup?.items
+            .filter(notNull)
+            .map(async ({ id: txId }) => {
+              await deleteTransaction(txId);
+            }) ?? [],
+        );
         break;
       }
 
