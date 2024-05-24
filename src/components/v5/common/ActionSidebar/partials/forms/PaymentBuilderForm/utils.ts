@@ -162,3 +162,41 @@ export const allTokensAmountValidation = ({
 
   return true;
 };
+
+export const delayGreaterThanZeroValidation = (
+  value: number | null | undefined,
+  context: TestContext<{ formValues?: any }>,
+) => {
+  if (value === undefined || !value) {
+    return true;
+  }
+
+  const { path } = context;
+
+  const index = getLastIndexFromPath(path);
+
+  if (index === undefined) {
+    return context.createError({
+      message: formatText({
+        id: 'errors.amount.smallerThanZero',
+      }),
+      path,
+    });
+  }
+
+  if (value.toString().includes('.')) {
+    return context.createError({
+      message: formatText(
+        {
+          id: 'errors.amount.smallerThanZeroIn',
+        },
+        {
+          paymentIndex: index + 1,
+        },
+      ),
+      path,
+    });
+  }
+
+  return true;
+};
