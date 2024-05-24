@@ -51,9 +51,7 @@ interface Props {
 
 const transformActionRolesToColonyRoles = (
   roles: ColonyActionRoles | null | undefined,
-  historicRoles:
-    | GetColonyHistoricRoleQuery['getColonyHistoricRole']
-    | undefined,
+  historicRoles: GetColonyHistoricRoleQuery['getColonyHistoricRole'],
 ): ColonyRole[] => {
   if (!roles) return [];
   const combinedRoles = { ...historicRoles };
