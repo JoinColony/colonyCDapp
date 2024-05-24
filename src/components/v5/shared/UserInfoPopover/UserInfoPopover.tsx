@@ -33,6 +33,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
   children,
   popperOptions,
   withVerifiedBadge = true,
+  showMultiSigPermissions = false,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -108,6 +109,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
       aboutDescription={bio || ''}
       contributorType={contributorType ?? undefined}
       domains={domains}
+      showMultiSigPermissions={showMultiSigPermissions}
       userDetails={
         <UserDetails
           isVerified={isVerified}
