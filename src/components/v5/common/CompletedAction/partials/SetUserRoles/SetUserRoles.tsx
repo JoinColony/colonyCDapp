@@ -5,7 +5,6 @@ import React from 'react';
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ColonyActionType,
   type GetColonyHistoricRoleQuery,
@@ -98,11 +97,8 @@ const SetUserRoles = ({ action }: Props) => {
     isMotion,
     annotation,
     blockNumber,
+    colonyAddress,
   } = action;
-
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
 
   const { data: historicRoles } = useGetColonyHistoricRoleQuery({
     variables: {

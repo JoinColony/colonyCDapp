@@ -1,0 +1,34 @@
+fragment ColonyHistoricRole on ColonyHistoricRole {
+  blockNumber
+  colony {
+    ...Colony
+  }
+  colonyId
+  createdAt
+  domain {
+    ...Domain
+  }
+  domainId
+  id
+  role_0
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
+  targetAddress
+  targetColony {
+    ...Colony
+  }
+  targetExtension {
+    ...Extension
+  }
+  targetToken {
+    ...Token
+  }
+  targetUser {
+    ...User
+  }
+  type
+  updatedAt
+}
