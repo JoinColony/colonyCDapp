@@ -5,7 +5,13 @@ import React from 'react';
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
-import { ColonyActionType, type ColonyActionRoles } from '~gql';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import {
+  ColonyActionType,
+  type GetColonyHistoricRoleQuery,
+  useGetColonyHistoricRoleQuery,
+  type ColonyActionRoles,
+} from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
@@ -45,11 +51,23 @@ interface Props {
 
 const transformActionRolesToColonyRoles = (
   roles: ColonyActionRoles | null | undefined,
+  historicRoles:
+    | GetColonyHistoricRoleQuery['getColonyHistoricRole']
+    | undefined,
 ): ColonyRole[] => {
   if (!roles) return [];
-  const roleKeys = Object.keys(roles);
+  const combinedRoles = { ...historicRoles };
+
+  for (const [key] of Object.entries(roles)) {
+    if (roles[key] !== null) {
+      combinedRoles[key] = roles[key];
+    }
+  }
+
+  const roleKeys = Object.keys(combinedRoles);
+
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => roles[key])
+    .filter((key) => combinedRoles[key])
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -81,8 +99,24 @@ const SetUserRoles = ({ action }: Props) => {
     fromDomain,
     isMotion,
     annotation,
+    blockNumber,
   } = action;
-  const userColonyRoles = transformActionRolesToColonyRoles(roles);
+
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+
+  const { data: historicRoles } = useGetColonyHistoricRoleQuery({
+    variables: {
+      id: `${colonyAddress}_${fromDomain?.nativeId}_${recipientAddress}_${blockNumber}_roles`,
+    },
+  });
+
+  const userColonyRoles = transformActionRolesToColonyRoles(
+    roles,
+    historicRoles?.getColonyHistoricRole,
+  );
+
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
 
