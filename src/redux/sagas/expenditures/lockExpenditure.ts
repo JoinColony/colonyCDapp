@@ -59,7 +59,7 @@ function* lockExpenditureAction({
       });
     }
 
-    yield initiateTransaction({ id: lockExpenditure.id });
+    yield initiateTransaction(lockExpenditure.id);
 
     const {
       payload: {

@@ -144,7 +144,7 @@ function* managePermissionsAction({
       intArrayToBytes32(roleArray),
     ]);
 
-    yield initiateTransaction({ id: setUserRoles.id });
+    yield initiateTransaction(setUserRoles.id);
 
     const {
       payload: {

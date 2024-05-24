@@ -32,7 +32,7 @@ function* reclaimExpenditureStake({
       params: [nativeExpenditureId],
     });
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     yield waitForTxResult(txChannel);
 

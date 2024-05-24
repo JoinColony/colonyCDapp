@@ -122,7 +122,7 @@ function* escalateMotion({
       siblings,
     ]);
 
-    yield initiateTransaction({ id: escalateMotionTransaction.id });
+    yield initiateTransaction(escalateMotionTransaction.id);
 
     yield waitForTxResult(escalateMotionTransaction.channel);
 

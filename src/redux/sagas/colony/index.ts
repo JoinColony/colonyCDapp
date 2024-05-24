@@ -52,7 +52,7 @@ function* colonyClaimToken({
 
       yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-      yield initiateTransaction({ id });
+      yield initiateTransaction(id);
 
       yield waitForTxResult(txChannel);
     }

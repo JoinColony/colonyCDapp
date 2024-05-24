@@ -99,18 +99,12 @@ export const takeLatestCancellable = (
   ]);
 };
 
-export function* initiateTransaction({
-  id,
-  metatransaction,
-}: {
-  id: string;
-  metatransaction?: boolean;
-}) {
+export function* initiateTransaction(id: string) {
   const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
 
   yield transactionSetReady(id);
 
-  if (metatransaction ?? shouldSendMetatransaction) {
+  if (shouldSendMetatransaction) {
     yield put(transactionSend(id));
   } else {
     yield put(transactionEstimateGas(id));

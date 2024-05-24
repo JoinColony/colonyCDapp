@@ -93,7 +93,7 @@ function* removeVerifiedMembersAction({
       JSON.stringify(getRemoveVerifiedMembersOperation(members)),
     ]);
 
-    yield initiateTransaction({ id: removeVerifiedMembers.id });
+    yield initiateTransaction(removeVerifiedMembers.id);
 
     const {
       payload: {

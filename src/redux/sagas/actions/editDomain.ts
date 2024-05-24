@@ -131,7 +131,7 @@ function* editDomainAction({
       '.',
     ]);
 
-    yield initiateTransaction({ id: editDomain.id });
+    yield initiateTransaction(editDomain.id);
 
     const {
       payload: {

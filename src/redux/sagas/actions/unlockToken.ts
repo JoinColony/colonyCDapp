@@ -85,7 +85,7 @@ function* tokenUnlockAction({
       );
     }
 
-    yield initiateTransaction({ id: tokenUnlock.id });
+    yield initiateTransaction(tokenUnlock.id);
 
     const {
       payload: {
