@@ -6,4 +6,5 @@ export interface SimpleMemberCardProps {
   user?: User;
   meatBallMenuProps: MeatBallMenuProps;
   showInheritedLabel?: boolean;
+  showMultiSigPermissions?: boolean;
 }

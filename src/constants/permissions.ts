@@ -62,13 +62,31 @@ export const CUSTOM_USER_ROLE: UserRoleMeta = {
   permissions: [],
 };
 
-export const getRole = (permissionsList: ColonyRole[]): UserRoleMeta =>
-  USER_ROLES.find(({ permissions }) =>
-    isEqual(permissions.sort(), permissionsList.sort()),
-  ) || {
-    ...CUSTOM_USER_ROLE,
-    permissions: permissionsList,
-  };
+export const getRole = (
+  permissionsList: ColonyRole[],
+  isMultiSig?: boolean,
+): UserRoleMeta => {
+  if (!isMultiSig) {
+    return (
+      USER_ROLES.find(({ permissions }) =>
+        isEqual(permissions.sort(), permissionsList.sort()),
+      ) || {
+        ...CUSTOM_USER_ROLE,
+        permissions: permissionsList,
+      }
+    );
+  }
+
+  // Multi-sig does not use the Mod role
+  return (
+    USER_ROLES.filter((role) => role.role !== UserRole.Mod).find(
+      ({ permissions }) => isEqual(permissions.sort(), permissionsList.sort()),
+    ) || {
+      ...CUSTOM_USER_ROLE,
+      permissions: permissionsList,
+    }
+  );
+};
 
 export const PERMISSIONS_TABLE_CONTENT: Record<
   Exclude<UserRole, 'custom'>,
