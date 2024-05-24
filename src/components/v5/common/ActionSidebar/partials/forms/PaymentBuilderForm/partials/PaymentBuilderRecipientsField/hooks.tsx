@@ -93,7 +93,6 @@ export const useRecipientsFieldTableColumns = (
               placeholder={formatText({ id: 'actionSidebar.enterValue' })}
               autoWidth
               inputWrapperClassName="flex-row flex items-center gap-2"
-              min={0}
               key={row.id}
               name={`${name}.${row.index}.delay`}
               type="number"
