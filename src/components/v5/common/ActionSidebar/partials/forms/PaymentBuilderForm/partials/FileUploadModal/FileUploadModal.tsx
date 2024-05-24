@@ -14,6 +14,7 @@ import { type FileUploadModalProps } from './types.ts';
 
 const FileUploadModal: FC<FileUploadModalProps> = ({
   isOpen,
+  isDataEmpty,
   onUpload,
   onClose,
 }) => {
@@ -61,7 +62,7 @@ const FileUploadModal: FC<FileUploadModalProps> = ({
           id: 'fileUploadModal.description',
         })}
       </p>
-      {file && !parsedFileValue && !fileError && (
+      {!isDataEmpty && !parsedFileValue && !fileError && (
         <div className="mb-4 rounded border border-negative-300 bg-negative-100 p-[1.125rem] text-sm text-negative-400">
           <span className="font-medium">
             {formatText({ id: 'fileUploadModal.warningImportant' })}
