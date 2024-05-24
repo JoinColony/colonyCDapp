@@ -140,7 +140,7 @@ const ReputationChart = () => {
           </div>
         </div>
       }
-      className="h-full flex-col items-start bg-base-white p-6 sm:hover:text-gray-900"
+      className="h-fit flex-1 flex-col items-start bg-base-white p-6 sm:hover:text-gray-900"
       // @BETA: Disabled for now
       // href={allTeams?.length ? COLONY_TEAMS_ROUTE : undefined}
     />

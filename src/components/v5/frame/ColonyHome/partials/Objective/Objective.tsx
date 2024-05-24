@@ -73,7 +73,7 @@ const Objective = () => {
         )
       }
       contentClassName="w-full"
-      className="h-full flex-col bg-base-white p-6"
+      className="flex-1 flex-col bg-base-white p-6"
       href={objective ? COLONY_DETAILS_ROUTE : undefined}
       onClick={openManageObjectives}
     />
