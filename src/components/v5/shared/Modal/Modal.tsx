@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
 import { useGetTxButtons } from '~frame/Extensions/layouts/hooks.tsx';
 import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
-import { useMobile } from '~hooks/index.ts';
+import { useTablet } from '~hooks/index.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 
 import JoinButton from '../Button/JoinButton/index.ts';
@@ -29,12 +29,12 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   disabled,
   buttonMode = 'secondarySolid',
   isTopSectionWithBackground,
-  shouldShowHeader = false,
+  showHeaderProps = {},
   ...props
 }) => {
   const { formatMessage } = useIntl();
   const txButtons = useGetTxButtons();
-  const isMobile = useMobile();
+  const isTablet = useTablet();
 
   return (
     <ModalBase
@@ -60,8 +60,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         onClick={onClose}
         className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
-      {!isMobile && shouldShowHeader && (
-        <div className="fixed right-4 top-9 z-top">
+      {!isTablet && !!showHeaderProps.className && (
+        <div className={clsx(showHeaderProps.className, 'fixed z-top')}>
           <div className="relative">
             <UserNavigationWrapper
               txButtons={txButtons}
