@@ -57,7 +57,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
             recipient: recipientAddress,
             amount: amount ? convertEnotationToNumber(amount) : '',
             tokenAddress,
-            delay: claimDelay === '' ? undefined : claimDelay,
+            delay: claimDelay === '' ? undefined : Number(claimDelay),
           };
         },
       );

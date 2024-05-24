@@ -36,7 +36,7 @@ export const getInputTextWidth = (
   } else {
     textMeasureContainer.innerHTML =
       (input.type === 'number' && !Number.isNaN(input.valueAsNumber)
-        ? input.valueAsNumber.toString()
+        ? input.value.toString()
         : input.value) || (usePlaceholderAsFallback ? input.placeholder : '0');
   }
 

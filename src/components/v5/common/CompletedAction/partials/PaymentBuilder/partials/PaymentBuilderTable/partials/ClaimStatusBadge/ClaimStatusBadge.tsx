@@ -54,7 +54,7 @@ const ClaimStatusBadge: FC<ClaimStatusBadgeProps> = ({
       text: formatText(MSG.claimIn, {
         time: (
           <PaymentCounter
-            claimDelay={Number(claimDelay)}
+            claimDelay={claimDelay}
             finalizedTimestamp={finalizedTimestamp}
             onTimeEnd={onTimeEnd}
             showSingleValue
