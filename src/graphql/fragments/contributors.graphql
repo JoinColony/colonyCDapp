@@ -27,6 +27,7 @@ fragment ContributorRoles on ColonyRole {
   role_3
   role_5
   role_6
+  isMultiSig
   id
 }
 
