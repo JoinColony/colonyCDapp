@@ -7,9 +7,9 @@ import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import {
   ColonyActionType,
-  type GetColonyHistoricRoleQuery,
-  useGetColonyHistoricRoleQuery,
   type ColonyActionRoles,
+  useGetColonyHistoricRoleRolesQuery,
+  type GetColonyHistoricRoleRolesQuery,
 } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
@@ -50,9 +50,10 @@ interface Props {
 
 const transformActionRolesToColonyRoles = (
   roles: ColonyActionRoles | null | undefined,
-  historicRoles: GetColonyHistoricRoleQuery['getColonyHistoricRole'],
+  historicRoles: GetColonyHistoricRoleRolesQuery['getColonyHistoricRole'],
 ): ColonyRole[] => {
   if (!roles) return [];
+
   const combinedRoles = { ...historicRoles };
 
   for (const [key] of Object.entries(roles)) {
@@ -100,10 +101,11 @@ const SetUserRoles = ({ action }: Props) => {
     colonyAddress,
   } = action;
 
-  const { data: historicRoles } = useGetColonyHistoricRoleQuery({
+  const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
     variables: {
       id: `${colonyAddress}_${fromDomain?.nativeId}_${recipientAddress}_${blockNumber}_roles`,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const userColonyRoles = transformActionRolesToColonyRoles(

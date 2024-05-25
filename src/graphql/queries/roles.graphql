@@ -1,5 +1,10 @@
-query GetColonyHistoricRole($id: ID!) {
+query GetColonyHistoricRoleRoles($id: ID!) {
   getColonyHistoricRole(id: $id) {
-    ...ColonyHistoricRole
+    role_0
+    role_1
+    role_2
+    role_3
+    role_5
+    role_6
   }
 }
