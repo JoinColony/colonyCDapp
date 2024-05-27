@@ -41,6 +41,7 @@ function* voteOnMultiSigAction({
       colonyAddress,
     );
 
+    // @TODO needs a multi sig equivalent, for now just assign the same roles for a member for the colony
     const [, childSkillIndex] = yield getPermissionProofs(
       colonyClient.networkClient,
       colonyClient,
