@@ -61,7 +61,7 @@ function ledgerLiveModule(options?: LedgerOptionsWCv2): WalletInit {
 
   return () => {
     return {
-      label: 'Ledger',
+      label: 'Ledger Live',
       getIcon: async () => icon,
       getInterface: async ({
         chains,
