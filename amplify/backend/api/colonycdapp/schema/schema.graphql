@@ -2604,7 +2604,7 @@ type MultiSigUserSignature @model {
       name: "byMultiSigId"
       queryField: "getMultiSigUserSignatureByMultiSigId"
     )
-  domainId: ID!
+  role: Int!
   userAddress: ID!
   user: User! @hasOne(fields: ["userAddress"])
   vote: MultiSigVote!
@@ -2623,7 +2623,7 @@ type ColonyMultiSig @model {
   """
   The on chain id of the multiSig
   """
-  nativeMultiSigId: String!
+  nativeMultiSigId: ID!
   """
   Unique identifier of the multiSigs domain in the database
   """
@@ -2639,8 +2639,7 @@ type ColonyMultiSig @model {
   """
   Signatures info
   """
-  signatures: [MultiSigUserSignature]
-  """
+  signatures: [MultiSigUserSignature] @hasMany(indexName: "byMultiSigId", fields: ["nativeMultiSigId"])  """
   Required role for signing
   """
   requiredPermissions: Int!
