@@ -138,8 +138,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (window.ethereum) {
-      if (previousAccountChange) {
-        // @ts-ignore
+      if (previousAccountChange && window.ethereum.removeListener) {
         window.ethereum.removeListener(
           'accountsChanged',
           previousAccountChange,
@@ -150,9 +149,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return () => {
-      if (window.ethereum) {
-        // @ts-ignore
-        window.ethereum.removeListener('accountsChanged', handleAccountChange);
+      if (window.ethereum && window.ethereum.removeListener) {
+        window.ethereum?.removeListener('accountsChanged', handleAccountChange);
       }
     };
   }, [handleAccountChange, previousAccountChange]);
