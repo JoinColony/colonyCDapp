@@ -20,6 +20,7 @@ import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/chainId.ts';
 import { intl } from '~utils/intl.ts';
 
+import argentModule from './argentModule.ts';
 import ganacheModule from './ganacheModule.ts';
 import ledgerLiveModule from './ledgerLiveModule.ts';
 
@@ -65,6 +66,7 @@ const onboardConfig: InitOptions = {
       email: ' ',
       appUrl: APP_URL.origin,
     }),
+    argentModule(),
     injectedWalletsModule({
       // Only enable required injected wallets
       filter: {
