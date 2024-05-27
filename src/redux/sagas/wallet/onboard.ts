@@ -15,6 +15,7 @@ import {
   TOKEN_DATA,
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
+  APP_URL,
 } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/chainId.ts';
@@ -62,23 +63,24 @@ const onboardConfig: InitOptions = {
     sequenceModule(),
     trezorModule({
       email: '',
-      appUrl: 'https://colony.io',
+      appUrl: APP_URL.origin,
     }),
     injectedWalletsModule({
+      // Only enable required injected wallets
       filter: {
         [ProviderLabel.AlphaWallet]: false,
         [ProviderLabel.ApexWallet]: false,
         [ProviderLabel.AToken]: false,
         [ProviderLabel.BifrostWallet]: false,
-        [ProviderLabel.Binance]: true,
+        [ProviderLabel.Binance]: true, // Enabled
         [ProviderLabel.Bitpie]: false,
         [ProviderLabel.Bitski]: false,
         [ProviderLabel.BlockWallet]: false,
-        [ProviderLabel.Brave]: true,
-        [ProviderLabel.Coinbase]: true,
+        [ProviderLabel.Brave]: true, // Enabled
+        [ProviderLabel.Coinbase]: true, // Enabled
         [ProviderLabel.Dcent]: false,
         [ProviderLabel.Detected]: false,
-        [ProviderLabel.Exodus]: true,
+        [ProviderLabel.Exodus]: true, // Enabled
         [ProviderLabel.Frame]: false,
         [ProviderLabel.Frontier]: false,
         [ProviderLabel.HuobiWallet]: false,
@@ -87,12 +89,12 @@ const onboardConfig: InitOptions = {
         [ProviderLabel.InfinityWallet]: false,
         [ProviderLabel.Liquality]: false,
         [ProviderLabel.MeetOne]: false,
-        [ProviderLabel.MetaMask]: true,
+        [ProviderLabel.MetaMask]: true, // Enabled
         [ProviderLabel.MyKey]: false,
         [ProviderLabel.Opera]: false,
         [ProviderLabel.OwnBit]: false,
         [ProviderLabel.Status]: false,
-        [ProviderLabel.Trust]: true,
+        [ProviderLabel.Trust]: true, // Enabled
         [ProviderLabel.TokenPocket]: false,
         [ProviderLabel.TP]: false,
         [ProviderLabel.WalletIo]: false,
