@@ -59,16 +59,9 @@ const onboardConfig: InitOptions = {
   wallets: [
     metamaskSDKModule({ options: { extensionOnly: true } }),
     coinbaseWalletModule(),
-    ledgerModule({
-      walletConnectVersion: 2,
-      projectId: import.meta.env.WALLETCONNECT_PROJECT_ID,
-    }),
-    walletConnectModule({
-      projectId: import.meta.env.WALLETCONNECT_PROJECT_ID,
-    }),
     sequenceModule(),
     trezorModule({
-      email: 'what!',
+      email: '',
       appUrl: 'https://colony.io',
     }),
     injectedWalletsModule({
@@ -182,9 +175,23 @@ const onboardConfig: InitOptions = {
   },
 };
 
+// Only enable WalletConnect and Ledger Live if a project id is available
+if (import.meta.env.WALLETCONNECT_PROJECT_ID) {
+  onboardConfig.wallets.push(
+    ledgerModule({
+      walletConnectVersion: 2,
+      projectId: import.meta.env.WALLETCONNECT_PROJECT_ID,
+    }),
+    walletConnectModule({
+      projectId: import.meta.env.WALLETCONNECT_PROJECT_ID,
+    }),
+  );
+}
+
 const getOnboard = async () => {
   const devWallets = await getDevelopmentWallets();
   onboardConfig.wallets.push(...devWallets);
   return Onboard(onboardConfig);
 };
+
 export default getOnboard;
