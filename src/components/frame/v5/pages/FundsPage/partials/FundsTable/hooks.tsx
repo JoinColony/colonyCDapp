@@ -7,6 +7,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
@@ -154,7 +155,7 @@ export const useFundsTable = (): UseFundsTableProps => {
           tokenAddress={token.tokenAddress}
           tokenAvatarSrc={token.avatar ?? undefined}
         />
-        {token.symbol}
+        {multiLineTextEllipsis(token.symbol, 5)}
       </div>
     ),
   }));

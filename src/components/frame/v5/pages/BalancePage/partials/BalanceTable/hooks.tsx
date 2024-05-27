@@ -12,6 +12,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { type NativeTokenStatus, type Token } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { multiLineTextEllipsis } from '~utils/strings.ts';
 import {
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
@@ -130,7 +131,9 @@ export const useBalanceTableColumns = (
         header: () => formatText({ id: 'table.row.symbol' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
         cell: ({ row }) => (
-          <span className="text-gray-600">{row.original.token?.symbol}</span>
+          <span className="text-gray-600">
+            {multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}
+          </span>
         ),
       }),
       columnHelper.display({
@@ -170,7 +173,7 @@ export const useBalanceTableColumns = (
                   row.original.token?.decimals,
                 )}
                 className="block text-gray-900 text-1"
-                suffix={` ${row.original.token?.symbol}`}
+                suffix={` ${multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}`}
               />
               <CurrencyConversion
                 tokenBalance={currentTokenBalance}
