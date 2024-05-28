@@ -56,9 +56,9 @@ const transformActionRolesToColonyRoles = (
 
   const combinedRoles = { ...historicRoles };
 
-  for (const [key] of Object.entries(roles)) {
-    if (roles[key] !== null) {
-      combinedRoles[key] = roles[key];
+  for (const [key, value] of Object.entries(roles)) {
+    if (value !== null) {
+      combinedRoles[key] = value;
     }
   }
 
