@@ -72,7 +72,6 @@ const UserInfo: FC<UserInfoProps> = ({
   domains,
   userDetails,
   additionalContent,
-  showMultiSigPermissions = false,
 }) => {
   const { isMultiSigEnabled } = useEnabledExtensions();
   const aboutDescriptionText = formatText(aboutDescription);
