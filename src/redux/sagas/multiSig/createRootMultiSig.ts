@@ -1,13 +1,9 @@
-import {
-  ClientType,
-  ColonyRole,
-  Id,
-  getPermissionProofs,
-} from '@colony/colony-js';
+import { ClientType, ColonyRole, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
+import { getUserRolesForDomain } from '~transformers';
 
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
@@ -24,17 +20,19 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
 } from '../utils/index.ts';
 
 function* createRootMultiSigSaga({
   payload: {
     operationName,
     colonyAddress,
+    colonyRoles,
     colonyName,
     multiSigParams,
     annotationMessage,
     customActionTitle,
-    domainId = Id.RootDomain,
+    domain,
     requiredRole = ColonyRole.Root,
   },
   meta: { id: metaId, navigate, setTxHash },
@@ -54,11 +52,30 @@ function* createRootMultiSigSaga({
       colonyAddress,
     );
 
-    // @TODO needs a multi sig equivalent, for now just assign the same roles for a member for the colony
-    const [, childSkillIndex] = yield getPermissionProofs(
+    const userAddress = yield colonyClient.signer.getAddress();
+
+    const userPermissions = getUserRolesForDomain(
+      colonyRoles,
+      userAddress,
+      domain.nativeId,
+      true,
+      true,
+    );
+    const userPermissionsInRoot = getUserRolesForDomain(
+      colonyRoles,
+      userAddress,
+      Id.RootDomain,
+      true,
+      true,
+    );
+
+    const [, childSkillIndex] = yield call(
+      getPermissionProofsLocal,
       colonyClient.networkClient,
       colonyClient,
-      domainId,
+      domain,
+      userPermissions,
+      userPermissionsInRoot,
       requiredRole,
     );
 
