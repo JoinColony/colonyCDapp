@@ -57,14 +57,14 @@ export const convertRolesToArray = (
     .filter(notUndefined);
 
 export const getUserRolesForDomain = ({
-  colony,
+  colonyRoles,
   userAddress,
   domainId,
   excludeInherited = false,
   intersectingRoles = false,
   isMultiSig = false,
 }: {
-  colony: ColonyFragment;
+  colonyRoles: ColonyRoleFragment[];
   userAddress: Address;
   domainId: number;
   excludeInherited?: boolean;
@@ -72,7 +72,7 @@ export const getUserRolesForDomain = ({
   isMultiSig?: boolean;
 }): ColonyRole[] => {
   const getUserRolesInDomain = (targetDomainId: number) =>
-    colony.roles?.items.find((domainRole) => {
+    colonyRoles.find((domainRole) => {
       const isMatchingDomain = domainRole?.domain?.nativeId === targetDomainId;
       const isMatchingUser = domainRole?.targetAddress === userAddress;
       const isMatchingMultiSig = isMultiSig === !!domainRole?.isMultiSig;
@@ -107,13 +107,13 @@ export const getUserRolesForDomain = ({
 };
 
 export const getAllUserRoles = (
-  colony: ColonyFragment,
+  colonyRoles: ColonyRoleFragment[],
   userAddress: Address | undefined,
   isMultiSig = false,
 ): ColonyRole[] => {
   if (!userAddress) return [];
 
-  const userRolesInAnyDomain = colony.roles?.items.find((domainRole) => {
+  const userRolesInAnyDomain = colonyRoles.find((domainRole) => {
     const isMatchingUser = domainRole?.targetAddress === userAddress;
     const isMatchingMultiSig = isMultiSig === !!domainRole?.isMultiSig;
 
@@ -133,11 +133,13 @@ export const getAllUserRoles = (
 export const getHighestTierRoleForUser = (
   colony: ColonyFragment,
   userAddress: Address | undefined,
+  isMultiSig = false,
 ): ColonyRole[] | null => {
   if (!userAddress) return [];
 
   const coloniesWhereUserHasARole = colony.roles?.items.filter(
     (domainRole) =>
+      isMultiSig === !!domainRole?.isMultiSig &&
       domainRole?.targetAddress === userAddress &&
       Object.values(domainRole).find(True),
   );

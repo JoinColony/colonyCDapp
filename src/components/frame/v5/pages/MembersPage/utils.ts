@@ -6,6 +6,7 @@ import {
   getHighestTierRoleForUser,
   getUserRolesForDomain,
 } from '~transformers';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { type MemberItem } from './types.ts';
 
@@ -27,7 +28,7 @@ export const getMembersList = (
     } = contributor;
 
     const domainRoles = getUserRolesForDomain({
-      colony,
+      colonyRoles: extractColonyRoles(colony.roles),
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
       intersectingRoles: true,
@@ -38,7 +39,7 @@ export const getMembersList = (
       : undefined;
 
     const domainRolesWithoutInherited = getUserRolesForDomain({
-      colony,
+      colonyRoles: extractColonyRoles(colony.roles),
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
       excludeInherited: true,
@@ -57,6 +58,36 @@ export const getMembersList = (
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
 
+    const domainMultiSigRoles = getUserRolesForDomain({
+      colonyRoles: extractColonyRoles(colony.roles),
+      userAddress: contributorAddress,
+      domainId: selectedTeamId || Id.RootDomain,
+      intersectingRoles: true,
+      isMultiSig: true,
+    });
+
+    const domainMultiSigRolesMeta = domainMultiSigRoles.length
+      ? getRole(domainMultiSigRoles)
+      : undefined;
+
+    const domainMultiSigRolesWithoutInherited = getUserRolesForDomain({
+      colonyRoles: extractColonyRoles(colony.roles),
+      userAddress: contributorAddress,
+      domainId: selectedTeamId || Id.RootDomain,
+      excludeInherited: true,
+      isMultiSig: true,
+    });
+
+    const highestTierMultiSigRole = getHighestTierRoleForUser(
+      colony,
+      contributorAddress,
+      true,
+    );
+
+    const highestTierMultiSigRoleMeta = highestTierMultiSigRole
+      ? getRole(highestTierMultiSigRole)
+      : undefined;
+
     return {
       user,
       walletAddress: contributorAddress,
@@ -68,7 +99,11 @@ export const getMembersList = (
       isRoleInherited:
         isAllTeamsSelected || selectedTeamId === Id.RootDomain
           ? false
-          : !domainRolesWithoutInherited.length,
+          : !domainRolesWithoutInherited.length ||
+            !domainMultiSigRolesWithoutInherited.length,
+      multiSigRole: isAllTeamsSelected
+        ? highestTierMultiSigRoleMeta
+        : domainMultiSigRolesMeta,
       contributorType: type ?? undefined,
     };
   });
