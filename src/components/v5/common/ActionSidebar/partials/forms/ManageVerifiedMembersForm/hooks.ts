@@ -37,8 +37,7 @@ export const useManageVerifiedMembers = (
   const {
     colony: { colonyAddress, name },
   } = useColonyContext();
-  const { membersByAddress, totalMembers, verifiedMembers } =
-    useMemberContext();
+  const { totalMembers, verifiedMembers } = useMemberContext();
 
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
@@ -56,15 +55,12 @@ export const useManageVerifiedMembers = (
       : ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS;
 
   const validationSchema = useMemo(() => {
-    const allMemberAddresses = Object.keys(membersByAddress);
-
     if (manageMembers === ManageMembersType.Add) {
       const verifiedBlacklist = verifiedMembers.map(
         (member) => member.contributorAddress,
       );
       return getValidationSchema(
         verifiedBlacklist,
-        allMemberAddresses,
         formatText(MSG.memberAlreadyVerified),
       );
     }
@@ -75,10 +71,9 @@ export const useManageVerifiedMembers = (
 
     return getValidationSchema(
       unverifiedBlacklist,
-      allMemberAddresses,
       formatText(MSG.memberAlreadyNotVerified),
     );
-  }, [manageMembers, totalMembers, membersByAddress, verifiedMembers]);
+  }, [manageMembers, totalMembers, verifiedMembers]);
 
   useActionFormBaseHook({
     actionType:
