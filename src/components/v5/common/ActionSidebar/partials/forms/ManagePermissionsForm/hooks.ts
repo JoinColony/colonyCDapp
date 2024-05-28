@@ -13,6 +13,7 @@ import { DecisionMethod } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -100,7 +101,7 @@ export const useManagePermissions = (
         const isMultiSig = authority === Authority.ViaMultiSig;
 
         const userPermissions = getUserRolesForDomain({
-          colony,
+          colonyRoles: extractColonyRoles(colony.roles),
           userAddress: member,
           domainId: Number(team),
           excludeInherited: true,
