@@ -27,13 +27,18 @@ export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
         id: 'claim',
         size: 101,
         header: () => formatText({ id: 'incomingFundsPage.table.claim' }),
-        cell: ({ row }) => (
-          <AcceptButton
-            tokenAddresses={[row.original.token?.tokenAddress || '']}
-          >
-            {formatText({ id: 'button.accept' })}
-          </AcceptButton>
-        ),
+        cell: ({ row }) =>
+          row.original.isClaimed ? (
+            <p className="w-full text-center text-sm text-gray-400">
+              {formatText({ id: 'incomingFundsPage.table.claimed' })}
+            </p>
+          ) : (
+            <AcceptButton
+              tokenAddresses={[row.original.token?.tokenAddress || '']}
+            >
+              {formatText({ id: 'button.accept' })}
+            </AcceptButton>
+          ),
       }),
     ],
     [columnHelper],

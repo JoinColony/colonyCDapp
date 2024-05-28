@@ -33,10 +33,12 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
     ({ token: currentClaimToken }) => currentClaimToken?.name === token?.name,
   );
   const claimsAmount =
-    currentClaims.reduce(
-      (acc, { amount }) => acc.add(amount),
-      BigNumber.from(0),
-    ) || 0;
+    currentClaims.reduce((acc, { amount, isClaimed }) => {
+      if (isClaimed) {
+        return acc;
+      }
+      return acc.add(amount);
+    }, BigNumber.from(0)) || 0;
   const [isTableRowOpen, { toggle: toggleTableRowAccordion }] = useToggle();
   const columns = useTokenTableColumns();
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -67,7 +69,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
     }
   };
 
-  return claimsAmount.gt(0) && token ? (
+  return token ? (
     <>
       <AccordionItem
         className="w-full text-gray-900 text-1 [&_.accordion-toggler]:px-[1.125rem] sm:hover:[&_.accordion-toggler]:bg-gray-25"

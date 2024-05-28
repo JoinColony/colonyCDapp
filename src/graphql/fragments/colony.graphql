@@ -154,6 +154,7 @@ fragment FundsClaim on ColonyFundsClaim {
   createdAtBlock
   createdAt
   amount
+  isClaimed
 }
 
 fragment ChainFundsClaim on ColonyChainFundsClaim {
@@ -161,6 +162,7 @@ fragment ChainFundsClaim on ColonyChainFundsClaim {
   createdAtBlock
   createdAt
   amount
+  isClaimed
 }
 
 fragment ColonyRole on ColonyRole {

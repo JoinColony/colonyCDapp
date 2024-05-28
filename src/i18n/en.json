@@ -1483,6 +1483,7 @@
     "incomingFundsPage.table.title": "Incoming funds",
     "incomingFundsPage.table.amount": "Amount",
     "incomingFundsPage.table.claim": "Claim",
+    "incomingFundsPage.table.claimed": "Claimed",
     "incomingFundsPage.table.claimAllFunds": "Claim all available funds",
     "incomingFundsPage.filter.tokenStatus": "Token status",
     "incomingFundsPage.filter.tokenType": "Token type",
