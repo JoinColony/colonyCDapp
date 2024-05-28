@@ -6,6 +6,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
 
@@ -52,22 +53,29 @@ const useHasNoDecisionMethods = () => {
   const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
 
   const userRootRoles = getUserRolesForDomain({
-    colony,
+    colonyRoles: extractColonyRoles(colony.roles),
     userAddress: user.walletAddress,
     domainId: Id.RootDomain,
   });
 
-  const userRootMultiSigRoles = getUserRolesForDomain(
-    colony,
+  const userRootMultiSigRoles = getUserRolesForDomain({
+    colonyRoles: extractColonyRoles(colony.roles),
+    userAddress: user.walletAddress,
+    domainId: Id.RootDomain,
+    excludeInherited: false,
+    isMultiSig: true,
+  });
+
+  const userRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
     user.walletAddress,
-    Id.RootDomain,
-    false,
-    true,
   );
 
-  const userRoles = getAllUserRoles(colony, user.walletAddress);
-
-  const userMultiSigRoles = getAllUserRoles(colony, user.walletAddress, true);
+  const userMultiSigRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user.walletAddress,
+    true,
+  );
 
   if (
     !requiredPermissions.every((role) => {
