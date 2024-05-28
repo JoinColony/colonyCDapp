@@ -1,0 +1,10 @@
+query GetColonyHistoricRoleRoles($id: ID!) {
+  getColonyHistoricRole(id: $id) {
+    role_0
+    role_1
+    role_2
+    role_3
+    role_5
+    role_6
+  }
+}
