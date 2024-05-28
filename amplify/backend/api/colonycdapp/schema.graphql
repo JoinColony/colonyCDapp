@@ -1906,7 +1906,7 @@ type DomainMetadataChangelog {
 """
 Represents a Colony Funds Claim for all ERC20 tokens (except native chain tokens)
 """
-type ColonyFundsClaim @model {
+type ColonyFundsClaim @model @searchable {
   """
   Unique identifier for the Colony Funds Claim
   """
@@ -1927,6 +1927,10 @@ type ColonyFundsClaim @model {
   Amount claimed in the Colony Funds Claim
   """
   amount: String!
+  """
+  Boolean to indicate whether the claim has been claimed or not
+  """
+  isClaimed: Boolean
 }
 
 # This is really not elegant, but there's no other proper solution, as you can't # return the Token @hadOne relationship from the lambda function # Note that we don't need token details for the values that we're fetching (since # it's implied), but it would have been nice not to have to basically repeat the type
@@ -1955,6 +1959,10 @@ type ColonyChainFundsClaim {
   Amount claimed in the Colony Chain Funds Claim
   """
   amount: String!
+  """
+  Boolean to indicate whether the claim has been claimed or not
+  """
+  isClaimed: Boolean
 }
 
 # This is not a @model since it will only be returned by a lambda function # so don't need to create tables for them
