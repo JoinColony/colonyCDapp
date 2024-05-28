@@ -2,7 +2,8 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
-import { getUserRolesForDomain } from '~transformers';
+import { getAllUserRoles, getUserRolesForDomain } from '~transformers/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { type MemberItem } from './types.ts';
 
@@ -19,19 +20,29 @@ export const getMembersList = (
       colonyReputationPercentage,
       user,
       isVerified,
+      roles,
       reputation,
       type,
+      hasPermissions,
     } = contributor;
 
+    const hasRoleInTeam = roles?.items?.some((item) => {
+      const domainId = item?.domain?.nativeId;
+
+      return isAllTeamsSelected
+        ? hasPermissions
+        : domainId === selectedTeamId || domainId === Id.RootDomain;
+    });
+
     const permissionsInTeam = getUserRolesForDomain({
-      colony,
+      colonyRoles: extractColonyRoles(colony.roles),
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
       excludeInherited: true,
     });
 
     const allPermissions = getUserRolesForDomain({
-      colony,
+      colonyRoles: extractColonyRoles(colony.roles),
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
     });
@@ -54,6 +65,22 @@ export const getMembersList = (
       ? getRole(permissionsInTeam)
       : parentRole;
 
+    const allMultiSigRoles = getAllUserRoles(
+      extractColonyRoles(colony.roles),
+      contributorAddress,
+      true,
+    );
+    const allMultiSigRolesFiltered =
+      hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
+        ? allMultiSigRoles
+        : allMultiSigRoles?.filter(
+            (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
+          );
+    const permissionMultiSigRole =
+      hasRoleInTeam && allMultiSigRolesFiltered?.length
+        ? getRole(allMultiSigRolesFiltered)
+        : undefined;
+
     return {
       user,
       walletAddress: contributorAddress,
@@ -63,6 +90,7 @@ export const getMembersList = (
         : teamReputationPercentage,
       role: roleTest,
       isRoleInherited: !permissionsInTeam.length && !!roleTest,
+      multiSigRole: permissionMultiSigRole,
       contributorType: type ?? undefined,
     };
   });
