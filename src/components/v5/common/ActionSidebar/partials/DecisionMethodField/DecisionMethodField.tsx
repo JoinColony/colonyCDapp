@@ -7,6 +7,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -42,8 +43,15 @@ const DecisionMethodField = ({
 }: DecisionMethodFieldProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const userRoles = getAllUserRoles(colony, user?.walletAddress);
-  const userMultiSigRoles = getAllUserRoles(colony, user?.walletAddress, true);
+  const userRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user?.walletAddress,
+  );
+  const userMultiSigRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user?.walletAddress,
+    true,
+  );
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
