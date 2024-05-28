@@ -5,12 +5,177 @@ import {
   getPotDomain,
   getPermissionProofs,
   getChildIndex,
+  type ColonyNetworkClient,
+  type AnyColonyClient,
 } from '@colony/colony-js';
-import { type BigNumberish } from 'ethers';
+import { BigNumber, constants, type BigNumberish } from 'ethers';
 
 import { type ColonyManager } from '~context/index.ts';
+import { type Domain } from '~gql';
 
 import getColonyManager from './getColonyManager.ts';
+
+export async function getChildIndexLocal(
+  networkClient: ColonyNetworkClient,
+  parentDomainNativeId: BigNumberish,
+  parentDomainSkillId: BigNumberish,
+  domain: Domain,
+): Promise<BigNumber> {
+  if (
+    BigNumber.from(parentDomainNativeId).eq(BigNumber.from(domain.nativeId))
+  ) {
+    return constants.MaxUint256;
+  }
+
+  const { nativeSkillId: skillId } = domain;
+  const { children } = await networkClient.getSkill(parentDomainSkillId);
+  const idx = children.findIndex((childSkillId) => childSkillId.eq(skillId));
+
+  if (idx < 0) {
+    throw new Error(
+      `Could not find ${domain.id} as a child of ${parentDomainNativeId}`,
+    );
+  }
+
+  return BigNumber.from(idx);
+}
+
+const getSinglePermissionProofsLocal = async (
+  networkClient: ColonyNetworkClient,
+  colonyClient: AnyColonyClient,
+  domain: Domain,
+  domainUserRoles: ColonyRole[],
+  rootDomainUserRoles: ColonyRole[],
+  requiredRole: ColonyRole,
+  customAddress?: string,
+  /* [permissionDomainId, childSkillIndex, permissionAddress] */
+): Promise<[BigNumber, BigNumber, string]> => {
+  // @TODO how to get parent domain without colonyClient?
+  const permissionAddress =
+    customAddress || (await colonyClient.signer?.getAddress());
+
+  if (!permissionAddress) {
+    throw new Error(
+      `Could not determine address for permission proofs. Please use a signer or provide a custom address`,
+    );
+  }
+
+  const hasPermissionInDomain = domainUserRoles.includes(requiredRole);
+  if (hasPermissionInDomain) {
+    return [
+      BigNumber.from(domain.nativeId),
+      constants.MaxUint256,
+      permissionAddress,
+    ];
+  }
+  // @TODO: once we allow nested domains on the network level, this needs to traverse down the skill/domain tree. Use binary search
+  const foundDomainId = BigNumber.from(Id.RootDomain);
+  const hasPermissionInAParentDomain =
+    rootDomainUserRoles.includes(requiredRole);
+
+  if (!hasPermissionInAParentDomain) {
+    throw new Error(
+      `${permissionAddress} does not have the permission ${requiredRole} in any parent domain`,
+    );
+  }
+
+  const { skillId } = await colonyClient.getDomain(foundDomainId);
+  const idx = await getChildIndexLocal(
+    networkClient,
+    foundDomainId,
+    skillId,
+    domain,
+  );
+
+  if (idx.lt(0)) {
+    throw new Error(
+      `${permissionAddress} does not have the permission ${requiredRole} in any parent domain`,
+    );
+  }
+  return [foundDomainId, idx, permissionAddress];
+};
+
+const getMultiPermissionProofsLocal = async (
+  networkClient: ColonyNetworkClient,
+  colonyClient: AnyColonyClient,
+  domain: Domain,
+  domainUserRoles: ColonyRole[],
+  rootDomainUserRoles: ColonyRole[],
+  requiredRoles: ColonyRole[],
+  customAddress?: string,
+): Promise<[BigNumber, BigNumber, string]> => {
+  const proofs = await Promise.all(
+    requiredRoles.map((role) =>
+      getSinglePermissionProofsLocal(
+        networkClient,
+        colonyClient,
+        domain,
+        domainUserRoles,
+        rootDomainUserRoles,
+        role,
+        customAddress,
+      ),
+    ),
+  );
+
+  // We are checking that all of the permissions resolve to the same domain and childSkillIndex
+  for (let idx = 0; idx < proofs.length; idx += 1) {
+    const [permissionDomainId, childSkillIndex, address] = proofs[idx];
+    if (
+      !permissionDomainId.eq(proofs[0][0]) ||
+      !childSkillIndex.eq(proofs[0][1])
+    ) {
+      throw new Error(
+        `${address} has to have all required roles (${requiredRoles}) in the same domain`,
+      );
+    }
+  }
+
+  // It does not need to be an array because if we get here, all the proofs are the same
+  return proofs[0];
+};
+
+export const getPermissionProofsLocal = async (
+  networkClient: ColonyNetworkClient,
+  colonyClient: AnyColonyClient,
+  domain: Domain,
+  domainUserRoles: ColonyRole[],
+  rootDomainUserRoles: ColonyRole[],
+  requiredRole: ColonyRole | ColonyRole[],
+  customAddress?: string,
+): Promise<[BigNumber, BigNumber, string]> => {
+  if (Array.isArray(requiredRole)) {
+    if (requiredRole.length === 1) {
+      return getSinglePermissionProofsLocal(
+        networkClient,
+        colonyClient,
+        domain,
+        domainUserRoles,
+        rootDomainUserRoles,
+        requiredRole[0],
+        customAddress,
+      );
+    }
+    return getMultiPermissionProofsLocal(
+      networkClient,
+      colonyClient,
+      domain,
+      domainUserRoles,
+      rootDomainUserRoles,
+      requiredRole,
+      customAddress,
+    );
+  }
+  return getSinglePermissionProofsLocal(
+    networkClient,
+    colonyClient,
+    domain,
+    domainUserRoles,
+    rootDomainUserRoles,
+    requiredRole,
+    customAddress,
+  );
+};
 
 export function* getMoveFundsPermissionProofs(
   colonyAddress: string,
