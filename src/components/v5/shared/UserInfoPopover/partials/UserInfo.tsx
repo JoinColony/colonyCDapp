@@ -3,9 +3,11 @@ import { Signature, Star, User } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { getRole } from '~constants/permissions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { type UserRoleMeta, getRole } from '~constants/permissions.ts';
 import { ContributorType } from '~gql';
+import { type AvailablePermission } from '~hooks/members/types.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -25,8 +27,8 @@ const UserInfo: FC<UserInfoProps> = ({
   domains,
   userDetails,
   additionalContent,
-  showMultiSigPermissions = false,
 }) => {
+  const { isMultiSigEnabled } = useEnabledExtensions();
   const aboutDescriptionText = formatText(aboutDescription);
   const isTopContributorType = contributorType === ContributorType.Top;
   const { colony } = useColonyContext();
@@ -107,21 +109,40 @@ const UserInfo: FC<UserInfoProps> = ({
                   reputationPercentage,
                   reputationRaw,
                 }) => {
-                  const relevantPermissions = showMultiSigPermissions
-                    ? multiSigPermissions
-                    : permissions;
-                  const finalPermissions = relevantPermissions?.length
-                    ? relevantPermissions
-                    : domains
-                        .find(({ nativeId }) => nativeId === Id.RootDomain)
-                        ?.permissions.filter(
+                  const getFilteredPermissions = (
+                    unfilteredPermissions: AvailablePermission[],
+                  ) => {
+                    if (unfilteredPermissions?.length) {
+                      return unfilteredPermissions;
+                    }
+                    const rootDomain = domains.find(
+                      ({ nativeId }) => nativeId === Id.RootDomain,
+                    );
+                    return rootDomain
+                      ? rootDomain.permissions.filter(
                           (permission) =>
                             permission !== ColonyRole.Root &&
                             permission !== ColonyRole.Recovery,
-                        );
-                  const permissionRole = finalPermissions?.length
-                    ? getRole(finalPermissions)
-                    : undefined;
+                        )
+                      : [];
+                  };
+
+                  const finalPermissions = getFilteredPermissions(permissions);
+                  const finalMultiSigPermissions =
+                    getFilteredPermissions(multiSigPermissions);
+
+                  let permissionRole: UserRoleMeta | undefined;
+                  let isMultiSigPermission = false;
+
+                  if (isMultiSigEnabled && finalMultiSigPermissions?.length) {
+                    permissionRole = getRole(multiSigPermissions);
+                    isMultiSigPermission = true;
+                  }
+
+                  if (finalPermissions?.length) {
+                    permissionRole = getRole(finalPermissions);
+                    isMultiSigPermission = false;
+                  }
 
                   return (
                     <li
@@ -135,7 +156,7 @@ const UserInfo: FC<UserInfoProps> = ({
                         {permissionRole && (
                           <PermissionsBadge
                             text={permissionRole.name}
-                            icon={!showMultiSigPermissions ? User : Signature}
+                            icon={!isMultiSigPermission ? User : Signature}
                           />
                         )}
 
