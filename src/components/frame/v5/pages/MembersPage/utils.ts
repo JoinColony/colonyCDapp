@@ -2,7 +2,8 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
-import { getAllUserRoles } from '~transformers';
+import { getAllUserRoles } from '~transformers/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { type MemberItem } from './types.ts';
 
@@ -32,10 +33,11 @@ export const getMembersList = (
         ? hasPermissions
         : domainId === selectedTeamId || domainId === Id.RootDomain;
     });
-
-    const allRoles = getAllUserRoles(colony, contributorAddress);
-
-    const filteredRoles =
+    const allRoles = getAllUserRoles(
+      extractColonyRoles(colony.roles),
+      contributorAddress,
+    );
+    const allRolesFiltered =
       hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
         ? allRoles
         : allRoles?.filter(
@@ -43,8 +45,8 @@ export const getMembersList = (
           );
 
     const permissionRole =
-      hasRoleInTeam && filteredRoles?.length
-        ? getRole(filteredRoles)
+      hasRoleInTeam && allRolesFiltered?.length
+        ? getRole(allRolesFiltered)
         : undefined;
 
     const teamReputationPercentage = reputation?.items?.find(
