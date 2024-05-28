@@ -6,12 +6,24 @@
     }
   },
   "Conditions": {
-    "IsQaEnv": {
-      "Fn::Equals": [
+    "IsQaOrClonedEnv": {
+      "Fn::Or": [
         {
-          "Ref": "env"
+          "Fn::Equals": [
+            {
+              "Ref": "env"
+            },
+            "qaarbsep"
+          ]
         },
-        "qaarbsep"
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "env"
+            },
+            "qaarbsepcl"
+          ]
+        }
       ]
     }
   },
@@ -25,7 +37,7 @@
         "Type": "String",
         "Value": {
           "Fn::If": [
-            "IsQaEnv",
+            "IsQaOrClonedEnv",
             "arbitrumSepolia",
             "arbitrumOne"
           ]
@@ -42,7 +54,7 @@
         "Type": "String",
         "Value": {
           "Fn::If": [
-            "IsQaEnv",
+            "IsQaOrClonedEnv",
             "https://arbitrum-sepolia.core.chainstack.com/5ee6818452437d552323df146564523d",
             "https://arbitrum-mainnet.core.chainstack.com/09365a049b04d0d7f3e3d40f97c18f2d"
           ]
@@ -59,7 +71,7 @@
         "Type": "String",
         "Value": {
           "Fn::If": [
-            "IsQaEnv",
+            "IsQaOrClonedEnv",
             "0x7777494e3d8cce0D3570E21FEf820F9Fee077777",
             "0xcccccdcc0ccf6c708d860e19353c5f9a49accccc"
           ]
@@ -76,7 +88,7 @@
         "Type": "String",
         "Value": {
           "Fn::If": [
-            "IsQaEnv",
+            "IsQaOrClonedEnv",
             "https://arbitrum-sepolia.colony.io/reputation/arbitrum-sepolia",
             "https://app.colony.io/reputation/arbitrum-one"
           ]
@@ -93,7 +105,7 @@
         "Type": "String",
         "Value": {
           "Fn::If": [
-            "IsQaEnv",
+            "IsQaOrClonedEnv",
             "https://wmc3qb57g5cnhhpok2bvdhmism.appsync-api.eu-west-2.amazonaws.com/graphql",
             "https://o4mnvckgrjhanhdnspfchnl6py.appsync-api.eu-west-2.amazonaws.com/graphql"
           ]
