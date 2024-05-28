@@ -31,7 +31,7 @@ export const TableRow: FC<TableRowProps> = ({
   itemHeight,
 }) => {
   if (!isEnabled) {
-    return <tr>{children}</tr>;
+    return <tr className={className}>{children}</tr>;
   }
 
   return (

@@ -133,7 +133,7 @@ export const useActionsTableProps = (
     {
       className: clsx(
         className,
-        'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:h-[3.625rem] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
+        'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:h-[70px] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
         {
           'sm:[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
         },

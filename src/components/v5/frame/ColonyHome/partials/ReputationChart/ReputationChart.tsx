@@ -75,7 +75,7 @@ const ReputationChart = () => {
           actionTitle={formatText({
             id: 'dashboard.team.widget.createTeam',
           })}
-          className="px-[1.8rem] py-[2.3rem]"
+          className="h-full p-2"
           onClick={openCreateNewTeam}
         />
       );
@@ -140,7 +140,7 @@ const ReputationChart = () => {
           </div>
         </div>
       }
-      className="min-h-[12.5rem] flex-col items-start bg-base-white p-6 sm:hover:text-gray-900"
+      className="h-fit flex-1 flex-col items-start bg-base-white p-6 sm:hover:text-gray-900"
       // @BETA: Disabled for now
       // href={allTeams?.length ? COLONY_TEAMS_ROUTE : undefined}
     />

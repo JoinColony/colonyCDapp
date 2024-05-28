@@ -67,13 +67,13 @@ const Objective = () => {
             actionTitle={formatText({
               id: 'dashboard.objective.widget.createObjective',
             })}
-            className="p-[2.7rem]"
+            className="h-full p-6"
             onClick={openManageObjectives}
           />
         )
       }
       contentClassName="w-full"
-      className="min-h-[10.5rem] flex-col bg-base-white p-6"
+      className="flex-1 flex-col bg-base-white p-6"
       href={objective ? COLONY_DETAILS_ROUTE : undefined}
       onClick={openManageObjectives}
     />
