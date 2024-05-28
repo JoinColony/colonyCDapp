@@ -3,6 +3,7 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
 import { getAllUserRoles } from '~transformers/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { type MemberItem } from './types.ts';
 
@@ -30,7 +31,10 @@ export const getMembersList = (
         domain?.nativeId === Id.RootDomain
       );
     });
-    const allRoles = getAllUserRoles(colony, contributorAddress);
+    const allRoles = getAllUserRoles(
+      extractColonyRoles(colony.roles),
+      contributorAddress,
+    );
     const allRolesFiltered =
       hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
         ? allRoles

@@ -5,6 +5,7 @@ import { getAllUserRoles } from '~transformers/index.ts';
 import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { ModificationOption } from '../../partials/forms/ManageReputationForm/consts.ts';
 
@@ -81,7 +82,11 @@ export const getHasActionPermissions = (
   formValues: Record<string, any>,
   isMultiSig = false,
 ) => {
-  const allUserRoles = getAllUserRoles(colony, userAddress, isMultiSig);
+  const allUserRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    userAddress,
+    isMultiSig,
+  );
   if (allUserRoles.length === 0) {
     return false;
   }

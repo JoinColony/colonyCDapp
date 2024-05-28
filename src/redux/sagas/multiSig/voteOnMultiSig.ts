@@ -1,9 +1,10 @@
-import { ClientType, getPermissionProofs } from '@colony/colony-js';
+import { type AnyColonyClient, ClientType, Id } from '@colony/colony-js';
 import { takeEvery, call, fork, put } from 'redux-saga/effects';
 
 import type ColonyManager from '~context/ColonyManager.ts';
 import { MultiSigVote } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux';
+import { getUserRolesForDomain } from '~transformers';
 
 import {
   createTransaction,
@@ -12,6 +13,7 @@ import {
 } from '../transactions/index.ts';
 import {
   getColonyManager,
+  getPermissionProofsLocal,
   initiateTransaction,
   putError,
   takeFrom,
@@ -23,8 +25,18 @@ const voteToNumber: Record<MultiSigVote, number> = {
   [MultiSigVote.Reject]: 2,
 };
 
+export type VoteOnMultiSigActionPayload =
+  Action<ActionTypes.MULTISIG_VOTE>['payload'];
+
 function* voteOnMultiSigAction({
-  payload: { colonyAddress, vote, multiSigId, requiredRole, domainId },
+  payload: {
+    colonyAddress,
+    colonyRoles,
+    vote,
+    multiSigId,
+    requiredRole,
+    domain,
+  },
   meta,
 }: Action<ActionTypes.MULTISIG_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -36,16 +48,34 @@ function* voteOnMultiSigAction({
 
     const colonyManager: ColonyManager = yield getColonyManager();
 
-    const colonyClient = yield colonyManager.getClient(
+    const colonyClient: AnyColonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
+    const userAddress = yield colonyClient.signer.getAddress();
 
-    // @TODO needs a multi sig equivalent, for now just assign the same roles for a member for the colony
-    const [, childSkillIndex] = yield getPermissionProofs(
+    const userPermissions = getUserRolesForDomain(
+      colonyRoles,
+      userAddress,
+      domain.nativeId,
+      true,
+      true,
+    );
+    const userPermissionsInRoot = getUserRolesForDomain(
+      colonyRoles,
+      userAddress,
+      Id.RootDomain,
+      true,
+      true,
+    );
+
+    const [, childSkillIndex] = yield call(
+      getPermissionProofsLocal,
       colonyClient.networkClient,
       colonyClient,
-      domainId,
+      domain,
+      userPermissions,
+      userPermissionsInRoot,
       requiredRole,
     );
 
@@ -53,7 +83,12 @@ function* voteOnMultiSigAction({
       context: ClientType.MultisigPermissionsClient,
       methodName: 'changeVote',
       identifier: colonyAddress,
-      params: [domainId, childSkillIndex, multiSigId, voteToNumber[vote]],
+      params: [
+        domain.nativeId,
+        childSkillIndex,
+        multiSigId,
+        voteToNumber[vote],
+      ],
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
