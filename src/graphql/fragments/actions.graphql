@@ -282,6 +282,9 @@ fragment MultiSigUserSignature on MultiSigUserSignature {
 fragment ColonyMultiSig on ColonyMultiSig {
   id
   nativeMultiSigId
+  multiSigDomain {
+    ...Domain
+  }
   multiSigDomainId
   nativeMultiSigDomainId
   requiredPermissions
