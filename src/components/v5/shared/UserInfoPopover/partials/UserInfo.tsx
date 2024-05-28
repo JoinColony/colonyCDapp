@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type UserRoleMeta, getRole } from '~constants/permissions.ts';
+import { getRole } from '~constants/permissions.ts';
 import { ContributorType } from '~gql';
 import { type AvailablePermission } from '~hooks/members/types.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -131,18 +131,13 @@ const UserInfo: FC<UserInfoProps> = ({
                   const finalMultiSigPermissions =
                     getFilteredPermissions(multiSigPermissions);
 
-                  let permissionRole: UserRoleMeta | undefined;
-                  let isMultiSigPermission = false;
-
-                  if (isMultiSigEnabled && finalMultiSigPermissions?.length) {
-                    permissionRole = getRole(multiSigPermissions);
-                    isMultiSigPermission = true;
-                  }
-
-                  if (finalPermissions?.length) {
-                    permissionRole = getRole(finalPermissions);
-                    isMultiSigPermission = false;
-                  }
+                  const permissionRole = finalPermissions?.length
+                    ? getRole(finalPermissions)
+                    : undefined;
+                  const multiSigPermissionRole =
+                    finalMultiSigPermissions?.length
+                      ? getRole(finalMultiSigPermissions)
+                      : undefined;
 
                   return (
                     <li
@@ -154,10 +149,32 @@ const UserInfo: FC<UserInfoProps> = ({
                       </span>
                       <div className="flex justify-end">
                         {permissionRole && (
-                          <PermissionsBadge
-                            text={permissionRole.name}
-                            icon={!isMultiSigPermission ? User : Signature}
-                          />
+                          <Tooltip
+                            // @TODO: Give this the correct tooltip content
+                            tooltipContent={
+                              <p>
+                                This member has the {permissionRole.name}{' '}
+                                permissions role
+                              </p>
+                            }
+                          >
+                            <PermissionsBadge icon={User} />
+                          </Tooltip>
+                        )}
+
+                        {isMultiSigEnabled && multiSigPermissionRole && (
+                          <Tooltip
+                            // @TODO: Give this the correct tooltip content
+                            tooltipContent={
+                              <p>
+                                This member has the{' '}
+                                {multiSigPermissionRole.name} multi-sig
+                                permissions role
+                              </p>
+                            }
+                          >
+                            <PermissionsBadge icon={Signature} />
+                          </Tooltip>
                         )}
 
                         <Tooltip
