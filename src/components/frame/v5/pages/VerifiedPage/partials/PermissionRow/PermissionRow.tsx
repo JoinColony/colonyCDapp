@@ -6,6 +6,7 @@ import { getRole } from '~constants/permissions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 
@@ -15,7 +16,10 @@ const displayName = 'v5.pages.VerifiedPage.partials.PermissionRow';
 
 const PermissionRow: FC<PermissionRowProps> = ({ contributorAddress }) => {
   const { colony } = useColonyContext();
-  const allRoles = getAllUserRoles(colony, contributorAddress);
+  const allRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    contributorAddress,
+  );
   const permissionRole = getRole(allRoles);
 
   return (

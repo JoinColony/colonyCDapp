@@ -2,7 +2,7 @@ import { type FC } from 'react';
 import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { type MultiSigUserSignature } from '~gql';
+import { type Domain, type MultiSigUserSignature } from '~gql';
 import { notMaybe } from '~utils/arrays/index.ts';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
@@ -44,16 +44,18 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
       {userSignature ? (
         <RemoveVoteButton
           actionType={action.type}
-          multiSigColonyAddress={action.colonyAddress}
           multiSigId={action.multiSigData.nativeMultiSigId}
-          multiSigDomainId={Number(action.multiSigData.nativeMultiSigDomainId)}
+          multiSigDomain={
+            action.multiSigData.multiSigDomain as unknown as Domain
+          }
         />
       ) : (
         <VoteButton
           actionType={action.type}
-          multiSigColonyAddress={action.colonyAddress}
           multiSigId={action.multiSigData.nativeMultiSigId}
-          multiSigDomainId={Number(action.multiSigData.nativeMultiSigDomainId)}
+          multiSigDomain={
+            action.multiSigData.multiSigDomain as unknown as Domain
+          }
         />
       )}
     </div>
