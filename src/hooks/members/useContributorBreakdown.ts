@@ -53,11 +53,18 @@ const mergeDomains = (
       },
     );
 
-    if (domains[permDomain.domainId]) {
-      domains[permDomain.domainId].permissions = roles;
-      domains[permDomain.domainId].multiSigPermissions = multiSigRoles;
+    const { domainId } = permDomain;
+    const domain = domains[domainId];
+
+    if (domain) {
+      if (roles.length > 0) {
+        domain.permissions = roles;
+      }
+      if (multiSigRoles.length > 0) {
+        domain.multiSigPermissions = multiSigRoles;
+      }
     } else {
-      domains[permDomain.domainId] = {
+      domains[domainId] = {
         nativeId: permDomain.domain.nativeId,
         domainId: permDomain.domainId,
         domainName:
