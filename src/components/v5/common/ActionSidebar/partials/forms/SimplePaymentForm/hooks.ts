@@ -27,7 +27,7 @@ import { getSimplePaymentPayload } from './utils.tsx';
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
-  const selectedTeam: string | undefined = watch('from');
+  const selectedTeam: number | undefined = watch('from');
 
   const validationSchema = useMemo(
     () =>

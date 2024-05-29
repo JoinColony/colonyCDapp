@@ -13,7 +13,7 @@ import {
 export const hasEnoughFundsValidation = (
   value: string | null | undefined,
   context: TestContext<object>,
-  selectedTeam: string | undefined,
+  selectedTeam: number | undefined,
   colony: ColonyFragment,
   tokenAddress?: string,
 ) => {
@@ -41,7 +41,7 @@ export const hasEnoughFundsValidation = (
   const tokenBalance = getBalanceForTokenAndDomain(
     colony?.balances,
     selectedToken?.tokenAddress,
-    Number(selectedTeam) || Id.RootDomain,
+    selectedTeam || Id.RootDomain,
   );
 
   return !BigNumber.from(

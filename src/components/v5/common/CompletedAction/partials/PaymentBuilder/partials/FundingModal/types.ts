@@ -8,3 +8,9 @@ export interface FundingModalProps extends ModalProps {
   expenditure: Expenditure;
   onSuccess: () => void;
 }
+
+export interface FundingModalContentProps
+  extends Pick<FundingModalProps, 'onClose'> {
+  fundingItems: TokenItemProps[];
+  teamName: string;
+}
