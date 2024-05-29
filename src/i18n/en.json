@@ -385,6 +385,7 @@
 
     "transaction.MultisigPermissionsClient.setGlobalThreshold.title": "Modify Multi-sig global threshold",
     "transaction.MultisigPermissionsClient.multicall.title": "Multicall",
+    "transaction.MultisigPermissionsClient.cancel.title": "Cancel MulitSig motion",
     "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
     "metatransaction.group.deposit.title": "Activate tokens",
     "metatransaction.group.deposit.description": "Activate tokens",
@@ -1834,5 +1835,7 @@
     "form.invalid": "Invalid {fieldName} format",
     "form.length": "{fieldName} must be exactly {length} characters",
     "form.min": "{fieldName} must be at least {length} characters",
-    "form.max": "{fieldName} must be a maximum of {length} characters"
+    "form.max": "{fieldName} must be a maximum of {length} characters",
+    "multiSig.rejectAction": "Reject action",
+    "multiSig.shareAction": "Share action"
 }
