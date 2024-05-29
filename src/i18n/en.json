@@ -425,7 +425,7 @@
     "transaction.group.removeVerifiedMembers.title": "Remove verified members",
     "transaction.group.removeVerifiedMembers.description": "Remove verified members",
     "transaction.MultisigPermissionsClient.multicall.title": "Multicall",
-    "transaction.MultisigPermissionsClient.cancel.title": "Cancel MulitSig motion",
+    "transaction.MultisigPermissionsClient.cancel.title": "Cancel MultiSig motion",
     "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
     "metatransaction.group.deposit.title": "Activate tokens",
     "metatransaction.group.deposit.description": "Activate tokens",
