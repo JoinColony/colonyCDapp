@@ -427,6 +427,7 @@
     "transaction.group.removeVerifiedMembers.title": "Remove verified members",
     "transaction.group.removeVerifiedMembers.description": "Remove verified members",
     "transaction.MultisigPermissionsClient.multicall.title": "Multicall",
+    "transaction.MultisigPermissionsClient.cancel.title": "Cancel MulitSig motion",
     "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
     "metatransaction.group.deposit.title": "Activate tokens",
     "metatransaction.group.deposit.description": "Activate tokens",
@@ -1838,5 +1839,7 @@
     "expenditure.paymentOverview": "Payment overview",
     "expenditure.paymentOverview.totalPayments": "Total payments",
     "expenditure.paymentOverview.paid": "Paid",
-    "expenditure.paymentOverview.payableNow": "Payable now"
+    "expenditure.paymentOverview.payableNow": "Payable now",
+    "multiSig.rejectAction": "Reject action",
+    "multiSig.shareAction": "Share action"
 }

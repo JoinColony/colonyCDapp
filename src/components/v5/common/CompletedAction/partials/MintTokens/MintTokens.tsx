@@ -23,6 +23,7 @@ import {
   ActionTitle,
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
+import MultiSigMeatballMenu from '../MultiSigMeatballMenu/MultiSigMeatballMenu.tsx';
 import {
   ActionTypeRow,
   AmountRow,
@@ -57,7 +58,9 @@ const MintTokens = ({ action }: MintTokensProps) => {
     token,
     transactionHash,
     isMotion,
+    isMultiSig,
     annotation,
+    multiSigData,
   } = action;
 
   const formattedAmount = getFormattedTokenAmount(
@@ -73,19 +76,26 @@ const MintTokens = ({ action }: MintTokensProps) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        <MeatballMenu
-          transactionHash={transactionHash}
-          defaultValues={{
-            [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
-            [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
-            [TOKEN_FIELD_NAME]: token?.tokenAddress,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
-            [DESCRIPTION_FIELD_NAME]: annotation?.message,
-          }}
-        />
+        {isMultiSig ? (
+          <MultiSigMeatballMenu
+            transactionHash={transactionHash}
+            multiSigData={multiSigData}
+          />
+        ) : (
+          <MeatballMenu
+            transactionHash={transactionHash}
+            defaultValues={{
+              [TITLE_FIELD_NAME]: customTitle,
+              [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+              [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
+              [TOKEN_FIELD_NAME]: token?.tokenAddress,
+              [DECISION_METHOD_FIELD_NAME]: isMotion
+                ? DecisionMethod.Reputation
+                : DecisionMethod.Permissions,
+              [DESCRIPTION_FIELD_NAME]: annotation?.message,
+            }}
+          />
+        )}
       </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
