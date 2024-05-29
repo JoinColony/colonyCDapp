@@ -39,11 +39,7 @@ export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
         sortUndefined: -1,
         sortingFn: (a, b) => {
           if (a.original.isClaimed && b.original.isClaimed) {
-            return BigNumber.from(a.original.amount).gt(
-              BigNumber.from(b.original.amount),
-            )
-              ? 1
-              : -1;
+            return 0;
           }
           if (a.original.isClaimed) {
             return -1;
