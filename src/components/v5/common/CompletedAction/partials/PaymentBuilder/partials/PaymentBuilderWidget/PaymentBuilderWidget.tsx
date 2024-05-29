@@ -125,9 +125,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       .filter(
         (motion) =>
           motion?.action?.type === ColonyActionType.FundExpenditureMotion,
-      ) || [];
+      )
+      .sort((a, b) => {
+        if (a?.createdAt && b?.createdAt) {
+          return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        }
+        return 0;
+      }) || [];
 
-  const { selectedTransaction } = usePaymentBuilderContext();
+  const { selectedTransaction, setSelectedTransaction } =
+    usePaymentBuilderContext();
 
   const {
     action: motionAction,
@@ -140,6 +147,19 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const selectedMotion = fundingMotions.find(
     (motion) => motion?.transactionHash === selectedTransaction,
   );
+
+  useEffect(() => {
+    if (
+      selectedMotion?.motionStateHistory.hasFailed ||
+      selectedMotion?.motionStateHistory.hasFailedNotFinalizable
+    ) {
+      setSelectedTransaction('');
+    }
+  }, [
+    selectedMotion?.motionStateHistory.hasFailed,
+    selectedMotion?.motionStateHistory.hasFailedNotFinalizable,
+    setSelectedTransaction,
+  ]);
 
   const { motionId = '', motionStakes } = motionAction?.motionData || {};
   const isFundingClaimed = selectedMotion
@@ -248,7 +268,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 <MotionBox
                   transactionId={
                     selectedTransaction ||
-                    motions?.items[0]?.transactionHash ||
+                    fundingMotions?.[0].transactionHash ||
                     ''
                   }
                 />
@@ -311,7 +331,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 />
               </div>
             ) : undefined}
-            {fundingActionsItems?.length === 1 && (
+            {fundingActionsItems && (
               <FinalizeWithPermissionsInfo
                 userAdddress={fundingActionsItems[0]?.initiatorAddress}
                 createdAt={fundingActionsItems[0]?.createdAt}
