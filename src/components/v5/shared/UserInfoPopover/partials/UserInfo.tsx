@@ -1,10 +1,14 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import { Signature, Star, User } from '@phosphor-icons/react';
+import { Star, User, UsersThree } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { getRole } from '~constants/permissions.ts';
+import {
+  UserRole,
+  type UserRoleMeta,
+  getRole,
+} from '~constants/permissions.ts';
 import { ContributorType } from '~gql';
 import { type AvailablePermission } from '~hooks/members/types.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -18,6 +22,47 @@ import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { type UserInfoProps } from '../types.ts';
+
+const getPermissionTooltipContent = ({
+  role,
+  isMultiSig = false,
+}: {
+  role: UserRoleMeta;
+  isMultiSig?: boolean;
+}) => {
+  const roleName = isMultiSig
+    ? `${formatText({ id: 'userInfo.permissions.multiSig' })}${role.name}`
+    : role.name;
+
+  return (
+    <>
+      <p className="font-normal">
+        {formatText(
+          {
+            id:
+              role.role === UserRole.Custom
+                ? 'userInfo.permissions.custom'
+                : 'userInfo.permissions.bundle',
+          },
+          {
+            role: <span className="font-bold">{roleName}</span>,
+          },
+          roleName,
+        )}
+      </p>
+      <ul className="list-disc pl-4">
+        {role.permissions.map((permission) => (
+          <li key={permission}>
+            {isMultiSig
+              ? `${formatText({ id: 'userInfo.permissions.multiSig' })}`
+              : ''}
+            {ColonyRole[permission]}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
 
 const displayName = 'v5.UserInfoPopover.partials.UserInfo';
 
@@ -150,13 +195,9 @@ const UserInfo: FC<UserInfoProps> = ({
                       <div className="flex justify-end">
                         {permissionRole && (
                           <Tooltip
-                            // @TODO: Give this the correct tooltip content
-                            tooltipContent={
-                              <p>
-                                This member has the {permissionRole.name}{' '}
-                                permissions role
-                              </p>
-                            }
+                            tooltipContent={getPermissionTooltipContent({
+                              role: permissionRole,
+                            })}
                           >
                             <PermissionsBadge icon={User} />
                           </Tooltip>
@@ -164,16 +205,12 @@ const UserInfo: FC<UserInfoProps> = ({
 
                         {isMultiSigEnabled && multiSigPermissionRole && (
                           <Tooltip
-                            // @TODO: Give this the correct tooltip content
-                            tooltipContent={
-                              <p>
-                                This member has the{' '}
-                                {multiSigPermissionRole.name} multi-sig
-                                permissions role
-                              </p>
-                            }
+                            tooltipContent={getPermissionTooltipContent({
+                              role: multiSigPermissionRole,
+                              isMultiSig: true,
+                            })}
                           >
-                            <PermissionsBadge icon={Signature} />
+                            <PermissionsBadge icon={UsersThree} />
                           </Tooltip>
                         )}
 
