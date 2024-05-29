@@ -1,4 +1,4 @@
-import React, { useState, type FC, useEffect } from 'react';
+import React, { useState, type FC, useEffect, useRef } from 'react';
 import {
   Outlet,
   useLocation,
@@ -27,7 +27,7 @@ const displayName = 'frame.Extensions.pages.PermissionsPage';
 const PermissionsPage: FC = () => {
   const navigate = useNavigate();
   const { isMultiSigEnabled } = useEnabledExtensions();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const resolvedPermissionsPath = useResolvedPath(COLONY_PERMISSIONS_ROUTE);
   const resolvedMultisigPath = useResolvedPath(COLONY_MULTISIG_ROUTE);
   const [activeTab, setActiveTab] = useState(PermissionType.Individual);
@@ -42,10 +42,20 @@ const PermissionsPage: FC = () => {
     itemsByMultiSigRole,
   ).reduce((acc, members) => acc + members.length, 0);
 
+  const searchRef = useRef(search);
+
   useEffect(() => {
-    if (pathname === resolvedPermissionsPath.pathname) {
+    searchRef.current = search;
+  }, [search]);
+
+  useEffect(() => {
+    const normalizedPathname = pathname.endsWith('/')
+      ? pathname.slice(0, -1)
+      : pathname;
+
+    if (normalizedPathname === resolvedPermissionsPath.pathname) {
       setActiveTab(PermissionType.Individual);
-    } else if (pathname === resolvedMultisigPath.pathname) {
+    } else if (normalizedPathname === resolvedMultisigPath.pathname) {
       setActiveTab(PermissionType.MultiSig);
     }
   }, [
@@ -64,8 +74,8 @@ const PermissionsPage: FC = () => {
       onTabClick={(_, id) =>
         navigate(
           id === PermissionType.Individual
-            ? COLONY_PERMISSIONS_ROUTE
-            : COLONY_MULTISIG_ROUTE,
+            ? `${COLONY_PERMISSIONS_ROUTE}${searchRef.current}`
+            : `${COLONY_MULTISIG_ROUTE}${searchRef.current}`,
         )
       }
       items={[
