@@ -10,7 +10,6 @@ import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
-import { ExpenditureStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -26,7 +25,7 @@ import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
-import ExpenditureBadge from './partials/ExpenditureBadge/ExpenditureBadge.tsx';
+import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 
@@ -160,7 +159,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   <ArrowsOutSimple size={18} />
                 )}
               </button>
-              {action && !isMotion && (
+              {action && !isMotion && !expenditure && (
                 <PillsBase
                   className="bg-success-100 text-success-400"
                   isCapitalized={false}
@@ -168,8 +167,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   {formatText({ id: 'action.passed' })}
                 </PillsBase>
               )}
-              {expenditure?.status === ExpenditureStatus.Draft && (
-                <ExpenditureBadge status={expenditure.status} />
+              {!!expenditure && (
+                <ExpenditureActionStatusBadge
+                  expenditure={expenditure}
+                  withAdditionalStatuses
+                />
               )}
               <MotionOutcomeBadge motionState={motionState} />
             </div>
