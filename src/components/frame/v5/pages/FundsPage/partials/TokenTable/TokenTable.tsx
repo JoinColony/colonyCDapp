@@ -129,11 +129,11 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
             sorting: [
               {
                 id: 'isClaimed',
-                desc: false,
+                desc: true,
               },
               {
                 id: 'amount',
-                desc: false,
+                desc: true,
               },
             ],
           }}
