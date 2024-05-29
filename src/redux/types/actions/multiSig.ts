@@ -78,4 +78,14 @@ export type MultiSigActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.ROOT_MULTISIG_SUCCESS,
       MetaWithSetter<object>
-    >;
+    >
+  | UniqueActionType<
+      ActionTypes.MULTISIG_CANCEL,
+      {
+        colonyAddress: Address;
+        motionId: string;
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.MULTISIG_CANCEL_ERROR, object>
+  | UniqueActionTypeWithoutPayload<ActionTypes.MULTISIG_CANCEL_SUCCESS, object>;
