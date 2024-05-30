@@ -752,6 +752,7 @@ export type ColonyMetadata = {
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['AWSDateTime'];
   /** List of addresses that are in the address book */
+  whitelistedAddresses?: Maybe<Array<Scalars['String']>>;
 };
 
 /**
@@ -1281,6 +1282,7 @@ export type CreateColonyMetadataInput = {
   objective?: InputMaybe<ColonyObjectiveInput>;
   safes?: InputMaybe<Array<SafeInput>>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type CreateColonyMotionInput = {
@@ -2652,6 +2654,7 @@ export type ModelColonyMetadataConditionInput = {
   not?: InputMaybe<ModelColonyMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataConditionInput>>>;
   thumbnail?: InputMaybe<ModelStringInput>;
+  whitelistedAddresses?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyMetadataConnection = {
@@ -2669,6 +2672,7 @@ export type ModelColonyMetadataFilterInput = {
   not?: InputMaybe<ModelColonyMetadataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelStringInput>;
+  whitelistedAddresses?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyMotionConditionInput = {
@@ -3619,6 +3623,7 @@ export type ModelSubscriptionColonyMetadataFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
+  whitelistedAddresses?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionColonyMotionFilterInput = {
@@ -4394,8 +4399,6 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
-  /** Removes the user from the colony whitelist */
-  removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -4985,12 +4988,6 @@ export type MutationDeleteUserStakeArgs = {
 export type MutationDeleteUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: DeleteUserTokensInput;
-};
-
-
-/** Root mutation type */
-export type MutationRemoveMemberFromColonyWhitelistArgs = {
-  input: RemoveMemberFromColonyWhitelistInput;
 };
 
 
@@ -6536,11 +6533,15 @@ export type QuerySearchColonyContributorsArgs = {
   sort?: InputMaybe<Array<InputMaybe<SearchableColonyContributorSortInput>>>;
 };
 
-export type RemoveMemberFromColonyWhitelistInput = {
-  /** The colony address */
-  colonyAddress: Scalars['ID'];
-  /** The user's wallet address */
-  userAddress: Scalars['ID'];
+
+/** Root query type */
+export type QuerySearchColonyFundsClaimsArgs = {
+  aggregates?: InputMaybe<Array<InputMaybe<SearchableColonyFundsClaimAggregationInput>>>;
+  filter?: InputMaybe<SearchableColonyFundsClaimFilterInput>;
+  from?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableColonyFundsClaimSortInput>>>;
 };
 
 export type ReputationMiningCycleMetadata = {
@@ -8032,6 +8033,7 @@ export type UpdateColonyMetadataInput = {
   objective?: InputMaybe<ColonyObjectiveInput>;
   safes?: InputMaybe<Array<SafeInput>>;
   thumbnail?: InputMaybe<Scalars['String']>;
+  whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UpdateColonyMotionInput = {
@@ -8681,13 +8683,6 @@ export type ValidateUserInviteMutationVariables = Exact<{
 
 
 export type ValidateUserInviteMutation = { __typename?: 'Mutation', validateUserInvite?: boolean | null };
-
-export type RemoveMemberFromColonyWhitelistMutationVariables = Exact<{
-  input: RemoveMemberFromColonyWhitelistInput;
-}>;
-
-
-export type RemoveMemberFromColonyWhitelistMutation = { __typename?: 'Mutation', removeMemberFromColonyWhitelist?: boolean | null };
 
 export type UpdateContributorsWithReputationMutationVariables = Exact<{
   colonyAddress?: InputMaybe<Scalars['String']>;
@@ -10297,37 +10292,6 @@ export function useValidateUserInviteMutation(baseOptions?: Apollo.MutationHookO
 export type ValidateUserInviteMutationHookResult = ReturnType<typeof useValidateUserInviteMutation>;
 export type ValidateUserInviteMutationResult = Apollo.MutationResult<ValidateUserInviteMutation>;
 export type ValidateUserInviteMutationOptions = Apollo.BaseMutationOptions<ValidateUserInviteMutation, ValidateUserInviteMutationVariables>;
-export const RemoveMemberFromColonyWhitelistDocument = gql`
-    mutation RemoveMemberFromColonyWhitelist($input: RemoveMemberFromColonyWhitelistInput!) {
-  removeMemberFromColonyWhitelist(input: $input)
-}
-    `;
-export type RemoveMemberFromColonyWhitelistMutationFn = Apollo.MutationFunction<RemoveMemberFromColonyWhitelistMutation, RemoveMemberFromColonyWhitelistMutationVariables>;
-
-/**
- * __useRemoveMemberFromColonyWhitelistMutation__
- *
- * To run a mutation, you first call `useRemoveMemberFromColonyWhitelistMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRemoveMemberFromColonyWhitelistMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [removeMemberFromColonyWhitelistMutation, { data, loading, error }] = useRemoveMemberFromColonyWhitelistMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRemoveMemberFromColonyWhitelistMutation(baseOptions?: Apollo.MutationHookOptions<RemoveMemberFromColonyWhitelistMutation, RemoveMemberFromColonyWhitelistMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveMemberFromColonyWhitelistMutation, RemoveMemberFromColonyWhitelistMutationVariables>(RemoveMemberFromColonyWhitelistDocument, options);
-      }
-export type RemoveMemberFromColonyWhitelistMutationHookResult = ReturnType<typeof useRemoveMemberFromColonyWhitelistMutation>;
-export type RemoveMemberFromColonyWhitelistMutationResult = Apollo.MutationResult<RemoveMemberFromColonyWhitelistMutation>;
-export type RemoveMemberFromColonyWhitelistMutationOptions = Apollo.BaseMutationOptions<RemoveMemberFromColonyWhitelistMutation, RemoveMemberFromColonyWhitelistMutationVariables>;
 export const UpdateContributorsWithReputationDocument = gql`
     mutation UpdateContributorsWithReputation($colonyAddress: String) {
   updateContributorsWithReputation(input: {colonyAddress: $colonyAddress})

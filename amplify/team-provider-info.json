@@ -84,7 +84,6 @@
           "deploymentBucketName": "amplify-colonycdapp-qa-170436-deployment",
           "s3Key": "amplify-builds/validateUserInvite-442f5152486468317969-build.zip"
         },
-        "removeMemberFromColonyWhitelist": {}
       }
     }
   },

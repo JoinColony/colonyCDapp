@@ -854,12 +854,6 @@ type Mutation {
   """
   validateUserInvite(input: ValidateUserInviteInput!): Boolean
     @function(name: "validateUserInvite-${env}")
-  """
-  Removes the user from the colony whitelist
-  """
-  removeMemberFromColonyWhitelist(
-    input: RemoveMemberFromColonyWhitelistInput!
-  ): Boolean @function(name: "removeMemberFromColonyWhitelist-${env}")
 }
 
 """
@@ -1311,11 +1305,6 @@ type Colony @model {
   """
   colonyMemberInvite: ColonyMemberInvite
     @hasOne(fields: ["colonyMemberInviteCode"])
-
-  """
-  An array of all whitelisted wallet addresses
-  """
-  whitelist: [ID!]!
 }
 
 input ValidateUserInviteInput {
@@ -1327,17 +1316,6 @@ input ValidateUserInviteInput {
   The invite code
   """
   inviteCode: ID!
-  """
-  The user's wallet address
-  """
-  userAddress: ID!
-}
-
-input RemoveMemberFromColonyWhitelistInput {
-  """
-  The colony address
-  """
-  colonyAddress: ID!
   """
   The user's wallet address
   """

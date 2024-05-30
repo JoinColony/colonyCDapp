@@ -6,7 +6,6 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
   useCreateColonyContributorMutation,
   useGetColonyContributorQuery,
-  useRemoveMemberFromColonyWhitelistMutation,
   useUpdateColonyContributorMutation,
 } from '~gql';
 import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
@@ -20,9 +19,6 @@ const useColonySubscription = (colony?: Colony) => {
   const { colonyAddress = '' } = colony ?? {};
   const { user, wallet, connectWallet } = useAppContext();
   const { walletAddress = '' } = user || {};
-
-  const [removeMemberFromColonyWhitelist] =
-    useRemoveMemberFromColonyWhitelistMutation();
 
   const [isWatching, setIsWatching] = useState(false);
 
@@ -97,15 +93,6 @@ const useColonySubscription = (colony?: Colony) => {
     });
     clearContributorCaches();
 
-    // @BETA: Remove once beta ends
-    await removeMemberFromColonyWhitelist({
-      variables: {
-        input: {
-          colonyAddress,
-          userAddress: walletAddress,
-        },
-      },
-    });
     navigate('/');
   };
 

@@ -21,9 +21,3 @@ mutation UpdateColonyMetadata($input: UpdateColonyMetadataInput!) {
 mutation ValidateUserInvite($input: ValidateUserInviteInput!) {
   validateUserInvite(input: $input)
 }
-
-mutation RemoveMemberFromColonyWhitelist(
-  $input: RemoveMemberFromColonyWhitelistInput!
-) {
-  removeMemberFromColonyWhitelist(input: $input)
-}

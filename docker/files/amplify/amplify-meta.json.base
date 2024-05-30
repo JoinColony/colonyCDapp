@@ -91,10 +91,5 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "removeMemberFromColonyWhitelist": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
   }
 }
