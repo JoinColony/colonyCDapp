@@ -2,11 +2,12 @@ import React from 'react';
 import { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { MultiSigVote, type ColonyActionType, type Domain } from '~gql';
+import { MultiSigVote, type ColonyActionType } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type VoteOnMultiSigActionPayload } from '~redux/sagas/multiSig/voteOnMultiSig.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -16,13 +17,13 @@ const displayName =
 interface RemoveVoteButtonProps {
   actionType: ColonyActionType;
   multiSigId: string;
-  multiSigDomain: Domain;
+  multiSigDomainId: number;
 }
 
 const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
   actionType,
   multiSigId,
-  multiSigDomain,
+  multiSigDomainId,
 }) => {
   const { colony } = useColonyContext();
   const voteOnMultiSig = useAsyncFunction({
@@ -34,9 +35,10 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
   const handleRemoveVoteClick = async () => {
     const voteForPayload: VoteOnMultiSigActionPayload = {
       colonyAddress: colony.colonyAddress,
+      colonyDomains: extractColonyDomains(colony.domains),
       colonyRoles: extractColonyRoles(colony.roles),
       vote: MultiSigVote.None,
-      domain: multiSigDomain,
+      domainId: multiSigDomainId,
       multiSigId,
       requiredRole: getMultiSigRequiredRole(actionType),
     };

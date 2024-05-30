@@ -67,7 +67,7 @@ const DecisionMethodField = ({
       ...(shouldShowPermissions
         ? [
             {
-              label: formatText({ id: 'actionSidebar.method.permissions' }),
+              label: formatText(MSG.permissions),
               value: DecisionMethod.Permissions,
             },
           ]
@@ -75,7 +75,7 @@ const DecisionMethodField = ({
       ...(isVotingReputationEnabled
         ? [
             {
-              label: formatText({ id: 'actionSidebar.method.reputation' }),
+              label: formatText(MSG.reputation),
               value: DecisionMethod.Reputation,
             },
           ]
