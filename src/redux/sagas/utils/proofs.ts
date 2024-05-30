@@ -6,12 +6,13 @@ import {
   getPermissionProofs,
   getChildIndex,
   type ColonyNetworkClient,
-  type AnyColonyClient,
 } from '@colony/colony-js';
 import { BigNumber, constants, type BigNumberish } from 'ethers';
 
 import { type ColonyManager } from '~context/index.ts';
-import { type Domain } from '~gql';
+import { type ColonyRoleFragment } from '~gql';
+import { getUserRolesForDomain } from '~transformers';
+import { type Domain } from '~types/graphql.ts';
 
 import getColonyManager from './getColonyManager.ts';
 
@@ -19,21 +20,21 @@ export async function getChildIndexLocal(
   networkClient: ColonyNetworkClient,
   parentDomainNativeId: BigNumberish,
   parentDomainSkillId: BigNumberish,
-  domain: Domain,
+  domainNativeId: BigNumberish,
+  domainSkillId: BigNumberish,
 ): Promise<BigNumber> {
-  if (
-    BigNumber.from(parentDomainNativeId).eq(BigNumber.from(domain.nativeId))
-  ) {
+  if (BigNumber.from(parentDomainNativeId).eq(BigNumber.from(domainNativeId))) {
     return constants.MaxUint256;
   }
 
-  const { nativeSkillId: skillId } = domain;
   const { children } = await networkClient.getSkill(parentDomainSkillId);
-  const idx = children.findIndex((childSkillId) => childSkillId.eq(skillId));
+  const idx = children.findIndex((childSkillId) =>
+    childSkillId.eq(domainSkillId),
+  );
 
   if (idx < 0) {
     throw new Error(
-      `Could not find ${domain.id} as a child of ${parentDomainNativeId}`,
+      `Could not find ${domainNativeId} as a child of ${parentDomainNativeId}`,
     );
   }
 
@@ -42,17 +43,28 @@ export async function getChildIndexLocal(
 
 const getSinglePermissionProofsLocal = async (
   networkClient: ColonyNetworkClient,
-  colonyClient: AnyColonyClient,
-  domain: Domain,
-  domainUserRoles: ColonyRole[],
-  rootDomainUserRoles: ColonyRole[],
+  colonyRoles: ColonyRoleFragment[],
+  colonyDomains: Domain[],
+  requiredDomainId: number,
   requiredRole: ColonyRole,
-  customAddress?: string,
+  permissionAddress: string,
+  isMultiSig: boolean,
   /* [permissionDomainId, childSkillIndex, permissionAddress] */
 ): Promise<[BigNumber, BigNumber, string]> => {
-  // @TODO how to get parent domain without colonyClient?
-  const permissionAddress =
-    customAddress || (await colonyClient.signer?.getAddress());
+  const userRolesInDomain = getUserRolesForDomain(
+    colonyRoles,
+    permissionAddress,
+    requiredDomainId,
+    true,
+    isMultiSig,
+  );
+  const userRolesInRoot = getUserRolesForDomain(
+    colonyRoles,
+    permissionAddress,
+    Id.RootDomain,
+    true,
+    isMultiSig,
+  );
 
   if (!permissionAddress) {
     throw new Error(
@@ -60,18 +72,17 @@ const getSinglePermissionProofsLocal = async (
     );
   }
 
-  const hasPermissionInDomain = domainUserRoles.includes(requiredRole);
+  const hasPermissionInDomain = userRolesInDomain.includes(requiredRole);
   if (hasPermissionInDomain) {
     return [
-      BigNumber.from(domain.nativeId),
+      BigNumber.from(requiredDomainId),
       constants.MaxUint256,
       permissionAddress,
     ];
   }
   // @TODO: once we allow nested domains on the network level, this needs to traverse down the skill/domain tree. Use binary search
   const foundDomainId = BigNumber.from(Id.RootDomain);
-  const hasPermissionInAParentDomain =
-    rootDomainUserRoles.includes(requiredRole);
+  const hasPermissionInAParentDomain = userRolesInRoot.includes(requiredRole);
 
   if (!hasPermissionInAParentDomain) {
     throw new Error(
@@ -79,12 +90,29 @@ const getSinglePermissionProofsLocal = async (
     );
   }
 
-  const { skillId } = await colonyClient.getDomain(foundDomainId);
+  const rootDomain = colonyDomains.find((domain) =>
+    BigNumber.from(domain.nativeId).eq(foundDomainId),
+  );
+  const permissionDomain = colonyDomains.find(
+    (domain) => domain.nativeId === requiredDomainId,
+  );
+
+  if (!rootDomain) {
+    throw new Error('Cannot find root domain in colony domains');
+  }
+
+  if (!permissionDomain) {
+    throw new Error(
+      `Cannot find domain with id of ${requiredDomainId} in colony domains`,
+    );
+  }
+
   const idx = await getChildIndexLocal(
     networkClient,
     foundDomainId,
-    skillId,
-    domain,
+    rootDomain.nativeSkillId,
+    permissionDomain.nativeId,
+    permissionDomain.nativeSkillId,
   );
 
   if (idx.lt(0)) {
@@ -97,23 +125,23 @@ const getSinglePermissionProofsLocal = async (
 
 const getMultiPermissionProofsLocal = async (
   networkClient: ColonyNetworkClient,
-  colonyClient: AnyColonyClient,
-  domain: Domain,
-  domainUserRoles: ColonyRole[],
-  rootDomainUserRoles: ColonyRole[],
+  colonyRoles: ColonyRoleFragment[],
+  colonyDomains: Domain[],
+  requiredDomainId: number,
   requiredRoles: ColonyRole[],
-  customAddress?: string,
+  permissionAddress: string,
+  isMultiSig: boolean,
 ): Promise<[BigNumber, BigNumber, string]> => {
   const proofs = await Promise.all(
     requiredRoles.map((role) =>
       getSinglePermissionProofsLocal(
         networkClient,
-        colonyClient,
-        domain,
-        domainUserRoles,
-        rootDomainUserRoles,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId,
         role,
-        customAddress,
+        permissionAddress,
+        isMultiSig,
       ),
     ),
   );
@@ -137,43 +165,43 @@ const getMultiPermissionProofsLocal = async (
 
 export const getPermissionProofsLocal = async (
   networkClient: ColonyNetworkClient,
-  colonyClient: AnyColonyClient,
-  domain: Domain,
-  domainUserRoles: ColonyRole[],
-  rootDomainUserRoles: ColonyRole[],
+  colonyRoles: ColonyRoleFragment[],
+  colonyDomains: Domain[],
+  requiredDomainId: number,
   requiredRole: ColonyRole | ColonyRole[],
-  customAddress?: string,
+  permissionAddress: string,
+  isMultiSig: boolean,
 ): Promise<[BigNumber, BigNumber, string]> => {
   if (Array.isArray(requiredRole)) {
     if (requiredRole.length === 1) {
       return getSinglePermissionProofsLocal(
         networkClient,
-        colonyClient,
-        domain,
-        domainUserRoles,
-        rootDomainUserRoles,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId,
         requiredRole[0],
-        customAddress,
+        permissionAddress,
+        isMultiSig,
       );
     }
     return getMultiPermissionProofsLocal(
       networkClient,
-      colonyClient,
-      domain,
-      domainUserRoles,
-      rootDomainUserRoles,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId,
       requiredRole,
-      customAddress,
+      permissionAddress,
+      isMultiSig,
     );
   }
   return getSinglePermissionProofsLocal(
     networkClient,
-    colonyClient,
-    domain,
-    domainUserRoles,
-    rootDomainUserRoles,
+    colonyRoles,
+    colonyDomains,
+    requiredDomainId,
     requiredRole,
-    customAddress,
+    permissionAddress,
+    isMultiSig,
   );
 };
 

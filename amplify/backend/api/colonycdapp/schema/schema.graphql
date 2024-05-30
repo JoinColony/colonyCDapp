@@ -2588,6 +2588,7 @@ enum MultiSigVote {
 
 type MultiSigUserSignature @model {
   id: ID!
+  colonyAddress: ID!
   multiSigId: ID!
     @index(
       name: "byMultiSigId"
@@ -2628,7 +2629,8 @@ type ColonyMultiSig @model {
   """
   Signatures info
   """
-  signatures: [MultiSigUserSignature] @hasMany(indexName: "byMultiSigId", fields: ["nativeMultiSigId"])  """
+  signatures: [MultiSigUserSignature] @hasMany(indexName: "byMultiSigId", fields: ["id"])
+  """
   Required role for signing
   """
   requiredPermissions: Int!
