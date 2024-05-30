@@ -8,3 +8,10 @@ query GetColonyHistoricRoleRoles($id: ID!) {
     role_6
   }
 }
+query GetColonyRoles($filter: ModelColonyRoleFilterInput) {
+  listColonyRoles(filter: $filter) {
+    items {
+      id
+    }
+  }
+}
