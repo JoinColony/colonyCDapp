@@ -162,7 +162,7 @@ export const allTokensAmountValidation = ({
 
 export const delayGreaterThanZeroValidation = (
   value: number | null | undefined,
-  context: TestContext<{ formValues?: any }>,
+  context: TestContext,
 ) => {
   if (value === undefined || !value) {
     return true;
@@ -185,7 +185,7 @@ export const delayGreaterThanZeroValidation = (
     return context.createError({
       message: formatText(
         {
-          id: 'errors.amount.smallerThanZeroIn',
+          id: 'errors.amount.smallerThanZeroInMultiplePayments',
         },
         {
           paymentIndex: index + 1,
