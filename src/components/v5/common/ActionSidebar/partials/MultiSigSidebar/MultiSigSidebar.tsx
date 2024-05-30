@@ -2,7 +2,6 @@ import { type FC } from 'react';
 import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { type Domain, type MultiSigUserSignature } from '~gql';
 import { notMaybe } from '~utils/arrays/index.ts';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
@@ -28,7 +27,6 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
     return null;
   }
 
-  // @TODO check why types are nagging me here
   const signatures = action.multiSigData?.signatures?.items ?? [];
   const userSignature = signatures.find(
     (signature) => signature?.userAddress === user?.walletAddress,
@@ -36,26 +34,18 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
 
   return (
     <div>
-      <Signees
-        signees={
-          signatures.filter(notMaybe) as unknown as MultiSigUserSignature[]
-        }
-      />
+      <Signees signees={signatures.filter(notMaybe)} />
       {userSignature ? (
         <RemoveVoteButton
           actionType={action.type}
           multiSigId={action.multiSigData.nativeMultiSigId}
-          multiSigDomain={
-            action.multiSigData.multiSigDomain as unknown as Domain
-          }
+          multiSigDomainId={Number(action.multiSigData.nativeMultiSigDomainId)}
         />
       ) : (
         <VoteButton
           actionType={action.type}
           multiSigId={action.multiSigData.nativeMultiSigId}
-          multiSigDomain={
-            action.multiSigData.multiSigDomain as unknown as Domain
-          }
+          multiSigDomainId={Number(action.multiSigData.nativeMultiSigDomainId)}
         />
       )}
     </div>
