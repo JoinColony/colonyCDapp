@@ -363,7 +363,6 @@ export interface EventValues {
 //   colonyAvatarHash: string | null;
 //   colonyTokens: string[] | null;
 //   verifiedAddresses: string[] | null;
-//   isWhitelistActivated: boolean | null;
 //   domainName?: string;
 //   domainPurpose?: string;
 //   domainColor?: string;
@@ -377,14 +376,12 @@ export interface EventValues {
 //         colonyAvatarHash = null,
 //         colonyTokens = [],
 //         verifiedAddresses = [],
-//         isWhitelistActivated = null,
 //       } = JSON.parse(jsonMetadata);
 //       return {
 //         colonyDisplayName,
 //         colonyAvatarHash,
 //         colonyTokens,
 //         verifiedAddresses,
-//         isWhitelistActivated,
 //       };
 //     }
 //   } catch (error) {
@@ -396,7 +393,6 @@ export interface EventValues {
 //     colonyAvatarHash: null,
 //     colonyTokens: [],
 //     verifiedAddresses: [],
-//     isWhitelistActivated: null,
 //   };
 // };
 
@@ -458,7 +454,6 @@ export interface EventValues {
 //     domainPurpose: currentDomainPurpose,
 //     domainColor: currentDomainColor,
 //     verifiedAddresses: currentVerifiedAddresses,
-//     isWhitelistActivated: currentIsWhitelistActivated,
 //   }: Partial<ColonyAction> | ColonyMetadata,
 //   {
 //     colonyDisplayName: prevColonyDisplayName,
@@ -468,7 +463,6 @@ export interface EventValues {
 //     domainPurpose: prevDomainPurpose,
 //     domainColor: prevDomainColor,
 //     verifiedAddresses: prevVerifiedAddresses,
-//     isWhitelistActivated: prevIsWhitelistActivated,
 //   }: {
 //     colonyDisplayName?: string | null;
 //     colonyAvatarHash?: string | null;
@@ -477,7 +471,6 @@ export interface EventValues {
 //     domainPurpose?: string | null;
 //     domainColor?: string | null;
 //     verifiedAddresses?: string[] | null;
-//     isWhitelistActivated?: boolean | null;
 //   },
 // ): { [key: string]: boolean } => {
 //   switch (actionType) {
@@ -486,10 +479,7 @@ export interface EventValues {
 //       const logoChanged = prevColonyAvatarHash !== currentColonyAvatarHash;
 
 //       const verifiedAddressesChanged =
-//         !isEqual(prevVerifiedAddresses, currentVerifiedAddresses) ||
-//         // @NOTE casting to Boolean as IsWhitelistActivated could have a value, null, undefined.
-//         Boolean(prevIsWhitelistActivated) !==
-//           Boolean(currentIsWhitelistActivated);
+//         !isEqual(prevVerifiedAddresses, currentVerifiedAddresses)
 
 //       /*
 //        * Tokens arrays might come from a subgraph query, in which case

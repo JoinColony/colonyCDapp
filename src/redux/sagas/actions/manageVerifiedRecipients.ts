@@ -45,7 +45,6 @@ function* manageVerifiedRecipients({
     verifiedAddresses = [],
     // colonyTokens = [],
     annotationMessage,
-    isWhitelistActivated,
     removedAddresses,
     // colonySafes = [],
     customActionTitle,
@@ -130,7 +129,6 @@ function* manageVerifiedRecipients({
     //     colonyAvatarHash,
     //     verifiedAddresses,
     //     colonyTokens,
-    //     isWhitelistActivated,
     //     colonySafes,
     //   }),
     // );
@@ -173,7 +171,6 @@ function* manageVerifiedRecipients({
         variables: {
           input: {
             id: colonyAddress,
-            isWhitelistActivated,
             whitelistedAddresses: verifiedAddresses,
             changelog: getUpdatedColonyMetadataChangelog({
               transactionHash: txHash,

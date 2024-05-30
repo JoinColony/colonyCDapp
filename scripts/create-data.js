@@ -501,9 +501,7 @@ const createColony = async (
   const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
   const tokenClient = ColonyTokenFactory.connect(tokenAddress, signerOrWallet);
 
-  const metadata = {
-    isWhitelistActivated: false,
-  };
+  const metadata = {};
   if (colonyDescription) {
     metadata.description = colonyDescription;
   }

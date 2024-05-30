@@ -286,7 +286,6 @@ export type ColonyActionsActionTypes =
         colonyTokenAddresses: Address[];
         customActionTitle: string;
         annotationMessage?: string;
-        isWhitelistActivated: boolean;
         removedAddresses: Address[];
       },
       MetaWithSetter<object>
