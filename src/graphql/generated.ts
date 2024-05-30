@@ -1548,6 +1548,7 @@ export type CreateMotionMessageInput = {
 };
 
 export type CreateMultiSigUserSignatureInput = {
+  colonyAddress: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id?: InputMaybe<Scalars['ID']>;
   multiSigId: Scalars['ID'];
@@ -3394,6 +3395,7 @@ export type ModelMotionMessageFilterInput = {
 
 export type ModelMultiSigUserSignatureConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelMultiSigUserSignatureConditionInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   multiSigId?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelMultiSigUserSignatureConditionInput>;
@@ -3411,6 +3413,7 @@ export type ModelMultiSigUserSignatureConnection = {
 
 export type ModelMultiSigUserSignatureFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelMultiSigUserSignatureFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   multiSigId?: InputMaybe<ModelIdInput>;
@@ -4058,6 +4061,7 @@ export type ModelSubscriptionMotionMessageFilterInput = {
 
 export type ModelSubscriptionMultiSigUserSignatureFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionMultiSigUserSignatureFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   multiSigId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4572,6 +4576,7 @@ export type MultiSigParamsInput = {
 
 export type MultiSigUserSignature = {
   __typename?: 'MultiSigUserSignature';
+  colonyAddress: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
   multiSigId: Scalars['ID'];
@@ -8687,6 +8692,7 @@ export type UpdateMotionMessageInput = {
 };
 
 export type UpdateMultiSigUserSignatureInput = {
+  colonyAddress?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
   multiSigId?: InputMaybe<Scalars['ID']>;
