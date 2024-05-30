@@ -111,9 +111,10 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
       additionalContent={
         !isVerified ? (
           <UserNotVerified
+            walletAddress={walletAddress}
             description={
               <div className="mt-2 break-words pb-2 text-sm font-semibold">
-                {user?.walletAddress}
+                {walletAddress}
               </div>
             }
           />
