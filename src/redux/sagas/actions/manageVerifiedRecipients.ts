@@ -62,7 +62,7 @@ function* manageVerifiedRecipients({
      */
     if (!colonyDisplayName && colonyDisplayName !== null) {
       throw new Error(
-        `A colony name is required in order to add whitelist addresses to the colony`,
+        `A colony name is required in order to add addresses to the colony`,
       );
     }
 

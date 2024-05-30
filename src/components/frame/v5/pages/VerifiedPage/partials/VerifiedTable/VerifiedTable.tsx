@@ -23,7 +23,7 @@ import { type TableProps } from './types.ts';
 const displayName = 'v5.pages.VerifiedPage.partials.VerifiedTable';
 
 const VerifiedTable: FC<TableProps> = ({ list }) => {
-  // @TODO: Add action for adding new member, removing user from whitelist, handle pagination
+  // @TODO: Add action for adding new member, handle pagination
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 

@@ -55,7 +55,6 @@ function* setupContextDependentSagas() {
     call(colonyCreateSaga),
     call(extensionSagas),
     call(motionSagas),
-    // call(whitelistSagas),
     // call(vestingSagas),
     call(setupUsersSagas),
     call(setupTransactionSagas),
