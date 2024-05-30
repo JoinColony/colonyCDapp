@@ -174,7 +174,6 @@ function* manageVerifiedRecipients({
             changelog: getUpdatedColonyMetadataChangelog({
               transactionHash: txHash,
               metadata: colony.metadata,
-              hasWhitelistChanged: true,
             }),
           },
         },
