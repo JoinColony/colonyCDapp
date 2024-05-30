@@ -43,4 +43,11 @@ module.exports = {
       }
     }
   `,
+  updateColonyContributor: /* GraphQL */ `
+    mutation UpdateColonyContributor($input: UpdateColonyContributorInput!) {
+      updateColonyContributor(input: $input) {
+        id
+      }
+    }
+  `,
 };

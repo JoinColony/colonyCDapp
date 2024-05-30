@@ -6,6 +6,7 @@ const {
   createColonyContributor,
   getUser,
   getColonyContributor,
+  updateColonyContributor,
 } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
@@ -112,7 +113,29 @@ exports.handler = async (event) => {
   );
 
   if (contributorExistenceCheckQuery?.data?.getColonyContributor) {
-    // contributor already exists no need to create one
+    // If the user has already been a contributor for a Colony before,
+    // switching their isWatching field to true will allow them to access it again
+    const colonyMemberIsWatchingMutation = await graphqlRequest(
+      updateColonyContributor,
+      {
+        input: {
+          id: getColonyContributorId(colonyAddress, userAddress),
+          isWatching: true,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    );
+
+    if (
+      colonyMemberIsWatchingMutation.errors ||
+      !colonyMemberIsWatchingMutation.data
+    ) {
+      throw new Error(
+        error?.message || 'Could not set contributor isWatching field to true',
+      );
+    }
+
     return true;
   }
 
