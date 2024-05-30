@@ -76,7 +76,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig ? (
+        {isMultiSig && multiSigData ? (
           <MultiSigMeatballMenu
             transactionHash={transactionHash}
             multiSigData={multiSigData}
