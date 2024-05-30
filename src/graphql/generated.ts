@@ -9515,12 +9515,12 @@ export type GetProfileByEmailQueryVariables = Exact<{
 
 export type GetProfileByEmailQuery = { __typename?: 'Query', getProfileByEmail?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', id: string } | null> } | null };
 
-export type GetColonyHistoricRoleRolesQueryVariables = Exact<{
-  id: Scalars['ID'];
+export type GetColonyRolesQueryVariables = Exact<{
+  filter?: InputMaybe<ModelColonyRoleFilterInput>;
 }>;
 
 
-export type GetColonyHistoricRoleRolesQuery = { __typename?: 'Query', getColonyHistoricRole?: { __typename?: 'ColonyHistoricRole', role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null } | null };
+export type GetColonyRolesQuery = { __typename?: 'Query', listColonyRoles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string } | null> } | null };
 
 export type GetUserStakesQueryVariables = Exact<{
   userAddress: Scalars['ID'];
@@ -13145,46 +13145,43 @@ export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
 export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
 export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
-export const GetColonyHistoricRoleRolesDocument = gql`
-    query GetColonyHistoricRoleRoles($id: ID!) {
-  getColonyHistoricRole(id: $id) {
-    role_0
-    role_1
-    role_2
-    role_3
-    role_5
-    role_6
+export const GetColonyRolesDocument = gql`
+    query GetColonyRoles($filter: ModelColonyRoleFilterInput) {
+  listColonyRoles(filter: $filter) {
+    items {
+      id
+    }
   }
 }
     `;
 
 /**
- * __useGetColonyHistoricRoleRolesQuery__
+ * __useGetColonyRolesQuery__
  *
- * To run a query within a React component, call `useGetColonyHistoricRoleRolesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetColonyHistoricRoleRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetColonyRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetColonyHistoricRoleRolesQuery({
+ * const { data, loading, error } = useGetColonyRolesQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      filter: // value for 'filter'
  *   },
  * });
  */
-export function useGetColonyHistoricRoleRolesQuery(baseOptions: Apollo.QueryHookOptions<GetColonyHistoricRoleRolesQuery, GetColonyHistoricRoleRolesQueryVariables>) {
+export function useGetColonyRolesQuery(baseOptions?: Apollo.QueryHookOptions<GetColonyRolesQuery, GetColonyRolesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyHistoricRoleRolesQuery, GetColonyHistoricRoleRolesQueryVariables>(GetColonyHistoricRoleRolesDocument, options);
+        return Apollo.useQuery<GetColonyRolesQuery, GetColonyRolesQueryVariables>(GetColonyRolesDocument, options);
       }
-export function useGetColonyHistoricRoleRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyHistoricRoleRolesQuery, GetColonyHistoricRoleRolesQueryVariables>) {
+export function useGetColonyRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyRolesQuery, GetColonyRolesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyHistoricRoleRolesQuery, GetColonyHistoricRoleRolesQueryVariables>(GetColonyHistoricRoleRolesDocument, options);
+          return Apollo.useLazyQuery<GetColonyRolesQuery, GetColonyRolesQueryVariables>(GetColonyRolesDocument, options);
         }
-export type GetColonyHistoricRoleRolesQueryHookResult = ReturnType<typeof useGetColonyHistoricRoleRolesQuery>;
-export type GetColonyHistoricRoleRolesLazyQueryHookResult = ReturnType<typeof useGetColonyHistoricRoleRolesLazyQuery>;
-export type GetColonyHistoricRoleRolesQueryResult = Apollo.QueryResult<GetColonyHistoricRoleRolesQuery, GetColonyHistoricRoleRolesQueryVariables>;
+export type GetColonyRolesQueryHookResult = ReturnType<typeof useGetColonyRolesQuery>;
+export type GetColonyRolesLazyQueryHookResult = ReturnType<typeof useGetColonyRolesLazyQuery>;
+export type GetColonyRolesQueryResult = Apollo.QueryResult<GetColonyRolesQuery, GetColonyRolesQueryVariables>;
 export const GetUserStakesDocument = gql`
     query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
   getUserStakes(
