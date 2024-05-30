@@ -1484,10 +1484,6 @@ type ColonyMetadataChangelog {
   """
   hasAvatarChanged: Boolean!
   """
-  Whether entries in the address book (whitelist) have changed
-  """
-  hasWhitelistChanged: Boolean!
-  """
   Whether tokens have been added or removed from the Colony's token list
   """
   haveTokensChanged: Boolean!

@@ -45,7 +45,6 @@ export const getUpdatedColonyMetadataChangelog = ({
   metadata,
   newDisplayName,
   newAvatarImage,
-  hasWhitelistChanged = false,
   haveTokensChanged = false,
   hasDescriptionChanged = false,
   haveExternalLinksChanged = false,
@@ -56,7 +55,6 @@ export const getUpdatedColonyMetadataChangelog = ({
   metadata: ColonyMetadata;
   newDisplayName?: string;
   newAvatarImage?: string | null;
-  hasWhitelistChanged?: boolean;
   haveTokensChanged?: boolean;
   hasDescriptionChanged?: boolean;
   haveExternalLinksChanged?: boolean;
@@ -77,7 +75,6 @@ export const getUpdatedColonyMetadataChangelog = ({
         newAvatarImage === undefined
           ? false
           : newAvatarImage !== metadata.avatar,
-      hasWhitelistChanged,
       haveTokensChanged,
       hasDescriptionChanged,
       haveExternalLinksChanged,

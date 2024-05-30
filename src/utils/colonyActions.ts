@@ -575,7 +575,7 @@ const getChangelogItem = (
 };
 /**
  * Function returning action type based on the action data, that can include extended action types,
- * e.g. UpdateAddressBook, UpdateTokens
+ * e.g. UpdateTokens
  */
 export const getExtendedActionType = (
   actionData: ColonyAction,
@@ -590,10 +590,6 @@ export const getExtendedActionType = (
 
   if (changelogItem?.haveTokensChanged) {
     return ExtendedColonyActionType.UpdateTokens;
-  }
-
-  if (changelogItem?.hasWhitelistChanged) {
-    return ExtendedColonyActionType.UpdateAddressBook;
   }
 
   if (!isEqual(changelogItem?.newSafes, changelogItem?.oldSafes)) {
