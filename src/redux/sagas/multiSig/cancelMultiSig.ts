@@ -32,15 +32,11 @@ function* cancelMultiSig({
     yield waitForTxResult(txChannel);
 
     yield put<AllActions>({
-      type: ActionTypes.MULTISIG_SET_THRESHOLDS_SUCCESS,
+      type: ActionTypes.MULTISIG_CANCEL_SUCCESS,
       meta,
     });
   } catch (error) {
-    return yield putError(
-      ActionTypes.MULTISIG_SET_THRESHOLDS_ERROR,
-      error,
-      meta,
-    );
+    return yield putError(ActionTypes.MULTISIG_CANCEL_ERROR, error, meta);
   }
 
   txChannel.close();
