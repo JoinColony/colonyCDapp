@@ -3,7 +3,6 @@ import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
-import { getUserRolesForDomain } from '~transformers';
 
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
@@ -27,12 +26,13 @@ function* createRootMultiSigSaga({
   payload: {
     operationName,
     colonyAddress,
+    colonyDomains,
     colonyRoles,
     colonyName,
     multiSigParams,
     annotationMessage,
     customActionTitle,
-    domain,
+    domainId = Id.RootDomain,
     requiredRole = ColonyRole.Root,
   },
   meta: { id: metaId, navigate, setTxHash },
@@ -54,29 +54,15 @@ function* createRootMultiSigSaga({
 
     const userAddress = yield colonyClient.signer.getAddress();
 
-    const userPermissions = getUserRolesForDomain(
-      colonyRoles,
-      userAddress,
-      domain.nativeId,
-      true,
-      true,
-    );
-    const userPermissionsInRoot = getUserRolesForDomain(
-      colonyRoles,
-      userAddress,
-      Id.RootDomain,
-      true,
-      true,
-    );
-
     const [, childSkillIndex] = yield call(
       getPermissionProofsLocal,
       colonyClient.networkClient,
-      colonyClient,
-      domain,
-      userPermissions,
-      userPermissionsInRoot,
+      colonyRoles,
+      colonyDomains,
+      domainId,
       requiredRole,
+      userAddress,
+      true,
     );
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
