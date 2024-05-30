@@ -1,10 +1,9 @@
-import { type AnyColonyClient, ClientType, Id } from '@colony/colony-js';
+import { type AnyColonyClient, ClientType } from '@colony/colony-js';
 import { takeEvery, call, fork, put } from 'redux-saga/effects';
 
 import type ColonyManager from '~context/ColonyManager.ts';
 import { MultiSigVote } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux';
-import { getUserRolesForDomain } from '~transformers';
 
 import {
   createTransaction,
@@ -19,23 +18,24 @@ import {
   takeFrom,
 } from '../utils/index.ts';
 
+export type VoteOnMultiSigActionPayload =
+  Action<ActionTypes.MULTISIG_VOTE>['payload'];
+
 const voteToNumber: Record<MultiSigVote, number> = {
   [MultiSigVote.None]: 0,
   [MultiSigVote.Approve]: 1,
   [MultiSigVote.Reject]: 2,
 };
 
-export type VoteOnMultiSigActionPayload =
-  Action<ActionTypes.MULTISIG_VOTE>['payload'];
-
 function* voteOnMultiSigAction({
   payload: {
     colonyAddress,
+    colonyDomains,
     colonyRoles,
     vote,
     multiSigId,
     requiredRole,
-    domain,
+    domainId,
   },
   meta,
 }: Action<ActionTypes.MULTISIG_VOTE>) {
@@ -54,41 +54,22 @@ function* voteOnMultiSigAction({
     );
     const userAddress = yield colonyClient.signer.getAddress();
 
-    const userPermissions = getUserRolesForDomain(
-      colonyRoles,
-      userAddress,
-      domain.nativeId,
-      true,
-      true,
-    );
-    const userPermissionsInRoot = getUserRolesForDomain(
-      colonyRoles,
-      userAddress,
-      Id.RootDomain,
-      true,
-      true,
-    );
-
     const [, childSkillIndex] = yield call(
       getPermissionProofsLocal,
       colonyClient.networkClient,
-      colonyClient,
-      domain,
-      userPermissions,
-      userPermissionsInRoot,
+      colonyRoles,
+      colonyDomains,
+      domainId,
       requiredRole,
+      userAddress,
+      true,
     );
 
     yield fork(createTransaction, meta.id, {
       context: ClientType.MultisigPermissionsClient,
       methodName: 'changeVote',
       identifier: colonyAddress,
-      params: [
-        domain.nativeId,
-        childSkillIndex,
-        multiSigId,
-        voteToNumber[vote],
-      ],
+      params: [domainId, childSkillIndex, multiSigId, voteToNumber[vote]],
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
