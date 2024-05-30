@@ -1,0 +1,7 @@
+query GetColonyRoles($filter: ModelColonyRoleFilterInput) {
+  listColonyRoles(filter: $filter) {
+    items {
+      id
+    }
+  }
+}
