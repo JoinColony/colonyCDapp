@@ -71,16 +71,11 @@ exports.handler = async (event) => {
     throw new Error('Invite code is not valid');
   }
 
-  const { whitelist } =
-    getColonyMemberInviteResponse?.data?.getColonyMemberInvite?.colony;
-  const updatedWhitelist = new Set([...whitelist, userAddress]);
-
   const colonyMutation = await graphqlRequest(
     updateColony,
     {
       input: {
         id: colonyAddress,
-        whitelist: [...updatedWhitelist],
       },
     },
     graphqlURL,
@@ -89,7 +84,7 @@ exports.handler = async (event) => {
 
   if (colonyMutation.errors || !colonyMutation.data) {
     const [error] = colonyMutation.errors;
-    throw new Error(error?.message || 'Could not update colony whitelist');
+    throw new Error(error?.message);
   }
 
   const colonyMemberInviteMutation = await graphqlRequest(

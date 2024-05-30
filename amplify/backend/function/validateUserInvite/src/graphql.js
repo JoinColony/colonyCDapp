@@ -4,9 +4,6 @@ module.exports = {
       getColonyMemberInvite(id: $inviteCode) {
         invitesRemaining
         colonyId
-        colony {
-          whitelist
-        }
       }
     }
   `,

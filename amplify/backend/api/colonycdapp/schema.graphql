@@ -849,8 +849,7 @@ type Mutation {
   ): Boolean @function(name: "updateContributorsWithReputation-${env}")
 
   """
-  Validates the user invite code and adds the user to the colony whitelist
-  and as a colony contributor
+  Validates the user invite code and adds the user as a colony contributor
   """
   validateUserInvite(input: ValidateUserInviteInput!): Boolean
     @function(name: "validateUserInvite-${env}")
@@ -1523,7 +1522,6 @@ enum ClientType {
   TokenClient
   TokenLockingClient
   VotingReputationClient
-  WhitelistClient
   WrappedTokenClient
   VestingSimpleClient
   LightTokenClient

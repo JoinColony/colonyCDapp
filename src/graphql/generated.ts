@@ -93,7 +93,6 @@ export enum ClientType {
   TokenSupplierClient = 'TokenSupplierClient',
   VestingSimpleClient = 'VestingSimpleClient',
   VotingReputationClient = 'VotingReputationClient',
-  WhitelistClient = 'WhitelistClient',
   WrappedTokenClient = 'WrappedTokenClient'
 }
 
@@ -152,8 +151,6 @@ export type Colony = {
   updatedAt: Scalars['AWSDateTime'];
   /** Version of the Colony */
   version: Scalars['Int'];
-  /** An array of all whitelisted wallet addresses */
-  whitelist: Array<Scalars['ID']>;
 };
 
 
@@ -751,8 +748,6 @@ export type ColonyMetadata = {
   /** URL of the Colony's thumbnail image */
   thumbnail?: Maybe<Scalars['String']>;
   updatedAt: Scalars['AWSDateTime'];
-  /** List of addresses that are in the address book */
-  whitelistedAddresses?: Maybe<Array<Scalars['String']>>;
 };
 
 /**
@@ -767,8 +762,6 @@ export type ColonyMetadataChangelog = {
   hasDescriptionChanged?: Maybe<Scalars['Boolean']>;
   /** Whether the colony's objective has changed */
   hasObjectiveChanged?: Maybe<Scalars['Boolean']>;
-  /** Whether entries in the address book (whitelist) have changed */
-  hasWhitelistChanged: Scalars['Boolean'];
   /** Whether the colony's external links have changed */
   haveExternalLinksChanged?: Maybe<Scalars['Boolean']>;
   /** Whether tokens have been added or removed from the Colony's token list */
@@ -1260,7 +1253,6 @@ export type CreateColonyInput = {
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version: Scalars['Int'];
-  whitelist: Array<Scalars['ID']>;
 };
 
 export type CreateColonyMemberInviteInput = {
@@ -1281,7 +1273,6 @@ export type CreateColonyMetadataInput = {
   objective?: InputMaybe<ColonyObjectiveInput>;
   safes?: InputMaybe<Array<SafeInput>>;
   thumbnail?: InputMaybe<Scalars['String']>;
-  whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type CreateColonyMotionInput = {
@@ -2417,7 +2408,6 @@ export type ModelColonyConditionInput = {
   reputation?: InputMaybe<ModelStringInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
   version?: InputMaybe<ModelIntInput>;
-  whitelist?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelColonyConnection = {
@@ -2545,7 +2535,6 @@ export type ModelColonyFilterInput = {
   reputation?: InputMaybe<ModelStringInput>;
   type?: InputMaybe<ModelColonyTypeInput>;
   version?: InputMaybe<ModelIntInput>;
-  whitelist?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelColonyFundsClaimConditionInput = {
@@ -2653,7 +2642,6 @@ export type ModelColonyMetadataConditionInput = {
   not?: InputMaybe<ModelColonyMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataConditionInput>>>;
   thumbnail?: InputMaybe<ModelStringInput>;
-  whitelistedAddresses?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyMetadataConnection = {
@@ -2671,7 +2659,6 @@ export type ModelColonyMetadataFilterInput = {
   not?: InputMaybe<ModelColonyMetadataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelStringInput>;
-  whitelistedAddresses?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelColonyMotionConditionInput = {
@@ -3575,7 +3562,6 @@ export type ModelSubscriptionColonyFilterInput = {
   reputation?: InputMaybe<ModelSubscriptionStringInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
   version?: InputMaybe<ModelSubscriptionIntInput>;
-  whitelist?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionColonyFundsClaimFilterInput = {
@@ -3622,7 +3608,6 @@ export type ModelSubscriptionColonyMetadataFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMetadataFilterInput>>>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
-  whitelistedAddresses?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionColonyMotionFilterInput = {
@@ -4398,8 +4383,6 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
-  /** Removes the user from the colony whitelist */
-  removeMemberFromColonyWhitelist?: Maybe<Scalars['Boolean']>;
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -4989,12 +4972,6 @@ export type MutationDeleteUserStakeArgs = {
 export type MutationDeleteUserTokensArgs = {
   condition?: InputMaybe<ModelUserTokensConditionInput>;
   input: DeleteUserTokensInput;
-};
-
-
-/** Root mutation type */
-export type MutationRemoveMemberFromColonyWhitelistArgs = {
-  input: RemoveMemberFromColonyWhitelistInput;
 };
 
 
@@ -8019,7 +7996,6 @@ export type UpdateColonyInput = {
   status?: InputMaybe<ColonyStatusInput>;
   type?: InputMaybe<ColonyType>;
   version?: InputMaybe<Scalars['Int']>;
-  whitelist?: InputMaybe<Array<Scalars['ID']>>;
 };
 
 export type UpdateColonyMemberInviteInput = {
@@ -8040,7 +8016,6 @@ export type UpdateColonyMetadataInput = {
   objective?: InputMaybe<ColonyObjectiveInput>;
   safes?: InputMaybe<Array<SafeInput>>;
   thumbnail?: InputMaybe<Scalars['String']>;
-  whitelistedAddresses?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UpdateColonyMotionInput = {
@@ -8927,13 +8902,6 @@ export type GetPublicColonyByNameQueryVariables = Exact<{
 
 
 export type GetPublicColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', avatar?: string | null, displayName: string, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', link: string, name: ExternalLinks }> | null } | null } | null> } | null };
-
-export type GetColonyWhitelistByNameQueryVariables = Exact<{
-  name: Scalars['String'];
-}>;
-
-
-export type GetColonyWhitelistByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', whitelist: Array<string> } | null> } | null };
 
 export type GetColonyMemberInviteQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -11490,43 +11458,6 @@ export function useGetPublicColonyByNameLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetPublicColonyByNameQueryHookResult = ReturnType<typeof useGetPublicColonyByNameQuery>;
 export type GetPublicColonyByNameLazyQueryHookResult = ReturnType<typeof useGetPublicColonyByNameLazyQuery>;
 export type GetPublicColonyByNameQueryResult = Apollo.QueryResult<GetPublicColonyByNameQuery, GetPublicColonyByNameQueryVariables>;
-export const GetColonyWhitelistByNameDocument = gql`
-    query GetColonyWhitelistByName($name: String!) {
-  getColonyByName(name: $name) {
-    items {
-      whitelist
-    }
-  }
-}
-    `;
-
-/**
- * __useGetColonyWhitelistByNameQuery__
- *
- * To run a query within a React component, call `useGetColonyWhitelistByNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetColonyWhitelistByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetColonyWhitelistByNameQuery({
- *   variables: {
- *      name: // value for 'name'
- *   },
- * });
- */
-export function useGetColonyWhitelistByNameQuery(baseOptions: Apollo.QueryHookOptions<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>(GetColonyWhitelistByNameDocument, options);
-      }
-export function useGetColonyWhitelistByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>(GetColonyWhitelistByNameDocument, options);
-        }
-export type GetColonyWhitelistByNameQueryHookResult = ReturnType<typeof useGetColonyWhitelistByNameQuery>;
-export type GetColonyWhitelistByNameLazyQueryHookResult = ReturnType<typeof useGetColonyWhitelistByNameLazyQuery>;
-export type GetColonyWhitelistByNameQueryResult = Apollo.QueryResult<GetColonyWhitelistByNameQuery, GetColonyWhitelistByNameQueryVariables>;
 export const GetColonyMemberInviteDocument = gql`
     query GetColonyMemberInvite($id: ID!) {
   getColonyMemberInvite(id: $id) {
