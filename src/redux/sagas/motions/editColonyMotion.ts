@@ -211,7 +211,6 @@ function* editColonyMotion({
             thumbnail: colonyThumbnail,
             description: colonyDescription,
             externalLinks: colonyExternalLinks,
-            whitelistedAddresses: colony.metadata.whitelistedAddresses,
             objective: colonyObjective,
             // We only need a single entry here, as we'll be appending it to the colony's metadata
             // changelog if the motion succeeds.

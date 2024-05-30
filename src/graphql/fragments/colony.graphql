@@ -98,7 +98,6 @@ fragment ColonyMetadata on ColonyMetadata {
     link
   }
   thumbnail
-  whitelistedAddresses
   modifiedTokenAddresses {
     added
     removed

@@ -171,7 +171,6 @@ function* manageVerifiedRecipients({
         variables: {
           input: {
             id: colonyAddress,
-            whitelistedAddresses: verifiedAddresses,
             changelog: getUpdatedColonyMetadataChangelog({
               transactionHash: txHash,
               metadata: colony.metadata,
