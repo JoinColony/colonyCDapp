@@ -47,6 +47,7 @@ import {
   type ApprovedTokenChangesFragment,
   type BridgeDrainFragment,
   type JoinedColonyWithExtensionsFragment,
+  type ColonyRoleFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -162,3 +163,4 @@ export type BridgeBankAccount = BridgeBankAccountFragment;
 export type BridgeDrain = BridgeDrainFragment;
 
 export type ApprovedTokenChanges = ApprovedTokenChangesFragment;
+export type ColonyRole = ColonyRoleFragment;
