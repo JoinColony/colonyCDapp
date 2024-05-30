@@ -1,21 +1,17 @@
 import { type FC } from 'react';
 import React from 'react';
 
-import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { notMaybe } from '~utils/arrays/index.ts';
+import { type ColonyMultiSig } from '~gql';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
 
-import RemoveVoteButton from './partials/RemoveVoteButton/RemoveVoteButton.tsx';
-import Signees from './partials/Signees/Signees.tsx';
-import VoteButton from './partials/VoteButton/VoteButton.tsx';
+import MultiSigWidget from './partials/MultiSigWidget/MultiSigWidget.tsx';
 
 const displayName = 'v5.common.ActionSidebar.partials.MultiSig';
 interface MultiSigSidebarProps {
   transactionId: string;
 }
 const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
-  const { user } = useAppContext();
   const { action, loadingAction } = useGetColonyAction(transactionId);
 
   if (loadingAction || !action) {
@@ -27,27 +23,12 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
     return null;
   }
 
-  const signatures = action.multiSigData?.signatures?.items ?? [];
-  const userSignature = signatures.find(
-    (signature) => signature?.userAddress === user?.walletAddress,
-  );
-
   return (
     <div>
-      <Signees signees={signatures.filter(notMaybe)} />
-      {userSignature ? (
-        <RemoveVoteButton
-          actionType={action.type}
-          multiSigId={action.multiSigData.nativeMultiSigId}
-          multiSigDomainId={Number(action.multiSigData.nativeMultiSigDomainId)}
-        />
-      ) : (
-        <VoteButton
-          actionType={action.type}
-          multiSigId={action.multiSigData.nativeMultiSigId}
-          multiSigDomainId={Number(action.multiSigData.nativeMultiSigDomainId)}
-        />
-      )}
+      <MultiSigWidget
+        multiSigData={action.multiSigData as unknown as ColonyMultiSig}
+        actionType={action.type}
+      />
     </div>
   );
 };
