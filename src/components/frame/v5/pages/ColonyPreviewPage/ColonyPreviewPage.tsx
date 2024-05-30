@@ -12,10 +12,10 @@ import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
   useGetColonyMemberInviteQuery,
-  useGetColonyWhitelistByNameQuery,
   useValidateUserInviteMutation,
   useGetPublicColonyByNameQuery,
 } from '~gql';
+import useIsContributor from '~hooks/useIsContributor.ts';
 import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -97,13 +97,6 @@ const ColonyPreviewPage = () => {
       skip: !inviteCode,
     });
 
-  // @TODO: This is terrible. Once we have auth, we need a method
-  // to check whether the logged in user is a member of the Colony
-  const { data: whitelistData, loading: whitelistLoading } =
-    useGetColonyWhitelistByNameQuery({
-      variables: { name: colonyName },
-    });
-
   const { data: colonyData, loading: colonyLoading } =
     useGetPublicColonyByNameQuery({
       variables: { name: colonyName },
@@ -114,6 +107,11 @@ const ColonyPreviewPage = () => {
 
   const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
   const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
+
+  const { isContributor, loading: isContributorLoading } = useIsContributor({
+    colonyAddress,
+    walletAddress: user?.walletAddress,
+  });
 
   const validateInviteCode = async () => {
     if (!colonyAddress || !inviteCode || !wallet) return;
@@ -132,7 +130,7 @@ const ColonyPreviewPage = () => {
     userLoading ||
     walletConnecting ||
     inviteLoading ||
-    whitelistLoading ||
+    isContributorLoading ||
     colonyLoading
   ) {
     return <PageLoader loadingText={formatMessage(MSG.loadingMessage)} />;
@@ -144,11 +142,7 @@ const ColonyPreviewPage = () => {
     );
   }
 
-  const isMember = !!whitelistData?.getColonyByName?.items[0]?.whitelist.some(
-    (addr) => addr === user?.walletAddress,
-  );
-
-  if (isMember) {
+  if (isContributor) {
     return <Navigate to={`/${colonyName}`} />;
   }
 
