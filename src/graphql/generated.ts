@@ -5613,7 +5613,6 @@ export type Query = {
   listUsers?: Maybe<ModelUserConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
   searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
-  searchColonyFundsClaims?: Maybe<SearchableColonyFundsClaimConnection>;
 };
 
 
@@ -6548,17 +6547,6 @@ export type QuerySearchColonyContributorsArgs = {
   sort?: InputMaybe<Array<InputMaybe<SearchableColonyContributorSortInput>>>;
 };
 
-
-/** Root query type */
-export type QuerySearchColonyFundsClaimsArgs = {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableColonyFundsClaimAggregationInput>>>;
-  filter?: InputMaybe<SearchableColonyFundsClaimFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableColonyFundsClaimSortInput>>>;
-};
-
 export type RemoveMemberFromColonyWhitelistInput = {
   /** The colony address */
   colonyAddress: Scalars['ID'];
@@ -6856,61 +6844,6 @@ export enum SearchableColonyContributorSortableFields {
   Id = 'id',
   IsVerified = 'isVerified',
   IsWatching = 'isWatching',
-  UpdatedAt = 'updatedAt'
-}
-
-export enum SearchableColonyFundsClaimAggregateField {
-  Amount = 'amount',
-  ColonyFundsClaimTokenId = 'colonyFundsClaimTokenId',
-  ColonyFundsClaimsId = 'colonyFundsClaimsId',
-  CreatedAt = 'createdAt',
-  CreatedAtBlock = 'createdAtBlock',
-  Id = 'id',
-  IsClaimed = 'isClaimed',
-  UpdatedAt = 'updatedAt'
-}
-
-export type SearchableColonyFundsClaimAggregationInput = {
-  field: SearchableColonyFundsClaimAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-};
-
-export type SearchableColonyFundsClaimConnection = {
-  __typename?: 'SearchableColonyFundsClaimConnection';
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<ColonyFundsClaim>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-};
-
-export type SearchableColonyFundsClaimFilterInput = {
-  amount?: InputMaybe<SearchableStringFilterInput>;
-  and?: InputMaybe<Array<InputMaybe<SearchableColonyFundsClaimFilterInput>>>;
-  colonyFundsClaimTokenId?: InputMaybe<SearchableIdFilterInput>;
-  colonyFundsClaimsId?: InputMaybe<SearchableIdFilterInput>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  createdAtBlock?: InputMaybe<SearchableIntFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  isClaimed?: InputMaybe<SearchableBooleanFilterInput>;
-  not?: InputMaybe<SearchableColonyFundsClaimFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableColonyFundsClaimFilterInput>>>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-};
-
-export type SearchableColonyFundsClaimSortInput = {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableColonyFundsClaimSortableFields>;
-};
-
-export enum SearchableColonyFundsClaimSortableFields {
-  Amount = 'amount',
-  ColonyFundsClaimTokenId = 'colonyFundsClaimTokenId',
-  ColonyFundsClaimsId = 'colonyFundsClaimsId',
-  CreatedAt = 'createdAt',
-  CreatedAtBlock = 'createdAtBlock',
-  Id = 'id',
-  IsClaimed = 'isClaimed',
   UpdatedAt = 'updatedAt'
 }
 

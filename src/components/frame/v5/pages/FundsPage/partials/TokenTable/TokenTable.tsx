@@ -112,7 +112,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
                   {formatText({ id: 'incomingFundsPage.table.new' })}
                 </PillsBase>
               )}
-              <div className="w-[120px]">
+              <div className="w-[116px]">
                 <Numeral value={claimsAmount} decimals={token.decimals} />{' '}
                 {token?.symbol}
               </div>
@@ -137,6 +137,9 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
               },
             ],
           }}
+          // This ensures that all sort actions made by the user are multisort.
+          // In other words, it's always sorting by all columns.
+          isMultiSortEvent={() => true}
         />
       </AccordionItem>
       {isMobile ? (
