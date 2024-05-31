@@ -28,7 +28,11 @@ const RequestBox: FC<RequestBoxProps> = ({
       <ul className="max-h-[6.25rem] overflow-y-auto overflow-x-hidden">
         {items.map(({ date, transactionHash }) => (
           <li className="mb-2 w-full last:mb-0" key={transactionHash}>
-            <RequestBoxItem date={date} transactionHash={transactionHash} />
+            <RequestBoxItem
+              date={date}
+              transactionHash={transactionHash}
+              isSingleItem={items.length === 1}
+            />
           </li>
         ))}
       </ul>

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { FormattedDate } from 'react-intl';
 
@@ -13,7 +14,11 @@ import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyActio
 
 import { type RequestBoxItemProps } from './types.ts';
 
-const RequestBoxItem: FC<RequestBoxItemProps> = ({ date, transactionHash }) => {
+const RequestBoxItem: FC<RequestBoxItemProps> = ({
+  date,
+  transactionHash,
+  isSingleItem,
+}) => {
   const { isCopied, handleClipboardCopy } = useCopyToClipboard();
   const { motionState, loadingAction } = useGetColonyAction(transactionHash);
   const { setSelectedTransaction } = usePaymentBuilderContext();
@@ -25,7 +30,12 @@ const RequestBoxItem: FC<RequestBoxItemProps> = ({ date, transactionHash }) => {
   const content = (
     <button
       type="button"
-      className="flex w-full items-center justify-between text-gray-600 outline-none transition-colors hover:text-blue-400"
+      className={clsx(
+        'flex w-full items-center justify-between text-gray-600 outline-none transition-colors',
+        {
+          'hover:text-blue-400': isMotionFailed || !isSingleItem,
+        },
+      )}
       onClick={() => {
         if (!isMotionFailed) {
           setSelectedTransaction(transactionHash);
