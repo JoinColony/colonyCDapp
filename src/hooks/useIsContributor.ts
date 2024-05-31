@@ -9,9 +9,9 @@ const useIsContributor = ({
 }) => {
   const { joinedColonies, loading } = useJoinedColonies(walletAddress);
 
-  const isContributor = joinedColonies
-    .map((col) => col.colonyAddress)
-    .includes(colonyAddress);
+  const isContributor = joinedColonies.some(
+    (colony) => colony.colonyAddress === colonyAddress,
+  );
 
   return { loading, isContributor };
 };
