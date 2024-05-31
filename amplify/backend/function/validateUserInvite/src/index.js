@@ -72,22 +72,6 @@ exports.handler = async (event) => {
     throw new Error('Invite code is not valid');
   }
 
-  const colonyMutation = await graphqlRequest(
-    updateColony,
-    {
-      input: {
-        id: colonyAddress,
-      },
-    },
-    graphqlURL,
-    apiKey,
-  );
-
-  if (colonyMutation.errors || !colonyMutation.data) {
-    const [error] = colonyMutation.errors;
-    throw new Error(error?.message);
-  }
-
   const colonyMemberInviteMutation = await graphqlRequest(
     updateColonyMemberInvite,
     {
@@ -132,7 +116,8 @@ exports.handler = async (event) => {
       !colonyMemberIsWatchingMutation.data
     ) {
       throw new Error(
-        error?.message || 'Could not set contributor isWatching field to true',
+        colonyMemberIsWatchingMutation?.message ||
+          'Could not set contributor isWatching field to true',
       );
     }
 
