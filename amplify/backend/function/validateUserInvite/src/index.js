@@ -115,9 +115,10 @@ exports.handler = async (event) => {
       colonyMemberIsWatchingMutation.errors ||
       !colonyMemberIsWatchingMutation.data
     ) {
+      const [error] = colonyMemberIsWatchingMutation.errors;
+
       throw new Error(
-        colonyMemberIsWatchingMutation?.message ||
-          'Could not set contributor isWatching field to true',
+        error?.message || 'Could not set contributor isWatching field to true',
       );
     }
 
