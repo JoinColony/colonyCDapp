@@ -375,7 +375,6 @@ export interface EventValues {
 //         colonyDisplayName = null,
 //         colonyAvatarHash = null,
 //         colonyTokens = [],
-//         verifiedAddresses = [],
 //       } = JSON.parse(jsonMetadata);
 //       return {
 //         colonyDisplayName,
