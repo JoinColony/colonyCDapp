@@ -9,6 +9,7 @@ import {
   type InstallableExtensionData,
 } from '~types/extensions.ts';
 import { type Colony, type ColonyExtension } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { userHasRole } from './checks/index.ts';
 
@@ -42,7 +43,7 @@ export const mapToInstalledExtensionData = (
   const isEnabled = isInitialized && !colonyExtension.isDeprecated;
 
   const extensionRoles = getUserRolesForDomain(
-    colony,
+    extractColonyRoles(colony.roles),
     colonyExtension.address,
     Id.RootDomain,
   );

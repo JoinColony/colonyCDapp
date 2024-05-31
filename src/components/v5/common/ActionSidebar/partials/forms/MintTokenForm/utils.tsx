@@ -1,10 +1,14 @@
+import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { RootMotionMethodNames } from '~redux/index.ts';
 import { RootMultiSigMethodNames } from '~redux/types/actions/multiSig.ts';
 import { DecisionMethod } from '~types/actions.ts';
-import { type Colony } from '~types/graphql.ts';
+import { ColonyActionType, type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { findDomainByNativeId } from '~utils/domains.ts';
+import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
@@ -50,6 +54,11 @@ export const getMintTokenPayload = (
     return {
       ...commonPayload,
       operationName: RootMultiSigMethodNames.MintTokens,
+      domain: findDomainByNativeId(Id.RootDomain, colony),
+      colonyRoles: extractColonyRoles(colony.roles),
+      requiredRole: getMultiSigRequiredRole(
+        ColonyActionType.MintTokensMultisig,
+      ),
       multiSigParams: [WEIAmount],
     };
   }

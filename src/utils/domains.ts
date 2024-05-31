@@ -1,6 +1,6 @@
 import { type Colony, type Domain } from '~types/graphql.ts';
 
-import { notNull } from './arrays/index.ts';
+import { notMaybe, notNull } from './arrays/index.ts';
 import { sortBy } from './lodash.ts';
 
 export const findDomainByNativeId = (
@@ -24,3 +24,9 @@ export const getDomainOptions = (colonyDomains: Domain[]) =>
     })) || [],
     ['value'],
   );
+
+export const extractColonyDomains = (
+  colonyDomains: Colony['domains'],
+): Domain[] => {
+  return colonyDomains?.items.filter(notMaybe) ?? [];
+};

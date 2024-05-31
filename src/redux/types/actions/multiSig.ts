@@ -1,5 +1,8 @@
+import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
+import { type ColonyRoleFragment, type MultiSigVote } from '~gql';
+import { type Domain } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
 import { type ActionTypes } from '../../actionTypes.ts';
@@ -38,14 +41,36 @@ export type MultiSigActionTypes =
       object
     >
   | UniqueActionType<
+      ActionTypes.MULTISIG_VOTE,
+      {
+        colonyAddress: Address;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        vote: MultiSigVote;
+        domainId: number;
+        requiredRole: ColonyRole;
+        multiSigId: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MULTISIG_VOTE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MULTISIG_VOTE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
       ActionTypes.ROOT_MULTISIG,
       {
         operationName: RootMultiSigMethodNames;
         customActionTitle: string;
         colonyAddress: Address;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
         colonyName?: string;
+        domainId?: number;
         multiSigParams: [BigNumber] | [string];
         annotationMessage?: string;
+        requiredRole: ColonyRole;
       },
       MetaWithSetter<object>
     >

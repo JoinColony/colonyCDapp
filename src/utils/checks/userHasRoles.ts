@@ -2,6 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 
 import { getUserRolesForDomain } from '~transformers/index.ts';
 import { type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 export const userHasRole = (userRoles: ColonyRole[], role: ColonyRole) =>
   userRoles.includes(role);
@@ -21,13 +22,13 @@ export const addressHasRoles = ({
 }) => {
   return requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain(
-      colony,
+      extractColonyRoles(colony.roles),
       address || '',
       domainId,
     );
 
     const userMultiSigDomainRoles = getUserRolesForDomain(
-      colony,
+      extractColonyRoles(colony.roles),
       address || '',
       domainId,
       false,

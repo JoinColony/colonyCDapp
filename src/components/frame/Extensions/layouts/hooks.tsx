@@ -34,6 +34,7 @@ import {
 } from '~routes/routeConstants.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { type NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types.ts';
@@ -58,7 +59,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colonyContractVersion } = useColonyContractVersion();
   const { user, wallet } = useAppContext();
   const allUserRoles = useTransformer(getAllUserRoles, [
-    colony,
+    extractColonyRoles(colony.roles),
     wallet?.address || '',
   ]);
 

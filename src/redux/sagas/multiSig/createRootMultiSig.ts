@@ -1,4 +1,4 @@
-import { ClientType, Id, getChildIndex } from '@colony/colony-js';
+import { ClientType, ColonyRole, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
@@ -19,21 +19,27 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
 } from '../utils/index.ts';
 
 function* createRootMultiSigSaga({
   payload: {
     operationName,
     colonyAddress,
+    colonyDomains,
+    colonyRoles,
     colonyName,
     multiSigParams,
     annotationMessage,
     customActionTitle,
+    domainId = Id.RootDomain,
+    requiredRole = ColonyRole.Root,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
 }: Action<ActionTypes.ROOT_MULTISIG>) {
   let txChannel;
+
   try {
     if (!multiSigParams) {
       throw new Error('Parameters not set for rootMultiSig transaction');
@@ -46,12 +52,17 @@ function* createRootMultiSigSaga({
       colonyAddress,
     );
 
-    const childSkillIndex = yield call(
-      getChildIndex,
+    const userAddress = yield colonyClient.signer.getAddress();
+
+    const [, childSkillIndex] = yield call(
+      getPermissionProofsLocal,
       colonyClient.networkClient,
-      colonyClient,
-      Id.RootDomain,
-      Id.RootDomain,
+      colonyRoles,
+      colonyDomains,
+      domainId,
+      requiredRole,
+      userAddress,
+      true,
     );
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
