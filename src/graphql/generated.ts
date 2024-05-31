@@ -558,7 +558,7 @@ export type ColonyContributor = {
    * Format: <colonyAddress>_<contributorAddress>
    */
   id: Scalars['ID'];
-  /** Is the contributor verified? */
+  /** Is the contributor a verified member of the colony? */
   isVerified: Scalars['Boolean'];
   /** Is the contributor watching the colony */
   isWatching?: Maybe<Scalars['Boolean']>;
