@@ -93,6 +93,7 @@ export enum ClientType {
   TokenSupplierClient = 'TokenSupplierClient',
   VestingSimpleClient = 'VestingSimpleClient',
   VotingReputationClient = 'VotingReputationClient',
+  WhitelistClient = 'WhitelistClient',
   WrappedTokenClient = 'WrappedTokenClient'
 }
 

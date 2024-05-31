@@ -1129,7 +1129,7 @@ type ColonyContributor @model @searchable {
   type: ContributorType
 
   """
-  Is the contributor a member of a colony?
+  Is the contributor verified?
   """
   isVerified: Boolean!
 
