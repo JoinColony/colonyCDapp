@@ -1,4 +1,4 @@
-import React, { useState, type FC, useEffect } from 'react';
+import React, { useState, type FC, useEffect, useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -117,19 +117,22 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const isFundingMotion =
     motions?.items?.length &&
     motions.items?.[0]?.action?.type === ColonyActionType.FundExpenditureMotion;
-  const fundingMotions =
-    motions?.items
-      .filter(notNull)
-      .filter(
-        (motion) =>
-          motion?.action?.type === ColonyActionType.FundExpenditureMotion,
-      )
-      .sort((a, b) => {
-        if (a?.createdAt && b?.createdAt) {
-          return Date.parse(b.createdAt) - Date.parse(a.createdAt);
-        }
-        return 0;
-      }) || [];
+  const fundingMotions = useMemo(() => {
+    return (
+      motions?.items
+        .filter(notNull)
+        .filter(
+          (motion) =>
+            motion?.action?.type === ColonyActionType.FundExpenditureMotion,
+        )
+        .sort((a, b) => {
+          if (a?.createdAt && b?.createdAt) {
+            return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+          }
+          return 0;
+        }) || []
+    );
+  }, [motions]);
 
   const { selectedTransaction, setSelectedTransaction } =
     usePaymentBuilderContext();
@@ -176,6 +179,26 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const hasMotionPassed = selectedMotion
     ? selectedMotion?.motionStateHistory.hasPassed
     : fundingMotions?.[0]?.motionStateHistory.hasPassed;
+  const hasEveryMotionEnded =
+    fundingMotions &&
+    fundingMotions.length > 0 &&
+    fundingMotions.every(
+      (motion) =>
+        motion?.motionStateHistory.hasPassed ||
+        motion?.motionStateHistory.hasFailed ||
+        motion?.motionStateHistory.hasFailedNotFinalizable,
+    );
+
+  useEffect(() => {
+    if (
+      fundingMotions &&
+      fundingMotions.length > 0 &&
+      expectedStepKey === ExpenditureStep.Release &&
+      !hasEveryMotionEnded
+    ) {
+      setExpectedStepKey(null);
+    }
+  }, [expectedStepKey, hasEveryMotionEnded, fundingMotions]);
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
