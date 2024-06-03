@@ -346,4 +346,20 @@ export type ColonyActionsActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_SUCCESS,
       MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_MANAGE_TOKENS,
+      {
+        colonyAddress: Address;
+        colonyName: string;
+        tokenAddresses: Address[];
+        customActionTitle: string;
+        annotationMessage: string | null;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_MANAGE_TOKENS_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.ACTION_MANAGE_TOKENS_SUCCESS,
+      MetaWithSetter<object>
     >;
