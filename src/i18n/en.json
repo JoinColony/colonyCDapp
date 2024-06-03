@@ -200,7 +200,6 @@
     "transaction.cancel.title": "Transaction cancelled",
     "transaction.cancel.description": "Transaction cancelled by user",
     "transaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
-
     "transaction.group.addExistingSafe.title": "Add Existing Safe",
     "transaction.group.addExistingSafe.description": "Add an existing Safe to this Colony",
     "transaction.group.addVerifiedMembers.title": "Add verified members",
@@ -261,6 +260,8 @@
     "transaction.group.makeArbitraryTransaction.description": "Make arbitrary transaction",
     "transaction.group.mintTokens.title": "Mint Tokens",
     "transaction.group.mintTokens.description": "Mint and claim native Token",
+    "transaction.group.manageTokens.title": "Manage tokens",
+    "transaction.group.manageTokens.description": "Manage tokens",
     "transaction.group.moveFunds.title": "Transfer Funds",
     "transaction.group.moveFunds.description": "Move Funds Between Teams",
     "transaction.group.payment.title": "Expenditure Payment",
