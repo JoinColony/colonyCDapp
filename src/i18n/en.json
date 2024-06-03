@@ -261,6 +261,8 @@
     "transaction.group.mintTokens.description": "Mint and claim native Token",
     "transaction.ColonyClient.mintTokens.title": "Mint New Tokens",
     "transaction.ColonyClient.mintTokens.description": "Mint New Tokens",
+    "transaction.group.manageTokens.title": "Manage tokens",
+    "transaction.group.manageTokens.description": "Manage tokens",
     "transaction.group.createDomainAction.title": "Create Team",
     "transaction.group.createDomainAction.description": "Create Team",
     "transaction.group.editDomainAction.title": "Edit Team",

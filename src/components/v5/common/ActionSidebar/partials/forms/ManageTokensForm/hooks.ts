@@ -50,7 +50,7 @@ export const useManageTokens = (
     validationSchema,
     actionType:
       decisionMethod === DecisionMethod.Permissions
-        ? ActionTypes.ACTION_EDIT_COLONY
+        ? ActionTypes.ACTION_MANAGE_TOKENS
         : ActionTypes.MOTION_EDIT_COLONY,
     defaultValues: useMemo(
       () => ({
