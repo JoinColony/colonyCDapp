@@ -1906,7 +1906,7 @@ type DomainMetadataChangelog {
 """
 Represents a Colony Funds Claim for all ERC20 tokens (except native chain tokens)
 """
-type ColonyFundsClaim @model @searchable {
+type ColonyFundsClaim @model {
   """
   Unique identifier for the Colony Funds Claim
   """

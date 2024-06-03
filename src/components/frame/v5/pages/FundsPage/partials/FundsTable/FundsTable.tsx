@@ -26,8 +26,9 @@ const FundsTable: FC = () => {
   const isMobile = useMobile();
   const { filters, searchedTokens, activeFilters } = useFundsTable();
   const claims = useColonyFundsClaims();
-  const allClaims = Array.from(
-    new Set(claims.map((claim) => claim.token?.tokenAddress || '')),
+  const unclaimedClaims = claims.filter((claim) => !claim.isClaimed);
+  const allUnclaimedClaims = Array.from(
+    new Set(unclaimedClaims.map((claim) => claim.token?.tokenAddress || '')),
   );
 
   return (
@@ -72,9 +73,9 @@ const FundsTable: FC = () => {
               ) : null,
             )}
           <Filter {...filters} />
-          {claims.length > 0 && (
+          {unclaimedClaims.length > 0 && (
             <AcceptButton
-              tokenAddresses={allClaims}
+              tokenAddresses={allUnclaimedClaims}
               disabled={!searchedTokens.length}
             >
               {formatText({ id: 'incomingFundsPage.table.claimAllFunds' })}

@@ -1,8 +1,8 @@
 import { CaretDown } from '@phosphor-icons/react';
-import { getSortedRowModel, type SortingState } from '@tanstack/react-table';
+import { getSortedRowModel } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { type FC, useState } from 'react';
+import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -11,6 +11,8 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import TokenInfo from '~shared/TokenInfo/index.ts';
+import { formatText } from '~utils/intl.ts';
+import PillsBase from '~v5/common/Pills/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
@@ -33,13 +35,14 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
     ({ token: currentClaimToken }) => currentClaimToken?.name === token?.name,
   );
   const claimsAmount =
-    currentClaims.reduce(
-      (acc, { amount }) => acc.add(amount),
-      BigNumber.from(0),
-    ) || 0;
+    currentClaims.reduce((acc, { amount, isClaimed }) => {
+      if (isClaimed) {
+        return acc;
+      }
+      return acc.add(amount);
+    }, BigNumber.from(0)) || 0;
   const [isTableRowOpen, { toggle: toggleTableRowAccordion }] = useToggle();
   const columns = useTokenTableColumns();
-  const [sorting, setSorting] = useState<SortingState>([]);
 
   const [
     isTokenModalOpened,
@@ -67,7 +70,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
     }
   };
 
-  return claimsAmount.gt(0) && token ? (
+  return token ? (
     <>
       <AccordionItem
         className="w-full text-gray-900 text-1 [&_.accordion-toggler]:px-[1.125rem] sm:hover:[&_.accordion-toggler]:bg-gray-25"
@@ -99,20 +102,44 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
                 {token.name}
               </span>
             </button>
-            <div>
-              <Numeral value={claimsAmount} decimals={token.decimals} />{' '}
-              {token?.symbol}
+            <div className="flex items-center gap-2">
+              {claimsAmount.gt(0) && (
+                <PillsBase
+                  className={clsx(
+                    'bg-success-100 text-sm font-medium text-success-400',
+                  )}
+                >
+                  {formatText({ id: 'incomingFundsPage.table.new' })}
+                </PillsBase>
+              )}
+              <div className="w-[116px]">
+                <Numeral value={claimsAmount} decimals={token.decimals} />{' '}
+                {token?.symbol}
+              </div>
             </div>
           </div>
         }
       >
         <Table
           data={currentClaims}
-          state={{ sorting }}
-          onSortingChange={setSorting}
           getSortedRowModel={getSortedRowModel()}
           columns={columns}
           className="-mx-[1.125rem] !w-[calc(100%+2.25rem)] rounded-none border-0 border-gray-200 px-[1.125rem] [&_td]:px-[1.125rem] [&_td]:py-4 [&_th]:border-y"
+          initialState={{
+            sorting: [
+              {
+                id: 'isClaimed',
+                desc: true,
+              },
+              {
+                id: 'amount',
+                desc: true,
+              },
+            ],
+          }}
+          // This ensures that all sort actions made by the user are multisort.
+          // In other words, it's always sorting by all columns.
+          isMultiSortEvent={() => true}
         />
       </AccordionItem>
       {isMobile ? (
