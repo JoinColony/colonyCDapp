@@ -1,7 +1,8 @@
-import { ClientType, ColonyRole, Id } from '@colony/colony-js';
+import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { UserRole, userRolePermissions } from '~constants/permissions.ts';
 import { type ColonyManager } from '~context/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
@@ -33,7 +34,7 @@ function* createRootMultiSigSaga({
     annotationMessage,
     customActionTitle,
     domainId = Id.RootDomain,
-    requiredRole = ColonyRole.Root,
+    requiredRole = UserRole.Owner,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -46,6 +47,7 @@ function* createRootMultiSigSaga({
     }
 
     const colonyManager: ColonyManager = yield getColonyManager();
+    const requiredColonyRoles = userRolePermissions[requiredRole];
 
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
@@ -60,7 +62,7 @@ function* createRootMultiSigSaga({
       colonyRoles,
       colonyDomains,
       domainId,
-      requiredRole,
+      requiredColonyRoles,
       userAddress,
       true,
     );
