@@ -44,7 +44,7 @@ export const getUpdatedColonyMetadataChangelog = ({
   transactionHash,
   metadata,
   newDisplayName,
-  newAvatarImage = null,
+  newAvatarImage,
   hasWhitelistChanged = false,
   haveTokensChanged = false,
   hasDescriptionChanged = false,
