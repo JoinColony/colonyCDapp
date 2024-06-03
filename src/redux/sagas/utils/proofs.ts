@@ -46,7 +46,7 @@ const getSinglePermissionProofsLocal = async (
   colonyRoles: ColonyRoleFragment[],
   colonyDomains: Domain[],
   requiredDomainId: number,
-  requiredRole: ColonyRole,
+  requiredColonyRole: ColonyRole,
   permissionAddress: string,
   isMultiSig: boolean,
   /* [permissionDomainId, childSkillIndex, permissionAddress] */
@@ -72,7 +72,7 @@ const getSinglePermissionProofsLocal = async (
     );
   }
 
-  const hasPermissionInDomain = userRolesInDomain.includes(requiredRole);
+  const hasPermissionInDomain = userRolesInDomain.includes(requiredColonyRole);
   if (hasPermissionInDomain) {
     return [
       BigNumber.from(requiredDomainId),
@@ -82,11 +82,12 @@ const getSinglePermissionProofsLocal = async (
   }
   // @TODO: once we allow nested domains on the network level, this needs to traverse down the skill/domain tree. Use binary search
   const foundDomainId = BigNumber.from(Id.RootDomain);
-  const hasPermissionInAParentDomain = userRolesInRoot.includes(requiredRole);
+  const hasPermissionInAParentDomain =
+    userRolesInRoot.includes(requiredColonyRole);
 
   if (!hasPermissionInAParentDomain) {
     throw new Error(
-      `${permissionAddress} does not have the permission ${requiredRole} in any parent domain`,
+      `${permissionAddress} does not have the permission ${requiredColonyRole} in any parent domain`,
     );
   }
 
@@ -128,12 +129,12 @@ const getMultiPermissionProofsLocal = async (
   colonyRoles: ColonyRoleFragment[],
   colonyDomains: Domain[],
   requiredDomainId: number,
-  requiredRoles: ColonyRole[],
+  requiredColonyRoles: ColonyRole[],
   permissionAddress: string,
   isMultiSig: boolean,
 ): Promise<[BigNumber, BigNumber, string]> => {
   const proofs = await Promise.all(
-    requiredRoles.map((role) =>
+    requiredColonyRoles.map((role) =>
       getSinglePermissionProofsLocal(
         networkClient,
         colonyRoles,
@@ -168,18 +169,18 @@ export const getPermissionProofsLocal = async (
   colonyRoles: ColonyRoleFragment[],
   colonyDomains: Domain[],
   requiredDomainId: number,
-  requiredRole: ColonyRole | ColonyRole[],
+  requiredColonyRole: ColonyRole | ColonyRole[],
   permissionAddress: string,
   isMultiSig: boolean,
 ): Promise<[BigNumber, BigNumber, string]> => {
-  if (Array.isArray(requiredRole)) {
-    if (requiredRole.length === 1) {
+  if (Array.isArray(requiredColonyRole)) {
+    if (requiredColonyRole.length === 1) {
       return getSinglePermissionProofsLocal(
         networkClient,
         colonyRoles,
         colonyDomains,
         requiredDomainId,
-        requiredRole[0],
+        requiredColonyRole[0],
         permissionAddress,
         isMultiSig,
       );
@@ -189,7 +190,7 @@ export const getPermissionProofsLocal = async (
       colonyRoles,
       colonyDomains,
       requiredDomainId,
-      requiredRole,
+      requiredColonyRole,
       permissionAddress,
       isMultiSig,
     );
@@ -199,7 +200,7 @@ export const getPermissionProofsLocal = async (
     colonyRoles,
     colonyDomains,
     requiredDomainId,
-    requiredRole,
+    requiredColonyRole,
     permissionAddress,
     isMultiSig,
   );

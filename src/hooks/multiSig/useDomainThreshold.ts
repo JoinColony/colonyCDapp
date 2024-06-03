@@ -1,15 +1,14 @@
-// disabling rule due to filters having snake case
-/* eslint-disable camelcase */
-import { ColonyRole, Extension } from '@colony/colony-js';
+import { Extension } from '@colony/colony-js';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetColonyRolesQuery, type ModelColonyRoleFilterInput } from '~gql';
+import { type UserRole } from '~constants/permissions.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
+import { useEligibleSignees } from './useEligibleSignees.ts';
+
 interface UseDomainThresholdParams {
   domainId: string;
-  requiredRole: ColonyRole;
+  requiredRole: UserRole;
 }
 
 interface UseDomainThresholdResult {
@@ -17,48 +16,17 @@ interface UseDomainThresholdResult {
   isLoading: boolean;
 }
 
-// We assume that if a user has a role, they also have all of the roles "below"
-const getRoleFilter = (
-  role: ColonyRole,
-): Partial<ModelColonyRoleFilterInput> => {
-  switch (role) {
-    case ColonyRole.Recovery:
-      return { role_0: { eq: true } };
-    case ColonyRole.Root:
-      return { role_1: { eq: true } };
-    case ColonyRole.Arbitration:
-      return { role_2: { eq: true } };
-    case ColonyRole.Architecture:
-      return { role_3: { eq: true } };
-    case ColonyRole.Funding:
-      return { role_5: { eq: true } };
-    case ColonyRole.Administration:
-      return { role_6: { eq: true } };
-    default:
-      return {};
-  }
-};
-
 export const useDomainThreshold = ({
   requiredRole,
   domainId,
 }: UseDomainThresholdParams): UseDomainThresholdResult => {
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
   const { extensionData, loading: loadingExtension } = useExtensionData(
     Extension.MultisigPermissions,
   );
 
-  const { loading: loadingRoles, data: rolesData } = useGetColonyRolesQuery({
-    variables: {
-      filter: {
-        colonyAddress: { eq: colonyAddress },
-        isMultiSig: { eq: true },
-        domainId: { eq: domainId },
-        ...getRoleFilter(requiredRole),
-      },
-    },
+  const { loadingRoles, rolesData } = useEligibleSignees({
+    domainId,
+    requiredRole,
   });
 
   const getDomainThreshold = (): number | null => {
