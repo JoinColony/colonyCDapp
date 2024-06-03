@@ -717,6 +717,10 @@ enum ColonyActionType {
   An action related to finalizing an expenditure via a motion
   """
   FINALIZE_EXPENDITURE_MOTION
+  """
+  An action related to adding / removing approved colony tokens
+  """
+  MANAGE_TOKENS
 }
 
 """
