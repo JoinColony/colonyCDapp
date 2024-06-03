@@ -29,35 +29,3 @@ export const modifyParams = (params, payload) =>
     }
     return payload[paramName];
   });
-
-export function* setupEnablingGroupTransactions(
-  metaId: string,
-  initParams: any[],
-  extensionId: string,
-  additionalChannels?: {
-    [index: string]: Channel | undefined;
-  },
-) {
-  try {
-    const channels = {
-      initialise: {
-        context: `${extensionId}Client`,
-        params: initParams,
-      },
-      ...additionalChannels,
-    };
-
-    const transactionChannels = yield createTransactionChannels(
-      metaId,
-      Object.keys(channels),
-    );
-
-    return {
-      channels,
-      transactionChannels,
-    };
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-}
