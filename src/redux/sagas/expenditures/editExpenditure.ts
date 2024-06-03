@@ -77,12 +77,12 @@ function* editExpenditureAction({
         }),
       });
     } else {
-      const multicallData = yield getMulticallDataForUpdatedPayouts(
+      const multicallData = yield getMulticallDataForUpdatedPayouts({
         expenditure,
-        resolvedPayouts,
+        payouts: resolvedPayouts,
         colonyClient,
         networkInverseFee,
-      );
+      });
 
       yield fork(createTransaction, editExpenditure.id, {
         context: ClientType.ColonyClient,

@@ -56,16 +56,15 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     toggleCancelConfirmation,
     handleCancelTransaction,
     canBeSigned,
-  } = useGroupedTransactionContent(
+  } = useGroupedTransactionContent({
     id,
-    error,
     methodContext,
     methodName,
     metatransaction,
     context,
     status,
     selected,
-  );
+  });
 
   return (
     <li

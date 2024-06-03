@@ -71,12 +71,17 @@ export const getMulticallDataForStageRelease = ({
  * Helper function returning an array of encoded multicall data containing transactions
  * needed to update expenditure payouts
  */
-export const getMulticallDataForUpdatedPayouts = async (
-  expenditure: Expenditure,
-  payouts: ExpenditurePayoutFieldValue[],
-  colonyClient: AnyColonyClient,
-  networkInverseFee: string,
-) => {
+export const getMulticallDataForUpdatedPayouts = async ({
+  expenditure,
+  payouts,
+  colonyClient,
+  networkInverseFee,
+}: {
+  expenditure: Expenditure;
+  payouts: ExpenditurePayoutFieldValue[];
+  colonyClient: AnyColonyClient;
+  networkInverseFee: string;
+}) => {
   const [permissionDomainId, childSkillIndex] = await getPermissionProofs(
     colonyClient.networkClient,
     colonyClient,

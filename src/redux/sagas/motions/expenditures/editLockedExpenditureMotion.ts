@@ -88,12 +88,12 @@ function* editLockedExpenditureMotion({
     );
 
     const encodedMulticallData: string[] =
-      yield getMulticallDataForUpdatedPayouts(
+      yield getMulticallDataForUpdatedPayouts({
         expenditure,
-        resolvedPayouts,
+        payouts: resolvedPayouts,
         colonyClient,
         networkInverseFee,
-      );
+      });
 
     const encodedEditExpenditureAction =
       yield colonyClient.interface.encodeFunctionData(

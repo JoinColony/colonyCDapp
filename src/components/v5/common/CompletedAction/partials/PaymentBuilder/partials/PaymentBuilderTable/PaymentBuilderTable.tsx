@@ -26,13 +26,19 @@ const displayName = 'v5.common.ActionsContent.partials.PaymentBuilderTable';
 const paymentBuilderColumnHelper =
   createColumnHelper<PaymentBuilderTableModel>();
 
-const useGetPaymentBuilderColumns = (
-  data: PaymentBuilderTableModel[],
-  status: ExpenditureStatus,
-  slots: ExpenditureSlotFragment[],
-  finalizedTimestamp?: number | null,
-  isLoading?: boolean,
-) => {
+const useGetPaymentBuilderColumns = ({
+  data,
+  status,
+  slots,
+  finalizedTimestamp,
+  isLoading,
+}: {
+  data: PaymentBuilderTableModel[];
+  status: ExpenditureStatus;
+  slots: ExpenditureSlotFragment[];
+  finalizedTimestamp?: number | null;
+  isLoading?: boolean;
+}) => {
   const isTablet = useTablet();
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = data.length > 1;
@@ -183,13 +189,13 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     [expendituresGlobalClaimDelay, items],
   );
 
-  const columns = useGetPaymentBuilderColumns(
+  const columns = useGetPaymentBuilderColumns({
     data,
     status,
-    items,
+    slots: items,
     finalizedTimestamp,
-    !data.length,
-  );
+    isLoading: !data.length,
+  });
 
   return (
     <div className="mt-7">

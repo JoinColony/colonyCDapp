@@ -80,12 +80,12 @@ export const useValidationSchema = () => {
                   return true;
                 }
 
-                return reputationAmountChangeValidation(
+                return reputationAmountChangeValidation({
                   value,
                   context,
                   userReputation,
                   colony,
-                );
+                });
               },
             ),
           modification: string().required(),

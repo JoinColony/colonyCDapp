@@ -47,12 +47,12 @@ const VotingStep: FC<VotingStepProps> = ({
     thresholdPercent,
     validationSchema,
     transform,
-  } = useVotingStep(
+  } = useVotingStep({
     actionData,
     startPollingAction,
     stopPollingAction,
     transactionId,
-  );
+  });
 
   const { wallet, user } = useAppContext();
   const canVote =

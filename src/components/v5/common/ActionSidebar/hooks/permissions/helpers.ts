@@ -74,12 +74,17 @@ export const getPermissionsDomainIdForAction = (
   }
 };
 
-export const getHasActionPermissions = (
-  colony: Colony,
-  userAddress: Address,
-  actionType: Action,
-  formValues: Record<string, any>,
-) => {
+export const getHasActionPermissions = ({
+  colony,
+  userAddress,
+  actionType,
+  formValues,
+}: {
+  colony: Colony;
+  userAddress: Address;
+  actionType: Action;
+  formValues: Record<string, any>;
+}) => {
   const allUserRoles = getAllUserRoles(colony, userAddress);
   if (allUserRoles.length === 0) {
     return false;

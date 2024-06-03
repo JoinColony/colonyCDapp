@@ -11,13 +11,19 @@ import {
 import { notNull } from '~utils/arrays/index.ts';
 import { excludeTypenameKey } from '~utils/objects/index.ts';
 
-export const getUpdatedDomainMetadataChangelog = (
-  transactionHash: string,
-  metadata: DomainMetadata,
-  newName?: string,
-  newColor?: DomainColor,
-  newDescription?: string,
-): DomainMetadataChangelogInput[] => {
+export const getUpdatedDomainMetadataChangelog = ({
+  transactionHash,
+  metadata,
+  newName,
+  newColor,
+  newDescription,
+}: {
+  transactionHash: string;
+  metadata: DomainMetadata;
+  newName?: string;
+  newColor?: DomainColor;
+  newDescription?: string;
+}): DomainMetadataChangelogInput[] => {
   const existingChangelog = metadata.changelog ?? [];
 
   return [

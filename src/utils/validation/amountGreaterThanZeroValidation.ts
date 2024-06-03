@@ -8,12 +8,17 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 
-export const amountGreaterThanZeroValidation = (
-  value: string | null | undefined,
-  context: TestContext<object>,
-  colony: ColonyFragment,
-  tokenAddress?: string,
-) => {
+export const amountGreaterThanZeroValidation = ({
+  value,
+  context,
+  colony,
+  tokenAddress,
+}: {
+  value: string | null | undefined;
+  context: TestContext<object>;
+  colony: ColonyFragment;
+  tokenAddress?: string;
+}) => {
   if (!value) {
     return false;
   }

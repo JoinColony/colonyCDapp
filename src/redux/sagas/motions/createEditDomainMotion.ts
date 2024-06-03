@@ -224,13 +224,13 @@ function* createEditDomainMotion({
             name: domainName,
             color: domainColor || domain.metadata.color,
             description: domainPurpose || domain.metadata.description,
-            changelog: getUpdatedDomainMetadataChangelog(
-              txHash,
-              domain.metadata,
-              domainName,
-              domainColor,
-              domainPurpose,
-            ),
+            changelog: getUpdatedDomainMetadataChangelog({
+              transactionHash: txHash,
+              metadata: domain.metadata,
+              newName: domainName,
+              newColor: domainColor,
+              newDescription: domainPurpose,
+            }),
           },
         },
       });

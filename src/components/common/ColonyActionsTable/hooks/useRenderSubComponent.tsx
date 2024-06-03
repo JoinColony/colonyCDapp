@@ -7,14 +7,19 @@ import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import ActionMobileDescription from '../partials/ActionMobileDescription/index.ts';
 
-const useRenderSubComponent = (
-  loadingMotionStates: boolean,
-  loading: boolean,
-  refetchMotionStates: RefetchMotionStates,
+const useRenderSubComponent = ({
+  loadingMotionStates,
+  loading,
+  refetchMotionStates,
+  getMenuProps,
+}: {
+  loadingMotionStates: boolean;
+  loading: boolean;
+  refetchMotionStates: RefetchMotionStates;
   getMenuProps: (
     row: Row<ActivityFeedColonyAction>,
-  ) => MeatBallMenuProps | undefined,
-) => {
+  ) => MeatBallMenuProps | undefined;
+}) => {
   return ({ row }: { row: Row<ActivityFeedColonyAction> }) => (
     <ActionMobileDescription
       actionRow={row}

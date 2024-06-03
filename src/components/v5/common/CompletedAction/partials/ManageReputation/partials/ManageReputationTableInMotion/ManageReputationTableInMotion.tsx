@@ -24,7 +24,7 @@ const ManageReputationTableInMotion: FC<ManageReputationTableInMotionProps> = ({
     isLoading,
     newPercentageReputation,
     percentageReputation,
-  } = useManageReputationTableData(amount, member, domainId, isSmite);
+  } = useManageReputationTableData({ amount, member, domainId, isSmite });
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
 

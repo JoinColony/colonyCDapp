@@ -46,13 +46,13 @@ const RevealStep: FC<RevealStepProps> = ({
     userVote,
     revealProgress,
     totalVoters,
-  } = useRevealStep(
+  } = useRevealStep({
     motionData,
     startPollingAction,
     stopPollingAction,
     transactionId,
     rootHash,
-  );
+  });
 
   const { decimals, symbol } = nativeToken || {};
 

@@ -426,12 +426,17 @@ export const getChainNameFromSafe = (safeDisplayName: string) => {
   return safeDisplayName.match(/\(([^()]*)\)$/)?.pop() || '';
 };
 
-export function* getTransactionEncodedData(
-  transactions: SafeTransactionData[],
-  safe: Safe,
-  network: NetworkInfo,
-  homeBridge: Contract,
-) {
+export function* getTransactionEncodedData({
+  transactions,
+  safe,
+  network,
+  homeBridge,
+}: {
+  transactions: SafeTransactionData[];
+  safe: Safe;
+  network: NetworkInfo;
+  homeBridge: Contract;
+}) {
   const { ZODIAC_BRIDGE_MODULE_ADDRESS } = yield getSafeAddresses();
   const zodiacBridgeModuleAddress = isDev
     ? ZODIAC_BRIDGE_MODULE_ADDRESS

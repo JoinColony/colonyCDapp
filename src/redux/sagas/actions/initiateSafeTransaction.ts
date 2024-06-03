@@ -50,12 +50,12 @@ function* initiateSafeTransactionAction({
 
     const homeBridge = yield getHomeBridgeByChain(safe.chainId);
 
-    const transactionData: string[] = yield getTransactionEncodedData(
+    const transactionData: string[] = yield getTransactionEncodedData({
       transactions,
       safe,
       network,
       homeBridge,
-    );
+    });
 
     const batchKey = TRANSACTION_METHODS.InitiateSafeTransaction;
 

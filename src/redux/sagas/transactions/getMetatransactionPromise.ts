@@ -209,12 +209,12 @@ async function getMetatransactionPromise(
         [...normalizedParams],
       );
 
-    const { messageUint8: messageData } = await generateMetatransactionMessage(
+    const { messageUint8: messageData } = await generateMetatransactionMessage({
       encodedTransaction,
-      normalizedClient.address,
+      contractAddress: normalizedClient.address,
       chainId,
-      availableNonce as BigNumberish,
-    );
+      nonce: availableNonce as BigNumberish,
+    });
 
     const metatransactionSignature = await signer.signMessage(messageData);
 

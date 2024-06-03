@@ -15,12 +15,12 @@ const MotionCountDownTimer: FC<MotionCountDownTimerProps> = ({
   refetchMotionState,
   ...rest
 }) => {
-  const { countdown, timeLeft, isLoading } = useMotionCountdown(
-    motionState,
+  const { countdown, timeLeft, isLoading } = useMotionCountdown({
+    state: motionState,
     motionId,
     refetchMotionState,
     motionStakes,
-  );
+  });
 
   const loadingState = isLoading || !timeLeft || timeLeft <= 0;
 

@@ -10,12 +10,17 @@ import {
 } from '~utils/tokens.ts';
 import { calculateNewValue } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/partials/ManageReputationTable/utils.ts';
 
-export const useManageReputationTableData = (
-  amount: string,
-  member: string | undefined,
-  domainId: number,
-  isSmite?: boolean,
-) => {
+export const useManageReputationTableData = ({
+  amount,
+  member,
+  domainId,
+  isSmite,
+}: {
+  amount: string;
+  member: string | undefined;
+  domainId: number;
+  isSmite?: boolean;
+}) => {
   const { colony } = useColonyContext();
   const { colonyAddress, nativeToken } = colony;
 

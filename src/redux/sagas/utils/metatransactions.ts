@@ -84,12 +84,17 @@ export const generateEIP2612TypedData = ({
   },
 });
 
-export const generateMetatransactionMessage = async (
-  encodedTransaction: string,
-  contractAddress: Address,
-  chainId: string,
-  nonce: BigNumberish,
-): Promise<{
+export const generateMetatransactionMessage = async ({
+  encodedTransaction,
+  contractAddress,
+  chainId,
+  nonce,
+}: {
+  encodedTransaction: string;
+  contractAddress: Address;
+  chainId: string;
+  nonce: BigNumberish;
+}): Promise<{
   message: string;
   messageUint8: Uint8Array;
 }> => {

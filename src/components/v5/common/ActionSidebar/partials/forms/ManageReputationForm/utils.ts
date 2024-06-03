@@ -42,12 +42,17 @@ export const getManageReputationPayload = (
   };
 };
 
-export const reputationAmountChangeValidation = (
-  value: string | null | undefined,
-  context: TestContext<object>,
-  userReputation: string | undefined,
-  colony: Colony,
-) => {
+export const reputationAmountChangeValidation = ({
+  value,
+  context,
+  userReputation,
+  colony,
+}: {
+  value: string | null | undefined;
+  context: TestContext<object>;
+  userReputation: string | undefined;
+  colony: Colony;
+}) => {
   const { parent } = context;
   const { modification } = parent || {};
   const isSmite = modification === ModificationOption.RemoveReputation;

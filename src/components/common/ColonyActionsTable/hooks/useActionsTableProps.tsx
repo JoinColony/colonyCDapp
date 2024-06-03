@@ -123,12 +123,12 @@ export const useActionsTableProps = (
   });
   const isMobile = useMobile();
   const renderRowLink = useRenderRowLink(loading);
-  const renderSubComponent = useRenderSubComponent(
+  const renderSubComponent = useRenderSubComponent({
     loadingMotionStates,
     loading,
     refetchMotionStates,
     getMenuProps,
-  );
+  });
   const tableProps: TableProps<ColonyAction> = merge(
     {
       className: clsx(
