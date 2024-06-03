@@ -178,8 +178,6 @@ function* manageVerifiedRecipients({
             changelog: getUpdatedColonyMetadataChangelog({
               transactionHash: txHash,
               metadata: colony.metadata,
-              newDisplayName: undefined,
-              newAvatarImage: undefined,
               hasWhitelistChanged: true,
             }),
           },

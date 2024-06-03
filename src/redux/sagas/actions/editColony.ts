@@ -196,7 +196,6 @@ function* editColonyAction({
               metadata: colony.metadata,
               newDisplayName: colonyDisplayName,
               newAvatarImage: colonyAvatarImage,
-              hasWhitelistChanged: false,
               haveTokensChanged,
               hasDescriptionChanged:
                 metadata?.description !== colonyDescription,

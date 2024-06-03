@@ -152,13 +152,6 @@ function* manageExistingSafesAction({
             changelog: getUpdatedColonyMetadataChangelog({
               transactionHash: txHash,
               metadata: colony.metadata,
-              newDisplayName: undefined,
-              newAvatarImage: undefined,
-              hasWhitelistChanged: false,
-              haveTokensChanged: false,
-              hasDescriptionChanged: false,
-              haveExternalLinksChanged: false,
-              hasObjectiveChanged: false,
               newSafes: updatedColonySafes,
             }),
           },
