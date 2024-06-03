@@ -145,17 +145,22 @@ export function* waitForTxResult(channel: Channel<any>) {
   }
 }
 
-export const createGroupTransaction = (
-  { id, index }: { id: string; index: number },
-  key: string,
-  meta: { id: string },
-  config: Omit<TxConfig, 'group'> & { group?: Partial<TxConfig['group']> },
-) =>
+export const createGroupTransaction = ({
+  channel: { id, index },
+  batchKey,
+  meta,
+  config,
+}: {
+  channel: { id: string; index: number };
+  batchKey: string;
+  meta: { id: string };
+  config: Omit<TxConfig, 'group'> & { group?: Partial<TxConfig['group']> };
+}) =>
   fork(createTransaction, id, {
     ...config,
     group: {
       ...config.group,
-      key,
+      key: batchKey,
       id: meta.id,
       index,
     },

@@ -80,14 +80,14 @@ function* releaseExpenditureStageMotion({
       ADDRESS_ZERO,
     );
 
-    const encodedMulticallData: string[] = getMulticallDataForStageRelease(
+    const encodedMulticallData: string[] = getMulticallDataForStageRelease({
       expenditure,
       slotId,
       colonyClient,
       permissionDomainId,
       childSkillIndex,
       tokenAddresses,
-    );
+    });
 
     const encodedReleaseStagedPaymentAction =
       yield colonyClient.interface.encodeFunctionData('multicall', [
@@ -96,24 +96,29 @@ function* releaseExpenditureStageMotion({
 
     const batchKey = 'motion-release-expenditure-stage';
 
-    yield createGroupTransaction(createMotion, batchKey, meta, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
-        motionDomainId,
-        childSkillIndex,
-        ADDRESS_ZERO,
-        encodedReleaseStagedPaymentAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        title: { id: 'transaction.group.createMotion.title' },
-        description: {
-          id: 'transaction.group.createMotion.description',
+    yield createGroupTransaction({
+      channel: createMotion,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          motionDomainId,
+          childSkillIndex,
+          ADDRESS_ZERO,
+          encodedReleaseStagedPaymentAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          title: { id: 'transaction.group.createMotion.title' },
+          description: {
+            id: 'transaction.group.createMotion.description',
+          },
         },
       },
     });

@@ -36,16 +36,25 @@ export const signTypedData = async ({
   return { r, s, v, signature };
 };
 
-export const generateEIP2612TypedData = (
-  userAddress: Address,
-  tokenName: string,
-  chainId: string,
-  verifyingContract: Address,
-  spender: Address,
-  value: BigNumberish,
-  nonce: BigNumberish,
-  deadline: number,
-) => ({
+export const generateEIP2612TypedData = ({
+  userAddress,
+  tokenName,
+  chainId,
+  verifyingContract,
+  spender,
+  value,
+  nonce,
+  deadline,
+}: {
+  userAddress: Address;
+  tokenName: string;
+  chainId: string;
+  verifyingContract: Address;
+  spender: Address;
+  value: BigNumberish;
+  nonce: BigNumberish;
+  deadline: number;
+}) => ({
   types: {
     Permit: [
       { name: 'owner', type: 'address' },

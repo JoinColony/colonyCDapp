@@ -77,21 +77,31 @@ function* createDomainAction({
       'annotateCreateDomainAction',
     ]);
 
-    yield createGroupTransaction(createDomain, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'addDomain(uint256,uint256,uint256)',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateCreateDomain, batchKey, meta, {
+    yield createGroupTransaction({
+      channel: createDomain,
+      batchKey,
+      meta,
+      config: {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: 'addDomain(uint256,uint256,uint256)',
         identifier: colonyAddress,
         params: [],
         ready: false,
+      },
+    });
+
+    if (annotationMessage) {
+      yield createGroupTransaction({
+        channel: annotateCreateDomain,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 

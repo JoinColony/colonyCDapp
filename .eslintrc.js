@@ -188,5 +188,6 @@ module.exports = {
       'WithStatement',
     ],
     'no-underscore-dangle': ['error', { allow: ['__typename'] }],
+    'max-params': ['error', { max: 3 }],
   },
 };

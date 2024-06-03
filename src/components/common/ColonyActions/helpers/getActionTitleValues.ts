@@ -147,12 +147,12 @@ const getActionTitleValues = ({
 }) => {
   const { isMotion, pendingColonyMetadata } = actionData;
 
-  const updatedItem = mapColonyActionToExpectedFormat(
+  const updatedItem = mapColonyActionToExpectedFormat({
     actionData,
     colony,
     keyFallbackValues,
     expenditureData,
-  );
+  });
 
   const actionType = getExtendedActionType(
     actionData,

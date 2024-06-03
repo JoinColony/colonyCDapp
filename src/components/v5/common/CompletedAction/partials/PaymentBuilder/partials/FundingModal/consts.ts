@@ -47,15 +47,15 @@ export const getValidationSchema = (
                     const { tokenAddress } = parent || {};
                     const tokenData = getSelectedToken(colony, tokenAddress);
 
-                    return hasEnoughFundsValidation(
-                      moveDecimal(
+                    return hasEnoughFundsValidation({
+                      value: moveDecimal(
                         value,
                         -getTokenDecimalsWithFallback(tokenData?.decimals),
                       ),
                       context,
                       selectedTeam,
                       colony,
-                    );
+                    });
                   },
                 ),
               tokenAddress: string().required(),

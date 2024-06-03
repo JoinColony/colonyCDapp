@@ -18,11 +18,11 @@ export const addressHasRoles = ({
   requiredRoles: ColonyRole[];
 }) => {
   return requiredRolesDomains.every((domainId) => {
-    const userDomainRoles = getUserRolesForDomain(
+    const userDomainRoles = getUserRolesForDomain({
       colony,
-      address || '',
+      userAddress: address || '',
       domainId,
-    );
+    });
 
     return requiredRoles.every((role) => userHasRole(userDomainRoles, role));
   });

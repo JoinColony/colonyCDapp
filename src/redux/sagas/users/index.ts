@@ -205,20 +205,30 @@ function* userDepositToken({
       'deposit',
     ]);
 
-    yield createGroupTransaction(approve, batchKey, meta, {
-      context: ClientType.TokenClient,
-      methodName: 'approve',
-      identifier: tokenAddress,
-      params: [tokenLockingClient.address, BigNumber.from(amount)],
-      ready: false,
+    yield createGroupTransaction({
+      channel: approve,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.TokenClient,
+        methodName: 'approve',
+        identifier: tokenAddress,
+        params: [tokenLockingClient.address, BigNumber.from(amount)],
+        ready: false,
+      },
     });
 
-    yield createGroupTransaction(deposit, batchKey, meta, {
-      context: ClientType.TokenLockingClient,
-      methodName: 'deposit(address,uint256,bool)',
-      identifier: colonyAddress,
-      params: [tokenAddress, BigNumber.from(amount), false],
-      ready: false,
+    yield createGroupTransaction({
+      channel: deposit,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.TokenLockingClient,
+        methodName: 'deposit(address,uint256,bool)',
+        identifier: colonyAddress,
+        params: [tokenAddress, BigNumber.from(amount), false],
+        ready: false,
+      },
     });
 
     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);

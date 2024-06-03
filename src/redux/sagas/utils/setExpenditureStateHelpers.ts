@@ -25,14 +25,21 @@ const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
 const MAPPING = false;
 const ARRAY = true;
 
-export const getMulticallDataForStageRelease = (
-  expenditure: Expenditure,
-  slotId: number,
-  colonyClient: AnyColonyClient,
-  permissionDomainId: BigNumber,
-  childSkillIndex: BigNumber,
-  tokenAddresses: string[],
-) => {
+export const getMulticallDataForStageRelease = ({
+  expenditure,
+  slotId,
+  colonyClient,
+  permissionDomainId,
+  childSkillIndex,
+  tokenAddresses,
+}: {
+  expenditure: Expenditure;
+  slotId: number;
+  colonyClient: AnyColonyClient;
+  permissionDomainId: BigNumber;
+  childSkillIndex: BigNumber;
+  tokenAddresses: string[];
+}) => {
   const encodedMulticallData: string[] = [];
 
   encodedMulticallData.push(

@@ -86,12 +86,12 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     }
 
     if (colonyExtension) {
-      return mapToInstalledExtensionData(
+      return mapToInstalledExtensionData({
         colony,
         extensionConfig,
         colonyExtension,
         version,
-      );
+      });
     }
 
     return mapToInstallableExtensionData(extensionConfig, version);

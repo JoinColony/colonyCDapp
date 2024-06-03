@@ -60,12 +60,17 @@ function* escalateMotion({
 
     const batchKey = TRANSACTION_METHODS.EscalateMotion;
 
-    yield createGroupTransaction(escalateMotionTransaction, batchKey, meta, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'escalateMotion',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
+    yield createGroupTransaction({
+      channel: escalateMotionTransaction,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.VotingReputationClient,
+        methodName: 'escalateMotion',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      },
     });
 
     yield takeFrom(

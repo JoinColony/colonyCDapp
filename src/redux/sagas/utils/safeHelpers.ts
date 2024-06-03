@@ -252,12 +252,17 @@ export const getTransferNFTData = async (
   ]);
 };
 
-export const getTransferFundsData = async (
-  zodiacBridgeModule: Contract,
-  safe: Safe,
-  transaction: SafeTransactionData,
-  network: NetworkInfo,
-) => {
+export const getTransferFundsData = async ({
+  zodiacBridgeModule,
+  safe,
+  transaction,
+  network,
+}: {
+  zodiacBridgeModule: Contract;
+  safe: Safe;
+  transaction: SafeTransactionData;
+  network: NetworkInfo;
+}) => {
   if (!transaction.token) {
     throw new Error('Transaction does not contain token data.');
   }
@@ -462,12 +467,12 @@ export function* getTransactionEncodedData(
         );
         break;
       case SafeTransactionType.TransferFunds:
-        txDataToBeSentToZodiacModule = yield getTransferFundsData(
+        txDataToBeSentToZodiacModule = yield getTransferFundsData({
           zodiacBridgeModule,
           safe,
           transaction,
           network,
-        );
+        });
         break;
       case SafeTransactionType.ContractInteraction:
         txDataToBeSentToZodiacModule = yield getContractInteractionData(

@@ -119,11 +119,11 @@ function* claimAllMotionRewards({
               extensionAddress,
             );
 
-          return createGroupTransaction(
-            channels[id],
-            'claimMotionRewards',
+          return createGroupTransaction({
+            channel: channels[id],
+            batchKey: 'claimMotionRewards',
             meta,
-            {
+            config: {
               context: ClientType.VotingReputationClient,
               methodName: 'claimReward',
               identifier: colonyAddress,
@@ -135,7 +135,7 @@ function* claimAllMotionRewards({
                 parseInt(id, 10) > motionsWithYayClaim.length - 1 ? 0 : 1,
               ],
             },
-          );
+          });
         }),
       ),
     );

@@ -88,21 +88,31 @@ function* managePermissionsAction({
         return true;
       });
 
-    yield createGroupTransaction(setUserRoles, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'setUserRoles',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateSetUserRoles, batchKey, meta, {
+    yield createGroupTransaction({
+      channel: setUserRoles,
+      batchKey,
+      meta,
+      config: {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: 'setUserRoles',
         identifier: colonyAddress,
         params: [],
         ready: false,
+      },
+    });
+
+    if (annotationMessage) {
+      yield createGroupTransaction({
+        channel: annotateSetUserRoles,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 

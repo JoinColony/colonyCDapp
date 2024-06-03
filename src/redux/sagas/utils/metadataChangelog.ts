@@ -34,18 +34,29 @@ export const getUpdatedDomainMetadataChangelog = (
   ];
 };
 
-export const getUpdatedColonyMetadataChangelog = (
-  transactionHash: string,
-  metadata: ColonyMetadata,
-  newDisplayName?: string,
-  newAvatarImage?: string | null,
+export const getUpdatedColonyMetadataChangelog = ({
+  transactionHash,
+  metadata,
+  newDisplayName,
+  newAvatarImage = null,
   hasWhitelistChanged = false,
   haveTokensChanged = false,
   hasDescriptionChanged = false,
   haveExternalLinksChanged = false,
   hasObjectiveChanged = false,
-  newSafes?: Safe[],
-): ColonyMetadataChangelogInput[] => {
+  newSafes,
+}: {
+  transactionHash: string;
+  metadata: ColonyMetadata;
+  newDisplayName?: string;
+  newAvatarImage?: string | null;
+  hasWhitelistChanged?: boolean;
+  haveTokensChanged?: boolean;
+  hasDescriptionChanged?: boolean;
+  haveExternalLinksChanged?: boolean;
+  hasObjectiveChanged?: boolean;
+  newSafes?: Safe[];
+}): ColonyMetadataChangelogInput[] => {
   const existingChangelog = metadata.changelog ?? [];
   const currentColonySafes =
     metadata.safes?.filter(notNull).map(excludeTypenameKey) || [];

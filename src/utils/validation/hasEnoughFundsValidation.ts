@@ -10,13 +10,19 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 
-export const hasEnoughFundsValidation = (
-  value: string | null | undefined,
-  context: TestContext<object>,
-  selectedTeam: number | undefined,
-  colony: ColonyFragment,
-  tokenAddress?: string,
-) => {
+export const hasEnoughFundsValidation = ({
+  value,
+  context,
+  selectedTeam,
+  colony,
+  tokenAddress,
+}: {
+  value: string | null | undefined;
+  context: TestContext<object>;
+  selectedTeam: number | undefined;
+  colony: ColonyFragment;
+  tokenAddress?: string;
+}) => {
   if (!value) {
     return false;
   }

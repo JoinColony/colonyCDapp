@@ -199,7 +199,11 @@ function* manageReputationMotion({
     /*
      * Refesh the user & colony reputation
      */
-    yield fork(updateDomainReputation, colonyAddress, userAddress, domainId);
+    yield fork(updateDomainReputation, {
+      colonyAddress,
+      walletAddress: userAddress,
+      domainId,
+    });
 
     yield put<AllActions>({
       type: ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,

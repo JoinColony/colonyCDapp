@@ -195,12 +195,12 @@ function* createStakedExpenditure({
     yield put(
       transactionAddParams(
         setExpenditureValues.id,
-        getSetExpenditureValuesFunctionParams(
-          expenditureId,
-          payoutsWithSlotIds,
+        getSetExpenditureValuesFunctionParams({
+          nativeExpenditureId: expenditureId,
+          payouts: payoutsWithSlotIds,
           networkInverseFee,
           isStaged,
-        ),
+        }),
       ),
     );
     yield initiateTransaction({ id: setExpenditureValues.id });

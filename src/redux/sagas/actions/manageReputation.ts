@@ -65,23 +65,33 @@ function* manageReputationAction({
         'annotateManageReputation',
       ]);
 
-    yield createGroupTransaction(manageReputation, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: isSmitingReputation
-        ? 'emitDomainReputationPenalty'
-        : 'emitDomainReputationReward',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateManageReputation, batchKey, meta, {
+    yield createGroupTransaction({
+      channel: manageReputation,
+      batchKey,
+      meta,
+      config: {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: isSmitingReputation
+          ? 'emitDomainReputationPenalty'
+          : 'emitDomainReputationReward',
         identifier: colonyAddress,
         params: [],
         ready: false,
+      },
+    });
+
+    if (annotationMessage) {
+      yield createGroupTransaction({
+        channel: annotateManageReputation,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 

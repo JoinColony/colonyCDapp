@@ -8,12 +8,17 @@ import {
 } from '~gql';
 import { type Address } from '~types/index.ts';
 
-export function* updateDomainReputation(
-  colonyAddress: Address,
-  walletAddress: Address,
-  domainId: number,
-  rootHash?: string,
-) {
+export function* updateDomainReputation({
+  colonyAddress,
+  walletAddress,
+  domainId,
+  rootHash,
+}: {
+  colonyAddress: Address;
+  walletAddress: Address;
+  domainId: number;
+  rootHash?: string;
+}) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   yield apolloClient.query<

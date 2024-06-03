@@ -103,17 +103,22 @@ function* claimMotionRewards({
 
     yield all(
       Object.keys(channels).map((id) =>
-        createGroupTransaction(channels[id], BATCH_KEY, meta, {
-          context: ClientType.VotingReputationClient,
-          methodName: 'claimReward',
-          identifier: colonyAddress,
-          params: [
-            motionData.motionId,
-            permissionDomainId,
-            childSkillIndex,
-            userAddress,
-            id === YAY_ID ? 1 : 0,
-          ],
+        createGroupTransaction({
+          channel: channels[id],
+          batchKey: BATCH_KEY,
+          meta,
+          config: {
+            context: ClientType.VotingReputationClient,
+            methodName: 'claimReward',
+            identifier: colonyAddress,
+            params: [
+              motionData.motionId,
+              permissionDomainId,
+              childSkillIndex,
+              userAddress,
+              id === YAY_ID ? 1 : 0,
+            ],
+          },
         }),
       ),
     );
