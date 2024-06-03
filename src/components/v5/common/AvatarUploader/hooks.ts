@@ -47,6 +47,12 @@ export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
     } catch (e) {
       if (e.message.includes('exceeded the maximum')) {
         setUploadAvatarError(DropzoneErrors.TOO_LARGE);
+      } else if (
+        e.message.includes(
+          "Pica: cannot use getImageData on canvas, make sure fingerprinting protection isn't enabled",
+        )
+      ) {
+        setUploadAvatarError(DropzoneErrors.FINGERPRINT_ENABLED);
       } else {
         setUploadAvatarError(DropzoneErrors.DEFAULT);
       }
