@@ -24,7 +24,7 @@ import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { getSimplePaymentPayload } from './utils.tsx';
 
-export const useValidationSchema = (networkInverseFee?: string) => {
+export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
   const fromDomainId: number | undefined = watch('from');

@@ -26,7 +26,7 @@ import {
   getPaymentBuilderPayload,
 } from './utils.tsx';
 
-export const useValidationSchema = () => {
+export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
   const colonyTokens = useMemo(
     () =>
@@ -85,7 +85,12 @@ export const useValidationSchema = () => {
                         }),
                     )
                     .test('tokens-sum-exceeded', '', (value, context) =>
-                      allTokensAmountValidation(value, context, colony),
+                      allTokensAmountValidation({
+                        value,
+                        context,
+                        colony,
+                        networkInverseFee,
+                      }),
                     ),
                   tokenAddress: string().required(),
                   delay: number()
@@ -143,7 +148,7 @@ export const useValidationSchema = () => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens],
+    [colony, colonyTokens, networkInverseFee],
   );
 };
 
@@ -159,8 +164,8 @@ export const usePaymentBuilder = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const validationSchema = useValidationSchema();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
+  const validationSchema = useValidationSchema(networkInverseFee);
 
   useActionFormBaseHook({
     validationSchema,

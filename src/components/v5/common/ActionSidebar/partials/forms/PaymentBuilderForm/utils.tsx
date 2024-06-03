@@ -76,11 +76,9 @@ export const advancedPaymentDescriptionMetadataGetter: DescriptionMetadataGetter
 */
 import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import { type TestContext } from 'yup';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { type ColonyFragment } from '~gql';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -90,6 +88,7 @@ import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { groupBy } from '~utils/lodash.ts';
 import {
+  calculateFee,
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
@@ -130,11 +129,19 @@ export const getPaymentBuilderPayload = (
   };
 };
 
-export const allTokensAmountValidation = (
-  value: string | null | undefined,
-  context: TestContext<{ formValues?: any }>,
-  colony: ColonyFragment,
-) => {
+interface AllTokensAmountValidationParams {
+  value: string | null | undefined;
+  context: TestContext<{ formValues?: any }>;
+  colony: Colony;
+  networkInverseFee: string | undefined;
+}
+
+export const allTokensAmountValidation = ({
+  value,
+  context,
+  colony,
+  networkInverseFee,
+}: AllTokensAmountValidationParams) => {
   if (!value) {
     return false;
   }
@@ -164,14 +171,19 @@ export const allTokensAmountValidation = (
     (acc, payment) => {
       const { amount } = payment;
 
-      return acc.add(
-        BigNumber.from(
-          moveDecimal(
-            amount && amount !== '' ? amount : '0',
-            getTokenDecimalsWithFallback(token?.decimals),
-          ),
-        ),
+      if (!amount) {
+        return acc;
+      }
+
+      const tokenDecimals = getTokenDecimalsWithFallback(token?.decimals);
+
+      const { totalToPay } = calculateFee(
+        payment,
+        networkInverseFee ?? '0',
+        tokenDecimals,
       );
+
+      return acc.add(totalToPay);
     },
     BigNumber.from('0'),
   );
