@@ -11,25 +11,28 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 
+interface HasEnoughFundsValidationParams {
+  // Amount in ETH
+  value: string | null | undefined;
+  context: TestContext<object>;
+  domainId: number | undefined;
+  colony: Colony;
+  tokenAddress?: string;
+  // If specified, fee will be calculated and added to the amount
+  networkInverseFee?: string;
+}
+
 export const hasEnoughFundsValidation = ({
   value,
   context,
-  selectedTeam,
+  domainId,
   colony,
   tokenAddress,
   networkInverseFee,
-}: {
-  value: string | null | undefined;
-  context: TestContext<object>;
-  selectedTeam: number | undefined;
-  colony: Colony;
-  tokenAddress?: string;
-  networkInverseFee?: string;
-}) => {
+}: HasEnoughFundsValidationParams) => {
   if (!value) {
     return false;
   }
-
   const { parent } = context;
   const { tokenAddress: tokenAddressFieldValue } = parent || {};
 
@@ -50,7 +53,7 @@ export const hasEnoughFundsValidation = ({
   const tokenBalance = getBalanceForTokenAndDomain(
     colony.balances,
     selectedToken.tokenAddress,
-    selectedTeam || Id.RootDomain,
+    domainId || Id.RootDomain,
   );
 
   const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);

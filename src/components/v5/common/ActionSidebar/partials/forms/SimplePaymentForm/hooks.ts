@@ -27,7 +27,7 @@ import { getSimplePaymentPayload } from './utils.tsx';
 export const useValidationSchema = (networkInverseFee?: string) => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
-  const selectedTeam: number | undefined = watch('from');
+  const fromDomainId: number | undefined = watch('from');
 
   const validationSchema = useMemo(
     () =>
@@ -59,7 +59,7 @@ export const useValidationSchema = (networkInverseFee?: string) => {
                 hasEnoughFundsValidation({
                   value,
                   context,
-                  selectedTeam,
+                  domainId: fromDomainId,
                   colony,
                   networkInverseFee,
                 }),
@@ -96,7 +96,7 @@ export const useValidationSchema = (networkInverseFee?: string) => {
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, networkInverseFee, selectedTeam],
+    [colony, fromDomainId, networkInverseFee],
   );
 
   return validationSchema;
