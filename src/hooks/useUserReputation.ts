@@ -10,12 +10,17 @@ interface UseUserReputationHook {
   loading: boolean;
 }
 
-const useUserReputation = (
-  colonyAddress: Address,
-  walletAddress: Address | null | undefined,
+const useUserReputation = ({
+  colonyAddress,
+  walletAddress,
   domainId = Id.RootDomain,
-  rootHash?: string,
-): UseUserReputationHook => {
+  rootHash,
+}: {
+  colonyAddress: Address;
+  walletAddress: Address | null | undefined;
+  domainId?: Id;
+  rootHash?: string;
+}): UseUserReputationHook => {
   const { data: userReputationData, loading: loadingUserReputation } =
     useGetUserReputationQuery({
       variables: {

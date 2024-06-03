@@ -41,11 +41,11 @@ export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const { colonyAddress } = colony;
 
-  const { userReputation, loading } = useUserReputation(
+  const { userReputation, loading } = useUserReputation({
     colonyAddress,
-    selectedUser,
+    walletAddress: selectedUser,
     domainId,
-  );
+  });
 
   useEffect(() => {
     if (

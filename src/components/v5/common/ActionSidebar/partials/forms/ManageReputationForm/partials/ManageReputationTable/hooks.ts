@@ -69,7 +69,11 @@ export const useReputationFields = () => {
     userReputation,
     totalReputation,
     loading: userReputationLoading,
-  } = useUserReputation(colonyAddress, selectedUser, domainId);
+  } = useUserReputation({
+    colonyAddress,
+    walletAddress: selectedUser,
+    domainId,
+  });
 
   const percentageReputation =
     calculatePercentageReputation(

@@ -36,12 +36,17 @@ const NestedOptions: FC<NestedOptionsProps> = ({
 
   const filterTitle = `${parentOption}.type`;
 
-  const onChange = (
-    hasNestedOptions: boolean,
-    id: NestedFilterOption,
-    isChecked: boolean,
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const onChange = ({
+    hasNestedOptions,
+    id,
+    isChecked,
+    event,
+  }: {
+    hasNestedOptions: boolean;
+    id: NestedFilterOption;
+    isChecked: boolean;
+    event: React.ChangeEvent<HTMLInputElement>;
+  }) => {
     if (hasNestedOptions) {
       setCheckedParent(isChecked ? null : id);
 
@@ -84,7 +89,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                     name={formatText(title)}
                     label={title}
                     onChange={(event) =>
-                      onChange(hasNestedOptions, id, isChecked, event)
+                      onChange({ hasNestedOptions, id, isChecked, event })
                     }
                     isChecked={isChecked || isNestedOptionsChecked}
                     classNames="w-full"

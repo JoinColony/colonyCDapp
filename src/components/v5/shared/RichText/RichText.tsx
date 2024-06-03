@@ -24,12 +24,12 @@ const RichText: FC<RichTextProps> = ({
   shouldFocus,
   isDisabled,
 }) => {
-  const { editor, notFormattedContent, field, characterCount } = useRichText(
+  const { editor, notFormattedContent, field, characterCount } = useRichText({
     name,
     isDecriptionFieldExpanded,
     isReadonly,
     maxDescriptionLength,
-  );
+  });
 
   useLayoutEffect(() => {
     if (shouldFocus) {

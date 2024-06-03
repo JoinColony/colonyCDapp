@@ -26,7 +26,10 @@ const PendingReputation: FC<PendingReputationProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const { userReputation } = useUserReputation(colonyAddress, wallet?.address);
+  const { userReputation } = useUserReputation({
+    colonyAddress,
+    walletAddress: wallet?.address,
+  });
 
   const { data } = useGetReputationMiningCycleMetadataQuery();
   const { lastCompletedAt } = data?.getReputationMiningCycleMetadata ?? {};

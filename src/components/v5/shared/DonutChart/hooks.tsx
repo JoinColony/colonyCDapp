@@ -50,12 +50,17 @@ export const useDonutChart = ({
   const totalValue = chartData.reduce((acc, item) => acc + item.value, 0);
 
   const polarToCartesian = useCallback(
-    (
-      centerX: number,
-      centerY: number,
-      radius: number,
-      angleInDegrees: number,
-    ) => {
+    ({
+      centerX,
+      centerY,
+      radius,
+      angleInDegrees,
+    }: {
+      centerX: number;
+      centerY: number;
+      radius: number;
+      angleInDegrees: number;
+    }) => {
       const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
       return {
         x: centerX + radius * Math.cos(angleInRadians),
@@ -77,30 +82,30 @@ export const useDonutChart = ({
       const largeArcFlag = angle > 180 ? 1 : 0;
       const outerRadius = size / 2;
       const innerRadius = outerRadius - donutWidth;
-      const startOuter = polarToCartesian(
-        outerRadius,
-        outerRadius,
-        outerRadius,
-        startAngle,
-      );
-      const endOuter = polarToCartesian(
-        outerRadius,
-        outerRadius,
-        outerRadius,
-        startAngle + angle,
-      );
-      const startInner = polarToCartesian(
-        outerRadius,
-        outerRadius,
-        innerRadius,
-        startAngle,
-      );
-      const endInner = polarToCartesian(
-        outerRadius,
-        outerRadius,
-        innerRadius,
-        startAngle + angle,
-      );
+      const startOuter = polarToCartesian({
+        centerX: outerRadius,
+        centerY: outerRadius,
+        radius: outerRadius,
+        angleInDegrees: startAngle,
+      });
+      const endOuter = polarToCartesian({
+        centerX: outerRadius,
+        centerY: outerRadius,
+        radius: outerRadius,
+        angleInDegrees: startAngle + angle,
+      });
+      const startInner = polarToCartesian({
+        centerX: outerRadius,
+        centerY: outerRadius,
+        radius: innerRadius,
+        angleInDegrees: startAngle,
+      });
+      const endInner = polarToCartesian({
+        centerX: outerRadius,
+        centerY: outerRadius,
+        radius: innerRadius,
+        angleInDegrees: startAngle + angle,
+      });
 
       return [
         'M',

@@ -23,7 +23,11 @@ export const useManageReputationTableData = (
     userReputation,
     totalReputation,
     loading: userReputationLoading,
-  } = useUserReputation(colonyAddress, member, domainId);
+  } = useUserReputation({
+    colonyAddress,
+    walletAddress: member,
+    domainId,
+  });
 
   const percentageReputation =
     calculatePercentageReputation(

@@ -21,12 +21,12 @@ export const useStakingStep = () => {
     loadingUserTokenBalance,
     userActivatedTokens,
     userInactivatedTokens,
-  } = useEnoughTokensForStaking(
+  } = useEnoughTokensForStaking({
     tokenAddress,
-    user?.walletAddress ?? '',
+    walletAddress: user?.walletAddress ?? '',
     colonyAddress,
-    userMinStake,
-  );
+    requiredStake: userMinStake,
+  });
 
   const { data, loading: loadingReputation } = useGetUserReputationQuery({
     variables: {

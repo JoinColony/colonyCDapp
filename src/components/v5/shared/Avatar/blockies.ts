@@ -74,7 +74,19 @@ function createImageData(size) {
   return data;
 }
 
-function createCanvas(imageData, color, scale, bgcolor, spotcolor) {
+function createCanvas({
+  imageData,
+  color,
+  scale,
+  bgcolor,
+  spotcolor,
+}: {
+  imageData: number[];
+  color: string;
+  scale: number;
+  bgcolor: string;
+  spotcolor: string;
+}) {
   const c = document.createElement('canvas');
   const width = Math.sqrt(imageData.length);
   c.width = c.height = width * scale;
@@ -113,7 +125,7 @@ function createIcon(opts: IconOptions) {
   const bgcolor = defaultOpts.bgcolor || createColor();
   const spotcolor = defaultOpts.spotcolor || createColor();
   const imageData = createImageData(size);
-  const canvas = createCanvas(imageData, color, scale, bgcolor, spotcolor);
+  const canvas = createCanvas({ imageData, color, scale, bgcolor, spotcolor });
 
   return canvas;
 }
