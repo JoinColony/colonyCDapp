@@ -36,16 +36,8 @@ export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
       }),
       columnHelper.accessor('isClaimed', {
         size: 120,
-        sortUndefined: -1,
-        sortingFn: (a, b) => {
-          if (a.original.isClaimed && b.original.isClaimed) {
-            return 0;
-          }
-          if (a.original.isClaimed) {
-            return -1;
-          }
-          return 1;
-        },
+        sortUndefined: 1,
+        invertSorting: true,
         header: () => formatText({ id: 'incomingFundsPage.table.claim' }),
         cell: ({ row }) => {
           return (
