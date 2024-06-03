@@ -15,7 +15,6 @@ interface HasEnoughFundsValidationParams {
   // Amount in ETH
   value: string | null | undefined;
   context: TestContext<object>;
-  domainId: number | undefined;
   colony: Colony;
   tokenAddress?: string;
   // If specified, fee will be calculated and added to the amount
@@ -25,7 +24,6 @@ interface HasEnoughFundsValidationParams {
 export const hasEnoughFundsValidation = ({
   value,
   context,
-  domainId,
   colony,
   tokenAddress,
   networkInverseFee,
@@ -34,7 +32,7 @@ export const hasEnoughFundsValidation = ({
     return false;
   }
   const { parent } = context;
-  const { tokenAddress: tokenAddressFieldValue } = parent || {};
+  const { tokenAddress: tokenAddressFieldValue, from } = parent || {};
 
   const colonyTokens =
     colony.tokens?.items
@@ -51,9 +49,9 @@ export const hasEnoughFundsValidation = ({
   }
 
   const tokenBalance = getBalanceForTokenAndDomain(
-    colony.balances,
-    selectedToken.tokenAddress,
-    domainId || Id.RootDomain,
+    colony?.balances,
+    selectedToken?.tokenAddress,
+    Number(from) || Id.RootDomain,
   );
 
   const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);

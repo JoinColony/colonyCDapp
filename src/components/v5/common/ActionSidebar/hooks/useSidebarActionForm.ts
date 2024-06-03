@@ -17,7 +17,7 @@ import ManageTokensForm from '../partials/forms/ManageTokensForm/index.ts';
 import ManageVerifiedMembersForm from '../partials/forms/ManageVerifiedMembersForm/index.ts';
 import MintTokenForm from '../partials/forms/MintTokenForm/index.ts';
 import PaymentBuilderForm from '../partials/forms/PaymentBuilderForm/index.ts';
-import SinglePaymentForm from '../partials/forms/SimplePaymentForm/index.ts';
+import SimplePaymentForm from '../partials/forms/SimplePaymentForm/index.ts';
 import SplitPaymentForm from '../partials/forms/SplitPaymentForm/index.ts';
 import TransferFundsForm from '../partials/forms/TransferFundsForm/index.ts';
 import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
@@ -29,7 +29,7 @@ const useSidebarActionForm = () => {
     Partial<Record<Action, FC<ActionFormBaseProps>>>
   >(
     () => ({
-      [Action.SimplePayment]: SinglePaymentForm,
+      [Action.SimplePayment]: SimplePaymentForm,
       [Action.MintTokens]: MintTokenForm,
       [Action.TransferFunds]: TransferFundsForm,
       [Action.CreateNewTeam]: CreateNewTeamForm,
