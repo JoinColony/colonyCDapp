@@ -3,9 +3,10 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { type TestContext } from 'yup';
 
-import { type ColonyFragment } from '~gql';
+import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import {
+  calculateFee,
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
@@ -16,12 +17,14 @@ export const hasEnoughFundsValidation = ({
   selectedTeam,
   colony,
   tokenAddress,
+  networkInverseFee,
 }: {
   value: string | null | undefined;
   context: TestContext<object>;
   selectedTeam: number | undefined;
-  colony: ColonyFragment;
+  colony: Colony;
   tokenAddress?: string;
+  networkInverseFee?: string;
 }) => {
   if (!value) {
     return false;
@@ -31,7 +34,7 @@ export const hasEnoughFundsValidation = ({
   const { tokenAddress: tokenAddressFieldValue } = parent || {};
 
   const colonyTokens =
-    colony?.tokens?.items
+    colony.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
 
@@ -40,17 +43,28 @@ export const hasEnoughFundsValidation = ({
       selectedTokenAddress === tokenAddressFieldValue || tokenAddress,
   );
 
-  if (!selectedToken?.tokenAddress) {
+  if (!selectedToken) {
     return false;
   }
 
   const tokenBalance = getBalanceForTokenAndDomain(
-    colony?.balances,
-    selectedToken?.tokenAddress,
+    colony.balances,
+    selectedToken.tokenAddress,
     selectedTeam || Id.RootDomain,
   );
 
-  return !BigNumber.from(
-    moveDecimal(value, getTokenDecimalsWithFallback(selectedToken?.decimals)),
-  ).gt(tokenBalance);
+  const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
+
+  let amountInWei = moveDecimal(value, tokenDecimals);
+
+  if (networkInverseFee) {
+    const { totalToPay } = calculateFee(
+      value,
+      networkInverseFee,
+      tokenDecimals,
+    );
+    amountInWei = totalToPay;
+  }
+
+  return !BigNumber.from(amountInWei).gt(tokenBalance);
 };
