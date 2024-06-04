@@ -39,6 +39,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.RemoveVerifiedMembers} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.RemoveVerifiedMembersMotion} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.CreateExpenditure} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
+      ${ColonyActionType.ManageTokens} {Manage tokens by {initiator}}
       ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
       ${ExtendedColonyActionType.UpdateTokens} {Manage approved tokens by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
@@ -87,6 +88,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.RemoveVerifiedMembers} {Manage verified members}
       ${ColonyActionType.RemoveVerifiedMembersMotion} {Manage verified members}
       ${ColonyActionType.CreateExpenditure} {Payment Builder}
+      ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ExtendedColonyActionType.UpdateAddressBook} {Update Address Book}
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
