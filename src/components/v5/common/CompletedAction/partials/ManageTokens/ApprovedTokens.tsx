@@ -6,6 +6,7 @@ import { formatText } from '~utils/intl.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import TokenRow from './TokenRow.tsx';
+import { TokenStatus } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.ApprovedTokens';
 
@@ -16,21 +17,24 @@ interface ApprovedTokensProps {
 const ApprovedTokens = ({ approvedTokenChanges }: ApprovedTokensProps) => {
   const { added, removed, unaffected } = approvedTokenChanges || {};
 
-  const convertArrayToObject = (
-    tokenAddresses: (string | null)[] | null | undefined,
-    type: 'added' | 'removed' | 'unaffected',
+  const mapAddressesToStatus = (
+    tokenAddresses: string[] | null | undefined,
+    status: TokenStatus,
   ) => {
-    if (!tokenAddresses) {
+    if (!tokenAddresses || tokenAddresses.length === 0) {
       return [];
     }
-    return tokenAddresses.map((address) => ({ address, type }));
+    return tokenAddresses.map((address) => ({ address, status }));
   };
 
-  const unaffectedTokens = convertArrayToObject(unaffected, 'unaffected');
-  const addedTokens = convertArrayToObject(added, 'added');
-  const removedTokens = convertArrayToObject(removed, 'removed');
+  const unaffectedTokens = mapAddressesToStatus(
+    unaffected,
+    TokenStatus.Unaffected,
+  );
+  const addedTokens = mapAddressesToStatus(added, TokenStatus.Added);
+  const removedTokens = mapAddressesToStatus(removed, TokenStatus.Removed);
 
-  const tokenAddresses = [
+  const combinedTokens = [
     ...unaffectedTokens,
     ...addedTokens,
     ...removedTokens,
@@ -51,12 +55,12 @@ const ApprovedTokens = ({ approvedTokenChanges }: ApprovedTokensProps) => {
           />
           {DEFAULT_NETWORK_TOKEN.name} - {DEFAULT_NETWORK_TOKEN.symbol}
         </li>
-        {tokenAddresses.map((tokenData) => {
+        {combinedTokens.map((tokenData) => {
           return (
             <TokenRow
               key={tokenData.address}
               address={tokenData.address}
-              type={tokenData.type}
+              status={tokenData.status}
             />
           );
         })}
