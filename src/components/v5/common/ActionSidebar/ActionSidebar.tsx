@@ -6,18 +6,27 @@ import {
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
+import React, {
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { removeQueryParamFromUrl } from '~utils/urls.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
+import FourOFourMessage from '../FourOFourMessage/index.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
 import { actionSidebarAnimation } from './consts.ts';
@@ -43,6 +52,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     motionState,
     expenditure,
     loadingExpenditure,
+    stopPollingForAction,
   } = useGetActionData(transactionId);
 
   const {
@@ -55,17 +65,37 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
     useToggle();
 
+  const timeout = useRef<NodeJS.Timeout>();
+
   useLayoutEffect(() => {
     if (localStorage.getItem(isFullScreen) === 'true') {
       toggleOn();
     }
   }, [toggleOn]);
 
+  useEffect(() => {
+    clearTimeout(timeout.current);
+
+    // If the action has not been found for 15 seconds, then assume it is an incorrect tx param.
+    if (loadingAction) {
+      timeout.current = setTimeout(() => {
+        stopPollingForAction();
+      }, 15000);
+    }
+
+    return () => {
+      clearTimeout(timeout.current);
+    };
+  }, [loadingAction, stopPollingForAction]);
+
   const { formRef, closeSidebarClick } = useCloseSidebarClick();
   const isMobile = useMobile();
 
   useDisableBodyScroll(isActionSidebarOpen);
   useRemoveTxParamOnClose();
+
+  const actionNotFound =
+    transactionId && !action && !loadingAction && !loadingExpenditure;
 
   const getSidebarContent = () => {
     if (loadingAction || loadingExpenditure) {
@@ -81,6 +111,37 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
     if (action) {
       return <CompletedAction action={action} />;
+    }
+
+    if (actionNotFound) {
+      return (
+        <div className="pt-14">
+          <FourOFourMessage
+            description={formatText({
+              id: 'actionSidebar.fourOfour.description',
+            })}
+            links={[
+              {
+                type: 'internal',
+                location: removeQueryParamFromUrl(
+                  window.location.href,
+                  TX_SEARCH_PARAM,
+                ),
+                text: formatText({
+                  id: 'actionSidebar.fourOfour.createNewAction',
+                }),
+              },
+            ]}
+            primaryLinkButton={{
+              onClick: toggleActionSidebarOff,
+              text: formatText({
+                id: 'actionSidebar.fourOfour.activityPageLink',
+              }),
+              location: COLONY_ACTIVITY_ROUTE,
+            }}
+          />
+        </div>
+      );
     }
 
     return (
@@ -130,7 +191,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         {
           'md:max-w-full': isSidebarFullscreen,
           'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
-          'md:max-w-[67.3125rem]': !isSidebarFullscreen && !!transactionId,
+          'md:max-w-[67.3125rem]':
+            !isSidebarFullscreen && !!transactionId && !actionNotFound,
         },
       )}
       ref={registerContainerRef}
