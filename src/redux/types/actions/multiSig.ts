@@ -59,6 +59,19 @@ export type MultiSigActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
+      ActionTypes.MULTISIG_FINALIZE,
+      {
+        colonyAddress: Address;
+        multiSigId: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MULTISIG_FINALIZE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MULTISIG_FINALIZE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
       ActionTypes.ROOT_MULTISIG,
       {
         operationName: RootMultiSigMethodNames;

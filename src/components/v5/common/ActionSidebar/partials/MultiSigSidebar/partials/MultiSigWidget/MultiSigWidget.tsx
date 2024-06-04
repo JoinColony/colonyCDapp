@@ -11,6 +11,7 @@ import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
 
+import FinalizeButton from '../FinalizeButton/FinalizeButton.tsx';
 import RemoveVoteButton from '../RemoveVoteButton/RemoveVoteButton.tsx';
 import Signees from '../Signees/Signees.tsx';
 import VoteButton from '../VoteButton/VoteButton.tsx';
@@ -39,10 +40,28 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     return <div>Loading threshold</div>;
   }
 
+  if (threshold === null) {
+    console.warn('Invalid threshold');
+    return <div>Invalid threshold, assign some stuff</div>;
+  }
+
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
   const userSignature = signatures.find(
     (signature) => signature?.userAddress === user?.walletAddress,
   );
+
+  const isMultiSigFinalizable = signatures.length >= threshold;
+  const isMultiSigExecuted = multiSigData.isExecuted;
+  const isMultiSigExecutedSuccessfully = multiSigData.isSuccess;
+
+  if (isMultiSigExecuted) {
+    return (
+      <div>
+        MultiSig motion completed{' '}
+        {isMultiSigExecutedSuccessfully ? 'successfully' : 'unsuccessfully'}
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -62,6 +81,9 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
           multiSigId={multiSigData.nativeMultiSigId}
           multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
         />
+      )}
+      {isMultiSigFinalizable && (
+        <FinalizeButton multiSigId={multiSigData.nativeMultiSigId} />
       )}
     </div>
   );

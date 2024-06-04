@@ -118,7 +118,7 @@ const getSinglePermissionProofsLocal = async (
 
   if (idx.lt(0)) {
     throw new Error(
-      `${permissionAddress} does not have the permission ${requiredRole} in any parent domain`,
+      `${permissionAddress} does not have the permission ${requiredColonyRole} in any parent domain`,
     );
   }
   return [foundDomainId, idx, permissionAddress];
@@ -155,7 +155,7 @@ const getMultiPermissionProofsLocal = async (
       !childSkillIndex.eq(proofs[0][1])
     ) {
       throw new Error(
-        `${address} has to have all required roles (${requiredRoles}) in the same domain`,
+        `${address} has to have all required roles (${requiredColonyRoles}) in the same domain`,
       );
     }
   }
