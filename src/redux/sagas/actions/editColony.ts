@@ -30,11 +30,6 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils/index.ts';
-import {
-  getExistingTokenAddresses,
-  getModifiedTokenAddresses,
-  updateColonyTokens,
-} from '../utils/updateColonyTokens.ts';
 
 function* editColonyAction({
   payload: {
@@ -45,7 +40,6 @@ function* editColonyAction({
     colonyAvatarImage,
     colonyExternalLinks,
     colonyThumbnail,
-    tokenAddresses,
     annotationMessage,
     colonyObjective,
     customActionTitle,
@@ -145,24 +139,6 @@ function* editColonyAction({
       },
     } = yield waitForTxResult(editColony.channel);
 
-    const existingTokenAddresses = getExistingTokenAddresses(colony);
-    const modifiedTokenAddresses = getModifiedTokenAddresses(
-      colony.nativeToken.tokenAddress,
-      existingTokenAddresses,
-      tokenAddresses,
-    );
-    const haveTokensChanged = !!(
-      tokenAddresses && modifiedTokenAddresses.length
-    );
-
-    if (haveTokensChanged) {
-      yield updateColonyTokens(
-        colony,
-        existingTokenAddresses,
-        modifiedTokenAddresses,
-      );
-    }
-
     /**
      * Save the updated metadata in the database
      */
@@ -188,7 +164,7 @@ function* editColonyAction({
               colonyDisplayName,
               colonyAvatarImage,
               false,
-              haveTokensChanged,
+              false,
               metadata?.description !== colonyDescription,
               !isEqual(metadata?.externalLinks, colonyExternalLinks),
               colonyObjective === undefined
