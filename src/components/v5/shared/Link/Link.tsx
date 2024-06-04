@@ -45,6 +45,7 @@ const Link: FC<LinkProps> = ({
         className,
         'transition-all duration-normal md:hover:text-blue-400',
       )}
+      onClick={onClick}
     >
       {linkText || children}
     </LinkComponent>

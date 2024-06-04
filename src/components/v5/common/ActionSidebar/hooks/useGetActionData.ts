@@ -24,8 +24,13 @@ import useGetColonyAction from './useGetColonyAction.ts';
 import { useGetExpenditureData } from './useGetExpenditureData.ts';
 
 const useGetActionData = (transactionId: string | undefined) => {
-  const { action, loadingAction, networkMotionState, motionState } =
-    useGetColonyAction(transactionId);
+  const {
+    action,
+    loadingAction,
+    networkMotionState,
+    motionState,
+    stopPollingForAction,
+  } = useGetColonyAction(transactionId);
   const { expenditure, loadingExpenditure } = useGetExpenditureData(
     action?.expenditureId,
   );
@@ -315,6 +320,7 @@ const useGetActionData = (transactionId: string | undefined) => {
     motionState,
     expenditure,
     loadingExpenditure,
+    stopPollingForAction,
   };
 };
 
