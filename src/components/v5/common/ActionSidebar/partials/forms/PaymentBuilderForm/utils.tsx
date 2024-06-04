@@ -102,7 +102,7 @@ export const allTokensAmountValidation = ({
       const tokenDecimals = getTokenDecimalsWithFallback(token?.decimals);
 
       const { totalToPay } = calculateFee(
-        payment,
+        amount,
         networkInverseFee ?? '0',
         tokenDecimals,
       );
