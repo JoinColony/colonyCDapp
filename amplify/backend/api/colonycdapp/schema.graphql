@@ -2929,6 +2929,19 @@ type ColonyAction @model @searchable {
   Applicable to `EDIT_EXPENDITURE` action only
   """
   expenditureSlotChanges: ExpenditureSlotChanges
+  """
+  Approved tokens impacted by the action (used for manage tokens)
+  """
+  approvedTokenChanges: ApprovedTokenChanges
+}
+
+"""
+Token IDs
+"""
+type ApprovedTokenChanges {
+  added: [ID]
+  removed: [ID]
+  existing: [ID]
 }
 
 type ExpenditureSlotChanges {
