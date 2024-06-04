@@ -153,9 +153,7 @@ const BalanceTable: FC = () => {
           onClick: () => {
             toggleActionSidebarOn({
               [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
-              amount: {
-                tokenAddress: selectedTokenData?.tokenAddress,
-              },
+              tokenAddress: selectedTokenData?.tokenAddress,
             });
           },
           label: formatMessage(MSG.labelTransferFunds),
@@ -166,9 +164,7 @@ const BalanceTable: FC = () => {
           onClick: () => {
             toggleActionSidebarOn({
               [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-              amount: {
-                tokenAddress: selectedTokenData?.tokenAddress,
-              },
+              tokenAddress: selectedTokenData?.tokenAddress,
             });
           },
           label: formatMessage(MSG.labelMakePayment),
