@@ -275,6 +275,7 @@ fragment ColonyMultiSig on ColonyMultiSig {
   requiredPermissions
   transactionHash
   isExecuted
+  isSuccess
   isRejected
   isDecision
   signatures {
