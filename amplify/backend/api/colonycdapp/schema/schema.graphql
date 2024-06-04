@@ -2639,6 +2639,10 @@ type ColonyMultiSig @model {
   """
   isExecuted: Boolean!
   """
+  Whether the multiSig was executed successfully or not
+  """
+  isSuccess: Boolean
+  """
   Whether the multiSig was cancelled or not
   """
   isRejected: Boolean!
@@ -2656,6 +2660,10 @@ type ColonyMultiSig @model {
     )
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
+  """
+  The timestamp when the motion was finalized
+  """
+  executedAt: AWSDateTime
 }
 """
 Represents a Motion within a Colony
