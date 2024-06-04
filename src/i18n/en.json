@@ -1579,6 +1579,7 @@
     "actionSidebar.managePermissions.permissionsModal.payer.heading": "All of the actions within Mod, plus:",
     "actionSidebar.managePermissions.permissionsModal.owner.heading": "All of the actions within Admin, plus:",
     "actionSidebar.managePermissions.authority.disbaledTooltip": "The Mod permission does not support multi-sig authority.",
+    "actionSidebar.manageTokens.table.title": "Approved tokens",
     "colonyAvatar.colonyImage.alt": "Colony logo",
     "colonyAvatar.chainImage.alt": "Chain logo",
     "colonyName": "Colony name",

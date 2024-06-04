@@ -128,6 +128,8 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
     case actionType.includes(ColonyActionType.RemoveVerifiedMembers):
       return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
+    case actionType.includes(ColonyActionType.ManageTokens):
+      return [ActionTitleMessageKeys.Initiator];
     default:
       return [];
   }
