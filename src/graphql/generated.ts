@@ -10374,7 +10374,7 @@ export const ApprovedTokenChangesFragmentDoc = gql`
     fragment ApprovedTokenChanges on ApprovedTokenChanges {
   added
   removed
-  existing
+  unaffected
 }
     `;
 export const ColonyActionFragmentDoc = gql`
