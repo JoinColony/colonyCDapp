@@ -55,6 +55,7 @@ export interface GroupedTransactionProps {
   isContentOpened: boolean;
   onToggleExpand?: (id?: string) => void;
   hideSummary?: boolean;
+  isClickable?: boolean;
 }
 
 export interface TransactionStatusProps {

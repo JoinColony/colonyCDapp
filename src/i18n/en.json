@@ -530,6 +530,8 @@
     "metatransaction.group.enableExtensions.description": "Enable Colony Extension",
     "metatransaction.group.unistallExtensions.title": "Uninstall Colony Extension",
     "metatransaction.group.unistallExtensions.description": "Uninstall Colony Extension",
+    "metatransaction.ColonyClient.installExtension.title": "Install Colony Extension",
+    "metatransaction.ColonyClient.installExtension.description": "Install Colony Extension",
     "metatransaction.ColonyClient.uninstallExtension.title": "Uninstall Colony Extension",
     "metatransaction.ColonyClient.uninstallExtension.description": "Uninstall Colony Extension",
     "metatransaction.ColonyClient.deprecateExtension.title": "Deprecate Colony Extension",
