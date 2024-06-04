@@ -362,6 +362,8 @@ export type ColonyAction = {
   annotation?: Maybe<Annotation>;
   /** The id of the associated annotation, if there is one */
   annotationId?: Maybe<Scalars['ID']>;
+  /** Approved tokens impacted by the action (used for manage tokens) */
+  approvedTokenChanges?: Maybe<ApprovedTokenChanges>;
   /** The block number where the action was recorded */
   blockNumber: Scalars['Int'];
   /** The Colony that the action belongs to */
@@ -1247,6 +1249,7 @@ export type CreateAnnotationInput = {
 export type CreateColonyActionInput = {
   amount?: InputMaybe<Scalars['String']>;
   annotationId?: InputMaybe<Scalars['ID']>;
+  approvedTokenChanges?: InputMaybe<ApprovedTokenChangesInput>;
   blockNumber: Scalars['Int'];
   colonyActionsId?: InputMaybe<Scalars['ID']>;
   colonyDecisionId?: InputMaybe<Scalars['ID']>;
@@ -8226,6 +8229,7 @@ export type UpdateAnnotationInput = {
 export type UpdateColonyActionInput = {
   amount?: InputMaybe<Scalars['String']>;
   annotationId?: InputMaybe<Scalars['ID']>;
+  approvedTokenChanges?: InputMaybe<ApprovedTokenChangesInput>;
   blockNumber?: InputMaybe<Scalars['Int']>;
   colonyActionsId?: InputMaybe<Scalars['ID']>;
   colonyDecisionId?: InputMaybe<Scalars['ID']>;
@@ -10366,6 +10370,13 @@ export const SafeTransactionFragmentDoc = gql`
 }
     ${SafeFragmentDoc}
 ${SafeTransactionDataFragmentDoc}`;
+export const ApprovedTokenChangesFragmentDoc = gql`
+    fragment ApprovedTokenChanges on ApprovedTokenChanges {
+  added
+  removed
+  existing
+}
+    `;
 export const ColonyActionFragmentDoc = gql`
     fragment ColonyAction on ColonyAction {
   transactionHash: id
@@ -10483,6 +10494,9 @@ export const ColonyActionFragmentDoc = gql`
   members
   rootHash
   expenditureId
+  approvedTokenChanges {
+    ...ApprovedTokenChanges
+  }
 }
     ${UserDisplayFragmentDoc}
 ${PublicColonyFragmentDoc}
@@ -10497,7 +10511,8 @@ ${ColonyMetadataFragmentDoc}
 ${DomainMetadataFragmentDoc}
 ${AnnotationFragmentDoc}
 ${ColonyDecisionFragmentDoc}
-${SafeTransactionFragmentDoc}`;
+${SafeTransactionFragmentDoc}
+${ApprovedTokenChangesFragmentDoc}`;
 export const UserStakeFragmentDoc = gql`
     fragment UserStake on UserStake {
   id
