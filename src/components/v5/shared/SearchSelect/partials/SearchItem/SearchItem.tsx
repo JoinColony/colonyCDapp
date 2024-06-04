@@ -81,7 +81,7 @@ const SearchItem: FC<SearchItemProps> = ({
                 <div className="relative flex w-full items-center">
                   {color && !isLabelVisible && (
                     <div
-                      className={clsx(teamColor, 'shrink-0 rounded', {
+                      className={clsx(teamColor, 'mx-auto shrink-0 rounded', {
                         'h-[1.125rem] w-[1.125rem]': !isMobile,
                         'h-7 w-7': isMobile,
                       })}
