@@ -2976,7 +2976,7 @@ Token IDs
 type ApprovedTokenChanges {
   added: [ID]
   removed: [ID]
-  existing: [ID]
+  unaffected: [ID]
 }
 
 type ExpenditureSlotChanges {
