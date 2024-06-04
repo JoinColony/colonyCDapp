@@ -128,7 +128,7 @@ fragment ColonyAction on ColonyAction {
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
   added
   removed
-  existing
+  unaffected
 }
 
 fragment Annotation on Annotation {
