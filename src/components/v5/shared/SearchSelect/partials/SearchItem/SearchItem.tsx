@@ -28,7 +28,7 @@ const SearchItem: FC<SearchItemProps> = ({
     <ul
       className={clsx({
         'w-full': isLabelVisible,
-        '-mx-2 flex flex-wrap items-center gap-y-4 sm:w-[8.75rem]':
+        '-mx-2 flex flex-wrap items-center gap-y-6 sm:w-[8.75rem]':
           !isLabelVisible,
         'sm:w-[12.75rem]': !isLabelVisible && isMobile,
       })}
@@ -64,13 +64,13 @@ const SearchItem: FC<SearchItemProps> = ({
               <button
                 type="button"
                 className={clsx(
-                  'flex w-full items-center rounded px-2 py-1.5 text-left text-md transition-colors',
+                  'flex w-full items-center rounded px-2 text-left text-md transition-colors',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
                     'pointer-events-none gap-1 text-gray-400': isDisabled,
-
                     'justify-center': !isLabelVisible,
+                    'py-1.5': isLabelVisible,
                   },
                 )}
                 name={value.toString()}
@@ -81,9 +81,9 @@ const SearchItem: FC<SearchItemProps> = ({
                 <div className="relative flex w-full items-center">
                   {color && !isLabelVisible && (
                     <div
-                      className={clsx(teamColor, 'mx-auto shrink-0 rounded', {
+                      className={clsx(teamColor, 'mx-auto rounded sm:mx-0', {
                         'h-[1.125rem] w-[1.125rem]': !isMobile,
-                        'h-7 w-7': isMobile,
+                        'aspect-square h-auto w-7': isMobile,
                       })}
                     />
                   )}
