@@ -35,6 +35,7 @@ const ConfirmTransactions = ({
           transactionGroup={transactionGroup as TransactionType[]}
           isContentOpened
           hideSummary
+          isClickable={false}
         />
         {transactionGroupStatus === TransactionStatus.Succeeded && (
           <div className="mt-8 text-center text-sm text-gray-600">

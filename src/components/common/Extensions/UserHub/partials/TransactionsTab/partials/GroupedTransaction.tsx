@@ -44,6 +44,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   isContentOpened,
   onToggleExpand,
   hideSummary = false,
+  isClickable = true,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -54,6 +55,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   const values = getGroupValues<TransactionType>(transactionGroup);
 
   const canLinkToAction =
+    isClickable &&
     values.group?.key &&
     !GROUP_KEYS_WHICH_CANNOT_LINK.includes(
       values.group.key as TRANSACTION_METHODS,
@@ -131,14 +133,16 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               <div className="flex w-full items-center justify-between gap-4">
                 <div className="flex flex-col items-start">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-1">{value}</h4>
+                    <h4 className="truncate text-left text-1 sm:w-[190px]">
+                      {value}
+                    </h4>
                     {createdAt && (
                       <span className="mt-0.5 block text-xs text-gray-400">
                         {createdAt}
                       </span>
                     )}
                   </div>
-                  <p className="text-left text-xs text-gray-600 break-word">
+                  <p className="truncate text-left text-xs text-gray-600 sm:w-[250px]">
                     <FormattedMessage
                       {...defaultTransactionGroupMessageDescriptorDescriptionId}
                       {...values.group?.description}
@@ -190,9 +194,9 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               exit="hidden"
               variants={accordionAnimation}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="w-full overflow-hidden pt-2 text-md text-gray-600"
+              className="w-full overflow-hidden text-md text-gray-600"
             >
-              <ul className="sm:px-6">
+              <ul className="pt-2 sm:px-6">
                 {transactionGroup.map((transaction, idx) => (
                   <GroupedTransactionContent
                     key={transaction.id}
