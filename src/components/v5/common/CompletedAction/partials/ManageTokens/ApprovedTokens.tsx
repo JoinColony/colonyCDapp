@@ -14,9 +14,7 @@ interface ApprovedTokensProps {
 }
 
 const ApprovedTokens = ({ approvedTokenChanges }: ApprovedTokensProps) => {
-  const { added, removed, existing } = approvedTokenChanges || {};
-
-  const unaffected = existing?.filter((address) => !removed?.includes(address));
+  const { added, removed, unaffected } = approvedTokenChanges || {};
 
   const convertArrayToObject = (
     tokenAddresses: (string | null)[] | null | undefined,
