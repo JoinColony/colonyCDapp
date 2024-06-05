@@ -22,20 +22,6 @@ export const useMintToken = (
     name: DECISION_METHOD_FIELD_NAME,
   });
 
-  const getActionToDispatch = () => {
-    switch (decisionMethod) {
-      case DecisionMethod.Permissions:
-        return ActionTypes.ACTION_MINT_TOKENS;
-      case DecisionMethod.Reputation:
-        return ActionTypes.ROOT_MOTION;
-      case DecisionMethod.MultiSig:
-        return ActionTypes.ROOT_MULTISIG;
-      default:
-        // @TODO not returning anything here produces a TS error
-        return ActionTypes.ACTION_MINT_TOKENS;
-    }
-  };
-
   useActionFormBaseHook({
     validationSchema,
     defaultValues: useMemo<DeepPartial<MintTokenFormValues>>(
@@ -45,7 +31,10 @@ export const useMintToken = (
       }),
       [colony],
     ),
-    actionType: getActionToDispatch(),
+    actionType:
+      decisionMethod === DecisionMethod.Permissions
+        ? ActionTypes.ACTION_MINT_TOKENS
+        : ActionTypes.ROOT_MOTION,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

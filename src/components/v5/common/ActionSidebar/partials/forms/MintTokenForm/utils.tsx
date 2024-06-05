@@ -1,14 +1,11 @@
-import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
 import { RootMotionMethodNames } from '~redux/index.ts';
-import { RootMultiSigMethodNames } from '~redux/types/actions/multiSig.ts';
 import { DecisionMethod } from '~types/actions.ts';
-import { ColonyActionType, type Colony } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
-import { findDomainByNativeId } from '~utils/domains.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
@@ -42,24 +39,17 @@ export const getMintTokenPayload = (
     customActionTitle: title,
   };
 
-  if (decisionMethod === DecisionMethod.Reputation) {
+  if (
+    decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.MultiSig
+  ) {
     return {
       ...commonPayload,
       operationName: RootMotionMethodNames.MintTokens,
-      motionParams: [WEIAmount],
-    };
-  }
-
-  if (decisionMethod === DecisionMethod.MultiSig) {
-    return {
-      ...commonPayload,
-      operationName: RootMultiSigMethodNames.MintTokens,
-      domain: findDomainByNativeId(Id.RootDomain, colony),
       colonyRoles: extractColonyRoles(colony.roles),
-      requiredRole: getMultiSigRequiredRole(
-        ColonyActionType.MintTokensMultisig,
-      ),
-      multiSigParams: [WEIAmount],
+      colonyDomains: extractColonyDomains(colony.domains),
+      motionParams: [WEIAmount],
+      isMultiSig: decisionMethod === DecisionMethod.MultiSig,
     };
   }
 
