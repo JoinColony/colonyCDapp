@@ -1239,7 +1239,6 @@ const colonyContext = {
         '0x35DA1076bE33BCdBC4525f8F9e903D542507318F',
         '0x37ef06B5046a2B38F0a6cA9Cd8bDD96f17DC6A71',
       ],
-      modifiedTokenAddresses: null,
       objective: {
         __typename: 'ColonyObjective',
         title: 'Revolutionize interstellar delivery services',

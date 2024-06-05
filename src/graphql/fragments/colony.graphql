@@ -100,10 +100,6 @@ fragment ColonyMetadata on ColonyMetadata {
   thumbnail
   isWhitelistActivated
   whitelistedAddresses
-  modifiedTokenAddresses {
-    added
-    removed
-  }
   objective {
     ...ColonyObjective
   }
