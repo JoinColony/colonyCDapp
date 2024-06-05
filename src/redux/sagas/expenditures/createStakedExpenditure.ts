@@ -47,7 +47,7 @@ function* createStakedExpenditure({
     networkInverseFee,
     annotationMessage,
     distributionType,
-    activeAmount = '0',
+    activeBalance = '0',
     tokenAddress,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
@@ -90,8 +90,8 @@ function* createStakedExpenditure({
   );
 
   try {
-    if (stakeAmount.gt(activeAmount)) {
-      const missingActiveTokens = stakeAmount.sub(activeAmount);
+    if (stakeAmount.gt(activeBalance)) {
+      const missingActiveTokens = stakeAmount.sub(activeBalance);
 
       yield createGroupTransaction(approve, batchKey, meta, {
         context: ClientType.TokenClient,
