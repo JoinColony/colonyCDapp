@@ -94,6 +94,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
 
   const getSidebarWidgetContent = () => {
     switch (actionType) {
+      case ColonyActionType.AddVerifiedMembersMotion:
+      case ColonyActionType.RemoveVerifiedMembersMotion:
       case ColonyActionType.PaymentMotion:
       case ColonyActionType.MintTokensMotion:
       case ColonyActionType.MoveFundsMotion:
