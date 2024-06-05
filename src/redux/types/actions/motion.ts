@@ -180,7 +180,6 @@ export type MotionActionTypes =
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
-        tokenAddresses?: Address[];
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
