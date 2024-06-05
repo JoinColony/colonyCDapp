@@ -227,7 +227,6 @@ function* editColonyMotion({
                 oldSafes: colony.metadata.safes,
               },
             ],
-            modifiedTokenAddresses: null,
           },
         },
       });
