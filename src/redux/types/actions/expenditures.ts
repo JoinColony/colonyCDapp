@@ -140,7 +140,7 @@ export type ExpendituresActionTypes =
         networkInverseFee: string;
         annotationMessage?: string;
         distributionType?: SplitPaymentDistributionType;
-        activeAmount: string;
+        activeAmount: string | undefined;
         tokenAddress: string;
       },
       MetaWithSetter<object>
