@@ -1,5 +1,6 @@
-import { ClientType, Id, getChildIndex } from '@colony/colony-js';
+import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
+import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
@@ -20,7 +21,11 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
+  getChildIndexLocal,
 } from '../utils/index.ts';
+
+import { REQUIRED_MULTISIG_ROLES_BY_OPERATION } from './constants.ts';
 
 function* createRootMotionSaga({
   payload: {
@@ -30,6 +35,9 @@ function* createRootMotionSaga({
     motionParams,
     annotationMessage,
     customActionTitle,
+    colonyRoles,
+    colonyDomains,
+    isMultiSig = false,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -47,28 +55,11 @@ function* createRootMotionSaga({
       colonyAddress,
     );
 
-    const childSkillIndex = yield call(
-      getChildIndex,
-      colonyClient.networkClient,
-      colonyClient,
-      Id.RootDomain,
-      Id.RootDomain,
-    );
+    const userAddress = yield colonyClient.signer.getAddress();
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       operationName,
       motionParams,
-    );
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
     );
 
     txChannel = yield call(getTxChannel, metaId);
@@ -82,28 +73,95 @@ function* createRootMotionSaga({
         'annotateRootMotion',
       ]);
 
-    // create transactions
-    yield fork(createTransaction, createMotion.id, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
+    // eslint-disable-next-line no-inner-declarations
+    function* getCreateMotionParams() {
+      if (isMultiSig) {
+        const requiredRoles =
+          REQUIRED_MULTISIG_ROLES_BY_OPERATION[operationName];
+
+        const [, childSkillIndex] = yield call(
+          getPermissionProofsLocal,
+          colonyClient.networkClient,
+          colonyRoles,
+          colonyDomains,
+          Id.RootDomain,
+          requiredRoles,
+          userAddress,
+          true,
+        );
+
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: 'createMotion',
+          identifier: colonyAddress,
+          params: [
+            Id.RootDomain,
+            childSkillIndex,
+            [AddressZero],
+            [encodedAction],
+          ],
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
+      const rootDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(Id.RootDomain),
+      );
+
+      if (!rootDomain) {
+        throw new Error('Cannot find rootDomain in colony domains');
+      }
+
+      const childSkillIndex = yield call(
+        getChildIndexLocal,
+        colonyClient.networkClient,
+        rootDomain?.nativeId,
+        rootDomain.nativeSkillId,
+        rootDomain.nativeId,
+        rootDomain.nativeSkillId,
+      );
+      const { skillId } = yield call(
+        [colonyClient, colonyClient.getDomain],
         Id.RootDomain,
-        childSkillIndex,
+      );
+
+      const { key, value, branchMask, siblings } = yield call(
+        colonyClient.getReputation,
+        skillId,
         AddressZero,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
-      ready: false,
-    });
+      );
+
+      return {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          Id.RootDomain,
+          childSkillIndex,
+          AddressZero,
+          encodedAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 0,
+        },
+        ready: false,
+      };
+    }
+
+    const transactionParams = yield getCreateMotionParams();
+    // create transactions
+    yield fork(createTransaction, createMotion.id, transactionParams);
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateRootMotion.id, {
