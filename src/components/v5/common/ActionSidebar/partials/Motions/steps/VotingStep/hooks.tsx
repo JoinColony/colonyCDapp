@@ -16,7 +16,6 @@ import { type VoterRecord } from '~types/graphql.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
 
 import { type DescriptionListItem } from './partials/DescriptionList/types.ts';
 import { type VotingFormValues, VotingRewardsSections } from './types.ts';
@@ -68,7 +67,7 @@ export const useVotingStep = ({
   transactionId,
 }: {
   actionData: MotionAction;
-  startPollingAction: (pollingInterval: number) => void;
+  startPollingAction: () => void;
   stopPollingAction: () => void;
   transactionId: string;
 }) => {
@@ -133,7 +132,7 @@ export const useVotingStep = ({
     setLocalStorageVoteValue(transactionId, vote.vote);
     setHasUserVoted(true);
     reset();
-    startPollingAction(getSafePollingInterval());
+    startPollingAction();
   };
 
   const validationSchema = object()

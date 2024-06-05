@@ -27,6 +27,7 @@ import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
 import FourOFourMessage from '../FourOFourMessage/index.ts';
+import { FourOFourMessageLinkType } from '../FourOFourMessage/types.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
 import { actionSidebarAnimation } from './consts.ts';
@@ -47,11 +48,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 }) => {
   const {
     action,
+    isInvalidTransactionHash,
     loadingAction,
     isMotion,
     motionState,
     expenditure,
     loadingExpenditure,
+    startPollingForAction,
     stopPollingForAction,
   } = useGetActionData(transactionId);
 
@@ -76,11 +79,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   useEffect(() => {
     clearTimeout(timeout.current);
 
-    // If the action has not been found for 15 seconds, then assume it is an incorrect tx param.
+    // If the action has not been found for 20 seconds, then assume transaction doesn't exist.
     if (loadingAction) {
       timeout.current = setTimeout(() => {
         stopPollingForAction();
-      }, 15000);
+      }, 20000);
     }
 
     return () => {
@@ -121,8 +124,19 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               id: 'actionSidebar.fourOfour.description',
             })}
             links={[
+              ...(isInvalidTransactionHash
+                ? []
+                : [
+                    {
+                      type: FourOFourMessageLinkType.Internal,
+                      location: COLONY_ACTIVITY_ROUTE,
+                      text: formatText({
+                        id: 'actionSidebar.fourOfour.activityPageLink',
+                      }),
+                    },
+                  ]),
               {
-                type: 'internal',
+                type: FourOFourMessageLinkType.Internal,
                 location: removeQueryParamFromUrl(
                   window.location.href,
                   TX_SEARCH_PARAM,
@@ -132,13 +146,22 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                 }),
               },
             ]}
-            primaryLinkButton={{
-              onClick: toggleActionSidebarOff,
-              text: formatText({
-                id: 'actionSidebar.fourOfour.activityPageLink',
-              }),
-              location: COLONY_ACTIVITY_ROUTE,
-            }}
+            primaryLinkButton={
+              isInvalidTransactionHash
+                ? {
+                    onClick: toggleActionSidebarOff,
+                    text: formatText({
+                      id: 'actionSidebar.fourOfour.activityPageLink',
+                    }),
+                    location: COLONY_ACTIVITY_ROUTE,
+                  }
+                : {
+                    onClick: startPollingForAction,
+                    text: formatText({
+                      id: 'button.retry',
+                    }),
+                  }
+            }
           />
         </div>
       );

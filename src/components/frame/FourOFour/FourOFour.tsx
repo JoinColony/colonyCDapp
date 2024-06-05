@@ -11,6 +11,7 @@ import {
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
+import { FourOFourMessageLinkType } from '~v5/common/FourOFourMessage/types.ts';
 
 const displayName = 'frame.FourOFour';
 
@@ -46,18 +47,18 @@ const FourOFour = () => (
         {
           location: COLONY_DOCS,
           text: formatText(MSG.docsLink),
-          type: 'external',
+          type: FourOFourMessageLinkType.External,
         },
         {
           location: `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`,
           text: formatText(MSG.userAccountLink),
-          type: 'internal',
+          type: FourOFourMessageLinkType.Internal,
         },
         // @BETA disabled for now
         // {
         //   location: CREATE_COLONY_ROUTE_BASE,
         //   text: formatText(MSG.createColonyLink),
-        //   type: 'internal',
+        //   type: FourOFourMessageLinkType.Internal,
         // },
       ]}
       primaryLinkButton={{
