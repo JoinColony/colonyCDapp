@@ -4,7 +4,7 @@ import {
   type TokenLockingClient,
   getChildIndex,
 } from '@colony/colony-js';
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put, all } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
@@ -164,11 +164,22 @@ function* createStakedExpenditure({
       );
     }
 
-    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
+    yield all(
+      [
+        approveStake,
+        makeExpenditure,
+        setExpenditureValues,
+        setExpenditureStaged,
+        annotateMakeStagedExpenditure,
+      ].map((channelDefinition) =>
+        takeFrom(channelDefinition.channel, ActionTypes.TRANSACTION_CREATED),
+      ),
+    );
+
     yield initiateTransaction({ id: approveStake.id });
     yield waitForTxResult(approveStake.channel);
 
-    // Find a chill skill index as a proof the extension has permissions in the selected domain
+    // Find a child skill index as a proof the extension has permissions in the selected domain
     const childSkillIndex = yield getChildIndex(
       colonyClient.networkClient,
       colonyClient,
