@@ -1,4 +1,6 @@
 import { ADDRESS_ZERO } from '~constants/index.ts';
+import { RootMotionMethodNames } from '~redux';
+import { getManageTokensOperation } from '~redux/sagas/utils/metadataDelta.ts';
 import { type Colony } from '~types/graphql.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { createAddress } from '~utils/web3/index.ts';
@@ -28,7 +30,13 @@ export const getManageTokensPayload = (
     ),
   ];
 
+  const motionParams = [
+    JSON.stringify(getManageTokensOperation(tokenAddresses)),
+  ];
+
   return {
+    operationName: RootMotionMethodNames.EditColonyByDelta,
+    motionParams,
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
     tokenAddresses,

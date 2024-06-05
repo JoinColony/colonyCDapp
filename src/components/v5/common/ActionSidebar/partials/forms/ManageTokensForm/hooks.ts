@@ -51,7 +51,7 @@ export const useManageTokens = (
     actionType:
       decisionMethod === DecisionMethod.Permissions
         ? ActionTypes.ACTION_MANAGE_TOKENS
-        : ActionTypes.MOTION_EDIT_COLONY,
+        : ActionTypes.ROOT_MOTION,
     defaultValues: useMemo(
       () => ({
         createdIn: Id.RootDomain,
