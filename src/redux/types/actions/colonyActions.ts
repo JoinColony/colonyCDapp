@@ -98,7 +98,6 @@ export type ColonyActionsActionTypes =
         colonyExternalLinks?: ExternalLink[] | null;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
-        tokenAddresses?: Address[];
         annotationMessage?: string;
         colonyObjective?: ColonyObjective;
       },
