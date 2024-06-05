@@ -1,5 +1,5 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
@@ -38,8 +38,8 @@ const useGetColonyAction = (transactionHash?: string) => {
   const {
     data: actionData,
     loading: loadingAction,
-    startPolling: startPollingForAction,
-    stopPolling: stopPollingForAction,
+    startPolling,
+    stopPolling,
     refetch: refetchAction,
   } = useGetColonyActionQuery({
     skip: isInvalidTx,
@@ -59,10 +59,21 @@ const useGetColonyAction = (transactionHash?: string) => {
     }
   };
 
+  const startPollingForAction = useCallback(
+    (interval: number = pollInterval) => {
+      startPolling(interval);
+      setIsPolling(true);
+    },
+    [pollInterval, startPolling],
+  );
+
+  const stopPollingForAction = useCallback(() => {
+    stopPolling();
+    setIsPolling(false);
+  }, [stopPolling]);
+
   useEffect(() => {
     const shouldPool = !isInvalidTx && !action;
-
-    setIsPolling(shouldPool);
 
     if (!shouldPool) {
       if (action) {
