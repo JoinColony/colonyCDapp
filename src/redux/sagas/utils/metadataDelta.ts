@@ -16,7 +16,7 @@ type RemoveVerifiedMembersOperation = {
 
 type ManageTokensOperation = {
   type: MetadataDeltaActionType.MANAGE_TOKENS;
-  payload: string[];
+  payload: string[] | unknown[];
 };
 
 export type MetadataDeltaOperation =
@@ -43,7 +43,7 @@ export const getRemoveVerifiedMembersOperation = (
 };
 
 export const getManageTokensOperation = (
-  tokenAddresses: string[],
+  tokenAddresses: string[] | unknown[],
 ): ManageTokensOperation => {
   return {
     type: MetadataDeltaActionType.MANAGE_TOKENS,
