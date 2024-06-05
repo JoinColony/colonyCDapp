@@ -35,6 +35,7 @@ export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
+  EditColonyByDelta = 'editColonyByDelta',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
