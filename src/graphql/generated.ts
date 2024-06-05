@@ -567,6 +567,8 @@ export enum ColonyActionType {
   MakeArbitraryTransactionsMotion = 'MAKE_ARBITRARY_TRANSACTIONS_MOTION',
   /** An action related to adding / removing approved colony tokens */
   ManageTokens = 'MANAGE_TOKENS',
+  /** An action related to adding / removing approved colony tokens */
+  ManageTokensMotion = 'MANAGE_TOKENS_MOTION',
   /** An action related to minting tokens within a Colony */
   MintTokens = 'MINT_TOKENS',
   /** An action related to minting tokens within a Colony via a motion */

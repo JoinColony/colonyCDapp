@@ -864,6 +864,10 @@ enum ColonyActionType {
   An action related to adding / removing approved colony tokens
   """
   MANAGE_TOKENS
+  """
+  An action related to adding / removing approved colony tokens
+  """
+  MANAGE_TOKENS_MOTION
 }
 
 """
