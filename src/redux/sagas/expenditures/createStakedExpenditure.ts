@@ -90,35 +90,37 @@ function* createStakedExpenditure({
   );
 
   try {
-    const missingActiveTokens = stakeAmount.sub(activeAmount);
+    if (stakeAmount.gt(activeAmount)) {
+      const missingActiveTokens = stakeAmount.sub(activeAmount);
 
-    yield createGroupTransaction(approve, batchKey, meta, {
-      context: ClientType.TokenClient,
-      methodName: 'approve',
-      identifier: tokenAddress,
-      params: [tokenLockingClient.address, missingActiveTokens],
-      ready: false,
-    });
+      yield createGroupTransaction(approve, batchKey, meta, {
+        context: ClientType.TokenClient,
+        methodName: 'approve',
+        identifier: tokenAddress,
+        params: [tokenLockingClient.address, missingActiveTokens],
+        ready: false,
+      });
 
-    yield createGroupTransaction(deposit, batchKey, meta, {
-      context: ClientType.TokenLockingClient,
-      methodName: 'deposit(address,uint256,bool)',
-      identifier: colonyAddress,
-      params: [tokenAddress, missingActiveTokens, false],
-      ready: false,
-    });
+      yield createGroupTransaction(deposit, batchKey, meta, {
+        context: ClientType.TokenLockingClient,
+        methodName: 'deposit(address,uint256,bool)',
+        identifier: colonyAddress,
+        params: [tokenAddress, missingActiveTokens, false],
+        ready: false,
+      });
 
-    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
+      yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
+      yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: approve.id });
+      yield initiateTransaction({ id: approve.id });
 
-    yield waitForTxResult(approve.channel);
+      yield waitForTxResult(approve.channel);
 
-    yield initiateTransaction({ id: deposit.id });
+      yield initiateTransaction({ id: deposit.id });
 
-    yield waitForTxResult(deposit.channel);
+      yield waitForTxResult(deposit.channel);
+    }
 
     yield createGroupTransaction(approveStake, batchKey, meta, {
       context: ClientType.ColonyClient,

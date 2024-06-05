@@ -1,8 +1,10 @@
 import { Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
 import { StreamingPaymentEndCondition, useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
@@ -42,6 +44,8 @@ const TmpAdvancedPayments = () => {
   const { votingReputationAddress, stagedExpenditureAddress } =
     useEnabledExtensions();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
+
+  const { tokenBalanceData } = useUserTokenBalanceContext();
 
   const [tokenAddress, setTokenAddress] = useState(
     colony.nativeToken.tokenAddress,
@@ -281,9 +285,11 @@ const TmpAdvancedPayments = () => {
       colonyAddress: colony.colonyAddress,
       createdInDomain: rootDomain,
       fundFromDomainId: 1,
-      stakeAmount,
+      stakeAmount: BigNumber.from(stakeAmount),
       stakedExpenditureAddress,
       networkInverseFee,
+      tokenAddress,
+      activeAmount: tokenBalanceData?.activeBalance ?? '0',
     };
 
     await createStakedExpenditure(payload);
