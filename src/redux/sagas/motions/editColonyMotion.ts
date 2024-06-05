@@ -212,7 +212,6 @@ function* editColonyMotion({
                   colonyAvatarImage === undefined
                     ? false
                     : colonyAvatarImage !== colony.metadata.avatar,
-                haveTokensChanged: false,
                 hasDescriptionChanged:
                   metadata?.description !== colonyDescription,
                 haveExternalLinksChanged: !isEqual(
