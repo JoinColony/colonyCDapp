@@ -88,6 +88,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateExpenditure:
         return <PaymentBuilder action={action} />;
       case ColonyActionType.ManageTokens:
+      case ColonyActionType.ManageTokensMotion:
         return <ManageTokens action={action} />;
       default:
         console.warn('Unsupported action display', action);
@@ -111,6 +112,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEditMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
+      case ColonyActionType.ManageTokensMotion:
         // @NOTE: Enabling those 2 above temporarily
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:
