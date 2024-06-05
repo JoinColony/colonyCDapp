@@ -18,12 +18,9 @@ const ApprovedTokens = ({ approvedTokenChanges }: ApprovedTokensProps) => {
   const { added, removed, unaffected } = approvedTokenChanges || {};
 
   const mapAddressesToStatus = (
-    tokenAddresses: string[] | null | undefined,
+    tokenAddresses: string[],
     status: TokenStatus,
   ) => {
-    if (!tokenAddresses || tokenAddresses.length === 0) {
-      return [];
-    }
     return tokenAddresses.map((address) => ({ address, status }));
   };
 
