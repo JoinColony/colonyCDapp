@@ -45,6 +45,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   onToggleExpand,
   hideSummary = false,
   isClickable = true,
+  isCancelable = true,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
@@ -204,6 +205,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                     idx={idx}
                     transaction={transaction}
                     selected={idx === selectedTransactionIdx}
+                    isCancelable={isCancelable}
                   />
                 ))}
               </ul>

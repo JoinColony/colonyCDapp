@@ -33,6 +33,7 @@ const MSG = defineMessages({
 
 const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   idx,
+  isCancelable = true,
   selected,
   transaction: {
     createdAt,
@@ -92,7 +93,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
           />
         </h4>
 
-        {canBeSigned ? (
+        {isCancelable && canBeSigned ? (
           <CancelTransaction
             isShowingCancelConfirmation={isShowingCancelConfirmation}
             handleCancelTransaction={handleCancelTransaction}
@@ -116,11 +117,13 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
                 >
                   <FormattedMessage id="retry" />
                 </button>
-                <CancelTransaction
-                  isShowingCancelConfirmation={isShowingCancelConfirmation}
-                  handleCancelTransaction={handleCancelTransaction}
-                  toggleCancelConfirmation={toggleCancelConfirmation}
-                />
+                {isCancelable && (
+                  <CancelTransaction
+                    isShowingCancelConfirmation={isShowingCancelConfirmation}
+                    handleCancelTransaction={handleCancelTransaction}
+                    toggleCancelConfirmation={toggleCancelConfirmation}
+                  />
+                )}
               </div>
             }
           >

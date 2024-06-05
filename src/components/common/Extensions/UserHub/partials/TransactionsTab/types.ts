@@ -41,6 +41,7 @@ export interface GroupedTransactionContentProps {
   idx: number;
   transaction: TransactionType;
   selected: boolean;
+  isCancelable?: boolean;
 }
 
 export interface TransactionDetailsProps {
@@ -55,6 +56,7 @@ export interface GroupedTransactionProps {
   onToggleExpand?: (id?: string) => void;
   hideSummary?: boolean;
   isClickable?: boolean;
+  isCancelable?: boolean;
 }
 
 export interface TransactionStatusProps {

@@ -202,7 +202,7 @@ export const useGroupedTransactions = () => {
 
   const groupState = getGroupStatusAll(transactions, loading);
 
-  return { groupState, transactions };
+  return { groupState, transactions, loading };
 };
 
 export const getTransaction = async (id: string, fetchPolicy?: FetchPolicy) => {
@@ -274,7 +274,7 @@ export const addTransactionToDb = async (
   };
 
   const txCreatedAt = createdAt.toISOString();
-  const txParams = JSON.stringify(params);
+  const txParams = JSON.stringify(params || []);
 
   const apollo = getContext(ContextModule.ApolloClient);
 
@@ -295,7 +295,7 @@ export const addTransactionToDb = async (
     title: JSON.stringify(title) || null,
     titleValues: JSON.stringify(titleValues) || null,
     params: txParams,
-    identifier,
+    identifier: identifier || null,
     options: JSON.stringify(options),
   };
 
@@ -381,13 +381,13 @@ export const updateTransaction = async (
         error: null,
         identifier: null,
         params: null,
-        deleted: false,
+        deleted: optimisticResponse.deleted || false,
         ...optimisticResponse,
       },
     };
   }
 
-  await apollo.mutate<
+  return apollo.mutate<
     UpdateTransactionMutation,
     UpdateTransactionMutationVariables
   >(mutationOpts);
@@ -406,6 +406,7 @@ export const deleteTransaction = async (id: string) => {
       input: {
         id,
         from: walletAddress,
+        status: TransactionStatus.Failed,
         deleted: true,
       },
     },
@@ -413,11 +414,12 @@ export const deleteTransaction = async (id: string) => {
       updateTransaction: {
         __typename: 'Transaction',
         id,
+        deleted: true,
+        status: TransactionStatus.Failed,
         // null values for optimistic response
         error: null,
         identifier: null,
         params: null,
-        status: TransactionStatus.Pending,
       },
     },
     update: (cache, { data }) => {
@@ -513,7 +515,7 @@ export const transactionRetry = async (id: string) => {
   const input = {
     id,
     from: walletAddress,
-    status: TransactionStatus.Pending,
+    status: TransactionStatus.Ready,
     error: null,
   };
   return updateTransaction(input, input);
@@ -546,8 +548,6 @@ export const failPendingTransactions = async () => {
         {
           id: tx.id,
           status: TransactionStatus.Failed,
-          params: null,
-          identifier: null,
         },
       );
     });

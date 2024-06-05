@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
+import GroupedTransaction from '~common/Extensions/UserHub/partials/TransactionsTab/partials/GroupedTransaction.tsx';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { TransactionStatus } from '~gql';
-import { type WizardStepProps } from '~shared/Wizard/types.ts';
+import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { formatText } from '~utils/intl.ts';
 
 import {
   findTransactionGroupByKey,
@@ -12,97 +14,95 @@ import {
 } from '../../../../../state/transactionState.ts';
 import HeaderRow from '../HeaderRow.tsx';
 
-import ConfirmTransactions from './ConfirmTransactions.tsx';
-import { type FormValues } from './types.ts';
-
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';
 
 const MSG = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Complete setup',
-  },
   description: {
     id: `${displayName}.description`,
     defaultMessage:
       'Deploying to the blockchain requires you to sign a transaction in your wallet for each step.',
   },
+  goBack: {
+    id: `${displayName}.goBack`,
+    defaultMessage: `go back`,
+  },
+  heading: {
+    id: `${displayName}.heading`,
+    defaultMessage: 'Complete setup',
+  },
+  loadingTransactions: {
+    id: `${displayName}.loadingTransactions`,
+    defaultMessage: `Waiting for transactions to be created...`,
+  },
+  loadingColony: {
+    id: `${displayName}.loadingColony`,
+    defaultMessage: `Waiting for your colony to exist...`,
+  },
+  someFailed: {
+    id: `${displayName}.someFailed`,
+    defaultMessage: `Some transactions failed. Feel free to retry them individaully or {goBack} to start over`,
+  },
 });
 
-type NewestGroup = Array<{
-  methodName: string;
-  status: typeof TransactionStatus;
-}>;
-
-const getContractDeploymentStatus = (newestGroup: NewestGroup) =>
-  !!newestGroup.find(
-    ({ methodName = '', status = '' }) =>
-      methodName.includes('createColony') &&
-      status === TransactionStatus.Succeeded,
-  );
-
-type Props = Pick<WizardStepProps<FormValues>, 'previousStep'>;
-
-const StepConfirmTransactions = ({ previousStep }: Props) => {
-  const [
-    existsRecoverableDeploymentError,
-    setExistsRecoverableDeploymentError,
-  ] = useState<boolean>(false);
+const StepConfirmTransactions = () => {
   const { user, updateUser } = useAppContext();
 
   const { transactions } = useGroupedTransactions();
 
-  const newestGroup = transactions[0];
+  const [createColonyTxs, setCreateColonyTxs] = useState<
+    (typeof transactions)[0] | null
+  >(null);
+
+  // Find the first colonyCreation tx group that is still pending and then set it to the colony creation tx group
+  useEffect(() => {
+    const txGroup = findTransactionGroupByKey(transactions, 'createColony');
+    if (!txGroup) {
+      return;
+    }
+    const groupStatus = getGroupStatus(txGroup);
+    if (groupStatus === TransactionStatus.Succeeded) {
+      return;
+    }
+
+    setCreateColonyTxs(txGroup);
+  }, [transactions]);
+
+  const groupStatus = createColonyTxs
+    ? getGroupStatus(createColonyTxs)
+    : TransactionStatus.Pending;
 
   useEffect(() => {
-    /*
-     * Find out if the deployment failed, and we can actually recover it
-     * Show an error message based on that
-     */
-    if (!newestGroup) return;
-    const colonyContractWasDeployed = getContractDeploymentStatus(
-      newestGroup as unknown as NewestGroup,
-    );
-    const deploymentHasErrors =
-      getGroupStatus(newestGroup) === TransactionStatus.Failed;
-    if (colonyContractWasDeployed && deploymentHasErrors) {
-      setExistsRecoverableDeploymentError(true);
-    } else if (existsRecoverableDeploymentError) {
-      // Hide the error if the user pressed the retry button
-      setExistsRecoverableDeploymentError(false);
+    if (groupStatus === TransactionStatus.Succeeded) {
+      updateUser(user?.walletAddress, true);
     }
-  }, [
-    newestGroup,
-    existsRecoverableDeploymentError,
-    setExistsRecoverableDeploymentError,
-  ]);
+  }, [groupStatus, updateUser, user]);
 
-  // @TODO: Move the following to the colonyCreate saga
-  // Redirect to the colony if a successful creteColony tx group is found
-  if (
-    newestGroup &&
-    getGroupStatus(newestGroup) === TransactionStatus.Succeeded &&
-    newestGroup[0].group.key === 'group.createColony'
-  ) {
-    updateUser(user?.walletAddress, true);
+  if (!createColonyTxs) {
+    return (
+      <>
+        <HeaderRow heading={MSG.heading} description={MSG.description} />
+        <SpinnerLoader />
+      </>
+    );
   }
-
-  // If the create colony transaction is cancelled at the first stage
-  // there will be no newest group and we should go back to the confirm all inputs step
-  if (!newestGroup) {
-    previousStep();
-  }
-
-  const createColonyTxGroup = useMemo(
-    () => findTransactionGroupByKey(transactions, 'group.createColony'),
-    [transactions],
-  );
 
   return (
     <>
       <HeaderRow heading={MSG.heading} description={MSG.description} />
-      {createColonyTxGroup && (
-        <ConfirmTransactions transactions={createColonyTxGroup} />
+      <GroupedTransaction
+        transactionGroup={createColonyTxs}
+        isContentOpened
+        hideSummary
+        isClickable={false}
+        isCancelable={false}
+      />
+      {groupStatus === TransactionStatus.Succeeded && (
+        <div className="mt-8 text-center text-sm text-gray-600">
+          <SpinnerLoader />
+          <span className="ml-2 align-text-bottom">
+            {formatText(MSG.loadingColony)}
+          </span>
+        </div>
       )}
     </>
   );
