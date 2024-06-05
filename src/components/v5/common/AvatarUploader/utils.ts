@@ -16,7 +16,7 @@ const MSG = defineMessages({
   fingerprintError: {
     id: `${displayName}.fingerprintError`,
     defaultMessage:
-      'You currently have fingerprint blocking enabled. Please disable it before selecting a file.',
+      'Your browser currently have fingerprint blocking enabled. Please disable it before selecting a file.',
   },
   fileSizeError: {
     id: `${displayName}.fileSizeError`,
