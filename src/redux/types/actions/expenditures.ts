@@ -1,3 +1,5 @@
+import { type BigNumber } from 'ethers';
+
 import {
   type ColonyRoleFragment,
   type SplitPaymentDistributionType,
@@ -134,13 +136,15 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
-        stakeAmount: string;
+        stakeAmount: BigNumber;
         stakedExpenditureAddress: Address;
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
         distributionType?: SplitPaymentDistributionType;
+        activeAmount: string;
+        tokenAddress: string;
       },
       MetaWithSetter<object>
     >
