@@ -164,7 +164,6 @@ function* editColonyAction({
               colonyDisplayName,
               colonyAvatarImage,
               false,
-              false,
               metadata?.description !== colonyDescription,
               !isEqual(metadata?.externalLinks, colonyExternalLinks),
               colonyObjective === undefined

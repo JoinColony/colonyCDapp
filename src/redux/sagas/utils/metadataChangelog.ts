@@ -40,7 +40,6 @@ export const getUpdatedColonyMetadataChangelog = (
   newDisplayName?: string,
   newAvatarImage?: string | null,
   hasWhitelistChanged = false,
-  haveTokensChanged = false,
   hasDescriptionChanged = false,
   haveExternalLinksChanged = false,
   hasObjectiveChanged = false,
@@ -61,7 +60,6 @@ export const getUpdatedColonyMetadataChangelog = (
           ? false
           : newAvatarImage !== metadata.avatar,
       hasWhitelistChanged,
-      haveTokensChanged,
       hasDescriptionChanged,
       haveExternalLinksChanged,
       hasObjectiveChanged,
