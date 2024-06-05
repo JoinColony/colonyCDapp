@@ -51,6 +51,14 @@ const useGetColonyAction = (transactionHash?: string) => {
 
   const action = actionData?.getColonyAction;
 
+  const clearPollingCancellationTimer = () => {
+    if (pollTimerRef.current) {
+      clearTimeout(pollTimerRef.current);
+
+      pollTimerRef.current = null;
+    }
+  };
+
   useEffect(() => {
     const shouldPool = !isInvalidTx && !action;
 
@@ -68,11 +76,7 @@ const useGetColonyAction = (transactionHash?: string) => {
       return;
     }
 
-    if (pollTimerRef.current) {
-      clearTimeout(pollTimerRef.current);
-
-      pollTimerRef.current = null;
-    }
+    clearPollingCancellationTimer();
 
     pollTimerRef.current = setTimeout(stopPollingForAction, POLLING_TIMEOUT);
 
@@ -95,9 +99,7 @@ const useGetColonyAction = (transactionHash?: string) => {
       // This effect should receive an empty array dependency to ensure that
       // it only ever calls the return statement when its node unmounts,
       // and not when any other state gets updated.
-      if (pollTimerRef.current) {
-        clearTimeout(pollTimerRef.current);
-      }
+      clearPollingCancellationTimer();
 
       stopPollingForAction();
     };
