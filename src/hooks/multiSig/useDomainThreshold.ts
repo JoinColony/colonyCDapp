@@ -24,7 +24,7 @@ export const useDomainThreshold = ({
     Extension.MultisigPermissions,
   );
 
-  const { loadingRoles, rolesData } = useEligibleSignees({
+  const { loadingRoles, eligibleSignees } = useEligibleSignees({
     domainId,
     requiredRole,
   });
@@ -66,12 +66,11 @@ export const useDomainThreshold = ({
       return thresholdConfig;
     }
 
-    if (loadingRoles || rolesData === undefined) {
+    if (loadingRoles) {
       return null;
     }
 
-    const numberOfPermissionHolders =
-      rolesData.listColonyRoles?.items.length ?? 0;
+    const numberOfPermissionHolders = eligibleSignees.length;
 
     if (numberOfPermissionHolders === 0) {
       console.warn('There are no multiSig permission holders');

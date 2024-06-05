@@ -1,8 +1,6 @@
 import { type FC } from 'react';
 import React from 'react';
 
-import { type ColonyMultiSig } from '~gql';
-
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
 
 import MultiSigWidget from './partials/MultiSigWidget/MultiSigWidget.tsx';
@@ -26,7 +24,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
   return (
     <div>
       <MultiSigWidget
-        multiSigData={action.multiSigData as unknown as ColonyMultiSig}
+        multiSigData={action.multiSigData}
         actionType={action.type}
       />
     </div>
