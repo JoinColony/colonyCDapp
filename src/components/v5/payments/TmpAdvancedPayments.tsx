@@ -286,7 +286,7 @@ const TmpAdvancedPayments = () => {
       stakedExpenditureAddress,
       networkInverseFee,
       tokenAddress,
-      activeAmount: tokenBalanceData?.activeBalance ?? '0',
+      activeBalance: tokenBalanceData?.activeBalance ?? '0',
     };
 
     await createStakedExpenditure(payload);
