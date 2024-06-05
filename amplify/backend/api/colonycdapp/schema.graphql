@@ -1472,10 +1472,6 @@ type ColonyMetadataChangelog {
   """
   hasAvatarChanged: Boolean!
   """
-  Whether tokens have been added or removed from the Colony's token list
-  """
-  haveTokensChanged: Boolean!
-  """
   Whether the colony description has changed
   """
   hasDescriptionChanged: Boolean

@@ -127,7 +127,6 @@ export type ActionUserRoles = {
 
 export enum ExtendedColonyActionType {
   UpdateColonyObjective = 'UPDATE_COLONY_OBJECTIVE',
-  UpdateTokens = 'UPDATE_TOKENS',
   RemoveSafe = 'REMOVE_SAFE',
   AddSafe = 'ADD_SAFE',
   SafeTransferFunds = 'SAFE_TRANSFER_FUNDS',
