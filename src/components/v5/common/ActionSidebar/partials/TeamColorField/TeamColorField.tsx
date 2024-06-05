@@ -41,6 +41,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
     HTMLDivElement
   >([isTeamColourSelectVisible], {
     top: 8,
+    withAutoTopPlacement: true,
   });
 
   return (
