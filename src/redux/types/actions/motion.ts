@@ -2,7 +2,7 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExternalLink } from '~gql';
+import { type ColonyRoleFragment, type ExternalLink } from '~gql';
 import { type Authority } from '~types/authority.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import {
@@ -220,8 +220,11 @@ export type MotionActionTypes =
         customActionTitle: string;
         colonyAddress: Address;
         colonyName?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
         motionParams: [BigNumber] | [string];
         annotationMessage?: string;
+        isMultiSig?: boolean;
       },
       MetaWithSetter<object>
     >
