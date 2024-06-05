@@ -73,9 +73,11 @@ const useGetColonyAction = (transactionHash?: string) => {
   }, [stopPolling]);
 
   useEffect(() => {
-    const shouldPool = !isInvalidTx && !action;
+    const shouldPoll = !isInvalidTx && !action;
 
-    if (!shouldPool) {
+    setIsPolling(shouldPoll);
+
+    if (!shouldPoll) {
       if (action) {
         if (action.type === ColonyActionType.Payment) {
           refetchTokenBalances();
