@@ -3,9 +3,9 @@ import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
-  type ColonyMultiSig,
   type ColonyActionType,
   type MultiSigUserSignatureFragment,
+  type ColonyMultiSigFragment,
 } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
@@ -21,7 +21,7 @@ const displayName =
 
 interface MultiSigWidgetProps {
   actionType: ColonyActionType;
-  multiSigData: ColonyMultiSig;
+  multiSigData: ColonyMultiSigFragment;
 }
 
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({
