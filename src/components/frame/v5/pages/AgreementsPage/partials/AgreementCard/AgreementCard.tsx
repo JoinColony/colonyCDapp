@@ -14,7 +14,6 @@ import {
 } from '~routes/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
@@ -56,7 +55,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
   );
 
   useEffect(() => {
-    startPollingForAction(getSafePollingInterval());
+    startPollingForAction();
     return () => stopPollingForAction();
   }, [networkMotionState, startPollingForAction, stopPollingForAction]);
 
