@@ -47,7 +47,7 @@ export const getMembersList = (
         ? getRole(filteredRoles)
         : undefined;
 
-    const teamReputation = reputation?.items?.find(
+    const teamReputationPercentage = reputation?.items?.find(
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
 
@@ -57,7 +57,7 @@ export const getMembersList = (
       isVerified,
       reputation: isAllTeamsSelected
         ? colonyReputationPercentage
-        : teamReputation,
+        : teamReputationPercentage,
       role: permissionRole,
       contributorType: type ?? undefined,
     };
