@@ -26,9 +26,11 @@ import { useGetExpenditureData } from './useGetExpenditureData.ts';
 const useGetActionData = (transactionId: string | undefined) => {
   const {
     action,
+    isInvalidTransactionHash,
     loadingAction,
     networkMotionState,
     motionState,
+    startPollingForAction,
     stopPollingForAction,
   } = useGetColonyAction(transactionId);
   const { expenditure, loadingExpenditure } = useGetExpenditureData(
@@ -314,12 +316,14 @@ const useGetActionData = (transactionId: string | undefined) => {
   return {
     action,
     defaultValues,
+    isInvalidTransactionHash,
     loadingAction,
     isMotion: !!action?.isMotion,
     networkMotionState,
     motionState,
     expenditure,
     loadingExpenditure,
+    startPollingForAction,
     stopPollingForAction,
   };
 };
