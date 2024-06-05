@@ -1362,20 +1362,6 @@ type ColonyUnclaimedStake {
   unclaimedRewards: [StakerRewards!]!
 }
 
-"""
-Colony token modifications that are stored temporarily and commited to the database once the corresponding motion passes
-"""
-type PendingModifiedTokenAddresses {
-  """
-  List of tokens that were added to the Colony's token list
-  """
-  added: [String!]
-  """
-  List of tokens that were removed from the Colony's token list
-  """
-  removed: [String!]
-}
-
 enum ExternalLinks {
   Custom
   Whitepaper
@@ -1450,11 +1436,6 @@ type ColonyMetadata @model {
   List of Colony metadata changelog entries
   """
   changelog: [ColonyMetadataChangelog!]
-  """
-  Token addresses that were modified in a previous action (motion)
-  Only present on pendingColonyMetadata for consumption in block ingestor
-  """
-  modifiedTokenAddresses: PendingModifiedTokenAddresses
   """
   Colony Objective
   """
