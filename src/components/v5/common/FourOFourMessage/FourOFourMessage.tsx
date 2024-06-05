@@ -8,7 +8,10 @@ import { formatText } from '~utils/intl.ts';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
-import { type FourOFourMessageProps } from './types.ts';
+import {
+  FourOFourMessageLinkType,
+  type FourOFourMessageProps,
+} from './types.ts';
 
 const displayName = 'v5.common.FourOFourMessage';
 
@@ -49,20 +52,30 @@ const FourOFourMessage: FC<FourOFourMessageProps> = ({
         <Button mode="quinary" className="flex-1" onClick={openFeaturesBugs}>
           {formatText(MSG.reportBugBtn)}
         </Button>
-        <ButtonLink
-          mode="primarySolid"
-          to={primaryLinkButton.location}
-          className="flex-1"
-          onClick={() => primaryLinkButton.onClick?.()}
-        >
-          {primaryLinkButton.text}
-        </ButtonLink>
+        {primaryLinkButton.location ? (
+          <ButtonLink
+            mode="primarySolid"
+            to={primaryLinkButton.location}
+            className="flex-1"
+            onClick={() => primaryLinkButton.onClick?.()}
+          >
+            {primaryLinkButton.text}
+          </ButtonLink>
+        ) : (
+          <Button
+            mode="primarySolid"
+            className="flex-1"
+            onClick={() => primaryLinkButton.onClick?.()}
+          >
+            {primaryLinkButton.text}
+          </Button>
+        )}
       </div>
       <h5 className="mb-3 text-md font-semibold">
         {formatText(MSG.linksTitle)}
       </h5>
       {links.map((link) =>
-        link.type === 'external' ? (
+        link.type === FourOFourMessageLinkType.External ? (
           <a
             href={link.location}
             target="_blank"

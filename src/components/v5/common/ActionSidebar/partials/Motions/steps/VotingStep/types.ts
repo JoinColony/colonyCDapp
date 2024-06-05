@@ -1,7 +1,7 @@
 import { type MotionAction } from '~types/motions.ts';
 
 export interface VotingStepProps {
-  startPollingAction: (pollingInterval: number) => void;
+  startPollingAction: () => void;
   stopPollingAction: () => void;
   actionData: MotionAction;
   transactionId: string;
