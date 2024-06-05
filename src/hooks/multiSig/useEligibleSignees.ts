@@ -2,7 +2,10 @@
 /* eslint-disable camelcase */
 import { UserRole } from '~constants/permissions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetColonyRolesQuery, type ModelColonyRoleFilterInput } from '~gql';
+import {
+  type ModelColonyRoleFilterInput,
+  useGetRolesForDomainQuery,
+} from '~gql';
 
 interface UseEligibleSigneesParams {
   domainId: string;
@@ -45,17 +48,20 @@ export const useEligibleSignees = ({
     colony: { colonyAddress },
   } = useColonyContext();
 
-  const { loading: loadingRoles, data: rolesData } = useGetColonyRolesQuery({
+  const { loading: loadingRoles, data: rolesData } = useGetRolesForDomainQuery({
     variables: {
+      colonyAddress,
+      domainId,
       filter: {
-        colonyAddress: { eq: colonyAddress },
         isMultiSig: { eq: true },
-        domainId: { eq: domainId },
         ...getRoleFilter(requiredRole),
       },
     },
     fetchPolicy: 'cache-first',
   });
 
-  return { loadingRoles, rolesData };
+  return {
+    loadingRoles,
+    eligibleSignees: rolesData?.getRoleByDomainAndColony?.items ?? [],
+  };
 };
