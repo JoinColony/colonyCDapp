@@ -11,12 +11,17 @@ export const getDefaultRenderCellWrapper =
   <T,>(): RenderCellWrapper<T> =>
   (cellClassName, content) => <div className={cellClassName}>{content}</div>;
 
-export const makeMenuColumn = <T,>(
-  helper: ColumnHelper<T>,
-  getMenuProps: TableProps<T>['getMenuProps'],
+export const makeMenuColumn = <T,>({
+  helper,
+  getMenuProps,
   meatBallMenuSize = 60,
-  meatBallMenuStaticSize: string | undefined,
-) =>
+  meatBallMenuStaticSize,
+}: {
+  helper: ColumnHelper<T>;
+  getMenuProps: TableProps<T>['getMenuProps'];
+  meatBallMenuSize?: number;
+  meatBallMenuStaticSize: string | undefined;
+}) =>
   helper.display({
     id: MEATBALL_MENU_COLUMN_ID,
     ...(meatBallMenuStaticSize

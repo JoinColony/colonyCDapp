@@ -79,21 +79,31 @@ function* manageVerifiedRecipients({
       'annotateEditColonyAction',
     ]);
 
-    yield createGroupTransaction(editColony, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'editColony',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateEditColony, batchKey, meta, {
+    yield createGroupTransaction({
+      channel: editColony,
+      batchKey,
+      meta,
+      config: {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: 'editColony',
         identifier: colonyAddress,
         params: [],
         ready: false,
+      },
+    });
+
+    if (annotationMessage) {
+      yield createGroupTransaction({
+        channel: annotateEditColony,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 
@@ -165,13 +175,11 @@ function* manageVerifiedRecipients({
             id: colonyAddress,
             isWhitelistActivated,
             whitelistedAddresses: verifiedAddresses,
-            changelog: getUpdatedColonyMetadataChangelog(
-              txHash,
-              colony.metadata,
-              undefined,
-              undefined,
-              true,
-            ),
+            changelog: getUpdatedColonyMetadataChangelog({
+              transactionHash: txHash,
+              metadata: colony.metadata,
+              hasWhitelistChanged: true,
+            }),
           },
         },
         // Update colony object with modified metadata

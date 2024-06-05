@@ -70,12 +70,17 @@ function* voteMotion({
       'voteMotionTransaction',
     ]);
 
-    yield createGroupTransaction(voteMotionTransaction, 'voteMotion', meta, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'submitVote',
-      identifier: colonyAddress,
-      params: [motionId, hash, key, value, branchMask, siblings],
-      ready: false,
+    yield createGroupTransaction({
+      channel: voteMotionTransaction,
+      batchKey: 'voteMotion',
+      meta,
+      config: {
+        context: ClientType.VotingReputationClient,
+        methodName: 'submitVote',
+        identifier: colonyAddress,
+        params: [motionId, hash, key, value, branchMask, siblings],
+        ready: false,
+      },
     });
 
     yield takeFrom(

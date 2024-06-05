@@ -42,13 +42,19 @@ const useRevealWidgetUpdate = (
   return { hasUserVoted, vote, userVoteRevealed, setUserVoteRevealed };
 };
 
-export const useRevealStep = (
-  motionData: ColonyMotion | undefined | null,
-  startPollingAction: (pollingInterval: number) => void,
-  stopPollingAction: () => void,
-  transactionId: string,
-  rootHash: string | undefined,
-) => {
+export const useRevealStep = ({
+  motionData,
+  startPollingAction,
+  stopPollingAction,
+  transactionId,
+  rootHash,
+}: {
+  motionData: ColonyMotion | undefined | null;
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
+  transactionId: string;
+  rootHash: string | undefined;
+}) => {
   const { nativeMotionDomainId, voterRecord, motionId } = motionData || {};
   const { user } = useAppContext();
   const {

@@ -17,11 +17,11 @@ const getIPFSWithFallback = (
   if (ipfsNode) {
     ipfsWithTimeout = {
       addString: async (data) =>
-        raceAgainstTimeout(
-          ipfsNode.addString(data),
-          DEFAULT_TIMEOUT_POST,
-          new Error('Timeout reached trying to upload data to IPFS'),
-        ),
+        raceAgainstTimeout({
+          promise: ipfsNode.addString(data),
+          ms: DEFAULT_TIMEOUT_POST,
+          err: new Error('Timeout reached trying to upload data to IPFS'),
+        }),
     };
   }
   let pinataWithTimeout: IPFSWithTimeout | undefined;
@@ -29,11 +29,13 @@ const getIPFSWithFallback = (
   if (pinataClient) {
     pinataWithTimeout = {
       addString: async (data) =>
-        raceAgainstTimeout(
-          pinataClient.addJSON(data),
-          DEFAULT_TIMEOUT_POST,
-          new Error('Timeout reached trying to upload data to IPFS via Pinata'),
-        ),
+        raceAgainstTimeout({
+          promise: pinataClient.addJSON(data),
+          ms: DEFAULT_TIMEOUT_POST,
+          err: new Error(
+            'Timeout reached trying to upload data to IPFS via Pinata',
+          ),
+        }),
     };
   }
   if (ipfsWithTimeout) {

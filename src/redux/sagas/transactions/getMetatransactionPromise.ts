@@ -170,16 +170,16 @@ async function getMetatransactionPromise(
 
     try {
       const { r, s, v } = await signTypedData(
-        generateEIP2612TypedData(
+        generateEIP2612TypedData({
           userAddress,
           tokenName,
           chainId,
-          normalizedClient.address,
-          spender as string,
-          amount as BigNumberish,
-          availableNonce as BigNumberish,
+          verifyingContract: normalizedClient.address,
+          spender: spender as string,
+          value: amount as BigNumberish,
+          nonce: availableNonce as BigNumberish,
           deadline,
-        ),
+        }),
       );
 
       broadcastData = {
@@ -209,12 +209,12 @@ async function getMetatransactionPromise(
         [...normalizedParams],
       );
 
-    const { messageUint8: messageData } = await generateMetatransactionMessage(
+    const { messageUint8: messageData } = await generateMetatransactionMessage({
       encodedTransaction,
-      normalizedClient.address,
+      contractAddress: normalizedClient.address,
       chainId,
-      availableNonce as BigNumberish,
-    );
+      nonce: availableNonce as BigNumberish,
+    });
 
     const metatransactionSignature = await signer.signMessage(messageData);
 

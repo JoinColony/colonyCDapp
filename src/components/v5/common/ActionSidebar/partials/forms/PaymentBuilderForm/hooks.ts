@@ -78,7 +78,11 @@ export const useValidationSchema = () => {
                         );
                       },
                       (value, context) =>
-                        amountGreaterThanZeroValidation(value, context, colony),
+                        amountGreaterThanZeroValidation({
+                          value,
+                          context,
+                          colony,
+                        }),
                     )
                     .test('tokens-sum-exceeded', '', (value, context) =>
                       allTokensAmountValidation(value, context, colony),

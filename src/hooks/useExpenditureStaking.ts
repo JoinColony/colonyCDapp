@@ -34,12 +34,12 @@ const useExpenditureStaking = (createdInDomainId = Id.RootDomain) => {
   );
 
   const { loadingUserTokenBalance, hasEnoughTokens } =
-    useEnoughTokensForStaking(
-      colony.nativeToken.tokenAddress,
+    useEnoughTokensForStaking({
+      tokenAddress: colony.nativeToken.tokenAddress,
       walletAddress,
-      colony.colonyAddress,
-      stakeAmount ?? '0',
-    );
+      colonyAddress: colony.colonyAddress,
+      requiredStake: stakeAmount ?? '0',
+    });
 
   useEffect(() => {
     if (

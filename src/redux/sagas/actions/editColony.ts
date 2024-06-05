@@ -69,21 +69,31 @@ function* editColonyAction({
       'annotateEditColonyAction',
     ]);
 
-    yield createGroupTransaction(editColony, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'editColony',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateEditColony, batchKey, meta, {
+    yield createGroupTransaction({
+      channel: editColony,
+      batchKey,
+      meta,
+      config: {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: 'editColony',
         identifier: colonyAddress,
         params: [],
         ready: false,
+      },
+    });
+
+    if (annotationMessage) {
+      yield createGroupTransaction({
+        channel: annotateEditColony,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 
@@ -181,20 +191,23 @@ function* editColonyAction({
             description: colonyDescription,
             externalLinks: colonyExternalLinks,
             objective: colonyObjective,
-            // @TODO: refactor this function to take an object
-            changelog: getUpdatedColonyMetadataChangelog(
-              txHash,
-              colony.metadata,
-              colonyDisplayName,
-              colonyAvatarImage,
-              false,
+            changelog: getUpdatedColonyMetadataChangelog({
+              transactionHash: txHash,
+              metadata: colony.metadata,
+              newDisplayName: colonyDisplayName,
+              newAvatarImage: colonyAvatarImage,
               haveTokensChanged,
-              metadata?.description !== colonyDescription,
-              !isEqual(metadata?.externalLinks, colonyExternalLinks),
-              colonyObjective === undefined
-                ? false
-                : !isEqual(metadata?.objective, colonyObjective),
-            ),
+              hasDescriptionChanged:
+                metadata?.description !== colonyDescription,
+              haveExternalLinksChanged: !isEqual(
+                metadata?.externalLinks,
+                colonyExternalLinks,
+              ),
+              hasObjectiveChanged:
+                colonyObjective === undefined
+                  ? false
+                  : !isEqual(metadata?.objective, colonyObjective),
+            }),
           },
         },
         refetchQueries: [GetFullColonyByNameDocument],

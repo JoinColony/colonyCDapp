@@ -5,13 +5,19 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { type Colony } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 
-const useDialogActionPermissions = (
-  colony: Colony,
-  isVotingExtensionEnabled: boolean,
-  requiredRoles: ColonyRole[],
-  requiredRolesDomains: number[],
-  hasReputation: boolean,
-): [boolean, boolean] => {
+const useDialogActionPermissions = ({
+  colony,
+  isVotingExtensionEnabled,
+  requiredRoles,
+  requiredRolesDomains,
+  hasReputation,
+}: {
+  colony: Colony;
+  isVotingExtensionEnabled: boolean;
+  requiredRoles: ColonyRole[];
+  requiredRolesDomains: number[];
+  hasReputation: boolean;
+}): [boolean, boolean] => {
   const { wallet } = useAppContext();
   const method = useFormContext();
   const forceAction = method?.watch('forceAction');

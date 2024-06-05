@@ -111,14 +111,14 @@ export const useStakingForm = () => {
     })
     .defined();
 
-  const transform = getStakingTransformFn(
-    user?.walletAddress ?? '',
-    colony?.colonyAddress ?? '',
+  const transform = getStakingTransformFn({
+    userAddress: user?.walletAddress ?? '',
+    colonyAddress: colony?.colonyAddress ?? '',
     motionId,
-    tokenDecimals,
+    nativeTokenDecimals: tokenDecimals,
     tokenAddress,
-    tokenBalanceData?.activeBalance ?? '0',
-  );
+    activeAmount: tokenBalanceData?.activeBalance ?? '0',
+  });
 
   const handleSuccess = getHandleStakeSuccessFn(
     setIsRefetching,

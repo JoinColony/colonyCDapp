@@ -11,13 +11,19 @@ import {
 import { notNull } from '~utils/arrays/index.ts';
 import { excludeTypenameKey } from '~utils/objects/index.ts';
 
-export const getUpdatedDomainMetadataChangelog = (
-  transactionHash: string,
-  metadata: DomainMetadata,
-  newName?: string,
-  newColor?: DomainColor,
-  newDescription?: string,
-): DomainMetadataChangelogInput[] => {
+export const getUpdatedDomainMetadataChangelog = ({
+  transactionHash,
+  metadata,
+  newName,
+  newColor,
+  newDescription,
+}: {
+  transactionHash: string;
+  metadata: DomainMetadata;
+  newName?: string;
+  newColor?: DomainColor;
+  newDescription?: string;
+}): DomainMetadataChangelogInput[] => {
   const existingChangelog = metadata.changelog ?? [];
 
   return [
@@ -34,18 +40,29 @@ export const getUpdatedDomainMetadataChangelog = (
   ];
 };
 
-export const getUpdatedColonyMetadataChangelog = (
-  transactionHash: string,
-  metadata: ColonyMetadata,
-  newDisplayName?: string,
-  newAvatarImage?: string | null,
+export const getUpdatedColonyMetadataChangelog = ({
+  transactionHash,
+  metadata,
+  newDisplayName,
+  newAvatarImage,
   hasWhitelistChanged = false,
   haveTokensChanged = false,
   hasDescriptionChanged = false,
   haveExternalLinksChanged = false,
   hasObjectiveChanged = false,
-  newSafes?: Safe[],
-): ColonyMetadataChangelogInput[] => {
+  newSafes,
+}: {
+  transactionHash: string;
+  metadata: ColonyMetadata;
+  newDisplayName?: string;
+  newAvatarImage?: string | null;
+  hasWhitelistChanged?: boolean;
+  haveTokensChanged?: boolean;
+  hasDescriptionChanged?: boolean;
+  haveExternalLinksChanged?: boolean;
+  hasObjectiveChanged?: boolean;
+  newSafes?: Safe[];
+}): ColonyMetadataChangelogInput[] => {
   const existingChangelog = metadata.changelog ?? [];
   const currentColonySafes =
     metadata.safes?.filter(notNull).map(excludeTypenameKey) || [];

@@ -1,5 +1,6 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo, useCallback, useEffect } from 'react';
+import { type FieldValues, type UseFieldArrayReturn } from 'react-hook-form';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
@@ -16,14 +17,21 @@ import {
   type SplitPaymentRecipientsTableModel,
 } from './types.ts';
 
-export const useRecipientsFieldTableColumns = (
-  name: string,
-  token: Token,
-  distributionMethod: DistributionMethod,
-  data: SplitPaymentRecipientsFieldModel[],
-  amount: number,
-  { update },
-): ColumnDef<SplitPaymentRecipientsTableModel, string>[] => {
+export const useRecipientsFieldTableColumns = ({
+  name,
+  token,
+  distributionMethod,
+  data,
+  amount,
+  fieldArrayMethods: { update },
+}: {
+  name: string;
+  token: Token;
+  distributionMethod: DistributionMethod;
+  data: SplitPaymentRecipientsFieldModel[];
+  amount: number;
+  fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>;
+}): ColumnDef<SplitPaymentRecipientsTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<SplitPaymentRecipientsTableModel>(),
     [],
@@ -152,12 +160,17 @@ export const useRecipientsFieldTableColumns = (
   return columns;
 };
 
-export const useDistributionMethodUpdate = (
-  distributionMethod: DistributionMethod,
-  data: { recipient?: string; percent?: number }[] | undefined,
-  { update },
-  amount: number,
-) => {
+export const useDistributionMethodUpdate = ({
+  distributionMethod,
+  data,
+  fieldArrayMethods: { update },
+  amount,
+}: {
+  distributionMethod: DistributionMethod;
+  data: SplitPaymentRecipientsFieldModel[] | undefined;
+  fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>;
+  amount: number;
+}) => {
   const { filteredContributors } = useMemberContext();
 
   useEffect(() => {

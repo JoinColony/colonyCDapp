@@ -71,21 +71,31 @@ function* editDomainAction({
       'annotateEditDomainAction',
     ]);
 
-    yield createGroupTransaction(editDomain, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'editDomain',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateEditDomain, batchKey, meta, {
+    yield createGroupTransaction({
+      channel: editDomain,
+      batchKey,
+      meta,
+      config: {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: 'editDomain',
         identifier: colonyAddress,
         params: [],
         ready: false,
+      },
+    });
+
+    if (annotationMessage) {
+      yield createGroupTransaction({
+        channel: annotateEditDomain,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 
@@ -148,13 +158,13 @@ function* editDomainAction({
             name: domainName,
             color: domainColor,
             description: domainPurpose,
-            changelog: getUpdatedDomainMetadataChangelog(
-              txHash,
-              domain.metadata,
-              domainName,
-              domainColor,
-              domainPurpose,
-            ),
+            changelog: getUpdatedDomainMetadataChangelog({
+              transactionHash: txHash,
+              metadata: domain.metadata,
+              newName: domainName,
+              newColor: domainColor,
+              newDescription: domainPurpose,
+            }),
           },
         },
         refetchQueries: [GetFullColonyByNameDocument],

@@ -86,46 +86,71 @@ function* stakeMotion({
     if (activateTokens) {
       const missingActiveTokens = amount.sub(activeAmount);
 
-      yield createGroupTransaction(approve, batchKey, meta, {
-        context: ClientType.TokenClient,
-        methodName: 'approve',
-        identifier: tokenAddress,
-        params: [tokenLockingClient.address, missingActiveTokens],
-        ready: false,
+      yield createGroupTransaction({
+        channel: approve,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.TokenClient,
+          methodName: 'approve',
+          identifier: tokenAddress,
+          params: [tokenLockingClient.address, missingActiveTokens],
+          ready: false,
+        },
       });
 
-      yield createGroupTransaction(deposit, batchKey, meta, {
-        context: ClientType.TokenLockingClient,
-        methodName: 'deposit(address,uint256,bool)',
-        identifier: colonyAddress,
-        params: [tokenAddress, missingActiveTokens, false],
-        ready: false,
+      yield createGroupTransaction({
+        channel: deposit,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.TokenLockingClient,
+          methodName: 'deposit(address,uint256,bool)',
+          identifier: colonyAddress,
+          params: [tokenAddress, missingActiveTokens, false],
+          ready: false,
+        },
       });
     }
 
-    yield createGroupTransaction(approveStake, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'approveStake',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    yield createGroupTransaction(stakeMotionTransaction, batchKey, meta, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'stakeMotion',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
-    });
-
-    if (annotationMessage) {
-      yield createGroupTransaction(annotateStaking, batchKey, meta, {
+    yield createGroupTransaction({
+      channel: approveStake,
+      batchKey,
+      meta,
+      config: {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: 'approveStake',
         identifier: colonyAddress,
         params: [],
         ready: false,
+      },
+    });
+
+    yield createGroupTransaction({
+      channel: stakeMotionTransaction,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.VotingReputationClient,
+        methodName: 'stakeMotion',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      },
+    });
+
+    if (annotationMessage) {
+      yield createGroupTransaction({
+        channel: annotateStaking,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 

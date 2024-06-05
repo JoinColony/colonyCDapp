@@ -29,12 +29,17 @@ function* finalizeMotion({
 
     const batchKey = TRANSACTION_METHODS.FinalizeMotion;
 
-    yield createGroupTransaction(finalizeMotionTransaction, batchKey, meta, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'finalizeMotion',
-      identifier: colonyAddress,
-      params: [motionId],
-      ready: false,
+    yield createGroupTransaction({
+      channel: finalizeMotionTransaction,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.VotingReputationClient,
+        methodName: 'finalizeMotion',
+        identifier: colonyAddress,
+        params: [motionId],
+        ready: false,
+      },
     });
 
     yield takeFrom(

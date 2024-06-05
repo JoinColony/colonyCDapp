@@ -128,14 +128,17 @@ const getInitiator = (actionData: ColonyAction) => {
   );
 };
 
-export const mapColonyActionToExpectedFormat = (
-  actionData: ColonyAction,
-  colony: Colony,
-  keyFallbackValues: Partial<
-    Record<ActionTitleMessageKeys, React.ReactNode>
-  > = {},
-  expenditureData?: Expenditure,
-) => {
+export const mapColonyActionToExpectedFormat = ({
+  actionData,
+  colony,
+  keyFallbackValues = {},
+  expenditureData,
+}: {
+  actionData: ColonyAction;
+  colony: Colony;
+  keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
+  expenditureData?: Expenditure;
+}) => {
   //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
   const formattedRolesTitle = formatRolesTitle(actionData.roles);
 

@@ -77,13 +77,13 @@ const StakingForm: FC<StakingFormProps> = ({
         const voteTypeValue = getValues('voteType');
         const amountValue = getValues('amount');
 
-        const predictedPercentage = getPredictedPercentage(
+        const predictedPercentage = getPredictedPercentage({
           voteTypeValue,
-          amountValue,
+          amount: amountValue,
           tokenDecimals,
           supportRemaining,
           opposeRemaining,
-        );
+        });
 
         return (
           <>

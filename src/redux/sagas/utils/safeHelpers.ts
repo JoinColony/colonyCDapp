@@ -252,12 +252,17 @@ export const getTransferNFTData = async (
   ]);
 };
 
-export const getTransferFundsData = async (
-  zodiacBridgeModule: Contract,
-  safe: Safe,
-  transaction: SafeTransactionData,
-  network: NetworkInfo,
-) => {
+export const getTransferFundsData = async ({
+  zodiacBridgeModule,
+  safe,
+  transaction,
+  network,
+}: {
+  zodiacBridgeModule: Contract;
+  safe: Safe;
+  transaction: SafeTransactionData;
+  network: NetworkInfo;
+}) => {
   if (!transaction.token) {
     throw new Error('Transaction does not contain token data.');
   }
@@ -421,12 +426,17 @@ export const getChainNameFromSafe = (safeDisplayName: string) => {
   return safeDisplayName.match(/\(([^()]*)\)$/)?.pop() || '';
 };
 
-export function* getTransactionEncodedData(
-  transactions: SafeTransactionData[],
-  safe: Safe,
-  network: NetworkInfo,
-  homeBridge: Contract,
-) {
+export function* getTransactionEncodedData({
+  transactions,
+  safe,
+  network,
+  homeBridge,
+}: {
+  transactions: SafeTransactionData[];
+  safe: Safe;
+  network: NetworkInfo;
+  homeBridge: Contract;
+}) {
   const { ZODIAC_BRIDGE_MODULE_ADDRESS } = yield getSafeAddresses();
   const zodiacBridgeModuleAddress = isDev
     ? ZODIAC_BRIDGE_MODULE_ADDRESS
@@ -462,12 +472,12 @@ export function* getTransactionEncodedData(
         );
         break;
       case SafeTransactionType.TransferFunds:
-        txDataToBeSentToZodiacModule = yield getTransferFundsData(
+        txDataToBeSentToZodiacModule = yield getTransferFundsData({
           zodiacBridgeModule,
           safe,
           transaction,
           network,
-        );
+        });
         break;
       case SafeTransactionType.ContractInteraction:
         txDataToBeSentToZodiacModule = yield getContractInteractionData(

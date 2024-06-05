@@ -132,17 +132,17 @@ function* createPaymentAction({
       colonyAddress,
     );
 
-    const [extensionPDID, extensionCSI] = yield getMultiPermissionProofs(
+    const [extensionPDID, extensionCSI] = yield getMultiPermissionProofs({
       colonyAddress,
       domainId,
-      [ColonyRole.Funding, ColonyRole.Administration],
-      oneTxPaymentClient.address,
-    );
-    const [userPDID, userCSI] = yield getMultiPermissionProofs(
+      roles: [ColonyRole.Funding, ColonyRole.Administration],
+      customAddress: oneTxPaymentClient.address,
+    });
+    const [userPDID, userCSI] = yield getMultiPermissionProofs({
       colonyAddress,
       domainId,
-      [ColonyRole.Funding, ColonyRole.Administration],
-    );
+      roles: [ColonyRole.Funding, ColonyRole.Administration],
+    });
 
     yield put(
       transactionAddParams(paymentAction.id, [

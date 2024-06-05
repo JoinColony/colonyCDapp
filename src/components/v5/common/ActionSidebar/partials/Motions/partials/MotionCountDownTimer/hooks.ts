@@ -28,12 +28,17 @@ const useMotionTimeoutPeriods = (colonyAddress: string, motionId: string) => {
   };
 };
 
-export const useMotionCountdown = (
-  state: MotionState,
-  motionId: string,
-  refetchMotionState: VoidFunction,
-  motionStakes: MotionStakes,
-): {
+export const useMotionCountdown = ({
+  state,
+  motionId,
+  refetchMotionState,
+  motionStakes,
+}: {
+  state: MotionState;
+  motionId: string;
+  refetchMotionState: VoidFunction;
+  motionStakes: MotionStakes;
+}): {
   timeLeft: number;
   countdown: Exclude<TimerValueProps['splitTime'], undefined>;
   isLoading: boolean;

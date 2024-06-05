@@ -59,11 +59,11 @@ export const useManagePermissions = (
         return;
       }
 
-      const userPermissions = getUserRolesForDomain(
+      const userPermissions = getUserRolesForDomain({
         colony,
-        member,
-        Number(team),
-      );
+        userAddress: member,
+        domainId: Number(team),
+      });
       const userRole = getRole(userPermissions);
 
       setValue('role', userRole.permissions.length ? userRole.role : undefined);

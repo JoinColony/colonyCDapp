@@ -148,24 +148,29 @@ function* fundExpenditureMotion({
 
     const batchKey = 'createMotion';
 
-    yield createGroupTransaction(createMotion, batchKey, meta, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
-        motionDomainId,
-        childSkillIndex,
-        ADDRESS_ZERO,
-        encodedMulticallAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 1,
+    yield createGroupTransaction({
+      channel: createMotion,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          motionDomainId,
+          childSkillIndex,
+          ADDRESS_ZERO,
+          encodedMulticallAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 1,
+        },
       },
     });
 

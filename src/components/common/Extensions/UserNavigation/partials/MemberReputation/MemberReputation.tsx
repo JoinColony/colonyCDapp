@@ -19,12 +19,12 @@ const MemberReputation: FC<MemberReputationProps> = ({
   textClassName = 'text-3',
   walletAddress,
 }) => {
-  const { userReputation, totalReputation } = useUserReputation(
+  const { userReputation, totalReputation } = useUserReputation({
     colonyAddress,
     walletAddress,
     domainId,
     rootHash,
-  );
+  });
   const percentageReputation = calculatePercentageReputation(
     userReputation,
     totalReputation,

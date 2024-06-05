@@ -124,35 +124,55 @@ function* colonyCreate({
    * Create all transactions for the group.
    */
   try {
-    yield createGroupTransaction(createColony, batchKey, meta, {
-      context: ClientType.NetworkClient,
-      methodName: 'createColonyForFrontend',
-      ready: false,
+    yield createGroupTransaction({
+      channel: createColony,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.NetworkClient,
+        methodName: 'createColonyForFrontend',
+        ready: false,
+      },
     });
 
     if (setOwner) {
-      yield createGroupTransaction(setOwner, batchKey, meta, {
-        context: ClientType.TokenClient,
-        methodName: 'setOwner',
-        ready: false,
+      yield createGroupTransaction({
+        channel: setOwner,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.TokenClient,
+          methodName: 'setOwner',
+          ready: false,
+        },
       });
     }
 
     if (installExtensions) {
-      yield createGroupTransaction(installExtensions, batchKey, meta, {
-        context: ClientType.ColonyClient,
-        methodName: 'multicall',
-        methodContext: 'installExtensions',
-        ready: false,
+      yield createGroupTransaction({
+        channel: installExtensions,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'multicall',
+          methodContext: 'installExtensions',
+          ready: false,
+        },
       });
     }
 
     if (setExtensionsRoles) {
-      yield createGroupTransaction(setExtensionsRoles, batchKey, meta, {
-        context: ClientType.ColonyClient,
-        methodContext: 'setExtensionsRoles',
-        methodName: 'multicall',
-        ready: false,
+      yield createGroupTransaction({
+        channel: setExtensionsRoles,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodContext: 'setExtensionsRoles',
+          methodName: 'multicall',
+          ready: false,
+        },
       });
     }
 

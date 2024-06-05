@@ -11,12 +11,17 @@ import { useController } from 'react-hook-form';
 import { formatText } from '~utils/intl.ts';
 import { stripAndremoveHeadingsFromHTML } from '~utils/strings.ts';
 
-export const useRichText = (
-  name: string,
-  isDecriptionFieldExpanded: boolean,
-  isReadonly?: boolean,
-  maxDescriptionLength?: number,
-) => {
+export const useRichText = ({
+  name,
+  isDecriptionFieldExpanded,
+  isReadonly,
+  maxDescriptionLength,
+}: {
+  name: string;
+  isDecriptionFieldExpanded: boolean;
+  isReadonly?: boolean;
+  maxDescriptionLength?: number;
+}) => {
   const [notFormattedContent, setNotFormattedContent] = useState<string>('');
   const { field } = useController({
     name,

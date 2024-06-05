@@ -41,24 +41,34 @@ function* tokenUnlockAction({
     /*
      * Add the tokenUnlock transaction to the group
      */
-    yield createGroupTransaction(tokenUnlock, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'unlockToken',
-      identifier: colonyAddress,
-      params: [],
-      ready: false,
+    yield createGroupTransaction({
+      channel: tokenUnlock,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.ColonyClient,
+        methodName: 'unlockToken',
+        identifier: colonyAddress,
+        params: [],
+        ready: false,
+      },
     });
 
     /*
      * If annotation message exists add the transaction to the group
      */
     if (annotationMessage) {
-      yield createGroupTransaction(annotateTokenUnlock, batchKey, meta, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        ready: false,
+      yield createGroupTransaction({
+        channel: annotateTokenUnlock,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
+        },
       });
     }
 

@@ -61,12 +61,17 @@ const useVotingWidgetUpdate = (
   return { hasUserVoted, setHasUserVoted };
 };
 
-export const useVotingStep = (
-  actionData: MotionAction,
-  startPollingAction: (pollingInterval: number) => void,
-  stopPollingAction: () => void,
-  transactionId: string,
-) => {
+export const useVotingStep = ({
+  actionData,
+  startPollingAction,
+  stopPollingAction,
+  transactionId,
+}: {
+  actionData: MotionAction;
+  startPollingAction: (pollingInterval: number) => void;
+  stopPollingAction: () => void;
+  transactionId: string;
+}) => {
   const {
     colony: { colonyAddress, nativeToken },
   } = useColonyContext();

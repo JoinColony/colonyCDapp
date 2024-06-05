@@ -1,3 +1,4 @@
+import { type ClientType } from '@colony/colony-js';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -8,18 +9,27 @@ import {
   transactionCancel,
   transactionRetry,
 } from '~redux/actionCreators/index.ts';
+import { type TransactionId } from '~redux/immutable/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
+import { type ExtendedClientType } from '~types/transactions.ts';
 
-export const useGroupedTransactionContent = (
+export const useGroupedTransactionContent = ({
   id,
-  error,
   methodContext,
   methodName,
   metatransaction,
   context,
   status,
   selected,
-) => {
+}: {
+  id: TransactionId;
+  methodContext: string | undefined;
+  methodName: string;
+  metatransaction: boolean;
+  context: ClientType | ExtendedClientType;
+  status: TransactionStatus;
+  selected: boolean;
+}) => {
   const dispatch = useDispatch();
 
   const handleCancelTransaction = useCallback(() => {

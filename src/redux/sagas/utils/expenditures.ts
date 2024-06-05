@@ -65,12 +65,17 @@ export const getPayoutAmount = (
   return totalToPay;
 };
 
-export const getSetExpenditureValuesFunctionParams = (
-  nativeExpenditureId: number,
-  payouts: ExpenditurePayoutFieldValue[],
-  networkInverseFee: string,
-  isStaged?: boolean,
-): MethodParams => {
+export const getSetExpenditureValuesFunctionParams = ({
+  nativeExpenditureId,
+  payouts,
+  networkInverseFee,
+  isStaged,
+}: {
+  nativeExpenditureId: number;
+  payouts: ExpenditurePayoutFieldValue[];
+  networkInverseFee: string;
+  isStaged?: boolean;
+}): MethodParams => {
   // Group payouts by token addresses
   const payoutsByTokenAddresses =
     groupExpenditurePayoutsByTokenAddresses(payouts);

@@ -54,12 +54,12 @@ const Table = <T,>({
       ...columns,
       ...(getMenuProps && !verticalLayout
         ? [
-            makeMenuColumn<T>(
+            makeMenuColumn<T>({
               helper,
               getMenuProps,
               meatBallMenuSize,
               meatBallMenuStaticSize,
-            ),
+            }),
           ]
         : []),
     ],

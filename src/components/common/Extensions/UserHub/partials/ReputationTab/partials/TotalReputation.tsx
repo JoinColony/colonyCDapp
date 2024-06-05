@@ -25,10 +25,10 @@ const TotalReputation: FC<TotalReputationProps> = ({
   nativeToken,
 }) => {
   const { formatMessage } = useIntl();
-  const { userReputation, totalReputation } = useUserReputation(
+  const { userReputation, totalReputation } = useUserReputation({
     colonyAddress,
-    wallet?.address,
-  );
+    walletAddress: wallet?.address,
+  });
 
   const percentageReputation = calculatePercentageReputation(
     userReputation || '0',

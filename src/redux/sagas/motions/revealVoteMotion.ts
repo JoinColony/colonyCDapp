@@ -123,18 +123,18 @@ function* revealVoteMotion({
         ['revealVoteMotionTransaction'],
       );
 
-      yield createGroupTransaction(
-        revealVoteMotionTransaction,
-        'revealVoteMotion',
+      yield createGroupTransaction({
+        channel: revealVoteMotionTransaction,
+        batchKey: 'revealVoteMotion',
         meta,
-        {
+        config: {
           context: ClientType.VotingReputationClient,
           methodName: 'revealVote',
           identifier: colonyAddress,
           params: [motionId, salt, sideVoted, key, value, branchMask, siblings],
           ready: false,
         },
-      );
+      });
 
       yield takeFrom(
         revealVoteMotionTransaction.channel,

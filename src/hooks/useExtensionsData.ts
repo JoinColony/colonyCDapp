@@ -72,12 +72,12 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
           return null;
         }
 
-        return mapToInstalledExtensionData(
+        return mapToInstalledExtensionData({
           colony,
           extensionConfig,
-          extension,
+          colonyExtension: extension,
           version,
-        );
+        });
       })
       .filter(notNull);
   }, [colony, colonyExtensions, extensionVersions]);

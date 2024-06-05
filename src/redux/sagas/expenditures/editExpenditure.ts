@@ -69,20 +69,20 @@ function* editExpenditureAction({
           id: meta.id,
           index: 0,
         },
-        params: getSetExpenditureValuesFunctionParams(
-          expenditure.nativeId,
-          resolvedPayouts,
+        params: getSetExpenditureValuesFunctionParams({
+          nativeExpenditureId: expenditure.nativeId,
+          payouts: resolvedPayouts,
           networkInverseFee,
-          expenditure.type === ExpenditureType.Staged,
-        ),
+          isStaged: expenditure.type === ExpenditureType.Staged,
+        }),
       });
     } else {
-      const multicallData = yield getMulticallDataForUpdatedPayouts(
+      const multicallData = yield getMulticallDataForUpdatedPayouts({
         expenditure,
-        resolvedPayouts,
+        payouts: resolvedPayouts,
         colonyClient,
         networkInverseFee,
-      );
+      });
 
       yield fork(createTransaction, editExpenditure.id, {
         context: ClientType.ColonyClient,

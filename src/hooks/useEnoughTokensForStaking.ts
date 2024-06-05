@@ -3,12 +3,17 @@ import { BigNumber } from 'ethers';
 import { useGetUserTokenBalanceQuery } from '~gql';
 import { type Address } from '~types/index.ts';
 
-const useEnoughTokensForStaking = (
-  tokenAddress: Address,
-  walletAddress: Address,
-  colonyAddress: Address,
-  requiredStake: string,
-) => {
+const useEnoughTokensForStaking = ({
+  tokenAddress,
+  walletAddress,
+  colonyAddress,
+  requiredStake,
+}: {
+  tokenAddress: Address;
+  walletAddress: Address;
+  colonyAddress: Address;
+  requiredStake: string;
+}) => {
   const { data, loading: loadingUserTokenBalance } =
     useGetUserTokenBalanceQuery({
       variables: {

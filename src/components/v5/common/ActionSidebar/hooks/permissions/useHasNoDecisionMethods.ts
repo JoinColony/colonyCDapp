@@ -50,11 +50,11 @@ const useHasNoDecisionMethods = () => {
 
   const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
 
-  const userRootRoles = getUserRolesForDomain(
+  const userRootRoles = getUserRolesForDomain({
     colony,
-    user.walletAddress,
-    Id.RootDomain,
-  );
+    userAddress: user.walletAddress,
+    domainId: Id.RootDomain,
+  });
 
   const userRoles = getAllUserRoles(colony, user.walletAddress);
 

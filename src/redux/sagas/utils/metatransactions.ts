@@ -36,16 +36,25 @@ export const signTypedData = async ({
   return { r, s, v, signature };
 };
 
-export const generateEIP2612TypedData = (
-  userAddress: Address,
-  tokenName: string,
-  chainId: string,
-  verifyingContract: Address,
-  spender: Address,
-  value: BigNumberish,
-  nonce: BigNumberish,
-  deadline: number,
-) => ({
+export const generateEIP2612TypedData = ({
+  userAddress,
+  tokenName,
+  chainId,
+  verifyingContract,
+  spender,
+  value,
+  nonce,
+  deadline,
+}: {
+  userAddress: Address;
+  tokenName: string;
+  chainId: string;
+  verifyingContract: Address;
+  spender: Address;
+  value: BigNumberish;
+  nonce: BigNumberish;
+  deadline: number;
+}) => ({
   types: {
     Permit: [
       { name: 'owner', type: 'address' },
@@ -75,12 +84,17 @@ export const generateEIP2612TypedData = (
   },
 });
 
-export const generateMetatransactionMessage = async (
-  encodedTransaction: string,
-  contractAddress: Address,
-  chainId: string,
-  nonce: BigNumberish,
-): Promise<{
+export const generateMetatransactionMessage = async ({
+  encodedTransaction,
+  contractAddress,
+  chainId,
+  nonce,
+}: {
+  encodedTransaction: string;
+  contractAddress: Address;
+  chainId: string;
+  nonce: BigNumberish;
+}): Promise<{
   message: string;
   messageUint8: Uint8Array;
 }> => {

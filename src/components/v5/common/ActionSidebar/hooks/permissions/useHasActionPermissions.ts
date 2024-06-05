@@ -26,12 +26,12 @@ const useHasActionPermissions = () => {
     return undefined;
   }
 
-  const hasPermissions = getHasActionPermissions(
+  const hasPermissions = getHasActionPermissions({
     colony,
-    user?.walletAddress ?? '',
+    userAddress: user?.walletAddress ?? '',
     actionType,
     formValues,
-  );
+  });
 
   return hasPermissions;
 };

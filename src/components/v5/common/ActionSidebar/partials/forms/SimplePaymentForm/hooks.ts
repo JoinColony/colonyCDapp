@@ -50,13 +50,18 @@ export const useValidationSchema = () => {
                 );
               },
               (value, context) =>
-                amountGreaterThanZeroValidation(value, context, colony),
+                amountGreaterThanZeroValidation({ value, context, colony }),
             )
             .test(
               'enough-tokens',
               formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
               (value, context) =>
-                hasEnoughFundsValidation(value, context, selectedTeam, colony),
+                hasEnoughFundsValidation({
+                  value,
+                  context,
+                  selectedTeam,
+                  colony,
+                }),
             ),
           tokenAddress: string().address().required(),
           createdIn: number().defined(),

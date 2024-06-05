@@ -8,15 +8,23 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { type StakeMotionPayload } from './types.ts';
 
-export const getStakingTransformFn = (
-  userAddress: string,
-  colonyAddress: string,
-  motionId: string,
-  nativeTokenDecimals: number | undefined,
-  tokenAddress: string,
-  activeAmount: string,
-  actionId?: string,
-) =>
+export const getStakingTransformFn = ({
+  userAddress,
+  colonyAddress,
+  motionId,
+  nativeTokenDecimals,
+  tokenAddress,
+  activeAmount,
+  actionId,
+}: {
+  userAddress: string;
+  colonyAddress: string;
+  motionId: string;
+  nativeTokenDecimals: number | undefined;
+  tokenAddress: string;
+  activeAmount: string;
+  actionId?: string;
+}) =>
   mapPayload(({ amount, voteType }) => {
     const amountValue = BigNumber.from(
       moveDecimal(amount, getTokenDecimalsWithFallback(nativeTokenDecimals)),
@@ -50,13 +58,19 @@ export const getHandleStakeSuccessFn =
     pollLockedTokenBalance();
   };
 
-export const getPredictedPercentage = (
-  voteTypeValue: MotionVote | undefined,
-  amount: string,
-  tokenDecimals: number,
-  supportRemaining: string,
-  opposeRemaining: string,
-) => {
+export const getPredictedPercentage = ({
+  voteTypeValue,
+  amount,
+  tokenDecimals,
+  supportRemaining,
+  opposeRemaining,
+}: {
+  voteTypeValue: MotionVote | undefined;
+  amount: string;
+  tokenDecimals: number;
+  supportRemaining: string;
+  opposeRemaining: string;
+}) => {
   let predictedPercentage = 0;
 
   try {

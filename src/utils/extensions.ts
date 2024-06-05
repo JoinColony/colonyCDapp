@@ -30,22 +30,27 @@ export const mapToInstallableExtensionData = (
   };
 };
 
-export const mapToInstalledExtensionData = (
-  colony: Colony,
-  extensionConfig: ExtensionConfig,
-  colonyExtension: ColonyExtension,
-  version: number,
-): InstalledExtensionData => {
+export const mapToInstalledExtensionData = ({
+  colony,
+  extensionConfig,
+  colonyExtension,
+  version,
+}: {
+  colony: Colony;
+  extensionConfig: ExtensionConfig;
+  colonyExtension: ColonyExtension;
+  version: number;
+}): InstalledExtensionData => {
   // extension is also considered initialized if it has no initialization params
   const isInitialized =
     colonyExtension?.isInitialized || !extensionConfig.initializationParams;
   const isEnabled = isInitialized && !colonyExtension.isDeprecated;
 
-  const extensionRoles = getUserRolesForDomain(
+  const extensionRoles = getUserRolesForDomain({
     colony,
-    colonyExtension.address,
-    Id.RootDomain,
-  );
+    userAddress: colonyExtension.address,
+    domainId: Id.RootDomain,
+  });
   const missingPermissions = extensionConfig.neededColonyPermissions.filter(
     (neededRole) => {
       return !userHasRole(extensionRoles, neededRole);

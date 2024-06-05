@@ -25,14 +25,21 @@ const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
 const MAPPING = false;
 const ARRAY = true;
 
-export const getMulticallDataForStageRelease = (
-  expenditure: Expenditure,
-  slotId: number,
-  colonyClient: AnyColonyClient,
-  permissionDomainId: BigNumber,
-  childSkillIndex: BigNumber,
-  tokenAddresses: string[],
-) => {
+export const getMulticallDataForStageRelease = ({
+  expenditure,
+  slotId,
+  colonyClient,
+  permissionDomainId,
+  childSkillIndex,
+  tokenAddresses,
+}: {
+  expenditure: Expenditure;
+  slotId: number;
+  colonyClient: AnyColonyClient;
+  permissionDomainId: BigNumber;
+  childSkillIndex: BigNumber;
+  tokenAddresses: string[];
+}) => {
   const encodedMulticallData: string[] = [];
 
   encodedMulticallData.push(
@@ -64,12 +71,17 @@ export const getMulticallDataForStageRelease = (
  * Helper function returning an array of encoded multicall data containing transactions
  * needed to update expenditure payouts
  */
-export const getMulticallDataForUpdatedPayouts = async (
-  expenditure: Expenditure,
-  payouts: ExpenditurePayoutFieldValue[],
-  colonyClient: AnyColonyClient,
-  networkInverseFee: string,
-) => {
+export const getMulticallDataForUpdatedPayouts = async ({
+  expenditure,
+  payouts,
+  colonyClient,
+  networkInverseFee,
+}: {
+  expenditure: Expenditure;
+  payouts: ExpenditurePayoutFieldValue[];
+  colonyClient: AnyColonyClient;
+  networkInverseFee: string;
+}) => {
   const [permissionDomainId, childSkillIndex] = await getPermissionProofs(
     colonyClient.networkClient,
     colonyClient,

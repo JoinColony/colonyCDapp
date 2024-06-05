@@ -24,12 +24,12 @@ const ManageReputationTableCompletedState: FC<
   const {
     userReputation: oldUserReputation = '0',
     totalReputation: oldTotalReputation = '0',
-  } = useUserReputation(
-    colony.colonyAddress,
-    recipientAddress,
+  } = useUserReputation({
+    colonyAddress: colony.colonyAddress,
+    walletAddress: recipientAddress,
     domainId,
     rootHash,
-  );
+  });
 
   const oldPercentageReputation =
     calculatePercentageReputation(oldUserReputation, oldTotalReputation) || 0;

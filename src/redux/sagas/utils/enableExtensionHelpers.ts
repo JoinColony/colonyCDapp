@@ -1,7 +1,6 @@
 import { BigNumber } from 'ethers';
 
 import { ContextModule, getContext, setContext } from '~context/index.ts';
-import { createTransactionChannels } from '~redux/sagas/index.ts';
 import { type TxConfig } from '~types/transactions.ts';
 
 export type Channel = Omit<TxConfig, 'methodName'>;
@@ -29,35 +28,3 @@ export const modifyParams = (params, payload) =>
     }
     return payload[paramName];
   });
-
-export function* setupEnablingGroupTransactions(
-  metaId: string,
-  initParams: any[],
-  extensionId: string,
-  additionalChannels?: {
-    [index: string]: Channel | undefined;
-  },
-) {
-  try {
-    const channels = {
-      initialise: {
-        context: `${extensionId}Client`,
-        params: initParams,
-      },
-      ...additionalChannels,
-    };
-
-    const transactionChannels = yield createTransactionChannels(
-      metaId,
-      Object.keys(channels),
-    );
-
-    return {
-      channels,
-      transactionChannels,
-    };
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-}

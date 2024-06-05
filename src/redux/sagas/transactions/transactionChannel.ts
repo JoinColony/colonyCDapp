@@ -91,12 +91,17 @@ const channelSendTransaction = async (
   return null;
 };
 
-const channelGetTransactionReceipt = async (
-  { id, params }: TransactionRecord,
-  { hash }: TransactionResponseWithHash,
-  provider: Provider,
+const channelGetTransactionReceipt = async ({
+  tx: { id, params },
+  transactionResponseWithHash: { hash },
+  provider,
   emit,
-) => {
+}: {
+  tx: TransactionRecord;
+  transactionResponseWithHash: TransactionResponseWithHash;
+  provider: Provider;
+  emit: any;
+}) => {
   try {
     // Sometimes the provider does not return a transaction receipt, so we try again
     // (for a really long time)
@@ -118,12 +123,17 @@ const channelGetTransactionReceipt = async (
   return null;
 };
 
-const channelGetEventData = async (
-  { id, params, metatransaction }: TransactionRecord,
-  receipt: TransactionReceipt,
-  client: ContractClient,
+const channelGetEventData = async ({
+  tx: { id, params, metatransaction },
+  receipt,
+  client,
   emit,
-) => {
+}: {
+  tx: TransactionRecord;
+  receipt: TransactionReceipt;
+  client: ContractClient;
+  emit: any;
+}) => {
   try {
     const eventData = parseEventData(client, receipt);
     const txSucceededEvent: TxSucceededEvent = {
@@ -144,12 +154,17 @@ const channelGetEventData = async (
   return null;
 };
 
-const channelStart = async (
-  tx: TransactionRecord,
-  txPromise: Promise<TransactionResponse>,
-  client: ContractClient,
+const channelStart = async ({
+  tx,
+  txPromise,
+  client,
   emit,
-) => {
+}: {
+  tx: TransactionRecord;
+  txPromise: Promise<TransactionResponse>;
+  client: ContractClient;
+  emit: any;
+}) => {
   try {
     const sentTx = await channelSendTransaction(tx, txPromise, emit);
     if (!sentTx) {
@@ -162,16 +177,21 @@ const channelStart = async (
       return null;
     }
 
-    const receipt = await channelGetTransactionReceipt(
+    const receipt = await channelGetTransactionReceipt({
       tx,
-      sentTx,
-      client.provider,
+      transactionResponseWithHash: sentTx,
+      provider: client.provider,
       emit,
-    );
+    });
     if (!receipt) return null;
 
     if (receipt.status === 1) {
-      await channelGetEventData(tx, receipt, client, emit);
+      await channelGetEventData({
+        tx,
+        receipt,
+        client,
+        emit,
+      });
     } else {
       /**
        * @todo Use revert reason strings (once supported) in transactions.
@@ -206,7 +226,7 @@ const transactionChannel = (
 ) =>
   eventChannel(
     (emit) => {
-      channelStart(tx, txPromise, client, emit);
+      channelStart({ tx, txPromise, client, emit });
       return () => {};
     },
     <Buffer<null>>buffers.fixed(),

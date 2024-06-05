@@ -149,18 +149,11 @@ function* manageExistingSafesAction({
           input: {
             id: colonyAddress,
             safes: updatedColonySafes,
-            changelog: getUpdatedColonyMetadataChangelog(
-              txHash,
-              colony.metadata,
-              undefined,
-              undefined,
-              false,
-              false,
-              false,
-              false,
-              false,
-              updatedColonySafes,
-            ),
+            changelog: getUpdatedColonyMetadataChangelog({
+              transactionHash: txHash,
+              metadata: colony.metadata,
+              newSafes: updatedColonySafes,
+            }),
           },
         },
         // Update colony object with modified metadata

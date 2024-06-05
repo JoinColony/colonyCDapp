@@ -91,12 +91,17 @@ export function* getMoveFundsPermissionProofs(
   return [fromPermissionDomainId, fromChildSkillIndex, toChildSkillIndex];
 }
 
-export function* getMultiPermissionProofs(
-  colonyAddress: string,
-  domainId: BigNumberish,
-  roles: ColonyRole[],
-  customAddress?: string,
-) {
+export function* getMultiPermissionProofs({
+  colonyAddress,
+  domainId,
+  roles,
+  customAddress,
+}: {
+  colonyAddress: string;
+  domainId: BigNumberish;
+  roles: ColonyRole[];
+  customAddress?: string;
+}) {
   const colonyManager: ColonyManager = yield getColonyManager();
 
   const colonyClient = yield colonyManager.getClient(

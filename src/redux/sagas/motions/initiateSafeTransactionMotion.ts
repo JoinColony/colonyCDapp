@@ -99,12 +99,12 @@ function* initiateSafeTransactionMotion({
         'annotateInitiateSafeTransaction',
       ]);
 
-    const transactionData: string[] = yield getTransactionEncodedData(
+    const transactionData: string[] = yield getTransactionEncodedData({
       transactions,
       safe,
       network,
       homeBridge,
-    );
+    });
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       'makeArbitraryTransactions',

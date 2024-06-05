@@ -36,14 +36,14 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
     }),
   );
   const value: SplitPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
-  const columns = useRecipientsFieldTableColumns(
+  const columns = useRecipientsFieldTableColumns({
     name,
     token,
     distributionMethod,
-    value,
+    data: value,
     amount,
     fieldArrayMethods,
-  );
+  });
   const isMobile = useMobile();
   const getMenuProps = ({ index }) => ({
     cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
@@ -65,12 +65,12 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
-  useDistributionMethodUpdate(
+  useDistributionMethodUpdate({
     distributionMethod,
-    value,
+    data: value,
     fieldArrayMethods,
     amount,
-  );
+  });
 
   return (
     <div>
