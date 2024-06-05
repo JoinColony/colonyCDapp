@@ -102,9 +102,6 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       ];
     }
     case actionType.includes(ColonyActionType.ColonyEdit):
-    case actionType.includes(ExtendedColonyActionType.UpdateTokens): {
-      return [ActionPageDetails.Type, ActionPageDetails.Name];
-    }
     case actionType.includes(ColonyActionType.EditDomain): {
       return [
         ActionPageDetails.Type,
@@ -585,7 +582,7 @@ const getChangelogItem = (
 };
 /**
  * Function returning action type based on the action data, that can include extended action types,
- * e.g. UpdateAddressBook, UpdateTokens
+ * e.g. UpdateAddressBook
  */
 export const getExtendedActionType = (
   actionData: ColonyAction,
@@ -596,10 +593,6 @@ export const getExtendedActionType = (
 
   if (changelogItem?.hasObjectiveChanged) {
     return ExtendedColonyActionType.UpdateColonyObjective;
-  }
-
-  if (changelogItem?.haveTokensChanged) {
-    return ExtendedColonyActionType.UpdateTokens;
   }
 
   if (changelogItem?.hasWhitelistChanged) {

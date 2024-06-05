@@ -42,7 +42,6 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
       ${ExtendedColonyActionType.UpdateAddressBook} {Address book was updated}
-      ${ExtendedColonyActionType.UpdateTokens} {Manage approved tokens by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -92,7 +91,6 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
       ${ExtendedColonyActionType.UpdateAddressBook} {Update Address Book}
-      ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeRawTransaction} {Raw transaction}
