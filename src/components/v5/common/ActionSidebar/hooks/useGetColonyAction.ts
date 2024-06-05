@@ -1,5 +1,5 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
@@ -10,7 +10,6 @@ import {
   useGetMotionStateQuery,
 } from '~gql';
 import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
-import noop from '~utils/noop.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
 
@@ -31,6 +30,8 @@ const useGetColonyAction = (transactionHash?: string) => {
   const isInvalidTx = !isTransactionFormat(transactionHash);
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
   const [isPolling, setIsPolling] = useState(!isInvalidTx);
+
+  const pollTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const pollInterval = getSafePollingInterval();
 
@@ -64,23 +65,18 @@ const useGetColonyAction = (transactionHash?: string) => {
         refetchColony();
       }
 
-      return noop;
+      return;
     }
 
-    const cancelPollingTimer = setTimeout(
-      stopPollingForAction,
-      POLLING_TIMEOUT,
-    );
+    if (pollTimerRef.current) {
+      clearTimeout(pollTimerRef.current);
+
+      pollTimerRef.current = null;
+    }
+
+    pollTimerRef.current = setTimeout(stopPollingForAction, POLLING_TIMEOUT);
 
     startPollingForAction(pollInterval);
-
-    return () => {
-      if (cancelPollingTimer) {
-        clearTimeout(cancelPollingTimer);
-      }
-
-      stopPollingForAction();
-    };
   }, [
     action,
     pollInterval,
@@ -90,6 +86,23 @@ const useGetColonyAction = (transactionHash?: string) => {
     startPollingForAction,
     stopPollingForAction,
   ]);
+
+  useEffect(() => {
+    return () => {
+      // The purpose of this is to isolate the concern of
+      // cleaning up the timeout scheduled for stopping the polling,
+      // and also to stop polling action polling altogether when the node unmounts.
+      // This effect should receive an empty array dependency to ensure that
+      // it only ever calls the return statement when its node unmounts,
+      // and not when any other state gets updated.
+      if (pollTimerRef.current) {
+        clearTimeout(pollTimerRef.current);
+      }
+
+      stopPollingForAction();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const {
     data: motionStateData,
