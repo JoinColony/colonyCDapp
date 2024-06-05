@@ -1,19 +1,39 @@
 import { RootMotionMethodNames } from '~redux/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 
 import { type UnlockTokenFormValues } from './consts.ts';
 
 export const getUnlockTokenPayload = (
   colony: Colony,
-  { description: annotationMessage, title }: UnlockTokenFormValues,
-) => ({
-  annotationMessage: annotationMessage
-    ? sanitizeHTML(annotationMessage)
-    : undefined,
-  colonyAddress: colony.colonyAddress,
-  operationName: RootMotionMethodNames.UnlockToken,
-  motionParams: [],
-  colonyName: colony.name,
-  customActionTitle: title,
-});
+  values: UnlockTokenFormValues,
+) => {
+  const { description: annotationMessage, title, decisionMethod } = values;
+  const commonPayload = {
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
+    colonyAddress: colony.colonyAddress,
+    colonyName: colony.name,
+    customActionTitle: title,
+  };
+
+  if (
+    decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.MultiSig
+  ) {
+    return {
+      ...commonPayload,
+      operationName: RootMotionMethodNames.UnlockToken,
+      colonyRoles: extractColonyRoles(colony.roles),
+      colonyDomains: extractColonyDomains(colony.domains),
+      motionParams: [],
+      isMultiSig: decisionMethod === DecisionMethod.MultiSig,
+    };
+  }
+
+  return commonPayload;
+};

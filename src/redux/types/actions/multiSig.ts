@@ -1,5 +1,3 @@
-import { type BigNumber } from 'ethers';
-
 import { type UserRole } from '~constants/permissions.ts';
 import { type ColonyRoleFragment, type MultiSigVote } from '~gql';
 import { type Domain } from '~types/graphql.ts';
@@ -15,11 +13,6 @@ import {
   type ActionTypeWithMeta,
 } from './index.ts';
 
-export enum RootMultiSigMethodNames {
-  MintTokens = 'mintTokens',
-  Upgrade = 'upgrade',
-  UnlockToken = 'unlockToken',
-}
 type DomainThreshold = {
   skillId: number;
   threshold: number;
@@ -69,27 +62,6 @@ export type MultiSigActionTypes =
   | ErrorActionType<ActionTypes.MULTISIG_FINALIZE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MULTISIG_FINALIZE_SUCCESS,
-      MetaWithSetter<object>
-    >
-  | UniqueActionType<
-      ActionTypes.ROOT_MULTISIG,
-      {
-        operationName: RootMultiSigMethodNames;
-        customActionTitle: string;
-        colonyAddress: Address;
-        colonyDomains: Domain[];
-        colonyRoles: ColonyRoleFragment[];
-        colonyName?: string;
-        domainId?: number;
-        multiSigParams: [BigNumber] | [string];
-        annotationMessage?: string;
-        requiredRole: UserRole;
-      },
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<ActionTypes.ROOT_MULTISIG_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.ROOT_MULTISIG_SUCCESS,
       MetaWithSetter<object>
     >
   | UniqueActionType<

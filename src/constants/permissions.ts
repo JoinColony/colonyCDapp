@@ -11,7 +11,6 @@ export enum UserRole {
   Custom = 'custom',
 }
 
-// @TODO currently just for multiSig, because Owner doesn't have the recovery role there, should we unify this?
 export const userRolePermissions: Record<UserRole, ColonyRole[]> = {
   [UserRole.Mod]: [ColonyRole.Administration],
   [UserRole.Payer]: [

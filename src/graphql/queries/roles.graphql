@@ -1,7 +1,23 @@
-query GetColonyRoles($filter: ModelColonyRoleFilterInput) {
-  listColonyRoles(filter: $filter) {
+query GetRolesForDomain(
+  $domainId: ID!
+  $colonyAddress: ID!
+  $filter: ModelColonyRoleFilterInput!
+) {
+  getRoleByDomainAndColony(
+    domainId: $domainId
+    colonyAddress: { eq: $colonyAddress }
+    filter: $filter
+  ) {
     items {
       id
+      targetUser {
+        id
+        profile {
+          avatar
+          displayName
+        }
+      }
+      targetAddress
     }
   }
 }
