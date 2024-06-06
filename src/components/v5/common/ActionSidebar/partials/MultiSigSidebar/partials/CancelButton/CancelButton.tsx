@@ -30,7 +30,7 @@ const CancelButton: FC<CancelButtonProps> = ({ multiSigId }) => {
     await cancelMultiSig(cancelPayload);
   };
 
-  return <Button onClick={handleFinalizeClick}>Finalize rejection</Button>;
+  return <Button onClick={handleFinalizeClick}>Cancel</Button>;
 };
 
 CancelButton.displayName = displayName;
