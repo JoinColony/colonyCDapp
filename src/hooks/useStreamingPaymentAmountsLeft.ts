@@ -40,7 +40,8 @@ const useStreamingPaymentAmountsLeft = (
     ).mul(
       BigNumber.from(durationToClaim)
         .mul(BigNumber.from(10).pow(18))
-        .div(BigNumber.from(streamingPayment.interval)),
+        .div(BigNumber.from(streamingPayment.interval))
+        .div(BigNumber.from(10).pow(18)),
     );
 
     amountAvailableToClaim = amountAvailableSinceStart.sub(amountClaimedToDate);
