@@ -8789,8 +8789,11 @@ export type StreamingPaymentClaim = {
   __typename?: 'StreamingPaymentClaim';
   amount: Scalars['String'];
   timestamp: Scalars['AWSTimestamp'];
+<<<<<<< HEAD
   tokenAddress: Scalars['ID'];
 >>>>>>> e64580ff0 (Add streaming payment claims)
+=======
+>>>>>>> a9ca6d1e1 (Schema update: remove token address from StreamingPaymentClaim)
 };
 
 export type StreamingPaymentClaimInput = {
@@ -8805,8 +8808,11 @@ export type StreamingPaymentClaimInput = {
 =======
 =======
   timestamp: Scalars['AWSTimestamp'];
+<<<<<<< HEAD
 >>>>>>> 881864577 (Add timestamp to streaming payment claims and code cleanup)
   tokenAddress: Scalars['ID'];
+=======
+>>>>>>> a9ca6d1e1 (Schema update: remove token address from StreamingPaymentClaim)
 };
 
 >>>>>>> e64580ff0 (Add streaming payment claims)
@@ -10786,7 +10792,7 @@ export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: st
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
-export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, tokenAddress: string, amount: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string, timestamp: number }> | null };
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, tokenAddress: string, amount: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: number }> | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -11316,7 +11322,7 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 }>;
 
 
-export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, tokenAddress: string, amount: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string, timestamp: number }> | null } | null };
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, tokenAddress: string, amount: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: number }> | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -12755,7 +12761,6 @@ export const StreamingPaymentChangesFragmentDoc = gql`
   }
   claims {
     amount
-    tokenAddress
     timestamp
   }
 }
