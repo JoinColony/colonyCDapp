@@ -6,12 +6,15 @@ import {
   type ColonyActionType,
   type MultiSigUserSignatureFragment,
   type ColonyMultiSigFragment,
+  MultiSigVote,
 } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
 
+import CancelButton from '../CancelButton/CancelButton.tsx';
 import FinalizeButton from '../FinalizeButton/FinalizeButton.tsx';
+import RejectButton from '../RejectButton/RejectButton.tsx';
 import RemoveVoteButton from '../RemoveVoteButton/RemoveVoteButton.tsx';
 import Signees from '../Signees/Signees.tsx';
 import VoteButton from '../VoteButton/VoteButton.tsx';
@@ -50,9 +53,19 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     (signature) => signature?.userAddress === user?.walletAddress,
   );
 
-  const isMultiSigFinalizable = signatures.length >= threshold;
+  const isMultiSigFinalizable =
+    signatures.filter((signature) => signature.vote === MultiSigVote.Approve)
+      .length >= threshold;
+  const isMultiSigCancelable =
+    signatures.filter((signature) => signature.vote === MultiSigVote.Reject)
+      .length >= threshold;
+  const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigExecuted = multiSigData.isExecuted;
   const isMultiSigExecutedSuccessfully = multiSigData.isSuccess;
+
+  if (isMultiSigRejected) {
+    return <div>MultiSig motion rejected</div>;
+  }
 
   if (isMultiSigExecuted) {
     return (
@@ -76,14 +89,24 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
           multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
         />
       ) : (
-        <VoteButton
-          actionType={actionType}
-          multiSigId={multiSigData.nativeMultiSigId}
-          multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
-        />
+        <>
+          <VoteButton
+            actionType={actionType}
+            multiSigId={multiSigData.nativeMultiSigId}
+            multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
+          />
+          <RejectButton
+            actionType={actionType}
+            multiSigId={multiSigData.nativeMultiSigId}
+            multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
+          />
+        </>
       )}
       {isMultiSigFinalizable && (
         <FinalizeButton multiSigId={multiSigData.nativeMultiSigId} />
+      )}
+      {isMultiSigCancelable && (
+        <CancelButton multiSigId={multiSigData.nativeMultiSigId} />
       )}
     </div>
   );
