@@ -47,7 +47,7 @@ export const useValidationSchema = () => {
                 hasEnoughFundsValidation({
                   value,
                   context,
-                  selectedTeam,
+                  domainId: selectedTeam,
                   colony,
                 }),
             ),

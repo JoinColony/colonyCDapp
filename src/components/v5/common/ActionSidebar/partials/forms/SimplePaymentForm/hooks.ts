@@ -24,10 +24,10 @@ import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { getSimplePaymentPayload } from './utils.tsx';
 
-export const useValidationSchema = () => {
+export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
-  const selectedTeam: number | undefined = watch('from');
+  const fromDomainId: number | undefined = watch('from');
 
   const validationSchema = useMemo(
     () =>
@@ -59,8 +59,9 @@ export const useValidationSchema = () => {
                 hasEnoughFundsValidation({
                   value,
                   context,
-                  selectedTeam,
+                  domainId: fromDomainId,
                   colony,
+                  networkInverseFee,
                 }),
             ),
           tokenAddress: string().address().required(),
@@ -95,7 +96,7 @@ export const useValidationSchema = () => {
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, selectedTeam],
+    [colony, fromDomainId, networkInverseFee],
   );
 
   return validationSchema;
@@ -113,7 +114,7 @@ export const useSimplePayment = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const validationSchema = useValidationSchema();
+  const validationSchema = useValidationSchema(networkInverseFee);
 
   useActionFormBaseHook({
     validationSchema,

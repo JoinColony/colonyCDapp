@@ -52,8 +52,8 @@ export const getValidationSchema = (
                         value,
                         -getTokenDecimalsWithFallback(tokenData?.decimals),
                       ),
+                      domainId: selectedTeam,
                       context,
-                      selectedTeam,
                       colony,
                     });
                   },

@@ -3,35 +3,41 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { type TestContext } from 'yup';
 
-import { type ColonyFragment } from '~gql';
+import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import {
+  calculateFee,
   getBalanceForTokenAndDomain,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 
+interface HasEnoughFundsValidationParams {
+  // Amount in ETH
+  value: string | null | undefined;
+  context: TestContext<object>;
+  domainId: number | undefined;
+  colony: Colony;
+  tokenAddress?: string;
+  // If specified, fee will be calculated and added to the amount
+  networkInverseFee?: string;
+}
+
 export const hasEnoughFundsValidation = ({
   value,
   context,
-  selectedTeam,
+  domainId,
   colony,
   tokenAddress,
-}: {
-  value: string | null | undefined;
-  context: TestContext<object>;
-  selectedTeam: number | undefined;
-  colony: ColonyFragment;
-  tokenAddress?: string;
-}) => {
+  networkInverseFee,
+}: HasEnoughFundsValidationParams) => {
   if (!value) {
     return false;
   }
-
   const { parent } = context;
   const { tokenAddress: tokenAddressFieldValue } = parent || {};
 
   const colonyTokens =
-    colony?.tokens?.items
+    colony.tokens?.items
       .filter(notNull)
       .map((colonyToken) => colonyToken.token) || [];
 
@@ -40,17 +46,28 @@ export const hasEnoughFundsValidation = ({
       selectedTokenAddress === tokenAddressFieldValue || tokenAddress,
   );
 
-  if (!selectedToken?.tokenAddress) {
+  if (!selectedToken) {
     return false;
   }
 
   const tokenBalance = getBalanceForTokenAndDomain(
-    colony?.balances,
-    selectedToken?.tokenAddress,
-    selectedTeam || Id.RootDomain,
+    colony.balances,
+    selectedToken.tokenAddress,
+    domainId || Id.RootDomain,
   );
 
-  return !BigNumber.from(
-    moveDecimal(value, getTokenDecimalsWithFallback(selectedToken?.decimals)),
-  ).gt(tokenBalance);
+  const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
+
+  let amountInWei = moveDecimal(value, tokenDecimals);
+
+  if (networkInverseFee) {
+    const { totalToPay } = calculateFee(
+      value,
+      networkInverseFee,
+      tokenDecimals,
+    );
+    amountInWei = totalToPay;
+  }
+
+  return !BigNumber.from(amountInWei).gt(tokenBalance);
 };
