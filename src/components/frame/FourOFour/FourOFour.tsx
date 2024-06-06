@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { COLONY_DOCS } from '~constants/index.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
@@ -11,7 +12,7 @@ import {
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
-import { FourOFourMessageLinkType } from '~v5/common/FourOFourMessage/types.ts';
+import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 
 const displayName = 'frame.FourOFour';
 
@@ -43,28 +44,42 @@ const FourOFour = () => (
   <MainLayout>
     <FourOFourMessage
       description={formatText(MSG.description)}
-      links={[
-        {
-          location: COLONY_DOCS,
-          text: formatText(MSG.docsLink),
-          type: FourOFourMessageLinkType.External,
-        },
-        {
-          location: `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`,
-          text: formatText(MSG.userAccountLink),
-          type: FourOFourMessageLinkType.Internal,
-        },
-        // @BETA disabled for now
-        // {
-        //   location: CREATE_COLONY_ROUTE_BASE,
-        //   text: formatText(MSG.createColonyLink),
-        //   type: FourOFourMessageLinkType.Internal,
-        // },
-      ]}
-      primaryLinkButton={{
-        text: formatText(MSG.goHomeBtn),
-        location: LANDING_PAGE_ROUTE,
-      }}
+      links={
+        <>
+          <a
+            href={COLONY_DOCS}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="mb-2 text-sm text-blue-400 underline"
+          >
+            {formatText(MSG.docsLink)}
+          </a>
+          <Link
+            to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
+            className="mb-2 text-sm text-blue-400 underline"
+          >
+            {formatText(MSG.userAccountLink)}
+          </Link>
+          {/*
+          @BETA disabled for now
+          <Link
+            to={CREATE_COLONY_ROUTE_BASE}
+            className="mb-2 text-sm text-blue-400 underline"
+          >
+            {formatText(MSG.createColonyLink)}
+          </Link>
+          */}
+        </>
+      }
+      primaryLinkButton={
+        <ButtonLink
+          mode="primarySolid"
+          to={LANDING_PAGE_ROUTE}
+          className="flex-1"
+        >
+          {formatText(MSG.goHomeBtn)}
+        </ButtonLink>
+      }
     />
   </MainLayout>
 );

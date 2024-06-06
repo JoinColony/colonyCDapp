@@ -13,6 +13,7 @@ import React, {
   useLayoutEffect,
   useRef,
 } from 'react';
+import { Link } from 'react-router-dom';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
@@ -23,11 +24,12 @@ import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { removeQueryParamFromUrl } from '~utils/urls.ts';
+import Button from '~v5/shared/Button/Button.tsx';
+import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
 import FourOFourMessage from '../FourOFourMessage/index.ts';
-import { FourOFourMessageLinkType } from '../FourOFourMessage/types.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
 import { actionSidebarAnimation } from './consts.ts';
@@ -123,44 +125,55 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             description={formatText({
               id: 'actionSidebar.fourOfour.description',
             })}
-            links={[
-              ...(isInvalidTransactionHash
-                ? []
-                : [
-                    {
-                      type: FourOFourMessageLinkType.Internal,
-                      location: COLONY_ACTIVITY_ROUTE,
-                      text: formatText({
-                        id: 'actionSidebar.fourOfour.activityPageLink',
-                      }),
-                    },
-                  ]),
-              {
-                type: FourOFourMessageLinkType.Internal,
-                location: removeQueryParamFromUrl(
-                  window.location.href,
-                  TX_SEARCH_PARAM,
-                ),
-                text: formatText({
-                  id: 'actionSidebar.fourOfour.createNewAction',
-                }),
-              },
-            ]}
-            primaryLinkButton={
-              isInvalidTransactionHash
-                ? {
-                    onClick: toggleActionSidebarOff,
-                    text: formatText({
+            links={
+              <>
+                {isInvalidTransactionHash && (
+                  <Link
+                    to={COLONY_ACTIVITY_ROUTE}
+                    className="mb-2 text-sm text-blue-400 underline"
+                    onClick={toggleActionSidebarOff}
+                  >
+                    {formatText({
                       id: 'actionSidebar.fourOfour.activityPageLink',
-                    }),
-                    location: COLONY_ACTIVITY_ROUTE,
-                  }
-                : {
-                    onClick: startPollingForAction,
-                    text: formatText({
-                      id: 'button.retry',
-                    }),
-                  }
+                    })}
+                  </Link>
+                )}
+                <Link
+                  to={removeQueryParamFromUrl(
+                    window.location.href,
+                    TX_SEARCH_PARAM,
+                  )}
+                  className="mb-2 text-sm text-blue-400 underline"
+                >
+                  {formatText({
+                    id: 'actionSidebar.fourOfour.createNewAction',
+                  })}
+                </Link>
+              </>
+            }
+            primaryLinkButton={
+              isInvalidTransactionHash ? (
+                <ButtonLink
+                  mode="primarySolid"
+                  to={COLONY_ACTIVITY_ROUTE}
+                  className="flex-1"
+                  onClick={toggleActionSidebarOff}
+                >
+                  {formatText({
+                    id: 'actionSidebar.fourOfour.activityPageLink',
+                  })}
+                </ButtonLink>
+              ) : (
+                <Button
+                  mode="primarySolid"
+                  className="flex-1"
+                  onClick={startPollingForAction}
+                >
+                  {formatText({
+                    id: 'button.retry',
+                  })}
+                </Button>
+              )
             }
           />
         </div>
