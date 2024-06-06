@@ -118,18 +118,6 @@ function* createStakedExpenditure({
           ready: false,
         },
       });
-
-      yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
-
-      yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
-
-      yield initiateTransaction(approve.id);
-
-      yield waitForTxResult(approve.channel);
-
-      yield initiateTransaction(deposit.id);
-
-      yield waitForTxResult(deposit.channel);
     }
 
     yield createGroupTransaction({
@@ -203,6 +191,8 @@ function* createStakedExpenditure({
 
     yield all(
       [
+        approve,
+        deposit,
         approveStake,
         makeExpenditure,
         setExpenditureValues,
@@ -212,6 +202,12 @@ function* createStakedExpenditure({
         takeFrom(channelDefinition.channel, ActionTypes.TRANSACTION_CREATED),
       ),
     );
+
+    yield initiateTransaction(approve.id);
+    yield waitForTxResult(approve.channel);
+
+    yield initiateTransaction(deposit.id);
+    yield waitForTxResult(deposit.channel);
 
     yield initiateTransaction(approveStake.id);
     yield waitForTxResult(approveStake.channel);
