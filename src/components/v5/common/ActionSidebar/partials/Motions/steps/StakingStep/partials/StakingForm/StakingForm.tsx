@@ -130,7 +130,7 @@ const StakingForm: FC<StakingFormProps> = ({
                             checked && !disabled,
                         }),
                       icon: ThumbsDown,
-                      disabled: isFullyObjected,
+                      disabled: isFullyObjected || isRefetching,
                     },
                     {
                       label: formatText({ id: 'motion.support' }),
@@ -146,7 +146,7 @@ const StakingForm: FC<StakingFormProps> = ({
                             checked && !disabled,
                         }),
                       icon: ThumbsUp,
-                      disabled: isFullySupported,
+                      disabled: isFullySupported || isRefetching,
                     },
                   ]}
                   disabled={disableForm}
