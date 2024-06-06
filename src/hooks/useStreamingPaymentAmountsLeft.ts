@@ -2,68 +2,57 @@ import { BigNumber } from 'ethers';
 
 import { type StreamingPayment } from '~types/graphql.ts';
 
+interface UseStreamingPaymentAmountsLeftReturn {
+  amountClaimedToDate: string;
+  amountAvailableToClaim: string;
+}
+
 const useStreamingPaymentAmountsLeft = (
   streamingPayment: StreamingPayment | null | undefined,
   currentTimestamp: number,
-) => {
-  if (!streamingPayment) {
+): UseStreamingPaymentAmountsLeftReturn => {
+  if (!streamingPayment || !streamingPayment.amount) {
     return {
-      amountsClaimedToDate: {},
-      amountsAvailableToClaim: {},
+      amountClaimedToDate: '0',
+      amountAvailableToClaim: '0',
     };
   }
 
-  const amountsClaimedToDate: { [tokenAddress: string]: BigNumber } =
-    streamingPayment.claims?.reduce((amounts, claim) => {
-      let newAmount = BigNumber.from(claim.amount);
+  const amountClaimedToDate =
+    streamingPayment.claims?.reduce((sum, claim) => {
+      const newAmount = BigNumber.from(claim.amount);
 
-      if (amounts[claim.tokenAddress]) {
-        newAmount = BigNumber.from(claim.amount).add(
-          amounts[claim.tokenAddress],
-        );
-      }
+      newAmount.add(sum);
 
-      return { ...amounts, [claim.tokenAddress]: newAmount };
-    }, {}) ?? {};
+      return newAmount.toString();
+    }, '0') ?? '0';
 
-  const amountsAvailableToClaim = streamingPayment.payouts
-    ? streamingPayment.payouts.reduce((amounts, payout) => {
-        let newAmount = BigNumber.from(0);
-        if (streamingPayment.startTime >= currentTimestamp) {
-          return { amounts, [payout.tokenAddress]: newAmount };
-        }
+  let amountAvailableToClaim: BigNumber;
+  if (streamingPayment.startTime >= currentTimestamp) {
+    amountAvailableToClaim = BigNumber.from(0);
+  } else {
+    const durationToClaim =
+      Math.min(currentTimestamp, streamingPayment.endTime) -
+      streamingPayment.startTime;
 
-        const durationToClaim =
-          Math.min(currentTimestamp, streamingPayment.endTime) -
-          streamingPayment.startTime;
+    const amountAvailableSinceStart = BigNumber.from(
+      streamingPayment.amount,
+    ).mul(
+      BigNumber.from(durationToClaim)
+        .mul(BigNumber.from(10).pow(18))
+        .div(BigNumber.from(streamingPayment.interval)),
+    );
 
-        if (!durationToClaim) {
-          return { amounts, [payout.tokenAddress]: newAmount };
-        }
+    amountAvailableToClaim = amountAvailableSinceStart.sub(amountClaimedToDate);
 
-        const amountAvailableSinceStart = BigNumber.from(payout.amount)
-          .mul(
-            BigNumber.from(durationToClaim)
-              .mul(BigNumber.from(10).pow(18))
-              .div(BigNumber.from(streamingPayment.interval)),
-          )
-          .div(BigNumber.from(10).pow(18));
-
-        const amountClaimedToDate = BigNumber.from(
-          amountsClaimedToDate[payout.tokenAddress] || 0,
-        );
-
-        newAmount = amountAvailableSinceStart.sub(amountClaimedToDate);
-
-        newAmount = newAmount.lt(0) ? BigNumber.from(0) : newAmount;
-
-        return { amounts, [payout.tokenAddress]: newAmount };
-      }, {})
-    : {};
+    amountAvailableToClaim = amountAvailableToClaim.lt(0)
+      ? BigNumber.from(0)
+      : amountAvailableToClaim;
+  }
 
   return {
-    amountsClaimedToDate,
-    amountsAvailableToClaim,
+    amountClaimedToDate,
+    amountAvailableToClaim: amountAvailableToClaim.toString(),
   };
 };
 
