@@ -2623,6 +2623,10 @@ type ColonyMultiSig @model {
   Colony address the multiSig belongs to
   """
   colonyAddress: ID!
+    @index(
+      name: "byColonyAddress"
+      queryField: "getMultiSigByColonyAddress"
+    )
   """
   The on chain id of the multiSig
   """
@@ -3445,6 +3449,11 @@ type ColonyRole @model {
   The colony in which the role was set
   """
   colonyAddress: ID!
+    @index(
+      name: "byColonyAddress"
+      queryField: "getRoleByColony"
+      sortKeyFields: ["domainId"]
+    )
   """
   Block at which permissions were update last
   """
