@@ -1929,6 +1929,9 @@ export type CreateSafeTransactionInput = {
 
 export type CreateStreamingPaymentInput = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
   amount: Scalars['String'];
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId: Scalars['ID'];
@@ -1948,8 +1951,13 @@ export type CreateStreamingPaymentInput = {
   nativeDomainId: Scalars['Int'];
   nativeId: Scalars['Int'];
   recipientAddress: Scalars['String'];
+<<<<<<< HEAD
   startTime: Scalars['String'];
   tokenAddress: Scalars['ID'];
+=======
+  startTime: Scalars['AWSTimestamp'];
+  tokenAddress: Scalars['String'];
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
 };
 
 export type CreateStreamingPaymentMetadataInput = {
@@ -4214,8 +4222,13 @@ export type ModelStreamingPaymentConditionInput = {
   not?: InputMaybe<ModelStreamingPaymentConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
   recipientAddress?: InputMaybe<ModelStringInput>;
+<<<<<<< HEAD
   startTime?: InputMaybe<ModelStringInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
+=======
+  startTime?: InputMaybe<ModelIntInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
 };
 
 export type ModelStreamingPaymentConnection = {
@@ -4248,8 +4261,13 @@ export type ModelStreamingPaymentFilterInput = {
   not?: InputMaybe<ModelStreamingPaymentFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentFilterInput>>>;
   recipientAddress?: InputMaybe<ModelStringInput>;
+<<<<<<< HEAD
   startTime?: InputMaybe<ModelStringInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
+=======
+  startTime?: InputMaybe<ModelIntInput>;
+  tokenAddress?: InputMaybe<ModelStringInput>;
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
 };
 
 export type ModelStreamingPaymentMetadataConditionInput = {
@@ -4812,8 +4830,13 @@ export type ModelSubscriptionStreamingPaymentFilterInput = {
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
   recipientAddress?: InputMaybe<ModelSubscriptionStringInput>;
+<<<<<<< HEAD
   startTime?: InputMaybe<ModelSubscriptionStringInput>;
   tokenAddress?: InputMaybe<ModelSubscriptionIdInput>;
+=======
+  startTime?: InputMaybe<ModelSubscriptionIntInput>;
+  tokenAddress?: InputMaybe<ModelSubscriptionStringInput>;
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
 };
 
 export type ModelSubscriptionStreamingPaymentMetadataFilterInput = {
@@ -8667,6 +8690,9 @@ export type StreamingPayment = {
   actions?: Maybe<ModelColonyActionConnection>;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
   amount: Scalars['String'];
   claims?: Maybe<Array<StreamingPaymentClaim>>;
   /** The Colony to which the expenditure belongs */
@@ -8697,9 +8723,14 @@ export type StreamingPayment = {
   /** Native ID of the streaming payment within a colony */
   nativeId: Scalars['Int'];
   recipientAddress: Scalars['String'];
+<<<<<<< HEAD
   startTime: Scalars['String'];
   token?: Maybe<Token>;
   tokenAddress: Scalars['ID'];
+=======
+  startTime: Scalars['AWSTimestamp'];
+  tokenAddress: Scalars['String'];
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -10308,6 +10339,9 @@ export type UpdateSafeTransactionInput = {
 
 export type UpdateStreamingPaymentInput = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
   amount?: InputMaybe<Scalars['String']>;
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId?: InputMaybe<Scalars['ID']>;
@@ -10327,8 +10361,13 @@ export type UpdateStreamingPaymentInput = {
   nativeDomainId?: InputMaybe<Scalars['Int']>;
   nativeId?: InputMaybe<Scalars['Int']>;
   recipientAddress?: InputMaybe<Scalars['String']>;
+<<<<<<< HEAD
   startTime?: InputMaybe<Scalars['String']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
+=======
+  startTime?: InputMaybe<Scalars['AWSTimestamp']>;
+  tokenAddress?: InputMaybe<Scalars['String']>;
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
 };
 
 export type UpdateStreamingPaymentMetadataInput = {
@@ -10747,7 +10786,7 @@ export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: st
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
-export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string, timestamp: number }> | null };
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, tokenAddress: string, amount: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string, timestamp: number }> | null };
 
 export type TokenFragment = { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string };
 
@@ -11277,7 +11316,7 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 }>;
 
 
-export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string, timestamp: number }> | null } | null };
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: number, endTime: number, interval: string, tokenAddress: string, amount: string, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, limitAmount?: string | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, tokenAddress: string, timestamp: number }> | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -12674,6 +12713,7 @@ export const StreamingPaymentFragmentDoc = gql`
   endTime
   interval
 <<<<<<< HEAD
+<<<<<<< HEAD
   tokenAddress
   token {
     ...Token
@@ -12705,6 +12745,10 @@ export const StreamingPaymentChangesFragmentDoc = gql`
   payouts {
     ...ExpenditurePayout
   }
+=======
+  tokenAddress
+  amount
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
   metadata {
     endCondition
     limitAmount
@@ -12715,8 +12759,12 @@ export const StreamingPaymentChangesFragmentDoc = gql`
     timestamp
   }
 }
+<<<<<<< HEAD
     ${ExpenditurePayoutFragmentDoc}`;
 >>>>>>> ce1397c62 (Feat: Cancel streams using permissions)
+=======
+    `;
+>>>>>>> f5e3c4817 (Schema update: adjust streaming payment model for a single token)
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance
