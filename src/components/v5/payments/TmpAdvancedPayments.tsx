@@ -192,7 +192,7 @@ const TmpAdvancedPayments = () => {
 
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
-  const { amountsAvailableToClaim, amountsClaimedToDate } =
+  const { amountAvailableToClaim, amountClaimedToDate } =
     useStreamingPaymentAmountsLeft(
       streamingPayment,
       Math.floor(blockTime ?? Date.now() / 1000),
@@ -574,7 +574,7 @@ const TmpAdvancedPayments = () => {
     await claimStreamingPayment(claimPayload);
   };
 
-  const amountClaimed = amountsClaimedToDate[tokenAddress] ?? 0;
+  const amountClaimed = amountClaimedToDate ?? 0;
   const convertedAmountClaimed = convertToDecimal(
     amountClaimed,
     parseInt(decimalAmount, 10) || 0,
@@ -584,7 +584,7 @@ const TmpAdvancedPayments = () => {
     amountClaimed,
   );
 
-  const amountAvailable = amountsAvailableToClaim[tokenAddress] ?? 0;
+  const amountAvailable = amountAvailableToClaim ?? 0;
   const convertedAmountAvailable = convertToDecimal(
     amountAvailable,
     parseInt(decimalAmount, 10) || 0,
