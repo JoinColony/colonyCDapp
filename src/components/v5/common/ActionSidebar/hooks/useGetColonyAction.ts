@@ -158,7 +158,8 @@ const useGetColonyAction = (transactionHash?: string) => {
     isInvalidTransactionHash: isInvalidTx,
     isUnknownTransaction:
       !isInvalidTx && action?.colony?.colonyAddress !== colonyAddress,
-    loadingAction: loadingAction || isPolling || loadingMotionState,
+    loadingAction:
+      loadingAction || (isPolling && !action) || loadingMotionState,
     action,
     startPollingForAction,
     stopPollingForAction,
