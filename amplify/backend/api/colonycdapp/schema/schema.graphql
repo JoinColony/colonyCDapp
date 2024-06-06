@@ -3970,7 +3970,8 @@ type StreamingPayment @model {
   startTime: AWSTimestamp!
   endTime: AWSTimestamp!
   interval: String!
-  payouts: [ExpenditurePayout!]
+  tokenAddress: String!
+  amount: String!
   claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
   """
