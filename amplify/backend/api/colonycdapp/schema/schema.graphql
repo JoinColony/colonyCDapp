@@ -4148,10 +4148,15 @@ type StreamingPayment @model @searchable {
   startTime: String!
   endTime: String!
   interval: String!
+<<<<<<< HEAD
   tokenAddress: ID!
   token: Token @hasOne(fields: ["tokenAddress"])
   amount: String!
   payouts: [ExpenditurePayout!]
+=======
+  tokenAddress: String!
+  amount: String!
+>>>>>>> 819abc5af (Schema update: adjust streaming payment model for a single token)
   claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
   """
