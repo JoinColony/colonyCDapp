@@ -41,6 +41,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
     HTMLDivElement
   >([isTeamColourSelectVisible], {
     top: 8,
+    withAutoTopPlacement: true,
   });
 
   return (
@@ -81,7 +82,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
                 }}
-                className="absolute z-sidebar w-full max-w-[calc(100%-2.25rem)] p-6 sm:w-auto sm:max-w-none"
+                className="absolute z-sidebar w-full max-w-[calc(100%-2.25rem)] px-0 py-6 sm:w-auto sm:max-w-none sm:px-6"
                 hasShadow
                 rounded="s"
               >
