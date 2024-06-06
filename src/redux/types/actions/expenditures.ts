@@ -266,7 +266,6 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         streamingPaymentsAddress: Address;
         streamingPayment: StreamingPayment;
-        tokenAddress: Address;
       },
       MetaWithSetter<object>
     >
