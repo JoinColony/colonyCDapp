@@ -3992,7 +3992,6 @@ type StreamingPaymentMetadata @model {
 }
 
 type StreamingPaymentClaim {
-  tokenAddress: ID!
   amount: String!
   timestamp: AWSTimestamp!
 }

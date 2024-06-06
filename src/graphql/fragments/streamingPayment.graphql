@@ -14,7 +14,6 @@ fragment StreamingPayment on StreamingPayment {
   }
   claims {
     amount
-    tokenAddress
     timestamp
   }
 }
