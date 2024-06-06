@@ -105,18 +105,6 @@ function* createStakedExpenditure({
         params: [tokenAddress, missingActiveTokens, false],
         ready: false,
       });
-
-      yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
-
-      yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
-
-      yield initiateTransaction({ id: approve.id });
-
-      yield waitForTxResult(approve.channel);
-
-      yield initiateTransaction({ id: deposit.id });
-
-      yield waitForTxResult(deposit.channel);
     }
 
     yield createGroupTransaction(approveStake, batchKey, meta, {
@@ -166,6 +154,8 @@ function* createStakedExpenditure({
 
     yield all(
       [
+        approve,
+        deposit,
         approveStake,
         makeExpenditure,
         setExpenditureValues,
@@ -175,6 +165,12 @@ function* createStakedExpenditure({
         takeFrom(channelDefinition.channel, ActionTypes.TRANSACTION_CREATED),
       ),
     );
+
+    yield initiateTransaction({ id: approve.id });
+    yield waitForTxResult(approve.channel);
+
+    yield initiateTransaction({ id: deposit.id });
+    yield waitForTxResult(deposit.channel);
 
     yield initiateTransaction({ id: approveStake.id });
     yield waitForTxResult(approveStake.channel);
