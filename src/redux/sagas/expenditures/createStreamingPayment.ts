@@ -122,8 +122,8 @@ function* createStreamingPaymentAction({
         endTimestamp ?? TIMESTAMP_IN_FUTURE,
         interval,
         recipientAddress,
-        [tokenAddress],
-        [convertedAmount],
+        tokenAddress,
+        convertedAmount,
       ],
     });
 
