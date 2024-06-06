@@ -270,6 +270,8 @@ function* createStakedExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {
     [
+      approve,
+      deposit,
       approveStake,
       makeExpenditure,
       setExpenditureValues,
