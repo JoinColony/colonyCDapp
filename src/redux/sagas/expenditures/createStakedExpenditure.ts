@@ -4,7 +4,7 @@ import {
   type TokenLockingClient,
   getChildIndex,
 } from '@colony/colony-js';
-import { takeEvery, call, put, all } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
@@ -26,7 +26,6 @@ import {
   initiateTransaction,
   uploadAnnotation,
   getPayoutsWithSlotIds,
-  adjustPayoutsAddresses,
   getEditDraftExpenditureMulticallData,
 } from '../utils/index.ts';
 
@@ -56,12 +55,10 @@ function* createStakedExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
-  const { network } = colonyManager.networkClient;
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
-  const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(adjustedPayouts);
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   const tokenLockingClient: TokenLockingClient = yield colonyManager.getClient(
     ClientType.TokenLockingClient,
@@ -189,26 +186,15 @@ function* createStakedExpenditure({
       });
     }
 
-    yield all(
-      [
-        approve,
-        deposit,
-        approveStake,
-        makeExpenditure,
-        setExpenditureValues,
-        setExpenditureStaged,
-        annotateMakeStagedExpenditure,
-      ].map((channelDefinition) =>
-        takeFrom(channelDefinition.channel, ActionTypes.TRANSACTION_CREATED),
-      ),
-    );
-
+    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction(approve.id);
     yield waitForTxResult(approve.channel);
 
+    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction(deposit.id);
     yield waitForTxResult(deposit.channel);
 
+    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction(approveStake.id);
     yield waitForTxResult(approveStake.channel);
 
@@ -233,8 +219,8 @@ function* createStakedExpenditure({
     );
 
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-
-    yield transactionSetParams(makeExpenditure.id, [
+    yield;
+    transactionSetParams(makeExpenditure.id, [
       Id.RootDomain,
       childSkillIndex,
       createdInDomain.nativeId,
@@ -323,6 +309,8 @@ function* createStakedExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {
     [
+      approve,
+      deposit,
       approveStake,
       makeExpenditure,
       setExpenditureValues,
