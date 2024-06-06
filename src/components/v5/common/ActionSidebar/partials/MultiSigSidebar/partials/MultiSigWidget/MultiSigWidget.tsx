@@ -11,6 +11,7 @@ import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
 
 import CancelButton from '../CancelButton/CancelButton.tsx';
 import FinalizeButton from '../FinalizeButton/FinalizeButton.tsx';
+import RejectButton from '../RejectButton/RejectButton.tsx';
 import RemoveVoteButton from '../RemoveVoteButton/RemoveVoteButton.tsx';
 import Signees from '../Signees/Signees.tsx';
 import VoteButton from '../VoteButton/VoteButton.tsx';
