@@ -4,7 +4,7 @@ import {
   type TokenLockingClient,
   getChildIndex,
 } from '@colony/colony-js';
-import { takeEvery, call, put, all } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
@@ -152,26 +152,15 @@ function* createStakedExpenditure({
       );
     }
 
-    yield all(
-      [
-        approve,
-        deposit,
-        approveStake,
-        makeExpenditure,
-        setExpenditureValues,
-        setExpenditureStaged,
-        annotateMakeStagedExpenditure,
-      ].map((channelDefinition) =>
-        takeFrom(channelDefinition.channel, ActionTypes.TRANSACTION_CREATED),
-      ),
-    );
-
+    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction({ id: approve.id });
     yield waitForTxResult(approve.channel);
 
+    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction({ id: deposit.id });
     yield waitForTxResult(deposit.channel);
 
+    yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction({ id: approveStake.id });
     yield waitForTxResult(approveStake.channel);
 
