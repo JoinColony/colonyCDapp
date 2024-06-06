@@ -51,7 +51,8 @@ const StakingForm: FC<StakingFormProps> = ({
     userInactivatedTokens,
   );
 
-  const { handleSuccess, transform, validationSchema } = useStakingForm();
+  const { handleSuccess, transform, validationSchema, isRefetching } =
+    useStakingForm();
 
   const { percentage } = motionStakes;
   const { nay, yay } = percentage;
@@ -220,7 +221,7 @@ const StakingForm: FC<StakingFormProps> = ({
                   />
                   <Button
                     isFullSize
-                    disabled={isSubmitting || !isValid}
+                    disabled={isSubmitting || !isValid || isRefetching}
                     type="submit"
                   >
                     {formatText({ id: 'motion.staking.button.submit' })}
