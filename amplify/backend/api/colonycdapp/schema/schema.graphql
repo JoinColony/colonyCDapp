@@ -4259,7 +4259,6 @@ type StreamingPaymentClaim {
 }
 
 type StreamingPaymentClaim {
-  tokenAddress: ID!
   amount: String!
   timestamp: AWSTimestamp!
 }
