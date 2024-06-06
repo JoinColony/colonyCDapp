@@ -40,8 +40,7 @@ import {
   type ExpenditureFundMotionPayload,
   type ExpenditureCancelMotionPayload,
 } from '~redux/types/actions/motion.ts';
-import { getFormattedNumeralValue } from '~shared/Numeral/helpers.tsx';
-import { convertToDecimal } from '~utils/convertToDecimal.ts';
+import Numeral from '~shared/Numeral/Numeral.tsx';
 import {
   getExpenditureDatabaseId,
   getStreamingPaymentDatabaseId,
@@ -574,26 +573,6 @@ const TmpAdvancedPayments = () => {
     await claimStreamingPayment(claimPayload);
   };
 
-  const amountClaimed = amountClaimedToDate ?? 0;
-  const convertedAmountClaimed = convertToDecimal(
-    amountClaimed,
-    parseInt(decimalAmount, 10) || 0,
-  );
-  const formattedAmountClaimed = getFormattedNumeralValue(
-    convertedAmountClaimed,
-    amountClaimed,
-  );
-
-  const amountAvailable = amountAvailableToClaim ?? 0;
-  const convertedAmountAvailable = convertToDecimal(
-    amountAvailable,
-    parseInt(decimalAmount, 10) || 0,
-  );
-  const formattedAmountAvailable = getFormattedNumeralValue(
-    convertedAmountAvailable,
-    amountAvailable,
-  );
-
   return (
     <div className="flex flex-col gap-8">
       <div className="flex gap-4">
@@ -698,10 +677,22 @@ const TmpAdvancedPayments = () => {
         {streamingPayment && (
           <div className="flex w-full flex-col gap-4">
             <p>
-              Amount claimed to date: <b>{formattedAmountClaimed}</b>
+              Amount claimed to date:{' '}
+              <b>
+                <Numeral
+                  value={amountClaimedToDate}
+                  decimals={colony.nativeToken.decimals}
+                />
+              </b>
             </p>
             <p>
-              Available to claim: <b>{formattedAmountAvailable}</b>
+              Available to claim:{' '}
+              <b>
+                <Numeral
+                  value={amountAvailableToClaim}
+                  decimals={colony.nativeToken.decimals}
+                />
+              </b>
             </p>
           </div>
         )}
