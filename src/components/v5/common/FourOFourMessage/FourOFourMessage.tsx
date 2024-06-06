@@ -1,17 +1,12 @@
 import { SmileySad } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { Link } from 'react-router-dom';
 
 import { openFeaturesBugs } from '~hooks/useBeamer.ts';
 import { formatText } from '~utils/intl.ts';
-import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
-import {
-  FourOFourMessageLinkType,
-  type FourOFourMessageProps,
-} from './types.ts';
+import { type FourOFourMessageProps } from './types.ts';
 
 const displayName = 'v5.common.FourOFourMessage';
 
@@ -52,48 +47,15 @@ const FourOFourMessage: FC<FourOFourMessageProps> = ({
         <Button mode="quinary" className="flex-1" onClick={openFeaturesBugs}>
           {formatText(MSG.reportBugBtn)}
         </Button>
-        {primaryLinkButton.location ? (
-          <ButtonLink
-            mode="primarySolid"
-            to={primaryLinkButton.location}
-            className="flex-1"
-            onClick={() => primaryLinkButton.onClick?.()}
-          >
-            {primaryLinkButton.text}
-          </ButtonLink>
-        ) : (
-          <Button
-            mode="primarySolid"
-            className="flex-1"
-            onClick={() => primaryLinkButton.onClick?.()}
-          >
-            {primaryLinkButton.text}
-          </Button>
-        )}
+        {primaryLinkButton}
       </div>
-      <h5 className="mb-3 text-md font-semibold">
-        {formatText(MSG.linksTitle)}
-      </h5>
-      {links.map((link) =>
-        link.type === FourOFourMessageLinkType.External ? (
-          <a
-            href={link.location}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="mb-2 text-sm text-blue-400 underline"
-            key={`${link.location}_${link.text}_${link.type}`}
-          >
-            {link.text}
-          </a>
-        ) : (
-          <Link
-            to={link.location}
-            className="mb-2 text-sm text-blue-400 underline"
-            key={`${link.location}_${link.text}_${link.type}`}
-          >
-            {link.text}
-          </Link>
-        ),
+      {links && (
+        <>
+          <h5 className="mb-3 text-md font-semibold">
+            {formatText(MSG.linksTitle)}
+          </h5>
+          {links}
+        </>
       )}
     </div>
   );
