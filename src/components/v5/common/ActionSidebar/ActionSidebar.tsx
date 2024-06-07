@@ -123,11 +123,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         <div className="pt-14">
           <FourOFourMessage
             description={formatText({
-              id: 'actionSidebar.fourOfour.description',
+              id: isInvalidTransactionHash
+                ? 'actionSidebar.fourOfour.descriptionInvalidHash'
+                : 'actionSidebar.fourOfour.description',
             })}
             links={
               <>
-                {isInvalidTransactionHash && (
+                {!isInvalidTransactionHash && (
                   <Link
                     to={COLONY_ACTIVITY_ROUTE}
                     className="mb-2 text-sm text-blue-400 underline"
