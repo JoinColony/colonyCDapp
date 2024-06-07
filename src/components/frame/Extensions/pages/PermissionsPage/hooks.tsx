@@ -151,6 +151,7 @@ export const useGetMembersForPermissions = () => {
     () => getMembersList(pagedMembers, selectedDomain?.nativeId, colony),
     [colony, pagedMembers, selectedDomain],
   );
+
   const allExtensions: AnyExtensionData[] = useMemo(
     () => [...availableExtensionsData, ...installedExtensionsData],
     [availableExtensionsData, installedExtensionsData],
@@ -212,6 +213,7 @@ export const useGetMembersForPermissions = () => {
       ),
     [allExtensions, colony.name, isMobile],
   );
+
   const mappedMembers = useMemo<Record<string, MemberCardItem>>(
     () =>
       membersList.reduce(
@@ -424,6 +426,7 @@ export const useGetMembersForPermissions = () => {
     const memberItems = searchedMembers.reduce((acc, memberCard) => {
       if (memberCard.member.role) {
         const roleName = memberCard.member.role.name.toLowerCase();
+
         if (!acc[roleName]) {
           acc[roleName] = [];
         }

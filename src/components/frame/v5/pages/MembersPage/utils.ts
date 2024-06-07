@@ -2,7 +2,7 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
-import { getAllUserRoles } from '~transformers/index.ts';
+import { getAllUserRoles } from '~transformers';
 
 import { type MemberItem } from './types.ts';
 
@@ -11,6 +11,8 @@ export const getMembersList = (
   selectedTeamId: number | undefined,
   colony: ColonyFragment,
 ): MemberItem[] => {
+  const isAllTeamsSelected = selectedTeamId === undefined;
+
   return members.map((contributor) => {
     const {
       contributorAddress,
@@ -20,38 +22,42 @@ export const getMembersList = (
       roles,
       reputation,
       type,
+      hasPermissions,
     } = contributor;
-    const { items } = roles || {};
-    const hasRoleInTeam = items?.some((item) => {
-      const { domain } = item || {};
 
-      return (
-        domain?.nativeId === selectedTeamId ||
-        domain?.nativeId === Id.RootDomain
-      );
+    const hasRoleInTeam = roles?.items?.some((item) => {
+      const domainId = item?.domain?.nativeId;
+
+      return isAllTeamsSelected
+        ? hasPermissions
+        : domainId === selectedTeamId || domainId === Id.RootDomain;
     });
+
     const allRoles = getAllUserRoles(colony, contributorAddress);
-    const allRolesFiltered =
+
+    const filteredRoles =
       hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
         ? allRoles
         : allRoles?.filter(
             (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
           );
+
     const permissionRole =
-      hasRoleInTeam && allRolesFiltered?.length
-        ? getRole(allRolesFiltered)
+      hasRoleInTeam && filteredRoles?.length
+        ? getRole(filteredRoles)
         : undefined;
+
+    const teamReputationPercentage = reputation?.items?.find(
+      (item) => item?.domain?.nativeId === selectedTeamId,
+    )?.reputationPercentage;
 
     return {
       user,
       walletAddress: contributorAddress,
       isVerified,
-      reputation: selectedTeamId
-        ? reputation?.items?.find((item) => {
-            const { domain } = item || {};
-            return domain?.nativeId === selectedTeamId;
-          })?.reputationPercentage
-        : colonyReputationPercentage,
+      reputation: isAllTeamsSelected
+        ? colonyReputationPercentage
+        : teamReputationPercentage,
       role: permissionRole,
       contributorType: type ?? undefined,
     };

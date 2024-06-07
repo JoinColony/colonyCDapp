@@ -12,6 +12,7 @@ import PermissionsPageRow from './partials/PermissionsPageRow.tsx';
 
 const IndividualPermissionsPage = () => {
   const { itemsByRole, filters, isLoading } = useGetMembersForPermissions();
+
   const emptyMembers = Object.keys(itemsByRole).every(
     (role) => itemsByRole[role].length === 0,
   );
