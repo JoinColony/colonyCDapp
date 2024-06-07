@@ -179,7 +179,8 @@ const TmpAdvancedPayments = () => {
     success: ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
   });
 
-  const { currentBlockTime: blockTime } = useCurrentBlockTime();
+  const { currentBlockTime: blockTime, refreshBlockTime } =
+    useCurrentBlockTime();
 
   const { amountAvailableToClaim, amountClaimedToDate } =
     useStreamingPaymentAmountsLeft(
@@ -645,7 +646,14 @@ const TmpAdvancedPayments = () => {
           >
             Claim
           </Button>
-          <Button onClick={() => refetchStreamingPayment()}>Refetch</Button>
+          <Button
+            onClick={() => {
+              refreshBlockTime();
+              refetchStreamingPayment();
+            }}
+          >
+            Refetch
+          </Button>
           <Button
             onClick={handleCancelStreamingPayment}
             disabled={!streamingPayment}
