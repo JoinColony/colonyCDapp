@@ -90,66 +90,100 @@ function* createStakedExpenditure({
     if (stakeAmount.gt(activeBalance)) {
       const missingActiveTokens = stakeAmount.sub(activeBalance);
 
-      yield createGroupTransaction(approve, batchKey, meta, {
-        context: ClientType.TokenClient,
-        methodName: 'approve',
-        identifier: tokenAddress,
-        params: [tokenLockingClient.address, missingActiveTokens],
-        ready: false,
+      yield createGroupTransaction({
+        channel: approve,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.TokenClient,
+          methodName: 'approve',
+          identifier: tokenAddress,
+          params: [tokenLockingClient.address, missingActiveTokens],
+          ready: false,
+        },
       });
 
-      yield createGroupTransaction(deposit, batchKey, meta, {
-        context: ClientType.TokenLockingClient,
-        methodName: 'deposit(address,uint256,bool)',
-        identifier: colonyAddress,
-        params: [tokenAddress, missingActiveTokens, false],
-        ready: false,
+      yield createGroupTransaction({
+        channel: deposit,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.TokenLockingClient,
+          methodName: 'deposit(address,uint256,bool)',
+          identifier: colonyAddress,
+          params: [tokenAddress, missingActiveTokens, false],
+          ready: false,
+        },
       });
     }
 
-    yield createGroupTransaction(approveStake, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'approveStake',
-      identifier: colonyAddress,
-      params: [stakedExpenditureAddress, createdInDomain.nativeId, stakeAmount],
-      ready: false,
+    yield createGroupTransaction({
+      channel: approveStake,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.ColonyClient,
+        methodName: 'approveStake',
+        identifier: colonyAddress,
+        params: [
+          stakedExpenditureAddress,
+          createdInDomain.nativeId,
+          stakeAmount,
+        ],
+        ready: false,
+      },
     });
 
-    yield createGroupTransaction(makeExpenditure, batchKey, meta, {
-      context: ClientType.StakedExpenditureClient,
-      methodName: 'makeExpenditureWithStake',
-      identifier: colonyAddress,
-      ready: false,
+    yield createGroupTransaction({
+      channel: makeExpenditure,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.StakedExpenditureClient,
+        methodName: 'makeExpenditureWithStake',
+        identifier: colonyAddress,
+        ready: false,
+      },
     });
 
-    yield createGroupTransaction(setExpenditureValues, batchKey, meta, {
-      context: ClientType.ColonyClient,
-      methodName: 'multicall',
-      identifier: colonyAddress,
-      ready: false,
+    yield createGroupTransaction({
+      channel: setExpenditureValues,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.ColonyClient,
+        methodName: 'multicall',
+        identifier: colonyAddress,
+        ready: false,
+      },
     });
 
     if (isStaged) {
-      yield createGroupTransaction(setExpenditureStaged, batchKey, meta, {
-        context: ClientType.StagedExpenditureClient,
-        methodName: 'setExpenditureStaged',
-        identifier: colonyAddress,
-        ready: false,
+      yield createGroupTransaction({
+        channel: setExpenditureStaged,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.StagedExpenditureClient,
+          methodName: 'setExpenditureStaged',
+          identifier: colonyAddress,
+          ready: false,
+        },
       });
     }
 
     if (annotationMessage) {
-      yield createGroupTransaction(
-        annotateMakeStagedExpenditure,
+      yield createGroupTransaction({
+        channel: annotateMakeStagedExpenditure,
         batchKey,
         meta,
-        {
+        config: {
           context: ClientType.ColonyClient,
           methodName: 'annotateTransaction',
           identifier: colonyAddress,
           ready: false,
         },
-      );
+      });
     }
 
     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
