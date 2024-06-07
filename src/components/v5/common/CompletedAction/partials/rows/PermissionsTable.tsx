@@ -24,8 +24,10 @@ interface Props {
 
 const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
   const isMobile = useMobile();
-  const customPermissionsTableColumns =
-    getCustomPermissionsTableColumns(userColonyRoles);
+  const customPermissionsTableColumns = getCustomPermissionsTableColumns(
+    userColonyRoles,
+    isMobile,
+  );
   const permissionsTableProps = usePermissionsTableProps(role);
 
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =

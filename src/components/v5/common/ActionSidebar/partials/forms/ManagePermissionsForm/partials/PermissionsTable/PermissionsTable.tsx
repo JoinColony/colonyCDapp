@@ -47,7 +47,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
       ) : (
         <Table<CustomPermissionTableModel>
           className={clsx(
-            'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0 sm:[&_tr>td]:border-none',
+            'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0',
             {
               '!border-negative-400': !!fieldState.error,
             },
@@ -55,6 +55,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
           verticalLayout={isMobile}
+          withBorder={false}
         />
       )}
     </div>
