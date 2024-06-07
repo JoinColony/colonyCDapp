@@ -1,6 +1,8 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
+import { useMobile } from '~hooks';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type CustomPermissionTableModel } from '~types/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 import { FormSwitch } from '~v5/common/Fields/Switch/index.ts';
@@ -8,18 +10,40 @@ import { FormSwitch } from '~v5/common/Fields/Switch/index.ts';
 const customPermissionsColumnHelper =
   createColumnHelper<CustomPermissionTableModel>();
 
-export const useCustomPermissionsTableColumns = (name: string) =>
-  useMemo(
+export const useCustomPermissionsTableColumns = (name: string) => {
+  const isMobile = useMobile();
+
+  return useMemo(
     () => [
       customPermissionsColumnHelper.accessor('type', {
-        staticSize: '8.25rem',
+        staticSize: isMobile ? '6.125rem' : '8.25rem',
         enableSorting: false,
         header: formatText({ id: 'table.column.type' }),
-        cell: ({ getValue }) => (
-          <span className="text-md font-medium text-gray-900">
-            {getValue()}
-          </span>
-        ),
+        cell: ({
+          getValue,
+          row: {
+            original: { tooltipContent },
+          },
+        }) => {
+          const content = (
+            <span className="text-md font-medium text-gray-900">
+              {getValue()}
+            </span>
+          );
+
+          return tooltipContent ? (
+            <Tooltip
+              tooltipContent={tooltipContent}
+              className="!inline-flex"
+              offset={isMobile ? [-10, 12] : undefined}
+              placement={isMobile ? 'bottom-start' : 'right'}
+            >
+              {content}
+            </Tooltip>
+          ) : (
+            content
+          );
+        },
       }),
       customPermissionsColumnHelper.accessor('overview', {
         enableSorting: false,
@@ -37,5 +61,6 @@ export const useCustomPermissionsTableColumns = (name: string) =>
         ),
       }),
     ],
-    [name],
+    [isMobile, name],
   );
+};
