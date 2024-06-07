@@ -42,7 +42,7 @@ const useGetPaymentBuilderColumns = ({
   const isTablet = useTablet();
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = data.length > 1;
-  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
+  const { currentBlockTime: blockTime, refreshBlockTime } =
     useCurrentBlockTime();
 
   const claimablePayouts = useMemo(
@@ -138,7 +138,7 @@ const useGetPaymentBuilderColumns = ({
                       isClaimable={
                         !!claimablePayouts.find(({ slotId }) => slotId === id)
                       }
-                      onTimeEnd={fetchCurrentBlockTime}
+                      onTimeEnd={refreshBlockTime}
                     />
                   </div>
                 );
@@ -151,7 +151,7 @@ const useGetPaymentBuilderColumns = ({
       claimablePayouts,
       data.length,
       dataRef,
-      fetchCurrentBlockTime,
+      refreshBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,
       isLoading,

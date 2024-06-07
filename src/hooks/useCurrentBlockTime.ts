@@ -7,7 +7,7 @@ const useCurrentBlockTime = () => {
 
   const [currentBlockTime, setCurrentBlockTime] = useState<number | null>(null);
 
-  const fetchCurrentBlockTime = useCallback(async () => {
+  const refreshBlockTime = useCallback(async () => {
     if (!wallet) {
       return;
     }
@@ -23,10 +23,10 @@ const useCurrentBlockTime = () => {
   }, [wallet]);
 
   useEffect(() => {
-    fetchCurrentBlockTime();
-  }, [fetchCurrentBlockTime]);
+    refreshBlockTime();
+  }, [refreshBlockTime]);
 
-  return { currentBlockTime, fetchCurrentBlockTime };
+  return { currentBlockTime, refreshBlockTime };
 };
 
 export default useCurrentBlockTime;
