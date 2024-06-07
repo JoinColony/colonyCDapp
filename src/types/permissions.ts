@@ -18,4 +18,5 @@ export interface CustomPermissionTableModel {
   type: React.ReactNode;
   overview: React.ReactNode;
   name: ColonyRole;
+  tooltipContent?: string;
 }

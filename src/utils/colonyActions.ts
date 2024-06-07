@@ -658,35 +658,47 @@ export const CUSTOM_PERMISSION_TABLE_CONTENT: CustomPermissionTableModel[] = [
     name: ColonyRole.Root,
     overview: formatText({ id: 'permissions.custom.root.overview' }),
     type: formatText({ id: 'role.1' }),
+    tooltipContent: formatText({ id: 'permissions.custom.root.tooltip' }),
   },
   {
     key: ColonyRole.Administration,
     name: ColonyRole.Administration,
     overview: formatText({ id: 'permissions.custom.administration.overview' }),
     type: formatText({ id: 'role.6' }),
+    tooltipContent: formatText({
+      id: 'permissions.custom.administration.tooltip',
+    }),
   },
   {
     key: ColonyRole.Architecture,
     name: ColonyRole.Architecture,
     overview: formatText({ id: 'permissions.custom.architecture.overview' }),
     type: formatText({ id: 'role.3' }),
+    tooltipContent: formatText({
+      id: 'permissions.custom.architecture.tooltip',
+    }),
   },
   {
     key: ColonyRole.Funding,
     name: ColonyRole.Funding,
     overview: formatText({ id: 'permissions.custom.funding.overview' }),
     type: formatText({ id: 'role.5' }),
+    tooltipContent: formatText({ id: 'permissions.custom.funding.tooltip' }),
   },
   {
     key: ColonyRole.Recovery,
     name: ColonyRole.Recovery,
     overview: formatText({ id: 'permissions.custom.recovery.overview' }),
     type: formatText({ id: 'role.0' }),
+    tooltipContent: formatText({ id: 'permissions.custom.recovery.tooltip' }),
   },
   {
     key: ColonyRole.Arbitration,
     name: ColonyRole.Arbitration,
     overview: formatText({ id: 'permissions.custom.arbitration.overview' }),
     type: formatText({ id: 'role.2' }),
+    tooltipContent: formatText({
+      id: 'permissions.custom.arbitration.tooltip',
+    }),
   },
 ];
