@@ -20,9 +20,7 @@ const useStreamingPaymentAmountsLeft = (
 
   const amountClaimedToDate =
     streamingPayment.claims?.reduce((sum, claim) => {
-      const newAmount = BigNumber.from(claim.amount);
-
-      newAmount.add(sum);
+      const newAmount = BigNumber.from(claim.amount).add(sum);
 
       return newAmount.toString();
     }, '0') ?? '0';
@@ -35,14 +33,9 @@ const useStreamingPaymentAmountsLeft = (
       Math.min(currentTimestamp, streamingPayment.endTime) -
       streamingPayment.startTime;
 
-    const amountAvailableSinceStart = BigNumber.from(
-      streamingPayment.amount,
-    ).mul(
-      BigNumber.from(durationToClaim)
-        .mul(BigNumber.from(10).pow(18))
-        .div(BigNumber.from(streamingPayment.interval))
-        .div(BigNumber.from(10).pow(18)),
-    );
+    const amountAvailableSinceStart = BigNumber.from(streamingPayment.amount)
+      .mul(BigNumber.from(durationToClaim))
+      .div(streamingPayment.interval);
 
     amountAvailableToClaim = amountAvailableSinceStart.sub(amountClaimedToDate);
 
