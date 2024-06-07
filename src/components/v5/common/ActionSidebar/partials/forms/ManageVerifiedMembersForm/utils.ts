@@ -10,15 +10,10 @@ const MSG = defineMessages({
     id: 'v5.common.ActionSidebar.partials.ManageVerifiedMembersForm.errors.member.required',
     defaultMessage: 'Please select a member',
   },
-  addressNotMember: {
-    id: 'v5.common.ActionSidebar.partials.ManageVerifiedMembersForm.errors.member.required',
-    defaultMessage: 'Address not found in the members list',
-  },
 });
 
 export const getValidationSchema = (
   addressBlacklist: string[],
-  memberAddresses: string[],
   errorMessage: string,
 ) =>
   object()
@@ -31,18 +26,6 @@ export const getValidationSchema = (
           .shape({
             value: string().required(formatText(MSG.membersRequired)),
           })
-          .test(
-            'is-address-member',
-            formatText(MSG.addressNotMember),
-            (value) => {
-              // if no value entered, skip this validation and fallback to required validation
-              if (!value?.value) {
-                return true;
-              }
-
-              return memberAddresses.includes(value.value);
-            },
-          )
           .test('can-manage-member', errorMessage, (value) => {
             // if no value entered, skip this validation and fallback to required validation
             if (!value?.value) {

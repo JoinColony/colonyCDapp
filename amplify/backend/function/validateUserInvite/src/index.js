@@ -6,6 +6,7 @@ const {
   createColonyContributor,
   getUser,
   getColonyContributor,
+  updateColonyContributor,
 } = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
@@ -71,27 +72,6 @@ exports.handler = async (event) => {
     throw new Error('Invite code is not valid');
   }
 
-  const { whitelist } =
-    getColonyMemberInviteResponse?.data?.getColonyMemberInvite?.colony;
-  const updatedWhitelist = new Set([...whitelist, userAddress]);
-
-  const colonyMutation = await graphqlRequest(
-    updateColony,
-    {
-      input: {
-        id: colonyAddress,
-        whitelist: [...updatedWhitelist],
-      },
-    },
-    graphqlURL,
-    apiKey,
-  );
-
-  if (colonyMutation.errors || !colonyMutation.data) {
-    const [error] = colonyMutation.errors;
-    throw new Error(error?.message || 'Could not update colony whitelist');
-  }
-
   const colonyMemberInviteMutation = await graphqlRequest(
     updateColonyMemberInvite,
     {
@@ -117,7 +97,31 @@ exports.handler = async (event) => {
   );
 
   if (contributorExistenceCheckQuery?.data?.getColonyContributor) {
-    // contributor already exists no need to create one
+    // If the user has already been a contributor for a Colony before,
+    // switching their isWatching field to true will allow them to access it again
+    const colonyMemberIsWatchingMutation = await graphqlRequest(
+      updateColonyContributor,
+      {
+        input: {
+          id: getColonyContributorId(colonyAddress, userAddress),
+          isWatching: true,
+        },
+      },
+      graphqlURL,
+      apiKey,
+    );
+
+    if (
+      colonyMemberIsWatchingMutation.errors ||
+      !colonyMemberIsWatchingMutation.data
+    ) {
+      const [error] = colonyMemberIsWatchingMutation.errors;
+
+      throw new Error(
+        error?.message || 'Could not set contributor isWatching field to true',
+      );
+    }
+
     return true;
   }
 

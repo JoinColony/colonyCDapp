@@ -126,7 +126,6 @@ export type ActionUserRoles = {
 };
 
 export enum ExtendedColonyActionType {
-  UpdateAddressBook = 'UPDATE_ADDRESS_BOOK',
   UpdateColonyObjective = 'UPDATE_COLONY_OBJECTIVE',
   UpdateTokens = 'UPDATE_TOKENS',
   RemoveSafe = 'REMOVE_SAFE',

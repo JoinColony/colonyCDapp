@@ -14,10 +14,8 @@ import UserTokenBalanceProvider from '~context/UserTokenBalanceContext/UserToken
 import UserTransactionContextProvider from '~context/UserTransactionContext/UserTransactionContextProvider.tsx';
 import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
-import {
-  useGetColonyWhitelistByNameQuery,
-  useGetFullColonyByNameQuery,
-} from '~gql';
+import { useGetFullColonyByNameQuery } from '~gql';
+import useIsContributor from '~hooks/useIsContributor.ts';
 
 import NotFoundRoute from './NotFoundRoute.tsx';
 
@@ -46,19 +44,22 @@ const ColonyRoute = () => {
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-first',
   });
-  const { user, userLoading, walletConnecting } = useAppContext();
 
-  // @TODO: This is terrible. Once we have auth, we need a method
-  // to check whether the logged in user is a member of the Colony
-  const { data: dataWhitelist, loading: whitelistLoading } =
-    useGetColonyWhitelistByNameQuery({
-      variables: { name: colonyName },
-      skip: !colonyName,
-    });
+  const { user, userLoading, walletConnecting } = useAppContext();
 
   const colony = data?.getColonyByName?.items?.[0] ?? undefined;
 
-  if (walletConnecting || isColonyLoading || userLoading || whitelistLoading) {
+  const { isContributor, loading: isContributorLoading } = useIsContributor({
+    colonyAddress: colony?.colonyAddress,
+    walletAddress: user?.walletAddress,
+  });
+
+  if (
+    walletConnecting ||
+    isColonyLoading ||
+    userLoading ||
+    isContributorLoading
+  ) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
@@ -69,11 +70,7 @@ const ColonyRoute = () => {
     return <NotFoundRoute />;
   }
 
-  const isMember = !!dataWhitelist?.getColonyByName?.items[0]?.whitelist.some(
-    (addr) => addr === user?.walletAddress,
-  );
-
-  if (!user || !isMember) {
+  if (!user || !isContributor) {
     return <Navigate to={`/go/${colony.name}`} />;
   }
 

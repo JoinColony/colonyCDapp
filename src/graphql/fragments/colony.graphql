@@ -98,8 +98,6 @@ fragment ColonyMetadata on ColonyMetadata {
     link
   }
   thumbnail
-  isWhitelistActivated
-  whitelistedAddresses
   modifiedTokenAddresses {
     added
     removed
@@ -112,7 +110,6 @@ fragment ColonyMetadata on ColonyMetadata {
     newDisplayName
     oldDisplayName
     hasAvatarChanged
-    hasWhitelistChanged
     haveTokensChanged
     hasDescriptionChanged
     haveExternalLinksChanged

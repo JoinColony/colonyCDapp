@@ -77,14 +77,6 @@ query GetPublicColonyByName($name: String!) {
   }
 }
 
-query GetColonyWhitelistByName($name: String!) {
-  getColonyByName(name: $name) {
-    items {
-      whitelist
-    }
-  }
-}
-
 query GetColonyMemberInvite($id: ID!) {
   getColonyMemberInvite(id: $id) {
     colony {

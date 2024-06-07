@@ -8,12 +8,6 @@ import { type Schema } from 'yup';
 import { type ExtensionCategory } from '~constants/index.ts';
 import { type ColonyExtension } from '~types/graphql.ts';
 
-export enum WhitelistPolicy {
-  KycOnly = 0,
-  AgreementOnly = 1,
-  KycAndAgreement = 2,
-}
-
 export enum ExtensionParamType {
   Input = 'Input',
   Radio = 'Radio',

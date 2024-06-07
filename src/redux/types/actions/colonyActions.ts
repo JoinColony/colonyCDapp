@@ -278,26 +278,6 @@ export type ColonyActionsActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
-      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE,
-      {
-        colony: Colony;
-        colonyDisplayName: string;
-        verifiedAddresses: Address[];
-        colonyTokenAddresses: Address[];
-        customActionTitle: string;
-        annotationMessage?: string;
-        isWhitelistActivated: boolean;
-        removedAddresses: Address[];
-      },
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.ACTION_VERIFIED_RECIPIENTS_MANAGE_SUCCESS,
-      object,
-      object
-    >
-  | UniqueActionType<
       ActionTypes.ACTION_ADD_VERIFIED_MEMBERS,
       {
         colonyAddress: Address;

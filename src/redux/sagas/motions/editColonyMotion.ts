@@ -211,8 +211,6 @@ function* editColonyMotion({
             thumbnail: colonyThumbnail,
             description: colonyDescription,
             externalLinks: colonyExternalLinks,
-            isWhitelistActivated: colony.metadata.isWhitelistActivated,
-            whitelistedAddresses: colony.metadata.whitelistedAddresses,
             objective: colonyObjective,
             // We only need a single entry here, as we'll be appending it to the colony's metadata
             // changelog if the motion succeeds.
@@ -226,7 +224,6 @@ function* editColonyMotion({
                   colonyAvatarImage === undefined
                     ? false
                     : colonyAvatarImage !== colony.metadata.avatar,
-                hasWhitelistChanged: false,
                 haveTokensChanged,
                 hasDescriptionChanged:
                   metadata?.description !== colonyDescription,
