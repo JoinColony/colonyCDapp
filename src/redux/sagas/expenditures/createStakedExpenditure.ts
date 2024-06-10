@@ -256,6 +256,7 @@ function* createStakedExpenditure({
       payouts: payoutsWithSlotIds,
       colonyClient,
       networkInverseFee,
+      isStaged,
     });
 
     yield transactionSetParams(setExpenditureValues.id, [multicallData]);
