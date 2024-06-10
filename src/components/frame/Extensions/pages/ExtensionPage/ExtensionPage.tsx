@@ -1,52 +1,22 @@
-import React, { type FC, useState } from 'react';
-import {
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import React, { type FC } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
-import { ActionTypes } from '~redux/index.ts';
-import { COLONY_EXTENSION_SETUP_ROUTE } from '~routes';
 import NotFoundRoute from '~routes/NotFoundRoute.tsx';
-import { ActionForm } from '~shared/Fields/index.ts';
-import { mapPayload, mergePayload, pipe } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { extensionSetupComponentScheme } from '../ExtensionSetupPage/consts.ts';
-import ExtensionSetupPage from '../ExtensionSetupPage/ExtensionSetupPage.tsx';
-
 import { ExtensionPageContextProvider } from './context/ExtensionPageContextProvider.tsx';
-import ExtensionDetailsWidget from './partials/ExtensionDetailsWidget/index.ts';
-import ExtensionTabs from './partials/ExtensionTabs/ExtensionTabs.tsx';
-import ExtensionsTopRow from './partials/ExtensionTopRow/ExtensionTopRow.tsx';
-import {
-  createExtensionSetupInitialValues,
-  getExtensionDataParams,
-  getFormSuccessFn,
-  mapExtensionActionPayload,
-} from './utils.tsx';
-import { getValidationSchema } from './validation.ts';
+import ExtensionPageForm from './partials/ExtensionPageForm/ExtensionPageForm.tsx';
 
 const displayName = 'frame.Extensions.pages.ExtensionPage';
 
 const ExtensionPage: FC = () => {
   const { extensionId } = useParams();
-  const { pathname } = useLocation();
-  const {
-    colony: { colonyAddress, name: colonyName },
-    refetchColony,
-  } = useColonyContext();
-  const navigate = useNavigate();
+
   const { extensionData, loading, refetchExtensionData } = useExtensionData(
     extensionId ?? '',
   );
-  const [waitingForEnableConfirmation, setWaitingForEnableConfirmation] =
-    useState(false);
 
   useSetPageHeadingTitle(formatText({ id: 'extensionsPage.title' }));
 
@@ -58,74 +28,12 @@ const ExtensionPage: FC = () => {
     return <NotFoundRoute />;
   }
 
-  const { initializationParams = [] } = extensionData;
-  const isSetupRoute = pathname.split('/').pop() === 'setup';
-  const initialValues = createExtensionSetupInitialValues(initializationParams);
-
-  const transform = pipe(
-    mapPayload(({ params }) =>
-      mapExtensionActionPayload(params, initializationParams),
-    ),
-    mergePayload({ colonyAddress, extensionData }),
-  );
-
-  const schema = getValidationSchema({ initializationParams });
-
-  const defaultValues = {
-    type: extensionData.extensionId,
-    option: '',
-    params: getExtensionDataParams(extensionData) ?? initialValues,
-  };
-
-  const handleFormSuccess = getFormSuccessFn<typeof defaultValues>({
-    colonyName,
-    extensionData,
-    navigate,
-    refetchColony,
-    refetchExtensionData,
-    setWaitingForEnableConfirmation,
-  });
-
-  const isSetupComponentAvailable =
-    extensionData.extensionId in extensionSetupComponentScheme;
-
   return (
     <ExtensionPageContextProvider>
-      <ActionForm<typeof defaultValues>
-        actionType={ActionTypes.EXTENSION_ENABLE}
-        transform={transform}
-        validationSchema={schema}
-        defaultValues={defaultValues}
-        onSuccess={handleFormSuccess}
-      >
-        <div className="grid grid-cols-6 gap-4 pb-6 md:gap-x-12 md:gap-y-6">
-          <div className="order-1 col-span-6">
-            <ExtensionsTopRow
-              extensionData={extensionData}
-              isSetupRoute={isSetupRoute}
-              waitingForEnableConfirmation={waitingForEnableConfirmation}
-            />
-          </div>
-          <div className="order-3 col-span-6 hidden md:order-4 md:col-span-2 md:block lg:order-2 lg:row-span-2">
-            <ExtensionDetailsWidget extensionData={extensionData} />
-          </div>
-          <div className="order-2 col-span-6 md:order-3 md:col-span-4 lg:order-1">
-            <Routes>
-              <Route
-                path="/"
-                element={<ExtensionTabs extensionData={extensionData} />}
-              />
-              {isSetupComponentAvailable && (
-                <Route
-                  path={COLONY_EXTENSION_SETUP_ROUTE}
-                  element={<ExtensionSetupPage extensionData={extensionData} />}
-                />
-              )}
-              <Route path="*" element={<NotFoundRoute />} />
-            </Routes>
-          </div>
-        </div>
-      </ActionForm>
+      <ExtensionPageForm
+        extensionData={extensionData}
+        refetchExtensionData={refetchExtensionData}
+      />
     </ExtensionPageContextProvider>
   );
 };

@@ -10,6 +10,7 @@ import {
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
+import { ExtensionPageTabId } from '~shared/Extensions/Tabs/types.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import {
@@ -142,6 +143,7 @@ export const getFormSuccessFn =
     refetchExtensionData,
     navigate,
     colonyName,
+    setActiveTab,
   }: {
     setWaitingForEnableConfirmation: SetStateFn;
     extensionData: AnyExtensionData;
@@ -149,6 +151,7 @@ export const getFormSuccessFn =
     refetchExtensionData: RefetchExtensionDataFn;
     navigate: ReturnType<typeof useNavigate>;
     colonyName: string;
+    setActiveTab: React.Dispatch<React.SetStateAction<ExtensionPageTabId>>;
   }): OnSuccess<T> =>
   async (_, { reset }) => {
     setWaitingForEnableConfirmation(true);
@@ -170,6 +173,7 @@ export const getFormSuccessFn =
       navigate(
         `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}`,
       );
+      setActiveTab(ExtensionPageTabId.Settings);
     } catch (error) {
       toast.error(
         <Toast
