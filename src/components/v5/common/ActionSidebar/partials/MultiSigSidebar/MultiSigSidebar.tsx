@@ -14,7 +14,6 @@ interface MultiSigSidebarProps {
   transactionId: string;
 }
 const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
-  const { user } = useAppContext();
   const { action, loadingAction } = useGetColonyAction(transactionId);
 
   const { extensionData, loading: loadingExtension } = useExtensionData(
