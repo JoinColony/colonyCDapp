@@ -1,13 +1,13 @@
 import React from 'react';
 import { type FC } from 'react';
 
-import { type MultiSigUserSignatureFragment } from '~gql';
+import { type MultiSigUserSignature } from '~types/graphql.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.Signees';
 
 interface SigneesProps {
-  signees: MultiSigUserSignatureFragment[];
+  signees: MultiSigUserSignature[];
 }
 
 const Signees: FC<SigneesProps> = ({ signees }) => (
