@@ -179,6 +179,7 @@ export type ExpendituresActionTypes =
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
         annotationMessage?: string;
+        userAddress: Address;
       },
       MetaWithSetter<object>
     >
