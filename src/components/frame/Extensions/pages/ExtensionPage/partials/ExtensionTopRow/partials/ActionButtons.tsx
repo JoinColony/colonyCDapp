@@ -57,7 +57,10 @@ const ActionButtons: FC<ActionButtonProps> = ({
     extensionData.currentVersion < extensionData.availableVersion;
 
   const isSaveSettingsVisible =
-    activeTab === ExtensionPageTabId.Settings && userHasRoot;
+    activeTab === ExtensionPageTabId.Settings &&
+    userHasRoot &&
+    isInstalledExtensionData(extensionData) &&
+    !extensionData.isDeprecated;
 
   return (
     <>

@@ -6,8 +6,10 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { ExtensionPageTabId } from '~shared/Extensions/Tabs/types.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 
+import { useExtensionPageContext } from '../../context/ExtensionPageContext.ts';
 import { waitForDbAfterExtensionAction } from '../../utils.tsx';
 
 export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
@@ -29,6 +31,8 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const { setActiveTab } = useExtensionPageContext();
+
   const handleDeprecate = async () => {
     try {
       setIsLoading(true);
@@ -44,6 +48,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
           description={{ id: 'extensionDeprecate.toast.description.success' }}
         />,
       );
+      setActiveTab(ExtensionPageTabId.Overview);
     } catch (err) {
       console.error(err);
       toast.error(
@@ -74,6 +79,7 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
     colonyAddress,
     extensionId,
   };
+  const { setActiveTab } = useExtensionPageContext();
 
   const uninstallAsyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_UNINSTALL,
@@ -98,6 +104,7 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
           }}
         />,
       );
+      setActiveTab(ExtensionPageTabId.Overview);
     } catch (err) {
       console.error(err);
       toast.error(
@@ -123,6 +130,8 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
+
+  const { setActiveTab } = useExtensionPageContext();
 
   const enableExtensionValues = {
     colonyAddress,
@@ -151,6 +160,7 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
           description={{ id: 'extensionReEnable.toast.description.success' }}
         />,
       );
+      setActiveTab(ExtensionPageTabId.Settings);
     } catch (err) {
       toast.error(
         <Toast
