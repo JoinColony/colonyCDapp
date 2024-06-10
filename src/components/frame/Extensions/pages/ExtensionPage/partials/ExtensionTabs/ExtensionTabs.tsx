@@ -10,7 +10,6 @@ import {
 import { type InstalledExtensionData } from '~types/extensions.ts';
 
 import { useExtensionPageContext } from '../../context/ExtensionPageContext.ts';
-import { getExtensionDataParams } from '../../utils.tsx';
 import ExtensionOverview from '../ExtensionOverview/ExtensionOverview.tsx';
 
 import {
@@ -82,10 +81,7 @@ const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
               <ExtensionOverview extensionData={extensionData} />
             )}
             {activeTab === ExtensionPageTabId.Settings && (
-              <ExtensionSettingsComponent
-                extensionId={extensionId}
-                params={getExtensionDataParams(extensionData)}
-              />
+              <ExtensionSettingsComponent extensionData={extensionData} />
             )}
           </motion.div>
         </AnimatePresence>

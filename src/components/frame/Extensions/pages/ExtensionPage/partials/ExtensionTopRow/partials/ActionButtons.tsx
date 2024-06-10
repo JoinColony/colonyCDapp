@@ -56,9 +56,18 @@ const ActionButtons: FC<ActionButtonProps> = ({
     isInstalledExtensionData(extensionData) &&
     extensionData.currentVersion < extensionData.availableVersion;
 
+  const hasNeededPermissions =
+    !!user &&
+    addressHasRoles({
+      address: user.walletAddress,
+      colony,
+      requiredRoles: extensionData.neededColonyPermissions,
+      requiredRolesDomains: [Id.RootDomain],
+    });
+
   const isSaveSettingsVisible =
     activeTab === ExtensionPageTabId.Settings &&
-    userHasRoot &&
+    hasNeededPermissions &&
     isInstalledExtensionData(extensionData) &&
     !extensionData.isDeprecated;
 

@@ -1,6 +1,8 @@
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
+import { getExtensionDataParams } from '~frame/Extensions/pages/ExtensionPage/utils.tsx';
+
 import { type ExtensionSettingsBaseProps } from '../../types.ts';
 
 import { paramsMap } from './consts.tsx';
@@ -9,9 +11,12 @@ const displayName =
   'pages.ExtensionPage.partials.ExtensionSettings.partials.LazyConsensusSettings';
 
 const LazyConsensusSettings: FC<ExtensionSettingsBaseProps> = ({
-  extensionId,
-  params,
+  extensionData,
 }) => {
+  const params = getExtensionDataParams(extensionData);
+
+  const { extensionId } = extensionData;
+
   if (!params) {
     return null;
   }

@@ -1,6 +1,5 @@
-import { type Extension } from '@colony/colony-js';
+import { type AnyExtensionData } from '~types/extensions.ts';
 
 export interface ExtensionSettingsBaseProps {
-  extensionId: Extension;
-  params?: Record<string, string> | null;
+  extensionData: AnyExtensionData;
 }
