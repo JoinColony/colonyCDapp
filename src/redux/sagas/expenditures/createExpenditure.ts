@@ -153,6 +153,7 @@ function* createExpenditure({
       payouts,
       colonyClient,
       networkInverseFee,
+      isStaged,
     });
 
     yield transactionSetParams(setExpenditureValues.id, [multicallData]);
