@@ -6,7 +6,7 @@ export enum ExtensionPageTabId {
 }
 
 export interface TabItem {
-  id: ExtensionPageTabId;
+  id: number;
   type?: string;
   title: MessageDescriptor | string;
   content?: React.ReactNode;
@@ -17,6 +17,6 @@ export interface TabsProps {
   initialActiveTab?: ExtensionPageTabId;
   items: TabItem[];
   activeTab: number;
-  onTabClick: (_: React.BaseSyntheticEvent, id: ExtensionPageTabId) => void;
+  onTabClick: (_: React.BaseSyntheticEvent, id: number) => void;
   className?: string;
 }
