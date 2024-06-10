@@ -21,17 +21,20 @@ import {
   uploadAnnotation,
 } from '../utils/index.ts';
 
-function* releaseExpenditureStage({
+export type ReleaseExpenditureStagesPayload =
+  Action<ActionTypes.RELEASE_EXPENDITURE_STAGES>['payload'];
+
+function* releaseExpenditureStages({
   payload: {
     colonyAddress,
     expenditure,
-    slotId,
+    slotIds,
     tokenAddresses,
     stagedExpenditureAddress,
     annotationMessage,
   },
   meta,
-}: Action<ActionTypes.RELEASE_EXPENDITURE_STAGE>) {
+}: Action<ActionTypes.RELEASE_EXPENDITURE_STAGES>) {
   const batchKey = TRANSACTION_METHODS.ReleaseExpenditure;
 
   const {
@@ -55,6 +58,11 @@ function* releaseExpenditureStage({
       );
     }
 
+    const stagedExpenditureClient = yield colonyManager.getClient(
+      ClientType.StagedExpenditureClient,
+      colonyAddress,
+    );
+
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient.networkClient,
       colonyClient,
@@ -63,22 +71,33 @@ function* releaseExpenditureStage({
       stagedExpenditureAddress,
     );
 
+    const multicallData: string[] = [];
+    slotIds.forEach((slotId) => {
+      multicallData.push(
+        stagedExpenditureClient.interface.encodeFunctionData(
+          'releaseStagedPayment',
+          [
+            permissionDomainId,
+            childSkillIndex,
+            expenditure.nativeId,
+            slotId,
+            tokenAddresses,
+          ],
+        ),
+      );
+    });
+
     yield fork(createTransaction, releaseExpenditure.id, {
       context: ClientType.StagedExpenditureClient,
-      methodName: 'releaseStagedPayment',
+      methodName: 'multicall',
       identifier: colonyAddress,
       group: {
         key: batchKey,
         id: meta.id,
         index: 0,
       },
-      params: [
-        permissionDomainId,
-        childSkillIndex,
-        expenditure.nativeId,
-        slotId,
-        tokenAddresses,
-      ],
+      ready: false,
+      params: [multicallData],
     });
 
     if (annotationMessage) {
@@ -118,12 +137,16 @@ function* releaseExpenditureStage({
         txHash,
       });
     }
-    const slotToClaim = expenditure.slots.find((slot) => slot.id === slotId);
-    const payoutsWithSlotIds =
-      slotToClaim?.payouts?.map((payout) => ({
-        ...payout,
-        slotId,
-      })) ?? [];
+    const slotsToClaim = expenditure.slots.filter((slot) =>
+      slotIds.includes(slot.id),
+    );
+    const payoutsWithSlotIds = slotsToClaim.flatMap(
+      (slot) =>
+        slot.payouts?.map((payout) => ({
+          ...payout,
+          slotId: slot.id,
+        })) ?? [],
+    );
 
     yield claimExpenditurePayouts({
       colonyAddress,
@@ -134,13 +157,13 @@ function* releaseExpenditureStage({
     });
 
     yield put<AllActions>({
-      type: ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      type: ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
       payload: {},
       meta,
     });
   } catch (error) {
     return yield putError(
-      ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR,
+      ActionTypes.RELEASE_EXPENDITURE_STAGES_ERROR,
       error,
       meta,
     );
@@ -154,7 +177,7 @@ function* releaseExpenditureStage({
 
 export default function* releaseExpenditureStageSaga() {
   yield takeEvery(
-    ActionTypes.RELEASE_EXPENDITURE_STAGE,
-    releaseExpenditureStage,
+    ActionTypes.RELEASE_EXPENDITURE_STAGES,
+    releaseExpenditureStages,
   );
 }

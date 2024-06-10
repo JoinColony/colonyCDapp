@@ -169,20 +169,25 @@ export type ExpendituresActionTypes =
       object
     >
   | UniqueActionType<
-      ActionTypes.RELEASE_EXPENDITURE_STAGE,
+      ActionTypes.RELEASE_EXPENDITURE_STAGES,
       {
         colonyAddress: Address;
         expenditure: Expenditure;
-        slotId: number;
+        slotIds: number[];
+        /**
+         * Addresses of all tokens present in the slots to be released
+         * This should be refactored if more control is needed over switch tokens are claimed
+         * per individual slots
+         */
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
         annotationMessage?: string;
       },
       MetaWithSetter<object>
     >
-  | ErrorActionType<ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR, object>
+  | ErrorActionType<ActionTypes.RELEASE_EXPENDITURE_STAGES_ERROR, object>
   | UniqueActionType<
-      ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
       object,
       object
     >
