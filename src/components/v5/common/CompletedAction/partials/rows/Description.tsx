@@ -35,7 +35,7 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
         'flex-col': isExpanded,
       })}
     >
-      <div className="w-40 sm:w-[12.5rem]">
+      <div className="w-40 flex-shrink-0 sm:w-[12.5rem]">
         <button
           className="flex items-center hover:text-blue-400"
           type="button"
@@ -59,17 +59,17 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
         </button>
       </div>
       <div
-        className={clsx('flex flex-1 items-start', {
-          'h-10': !isExpanded,
-          'mt-4 flex-col': isExpanded,
+        className={clsx('flex items-start', {
+          'h-10 flex-1': !isExpanded,
+          'mt-4 w-full flex-col': isExpanded,
         })}
       >
         <RichTextDisplay
           content={description}
           shouldFormat={isExpanded}
-          className={
-            !isExpanded ? 'line-clamp-2 flex-1 text-left break-word' : undefined
-          }
+          className={clsx('w-full break-word', {
+            'line-clamp-2 flex-1 text-left': !isExpanded,
+          })}
         />
         {isExpandButtonVisible && (
           <button
