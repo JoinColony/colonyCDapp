@@ -343,6 +343,7 @@ const TmpAdvancedPayments = () => {
       stagedExpenditureAddress,
       slotIds,
       tokenAddresses: [colony.nativeToken.tokenAddress],
+      userAddress: user?.walletAddress ?? '',
     };
 
     await releaseExpenditureStages(payload);

@@ -32,6 +32,7 @@ function* releaseExpenditureStages({
     tokenAddresses,
     stagedExpenditureAddress,
     annotationMessage,
+    userAddress,
   },
   meta,
 }: Action<ActionTypes.RELEASE_EXPENDITURE_STAGES>) {
@@ -63,28 +64,56 @@ function* releaseExpenditureStages({
       colonyAddress,
     );
 
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      expenditure.nativeDomainId,
-      ColonyRole.Arbitration,
-      stagedExpenditureAddress,
-    );
+    const [extensionPermissionDomainId, extensionChildSkillIndex] =
+      yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditure.nativeDomainId,
+        ColonyRole.Arbitration,
+        stagedExpenditureAddress,
+      );
+
+    let userPermissionDomainId;
+    let userChildSkillIndex;
+    if (expenditure.ownerAddress !== userAddress) {
+      [userPermissionDomainId, userChildSkillIndex] = yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditure.nativeDomainId,
+        ColonyRole.Administration,
+      );
+    }
 
     const multicallData: string[] = [];
     slotIds.forEach((slotId) => {
-      multicallData.push(
-        stagedExpenditureClient.interface.encodeFunctionData(
+      let functionData;
+      if (expenditure.ownerAddress === userAddress) {
+        functionData = stagedExpenditureClient.interface.encodeFunctionData(
           'releaseStagedPayment',
           [
-            permissionDomainId,
-            childSkillIndex,
+            extensionPermissionDomainId,
+            extensionChildSkillIndex,
             expenditure.nativeId,
             slotId,
             tokenAddresses,
           ],
-        ),
-      );
+        );
+      } else {
+        functionData = stagedExpenditureClient.interface.encodeFunctionData(
+          'releaseStagedPaymentViaArbitration',
+          [
+            userPermissionDomainId,
+            userChildSkillIndex,
+            extensionPermissionDomainId,
+            extensionChildSkillIndex,
+            expenditure.nativeId,
+            slotId,
+            tokenAddresses,
+          ],
+        );
+      }
+
+      multicallData.push(functionData);
     });
 
     yield fork(createTransaction, releaseExpenditure.id, {
