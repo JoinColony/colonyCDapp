@@ -30,7 +30,7 @@ const FinalizeButton: FC<FinalizeButtonProps> = ({ multiSigId }) => {
     await finalizeMultiSig(voteForPayload);
   };
 
-  return <Button onClick={handleFinalizeClick}>Finalize</Button>;
+  return <Button onClick={handleFinalizeClick}>Finalize approval</Button>;
 };
 
 FinalizeButton.displayName = displayName;
