@@ -25,7 +25,7 @@ import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
-import UserPopover from '~v5/shared/UserPopover/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import {
   ActionDataGrid,
@@ -163,11 +163,13 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
             recipientsNumber: slots.length,
             tokensNumber: tokensCount,
             initiator: initiatorUser ? (
-              <UserPopover
-                size={18}
+              <UserInfoPopover
                 walletAddress={initiatorUser.walletAddress}
+                user={initiatorUser}
                 withVerifiedBadge={false}
-              />
+              >
+                {initiatorUser.profile?.displayName}
+              </UserInfoPopover>
             ) : null,
           },
         )}
