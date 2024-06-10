@@ -22,6 +22,8 @@ const EXPENDITURESLOTS_SLOT = toB32(BigNumber.from(26));
 const EXPENDITURESLOT_RECIPIENT = toB32(BigNumber.from(0));
 const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
 
+const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
+
 interface GetEditLockedExpenditureMulticallDataParams {
   expenditure: Expenditure;
   payouts: ExpenditurePayoutFieldValue[];
@@ -120,6 +122,7 @@ interface GetExpenditureValuesMulticallDataParams {
   payouts: ExpenditurePayoutFieldValue[];
   colonyClient: AnyColonyClient;
   networkInverseFee: string;
+  isStaged?: boolean;
 }
 
 /**
@@ -132,6 +135,7 @@ export const getEditDraftExpenditureMulticallData = ({
   payouts,
   colonyClient,
   networkInverseFee,
+  isStaged,
 }: GetExpenditureValuesMulticallDataParams) => {
   const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
@@ -148,7 +152,9 @@ export const getEditDraftExpenditureMulticallData = ({
     colonyClient.interface.encodeFunctionData('setExpenditureClaimDelays', [
       expenditureId,
       payoutsWithSlotIds.map((payout) => payout.slotId!),
-      payoutsWithSlotIds.map((payout) => payout.claimDelay),
+      payoutsWithSlotIds.map((payout) =>
+        isStaged ? MAX_CLAIM_DELAY_VALUE : payout.claimDelay,
+      ),
     ]),
   );
 
