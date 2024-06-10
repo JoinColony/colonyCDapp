@@ -6,6 +6,7 @@ import {
   PAYMENTS,
   LAZY_CONSENSUS_EXTENSION,
   STREAMING_PAYMENTS,
+  STAKED_EXPENDITURE,
 } from '~constants/index.ts';
 
 const supportingDocumentsMessages = defineMessages({
@@ -24,6 +25,10 @@ const supportingDocumentsMessages = defineMessages({
   streamingPaymentsLink: {
     id: 'SupportingDocuments.StreamingPayments.paymentsLink',
     defaultMessage: 'Streaming Payments',
+  },
+  stakingAdvancedPaymentsLink: {
+    id: 'SupportingDocuments.StakedExpenditure.paymentsLink',
+    defaultMessage: 'Staking Advanced Payments',
   },
 });
 
@@ -48,6 +53,12 @@ export const links = {
     {
       url: STREAMING_PAYMENTS,
       message: supportingDocumentsMessages.streamingPaymentsLink,
+    },
+  ],
+  [Extension.StakedExpenditure]: [
+    {
+      url: STAKED_EXPENDITURE,
+      message: supportingDocumentsMessages.stakingAdvancedPaymentsLink,
     },
   ],
 };
