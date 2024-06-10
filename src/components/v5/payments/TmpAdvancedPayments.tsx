@@ -22,6 +22,7 @@ import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/final
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type ReleaseExpenditureStagesPayload } from '~redux/sagas/expenditures/releaseExpenditureStages.ts';
 import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
 import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
 import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
@@ -106,6 +107,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.STAKED_EXPENDITURE_CANCEL,
     error: ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR,
     success: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
+  });
+  const releaseExpenditureStages = useAsyncFunction({
+    submit: ActionTypes.RELEASE_EXPENDITURE_STAGES,
+    error: ActionTypes.RELEASE_EXPENDITURE_STAGES_ERROR,
+    success: ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
   });
   const releaseExpenditureStageMotion = useAsyncFunction({
     submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
@@ -317,6 +323,29 @@ const TmpAdvancedPayments = () => {
     };
 
     await cancelStakedExpenditure(payload);
+  };
+
+  const handleReleaseExpenditureStage = async () => {
+    if (!expenditure || !releaseStage || !stagedExpenditureAddress) {
+      return;
+    }
+
+    let slotIds: number[] = [];
+    if (releaseStage.includes(',')) {
+      slotIds = releaseStage.split(',').map(Number);
+    } else {
+      slotIds = [Number(releaseStage)];
+    }
+
+    const payload: ReleaseExpenditureStagesPayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      stagedExpenditureAddress,
+      slotIds,
+      tokenAddresses: [colony.nativeToken.tokenAddress],
+    };
+
+    await releaseExpenditureStages(payload);
   };
 
   const handleReleaseExpenditureStageMotion = async () => {
@@ -535,8 +564,11 @@ const TmpAdvancedPayments = () => {
         <InputBase
           value={releaseStage}
           onChange={(e) => setReleaseStage(e.currentTarget.value)}
-          placeholder="Stage to release"
+          placeholder="Stage to release (or multiple stages separated by commas)"
         />
+        <Button onClick={handleReleaseExpenditureStage} disabled={!expenditure}>
+          Release Expenditure Stage
+        </Button>
         <Button
           onClick={handleReleaseExpenditureStageMotion}
           disabled={!expenditure}
