@@ -24,6 +24,7 @@ import {
   getPayoutAmount,
   createActionMetadataInDB,
   adjustPayoutsAddresses,
+  MAX_CLAIM_DELAY_VALUE,
 } from '../utils/index.ts';
 import { chunkedMulticall } from '../utils/multicall.ts';
 
@@ -180,7 +181,9 @@ function* createExpenditure({
             [
               expenditureId,
               payoutsWithSlotIds.map((payout) => payout.slotId),
-              payoutsWithSlotIds.map((payout) => payout.claimDelay),
+              payoutsWithSlotIds.map((payout) =>
+                isStaged ? MAX_CLAIM_DELAY_VALUE : payout.claimDelay,
+              ),
             ],
           ),
         );
