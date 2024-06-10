@@ -31,7 +31,7 @@ export const Base: Story = {
     <CheckboxWithHooks
       id="checkbox-1"
       name="checkbox-1"
-      label={{ id: 'extensionDetailsPage.uninstallConfirmation' }}
+      label={{ id: 'extensionPage.uninstallConfirmation' }}
     />
   ),
 };

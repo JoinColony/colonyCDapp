@@ -5,7 +5,7 @@ import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
-import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/index.ts';
+import ExtensionPage from '~frame/Extensions/pages/ExtensionPage/index.ts';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage/index.ts';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
@@ -183,7 +183,7 @@ const Routes = () => {
           <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={<ExtensionDetailsPage />}
+            element={<ExtensionPage />}
           />
           <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
         </Route>
@@ -215,7 +215,7 @@ const Routes = () => {
           <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={<ExtensionDetailsPage />}
+            element={<ExtensionPage />}
           />
           <Route
             path={COLONY_INTEGRATIONS_ROUTE}

@@ -1,7 +1,12 @@
 import { type MessageDescriptor } from 'react-intl';
 
+export enum ExtensionPageTabId {
+  Overview = 0,
+  Settings = 1,
+}
+
 export interface TabItem {
-  id: number;
+  id: ExtensionPageTabId;
   type?: string;
   title: MessageDescriptor | string;
   content?: React.ReactNode;
@@ -9,9 +14,9 @@ export interface TabItem {
 }
 
 export interface TabsProps {
-  initialActiveTab?: number;
+  initialActiveTab?: ExtensionPageTabId;
   items: TabItem[];
   activeTab: number;
-  onTabClick: (_: React.BaseSyntheticEvent, id: number) => void;
+  onTabClick: (_: React.BaseSyntheticEvent, id: ExtensionPageTabId) => void;
   className?: string;
 }
