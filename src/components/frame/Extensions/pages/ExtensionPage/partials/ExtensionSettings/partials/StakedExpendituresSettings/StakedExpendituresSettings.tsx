@@ -1,9 +1,13 @@
+import { get } from 'lodash';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import SpecialInput from '~common/Extensions/SpecialInput/SpecialInput.tsx';
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText.tsx';
+import { type Message } from '~types';
+import { formatText } from '~utils/intl.ts';
+import FormError from '~v5/shared/FormError/FormError.tsx';
 
 import { type ExtensionSettingsBaseProps } from '../../types.ts';
 
@@ -13,7 +17,14 @@ const displayName =
 const StakedExpenditureSettings: FC<ExtensionSettingsBaseProps> = ({
   params,
 }) => {
-  const { setValue } = useFormContext();
+  const {
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+
+  const error = get(errors, 'params.stakeFraction')?.message as
+    | Message
+    | undefined;
 
   if (!params) {
     return null;
@@ -39,16 +50,21 @@ const StakedExpenditureSettings: FC<ExtensionSettingsBaseProps> = ({
           subTitle={MSG.requiredStakeSubtitle}
         />
       </div>
-      <SpecialInput
-        type="percent"
-        placeholder="1"
-        name="params.stakeFraction"
-        onChange={(event) =>
-          setValue('params.stakeFraction', event.currentTarget.value, {
-            shouldValidate: true,
-          })
-        }
-      />
+      <div>
+        <SpecialInput
+          type="percent"
+          placeholder="1"
+          name="params.stakeFraction"
+          onChange={(event) =>
+            setValue('params.stakeFraction', event.currentTarget.value, {
+              shouldValidate: true,
+              shouldDirty: true,
+            })
+          }
+          isError={!!errors.params}
+        />
+        {error && <FormError>{formatText(error)}</FormError>}
+      </div>
     </div>
   );
 };

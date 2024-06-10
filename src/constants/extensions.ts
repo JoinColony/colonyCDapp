@@ -54,6 +54,10 @@ const validationMessages = {
     id: 'extensions.param.validation.positiveError',
     defaultMessage: 'Please enter a positive number',
   },
+  lessThan1PercentError: {
+    id: 'extensions.param.validation.lessThan1PercentError',
+    defaultMessage: 'Percentage must be greater than 0',
+  },
 };
 
 const oneTransactionPaymentMessages = {
@@ -508,7 +512,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .transform((value) => toFinite(value))
           .positive(() => MSG.positiveError)
           .required(() => MSG.requiredError)
-          .max(100, () => MSG.lessThan100Error),
+          .max(100, () => MSG.lessThan100Error)
+          .min(1, () => MSG.lessThan1PercentError),
         defaultValue: 1,
         title: MSG.stakedExpenditureStakeFractionTitle,
         description: MSG.stakedExpenditureStakeFractionDescription,

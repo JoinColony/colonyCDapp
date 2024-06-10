@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import NotFoundRoute from '~routes/NotFoundRoute.tsx';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import { ExtensionPageContextProvider } from './context/ExtensionPageContextProvider.tsx';
@@ -21,7 +22,11 @@ const ExtensionPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'extensionsPage.title' }));
 
   if (loading) {
-    return null;
+    return (
+      <div className="flex w-full justify-center py-10">
+        <SpinnerLoader appearance={{ size: 'large' }} />
+      </div>
+    );
   }
 
   if (!extensionData) {

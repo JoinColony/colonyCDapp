@@ -1,6 +1,7 @@
 import { Extension } from '@colony/colony-js';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -29,19 +30,29 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
 
   const {
     watch,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = useFormContext();
 
   const { params } = watch();
+
+  const MSG = defineMessages({
+    successTitle: {
+      id: 'extension.updatedTitle',
+      defaultMessage: 'Updated',
+    },
+    successSubtitle: {
+      id: 'extension.updatedTSubtitle',
+      defaultMessage:
+        'The extension parameters have been successfully updated.',
+    },
+  });
 
   const handleInstallSuccess = async () => {
     toast.success(
       <Toast
         type="success"
-        title={{ id: 'extensionInstall.toast.title.success' }}
-        description={{
-          id: 'extensionInstall.toast.description.success',
-        }}
+        title={MSG.successTitle}
+        description={MSG.successSubtitle}
       />,
     );
   };
@@ -75,19 +86,22 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
 
   if (!action.type) return null;
 
-  const isDisabled = !isValid || !isSupportedColonyVersion || !action.type;
+  const isDisabled =
+    !isValid || !isSupportedColonyVersion || !action.type || !isDirty;
 
   return (
-    <ActionButton
-      actionType={action.type}
-      values={{ ...action.values }}
-      onSuccess={handleInstallSuccess}
-      onError={handleInstallError}
-      isFullSize={isMobile}
-      disabled={isDisabled}
-    >
-      {formatText({ id: 'button.saveSettings' })}
-    </ActionButton>
+    <div>
+      <ActionButton
+        actionType={action.type}
+        values={{ ...action.values }}
+        onSuccess={handleInstallSuccess}
+        onError={handleInstallError}
+        isFullSize={isMobile}
+        disabled={isDisabled}
+      >
+        {formatText({ id: 'button.saveSettings' })}
+      </ActionButton>
+    </div>
   );
 };
 
