@@ -154,6 +154,7 @@ function* createExpenditure({
       payouts,
       colonyClient,
       networkInverseFee,
+      isStaged,
     });
 
     yield put(transactionAddParams(setExpenditureValues.id, [multicallData]));
