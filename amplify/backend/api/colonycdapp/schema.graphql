@@ -3887,6 +3887,7 @@ type ExtensionInstallationsCount @model {
   stagedExpenditure: Int!
   streamingPayments: Int!
   reputationWeighted: Int!
+  multiSigPermissions: Int!
 }
 
 type UserStake @model {
