@@ -901,6 +901,10 @@ enum ColonyActionType {
   """
   CANCEL_STREAMING_PAYMENT
   """
+  An action related to cancelling and waiving a streaming payment
+  """
+  CANCEL_AND_WAIVE_STREAMING_PAYMENT
+  """
   An action related to adding / removing approved colony tokens
   """
   MANAGE_TOKENS
