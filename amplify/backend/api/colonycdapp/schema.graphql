@@ -2634,6 +2634,10 @@ type ColonyMultiSig @model {
   """
   id: ID!
   """
+  Colony address the multiSig belongs to
+  """
+  colonyAddress: ID!
+  """
   The on chain id of the multiSig
   """
   nativeMultiSigId: ID!
@@ -2756,7 +2760,7 @@ type ColonyMotion @model {
   """
   revealedVotes: MotionStakes! ## I.e. MotionVotes (same type)
   """
-  The amount of reputation that has submitted a vote
+  The amount of reputaion that has submitted a vote
   """
   repSubmitted: String!
   """
