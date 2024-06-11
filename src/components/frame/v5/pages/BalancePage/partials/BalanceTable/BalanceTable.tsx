@@ -89,8 +89,10 @@ const BalanceTable: FC = () => {
 
   const columns = useBalanceTableColumns(nativeToken, nativeTokenStatus);
   const getMenuProps: TableProps<BalanceTableFieldModel>['getMenuProps'] = ({
-    original: { token: selectedTokenData },
+    original: { token: selectedTokenData, loading },
   }) => {
+    if (loading) return undefined;
+
     const isTokenNative =
       selectedTokenData?.tokenAddress === nativeToken?.tokenAddress;
 
