@@ -630,9 +630,17 @@ export enum ColonyActionType {
   /** An action related to adding verified members */
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
+<<<<<<< HEAD
   AddVerifiedMembersMultisig = 'ADD_VERIFIED_MEMBERS_MULTISIG',
+<<<<<<< HEAD
   /** An action related to cancelling and waiving a streaming payment */
   CancelAndWaiveStreamingPayment = 'CANCEL_AND_WAIVE_STREAMING_PAYMENT',
+=======
+=======
+  /** An action related to cancelling and waiving a streaming payment */
+  CancelAndWaiveStreamingPayment = 'CANCEL_AND_WAIVE_STREAMING_PAYMENT',
+>>>>>>> 34b866c5a (feat: add a ColonyActionType enum entry for cancel and waive)
+>>>>>>> bbb2559eb (feat: add a ColonyActionType enum entry for cancel and waive)
   /** An action related to canceling an expenditure */
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
