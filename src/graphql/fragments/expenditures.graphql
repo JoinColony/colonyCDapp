@@ -70,16 +70,6 @@ fragment Expenditure on Expenditure {
       ...ExpenditureAction
     }
   }
-  cancellingActions: actions(
-    filter: {
-      type: { eq: CANCEL_EXPENDITURE }
-      isMotionFinalization: { ne: true }
-    }
-  ) {
-    items {
-      ...ExpenditureAction
-    }
-  }
   editingActions: actions(
     filter: {
       type: { eq: EDIT_EXPENDITURE }
