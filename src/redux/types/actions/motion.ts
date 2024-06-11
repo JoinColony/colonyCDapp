@@ -22,6 +22,7 @@ import {
   type ExpenditureFundPayload,
   type CancelStakedExpenditurePayload,
   type CancelExpenditurePayload,
+  type CancelStreamingPaymentPayload,
 } from './expenditures.ts';
 import {
   type ErrorActionType,
@@ -66,6 +67,15 @@ export type MotionFinalizePayload = {
   colonyAddress: Address;
   motionId: string;
   gasEstimate: string;
+};
+
+export type StreamingPaymentsMotionCancelPayload = Omit<
+  CancelStreamingPaymentPayload,
+  'colonyAddress'
+> & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+  colony: Colony;
 };
 
 export type MotionActionTypes =
@@ -410,5 +420,15 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL,
+      StreamingPaymentsMotionCancelPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_SUCCESS,
       MetaWithSetter<object>
     >;
