@@ -58,10 +58,7 @@ function* editStreamingPaymentAction({
   // The create streaming payment contract method allows for multiple amounts
   // The CDapp UI only allows for one amount and the token cannot be changed
   // Here we check the token matches the existing payment
-  if (
-    streamingPayment.payouts &&
-    streamingPayment.payouts[0].tokenAddress !== tokenAddress
-  ) {
+  if (streamingPayment.tokenAddress !== tokenAddress) {
     throw new Error('Streaming payment token cannot be changed');
   }
 
@@ -118,9 +115,7 @@ function* editStreamingPaymentAction({
 
     const multicallData: string[] = [];
 
-    const hasAmountChanged =
-      streamingPayment.payouts &&
-      !convertedAmount.eq(streamingPayment.payouts[0].amount);
+    const hasAmountChanged = !convertedAmount.eq(streamingPayment.amount);
 
     if (hasAmountChanged) {
       multicallData.push(
