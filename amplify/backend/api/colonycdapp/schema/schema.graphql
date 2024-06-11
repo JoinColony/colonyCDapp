@@ -4020,6 +4020,10 @@ type StreamingPayment @model {
   Is the stream cancelled?
   """
   isCancelled: Boolean
+  """
+  Is the stream waived?
+  """
+  isWaived: Boolean
 }
 
 type StreamingPaymentMetadata @model {
