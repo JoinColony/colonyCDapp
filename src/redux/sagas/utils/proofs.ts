@@ -16,13 +16,21 @@ import { type Domain } from '~types/graphql.ts';
 
 import getColonyManager from './getColonyManager.ts';
 
-export async function getChildIndexLocal(
-  networkClient: ColonyNetworkClient,
-  parentDomainNativeId: BigNumberish,
-  parentDomainSkillId: BigNumberish,
-  domainNativeId: BigNumberish,
-  domainSkillId: BigNumberish,
-): Promise<BigNumber> {
+interface GetChildIndexLocalParams {
+  networkClient: ColonyNetworkClient;
+  parentDomainNativeId: BigNumberish;
+  parentDomainSkillId: BigNumberish;
+  domainNativeId: BigNumberish;
+  domainSkillId: BigNumberish;
+}
+
+export async function getChildIndexLocal({
+  networkClient,
+  parentDomainNativeId,
+  parentDomainSkillId,
+  domainNativeId,
+  domainSkillId,
+}: GetChildIndexLocalParams): Promise<BigNumber> {
   if (BigNumber.from(parentDomainNativeId).eq(BigNumber.from(domainNativeId))) {
     return constants.MaxUint256;
   }
@@ -41,30 +49,42 @@ export async function getChildIndexLocal(
   return BigNumber.from(idx);
 }
 
-const getSinglePermissionProofsLocal = async (
-  networkClient: ColonyNetworkClient,
-  colonyRoles: ColonyRoleFragment[],
-  colonyDomains: Domain[],
-  requiredDomainId: number,
-  requiredColonyRole: ColonyRole,
-  permissionAddress: string,
-  isMultiSig: boolean,
+interface GetSinglePermissionProofsLocalParams {
+  networkClient: ColonyNetworkClient;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  requiredDomainId: number;
+  requiredColonyRole: ColonyRole;
+  permissionAddress: string;
+  isMultiSig: boolean;
+}
+
+const getSinglePermissionProofsLocal = async ({
+  networkClient,
+  colonyRoles,
+  colonyDomains,
+  requiredDomainId,
+  requiredColonyRole,
+  permissionAddress,
+  isMultiSig,
   /* [permissionDomainId, childSkillIndex, permissionAddress] */
-): Promise<[BigNumber, BigNumber, string]> => {
-  const userRolesInDomain = getUserRolesForDomain(
+}: GetSinglePermissionProofsLocalParams): Promise<
+  [BigNumber, BigNumber, string]
+> => {
+  const userRolesInDomain = getUserRolesForDomain({
     colonyRoles,
-    permissionAddress,
-    requiredDomainId,
-    true,
+    userAddress: permissionAddress,
+    domainId: requiredDomainId,
+    excludeInherited: true,
     isMultiSig,
-  );
-  const userRolesInRoot = getUserRolesForDomain(
+  });
+  const userRolesInRoot = getUserRolesForDomain({
     colonyRoles,
-    permissionAddress,
-    Id.RootDomain,
-    true,
+    userAddress: permissionAddress,
+    domainId: Id.RootDomain,
+    excludeInherited: true,
     isMultiSig,
-  );
+  });
 
   if (!permissionAddress) {
     throw new Error(
@@ -108,13 +128,13 @@ const getSinglePermissionProofsLocal = async (
     );
   }
 
-  const idx = await getChildIndexLocal(
+  const idx = await getChildIndexLocal({
     networkClient,
-    foundDomainId,
-    rootDomain.nativeSkillId,
-    permissionDomain.nativeId,
-    permissionDomain.nativeSkillId,
-  );
+    parentDomainNativeId: foundDomainId,
+    parentDomainSkillId: rootDomain.nativeSkillId,
+    domainNativeId: permissionDomain.nativeId,
+    domainSkillId: permissionDomain.nativeSkillId,
+  });
 
   if (idx.lt(0)) {
     throw new Error(
@@ -124,26 +144,38 @@ const getSinglePermissionProofsLocal = async (
   return [foundDomainId, idx, permissionAddress];
 };
 
-const getMultiPermissionProofsLocal = async (
-  networkClient: ColonyNetworkClient,
-  colonyRoles: ColonyRoleFragment[],
-  colonyDomains: Domain[],
-  requiredDomainId: number,
-  requiredColonyRoles: ColonyRole[],
-  permissionAddress: string,
-  isMultiSig: boolean,
-): Promise<[BigNumber, BigNumber, string]> => {
+interface GetMultiPermissionProofsLocalParams {
+  networkClient: ColonyNetworkClient;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  requiredDomainId: number;
+  requiredColonyRoles: ColonyRole[];
+  permissionAddress: string;
+  isMultiSig: boolean;
+}
+
+const getMultiPermissionProofsLocal = async ({
+  networkClient,
+  colonyRoles,
+  colonyDomains,
+  requiredDomainId,
+  requiredColonyRoles,
+  permissionAddress,
+  isMultiSig,
+}: GetMultiPermissionProofsLocalParams): Promise<
+  [BigNumber, BigNumber, string]
+> => {
   const proofs = await Promise.all(
     requiredColonyRoles.map((role) =>
-      getSinglePermissionProofsLocal(
+      getSinglePermissionProofsLocal({
         networkClient,
         colonyRoles,
         colonyDomains,
         requiredDomainId,
-        role,
+        requiredColonyRole: role,
         permissionAddress,
         isMultiSig,
-      ),
+      }),
     ),
   );
 
@@ -164,38 +196,47 @@ const getMultiPermissionProofsLocal = async (
   return proofs[0];
 };
 
-export const getPermissionProofsLocal = async (
-  networkClient: ColonyNetworkClient,
-  colonyRoles: ColonyRoleFragment[],
-  colonyDomains: Domain[],
-  requiredDomainId: number,
-  requiredColonyRole: ColonyRole | ColonyRole[],
-  permissionAddress: string,
-  isMultiSig: boolean,
-): Promise<[BigNumber, BigNumber, string]> => {
+interface GetPermissionProofsLocalParams {
+  networkClient: ColonyNetworkClient;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  requiredDomainId: number;
+  requiredColonyRole: ColonyRole | ColonyRole[];
+  permissionAddress: string;
+  isMultiSig: boolean;
+}
+export const getPermissionProofsLocal = async ({
+  networkClient,
+  colonyRoles,
+  colonyDomains,
+  requiredDomainId,
+  requiredColonyRole,
+  permissionAddress,
+  isMultiSig,
+}: GetPermissionProofsLocalParams): Promise<[BigNumber, BigNumber, string]> => {
   if (Array.isArray(requiredColonyRole)) {
     if (requiredColonyRole.length === 1) {
-      return getSinglePermissionProofsLocal(
+      return getSinglePermissionProofsLocal({
         networkClient,
         colonyRoles,
         colonyDomains,
         requiredDomainId,
-        requiredColonyRole[0],
+        requiredColonyRole: requiredColonyRole[0],
         permissionAddress,
         isMultiSig,
-      );
+      });
     }
-    return getMultiPermissionProofsLocal(
+    return getMultiPermissionProofsLocal({
       networkClient,
       colonyRoles,
       colonyDomains,
       requiredDomainId,
-      requiredColonyRole,
+      requiredColonyRoles: requiredColonyRole,
       permissionAddress,
       isMultiSig,
-    );
+    });
   }
-  return getSinglePermissionProofsLocal(
+  return getSinglePermissionProofsLocal({
     networkClient,
     colonyRoles,
     colonyDomains,
@@ -203,7 +244,7 @@ export const getPermissionProofsLocal = async (
     requiredColonyRole,
     permissionAddress,
     isMultiSig,
-  );
+  });
 };
 
 export function* getMoveFundsPermissionProofs(
