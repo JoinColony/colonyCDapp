@@ -43,13 +43,13 @@ const useHasActionPermissions = () => {
     return hasPermissions;
   }
 
-  const hasMultiSigPermissions = getHasActionPermissions(
+  const hasMultiSigPermissions = getHasActionPermissions({
     colony,
-    user?.walletAddress ?? '',
+    userAddress: user?.walletAddress ?? '',
     actionType,
     formValues,
-    true,
-  );
+    isMultiSig: true,
+  });
 
   if (decisionMethod === DecisionMethod.MultiSig) {
     return hasMultiSigPermissions;
