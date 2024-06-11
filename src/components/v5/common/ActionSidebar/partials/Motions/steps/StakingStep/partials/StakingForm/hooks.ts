@@ -33,7 +33,7 @@ export const useStakingForm = () => {
   const { user } = useAppContext();
   const { pollLockedTokenBalance, tokenBalanceData } =
     useUserTokenBalanceContext();
-  const { motionAction, setIsRefetching, startPollingAction } =
+  const { motionAction, setIsRefetching, startPollingAction, isRefetching } =
     useMotionContext();
 
   const { colony, motionData } = motionAction || {};
@@ -127,6 +127,7 @@ export const useStakingForm = () => {
   );
 
   return {
+    isRefetching,
     transform,
     handleSuccess,
     validationSchema,
