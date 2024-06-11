@@ -12,11 +12,13 @@ const displayName = 'v5.UserInfoPopover.partials.UserNotVerified';
 export interface UserNotVerifiedProps {
   description?: React.ReactNode;
   walletAddress: string;
+  onClick?: () => void;
 }
 
 const UserNotVerified: FC<UserNotVerifiedProps> = ({
   description,
   walletAddress,
+  onClick,
 }) => {
   const {
     actionSidebarToggle: [
@@ -36,6 +38,7 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
             toggleActionSidebarOff();
 
             setTimeout(() => {
+              onClick?.();
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
                 members: [{ value: walletAddress }],
