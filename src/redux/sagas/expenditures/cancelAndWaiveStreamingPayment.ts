@@ -1,6 +1,8 @@
 import { ClientType } from '@colony/colony-js';
+import { utils } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
+import { ContextModule, getContext } from '~context';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
@@ -23,6 +25,13 @@ function* cancelAndWaiveStreamingPaymentAction({
     ]);
 
   try {
+    const wallet = getContext(ContextModule.Wallet);
+    const userWalletAddress = utils.getAddress(wallet.address);
+
+    if (userWalletAddress !== streamingPayment.recipientAddress) {
+      throw new Error('The stream recipient is not the current user');
+    }
+
     yield fork(createTransaction, cancelAndWaiveStreamingPayment.id, {
       context: ClientType.StreamingPaymentsClient,
       methodName: 'cancelAndWaive',
