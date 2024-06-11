@@ -22,7 +22,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
   expenditure,
 }) => {
   const { colony } = useColonyContext();
-  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
+  const { currentBlockTime: blockTime, refreshBlockTime } =
     useCurrentBlockTime();
   const { slots = [], finalizedAt, nativeId } = expenditure || {};
 
@@ -116,7 +116,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                   <PaymentCounter
                     finalizedTimestamp={finalizedAt}
                     claimDelay={closestPayoutClaimDelay}
-                    onTimeEnd={fetchCurrentBlockTime}
+                    onTimeEnd={refreshBlockTime}
                   />
                 ),
               },
@@ -139,7 +139,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
                 onSuccess={() => {
-                  fetchCurrentBlockTime();
+                  refreshBlockTime();
                 }}
               />
             </div>

@@ -6,16 +6,14 @@ fragment StreamingPayment on StreamingPayment {
   startTime
   endTime
   interval
-  payouts {
-    ...ExpenditurePayout
-  }
+  tokenAddress
+  amount
   metadata {
     endCondition
     limitAmount
   }
   claims {
     amount
-    tokenAddress
     timestamp
   }
 }
