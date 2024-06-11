@@ -32,6 +32,7 @@ import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/
 import {
   type CancelStreamingPaymentPayload,
   type CancelStakedExpenditurePayload,
+  type CancelAndWaitveStreamingPaymentPayload,
 } from '~redux/types/actions/expenditures.ts';
 import {
   type ExpenditureFundMotionPayload,
@@ -172,6 +173,11 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.STREAMING_PAYMENT_CANCEL,
     error: ActionTypes.STREAMING_PAYMENT_CANCEL_ERROR,
     success: ActionTypes.STREAMING_PAYMENT_CANCEL_SUCCESS,
+  });
+  const cancelAndWaiveStreamingPayment = useAsyncFunction({
+    submit: ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE,
+    error: ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_ERROR,
+    success: ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_SUCCESS,
   });
   const claimStreamingPayment = useAsyncFunction({
     submit: ActionTypes.STREAMING_PAYMENT_CLAIM,
@@ -516,6 +522,19 @@ const TmpAdvancedPayments = () => {
     await cancelStreamingPayment(payload);
   };
 
+  const handleCancelAndWaiveStreamingPayment = async () => {
+    if (!streamingPayment) {
+      return;
+    }
+
+    const payload: CancelAndWaitveStreamingPaymentPayload = {
+      colonyAddress: colony.colonyAddress,
+      streamingPayment,
+    };
+
+    await cancelAndWaiveStreamingPayment(payload);
+  };
+
   const handleClaimStreamingPayment = async () => {
     if (!streamingPayment) {
       return;
@@ -659,6 +678,12 @@ const TmpAdvancedPayments = () => {
             disabled={!streamingPayment}
           >
             Cancel
+          </Button>
+          <Button
+            onClick={handleCancelAndWaiveStreamingPayment}
+            disabled={!streamingPayment}
+          >
+            Cancel and Waive
           </Button>
         </div>
       </div>
