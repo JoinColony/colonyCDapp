@@ -21,7 +21,7 @@ fragment Expenditure on Expenditure {
   motions {
     items {
       ...ColonyMotion
-      expenditureSlotId
+      expenditureSlotIds
     }
   }
   type

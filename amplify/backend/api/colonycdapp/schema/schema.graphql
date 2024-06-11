@@ -2830,9 +2830,9 @@ type ColonyMotion @model {
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
 
   """
-  Id of the expenditure stage payment to be released if the motion pass, if any
+  Ids of the staged payment slots to be released if the motion pass, if any
   """
-  expenditureSlotId: Int
+  expenditureSlotIds: [Int!]
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
 
