@@ -24,6 +24,7 @@ import {
   type ExpenditureFundPayload,
   type CancelStakedExpenditurePayload,
   type CancelExpenditurePayload,
+  type CancelStreamingPaymentPayload,
 } from './expenditures.ts';
 import {
   type ErrorActionType,
@@ -87,11 +88,21 @@ export type MotionDomainCreateEditPayload = {
   colonyDomains: Domain[];
   domainCreatedInNativeId: number;
 };
+
 interface OneTxPaymentMotionPayload extends OneTxPaymentPayload {
   colonyDomains: Domain[];
   colonyRoles: ColonyRoleFragment[];
   isMultiSig?: boolean;
 }
+
+export type StreamingPaymentsMotionCancelPayload = Omit<
+  CancelStreamingPaymentPayload,
+  'colonyAddress'
+> & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+  colony: Colony;
+};
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -474,5 +485,15 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_MANAGE_TOKENS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL,
+      StreamingPaymentsMotionCancelPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_SUCCESS,
       MetaWithSetter<object>
     >;
