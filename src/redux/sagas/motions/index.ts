@@ -10,7 +10,7 @@ import editColonyMotionSaga from './editColonyMotion.ts';
 import {
   fundExpenditureMotionSaga,
   cancelStakedExpenditureMotionSaga,
-  releaseExpenditureStageMotionSaga,
+  releaseExpenditureStagesMotionSaga,
   editLockedExpenditureMotionSaga,
   cancelExpenditureMotionSaga,
   finalizeExpenditureMotionSaga,
@@ -47,7 +47,7 @@ export default function* actionsSagas() {
     call(fundExpenditureMotionSaga),
     call(cancelExpenditureMotionSaga),
     call(cancelStakedExpenditureMotionSaga),
-    call(releaseExpenditureStageMotionSaga),
+    call(releaseExpenditureStagesMotionSaga),
     call(editLockedExpenditureMotionSaga),
     call(finalizeExpenditureMotionSaga),
     call(paymentMotionSaga),
