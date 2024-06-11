@@ -40,7 +40,7 @@ export type CancelStreamingPaymentPayload = {
   userAddress: Address;
 };
 
-export type CancelAndWaitveStreamingPaymentPayload = {
+export type CancelAndWaiveStreamingPaymentPayload = {
   colonyAddress: Address;
   streamingPayment: StreamingPayment;
 };
@@ -282,7 +282,7 @@ export type ExpendituresActionTypes =
     >
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE,
-      CancelAndWaitveStreamingPaymentPayload,
+      CancelAndWaiveStreamingPaymentPayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<
