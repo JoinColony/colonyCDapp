@@ -1,5 +1,4 @@
 import { Layout, UserCircle } from '@phosphor-icons/react';
-import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +19,7 @@ import {
   USER_HOME_ROUTE,
 } from '~routes/index.ts';
 import Heading from '~shared/Heading/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 import SimpleSidebar from '~v5/shared/SimpleSidebar/index.ts';
 
 import LandingPageItem from './LandingPageItem.tsx';
@@ -93,8 +93,10 @@ const MSG = defineMessages({
   },
 });
 
+const landingImagesSrc = [CreateAColonyBanner, CreateAProfileBanner];
+
 const LandingPage = () => {
-  const [, setHoveredItem] = useState<number>(1);
+  const [, /* hoveredItemIndex */ setHoveredItemIndex] = useState<number>(1);
   const navigate = useNavigate();
   const { user, connectWallet, wallet, walletConnecting, userLoading } =
     useAppContext();
@@ -112,44 +114,6 @@ const LandingPage = () => {
   if (userLoading || walletConnecting) {
     return <LoadingTemplate />;
   }
-
-  const landingPageItems = [
-    {
-      buttonText: MSG.createColonyButtonText,
-      headingText: MSG.createColonyTitle,
-      headingDescription: MSG.createColonyDescription,
-      icon: Layout,
-      onClick: () => navigate(CREATE_COLONY_ROUTE_BASE),
-      imgSrc: CreateAColonyBanner,
-      disabled: true,
-    },
-    {
-      buttonText: user
-        ? MSG.viewUserProfileButtonText
-        : MSG.createUserProfileButtonText,
-      headingText: user ? MSG.viewUserProfileTitle : MSG.createUserProfileTitle,
-      headingDescription: MSG.viewUserProfileDescription,
-      icon: UserCircle,
-      onClick: !wallet
-        ? () => connectWallet()
-        : () =>
-            navigate(
-              user
-                ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
-                : `${CREATE_PROFILE_ROUTE}`,
-            ),
-      imgSrc: CreateAProfileBanner,
-      disabled: userLoading,
-    },
-    {
-      buttonText: MSG.exploreMetacolonyButtonText,
-      headingText: MSG.exploreMetacolonyTitle,
-      headingDescription: MSG.exploreMetacolonyDescription,
-      icon: ColonyIcon,
-      onClick: () => navigate(METACOLONY_HOME_ROUTE),
-      disabled: true,
-    },
-  ];
   const hasShareableInvitationCode =
     !!user?.privateBetaInviteCode?.shareableInvites;
 
@@ -172,17 +136,75 @@ const LandingPage = () => {
         </div>
         <div className="flex w-full justify-center gap-4">
           <div className="flex w-1/2 flex-col justify-between">
-            {landingPageItems.map((item, index) => (
-              <LandingPageItem
-                key={nanoid()}
-                {...item}
-                itemIndex={index}
-                onHover={setHoveredItem}
+            <LandingPageItem
+              headingText={MSG.createColonyTitle}
+              headingDescription={MSG.createColonyDescription}
+              icon={Layout}
+              // imgSrc={CreateAColonyBanner}
+              onMouseEnter={() => setHoveredItemIndex(0)}
+              onMouseLeave={() => setHoveredItemIndex(0)}
+              disabled
+            >
+              <Button
+                text={MSG.createColonyButtonText}
+                size="small"
+                mode="quinary"
+                isFullSize
+                onClick={() => navigate(CREATE_COLONY_ROUTE_BASE)}
+                disabled
               />
-            ))}
+            </LandingPageItem>
+            <LandingPageItem
+              headingText={
+                user ? MSG.viewUserProfileTitle : MSG.createUserProfileTitle
+              }
+              headingDescription={MSG.viewUserProfileDescription}
+              icon={UserCircle}
+              // imgSrc={CreateAProfileBanner}
+              onMouseEnter={() => setHoveredItemIndex(1)}
+              onMouseLeave={() => setHoveredItemIndex(0)}
+            >
+              <Button
+                text={
+                  user
+                    ? MSG.viewUserProfileButtonText
+                    : MSG.createUserProfileButtonText
+                }
+                size="small"
+                mode="quinary"
+                isFullSize
+                onClick={
+                  !wallet
+                    ? () => connectWallet()
+                    : () =>
+                        navigate(
+                          user
+                            ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
+                            : `${CREATE_PROFILE_ROUTE}`,
+                        )
+                }
+              />
+            </LandingPageItem>
+            <LandingPageItem
+              headingText={MSG.exploreMetacolonyTitle}
+              headingDescription={MSG.exploreMetacolonyDescription}
+              icon={ColonyIcon}
+              onMouseEnter={() => setHoveredItemIndex(0)}
+              onMouseLeave={() => setHoveredItemIndex(0)}
+              disabled
+            >
+              <Button
+                text={MSG.exploreMetacolonyButtonText}
+                size="small"
+                mode="quinary"
+                isFullSize
+                onClick={() => navigate(METACOLONY_HOME_ROUTE)}
+                disabled
+              />
+            </LandingPageItem>
           </div>
           <img
-            src={landingPageItems[1].imgSrc} // @TODO: Change to hoveredItem once we enable the create colony landing page item
+            src={landingImagesSrc[1]} // @TODO: Change to hoveredItem once we enable the create colony landing page item
             alt=""
             className="w-1/2 rounded-lg border border-gray-200 object-cover shadow-sm"
           />

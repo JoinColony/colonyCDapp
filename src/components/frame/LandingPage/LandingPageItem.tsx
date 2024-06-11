@@ -1,33 +1,29 @@
 import { type Icon as PhosphorIcon } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { FormattedMessage, type MessageDescriptor } from 'react-intl';
 
 import Heading from '~shared/Heading/index.ts';
-import Button from '~v5/shared/Button/index.ts';
 
 const displayName = 'frame.LandingPage';
 
-interface Props {
+interface Props extends PropsWithChildren {
   icon: PhosphorIcon;
   headingText: MessageDescriptor;
   headingDescription: MessageDescriptor;
-  buttonText: MessageDescriptor;
-  onClick: () => void;
-  itemIndex: number;
-  onHover: (itemIndex: number) => void;
   disabled?: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
 const LandingPageItem = ({
   icon: Icon,
   headingText,
   headingDescription,
-  buttonText,
-  onClick,
   disabled,
-  onHover,
-  itemIndex,
+  onMouseEnter,
+  onMouseLeave,
+  children,
 }: Props) => {
   return (
     <div
@@ -35,10 +31,10 @@ const LandingPageItem = ({
         'group flex items-center justify-between rounded-lg border border-gray-200 px-6 py-5',
         { 'hover:border-blue-400': !disabled, 'text-gray-300': disabled },
       )}
-      onMouseEnter={() => onHover(disabled ? 0 : itemIndex)}
-      onMouseLeave={() => onHover(0)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
-      <div className="flex items-center">
+      <div className="flex w-full items-center">
         <div
           className={clsx('mr-4 flex items-center rounded-lg bg-base-bg p-6', {
             'group-hover:bg-blue-100': !disabled,
@@ -51,20 +47,16 @@ const LandingPageItem = ({
             })}
           />
         </div>
-        <div>
-          <Heading text={headingText} className="text-md font-semibold" />
-          <p className="mt-1 text-sm">
-            <FormattedMessage {...headingDescription} />
-          </p>
+        <div className="flex w-full flex-col items-center gap-3 md:flex-row md:gap-4">
+          <div className="w-full">
+            <Heading text={headingText} className="text-md font-semibold" />
+            <p className="mt-1 text-sm">
+              <FormattedMessage {...headingDescription} />
+            </p>
+          </div>
+          <div className="w-full md:w-auto">{children}</div>
         </div>
       </div>
-      <Button
-        text={buttonText}
-        size="small"
-        mode="quinary"
-        onClick={onClick}
-        disabled={disabled}
-      />
     </div>
   );
 };
