@@ -137,7 +137,7 @@ function* handleMultiSigInstall(colonyAddress: string, metaId: string) {
           childSkillIndex,
           userId,
           Id.RootDomain,
-          intArrayToBytes32([1, 2, 3, 4, 5, 6]),
+          intArrayToBytes32([1, 2, 3, 5, 6]),
         ],
         group: {
           key: batchKey,
