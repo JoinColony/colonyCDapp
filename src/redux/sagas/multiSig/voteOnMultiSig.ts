@@ -56,16 +56,15 @@ function* voteOnMultiSigAction({
     );
     const userAddress = yield colonyClient.signer.getAddress();
 
-    const [, childSkillIndex] = yield call(
-      getPermissionProofsLocal,
-      colonyClient.networkClient,
+    const [, childSkillIndex] = yield call(getPermissionProofsLocal, {
+      networkClient: colonyClient.networkClient,
       colonyRoles,
       colonyDomains,
-      domainId,
-      requiredColonyRoles,
-      userAddress,
-      true,
-    );
+      requiredDomainId: domainId,
+      requiredColonyRole: requiredColonyRoles,
+      permissionAddress: userAddress,
+      isMultiSig: true,
+    });
 
     yield fork(createTransaction, meta.id, {
       context: ClientType.MultisigPermissionsClient,

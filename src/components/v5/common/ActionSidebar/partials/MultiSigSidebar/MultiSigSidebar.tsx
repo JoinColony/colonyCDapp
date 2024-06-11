@@ -1,5 +1,9 @@
+import { Extension } from '@colony/colony-js';
 import { type FC } from 'react';
 import React from 'react';
+
+import useExtensionData from '~hooks/useExtensionData.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
 
@@ -12,13 +16,24 @@ interface MultiSigSidebarProps {
 const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
   const { action, loadingAction } = useGetColonyAction(transactionId);
 
-  if (loadingAction || !action) {
+  const { extensionData, loading: loadingExtension } = useExtensionData(
+    Extension.MultisigPermissions,
+  );
+
+  if (loadingAction || loadingExtension || !action) {
     return <div>Loading</div>;
   }
 
   if (!action.multiSigData || !action.multiSigId) {
     console.warn('Not a multisig action');
     return null;
+  }
+
+  const isMultiSigExtensionInstalled =
+    extensionData && isInstalledExtensionData(extensionData);
+
+  if (!isMultiSigExtensionInstalled) {
+    return <div>The Multi Sig extension has been uninstalled</div>;
   }
 
   return (
