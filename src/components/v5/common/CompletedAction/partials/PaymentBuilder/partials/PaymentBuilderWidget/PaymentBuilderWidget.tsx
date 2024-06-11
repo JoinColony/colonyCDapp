@@ -2,6 +2,7 @@ import React, { useState, type FC, useEffect } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useGetColonyExpendituresQuery } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
@@ -24,7 +25,12 @@ import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
-  const { colony } = useColonyContext();
+  const { colony, refetchColony } = useColonyContext();
+  const { refetch: refetchExpenditures } = useGetColonyExpendituresQuery({
+    variables: {
+      colonyAddress: colony.colonyAddress,
+    },
+  });
   const { user } = useAppContext();
   const { walletAddress } = user || {};
 
@@ -65,8 +71,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   }, [startPolling, stopPolling]);
 
   useEffect(() => {
+    if (expenditureStep === ExpenditureStep.Release) {
+      // Once funds have been allocated to this expenditure,
+      // we need to refetch the colony and the expenditures so that
+      // balances are correctly shown across the app.
+      refetchColony();
+      refetchExpenditures();
+    }
     setActiveStepKey(expenditureStep);
-  }, [expenditureStep]);
+  }, [expenditureStep, refetchColony, refetchExpenditures]);
 
   useEffect(() => {
     if (expectedStepKey === expenditureStep) {
