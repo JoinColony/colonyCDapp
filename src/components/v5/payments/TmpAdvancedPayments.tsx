@@ -25,7 +25,7 @@ import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/r
 import { type ReleaseExpenditureStagesPayload } from '~redux/sagas/expenditures/releaseExpenditureStages.ts';
 import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
 import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
-import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
+import { type ReleaseExpenditureStagesMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStagesMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import {
   type ExpenditureFundMotionPayload,
@@ -114,9 +114,9 @@ const TmpAdvancedPayments = () => {
     success: ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
   });
   const releaseExpenditureStageMotion = useAsyncFunction({
-    submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
-    error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
-    success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+    submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES,
+    error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
+    success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS,
   });
   const editExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_EDIT,
@@ -359,13 +359,20 @@ const TmpAdvancedPayments = () => {
       return;
     }
 
-    const payload: ReleaseExpenditureStageMotionPayload = {
+    let slotIds: number[] = [];
+    if (releaseStage.includes(',')) {
+      slotIds = releaseStage.split(',').map(Number);
+    } else {
+      slotIds = [Number(releaseStage)];
+    }
+
+    const payload: ReleaseExpenditureStagesMotionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyName: colony.name,
       stagedExpenditureAddress,
       votingReputationAddress,
       expenditure,
-      slotId: Number(releaseStage),
+      slotIds,
       motionDomainId: expenditure.nativeDomainId,
       tokenAddresses: [colony.nativeToken.tokenAddress],
     };
