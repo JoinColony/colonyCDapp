@@ -1,5 +1,6 @@
 import { all, call } from 'redux-saga/effects';
 
+import cancelAndWaiveStreamingPaymentSaga from './cancelAndWaiveStreamingPayment.ts';
 import cancelExpenditureSaga from './cancelExpenditure.ts';
 import cancelStakedExpenditureSaga from './cancelStakedExpenditure.ts';
 import cancelStreamingPaymentSaga from './cancelStreamingPayment.ts';
@@ -33,5 +34,6 @@ export default function* expendituresSagas() {
     call(setStakeFractionSaga),
     call(cancelStreamingPaymentSaga),
     call(claimStreamingPaymentSaga),
+    call(cancelAndWaiveStreamingPaymentSaga),
   ]);
 }

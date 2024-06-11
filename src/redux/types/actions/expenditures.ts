@@ -40,6 +40,11 @@ export type CancelStreamingPaymentPayload = {
   userAddress: Address;
 };
 
+export type CancelAndWaitveStreamingPaymentPayload = {
+  colonyAddress: Address;
+  streamingPayment: StreamingPayment;
+};
+
 export type CancelStakedExpenditurePayload = {
   colonyAddress: Address;
   stakedExpenditureAddress: string;
@@ -271,6 +276,20 @@ export type ExpendituresActionTypes =
   | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR, object>
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE,
+      CancelAndWaitveStreamingPaymentPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_ERROR,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_SUCCESS,
       object,
       object
     >;
