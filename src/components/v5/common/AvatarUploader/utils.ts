@@ -16,7 +16,7 @@ const MSG = defineMessages({
   fingerprintError: {
     id: `${displayName}.fingerprintError`,
     defaultMessage:
-      'Your browser currently has fingerprint blocking enabled. Please disable it before selecting a file.',
+      'Your browser blocked the upload. Check if fingerprint blocking is enabled and temporarily disable it before trying again.',
   },
   fileSizeError: {
     id: `${displayName}.fileSizeError`,
