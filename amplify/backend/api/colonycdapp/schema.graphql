@@ -733,6 +733,10 @@ enum ColonyActionType {
   An action related to cancelling and waiving a streaming payment
   """
   CANCEL_AND_WAIVE_STREAMING_PAYMENT
+  """
+  An action related to cancelling a streaming payment via a motion
+  """
+  CANCEL_STREAMING_PAYMENT_MOTION
 }
 
 """

@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -10,6 +11,7 @@ import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
+import { type TransactionType } from '~redux/immutable/index.ts';
 import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelExpenditure.ts';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
@@ -26,6 +28,7 @@ import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expend
 import {
   type ExpenditureFundMotionPayload,
   type ExpenditureCancelMotionPayload,
+  type StreamingPaymentsMotionCancelPayload,
 } from '~redux/types/actions/motion.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -48,6 +51,9 @@ const TmpAdvancedPayments = () => {
   const [transactionAmount, setTransactionAmount] = useState('0');
   const [expenditureId, setExpenditureId] = useState('');
   const [releaseStage, setReleaseStage] = useState('');
+  const [annotation, setAnnotation] = useState<string | undefined>(undefined);
+  const [copiedMsgVisible, setCopiedMsgVisible] = useState(false);
+  const { transactionAndMessageGroups } = useUserTransactionContext();
 
   const tokenDecimalAmount = parseFloat(decimalAmount);
 
