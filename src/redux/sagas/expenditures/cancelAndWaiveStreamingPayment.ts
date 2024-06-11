@@ -26,9 +26,9 @@ function* cancelAndWaiveStreamingPaymentAction({
 
   try {
     const wallet = getContext(ContextModule.Wallet);
-    const userWalletAddress = utils.getAddress(wallet.address);
+    const senderAddress = utils.getAddress(wallet.address);
 
-    if (userWalletAddress !== streamingPayment.recipientAddress) {
+    if (senderAddress !== streamingPayment.recipientAddress) {
       throw new Error('The stream recipient is not the current user');
     }
 
