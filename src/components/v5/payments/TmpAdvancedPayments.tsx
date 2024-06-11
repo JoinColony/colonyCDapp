@@ -32,7 +32,7 @@ import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/
 import {
   type CancelStreamingPaymentPayload,
   type CancelStakedExpenditurePayload,
-  type CancelAndWaitveStreamingPaymentPayload,
+  type CancelAndWaiveStreamingPaymentPayload,
 } from '~redux/types/actions/expenditures.ts';
 import {
   type ExpenditureFundMotionPayload,
@@ -527,7 +527,7 @@ const TmpAdvancedPayments = () => {
       return;
     }
 
-    const payload: CancelAndWaitveStreamingPaymentPayload = {
+    const payload: CancelAndWaiveStreamingPaymentPayload = {
       colonyAddress: colony.colonyAddress,
       streamingPayment,
     };
