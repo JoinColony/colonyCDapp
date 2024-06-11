@@ -79,16 +79,15 @@ function* createRootMotionSaga({
         const requiredRoles =
           REQUIRED_MULTISIG_ROLES_BY_OPERATION[operationName];
 
-        const [, childSkillIndex] = yield call(
-          getPermissionProofsLocal,
-          colonyClient.networkClient,
+        const [, childSkillIndex] = yield call(getPermissionProofsLocal, {
+          networkClient: colonyClient.networkClient,
           colonyRoles,
           colonyDomains,
-          Id.RootDomain,
-          requiredRoles,
-          userAddress,
-          true,
-        );
+          requiredDomainId: Id.RootDomain,
+          requiredColonyRole: requiredRoles,
+          permissionAddress: userAddress,
+          isMultiSig: true,
+        });
 
         return {
           context: ClientType.MultisigPermissionsClient,
@@ -117,14 +116,13 @@ function* createRootMotionSaga({
         throw new Error('Cannot find rootDomain in colony domains');
       }
 
-      const childSkillIndex = yield call(
-        getChildIndexLocal,
-        colonyClient.networkClient,
-        rootDomain?.nativeId,
-        rootDomain.nativeSkillId,
-        rootDomain.nativeId,
-        rootDomain.nativeSkillId,
-      );
+      const childSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: rootDomain.nativeId,
+        parentDomainSkillId: rootDomain.nativeSkillId,
+        domainNativeId: rootDomain.nativeId,
+        domainSkillId: rootDomain.nativeSkillId,
+      });
       const { skillId } = yield call(
         [colonyClient, colonyClient.getDomain],
         Id.RootDomain,
