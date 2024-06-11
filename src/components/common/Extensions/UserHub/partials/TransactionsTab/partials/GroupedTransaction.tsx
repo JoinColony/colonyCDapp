@@ -131,7 +131,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               <div className="flex w-full items-center justify-between gap-4">
                 <div className="flex flex-col items-start">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-1">{value}</h4>
+                    <h4 className="text-left text-1">{value}</h4>
                     {createdAt && (
                       <span className="mt-0.5 block text-xs text-gray-400">
                         {createdAt}
