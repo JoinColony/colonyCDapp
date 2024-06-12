@@ -33,7 +33,7 @@ function* cancelStreamingPaymentsMotionAction({
     userAddress,
     annotationMessage,
   },
-}: Action<ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL>) {
+}: Action<ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL>) {
   const { createMotion, annotateMotion } = yield call(
     createTransactionChannels,
     meta.id,
@@ -72,14 +72,6 @@ function* cancelStreamingPaymentsMotionAction({
       colonyAddress,
     );
 
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      streamingPayment.nativeDomainId,
-      ColonyRole.Arbitration,
-      votingReputationAddress,
-    );
-
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
       Id.RootDomain,
@@ -91,12 +83,33 @@ function* cancelStreamingPaymentsMotionAction({
       ADDRESS_ZERO,
     );
 
+    const [adminPermissionDomainId, adminChildSkillIndex] =
+      yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        streamingPayment.nativeDomainId,
+        ColonyRole.Administration,
+        votingReputationAddress,
+      );
+
     const encodedAction = streamingPaymentsClient.interface.encodeFunctionData(
       'cancel',
-      [permissionDomainId, childSkillIndex, streamingPayment.nativeId],
+      [
+        adminPermissionDomainId,
+        adminChildSkillIndex,
+        streamingPayment.nativeId,
+      ],
     );
 
     const batchKey = 'createMotion';
+
+    const [, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
+      colonyClient,
+      streamingPayment.nativeDomainId,
+      ColonyRole.Arbitration,
+      votingReputationAddress,
+    );
 
     yield createGroupTransaction({
       channel: createMotion,
@@ -164,14 +177,14 @@ function* cancelStreamingPaymentsMotionAction({
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put({
-        type: ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_SUCCESS,
+        type: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_SUCCESS,
         meta,
       });
     }
   } catch (e) {
     console.error(e);
 
-    yield putError(ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_ERROR, e, meta);
+    yield putError(ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_ERROR, e, meta);
   } finally {
     [createMotion, annotateMotion].forEach((channel) =>
       channel.channel.close(),
@@ -183,7 +196,7 @@ function* cancelStreamingPaymentsMotionAction({
 
 export default function* cancelStreamingPaymentsMotionSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL,
+    ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
     cancelStreamingPaymentsMotionAction,
   );
 }

@@ -617,6 +617,8 @@ export enum ColonyActionType {
   AddVerifiedMembersMultisig = 'ADD_VERIFIED_MEMBERS_MULTISIG',
   /** An action related to arbitrary transaction */
   ArbitraryTx = 'ARBITRARY_TX',
+  /** An action related to cancelling and waiving a streaming payment */
+  CancelAndWaiveStreamingPayment = 'CANCEL_AND_WAIVE_STREAMING_PAYMENT',
   /** An action related to canceling an expenditure */
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
@@ -625,6 +627,8 @@ export enum ColonyActionType {
   CancelStakedExpenditureMultisig = 'CANCEL_STAKED_EXPENDITURE_MULTISIG',
   /** An action related to cancelling a streaming payment */
   CancelStreamingPayment = 'CANCEL_STREAMING_PAYMENT',
+  /** An action related to cancelling a streaming payment via a motion */
+  CancelStreamingPaymentMotion = 'CANCEL_STREAMING_PAYMENT_MOTION',
   /** An action related to editing a Colony's details */
   ColonyEdit = 'COLONY_EDIT',
   /** An action related to editing a Colony's details via a motion */
