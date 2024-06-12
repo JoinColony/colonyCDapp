@@ -1,4 +1,5 @@
-import { Network, SupportedCurrencies } from '~gql';
+import { SupportedCurrencies } from '~gql';
+import { Network } from '~types/network.ts';
 
 import { currencyApiConfig, coinGeckoMappings } from './config.ts';
 import {
@@ -16,7 +17,7 @@ import { buildAPIEndpoint, fetchData, mapToAPIFormat } from './utils.ts';
 const { chains, currencies } = coinGeckoMappings;
 const buildTokenAddressCoinGeckoURL = (
   contractAddress: string,
-  chainId: SupportedChains = Network.Gnosis,
+  chainId: SupportedChains = Network.ArbitrumOne,
   conversionDenomination: CoinGeckoSupportedCurrencies = SupportedCurrencies.Usd,
 ) => {
   const chain = mapToAPIFormat(chains, chainId);
@@ -64,7 +65,7 @@ const isAddressPriceSuccessResponse = (
 
 export const fetchTokenPriceByAddress = async ({
   contractAddress,
-  chainId = Network.Gnosis,
+  chainId = Network.ArbitrumOne,
   conversionDenomination = SupportedCurrencies.Usd,
 }: Pick<FetchCurrentPriceArgs, 'chainId' | 'contractAddress'> & {
   conversionDenomination: CoinGeckoSupportedCurrencies;
