@@ -34,15 +34,11 @@ export type ExpenditureFundPayload = {
 };
 
 export type CancelStreamingPaymentPayload = {
-  colonyAddress: Address;
+  colonyAddress?: Address;
   streamingPayment: StreamingPayment;
   annotationMessage?: string;
   userAddress: Address;
-};
-
-export type CancelAndWaiveStreamingPaymentPayload = {
-  colonyAddress: Address;
-  streamingPayment: StreamingPayment;
+  shouldWaive?: boolean;
 };
 
 export type CancelStakedExpenditurePayload = {
@@ -276,20 +272,6 @@ export type ExpendituresActionTypes =
   | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR, object>
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
-      object,
-      object
-    >
-  | UniqueActionType<
-      ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE,
-      CancelAndWaiveStreamingPaymentPayload,
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<
-      ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_ERROR,
-      object
-    >
-  | UniqueActionType<
-      ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_SUCCESS,
       object,
       object
     >;
