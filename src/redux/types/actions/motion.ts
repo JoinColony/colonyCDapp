@@ -488,12 +488,12 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
-      ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL,
+      ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
       StreamingPaymentsMotionCancelPayload,
       MetaWithSetter<object>
     >
-  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_ERROR, object>
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_ERROR, object>
   | ActionTypeWithMeta<
-      ActionTypes.MOTION_STREAMING_PAYMENTS_CANCEL_SUCCESS,
+      ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_SUCCESS,
       MetaWithSetter<object>
     >;
