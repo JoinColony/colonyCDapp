@@ -32,7 +32,6 @@ import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/
 import {
   type CancelStreamingPaymentPayload,
   type CancelStakedExpenditurePayload,
-  type CancelAndWaiveStreamingPaymentPayload,
 } from '~redux/types/actions/expenditures.ts';
 import {
   type ExpenditureFundMotionPayload,
@@ -173,11 +172,6 @@ const TmpAdvancedPayments = () => {
     submit: ActionTypes.STREAMING_PAYMENT_CANCEL,
     error: ActionTypes.STREAMING_PAYMENT_CANCEL_ERROR,
     success: ActionTypes.STREAMING_PAYMENT_CANCEL_SUCCESS,
-  });
-  const cancelAndWaiveStreamingPayment = useAsyncFunction({
-    submit: ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE,
-    error: ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_ERROR,
-    success: ActionTypes.STREAMING_PAYMENT_CANCEL_AND_WAIVE_SUCCESS,
   });
   const claimStreamingPayment = useAsyncFunction({
     submit: ActionTypes.STREAMING_PAYMENT_CLAIM,
@@ -508,7 +502,9 @@ const TmpAdvancedPayments = () => {
     await finalizeExpenditureViaMotion(payload);
   };
 
-  const handleCancelStreamingPayment = async () => {
+  const handleCancelStreamingPayment = async ({
+    shouldWaive,
+  }: Pick<CancelStreamingPaymentPayload, 'shouldWaive'>) => {
     if (!streamingPayment) {
       return;
     }
@@ -517,22 +513,10 @@ const TmpAdvancedPayments = () => {
       colonyAddress: colony.colonyAddress,
       streamingPayment,
       userAddress: user?.walletAddress ?? '',
+      shouldWaive,
     };
 
     await cancelStreamingPayment(payload);
-  };
-
-  const handleCancelAndWaiveStreamingPayment = async () => {
-    if (!streamingPayment) {
-      return;
-    }
-
-    const payload: CancelAndWaiveStreamingPaymentPayload = {
-      colonyAddress: colony.colonyAddress,
-      streamingPayment,
-    };
-
-    await cancelAndWaiveStreamingPayment(payload);
   };
 
   const handleClaimStreamingPayment = async () => {
@@ -674,13 +658,15 @@ const TmpAdvancedPayments = () => {
             Refetch
           </Button>
           <Button
-            onClick={handleCancelStreamingPayment}
+            onClick={() => handleCancelStreamingPayment({ shouldWaive: false })}
             disabled={!streamingPayment}
           >
             Cancel
           </Button>
           <Button
-            onClick={handleCancelAndWaiveStreamingPayment}
+            onClick={() => {
+              handleCancelStreamingPayment({ shouldWaive: true });
+            }}
             disabled={!streamingPayment}
           >
             Cancel and Waive
