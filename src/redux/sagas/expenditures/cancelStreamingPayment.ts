@@ -1,14 +1,19 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
+import { utils } from 'ethers';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
-import { type ColonyManager } from '~context/index.ts';
+import {
+  ContextModule,
+  getContext,
+  type ColonyManager,
+} from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 
 import {
-  type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,
+  type TransactionChannelMap,
 } from '../transactions/index.ts';
 import {
   getColonyManager,
@@ -20,25 +25,48 @@ import {
 
 function* cancelStreamingPaymentAction({
   meta,
-  payload: { colonyAddress, streamingPayment, annotationMessage },
+  payload: { colonyAddress, streamingPayment, annotationMessage, shouldWaive },
 }: Action<ActionTypes.STREAMING_PAYMENT_CANCEL>) {
-  const batchKey = 'cancelStreamingPayment';
+  // To make the flow more readable
+  const isCancelMethod = !shouldWaive;
+  const isCancelAndWaiveMethod = shouldWaive;
+
+  const batchKey = `cancel${isCancelMethod ? '' : 'AndWaive'}StreamingPayment`;
 
   const colonyManager: ColonyManager = yield getColonyManager();
-  const colonyClient = yield colonyManager.getClient(
-    ClientType.ColonyClient,
-    colonyAddress,
-  );
 
   const {
     cancelStreamingPayment,
     annotateCancelStreamingPayment,
-  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
-    meta.id,
-    ['cancelStreamingPayment', 'annotateCancelStreamingPayment'],
-  );
+  }: TransactionChannelMap = yield createTransactionChannels(meta.id, [
+    'cancelStreamingPayment',
+    'annotateCancelStreamingPayment',
+  ]);
+
+  const shouldAnnotate = isCancelMethod && annotationMessage;
 
   try {
+    if (isCancelMethod && !colonyAddress) {
+      throw new Error('The colony address should be provided');
+    }
+
+    const wallet = getContext(ContextModule.Wallet);
+    const senderAddress = utils.getAddress(wallet.address);
+
+    if (
+      isCancelAndWaiveMethod &&
+      senderAddress !== streamingPayment.recipientAddress
+    ) {
+      throw new Error(
+        'The stream recipient address should be the same as the current user address',
+      );
+    }
+
+    const colonyClient = yield colonyManager.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient.networkClient,
       colonyClient,
@@ -48,17 +76,24 @@ function* cancelStreamingPaymentAction({
 
     yield fork(createTransaction, cancelStreamingPayment.id, {
       context: ClientType.StreamingPaymentsClient,
-      methodName: 'cancel',
+      methodName: isCancelMethod ? 'cancel' : 'cancelAndWaive',
       identifier: colonyAddress,
       group: {
         key: batchKey,
         id: meta.id,
         index: 0,
       },
-      params: [permissionDomainId, childSkillIndex, streamingPayment.nativeId],
+      params: isCancelMethod
+        ? [permissionDomainId, childSkillIndex, streamingPayment.nativeId]
+        : [streamingPayment.nativeId],
     });
 
-    if (annotationMessage) {
+    yield takeFrom(
+      cancelStreamingPayment.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+
+    if (shouldAnnotate) {
       yield fork(createTransaction, annotateCancelStreamingPayment.id, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
@@ -70,13 +105,7 @@ function* cancelStreamingPaymentAction({
         },
         ready: false,
       });
-    }
 
-    yield takeFrom(
-      cancelStreamingPayment.channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
-    if (annotationMessage) {
       yield takeFrom(
         annotateCancelStreamingPayment.channel,
         ActionTypes.TRANSACTION_CREATED,
@@ -94,7 +123,7 @@ function* cancelStreamingPaymentAction({
 
     yield waitForTxResult(cancelStreamingPayment.channel);
 
-    if (annotationMessage) {
+    if (shouldAnnotate) {
       yield uploadAnnotation({
         txChannel: annotateCancelStreamingPayment,
         message: annotationMessage,
