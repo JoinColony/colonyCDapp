@@ -146,6 +146,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ReleaseStagedPaymentsMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
+      case ColonyActionType.CancelStreamingPaymentMotion:
         // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
         return <Motions transactionId={action.transactionHash} />;
       // @todo: reorganize folder structure after all of the advanced payments will be ready
