@@ -684,6 +684,7 @@ export enum ColonyActionType {
   /** An action related to cancelling a streaming payment via a motion */
   CancelStreamingPaymentMotion = 'CANCEL_STREAMING_PAYMENT_MOTION',
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 94034ad97 (Feat: Cancel streams using permissions)
@@ -705,6 +706,8 @@ export enum ColonyActionType {
   /** An action related to cancelling a streaming payment */
   CancelStreamingPayment = 'CANCEL_STREAMING_PAYMENT',
 >>>>>>> 3cb2283e8 (Add timestamp to streaming payment claims and code cleanup)
+=======
+>>>>>>> e921efe55 (feat: fix permission proof for StreamingPayment cancel)
   /** An action related to editing a Colony's details */
   ColonyEdit = 'COLONY_EDIT',
   /** An action related to editing a Colony's details via a motion */
