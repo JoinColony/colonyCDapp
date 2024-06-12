@@ -1,5 +1,6 @@
 import { ETHER_TOKEN, XDAI_TOKEN } from '~constants';
-import { Network, SupportedCurrencies } from '~gql';
+import { SupportedCurrencies } from '~gql';
+import { Network } from '~types/network.ts';
 
 // For walkthrough, see: https://apiguide.coingecko.com/getting-started/10-min-tutorial-guide/1-get-data-by-id-or-address
 export const currencyApiConfig = {
@@ -23,6 +24,22 @@ export const currencyApiConfig = {
   },
   attribution: 'https://www.coingecko.com/',
 };
+
+// This is a map between our internal reference to the current network, and the asset platform
+// we should call the coingecko api with.
+// For full list: https://api.coingecko.com/api/v3/asset_platforms
+const coinGeckoAssetPlatforms: { [key in Network]: string } = {
+  [Network.Amoy]: 'polygon-pos',
+  [Network.ArbitrumOne]: 'arbitrum-one',
+  [Network.ArbitrumSepolia]: 'arbitrum-one',
+  [Network.Ganache]: 'arbitrum-one',
+  [Network.Gnosis]: 'xdai',
+  [Network.GnosisFork]: 'xdai',
+  [Network.Goerli]: 'ethereum',
+  [Network.Mainnet]: 'ethereum',
+  [Network.Polygon]: 'polygon-pos',
+};
+
 export const coinGeckoMappings = {
   // This is a map between our internal reference to a supported currency, and the reference the api uses.
   // For full list: https://api.coingecko.com/api/v3/simple/supported_vs_currencies
@@ -37,11 +54,7 @@ export const coinGeckoMappings = {
     [SupportedCurrencies.Brl]: 'brl',
     [SupportedCurrencies.Eth]: 'eth',
   },
-  // For full list: https://api.coingecko.com/api/v3/asset_platforms
-  chains: {
-    [Network.Gnosis]: 'xdai',
-    [Network.Mainnet]: 'ethereum',
-  },
+  chains: coinGeckoAssetPlatforms,
   networkTokens: {
     [ETHER_TOKEN.symbol]: 'ethereum',
     [XDAI_TOKEN.symbol]: 'xdai',
