@@ -552,6 +552,8 @@ export enum ColonyActionType {
   CancelExpenditureMotion = 'CANCEL_EXPENDITURE_MOTION',
   /** An action related to cancelling a streaming payment */
   CancelStreamingPayment = 'CANCEL_STREAMING_PAYMENT',
+  /** An action related to cancelling a streaming payment via a motion */
+  CancelStreamingPaymentMotion = 'CANCEL_STREAMING_PAYMENT_MOTION',
   /** An action related to editing a Colony's details */
   ColonyEdit = 'COLONY_EDIT',
   /** An action related to editing a Colony's details via a motion */
