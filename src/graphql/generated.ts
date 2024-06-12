@@ -630,8 +630,8 @@ export enum ColonyActionType {
   /** An action related to adding verified members */
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
-<<<<<<< HEAD
   AddVerifiedMembersMultisig = 'ADD_VERIFIED_MEMBERS_MULTISIG',
+<<<<<<< HEAD
 <<<<<<< HEAD
   /** An action related to cancelling and waiving a streaming payment */
   CancelAndWaiveStreamingPayment = 'CANCEL_AND_WAIVE_STREAMING_PAYMENT',
@@ -641,6 +641,10 @@ export enum ColonyActionType {
   CancelAndWaiveStreamingPayment = 'CANCEL_AND_WAIVE_STREAMING_PAYMENT',
 >>>>>>> 34b866c5a (feat: add a ColonyActionType enum entry for cancel and waive)
 >>>>>>> bbb2559eb (feat: add a ColonyActionType enum entry for cancel and waive)
+=======
+  /** An action related to cancelling and waiving a streaming payment */
+  CancelAndWaiveStreamingPayment = 'CANCEL_AND_WAIVE_STREAMING_PAYMENT',
+>>>>>>> 30262a729 (feat: fix permission proof for StreamingPayment cancel)
   /** An action related to canceling an expenditure */
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
@@ -653,6 +657,7 @@ export enum ColonyActionType {
   CancelStreamingPayment = 'CANCEL_STREAMING_PAYMENT',
   /** An action related to cancelling a streaming payment via a motion */
   CancelStreamingPaymentMotion = 'CANCEL_STREAMING_PAYMENT_MOTION',
+<<<<<<< HEAD
 =======
 =======
   /** An action related to cancelling a streaming payment */
@@ -663,6 +668,8 @@ export enum ColonyActionType {
   /** An action related to cancelling a streaming payment */
   CancelStreamingPayment = 'CANCEL_STREAMING_PAYMENT',
 >>>>>>> 881864577 (Add timestamp to streaming payment claims and code cleanup)
+=======
+>>>>>>> 30262a729 (feat: fix permission proof for StreamingPayment cancel)
   /** An action related to editing a Colony's details */
   ColonyEdit = 'COLONY_EDIT',
   /** An action related to editing a Colony's details via a motion */

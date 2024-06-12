@@ -100,6 +100,14 @@ function* cancelStreamingPaymentsMotionAction({
 
     const batchKey = 'createMotion';
 
+    const [, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
+      colonyClient,
+      streamingPayment.nativeDomainId,
+      ColonyRole.Arbitration,
+      votingReputationAddress,
+    );
+
     yield createGroupTransaction({
       channel: createMotion,
       batchKey,
