@@ -139,7 +139,9 @@ export const useGetMembersForPermissions = () => {
     loading: extensionLoading,
   } = useExtensionsData();
   const isMobile = useMobile();
-  const { pagedMembers, loading } = useMemberContext();
+  const { loading, filteredMembers: filteredMembersFromContext } =
+    useMemberContext();
+
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
@@ -148,8 +150,13 @@ export const useGetMembersForPermissions = () => {
   } = useActionSidebarContext();
 
   const membersList = useMemo(
-    () => getMembersList(pagedMembers, selectedDomain?.nativeId, colony),
-    [colony, pagedMembers, selectedDomain],
+    () =>
+      getMembersList(
+        filteredMembersFromContext,
+        selectedDomain?.nativeId,
+        colony,
+      ),
+    [colony, filteredMembersFromContext, selectedDomain?.nativeId],
   );
 
   const allExtensions: AnyExtensionData[] = useMemo(
