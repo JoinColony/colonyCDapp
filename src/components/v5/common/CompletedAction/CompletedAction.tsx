@@ -94,6 +94,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
 
   const getSidebarWidgetContent = () => {
     switch (actionType) {
+      case ColonyActionType.CancelStreamingPaymentMotion:
       case ColonyActionType.PaymentMotion:
       case ColonyActionType.MintTokensMotion:
       case ColonyActionType.MoveFundsMotion:
