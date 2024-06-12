@@ -195,16 +195,17 @@ const TmpStreamingPayments = () => {
       colonyAddress: colony.colonyAddress,
       streamingPayment,
       streamingPaymentsAddress,
-      createdInDomain: rootDomain,
-      amount: transactionAmount,
-      endCondition: StreamingPaymentEndCondition.FixedTime,
-      interval: 604800, // One week
-      startTimestamp: streamingPayment.startTime,
-      tokenAddress,
-      tokenDecimals: parseInt(decimalAmount, 10),
+      startTimestamp: BigNumber.from(
+        (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 2,
+      ).toString(), // Two weeks away
       endTimestamp: BigNumber.from(
         (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 3,
       ).toString(), // Three weeks away
+      amount: transactionAmount,
+      tokenDecimals: parseInt(decimalAmount, 10),
+      interval: 604800, // One week
+      endCondition: StreamingPaymentEndCondition.LimitReached,
+      limitAmount: '1000',
     };
 
     await editStreamingPayment(payload);
