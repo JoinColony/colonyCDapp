@@ -43,25 +43,16 @@ function* editStreamingPaymentAction({
     colonyAddress,
     streamingPayment,
     streamingPaymentsAddress,
-    createdInDomain,
-    tokenAddress,
-    tokenDecimals,
-    amount,
     startTimestamp,
     endTimestamp,
-    // interval, @TODO: handle interval once setInterval contract method has been added
+    amount,
+    tokenDecimals,
+    interval,
     endCondition,
     limitAmount,
   },
   meta,
 }: Action<ActionTypes.STREAMING_PAYMENT_EDIT>) {
-  // The create streaming payment contract method allows for multiple amounts
-  // The CDapp UI only allows for one amount and the token cannot be changed
-  // Here we check the token matches the existing payment
-  if (streamingPayment.tokenAddress !== tokenAddress) {
-    throw new Error('Streaming payment token cannot be changed');
-  }
-
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -86,7 +77,7 @@ function* editStreamingPaymentAction({
       yield getPermissionProofs(
         colonyClient.networkClient,
         colonyClient,
-        createdInDomain.nativeId,
+        streamingPayment.nativeDomainId,
         ColonyRole.Funding,
       );
 
@@ -95,7 +86,7 @@ function* editStreamingPaymentAction({
       yield getPermissionProofs(
         colonyClient.networkClient,
         colonyClient,
-        createdInDomain.nativeId,
+        streamingPayment.nativeDomainId,
         ColonyRole.Administration,
       );
 
@@ -104,7 +95,7 @@ function* editStreamingPaymentAction({
       yield getPermissionProofs(
         colonyClient.networkClient,
         colonyClient,
-        createdInDomain.nativeId,
+        streamingPayment.nativeDomainId,
         [ColonyRole.Funding, ColonyRole.Administration],
         streamingPaymentsAddress,
       );
@@ -127,8 +118,8 @@ function* editStreamingPaymentAction({
           extensionChildSkillIndex,
           extensionChildSkillIndex,
           streamingPayment.nativeId,
-          tokenAddress,
           convertedAmount,
+          interval,
         ]),
       );
     }
@@ -179,22 +170,31 @@ function* editStreamingPaymentAction({
     const { type } = yield waitForTxResult(txChannel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield apolloClient.mutate<
-        UpdateStreamingPaymentMetadataMutation,
-        UpdateStreamingPaymentMetadataMutationVariables
-      >({
-        mutation: UpdateStreamingPaymentMetadataDocument,
-        variables: {
-          input: {
-            id: getExpenditureDatabaseId(
-              colonyAddress,
-              toNumber(streamingPayment.nativeId),
-            ),
-            endCondition,
-            limitAmount,
+      const hasEndConditionChanged =
+        endCondition &&
+        endCondition !== streamingPayment.metadata?.endCondition;
+      const hasLimitAmountChanged =
+        limitAmount && limitAmount !== streamingPayment.metadata?.limitAmount;
+      const hasMetadataChanged =
+        hasEndConditionChanged || hasLimitAmountChanged;
+      if (hasMetadataChanged) {
+        yield apolloClient.mutate<
+          UpdateStreamingPaymentMetadataMutation,
+          UpdateStreamingPaymentMetadataMutationVariables
+        >({
+          mutation: UpdateStreamingPaymentMetadataDocument,
+          variables: {
+            input: {
+              id: getExpenditureDatabaseId(
+                colonyAddress,
+                toNumber(streamingPayment.nativeId),
+              ),
+              endCondition,
+              limitAmount,
+            },
           },
-        },
-      });
+        });
+      }
 
       yield put<AllActions>({
         type: ActionTypes.STREAMING_PAYMENT_EDIT_SUCCESS,
