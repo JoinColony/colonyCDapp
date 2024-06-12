@@ -281,14 +281,12 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         streamingPayment: StreamingPayment;
         streamingPaymentsAddress: string;
-        createdInDomain: Domain;
-        tokenAddress: Address;
-        tokenDecimals: number;
-        amount: string;
         startTimestamp: string;
         endTimestamp?: string;
+        amount: string;
+        tokenDecimals: number;
         interval: number;
-        endCondition: StreamingPaymentEndCondition;
+        endCondition?: StreamingPaymentEndCondition;
         limitAmount?: string;
       },
       MetaWithSetter<object>
