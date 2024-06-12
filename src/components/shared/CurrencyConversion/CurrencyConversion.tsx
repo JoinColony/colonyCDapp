@@ -9,7 +9,7 @@ import useCurrency from '~hooks/useCurrency.ts';
 import Numeral, {
   type Props as NumeralProps,
 } from '~shared/Numeral/Numeral.tsx';
-import { Network } from '~types/network.tsx';
+import { Network } from '~types/network.ts';
 import { type FetchCurrentPriceArgs } from '~utils/currency/index.ts';
 
 const displayName = 'CurrencyConversion';
