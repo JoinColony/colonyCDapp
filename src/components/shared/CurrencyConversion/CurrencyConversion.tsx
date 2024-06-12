@@ -9,7 +9,7 @@ import useCurrency from '~hooks/useCurrency.ts';
 import Numeral, {
   type Props as NumeralProps,
 } from '~shared/Numeral/Numeral.tsx';
-import { Network } from '~types/network.ts';
+import { type Network } from '~types/network.ts';
 import { type FetchCurrentPriceArgs } from '~utils/currency/index.ts';
 
 const displayName = 'CurrencyConversion';
@@ -47,9 +47,7 @@ const CurrencyConversion = ({
   tokenBalance,
   tokenDecimals,
   contractAddress,
-  chainId = DEFAULT_NETWORK in Network
-    ? (DEFAULT_NETWORK as Network)
-    : undefined,
+  chainId = DEFAULT_NETWORK as Network,
   className,
   ...rest
 }: Props) => {
