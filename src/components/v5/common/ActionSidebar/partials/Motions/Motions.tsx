@@ -10,7 +10,6 @@ import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
@@ -56,7 +55,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     networkMotionState === NetworkMotionState.Failed;
 
   useEffect(() => {
-    startPollingForAction(getSafePollingInterval());
+    startPollingForAction();
     setActiveStepKey(networkMotionState);
     if (motionFinished) {
       setActiveStepKey(CustomStep.Finalize);

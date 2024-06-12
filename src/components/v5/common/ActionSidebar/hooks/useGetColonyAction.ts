@@ -59,13 +59,10 @@ const useGetColonyAction = (transactionHash?: string) => {
     }
   };
 
-  const startPollingForAction = useCallback(
-    (interval: number = pollInterval) => {
-      startPolling(interval);
-      setIsPolling(true);
-    },
-    [pollInterval, startPolling],
-  );
+  const startPollingForAction = useCallback(() => {
+    startPolling(pollInterval);
+    setIsPolling(true);
+  }, [pollInterval, startPolling]);
 
   const stopPollingForAction = useCallback(() => {
     stopPolling();
@@ -93,7 +90,7 @@ const useGetColonyAction = (transactionHash?: string) => {
 
     pollTimerRef.current = setTimeout(stopPollingForAction, POLLING_TIMEOUT);
 
-    startPollingForAction(pollInterval);
+    startPollingForAction();
   }, [
     action,
     pollInterval,
@@ -158,7 +155,8 @@ const useGetColonyAction = (transactionHash?: string) => {
     isInvalidTransactionHash: isInvalidTx,
     isUnknownTransaction:
       !isInvalidTx && action?.colony?.colonyAddress !== colonyAddress,
-    loadingAction: loadingAction || isPolling || loadingMotionState,
+    loadingAction:
+      loadingAction || (isPolling && !action) || loadingMotionState,
     action,
     startPollingForAction,
     stopPollingForAction,
