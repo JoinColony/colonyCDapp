@@ -29,10 +29,11 @@ export type ExpenditureFundPayload = {
 };
 
 export type CancelStreamingPaymentPayload = {
-  colonyAddress: Address;
+  colonyAddress?: Address;
   streamingPayment: StreamingPayment;
   annotationMessage?: string;
   userAddress: Address;
+  shouldWaive?: boolean;
 };
 
 export type CancelStakedExpenditurePayload = {

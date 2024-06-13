@@ -729,6 +729,10 @@ enum ColonyActionType {
   An action related to cancelling a streaming payment
   """
   CANCEL_STREAMING_PAYMENT
+  """
+  An action related to cancelling and waiving a streaming payment
+  """
+  CANCEL_AND_WAIVE_STREAMING_PAYMENT
 }
 
 """
@@ -3405,6 +3409,10 @@ type StreamingPayment @model {
   Is the stream cancelled?
   """
   isCancelled: Boolean
+  """
+  Is the stream waived?
+  """
+  isWaived: Boolean
 }
 
 type StreamingPaymentMetadata @model {

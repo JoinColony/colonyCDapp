@@ -502,7 +502,9 @@ const TmpAdvancedPayments = () => {
     await finalizeExpenditureViaMotion(payload);
   };
 
-  const handleCancelStreamingPayment = async () => {
+  const handleCancelStreamingPayment = async ({
+    shouldWaive,
+  }: Pick<CancelStreamingPaymentPayload, 'shouldWaive'>) => {
     if (!streamingPayment) {
       return;
     }
@@ -511,6 +513,7 @@ const TmpAdvancedPayments = () => {
       colonyAddress: colony.colonyAddress,
       streamingPayment,
       userAddress: user?.walletAddress ?? '',
+      shouldWaive,
     };
 
     await cancelStreamingPayment(payload);
@@ -655,10 +658,18 @@ const TmpAdvancedPayments = () => {
             Refetch
           </Button>
           <Button
-            onClick={handleCancelStreamingPayment}
+            onClick={() => handleCancelStreamingPayment({ shouldWaive: false })}
             disabled={!streamingPayment}
           >
             Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleCancelStreamingPayment({ shouldWaive: true });
+            }}
+            disabled={!streamingPayment}
+          >
+            Cancel and Waive
           </Button>
         </div>
       </div>
