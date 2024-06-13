@@ -35,7 +35,7 @@ const VoteButton: FC<VoteButtonProps> = ({
   });
 
   const handleVoteClick = async () => {
-    const voteForPayload: VoteOnMultiSigActionPayload = {
+    const votePayload: VoteOnMultiSigActionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyDomains: extractColonyDomains(colony.domains),
       colonyRoles: extractColonyRoles(colony.roles),
@@ -45,7 +45,7 @@ const VoteButton: FC<VoteButtonProps> = ({
       requiredRole: getMultiSigRequiredRole(actionType),
     };
 
-    await voteOnMultiSig(voteForPayload);
+    await voteOnMultiSig(votePayload);
   };
 
   return <Button onClick={handleVoteClick}>{voteType}</Button>;
