@@ -27,9 +27,9 @@ const StepperButton: React.FC<StepperButtonProps> = ({
 
   useEffect(() => {
     if (ref?.current && isHighlighted) {
-        ref.current.scrollIntoView({ behavior: "smooth", inline: "end" });
+      ref.current.scrollIntoView({ behavior: 'smooth', inline: 'end' });
     }
-}, [isHighlighted, ref]);
+  }, [isHighlighted, ref]);
 
   const content = (
     <button
@@ -38,10 +38,10 @@ const StepperButton: React.FC<StepperButtonProps> = ({
       className={clsx(
         className,
         `
-          whitespace-nowrap
           flex
           items-center
           justify-center
+          whitespace-nowrap
           rounded-3xl
           border
           px-[.625rem]
