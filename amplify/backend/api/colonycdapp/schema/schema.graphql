@@ -2652,10 +2652,6 @@ type ColonyMultiSig @model {
   """
   isExecuted: Boolean!
   """
-  Whether the multiSig was executed successfully or not
-  """
-  isSuccess: Boolean
-  """
   Whether the multiSig was cancelled or not
   """
   isRejected: Boolean!
