@@ -59,7 +59,7 @@ const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
   };
 
   const handleRejectMultiSig = async () => {
-    const voteForPayload: VoteOnMultiSigActionPayload = {
+    const rejectVotePayload: VoteOnMultiSigActionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyDomains: extractColonyDomains(colony.domains),
       colonyRoles: extractColonyRoles(colony.roles),
@@ -69,7 +69,7 @@ const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
       requiredRole: getMultiSigRequiredRole(actionType),
     };
 
-    await voteOnMultiSig(voteForPayload);
+    await voteOnMultiSig(rejectVotePayload);
     setShowRejectMultiSigStep(true);
   };
 
