@@ -62,7 +62,6 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   const isMultiSigCancelable = rejectionSignatures.length >= threshold;
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigExecuted = multiSigData.isExecuted;
-  const isMultiSigExecutedSuccessfully = multiSigData.isSuccess;
 
   if (rejectionSignatures.length > 0) {
     setShowRejectMultiSigStep(true);
@@ -73,12 +72,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   }
 
   if (isMultiSigExecuted) {
-    return (
-      <div>
-        MultiSig motion completed{' '}
-        {isMultiSigExecutedSuccessfully ? 'successfully' : 'unsuccessfully'}
-      </div>
-    );
+    return <div>MultiSig motion completed</div>;
   }
 
   return (
