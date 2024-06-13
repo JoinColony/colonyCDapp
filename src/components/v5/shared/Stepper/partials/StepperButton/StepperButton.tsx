@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useMobile } from '~hooks';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
@@ -21,15 +21,24 @@ const StepperButton: React.FC<StepperButtonProps> = ({
   tooltipProps,
   ...rest
 }) => {
+  const ref = useRef<HTMLButtonElement>(null);
   const Icon = icon || ICON_NAME_MAP[stage];
   const isMobile = useMobile();
 
+  useEffect(() => {
+    if (ref?.current && isHighlighted) {
+        ref.current.scrollIntoView({ behavior: "smooth", inline: "end" });
+    }
+}, [isHighlighted, ref]);
+
   const content = (
     <button
+      ref={ref}
       type="button"
       className={clsx(
         className,
         `
+          whitespace-nowrap
           flex
           items-center
           justify-center
