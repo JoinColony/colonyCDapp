@@ -13,6 +13,11 @@ const MSG = defineMessages({
     defaultMessage:
       'File could not be uploaded and may be corrupted. Try again with a different file.',
   },
+  fingerprintError: {
+    id: `${displayName}.fingerprintError`,
+    defaultMessage:
+      'Your browser blocked the upload. Check if fingerprint blocking is enabled and temporarily disable it before trying again.',
+  },
   fileSizeError: {
     id: `${displayName}.fileSizeError`,
     defaultMessage: 'File size is too large, it should not exceed 1MB',
@@ -48,6 +53,7 @@ export enum DropzoneErrors {
   STRUCTURE = 'wrong-structure',
   CUSTOM = 'custom-error',
   DEFAULT = 'default',
+  FINGERPRINT_ENABLED = 'fingerprint-enabled',
 }
 
 /**
@@ -68,6 +74,9 @@ export const getErrorMessage = (errorCode: DropzoneErrors) => {
     }
     case DropzoneErrors.STRUCTURE: {
       return MSG.wrongStructure;
+    }
+    case DropzoneErrors.FINGERPRINT_ENABLED: {
+      return MSG.fingerprintError;
     }
 
     /* Extend here with too-small and too-many as needed */
