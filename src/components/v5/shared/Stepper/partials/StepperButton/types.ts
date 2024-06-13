@@ -7,7 +7,7 @@ import { type StepStage } from './consts.ts';
 
 export interface StepperButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+  label: string | React.ReactElement;
   stage: StepStage;
   isHighlighted?: boolean;
   className?: string;

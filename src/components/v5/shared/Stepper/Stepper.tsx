@@ -21,11 +21,12 @@ function Stepper<TKey extends React.Key>({
   const activeItemIndex = items.findIndex(({ key }) => key === activeStepKey);
   const [openItemIndex, setOpenItemIndex] = useState(activeItemIndex);
   const isMobile = useMobile();
-  const withArrowsOnMobile =
-    items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION && isMobile;
   const openedItem = items[openItemIndex];
   const listRef = React.useRef<HTMLUListElement | null>(null);
   const [isScrollableList, setIsScrollableList] = useState(false);
+  const withArrowsOnMobile = 
+    (isScrollableList || items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION) 
+    && isMobile;
 
   const scrollLeft = () => {
     if (listRef.current) {
@@ -156,7 +157,7 @@ function Stepper<TKey extends React.Key>({
                       onClick={() => {
                         setOpenItemIndex(index);
 
-                        if (index > activeItemIndex) {
+                        if (index > activeItemIndex && setActiveStepKey) {
                           setActiveStepKey(key);
                         }
                       }}
@@ -167,7 +168,7 @@ function Stepper<TKey extends React.Key>({
                     />
                     {decor || null}
                   </div>
-                  {!isMobile && !itemDisabled && (
+                  {!isMobile && !itemDisabled && !!content && (
                     <div
                       className={clsx(
                         'grid w-full transition-[grid-template-rows_0.5s_ease-in-out]',
@@ -193,7 +194,7 @@ function Stepper<TKey extends React.Key>({
           </button>
         )}
       </div>
-      {isMobile && <div className="pt-4">{openedItem.content}</div>}
+      {isMobile && !!openedItem.content && <div className="pt-4">{openedItem.content}</div>}
     </>
   ) : null;
 }

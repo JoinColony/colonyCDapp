@@ -5,7 +5,7 @@ export interface StepperItem<TKey> {
   heading: Omit<StepperButtonProps, 'onClick' | 'stage'> & {
     decor?: JSX.Element | null;
   };
-  content: React.ReactNode;
+  content?: React.ReactNode;
   isOptional?: boolean;
   isSkipped?: boolean;
   isHidden?: boolean;
@@ -14,5 +14,5 @@ export interface StepperItem<TKey> {
 export interface StepperProps<TKey> {
   items: StepperItem<TKey>[];
   activeStepKey: TKey;
-  setActiveStepKey: (key: TKey) => void;
+  setActiveStepKey?: (key: TKey) => void;
 }
