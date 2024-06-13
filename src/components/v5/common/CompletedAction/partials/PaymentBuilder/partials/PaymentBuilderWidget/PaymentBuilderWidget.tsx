@@ -47,8 +47,13 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     stopPolling,
   } = useGetExpenditureData(expenditureId);
 
-  const { fundingActions, finalizingActions, cancellingActions, finalizedAt } =
-    expenditure || {};
+  const {
+    fundingActions,
+    finalizingActions,
+    cancellingActions,
+    finalizedAt,
+    createdAt,
+  } = expenditure || {};
   const { items: fundingActionsItems } = fundingActions || {};
 
   const expenditureStep = getExpenditureStep(expenditure);
@@ -100,7 +105,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       key: ExpenditureStep.Create,
       heading: { label: formatText({ id: 'expenditure.createStage.label' }) },
       content: (
-        <FinalizeWithPermissionsInfo userAdddress={expenditure?.ownerAddress} />
+        <FinalizeWithPermissionsInfo
+          userAdddress={expenditure?.ownerAddress}
+          createdAt={createdAt}
+        />
       ),
     },
     {
@@ -135,6 +143,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ) : (
           <FinalizeWithPermissionsInfo
             userAdddress={expenditure?.ownerAddress}
+            createdAt={expenditure?.lockingActions?.items[0]?.createdAt}
           />
         ),
     },
@@ -164,6 +173,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             {fundingActionsItems?.[0] && (
               <FinalizeWithPermissionsInfo
                 userAdddress={fundingActionsItems[0].initiatorAddress}
+                createdAt={fundingActionsItems[0].createdAt}
               />
             )}
           </>
@@ -194,6 +204,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             {finalizedAt ? (
               <FinalizeWithPermissionsInfo
                 userAdddress={finalizingActions?.items[0]?.initiatorAddress}
+                createdAt={finalizingActions?.items[0]?.createdAt}
               />
             ) : (
               <div />

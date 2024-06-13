@@ -1,4 +1,6 @@
+import { isToday, isYesterday } from 'date-fns';
 import React, { type FC } from 'react';
+import { FormattedDate, defineMessages } from 'react-intl';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -8,9 +10,64 @@ import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import { type FinalizeWithPermissionsInfoProps } from './types.ts';
 
+const displayName =
+  'v5.common.CompletedAction.partials.FinalizeWithPermissionsInfo';
+
+const MSG = defineMessages({
+  todayAt: {
+    id: `${displayName}.todayAt`,
+    defaultMessage: 'Today at',
+  },
+  yestardayAt: {
+    id: `${displayName}.yestardayAt`,
+    defaultMessage: 'Yesterday at',
+  },
+  at: {
+    id: `${displayName}.at`,
+    defaultMessage: 'at',
+  },
+});
+
+const formatDate = (value: string | undefined) => {
+  if (!value) {
+    return undefined;
+  }
+
+  const date = new Date(value);
+
+  if (isToday(date)) {
+    return (
+      <>
+        {formatText(MSG.todayAt)}{' '}
+        <FormattedDate value={date} hour="numeric" minute="numeric" />
+      </>
+    );
+  }
+
+  if (isYesterday(date)) {
+    return (
+      <>
+        {formatText(MSG.yestardayAt)}{' '}
+        <FormattedDate value={date} hour="numeric" minute="numeric" />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <FormattedDate value={date} day="numeric" month="short" year="numeric" />{' '}
+      {formatText(MSG.at)}{' '}
+      <FormattedDate value={date} hour="numeric" minute="numeric" />
+    </>
+  );
+};
+
 const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
   userAdddress,
+  createdAt,
 }) => {
+  const formattedDate = formatDate(createdAt);
+
   return (
     <MenuWithStatusText
       statusTextSectionProps={{
@@ -52,6 +109,16 @@ const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
                     <PermissionRow contributorAddress={userAdddress} />
                   </div>
                 </>
+              )}
+              {createdAt && (
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <span className="text-sm text-gray-600">
+                    {formatText({
+                      id: 'action.executed.permissions.date',
+                    })}
+                  </span>
+                  <span className="text-sm text-gray-900">{formattedDate}</span>
+                </div>
               )}
             </>
           ),

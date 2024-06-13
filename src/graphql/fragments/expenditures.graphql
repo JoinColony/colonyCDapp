@@ -15,6 +15,7 @@ fragment Expenditure on Expenditure {
     }
   }
   finalizedAt
+  createdAt
   motions {
     items {
       ...ColonyMotion
@@ -41,11 +42,7 @@ fragment Expenditure on Expenditure {
     filter: { type: { eq: MOVE_FUNDS }, isMotionFinalization: { ne: true } }
   ) {
     items {
-      id
-      initiatorAddress
-      initiatorUser {
-        ...User
-      }
+      ...ExpenditureAction
     }
   }
   finalizingActions: actions(
@@ -111,6 +108,7 @@ fragment ExpenditureBalance on ExpenditureBalance {
 fragment ExpenditureAction on ColonyAction {
   id
   initiatorAddress
+  createdAt
   initiatorUser {
     ...User
   }
