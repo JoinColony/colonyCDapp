@@ -129,7 +129,6 @@ fragment ColonyAction on ColonyAction {
   multiSigData {
     ...ColonyMultiSig
   }
-<<<<<<< HEAD
   approvedTokenChanges {
     ...ApprovedTokenChanges
   }
@@ -139,9 +138,6 @@ fragment ApprovedTokenChanges on ApprovedTokenChanges {
   added
   removed
   unaffected
->>>>>>> 2c4161a9a (feat: implement dummy sidebar for multiSig, navigate after tx success)
-=======
->>>>>>> 4c63c6e32 (feat: realign after rebase)
 }
 
 fragment Annotation on Annotation {
@@ -285,12 +281,12 @@ fragment ColonyMultiSig on ColonyMultiSig {
   multiSigDomain {
     ...Domain
   }
+  createdAt
   multiSigDomainId
   nativeMultiSigDomainId
   requiredPermissions
   transactionHash
   isExecuted
-  isSuccess
   isRejected
   isDecision
   signatures {
