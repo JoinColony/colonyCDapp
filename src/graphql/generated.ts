@@ -14597,7 +14597,13 @@ export function useGetCurrentColonyVersionLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetCurrentColonyVersionQueryHookResult = ReturnType<typeof useGetCurrentColonyVersionQuery>;
 export type GetCurrentColonyVersionLazyQueryHookResult = ReturnType<typeof useGetCurrentColonyVersionLazyQuery>;
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
 =======
 export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
 >>>>>>> f7dbfbfe3 (fix: realign after rebase)
+=======
+export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
+=======
+>>>>>>> fdd116091 (feat: allow any user to cancel a multi-sig after a week, remove the)
+>>>>>>> 100ff1959 (feat: allow any user to cancel a multi-sig after a week, remove the)
