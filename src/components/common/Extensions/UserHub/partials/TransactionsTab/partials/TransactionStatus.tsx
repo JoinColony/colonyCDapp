@@ -31,7 +31,7 @@ const TransactionStatus: FC<TransactionStatusProps> = ({
     >
       {pending && (
         <SpinnerGap
-        className="absolute right-[-20px] top-[0.125rem] h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
+        className=" h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
         size={14}
       />
       )}
