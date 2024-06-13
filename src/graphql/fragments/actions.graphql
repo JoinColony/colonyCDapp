@@ -270,12 +270,12 @@ fragment ColonyMultiSig on ColonyMultiSig {
   multiSigDomain {
     ...Domain
   }
+  createdAt
   multiSigDomainId
   nativeMultiSigDomainId
   requiredPermissions
   transactionHash
   isExecuted
-  isSuccess
   isRejected
   isDecision
   signatures {
