@@ -292,8 +292,6 @@
     "transaction.group.createStreamingPayment.description": "Create Streaming Payment",
     "transaction.group.claimStreamingPayment.title": "Claim Streaming Payment",
     "transaction.group.claimStreamingPayment.description": "Claim Streaming Payment",
-    "transaction.group.cancelAndWaiveStreamingPayment.title": "Cancel and Waive Streaming Payment",
-    "transaction.group.cancelAndWaiveStreamingPayment.description": "Cancel and Waive Streaming Payment",
     "transaction.group.makeArbitraryTransaction.title": "Make arbitrary transaction",
     "transaction.group.makeArbitraryTransaction.description": "Make arbitrary transaction",
     "transaction.group.mintTokens.title": "Mint Tokens",
@@ -406,7 +404,6 @@
 
     "transaction.StreamingPaymentsClient.create.title": "Create Streaming Payment",
     "transaction.StreamingPaymentsClient.claim.title": "Claim Streaming Payment",
-    "transaction.StreamingPaymentsClient.cancelAndWaive.title": "Cancel and Waive Streaming Payment",
 
     "transaction.TokenClient.approve.title": "Approve amount of tokens",
     "transaction.TokenClient.setOwner.title": "Set Token Owner",

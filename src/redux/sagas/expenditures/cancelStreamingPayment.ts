@@ -31,7 +31,7 @@ function* cancelStreamingPaymentAction({
   const isCancelMethod = !shouldWaive;
   const isCancelAndWaiveMethod = shouldWaive;
 
-  const batchKey = `cancel${isCancelMethod ? '' : 'AndWaive'}StreamingPayment`;
+  const batchKey = 'cancelStreamingPayment';
 
   const colonyManager: ColonyManager = yield getColonyManager();
 
