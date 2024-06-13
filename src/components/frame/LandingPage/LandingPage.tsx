@@ -135,7 +135,7 @@ const LandingPage = () => {
           </p>
         </div>
         <div className="flex w-full justify-center gap-4">
-          <div className="flex gap-6 sm:gap-4 w-full sm:w-1/2 flex-col justify-between">
+          <div className="flex w-full flex-col justify-between gap-6 sm:w-1/2 sm:gap-4">
             <LandingPageItem
               headingText={MSG.createColonyTitle}
               headingDescription={MSG.createColonyDescription}
@@ -206,7 +206,7 @@ const LandingPage = () => {
           <img
             src={landingImagesSrc[1]} // @TODO: Change to hoveredItem once we enable the create colony landing page item
             alt=""
-            className="hidden sm:block w-1/2 rounded-lg border border-gray-200 object-cover shadow-sm"
+            className="hidden w-1/2 rounded-lg border border-gray-200 object-cover shadow-sm sm:block"
           />
         </div>
         {hasShareableInvitationCode && <InvitationBlock />}

@@ -24,9 +24,10 @@ function Stepper<TKey extends React.Key>({
   const openedItem = items[openItemIndex];
   const listRef = React.useRef<HTMLUListElement | null>(null);
   const [isScrollableList, setIsScrollableList] = useState(false);
-  const withArrowsOnMobile = 
-    (isScrollableList || items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION) 
-    && isMobile;
+  const withArrowsOnMobile =
+    (isScrollableList ||
+      items.length > MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION) &&
+    isMobile;
 
   const scrollLeft = () => {
     if (listRef.current) {
@@ -194,7 +195,9 @@ function Stepper<TKey extends React.Key>({
           </button>
         )}
       </div>
-      {isMobile && !!openedItem.content && <div className="pt-4">{openedItem.content}</div>}
+      {isMobile && !!openedItem.content && (
+        <div className="pt-4">{openedItem.content}</div>
+      )}
     </>
   ) : null;
 }
