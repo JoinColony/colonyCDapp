@@ -123,8 +123,9 @@ export const useBalanceTableColumns = (
         cell: ({ row }) => {
           if (!row.original.token) return [];
 
-          if (row.original.loading)
+          if (row.original.loading) {
             return <div className="h-4 w-40 skeleton" />;
+          }
 
           return (
             <TokenCell
@@ -141,8 +142,10 @@ export const useBalanceTableColumns = (
         header: () => formatText({ id: 'table.row.symbol' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
         cell: ({ row }) => {
-          if (row.original.loading)
+          if (row.original.loading) {
             return <div className="h-4 w-12 skeleton" />;
+          }
+
           return (
             <span className="text-gray-600">
               {multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}
@@ -155,8 +158,9 @@ export const useBalanceTableColumns = (
         size: 130,
         header: () => formatText({ id: 'table.row.type' }),
         cell: ({ row }) => {
-          if (row.original.loading)
+          if (row.original.loading) {
             return <div className="h-4 w-12 skeleton" />;
+          }
 
           const isTokenNative =
             row.original.token?.tokenAddress === nativeToken.tokenAddress;
@@ -182,8 +186,9 @@ export const useBalanceTableColumns = (
         cell: ({ row }) => {
           const currentTokenBalance = row.original.balance;
 
-          if (row.original.loading)
+          if (row.original.loading) {
             return <div className="ml-auto h-4 w-24 skeleton" />;
+          }
 
           return (
             <div className="ml-auto text-right">
