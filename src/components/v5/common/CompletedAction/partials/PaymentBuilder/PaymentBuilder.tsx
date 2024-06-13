@@ -50,7 +50,7 @@ const displayName = 'v5.common.CompletedAction.partials.PaymentBuilder';
 const MSG = defineMessages({
   defaultTitle: {
     id: `${displayName}.defaultTitle`,
-    defaultMessage: 'Payment builder',
+    defaultMessage: 'Advanced payment',
   },
 });
 

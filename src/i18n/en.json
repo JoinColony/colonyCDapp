@@ -893,7 +893,7 @@
     "actions.selectActionType": "Select action type",
     "actions.payments": "Payments",
     "actions.simplePayment": "Simple payment",
-    "actions.paymentBuilder": "Payment builder",
+    "actions.paymentBuilder": "Advanced payment",
     "actions.batchPayment": "Batch payment",
     "actions.splitPayment": "Split payment",
     "actions.stagedPayment": "Staged payment",

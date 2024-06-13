@@ -85,7 +85,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.AddVerifiedMembersMotion} {Manage verified members}
       ${ColonyActionType.RemoveVerifiedMembers} {Manage verified members}
       ${ColonyActionType.RemoveVerifiedMembersMotion} {Manage verified members}
-      ${ColonyActionType.CreateExpenditure} {Payment Builder}
+      ${ColonyActionType.CreateExpenditure} {Advanced payment}
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
