@@ -414,8 +414,6 @@
     "transaction.StreamingPaymentsClient.cancelAndWaive.description": "Cancel and Waive Streaming Payment",
     "transaction.StreamingPaymentsClient.cancel.title": "Cancel Streaming Payment",
     "transaction.StreamingPaymentsClient.cancel.description": "Cancel Streaming Payment",
-    "transaction.group.cancelAndWaiveStreamingPayment.title": "Cancel and Waive Streaming Payment",
-    "transaction.group.cancelAndWaiveStreamingPayment.description": "Cancel and Waive Streaming Payment",
     "transaction.group.addExistingSafe.title": "Add Existing Safe",
     "transaction.group.addExistingSafe.description": "Add an existing Safe to this Colony",
     "transaction.ColonyClient.addExistingSafe.title": "Add Existing Safe",
