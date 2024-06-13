@@ -8,7 +8,7 @@ import {
   userSidebarValues,
   type WizardProps,
 } from './consts.ts';
-import { type Flow, WizardType } from './types.ts';
+import { Flow, WizardType } from './types.ts';
 import {
   initialValues as colonyInitialValues,
   stepArray as stepsCreateColony,
@@ -21,7 +21,7 @@ export const createWizard = (
   flow: Flow,
   inviteCode?: string,
 ) => {
-  if (flow === 'user') {
+  if (flow === Flow.User) {
     return withWizard<WizardProps>({
       initialValues: userInitialValues,
       steps: stepsCreateUser,
@@ -32,7 +32,7 @@ export const createWizard = (
     })(WizardTemplate);
   }
 
-  if (user && flow === 'colony') {
+  if (user && flow === Flow.Colony) {
     return withWizard<WizardProps>({
       initialValues: colonyInitialValues,
       steps: stepsCreateColony,
