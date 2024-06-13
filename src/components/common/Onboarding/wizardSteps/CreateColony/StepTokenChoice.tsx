@@ -76,7 +76,7 @@ const StepTokenChoice = ({
     }}
   >
     <HeaderRow heading={MSG.heading} description={MSG.description} />
-    <div className="flex gap-6">
+    <div className="flex flex-col sm:flex-row gap-6">
       <TokenSelector
         name="create"
         title={MSG.createOptionTitle}
