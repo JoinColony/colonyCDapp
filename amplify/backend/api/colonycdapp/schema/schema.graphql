@@ -4260,7 +4260,7 @@ type StreamingPaymentClaim {
 
 type StreamingPaymentClaim {
   amount: String!
-  timestamp: AWSTimestamp!
+  timestamp: String!
 }
 
 """
