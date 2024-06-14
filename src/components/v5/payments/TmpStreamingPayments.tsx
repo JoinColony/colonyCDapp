@@ -86,12 +86,12 @@ const TmpStreamingPayments = () => {
     recipientAddress: user?.walletAddress ?? '',
     startTimestamp: BigNumber.from(
       (blockTime ?? Math.floor(Date.now() / 1000)) - 604800,
-    ), // One week ago
+    ).toString(), // One week ago
     tokenAddress,
     tokenDecimals: parseInt(decimalAmount, 10),
     endTimestamp: BigNumber.from(
       (blockTime ?? Math.floor(Date.now() / 1000)) + 604800,
-    ), // Next week
+    ).toString(), // Next week
     limitAmount: limit,
   };
 
