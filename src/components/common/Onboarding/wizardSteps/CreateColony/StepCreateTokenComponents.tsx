@@ -25,7 +25,7 @@ export const TokenChoiceOptions = ({
         <label
           key={`tokenChoice-${option}`}
           htmlFor={option}
-          className="flex gap-2 pb-6 text-md text-gray-900"
+          className="flex items-center gap-2 pb-6 text-md text-gray-900"
         >
           <input
             {...register('tokenChoice')}
@@ -36,6 +36,7 @@ export const TokenChoiceOptions = ({
             type="radio"
             value={option}
             id={option}
+            className="flex h-4 min-h-4 w-4 min-w-4 appearance-none items-center justify-center rounded-full border border-gray-200 transition ease-in checked:border-blue-400 checked:after:block checked:after:h-[7px] checked:after:w-[7px] checked:after:rounded-full checked:after:bg-blue-400 checked:after:content-['']"
           />
           {formatMessage(MSG[`${option}OptionTitle`])}
         </label>
