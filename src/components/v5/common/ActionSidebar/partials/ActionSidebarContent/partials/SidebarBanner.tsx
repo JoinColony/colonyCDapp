@@ -13,11 +13,13 @@ import { canColonyBeUpgraded } from '~utils/checks/canColonyBeUpgraded.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import ActionTypeNotification from '~v5/shared/ActionTypeNotification/ActionTypeNotification.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
+import { useShowNotEnoughMembersWithPermissionsNotification } from '../hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';
@@ -32,9 +34,10 @@ const MSG = defineMessages({
 
 export const SidebarBanner: FC = () => {
   const { watch } = useFormContext();
-  const [selectedAction, decisionMethod] = watch([
+  const [selectedAction, decisionMethod, createdIn] = watch([
     ACTION_TYPE_FIELD_NAME,
     DECISION_METHOD_FIELD_NAME,
+    CREATED_IN_FIELD_NAME,
   ]);
 
   const { installedExtensionsData } = useExtensionsData();
@@ -63,6 +66,13 @@ export const SidebarBanner: FC = () => {
   const showVersionUpToDateNotification =
     selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
 
+  const showNotEnoughMembersWithPermissionsNotification =
+    useShowNotEnoughMembersWithPermissionsNotification({
+      decisionMethod,
+      selectedAction,
+      createdIn,
+    });
+
   return (
     <>
       {selectedAction && (
@@ -86,6 +96,13 @@ export const SidebarBanner: FC = () => {
         <div className="mt-6">
           <NotificationBanner icon={CheckCircle} status="success">
             <FormattedMessage id="actionSidebar.upToDate" />
+          </NotificationBanner>
+        </div>
+      )}
+      {showNotEnoughMembersWithPermissionsNotification && (
+        <div className="mt-6">
+          <NotificationBanner icon={WarningCircle} status="error">
+            <FormattedMessage id="actionSidebar.notEnoughMembersWithPermissions" />
           </NotificationBanner>
         </div>
       )}
