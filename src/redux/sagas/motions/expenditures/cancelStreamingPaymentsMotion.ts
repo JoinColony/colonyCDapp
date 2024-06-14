@@ -55,7 +55,7 @@ function* cancelStreamingPaymentsMotionAction({
 
     if (colony.version < 15) {
       throw new Error(
-        'Motions to cancel expenditure are only available in Colony version 15 and above',
+        'Motions to cancel streaming payments are only available in Colony version 15 and above',
       );
     }
 
