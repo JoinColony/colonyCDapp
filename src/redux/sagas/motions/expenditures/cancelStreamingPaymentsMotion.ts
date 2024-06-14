@@ -4,7 +4,7 @@ import {
   getPermissionProofs,
   ColonyRole,
 } from '@colony/colony-js';
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type Action, ActionTypes } from '~redux/index.ts';
@@ -34,8 +34,7 @@ function* cancelStreamingPaymentsMotionAction({
     annotationMessage,
   },
 }: Action<ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL>) {
-  const { createMotion, annotateMotion } = yield call(
-    createTransactionChannels,
+  const { createMotion, annotateMotion } = yield createTransactionChannels(
     meta.id,
     ['createMotion', 'annotateMotion'],
   );
@@ -59,7 +58,7 @@ function* cancelStreamingPaymentsMotionAction({
       );
     }
 
-    const colonyManager = yield call(getColonyManager);
+    const colonyManager = yield getColonyManager();
 
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
@@ -71,16 +70,10 @@ function* cancelStreamingPaymentsMotionAction({
       colonyAddress,
     );
 
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
-    );
+    const { skillId } = yield colonyClient.getDomain(Id.RootDomain);
 
-    const { key, value, branchMask, siblings } = yield call(
-      [colonyClient, colonyClient.getReputation],
-      skillId,
-      ADDRESS_ZERO,
-    );
+    const { key, value, branchMask, siblings } =
+      yield colonyClient.getReputation(skillId, ADDRESS_ZERO);
 
     const [adminPermissionDomainId, adminChildSkillIndex] =
       yield getPermissionProofs(
@@ -162,7 +155,7 @@ function* cancelStreamingPaymentsMotionAction({
       payload: {
         receipt: { transactionHash: txHash },
       },
-    } = yield call(waitForTxResult, createMotion.channel);
+    } = yield waitForTxResult(createMotion.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({
