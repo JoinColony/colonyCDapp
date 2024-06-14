@@ -22,20 +22,21 @@ const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
         'text-negative-400': failed,
       })}
     >
-      {pending && (
-        <SpinnerGap
-          className="absolute right-[-20px] top-[0.125rem] ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
-          size={14}
-        />
-      )}
       <PillsBase
         className={clsx({
           'bg-success-100 text-success-400': succeeded,
           'bg-negative-100 text-negative-400': failed,
           'bg-gray-100 text-gray-500': !succeeded && !failed,
+          'relative flex items-center': true,
         })}
       >
         {status.toLowerCase()}
+        {pending && (
+          <SpinnerGap
+            className="ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
+            size={14}
+          />
+        )}
       </PillsBase>
     </div>
   );
