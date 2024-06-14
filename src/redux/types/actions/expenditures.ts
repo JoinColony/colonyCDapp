@@ -1,5 +1,3 @@
-import { type BigNumber } from 'ethers';
-
 import {
   type SplitPaymentDistributionType,
   type StreamingPaymentEndCondition,
@@ -213,8 +211,8 @@ export type ExpendituresActionTypes =
         tokenAddress: Address;
         tokenDecimals: number;
         amount: string;
-        startTimestamp: BigNumber;
-        endTimestamp?: BigNumber;
+        startTimestamp: string;
+        endTimestamp?: string;
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
