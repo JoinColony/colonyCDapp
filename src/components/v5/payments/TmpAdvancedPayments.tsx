@@ -1,3 +1,4 @@
+import { gql, useLazyQuery } from '@apollo/client';
 import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
