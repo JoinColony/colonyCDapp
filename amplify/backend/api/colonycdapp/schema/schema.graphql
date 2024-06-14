@@ -4012,8 +4012,8 @@ type StreamingPayment @model {
   createdAt: AWSDateTime!
   recipientAddress: String!
   nativeDomainId: Int!
-  startTime: AWSTimestamp!
-  endTime: AWSTimestamp!
+  startTime: String!
+  endTime: String!
   interval: String!
   tokenAddress: String!
   amount: String!
@@ -4042,7 +4042,7 @@ type StreamingPaymentMetadata @model {
 
 type StreamingPaymentClaim {
   amount: String!
-  timestamp: AWSTimestamp!
+  timestamp: String!
 }
 
 """

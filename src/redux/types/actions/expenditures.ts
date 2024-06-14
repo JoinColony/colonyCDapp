@@ -225,8 +225,8 @@ export type ExpendituresActionTypes =
         tokenAddress: Address;
         tokenDecimals: number;
         amount: string;
-        startTimestamp: number;
-        endTimestamp?: number;
+        startTimestamp: BigNumber;
+        endTimestamp?: BigNumber;
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
