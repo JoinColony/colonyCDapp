@@ -1,10 +1,12 @@
 // disabling rule due to filters having snake case
 /* eslint-disable camelcase */
+import { Id } from '@colony/colony-js';
+
 import { UserRole } from '~constants/permissions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   type ModelColonyRoleFilterInput,
-  useGetRolesForDomainQuery,
+  useGetRolesForDomainAndRootDomainQuery,
 } from '~gql';
 
 interface UseEligibleSigneesParams {
@@ -48,20 +50,42 @@ export const useEligibleSignees = ({
     colony: { colonyAddress },
   } = useColonyContext();
 
-  const { loading: loadingRoles, data: rolesData } = useGetRolesForDomainQuery({
-    variables: {
-      colonyAddress,
-      domainId,
-      filter: {
-        isMultiSig: { eq: true },
-        ...getRoleFilter(requiredRole),
+  const { loading: loadingRoles, data: rolesData } =
+    useGetRolesForDomainAndRootDomainQuery({
+      variables: {
+        colonyAddress,
+        domainId,
+        rootDomainId: `${colonyAddress}_${Id.RootDomain}`,
+        filter: {
+          isMultiSig: { eq: true },
+          ...getRoleFilter(requiredRole),
+        },
       },
-    },
-    fetchPolicy: 'cache-first',
+      fetchPolicy: 'cache-first',
+    });
+
+  const { domainRoles, rootDomainRoles } = rolesData || {};
+
+  const combinedRoles = rootDomainRoles ? [...rootDomainRoles.items] : [];
+
+  const rootUserIds = new Set(
+    rootDomainRoles?.items.map((role) => {
+      return role?.targetUser?.id;
+    }),
+  );
+
+  domainRoles?.items.forEach((role) => {
+    if (!role) {
+      return;
+    }
+    if (!rootUserIds.has(role?.targetUser?.id)) {
+      combinedRoles.push(role);
+    }
   });
 
   return {
     loadingRoles,
-    eligibleSignees: rolesData?.getRoleByDomainAndColony?.items ?? [],
+    eligibleSignees: combinedRoles,
+    eligibleSigneesCount: combinedRoles.length,
   };
 };
