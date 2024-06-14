@@ -26,16 +26,27 @@ const useStreamingPaymentAmountsLeft = (
     }, '0') ?? '0';
 
   let amountAvailableToClaim: BigNumber;
-  if (streamingPayment.startTime >= currentTimestamp) {
+
+  const {
+    startTime: startTimeString,
+    endTime: endTimeString,
+    amount,
+    interval,
+  } = streamingPayment;
+
+  const startTime = BigNumber.from(startTimeString);
+  const endTime = BigNumber.from(endTimeString);
+
+  if (startTime.gte(currentTimestamp)) {
     amountAvailableToClaim = BigNumber.from(0);
   } else {
-    const durationToClaim =
-      Math.min(currentTimestamp, streamingPayment.endTime) -
-      streamingPayment.startTime;
+    const durationToClaim = endTime.lt(currentTimestamp)
+      ? endTime.sub(startTime) // End time has already passed, the whole duration can be claimed.
+      : BigNumber.from(currentTimestamp).sub(startTime); // End time has not passed, calculate duration to be claimed.
 
-    const amountAvailableSinceStart = BigNumber.from(streamingPayment.amount)
-      .mul(BigNumber.from(durationToClaim))
-      .div(streamingPayment.interval);
+    const amountAvailableSinceStart = BigNumber.from(amount)
+      .mul(durationToClaim)
+      .div(interval);
 
     amountAvailableToClaim = amountAvailableSinceStart.sub(amountClaimedToDate);
 
