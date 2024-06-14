@@ -51,7 +51,7 @@ function* cancelStreamingPaymentsMotionAction({
       throw new Error('Invalid payload');
     }
 
-    const batchKey = 'cancelStreamingPaymentsMotion';
+    const batchKey = 'cancelStreamingPaymentMotion';
 
     const { colonyAddress } = colony;
 
