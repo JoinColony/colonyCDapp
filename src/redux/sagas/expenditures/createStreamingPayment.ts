@@ -4,6 +4,7 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
@@ -11,6 +12,7 @@ import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateStreamingPaymentMetadataDocument,
+  StreamingPaymentEndCondition,
   type CreateStreamingPaymentMetadataMutation,
   type CreateStreamingPaymentMetadataMutationVariables,
 } from '~gql';
@@ -26,6 +28,7 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  TIMESTAMP_IN_FUTURE,
   adjustRecipientAddress,
   getColonyManager,
   getEndTimeByEndCondition,
@@ -117,6 +120,43 @@ function* createStreamingPaymentAction({
       limitInWei,
       endTimestamp,
     });
+
+    let realEndTimestamp: BigNumber;
+
+    switch (endCondition) {
+      case StreamingPaymentEndCondition.FixedTime:
+        if (endTimestamp === undefined) {
+          throw new Error(
+            'endTimestamp is required for FixedTime endCondition',
+          );
+        }
+
+        realEndTimestamp = endTimestamp;
+        break;
+
+      case StreamingPaymentEndCondition.LimitReached:
+        if (limitAmount === undefined) {
+          throw new Error(
+            'limitAmount is required for LimitReached endCondition',
+          );
+        }
+
+        realEndTimestamp = BigNumber.from(limitAmount ?? 0).eq(0)
+          ? startTimestamp
+          : BigNumber.from(limitAmount ?? 0)
+              .mul(interval)
+              .div(amount)
+              .add(startTimestamp);
+        break;
+
+      case StreamingPaymentEndCondition.WhenCancelled:
+        realEndTimestamp = TIMESTAMP_IN_FUTURE;
+        break;
+
+      default:
+        realEndTimestamp = TIMESTAMP_IN_FUTURE;
+        break;
+    }
 
     yield fork(createTransaction, createStreamingPayment.id, {
       context: ClientType.StreamingPaymentsClient,
