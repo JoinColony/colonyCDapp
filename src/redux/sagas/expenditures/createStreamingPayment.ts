@@ -124,7 +124,7 @@ function* createStreamingPaymentAction({
           );
         }
 
-        realEndTimestamp = endTimestamp;
+        realEndTimestamp = BigNumber.from(endTimestamp);
         break;
 
       case StreamingPaymentEndCondition.LimitReached:
@@ -135,7 +135,7 @@ function* createStreamingPaymentAction({
         }
 
         realEndTimestamp = BigNumber.from(limitAmount ?? 0).eq(0)
-          ? startTimestamp
+          ? BigNumber.from(startTimestamp)
           : BigNumber.from(limitAmount ?? 0)
               .mul(interval)
               .div(amount)
