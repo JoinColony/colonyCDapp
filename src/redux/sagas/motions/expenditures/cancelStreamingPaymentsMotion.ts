@@ -66,8 +66,7 @@ function* cancelStreamingPaymentsMotionAction({
       colonyAddress,
     );
 
-    const streamingPaymentsClient = yield call(
-      [colonyManager, colonyManager.getClient],
+    const streamingPaymentsClient = yield colonyManager.getClient(
       ClientType.StreamingPaymentsClient,
       colonyAddress,
     );
@@ -92,6 +91,14 @@ function* cancelStreamingPaymentsMotionAction({
         votingReputationAddress,
       );
 
+    const [, childSkillIndex] = yield getPermissionProofs(
+      colonyClient.networkClient,
+      colonyClient,
+      streamingPayment.nativeDomainId,
+      ColonyRole.Arbitration,
+      votingReputationAddress,
+    );
+
     const encodedAction = streamingPaymentsClient.interface.encodeFunctionData(
       'cancel',
       [
@@ -102,14 +109,6 @@ function* cancelStreamingPaymentsMotionAction({
     );
 
     const batchKey = 'createMotion';
-
-    const [, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      streamingPayment.nativeDomainId,
-      ColonyRole.Arbitration,
-      votingReputationAddress,
-    );
 
     yield createGroupTransaction({
       channel: createMotion,
@@ -122,7 +121,7 @@ function* cancelStreamingPaymentsMotionAction({
         params: [
           motionDomainId,
           childSkillIndex,
-          ADDRESS_ZERO,
+          streamingPaymentsClient.address,
           encodedAction,
           key,
           value,
