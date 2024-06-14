@@ -3,6 +3,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useMobile } from '~hooks';
 import useBaseUrl from '~hooks/useBaseUrl.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { CREATE_COLONY_ROUTE_BASE } from '~routes/index.ts';
@@ -30,6 +31,7 @@ const MSG = defineMessages({
 
 const InvitationBlock = () => {
   const { user } = useAppContext();
+  const isMobile = useMobile();
   const invitationCode = user?.privateBetaInviteCode?.id;
   const inviteLink = useBaseUrl(
     `${CREATE_COLONY_ROUTE_BASE}/${invitationCode}`,
@@ -56,6 +58,7 @@ const InvitationBlock = () => {
             onClick={() => handleClipboardCopy(inviteLink)}
             textValues={{ isCopied }}
             size="small"
+            isFullSize={isMobile}
           />
         }
       >

@@ -126,7 +126,7 @@ const LandingPage = () => {
               text={{ id: 'colonyWelcome' }}
               className="text-3xl font-semibold text-gray-900"
             />
-            <span className="ml-3 rounded-3xl bg-blue-100 px-3 py-1 text-sm font-medium text-blue-400">
+            <span className="ml-3 hidden rounded-3xl bg-blue-100 px-3 py-1 text-sm font-medium text-blue-400 sm:inline">
               <FormattedMessage {...MSG.privateBetaLabel} />
             </span>
           </div>
@@ -140,7 +140,6 @@ const LandingPage = () => {
               headingText={MSG.createColonyTitle}
               headingDescription={MSG.createColonyDescription}
               icon={Layout}
-              // imgSrc={CreateAColonyBanner}
               onMouseEnter={() => setHoveredItemIndex(0)}
               onMouseLeave={() => setHoveredItemIndex(0)}
               disabled
@@ -160,7 +159,6 @@ const LandingPage = () => {
               }
               headingDescription={MSG.viewUserProfileDescription}
               icon={UserCircle}
-              // imgSrc={CreateAProfileBanner}
               onMouseEnter={() => setHoveredItemIndex(1)}
               onMouseLeave={() => setHoveredItemIndex(0)}
             >

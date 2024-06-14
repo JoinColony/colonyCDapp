@@ -79,7 +79,7 @@ const StepCreateTokenInputs = ({
 
   return (
     <>
-      <div className="flex gap-6 pb-6">
+      <div className="flex flex-col gap-6 pb-6 sm:flex-row">
         <div className="flex-1">
           <Input
             name="tokenName"

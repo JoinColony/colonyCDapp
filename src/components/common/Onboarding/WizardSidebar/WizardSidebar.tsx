@@ -2,7 +2,8 @@ import React from 'react';
 import { type MessageDescriptor } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useMobile } from '~hooks';
+import UserNavigationWrapper from '~frame/Extensions/layouts/partials/UserNavigationWrapper/UserNavigationWrapper.tsx';
+import { useMobile, useTablet } from '~hooks';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import { LANDING_PAGE_ROUTE } from '~routes/routeConstants.ts';
 import { Heading3 } from '~shared/Heading/index.ts';
@@ -34,21 +35,37 @@ const WizardSidebar = ({
   wizardSteps,
 }: Props) => {
   const isMobile = useMobile();
-  const Stepper = isMobile ? MobileWizardSidebar : DesktopWizardSidebar;
+  const isTablet = useTablet();
 
   return (
-    <nav className="flex h-full flex-col rounded-lg border border-gray-200 p-6">
-      <Link to={LANDING_PAGE_ROUTE} className="mb-10 h-fit w-fit">
-        <ColonyIcon size={36} />
-      </Link>
-      <Heading3
-        appearance={{ theme: 'dark' }}
-        className="mb-6 text-xl font-semibold text-gray-900"
-        text={sidebarTitle}
-        textValues={sidebarTitleValues}
-      />
-      <Stepper currentStep={currentStep} wizardSteps={wizardSteps} />
-    </nav>
+    <>
+      <nav className="flex h-full flex-col border border-gray-200 p-6 sm:rounded-lg">
+        <div className="relative mb-10 flex items-center">
+          <Link to={LANDING_PAGE_ROUTE} className="h-fit w-fit">
+            <ColonyIcon size={36} />
+          </Link>
+          {isTablet && <UserNavigationWrapper />}
+        </div>
+        <Heading3
+          appearance={{ theme: 'dark' }}
+          className="text-xl font-semibold text-gray-900 sm:mb-6"
+          text={sidebarTitle}
+          textValues={sidebarTitleValues}
+        />
+        {!isMobile && (
+          <DesktopWizardSidebar
+            currentStep={currentStep}
+            wizardSteps={wizardSteps}
+          />
+        )}
+      </nav>
+      {isMobile && (
+        <MobileWizardSidebar
+          currentStep={currentStep}
+          wizardSteps={wizardSteps}
+        />
+      )}
+    </>
   );
 };
 
