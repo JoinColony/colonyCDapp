@@ -53,10 +53,12 @@ const MobileWizardSidebar = ({ currentStep, wizardSteps }: Props) => {
   const activeStepKey = isPreviousStepActive ? currentStep - 1 : currentStep;
 
   return (
-    <Stepper
-      activeStepKey={activeStepKey}
-      items={steps.filter((step) => !!step)}
-    />
+    <div className="border-b border-gray-200 bg-base-bg px-6 py-[18px]">
+      <Stepper
+        activeStepKey={activeStepKey}
+        items={steps.filter((step) => !!step)}
+      />
+    </div>
   );
 };
 

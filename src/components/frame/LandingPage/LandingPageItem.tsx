@@ -34,7 +34,7 @@ const LandingPageItem = ({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className="flex w-full items-center">
+      <div className="flex w-full items-start sm:items-center">
         <div
           className={clsx('mr-4 flex items-center rounded-lg bg-base-bg p-6', {
             'group-hover:bg-blue-100': !disabled,
