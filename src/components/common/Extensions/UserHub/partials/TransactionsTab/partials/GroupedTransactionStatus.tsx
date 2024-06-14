@@ -24,7 +24,7 @@ const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
     >
       {pending && (
         <SpinnerGap
-          className="ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
+          className="absolute right-[-20px] top-[0.125rem] ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
           size={14}
         />
       )}
