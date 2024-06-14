@@ -1104,6 +1104,7 @@
     "actionSidebar.currentVersion": "Current version",
     "actionSidebar.upToDate": "Your Colony version is up to date",
     "actionSidebar.newVersion": "New version",
+    "actionSidebar.notEnoughMembersWithPermissions": "There are not enough members in this or higher teams with the required permissions to approve this action.",
     "actionSidebar.availableTokens": "Available tokens",
     "actionSidebar.availableDecisions": "Available decision methods",
     "actionSidebar.manageMembers": "Add/remove",

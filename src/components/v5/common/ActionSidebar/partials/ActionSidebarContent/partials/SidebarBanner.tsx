@@ -16,9 +16,11 @@ import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import {
   ACTION_TYPE_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
 } from '../../../consts.ts';
 import { useIsFieldDisabled } from '../../hooks.ts';
+import { useShowNotEnoughMembersWithPermissionsNotification } from '../hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';
@@ -33,9 +35,10 @@ const MSG = defineMessages({
 
 export const SidebarBanner: FC = () => {
   const { watch } = useFormContext();
-  const [selectedAction, decisionMethod] = watch([
+  const [selectedAction, decisionMethod, createdIn] = watch([
     ACTION_TYPE_FIELD_NAME,
     DECISION_METHOD_FIELD_NAME,
+    CREATED_IN_FIELD_NAME,
   ]);
 
   const { installedExtensionsData } = useExtensionsData();
@@ -64,6 +67,13 @@ export const SidebarBanner: FC = () => {
   const showVersionUpToDateNotification =
     selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
 
+  const showNotEnoughMembersWithPermissionsNotification =
+    useShowNotEnoughMembersWithPermissionsNotification({
+      decisionMethod,
+      selectedAction,
+      createdIn,
+    });
+
   return (
     <>
       {selectedAction && (
@@ -87,6 +97,13 @@ export const SidebarBanner: FC = () => {
         <div className="mt-6">
           <NotificationBanner icon={CheckCircle} status="success">
             <FormattedMessage id="actionSidebar.upToDate" />
+          </NotificationBanner>
+        </div>
+      )}
+      {showNotEnoughMembersWithPermissionsNotification && (
+        <div className="mt-6">
+          <NotificationBanner icon={WarningCircle} status="error">
+            <FormattedMessage id="actionSidebar.notEnoughMembersWithPermissions" />
           </NotificationBanner>
         </div>
       )}
