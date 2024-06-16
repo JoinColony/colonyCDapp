@@ -1,8 +1,8 @@
 import React, { type FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import reputationTabClasses from '~common/Extensions/UserHub/partials/ReputationTab/ReputationTab.styles.ts';
-import { type PendingReputationProps } from '~common/Extensions/UserHub/partials/ReputationTab/types.ts';
+import reputationTabClasses from '~common/Extensions/UserHub/partials/BalanceTab/BalanceTab.styles.ts';
+import { type PendingReputationProps } from '~common/Extensions/UserHub/partials/BalanceTab/types.ts';
 import { useGetReputationMiningCycleMetadataQuery } from '~gql';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import TimeRelative from '~shared/TimeRelative/index.ts';

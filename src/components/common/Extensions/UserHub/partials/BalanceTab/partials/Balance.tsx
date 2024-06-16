@@ -19,7 +19,7 @@ import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import reputationTabClasses from '../ReputationTab.styles.ts';
+import reputationTabClasses from '../BalanceTab.styles.ts';
 import { type BalanceProps, type ViewStakedButtonProps } from '../types.ts';
 
 const displayName =

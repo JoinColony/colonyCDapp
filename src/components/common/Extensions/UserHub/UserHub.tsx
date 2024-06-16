@@ -10,8 +10,8 @@ import Select from '~v5/common/Fields/Select/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
+import BalanceTab from './partials/BalanceTab/index.ts';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
-import ReputationTab from './partials/ReputationTab/index.ts';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
 import { UserHubTab } from './types.ts';
@@ -128,7 +128,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
       </div>
       <div className="relative h-full w-full min-w-0 overflow-y-auto">
         {selectedTab === UserHubTab.Balance && (
-          <ReputationTab onTabChange={handleTabChange} />
+          <BalanceTab onTabChange={handleTabChange} />
         )}
         {selectedTab === UserHubTab.Stakes && <StakesTab />}
         {selectedTab === UserHubTab.Transactions && (
