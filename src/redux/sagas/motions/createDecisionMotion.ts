@@ -15,7 +15,6 @@ import {
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {
   createTransaction,
@@ -23,7 +22,12 @@ import {
   getTxChannel,
 } from '../transactions/index.ts';
 import { getColonyDecisionId } from '../utils/decisionMotion.ts';
-import { getColonyManager, initiateTransaction } from '../utils/index.ts';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+} from '../utils/index.ts';
 
 function* createDecisionMotion({
   payload: {
@@ -108,21 +112,7 @@ function* createDecisionMotion({
       ready: false,
     });
 
-    // yield fork(createTransaction, annotateMotion.id, {
-    //   context: ClientType.ColonyClient,
-    //   methodName: 'annotateTransaction',
-    //   identifier: colonyAddress,
-    //   params: [],
-    //   group: {
-    //     key: batchKey,
-    //     id: metaId,
-    //     index: 1,
-    //   },
-    //   ready: false,
-    // });
-
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    // yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
     yield initiateTransaction(createMotion.id);
 
@@ -154,19 +144,6 @@ function* createDecisionMotion({
       }),
     );
 
-    // yield transactionSetPending(annotateMotion.id);
-
-    // yield put(
-    //   transactionAddParams(annotateMotion.id, [
-    //     txHash,
-    //     JSON.stringify(decision),
-    //   ]),
-    // );
-
-    // yield put(transactionReady(annotateMotion.id));
-
-    // yield waitForTxResult(annotateMotion.channel);
-    //
     setTxHash?.(txHash);
 
     yield put<AllActions>({
@@ -179,7 +156,7 @@ function* createDecisionMotion({
       payload: { walletAddress, colonyAddress },
     });
   } catch (caughtError) {
-    console.error('the kot error', caughtError);
+    console.error(caughtError);
     yield putError(ActionTypes.MOTION_CREATE_DECISION_ERROR, caughtError, meta);
   } finally {
     txChannel.close();
