@@ -1252,6 +1252,10 @@ type Token @model {
   Timestamp of the token model's creation in the database
   """
   createdAt: AWSDateTime!
+  """
+  If the token was validated by the Colony Team, meaning it shows up in the manage tokens list to add to your colony
+  """
+  validated: Boolean
 }
 
 type ContributorReputation @model {
