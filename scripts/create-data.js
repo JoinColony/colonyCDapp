@@ -149,6 +149,15 @@ const updateColonyContributor = /* GraphQL */ `
   }
 `;
 
+const updateToken = /* GraphQL */ `
+  mutation UpdateToken($input: UpdateTokenInput!) {
+    updateToken(input: $input) {
+      id
+    }
+  }
+`;
+
+
 /*
  * Queries
  */
@@ -368,6 +377,56 @@ const addTokenToDB = async (tokenAddress, avatar) => {
       },
     },
   );
+};
+
+// Creating extra tokens, not added to any colony, but which are validated
+// Note that this method won't actually return anything
+const createValidatedToken = async (
+  {
+    tokenName = 'Generic Token',
+    tokenSymbol = 'GTKN',
+    tokenDecimals = 18,
+  },
+  signerOrWallet,
+) => {
+  const colonyNetwork = await ColonyNetworkFactory.connect(
+    etherRouterAddress,
+    signerOrWallet,
+  );
+
+  // Dry run
+  const newlyCreatedTokenAddress = await colonyNetwork.callStatic[
+    'deployTokenViaNetwork'
+  ](
+    tokenName,
+    tokenSymbol,
+    tokenDecimals,
+  );
+
+  // Create the actual token
+  await colonyNetwork.deployTokenViaNetwork(
+    tokenName,
+    tokenSymbol,
+    tokenDecimals,
+  );
+
+  // add the token to the db
+  await addTokenToDB(newlyCreatedTokenAddress);
+
+  // validate the token
+  await graphqlRequest(
+    updateToken,
+    {
+      input: {
+        id: newlyCreatedTokenAddress,
+        validated: true,
+      },
+    },
+    GRAPHQL_URI,
+    API_KEY,
+  );
+
+  console.log(`Created validated token "${tokenName}", "${tokenSymbol}", at address "${newlyCreatedTokenAddress}"`);
 };
 
 const mintTokens = async (
@@ -1424,6 +1483,35 @@ const createUserAndColonyData = async () => {
       addTokenToColonyTokens(planetExpressColony.colonyAddress, tokenAddress);
       delay();
     }),
+  );
+
+  // Create some verified tokens (Acting as stablecoins for local dev)
+  const validatedTokensOwner = availableUsers.walletUsers[
+    utils.getAddress(Object.keys(ganacheAddresses)[0])
+  ];
+  await createValidatedToken(
+    {
+      tokenName: 'USDC for Local Development',
+      tokenSymbol: 'USDC-L',
+      tokenDecimals: 6,
+    },
+    validatedTokensOwner
+  );
+  await createValidatedToken(
+    {
+      tokenName: 'USDT for Local Development',
+      tokenSymbol: 'USDT-L',
+      tokenDecimals: 6,
+    },
+    validatedTokensOwner
+  );
+  await createValidatedToken(
+    {
+      tokenName: 'DAI for Local Development',
+      tokenSymbol: 'DAI-L',
+      tokenDecimals: 18,
+    },
+    validatedTokensOwner
   );
 
   if (reputationMining) {
