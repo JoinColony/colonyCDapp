@@ -36,10 +36,6 @@ const graphqlRequest = async (
   }
 };
 
-const getColonyStakeId = (walletAddress, colonyAddress) => {
-  return `${walletAddress}_${colonyAddress}`;
-};
-
 const getStakedTokens = async (
   walletAddress,
   colonyAddress,
