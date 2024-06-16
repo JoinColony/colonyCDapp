@@ -1222,27 +1222,6 @@ export type ColonyRole = {
 };
 
 /**
- * Keeps track of the current amount a user has staked in a colony
- * When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
- */
-export type ColonyStake = {
-  __typename?: 'ColonyStake';
-  /** Unique identifier for the Colony */
-  colonyId: Scalars['ID'];
-  createdAt: Scalars['AWSDateTime'];
-  /**
-   * Unique identifier for the stake
-   * Format: `<userId>_<colonyId>`
-   */
-  id: Scalars['ID'];
-  /** Total staked amount */
-  totalAmount: Scalars['String'];
-  updatedAt: Scalars['AWSDateTime'];
-  /** Unique identifier for the user */
-  userId: Scalars['ID'];
-};
-
-/**
  * Represents the status of a Colony
  *
  * This contains important meta information about the Colony's token and other fundamental settings
@@ -1601,13 +1580,6 @@ export type CreateColonyRoleInput = {
   role_5?: InputMaybe<Scalars['Boolean']>;
   role_6?: InputMaybe<Scalars['Boolean']>;
   targetAddress: Scalars['ID'];
-};
-
-export type CreateColonyStakeInput = {
-  colonyId: Scalars['ID'];
-  id?: InputMaybe<Scalars['ID']>;
-  totalAmount: Scalars['String'];
-  userId: Scalars['ID'];
 };
 
 export type CreateColonyTokensInput = {
@@ -1969,10 +1941,6 @@ export type DeleteColonyMultiSigInput = {
 };
 
 export type DeleteColonyRoleInput = {
-  id: Scalars['ID'];
-};
-
-export type DeleteColonyStakeInput = {
   id: Scalars['ID'];
 };
 
@@ -3207,31 +3175,6 @@ export type ModelColonyRoleFilterInput = {
   targetAddress?: InputMaybe<ModelIdInput>;
 };
 
-export type ModelColonyStakeConditionInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelColonyStakeConditionInput>>>;
-  colonyId?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelColonyStakeConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelColonyStakeConditionInput>>>;
-  totalAmount?: InputMaybe<ModelStringInput>;
-  userId?: InputMaybe<ModelIdInput>;
-};
-
-export type ModelColonyStakeConnection = {
-  __typename?: 'ModelColonyStakeConnection';
-  items: Array<Maybe<ColonyStake>>;
-  nextToken?: Maybe<Scalars['String']>;
-};
-
-export type ModelColonyStakeFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelColonyStakeFilterInput>>>;
-  colonyId?: InputMaybe<ModelIdInput>;
-  id?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelColonyStakeFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelColonyStakeFilterInput>>>;
-  totalAmount?: InputMaybe<ModelStringInput>;
-  userId?: InputMaybe<ModelIdInput>;
-};
-
 export type ModelColonyTokensConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyTokensConditionInput>>>;
   colonyID?: InputMaybe<ModelIdInput>;
@@ -4204,15 +4147,6 @@ export type ModelSubscriptionColonyRoleFilterInput = {
   targetAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
-export type ModelSubscriptionColonyStakeFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyStakeFilterInput>>>;
-  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
-  id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyStakeFilterInput>>>;
-  totalAmount?: InputMaybe<ModelSubscriptionStringInput>;
-  userId?: InputMaybe<ModelSubscriptionIdInput>;
-};
-
 export type ModelSubscriptionColonyTokensFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyTokensFilterInput>>>;
   colonyID?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4991,7 +4925,6 @@ export type Mutation = {
   createColonyMotion?: Maybe<ColonyMotion>;
   createColonyMultiSig?: Maybe<ColonyMultiSig>;
   createColonyRole?: Maybe<ColonyRole>;
-  createColonyStake?: Maybe<ColonyStake>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
   createContributorReputation?: Maybe<ContributorReputation>;
@@ -5035,7 +4968,6 @@ export type Mutation = {
   deleteColonyMotion?: Maybe<ColonyMotion>;
   deleteColonyMultiSig?: Maybe<ColonyMultiSig>;
   deleteColonyRole?: Maybe<ColonyRole>;
-  deleteColonyStake?: Maybe<ColonyStake>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
   deleteContributorReputation?: Maybe<ContributorReputation>;
@@ -5079,7 +5011,6 @@ export type Mutation = {
   updateColonyMotion?: Maybe<ColonyMotion>;
   updateColonyMultiSig?: Maybe<ColonyMultiSig>;
   updateColonyRole?: Maybe<ColonyRole>;
-  updateColonyStake?: Maybe<ColonyStake>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
   updateContributorReputation?: Maybe<ContributorReputation>;
@@ -5233,13 +5164,6 @@ export type MutationCreateColonyMultiSigArgs = {
 export type MutationCreateColonyRoleArgs = {
   condition?: InputMaybe<ModelColonyRoleConditionInput>;
   input: CreateColonyRoleInput;
-};
-
-
-/** Root mutation type */
-export type MutationCreateColonyStakeArgs = {
-  condition?: InputMaybe<ModelColonyStakeConditionInput>;
-  input: CreateColonyStakeInput;
 };
 
 
@@ -5537,13 +5461,6 @@ export type MutationDeleteColonyRoleArgs = {
 
 
 /** Root mutation type */
-export type MutationDeleteColonyStakeArgs = {
-  condition?: InputMaybe<ModelColonyStakeConditionInput>;
-  input: DeleteColonyStakeInput;
-};
-
-
-/** Root mutation type */
 export type MutationDeleteColonyTokensArgs = {
   condition?: InputMaybe<ModelColonyTokensConditionInput>;
   input: DeleteColonyTokensInput;
@@ -5833,13 +5750,6 @@ export type MutationUpdateColonyMultiSigArgs = {
 export type MutationUpdateColonyRoleArgs = {
   condition?: InputMaybe<ModelColonyRoleConditionInput>;
   input: UpdateColonyRoleInput;
-};
-
-
-/** Root mutation type */
-export type MutationUpdateColonyStakeArgs = {
-  condition?: InputMaybe<ModelColonyStakeConditionInput>;
-  input: UpdateColonyStakeInput;
 };
 
 
@@ -6277,8 +6187,6 @@ export type Query = {
   getColonyMotion?: Maybe<ColonyMotion>;
   getColonyMultiSig?: Maybe<ColonyMultiSig>;
   getColonyRole?: Maybe<ColonyRole>;
-  getColonyStake?: Maybe<ColonyStake>;
-  getColonyStakeByUserAddress?: Maybe<ModelColonyStakeConnection>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
   getContributorReputation?: Maybe<ContributorReputation>;
@@ -6364,7 +6272,6 @@ export type Query = {
   listColonyMotions?: Maybe<ModelColonyMotionConnection>;
   listColonyMultiSigs?: Maybe<ModelColonyMultiSigConnection>;
   listColonyRoles?: Maybe<ModelColonyRoleConnection>;
-  listColonyStakes?: Maybe<ModelColonyStakeConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
   listContributorReputations?: Maybe<ModelContributorReputationConnection>;
@@ -6597,23 +6504,6 @@ export type QueryGetColonyMultiSigArgs = {
 /** Root query type */
 export type QueryGetColonyRoleArgs = {
   id: Scalars['ID'];
-};
-
-
-/** Root query type */
-export type QueryGetColonyStakeArgs = {
-  id: Scalars['ID'];
-};
-
-
-/** Root query type */
-export type QueryGetColonyStakeByUserAddressArgs = {
-  colonyId?: InputMaybe<ModelIdKeyConditionInput>;
-  filter?: InputMaybe<ModelColonyStakeFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-  userId: Scalars['ID'];
 };
 
 
@@ -7254,14 +7144,6 @@ export type QueryListColonyMultiSigsArgs = {
 /** Root query type */
 export type QueryListColonyRolesArgs = {
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Root query type */
-export type QueryListColonyStakesArgs = {
-  filter?: InputMaybe<ModelColonyStakeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -7983,7 +7865,6 @@ export type Subscription = {
   onCreateColonyMotion?: Maybe<ColonyMotion>;
   onCreateColonyMultiSig?: Maybe<ColonyMultiSig>;
   onCreateColonyRole?: Maybe<ColonyRole>;
-  onCreateColonyStake?: Maybe<ColonyStake>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
   onCreateContributorReputation?: Maybe<ContributorReputation>;
@@ -8025,7 +7906,6 @@ export type Subscription = {
   onDeleteColonyMotion?: Maybe<ColonyMotion>;
   onDeleteColonyMultiSig?: Maybe<ColonyMultiSig>;
   onDeleteColonyRole?: Maybe<ColonyRole>;
-  onDeleteColonyStake?: Maybe<ColonyStake>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
   onDeleteContributorReputation?: Maybe<ContributorReputation>;
@@ -8067,7 +7947,6 @@ export type Subscription = {
   onUpdateColonyMotion?: Maybe<ColonyMotion>;
   onUpdateColonyMultiSig?: Maybe<ColonyMultiSig>;
   onUpdateColonyRole?: Maybe<ColonyRole>;
-  onUpdateColonyStake?: Maybe<ColonyStake>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
   onUpdateContributorReputation?: Maybe<ContributorReputation>;
@@ -8165,11 +8044,6 @@ export type SubscriptionOnCreateColonyMultiSigArgs = {
 
 export type SubscriptionOnCreateColonyRoleArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyRoleFilterInput>;
-};
-
-
-export type SubscriptionOnCreateColonyStakeArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyStakeFilterInput>;
 };
 
 
@@ -8378,11 +8252,6 @@ export type SubscriptionOnDeleteColonyRoleArgs = {
 };
 
 
-export type SubscriptionOnDeleteColonyStakeArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyStakeFilterInput>;
-};
-
-
 export type SubscriptionOnDeleteColonyTokensArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyTokensFilterInput>;
 };
@@ -8585,11 +8454,6 @@ export type SubscriptionOnUpdateColonyMultiSigArgs = {
 
 export type SubscriptionOnUpdateColonyRoleArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyRoleFilterInput>;
-};
-
-
-export type SubscriptionOnUpdateColonyStakeArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyStakeFilterInput>;
 };
 
 
@@ -9148,13 +9012,6 @@ export type UpdateColonyRoleInput = {
   targetAddress?: InputMaybe<Scalars['ID']>;
 };
 
-export type UpdateColonyStakeInput = {
-  colonyId?: InputMaybe<Scalars['ID']>;
-  id: Scalars['ID'];
-  totalAmount?: InputMaybe<Scalars['String']>;
-  userId?: InputMaybe<Scalars['ID']>;
-};
-
 export type UpdateColonyTokensInput = {
   colonyID?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
@@ -9470,7 +9327,6 @@ export type User = {
   /** Profile ID associated with the user */
   profileId?: Maybe<Scalars['ID']>;
   roles?: Maybe<ModelColonyRoleConnection>;
-  stakes?: Maybe<ModelColonyStakeConnection>;
   tokens?: Maybe<ModelUserTokensConnection>;
   transactionHistory?: Maybe<ModelTransactionConnection>;
   updatedAt: Scalars['AWSDateTime'];
@@ -9491,16 +9347,6 @@ export type UserLiquidationAddressesArgs = {
 export type UserRolesArgs = {
   colonyAddress?: InputMaybe<ModelIdKeyConditionInput>;
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-
-/** Represents a User within the Colony Network */
-export type UserStakesArgs = {
-  colonyId?: InputMaybe<ModelIdKeyConditionInput>;
-  filter?: InputMaybe<ModelColonyStakeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;

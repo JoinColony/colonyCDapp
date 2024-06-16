@@ -1938,10 +1938,6 @@ type User @model {
   """
   profile: Profile @hasOne(fields: ["profileId"])
   """
-  List of stakes the User made
-  """
-  stakes: [ColonyStake!]! @hasMany(indexName: "byUserAddress", fields: ["id"])
-  """
   List of domains with the user's permissions in each domain
   """
   roles: [ColonyRole] @hasMany(indexName: "byTargetAddress", fields: ["id"])
@@ -2000,35 +1996,6 @@ type LiquidationAddress @model {
       name: "byLiquidationAddress"
       queryField: "getUserByLiquidationAddress"
     )
-}
-
-"""
-Keeps track of the current amount a user has staked in a colony
-When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
-"""
-type ColonyStake @model {
-  """
-  Unique identifier for the stake
-  Format: `<userId>_<colonyId>`
-  """
-  id: ID! #
-  """
-  Unique identifier for the user
-  """
-  userId: ID!
-    @index(
-      name: "byUserAddress"
-      queryField: "getColonyStakeByUserAddress"
-      sortKeyFields: ["colonyId"]
-    )
-  """
-  Unique identifier for the Colony
-  """
-  colonyId: ID!
-  """
-  Total staked amount
-  """
-  totalAmount: String!
 }
 
 """
