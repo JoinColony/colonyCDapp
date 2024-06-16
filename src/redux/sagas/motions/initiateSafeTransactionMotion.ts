@@ -15,7 +15,6 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { fill, omit } from '~utils/lodash.ts';
-import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import { transactionReady } from '../../actionCreators/index.ts';
 import {
@@ -28,6 +27,8 @@ import {
   getColonyManager,
   uploadAnnotation,
   createActionMetadataInDB,
+  putError,
+  takeFrom,
 } from '../utils/index.ts';
 import {
   getHomeBridgeByChain,

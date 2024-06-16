@@ -64,6 +64,12 @@ export enum MetamaskRpcErrors {
   TypedDataSignDifferentChain = 'must match the active chainId',
 }
 
+/**
+ * @NOTE: This enum is not correct, it began as a list of methods available on the contracts
+ * but has since been repurposed to be a list of batch keys for sagas
+ * A saga can call multiple methods so we should not mix the 2 concepts
+ * This should be taken into account when moving away from sagas
+ */
 export enum TRANSACTION_METHODS {
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
@@ -75,7 +81,6 @@ export enum TRANSACTION_METHODS {
   CreateDomainAction = 'createDomainAction',
   CreateExpenditure = 'createExpenditure',
   CreateMotion = 'createMotion',
-  CreateStreamingPayment = 'createStreamingPayment',
   DeployToken = 'deployToken',
   DeployTokenViaNetwork = 'deployTokenViaNetwork',
   DeployTokenAuthority = 'deployTokenAuthority',
