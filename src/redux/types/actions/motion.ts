@@ -2,7 +2,11 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExternalLink, type ColonyRoleFragment } from '~gql';
+import {
+  type ExternalLink,
+  type ColonyRoleFragment,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type Authority } from '~types/authority.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
@@ -533,5 +537,30 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_ARBITRARY_TRANSACTION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_ARBITRARY_TRANSACTION_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_CREATE_STREAMING_PAYMENT,
+      {
+        colonyAddress: Address;
+        createdInDomain: Domain;
+        recipientAddress: Address;
+        tokenAddress: Address;
+        tokenDecimals: number;
+        amount: string;
+        startTimestamp: number;
+        endTimestamp?: number;
+        interval: number;
+        endCondition: StreamingPaymentEndCondition;
+        limitAmount?: string;
+        annotationMessage?: string;
+        votingReputationAddress: Address;
+        motionDomainId: number;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_CREATE_STREAMING_PAYMENT_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_CREATE_STREAMING_PAYMENT_SUCCESS,
       MetaWithSetter<object>
     >;
