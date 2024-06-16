@@ -7,11 +7,11 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Balance from './partials/Balance.tsx';
 import PendingReputation from './partials/PendingReputation/index.ts';
 import TotalReputation from './partials/TotalReputation.tsx';
-import { type ReputationTabProps } from './types.ts';
+import { type BalanceTabProps } from './types.ts';
 
-const displayName = 'common.Extensions.UserHub.partials.ReputationTab';
+const displayName = 'common.Extensions.UserHub.partials.BalanceTab';
 
-const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
+const BalanceTab = ({ onTabChange }: BalanceTabProps) => {
   const { formatMessage } = useIntl();
   const {
     colony: { colonyAddress, nativeToken },
@@ -47,6 +47,6 @@ const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
   );
 };
 
-ReputationTab.displayName = displayName;
+BalanceTab.displayName = displayName;
 
-export default ReputationTab;
+export default BalanceTab;

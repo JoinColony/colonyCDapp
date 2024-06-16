@@ -6,7 +6,7 @@ import useUserReputation from '~hooks/useUserReputation.ts';
 import TimeRelative from '~shared/TimeRelative/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import reputationTabClasses from '../../ReputationTab.styles.ts';
+import reputationTabClasses from '../../BalanceTab.styles.ts';
 import { type PendingReputationProps } from '../../types.ts';
 
 import {
