@@ -22,9 +22,10 @@ import {
   getEditLockedExpenditureMulticallData,
   uploadAnnotation,
   getResolvedPayouts,
+  putError,
+  takeFrom,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
-import { takeFrom } from '~utils/saga/effects.ts';
 
 export type EditExpenditureMotionPayload =
   Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE>['payload'];
@@ -175,15 +176,7 @@ function* editLockedExpenditureMotion({
     }
   } catch (e) {
     console.error(e);
-    yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR>>({
-      type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR,
-      payload: {
-        name: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR,
-        message: JSON.stringify(e),
-      },
-      meta,
-      error: true,
-    });
+    yield putError(ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR, e, meta);
   } finally {
     createMotion.channel.close();
     annotateEditLockedExpenditure.channel.close();
