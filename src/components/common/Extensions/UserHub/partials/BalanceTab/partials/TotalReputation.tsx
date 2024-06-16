@@ -12,7 +12,7 @@ import {
 } from '~utils/tokens.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import reputationTabClasses from '../ReputationTab.styles.ts';
+import reputationTabClasses from '../BalanceTab.styles.ts';
 import { type TotalReputationProps } from '../types.ts';
 
 const displayName =
