@@ -1,5 +1,6 @@
 const fetch = require('cross-fetch');
-const { getColonyStake } = require('./graphql');
+const { getUserStakesInColony } = require('./graphql');
+const { BigNumber } = require('ethers');
 
 const graphqlRequest = async (
   queryOrMutation,
@@ -47,15 +48,27 @@ const getStakedTokens = async (
 ) => {
   const { data } =
     (await graphqlRequest(
-      getColonyStake,
+      getUserStakesInColony,
       {
-        colonyStakeId: getColonyStakeId(walletAddress, colonyAddress),
+        userAddress: walletAddress,
+        colonyAddress,
       },
       apiKey,
       graphqlURL,
     )) ?? {};
 
-  return data?.getColonyStake?.totalAmount ?? 0;
+  let totalAmount = BigNumber.from(0);
+  if (data?.getUserStakesInColony) {
+    data.getUserStakesInColony.items.forEach((item) => {
+      totalAmount = totalAmount.add(item.amount);
+    });
+  } else {
+    console.error(
+      `Could not get user ${walletAddress} stakes in colony ${colonyAddress}`,
+    );
+  }
+
+  return totalAmount.toString();
 };
 
 module.exports = {
