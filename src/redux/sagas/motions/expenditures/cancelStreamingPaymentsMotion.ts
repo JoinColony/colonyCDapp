@@ -30,7 +30,6 @@ function* cancelStreamingPaymentsMotionAction({
     votingReputationAddress,
     motionDomainId,
     streamingPayment,
-    userAddress,
     annotationMessage,
   },
 }: Action<ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL>) {
@@ -44,7 +43,6 @@ function* cancelStreamingPaymentsMotionAction({
       !colony ||
       !votingReputationAddress ||
       !motionDomainId ||
-      !userAddress ||
       !streamingPayment
     ) {
       throw new Error('Invalid payload');
