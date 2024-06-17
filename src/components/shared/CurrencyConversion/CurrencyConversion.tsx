@@ -3,11 +3,13 @@ import { type BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import React from 'react';
 
+import { DEFAULT_NETWORK } from '~constants';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import useCurrency from '~hooks/useCurrency.ts';
 import Numeral, {
   type Props as NumeralProps,
 } from '~shared/Numeral/Numeral.tsx';
+import { type Network } from '~types/network.ts';
 import { type FetchCurrentPriceArgs } from '~utils/currency/index.ts';
 
 const displayName = 'CurrencyConversion';
@@ -45,7 +47,7 @@ const CurrencyConversion = ({
   tokenBalance,
   tokenDecimals,
   contractAddress,
-  chainId,
+  chainId = DEFAULT_NETWORK as Network,
   className,
   ...rest
 }: Props) => {
