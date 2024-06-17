@@ -1,7 +1,7 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import { Id } from '@colony/colony-js';
-import clsx from 'clsx';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -53,7 +53,6 @@ const TmpAdvancedPayments = () => {
   const [expenditureId, setExpenditureId] = useState('');
   const [releaseStage, setReleaseStage] = useState('');
   const [annotation, setAnnotation] = useState<string | undefined>(undefined);
-  const [copiedMsgVisible, setCopiedMsgVisible] = useState(false);
   const { transactionAndMessageGroups } = useUserTransactionContext();
 
   const tokenDecimalAmount = parseFloat(decimalAmount);
