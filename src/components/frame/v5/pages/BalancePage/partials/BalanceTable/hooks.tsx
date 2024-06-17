@@ -31,7 +31,7 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const { attributeFilters, tokenTypes, searchFilter } = useFiltersContext();
-  const { balancesByToken: expenditureBalances } =
+  const { balancesByToken: expenditureBalances, loading } =
     useColonyExpenditureBalances();
 
   const tokensData = useMemo(
@@ -55,9 +55,16 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
         return {
           ...item,
           balance: totalBalance,
+          loading,
         };
       }) ?? [],
-    [colonyTokens?.items, balances, selectedDomain, expenditureBalances],
+    [
+      colonyTokens?.items,
+      balances,
+      selectedDomain,
+      expenditureBalances,
+      loading,
+    ],
   );
 
   const filteredTokens = tokensData?.filter((token) => {
@@ -116,6 +123,10 @@ export const useBalanceTableColumns = (
         cell: ({ row }) => {
           if (!row.original.token) return [];
 
+          if (row.original.loading) {
+            return <div className="h-4 w-40 skeleton" />;
+          }
+
           return (
             <TokenCell
               token={row.original.token}
@@ -130,17 +141,27 @@ export const useBalanceTableColumns = (
         size: isMobile ? 60 : 100,
         header: () => formatText({ id: 'table.row.symbol' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
-        cell: ({ row }) => (
-          <span className="text-gray-600">
-            {multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}
-          </span>
-        ),
+        cell: ({ row }) => {
+          if (row.original.loading) {
+            return <div className="h-4 w-12 skeleton" />;
+          }
+
+          return (
+            <span className="text-gray-600">
+              {multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}
+            </span>
+          );
+        },
       }),
       columnHelper.display({
         id: 'type',
         size: 130,
         header: () => formatText({ id: 'table.row.type' }),
         cell: ({ row }) => {
+          if (row.original.loading) {
+            return <div className="h-4 w-12 skeleton" />;
+          }
+
           const isTokenNative =
             row.original.token?.tokenAddress === nativeToken.tokenAddress;
 
@@ -164,6 +185,10 @@ export const useBalanceTableColumns = (
         }),
         cell: ({ row }) => {
           const currentTokenBalance = row.original.balance;
+
+          if (row.original.loading) {
+            return <div className="ml-auto h-4 w-24 skeleton" />;
+          }
 
           return (
             <div className="ml-auto text-right">

@@ -5,4 +5,5 @@ import { type TokenFragment } from '~gql';
 export interface BalanceTableFieldModel {
   balance: BigNumber;
   token?: TokenFragment;
+  loading?: boolean;
 }
