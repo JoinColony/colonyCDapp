@@ -36,7 +36,7 @@ export const TokenChoiceOptions = ({
             type="radio"
             value={option}
             id={option}
-            className="flex h-4 min-h-4 w-4 min-w-4 appearance-none items-center justify-center rounded-full border border-gray-200 transition ease-in checked:border-blue-400 checked:after:block checked:after:h-[7px] checked:after:w-[7px] checked:after:rounded-full checked:after:bg-blue-400 checked:after:content-['']"
+            className="relative h-4 max-h-4 min-h-4 w-4 min-w-4 max-w-4 appearance-none rounded-full border border-gray-200 transition ease-in checked:border-blue-400 checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:block checked:after:h-[7.02px] checked:after:w-[7.02px] checked:after:-translate-x-1/2 checked:after:-translate-y-1/2 checked:after:rounded-full checked:after:bg-blue-400 checked:after:content-['']"
           />
           {formatMessage(MSG[`${option}OptionTitle`])}
         </label>
