@@ -1,6 +1,7 @@
 import {
   ArrowLineRight,
   ArrowsOutSimple,
+  ShareNetwork,
   WarningCircle,
   X,
 } from '@phosphor-icons/react';
@@ -18,9 +19,11 @@ import { Link } from 'react-router-dom';
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { removeQueryParamFromUrl } from '~utils/urls.ts';
@@ -94,6 +97,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   }, [loadingAction, stopPollingForAction]);
 
   const { formRef, closeSidebarClick } = useCloseSidebarClick();
+  const { isCopied, handleClipboardCopy } = useCopyToClipboard();
   const isMobile = useMobile();
 
   useDisableBodyScroll(isActionSidebarOpen);
@@ -193,6 +197,25 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     );
   };
 
+  const getShareButton = () =>
+    !!transactionId && (
+      <Tooltip
+        tooltipContent={formatText({ id: 'copy.urlCopied' })}
+        isOpen={isCopied}
+        isSuccess={isCopied}
+        placement="bottom"
+      >
+        <button
+          type="button"
+          className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
+          onClick={() => handleClipboardCopy(window.location.href)}
+          aria-label={formatText({ id: 'ariaLabel.shareAction' })}
+        >
+          <ShareNetwork size={18} />
+        </button>
+      </Tooltip>
+    );
+
   return (
     <motion.div
       transition={{
@@ -248,18 +271,21 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             </button>
             {!isMobile && (
               <div className="flex items-center gap-4">
-                <button
-                  type="button"
-                  className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-                  onClick={toggleIsSidebarFullscreen}
-                  aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
-                >
-                  {isSidebarFullscreen ? (
-                    <ArrowLineRight size={18} />
-                  ) : (
-                    <ArrowsOutSimple size={18} />
-                  )}
-                </button>
+              <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
+                    onClick={toggleIsSidebarFullscreen}
+                    aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
+                  >
+                    {isSidebarFullscreen ? (
+                      <ArrowLineRight size={18} />
+                    ) : (
+                      <ArrowsOutSimple size={18} />
+                    )}
+                  </button>
+                {getShareButton()}
+              </div>
                 {action && !isMotion && !expenditure && (
                   <PillsBase
                     className="bg-success-100 text-success-400"
@@ -277,6 +303,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                 <MotionOutcomeBadge motionState={motionState} />
               </div>
             )}
+          {isMobile && getShareButton()}
           </div>
           <div>{children}</div>
         </div>
