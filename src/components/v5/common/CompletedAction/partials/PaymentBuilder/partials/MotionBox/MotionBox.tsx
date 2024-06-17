@@ -4,7 +4,6 @@ import React, { type FC, useEffect, useState, useMemo } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MotionProvider from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/index.ts';
 import FinalizeStep from '~v5/common/ActionSidebar/partials/Motions/steps/FinalizeStep/FinalizeStep.tsx';
@@ -38,7 +37,7 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
     networkMotionState === NetworkMotionState.Failed;
 
   useEffect(() => {
-    startPollingForAction(getSafePollingInterval());
+    startPollingForAction();
     setActiveStepKey(networkMotionState);
     if (motionFinished) {
       setActiveStepKey(CustomStep.Finalize);
