@@ -71,7 +71,7 @@ export type MotionFinalizePayload = {
 
 export type StreamingPaymentsMotionCancelPayload = Omit<
   CancelStreamingPaymentPayload,
-  'colonyAddress'
+  'colonyAddress' | 'userAddress'
 > & {
   motionDomainId: number;
   votingReputationAddress: Address;
