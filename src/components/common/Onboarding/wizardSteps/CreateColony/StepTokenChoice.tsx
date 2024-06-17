@@ -48,13 +48,15 @@ const TokenSelector = ({
           'flex h-full cursor-pointer flex-col items-center text-center md:hover:border-blue-200 md:hover:shadow-default',
         )}
       >
-        <input
-          {...registerField}
-          type="radio"
-          value={name}
-          id={`id-${name}`}
-          className="mb-4"
-        />
+        <div className="mb-4">
+          <input
+            {...registerField}
+            type="radio"
+            value={name}
+            id={`id-${name}`}
+            className="relative h-4 max-h-4 min-h-4 w-4 min-w-4 max-w-4 appearance-none rounded-full border border-gray-200 transition ease-in checked:border-blue-400 checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:block checked:after:h-[7.02px] checked:after:w-[7.02px] checked:after:-translate-x-1/2 checked:after:-translate-y-1/2 checked:after:rounded-full checked:after:bg-blue-400 checked:after:content-['']"
+          />
+        </div>
         {icon}
         <span className="pt-4 text-1">{formatText(title)}</span>
         <span className="pt-1 description-1">{formatText(description)}</span>
