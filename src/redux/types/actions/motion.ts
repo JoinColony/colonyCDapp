@@ -97,7 +97,7 @@ interface OneTxPaymentMotionPayload extends OneTxPaymentPayload {
 
 export type StreamingPaymentsMotionCancelPayload = Omit<
   CancelStreamingPaymentPayload,
-  'colonyAddress'
+  'colonyAddress' | 'userAddress'
 > & {
   motionDomainId: number;
   votingReputationAddress: Address;
