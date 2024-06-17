@@ -2,7 +2,7 @@ import React from 'react';
 import { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type ColonyActionType, MultiSigVote } from '~gql';
+import { type ColonyActionType, type MultiSigVote } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type VoteOnMultiSigActionPayload } from '~redux/sagas/multiSig/voteOnMultiSig.ts';
@@ -18,12 +18,14 @@ interface VoteButtonProps {
   actionType: ColonyActionType;
   multiSigId: string;
   multiSigDomainId: number;
+  voteType: Exclude<MultiSigVote, MultiSigVote.None>;
 }
 
 const VoteButton: FC<VoteButtonProps> = ({
   actionType,
   multiSigId,
   multiSigDomainId,
+  voteType,
 }) => {
   const { colony } = useColonyContext();
   const voteOnMultiSig = useAsyncFunction({
@@ -33,20 +35,20 @@ const VoteButton: FC<VoteButtonProps> = ({
   });
 
   const handleVoteClick = async () => {
-    const voteForPayload: VoteOnMultiSigActionPayload = {
+    const votePayload: VoteOnMultiSigActionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyDomains: extractColonyDomains(colony.domains),
       colonyRoles: extractColonyRoles(colony.roles),
-      vote: MultiSigVote.Approve,
+      vote: voteType,
       domainId: multiSigDomainId,
       multiSigId,
       requiredRole: getMultiSigRequiredRole(actionType),
     };
 
-    await voteOnMultiSig(voteForPayload);
+    await voteOnMultiSig(votePayload);
   };
 
-  return <Button onClick={handleVoteClick}>Approve</Button>;
+  return <Button onClick={handleVoteClick}>{voteType}</Button>;
 };
 
 VoteButton.displayName = displayName;

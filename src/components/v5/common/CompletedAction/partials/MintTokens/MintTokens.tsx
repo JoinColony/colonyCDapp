@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -51,6 +52,7 @@ const MSG = defineMessages({
 });
 
 const MintTokens = ({ action }: MintTokensProps) => {
+  const { user } = useAppContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
@@ -61,6 +63,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
     isMultiSig,
     annotation,
     multiSigData,
+    type: actionType,
   } = action;
 
   const formattedAmount = getFormattedTokenAmount(
@@ -72,6 +75,8 @@ const MintTokens = ({ action }: MintTokensProps) => {
     getTokenDecimalsWithFallback(token?.decimals),
   );
 
+  const isOwner = initiatorUser?.walletAddress === user?.walletAddress;
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -80,6 +85,8 @@ const MintTokens = ({ action }: MintTokensProps) => {
           <MultiSigMeatballMenu
             transactionHash={transactionHash}
             multiSigData={multiSigData}
+            isOwner={isOwner}
+            actionType={actionType}
           />
         ) : (
           <MeatballMenu
