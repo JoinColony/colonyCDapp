@@ -6,7 +6,6 @@ import moveDecimal from 'move-decimal-point';
 import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
@@ -32,7 +31,6 @@ const StakingForm: FC<StakingFormProps> = ({
   userInactivatedTokens,
   disableForm,
 }) => {
-  const { canInteract } = useAppContext();
   const { motionAction } = useMotionContext();
 
   const thresholdPercentValue = 10;
@@ -107,11 +105,11 @@ const StakingForm: FC<StakingFormProps> = ({
                   voteTypeValue === MotionVote.Yay
                     ? predictedPercentage
                     : undefined,
-                className: 'mb-6',
+                ...(!disableForm && { className: 'mb-6' }),
               }}
             />
             <div>
-              {canInteract && (
+              {!disableForm && (
                 <FormButtonRadioButtons
                   name="voteType"
                   allowUnselect={!isFullySupported && !isFullyObjected}
