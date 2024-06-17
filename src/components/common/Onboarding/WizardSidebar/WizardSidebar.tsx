@@ -40,23 +40,25 @@ const WizardSidebar = ({
   return (
     <>
       <nav className="flex h-full flex-col border border-gray-200 p-6 sm:rounded-lg">
-        <div className="relative mb-10 flex items-center">
+        <div className="relative flex items-center sm:mb-10">
           <Link to={LANDING_PAGE_ROUTE} className="h-fit w-fit">
             <ColonyIcon size={36} />
           </Link>
           {isTablet && <UserNavigationWrapper />}
         </div>
-        <Heading3
-          appearance={{ theme: 'dark' }}
-          className="text-xl font-semibold text-gray-900 sm:mb-6"
-          text={sidebarTitle}
-          textValues={sidebarTitleValues}
-        />
         {!isMobile && (
-          <DesktopWizardSidebar
-            currentStep={currentStep}
-            wizardSteps={wizardSteps}
-          />
+          <>
+            <Heading3
+              appearance={{ theme: 'dark' }}
+              className="text-xl font-semibold text-gray-900 sm:mb-6"
+              text={sidebarTitle}
+              textValues={sidebarTitleValues}
+            />
+            <DesktopWizardSidebar
+              currentStep={currentStep}
+              wizardSteps={wizardSteps}
+            />
+          </>
         )}
       </nav>
       {isMobile && (
