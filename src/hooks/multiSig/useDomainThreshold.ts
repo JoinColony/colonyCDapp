@@ -1,14 +1,14 @@
-import { Extension } from '@colony/colony-js';
+import { type ColonyRole, Extension } from '@colony/colony-js';
 
-import { type UserRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import { useEligibleSignees } from './useEligibleSignees.ts';
 
 interface UseDomainThresholdParams {
-  domainId: string;
-  requiredRole: UserRole;
+  domainId?: number;
+  requiredRoles?: ColonyRole[];
 }
 
 interface UseDomainThresholdResult {
@@ -17,17 +17,23 @@ interface UseDomainThresholdResult {
 }
 
 export const useDomainThreshold = ({
-  requiredRole,
+  requiredRoles,
   domainId,
 }: UseDomainThresholdParams): UseDomainThresholdResult => {
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+
   const { extensionData, loading: loadingExtension } = useExtensionData(
     Extension.MultisigPermissions,
   );
 
-  const { loadingRoles, eligibleSignees } = useEligibleSignees({
+  const { eligibleSigneesCount } = useEligibleSignees({
     domainId,
-    requiredRole,
+    requiredRoles,
   });
+
+  const thresholdMultiplier = requiredRoles ? requiredRoles.length : 1;
 
   const getDomainThreshold = (): number | null => {
     if (loadingExtension) {
@@ -52,7 +58,7 @@ export const useDomainThreshold = ({
     const matchingDomain = (domainThresholds ?? []).find(
       (thresholdEntry) =>
         thresholdEntry !== null &&
-        thresholdEntry.domainId === domainId.toString(),
+        thresholdEntry.domainId === `${colonyAddress}_${domainId}`,
     );
 
     // if we didn't find domain config, let's just assume we inherit from the colony
@@ -63,14 +69,10 @@ export const useDomainThreshold = ({
 
     // if it's not majority approval
     if (thresholdConfig > 0) {
-      return thresholdConfig;
+      return thresholdConfig * thresholdMultiplier;
     }
 
-    if (loadingRoles) {
-      return null;
-    }
-
-    const numberOfPermissionHolders = eligibleSignees.length;
+    const numberOfPermissionHolders = eligibleSigneesCount;
 
     if (numberOfPermissionHolders === 0) {
       console.warn('There are no multiSig permission holders');
@@ -80,11 +82,11 @@ export const useDomainThreshold = ({
 
     const majority = Math.ceil(numberOfPermissionHolders / 2);
 
-    return majority;
+    return majority * thresholdMultiplier;
   };
 
   return {
     threshold: getDomainThreshold(),
-    isLoading: loadingExtension || loadingRoles,
+    isLoading: loadingExtension,
   };
 };
