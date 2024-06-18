@@ -151,7 +151,7 @@ const UserHubButton: FC = () => {
           {
             '!border-blue-400': visible || isUserHubOpen,
           },
-          ' flex min-w-[3rem] md:hover:!border-blue-400',
+          'min-w-[3rem] md:hover:!border-blue-400',
         )}
         onClick={handleButtonClick}
       >
