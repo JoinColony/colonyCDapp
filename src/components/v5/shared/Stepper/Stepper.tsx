@@ -195,7 +195,7 @@ function Stepper<TKey extends React.Key>({
           </button>
         )}
       </div>
-      {isMobile && !!openedItem.content && (
+      {isMobile && !!openedItem?.content && (
         <div className="pt-4">{openedItem.content}</div>
       )}
     </>
