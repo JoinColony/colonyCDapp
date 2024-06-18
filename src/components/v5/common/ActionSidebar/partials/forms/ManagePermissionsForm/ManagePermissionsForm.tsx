@@ -132,8 +132,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <FormCardSelect
           name="role"
           cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm md:px-4 md:[&_.section-title]:px-2"
-          renderSelectedValue={(option, placeholder) =>
-            getRoleLabel(option?.value) || placeholder
+          renderSelectedValue={(_, placeholder) =>
+            getRoleLabel(role) || placeholder
           }
           options={ALLOWED_PERMISSION_OPTIONS}
           title={formatText({ id: 'actionSidebar.permissions' })}
