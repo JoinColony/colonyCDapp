@@ -843,7 +843,11 @@ enum ColonyActionType {
   """
   An action related to a motion to release a staged payment
   """
-  RELEASE_STAGED_PAYMENT_MOTION
+  RELEASE_STAGED_PAYMENTS
+  """
+  An action related to a motion to release a staged payment
+  """
+  RELEASE_STAGED_PAYMENTS_MOTION
   """
   An action related to the creation of safe transactions via Safe Control
   """
