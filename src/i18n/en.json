@@ -272,6 +272,8 @@
     "transaction.group.lockExpenditure.description": "Lock Expenditure",
     "transaction.group.setStakeFraction.title": "Set Stake Fraction",
     "transaction.group.setStakeFraction.description": "Set Stake Fraction",
+    "transaction.group.releaseStagedPayment.title": "Release Staged Payment",
+    "transaction.group.releaseStagedPayment.description": "Release Staged Payment",
     "transaction.group.makeArbitraryTransaction.title": "Make arbitrary transaction",
     "transaction.group.makeArbitraryTransaction.description": "Make arbitrary transaction",
     "transaction.group.mintTokens.title": "Mint Tokens",
@@ -373,7 +375,9 @@
     "transaction.StakedExpenditureClient.reclaimStake.title": "Reclaim Stake",
     "transaction.StakedExpenditureClient.setStakeFraction.title": "Set Stake Fraction",
     "transaction.StagedExpenditureClient.releaseStagedPayment.title": "Release Staged Payment",
+    "transaction.StagedExpenditureClient.releaseStagedPaymentViaArbitration.title": "Release Staged Payment",
     "transaction.StagedExpenditureClient.setExpenditureStaged.title": "Set Expenditure as Staged",
+    "transaction.StagedExpenditureClient.multicall.title": "Multicall",
 
     "transaction.StreamingPaymentsClient.create.title": "Create Streaming Payment",
 
