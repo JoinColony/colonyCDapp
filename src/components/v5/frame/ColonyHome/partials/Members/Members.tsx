@@ -19,10 +19,11 @@ const Members = () => {
     totalMembers: members,
     totalMemberCount,
     loading: membersLoading,
+    filteredMembers,
   } = useMemberContext();
 
   const domainMembers = nativeDomainId
-    ? members.filter(
+    ? filteredMembers.filter(
         ({ roles, reputation }) =>
           roles?.items?.find(
             (role) => role?.domain.nativeId === nativeDomainId,
@@ -39,7 +40,9 @@ const Members = () => {
   }));
 
   // Either all or just filtered by domain
-  const membersCount = !nativeDomainId ? totalMemberCount : allMembers.length;
+  const membersCount = !nativeDomainId
+    ? totalMemberCount
+    : filteredMembers.length;
 
   return (
     <WidgetBox
