@@ -2914,6 +2914,10 @@ type ColonyAction @model @searchable {
   Applicable to `EDIT_EXPENDITURE` action only
   """
   expenditureSlotChanges: ExpenditureSlotChanges
+  """
+  Ids of the staged payment slots released by the action, if any
+  """
+  expenditureSlotIds: [Int!]
 }
 
 type ExpenditureSlotChanges {
