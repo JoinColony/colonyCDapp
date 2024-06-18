@@ -117,7 +117,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
             md:gap-9
           `}
         >
-          <div className="flex gap-6 md:flex-col md:gap-9">
+          <div className="flex gap-3 md:flex-col md:gap-9">
             <div className="flex justify-center md:w-full">
               <button
                 type="button"
