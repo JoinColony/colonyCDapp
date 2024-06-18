@@ -689,7 +689,11 @@ enum ColonyActionType {
   """
   An action related to a motion to release a staged payment
   """
-  RELEASE_STAGED_PAYMENT_MOTION
+  RELEASE_STAGED_PAYMENTS
+  """
+  An action related to a motion to release a staged payment
+  """
+  RELEASE_STAGED_PAYMENTS_MOTION
   """
   An action related to the creation of safe transactions via Safe Control
   """
@@ -2445,9 +2449,9 @@ type ColonyMotion @model {
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
 
   """
-  Id of the expenditure stage payment to be released if the motion pass, if any
+  Ids of the staged payment slots to be released if the motion pass, if any
   """
-  expenditureSlotId: Int
+  expenditureSlotIds: [Int!]
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
 
@@ -2935,6 +2939,10 @@ type ColonyAction @model @searchable {
   Applicable to `EDIT_EXPENDITURE` action only
   """
   expenditureSlotChanges: ExpenditureSlotChanges
+  """
+  Ids of the staged payment slots released by the action, if any
+  """
+  expenditureSlotIds: [Int!]
 }
 
 type ExpenditureSlotChanges {
@@ -3333,7 +3341,6 @@ type ExpenditureBalance {
 type ExpenditureStage {
   slotId: Int!
   name: String!
-  isReleased: Boolean!
 }
 
 type StreamingPayment @model {

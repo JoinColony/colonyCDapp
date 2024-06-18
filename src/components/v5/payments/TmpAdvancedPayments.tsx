@@ -22,9 +22,10 @@ import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/final
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type ReleaseExpenditureStagesPayload } from '~redux/sagas/expenditures/releaseExpenditureStages.ts';
 import { type EditExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/editLockedExpenditureMotion.ts';
 import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
-import { type ReleaseExpenditureStageMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStageMotion.ts';
+import { type ReleaseExpenditureStagesMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStagesMotion.ts';
 import { type CancelStakedExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import {
   type ExpenditureFundMotionPayload,
@@ -106,10 +107,15 @@ const TmpAdvancedPayments = () => {
     error: ActionTypes.STAKED_EXPENDITURE_CANCEL_ERROR,
     success: ActionTypes.STAKED_EXPENDITURE_CANCEL_SUCCESS,
   });
+  const releaseExpenditureStages = useAsyncFunction({
+    submit: ActionTypes.RELEASE_EXPENDITURE_STAGES,
+    error: ActionTypes.RELEASE_EXPENDITURE_STAGES_ERROR,
+    success: ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
+  });
   const releaseExpenditureStageMotion = useAsyncFunction({
-    submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
-    error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
-    success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+    submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES,
+    error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
+    success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS,
   });
   const editExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_EDIT,
@@ -316,6 +322,30 @@ const TmpAdvancedPayments = () => {
     await cancelStakedExpenditure(payload);
   };
 
+  const handleReleaseExpenditureStage = async () => {
+    if (!expenditure || !releaseStage || !stagedExpenditureAddress) {
+      return;
+    }
+
+    let slotIds: number[] = [];
+    if (releaseStage.includes(',')) {
+      slotIds = releaseStage.split(',').map(Number);
+    } else {
+      slotIds = [Number(releaseStage)];
+    }
+
+    const payload: ReleaseExpenditureStagesPayload = {
+      colonyAddress: colony.colonyAddress,
+      expenditure,
+      stagedExpenditureAddress,
+      slotIds,
+      tokenAddresses: [colony.nativeToken.tokenAddress],
+      userAddress: user?.walletAddress ?? '',
+    };
+
+    await releaseExpenditureStages(payload);
+  };
+
   const handleReleaseExpenditureStageMotion = async () => {
     if (
       !expenditure ||
@@ -326,13 +356,20 @@ const TmpAdvancedPayments = () => {
       return;
     }
 
-    const payload: ReleaseExpenditureStageMotionPayload = {
+    let slotIds: number[] = [];
+    if (releaseStage.includes(',')) {
+      slotIds = releaseStage.split(',').map(Number);
+    } else {
+      slotIds = [Number(releaseStage)];
+    }
+
+    const payload: ReleaseExpenditureStagesMotionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyName: colony.name,
       stagedExpenditureAddress,
       votingReputationAddress,
       expenditure,
-      slotId: Number(releaseStage),
+      slotIds,
       motionDomainId: expenditure.nativeDomainId,
       tokenAddresses: [colony.nativeToken.tokenAddress],
     };
@@ -530,8 +567,11 @@ const TmpAdvancedPayments = () => {
         <InputBase
           value={releaseStage}
           onChange={(e) => setReleaseStage(e.currentTarget.value)}
-          placeholder="Stage to release"
+          placeholder="Stage to release (or multiple stages separated by commas)"
         />
+        <Button onClick={handleReleaseExpenditureStage} disabled={!expenditure}>
+          Release Expenditure Stage
+        </Button>
         <Button
           onClick={handleReleaseExpenditureStageMotion}
           disabled={!expenditure}

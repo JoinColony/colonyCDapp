@@ -21,28 +21,27 @@ import {
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 
-export type ReleaseExpenditureStageMotionPayload =
-  Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>['payload'];
+export type ReleaseExpenditureStagesMotionPayload =
+  Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES>['payload'];
 
-function* releaseExpenditureStageMotion({
+function* releaseExpenditureStagesMotion({
   payload: {
     colonyAddress,
     colonyName,
     stagedExpenditureAddress,
     votingReputationAddress,
     expenditure,
-    slotId,
+    slotIds,
     motionDomainId,
     tokenAddresses,
   },
   meta,
   meta: { setTxHash, id },
-}: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>) {
-  const { createMotion /* annotationMessage */ } = yield call(
-    createTransactionChannels,
-    id,
-    ['createMotion', 'annotateMotion'],
-  );
+}: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES>) {
+  const { createMotion } = yield call(createTransactionChannels, id, [
+    'createMotion',
+    'annotateMotion',
+  ]);
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
@@ -50,16 +49,16 @@ function* releaseExpenditureStageMotion({
   );
 
   try {
-    const stagedExpenditureClient = yield colonyManager.getClient(
-      ClientType.StagedExpenditureClient,
-      colonyAddress,
-    );
-
     if (expenditure.status !== ExpenditureStatus.Finalized) {
       throw new Error(
         'Expenditure must be finalized in order to release expenditure stage',
       );
     }
+
+    const stagedExpenditureClient = yield colonyManager.getClient(
+      ClientType.StagedExpenditureClient,
+      colonyAddress,
+    );
 
     const [userPermissionDomainId, userChildSkillIndex] =
       yield getPermissionProofs(
@@ -98,17 +97,24 @@ function* releaseExpenditureStageMotion({
       expenditure.nativeDomainId,
     );
 
+    const multicallData = slotIds.map((slotId) =>
+      stagedExpenditureClient.interface.encodeFunctionData(
+        'releaseStagedPaymentViaArbitration',
+        [
+          userPermissionDomainId,
+          userChildSkillIndex,
+          extensionPermissionDomainId,
+          extensionChildSkillIndex,
+          expenditure.nativeId,
+          slotId,
+          tokenAddresses,
+        ],
+      ),
+    );
+
     const encodedAction = stagedExpenditureClient.interface.encodeFunctionData(
-      'releaseStagedPaymentViaArbitration',
-      [
-        userPermissionDomainId,
-        userChildSkillIndex,
-        extensionPermissionDomainId,
-        extensionChildSkillIndex,
-        expenditure.nativeId,
-        slotId,
-        tokenAddresses,
-      ],
+      'multicall',
+      [multicallData],
     );
 
     const batchKey = 'createMotion';
@@ -131,11 +137,6 @@ function* releaseExpenditureStageMotion({
           branchMask,
           siblings,
         ],
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 1,
-        },
       },
     });
 
@@ -151,8 +152,8 @@ function* releaseExpenditureStageMotion({
     setTxHash?.(txHash);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS>>({
-        type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS>>({
+        type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS,
         meta,
       });
 
@@ -168,10 +169,10 @@ function* releaseExpenditureStageMotion({
     );
   } catch (e) {
     console.error(e);
-    yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR>>({
-      type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
+    yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR>>({
+      type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
       payload: {
-        name: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
+        name: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
         message: JSON.stringify(e),
       },
       meta,
@@ -182,9 +183,9 @@ function* releaseExpenditureStageMotion({
   }
 }
 
-export default function* releaseExpenditureStageSaga() {
+export default function* releaseExpenditureStagesSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
-    releaseExpenditureStageMotion,
+    ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES,
+    releaseExpenditureStagesMotion,
   );
 }
