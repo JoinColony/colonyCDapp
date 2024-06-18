@@ -38,11 +38,10 @@ function* releaseExpenditureStagesMotion({
   meta,
   meta: { setTxHash, id },
 }: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES>) {
-  const { createMotion /* annotationMessage */ } = yield call(
-    createTransactionChannels,
-    id,
-    ['createMotion', 'annotateMotion'],
-  );
+  const { createMotion } = yield call(createTransactionChannels, id, [
+    'createMotion',
+    'annotateMotion',
+  ]);
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
@@ -50,16 +49,16 @@ function* releaseExpenditureStagesMotion({
   );
 
   try {
-    const stagedExpenditureClient = yield colonyManager.getClient(
-      ClientType.StagedExpenditureClient,
-      colonyAddress,
-    );
-
     if (expenditure.status !== ExpenditureStatus.Finalized) {
       throw new Error(
         'Expenditure must be finalized in order to release expenditure stage',
       );
     }
+
+    const stagedExpenditureClient = yield colonyManager.getClient(
+      ClientType.StagedExpenditureClient,
+      colonyAddress,
+    );
 
     const [userPermissionDomainId, userChildSkillIndex] =
       yield getPermissionProofs(
@@ -138,11 +137,6 @@ function* releaseExpenditureStagesMotion({
           branchMask,
           siblings,
         ],
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 1,
-        },
       },
     });
 
