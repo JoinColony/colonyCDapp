@@ -235,49 +235,51 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       )}
       ref={registerContainerRef}
     >
-      <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-            onClick={closeSidebarClick}
-            aria-label={formatText({ id: 'ariaLabel.closeModal' })}
-          >
-            <X size={18} />
-          </button>
-          {!isMobile && (
-            <div className="flex items-center gap-4">
-              <button
-                type="button"
-                className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-                onClick={toggleIsSidebarFullscreen}
-                aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
-              >
-                {isSidebarFullscreen ? (
-                  <ArrowLineRight size={18} />
-                ) : (
-                  <ArrowsOutSimple size={18} />
-                )}
-              </button>
-              {action && !isMotion && !expenditure && (
-                <PillsBase
-                  className="bg-success-100 text-success-400"
-                  isCapitalized={false}
+      <div className="relative">
+        <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
+              onClick={closeSidebarClick}
+              aria-label={formatText({ id: 'ariaLabel.closeModal' })}
+            >
+              <X size={18} />
+            </button>
+            {!isMobile && (
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
+                  onClick={toggleIsSidebarFullscreen}
+                  aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
                 >
-                  {formatText({ id: 'action.passed' })}
-                </PillsBase>
-              )}
-              {!!expenditure && (
-                <ExpenditureActionStatusBadge
-                  expenditure={expenditure}
-                  withAdditionalStatuses
-                />
-              )}
-              <MotionOutcomeBadge motionState={motionState} />
-            </div>
-          )}
+                  {isSidebarFullscreen ? (
+                    <ArrowLineRight size={18} />
+                  ) : (
+                    <ArrowsOutSimple size={18} />
+                  )}
+                </button>
+                {action && !isMotion && !expenditure && (
+                  <PillsBase
+                    className="bg-success-100 text-success-400"
+                    isCapitalized={false}
+                  >
+                    {formatText({ id: 'action.passed' })}
+                  </PillsBase>
+                )}
+                {!!expenditure && (
+                  <ExpenditureActionStatusBadge
+                    expenditure={expenditure}
+                    withAdditionalStatuses
+                  />
+                )}
+                <MotionOutcomeBadge motionState={motionState} />
+              </div>
+            )}
+          </div>
+          <div>{children}</div>
         </div>
-        <div>{children}</div>
       </div>
       {getSidebarContent()}
       <Modal
