@@ -31,9 +31,9 @@ const TransactionStatus: FC<TransactionStatusProps> = ({
     >
       {pending && (
         <SpinnerGap
-          className="ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
-          size={14}
-        />
+        className="h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
+        size={14}
+      />
       )}
       {succeeded && <CheckCircle size={14} />}
       {failed && (
