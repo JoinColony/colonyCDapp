@@ -97,7 +97,6 @@ fragment ExpenditurePayout on ExpenditurePayout {
 fragment ExpenditureStage on ExpenditureStage {
   slotId
   name
-  isReleased
 }
 
 fragment ExpenditureBalance on ExpenditureBalance {
