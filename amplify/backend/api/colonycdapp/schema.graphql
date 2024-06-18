@@ -3539,7 +3539,6 @@ type ExpenditureBalance {
 type ExpenditureStage {
   slotId: Int!
   name: String!
-  isReleased: Boolean!
 }
 
 type StreamingPayment @model {
