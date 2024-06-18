@@ -1,6 +1,6 @@
 import { Tokens } from '@colony/colony-js';
 
-import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN } from '~constants';
+import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN, isDev } from '~constants';
 import { SupportedCurrencies } from '~gql';
 import { Network } from '~types/network.ts';
 
@@ -65,6 +65,10 @@ export const fetchCurrentPrice = async ({
   chainId = Network.ArbitrumOne,
   conversionDenomination = SupportedCurrencies.Usd,
 }: FetchCurrentPriceArgs): Promise<number | null> => {
+  // It is useful to have a mock price for tokens in our dev environments, this ensures every token price
+  // is equal to 1 unit of your local currency when running the app locally, since calls to coinGecko won't work.
+  if (isDev) return 1;
+
   const savedPrice = getSavedPrice({
     contractAddress,
     chainId,
