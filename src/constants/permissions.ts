@@ -11,29 +11,6 @@ export enum UserRole {
   Custom = 'custom',
 }
 
-export const userRolePermissions: Record<UserRole, ColonyRole[]> = {
-  [UserRole.Mod]: [ColonyRole.Administration],
-  [UserRole.Payer]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-  ],
-  [UserRole.Admin]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-    ColonyRole.Architecture,
-  ],
-  [UserRole.Owner]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-    ColonyRole.Architecture,
-    ColonyRole.Root,
-  ],
-  [UserRole.Custom]: [],
-};
-
 export interface UserRoleMeta {
   name: string;
   role: UserRole;

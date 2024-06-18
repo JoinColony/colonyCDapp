@@ -7,7 +7,7 @@ import { type ColonyActionType, MultiSigVote } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { type ColonyMultiSig } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
 
 import CancelButton from '../CancelButton/CancelButton.tsx';
 import FinalizeButton from '../FinalizeButton/FinalizeButton.tsx';
@@ -28,13 +28,13 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   actionType,
 }) => {
   const { user } = useAppContext();
-  const requiredRole = getMultiSigRequiredRole(actionType);
+  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
   const { showRejectMultiSigStep, setShowRejectMultiSigStep } =
     useCompletedActionContext();
 
   const { isLoading, threshold } = useDomainThreshold({
-    domainId: multiSigData.multiSigDomainId,
-    requiredRole,
+    domainId: Number(multiSigData.multiSigDomainId),
+    requiredRoles,
   });
 
   if (isLoading) {

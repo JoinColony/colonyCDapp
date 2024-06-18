@@ -7,25 +7,7 @@ export const REQUIRED_MULTISIG_ROLES_BY_OPERATION: Record<
   RootMotionMethodNames,
   ColonyRole[]
 > = {
-  [RootMotionMethodNames.MintTokens]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-    ColonyRole.Architecture,
-    ColonyRole.Root,
-  ],
-  [RootMotionMethodNames.UnlockToken]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-    ColonyRole.Architecture,
-    ColonyRole.Root,
-  ],
-  [RootMotionMethodNames.Upgrade]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-    ColonyRole.Architecture,
-    ColonyRole.Root,
-  ],
+  [RootMotionMethodNames.MintTokens]: [ColonyRole.Root],
+  [RootMotionMethodNames.UnlockToken]: [ColonyRole.Root],
+  [RootMotionMethodNames.Upgrade]: [ColonyRole.Root],
 };
