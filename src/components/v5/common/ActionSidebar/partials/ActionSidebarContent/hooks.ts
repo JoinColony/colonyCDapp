@@ -1,15 +1,13 @@
-import { Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { type Action } from '~constants/actions.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import useFlatFormErrors from '~hooks/useFlatFormErrors.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { uniqBy } from '~utils/lodash.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
 
+import { getPermissionsNeededForAction } from '../../hooks/permissions/helpers.ts';
 import { REPUTATION_VALIDATION_FIELD_NAME } from '../../hooks/useReputationValidation.ts';
 
 export const useGetFormActionErrors = () => {
@@ -37,21 +35,22 @@ export const useShowNotEnoughMembersWithPermissionsNotification = ({
   selectedAction: Action;
   createdIn?: number;
 }) => {
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
-  const requiredRole = getMultiSigRequiredRole(selectedAction);
+  const { watch } = useFormContext();
+  const formValues = watch();
 
-  const domainId = `${colonyAddress}_${createdIn ?? Id.RootDomain}`;
+  const requiredRoles = getPermissionsNeededForAction(
+    selectedAction,
+    formValues,
+  );
 
   const { threshold } = useDomainThreshold({
-    domainId,
-    requiredRole,
+    domainId: createdIn,
+    requiredRoles,
   });
 
   const { eligibleSigneesCount } = useEligibleSignees({
-    domainId,
-    requiredRole,
+    domainId: createdIn,
+    requiredRoles,
   });
 
   const hasEnoughMembersWithPermissions =
