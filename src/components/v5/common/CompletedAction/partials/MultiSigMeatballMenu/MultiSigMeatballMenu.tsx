@@ -26,6 +26,8 @@ import { type MultiSigMeatballMenuProps } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.MultiSigMeatballMenu';
 
+const MULTISIG_EXPIRY_PERIOD = 604_800_000; // 1 week
+
 const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
   transactionHash,
   multiSigData,
@@ -73,6 +75,15 @@ const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
     setShowRejectMultiSigStep(true);
   };
 
+  const canCancelMultiSig =
+    !isRejected &&
+    (isOwner ||
+      Date.now() - new Date(multiSigData.createdAt).getTime() >
+        MULTISIG_EXPIRY_PERIOD);
+
+  const canRejectMultiSig =
+    !canCancelMultiSig && !isRejected && !isOwner && !showRejectMultiSigStep;
+
   const multiSigMeatballOptions: MeatBallMenuItem[] = [
     {
       key: '1',
@@ -89,7 +100,7 @@ const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
       ),
       icon: Copy,
     },
-    ...(!isRejected && isOwner
+    ...(canCancelMultiSig
       ? [
           {
             key: '2',
@@ -99,7 +110,7 @@ const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
           },
         ]
       : []),
-    ...(!isRejected && !isOwner && !showRejectMultiSigStep
+    ...(canRejectMultiSig
       ? [
           {
             key: '2',
