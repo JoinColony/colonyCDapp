@@ -34,7 +34,8 @@
     "upgrade-colony-js": "./scripts/upgrade-colony-js.sh",
     "prepare": "if [ -z \"$SKIP_HOOKS\" ]; then import-meta-env-typescript -x .env.example -o src/typedefs; fi",
     "postinstall": "if [ -z \"$SKIP_HOOKS\" ]; then ./scripts/lambda-functions-dependencies.sh && scripts/generate-amplify-local-config.sh; fi",
-    "watch-amplify": "node scripts/watchAmplifyFiles"
+    "watch-amplify": "node scripts/watchAmplifyFiles",
+    "forward-time": "node scripts/forward-time"
   },
   "repository": {
     "type": "git",
