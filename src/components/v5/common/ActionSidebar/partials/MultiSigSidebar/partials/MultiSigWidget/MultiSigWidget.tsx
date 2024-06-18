@@ -8,9 +8,9 @@ import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { type ColonyMultiSig } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 import Stepper from '~v5/shared/Stepper/Stepper.tsx';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
 
 import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
 import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
@@ -45,11 +45,11 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   actionType,
   initiatorAddress,
 }) => {
-  const requiredRole = getMultiSigRequiredRole(actionType);
+  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
 
   const { isLoading, threshold } = useDomainThreshold({
-    domainId: multiSigData.multiSigDomainId,
-    requiredRole,
+    domainId: Number(multiSigData.multiSigDomainId),
+    requiredRoles,
   });
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
