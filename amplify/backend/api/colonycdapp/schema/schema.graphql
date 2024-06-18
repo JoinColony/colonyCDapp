@@ -3359,6 +3359,10 @@ type ColonyAction @model @searchable {
   Approved tokens impacted by the action (used for manage tokens)
   """
   approvedTokenChanges: ApprovedTokenChanges
+  """
+  Ids of the staged payment slots released by the action, if any
+  """
+  expenditureSlotIds: [Int!]
 }
 
 """
