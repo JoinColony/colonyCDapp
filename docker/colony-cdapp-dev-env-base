@@ -91,4 +91,6 @@ RUN pip install pipenv
 # This counteracts the fact that you need a GH account in order to use ssh keys
 RUN git config --global url."https://github".insteadOf ssh://git@github
 
+RUN npm install -g npm@10.8
+
 WORKDIR /colonyCDapp
