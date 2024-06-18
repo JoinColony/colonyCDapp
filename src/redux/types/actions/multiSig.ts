@@ -1,4 +1,5 @@
-import { type UserRole } from '~constants/permissions.ts';
+import { type ColonyRole } from '@colony/colony-js';
+
 import { type ColonyRoleFragment, type MultiSigVote } from '~gql';
 import { type Domain } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
@@ -41,7 +42,7 @@ export type MultiSigActionTypes =
         colonyRoles: ColonyRoleFragment[];
         vote: MultiSigVote;
         domainId: number;
-        requiredRole: UserRole;
+        requiredRoles: ColonyRole[];
         multiSigId: string;
       },
       MetaWithSetter<object>
