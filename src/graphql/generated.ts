@@ -405,6 +405,8 @@ export type ColonyAction = {
    * Applicable to `EDIT_EXPENDITURE` action only
    */
   expenditureSlotChanges?: Maybe<ExpenditureSlotChanges>;
+  /** Ids of the staged payment slots released by the action, if any */
+  expenditureSlotIds?: Maybe<Array<Scalars['Int']>>;
   /** The source Domain of the action, if applicable */
   fromDomain?: Maybe<Domain>;
   /** The source Domain identifier, if applicable */
@@ -1364,6 +1366,7 @@ export type CreateColonyActionInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotChanges?: InputMaybe<ExpenditureSlotChangesInput>;
+  expenditureSlotIds?: InputMaybe<Array<Scalars['Int']>>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   fromPotId?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -2644,6 +2647,7 @@ export type ModelColonyActionConditionInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
+  expenditureSlotIds?: InputMaybe<ModelIntInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
   fromPotId?: InputMaybe<ModelIntInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
@@ -2688,6 +2692,7 @@ export type ModelColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
+  expenditureSlotIds?: InputMaybe<ModelIntInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
   fromPotId?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -3923,6 +3928,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
+  expenditureSlotIds?: InputMaybe<ModelSubscriptionIntInput>;
   fromDomainId?: InputMaybe<ModelSubscriptionIdInput>;
   fromPotId?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -7485,6 +7491,7 @@ export enum SearchableColonyActionAggregateField {
   ColonyId = 'colonyId',
   CreatedAt = 'createdAt',
   ExpenditureId = 'expenditureId',
+  ExpenditureSlotIds = 'expenditureSlotIds',
   FromDomainId = 'fromDomainId',
   FromPotId = 'fromPotId',
   Id = 'id',
@@ -7537,6 +7544,7 @@ export type SearchableColonyActionFilterInput = {
   colonyId?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
   expenditureId?: InputMaybe<SearchableIdFilterInput>;
+  expenditureSlotIds?: InputMaybe<SearchableIntFilterInput>;
   fromDomainId?: InputMaybe<SearchableIdFilterInput>;
   fromPotId?: InputMaybe<SearchableIntFilterInput>;
   id?: InputMaybe<SearchableIdFilterInput>;
@@ -7581,6 +7589,7 @@ export enum SearchableColonyActionSortableFields {
   ColonyId = 'colonyId',
   CreatedAt = 'createdAt',
   ExpenditureId = 'expenditureId',
+  ExpenditureSlotIds = 'expenditureSlotIds',
   FromDomainId = 'fromDomainId',
   FromPotId = 'fromPotId',
   Id = 'id',
@@ -8797,6 +8806,7 @@ export type UpdateColonyActionInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotChanges?: InputMaybe<ExpenditureSlotChangesInput>;
+  expenditureSlotIds?: InputMaybe<Array<Scalars['Int']>>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   fromPotId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
