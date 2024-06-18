@@ -643,7 +643,9 @@ export enum ColonyActionType {
   /** An action related to the recovery functionality of a Colony */
   Recovery = 'RECOVERY',
   /** An action related to a motion to release a staged payment */
-  ReleaseStagedPaymentMotion = 'RELEASE_STAGED_PAYMENT_MOTION',
+  ReleaseStagedPayments = 'RELEASE_STAGED_PAYMENTS',
+  /** An action related to a motion to release a staged payment */
+  ReleaseStagedPaymentsMotion = 'RELEASE_STAGED_PAYMENTS_MOTION',
   /** An action related to removing verified members */
   RemoveVerifiedMembers = 'REMOVE_VERIFIED_MEMBERS',
   RemoveVerifiedMembersMotion = 'REMOVE_VERIFIED_MEMBERS_MOTION',
