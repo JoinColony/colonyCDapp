@@ -14,6 +14,7 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '~redux/sagas/transactions/index.ts';
+import { checkColonyVersionCompliance } from '~redux/sagas/utils/checkColonyVersionCompliance.ts';
 import {
   getColonyManager,
   initiateTransaction,
@@ -50,11 +51,10 @@ function* cancelStreamingPaymentsMotionAction({
 
     const { colonyAddress } = colony;
 
-    if (colony.version < 15) {
-      throw new Error(
-        'Motions to cancel streaming payments are only available in Colony version 15 and above',
-      );
-    }
+    checkColonyVersionCompliance({
+      colony,
+      actionType: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
+    });
 
     const colonyManager = yield getColonyManager();
 
