@@ -5,7 +5,6 @@ import { takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
-  type GetTransactionQuery,
   GetTransactionsByGroupDocument,
   type GetTransactionsByGroupQuery,
   type GetTransactionsByGroupQueryVariables,
@@ -26,7 +25,7 @@ import { notNull } from '~utils/arrays/index.ts';
 
 import {
   deleteTransaction,
-  fetchTransaction,
+  getTransaction,
   updateTransaction,
 } from '../../../state/transactionState.ts';
 
@@ -107,11 +106,11 @@ function* updateTransactionInDb({
 
       case ActionTypes.TRANSACTION_OPTIONS_UPDATE: {
         const { options: newOpts } = payload as TransactionOptionsUpdatePayload;
-        const tx = yield fetchTransaction({ id });
+        const tx = yield getTransaction(id);
         let oldOpts: TxOverrides = {};
         try {
-          if (typeof tx.data.getTransaction?.options == 'string') {
-            oldOpts = JSON.parse(tx.data.getTransaction?.options);
+          if (tx.options) {
+            oldOpts = tx.options;
           }
         } catch {
           // Do nothing
@@ -174,14 +173,9 @@ function* updateTransactionInDb({
 
       case ActionTypes.TRANSACTION_CANCEL: {
         onTransactionResolved(id);
-        const { data }: ApolloQueryResult<GetTransactionQuery> =
-          yield fetchTransaction({ id });
+        const tx = yield getTransaction(id);
 
-        if (!data.getTransaction) {
-          throw new Error(`Transaction with id ${id} not found in db`);
-        }
-
-        const { groupId, from } = data.getTransaction ?? {};
+        const { groupId, from } = tx;
 
         const {
           data: response,

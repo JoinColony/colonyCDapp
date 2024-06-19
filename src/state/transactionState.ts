@@ -38,7 +38,7 @@ import { filter, groupBy, mapValues, orderBy } from '~utils/lodash.ts';
 
 export const TX_PAGE_SIZE = 20;
 
-const convertTransactionType = ({
+export const convertTransactionType = ({
   context,
   createdAt,
   error,
@@ -222,14 +222,6 @@ export const getTransaction = async (id: string, fetchPolicy?: FetchPolicy) => {
     throw new Error('Transaction not found.');
   }
   return convertTransactionType(data.getTransaction);
-};
-
-export const fetchTransaction = async ({ id }) => {
-  const apollo = getContext(ContextModule.ApolloClient);
-  return apollo.query<GetTransactionQuery, GetTransactionQueryVariables>({
-    query: GetTransactionDocument,
-    variables: { id },
-  });
 };
 
 export const addTransactionToDb = async (
