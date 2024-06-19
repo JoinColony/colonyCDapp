@@ -373,3 +373,7 @@ export const FETCH_ABORTED = 'fetchAborted';
 export const isFullScreen = 'isFullScreen';
 
 export const APP_URL = new URL(import.meta.env.URL || 'http://localhost:9091/');
+
+export enum ColonyVersion {
+  V15 = 15,
+}
