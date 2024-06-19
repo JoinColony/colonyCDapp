@@ -174,7 +174,10 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
             actionType={action.type}
           />
         )}
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}
