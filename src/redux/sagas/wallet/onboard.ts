@@ -1,11 +1,8 @@
-import coinbaseWalletModule from '@web3-onboard/coinbase';
 import Onboard, { type InitOptions } from '@web3-onboard/core';
+import safeModule from '@web3-onboard/gnosis';
 import injectedWalletsModule, {
   ProviderLabel,
 } from '@web3-onboard/injected-wallets';
-import metamaskSDKModule from '@web3-onboard/metamask';
-import sequenceModule from '@web3-onboard/sequence';
-import trezorModule from '@web3-onboard/trezor';
 import walletConnectModule from '@web3-onboard/walletconnect';
 
 import {
@@ -14,15 +11,12 @@ import {
   TOKEN_DATA,
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
-  APP_URL,
 } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/chainId.ts';
 import { intl } from '~utils/intl.ts';
 
-import argentModule from './argentModule.ts';
 import ganacheModule from './ganacheModule.ts';
-import ledgerLiveModule from './ledgerLiveModule.ts';
 
 const { formatMessage } = intl({
   'metadata.name': 'Colony App',
@@ -59,14 +53,6 @@ const getDevelopmentWallets = async () => {
 
 const onboardConfig: InitOptions = {
   wallets: [
-    metamaskSDKModule({ options: { extensionOnly: true } }),
-    coinbaseWalletModule(),
-    sequenceModule(),
-    trezorModule({
-      email: ' ',
-      appUrl: APP_URL.origin,
-    }),
-    argentModule(),
     injectedWalletsModule({
       // Only enable required injected wallets
       filter: {
@@ -182,10 +168,7 @@ const onboardConfig: InitOptions = {
 // Only enable WalletConnect and Ledger Live if a project id is available
 if (import.meta.env.WALLETCONNECT_PROJECT_ID) {
   onboardConfig.wallets.push(
-    ledgerLiveModule({
-      walletConnectVersion: 2,
-      projectId: import.meta.env.WALLETCONNECT_PROJECT_ID,
-    }),
+    safeModule(),
     walletConnectModule({
       projectId: import.meta.env.WALLETCONNECT_PROJECT_ID,
     }),
