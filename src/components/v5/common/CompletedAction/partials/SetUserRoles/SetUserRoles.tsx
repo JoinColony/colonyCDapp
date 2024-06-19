@@ -7,13 +7,13 @@ import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import {
   ColonyActionType,
-  type ColonyActionRoles,
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
 } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
+import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
@@ -49,23 +49,14 @@ interface Props {
 }
 
 const transformActionRolesToColonyRoles = (
-  roles: ColonyActionRoles | null | undefined,
   historicRoles: GetColonyHistoricRoleRolesQuery['getColonyHistoricRole'],
 ): ColonyRole[] => {
-  if (!roles) return [];
+  if (!historicRoles) return [];
 
-  const combinedRoles = { ...historicRoles };
-
-  for (const [key, value] of Object.entries(roles)) {
-    if (value !== null) {
-      combinedRoles[key] = value;
-    }
-  }
-
-  const roleKeys = Object.keys(combinedRoles);
+  const roleKeys = Object.keys(historicRoles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => combinedRoles[key])
+    .filter((key) => historicRoles[key])
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -103,13 +94,17 @@ const SetUserRoles = ({ action }: Props) => {
 
   const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
     variables: {
-      id: `${colonyAddress}_${fromDomain?.nativeId}_${recipientAddress}_${blockNumber}_roles`,
+      id: getHistoricRolesDatabaseId({
+        blockNumber,
+        colonyAddress,
+        nativeId: fromDomain?.nativeId,
+        recipientAddress,
+      }),
     },
     fetchPolicy: 'cache-and-network',
   });
 
   const userColonyRoles = transformActionRolesToColonyRoles(
-    roles,
     historicRoles?.getColonyHistoricRole,
   );
 
