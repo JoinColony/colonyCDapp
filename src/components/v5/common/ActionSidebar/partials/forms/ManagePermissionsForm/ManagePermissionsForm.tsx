@@ -25,7 +25,11 @@ import Description from '../../Description/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
 
-import { AuthorityOptions, RemoveRoleOptionValue } from './consts.ts';
+import {
+  AuthorityOptions,
+  FIELD_NAME,
+  RemoveRoleOptionValue,
+} from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
@@ -88,7 +92,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       />
       <ActionFormRow
         icon={UserFocus}
-        fieldName="member"
+        fieldName={FIELD_NAME.MEMBER}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -99,11 +103,11 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         title={formatText({ id: 'actionSidebar.member' })}
         isDisabled={hasNoDecisionMethods}
       >
-        <UserSelect name="member" disabled={hasNoDecisionMethods} />
+        <UserSelect name={FIELD_NAME.MEMBER} disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
         icon={UsersThree}
-        fieldName="team"
+        fieldName={FIELD_NAME.TEAM}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -114,11 +118,11 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         title={formatText({ id: 'actionSidebar.managePermissions.team' })}
         isDisabled={hasNoDecisionMethods}
       >
-        <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
+        <TeamsSelect name={FIELD_NAME.TEAM} disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
         icon={Shield}
-        fieldName="role"
+        fieldName={FIELD_NAME.ROLE}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -130,7 +134,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         isDisabled={hasNoDecisionMethods}
       >
         <FormCardSelect
-          name="role"
+          name={FIELD_NAME.ROLE}
           cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm md:px-4 md:[&_.section-title]:px-2"
           renderSelectedValue={(option, placeholder) =>
             getRoleLabel(option?.value) || placeholder
@@ -147,7 +151,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <ActionFormRow
         icon={Signature}
-        fieldName="authority"
+        fieldName={FIELD_NAME.AUTHORITY}
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -174,7 +178,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <FormCardSelect
           disabled={isModeRoleSelected || hasNoDecisionMethods}
-          name="authority"
+          name={FIELD_NAME.AUTHORITY}
           options={AuthorityOptions}
           title={formatText({
             id: 'actionSidebar.managePermissions.authoritySelect.title',
@@ -188,7 +192,11 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       {role !== RemoveRoleOptionValue.remove && (
-        <PermissionsTable name="permissions" role={role} className="mt-7" />
+        <PermissionsTable
+          name={FIELD_NAME.PERMISSIONS}
+          role={role}
+          className="mt-7"
+        />
       )}
     </>
   );

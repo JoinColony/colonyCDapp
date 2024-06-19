@@ -6,6 +6,16 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
+export const FIELD_NAME = {
+  MEMBER: 'member',
+  TEAM: 'team',
+  CREATED_IN: 'createdIn',
+  ROLE: 'role',
+  AUTHORITY: 'authority',
+  PERMISSIONS: 'permissions',
+  DECISION_METHOD: 'decisionMethod',
+} as const;
+
 export const validationSchema = object()
   .shape({
     member: string().required(),
