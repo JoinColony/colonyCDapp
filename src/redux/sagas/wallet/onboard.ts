@@ -11,6 +11,7 @@ import {
   TOKEN_DATA,
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
+  APP_URL,
 } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/chainId.ts';
@@ -82,12 +83,12 @@ const onboardConfig: InitOptions = {
         [ProviderLabel.Opera]: false,
         [ProviderLabel.OwnBit]: false,
         [ProviderLabel.Status]: false,
-        [ProviderLabel.Trust]: true, // Enabled
+        [ProviderLabel.Trust]: false,
         [ProviderLabel.TokenPocket]: false,
         [ProviderLabel.TP]: false,
         [ProviderLabel.WalletIo]: false,
         [ProviderLabel.XDEFI]: false,
-        [ProviderLabel.OneInch]: false,
+        [ProviderLabel.OneInch]: true, // Enabled
         [ProviderLabel.Tokenary]: false,
         [ProviderLabel.Tally]: false,
         [ProviderLabel.Rabby]: false,
@@ -100,7 +101,7 @@ const onboardConfig: InitOptions = {
         [ProviderLabel.Phantom]: false,
         [ProviderLabel.OKXWallet]: false,
         [ProviderLabel.Zerion]: false,
-        [ProviderLabel.Rainbow]: false,
+        [ProviderLabel.Rainbow]: true, // Enabled
         [ProviderLabel.SafePal]: false,
         [ProviderLabel.DeFiWallet]: false,
         [ProviderLabel.Safeheron]: false,
@@ -171,6 +172,7 @@ if (import.meta.env.WALLETCONNECT_PROJECT_ID) {
     safeModule(),
     walletConnectModule({
       projectId: import.meta.env.WALLETCONNECT_PROJECT_ID,
+      dappUrl: APP_URL.origin,
     }),
   );
 }
