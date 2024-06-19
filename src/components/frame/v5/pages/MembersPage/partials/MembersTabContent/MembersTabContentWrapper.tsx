@@ -18,7 +18,7 @@ const MembersTabContentWrapper: FC<
   );
 
   return (
-    <div className="pt-2">
+    <div className="pt-6">
       <div
         className={clsx('mb-6 flex w-full flex-col', {
           'gap-4 sm:gap-1': additionalActions,
