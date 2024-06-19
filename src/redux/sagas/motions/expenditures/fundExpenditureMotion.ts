@@ -21,6 +21,7 @@ import {
   createInvalidParamsError,
   getColonyManager,
   initiateTransaction,
+  putError,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 
@@ -31,16 +32,13 @@ function* fundExpenditureMotion({
     fromDomainFundingPotId,
     motionDomainId,
     fromDomainId,
-    /* annotationMessage */
   },
   meta: { setTxHash, id },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_FUND>) {
-  const { createMotion /* annotationMessage */ } = yield call(
-    createTransactionChannels,
-    id,
-    ['createMotion', 'annotateMotion'],
-  );
+  const { createMotion } = yield call(createTransactionChannels, id, [
+    'createMotion',
+  ]);
 
   try {
     const sagaName = fundExpenditureMotion.name;
@@ -196,19 +194,10 @@ function* fundExpenditureMotion({
     }
   } catch (e) {
     console.error(e);
-    yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR>>({
-      type: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
-      payload: {
-        name: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
-        message: JSON.stringify(e),
-      },
-      meta,
-      error: true,
-    });
+    yield putError(ActionTypes.MOTION_EXPENDITURE_FUND_ERROR, e, meta);
   } finally {
     createMotion.channel.close();
   }
-  // @todo add annotation logic post-rebase on master
 }
 
 export default function* fundExpenditureMotionSaga() {
