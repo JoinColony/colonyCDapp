@@ -81,7 +81,10 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
           </>
         )}
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
