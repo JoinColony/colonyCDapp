@@ -2649,6 +2649,26 @@ type ColonyMultiSig @model {
   The timestamp when the motion was finalized
   """
   executedAt: AWSDateTime
+  """
+  Wallet address of the user finalizing the motion
+  """
+  executedBy: ID
+  """
+  Extended user object for given executedBy
+  """
+  executedByUser: User @hasOne(fields: ["executedBy"])
+  """
+  Wallet address of the user rejecting the motion
+  """
+  rejectedBy: ID
+  """
+  Extended user object for given rejectedBy
+  """
+  rejectedByUser: User @hasOne(fields: ["rejectedBy"])
+  """
+  The timestamp when the motion was rejected
+  """
+  rejectedAt: AWSDateTime
 }
 """
 Represents a Motion within a Colony
