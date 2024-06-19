@@ -14,6 +14,8 @@ export type ManagePermissionsFormValues = {
   description: string;
 };
 
+export type TestNodeContext = { parent: ManagePermissionsFormValues };
+
 export const AVAILABLE_ROLES = [
   ColonyRole.Root,
   ColonyRole.Administration,
@@ -48,5 +50,9 @@ export const MANAGE_PERMISSIONS_FORM_MSGS = defineMessages({
   samePermissionsApplied: {
     id: 'managePermissionsFormError.samePermissionsApplied',
     defaultMessage: 'This user already has these permissions',
+  },
+  permissionRequired: {
+    id: 'managePermissionsFormError.permissionsRequired',
+    defaultMessage: 'You have to select at least one permission',
   },
 });
