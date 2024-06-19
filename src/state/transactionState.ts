@@ -24,6 +24,7 @@ import {
   type GetPendingTransactionsQuery,
   type GetPendingTransactionsQueryVariables,
   GetPendingTransactionsDocument,
+  type CreateTransactionInput,
 } from '~gql';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { type TransactionCreatedPayload } from '~redux/types/actions/transaction.ts';
@@ -270,7 +271,7 @@ export const addTransactionToDb = async (
 
   const apollo = getContext(ContextModule.ApolloClient);
 
-  const input = {
+  const input: CreateTransactionInput = {
     id,
     context: context as ClientType,
     createdAt: txCreatedAt,
@@ -336,6 +337,8 @@ export const addTransactionToDb = async (
       createTransaction: {
         __typename: 'Transaction',
         ...input,
+        id,
+        createdAt: txCreatedAt,
         group: {
           __typename: 'TransactionGroup',
           ...input.group,
