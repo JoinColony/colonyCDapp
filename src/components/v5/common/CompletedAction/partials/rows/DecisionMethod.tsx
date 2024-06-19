@@ -10,9 +10,23 @@ const displayName = 'v5.common.CompletedAction.partials.DecisionMethodRow';
 
 interface DecisionMethodRowProps {
   isMotion: boolean;
+  isMultisig: boolean;
 }
 
-const DecisionMethodRow = ({ isMotion }: DecisionMethodRowProps) => {
+const DecisionMethodRow = ({
+  isMotion,
+  isMultisig,
+}: DecisionMethodRowProps) => {
+  const getRowContent = () => {
+    if (isMultisig) {
+      return DecisionMethod.MultiSig;
+    }
+    if (isMotion) {
+      return DecisionMethod.Reputation;
+    }
+    return DecisionMethod.Permissions;
+  };
+
   return (
     <ActionData
       rowLabel={formatText({ id: 'actionSidebar.decisionMethod' })}
@@ -20,9 +34,7 @@ const DecisionMethodRow = ({ isMotion }: DecisionMethodRowProps) => {
         id: 'actionSidebar.tooltip.decisionMethod',
       })}
       RowIcon={Scales}
-      rowContent={
-        isMotion ? DecisionMethod.Reputation : DecisionMethod.Permissions
-      }
+      rowContent={getRowContent()}
     />
   );
 };
