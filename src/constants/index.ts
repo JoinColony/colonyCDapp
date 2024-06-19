@@ -382,3 +382,7 @@ export const DEV_USDC_ADDRESS = import.meta.env.USDC_LOCAL_ADDRESS;
 export const isFullScreen = 'isFullScreen';
 
 export const APP_URL = new URL(import.meta.env.URL || 'http://localhost:9091/');
+
+export enum ColonyVersion {
+  V15 = 15,
+}
