@@ -57,6 +57,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <ManageTeam action={action} />;
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:
+      case ColonyActionType.UnlockTokenMultisig:
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
       case ColonyActionType.VersionUpgradeMotion:
