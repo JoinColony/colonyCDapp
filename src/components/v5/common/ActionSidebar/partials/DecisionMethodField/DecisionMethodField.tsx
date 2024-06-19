@@ -10,6 +10,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
+import { DECISION_METHOD_FIELD_NAME } from '../../consts.ts';
 import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 
 import {
@@ -65,7 +66,7 @@ const DecisionMethodField = ({
   return (
     <ActionFormRow
       icon={Scales}
-      fieldName="decisionMethod"
+      fieldName={DECISION_METHOD_FIELD_NAME}
       tooltips={{
         label: {
           tooltipContent: formatText({
@@ -77,7 +78,7 @@ const DecisionMethodField = ({
       isDisabled={disabled || hasNoDecisionMethods}
     >
       <FormCardSelect
-        name="decisionMethod"
+        name={DECISION_METHOD_FIELD_NAME}
         options={getDecisionMethods()}
         title={formatText({ id: 'actionSidebar.availableDecisions' })}
         placeholder={formatText({

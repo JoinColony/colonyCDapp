@@ -12,7 +12,6 @@ import { getUserRolesForDomain } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -23,6 +22,7 @@ import {
   type ManagePermissionsFormValues,
   type RemoveRoleOptionValue,
   validationSchema,
+  FIELD_NAME,
 } from './consts.ts';
 import { getManagePermissionsPayload } from './utils.ts';
 
@@ -30,7 +30,7 @@ export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const decisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
+    name: FIELD_NAME.DECISION_METHOD,
   });
   const { setValue, watch } =
     useFormContext<Partial<ManagePermissionsFormValues>>();
@@ -38,13 +38,13 @@ export const useManagePermissions = (
   const { user } = useAppContext();
   const navigate = useNavigate();
   const role: UserRole | RemoveRoleOptionValue | undefined = useWatch({
-    name: 'role',
+    name: FIELD_NAME.ROLE,
   });
   const isModeRoleSelected = role === UserRole.Mod;
 
   useEffect(() => {
     if (isModeRoleSelected) {
-      setValue('authority', Authority.Own);
+      setValue(FIELD_NAME.AUTHORITY, Authority.Own);
     }
   }, [isModeRoleSelected, setValue]);
 
@@ -52,7 +52,7 @@ export const useManagePermissions = (
     const { unsubscribe } = watch(({ member, team }, { name }) => {
       if (
         !name ||
-        !['team', 'member'].includes(name) ||
+        name !== FIELD_NAME.TEAM ||
         !notMaybe(team) ||
         !notMaybe(member)
       ) {
@@ -66,7 +66,10 @@ export const useManagePermissions = (
       });
       const userRole = getRole(userPermissions);
 
-      setValue('role', userRole.permissions.length ? userRole.role : undefined);
+      setValue(
+        FIELD_NAME.ROLE,
+        userRole.permissions.length ? userRole.role : undefined,
+      );
 
       if (userRole.role !== UserRole.Custom) {
         return;
