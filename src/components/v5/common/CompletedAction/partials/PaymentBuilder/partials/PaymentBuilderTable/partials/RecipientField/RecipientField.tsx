@@ -7,14 +7,19 @@ import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 import { type RecipientFieldProps } from './types.ts';
 
 const RecipientField: FC<RecipientFieldProps> = ({ address, isLoading }) => {
-  const { totalMembers, loading } = useMemberContext();
+  const { totalMembers, loading: loadingMemberContext } = useMemberContext();
   const recipientMember = totalMembers.find(
     (member) => member.contributorAddress === address,
   );
 
   return (
     <>
-      {!loading && !isLoading ? (
+      {loadingMemberContext || isLoading ? (
+        <div className="flex items-center gap-2">
+          <div className="h-[1.125rem] w-[1.125rem] overflow-hidden rounded-full skeleton" />
+          <div className="h-4 w-16 overflow-hidden rounded skeleton" />
+        </div>
+      ) : (
         <div className="flex items-center">
           <UserPopover
             size={18}
@@ -23,16 +28,11 @@ const RecipientField: FC<RecipientFieldProps> = ({ address, isLoading }) => {
             }
             withVerifiedBadge={!!recipientMember?.isVerified}
             className={clsx('flex items-center sm:hover:text-blue-400', {
-              'pointer-events-none': loading,
+              'pointer-events-none': loadingMemberContext || isLoading,
               'text-warning-400': !recipientMember?.isVerified,
               'text-gray-900': recipientMember?.isVerified,
             })}
           />
-        </div>
-      ) : (
-        <div className="flex items-center gap-2">
-          <div className="h-[1.125rem] w-[1.125rem] overflow-hidden rounded-full skeleton" />
-          <div className="h-4 w-16 overflow-hidden rounded skeleton" />
         </div>
       )}
     </>

@@ -1,56 +1,25 @@
 import { Id } from '@colony/colony-js';
-import { useFormContext } from 'react-hook-form';
 
-import { Action } from '~constants/actions.ts';
+import { type Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
-
-import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
-
 import {
   getPermissionsDomainIdForAction,
   getPermissionsNeededForAction,
-} from './helpers.ts';
+} from '~v5/common/ActionSidebar/hooks/permissions/helpers.ts';
 
-/**
- * Hook determining if the user has no decision methods available for the currently selected action type
- */
-const useHasNoDecisionMethods = () => {
+export const useCheckIfUserHasPermissions = (actionType: Action) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { isVotingReputationEnabled, isStakedExpenditureEnabled } =
-    useEnabledExtensions();
-
-  const { watch } = useFormContext() || {};
-
-  if (!watch) {
-    return false;
-  }
-
-  const actionType = watch(ACTION_TYPE_FIELD_NAME);
 
   if (!user) {
-    return true;
-  }
-
-  if (!isVotingReputationEnabled && actionType === Action.CreateDecision) {
-    return true;
-  }
-
-  // User can't use reputation to create Payment builder action
-  if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
-    return false;
-  }
-
-  if (isStakedExpenditureEnabled && actionType === Action.PaymentBuilder) {
     return false;
   }
 
   const requiredPermissions = getPermissionsNeededForAction(actionType, {});
   if (!requiredPermissions) {
-    return false;
+    return true;
   }
 
   const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
@@ -73,10 +42,8 @@ const useHasNoDecisionMethods = () => {
       return userRoles.includes(role);
     })
   ) {
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 };
-
-export default useHasNoDecisionMethods;
