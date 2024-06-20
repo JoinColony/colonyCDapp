@@ -3,7 +3,10 @@ import { type InferType, mixed, object, string, number } from 'yup';
 
 import { CUSTOM_USER_ROLE } from '~constants/permissions.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
+import {
+  ACTION_BASE_VALIDATION_SCHEMA,
+  DECISION_METHOD_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 export const FIELD_NAME = {
@@ -13,17 +16,21 @@ export const FIELD_NAME = {
   ROLE: 'role',
   AUTHORITY: 'authority',
   PERMISSIONS: 'permissions',
-  DECISION_METHOD: 'decisionMethod',
+  DECISION_METHOD: DECISION_METHOD_FIELD_NAME,
 } as const;
+
+type PermissionRole = `role_${(typeof AVAILABLE_ROLES)[number]}`;
 
 export const validationSchema = object()
   .shape({
-    member: string().required(),
-    team: number().required(),
-    createdIn: number().required(),
-    role: string().required(),
-    authority: string().required(),
-    permissions: mixed<Partial<Record<string, boolean>>>().test(
+    [FIELD_NAME.MEMBER]: string().required(),
+    [FIELD_NAME.TEAM]: number().required(),
+    [FIELD_NAME.CREATED_IN]: number().required(),
+    [FIELD_NAME.ROLE]: string().required(),
+    [FIELD_NAME.AUTHORITY]: string().required(),
+    [FIELD_NAME.PERMISSIONS]: mixed<
+      Partial<Record<PermissionRole, boolean>>
+    >().test(
       'permissions',
       'You have to select at least one permission.',
       (value, { parent }) => {
@@ -34,7 +41,7 @@ export const validationSchema = object()
         return Object.values(value || {}).some(Boolean);
       },
     ),
-    decisionMethod: string().defined(),
+    [FIELD_NAME.DECISION_METHOD]: string().defined(),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);
