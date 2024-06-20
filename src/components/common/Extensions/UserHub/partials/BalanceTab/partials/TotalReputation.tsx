@@ -12,7 +12,7 @@ import {
 } from '~utils/tokens.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import reputationTabClasses from '../BalanceTab.styles.ts';
+import balanceTabClasses from '../BalanceTab.styles.ts';
 import { type TotalReputationProps } from '../types.ts';
 
 const displayName =
@@ -53,21 +53,21 @@ const TotalReputation: FC<TotalReputationProps> = ({
         {/* </button> */}
       </div>
       <div className="flex flex-col gap-4 pb-6 pt-2">
-        <div className={reputationTabClasses.row}>
-          <span className={reputationTabClasses.rowName}>
+        <div className={balanceTabClasses.row}>
+          <span className={balanceTabClasses.rowName}>
             {formatMessage({ id: 'total.balance' })}
           </span>
           <div className="flex items-center">
-            <Star className={reputationTabClasses.icon} size={12} />
+            <Star className={balanceTabClasses.icon} size={12} />
             {percentageReputation === ZeroValue.NearZero && (
-              <span className={reputationTabClasses.reputationValue}>
+              <span className={balanceTabClasses.reputationValue}>
                 {percentageReputation}
               </span>
             )}
             {percentageReputation &&
               percentageReputation !== ZeroValue.NearZero && (
                 <Numeral
-                  className={reputationTabClasses.reputationValue}
+                  className={balanceTabClasses.reputationValue}
                   value={percentageReputation || 0}
                   suffix=" %"
                   appearance={{ size: 'small' }}
@@ -75,8 +75,8 @@ const TotalReputation: FC<TotalReputationProps> = ({
               )}
           </div>
         </div>
-        <div className={reputationTabClasses.row}>
-          <span className={reputationTabClasses.rowName}>
+        <div className={balanceTabClasses.row}>
+          <span className={balanceTabClasses.rowName}>
             {formatMessage({ id: 'reputation.points' })}
           </span>
           <Numeral
