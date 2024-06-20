@@ -22,3 +22,4 @@ export { default as pick } from 'lodash/pick';
 export { default as mapValues } from 'lodash/mapValues';
 export { default as orderBy } from 'lodash/orderBy';
 export { default as filter } from 'lodash/filter';
+export { default as camelCase } from 'lodash/camelCase';

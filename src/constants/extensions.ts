@@ -14,6 +14,8 @@ import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.p
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
 import reputationInterface from '~images/assets/extensions/reputation-interface.png';
+import stakedHero from '~images/assets/extensions/staked-hero.png';
+import stakedInterface from '~images/assets/extensions/staked-interface.png';
 import streamingHero from '~images/assets/extensions/streaming-hero.png';
 import streamingInterface from '~images/assets/extensions/streaming-interface.png';
 import { type ExtensionConfig, ExtensionParamType } from '~types/extensions.ts';
@@ -57,6 +59,10 @@ const validationMessages = {
   positiveError: {
     id: 'extensions.param.validation.positiveError',
     defaultMessage: 'Please enter a positive number',
+  },
+  greaterThan0Error: {
+    id: 'extensions.param.validation.greaterThan0Error',
+    defaultMessage: 'Percentage must be greater than 0',
   },
 };
 
@@ -231,15 +237,16 @@ export const votingReputationMessages = {
 const stakedExpenditureMessages = {
   stakedExpenditureName: {
     id: `${stakedExpenditureName}.name`,
-    defaultMessage: 'Staked Expenditure',
+    defaultMessage: 'Staking Advanced Payments',
   },
   stakedExpenditureDescriptionShort: {
     id: `${stakedExpenditureName}.description`,
-    defaultMessage: 'Staked Expenditure extension.',
+    defaultMessage:
+      'Allow the creation of Advanced payments by staking tokens. Adding more flexibility and autonomy to manage funds in a secure way.',
   },
   stakedExpenditureDescriptionLong: {
     id: `${stakedExpenditureName}.descriptionLong`,
-    defaultMessage: 'Staked Expenditure extension.',
+    defaultMessage: `<p>Allows contributors to create advanced payment types by staking their own tokens, meaning they don’t require “Payer” permissions or above. Funding the payment however, will still require either “Payer” permissions or another supported decision method.</p><p>This feature adds more flexibility to manage funds and resources in an efficient, open, and trustless way.</p><h4>Payment types supported:</h4><p><b>Payment Builder</b>\nProvides a highly flexible way to construct a complicated payment involving multiple recipients receiving a number of different tokens at different times.</p><p><b>Split Payments</b>\nDivide an amount of funds between a set of recipients equally, unequally or based on proportion of selected recipients reputation.</p><p><b>Staged Payments</b>\nA payment broken down into separate milestones which may be released separately. Useful for example to make partial payments upon delivery of agreed project milestones.</p><h4>How the extension works</h4><ul><li>Users can select a supported payment type based on the required structure of the payment</li><li>Provide details of the payment, such as, team to pay funds from, recipients, amounts, tokens, delays, etc.</li><li>Decision Method: Choose the <b>"Staking"</b> decision method to create the payment process.</li><li>To create the payment, users will need to stake some of their own funds. Acting as a safeguard against frivolous or spam payments.</li><li>The rest of the payment process will be the same as usual for these payment types.</li><li>If the payment is approved, the creator will receive their full stake back on first payment.</li><li>However, if it is determined that the payment goes against the organization, it can be canceled, and the user canceling can decide to release or punish the creator’s stake. If punished, the creator will lose their original stake amount and equivalent reputation.</li></ul><h4>Useful for:</h4><ul><li>Increasing autonomy in your team without compromising security.</li><li>Providing a way for members of your team to make payment requests.</li></ul>`,
   },
   stakedExpenditureStakeFractionTitle: {
     id: `${stakedExpenditureName}.param.stakeFraction.title`,
@@ -509,7 +516,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   // @BETA: Disabled for now
   {
     icon: ExtensionAdvancedPaymentsIcon,
-    imageURLs: [advancedHero, advancedInterface],
+    imageURLs: [stakedHero, stakedInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StakedExpenditure,
     name: MSG.stakedExpenditureName,
@@ -527,9 +534,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         paramName: 'stakeFraction',
         validation: number()
           .transform((value) => toFinite(value))
-          .positive(() => MSG.positiveError)
+          .positive(() => MSG.greaterThan0Error)
           .required(() => MSG.requiredError)
-          .max(100, () => MSG.lessThan100Error),
+          .max(50, () => MSG.lessThan50Error),
         defaultValue: 1,
         title: MSG.stakedExpenditureStakeFractionTitle,
         description: MSG.stakedExpenditureStakeFractionDescription,
@@ -541,6 +548,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         transformValue: convertFractionToWei,
       },
     ],
+    enabledAutomaticallyAfterInstall: true,
   },
   {
     icon: ExtensionAdvancedPaymentsIcon,

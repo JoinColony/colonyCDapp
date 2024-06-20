@@ -14,7 +14,10 @@ import UninstallButton from './UninstallButton.tsx';
 const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';
 
-const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
+const ExtensionDetails: FC<ExtensionDetailsProps> = ({
+  extensionData,
+  className,
+}) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
 
@@ -44,7 +47,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
   );
 
   return (
-    <div>
+    <div className={className}>
       <SpecificSidePanel extensionData={extensionData} />
       <div className="mt-6">
         {canExtensionBeDeprecated && (
