@@ -23,6 +23,7 @@ export enum ExtensionMethods {
   DEPRECATE = 'deprecateExtension',
   REENABLE = 'reenableExtension',
   ENABLE = 'enableExtension',
+  SAVE_CHANGES = 'saveChanges',
 }
 
 export type RefetchExtensionDataFn = (
