@@ -83,7 +83,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           {isTablet ? (
             <div className="inner h-[calc(100vh-var(--top-content-height))] overflow-auto py-6">
               {pageHeadingProps && (
-                <PageHeading {...pageHeadingProps} className="mb-6" />
+                <PageHeading {...pageHeadingProps} className="mb-2 sm:mb-6" />
               )}
               {children}
             </div>
