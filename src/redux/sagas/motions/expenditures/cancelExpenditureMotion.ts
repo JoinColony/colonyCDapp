@@ -41,7 +41,6 @@ function* cancelExpenditureMotion({
 
     checkColonyVersionCompliance({
       colony,
-      actionType: ActionTypes.MOTION_EXPENDITURE_CANCEL,
     });
 
     const colonyManager = yield call(getColonyManager);
