@@ -32,8 +32,11 @@ export const useManagePermissions = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: FIELD_NAME.DECISION_METHOD,
   });
-  const { setValue, watch } =
-    useFormContext<Partial<ManagePermissionsFormValues>>();
+  const {
+    setValue,
+    watch,
+    formState: { isValid, isSubmitted },
+  } = useFormContext<Partial<ManagePermissionsFormValues>>();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
@@ -52,7 +55,7 @@ export const useManagePermissions = (
     const { unsubscribe } = watch(({ member, team }, { name }) => {
       if (
         !name ||
-        name !== FIELD_NAME.TEAM ||
+        !([FIELD_NAME.MEMBER, FIELD_NAME.TEAM] as string[]).includes(name) ||
         !notMaybe(team) ||
         !notMaybe(member)
       ) {
@@ -65,11 +68,11 @@ export const useManagePermissions = (
         domainId: Number(team),
       });
       const userRole = getRole(userPermissions);
+      const roleValue = userRole.permissions.length ? userRole.role : undefined;
 
-      setValue(
-        FIELD_NAME.ROLE,
-        userRole.permissions.length ? userRole.role : undefined,
-      );
+      setValue(FIELD_NAME.ROLE, roleValue, {
+        shouldValidate: !!roleValue || (isSubmitted && !isValid),
+      });
 
       if (userRole.role !== UserRole.Custom) {
         return;
@@ -77,14 +80,14 @@ export const useManagePermissions = (
 
       AVAILABLE_ROLES.forEach((colonyRole) => {
         setValue(
-          `permissions.role_${colonyRole}`,
+          `${FIELD_NAME.PERMISSIONS}.role_${colonyRole}`,
           userRole.permissions.includes(colonyRole),
         );
       });
     });
 
     return () => unsubscribe();
-  }, [colony, role, setValue, watch]);
+  }, [colony, role, setValue, watch, isSubmitted, isValid]);
 
   useActionFormBaseHook({
     getFormOptions,
