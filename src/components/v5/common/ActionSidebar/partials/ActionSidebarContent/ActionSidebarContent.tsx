@@ -98,6 +98,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const selectedDecisionMethod = formValues[DECISION_METHOD_FIELD_NAME];
   const shouldShowCreateStakedExpenditureModal =
     actionsWithStakingDecisionMethod.includes(selectedActionType) &&
+    selectedActionType === Action.PaymentBuilder &&
     selectedDecisionMethod === DecisionMethod.Staking;
 
   useEffect(() => {
