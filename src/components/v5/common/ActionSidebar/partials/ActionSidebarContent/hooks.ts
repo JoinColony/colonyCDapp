@@ -43,18 +43,23 @@ export const useShowNotEnoughMembersWithPermissionsNotification = ({
     formValues,
   );
 
-  const { threshold } = useDomainThreshold({
+  const { thresholdPerRole } = useDomainThreshold({
     domainId: createdIn,
     requiredRoles,
   });
 
-  const { eligibleSigneesCount } = useEligibleSignees({
+  const { countPerRole } = useEligibleSignees({
     domainId: createdIn,
     requiredRoles,
   });
 
-  const hasEnoughMembersWithPermissions =
-    threshold && eligibleSigneesCount >= threshold;
+  if (!thresholdPerRole || !requiredRoles) {
+    return false;
+  }
+
+  const hasEnoughMembersWithPermissions = requiredRoles.every(
+    (role) => countPerRole[role] >= thresholdPerRole[role],
+  );
 
   const showNotEnoughMembersWithPermissionsNotification =
     decisionMethod === DecisionMethod.MultiSig &&

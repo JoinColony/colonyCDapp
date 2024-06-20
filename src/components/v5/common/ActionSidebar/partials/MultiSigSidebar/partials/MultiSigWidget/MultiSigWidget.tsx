@@ -3,9 +3,12 @@ import { useMemo, type FC, useState, useEffect } from 'react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MultiSigVote, type ColonyActionType } from '~gql';
+import { type ColonyActionType } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
-import { type ColonyMultiSig } from '~types/graphql.ts';
+import {
+  type MultiSigUserSignature,
+  type ColonyMultiSig,
+} from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
@@ -47,24 +50,101 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
 }) => {
   const requiredRoles = getRolesNeededForMultiSigAction(actionType);
 
-  const { isLoading, threshold } = useDomainThreshold({
+  const { isLoading, thresholdPerRole } = useDomainThreshold({
     domainId: Number(multiSigData.multiSigDomainId),
     requiredRoles,
   });
 
+  if (thresholdPerRole === null && !isLoading) {
+    console.warn('Invalid threshold');
+
+    return (
+      <NotificationBanner status="error" icon={WarningCircle}>
+        {formatText(MSG.invalidThreshold)}
+      </NotificationBanner>
+    );
+  }
+
+  // @TODO: This wasn't handled in the UI issue
+  if (isLoading) {
+    return <div>Loading threshold</div>;
+  }
+
+  // @TODO: This wasn't handled in the UI issue
+  if (thresholdPerRole === null) {
+    console.warn('Invalid threshold');
+    return <div>Invalid threshold, assign some stuff</div>;
+  }
+
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
-  const approvalProgress = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Approve,
-  ).length;
-  const rejectionProgress = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Reject,
-  ).length;
+  const approvalSignaturesPerRole = {};
+  const rejectionSignaturesPerRole = {};
+  const allApprovalSignees = new Set<MultiSigUserSignature['user']>();
+  const allRejectionSignees = new Set<MultiSigUserSignature['user']>();
 
-  const isMultiSigFinalizable =
-    threshold && (approvalProgress || rejectionProgress) >= threshold;
-  const isMultiSigExecuted = multiSigData.isExecuted;
+  signatures.forEach((signature) => {
+    const { role, vote, user: voter } = signature;
+
+    if (vote === 'Approve') {
+      allApprovalSignees.add(voter);
+
+      if (!approvalSignaturesPerRole[role]) {
+        approvalSignaturesPerRole[role] = [];
+      }
+      approvalSignaturesPerRole[role].push(signature);
+    } else if (vote === 'Reject') {
+      allRejectionSignees.add(voter);
+
+      if (!rejectionSignaturesPerRole[role]) {
+        rejectionSignaturesPerRole[role] = [];
+      }
+      rejectionSignaturesPerRole[role].push(signature);
+    }
+  });
+
+  const isMultiSigFinalizable = Object.keys(approvalSignaturesPerRole).every(
+    (role) => {
+      const approvals = approvalSignaturesPerRole[role]?.length || 0;
+      const threshold = thresholdPerRole[role] || 0;
+      return approvals >= threshold;
+    },
+    );
+    
+    const isMultiSigCancelable = Object.keys(rejectionSignaturesPerRole).every(
+      (role) => {
+      // @TODO: This doesn't look right = should be rejections and rejectionSignaturesPerRole?
+      const approvals = approvalSignaturesPerRole[role]?.length || 0;
+      const threshold = thresholdPerRole[role] || 0;
+      return approvals >= threshold;
+    },
+  );
+
   const isMultiSigRejected = multiSigData.isRejected;
+  const isMultiSigExecuted = multiSigData.isExecuted;
+
+  const combinedThreshold = Object.values(thresholdPerRole).reduce(
+    (acc, threshold) => acc + threshold,
+    0,
+  );
+
+  let combinedApprovals = 0;
+  Object.keys(approvalSignaturesPerRole).forEach((role) => {
+    const approvalsForRole = approvalSignaturesPerRole[role]
+      ? approvalSignaturesPerRole[role].length
+      : 0;
+    const thresholdForRole = thresholdPerRole[role];
+    combinedApprovals += Math.min(approvalsForRole, thresholdForRole);
+  });
+
+  let combinedRejections = 0;
+  Object.keys(approvalSignaturesPerRole).forEach((role) => {
+    const rejectionsForRole = rejectionSignaturesPerRole[role]
+      ? rejectionSignaturesPerRole[role].length
+      : 0;
+    const thresholdForRole = thresholdPerRole[role];
+    combinedRejections += Math.min(rejectionsForRole, thresholdForRole);
+  });
 
   const items = useMemo(() => {
     if (isLoading) {
@@ -75,7 +155,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
         key: MultiSigState.Approval,
         content: (
           <ApprovalStep
-            threshold={threshold || 0}
+            threshold={combinedThreshold || 0}
             multiSigData={multiSigData}
             actionType={actionType}
             initiatorAddress={initiatorAddress}
@@ -90,9 +170,9 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
         key: MultiSigState.Finalize,
         content: (
           <FinalizeStep
-            threshold={threshold || 0}
+            threshold={combinedThreshold || 0}
             multiSigData={multiSigData}
-            isMultiSigFinalizable={isMultiSigFinalizable || false}
+            isMultiSigFinalizable={isMultiSigFinalizable || isMultiSigCancelable || false}
             // initiatorAddress={initiatorAddress}
             createdAt={multiSigData.createdAt}
           />
@@ -104,7 +184,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     ];
   }, [
     isLoading,
-    threshold,
+    combinedThreshold,
     multiSigData,
     actionType,
     initiatorAddress,
@@ -120,16 +200,6 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
       setActiveStepKey(MultiSigState.Finalize);
     }
   }, [isMultiSigFinalizable, isMultiSigRejected, isMultiSigExecuted]);
-
-  if (threshold === null && !isLoading) {
-    console.warn('Invalid threshold');
-
-    return (
-      <NotificationBanner status="error" icon={WarningCircle}>
-        {formatText(MSG.invalidThreshold)}
-      </NotificationBanner>
-    );
-  }
 
   return (
     <div>
