@@ -1,3 +1,4 @@
+import { gql, useLazyQuery } from '@apollo/client';
 import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
@@ -16,6 +17,7 @@ import { ActionTypes } from '~redux';
 import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
 import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
 import { type CancelStreamingPaymentPayload } from '~redux/types/actions/expenditures.ts';
+import { type StreamingPaymentsMotionCancelPayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -24,10 +26,24 @@ import Select from '~v5/common/Fields/Select/Select.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import { ActionButton } from '~v5/shared/Button/index.ts';
 
+import { useTmpContext } from './context/TmpContext.ts';
+
 const TmpStreamingPayments = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { streamingPaymentsAddress } = useEnabledExtensions();
+  const { streamingPaymentsAddress, votingReputationAddress } =
+    useEnabledExtensions();
+  const [getStreamingPayments] = useLazyQuery(gql`
+    query ListStreamingPayments {
+      listStreamingPayments {
+        nextToken
+        items {
+          nativeId
+        }
+      }
+    }
+  `);
+  const { annotation } = useTmpContext();
 
   const [tokenAddress, setTokenAddress] = useState(
     colony.nativeToken.tokenAddress,
@@ -62,6 +78,11 @@ const TmpStreamingPayments = () => {
     error: ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR,
     success: ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
   });
+  const cancelMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
+    error: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_ERROR,
+    success: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_SUCCESS,
+  });
 
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
@@ -93,6 +114,7 @@ const TmpStreamingPayments = () => {
       (blockTime ?? Math.floor(Date.now() / 1000)) + 604800,
     ).toString(), // Next week
     limitAmount: limit,
+    annotationMessage: annotation,
   };
 
   const handleCancel = async ({
@@ -107,6 +129,7 @@ const TmpStreamingPayments = () => {
       streamingPayment,
       userAddress: user?.walletAddress ?? '',
       shouldWaive,
+      annotationMessage: annotation,
     };
 
     await cancel(payload);
@@ -124,6 +147,37 @@ const TmpStreamingPayments = () => {
     };
 
     await claim(claimPayload);
+  };
+
+  const handleCancelMotion = async () => {
+    if (!streamingPayment || !votingReputationAddress) {
+      return;
+    }
+
+    const payload: StreamingPaymentsMotionCancelPayload = {
+      colony,
+      motionDomainId: Id.RootDomain,
+      streamingPayment,
+      votingReputationAddress,
+      annotationMessage: annotation,
+    };
+
+    await cancelMotion(payload);
+  };
+
+  const handleGetLatestMotionId = () => {
+    getStreamingPayments({
+      onCompleted: (d) => {
+        if (d) {
+          const latestStreamingPaymentNativeID =
+            d?.listStreamingPayments?.items?.length;
+
+          if (!latestStreamingPaymentNativeID) return;
+
+          setStreamingPaymentId(latestStreamingPaymentNativeID || '');
+        }
+      },
+    });
   };
 
   return (
@@ -186,11 +240,16 @@ const TmpStreamingPayments = () => {
             Create streaming payment
           </ActionButton>
         </div>
-        <InputBase
-          value={streamingPaymentId}
-          onChange={(e) => setStreamingPaymentId(e.currentTarget.value)}
-          placeholder="Streaming Payment ID"
-        />
+        <div className="flex w-full gap-2">
+          <InputBase
+            value={streamingPaymentId}
+            onChange={(e) => setStreamingPaymentId(e.currentTarget.value)}
+            placeholder="Streaming Payment Native ID"
+          />
+          <Button onClick={handleGetLatestMotionId}>
+            Use latest streaming payment native ID
+          </Button>
+        </div>
         {streamingPayment && (
           <div className="flex w-full flex-col gap-4">
             <p>
@@ -238,6 +297,9 @@ const TmpStreamingPayments = () => {
             disabled={!streamingPayment}
           >
             Cancel and Waive
+          </Button>
+          <Button onClick={handleCancelMotion} disabled={!streamingPayment}>
+            Cancel via motion
           </Button>
         </div>
       </div>
