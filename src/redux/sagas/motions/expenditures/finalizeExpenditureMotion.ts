@@ -44,7 +44,6 @@ function* finalizeExpenditureMotion({
 
     checkColonyVersionCompliance({
       colony,
-      actionType: ActionTypes.MOTION_EXPENDITURE_FINALIZE,
     });
 
     const colonyManager = yield call(getColonyManager);

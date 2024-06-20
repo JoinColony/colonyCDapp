@@ -55,7 +55,6 @@ function* cancelStreamingPaymentsMotionAction({
 
     checkColonyVersionCompliance({
       colony,
-      actionType: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
     });
 
     const colonyManager = yield getColonyManager();
