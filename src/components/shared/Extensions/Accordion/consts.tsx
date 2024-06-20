@@ -23,7 +23,7 @@ export const accordionMocksContent = [
             in token terms, should need to stake on each side of a motion?"
           />
         ),
-        inputItem: <SpecialHourInput />,
+        inputItem: <SpecialHourInput name="requiredStake" />,
       },
     ],
   },
@@ -39,7 +39,7 @@ export const accordionMocksContent = [
             subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
-        inputItem: <SpecialPercentageInput />,
+        inputItem: <SpecialPercentageInput name="voterReward" />,
         accordionItem: [
           {
             id: 'step-1-0',
@@ -72,7 +72,7 @@ export const accordionMocksContent = [
             subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
-        inputItem: <SpecialPercentageInput />,
+        inputItem: <SpecialPercentageInput name="voterReward2" />,
       },
       {
         id: 2,

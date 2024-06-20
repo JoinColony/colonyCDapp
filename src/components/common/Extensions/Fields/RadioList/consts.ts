@@ -1,4 +1,4 @@
-import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types.ts';
+import { GovernanceOptions } from '~frame/Extensions/pages/Extensions/ExtensionsListingPage/types.ts';
 
 import { type RadioItemProps } from './types.ts';
 
