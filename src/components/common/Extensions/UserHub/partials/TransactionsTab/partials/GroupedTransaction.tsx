@@ -36,6 +36,7 @@ const GROUP_KEYS_WHICH_CANNOT_LINK = [
   TRANSACTION_METHODS.FinalizeMotion,
   TRANSACTION_METHODS.EscalateMotion,
   TRANSACTION_METHODS.EnableExtension,
+  TRANSACTION_METHODS.ClaimColonyFunds,
 ];
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({

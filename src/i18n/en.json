@@ -511,6 +511,8 @@
     "metatransaction.ColonyClient.upgrade.description": "Colony Version Upgrade",
     "metatransaction.group.upgrade.title": "Colony Version Upgrade",
     "metatransaction.group.upgrade.description": "Colony Version Upgrade",
+    "metatransaction.group.claimColonyFunds.title": "Claim Pending Transactions",
+    "metatransaction.group.claimColonyFunds.description": "Claim Pending Transactions",
     "metatransaction.ColonyClient.claimColonyFunds.title": "Claim Pending Transactions",
     "metatransaction.ColonyClient.claimColonyFunds.description": "Claim Pending Transactions",
     "metatransaction.ColonyClient.moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address).title": "Move Funds Between Pots",
