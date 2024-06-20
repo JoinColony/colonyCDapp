@@ -60,6 +60,7 @@ export const LAZY_CONSENSUS = `https://docs.colony.io/learn/governance/lazy-cons
 export const LAZY_CONSENSUS_EXTENSION = `https://docs.colony.io/use/governance/motions-and-disputes`;
 export const PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
 export const STREAMING_PAYMENTS = `https://docs.colony.io/use/making-payments/streaming-payments`;
+export const STAKING_ADVANCED_PAYMENTS = `https://docs.colony.io/use/making-payments/staking-payments`;
 
 /*
  * Navigation
