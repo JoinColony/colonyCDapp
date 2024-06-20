@@ -1,22 +1,17 @@
 import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
-import { useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 import { array, type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
-import {
-  ACTION_BASE_VALIDATION_SCHEMA,
-  DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -165,9 +160,6 @@ export const usePaymentBuilder = (
 ) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
-  const decisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
-  });
   const { networkInverseFee = '0' } = useNetworkInverseFee();
   const validationSchema = useValidationSchema(networkInverseFee);
 
@@ -184,20 +176,14 @@ export const usePaymentBuilder = (
       }),
       [nativeToken.tokenAddress],
     ),
-    actionType:
-      decisionMethod === DecisionMethod.Permissions
-        ? ActionTypes.EXPENDITURE_CREATE
-        : ActionTypes.STAKED_EXPENDITURE_CREATE,
+    actionType: ActionTypes.EXPENDITURE_CREATE,
     getFormOptions: (formOptions, form) =>
       getFormOptions(
         {
           ...formOptions,
           mode: 'onSubmit',
           reValidateMode: 'onSubmit',
-          actionType:
-            decisionMethod === DecisionMethod.Permissions
-              ? ActionTypes.EXPENDITURE_CREATE
-              : ActionTypes.STAKED_EXPENDITURE_CREATE,
+          actionType: ActionTypes.EXPENDITURE_CREATE,
         },
         form,
       ),

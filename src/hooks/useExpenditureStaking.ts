@@ -33,13 +33,17 @@ const useExpenditureStaking = (createdInDomainId = Id.RootDomain) => {
     Extension.StakedExpenditure,
   );
 
-  const { loadingUserTokenBalance, hasEnoughTokens } =
-    useEnoughTokensForStaking({
-      tokenAddress: colony.nativeToken.tokenAddress,
-      walletAddress,
-      colonyAddress: colony.colonyAddress,
-      requiredStake: stakeAmount ?? '0',
-    });
+  const {
+    loadingUserTokenBalance,
+    hasEnoughTokens,
+    hasEnoughActivatedTokens,
+    userActivatedTokens,
+  } = useEnoughTokensForStaking({
+    tokenAddress: colony.nativeToken.tokenAddress,
+    walletAddress,
+    colonyAddress: colony.colonyAddress,
+    requiredStake: stakeAmount ?? '0',
+  });
 
   useEffect(() => {
     if (
@@ -76,6 +80,8 @@ const useExpenditureStaking = (createdInDomainId = Id.RootDomain) => {
     stakeAmount,
     stakedExpenditureAddress: getStakedExpenditureAddress(),
     hasEnoughTokens,
+    hasEnoughActivatedTokens,
+    userActivatedTokens,
   };
 };
 

@@ -43,7 +43,7 @@ export const getPaymentBuilderPayload = (
     payouts: values.payments.map((payment) => ({
       recipientAddress: payment.recipient,
       tokenAddress: payment.tokenAddress,
-      amount: payment.amount.toString(),
+      amount: payment.amount,
       claimDelay: convertPeriodToSeconds(payment.delay),
       tokenDecimals:
         colonyTokens?.find(
