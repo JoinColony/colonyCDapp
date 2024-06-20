@@ -1,5 +1,6 @@
-import { ColonyRole } from '@colony/colony-js';
+import { type ColonyRole } from '@colony/colony-js';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ColonyActionType } from '~gql';
 
 export const getRolesNeededForMultiSigAction = (
@@ -7,7 +8,7 @@ export const getRolesNeededForMultiSigAction = (
 ): ColonyRole[] | undefined => {
   switch (actionType) {
     case ColonyActionType.MintTokensMultisig:
-      return [ColonyRole.Root];
+      return PERMISSIONS_NEEDED_FOR_ACTION.MintTokens;
     default:
       return undefined;
   }
