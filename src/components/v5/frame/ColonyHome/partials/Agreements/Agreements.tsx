@@ -71,8 +71,6 @@ const Agreements = () => {
                 <span className="text-3">
                   {newestAgreement.decisionData?.title}
                 </span>
-                {/* @TODO Re-enable once a Motion supports the comments feature */}
-                {/* <MessageNumber message={1} /> */}
               </div>
               {newestAgreement.decisionData?.description && (
                 <RichTextDisplay
