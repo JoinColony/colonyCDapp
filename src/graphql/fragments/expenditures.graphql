@@ -26,6 +26,10 @@ fragment Expenditure on Expenditure {
   }
   type
   isStaked
+  userStake {
+    amount
+    isClaimed
+  }
   balances {
     ...ExpenditureBalance
   }

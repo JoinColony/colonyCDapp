@@ -57,9 +57,7 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
   const {
     annotation,
     initiatorUser,
-    isMotion,
     motionData,
-    isMultiSig,
     multiSigData,
     transactionHash,
     token,
@@ -108,10 +106,7 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
           RowIcon={CoinVertical}
         />
 
-        <DecisionMethodRow
-          isMotion={isMotion || false}
-          isMultisig={isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
 
         {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>

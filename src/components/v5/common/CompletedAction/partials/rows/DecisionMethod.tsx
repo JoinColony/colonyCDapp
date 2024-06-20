@@ -1,6 +1,7 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
+import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 
 import ActionData from './ActionData.tsx';
@@ -8,20 +9,22 @@ import ActionData from './ActionData.tsx';
 const displayName = 'v5.common.CompletedAction.partials.DecisionMethodRow';
 
 interface DecisionMethodRowProps {
-  isMotion: boolean;
-  isMultisig: boolean;
+  action: ColonyAction;
 }
 
-const DecisionMethodRow = ({
-  isMotion,
-  isMultisig,
-}: DecisionMethodRowProps) => {
+const DecisionMethodRow = ({ action }: DecisionMethodRowProps) => {
   const getRowContent = () => {
-    if (isMultisig) {
+    if (action.isMultiSig) {
       return formatText({ id: 'decisionMethod.multiSig' });
     }
-    if (isMotion) {
+    if (action.isMotion) {
       return formatText({ id: 'decisionMethod.reputation' });
+    }
+    if (
+      action.type === ColonyActionType.CreateExpenditure &&
+      action.expenditure?.isStaked
+    ) {
+      return formatText({ id: 'decisionMethod.staking' });
     }
     return formatText({ id: 'decisionMethod.permissions' });
   };

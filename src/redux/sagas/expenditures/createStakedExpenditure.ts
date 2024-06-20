@@ -34,6 +34,7 @@ export type CreateStakedExpenditurePayload =
 
 function* createStakedExpenditure({
   meta,
+  meta: { setTxHash },
   payload: {
     colonyAddress,
     payouts,
@@ -303,9 +304,7 @@ function* createStakedExpenditure({
       meta,
     });
 
-    // @TODO: Remove during advanced payments UI wiring
-    // eslint-disable-next-line no-console
-    console.log('Created expenditure ID:', expenditureId.toString());
+    setTxHash?.(txHash);
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {

@@ -228,10 +228,7 @@ const SetUserRoles = ({ action }: Props) => {
           })}
           RowIcon={ShieldStar}
         />
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
         {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
       {action.annotation?.message && (

@@ -2,8 +2,16 @@
   @apply rounded-e rounded-s border-gray-300 bg-base-white text-md font-medium text-gray-900;
 }
 
+.wrapper :global(.select__control--is-disabled) {
+  @apply bg-base-white text-gray-300;
+}
+
 .wrapper :global(.select__placeholder) {
   @apply text-md font-normal text-gray-400;
+}
+
+.wrapper :global(.select__control--is-disabled .select__placeholder) {
+  @apply text-gray-300;
 }
 
 .wrapper :global(.select__control--is-focused) {

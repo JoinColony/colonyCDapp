@@ -10,10 +10,10 @@ import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
-import { type FinalizeWithPermissionsInfoProps } from './types.ts';
+import { type ActionWithPermissionsInfoProps } from './types.ts';
 
 const displayName =
-  'v5.common.CompletedAction.partials.FinalizeWithPermissionsInfo';
+  'v5.common.CompletedAction.partials.ActionWithPermissionsInfoProps';
 
 const MSG = defineMessages({
   todayAt: {
@@ -63,7 +63,7 @@ const formatDate = (value: string | undefined) => {
   );
 };
 
-const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
+const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
   userAdddress,
   createdAt,
 }) => {
@@ -138,4 +138,4 @@ const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
   );
 };
 
-export default FinalizeWithPermissionsInfo;
+export default ActionWithPermissionsInfo;

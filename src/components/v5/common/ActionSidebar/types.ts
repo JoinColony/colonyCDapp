@@ -6,6 +6,7 @@ import { type ColonyAction } from '~types/graphql.ts';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
+  onSubmitClick?: () => void;
 }
 
 export interface ActionFormBaseProps {

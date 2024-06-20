@@ -66,10 +66,7 @@ const ManageTokens = ({ action }: ManageTokensProps) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
 
         {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
