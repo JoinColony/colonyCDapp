@@ -70,10 +70,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const isSubmitDisabled =
-    !selectedAction ||
-    hasPermissions === false ||
-    hasNoDecisionMethods ||
-    flatFormErrors.length > 0;
+    !selectedAction || hasPermissions === false || hasNoDecisionMethods;
 
   const [isModalVisible, { toggleOn: showModal, toggleOff: hideModal }] =
     useToggle();
