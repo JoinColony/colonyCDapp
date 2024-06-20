@@ -26,7 +26,7 @@ export const useGetFormActionErrors = () => {
   };
 };
 
-export const useShowNotEnoughMembersWithPermissionsNotification = ({
+export const useHasEnoughMembersWithPermissions = ({
   decisionMethod,
   selectedAction,
   createdIn,
@@ -54,7 +54,7 @@ export const useShowNotEnoughMembersWithPermissionsNotification = ({
   });
 
   if (!thresholdPerRole || !requiredRoles) {
-    return false;
+    return true;
   }
 
   const hasEnoughMembersWithPermissions = requiredRoles.every(
@@ -65,5 +65,5 @@ export const useShowNotEnoughMembersWithPermissionsNotification = ({
     decisionMethod === DecisionMethod.MultiSig &&
     !hasEnoughMembersWithPermissions;
 
-  return showNotEnoughMembersWithPermissionsNotification;
+  return !showNotEnoughMembersWithPermissionsNotification;
 };
