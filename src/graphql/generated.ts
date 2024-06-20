@@ -9903,6 +9903,10 @@ export const ExpenditureFragmentDoc = gql`
   }
   type
   isStaked
+  userStake {
+    amount
+    isClaimed
+  }
   balances {
     ...ExpenditureBalance
   }

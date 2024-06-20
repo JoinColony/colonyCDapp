@@ -18,6 +18,7 @@ import {
   TX_SEARCH_PARAM,
 } from '~routes';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { DecisionMethod } from '~types/actions.ts';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -83,7 +84,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     return null;
   }
 
-  const { slots = [], metadata, status, finalizedAt } = expenditure;
+  const { slots = [], metadata, status, finalizedAt, isStaked } = expenditure;
 
   const selectedTeam = findDomainByNativeId(
     metadata?.fundFromDomainNativeId,
@@ -184,7 +185,10 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           />
         )}
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          decisionMethod={isStaked ? DecisionMethod.Staking : undefined}
+          isMotion={action.isMotion || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

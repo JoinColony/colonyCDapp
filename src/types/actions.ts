@@ -168,4 +168,6 @@ export enum SystemMessages {
 export enum DecisionMethod {
   Permissions = 'Permissions',
   Reputation = 'Reputation',
+  Staking = 'Staking',
+  PaymentCreator = 'PaymentCreator',
 }
