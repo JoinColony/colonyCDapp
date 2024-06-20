@@ -7,7 +7,6 @@ import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type ExpenditureFundMotionPayload } from '~redux/types/actions/motion.ts';
@@ -23,8 +22,8 @@ import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.t
 import {
   fundingDecisionMethodDescriptions,
   getValidationSchema,
-  getFundingDecisionMethodItems,
 } from './consts.ts';
+import { useFundingDecisionMethods } from './hooks.ts';
 import TokenItem from './TokenItem.tsx';
 import {
   type FundingModalContentProps,
@@ -47,6 +46,7 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
   fundingItems,
   onClose,
   teamName,
+  actionType,
 }) => {
   const {
     watch,
@@ -55,10 +55,10 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
   } = useFormContext();
   const method = watch('decisionMethod');
 
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const fundingDecisionMethodOptions = useFundingDecisionMethods(actionType);
 
-  const fundingDecisionMethodItems = getFundingDecisionMethodItems(
-    isVotingReputationEnabled,
+  const noDecisionMethodAvailable = fundingDecisionMethodOptions.every(
+    ({ isDisabled }) => isDisabled,
   );
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
       </div>
       <div className="mb-8">
         <DecisionMethodSelect
-          options={fundingDecisionMethodItems}
+          options={fundingDecisionMethodOptions}
           name="decisionMethod"
         />
         {method && method.value && (
@@ -112,6 +112,13 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
           <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm text-negative-400">
             {formatText(MSG.notEnoughTokens, {
               team: teamName,
+            })}
+          </div>
+        )}
+        {noDecisionMethodAvailable && (
+          <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
+            {formatText({
+              id: 'fundingModal.noDecisionMethodAvailable',
             })}
           </div>
         )}
@@ -139,6 +146,7 @@ const FundingModal: FC<FundingModalProps> = ({
   onClose,
   expenditure,
   onSuccess,
+  actionType,
   ...rest
 }) => {
   const { colony } = useColonyContext();
@@ -239,6 +247,7 @@ const FundingModal: FC<FundingModalProps> = ({
           fundingItems={fundingItems}
           onClose={onClose}
           teamName={selectedTeam?.metadata?.name || ''}
+          actionType={actionType}
         />
       </Form>
     </Modal>

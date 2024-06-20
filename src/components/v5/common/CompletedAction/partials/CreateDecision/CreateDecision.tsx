@@ -64,10 +64,7 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
 
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
