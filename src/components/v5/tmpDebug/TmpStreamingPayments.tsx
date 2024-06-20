@@ -29,6 +29,12 @@ import { ActionButton } from '~v5/shared/Button/index.ts';
 
 import { useTmpContext } from './context/TmpContext.ts';
 
+enum StartTime {
+  Now = 'now',
+  OneWeekAgo = 'one-week-ago',
+  OneWeekFromNow = 'one-week-from-now',
+}
+
 const TmpStreamingPayments = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -46,6 +52,9 @@ const TmpStreamingPayments = () => {
   `);
   const { annotation } = useTmpContext();
 
+  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
+    useCurrentBlockTime();
+
   const [tokenAddress, setTokenAddress] = useState(
     colony.nativeToken.tokenAddress,
   );
@@ -54,6 +63,7 @@ const TmpStreamingPayments = () => {
   const [endCondition, setEndCondition] = useState(
     StreamingPaymentEndCondition.FixedTime,
   );
+  const [selectedStartTime, setSelectedStartTime] = useState(StartTime.Now);
   const [limit, setLimit] = useState('0');
   const [streamingPaymentId, setStreamingPaymentId] = useState('');
 
@@ -90,9 +100,6 @@ const TmpStreamingPayments = () => {
     success: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_SUCCESS,
   });
 
-  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
-    useCurrentBlockTime();
-
   const { amountAvailableToClaim, amountClaimedToDate } =
     useStreamingPaymentAmountsLeft(
       streamingPayment,
@@ -104,6 +111,27 @@ const TmpStreamingPayments = () => {
     return null;
   }
 
+  const getStartTime = (startTime: StartTime) => {
+    switch (startTime) {
+      case StartTime.OneWeekAgo: {
+        return BigNumber.from(
+          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 - 1,
+        ).toString();
+      }
+      case StartTime.OneWeekFromNow: {
+        return BigNumber.from(
+          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 + 1,
+        ).toString();
+      }
+      case StartTime.Now:
+      default: {
+        return BigNumber.from(
+          blockTime ?? Math.floor(Date.now() / 1000),
+        ).toString();
+      }
+    }
+  };
+
   const createStreamingPaymentPayload: CreateStreamingPaymentPayload = {
     colonyAddress: colony.colonyAddress,
     createdInDomain: rootDomain,
@@ -111,9 +139,7 @@ const TmpStreamingPayments = () => {
     endCondition,
     interval: 86400, // One day
     recipientAddress: user?.walletAddress ?? '',
-    startTimestamp: BigNumber.from(
-      (blockTime ?? Math.floor(Date.now() / 1000)) + 604800,
-    ).toString(), // Next week
+    startTimestamp: getStartTime(selectedStartTime),
     tokenAddress,
     tokenDecimals: parseInt(decimalAmount, 10),
     endTimestamp: BigNumber.from(
@@ -204,8 +230,8 @@ const TmpStreamingPayments = () => {
       amount: transactionAmount,
       tokenDecimals: parseInt(decimalAmount, 10),
       interval: 604800, // One week
-      endCondition: StreamingPaymentEndCondition.LimitReached,
-      limitAmount: '1000',
+      endCondition,
+      limitAmount: limit,
     };
 
     await editStreamingPayment(payload);
@@ -260,6 +286,31 @@ const TmpStreamingPayments = () => {
             value={endCondition}
             onChange={(value) =>
               setEndCondition(value?.value as StreamingPaymentEndCondition)
+            }
+            className="w-full"
+          />
+
+          <Select
+            options={[
+              {
+                value: StartTime.Now,
+                label: 'Start now',
+              },
+              {
+                value: StartTime.OneWeekAgo,
+                label: 'Start one week ago',
+              },
+              {
+                value: StartTime.OneWeekFromNow,
+                label: 'Start one week from now',
+              },
+            ]}
+            defaultValue={BigNumber.from(
+              blockTime ?? Math.floor(Date.now() / 1000),
+            ).toString()}
+            value={selectedStartTime}
+            onChange={(value) =>
+              setSelectedStartTime(value?.value as StartTime)
             }
             className="w-full"
           />
