@@ -9597,16 +9597,6 @@ export type GetRolesForDomainQueryVariables = Exact<{
 
 export type GetRolesForDomainQuery = { __typename?: 'Query', getRoleByDomainAndColony?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, targetUser?: { __typename?: 'User', id: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null } | null } | null } | null> } | null };
 
-export type GetRolesForDomainAndRootDomainQueryVariables = Exact<{
-  domainId: Scalars['ID'];
-  rootDomainId: Scalars['ID'];
-  colonyAddress: Scalars['ID'];
-  filter: ModelColonyRoleFilterInput;
-}>;
-
-
-export type GetRolesForDomainAndRootDomainQuery = { __typename?: 'Query', domainRoles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, targetUser?: { __typename?: 'User', id: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null } | null } | null } | null> } | null, rootDomainRoles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, targetUser?: { __typename?: 'User', id: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null } | null } | null } | null> } | null };
-
 export type GetUserStakesQueryVariables = Exact<{
   userAddress: Scalars['ID'];
   colonyAddress: Scalars['ID'];
@@ -12895,75 +12885,6 @@ export function useGetRolesForDomainLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetRolesForDomainQueryHookResult = ReturnType<typeof useGetRolesForDomainQuery>;
 export type GetRolesForDomainLazyQueryHookResult = ReturnType<typeof useGetRolesForDomainLazyQuery>;
 export type GetRolesForDomainQueryResult = Apollo.QueryResult<GetRolesForDomainQuery, GetRolesForDomainQueryVariables>;
-export const GetRolesForDomainAndRootDomainDocument = gql`
-    query GetRolesForDomainAndRootDomain($domainId: ID!, $rootDomainId: ID!, $colonyAddress: ID!, $filter: ModelColonyRoleFilterInput!) {
-  domainRoles: getRoleByDomainAndColony(
-    domainId: $domainId
-    colonyAddress: {eq: $colonyAddress}
-    filter: $filter
-  ) {
-    items {
-      id
-      targetUser {
-        id
-        profile {
-          avatar
-          displayName
-        }
-      }
-      targetAddress
-    }
-  }
-  rootDomainRoles: getRoleByDomainAndColony(
-    domainId: $rootDomainId
-    colonyAddress: {eq: $colonyAddress}
-    filter: $filter
-  ) {
-    items {
-      id
-      targetUser {
-        id
-        profile {
-          avatar
-          displayName
-        }
-      }
-      targetAddress
-    }
-  }
-}
-    `;
-
-/**
- * __useGetRolesForDomainAndRootDomainQuery__
- *
- * To run a query within a React component, call `useGetRolesForDomainAndRootDomainQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetRolesForDomainAndRootDomainQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetRolesForDomainAndRootDomainQuery({
- *   variables: {
- *      domainId: // value for 'domainId'
- *      rootDomainId: // value for 'rootDomainId'
- *      colonyAddress: // value for 'colonyAddress'
- *      filter: // value for 'filter'
- *   },
- * });
- */
-export function useGetRolesForDomainAndRootDomainQuery(baseOptions: Apollo.QueryHookOptions<GetRolesForDomainAndRootDomainQuery, GetRolesForDomainAndRootDomainQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetRolesForDomainAndRootDomainQuery, GetRolesForDomainAndRootDomainQueryVariables>(GetRolesForDomainAndRootDomainDocument, options);
-      }
-export function useGetRolesForDomainAndRootDomainLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRolesForDomainAndRootDomainQuery, GetRolesForDomainAndRootDomainQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetRolesForDomainAndRootDomainQuery, GetRolesForDomainAndRootDomainQueryVariables>(GetRolesForDomainAndRootDomainDocument, options);
-        }
-export type GetRolesForDomainAndRootDomainQueryHookResult = ReturnType<typeof useGetRolesForDomainAndRootDomainQuery>;
-export type GetRolesForDomainAndRootDomainLazyQueryHookResult = ReturnType<typeof useGetRolesForDomainAndRootDomainLazyQuery>;
-export type GetRolesForDomainAndRootDomainQueryResult = Apollo.QueryResult<GetRolesForDomainAndRootDomainQuery, GetRolesForDomainAndRootDomainQueryVariables>;
 export const GetUserStakesDocument = gql`
     query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
   getUserStakes(
