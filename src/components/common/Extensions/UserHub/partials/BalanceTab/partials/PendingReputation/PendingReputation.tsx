@@ -6,7 +6,7 @@ import useUserReputation from '~hooks/useUserReputation.ts';
 import TimeRelative from '~shared/TimeRelative/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import reputationTabClasses from '../../BalanceTab.styles.ts';
+import balanceTabClasses from '../../BalanceTab.styles.ts';
 import { type PendingReputationProps } from '../../types.ts';
 
 import {
@@ -62,8 +62,8 @@ const PendingReputation: FC<PendingReputationProps> = ({
     <div className="pt-6">
       <TitleLabel text={formatMessage({ id: 'userHub.pendingReputation' })} />
       <div className="flex flex-col gap-4 pt-2">
-        <div className={reputationTabClasses.row}>
-          <p className={reputationTabClasses.rowName}>
+        <div className={balanceTabClasses.row}>
+          <p className={balanceTabClasses.rowName}>
             {formatMessage({ id: 'userHub.reputationNextUpdate' })}
           </p>
           <span className="text-sm">
@@ -77,8 +77,8 @@ const PendingReputation: FC<PendingReputationProps> = ({
             )}
           </span>
         </div>
-        <div className={reputationTabClasses.row}>
-          <p className={reputationTabClasses.rowName}>
+        <div className={balanceTabClasses.row}>
+          <p className={balanceTabClasses.rowName}>
             {formatMessage({ id: 'userHub.reputationDecayLabel' })}
           </p>
           <span className="text-sm">
