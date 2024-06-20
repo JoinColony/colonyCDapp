@@ -58,6 +58,10 @@ const useHasNoDecisionMethods = () => {
     return false;
   }
 
+  if (isStakedExpenditureEnabled && actionType === Action.PaymentBuilder) {
+    return false;
+  }
+
   const requiredPermissions = getPermissionsNeededForAction(actionType, {});
   if (!requiredPermissions) {
     return false;

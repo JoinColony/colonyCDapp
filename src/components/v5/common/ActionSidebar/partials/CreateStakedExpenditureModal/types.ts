@@ -1,16 +1,17 @@
 import { type FieldValues } from 'react-hook-form';
 
-import { type Action } from '~constants/actions.ts';
 import { type ModalBaseProps } from '~v5/shared/Modal/types.ts';
+
+import { type PaymentBuilderFormValues } from '../forms/PaymentBuilderForm/hooks.ts';
 
 export interface CreateStakedExpenditureModalProps
   extends Pick<ModalBaseProps, 'isOpen'> {
   onCloseClick: () => void;
   formValues: FieldValues;
-  actionType: Action;
 }
 
-export interface CreateStakedExpenditureFormFields {
+export interface CreateStakedExpenditureFormFields
+  extends PaymentBuilderFormValues {
   stakeAmount: string;
   networkInverseFee: string;
   stakedExpenditureAddress: string;
