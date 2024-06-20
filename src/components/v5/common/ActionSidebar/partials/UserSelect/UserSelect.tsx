@@ -89,6 +89,8 @@ const UserSelect: FC<UserSelectProps> = ({
 
   const userName = getUserName();
   const isUserAddressValid = isAddress(field.value);
+  const isUserAddressInvalid =
+    !isUserAddressValid && (selectedUser || field.value);
 
   const toggler = (
     <button
@@ -157,12 +159,12 @@ const UserSelect: FC<UserSelectProps> = ({
 
   const selectedUserContent = (
     <>
-      {tooltipContent || !isUserAddressValid ? (
+      {tooltipContent || isUserAddressInvalid ? (
         <Tooltip
           tooltipContent={
-            isUserAddressValid
-              ? tooltipContent
-              : formatText({ id: 'actionSidebar.addressErrorTooltip' })
+            isUserAddressInvalid
+              ? formatText({ id: 'actionSidebar.addressErrorTooltip' })
+              : tooltipContent
           }
           // selectTriggerRef={(triggerRef) => {
           //   if (!triggerRef) {
@@ -171,8 +173,8 @@ const UserSelect: FC<UserSelectProps> = ({
 
           //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
           // }}
-          trigger={!isUserAddressValid ? 'hover' : undefined}
-          placement={isUserAddressValid ? 'top' : 'bottom'}
+          trigger={isUserAddressInvalid ? 'hover' : undefined}
+          placement={isUserAddressInvalid ? 'bottom' : 'top'}
         >
           {toggler}
         </Tooltip>
