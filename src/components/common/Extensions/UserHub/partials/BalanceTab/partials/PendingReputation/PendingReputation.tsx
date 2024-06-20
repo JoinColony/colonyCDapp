@@ -1,7 +1,7 @@
 import React, { type FC, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import reputationTabClasses from '~common/Extensions/UserHub/partials/BalanceTab/BalanceTab.styles.ts';
+import balanceTabClasses from '~common/Extensions/UserHub/partials/BalanceTab/BalanceTab.styles.ts';
 import { type PendingReputationProps } from '~common/Extensions/UserHub/partials/BalanceTab/types.ts';
 import { useGetReputationMiningCycleMetadataQuery } from '~gql';
 import useUserReputation from '~hooks/useUserReputation.ts';
@@ -61,8 +61,8 @@ const PendingReputation: FC<PendingReputationProps> = ({
     <div className="pt-6">
       <TitleLabel text={formatMessage({ id: 'userHub.pendingReputation' })} />
       <div className="flex flex-col gap-4 pt-2">
-        <div className={reputationTabClasses.row}>
-          <p className={reputationTabClasses.rowName}>
+        <div className={balanceTabClasses.row}>
+          <p className={balanceTabClasses.rowName}>
             {formatMessage({ id: 'userHub.reputationNextUpdate' })}
           </p>
           <span className="text-sm">
@@ -76,8 +76,8 @@ const PendingReputation: FC<PendingReputationProps> = ({
             )}
           </span>
         </div>
-        <div className={reputationTabClasses.row}>
-          <p className={reputationTabClasses.rowName}>
+        <div className={balanceTabClasses.row}>
+          <p className={balanceTabClasses.rowName}>
             {formatMessage({ id: 'userHub.reputationDecayLabel' })}
           </p>
           <span className="text-sm">
