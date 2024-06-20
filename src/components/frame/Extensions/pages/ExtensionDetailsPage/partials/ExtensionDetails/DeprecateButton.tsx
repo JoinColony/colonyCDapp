@@ -1,7 +1,7 @@
 import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
-import { ButtonWithLoader } from '~frame/Extensions/pages/partials/ButtonWithLoader.tsx';
+import { ButtonWithLoader } from '~frame/Extensions/pages/ExtensionDetailsPage/partials/ExtensionDetails/ButtonWithLoader.tsx';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/Modal.tsx';

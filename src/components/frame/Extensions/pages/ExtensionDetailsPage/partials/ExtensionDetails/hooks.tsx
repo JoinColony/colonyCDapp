@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
+import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
+import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -63,7 +64,13 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
   };
 };
 
-export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
+export const useUninstall = ({
+  extensionId,
+  setActiveTab,
+}: {
+  extensionId: Extension;
+  setActiveTab: (id: ExtensionDetailsPageTabId) => void;
+}) => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
@@ -97,6 +104,8 @@ export const useUninstall = ({ extensionId }: { extensionId: Extension }) => {
           }}
         />,
       );
+
+      setActiveTab(ExtensionDetailsPageTabId.Overview);
     } catch (err) {
       console.error(err);
       toast.error(

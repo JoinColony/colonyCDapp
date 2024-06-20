@@ -11,12 +11,13 @@ const displayName = 'common.Extensions.ImageCarousel';
 const ImageCarousel: FC<ImageCarouselProps> = ({
   slideUrls = images,
   options = { loop: true, align: 'start' },
+  className,
 }) => {
   const { scrollSnaps, emblaRef, scrollTo, selectedIndex } =
     useEmblaCarouselSettings(options);
 
   return (
-    <div className="relative pb-[1.75rem]">
+    <div className={clsx(className, 'relative pb-[1.75rem]')}>
       <div className="cursor-grab overflow-hidden">
         <div ref={emblaRef}>
           <div className="flex">

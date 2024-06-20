@@ -16,15 +16,15 @@ import {
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import ReenableButton from '../ExtensionDetailsPage/partials/ExtensionDetails/ReenableButton.tsx';
+import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
 
-import { ButtonWithLoader } from './ButtonWithLoader.tsx';
+import { ButtonWithLoader } from './ExtensionDetails/ButtonWithLoader.tsx';
+import ReenableButton from './ExtensionDetails/ReenableButton.tsx';
 
 interface EnableButtonProps {
   userHasRoot: boolean;
   extensionData: AnyExtensionData;
   isSetupRoute: boolean;
-  waitingForEnableConfirmation: boolean;
 }
 
 const displayName = 'frame.Extensions.pages.partials.EnableButton';
@@ -33,13 +33,14 @@ const EnableButton = ({
   userHasRoot,
   extensionData,
   isSetupRoute,
-  waitingForEnableConfirmation,
 }: EnableButtonProps) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const isMobile = useMobile();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
 
   const {
     formState: { isValid, isSubmitting },
@@ -63,7 +64,8 @@ const EnableButton = ({
     isInstalledExtensionData(extensionData) &&
     canExtensionBeInitialized(extensionData.extensionId) &&
     !extensionData.isDeprecated &&
-    !extensionData.isInitialized;
+    !extensionData.isInitialized &&
+    !extensionData.enabledAutomaticallyAfterInstall;
 
   /* If deprecated, can be re-enabled */
   const canExtensionBeRenabled = !!(
@@ -96,7 +98,7 @@ const EnableButton = ({
         type="submit"
         disabled={!isValid}
         isFullSize={isMobile}
-        isLoading={isSubmitting || waitingForEnableConfirmation}
+        isLoading={isSubmitting || waitingForActionConfirmation}
       >
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>

@@ -41,7 +41,7 @@ export interface AccordionContentDetails {
     max: number;
     min: number;
     name: string;
-    step: number;
+    step?: number;
   };
   accordionItem?: AccordionMocksItemProps[];
   maxValue: any;

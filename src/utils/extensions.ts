@@ -1,5 +1,6 @@
 import { Extension, Id } from '@colony/colony-js';
 import Decimal from 'decimal.js';
+import { BigNumber } from 'ethers';
 
 import { getUserRolesForDomain } from '~transformers/index.ts';
 import {
@@ -12,6 +13,8 @@ import { type Colony, type ColonyExtension } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { userHasRole } from './checks/index.ts';
+
+const DEFAULT_STAKE_PERCENTAGE = 1; // 1%
 
 /**
  * Type guard to distinguish installed extension data from installable extension data
@@ -86,6 +89,15 @@ export const canExtensionBeInitialized = (extension: Extension) => {
  */
 export const convertFractionToWei = (percentage: number) =>
   new Decimal(percentage).mul(new Decimal(10).pow(16)).toString();
+
+export const getDefaultStakeFraction = (nativeTokensDecimals: number) =>
+  BigNumber.from(10)
+    .pow(nativeTokensDecimals)
+    .mul(DEFAULT_STAKE_PERCENTAGE)
+    .div(100);
+
+export const convertFractionToEth = (value: string) =>
+  new Decimal(value).div(new Decimal(10).pow(16)).toString();
 
 /**
  * For extensions accepting period parameter that the user enters in hours,

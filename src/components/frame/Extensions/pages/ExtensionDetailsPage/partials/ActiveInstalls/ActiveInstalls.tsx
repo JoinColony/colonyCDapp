@@ -10,7 +10,7 @@ const displayName = 'frame.Extensions.pages.partials.ActiveInstalls';
 
 const ActiveInstalls: FC<ActiveInstallsProps> = ({ activeInstalls }) => {
   return (
-    <div className="sm:hidden md:block">
+    <div>
       {activeInstalls < EXTENSIONS_COUNT_THRESHOLD ? (
         <ExtensionStatusBadge
           mode="new"

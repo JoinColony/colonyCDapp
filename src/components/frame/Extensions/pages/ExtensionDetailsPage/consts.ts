@@ -1,16 +1,18 @@
 import { Extension } from '@colony/colony-js';
 
-import LazyConsensusPageSetup from '../LazyConsensusPage/LazyConsensusPageSetup.tsx';
+import LazyConsensusPageSetup from '../LazyConsensusPage/index.ts';
 import MultiSigPageSetup from '../MultiSigPage/MultiSigPageSetup.tsx';
+import StakedExpenditurePageSetup from '../StakedExpenditurePage/StakedExpenditurePageSetup.tsx';
 
 export const ExtensionsBadgeMap = {
   [Extension.VotingReputation]: 'governance',
-  [Extension.MultisigPermissions]: 'governance',
   [Extension.OneTxPayment]: 'payments',
+  [Extension.StagedExpenditure]: 'payments',
 };
 
 export const SetupComponentMap = {
   [Extension.VotingReputation]: LazyConsensusPageSetup,
+  [Extension.StakedExpenditure]: StakedExpenditurePageSetup,
   [Extension.MultisigPermissions]: MultiSigPageSetup,
 };
 
@@ -23,6 +25,10 @@ enum GovernanceInitializationParams {
   submitPeriod = 'submitPeriod',
   revealPeriod = 'revealPeriod',
   // escalationPeriod = 'escalationPeriod', @TODO Re-enable once Motion escalation is implemented
+}
+
+enum StakedExpenditureInitializationParams {
+  stakeFraction = 'stakeFraction',
 }
 
 export const paramsMap = {
@@ -75,5 +81,13 @@ export const paramsMap = {
     //   description:
     //     'How long allowed for members to escalate a dispute to a higher team',
     // },
+  },
+  [Extension.StakedExpenditure]: {
+    [StakedExpenditureInitializationParams.stakeFraction]: {
+      complementaryLabel: 'percent',
+      title: 'Required Stake',
+      description:
+        'What percentage of the team’s reputation, in token terms, is required to create a Payment builder, Split or Staged payment action?',
+    },
   },
 };
