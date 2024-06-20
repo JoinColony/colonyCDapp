@@ -84,7 +84,7 @@ export const useDomainThreshold = ({
 
     const thresholdPerRole = Object.entries(countPerRole).reduce(
       (acc, [role, count]) => {
-        acc[role] = Math.ceil(count / 2);
+        acc[role] = Math.floor(count / 2) + 1;
         return acc;
       },
       {},
