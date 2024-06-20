@@ -19,12 +19,15 @@ const ContentTypeText: FC<ContentTypeProps> = ({ title, subTitle }) => {
   return (
     <div>
       {titleText && (
-        // eslint-disable-next-line react/no-danger
-        <p className="text-1" dangerouslySetInnerHTML={{ __html: titleText }} />
+        <p
+          className="max-w-[30rem] text-1"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: titleText }}
+        />
       )}
       {subTitleText && (
         <p
-          className="mt-0.5 text-sm text-gray-600"
+          className="mt-0.5 max-w-[30rem] text-sm text-gray-600"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: subTitleText }}
         />

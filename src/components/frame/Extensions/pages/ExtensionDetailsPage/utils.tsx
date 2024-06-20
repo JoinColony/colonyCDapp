@@ -1,15 +1,17 @@
-import { Extension, Id } from '@colony/colony-js';
+import { Extension, Id, getExtensionHash } from '@colony/colony-js';
 import React from 'react';
 import { type FieldValues } from 'react-hook-form';
 import { type useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { supportedExtensionsConfig } from '~constants/index.ts';
+import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
+import { ActionTypes } from '~redux';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
-import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import {
@@ -20,11 +22,11 @@ import {
 import { type SetStateFn } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
-
-export enum ExtensionTabId {
-  OVERVIEW = 0,
-  SETTINGS = 1,
-}
+import {
+  convertFractionToEth,
+  isInstalledExtensionData,
+} from '~utils/extensions.ts';
+import { camelCase } from '~utils/lodash.ts';
 
 export const waitForColonyPermissions = ({
   refetchColony,
@@ -61,18 +63,30 @@ export const waitForColonyPermissions = ({
     }, interval);
   });
 
-export const waitForDbAfterExtensionAction = ({
-  refetchExtensionData,
-  method,
-  interval = 1000,
-  latestVersion,
-}: {
-  refetchExtensionData: RefetchExtensionDataFn;
-  interval?: number;
-  method: ExtensionMethods;
-  latestVersion?: number;
-}) =>
-  new Promise<void>((res, rej) => {
+export const waitForDbAfterExtensionAction = (
+  args: {
+    refetchExtensionData: RefetchExtensionDataFn;
+    interval?: number;
+  } & (
+    | {
+        method: ExtensionMethods.UPGRADE;
+        latestVersion: number;
+      }
+    | {
+        method: ExtensionMethods.SAVE_CHANGES;
+        params: Record<string, any>;
+      }
+    | {
+        method: Exclude<
+          ExtensionMethods,
+          ExtensionMethods.UPGRADE | ExtensionMethods.SAVE_CHANGES
+        >;
+      }
+  ),
+) => {
+  const { refetchExtensionData, interval = 1000 } = args;
+
+  return new Promise<void>((res, rej) => {
     const initTime = new Date().valueOf();
     const intervalId = setInterval(async () => {
       const thirtySeconds = 1000 * 30;
@@ -90,9 +104,13 @@ export const waitForDbAfterExtensionAction = ({
       const extension =
         freshExtensionData?.getExtensionByColonyAndHash?.items[0];
 
+      const extensionConfig = supportedExtensionsConfig.find(
+        (e) => getExtensionHash(e.extensionId) === extension?.hash,
+      );
+
       let condition = false;
 
-      switch (method) {
+      switch (args.method) {
         case ExtensionMethods.INSTALL: {
           if (extension) {
             // If it appears in the query, it means it's been installed
@@ -110,14 +128,38 @@ export const waitForDbAfterExtensionAction = ({
         }
 
         case ExtensionMethods.ENABLE: {
-          // Extension.MultisigPermissions doesn't need initialisation by default
-          condition =
-            !!extension?.isInitialized || !!extension?.params?.multiSig;
+          condition = !!extension?.isInitialized;
           break;
         }
 
         case ExtensionMethods.UPGRADE: {
-          condition = extension?.currentVersion === latestVersion;
+          condition = extension?.currentVersion === args.latestVersion;
+          break;
+        }
+
+        case ExtensionMethods.SAVE_CHANGES: {
+          const initializationParams =
+            extensionConfig?.initializationParams || [];
+          condition = Object.entries(args.params).every(([key, value]) => {
+            const initializationParam = initializationParams.find(
+              (param) => param.paramName === key,
+            );
+
+            if (!initializationParam) {
+              return true;
+            }
+
+            const extensionParamValue =
+              extension?.params?.[camelCase(extensionConfig?.extensionId)]?.[
+                key
+              ];
+
+            return initializationParam.transformValue
+              ? initializationParam.transformValue(value) ===
+                  extensionParamValue
+              : value === extensionParamValue;
+          });
+
           break;
         }
 
@@ -138,46 +180,87 @@ export const waitForDbAfterExtensionAction = ({
       }
     }, interval);
   });
+};
 
 export const getFormSuccessFn =
   <T extends FieldValues>({
-    setWaitingForEnableConfirmation,
+    setWaitingForActionConfirmation,
     extensionData,
-    checkExtensionEnabled,
+    refetchColony,
+    refetchExtensionData,
     navigate,
     colonyName,
   }: {
-    setWaitingForEnableConfirmation: SetStateFn;
+    setWaitingForActionConfirmation: SetStateFn;
     extensionData: AnyExtensionData;
-    checkExtensionEnabled: () => Promise<void>;
+    refetchColony: RefetchColonyFn;
+    refetchExtensionData: RefetchExtensionDataFn;
     navigate: ReturnType<typeof useNavigate>;
     colonyName: string;
   }): OnSuccess<T> =>
-  async (_, { reset }) => {
-    setWaitingForEnableConfirmation(true);
+  async (fieldValues, { reset }) => {
+    setWaitingForActionConfirmation(true);
+    const isSaveChanges =
+      extensionData &&
+      isInstalledExtensionData(extensionData) &&
+      extensionData.enabledAutomaticallyAfterInstall &&
+      (extensionData.isEnabled || extensionData.isDeprecated);
+
     try {
-      await checkExtensionEnabled();
+      /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
+      await waitForColonyPermissions({ extensionData, refetchColony });
+      if (isSaveChanges) {
+        await waitForDbAfterExtensionAction({
+          method: ExtensionMethods.SAVE_CHANGES,
+          refetchExtensionData,
+          params: fieldValues.params,
+        });
+      } else {
+        await waitForDbAfterExtensionAction({
+          method: ExtensionMethods.ENABLE,
+          refetchExtensionData,
+        });
+
+        reset();
+
+        navigate(
+          `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}`,
+        );
+      }
+
       toast.success(
         <Toast
           type="success"
-          title={{ id: 'extensionEnable.toast.title.success' }}
-          description={{ id: 'extensionEnable.toast.description.success' }}
+          title={{
+            id: isSaveChanges
+              ? 'extensionSaveChanges.toast.title.success'
+              : 'extensionEnable.toast.title.success',
+          }}
+          description={{
+            id: isSaveChanges
+              ? 'extensionSaveChanges.toast.description.success'
+              : 'extensionEnable.toast.description.success',
+          }}
         />,
-      );
-      reset();
-      navigate(
-        `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}`,
       );
     } catch (error) {
       toast.error(
         <Toast
           type="error"
-          title={{ id: 'extensionEnable.toast.title.error' }}
-          description={{ id: 'extensionEnable.toast.description.error' }}
+          title={{
+            id: isSaveChanges
+              ? 'extensionSaveChanges.toast.title.error'
+              : 'extensionEnable.toast.title.error',
+          }}
+          description={{
+            id: isSaveChanges
+              ? 'extensionSaveChanges.toast.description.error'
+              : 'extensionEnable.toast.description.error',
+          }}
         />,
       );
     } finally {
-      setWaitingForEnableConfirmation(false);
+      setWaitingForActionConfirmation(false);
     }
   };
 
@@ -210,23 +293,76 @@ export const mapExtensionActionPayload = (
   );
 };
 
-export const getExtensionTabs = (
-  extension: Extension,
-  isInstalled?: boolean,
-): TabItem[] => {
-  /* eslint-disable no-fallthrough */
-  switch (extension) {
-    case Extension.VotingReputation:
-    case Extension.MultisigPermissions: {
-      if (isInstalled) {
-        return [
-          { id: ExtensionTabId.OVERVIEW, title: 'Overview' },
-          { id: ExtensionTabId.SETTINGS, title: 'Extension settings' },
-        ];
+export const getTextChunks = () => {
+  const HeadingChunks = (chunks: React.ReactNode[]) => (
+    <h4 className="mb-4 mt-6 font-semibold text-gray-900">{chunks}</h4>
+  );
+
+  const ParagraphChunks = (chunks: React.ReactNode[]) => (
+    <p className="mb-4">{chunks}</p>
+  );
+  const BoldChunks = (chunks: React.ReactNode[]) => (
+    <b className="font-medium text-gray-900">{chunks}</b>
+  );
+  const ListChunks = (chunks: React.ReactNode[]) => (
+    <ul className="my-4 ml-4 list-disc">{chunks}</ul>
+  );
+  const ListItemChunks = (chunks: React.ReactNode[]) => <li>{chunks}</li>;
+
+  return {
+    h4: HeadingChunks,
+    p: ParagraphChunks,
+    b: BoldChunks,
+    ul: ListChunks,
+    li: ListItemChunks,
+  };
+};
+
+export const getExtensionParams = (extensionData: AnyExtensionData | null) => {
+  if (!extensionData) {
+    return {};
+  }
+
+  const isExtensionInstalled = isInstalledExtensionData(extensionData);
+  const { initializationParams = [] } = extensionData;
+  const initialValues = createExtensionSetupInitialValues(initializationParams);
+
+  if (isExtensionInstalled) {
+    switch (extensionData.extensionId) {
+      case Extension.StakedExpenditure: {
+        return extensionData.params?.stakedExpenditure?.stakeFraction
+          ? {
+              stakeFraction: convertFractionToEth(
+                extensionData.params.stakedExpenditure.stakeFraction,
+              ),
+            }
+          : initialValues;
+      }
+      default: {
+        return extensionData.params?.[camelCase(extensionData.extensionId)];
       }
     }
-    default:
-      return [{ id: ExtensionTabId.OVERVIEW, title: 'Overview' }];
   }
-  /* eslint-enable no-fallthrough */
+
+  return initialValues;
+};
+
+export const getActionData = (extensionData: AnyExtensionData) => {
+  const isExtensionInstalled = isInstalledExtensionData(extensionData);
+
+  switch (extensionData.extensionId) {
+    case Extension.StakedExpenditure: {
+      if (
+        isExtensionInstalled &&
+        (extensionData.isEnabled || extensionData.isDeprecated)
+      ) {
+        return ActionTypes.SET_STAKE_FRACTION;
+      }
+
+      return ActionTypes.EXTENSION_ENABLE;
+    }
+    default: {
+      return ActionTypes.EXTENSION_ENABLE;
+    }
+  }
 };
