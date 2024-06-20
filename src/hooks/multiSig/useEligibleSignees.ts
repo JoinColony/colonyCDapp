@@ -17,11 +17,18 @@ export const useEligibleSignees = ({
   const domainIds =
     domainId === Id.RootDomain ? [Id.RootDomain] : [Id.RootDomain, domainId];
 
-  const getMatchingRoles = (members: ColonyContributor[]) => {
-    const matches = {};
+  const getEligibleSignees = (members: ColonyContributor[]) => {
+    if (!requiredRoles) {
+      return {};
+    }
+
+    const matches = requiredRoles.reduce((acc, role) => {
+      acc[role] = {};
+      return acc;
+    }, {});
 
     members.forEach((member) => {
-      if (!member.roles || !requiredRoles) {
+      if (!member.roles) {
         return;
       }
 
@@ -42,28 +49,31 @@ export const useEligibleSignees = ({
           .map((key) => Number(key.split('_')[1]));
 
         requiredRoles.forEach((role) => {
+          if (!member.user) {
+            return;
+          }
+
           if (assignedRoles.includes(role)) {
-            const key = `${member.user?.walletAddress}_${role}`;
-            if (
-              !matches[key] ||
-              Number(matches[key].domainId) !== Id.RootDomain
-            ) {
-              matches[key] = member.user;
-            }
+            const key = member.user.walletAddress;
+            matches[role][key] = member.user;
           }
         });
       });
     });
 
-    return Object.values(matches);
+    return matches;
   };
 
-  const matchingRoles = getMatchingRoles(totalMembers);
-  const eligibleSigneesCount = matchingRoles.length;
-  const eligibleSignees = new Set(matchingRoles);
+  const eligibleSignees = getEligibleSignees(totalMembers);
+
+  const countPerRole: { [role: number]: number } = {};
+  Object.keys(eligibleSignees).forEach((role) => {
+    const numberOfUsers = Object.keys(eligibleSignees[role]).length;
+    countPerRole[role] = numberOfUsers;
+  });
 
   return {
     eligibleSignees,
-    eligibleSigneesCount,
+    countPerRole,
   };
 };
