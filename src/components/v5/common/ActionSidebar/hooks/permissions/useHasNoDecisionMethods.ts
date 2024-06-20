@@ -20,8 +20,11 @@ import {
 const useHasNoDecisionMethods = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { isVotingReputationEnabled, isMultiSigEnabled } =
-    useEnabledExtensions();
+  const {
+    isVotingReputationEnabled,
+    isMultiSigEnabled,
+    isStakedExpenditureEnabled,
+  } = useEnabledExtensions();
 
   const { watch } = useFormContext() || {};
 
@@ -41,6 +44,10 @@ const useHasNoDecisionMethods = () => {
 
   // User can't use reputation to create Payment builder action
   if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
+    return false;
+  }
+
+  if (isStakedExpenditureEnabled && actionType === Action.PaymentBuilder) {
     return false;
   }
 

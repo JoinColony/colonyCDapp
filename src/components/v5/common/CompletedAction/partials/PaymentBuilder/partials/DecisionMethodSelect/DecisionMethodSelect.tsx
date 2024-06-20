@@ -20,6 +20,7 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
   options,
   name,
   onChange: onChangeProp,
+  isDisabled,
 }) => {
   const {
     field: { onChange, value },
@@ -44,12 +45,17 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
 
   return (
     <>
-      <h6 className="mb-2 text-gray-700 text-2">
+      <h6
+        className={clsx('mb-2 text-2', {
+          'text-gray-700': !isDisabled,
+          'text-gray-300': isDisabled,
+        })}
+      >
         {formatText({ id: 'decisionMethodSelect.title' })}
       </h6>
       <SelectBase
         className={clsx(styles.wrapper, {
-          '[&_div]:!border-negative-400': error,
+          '[&_div]:!border-negative-400': error && !isDisabled,
         })}
         classNames={{
           menu: () => styles.menu,
@@ -68,8 +74,9 @@ const DecisionMethodSelect: FC<DecisionMethodSelectProps> = ({
         onChange={handleChange}
         value={value.value}
         defaultValue={value.value}
+        isDisabled={isDisabled}
       />
-      {error && (
+      {error && !isDisabled && (
         <span className="text-sm text-negative-400">
           {formatText({ id: 'decisionMethodSelect.error' })}
         </span>

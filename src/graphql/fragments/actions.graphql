@@ -133,6 +133,7 @@ fragment ColonyAction on ColonyAction {
     ...ApprovedTokenChanges
   }
   expenditure {
+    isStaked
     metadata {
       distributionType
     }

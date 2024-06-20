@@ -175,4 +175,6 @@ export enum DecisionMethod {
   Permissions = 'Permissions',
   Reputation = 'Reputation',
   MultiSig = 'MultiSig',
+  Staking = 'Staking',
+  PaymentCreator = 'PaymentCreator',
 }

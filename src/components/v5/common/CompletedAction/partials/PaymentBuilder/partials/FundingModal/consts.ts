@@ -9,32 +9,6 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
-import { type SelectBaseOption } from '~v5/common/Fields/Select/types.ts';
-
-export const getFundingDecisionMethodItems = (
-  isVotingExtensionEnabled: boolean,
-): SelectBaseOption[] =>
-  isVotingExtensionEnabled
-    ? [
-        {
-          label: formatText({
-            id: 'decisionMethodSelect.decision.permissions',
-          }),
-          value: DecisionMethod.Permissions,
-        },
-        {
-          label: formatText({ id: 'decisionMethodSelect.decision.reputation' }),
-          value: DecisionMethod.Reputation,
-        },
-      ]
-    : [
-        {
-          label: formatText({
-            id: 'decisionMethodSelect.decision.permissions',
-          }),
-          value: DecisionMethod.Permissions,
-        },
-      ];
 
 export const fundingDecisionMethodDescriptions = {
   [DecisionMethod.Permissions]: formatText({

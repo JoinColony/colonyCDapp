@@ -1,5 +1,6 @@
 import React, { useState, type FC, useEffect, useMemo } from 'react';
 
+import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
@@ -18,7 +19,9 @@ import Button from '~v5/shared/Button/Button.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
-import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/FinalizeWithPermissionsInfo.tsx';
+import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
+import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
+import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
@@ -59,8 +62,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     cancellingActions,
     finalizedAt,
     createdAt,
+    isStaked,
+    userStake,
+    ownerAddress,
     motions,
   } = expenditure || {};
+  const { amount: stakeAmount = '' } = userStake || {};
   const { items: fundingActionsItems } = fundingActions || {};
 
   const expenditureStep = getExpenditureStep(expenditure);
@@ -106,7 +113,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       label: formatText({ id: 'expenditure.cancelStage.label' }),
     },
     content: (
-      <FinalizeWithPermissionsInfo
+      <ActionWithPermissionsInfo
         userAdddress={cancellingActions?.items[0]?.initiatorAddress}
       />
     ),
@@ -204,8 +211,13 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Create,
       heading: { label: formatText({ id: 'expenditure.createStage.label' }) },
-      content: (
-        <FinalizeWithPermissionsInfo
+      content: isStaked ? (
+        <ActionWithStakingInfo
+          userAdddress={expenditure?.ownerAddress}
+          stakeAmount={stakeAmount ?? ''}
+        />
+      ) : (
+        <ActionWithPermissionsInfo
           userAdddress={expenditure?.ownerAddress}
           createdAt={createdAt}
         />
@@ -242,10 +254,19 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             }
           />
         ) : (
-          <FinalizeWithPermissionsInfo
-            userAdddress={expenditure?.ownerAddress}
-            createdAt={expenditure?.lockingActions?.items[0]?.createdAt}
-          />
+          <>
+            {isStaked ? (
+              <ActionWithStakingInfo
+                userAdddress={expenditure?.ownerAddress}
+                stakeAmount={stakeAmount ?? ''}
+              />
+            ) : (
+              <ActionWithPermissionsInfo
+                userAdddress={expenditure?.ownerAddress}
+                createdAt={expenditure?.lockingActions?.items[0]?.createdAt}
+              />
+            )}
+          </>
         ),
     },
     {
@@ -330,9 +351,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 />
               </div>
             ) : undefined}
-            {fundingActionsItems && (
-              <FinalizeWithPermissionsInfo
-                userAdddress={fundingActionsItems[0]?.initiatorAddress}
+            {fundingActionsItems?.[0] && (
+              <ActionWithPermissionsInfo
+                userAdddress={fundingActionsItems[0].initiatorAddress}
                 createdAt={fundingActionsItems[0]?.createdAt}
               />
             )}
@@ -362,10 +383,19 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ) : (
           <>
             {finalizedAt ? (
-              <FinalizeWithPermissionsInfo
-                userAdddress={finalizingActions?.items[0]?.initiatorAddress}
-                createdAt={finalizingActions?.items[0]?.createdAt}
-              />
+              <>
+                {finalizingActions?.items[0]?.initiatorAddress ===
+                ownerAddress ? (
+                  <FinalizeByPaymentCreatorInfo
+                    userAdddress={expenditure?.ownerAddress}
+                  />
+                ) : (
+                  <ActionWithPermissionsInfo
+                    userAdddress={finalizingActions?.items[0]?.initiatorAddress}
+                    createdAt={finalizingActions?.items[0]?.createdAt}
+                  />
+                )}
+              </>
             ) : (
               <div />
             )}
@@ -405,6 +435,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             onSuccess={() => {
               setExpectedStepKey(ExpenditureStep.Payment);
             }}
+            // @todo: update when split payment will be ready
+            actionType={Action.PaymentBuilder}
           />
           <FundingModal
             isOpen={isFundingModalOpen}
@@ -413,6 +445,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             onSuccess={() => {
               setExpectedStepKey(ExpenditureStep.Release);
             }}
+            // @todo: update when split payment will be ready
+            actionType={Action.PaymentBuilder}
           />
         </>
       )}
