@@ -2,9 +2,11 @@ import { ArrowsClockwise, SpinnerGap } from '@phosphor-icons/react';
 import React, { type FC, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
@@ -25,7 +27,14 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
   const { colony } = useColonyContext();
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
-  const { slots = [], finalizedAt, nativeId } = expenditure || {};
+  const {
+    slots = [],
+    finalizedAt,
+    nativeId,
+    userStake,
+    isStaked,
+  } = expenditure || {};
+  const { isClaimed: isStakeClaimed } = userStake || {};
 
   const claimablePayouts = useMemo(
     () => getClaimableExpenditurePayouts(slots, blockTime, finalizedAt),
@@ -79,6 +88,25 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
         nativeExpenditureId: nativeId,
       }
     : undefined;
+
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+  });
+
+  const handleReclaimStake = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: ReclaimExpenditureStakePayload = {
+      colonyAddress: colony.colonyAddress,
+      nativeExpenditureId: expenditure?.nativeId,
+    };
+
+    await reclaimExpenditureStake(payload);
+  };
 
   if (!finalizedAt) {
     return null;
@@ -151,7 +179,11 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                     }
                   />
                 }
-                onSuccess={() => {
+                onSuccess={async () => {
+                  if (isStaked && !isStakeClaimed) {
+                    await handleReclaimStake();
+                  }
+
                   fetchCurrentBlockTime();
                 }}
               />
