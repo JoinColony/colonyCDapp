@@ -19,7 +19,7 @@ import {
 import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import ActionTypeNotification from '~v5/shared/ActionTypeNotification/ActionTypeNotification.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
-import { useShowNotEnoughMembersWithPermissionsNotification } from '../hooks.ts';
+import { useHasEnoughMembersWithPermissions } from '../hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';
@@ -66,12 +66,11 @@ export const SidebarBanner: FC = () => {
   const showVersionUpToDateNotification =
     selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
 
-  const showNotEnoughMembersWithPermissionsNotification =
-    useShowNotEnoughMembersWithPermissionsNotification({
-      decisionMethod,
-      selectedAction,
-      createdIn,
-    });
+  const hasEnoughMembersWithPermissions = useHasEnoughMembersWithPermissions({
+    decisionMethod,
+    selectedAction,
+    createdIn,
+  });
 
   return (
     <>
@@ -99,7 +98,7 @@ export const SidebarBanner: FC = () => {
           </NotificationBanner>
         </div>
       )}
-      {showNotEnoughMembersWithPermissionsNotification && (
+      {!hasEnoughMembersWithPermissions && (
         <div className="mt-6">
           <NotificationBanner icon={WarningCircle} status="error">
             <FormattedMessage id="actionSidebar.notEnoughMembersWithPermissions" />
