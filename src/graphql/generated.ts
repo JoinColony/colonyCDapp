@@ -1689,6 +1689,7 @@ export type CreateUserStakeInput = {
   id?: InputMaybe<Scalars['ID']>;
   isClaimed: Scalars['Boolean'];
   isForfeited?: InputMaybe<Scalars['Boolean']>;
+  type?: InputMaybe<UserStakeType>;
   userAddress: Scalars['ID'];
 };
 
@@ -4142,6 +4143,7 @@ export type ModelSubscriptionUserStakeFilterInput = {
   isClaimed?: InputMaybe<ModelSubscriptionBooleanInput>;
   isForfeited?: InputMaybe<ModelSubscriptionBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionUserStakeFilterInput>>>;
+  type?: InputMaybe<ModelSubscriptionStringInput>;
   userAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
@@ -4303,6 +4305,7 @@ export type ModelUserStakeConditionInput = {
   isForfeited?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelUserStakeConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserStakeConditionInput>>>;
+  type?: InputMaybe<ModelUserStakeTypeInput>;
   userAddress?: InputMaybe<ModelIdInput>;
 };
 
@@ -4323,7 +4326,13 @@ export type ModelUserStakeFilterInput = {
   isForfeited?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelUserStakeFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserStakeFilterInput>>>;
+  type?: InputMaybe<ModelUserStakeTypeInput>;
   userAddress?: InputMaybe<ModelIdInput>;
+};
+
+export type ModelUserStakeTypeInput = {
+  eq?: InputMaybe<UserStakeType>;
+  ne?: InputMaybe<UserStakeType>;
 };
 
 export type ModelUserTokensConditionInput = {
@@ -8557,6 +8566,7 @@ export type UpdateUserStakeInput = {
   id: Scalars['ID'];
   isClaimed?: InputMaybe<Scalars['Boolean']>;
   isForfeited?: InputMaybe<Scalars['Boolean']>;
+  type?: InputMaybe<UserStakeType>;
   userAddress?: InputMaybe<Scalars['ID']>;
 };
 
@@ -8655,10 +8665,17 @@ export type UserStake = {
   isClaimed: Scalars['Boolean'];
   /** Only applicable for expenditure stakes, indicates if the creator's stake was forfeited when expenditure was cancelled */
   isForfeited?: Maybe<Scalars['Boolean']>;
+  type?: Maybe<UserStakeType>;
   updatedAt: Scalars['AWSDateTime'];
   user: User;
   userAddress: Scalars['ID'];
 };
+
+/** Type of stake a user can make */
+export enum UserStakeType {
+  Motion = 'MOTION',
+  StakedExpenditure = 'STAKED_EXPENDITURE'
+}
 
 export type UserTokens = {
   __typename?: 'UserTokens';
