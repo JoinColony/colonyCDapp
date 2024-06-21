@@ -271,7 +271,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             </button>
             {!isMobile && (
               <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
                     className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
@@ -284,8 +284,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                       <ArrowsOutSimple size={18} />
                     )}
                   </button>
-                {getShareButton()}
-              </div>
+                  {getShareButton()}
+                </div>
                 {action && !isMotion && !expenditure && (
                   <PillsBase
                     className="bg-success-100 text-success-400"
@@ -303,7 +303,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                 <MotionOutcomeBadge motionState={motionState} />
               </div>
             )}
-          {isMobile && getShareButton()}
+            {isMobile && getShareButton()}
           </div>
           <div>{children}</div>
         </div>
