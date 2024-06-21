@@ -1,5 +1,5 @@
 import React from 'react';
-import { useController } from 'react-hook-form';
+import { useController, useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 
@@ -17,17 +17,18 @@ function FormCardSelect<TValue = string>({
 }: FormCardSelectProps<TValue>): JSX.Element {
   const { readonly } = useAdditionalFormOptionsContext();
   const {
-    field: { onChange: onFieldChange, value },
+    field: { onChange: onFieldChange },
     fieldState: { invalid, error },
   } = useController({
     name,
   });
+  const watchedValue = useWatch({ name });
 
   return (
     <CardSelect<TValue>
       {...rest}
       readonly={readonly}
-      value={value}
+      value={watchedValue}
       onChange={(onChangeValue) => {
         onChange?.(onChangeValue);
         onFieldChange(onChangeValue);
