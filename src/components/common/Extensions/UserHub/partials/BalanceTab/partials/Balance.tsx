@@ -63,6 +63,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
       },
     },
     skip: !wallet?.address || !nativeToken?.tokenAddress,
+    fetchPolicy: 'cache-and-network',
   });
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
