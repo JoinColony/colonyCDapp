@@ -53,7 +53,8 @@ export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
-  AddDomain = 'addDomain(uint256,uint256,uint256)',
+  AddDomain = 'addDomain(uint256,uint256,uint256,string)',
+  EditDomain = 'editDomain',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
