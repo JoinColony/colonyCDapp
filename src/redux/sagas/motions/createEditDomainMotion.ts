@@ -236,7 +236,7 @@ function* createEditDomainMotion({
       getPermissionProofs,
       colonyClient.networkClient,
       colonyClient,
-      parentId,
+      isMultiSig ? Id.RootDomain : domainId,
       ColonyRole.Architecture,
       votingReputationClient.address,
     );
