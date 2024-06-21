@@ -23,6 +23,7 @@ const mergeDomains = (
       nativeId: repInfo.domain.nativeId,
       permissions: [],
       multiSigPermissions: [],
+      domainColor: repInfo.domain.metadata?.color,
       domainName:
         repInfo.domain.metadata?.name ?? `Domain ${repInfo.domain.nativeId}`,
     };
@@ -67,6 +68,7 @@ const mergeDomains = (
       domains[domainId] = {
         nativeId: permDomain.domain.nativeId,
         domainId: permDomain.domainId,
+        domainColor: permDomain.domain?.metadata?.color,
         domainName:
           permDomain.domain?.metadata?.name ??
           `Domain ${permDomain.domain.nativeId}`,
