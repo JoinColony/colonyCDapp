@@ -387,6 +387,7 @@
     "transaction.MultisigPermissionsClient.changeVote.title": "Change MultiSig motion vote",
     "transaction.MultisigPermissionsClient.execute.title": "Execute MultiSig motion",
     "transaction.MultisigPermissionsClient.createMotion.title": "Create motion",
+    "transaction.MultisigPermissionsClient.execute.title": "Execute",
     "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
     "metatransaction.group.deposit.title": "Activate tokens",
     "metatransaction.group.deposit.description": "Activate tokens",
