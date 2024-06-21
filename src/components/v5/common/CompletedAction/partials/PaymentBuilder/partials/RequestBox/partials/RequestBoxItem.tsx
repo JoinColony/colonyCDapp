@@ -31,7 +31,7 @@ const RequestBoxItem: FC<RequestBoxItemProps> = ({
     <button
       type="button"
       className={clsx(
-        'flex w-full items-center justify-between text-gray-600 outline-none transition-colors',
+        'relative flex w-full items-center justify-between text-gray-600 outline-none transition-colors',
         {
           'hover:text-blue-400': isMotionFailed || !isSingleItem,
         },
