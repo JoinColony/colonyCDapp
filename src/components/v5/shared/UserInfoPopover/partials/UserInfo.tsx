@@ -15,6 +15,7 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
+import { getTeamColor } from '~utils/teams.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
@@ -77,20 +78,20 @@ const UserInfo: FC<UserInfoProps> = ({
 
   return (
     <div
-      className={clsx({
+      className={clsx('flex flex-col sm:max-h-[504px] sm:w-[350px]', {
         'sm:min-w-[17rem]': !isTopContributorType,
         'sm:min-w-[20rem]': isTopContributorType,
       })}
     >
       <div
         className={clsx({
-          'bg-purple-100 p-6': isTopContributorType,
+          'bg-purple-100 p-6 pb-[18px]': isTopContributorType,
           'px-6 pt-6': !isTopContributorType,
         })}
       >
         <div
           className={clsx({
-            'mb-6': isTopContributorType,
+            'mb-4': isTopContributorType,
           })}
         >
           {userDetails}
@@ -120,31 +121,31 @@ const UserInfo: FC<UserInfoProps> = ({
           </>
         )}
       </div>
-      <div className="flex flex-col gap-6 p-6">
+      <div className="flex flex-1 flex-col gap-6 overflow-hidden p-6 pt-[18px]">
         {aboutDescriptionText && (
           <div>
             <TitleLabel
               className="mb-2"
               text={formatText({ id: 'userInfo.about.section' })}
             />
-            <p className="text-md text-gray-600">{aboutDescriptionText}</p>
+            <p className="truncate whitespace-break-spaces text-md text-gray-600 sm:max-h-[80px]">
+              {aboutDescriptionText}
+            </p>
           </div>
         )}
         {additionalContent && <div>{additionalContent}</div>}
-        {(aboutDescriptionText || additionalContent) && !!domains?.length && (
-          <div className="border-t border-gray-200" />
-        )}
         {domains?.length ? (
-          <div>
+          <div className="flex flex-col overflow-hidden">
             <TitleLabel
               text={formatText({
                 id: 'userInfo.teamBreakdown.section',
               })}
             />
-            <ul className="flex flex-col gap-2 pt-2">
+            <ul className="flex flex-col gap-2 pt-2 sm:overflow-y-auto">
               {domains.map(
                 ({
                   domainId,
+                  domainColor,
                   domainName,
                   permissions,
                   multiSigPermissions,
@@ -184,14 +185,20 @@ const UserInfo: FC<UserInfoProps> = ({
                   return (
                     <li
                       key={domainId}
-                      className="grid grid-cols-[2fr,1fr] items-center font-medium"
+                      className="grid grid-cols-[2fr,1fr] items-center rounded border border-gray-100 p-3 font-medium"
                     >
-                      <span className="truncate whitespace-nowrap text-md">
-                        {domainName}
-                      </span>
+                      <div className="flex flex-row items-center truncate">
+                        <div
+                          className={`mr-2 flex h-[0.625rem] w-[0.625rem] rounded-full ${getTeamColor(domainColor)}`}
+                        />
+                        <span className="truncate whitespace-nowrap text-sm">
+                          {domainName}
+                        </span>
+                      </div>
                       <div className="flex justify-end">
                         {permissionRole && (
                           <Tooltip
+                            placement="top"
                             tooltipContent={getPermissionTooltipContent({
                               role: permissionRole,
                             })}
@@ -202,6 +209,7 @@ const UserInfo: FC<UserInfoProps> = ({
 
                         {isMultiSigEnabled && multiSigPermissionRole && (
                           <Tooltip
+                            placement="top"
                             tooltipContent={getPermissionTooltipContent({
                               role: multiSigPermissionRole,
                               isMultiSig: true,
@@ -212,6 +220,7 @@ const UserInfo: FC<UserInfoProps> = ({
                         )}
 
                         <Tooltip
+                          placement="top"
                           className="flex min-w-[4.5rem] items-center justify-end text-sm text-blue-400"
                           tooltipContent={
                             <Numeral value={reputationRaw} suffix=" pts" />
