@@ -6,7 +6,7 @@ import { Network } from '~types/network.ts';
 export const currencyApiConfig = {
   endpoints: {
     tokenPriceByAddress: {
-      url: 'https://api.coingecko.com/api/v3/simple/token_price',
+      url: `${import.meta.env.COINGECKO_API_URL}/api/v3/simple/token_price`,
       searchParams: {
         from: 'contract_addresses',
         to: 'vs_currencies',
@@ -14,7 +14,7 @@ export const currencyApiConfig = {
       },
     },
     tokenPriceByName: {
-      url: 'https://api.coingecko.com/api/v3/simple/price',
+      url: `${import.meta.env.COINGECKO_API_URL}/api/v3/simple/price`,
       searchParams: {
         from: 'ids',
         to: 'vs_currencies',
