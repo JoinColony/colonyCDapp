@@ -72,6 +72,7 @@ export const useManagePermissions = (
 
       setValue(FIELD_NAME.ROLE, roleValue, {
         shouldValidate: !!roleValue || (isSubmitted && !isValid),
+        shouldDirty: true,
       });
 
       if (userRole.role !== UserRole.Custom) {
