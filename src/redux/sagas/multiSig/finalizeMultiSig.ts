@@ -23,7 +23,7 @@ function* finalizeMultiSigAction({
 
     yield fork(createTransaction, meta.id, {
       context: ClientType.MultisigPermissionsClient,
-      methodName: 'execute',
+      methodName: 'executeWithoutFailure',
       identifier: colonyAddress,
       params: [multiSigId],
     });
