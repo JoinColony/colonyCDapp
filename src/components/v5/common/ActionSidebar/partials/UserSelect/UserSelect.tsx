@@ -166,6 +166,7 @@ const UserSelect: FC<UserSelectProps> = ({
               ? formatText({ id: 'actionSidebar.addressErrorTooltip' })
               : tooltipContent
           }
+          placement="top"
           // selectTriggerRef={(triggerRef) => {
           //   if (!triggerRef) {
           //     return null;
@@ -173,8 +174,6 @@ const UserSelect: FC<UserSelectProps> = ({
 
           //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
           // }}
-          trigger={isUserAddressInvalid ? 'hover' : undefined}
-          placement={isUserAddressInvalid ? 'bottom' : 'top'}
         >
           {toggler}
         </Tooltip>
