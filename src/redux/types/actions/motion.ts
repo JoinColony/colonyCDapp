@@ -53,7 +53,8 @@ export enum RootMotionMethodNames {
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
   EditColonyByDelta = 'editColonyByDelta',
-  AddDomain = 'addDomain(uint256,uint256,uint256)',
+  AddDomain = 'addDomain(uint256,uint256,uint256,string)',
+  EditDomain = 'editDomain',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
