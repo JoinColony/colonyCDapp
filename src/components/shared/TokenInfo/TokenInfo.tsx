@@ -37,7 +37,7 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
     <div
       className={clsx(
         className,
-        'flex w-80 flex-col items-center gap-6 p-6 text-gray-900',
+        'flex w-80 flex-col items-center gap-6 p-6 text-gray-900 sm:w-96',
       )}
     >
       <div className="flex w-full flex-row items-center gap-4">
