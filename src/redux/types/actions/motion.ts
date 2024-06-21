@@ -30,11 +30,29 @@ import {
   type UniqueActionTypeWithoutPayload,
 } from './index.ts';
 
+// eslint-disable-next-line no-warning-comments
+// TODO: These method names are not specifically associated with motions
+// They are the actual Contract method names so it will be better if we
+// refactored it to:
+//
+// enum ColonyMethodNames { <<-- declare this enum somewhere else
+//   MintTokens = 'mintTokens',
+//   Upgrade = 'upgrade',
+//   UnlockToken = 'unlockToken',
+// }
+//
+// Then we create another enum for another Contract like
+// enum StreamingPaymentsMethodNames {
+//   Cancel = 'cancel'
+// }
+//
+// Then use these enums in both motion and non-motion sagas
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
   EditColonyByDelta = 'editColonyByDelta',
+  AddDomain = 'addDomain(uint256,uint256,uint256)',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
@@ -66,6 +84,24 @@ export type MotionFinalizePayload = {
   colonyAddress: Address;
   motionId: string;
   canMotionFail?: boolean;
+};
+
+export type MotionDomainCreateEditPayload = {
+  colonyAddress: Address;
+  isCreateDomain: boolean;
+  motionDomainId: number;
+  customActionTitle: string;
+  domain?: Domain;
+  colonyName?: string;
+  domainName: string;
+  domainColor?: DomainColor;
+  domainPurpose?: string;
+  annotationMessage?: string;
+  parentId?: number;
+  isMultiSig: boolean;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  operationName: RootMotionMethodNames;
 };
 
 export type MotionActionTypes =
@@ -145,19 +181,7 @@ export type MotionActionTypes =
   | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_CLAIM_ALL_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
-      {
-        colonyAddress: Address;
-        isCreateDomain: boolean;
-        motionDomainId: number;
-        customActionTitle: string;
-        domain?: Domain;
-        colonyName?: string;
-        domainName: string;
-        domainColor?: DomainColor;
-        domainPurpose?: string;
-        annotationMessage?: string;
-        parentId?: number;
-      },
+      MotionDomainCreateEditPayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>

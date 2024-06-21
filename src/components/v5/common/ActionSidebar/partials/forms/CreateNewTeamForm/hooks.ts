@@ -24,9 +24,9 @@ export const useCreateNewTeam = (
 
   useActionFormBaseHook({
     actionType:
-      decisionMethod === DecisionMethod.Reputation
-        ? ActionTypes.MOTION_DOMAIN_CREATE_EDIT
-        : ActionTypes.ACTION_DOMAIN_CREATE,
+      decisionMethod === DecisionMethod.Permissions
+        ? ActionTypes.ACTION_DOMAIN_CREATE
+        : ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
     defaultValues: useMemo<DeepPartial<CreateNewTeamFormValues>>(
       () => ({
         createdIn: Id.RootDomain,
