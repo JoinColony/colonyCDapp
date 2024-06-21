@@ -9,6 +9,7 @@ import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notNull } from '~utils/arrays/index.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
@@ -100,12 +101,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     }
   }, [expectedStepKey, expenditureStep]);
 
-  const lockExpenditurePayload: LockExpenditurePayload | null = expenditure
-    ? {
-        colonyAddress: colony.colonyAddress,
-        nativeExpenditureId: expenditure.nativeId,
-      }
-    : null;
+  const lockExpenditurePayload: LockExpenditurePayload | null = useMemo(
+    () =>
+      expenditure
+        ? {
+            colonyAddress: colony.colonyAddress,
+            nativeExpenditureId: expenditure.nativeId,
+          }
+        : null,
+    [colony.colonyAddress, expenditure],
+  );
 
   const cancelItem: StepperItem<ExpenditureStep> = {
     key: ExpenditureStep.Cancel,
@@ -206,6 +211,20 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       setExpectedStepKey(null);
     }
   }, [expectedStepKey, hasEveryMotionEnded, fundingMotions]);
+
+  useEffect(() => {
+    if (
+      !hasEveryMotionEnded &&
+      motionState === MotionState.FailedNotFinalizable
+    ) {
+      setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
+    }
+  }, [
+    fundingMotions,
+    hasEveryMotionEnded,
+    motionState,
+    setSelectedTransaction,
+  ]);
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
