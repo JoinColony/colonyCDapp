@@ -28,4 +28,10 @@ export const REQUIRED_MULTISIG_ROLES_BY_OPERATION: Record<
     ColonyRole.Architecture,
     ColonyRole.Root,
   ],
+  [RootMotionMethodNames.AddDomain]: [
+    ColonyRole.Administration,
+    ColonyRole.Funding,
+    ColonyRole.Arbitration,
+    ColonyRole.Architecture,
+  ],
 };
