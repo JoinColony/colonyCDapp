@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { type SupportedCurrencies } from '~gql';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type ColonyBalances } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { fetchCurrentPrice } from '~utils/currency/currency.ts';
@@ -11,11 +12,16 @@ import { fetchCurrentPrice } from '~utils/currency/currency.ts';
 const calculateTotalFunds = async (
   balances: ColonyBalances,
   currency: SupportedCurrencies,
+  selectedDomainNativeId: number | undefined,
 ): Promise<Decimal | null> => {
   let isError = false;
   const funds = balances.items
     ?.filter(notNull)
-    .filter(({ domain }) => !!domain?.isRoot)
+    .filter(({ domain }) =>
+      !selectedDomainNativeId
+        ? domain === null
+        : domain?.nativeId === selectedDomainNativeId,
+    )
     .reduce(
       async (total, { balance, token: { tokenAddress, decimals } }) => {
         const currentPrice = await fetchCurrentPrice({
@@ -44,6 +50,7 @@ const calculateTotalFunds = async (
 };
 
 export const useTotalFunds = () => {
+  const selectedDomain = useGetSelectedDomainFilter();
   const { colony } = useColonyContext();
   const { currency } = useCurrencyContext();
   const { balances: colonyBalances } = colony || {};
@@ -51,14 +58,18 @@ export const useTotalFunds = () => {
 
   useEffect(() => {
     const getTotalFunds = async (balances: ColonyBalances) => {
-      const funds = await calculateTotalFunds(balances, currency);
+      const funds = await calculateTotalFunds(
+        balances,
+        currency,
+        selectedDomain?.nativeId,
+      );
       setTotalFunds(funds);
     };
 
     if (colonyBalances) {
       getTotalFunds(colonyBalances);
     }
-  }, [colonyBalances, currency]);
+  }, [colonyBalances, currency, selectedDomain]);
 
   return totalFunds;
 };
