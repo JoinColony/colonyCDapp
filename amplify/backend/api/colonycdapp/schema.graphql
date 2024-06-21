@@ -953,6 +953,14 @@ enum KYCStatus {
 }
 
 """
+Type of stake a user can make
+"""
+enum UserStakeType {
+  MOTION
+  STAKED_EXPENDITURE
+}
+
+"""
 Root query type
 """
 type Query {
@@ -3702,6 +3710,8 @@ type UserStake @model {
     )
   user: User! @hasOne(fields: ["userAddress"])
   colonyAddress: ID!
+  # TODO: Make this field non-nullable once migration is done
+  type: UserStakeType
   amount: String!
   isClaimed: Boolean!
   actionId: ID!
