@@ -1,5 +1,5 @@
 const fetch = require('cross-fetch');
-const { getUserStakesInColony } = require('./graphql');
+const { getUserMotionStakes } = require('./graphql');
 const { BigNumber } = require('ethers');
 
 const graphqlRequest = async (
@@ -36,7 +36,7 @@ const graphqlRequest = async (
   }
 };
 
-const getStakedTokens = async (
+const getUnclaimedMotionStakesAmount = async (
   walletAddress,
   colonyAddress,
   apiKey,
@@ -44,7 +44,7 @@ const getStakedTokens = async (
 ) => {
   const { data } =
     (await graphqlRequest(
-      getUserStakesInColony,
+      getUserMotionStakes,
       {
         userAddress: walletAddress,
         colonyAddress,
@@ -54,8 +54,8 @@ const getStakedTokens = async (
     )) ?? {};
 
   let totalAmount = BigNumber.from(0);
-  if (data?.getUserStakesInColony) {
-    data.getUserStakesInColony.items.forEach((item) => {
+  if (data?.getUserStakes) {
+    data.getUserStakes.items.forEach((item) => {
       totalAmount = totalAmount.add(item.amount);
     });
   } else {
@@ -69,5 +69,5 @@ const getStakedTokens = async (
 
 module.exports = {
   graphqlRequest,
-  getStakedTokens,
+  getUnclaimedMotionStakesAmount,
 };
