@@ -11,7 +11,7 @@ const {
   constants,
 } = require('ethers');
 
-const { getStakedTokens } = require('./utils');
+const { getUnclaimedMotionStakesAmount } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -69,6 +69,15 @@ const setEnvVariables = async () => {
     }
 
     try {
+      /**
+       * Here's an attempt at documenting each term in the return object:
+       * - inactiveBalance: The balance of the token in the user's wallet
+       * - activeBalance: The balance of locked tokens that are not staked
+       * - lockedBalance: The value of `totalObligations` for the user tracked by TokenLockingClient.
+       *                  It includes stakes made when creating a staked expenditure but excludes stakes made for a motion
+       * - pendingBalance: Balance that failed to be transferred from the userLock
+       * See: https://github.com/JoinColony/colonyNetwork/blob/develop/contracts/tokenLocking/TokenLocking.sol for more details
+       */
       // Get token balance
       const tokenClient = await getTokenClient(tokenAddress, provider);
 
@@ -82,7 +91,7 @@ const setEnvVariables = async () => {
         walletAddress,
       );
 
-      const stakedTokens = await getStakedTokens(
+      const motionsStakeAmount = await getUnclaimedMotionStakesAmount(
         walletAddress,
         colonyAddress,
         apiKey,
@@ -95,7 +104,7 @@ const setEnvVariables = async () => {
       );
 
       const inactiveBalance = await tokenClient.balanceOf(walletAddress);
-      const lockedBalance = totalObligation.add(stakedTokens);
+      const lockedBalance = totalObligation.add(motionsStakeAmount);
       const activeBalance = userLock.balance.sub(totalObligation);
       const totalBalance = inactiveBalance
         .add(lockedBalance)
