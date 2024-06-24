@@ -24,6 +24,7 @@ import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Select from '~v5/common/Fields/Select/Select.tsx';
+import Switch from '~v5/common/Fields/Switch/Switch.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import { ActionButton } from '~v5/shared/Button/index.ts';
 
@@ -33,6 +34,19 @@ enum StartTime {
   Now = 'now',
   OneWeekAgo = 'one-week-ago',
   OneWeekFromNow = 'one-week-from-now',
+  TwoWeeksFromNow = 'two-weeks-from-now',
+}
+
+enum EndTime {
+  TwoWeeksFromNow = 'two-weeks-from-now',
+  ThreeWeeksFromNow = 'three-weeks-from-now',
+  FourWeeksFromNow = 'four-weeks-from-now',
+}
+
+enum Interval {
+  Hourly = 'hourly',
+  Daily = 'daily',
+  Weekly = 'weekly',
 }
 
 const TmpStreamingPayments = () => {
@@ -64,8 +78,18 @@ const TmpStreamingPayments = () => {
     StreamingPaymentEndCondition.FixedTime,
   );
   const [selectedStartTime, setSelectedStartTime] = useState(StartTime.Now);
+  const [selectedEndTime, setSelectedEndTime] = useState(
+    EndTime.TwoWeeksFromNow,
+  );
+  const [selectedInterval, setSelectedInterval] = useState(Interval.Hourly);
   const [limit, setLimit] = useState('0');
   const [streamingPaymentId, setStreamingPaymentId] = useState('');
+  const [updateStartTime, setUpdateStartTime] = useState(false);
+  const [updateEndTime, setUpdateEndTime] = useState(false);
+  const [updateAmount, setUpdateAmount] = useState(false);
+  const [updateInterval, setUpdateInterval] = useState(false);
+  const [updateEndCondition, setUpdateEndCondition] = useState(false);
+  const [updateLimit, setUpdateLimit] = useState(false);
 
   const { data, refetch } = useGetStreamingPaymentQuery({
     variables: {
@@ -115,12 +139,17 @@ const TmpStreamingPayments = () => {
     switch (startTime) {
       case StartTime.OneWeekAgo: {
         return BigNumber.from(
-          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 - 1,
+          (blockTime ?? Math.floor(Date.now() / 1000)) - 604800,
         ).toString();
       }
       case StartTime.OneWeekFromNow: {
         return BigNumber.from(
-          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 + 1,
+          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800,
+        ).toString();
+      }
+      case StartTime.TwoWeeksFromNow: {
+        return BigNumber.from(
+          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 2,
         ).toString();
       }
       case StartTime.Now:
@@ -132,19 +161,53 @@ const TmpStreamingPayments = () => {
     }
   };
 
+  const getEndTime = (endTime: EndTime) => {
+    switch (endTime) {
+      case EndTime.FourWeeksFromNow: {
+        return BigNumber.from(
+          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 4,
+        ).toString();
+      }
+      case EndTime.ThreeWeeksFromNow: {
+        return BigNumber.from(
+          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 3,
+        ).toString();
+      }
+      case EndTime.TwoWeeksFromNow:
+      default: {
+        return BigNumber.from(
+          (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 2,
+        ).toString();
+      }
+    }
+  };
+
+  const getInterval = (interval: Interval) => {
+    switch (interval) {
+      case Interval.Weekly: {
+        return 3600 * 24 * 7;
+      }
+      case Interval.Daily: {
+        return 3600 * 24;
+      }
+      case Interval.Hourly:
+      default: {
+        return 3600;
+      }
+    }
+  };
+
   const createStreamingPaymentPayload: CreateStreamingPaymentPayload = {
     colonyAddress: colony.colonyAddress,
     createdInDomain: rootDomain,
     amount: transactionAmount,
     endCondition,
-    interval: 86400, // One day
+    interval: getInterval(selectedInterval),
     recipientAddress: user?.walletAddress ?? '',
     startTimestamp: getStartTime(selectedStartTime),
     tokenAddress,
     tokenDecimals: parseInt(decimalAmount, 10),
-    endTimestamp: BigNumber.from(
-      (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 2,
-    ).toString(), // Two weeks away
+    endTimestamp: getEndTime(selectedEndTime),
     limitAmount: limit,
     annotationMessage: annotation,
   };
@@ -217,22 +280,70 @@ const TmpStreamingPayments = () => {
       return;
     }
 
-    const payload: EditStreamingPaymentPayload = {
-      colonyAddress: colony.colonyAddress,
+    const fixedPayload: EditStreamingPaymentPayload = {
+      colony,
       streamingPayment,
       streamingPaymentsAddress,
-      startTimestamp: BigNumber.from(
-        (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 2,
-      ).toString(), // Two weeks away
-      endTimestamp: BigNumber.from(
-        (blockTime ?? Math.floor(Date.now() / 1000)) + 604800 * 3,
-      ).toString(), // Three weeks away
-      amount: transactionAmount,
-      tokenDecimals: parseInt(decimalAmount, 10),
-      interval: 604800, // One week
-      endCondition,
-      limitAmount: limit,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      endCondition: StreamingPaymentEndCondition.FixedTime,
+      endTimestamp: updateEndTime ? getEndTime(selectedEndTime) : undefined,
     };
+
+    const limitPayload: EditStreamingPaymentPayload = {
+      colony,
+      streamingPayment,
+      streamingPaymentsAddress,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      endCondition: StreamingPaymentEndCondition.LimitReached,
+      limitAmount: updateLimit ? limit : undefined,
+    };
+
+    const whenCancelledPayload: EditStreamingPaymentPayload = {
+      colony,
+      streamingPayment,
+      streamingPaymentsAddress,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      endCondition: StreamingPaymentEndCondition.WhenCancelled,
+    };
+
+    const undefinedEndConditionPayload: EditStreamingPaymentPayload = {
+      colony,
+      streamingPayment,
+      streamingPaymentsAddress,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      endTimestamp: updateEndTime ? getEndTime(selectedEndTime) : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      limitAmount: updateLimit ? limit : undefined,
+    };
+
+    let payload: EditStreamingPaymentPayload = undefinedEndConditionPayload;
+
+    if (updateEndCondition) {
+      if (endCondition === StreamingPaymentEndCondition.FixedTime) {
+        payload = fixedPayload;
+      }
+      if (endCondition === StreamingPaymentEndCondition.LimitReached) {
+        payload = limitPayload;
+      }
+      if (endCondition === StreamingPaymentEndCondition.WhenCancelled) {
+        payload = whenCancelledPayload;
+      }
+    }
 
     await editStreamingPayment(payload);
   };
@@ -304,14 +415,58 @@ const TmpStreamingPayments = () => {
                 value: StartTime.OneWeekFromNow,
                 label: 'Start one week from now',
               },
+              {
+                value: StartTime.TwoWeeksFromNow,
+                label: 'Start two weeks from now',
+              },
             ]}
-            defaultValue={BigNumber.from(
-              blockTime ?? Math.floor(Date.now() / 1000),
-            ).toString()}
+            defaultValue={getStartTime(StartTime.Now)}
             value={selectedStartTime}
             onChange={(value) =>
               setSelectedStartTime(value?.value as StartTime)
             }
+            className="w-full"
+          />
+
+          <Select
+            options={[
+              {
+                value: EndTime.TwoWeeksFromNow,
+                label: 'End two weeks from now',
+              },
+              {
+                value: EndTime.ThreeWeeksFromNow,
+                label: 'End three weeks from now',
+              },
+              {
+                value: EndTime.FourWeeksFromNow,
+                label: 'End four weeks from now',
+              },
+            ]}
+            defaultValue={getEndTime(EndTime.TwoWeeksFromNow)}
+            value={selectedEndTime}
+            onChange={(value) => setSelectedEndTime(value?.value as EndTime)}
+            className="w-full"
+          />
+
+          <Select
+            options={[
+              {
+                value: Interval.Hourly,
+                label: 'Hourly',
+              },
+              {
+                value: Interval.Daily,
+                label: 'Daily',
+              },
+              {
+                value: Interval.Weekly,
+                label: 'Weekly',
+              },
+            ]}
+            defaultValue={3600}
+            value={selectedInterval}
+            onChange={(value) => setSelectedInterval(value?.value as Interval)}
             className="w-full"
           />
 
@@ -352,9 +507,33 @@ const TmpStreamingPayments = () => {
                 />
               </b>
             </p>
+            <p>
+              Start time: <b>{streamingPayment.startTime}</b>
+            </p>
+            <p>
+              End time: <b>{streamingPayment.endTime}</b>
+            </p>
+            <p>
+              Amount:{' '}
+              <b>
+                <Numeral
+                  value={streamingPayment.amount}
+                  decimals={colony.nativeToken.decimals}
+                />
+              </b>
+            </p>
+            <p>
+              Interval: <b>{streamingPayment.interval}</b>
+            </p>
+            <p>
+              End Condition: <b>{streamingPayment.metadata?.endCondition}</b>
+            </p>
+            <p>
+              Limit: <b>{streamingPayment.metadata?.limitAmount}</b>
+            </p>
           </div>
         )}
-        <div className="flex flex-wrap gap-4 ">
+        <div className="flex w-full flex-wrap gap-4">
           <Button onClick={handleClaim} disabled={!streamingPayment}>
             Claim
           </Button>
@@ -365,9 +544,6 @@ const TmpStreamingPayments = () => {
             }}
           >
             Refetch
-          </Button>
-          <Button onClick={() => handleEdit()} disabled={!streamingPayment}>
-            Edit
           </Button>
           <Button
             onClick={() => handleCancel({ shouldWaive: false })}
@@ -387,6 +563,57 @@ const TmpStreamingPayments = () => {
             Cancel via motion
           </Button>
         </div>
+        {streamingPayment && (
+          <div className="flex w-full flex-wrap gap-4">
+            <div className="flex items-center">
+              <span>Update start time</span>
+              <Switch
+                checked={updateStartTime}
+                onChange={(event) => setUpdateStartTime(event.target.checked)}
+              />
+            </div>
+            <div className="flex items-center">
+              <span>Update end time (for fixed end condition)</span>
+              <Switch
+                checked={updateEndTime}
+                onChange={(event) => setUpdateEndTime(event.target.checked)}
+              />
+            </div>
+            <div className="flex items-center">
+              <span>Update amount</span>
+              <Switch
+                checked={updateAmount}
+                onChange={(event) => setUpdateAmount(event.target.checked)}
+              />
+            </div>
+            <div className="flex items-center">
+              <span>Update interval</span>
+              <Switch
+                checked={updateInterval}
+                onChange={(event) => setUpdateInterval(event.target.checked)}
+              />
+            </div>
+            <div className="flex items-center">
+              <span>Update end condition</span>
+              <Switch
+                checked={updateEndCondition}
+                onChange={(event) =>
+                  setUpdateEndCondition(event.target.checked)
+                }
+              />
+            </div>
+            <div className="flex items-center">
+              <span>Update limit (for limit reached end condition)</span>
+              <Switch
+                checked={updateLimit}
+                onChange={(event) => setUpdateLimit(event.target.checked)}
+              />
+            </div>
+            <Button onClick={() => handleEdit()} disabled={!streamingPayment}>
+              Edit
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
