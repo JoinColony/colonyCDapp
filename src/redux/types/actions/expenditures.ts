@@ -15,6 +15,7 @@ import {
   type StreamingPayment,
   type Domain,
   type Expenditure,
+  type Colony,
 } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
@@ -279,14 +280,13 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_EDIT,
       {
-        colonyAddress: Address;
+        colony: Colony;
         streamingPayment: StreamingPayment;
         streamingPaymentsAddress: string;
-        startTimestamp: string;
+        startTimestamp?: string;
         endTimestamp?: string;
-        amount: string;
-        tokenDecimals: number;
-        interval: number;
+        amount?: string;
+        interval?: number;
         endCondition?: StreamingPaymentEndCondition;
         limitAmount?: string;
       },
