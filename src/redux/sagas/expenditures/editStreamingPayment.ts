@@ -29,7 +29,9 @@ import {
   getTxChannel,
 } from '../transactions/index.ts';
 import {
+  TIMESTAMP_IN_FUTURE,
   getColonyManager,
+  getEndTimeByEndCondition,
   initiateTransaction,
   putError,
   takeFrom,
@@ -40,13 +42,12 @@ export type EditStreamingPaymentPayload =
 
 function* editStreamingPaymentAction({
   payload: {
-    colonyAddress,
+    colony: { colonyAddress, tokens },
     streamingPayment,
     streamingPaymentsAddress,
     startTimestamp,
     endTimestamp,
     amount,
-    tokenDecimals,
     interval,
     endCondition,
     limitAmount,
@@ -66,6 +67,15 @@ function* editStreamingPaymentAction({
   const txChannel = yield call(getTxChannel, meta.id);
 
   try {
+    const { decimals: tokenDecimals } =
+      tokens?.items.find(
+        (token) => token?.token.tokenAddress === streamingPayment.tokenAddress,
+      )?.token || {};
+
+    if (!tokenDecimals) {
+      throw new Error('Token cannot be found');
+    }
+
     const streamingPaymentsClient: AnyStreamingPaymentsClient = yield call(
       [colonyManager, colonyManager.getClient],
       ClientType.StreamingPaymentsClient,
@@ -100,15 +110,42 @@ function* editStreamingPaymentAction({
         streamingPaymentsAddress,
       );
 
-    const convertedAmount = BigNumber.from(amount).mul(
-      BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
-    );
+    const convertedAmount = amount
+      ? BigNumber.from(amount).mul(
+          BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
+        )
+      : BigNumber.from(streamingPayment.amount);
+
+    const realStartTimestamp = startTimestamp || streamingPayment.startTime;
+    const realInterval = interval || Number(streamingPayment.interval);
+    const realLimitAmount =
+      limitAmount || streamingPayment.metadata?.limitAmount;
+    const realEndCondition =
+      endCondition || streamingPayment.metadata?.endCondition;
+
+    if (!realEndCondition) {
+      throw new Error(
+        'End condition undefined and cannot be found in metadata',
+      );
+    }
+
+    const realEndTimestamp = getEndTimeByEndCondition({
+      endCondition: realEndCondition,
+      startTimestamp: realStartTimestamp,
+      interval: realInterval,
+      convertedAmount,
+      tokenDecimals,
+      limitAmount: realLimitAmount,
+      endTimestamp: endTimestamp || streamingPayment.endTime,
+    });
 
     const multicallData: string[] = [];
 
     const hasAmountChanged = !convertedAmount.eq(streamingPayment.amount);
+    const hasIntervalChanged =
+      realInterval !== Number(streamingPayment.interval);
 
-    if (hasAmountChanged) {
+    if (hasAmountChanged || hasIntervalChanged) {
       multicallData.push(
         streamingPaymentsClient.interface.encodeFunctionData('setTokenAmount', [
           fundingPermissionDomainId,
@@ -119,36 +156,71 @@ function* editStreamingPaymentAction({
           extensionChildSkillIndex,
           streamingPayment.nativeId,
           convertedAmount,
-          interval,
+          realInterval,
         ]),
       );
     }
 
-    const hasStartTimeChanged = streamingPayment.startTime !== startTimestamp;
+    const hasStartTimeChanged =
+      streamingPayment.startTime !== realStartTimestamp;
+    const hasEndTimeChanged = !realEndTimestamp.eq(streamingPayment.endTime);
 
-    if (hasStartTimeChanged) {
+    const pushSetStartTime = (time: string) => {
       multicallData.push(
         streamingPaymentsClient.interface.encodeFunctionData('setStartTime', [
           adminPermissionDomainId,
           adminChildSkillIndex,
           streamingPayment.nativeId,
-          startTimestamp,
+          time,
         ]),
       );
-    }
+    };
 
-    const hasEndTimeChanged =
-      endTimestamp && streamingPayment.endTime !== endTimestamp;
-
-    if (hasEndTimeChanged) {
+    const pushSetEndTime = (time: BigNumber) => {
       multicallData.push(
         streamingPaymentsClient.interface.encodeFunctionData('setEndTime', [
           adminPermissionDomainId,
           adminChildSkillIndex,
           streamingPayment.nativeId,
-          endTimestamp,
+          time,
         ]),
       );
+    };
+
+    // @NOTE: The multicall will fail if we set the new start time to be before the current end time
+    // Or the new end time to be before the current start time
+    // If both are true, then first set the endTime to the maximum possible end time
+    if (
+      realStartTimestamp > streamingPayment.endTime &&
+      realEndTimestamp.lt(streamingPayment.startTime)
+    ) {
+      if (hasEndTimeChanged) {
+        pushSetEndTime(TIMESTAMP_IN_FUTURE);
+      }
+
+      if (hasStartTimeChanged) {
+        pushSetStartTime(realStartTimestamp);
+      }
+
+      if (hasEndTimeChanged) {
+        pushSetEndTime(realEndTimestamp);
+      }
+    } else if (realStartTimestamp > streamingPayment.endTime) {
+      if (hasEndTimeChanged) {
+        pushSetEndTime(realEndTimestamp);
+      }
+
+      if (hasStartTimeChanged) {
+        pushSetStartTime(realStartTimestamp);
+      }
+    } else {
+      if (hasStartTimeChanged) {
+        pushSetStartTime(realStartTimestamp);
+      }
+
+      if (hasEndTimeChanged) {
+        pushSetEndTime(realEndTimestamp);
+      }
     }
 
     yield fork(createTransaction, meta.id, {
@@ -170,14 +242,13 @@ function* editStreamingPaymentAction({
     const { type } = yield waitForTxResult(txChannel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      // @NOTE: hasLimitChanged is deliberately omitted here as it is updated on the block-ingestor
+      // Limit should only be updated here when the end condition changes to limit reached
       const hasEndConditionChanged =
-        endCondition &&
+        endCondition !== undefined &&
         endCondition !== streamingPayment.metadata?.endCondition;
-      const hasLimitAmountChanged =
-        limitAmount && limitAmount !== streamingPayment.metadata?.limitAmount;
-      const hasMetadataChanged =
-        hasEndConditionChanged || hasLimitAmountChanged;
-      if (hasMetadataChanged) {
+
+      if (hasEndConditionChanged) {
         yield apolloClient.mutate<
           UpdateStreamingPaymentMetadataMutation,
           UpdateStreamingPaymentMetadataMutationVariables
