@@ -19,7 +19,7 @@ import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
-import reputationTabClasses from '../ReputationTab.styles.ts';
+import balanceTabClasses from '../BalanceTab.styles.ts';
 import { type BalanceProps, type ViewStakedButtonProps } from '../types.ts';
 
 const displayName =
@@ -63,6 +63,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
       },
     },
     skip: !wallet?.address || !nativeToken?.tokenAddress,
+    fetchPolicy: 'cache-and-network',
   });
   const tokenBalanceData = tokenBalanceQueryData?.getUserTokenBalance;
 
@@ -77,12 +78,12 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
     <div>
       <TitleLabel text={formatMessage(MSG.nativeToken)} />
       <div className="flex flex-col gap-4 border-b border-gray-200 pb-6 pt-2">
-        <div className={reputationTabClasses.row}>
-          <span className={reputationTabClasses.rowName}>
+        <div className={balanceTabClasses.row}>
+          <span className={balanceTabClasses.rowName}>
             {formatMessage({ id: 'total.balance' })}
           </span>
           <Numeral
-            className={reputationTabClasses.numeral}
+            className={balanceTabClasses.numeral}
             value={tokenBalanceData?.balance ?? 0}
             decimals={tokenDecimals}
             suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
@@ -91,9 +92,9 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
         </div>
         {/* @TODO: actived icons? */}
         <div>
-          <div className={reputationTabClasses.row}>
+          <div className={balanceTabClasses.row}>
             <div className="flex items-center gap-4">
-              <span className={reputationTabClasses.rowName}>
+              <span className={balanceTabClasses.rowName}>
                 {formatMessage({ id: 'active' })}
               </span>
               {!isMobile && (
@@ -124,7 +125,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               )}
             </div>
             <Numeral
-              className={reputationTabClasses.numeral}
+              className={balanceTabClasses.numeral}
               value={tokenBalanceData?.activeBalance ?? 0}
               decimals={tokenDecimals}
               suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
@@ -163,9 +164,9 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
 
         {/* @TODO: stacked icon viewed? */}
         <div>
-          <div className={reputationTabClasses.row}>
+          <div className={balanceTabClasses.row}>
             <div className="flex items-center gap-4">
-              <span className={reputationTabClasses.rowName}>
+              <span className={balanceTabClasses.rowName}>
                 {formatMessage({ id: 'staked' })}
               </span>
               {!isMobile && (
@@ -175,7 +176,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               )}
             </div>
             <Numeral
-              className={reputationTabClasses.numeral}
+              className={balanceTabClasses.numeral}
               value={tokenBalanceData?.lockedBalance ?? 0}
               decimals={tokenDecimals}
               suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
