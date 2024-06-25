@@ -1,4 +1,9 @@
-import { type StreamingPaymentEndCondition } from '~gql';
+import { type BigNumber } from 'ethers';
+
+import {
+  type SplitPaymentDistributionType,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   type ExpenditurePayoutWithSlotId,
@@ -52,6 +57,7 @@ export type ExpendituresActionTypes =
         networkInverseFee: string;
         annotationMessage?: string;
         customActionTitle?: string;
+        distributionType?: SplitPaymentDistributionType;
       },
       MetaWithSetter<object>
     >
@@ -127,12 +133,15 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
-        stakeAmount: string;
+        stakeAmount: BigNumber;
         stakedExpenditureAddress: Address;
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
+        distributionType?: SplitPaymentDistributionType;
+        activeBalance: string | undefined;
+        tokenAddress: string;
       },
       MetaWithSetter<object>
     >
@@ -208,4 +217,14 @@ export type ExpendituresActionTypes =
       ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
       object,
       object
-    >;
+    >
+  | UniqueActionType<
+      ActionTypes.SET_STAKE_FRACTION,
+      {
+        colonyAddress: Address;
+        stakeFraction: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.SET_STAKE_FRACTION_ERROR, object>
+  | UniqueActionType<ActionTypes.SET_STAKE_FRACTION_SUCCESS, object, object>;

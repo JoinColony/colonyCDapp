@@ -1,8 +1,10 @@
 import { Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
 import { StreamingPaymentEndCondition, useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
@@ -41,6 +43,8 @@ const TmpAdvancedPayments = () => {
   const { votingReputationAddress, stagedExpenditureAddress } =
     useEnabledExtensions();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
+
+  const { tokenBalanceData } = useUserTokenBalanceContext();
 
   const [tokenAddress, setTokenAddress] = useState(
     colony.nativeToken.tokenAddress,
@@ -164,7 +168,22 @@ const TmpAdvancedPayments = () => {
   };
 
   const createStagedExpenditurePayload: CreateExpenditurePayload = {
-    payouts,
+    payouts: [
+      {
+        amount: transactionAmount,
+        tokenAddress,
+        recipientAddress: user?.walletAddress ?? '',
+        claimDelay: '0',
+        tokenDecimals: tokenDecimalAmount,
+      },
+      {
+        amount: '500',
+        tokenAddress,
+        recipientAddress: user?.walletAddress ?? '',
+        claimDelay: '0',
+        tokenDecimals: tokenDecimalAmount,
+      },
+    ],
     colonyAddress: colony.colonyAddress,
     createdInDomain: rootDomain,
     fundFromDomainId: 1,
@@ -263,9 +282,11 @@ const TmpAdvancedPayments = () => {
       colonyAddress: colony.colonyAddress,
       createdInDomain: rootDomain,
       fundFromDomainId: 1,
-      stakeAmount,
+      stakeAmount: BigNumber.from(stakeAmount),
       stakedExpenditureAddress,
       networkInverseFee,
+      tokenAddress,
+      activeBalance: tokenBalanceData?.activeBalance ?? '0',
     };
 
     await createStakedExpenditure(payload);
@@ -296,18 +317,24 @@ const TmpAdvancedPayments = () => {
   };
 
   const handleReleaseExpenditureStageMotion = async () => {
-    if (!expenditure || !releaseStage || !stagedExpenditureAddress) {
+    if (
+      !expenditure ||
+      !releaseStage ||
+      !stagedExpenditureAddress ||
+      !votingReputationAddress
+    ) {
       return;
     }
 
     const payload: ReleaseExpenditureStageMotionPayload = {
       colonyAddress: colony.colonyAddress,
       colonyName: colony.name,
+      stagedExpenditureAddress,
+      votingReputationAddress,
       expenditure,
       slotId: Number(releaseStage),
       motionDomainId: expenditure.nativeDomainId,
       tokenAddresses: [colony.nativeToken.tokenAddress],
-      stagedExpenditureAddress,
     };
 
     await releaseExpenditureStageMotion(payload);

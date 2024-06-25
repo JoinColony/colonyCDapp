@@ -19,9 +19,8 @@ import {
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
-  getPayoutsWithSlotIds,
-  getPayoutAmount,
   createActionMetadataInDB,
+  getEditDraftExpenditureMulticallData,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -40,6 +39,7 @@ function* createExpenditure({
     networkInverseFee,
     annotationMessage,
     customActionTitle,
+    distributionType,
   },
 }: Action<ActionTypes.EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -49,8 +49,6 @@ function* createExpenditure({
   );
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
-
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
 
   const {
     makeExpenditure,
@@ -151,43 +149,11 @@ function* createExpenditure({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    const multicallData: string[] = [];
-    multicallData.push(
-      colonyClient.interface.encodeFunctionData('setExpenditureRecipients', [
-        expenditureId,
-        payoutsWithSlotIds.map((payout) => payout.slotId),
-        payoutsWithSlotIds.map((payout) => payout.recipientAddress),
-      ]),
-    );
-
-    multicallData.push(
-      colonyClient.interface.encodeFunctionData('setExpenditureClaimDelays', [
-        expenditureId,
-        payoutsWithSlotIds.map((payout) => payout.slotId),
-        payoutsWithSlotIds.map((payout) => payout.claimDelay),
-      ]),
-    );
-
-    const tokenAddresses = new Set(
-      payoutsWithSlotIds.map((payout) => payout.tokenAddress),
-    );
-
-    tokenAddresses.forEach((tokenAddress) => {
-      const tokenPayouts = payoutsWithSlotIds.filter(
-        (payout) => payout.tokenAddress === tokenAddress,
-      );
-      const tokenAmounts = tokenPayouts.map((payout) =>
-        getPayoutAmount(payout, networkInverseFee),
-      );
-
-      multicallData.push(
-        colonyClient.interface.encodeFunctionData('setExpenditurePayouts', [
-          expenditureId,
-          tokenPayouts.map((payout) => payout.slotId),
-          tokenAddress,
-          tokenAmounts,
-        ]),
-      );
+    const multicallData = getEditDraftExpenditureMulticallData({
+      expenditureId,
+      payouts,
+      colonyClient,
+      networkInverseFee,
     });
 
     yield put(transactionAddParams(setExpenditureValues.id, [multicallData]));
@@ -223,6 +189,7 @@ function* createExpenditure({
       expenditureId,
       fundFromDomainId,
       stages: isStaged ? stages : undefined,
+      distributionType,
     });
 
     yield put<AllActions>({

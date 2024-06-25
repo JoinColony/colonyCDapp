@@ -687,6 +687,10 @@ enum ColonyActionType {
   """
   EDIT_EXPENDITURE_MOTION
   """
+  An action related to a motion to release a staged payment
+  """
+  RELEASE_STAGED_PAYMENT_MOTION
+  """
   An action related to the creation of safe transactions via Safe Control
   """
   MAKE_ARBITRARY_TRANSACTION
@@ -769,6 +773,12 @@ enum StreamingPaymentEndCondition {
   WHEN_CANCELLED
   LIMIT_REACHED
   FIXED_TIME
+}
+
+enum SplitPaymentDistributionType {
+  EQUAL
+  UNEQUAL
+  REPUTATION
 }
 
 """
@@ -3308,6 +3318,11 @@ type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   fundFromDomainNativeId: Int!
   stages: [ExpenditureStage!]
+  """
+  Specifies the distribution type selected when creating a split payment
+  Will be null for other payment types
+  """
+  distributionType: SplitPaymentDistributionType
 }
 
 type ExpenditureBalance {

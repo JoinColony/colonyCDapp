@@ -106,6 +106,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateDecisionMotion:
       case ColonyActionType.SetUserRolesMotion:
       case ColonyActionType.ColonyEditMotion:
+      case ColonyActionType.ReleaseStagedPaymentMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
         // @NOTE: Enabling those 2 above temporarily

@@ -120,6 +120,11 @@ fragment ColonyAction on ColonyAction {
   members
   rootHash
   expenditureId
+  expenditure {
+    metadata {
+      distributionType
+    }
+  }
 }
 
 fragment Annotation on Annotation {
