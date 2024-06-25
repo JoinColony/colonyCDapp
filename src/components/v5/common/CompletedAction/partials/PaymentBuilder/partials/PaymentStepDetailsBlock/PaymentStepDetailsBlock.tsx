@@ -1,13 +1,16 @@
-import { ArrowsClockwise } from '@phosphor-icons/react';
+import { ArrowsClockwise, SpinnerGap } from '@phosphor-icons/react';
 import React, { type FC, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
+import TxButton from '~v5/shared/Button/TxButton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
@@ -24,7 +27,14 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
   const { colony } = useColonyContext();
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
-  const { slots = [], finalizedAt, nativeId } = expenditure || {};
+  const {
+    slots = [],
+    finalizedAt,
+    nativeId,
+    userStake,
+    isStaked,
+  } = expenditure || {};
+  const { isClaimed: isStakeClaimed } = userStake || {};
 
   const claimablePayouts = useMemo(
     () => getClaimableExpenditurePayouts(slots, blockTime, finalizedAt),
@@ -78,6 +88,25 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
         nativeExpenditureId: nativeId,
       }
     : undefined;
+
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+  });
+
+  const handleReclaimStake = async () => {
+    if (!expenditure) {
+      return;
+    }
+
+    const payload: ReclaimExpenditureStakePayload = {
+      colonyAddress: colony.colonyAddress,
+      nativeExpenditureId: expenditure?.nativeId,
+    };
+
+    await reclaimExpenditureStake(payload);
+  };
 
   if (!finalizedAt) {
     return null;
@@ -138,7 +167,23 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                 disabled={!claimablePayouts.length || !blockTime}
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
-                onSuccess={() => {
+                loadingContent={
+                  <TxButton
+                    className="mt-4 max-h-[2.5rem] w-full !text-md"
+                    rounded="s"
+                    text={{ id: 'button.pending' }}
+                    icon={
+                      <span className="ml-1.5 flex shrink-0">
+                        <SpinnerGap className="animate-spin" size={14} />
+                      </span>
+                    }
+                  />
+                }
+                onSuccess={async () => {
+                  if (isStaked && !isStakeClaimed) {
+                    await handleReclaimStake();
+                  }
+
                   fetchCurrentBlockTime();
                 }}
               />

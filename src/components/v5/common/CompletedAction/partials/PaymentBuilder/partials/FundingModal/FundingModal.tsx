@@ -1,4 +1,5 @@
-import { Wallet } from '@phosphor-icons/react';
+import { Id } from '@colony/colony-js';
+import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import React, { useEffect, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -8,19 +9,22 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
+import { type ExpenditureFundMotionPayload } from '~redux/types/actions/motion.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+import TxButton from '~v5/shared/Button/TxButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 
 import {
   fundingDecisionMethodDescriptions,
-  fundingDecisionMethodItems,
   getValidationSchema,
 } from './consts.ts';
+import { useFundingDecisionMethods } from './hooks.ts';
 import TokenItem from './TokenItem.tsx';
 import {
   type FundingModalContentProps,
@@ -43,6 +47,7 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
   fundingItems,
   onClose,
   teamName,
+  actionType,
 }) => {
   const {
     watch,
@@ -50,6 +55,12 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
     trigger,
   } = useFormContext();
   const method = watch('decisionMethod');
+
+  const fundingDecisionMethodOptions = useFundingDecisionMethods(actionType);
+
+  const noDecisionMethodAvailable = fundingDecisionMethodOptions.every(
+    ({ isDisabled }) => isDisabled,
+  );
 
   useEffect(() => {
     trigger('fundingItems');
@@ -83,10 +94,9 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
           </div>
         ))}
       </div>
-
       <div className="mb-8">
         <DecisionMethodSelect
-          options={fundingDecisionMethodItems}
+          options={fundingDecisionMethodOptions}
           name="decisionMethod"
         />
         {method && method.value && (
@@ -106,20 +116,35 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
             })}
           </div>
         )}
+        {noDecisionMethodAvailable && (
+          <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
+            {formatText({
+              id: 'fundingModal.noDecisionMethodAvailable',
+            })}
+          </div>
+        )}
       </div>
       <div className="mt-auto flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
         <Button mode="primaryOutline" isFullSize onClick={onClose}>
           {formatText({ id: 'button.cancel' })}
         </Button>
         <div className="flex w-full justify-center">
-          <Button
-            mode="primarySolid"
-            isFullSize
-            type="submit"
-            loading={isSubmitting}
-          >
-            {formatText({ id: 'fundingModal.accept' })}
-          </Button>
+          {isSubmitting ? (
+            <TxButton
+              className="max-h-[2.5rem] w-full !text-md"
+              rounded="s"
+              text={{ id: 'button.pending' }}
+              icon={
+                <span className="ml-1.5 flex shrink-0">
+                  <SpinnerGap className="animate-spin" size={14} />
+                </span>
+              }
+            />
+          ) : (
+            <Button mode="primarySolid" isFullSize type="submit">
+              {formatText({ id: 'fundingModal.accept' })}
+            </Button>
+          )}
         </div>
       </div>
     </>
@@ -130,6 +155,7 @@ const FundingModal: FC<FundingModalProps> = ({
   onClose,
   expenditure,
   onSuccess,
+  actionType,
   ...rest
 }) => {
   const { colony } = useColonyContext();
@@ -172,11 +198,26 @@ const FundingModal: FC<FundingModalProps> = ({
     success: ActionTypes.EXPENDITURE_FUND_SUCCESS,
   });
 
-  const handleFundExpenditure = async () => {
+  const fundExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FUND,
+    error: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleFundExpenditure = async ({ decisionMethod, ...restValues }) => {
     try {
       if (!expenditure) {
         return;
       }
+
+      const motionPayload: ExpenditureFundMotionPayload = {
+        colony,
+        expenditure,
+        motionDomainId: Id.RootDomain,
+        fromDomainFundingPotId: Id.RootDomain,
+        fromDomainId: Id.RootDomain,
+      };
 
       const payload: FundExpenditurePayload = {
         colonyAddress: colony.colonyAddress,
@@ -184,9 +225,17 @@ const FundingModal: FC<FundingModalProps> = ({
         fromDomainFundingPotId: 1,
       };
 
-      await fundExpenditure(payload);
+      if (
+        decisionMethod &&
+        decisionMethod.value === DecisionMethod.Reputation
+      ) {
+        await fundExpenditureViaMotion(motionPayload);
+      } else {
+        await fundExpenditure(payload);
+      }
 
       onSuccess();
+
       onClose();
     } catch (err) {
       onClose();
@@ -196,7 +245,12 @@ const FundingModal: FC<FundingModalProps> = ({
   const validationSchema = getValidationSchema(selectedTeam?.nativeId, colony);
 
   return (
-    <Modal {...rest} onClose={onClose} icon={Wallet}>
+    <Modal
+      {...rest}
+      onClose={onClose}
+      showHeaderProps={{ className: 'right-6 top-[2.0625rem]' }}
+      icon={Wallet}
+    >
       <Form
         className="flex h-full flex-col"
         onSubmit={handleFundExpenditure}
@@ -207,6 +261,7 @@ const FundingModal: FC<FundingModalProps> = ({
           fundingItems={fundingItems}
           onClose={onClose}
           teamName={selectedTeam?.metadata?.name || ''}
+          actionType={actionType}
         />
       </Form>
     </Modal>

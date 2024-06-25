@@ -4,6 +4,7 @@ import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
+  onSubmitClick?: () => void;
 }
 
 export interface ActionFormBaseProps {

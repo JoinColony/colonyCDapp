@@ -19,3 +19,4 @@ export { default as range } from 'lodash/range';
 export { default as merge } from 'lodash/merge';
 export { default as isPlainObject } from 'lodash/isPlainObject';
 export { default as pick } from 'lodash/pick';
+export { default as camelCase } from 'lodash/camelCase';

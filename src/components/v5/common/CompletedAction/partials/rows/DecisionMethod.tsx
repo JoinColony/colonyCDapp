@@ -10,9 +10,13 @@ const displayName = 'v5.common.CompletedAction.partials.DecisionMethodRow';
 
 interface DecisionMethodRowProps {
   isMotion: boolean;
+  decisionMethod?: DecisionMethod;
 }
 
-const DecisionMethodRow = ({ isMotion }: DecisionMethodRowProps) => {
+const DecisionMethodRow = ({
+  isMotion,
+  decisionMethod,
+}: DecisionMethodRowProps) => {
   return (
     <ActionData
       rowLabel={formatText({ id: 'actionSidebar.decisionMethod' })}
@@ -21,7 +25,8 @@ const DecisionMethodRow = ({ isMotion }: DecisionMethodRowProps) => {
       })}
       RowIcon={Scales}
       rowContent={
-        isMotion ? DecisionMethod.Reputation : DecisionMethod.Permissions
+        decisionMethod ||
+        (isMotion ? DecisionMethod.Reputation : DecisionMethod.Permissions)
       }
     />
   );

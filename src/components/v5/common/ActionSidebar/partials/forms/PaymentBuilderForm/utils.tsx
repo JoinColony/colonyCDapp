@@ -43,7 +43,7 @@ export const getPaymentBuilderPayload = (
     payouts: values.payments.map((payment) => ({
       recipientAddress: payment.recipient,
       tokenAddress: payment.tokenAddress,
-      amount: payment.amount.toString(),
+      amount: payment.amount,
       claimDelay: convertPeriodToSeconds(payment.delay),
       tokenDecimals:
         colonyTokens?.find(
@@ -151,6 +151,44 @@ export const allTokensAmountValidation = ({
         },
         {
           tokenSymbol: token?.symbol || '',
+        },
+      ),
+      path,
+    });
+  }
+
+  return true;
+};
+
+export const delayGreaterThanZeroValidation = (
+  value: number | null | undefined,
+  context: TestContext,
+) => {
+  if (value === undefined || !value) {
+    return true;
+  }
+
+  const { path } = context;
+
+  const index = getLastIndexFromPath(path);
+
+  if (index === undefined) {
+    return context.createError({
+      message: formatText({
+        id: 'errors.amount.smallerThanZero',
+      }),
+      path,
+    });
+  }
+
+  if (value.toString().includes('.')) {
+    return context.createError({
+      message: formatText(
+        {
+          id: 'errors.amount.smallerThanZeroInMultiplePayments',
+        },
+        {
+          paymentIndex: index + 1,
         },
       ),
       path,

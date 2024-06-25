@@ -64,13 +64,16 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
   }, []);
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({
-      delayShow: 200,
-      delayHide: 200,
-      placement: popperOptions?.placement || 'bottom-end',
-      trigger: ['click'],
-      interactive: true,
-    });
+    usePopperTooltip(
+      {
+        delayShow: 200,
+        delayHide: 200,
+        placement: popperOptions?.placement || 'bottom-end',
+        trigger: ['click'],
+        interactive: true,
+      },
+      popperOptions,
+    );
 
   const button = (
     <button
@@ -142,7 +145,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
-              classNames="max-w-[20rem]"
+              classNames="sm:w-[20rem]"
               withTooltipStyles={false}
               cardProps={{
                 rounded: 's',

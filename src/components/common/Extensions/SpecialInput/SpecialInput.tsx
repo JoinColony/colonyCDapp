@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 
@@ -17,9 +17,12 @@ const SpecialInput: FC<SpecialInputProps> = ({
   isError,
   type,
   step,
-  onChange,
+  onChange: onChangeProp,
 }) => {
-  const { register } = useFormContext();
+  const {
+    field: { onChange, disabled: fieldDisabled, ...restField },
+  } = useController({ name });
+
   return (
     <div
       className={clsx(
@@ -27,12 +30,12 @@ const SpecialInput: FC<SpecialInputProps> = ({
         {
           'hover:after:border-blue-100': !isError,
           'border-none': isError,
-          'pointer-events-none opacity-50': disabled,
+          'pointer-events-none opacity-50': disabled || fieldDisabled,
         },
       )}
     >
       <input
-        {...register(name)}
+        {...restField}
         defaultValue={defaultValue}
         type="number"
         className={clsx(
@@ -44,12 +47,15 @@ const SpecialInput: FC<SpecialInputProps> = ({
         )}
         id={id}
         placeholder={placeholder}
-        aria-disabled={disabled}
-        disabled={disabled}
+        aria-disabled={disabled || fieldDisabled}
+        disabled={disabled || fieldDisabled}
         step={step}
         // Stop value changing on scroll, which is generally an inadvertant side effect of scrolling the page
         onWheel={(e) => e.currentTarget.blur()}
-        onChange={onChange}
+        onChange={(e) => {
+          onChange(e);
+          onChangeProp?.(e);
+        }}
       />
       <span
         className={clsx(
