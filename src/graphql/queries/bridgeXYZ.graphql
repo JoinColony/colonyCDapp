@@ -1,3 +1,5 @@
-query BridgeXYZ($input: BridgeXYZQueryInput!) {
-  bridgeXYZQuery(input: $input)
+query BridgeXYZQuery($input: BridgeXYZQueryInput!) {
+  bridgeXYZQuery(input: $input) {
+    success
+  }
 }
