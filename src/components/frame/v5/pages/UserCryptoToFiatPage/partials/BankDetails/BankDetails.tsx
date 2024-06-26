@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
-import { KYCModal } from '../KYCModal/index.tsx';
+import { BankDetailsModal } from '../BankDetailsModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
 import { statusPillScheme } from './consts.ts';
@@ -60,7 +60,9 @@ const BankDetails = () => {
         ctaOnClick={handleOpen}
       />
 
-      {isOpened && <KYCModal isOpened={isOpened} onClose={handleClose} />}
+      {isOpened && (
+        <BankDetailsModal isOpened={isOpened} onClose={handleClose} />
+      )}
     </RowItem.Container>
   );
 };
