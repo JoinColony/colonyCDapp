@@ -42,8 +42,8 @@ export const useRecipientsFieldTableColumns = (
       amountFooter: hasMoreThanOneToken
         ? () => (
             <PaymentBuilderPayoutsTotal
-              data={dataRef.current}
-              moveDecimals
+              data={dataRef.current || []}
+              convertToWEI
               itemClassName="justify-end md:justify-start"
               buttonClassName="justify-end md:justify-start"
             />
@@ -52,7 +52,7 @@ export const useRecipientsFieldTableColumns = (
       recipientFooter: hasMoreThanOneToken
         ? () => (
             <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
-              {dataRef.current.length <= 7
+              {!!dataRef.current.length && dataRef.current.length <= 7
                 ? formatText({ id: 'table.footer.total' })
                 : formatText(
                     { id: 'table.footer.totalPayments' },

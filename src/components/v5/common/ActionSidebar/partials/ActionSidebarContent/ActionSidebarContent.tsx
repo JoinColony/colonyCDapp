@@ -26,6 +26,7 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '../../consts.ts';
+import { actionsWithStakingDecisionMethod } from '../../hooks/permissions/consts.ts';
 import useHasActionPermissions from '../../hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 import useActionFormProps from '../../hooks/useActionFormProps.ts';
@@ -96,7 +97,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const selectedActionType = formValues[ACTION_TYPE_FIELD_NAME];
   const selectedDecisionMethod = formValues[DECISION_METHOD_FIELD_NAME];
   const shouldShowCreateStakedExpenditureModal =
-    selectedActionType === Action.PaymentBuilder &&
+    actionsWithStakingDecisionMethod.includes(selectedActionType) &&
     selectedDecisionMethod === DecisionMethod.Staking;
 
   useEffect(() => {
@@ -225,6 +226,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       )}
       {shouldShowCreateStakedExpenditureModal && (
         <CreateStakedExpenditureModal
+          actionType={selectedActionType}
           isOpen={isCreateStakedExpenditureModalVisible}
           onCloseClick={hideCreateStakedExpenditureModal}
           formValues={formValues}
