@@ -22,6 +22,7 @@ import {
   getPayoutsWithSlotIds,
   getPayoutAmount,
   createActionMetadataInDB,
+  adjustPayoutsAddresses,
 } from '../utils/index.ts';
 
 export type CreateExpenditurePayload =
@@ -47,10 +48,12 @@ function* createExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
+  const { network } = colonyManager.networkClient;
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
+  const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(adjustedPayouts);
 
   const {
     makeExpenditure,
