@@ -68,12 +68,30 @@ const checkKYCHandler = async (
       },
     );
 
-    // TODO: If KYC passed and external account added, generate liquidation address
-
     if (res.status !== 200) {
       throw Error(`Get failed with error code ${res.status}`);
     }
     const kyc_status = (await res.json()).kyc_status;
+
+    // TODO: If KYC passed and external account added, generate liquidation address
+    if (kyc_status === true) {
+      // Do they have an external account?
+
+      const externalAccountRes = await fetch(
+        `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Idempotency-Key': 'thisisadifferentkey',
+            'Api-Key': apiKey,
+          },
+        },
+      );
+
+      const externalAccounts = externalAccountRes.json();
+      if (externalAccounts) {
+      }
+    }
 
     return {
       kyc_status,
