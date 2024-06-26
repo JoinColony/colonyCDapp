@@ -1,5 +1,6 @@
 query BridgeXYZQuery($input: BridgeXYZQueryInput!) {
   bridgeXYZQuery(input: $input) {
     success
+    transactionFee
   }
 }

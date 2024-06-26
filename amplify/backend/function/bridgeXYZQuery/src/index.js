@@ -1,3 +1,5 @@
+const { getFeesHandler } = require('./handlers/getFees');
+
 let appSyncApiKey = 'da2-fakeApiId123456';
 let apiKey = 'da2-fakeApiId123456';
 let apiUrl = 'http://mocking:3000/bridgexyz';
@@ -27,6 +29,7 @@ exports.handler = async (event) => {
   const { path } = event.arguments?.input || {};
 
   const handlers = {
+    'v0/developer/fees': getFeesHandler,
     default: () => {
       console.log('Running default handler');
       return null;
