@@ -51,11 +51,11 @@ const MSG = defineMessages({
   },
   lastNameLabel: {
     id: `${displayname}.lastNameLabel`,
-    defaultMessage: 'First name',
+    defaultMessage: 'Last name',
   },
   lastNamePlaceholder: {
     id: `${displayname}.lastNamePlaceholder`,
-    defaultMessage: 'First name',
+    defaultMessage: 'Last name',
   },
   emailLabel: {
     id: `${displayname}.emailLabel`,

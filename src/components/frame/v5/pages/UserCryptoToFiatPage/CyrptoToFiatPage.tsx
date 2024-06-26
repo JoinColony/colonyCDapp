@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
@@ -53,10 +53,10 @@ const UserCryptoToFiatPage = () => {
       </section>
       {rowItems.map(({ Component, key }, index, items) => {
         return (
-          <>
-            <Component key={key} />
+          <Fragment key={key}>
+            <Component />
             {index < items.length - 1 && <hr />}
-          </>
+          </Fragment>
         );
       })}
     </div>

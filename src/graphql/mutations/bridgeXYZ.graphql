@@ -7,3 +7,42 @@ mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
     success
   }
 }
+
+mutation CreateKYCLinks($fullName: String!, $email: String!) {
+  bridgeXYZMutation(
+    input: {
+      path: "v0/kyc_links"
+      body: { full_name: $fullName, email: $email }
+    }
+  ) {
+    success
+    tos_link
+  }
+}
+
+mutation UpdateBridgeCustomer(
+  $firstName: String!
+  $lastName: String!
+  $address: BridgeXYZMutationAddressInput
+  $birthDate: String!
+  $taxIdNumber: String!
+  $signedAgreementId: String!
+  $email: String!
+) {
+  bridgeXYZMutation(
+    input: {
+      path: "v0/customers/{customerID}"
+      body: {
+        first_name: $firstName
+        last_name: $lastName
+        address: $address
+        birth_date: $birthDate
+        tax_identification_number: $taxIdNumber
+        signed_agreement_id: $signedAgreementId
+        email: $email
+      }
+    }
+  ) {
+    success
+  }
+}

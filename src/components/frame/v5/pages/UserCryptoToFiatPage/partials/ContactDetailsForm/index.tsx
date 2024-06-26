@@ -93,41 +93,40 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
           />
         </FormRow>
 
-        {!!selectedCountry?.subdivisions?.length && (
-          <>
-            <label className="mb-1.5 text-md font-medium text-gray-700">
-              Adress
-            </label>
+        <label className="mb-1.5 text-md font-medium text-gray-700">
+          Adress
+        </label>
 
-            <FormRow>
-              <FormInput name="address1" placeholder="Address line 1" />
-            </FormRow>
-            <FormRow>
-              <FormInput name="address2" placeholder="Address line 2" />
-            </FormRow>
-            <FormRow>
-              <div className="flex">
-                <div className="mr-1 flex-1">
-                  <FormInput name="city" placeholder="City" />
-                </div>
+        <FormRow>
+          <FormInput name="address1" placeholder="Address line 1" />
+        </FormRow>
+        <FormRow>
+          <FormInput name="address2" placeholder="Address line 2" />
+        </FormRow>
+        <FormRow>
+          <div className="flex">
+            <div className="mr-1 flex-1">
+              <FormInput name="city" placeholder="City" />
+            </div>
 
-                <div className="ml-1 flex-1">
-                  <FormSelect
-                    name="subdivisions"
-                    options={selectedCountry?.subdivisions.map((item) => ({
-                      value: item.code,
-                      label: item.name,
-                    }))}
-                  />
-                </div>
+            {!!selectedCountry?.subdivisions.length && (
+              <div className="ml-1 flex-1">
+                <FormSelect
+                  name="subdivisions"
+                  options={selectedCountry?.subdivisions.map((item) => ({
+                    value: item.code,
+                    label: item.name,
+                  }))}
+                />
               </div>
-            </FormRow>
+            )}
+          </div>
+        </FormRow>
 
-            <FormRow>
-              <FormInput name="postcode" placeholder="Postcode" />
-            </FormRow>
-          </>
-        )}
+        <FormRow>
+          <FormInput name="postcode" placeholder="Postcode" />
+        </FormRow>
+
         <ModalFormCTAButtons
           cancelButton={{ onClick: onClose, title: MSG.cancelButtonTitle }}
           proceedButton={{ title: MSG.proceedButtonTitle }}
