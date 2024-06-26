@@ -331,6 +331,7 @@ type BridgeXYZMutationReturn {
 
 type BridgeXYZQueryReturn {
   success: Boolean
+  transactionFee: String
 }
 
 """
