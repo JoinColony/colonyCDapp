@@ -263,6 +263,11 @@ input BridgeXYZMutationInput {
   body: String!
 }
 
+type BridgeXYZMutationReturn {
+  tos_link: String
+  kyc_link: String
+}
+
 """
 Return type for tokens gotten from DB or from chain
 """
@@ -879,7 +884,7 @@ type Mutation {
   """
   Post to the Bridge XYZ API
   """
-  bridgeXYZMutation(input: BridgeXYZMutationInput!): String
+  bridgeXYZMutation(input: BridgeXYZMutationInput!): BridgeXYZMutationReturn
     @function(name: "bridgeXYZMutation-${env}")
 }
 
