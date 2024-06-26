@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,10 @@ import {
   USER_EDIT_PROFILE_ROUTE,
   USER_HOME_ROUTE,
 } from '~routes/index.ts';
-import { type KYCLinksMutationBody } from '~types/offramp.ts';
+import {
+  type PutCustomerMutationBody,
+  type KYCLinksMutationBody,
+} from '~types/offramp.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -44,34 +48,72 @@ const MSG = defineMessages({
 });
 
 const FourOFour = () => {
-  const [bridgeXYZMutation, { data }] = useBridgeXyzMutationMutation();
+  const [bridgeXYZMutation] = useBridgeXyzMutationMutation();
 
-  const body: KYCLinksMutationBody = {
-    // eslint-disable-next-line camelcase
-    full_name: 'My Apple Pie',
-    email: 'apple@pie.com',
+  const sendKYCLinksMutation = () => {
+    const body: KYCLinksMutationBody = {
+      full_name: 'My Apple Pie',
+      email: 'apple@pie.com',
+    };
+
+    bridgeXYZMutation({
+      variables: {
+        input: {
+          body,
+          path: 'v0/kyc_links',
+        },
+      },
+    })
+      .then((data) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log('Error! ', err);
+      });
   };
 
-  // eslint-disable-next-line no-console
-  console.log(data);
+  const putCustomerMutation = () => {
+    const body: PutCustomerMutationBody = {
+      address: {
+        city: 'United',
+        country: 'United States',
+        postal_code: '123',
+        state: 'New York',
+        street_line_1: '123',
+        street_line_2: '456',
+      },
+      birth_date: '2020-01-01',
+      email: 'test@example.com',
+      first_name: 'John',
+      last_name: 'Doe',
+      signed_agreement_id: 'asdas',
+      tax_identification_number: '123',
+    };
+
+    bridgeXYZMutation({
+      variables: {
+        input: {
+          body,
+          path: 'v0/customers/{customerID}',
+        },
+      },
+    })
+      .then((data) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log('Error! ', err);
+      });
+  };
 
   return (
     <MainLayout>
-      <Button
-        onClick={() =>
-          bridgeXYZMutation({
-            variables: {
-              input: {
-                body,
-                path: 'v0/kyc_links',
-                pathParams: [],
-              },
-            },
-          })
-        }
-      >
-        Send bridge data
-      </Button>
+      <Button onClick={sendKYCLinksMutation}>Send kyc_links mutation</Button>
+      <Button onClick={putCustomerMutation}>Send put_customer mutation</Button>
       <FourOFourMessage
         description={formatText(MSG.description)}
         links={
