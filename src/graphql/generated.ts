@@ -48,27 +48,41 @@ export type Annotation = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
+export type BridgeXyzMutationAddressInput = {
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  postal_code?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<Scalars['String']>;
+  street_line_1?: InputMaybe<Scalars['String']>;
+  street_line_2?: InputMaybe<Scalars['String']>;
+};
+
 export type BridgeXyzMutationBodyInput = {
+  address?: InputMaybe<BridgeXyzMutationAddressInput>;
+  birth_date?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
+  first_name?: InputMaybe<Scalars['String']>;
   full_name?: InputMaybe<Scalars['String']>;
+  last_name?: InputMaybe<Scalars['String']>;
+  signed_agreement_id?: InputMaybe<Scalars['String']>;
+  tax_identification_number?: InputMaybe<Scalars['String']>;
 };
 
 export type BridgeXyzMutationInput = {
   body: BridgeXyzMutationBodyInput;
   path: Scalars['String'];
-  pathParams: Array<Scalars['String']>;
 };
 
 export type BridgeXyzMutationReturn = {
   __typename?: 'BridgeXYZMutationReturn';
   kyc_link?: Maybe<Scalars['String']>;
+  success?: Maybe<Scalars['Boolean']>;
   tos_link?: Maybe<Scalars['String']>;
 };
 
 export type BridgeXyzQueryInput = {
   body: Scalars['String'];
   path: Scalars['String'];
-  pathParams: Array<Scalars['String']>;
 };
 
 /**
@@ -1447,6 +1461,13 @@ export type CreateIngestorStatsInput = {
   value: Scalars['String'];
 };
 
+export type CreateLiquidationAddressInput = {
+  chainId: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
+  liquidationAddress: Scalars['ID'];
+  userAddress: Scalars['ID'];
+};
+
 export type CreateMotionMessageInput = {
   amount?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
@@ -1722,6 +1743,10 @@ export type DeleteExtensionInstallationsCountInput = {
 };
 
 export type DeleteIngestorStatsInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteLiquidationAddressInput = {
   id: Scalars['ID'];
 };
 
@@ -2266,6 +2291,22 @@ export type IngestorStats = {
   updatedAt: Scalars['AWSDateTime'];
   /** JSON string to pass custom, dynamic values */
   value: Scalars['String'];
+};
+
+export type LiquidationAddress = {
+  __typename?: 'LiquidationAddress';
+  /** The chain id the colony is on */
+  chainId: Scalars['String'];
+  createdAt: Scalars['AWSDateTime'];
+  /** Unique identifier for the liquidation address entry */
+  id: Scalars['ID'];
+  /** The liquidation address */
+  liquidationAddress: Scalars['ID'];
+  updatedAt: Scalars['AWSDateTime'];
+  /** The user associated */
+  user?: Maybe<User>;
+  /** The user address associated */
+  userAddress: Scalars['ID'];
 };
 
 export type ModelAnnotationConditionInput = {
@@ -3204,6 +3245,31 @@ export type ModelIntKeyConditionInput = {
   lt?: InputMaybe<Scalars['Int']>;
 };
 
+export type ModelLiquidationAddressConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelLiquidationAddressConditionInput>>>;
+  chainId?: InputMaybe<ModelStringInput>;
+  liquidationAddress?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelLiquidationAddressConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelLiquidationAddressConditionInput>>>;
+  userAddress?: InputMaybe<ModelIdInput>;
+};
+
+export type ModelLiquidationAddressConnection = {
+  __typename?: 'ModelLiquidationAddressConnection';
+  items: Array<Maybe<LiquidationAddress>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelLiquidationAddressFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelLiquidationAddressFilterInput>>>;
+  chainId?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  liquidationAddress?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelLiquidationAddressFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelLiquidationAddressFilterInput>>>;
+  userAddress?: InputMaybe<ModelIdInput>;
+};
+
 export type ModelMotionMessageConditionInput = {
   amount?: InputMaybe<ModelStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelMotionMessageConditionInput>>>;
@@ -3835,6 +3901,15 @@ export type ModelSubscriptionIntInput = {
   notIn?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
 };
 
+export type ModelSubscriptionLiquidationAddressFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionLiquidationAddressFilterInput>>>;
+  chainId?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  liquidationAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionLiquidationAddressFilterInput>>>;
+  userAddress?: InputMaybe<ModelSubscriptionIdInput>;
+};
+
 export type ModelSubscriptionMotionMessageFilterInput = {
   amount?: InputMaybe<ModelSubscriptionStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionMotionMessageFilterInput>>>;
@@ -4364,6 +4439,7 @@ export type Mutation = {
   createExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   createExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   createIngestorStats?: Maybe<IngestorStats>;
+  createLiquidationAddress?: Maybe<LiquidationAddress>;
   createMotionMessage?: Maybe<MotionMessage>;
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
@@ -4404,6 +4480,7 @@ export type Mutation = {
   deleteExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   deleteExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   deleteIngestorStats?: Maybe<IngestorStats>;
+  deleteLiquidationAddress?: Maybe<LiquidationAddress>;
   deleteMotionMessage?: Maybe<MotionMessage>;
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
@@ -4444,6 +4521,7 @@ export type Mutation = {
   updateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   updateExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   updateIngestorStats?: Maybe<IngestorStats>;
+  updateLiquidationAddress?: Maybe<LiquidationAddress>;
   updateMotionMessage?: Maybe<MotionMessage>;
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
@@ -4646,6 +4724,13 @@ export type MutationCreateExtensionInstallationsCountArgs = {
 export type MutationCreateIngestorStatsArgs = {
   condition?: InputMaybe<ModelIngestorStatsConditionInput>;
   input: CreateIngestorStatsInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateLiquidationAddressArgs = {
+  condition?: InputMaybe<ModelLiquidationAddressConditionInput>;
+  input: CreateLiquidationAddressInput;
 };
 
 
@@ -4922,6 +5007,13 @@ export type MutationDeleteIngestorStatsArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteLiquidationAddressArgs = {
+  condition?: InputMaybe<ModelLiquidationAddressConditionInput>;
+  input: DeleteLiquidationAddressInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteMotionMessageArgs = {
   condition?: InputMaybe<ModelMotionMessageConditionInput>;
   input: DeleteMotionMessageInput;
@@ -5190,6 +5282,13 @@ export type MutationUpdateExtensionInstallationsCountArgs = {
 export type MutationUpdateIngestorStatsArgs = {
   condition?: InputMaybe<ModelIngestorStatsConditionInput>;
   input: UpdateIngestorStatsInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateLiquidationAddressArgs = {
+  condition?: InputMaybe<ModelLiquidationAddressConditionInput>;
+  input: UpdateLiquidationAddressInput;
 };
 
 
@@ -5544,6 +5643,8 @@ export type Query = {
   getExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   getExtensionsByHash?: Maybe<ModelColonyExtensionConnection>;
   getIngestorStats?: Maybe<IngestorStats>;
+  getLiquidationAddress?: Maybe<LiquidationAddress>;
+  getLiquidationAddressesByUserAddress?: Maybe<ModelLiquidationAddressConnection>;
   getMotionByExpenditureId?: Maybe<ModelColonyMotionConnection>;
   getMotionByTransactionHash?: Maybe<ModelColonyMotionConnection>;
   getMotionMessage?: Maybe<MotionMessage>;
@@ -5574,6 +5675,7 @@ export type Query = {
   getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
+  getUserByLiquidationAddress?: Maybe<ModelLiquidationAddressConnection>;
   /** Retrieve a user's reputation within a specific domain in a Colony */
   getUserReputation?: Maybe<Scalars['String']>;
   getUserReputationInColony?: Maybe<ModelContributorReputationConnection>;
@@ -5609,6 +5711,7 @@ export type Query = {
   listExpenditures?: Maybe<ModelExpenditureConnection>;
   listExtensionInstallationsCounts?: Maybe<ModelExtensionInstallationsCountConnection>;
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
+  listLiquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
@@ -5973,6 +6076,22 @@ export type QueryGetIngestorStatsArgs = {
 
 
 /** Root query type */
+export type QueryGetLiquidationAddressArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetLiquidationAddressesByUserAddressArgs = {
+  filter?: InputMaybe<ModelLiquidationAddressFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  userAddress: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetMotionByExpenditureIdArgs = {
   expenditureId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyMotionFilterInput>;
@@ -6182,6 +6301,16 @@ export type QueryGetUserByAddressArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   id: Scalars['ID'];
   limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetUserByLiquidationAddressArgs = {
+  filter?: InputMaybe<ModelLiquidationAddressFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  liquidationAddress: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
@@ -6434,6 +6563,14 @@ export type QueryListExtensionInstallationsCountsArgs = {
 /** Root query type */
 export type QueryListIngestorStatsArgs = {
   filter?: InputMaybe<ModelIngestorStatsFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListLiquidationAddressesArgs = {
+  filter?: InputMaybe<ModelLiquidationAddressFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -7039,6 +7176,7 @@ export type Subscription = {
   onCreateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onCreateExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   onCreateIngestorStats?: Maybe<IngestorStats>;
+  onCreateLiquidationAddress?: Maybe<LiquidationAddress>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
@@ -7077,6 +7215,7 @@ export type Subscription = {
   onDeleteExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onDeleteExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   onDeleteIngestorStats?: Maybe<IngestorStats>;
+  onDeleteLiquidationAddress?: Maybe<LiquidationAddress>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
@@ -7115,6 +7254,7 @@ export type Subscription = {
   onUpdateExpenditureMetadata?: Maybe<ExpenditureMetadata>;
   onUpdateExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   onUpdateIngestorStats?: Maybe<IngestorStats>;
+  onUpdateLiquidationAddress?: Maybe<LiquidationAddress>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
@@ -7253,6 +7393,11 @@ export type SubscriptionOnCreateExtensionInstallationsCountArgs = {
 
 export type SubscriptionOnCreateIngestorStatsArgs = {
   filter?: InputMaybe<ModelSubscriptionIngestorStatsFilterInput>;
+};
+
+
+export type SubscriptionOnCreateLiquidationAddressArgs = {
+  filter?: InputMaybe<ModelSubscriptionLiquidationAddressFilterInput>;
 };
 
 
@@ -7446,6 +7591,11 @@ export type SubscriptionOnDeleteIngestorStatsArgs = {
 };
 
 
+export type SubscriptionOnDeleteLiquidationAddressArgs = {
+  filter?: InputMaybe<ModelSubscriptionLiquidationAddressFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
 };
@@ -7633,6 +7783,11 @@ export type SubscriptionOnUpdateExtensionInstallationsCountArgs = {
 
 export type SubscriptionOnUpdateIngestorStatsArgs = {
   filter?: InputMaybe<ModelSubscriptionIngestorStatsFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateLiquidationAddressArgs = {
+  filter?: InputMaybe<ModelSubscriptionLiquidationAddressFilterInput>;
 };
 
 
@@ -8230,6 +8385,13 @@ export type UpdateIngestorStatsInput = {
   value?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateLiquidationAddressInput = {
+  chainId?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  liquidationAddress?: InputMaybe<Scalars['ID']>;
+  userAddress?: InputMaybe<Scalars['ID']>;
+};
+
 export type UpdateMotionMessageInput = {
   amount?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
@@ -8432,14 +8594,6 @@ export type UserTransactionHistoryArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-export type UserLiquidationAddress = {
-  __typename?: 'UserLiquidationAddress';
-  chainId: Scalars['String'];
-  id: Scalars['ID'];
-  liquidationAddress: Scalars['ID'];
-  userAddress: Scalars['ID'];
 };
 
 /** Stakes that a user has made for a motion */
@@ -8691,7 +8845,7 @@ export type BridgeXyzMutationMutationVariables = Exact<{
 }>;
 
 
-export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', tos_link?: string | null, kyc_link?: string | null } | null };
+export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', tos_link?: string | null, kyc_link?: string | null, success?: boolean | null } | null };
 
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
@@ -10209,6 +10363,7 @@ export const BridgeXyzMutationDocument = gql`
   bridgeXYZMutation(input: $input) {
     tos_link
     kyc_link
+    success
   }
 }
     `;
