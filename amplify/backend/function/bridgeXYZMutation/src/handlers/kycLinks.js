@@ -58,6 +58,7 @@ const kycLinksHandler = async (
       return {
         tos_link: data.tos_link,
         kyc_link: data.kyc_link,
+        // TODO: return success
       };
     }
   } catch (e) {
