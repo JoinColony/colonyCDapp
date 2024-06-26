@@ -274,6 +274,13 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
                         lastName,
                         taxIdNumber,
                         email,
+                        currency: 'eur',
+                        iban: {
+                          // eslint-disable-next-line camelcase
+                          account_number: '12345',
+                          bic: 'bicbic',
+                          country: 'GBR',
+                        },
                         address: {
                           city,
                           country,
