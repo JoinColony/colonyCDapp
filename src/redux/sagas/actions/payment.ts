@@ -78,7 +78,7 @@ function* createPaymentAction({
       ({ recipientAddress }) => recipientAddress,
     );
 
-    const txChannel = yield call(getTxChannel, metaId);
+    txChannel = yield call(getTxChannel, metaId);
     /*
      * setup batch ids and channels
      */
