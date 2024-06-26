@@ -1,11 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import {
+  FeatureFlag,
+  FeatureFlagsContext,
+} from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
-import { LANDING_PAGE_ROUTE } from '~routes';
+import {
+  LANDING_PAGE_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+  USER_HOME_ROUTE,
+} from '~routes';
 import { formatText } from '~utils/intl.ts';
 
 import { useUserCryptoToFiatPage } from './hooks.tsx';
@@ -30,10 +38,15 @@ const MSG = defineMessages({
 
 const UserCryptoToFiatPage = () => {
   const { user, userLoading, walletConnecting } = useAppContext();
+  const featureFlags = useContext(FeatureFlagsContext);
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
 
   const { rowItems } = useUserCryptoToFiatPage();
+
+  if (!featureFlags[FeatureFlag.CRYPTO_TO_FIAT]) {
+    return <Navigate to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`} />;
+  }
 
   if (userLoading || walletConnecting) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
