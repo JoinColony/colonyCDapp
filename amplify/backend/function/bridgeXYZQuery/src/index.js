@@ -1,4 +1,5 @@
 const { getFeesHandler } = require('./handlers/getFees');
+const { getLiquidationsHandler } = require('./handlers/getLiquidations');
 
 let appSyncApiKey = 'da2-fakeApiId123456';
 let apiKey = 'da2-fakeApiId123456';
@@ -30,6 +31,8 @@ exports.handler = async (event) => {
 
   const handlers = {
     'v0/developer/fees': getFeesHandler,
+    'v0/customers/{customerID}/liquidation_addresses/{liquidationAddressID}/drains':
+      getLiquidationsHandler,
     default: () => {
       console.log('Running default handler');
       return null;
