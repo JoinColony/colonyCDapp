@@ -12,6 +12,8 @@ import { FormRow } from '../FormRow.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
+import { validationSchema } from './validation.ts';
+
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
   onClose: () => void;
@@ -89,7 +91,12 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
   return (
     <div>
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
-      <Form onSubmit={onSubmit} className="flex flex-col gap-3">
+      <Form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-3 "
+        validationSchema={validationSchema}
+        mode="onSubmit"
+      >
         <FormRow>
           <FormInput
             name="firstName"
@@ -124,12 +131,6 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
           />
         </FormRow>
 
-        <FormRow>
-          <FormInput
-            name="postcode"
-            placeholder={formatText(MSG.postcodePlaceholder)}
-          />
-        </FormRow>
         <ModalFormCTAButtons
           cancelButton={{ title: MSG.cancelButtonTitle, onClick: onClose }}
           proceedButton={{ title: MSG.proceedButtonTitle }}
