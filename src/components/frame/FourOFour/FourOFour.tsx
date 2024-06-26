@@ -144,14 +144,14 @@ const FourOFour = () => {
       first_name: 'Johnny',
       last_name: 'Dapp',
       account: {
-        account_number: '123',
-        routing_number: '123',
+        account_number: 'thisisanaccountnumber',
+        routing_number: 'thisisaroutingnumber',
       },
       account_owner_name: 'Johnny Dapp',
       bank_name: 'HSBC',
       currency: 'usd',
       iban: {
-        account_number: '1234',
+        account_number: 'thisisanaccountnumber',
         bic: '1234',
         country: 'USA',
       },

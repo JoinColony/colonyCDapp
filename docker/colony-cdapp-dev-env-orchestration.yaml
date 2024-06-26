@@ -97,7 +97,7 @@ services:
     image: colony-cdapp-dev-env/base:latest
     volumes:
       - 'amplify-mock-data:/mock-data'
-    command: "npx --yes http-server --cors --port 3006 /mock-data/colonyNetworkArtifacts"
+    command: 'npx --yes http-server --cors --port 3006 /mock-data/colonyNetworkArtifacts'
     ports:
       - '3006:3006'
     depends_on:
