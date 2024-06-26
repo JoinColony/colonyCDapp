@@ -95,7 +95,7 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
       <Form
         onSubmit={onSubmit}
-        className="flex flex-col gap-3 "
+        className="flex flex-col"
         validationSchema={validationSchema}
         mode="onSubmit"
       >
