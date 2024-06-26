@@ -1,7 +1,11 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
+import { toast } from 'react-toastify';
 
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useUpdateUserProfileMutation } from '~gql';
+import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import Switch from '~v5/common/Fields/Switch/Switch.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
@@ -27,7 +31,7 @@ const MSG = defineMessages({
   bodyDescription: {
     id: `${displayName}.bodyDescription`,
     defaultMessage:
-      'Enable this to autmoatically USD or EUR in your account any time you receive a USDC payment from the colony app. A gateway fee, plus any transaction costs will be deducted from your payment',
+      'Enable this to automatically USD or EUR in your account any time you receive a USDC payment from the colony app. A gateway fee, plus any transaction costs will be deducted from your payment',
   },
   bodyCtaTitle: {
     id: `${displayName}.bodyCtaTitle`,
@@ -37,6 +41,15 @@ const MSG = defineMessages({
 
 const AutomaticDeposits = () => {
   const status = 'kycPaymentRequired';
+
+  const { user, updateUser } = useAppContext();
+
+  const [editUser, { loading: editUserLoading }] =
+    useUpdateUserProfileMutation();
+
+  const [isChecked, setIsChecked] = useState(
+    !!user?.profile?.isAutoOfframpEnabled,
+  );
 
   return (
     <RowItem.Container>
@@ -61,7 +74,38 @@ const AutomaticDeposits = () => {
       <RowItem.Body
         title={MSG.bodyTitle}
         description={MSG.bodyDescription}
-        ctaComponent={<Switch />}
+        ctaComponent={
+          <Switch
+            checked={isChecked}
+            onChange={async () => {
+              const newValue = !isChecked;
+
+              setIsChecked(newValue);
+
+              await editUser({
+                variables: {
+                  input: {
+                    id: user?.walletAddress ?? '',
+                    isAutoOfframpEnabled: newValue,
+                  },
+                },
+              });
+
+              updateUser(user?.walletAddress ?? '', true);
+
+              toast.success(
+                <Toast
+                  type="success"
+                  title={{ id: 'advancedSettings.toast.changesSaved' }}
+                  description={{
+                    id: 'advancedSettings.toast.autoOfframp.success',
+                  }}
+                />,
+              );
+            }}
+            disabled={editUserLoading}
+          />
+        }
       />
     </RowItem.Container>
   );

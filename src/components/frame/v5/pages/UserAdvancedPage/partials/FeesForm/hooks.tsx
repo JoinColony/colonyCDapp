@@ -57,7 +57,7 @@ export const useFeesForm = () => {
         toast.success(
           <Toast
             type="success"
-            title={{ id: 'advancedSettings.fees.toast.title' }}
+            title={{ id: 'advancedSettings.toast.changesSaved' }}
             description={{
               id: metatransactionsEnabled
                 ? 'advancedSettings.fees.toast.description.true'
