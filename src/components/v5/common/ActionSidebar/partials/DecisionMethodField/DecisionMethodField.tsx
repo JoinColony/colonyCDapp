@@ -40,7 +40,8 @@ const DecisionMethodField = ({
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
   const shouldShowStaking =
-    isStakedExpenditureEnabled && actionType === Action.PaymentBuilder;
+    isStakedExpenditureEnabled &&
+    [Action.PaymentBuilder, Action.SplitPayment].includes(actionType);
 
   const getDecisionMethods = () => {
     const decisionMethods: DecisionMethodOption[] = [
