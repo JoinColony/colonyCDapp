@@ -11,6 +11,7 @@ import {
   USER_EDIT_PROFILE_ROUTE,
   USER_HOME_ROUTE,
 } from '~routes/index.ts';
+import { type KYCLinksMutationBody } from '~types/offramp.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -45,7 +46,7 @@ const MSG = defineMessages({
 const FourOFour = () => {
   const [bridgeXYZMutation, { data }] = useBridgeXyzMutationMutation();
 
-  const body = {
+  const body: KYCLinksMutationBody = {
     // eslint-disable-next-line camelcase
     full_name: 'My Apple Pie',
     email: 'apple@pie.com',
