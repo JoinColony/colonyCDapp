@@ -8809,6 +8809,8 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
+export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: string, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
+
 export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
 
 export type FunctionParamFragment = { __typename?: 'FunctionParam', name: string, type: string, value: string };
@@ -9215,6 +9217,20 @@ export type GetExtensionInstallationsCountQueryVariables = Exact<{
 
 
 export type GetExtensionInstallationsCountQuery = { __typename?: 'Query', getExtensionInstallationsCount?: { __typename?: 'ExtensionInstallationsCount', oneTxPayment: number, stakedExpenditure: number, stagedExpenditure: number, streamingPayments: number, reputationWeighted: number } | null };
+
+export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
+  userOrLiquidationAddress: Scalars['ID'];
+}>;
+
+
+export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: string, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
+
+export type GetUserLiquidationAddressesQueryVariables = Exact<{
+  userAddress: Scalars['ID'];
+}>;
+
+
+export type GetUserLiquidationAddressesQuery = { __typename?: 'Query', getLiquidationAddressesByUserAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: string, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
 
 export type GetReputationMiningCycleMetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -9802,6 +9818,17 @@ ${ExpenditureStageFragmentDoc}
 ${ColonyMotionFragmentDoc}
 ${ExpenditureBalanceFragmentDoc}
 ${ExpenditureActionFragmentDoc}`;
+export const LiquidationAddressFragmentDoc = gql`
+    fragment LiquidationAddress on LiquidationAddress {
+  id
+  chainId
+  userAddress
+  user {
+    ...User
+  }
+  liquidationAddress
+}
+    ${UserFragmentDoc}`;
 export const UserDisplayFragmentDoc = gql`
     fragment UserDisplay on User {
   walletAddress: id
@@ -12208,6 +12235,86 @@ export function useGetExtensionInstallationsCountLazyQuery(baseOptions?: Apollo.
 export type GetExtensionInstallationsCountQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountQuery>;
 export type GetExtensionInstallationsCountLazyQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountLazyQuery>;
 export type GetExtensionInstallationsCountQueryResult = Apollo.QueryResult<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>;
+export const GetUserByUserOrLiquidationAddressDocument = gql`
+    query GetUserByUserOrLiquidationAddress($userOrLiquidationAddress: ID!) {
+  getUserByAddress(id: $userOrLiquidationAddress) {
+    items {
+      ...User
+    }
+  }
+  getUserByLiquidationAddress(liquidationAddress: $userOrLiquidationAddress) {
+    items {
+      ...LiquidationAddress
+    }
+  }
+}
+    ${UserFragmentDoc}
+${LiquidationAddressFragmentDoc}`;
+
+/**
+ * __useGetUserByUserOrLiquidationAddressQuery__
+ *
+ * To run a query within a React component, call `useGetUserByUserOrLiquidationAddressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByUserOrLiquidationAddressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByUserOrLiquidationAddressQuery({
+ *   variables: {
+ *      userOrLiquidationAddress: // value for 'userOrLiquidationAddress'
+ *   },
+ * });
+ */
+export function useGetUserByUserOrLiquidationAddressQuery(baseOptions: Apollo.QueryHookOptions<GetUserByUserOrLiquidationAddressQuery, GetUserByUserOrLiquidationAddressQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByUserOrLiquidationAddressQuery, GetUserByUserOrLiquidationAddressQueryVariables>(GetUserByUserOrLiquidationAddressDocument, options);
+      }
+export function useGetUserByUserOrLiquidationAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByUserOrLiquidationAddressQuery, GetUserByUserOrLiquidationAddressQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByUserOrLiquidationAddressQuery, GetUserByUserOrLiquidationAddressQueryVariables>(GetUserByUserOrLiquidationAddressDocument, options);
+        }
+export type GetUserByUserOrLiquidationAddressQueryHookResult = ReturnType<typeof useGetUserByUserOrLiquidationAddressQuery>;
+export type GetUserByUserOrLiquidationAddressLazyQueryHookResult = ReturnType<typeof useGetUserByUserOrLiquidationAddressLazyQuery>;
+export type GetUserByUserOrLiquidationAddressQueryResult = Apollo.QueryResult<GetUserByUserOrLiquidationAddressQuery, GetUserByUserOrLiquidationAddressQueryVariables>;
+export const GetUserLiquidationAddressesDocument = gql`
+    query GetUserLiquidationAddresses($userAddress: ID!) {
+  getLiquidationAddressesByUserAddress(userAddress: $userAddress) {
+    items {
+      ...LiquidationAddress
+    }
+  }
+}
+    ${LiquidationAddressFragmentDoc}`;
+
+/**
+ * __useGetUserLiquidationAddressesQuery__
+ *
+ * To run a query within a React component, call `useGetUserLiquidationAddressesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserLiquidationAddressesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserLiquidationAddressesQuery({
+ *   variables: {
+ *      userAddress: // value for 'userAddress'
+ *   },
+ * });
+ */
+export function useGetUserLiquidationAddressesQuery(baseOptions: Apollo.QueryHookOptions<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>(GetUserLiquidationAddressesDocument, options);
+      }
+export function useGetUserLiquidationAddressesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>(GetUserLiquidationAddressesDocument, options);
+        }
+export type GetUserLiquidationAddressesQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressesQuery>;
+export type GetUserLiquidationAddressesLazyQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressesLazyQuery>;
+export type GetUserLiquidationAddressesQueryResult = Apollo.QueryResult<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>;
 export const GetReputationMiningCycleMetadataDocument = gql`
     query GetReputationMiningCycleMetadata {
   getReputationMiningCycleMetadata(id: "REPUTATION_MINING_CYCLE_METADATA") {
