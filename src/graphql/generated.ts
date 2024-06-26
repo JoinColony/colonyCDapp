@@ -10110,6 +10110,7 @@ export const ExpenditureFragmentDoc = gql`
   nativeDomainId
   metadata {
     fundFromDomainNativeId
+    distributionType
     stages {
       ...ExpenditureStage
     }

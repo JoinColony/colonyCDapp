@@ -50,6 +50,8 @@ export const getPermissionsNeededForAction = (
       return [ColonyRole.Recovery];
     case Action.PaymentBuilder:
       return [ColonyRole.Administration];
+    case Action.SplitPayment:
+      return [ColonyRole.Administration];
     default:
       return undefined;
   }

@@ -64,11 +64,13 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
         ref={inputRef}
         className={clsx(
           className,
-          state ? stateClassNames[state] : undefined,
-          'w-full bg-base-white text-md text-gray-900 outline-0 placeholder:text-gray-400 focus:outline-none',
+          state && !disabled ? stateClassNames[state] : undefined,
+          'w-full text-md outline-0 focus:outline-none',
           {
-            'pointer-events-none text-gray-400': disabled,
-            'rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200':
+            'text-gray-900 placeholder:text-gray-400': !disabled,
+            'pointer-events-none bg-transparent text-gray-400 placeholder:text-gray-300':
+              disabled,
+            'rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200 focus:shadow-light-blue':
               mode === 'primary',
             'border-none': mode === 'secondary',
           },
@@ -93,7 +95,13 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
           {label}
         </label>
         {prefix || suffix ? (
-          <div className={clsx(inputWrapperClassName, 'w-full')}>
+          <div
+            className={clsx(inputWrapperClassName, 'w-full', {
+              'text-negative-400': state === FieldState.Error && !disabled,
+              'text-gray-300': disabled && !value,
+              'text-gray-400': disabled && value,
+            })}
+          >
             {prefix}
             {input}
             {suffix}
@@ -114,14 +122,16 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
               {typeof value === 'string' && value.length}/{maxLength}
             </div>
           )}
-        <span
-          className={clsx(
-            'border-0 text-md',
-            state ? stateClassNames[state] : undefined,
-          )}
-        >
-          {message}
-        </span>
+        {!!message && (
+          <span
+            className={clsx(
+              'border-0 text-md',
+              state ? stateClassNames[state] : undefined,
+            )}
+          >
+            {message}
+          </span>
+        )}
       </div>
     );
   },

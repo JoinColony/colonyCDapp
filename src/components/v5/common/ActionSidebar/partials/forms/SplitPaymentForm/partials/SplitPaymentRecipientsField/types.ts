@@ -1,11 +1,11 @@
+import { type SplitPaymentDistributionType } from '~gql';
 import { type Token } from '~types/graphql.ts';
-import { type DistributionMethod } from '~v5/common/ActionSidebar/partials/consts.tsx';
 
 export interface SplitPaymentRecipientsFieldProps {
   name: string;
-  distributionMethod?: DistributionMethod;
+  distributionMethod?: SplitPaymentDistributionType;
   token: Token;
-  amount: number;
+  disabled?: boolean;
 }
 
 export interface SplitPaymentRecipientsTableModel {
@@ -15,4 +15,6 @@ export interface SplitPaymentRecipientsTableModel {
 export interface SplitPaymentRecipientsFieldModel {
   recipient?: string;
   percent?: number;
+  amount?: string;
+  tokenAddress?: string;
 }

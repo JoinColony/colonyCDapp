@@ -14,6 +14,9 @@ const FormInputBase: FC<FormInputBaseProps> = ({
   name,
   type,
   defaultValue,
+  onBlur: onBlurProp,
+  readOnly,
+  onChange: onChangeProp,
   ...rest
 }) => {
   const {
@@ -29,12 +32,17 @@ const FormInputBase: FC<FormInputBaseProps> = ({
     <InputBase
       message={error?.message}
       {...rest}
-      readOnly={readonly}
+      readOnly={readonly || readOnly}
       type={type}
-      onBlur={onBlur}
+      onBlur={(event) => {
+        onBlur();
+        onBlurProp?.(event);
+      }}
       value={value?.toString() || ''}
       onChange={(event) => {
         const { value: inputValue, valueAsNumber } = event.target;
+
+        onChangeProp?.();
 
         if (type === 'number') {
           onChange(Number.isNaN(valueAsNumber) ? 0 : valueAsNumber);
