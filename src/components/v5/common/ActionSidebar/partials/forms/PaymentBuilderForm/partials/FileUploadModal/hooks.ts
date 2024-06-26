@@ -176,7 +176,7 @@ export const useCSVFileTemplate = () => {
 
   const csvTemplate = [
     `
-Instructions here: https://clny.io/csv
+Instructions here: https://go.clny.io/csv
 
 Address Book
 
