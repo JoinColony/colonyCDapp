@@ -43,7 +43,10 @@ const putCustomerHandler = async (
     );
 
     if (res.status !== 200) {
-      throw Error(`Put failed with error code ${res.status}`);
+      console.log(await res.json());
+      throw Error(
+        `Put failed with error code ${res.status}. Error message was: ${await res.json()}`,
+      );
     }
 
     return { success: true };
