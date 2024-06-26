@@ -192,7 +192,13 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
               content: (
                 <div>
                   <ModalHeading title={MSG.tcTitle} subtitle={MSG.tcSubtitle} />
-                  <iframe title="Terms iframe" src={kycFields.tosLink} />
+                  <div className="flex justify-center">
+                    <iframe
+                      title="Terms iframe"
+                      src={kycFields.tosLink}
+                      className="min-h-[20.2rem] min-w-[25rem]"
+                    />
+                  </div>
                 </div>
               ),
             },
