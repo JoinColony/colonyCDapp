@@ -27,6 +27,7 @@ import MembersPage, {
 import OnboardingPage from '~frame/v5/pages/OnboardingPage/index.ts';
 import TeamsPage from '~frame/v5/pages/TeamsPage/index.ts';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage/index.ts';
+import UserCryptoToFiatPage from '~frame/v5/pages/UserCryptoToFiatPage/CyrptoToFiatPage.tsx';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage/index.ts';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage/index.ts';
 import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage/index.ts';
@@ -69,6 +70,7 @@ import {
   CREATE_PROFILE_ROUTE,
   COLONY_MULTISIG_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
+  USER_CRYPTO_TO_FIAT_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -104,6 +106,14 @@ const Routes = () => {
               element={<UserPreferencesPage />}
             />
             <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
+            <Route
+              path={USER_PREFERENCES_ROUTE}
+              element={<UserPreferencesPage />}
+            />
+            <Route
+              path={USER_CRYPTO_TO_FIAT_ROUTE}
+              element={<UserCryptoToFiatPage />}
+            />
           </Route>
         </Route>
 
