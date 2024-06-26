@@ -1,61 +1,70 @@
-import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { type FieldValues } from 'react-hook-form';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { Action } from '~constants/actions.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type Colony } from '~types/graphql.ts';
-import { notNull } from '~utils/arrays/index.ts';
-import { findDomainByNativeId } from '~utils/domains.ts';
-import { convertPeriodToSeconds } from '~utils/extensions.ts';
 
-import { type PaymentBuilderFormValues } from '../forms/PaymentBuilderForm/hooks.ts';
-import { unformatNumeral } from 'cleave-zen';
+import { getPaymentBuilderPayload } from '../forms/PaymentBuilderForm/utils.tsx';
+import { getSplitPaymentPayload } from '../forms/SplitPaymentForm/utils.ts';
 
-export const getCreateStakedExpenditurePayload = (
-  colony: Colony,
-  values: PaymentBuilderFormValues,
+export const getActionPayload = ({
+  actionType,
+  colony,
+  formValues,
+  networkInverseFee,
+}: {
+  actionType: Action;
+  colony: Colony;
+  formValues: any;
+  networkInverseFee: string;
+}) => {
+  switch (actionType) {
+    case Action.PaymentBuilder:
+      return getPaymentBuilderPayload(colony, formValues, networkInverseFee);
+    case Action.SplitPayment:
+      return getSplitPaymentPayload(colony, formValues, networkInverseFee);
+    default:
+      return null;
+  }
+};
+
+export const getCreateStakedExpenditurePayload = ({
+  actionType,
+  colony,
+  values,
+  options,
+}: {
+  actionType: Action;
+  colony: Colony;
+  values: FieldValues;
   options: {
     networkInverseFee: string;
     stakeAmount: string;
     stakedExpenditureAddress: string;
     activeBalance: string | undefined;
-  },
-): CreateStakedExpenditurePayload | null => {
+  };
+}): CreateStakedExpenditurePayload | null => {
   const {
     activeBalance,
     networkInverseFee,
     stakeAmount,
     stakedExpenditureAddress,
   } = options;
-  const colonyTokens = colony.tokens?.items.filter(notNull);
-  const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
-  const createdInDomain =
-    findDomainByNativeId(values.createdIn, colony) || rootDomain;
 
-  if (!createdInDomain || !stakeAmount || !stakedExpenditureAddress) {
+  const payload = getActionPayload({
+    actionType,
+    formValues: values,
+    colony,
+    networkInverseFee,
+  });
+
+  if (!payload) {
     return null;
   }
 
   return {
-    colonyAddress: colony.colonyAddress,
-    createdInDomain,
-    fundFromDomainId: values?.from,
-    isStaged: false,
-    networkInverseFee,
-    annotationMessage: values?.description,
-    payouts:
-      values?.payments?.map((payment) => ({
-        recipientAddress: payment.recipient || '',
-        tokenAddress: payment.tokenAddress || '',
-        amount: payment.amount || '0',
-        claimDelay: convertPeriodToSeconds(
-          Number(unformatNumeral(payment.delay)),
-        ),
-        tokenDecimals:
-          colonyTokens?.find(
-            ({ token }) => token.tokenAddress === payment.tokenAddress,
-          )?.token.decimals || DEFAULT_TOKEN_DECIMALS,
-      })) || [],
+    ...payload,
     stakeAmount: BigNumber.from(stakeAmount),
     stakedExpenditureAddress,
     tokenAddress: colony.nativeToken.tokenAddress,

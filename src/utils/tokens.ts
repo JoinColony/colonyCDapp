@@ -8,7 +8,6 @@ import {
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants/index.ts';
-import { type ColonyFragment } from '~gql';
 import {
   type Colony,
   type ColonyBalances,
@@ -133,7 +132,7 @@ export const getNativeTokenByChainId = (chainId: string): Token => {
 
 export const shouldPreventPaymentsWithTokenInColony = (
   tokenAddress: string,
-  colony: ColonyFragment,
+  colony: Colony,
   tokenLockStatesMap: Record<string, boolean>,
 ): boolean => {
   const isTokenLocked = tokenLockStatesMap[tokenAddress] === false;
