@@ -8926,6 +8926,8 @@ export type UpdateBridgeCustomerMutationVariables = Exact<{
   taxIdNumber: Scalars['String'];
   signedAgreementId: Scalars['String'];
   email: Scalars['String'];
+  currency: Scalars['String'];
+  iban?: InputMaybe<BridgeXyzMutationIbanInput>;
 }>;
 
 
@@ -8934,7 +8936,7 @@ export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZM
 export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, success?: boolean | null } | null };
+export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, success?: boolean | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
@@ -10562,9 +10564,9 @@ export type CreateKycLinksMutationHookResult = ReturnType<typeof useCreateKycLin
 export type CreateKycLinksMutationResult = Apollo.MutationResult<CreateKycLinksMutation>;
 export type CreateKycLinksMutationOptions = Apollo.BaseMutationOptions<CreateKycLinksMutation, CreateKycLinksMutationVariables>;
 export const UpdateBridgeCustomerDocument = gql`
-    mutation UpdateBridgeCustomer($firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $birthDate: String!, $taxIdNumber: String!, $signedAgreementId: String!, $email: String!) {
+    mutation UpdateBridgeCustomer($firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $birthDate: String!, $taxIdNumber: String!, $signedAgreementId: String!, $email: String!, $currency: String!, $iban: BridgeXYZMutationIbanInput) {
   bridgeXYZMutation(
-    input: {path: "v0/customers/{customerID}", body: {first_name: $firstName, last_name: $lastName, address: $address, birth_date: $birthDate, tax_identification_number: $taxIdNumber, signed_agreement_id: $signedAgreementId, email: $email}}
+    input: {path: "v0/customers/{customerID}", body: {first_name: $firstName, last_name: $lastName, address: $address, birth_date: $birthDate, tax_identification_number: $taxIdNumber, signed_agreement_id: $signedAgreementId, email: $email, currency: $currency, iban: $iban}}
   ) {
     success
   }
@@ -10592,6 +10594,8 @@ export type UpdateBridgeCustomerMutationFn = Apollo.MutationFunction<UpdateBridg
  *      taxIdNumber: // value for 'taxIdNumber'
  *      signedAgreementId: // value for 'signedAgreementId'
  *      email: // value for 'email'
+ *      currency: // value for 'currency'
+ *      iban: // value for 'iban'
  *   },
  * });
  */
@@ -10608,6 +10612,20 @@ export const CheckKycStatusDocument = gql`
     kyc_status
     kyc_link
     success
+    country
+    bankAccount {
+      currency
+      bankName
+      iban {
+        bic
+        country
+        last4
+      }
+      usAccount {
+        last4
+        routingNumber
+      }
+    }
   }
 }
     `;
