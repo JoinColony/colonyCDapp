@@ -6,6 +6,7 @@ import { type CountryData } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
+import FormError from '~v5/shared/FormError/index.ts';
 
 interface CountrySelectProps {
   options: SelectOption[];
@@ -22,7 +23,11 @@ export const CountrySelect: FC<CountrySelectProps> = ({
   labelMessage,
   name,
 }) => {
-  const { setValue } = useFormContext();
+  const { setValue, getFieldState } = useFormContext();
+
+  const { error } = getFieldState(name);
+
+  const customErrorMessage = error?.message || '';
 
   const handleChange = (val) => {
     onChange(val?.value);
@@ -42,6 +47,9 @@ export const CountrySelect: FC<CountrySelectProps> = ({
         onChange={handleChange}
         name={name}
       />
+      <FormError isFullSize alignment="left">
+        {customErrorMessage}
+      </FormError>
     </div>
   );
 };
