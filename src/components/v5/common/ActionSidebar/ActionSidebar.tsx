@@ -56,6 +56,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     isInvalidTransactionHash,
     loadingAction,
     isMotion,
+    isMultiSig,
     motionState,
     expenditure,
     loadingExpenditure,
@@ -301,7 +302,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                     withAdditionalStatuses
                   />
                 )}
-                <MotionOutcomeBadge motionState={motionState} />
+                {(!!isMotion || !!isMultiSig) && (
+                  <MotionOutcomeBadge motionState={motionState} />
+                )}
               </div>
             )}
             {isMobile && getShareButton()}
