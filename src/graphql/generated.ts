@@ -8395,6 +8395,14 @@ export type UserTransactionHistoryArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+export type UserLiquidationAddress = {
+  __typename?: 'UserLiquidationAddress';
+  chainId: Scalars['String'];
+  id: Scalars['ID'];
+  liquidationAddress: Scalars['ID'];
+  userAddress: Scalars['ID'];
+};
+
 /** Stakes that a user has made for a motion */
 export type UserMotionStakes = {
   __typename?: 'UserMotionStakes';
