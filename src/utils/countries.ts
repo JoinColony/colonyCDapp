@@ -26,7 +26,7 @@ interface SubdivisionData {
   code: string;
 }
 
-interface CountryData {
+export interface CountryData {
   name: string;
   alpha2: string;
   alpha3: string;
