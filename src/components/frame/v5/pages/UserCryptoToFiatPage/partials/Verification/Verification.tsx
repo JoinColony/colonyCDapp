@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
+import { useSearchParams } from 'react-router-dom';
 
+import { CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM } from '~routes/routeConstants.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { KYCModal } from '../KYCModal/index.tsx';
@@ -38,7 +40,11 @@ const MSG = defineMessages({
 const Verification = () => {
   const status = 'notStarted';
 
-  const [isOpened, setOpened] = useState(true);
+  const [searchParams] = useSearchParams();
+  const isInitialOpened = !!searchParams?.has(
+    CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM,
+  );
+  const [isOpened, setOpened] = useState(isInitialOpened);
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
 
