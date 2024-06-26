@@ -1,4 +1,11 @@
 module.exports = {
+  getUserByAddress: /* GraphQL */ `
+    query GetUser($id: ID!) {
+      getUser(id: $id) {
+        bridgeCustomerId
+      }
+    }
+  `,
   updateUser: /* GraphQL */ `
     mutation UpdateUser(
       $input: UpdateUserInput!
