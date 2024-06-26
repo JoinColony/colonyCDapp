@@ -98,8 +98,11 @@ const checkKYCHandler = async (
 
     const externalAccounts = await externalAccountRes.json();
 
+    // NOTE: Mock returns a key-value object, but the real API returns an array
+    const expectedResponseFormat = Object.values(externalAccounts);
+
     // TODO: Support multiple accounts
-    const firstAccount = externalAccounts[0];
+    const firstAccount = expectedResponseFormat[0];
     const mappedAccount = firstAccount
       ? {
           id: firstAccount.id,
@@ -107,15 +110,23 @@ const checkKYCHandler = async (
           bankName: firstAccount.bank_name,
           iban: firstAccount.iban
             ? {
-                last4: firstAccount.iban.last4,
-                bic: firstAccount.iban.bic,
-                country: firstAccount.iban.country,
+                // TODO: Remove fallbacks
+                last4:
+                  firstAccount.iban.last_4 ??
+                  firstAccount.account.last_4 ??
+                  'NOT MOCKED',
+                bic:
+                  firstAccount.iban.bic ??
+                  firstAccount.account.bic ??
+                  'NOT MOCKED',
+                country: firstAccount.iban.country ?? 'NOT MOCKED',
               }
             : null,
           usAccount: firstAccount.account
             ? {
-                last4: firstAccount.account.last4,
-                routingNumber: firstAccount.account.routing_number,
+                last4: firstAccount.account.last_4,
+                routingNumber:
+                  firstAccount.account.routing_number ?? 'NOT MOCKED',
               }
             : null,
         }
