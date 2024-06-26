@@ -41,11 +41,15 @@ exports.handler = async (event) => {
     }
   };
 
-  return (handler = {
+  const handlers = {
     'v0/kyc_links': kycLinkHandler,
     default: () => {
       console.log('Running default handler');
       return null;
     },
-  }[path || 'default']());
+  };
+
+  const handler = handlers[path] || handlers.default;
+
+  return handler();
 };
