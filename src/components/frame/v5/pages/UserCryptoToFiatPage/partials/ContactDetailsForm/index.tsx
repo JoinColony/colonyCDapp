@@ -65,7 +65,7 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
   onClose,
 }) => {
   const validationSchema = useMemo(
-    () => getValidationSchema(selectedCountry),
+    () => getValidationSchema(selectedCountry?.subdivisions.length),
     [selectedCountry],
   );
 
