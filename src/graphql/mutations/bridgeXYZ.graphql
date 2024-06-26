@@ -1,5 +1,7 @@
 mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
   bridgeXYZMutation(input: $input) {
+    country
+    kyc_status
     tos_link
     kyc_link
     success
