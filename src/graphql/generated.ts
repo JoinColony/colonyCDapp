@@ -48,8 +48,13 @@ export type Annotation = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
+export type BridgeXyzMutationBodyInput = {
+  email?: InputMaybe<Scalars['String']>;
+  full_name?: InputMaybe<Scalars['String']>;
+};
+
 export type BridgeXyzMutationInput = {
-  body: Scalars['String'];
+  body: BridgeXyzMutationBodyInput;
   path: Scalars['String'];
   pathParams: Array<Scalars['String']>;
 };
