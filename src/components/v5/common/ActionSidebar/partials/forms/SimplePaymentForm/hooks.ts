@@ -66,14 +66,14 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
             ),
           tokenAddress: string().address().required(),
           createdIn: number().defined(),
-          recipient: string().address().required(),
+          recipientAddress: string().address().required(),
           from: number().required(),
           decisionMethod: string().defined(),
           payments: array()
             .of(
               object()
                 .shape({
-                  recipient: string().required(),
+                  recipientAddress: string().required(),
                   amount: number()
                     .required(() => formatText({ id: 'errors.amount' }))
                     .transform((value) => toFinite(value))
