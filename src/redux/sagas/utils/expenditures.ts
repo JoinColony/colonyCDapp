@@ -9,6 +9,7 @@ import { getAddress } from 'ethers/lib/utils';
 import { fork } from 'redux-saga/effects';
 
 import { apolloClient } from '~apollo';
+import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
   CreateExpenditureMetadataDocument,
   type GetUserByAddressQuery,
@@ -302,35 +303,54 @@ export const getResolvedPayouts = (
   return resolvedPayouts;
 };
 
+interface MinimalPayout {
+  recipientAddress: string;
+  tokenAddress: string;
+}
+export const adjustRecipientAddress = async (
+  { recipientAddress, tokenAddress }: MinimalPayout,
+  network: Network,
+) => {
+  const USDCAddress = isDev ? DEV_USDC_ADDRESS : Tokens[network]?.USDC;
+
+  if (tokenAddress !== USDCAddress) {
+    return recipientAddress;
+  }
+
+  const { data } = await apolloClient.query<
+    GetUserByAddressQuery,
+    GetUserByAddressQueryVariables
+  >({
+    query: GetUserByAddressDocument,
+    variables: {
+      address: getAddress(recipientAddress),
+    },
+  });
+
+  const user = data?.getUserByAddress?.items[0];
+
+  if (!user) {
+    return recipientAddress;
+  }
+
+  const paymentAddress = getUserPaymentAddress(user);
+  return paymentAddress;
+};
+
 export const adjustPayoutsAddresses = async (
-  payouts: Array<{ recipientAddress: string; tokenAddress: string }>,
+  payouts: MinimalPayout[],
   network: Network,
 ) => {
   return Promise.all(
     payouts.map(async (payout) => {
       const { tokenAddress, recipientAddress } = payout;
-
-      if (tokenAddress !== Tokens[network]?.USDC) {
-        return payout;
-      }
-
-      const { data } = await apolloClient.query<
-        GetUserByAddressQuery,
-        GetUserByAddressQueryVariables
-      >({
-        query: GetUserByAddressDocument,
-        variables: {
-          address: getAddress(recipientAddress),
+      const paymentAddress = await adjustRecipientAddress(
+        {
+          recipientAddress,
+          tokenAddress,
         },
-      });
-
-      const user = data?.getUserByAddress?.items[0];
-
-      if (!user) {
-        return payout;
-      }
-
-      const paymentAddress = getUserPaymentAddress(user);
+        network,
+      );
 
       return {
         ...payout,

@@ -370,6 +370,9 @@ export const GNOSIS_AMB_BRIDGES: { [x: number]: AmbBridge } = {
 
 export const FETCH_ABORTED = 'fetchAborted';
 
+// @TODO switch this with the actual address when we have predictable token addresses in create data
+export const DEV_USDC_ADDRESS = '0xeF841fe1611ce41bFCf0265097EFaf50486F5111';
+
 export const isFullScreen = 'isFullScreen';
 
 export const APP_URL = new URL(import.meta.env.URL || 'http://localhost:9091/');
