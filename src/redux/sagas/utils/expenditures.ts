@@ -29,7 +29,6 @@ import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-import { getUserPaymentAddress } from '~utils/user.ts';
 
 import {
   createTransaction,
@@ -303,6 +302,7 @@ export const getResolvedPayouts = (
   return resolvedPayouts;
 };
 
+// @TODO: Crypto-to-fiat
 interface MinimalPayout {
   recipientAddress: string;
   tokenAddress: string;
@@ -333,8 +333,8 @@ export const adjustRecipientAddress = async (
     return recipientAddress;
   }
 
-  const paymentAddress = getUserPaymentAddress(user);
-  return paymentAddress;
+  // @TODO: Return liquidation address
+  return recipientAddress;
 };
 
 export const adjustPayoutsAddresses = async (

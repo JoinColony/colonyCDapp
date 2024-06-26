@@ -6,6 +6,7 @@ import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
@@ -28,12 +29,18 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     motionData,
     motionState,
     expenditureId,
+    recipientAddress,
   } = action;
+
+  const { user: recipientUser, loading: loadingUser } = useUserByAddress(
+    recipientAddress || '',
+    true,
+  );
 
   const { expenditure, loadingExpenditure } =
     useGetExpenditureData(expenditureId);
 
-  const isLoading = loading || loadingExpenditure;
+  const isLoading = loading || loadingExpenditure || loadingUser;
 
   const walletAddress = user?.walletAddress || initiatorAddress || ADDRESS_ZERO;
   const refetchMotionState = () => {
@@ -52,7 +59,11 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
     getActionTitleValues({
-      actionData: action,
+      actionData: {
+        ...action,
+        recipientAddress: recipientUser?.walletAddress ?? recipientAddress,
+        recipientUser: recipientUser ?? action.recipientUser,
+      },
       colony,
       expenditureData: expenditure ?? undefined,
     }),

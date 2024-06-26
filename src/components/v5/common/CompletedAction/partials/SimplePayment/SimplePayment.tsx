@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -63,8 +64,8 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
   const {
     amount,
     initiatorUser,
-    recipientAddress,
-    recipientUser,
+    recipientAddress: actionRecipientAddress = '',
+    recipientUser: actionRecipientUser,
     token,
     transactionHash,
     fromDomain,
@@ -83,6 +84,10 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
     amount || '',
     getTokenDecimalsWithFallback(token?.decimals),
   );
+
+  const { user } = useUserByAddress(actionRecipientAddress as string, true);
+  const recipientAddress = user?.walletAddress ?? actionRecipientAddress;
+  const recipientUser = user ?? actionRecipientUser;
 
   return (
     <>
@@ -145,7 +150,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           rowLabel={formatText({ id: 'actionSidebar.recipient' })}
           rowContent={
             <UserPopover
-              walletAddress={action.recipientAddress || ADDRESS_ZERO}
+              walletAddress={recipientAddress || ADDRESS_ZERO}
               size={20}
             />
           }
