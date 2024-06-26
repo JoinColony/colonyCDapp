@@ -25,17 +25,19 @@ const RequestBox: FC<RequestBoxProps> = ({
       withPadding={false}
     >
       <h5 className="mb-2 text-1">{title}</h5>
-      <ul className="max-h-[6.25rem] overflow-y-auto overflow-x-hidden">
-        {items.map(({ date, transactionHash }) => (
-          <li className="mb-2 w-full last:mb-0" key={transactionHash}>
-            <RequestBoxItem
-              date={date}
-              transactionHash={transactionHash}
-              isSingleItem={items.length === 1}
-            />
-          </li>
-        ))}
-      </ul>
+      <div className="max-h-[6.25rem] overflow-x-hidden overflow-y-scroll">
+        <ul className="flex flex-col gap-2 overflow-hidden">
+          {items.map(({ date, transactionHash }) => (
+            <li className="w-full" key={transactionHash}>
+              <RequestBoxItem
+                date={date}
+                transactionHash={transactionHash}
+                isSingleItem={items.length === 1}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
     </MenuContainer>
   );
 };
