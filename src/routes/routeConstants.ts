@@ -57,6 +57,7 @@ export const LANDING_PAGE_ROUTE = '/';
 
 export const TX_SEARCH_PARAM = 'tx';
 export const TEAM_SEARCH_PARAM = 'team';
+export const CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM = 'verification';
 
 // Note all base routes begin with a '/'
 
