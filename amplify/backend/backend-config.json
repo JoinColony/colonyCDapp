@@ -25,6 +25,16 @@
     }
   },
   "function": {
+    "bridgeXYZMutation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "bridgeXYZQuery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "colonycdappSSMAccess": {
       "build": true,
       "providerPlugin": "awscloudformation",
