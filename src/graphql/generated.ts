@@ -65,23 +65,21 @@ export type BridgeXyzIbanBankAccount = {
 };
 
 export type BridgeXyzMutationAccountInput = {
-  account_number?: InputMaybe<Scalars['String']>;
-  routing_number?: InputMaybe<Scalars['String']>;
+  account_number: Scalars['String'];
+  routing_number: Scalars['String'];
 };
 
 export type BridgeXyzMutationAddressInput = {
-  addressLine1?: InputMaybe<Scalars['String']>;
-  addressLine2?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
+  city: Scalars['String'];
+  country: Scalars['String'];
   postcode?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
+  street_line_1: Scalars['String'];
+  street_line_2?: InputMaybe<Scalars['String']>;
 };
 
 export type BridgeXyzMutationBodyInput = {
   account?: InputMaybe<BridgeXyzMutationAccountInput>;
-  account_owner_name?: InputMaybe<Scalars['String']>;
-  account_type?: InputMaybe<Scalars['String']>;
   address?: InputMaybe<BridgeXyzMutationAddressInput>;
   bank_name?: InputMaybe<Scalars['String']>;
   birth_date?: InputMaybe<Scalars['String']>;
@@ -96,9 +94,9 @@ export type BridgeXyzMutationBodyInput = {
 };
 
 export type BridgeXyzMutationIbanInput = {
-  account_number?: InputMaybe<Scalars['String']>;
-  bic?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
+  account_number: Scalars['String'];
+  bic: Scalars['String'];
+  country: Scalars['String'];
 };
 
 export type BridgeXyzMutationInput = {

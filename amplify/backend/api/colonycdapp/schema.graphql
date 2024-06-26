@@ -257,23 +257,23 @@ input BridgeXYZQueryInput {
 }
 
 input BridgeXYZMutationAddressInput {
-  addressLine1: String
-  addressLine2: String
-  city: String
+  street_line_1: String!
+  street_line_2: String
+  city: String!
   state: String
   postcode: String
-  country: String
+  country: String!
 }
 
 input BridgeXYZMutationIbanInput {
-  account_number: String
-  bic: String
-  country: String
+  account_number: String!
+  bic: String!
+  country: String!
 }
 
 input BridgeXYZMutationAccountInput {
-  account_number: String
-  routing_number: String
+  account_number: String!
+  routing_number: String!
 }
 
 input BridgeXYZMutationBodyInput {
@@ -293,19 +293,10 @@ input BridgeXYZMutationBodyInput {
   birth_date: String
   tax_identification_number: String
   signed_agreement_id: String
-
-  #
-  # Create external account
-  #
   currency: String
   bank_name: String
-  account_owner_name: String
-  account_type: String
   iban: BridgeXYZMutationIbanInput
   account: BridgeXYZMutationAccountInput
-  # first_name: String
-  # last_name: String
-  # address: BridgeXYZMutationAddressInput
 }
 
 input BridgeXYZMutationInput {
