@@ -26,6 +26,8 @@ export enum MotionState {
   Escalated = 'Escalated',
   Forced = 'Forced',
   Draft = 'Draft',
+  Rejected = 'Rejected',
+  Open = 'Open',
   Unknown = 'Unknown',
 }
 

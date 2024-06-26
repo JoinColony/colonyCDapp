@@ -10,6 +10,7 @@ import {
   useGetMotionStateQuery,
 } from '~gql';
 import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
+import { getMultiSigState } from '~utils/multiSig.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
 
@@ -140,9 +141,16 @@ const useGetColonyAction = (transactionHash?: string) => {
    */
   const networkMotionState = (motionStateData?.getMotionState ??
     NetworkMotionState.Null) as NetworkMotionState;
-  const motionState = action?.motionData
-    ? getMotionState(networkMotionState, action?.motionData)
-    : MotionState.Invalid;
+  let motionState;
+  if (action?.isMultiSig) {
+    motionState = action?.multiSigData
+      ? getMultiSigState(action?.multiSigData)
+      : MotionState.Invalid;
+  } else {
+    motionState = action?.motionData
+      ? getMotionState(networkMotionState, action?.motionData)
+      : MotionState.Invalid;
+  }
 
   /* Ensures motion state is kept in sync with motion data */
   useEffect(() => {
