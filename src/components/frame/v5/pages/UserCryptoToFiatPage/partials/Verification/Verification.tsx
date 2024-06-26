@@ -38,7 +38,7 @@ const MSG = defineMessages({
 const Verification = () => {
   const status = 'notStarted';
 
-  const [isOpened, setOpened] = useState(false);
+  const [isOpened, setOpened] = useState(true);
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
 

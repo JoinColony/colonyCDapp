@@ -1,9 +1,13 @@
 import React, { useEffect, useState, type FC } from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
+import { type CountryData } from '~utils/countries.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
+import { BankDetailsForm } from '../BankDetailsForm/index.tsx';
+import { ContactDetailsForm } from '../ContactDetailsForm/index.tsx';
+import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 import { PersonalDetailsForm } from '../PersonalDetailsForm/index.tsx';
 import Stepper from '../Stepper/index.tsx';
 
@@ -13,15 +17,34 @@ interface KYCModalProps {
 }
 
 enum TabId {
-  Terms = 0,
-  PersonalDetails = 1,
-  BankDetails = 2,
+  PersonalDetails = 0,
+  Terms = 1,
+  ContactDetails = 2,
+  BankDetails = 3,
 }
+
+const displayName = 'v5.pages.UserCryptoToFiatPage.partials.KYCModal';
+
+const MSG = defineMessages({
+  tcTitle: {
+    id: `${displayName}.tcTitle`,
+    defaultMessage: 'Terms & Privacy',
+  },
+  tcSubtitle: {
+    id: `${displayName}.tcSubtitle`,
+    defaultMessage:
+      'Accept the terms and privacy of our partner provider Bridge to enable crypto to fiat functionality.',
+  },
+});
 
 export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
   const { formatMessage } = useIntl();
 
-  const [activeTab, setActiveTab] = useState<TabId>(TabId.Terms);
+  const [activeTab, setActiveTab] = useState<TabId>(TabId.PersonalDetails);
+
+  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
+    null,
+  );
 
   useEffect(() => {
     const handler = (ev: MessageEvent<{ type: string; message: string }>) => {
@@ -54,25 +77,6 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
             activeStepKey={activeTab}
             items={[
               {
-                key: TabId.Terms,
-                heading: {
-                  label: 'Terms',
-                },
-                content: (
-                  <div>
-                    <h2 className="text-2">Terms & Privacy</h2>
-                    <p className="whitespace-pre-wrap text-md">
-                      Accept the terms and privacy of our partner provider
-                      Bridge to enable crypto to fiat functionality.
-                    </p>
-                    <iframe
-                      title="Terms iframe"
-                      src="http://localhost:3007/bridgexyz/accept-terms-of-service"
-                    />
-                  </div>
-                ),
-              },
-              {
                 key: TabId.PersonalDetails,
                 heading: {
                   label: 'Personal details',
@@ -81,13 +85,53 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                 content: (
                   <div>
                     <PersonalDetailsForm
+                      selectedCountry={selectedCountry}
+                      handleSelectCountry={(value) =>
+                        setSelectedCountry(value as any)
+                      }
                       onSubmit={(values) => {
                         // eslint-disable-next-line no-console
                         console.log(values);
-                        setActiveTab(TabId.BankDetails);
+                        setActiveTab(TabId.Terms);
                       }}
+                      onClose={onClose}
                     />
                   </div>
+                ),
+              },
+              {
+                key: TabId.Terms,
+                heading: {
+                  label: 'Terms',
+                },
+                content: (
+                  <div>
+                    <ModalHeading
+                      title={MSG.tcTitle}
+                      subtitle={MSG.tcSubtitle}
+                    />
+                    <iframe
+                      title="Terms iframe"
+                      src="http://localhost:3007/bridgexyz/accept-terms-of-service"
+                    />
+                  </div>
+                ),
+              },
+              {
+                key: TabId.ContactDetails,
+                heading: {
+                  label: 'Contact details',
+                },
+                content: (
+                  <ContactDetailsForm
+                    selectedCountry={selectedCountry}
+                    onSubmit={(values) => {
+                      // eslint-disable-next-line no-console
+                      console.log(values);
+                      setActiveTab(TabId.BankDetails);
+                    }}
+                    onClose={onClose}
+                  />
                 ),
               },
               {
@@ -96,7 +140,16 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                   label: 'Bank details',
                 },
 
-                content: <div>Test 1</div>,
+                content: (
+                  <BankDetailsForm
+                    onSubmit={(values) => {
+                      // eslint-disable-next-line no-console
+                      console.log(values);
+                      setActiveTab(TabId.BankDetails);
+                    }}
+                    onClose={onClose}
+                  />
+                ),
               },
             ]}
           />

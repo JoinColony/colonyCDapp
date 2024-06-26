@@ -1,25 +1,87 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { type FC, useState, type PropsWithChildren } from 'react';
+import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
 import { type CountryData, getCountries } from '~utils/countries.ts';
-import Button from '~v5/shared/Button/Button.tsx';
+import { formatText } from '~utils/intl.ts';
 
 import { CountrySelect } from '../CountrySelect.tsx';
 import { FormInput } from '../FormInput.tsx';
-import { FormSelect } from '../FormSelect.tsx';
+import { FormRow } from '../FormRow.tsx';
+import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
+import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
-const FormRow: FC<PropsWithChildren> = ({ children }) => {
-  return <div className="py-1">{children}</div>;
-};
+import { validationSchema } from './validation.ts';
 
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
+  onClose: () => void;
+  selectedCountry: CountryData | null;
+  handleSelectCountry: (value: any) => void;
 }
-export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({ onSubmit }) => {
-  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
-    null,
-  );
+
+const displayname =
+  'v5.pages.UserCryptoToFiatPage.partials.PersonalDetailsForm';
+
+const MSG = defineMessages({
+  title: {
+    id: `${displayname}.title`,
+    defaultMessage: 'Personal details',
+  },
+  subtitle: {
+    id: `${displayname}.subtitle`,
+    defaultMessage:
+      'The information is only provided to Bridge and not stored by Colony.',
+  },
+  cancelButtonTitle: {
+    id: `${displayname}.cancelButtonTitle`,
+    defaultMessage: 'Cancel',
+  },
+  proceedButtonTitle: {
+    id: `${displayname}.proceedButtonTitle`,
+    defaultMessage: `Next`,
+  },
+  firstNameLabel: {
+    id: `${displayname}.firstNameLabel`,
+    defaultMessage: 'First name',
+  },
+  firstNamePlaceholder: {
+    id: `${displayname}.firstNamePlaceholder`,
+    defaultMessage: 'First name',
+  },
+  lastNameLabel: {
+    id: `${displayname}.lastNameLabel`,
+    defaultMessage: 'First name',
+  },
+  lastNamePlaceholder: {
+    id: `${displayname}.lastNamePlaceholder`,
+    defaultMessage: 'First name',
+  },
+  emailLabel: {
+    id: `${displayname}.emailLabel`,
+    defaultMessage: 'Email address',
+  },
+  emailPlaceholder: {
+    id: `${displayname}.emailPlaceholder`,
+    defaultMessage: 'Email address',
+  },
+  countryLabel: {
+    id: `${displayname}.countryLabel`,
+    defaultMessage: 'Country',
+  },
+  postcodePlaceholder: {
+    id: `${displayname}.postcodePlaceholder`,
+    defaultMessage: 'Postcode',
+  },
+});
+
+export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
+  onSubmit,
+  selectedCountry,
+  handleSelectCountry,
+  onClose,
+}) => {
   const countries = getCountries();
   const countriesOptions = countries.map((item) => ({
     value: item,
@@ -28,84 +90,52 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({ onSubmit }) => {
 
   return (
     <div>
-      Personal details
-      <Form onSubmit={onSubmit}>
+      <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
+      <Form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-3 "
+        validationSchema={validationSchema}
+        mode="onSubmit"
+      >
         <FormRow>
           <FormInput
             name="firstName"
-            label="First name"
-            placeholder="First name"
-          />
-        </FormRow>
-        <FormRow>
-          <FormInput
-            name="lastName"
-            label="Last name"
-            placeholder="Last name"
-          />
-        </FormRow>
-        <FormRow>
-          <FormInput
-            name="email"
-            label="Email address"
-            placeholder="Email address"
-          />
-        </FormRow>
-        <FormRow>
-          <FormInput
-            name="date"
-            label="Date of birth"
-            placeholder="YYYY-MM-DD"
-          />
-        </FormRow>
-        <FormRow>
-          <FormInput
-            name="tax"
-            label="Tax identification number (eg. social security number or EIN)"
-            placeholder="Tax identification number"
+            label={formatText(MSG.firstNameLabel)}
+            placeholder={formatText(MSG.firstNamePlaceholder)}
           />
         </FormRow>
 
-        <label className="mb-1.5 text-md font-medium text-gray-700">
-          Adress
-        </label>
+        <FormRow>
+          <FormInput
+            name="lastName"
+            label={formatText(MSG.lastNameLabel)}
+            placeholder={formatText(MSG.lastNamePlaceholder)}
+          />
+        </FormRow>
+
+        <FormRow>
+          <FormInput
+            name="email"
+            label={formatText(MSG.emailLabel)}
+            placeholder={formatText(MSG.emailPlaceholder)}
+          />
+        </FormRow>
+
         <FormRow>
           <CountrySelect
             name="country"
             options={countriesOptions as any}
             value={selectedCountry}
-            onChange={(value) => setSelectedCountry(value as any)}
+            labelMessage={formatText(MSG.countryLabel)}
+            onChange={handleSelectCountry}
           />
         </FormRow>
-        <FormRow>
-          <FormInput name="address1" placeholder="Address line 1" />
-        </FormRow>
-        <FormRow>
-          <FormInput name="address2" placeholder="Address line 2" />
-        </FormRow>
-        <FormRow>
-          <div className="flex">
-            <div className="flex-1">
-              <FormInput name="city" placeholder="City" />
-            </div>
-            {!!selectedCountry?.subdivisions?.length && (
-              <div className="flex-1">
-                <FormSelect
-                  name="subdivisions"
-                  options={selectedCountry?.subdivisions.map((item) => ({
-                    value: item.code,
-                    label: item.name,
-                  }))}
-                />
-              </div>
-            )}
-          </div>
-        </FormRow>
 
-        <FormRow>
-          <FormInput name="email" placeholder="Postcode" />
-        </FormRow>
-        <Button type="submit">Next</Button>
+        <ModalFormCTAButtons
+          cancelButton={{ title: MSG.cancelButtonTitle, onClick: onClose }}
+          proceedButton={{ title: MSG.proceedButtonTitle }}
+          className="mt-4"
+        />
       </Form>
     </div>
   );
