@@ -23,8 +23,9 @@ const checkKYCHandler = async (
       graphqlURL,
       appSyncApiKey,
     );
+    const colonyUser = graphQlData?.getUser;
 
-    const bridgeCustomerId = graphQlData?.getUser?.bridgeCustomerId;
+    const bridgeCustomerId = colonyUser?.bridgeCustomerId;
 
     // Get customer from Bridge
 
@@ -53,13 +54,13 @@ const checkKYCHandler = async (
 
     // Is it an existing KYC link or a new one?
     let kycLink;
-    let kycLinkId
+    let kycLinkId;
     if (data.existing_kyc_link) {
       kycLinkId = data.existing_kyc_link.id;
       kycLink = data.existing_kyc_link.kyc_link;
     } else {
-      kycLinkId = data.id
-      kycLink = data.kyc_link
+      kycLinkId = data.id;
+      kycLink = data.kyc_link;
     }
 
     // Take kyc link id
@@ -82,31 +83,58 @@ const checkKYCHandler = async (
     }
     const kyc_status = (await res.json()).kyc_status;
 
-    // TODO: If KYC passed and external account added, generate liquidation address
-    if (kyc_status === true) {
-      // Do they have an external account?
+    // TODO: If ~~KYC passed and~~ external account added, generate liquidation address
 
-      const externalAccountRes = await fetch(
-        `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Idempotency-Key': 'thisisadifferentkey',
-            'Api-Key': apiKey,
-          },
+    const externalAccountRes = await fetch(
+      `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': 'thisisadifferentkey',
+          'Api-Key': apiKey,
         },
-      );
+      },
+    );
 
-      const externalAccounts = externalAccountRes.json();
-      if (externalAccounts) {
-      }
+    const externalAccounts = await externalAccountRes.json();
+
+    // TODO: Support multiple accounts
+    const firstAccount = externalAccounts[0];
+    const mappedAccount = firstAccount
+      ? {
+          id: firstAccount.id,
+          currency: firstAccount.currency,
+          bankName: firstAccount.bank_name,
+          iban: firstAccount.iban
+            ? {
+                last4: firstAccount.iban.last4,
+                bic: firstAccount.iban.bic,
+                country: firstAccount.iban.country,
+              }
+            : null,
+          usAccount: firstAccount.account
+            ? {
+                last4: firstAccount.account.last4,
+                routingNumber: firstAccount.account.routing_number,
+              }
+            : null,
+        }
+      : null;
+
+    const hasLiquidationAddress =
+      colonyUser.liquidationAddresses.items.length > 0;
+
+    if (firstAccount && !hasLiquidationAddress) {
+      // Create liquidation address
+      console.log('need to create');
     }
 
     return {
       kyc_status,
-      kyc_link,
+      kyc_link: kycLink,
       country: bridgeCustomer.address.country,
       success: true,
+      bankAccount: mappedAccount,
     };
   } catch (e) {
     console.error(e);
