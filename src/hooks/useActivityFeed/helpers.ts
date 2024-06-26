@@ -6,7 +6,8 @@ import { type AnyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
-import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
+import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
+import { getMultiSigState } from '~utils/multiSig.ts';
 
 import {
   ActivityDecisionMethod,
@@ -19,6 +20,10 @@ const getActivityFeedMotionState = (
   action: ColonyAction,
   motionStatesMap: MotionStatesMap,
 ): MotionState | undefined => {
+  if (action.isMultiSig) {
+    return getMultiSigState(action.multiSigData);
+  }
+
   if (!action.motionData) {
     return MotionState.Passed;
   }
