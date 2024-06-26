@@ -1,9 +1,10 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
+import { KYCModal } from '../KYCModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
 import { statusPillScheme } from './consts.ts';
@@ -37,6 +38,10 @@ const MSG = defineMessages({
 const Verification = () => {
   const status = 'notStarted';
 
+  const [isOpened, setOpened] = useState(false);
+  const handleOpen = () => setOpened(true);
+  const handleClose = () => setOpened(false);
+
   return (
     <RowItem.Container>
       <RowItem.Heading
@@ -61,9 +66,10 @@ const Verification = () => {
         title={MSG.bodyTitle}
         description={MSG.bodyDescription}
         ctaTitle={MSG.bodyCtaTitle}
-        // eslint-disable-next-line no-console
-        ctaOnClick={() => console.log('HANDLE KYC HERE')}
+        ctaOnClick={handleOpen}
       />
+
+      {isOpened && <KYCModal isOpened={isOpened} onClose={handleClose} />}
     </RowItem.Container>
   );
 };
