@@ -257,11 +257,11 @@ input BridgeXYZQueryInput {
 }
 
 input BridgeXYZMutationAddressInput {
-  street_line_1: String
-  street_line_2: String
+  addressLine1: String
+  addressLine2: String
   city: String
   state: String
-  postal_code: String
+  postcode: String
   country: String
 }
 

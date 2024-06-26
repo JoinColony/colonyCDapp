@@ -54,12 +54,12 @@ export type BridgeXyzMutationAccountInput = {
 };
 
 export type BridgeXyzMutationAddressInput = {
+  addressLine1?: InputMaybe<Scalars['String']>;
+  addressLine2?: InputMaybe<Scalars['String']>;
   city?: InputMaybe<Scalars['String']>;
   country?: InputMaybe<Scalars['String']>;
-  postal_code?: InputMaybe<Scalars['String']>;
+  postcode?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
-  street_line_1?: InputMaybe<Scalars['String']>;
-  street_line_2?: InputMaybe<Scalars['String']>;
 };
 
 export type BridgeXyzMutationBodyInput = {
@@ -8874,6 +8874,27 @@ export type BridgeXyzMutationMutationVariables = Exact<{
 
 export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', country?: string | null, kyc_status?: string | null, tos_link?: string | null, kyc_link?: string | null, success?: boolean | null } | null };
 
+export type CreateKycLinksMutationVariables = Exact<{
+  fullName: Scalars['String'];
+  email: Scalars['String'];
+}>;
+
+
+export type CreateKycLinksMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null, tos_link?: string | null } | null };
+
+export type UpdateBridgeCustomerMutationVariables = Exact<{
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  address?: InputMaybe<BridgeXyzMutationAddressInput>;
+  birthDate: Scalars['String'];
+  taxIdNumber: Scalars['String'];
+  signedAgreementId: Scalars['String'];
+  email: Scalars['String'];
+}>;
+
+
+export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null } | null };
+
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
 }>;
@@ -10447,6 +10468,84 @@ export function useBridgeXyzMutationMutation(baseOptions?: Apollo.MutationHookOp
 export type BridgeXyzMutationMutationHookResult = ReturnType<typeof useBridgeXyzMutationMutation>;
 export type BridgeXyzMutationMutationResult = Apollo.MutationResult<BridgeXyzMutationMutation>;
 export type BridgeXyzMutationMutationOptions = Apollo.BaseMutationOptions<BridgeXyzMutationMutation, BridgeXyzMutationMutationVariables>;
+export const CreateKycLinksDocument = gql`
+    mutation CreateKYCLinks($fullName: String!, $email: String!) {
+  bridgeXYZMutation(
+    input: {path: "v0/kyc_links", body: {full_name: $fullName, email: $email}}
+  ) {
+    success
+    tos_link
+  }
+}
+    `;
+export type CreateKycLinksMutationFn = Apollo.MutationFunction<CreateKycLinksMutation, CreateKycLinksMutationVariables>;
+
+/**
+ * __useCreateKycLinksMutation__
+ *
+ * To run a mutation, you first call `useCreateKycLinksMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateKycLinksMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createKycLinksMutation, { data, loading, error }] = useCreateKycLinksMutation({
+ *   variables: {
+ *      fullName: // value for 'fullName'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useCreateKycLinksMutation(baseOptions?: Apollo.MutationHookOptions<CreateKycLinksMutation, CreateKycLinksMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateKycLinksMutation, CreateKycLinksMutationVariables>(CreateKycLinksDocument, options);
+      }
+export type CreateKycLinksMutationHookResult = ReturnType<typeof useCreateKycLinksMutation>;
+export type CreateKycLinksMutationResult = Apollo.MutationResult<CreateKycLinksMutation>;
+export type CreateKycLinksMutationOptions = Apollo.BaseMutationOptions<CreateKycLinksMutation, CreateKycLinksMutationVariables>;
+export const UpdateBridgeCustomerDocument = gql`
+    mutation UpdateBridgeCustomer($firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $birthDate: String!, $taxIdNumber: String!, $signedAgreementId: String!, $email: String!) {
+  bridgeXYZMutation(
+    input: {path: "v0/customers/{customerID}", body: {first_name: $firstName, last_name: $lastName, address: $address, birth_date: $birthDate, tax_identification_number: $taxIdNumber, signed_agreement_id: $signedAgreementId, email: $email}}
+  ) {
+    success
+  }
+}
+    `;
+export type UpdateBridgeCustomerMutationFn = Apollo.MutationFunction<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>;
+
+/**
+ * __useUpdateBridgeCustomerMutation__
+ *
+ * To run a mutation, you first call `useUpdateBridgeCustomerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBridgeCustomerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBridgeCustomerMutation, { data, loading, error }] = useUpdateBridgeCustomerMutation({
+ *   variables: {
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      address: // value for 'address'
+ *      birthDate: // value for 'birthDate'
+ *      taxIdNumber: // value for 'taxIdNumber'
+ *      signedAgreementId: // value for 'signedAgreementId'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useUpdateBridgeCustomerMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>(UpdateBridgeCustomerDocument, options);
+      }
+export type UpdateBridgeCustomerMutationHookResult = ReturnType<typeof useUpdateBridgeCustomerMutation>;
+export type UpdateBridgeCustomerMutationResult = Apollo.MutationResult<UpdateBridgeCustomerMutation>;
+export type UpdateBridgeCustomerMutationOptions = Apollo.BaseMutationOptions<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>;
 export const CreateColonyEtherealMetadataDocument = gql`
     mutation CreateColonyEtherealMetadata($input: CreateColonyEtherealMetadataInput!) {
   createColonyEtherealMetadata(input: $input) {

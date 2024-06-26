@@ -1,9 +1,10 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
+import { KYCModal } from '../KYCModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
 import { statusPillScheme } from './consts.ts';
@@ -29,6 +30,10 @@ const MSG = defineMessages({
 const BankDetails = () => {
   const status = 'notStarted';
 
+  const [isOpened, setOpened] = useState(false);
+  const handleOpen = () => setOpened(true);
+  const handleClose = () => setOpened(false);
+
   return (
     <RowItem.Container>
       <RowItem.Heading
@@ -52,9 +57,10 @@ const BankDetails = () => {
       <RowItem.Body
         descriptionComponent={<BankDetailsDescriptionComponent />}
         ctaTitle={MSG.ctaTitle}
-        // eslint-disable-next-line no-console
-        ctaOnClick={() => console.log('Handle bank details here')}
+        ctaOnClick={handleOpen}
       />
+
+      {isOpened && <KYCModal isOpened={isOpened} onClose={handleClose} />}
     </RowItem.Container>
   );
 };
