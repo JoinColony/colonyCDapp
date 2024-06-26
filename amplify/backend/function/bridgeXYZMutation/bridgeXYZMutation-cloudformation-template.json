@@ -129,7 +129,27 @@
                             "logs:CreateLogStream",
                             "logs:PutLogEvents"],
                             "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
-                        }
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                              "ssm:GetParameter",
+                            "kms:Decrypt"
+                            ],
+                            "Resource": {
+                              "Fn::Sub": [
+                                "arn:aws:ssm:${region}:${account}:parameter/*",
+                                {
+                                  "region": {
+                                    "Ref": "AWS::Region"
+                                  },
+                                  "account": {
+                                    "Ref": "AWS::AccountId"
+                                  }
+                                }
+                              ]
+                            }
+                          }
                     ]
                 }
             }
