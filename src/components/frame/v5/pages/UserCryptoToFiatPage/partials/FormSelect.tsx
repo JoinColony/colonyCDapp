@@ -1,16 +1,23 @@
 import React, { type FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { type Message } from '~types/index.ts';
+import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
 import FormError from '~v5/shared/FormError/index.ts';
 
 interface FormSelectProps {
   name: string;
+  labelMessage?: Message;
   options: SelectOption[];
 }
 
-export const FormSelect: FC<FormSelectProps> = ({ name, options }) => {
+export const FormSelect: FC<FormSelectProps> = ({
+  name,
+  options,
+  labelMessage,
+}) => {
   const { control, getFieldState } = useFormContext();
   const { error } = getFieldState(name);
   const customErrorMessage = error?.message || '';
@@ -22,6 +29,14 @@ export const FormSelect: FC<FormSelectProps> = ({ name, options }) => {
       rules={{ required: true }}
       render={({ field }) => (
         <>
+          {labelMessage && (
+            <label
+              className="flex flex-col pb-1.5 text-1"
+              htmlFor={`id-${name}`}
+            >
+              {formatText(labelMessage)}
+            </label>
+          )}
           <Select
             {...field}
             options={options}
