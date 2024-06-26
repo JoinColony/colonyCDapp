@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { getCountries, type CountryData } from '~utils/countries.ts';
+import { getCountries } from '~utils/countries.ts';
 
-import { CountrySelect } from '../CountrySelect.tsx';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
+import { FormSelect } from '../FormSelect.tsx';
 
 export const AccountDetailsInputs = () => {
   const { watch } = useFormContext();
   const currency = watch('currency');
 
-  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
-    null,
-  );
   const countries = getCountries();
   const countriesOptions = countries.map((item) => ({
-    value: item,
+    value: item.alpha3,
     label: item.name,
+    country: item,
   }));
 
   return (
@@ -31,12 +29,7 @@ export const AccountDetailsInputs = () => {
             <FormInput name="swift" placeholder="SWIFT/BIC" />
           </FormRow>
           <FormRow>
-            <CountrySelect
-              name="country"
-              options={countriesOptions as any}
-              value={selectedCountry}
-              onChange={(value) => setSelectedCountry(value as any)}
-            />
+            <FormSelect name="country" options={countriesOptions} />
           </FormRow>
         </>
       )}
