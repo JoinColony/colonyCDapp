@@ -50,11 +50,20 @@ const checkKYCHandler = async (
     });
 
     const data = await kycLinksRes.json();
-    console.log(data);
+
+    // Is it an existing KYC link or a new one?
+    let kycLink;
+    let kycLinkId
+    if (data.existing_kyc_link) {
+      kycLinkId = data.existing_kyc_link.id;
+      kycLink = data.existing_kyc_link.kyc_link;
+    } else {
+      kycLinkId = data.id
+      kycLink = data.kyc_link
+    }
 
     // Take kyc link id
-    const kycLinkId = data.id;
-
+    // const kycLinkId = data.id;
     // Check status of KYC Link id
 
     const res = await fetch(
@@ -95,6 +104,7 @@ const checkKYCHandler = async (
 
     return {
       kyc_status,
+      kyc_link,
       country: bridgeCustomer.address.country,
       success: true,
     };
