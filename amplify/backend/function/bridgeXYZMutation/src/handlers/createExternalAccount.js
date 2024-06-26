@@ -41,7 +41,7 @@ const createExternalAccountHandler = async (
         method: 'POST',
       },
     );
-    console.log(await res.text());
+
     if (res.status !== 200) {
       throw Error(`POST failed with error code ${res.status}`);
     }
