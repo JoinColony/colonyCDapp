@@ -91,5 +91,15 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "bridgeXYZMutation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "bridgeXYZQuery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }
