@@ -251,6 +251,14 @@ input GetSafeTransactionStatusInput {
   chainId: String!
 }
 
+input BridgeXYZQueryInput {
+  test: String!
+}
+
+input BridgeXYZMutationInput {
+  test: String!
+}
+
 """
 Return type for tokens gotten from DB or from chain
 """
@@ -792,27 +800,32 @@ type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-${env}")
+
   """
   Retrieve a user's reputation within a specific domain in a Colony
   """
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation-${env}")
+
   """
   Retrieve a user's token balance for a specific token
   """
   getUserTokenBalance(
     input: GetUserTokenBalanceInput
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance-${env}")
+
   """
   Get the state of a motion (i.e. the current period)
   """
   getMotionState(input: GetMotionStateInput): Int!
     @function(name: "fetchMotionState-${env}")
+
   """
   Get the voting reward for a user and a motion
   """
   getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
     @function(name: "fetchVoterRewards-${env}")
+
   """
   Get the timeout for the current period of a motion
   """
@@ -823,6 +836,12 @@ type Query {
 
   getSafeTransactionStatus(input: GetSafeTransactionStatusInput): [String!]
     @function(name: "getSafeTransactionStatus-${env}")
+
+  """
+  Fetch from the Bridge XYZ API
+  """
+  bridgeXYZQuery(input: BridgeXYZQueryInput!): String
+    @function(name: "bridgeXYZQuery-${env}")
 }
 
 """
@@ -853,6 +872,11 @@ type Mutation {
   """
   validateUserInvite(input: ValidateUserInviteInput!): Boolean
     @function(name: "validateUserInvite-${env}")
+  """
+  Post to the Bridge XYZ API
+  """
+  bridgeXYZMutation(input: BridgeXYZMutationInput!): String
+    @function(name: "bridgeXYZMutation-${env}")
 }
 
 """
