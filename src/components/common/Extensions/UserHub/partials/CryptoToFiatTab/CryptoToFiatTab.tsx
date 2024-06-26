@@ -54,7 +54,7 @@ const CryptoToFiatTab = () => {
         {verificationRequired && <KycCard />}
         {!success ? (
           <ActionForm
-            actionType={ActionTypes.ACTION_CRYPTO_TO_FIAT_TRANSFER}
+            actionType={ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER}
             validationSchema={validationSchema}
             transform={transform}
             defaultValues={{
