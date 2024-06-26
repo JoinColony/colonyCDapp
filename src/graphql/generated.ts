@@ -107,6 +107,7 @@ export type BridgeXyzQueryInput = {
 export type BridgeXyzQueryReturn = {
   __typename?: 'BridgeXYZQueryReturn';
   success?: Maybe<Scalars['Boolean']>;
+  transactionFee?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -9088,7 +9089,7 @@ export type BridgeXyzQueryQueryVariables = Exact<{
 }>;
 
 
-export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null } | null };
+export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null } | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -11465,6 +11466,7 @@ export const BridgeXyzQueryDocument = gql`
     query BridgeXYZQuery($input: BridgeXYZQueryInput!) {
   bridgeXYZQuery(input: $input) {
     success
+    transactionFee
   }
 }
     `;
