@@ -93,7 +93,7 @@ const FourOFour = () => {
       last_name: 'Doe',
       signed_agreement_id: 'asdas',
       tax_identification_number: '123',
-      currency: 'usd',
+      currency: 'eur',
       bank_name: 'HSBC',
       // Either iban (EUR) or account (USD)
       iban: {
