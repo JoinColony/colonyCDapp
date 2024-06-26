@@ -45,7 +45,7 @@ const TransferForm = ({ isFormDisabled }: { isFormDisabled: boolean }) => {
       </div>
       {isSubmitting || isLoading ? (
         <TxButton
-          className="w-full"
+          className="my-6 w-full"
           rounded="s"
           text={{ id: 'button.transfer' }}
           icon={
