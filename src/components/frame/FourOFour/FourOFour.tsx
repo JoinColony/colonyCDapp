@@ -15,7 +15,6 @@ import {
 import {
   type PutCustomerMutationBody,
   type KYCLinksMutationBody,
-  type CreateExternalAccountMutationBody,
 } from '~types/offramp.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
@@ -84,9 +83,9 @@ const FourOFour = () => {
         city: 'United',
         country: 'USA',
         postcode: '123',
-        state: 'New York',
-        addressLine1: '123',
-        addressLine2: '456',
+        state: 'US-NY',
+        street_line_1: '123',
+        street_line_2: '456',
       },
       birth_date: '2020-01-01',
       email: 'test@example.com',
@@ -94,6 +93,18 @@ const FourOFour = () => {
       last_name: 'Doe',
       signed_agreement_id: 'asdas',
       tax_identification_number: '123',
+      currency: 'usd',
+      bank_name: 'HSBC',
+      // Either iban (EUR) or account (USD)
+      iban: {
+        account_number: '123',
+        bic: '123',
+        country: 'GBR',
+      },
+      account: {
+        account_number: '123',
+        routing_number: '123',
+      },
     };
 
     bridgeXYZMutation({
@@ -133,50 +144,6 @@ const FourOFour = () => {
       });
   };
 
-  const createExternalAccount = () => {
-    const body: CreateExternalAccountMutationBody = {
-      address: {
-        city: 'Chicago',
-        country: 'USA',
-        postcode: '90210',
-        state: 'NY',
-        addressLine1: '123 Murica Street',
-        addressLine2: 'Georgetown',
-      },
-      first_name: 'Johnny',
-      last_name: 'Dapp',
-      account: {
-        account_number: 'thisisanaccountnumber',
-        routing_number: 'thisisaroutingnumber',
-      },
-      account_owner_name: 'Johnny Dapp',
-      bank_name: 'HSBC',
-      currency: 'usd',
-      iban: {
-        account_number: 'thisisanaccountnumber',
-        bic: '1234',
-        country: 'USA',
-      },
-      account_type: 'us',
-    };
-
-    bridgeXYZMutation({
-      variables: {
-        input: {
-          body,
-          path: 'v0/customers/{customerID}/external_accounts',
-        },
-      },
-    })
-      .then((data) => {
-        // eslint-disable-next-line no-console
-        console.log(data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log('Error! ', err);
-      });
-  };
   const getOfframpFees = async () => {
     const feesResponse = await bridgeXYZQuery({
       variables: { input: { path: 'v0/developer/fees', body: '' } },
@@ -194,7 +161,6 @@ const FourOFour = () => {
         <Button onClick={getKYCLinks}>Get KYC links</Button>
         <Button onClick={putCustomer}>Put customer</Button>
         <Button onClick={checkKYCStatus}>Check KYC status</Button>
-        <Button onClick={createExternalAccount}>Create external account</Button>
         <Button onClick={getOfframpFees}>Get the current fees</Button>
         {fee !== null && <span>The fee is {fee}</span>}
       </div>
