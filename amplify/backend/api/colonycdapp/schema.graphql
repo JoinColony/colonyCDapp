@@ -257,10 +257,15 @@ input BridgeXYZQueryInput {
   body: String!
 }
 
+input BridgeXYZMutationBodyInput {
+  full_name: String
+  email: String
+}
+
 input BridgeXYZMutationInput {
   path: String!
   pathParams: [String!]!
-  body: String!
+  body: BridgeXYZMutationBodyInput!
 }
 
 type BridgeXYZMutationReturn {
