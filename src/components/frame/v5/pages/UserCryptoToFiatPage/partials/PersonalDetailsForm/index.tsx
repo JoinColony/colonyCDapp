@@ -3,12 +3,12 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import { type CountryData, getCountries } from '~utils/countries.ts';
+import { getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { CountrySelect } from '../CountrySelect.tsx';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
+import { FormSelect } from '../FormSelect.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
@@ -17,8 +17,7 @@ import { validationSchema } from './validation.ts';
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
   onClose: () => void;
-  selectedCountry: CountryData | null;
-  handleSelectCountry: (value: any) => void;
+  setSelectCountry: (value: any) => void;
 }
 
 const displayname =
@@ -78,15 +77,19 @@ const MSG = defineMessages({
 
 export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
-  selectedCountry,
-  handleSelectCountry,
+  setSelectCountry,
   onClose,
 }) => {
   const countries = getCountries();
   const countriesOptions = countries.map((item) => ({
-    value: item,
+    value: item.alpha3,
     label: item.name,
+    country: item,
   }));
+
+  const onCountrySelect = (item) => {
+    setSelectCountry(item?.country);
+  };
 
   return (
     <div>
@@ -122,12 +125,11 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
         </FormRow>
 
         <FormRow>
-          <CountrySelect
+          <FormSelect
             name="country"
-            options={countriesOptions as any}
-            value={selectedCountry}
+            options={countriesOptions}
             labelMessage={formatText(MSG.countryLabel)}
-            onChange={handleSelectCountry}
+            handleChange={onCountrySelect}
           />
         </FormRow>
 
