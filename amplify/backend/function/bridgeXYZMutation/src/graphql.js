@@ -3,6 +3,11 @@ module.exports = {
     query GetUser($id: ID!) {
       getUser(id: $id) {
         bridgeCustomerId
+        liquidationAddresses {
+          items {
+            id
+          }
+        }
       }
     }
   `,

@@ -48,6 +48,22 @@ export type Annotation = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
+export type BridgeXyzBankAccount = {
+  __typename?: 'BridgeXYZBankAccount';
+  bankName: Scalars['String'];
+  currency: Scalars['String'];
+  iban?: Maybe<BridgeXyzIbanBankAccount>;
+  id: Scalars['String'];
+  usAccount?: Maybe<BridgeXyzusBankAccount>;
+};
+
+export type BridgeXyzIbanBankAccount = {
+  __typename?: 'BridgeXYZIbanBankAccount';
+  bic: Scalars['String'];
+  country: Scalars['String'];
+  last4: Scalars['String'];
+};
+
 export type BridgeXyzMutationAccountInput = {
   account_number?: InputMaybe<Scalars['String']>;
   routing_number?: InputMaybe<Scalars['String']>;
@@ -92,6 +108,7 @@ export type BridgeXyzMutationInput = {
 
 export type BridgeXyzMutationReturn = {
   __typename?: 'BridgeXYZMutationReturn';
+  bankAccount?: Maybe<BridgeXyzBankAccount>;
   country?: Maybe<Scalars['String']>;
   kyc_link?: Maybe<Scalars['String']>;
   kyc_status?: Maybe<Scalars['String']>;
@@ -108,6 +125,12 @@ export type BridgeXyzQueryReturn = {
   __typename?: 'BridgeXYZQueryReturn';
   success?: Maybe<Scalars['Boolean']>;
   transactionFee?: Maybe<Scalars['String']>;
+};
+
+export type BridgeXyzusBankAccount = {
+  __typename?: 'BridgeXYZUSBankAccount';
+  last4: Scalars['String'];
+  routingNumber: Scalars['String'];
 };
 
 /**
@@ -8568,6 +8591,7 @@ export type User = {
   createdAt: Scalars['AWSDateTime'];
   /** Unique identifier for the user (wallet address) */
   id: Scalars['ID'];
+  liquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
   /** A user who has been invited by colony will be able to pass on the private beta invite */
   privateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   /** Profile information of the user */
@@ -8580,6 +8604,15 @@ export type User = {
   transactionHistory?: Maybe<ModelTransactionConnection>;
   updatedAt: Scalars['AWSDateTime'];
   userPrivateBetaInviteCodeId?: Maybe<Scalars['ID']>;
+};
+
+
+/** Represents a User within the Colony Network */
+export type UserLiquidationAddressesArgs = {
+  filter?: InputMaybe<ModelLiquidationAddressFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -8872,7 +8905,7 @@ export type BridgeXyzMutationMutationVariables = Exact<{
 }>;
 
 
-export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', country?: string | null, kyc_status?: string | null, tos_link?: string | null, kyc_link?: string | null, success?: boolean | null } | null };
+export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', country?: string | null, kyc_status?: string | null, tos_link?: string | null, kyc_link?: string | null, success?: boolean | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', last4: string, bic: string, country: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateKycLinksMutationVariables = Exact<{
   fullName: Scalars['String'];
@@ -10439,6 +10472,20 @@ export const BridgeXyzMutationDocument = gql`
     tos_link
     kyc_link
     success
+    bankAccount {
+      id
+      currency
+      bankName
+      iban {
+        last4
+        bic
+        country
+      }
+      usAccount {
+        last4
+        routingNumber
+      }
+    }
   }
 }
     `;
