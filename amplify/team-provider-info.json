@@ -170,5 +170,13 @@
         }
       }
     }
+  },
+  "dev": {
+    "categories": {
+      "function": {
+        "bridgeXYZMutation": {},
+        "bridgeXYZQuery": {}
+      }
+    }
   }
 }
