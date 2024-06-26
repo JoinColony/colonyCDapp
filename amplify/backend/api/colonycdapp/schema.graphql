@@ -1732,6 +1732,29 @@ type User @model {
   bridgeCustomerId: String
 }
 
+type LiquidationAddress @model {
+  """
+  Unique identifier for the liquidation address entry
+  """
+  id: ID!
+  """
+  The chain id the colony is on
+  """
+  chainId: String!
+  """
+  The user address associated
+  """
+  userAddress: ID!@index(name: "byUserAddress", queryField: "getLiquidationAddressesByUserAddress")
+  """
+  The user associated
+  """
+  user: User @hasOne(fields: ["userAddress"])
+  """
+  The liquidation address
+  """
+  liquidationAddress: ID! @index(name: "byLiquidationAddress", queryField: "getUserByLiquidationAddress")
+}
+
 """
 Keeps track of the current amount a user has staked in a colony
 When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
