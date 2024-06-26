@@ -8,6 +8,7 @@ import Select from '~v5/common/Fields/Select/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
+import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
 import ReputationTab from './partials/ReputationTab/index.ts';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
@@ -51,7 +52,9 @@ const UserHub: FC<UserHubProps> = ({
   return (
     <div
       className={clsx('flex h-full flex-col sm:w-[42.625rem] sm:flex-row', {
-        'sm:h-[27.75rem]': selectedTab !== UserHubTabs.Balance,
+        'sm:h-[27.75rem]':
+          selectedTab !== UserHubTabs.Balance &&
+          selectedTab !== UserHubTabs.CryptoToFiat,
         'sm:min-h-[27.75rem]': selectedTab === UserHubTabs.Balance,
       })}
     >
@@ -119,6 +122,7 @@ const UserHub: FC<UserHubProps> = ({
         {selectedTab === UserHubTabs.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}
+        {selectedTab === UserHubTabs.CryptoToFiat && <CryptoToFiatTab />}
       </div>
       {/* @BETA: Disabled for now */}
       {/* {isMobile && ( */}
