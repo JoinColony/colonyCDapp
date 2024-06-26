@@ -1,4 +1,9 @@
-import { CoinVertical, Receipt, Invoice } from '@phosphor-icons/react';
+import {
+  CoinVertical,
+  Receipt,
+  Invoice,
+  CreditCard,
+} from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
@@ -17,6 +22,10 @@ export const menuMessages = defineMessages({
   transactions: {
     id: 'UserSubmenu.transactions',
     defaultMessage: 'Transactions',
+  },
+  cryptoToFiat: {
+    id: 'UserSubmenu.cryptoToFiat',
+    defaultMessage: 'Crypto to fiat',
   },
 });
 
@@ -38,5 +47,11 @@ export const tabList: UserHubTabList = [
     label: formatText(menuMessages.transactions),
     value: UserHubTabs.Transactions,
     icon: Receipt,
+  },
+  {
+    id: UserHubTabs.CryptoToFiat,
+    label: formatText(menuMessages.cryptoToFiat),
+    value: UserHubTabs.CryptoToFiat,
+    icon: CreditCard,
   },
 ];

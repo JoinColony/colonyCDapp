@@ -169,6 +169,7 @@
     "button.addToken": "Add token",
     "button.addRow": "Add row",
     "button.pending": "Pending",
+    "button.transfer": "Transfer",
     "button.confirmChange": "Confirm change",
     "button.addBatchPayments": "Add batch payments",
     "button.addFunds": "Add funds",
