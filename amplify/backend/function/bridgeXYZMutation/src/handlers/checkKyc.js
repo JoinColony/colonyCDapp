@@ -94,7 +94,9 @@ const checkKYCHandler = async (
       },
     );
 
-    const externalAccounts = await externalAccountRes.json().data;
+    const response = await externalAccountRes.json();
+
+    const externalAccounts = response.data;
 
     // TODO: Support multiple accounts
     const firstAccount = externalAccounts[0];
