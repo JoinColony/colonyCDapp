@@ -41,6 +41,7 @@ export const FormSelect: FC<FormSelectProps> = ({
           <Select
             {...field}
             options={options}
+            isError={!!customErrorMessage}
             onChange={(val) => {
               handleChange?.(val);
               field.onChange(val?.value);
