@@ -6,6 +6,7 @@ import {
 } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
+import { FeatureFlag } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type UserHubTabList, UserHubTabs } from './types.ts';
@@ -53,5 +54,6 @@ export const tabList: UserHubTabList = [
     label: formatText(menuMessages.cryptoToFiat),
     value: UserHubTabs.CryptoToFiat,
     icon: CreditCard,
+    featureFlag: FeatureFlag.CRYPTO_TO_FIAT,
   },
 ];

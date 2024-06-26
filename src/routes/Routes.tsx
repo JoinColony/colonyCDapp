@@ -27,7 +27,7 @@ import MembersPage, {
 import OnboardingPage from '~frame/v5/pages/OnboardingPage/index.ts';
 import TeamsPage from '~frame/v5/pages/TeamsPage/index.ts';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage/index.ts';
-import UserCryptoToFiatPage from '~frame/v5/pages/UserCryptoToFiatPage/CyrptoToFiatPage.tsx';
+import UserCryptoToFiatPage from '~frame/v5/pages/UserCryptoToFiatPage/CryptoToFiatPage.tsx';
 import UserPreferencesPage from '~frame/v5/pages/UserPreferencesPage/index.ts';
 import UserProfilePage from '~frame/v5/pages/UserProfilePage/index.ts';
 import UserAccountPage from '~frame/v5/pages/UserProfilePage/partials/UserAccountPage/index.ts';
