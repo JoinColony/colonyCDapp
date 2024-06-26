@@ -313,6 +313,25 @@ input BridgeXYZMutationInput {
   body: BridgeXYZMutationBodyInput!
 }
 
+type BridgeXYZIbanBankAccount {
+  last4: String!
+  bic: String!
+  country: String!
+}
+
+type BridgeXYZUSBankAccount {
+  last4: String!
+  routingNumber: String!
+}
+
+type BridgeXYZBankAccount {
+  id: String!
+  currency: String!
+  bankName: String!
+  iban: BridgeXYZIbanBankAccount
+  usAccount: BridgeXYZUSBankAccount
+}
+
 type BridgeXYZMutationReturn {
   #
   # KYC Links
@@ -325,6 +344,8 @@ type BridgeXYZMutationReturn {
   #
   kyc_status: String
   country: String
+  # Should support multiple accounts at some point
+  bankAccount: BridgeXYZBankAccount
 
   success: Boolean
 }
@@ -1829,6 +1850,8 @@ type User @model {
   Bridge customer id
   """
   bridgeCustomerId: String
+  liquidationAddresses: [LiquidationAddress!]
+    @hasMany(indexName: "byUserAddress", fields: ["id"])
 }
 
 type LiquidationAddress @model {

@@ -5,6 +5,20 @@ mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
     tos_link
     kyc_link
     success
+    bankAccount {
+      id
+      currency
+      bankName
+      iban {
+        last4
+        bic
+        country
+      }
+      usAccount {
+        last4
+        routingNumber
+      }
+    }
   }
 }
 
