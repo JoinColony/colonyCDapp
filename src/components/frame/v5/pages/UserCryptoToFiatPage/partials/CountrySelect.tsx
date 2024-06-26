@@ -1,7 +1,9 @@
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { type Message } from '~types/index.ts';
 import { type CountryData } from '~utils/countries.ts';
+import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
 
@@ -9,12 +11,15 @@ interface CountrySelectProps {
   options: SelectOption[];
   value: CountryData | null;
   name: string;
+
+  labelMessage?: Message;
   onChange: (s: string) => void;
 }
 export const CountrySelect: FC<CountrySelectProps> = ({
   options,
   value,
   onChange,
+  labelMessage,
   name,
 }) => {
   const { setValue } = useFormContext();
@@ -24,11 +29,19 @@ export const CountrySelect: FC<CountrySelectProps> = ({
     setValue(name, val?.value?.alpha3);
   };
   return (
-    <Select
-      options={options}
-      value={(value as any) ?? ''}
-      onChange={handleChange}
-      name={name}
-    />
+    <div>
+      {labelMessage && (
+        <label className="flex flex-col pb-1.5 text-1" htmlFor={`id-${name}`}>
+          {formatText(labelMessage)}
+        </label>
+      )}
+
+      <Select
+        options={options}
+        value={(value as any) ?? ''}
+        onChange={handleChange}
+        name={name}
+      />
+    </div>
   );
 };
