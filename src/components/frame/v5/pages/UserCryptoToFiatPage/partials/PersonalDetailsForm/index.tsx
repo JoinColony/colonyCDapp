@@ -17,7 +17,7 @@ import { validationSchema } from './validation.ts';
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
   onClose: () => void;
-  setSelectCountry: (value: any) => void;
+  setSelectedCountry: (value: any) => void;
 }
 
 const displayname =
@@ -77,7 +77,7 @@ const MSG = defineMessages({
 
 export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
-  setSelectCountry,
+  setSelectedCountry,
   onClose,
 }) => {
   const countries = getCountries();
@@ -88,7 +88,7 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
   }));
 
   const onCountrySelect = (item) => {
-    setSelectCountry(item?.country);
+    setSelectedCountry(item?.country);
   };
 
   return (
