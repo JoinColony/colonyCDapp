@@ -23,6 +23,7 @@ import PaymentBuilder from './partials/PaymentBuilder/PaymentBuilder.tsx';
 import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
+import SplitPayment from './partials/SplitPayment/SplitPayment.tsx';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
 import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
@@ -111,6 +112,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ManageTokensMotion:
       case ColonyActionType.ManageTokensMultisig:
         return <ManageTokens action={action} />;
+      case ExtendedColonyActionType.SplitPayment:
+        return <SplitPayment action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -144,7 +147,9 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.FundExpenditureMotion:
         // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
         return <Motions transactionId={action.transactionHash} />;
+      // @todo: reorganize folder structure after all of the advanced payments will be ready
       case ColonyActionType.CreateExpenditure:
+      case ExtendedColonyActionType.SplitPayment:
         return <PaymentBuilderWidget action={action} />;
       default:
         return <PermissionSidebar transactionId={action.transactionHash} />;

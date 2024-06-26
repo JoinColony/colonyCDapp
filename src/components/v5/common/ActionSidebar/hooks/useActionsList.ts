@@ -26,10 +26,10 @@ const useActionsList = () => {
           //   label: { id: 'actions.batchPayment' },
           //   value: Action.BatchPayment,
           // },
-          // {
-          //   label: { id: 'actions.splitPayment' },
-          //   value: Action.SplitPayment,
-          // },
+          {
+            label: { id: 'actions.splitPayment' },
+            value: Action.SplitPayment,
+          },
           // {
           //   label: { id: 'actions.stagedPayment' },
           //   value: Action.StagedPayment,

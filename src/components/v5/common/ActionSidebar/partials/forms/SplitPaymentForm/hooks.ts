@@ -4,11 +4,14 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { array, type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { SplitPaymentDistributionType } from '~gql';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
@@ -20,67 +23,174 @@ import {
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
+import { getSplitPaymentPayload } from './utils.ts';
+
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
   const selectedTeam = watch('team');
+
   const tokenLockStatesMap = useTokenLockStates();
 
   const validationSchema = useMemo(
     () =>
       object({
-        amount: object({
-          amount: string()
-            .required(() => formatText({ id: 'validation.required' }))
-            .test(
-              'more-than-zero',
-              formatText({
-                id: 'errors.amount.greaterThanZero',
+        amount: string()
+          .required(() => formatText({ id: 'errors.amount' }))
+          .test(
+            'more-than-zero',
+            ({ path }) => {
+              const index = getLastIndexFromPath(path);
+              if (index === undefined) {
+                return formatText({
+                  id: 'errors.amount.greaterThanZero',
+                });
+              }
+              return formatText(
+                { id: 'errors.amount.greaterThanZeroIn' },
+                { paymentIndex: index + 1 },
+              );
+            },
+            (value, context) =>
+              amountGreaterThanZeroValidation({ value, context, colony }),
+          )
+          .test(
+            'enough-tokens',
+            formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
+            (value, context) =>
+              hasEnoughFundsValidation({
+                value,
+                context,
+                domainId: selectedTeam,
+                colony,
               }),
-              (value, context) =>
-                amountGreaterThanZeroValidation({ value, context, colony }),
-            )
-            .test(
-              'enough-tokens',
-              formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
-              (value, context) =>
-                hasEnoughFundsValidation({
-                  value,
-                  context,
-                  domainId: selectedTeam,
-                  colony,
-                }),
-            ),
-          tokenAddress: string()
-            .address()
-            .required()
-            .test(
-              'token-unlocked',
-              formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
-              (value) =>
-                !shouldPreventPaymentsWithTokenInColony(
-                  value || '',
-                  colony,
-                  tokenLockStatesMap,
-                ),
-            ),
-        }).required(),
-        createdIn: number().defined(),
+          ),
+        tokenAddress: string()
+          .address()
+          .required()
+          .test(
+            'token-unlocked',
+            formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+            (value) =>
+              !shouldPreventPaymentsWithTokenInColony(
+                value || '',
+                colony,
+                tokenLockStatesMap,
+              ),
+          ),
+        createdIn: number().defined().required(),
         team: number().required(),
-        decisionMethod: string().defined(),
-        distributionMethod: string().defined(),
-        payments: array(
-          object().shape({
-            percent: number().required(),
-            recipient: string().required(),
-          }),
-        )
+        decisionMethod: string().defined().required(),
+        distributionMethod: string().defined().required(),
+        payments: array()
+          .of(
+            object()
+              .shape({
+                percent: number()
+                  .required(({ path }) => {
+                    const index = getLastIndexFromPath(path);
+
+                    return formatText(
+                      { id: 'errors.percent.required' },
+                      { paymentIndex: index === undefined ? 1 : index + 1 },
+                    );
+                  })
+                  .min(0)
+                  .max(100, ({ path }) => {
+                    const index = getLastIndexFromPath(path);
+
+                    return formatText(
+                      { id: 'errors.percent.lessOrEqual100' },
+                      { paymentIndex: index === undefined ? 1 : index + 1 },
+                    );
+                  })
+                  .test('decimals', 'Max 4 decimal places', (val) => {
+                    if (!val) {
+                      return true;
+                    }
+
+                    const value = val.toString().split('.');
+
+                    const decimals =
+                      value.length > 1 ? val.toString().split('.')[1] : '';
+
+                    return decimals.length <= 4;
+                  }),
+                recipient: string().required(({ path }) => {
+                  const index = getLastIndexFromPath(path);
+
+                  return formatText(
+                    { id: 'errors.recipient.required' },
+                    { paymentIndex: index === undefined ? 1 : index + 1 },
+                  );
+                }),
+                amount: string()
+                  .required(formatText({ id: 'errors.amount' }))
+                  .test(
+                    'more-than-zero',
+                    ({ path }) => {
+                      const index = getLastIndexFromPath(path);
+                      if (index === undefined) {
+                        return formatText({
+                          id: 'errors.amount.greaterThanZero',
+                        });
+                      }
+                      return formatText(
+                        { id: 'errors.amount.greaterThanZeroIn' },
+                        { paymentIndex: index + 1 },
+                      );
+                    },
+                    (value, context) =>
+                      amountGreaterThanZeroValidation({
+                        value,
+                        context,
+                        colony,
+                      }),
+                  )
+                  .test(
+                    'enough-tokens',
+                    formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
+                    (value, context) =>
+                      hasEnoughFundsValidation({
+                        value,
+                        context,
+                        domainId: selectedTeam,
+                        colony,
+                      }),
+                  ),
+                tokenAddress: string()
+                  .required()
+                  .test(
+                    'token-unlocked',
+                    formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+                    (value) =>
+                      !shouldPreventPaymentsWithTokenInColony(
+                        value || '',
+                        colony,
+                        tokenLockStatesMap,
+                      ),
+                  ),
+              })
+              .defined()
+              .required(),
+          )
           .test(
             'sum',
             formatText({ id: 'errors.sumOfPercentageMustBe100' }) || '',
-            (value) => {
+            (value, context) => {
+              const { parent } = context;
+              const decisionMethod = parent?.decisionMethod;
+              const distributionMethod = parent?.distributionMethod;
               if (!value) {
                 return false;
+              }
+
+              if (
+                !decisionMethod ||
+                distributionMethod === SplitPaymentDistributionType.Equal ||
+                distributionMethod === SplitPaymentDistributionType.Reputation
+              ) {
+                return true;
               }
 
               const sum = value.reduce(
@@ -119,47 +229,42 @@ export const useSplitPayment = (
         .map((colonyToken) => colonyToken.token) || [],
     [colony.tokens?.items],
   );
-  const amount = useWatch({ name: 'amount' });
+  const tokenAddress = useWatch({ name: 'tokenAddress' });
   const currentToken = useMemo(
-    () =>
-      colonyTokens.find(
-        (token) => token?.tokenAddress === amount?.tokenAddress,
-      ),
-    [amount?.tokenAddress, colonyTokens],
+    () => colonyTokens.find((token) => token?.tokenAddress === tokenAddress),
+    [tokenAddress, colonyTokens],
   );
   const distributionMethod = useWatch({ name: 'distributionMethod' });
   const validationSchema = useValidationSchema();
+  const { networkInverseFee = '0' } = useNetworkInverseFee();
 
   useActionFormBaseHook({
     validationSchema,
     defaultValues: useMemo(
       () => ({
-        amount: {
-          tokenAddress: colony.nativeToken.tokenAddress,
-        },
+        tokenAddress: colony.nativeToken.tokenAddress,
         createdIn: Id.RootDomain,
         payments: [
           {
-            percent: 0,
+            tokenAddress,
+            percent: undefined,
           },
         ],
       }),
-      [colony.nativeToken.tokenAddress],
+      [colony.nativeToken.tokenAddress, tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
-        ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
-        : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
+        ? ActionTypes.EXPENDITURE_CREATE
+        : ActionTypes.STAKED_EXPENDITURE_CREATE,
     getFormOptions,
-    transform: mapPayload((payload: SplitPaymentFormValues) => {
-      // @TODO: Add a helper function mapping form values to action payload
-      return payload;
-    }),
+    transform: mapPayload((payload: SplitPaymentFormValues) =>
+      getSplitPaymentPayload(colony, payload, networkInverseFee),
+    ),
   });
 
   return {
     currentToken,
-    amount: Number(amount?.amount || 0),
     distributionMethod,
   };
 };
