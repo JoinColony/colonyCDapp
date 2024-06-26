@@ -27,7 +27,7 @@ export type OneTxPaymentPayload = {
   domainId: number;
   customActionTitle: string;
   payments: {
-    recipient: string;
+    recipientAddress: string;
     amount: string;
     tokenAddress: Address;
   }[];
