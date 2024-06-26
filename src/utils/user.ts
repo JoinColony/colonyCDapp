@@ -4,6 +4,7 @@ import {
   type GetUserLiquidationAddressesQuery,
   type GetUserLiquidationAddressesQueryVariables,
 } from '~gql';
+import { getColonyManager } from '~redux/sagas/utils/index.ts';
 import { type Address } from '~types';
 import { type User } from '~types/graphql.ts';
 
@@ -12,7 +13,8 @@ export const getUserPaymentAddress = async (user: User): Promise<Address> => {
     return user.walletAddress;
   }
 
-  // @TODO fetch user address via the lambda, for now it's a random address
+  const colonyManager = await getColonyManager();
+  const { chainId } = await colonyManager.provider.getNetwork();
 
   const { data } = await apolloClient.query<
     GetUserLiquidationAddressesQuery,
@@ -20,6 +22,7 @@ export const getUserPaymentAddress = async (user: User): Promise<Address> => {
   >({
     query: GetUserLiquidationAddressesDocument,
     variables: {
+      chainId,
       userAddress: user.walletAddress,
     },
   });

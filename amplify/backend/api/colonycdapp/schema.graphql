@@ -1853,7 +1853,7 @@ type LiquidationAddress @model {
   """
   The chain id the colony is on
   """
-  chainId: String!
+  chainId: Int!
   """
   The user address associated
   """
