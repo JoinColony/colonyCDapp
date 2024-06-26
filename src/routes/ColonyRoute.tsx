@@ -7,6 +7,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import ColonyContextProvider from '~context/ColonyContext/ColonyContextProvider.tsx';
 import ColonyCreateModalProvider from '~context/ColonyCreateModalContext/ColonyCreateModalContextProvider.tsx';
 import ColonyDecisionProvider from '~context/ColonyDecisionContext/ColonyDecisionContextProvider.tsx';
+import ColonyFeatureFlagsContextProvider from '~context/ColonyFeatureFlagsContext/ColonyFeatureFlagsContextProvider.tsx';
 import MemberContextProvider from '~context/MemberContext/MemberContextProviderWithSearchAndFilter.tsx';
 import MemberModalProvider from '~context/MemberModalContext/MemberModalContextProvider.tsx';
 import TokensModalContextProvider from '~context/TokensModalContext/TokensModalContextProvider.tsx';
@@ -81,25 +82,27 @@ const ColonyRoute = () => {
       startPollingColonyData={startPolling}
       stopPollingColonyData={stopPolling}
     >
-      <MemberContextProvider>
-        <ActionSidebarContextProvider>
-          <ColonyDecisionProvider>
-            <UserTokenBalanceProvider>
-              <MemberModalProvider>
-                <ColonyCreateModalProvider>
-                  <UserTransactionContextProvider>
-                    <TokensModalContextProvider>
-                      <ColonyLayout>
-                        <Outlet />
-                      </ColonyLayout>
-                    </TokensModalContextProvider>
-                  </UserTransactionContextProvider>
-                </ColonyCreateModalProvider>
-              </MemberModalProvider>
-            </UserTokenBalanceProvider>
-          </ColonyDecisionProvider>
-        </ActionSidebarContextProvider>
-      </MemberContextProvider>
+      <ColonyFeatureFlagsContextProvider>
+        <MemberContextProvider>
+          <ActionSidebarContextProvider>
+            <ColonyDecisionProvider>
+              <UserTokenBalanceProvider>
+                <MemberModalProvider>
+                  <ColonyCreateModalProvider>
+                    <UserTransactionContextProvider>
+                      <TokensModalContextProvider>
+                        <ColonyLayout>
+                          <Outlet />
+                        </ColonyLayout>
+                      </TokensModalContextProvider>
+                    </UserTransactionContextProvider>
+                  </ColonyCreateModalProvider>
+                </MemberModalProvider>
+              </UserTokenBalanceProvider>
+            </ColonyDecisionProvider>
+          </ActionSidebarContextProvider>
+        </MemberContextProvider>
+      </ColonyFeatureFlagsContextProvider>
     </ColonyContextProvider>
   );
 };
