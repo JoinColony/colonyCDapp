@@ -1,12 +1,21 @@
-import { type AnyColonyClient, ClientType } from '@colony/colony-js';
+import {
+  type AnyColonyClient,
+  ClientType,
+  type Network,
+  Tokens,
+} from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { getAddress } from 'ethers/lib/utils';
 import { fork } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context/index.ts';
+import { apolloClient } from '~apollo';
 import {
   CreateExpenditureMetadataDocument,
+  type GetUserByAddressQuery,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
+  type GetUserByAddressQueryVariables,
+  GetUserByAddressDocument,
 } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { type Address } from '~types';
@@ -19,6 +28,7 @@ import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import { getUserPaymentAddress } from '~utils/user.ts';
 
 import {
   createTransaction,
@@ -152,8 +162,6 @@ export function* saveExpenditureMetadata({
   fundFromDomainId,
   stages,
 }: SaveExpenditureMetadataParams) {
-  const apolloClient = getContext(ContextModule.ApolloClient);
-
   yield apolloClient.mutate<
     CreateExpenditureMetadataMutation,
     CreateExpenditureMetadataMutationVariables
@@ -292,4 +300,42 @@ export const getResolvedPayouts = (
   });
 
   return resolvedPayouts;
+};
+
+export const adjustPayoutsAddresses = async (
+  payouts: Array<{ recipientAddress: string; tokenAddress: string }>,
+  network: Network,
+) => {
+  return Promise.all(
+    payouts.map(async (payout) => {
+      const { tokenAddress, recipientAddress } = payout;
+
+      if (tokenAddress !== Tokens[network]?.USDC) {
+        return payout;
+      }
+
+      const { data } = await apolloClient.query<
+        GetUserByAddressQuery,
+        GetUserByAddressQueryVariables
+      >({
+        query: GetUserByAddressDocument,
+        variables: {
+          address: getAddress(recipientAddress),
+        },
+      });
+
+      const user = data?.getUserByAddress?.items[0];
+
+      if (!user) {
+        return payout;
+      }
+
+      const paymentAddress = getUserPaymentAddress(user);
+
+      return {
+        ...payout,
+        recipientAddress: paymentAddress,
+      };
+    }),
+  );
 };
