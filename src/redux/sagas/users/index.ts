@@ -5,6 +5,7 @@ import { BigNumber, utils } from 'ethers';
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 
 import { deauthenticateWallet } from '~auth/index.ts';
+import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
   type ColonyManager,
   ContextModule,
@@ -320,7 +321,7 @@ function* userCryptoToFiatTransfer({
 
     const colonyManager: ColonyManager = yield getColonyManager();
     const { network } = colonyManager.networkClient;
-    const tokenAddress = Tokens[network]?.USDC;
+    const tokenAddress = isDev ? DEV_USDC_ADDRESS : Tokens[network]?.USDC;
 
     if (!tokenAddress) {
       throw new Error(`USDC token address not found on network ${network}`);
