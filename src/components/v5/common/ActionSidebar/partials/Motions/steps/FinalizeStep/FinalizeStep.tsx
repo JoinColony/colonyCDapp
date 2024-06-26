@@ -103,6 +103,14 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     };
   }
 
+  let title = 'motion.finalizeStep.title';
+
+  if (isMotionClaimable) {
+    title = 'motion.finalizeStep.claimable.statusText';
+  } else if (isMotionFailedNotFinalizable) {
+    title = 'motion.finalizeStep.failed.statusText';
+  }
+
   /*
    * @NOTE This is just needed until we properly save motion data in the db
    * For now, we just fetch it live from chain, so when we uninstall the extension
@@ -115,9 +123,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       statusTextSectionProps={{
         status: StatusTypes.Info,
         children: formatText({
-          id: isMotionFailedNotFinalizable
-            ? 'motion.finalizeStep.failed.statusText'
-            : 'motion.finalizeStep.statusText',
+          id: title,
         }),
         textClassName: 'text-4 text-gray-900',
         iconAlignment: 'top',
