@@ -34,7 +34,7 @@ const getPaymentPayload = ({
     : amount;
 
   return {
-    recipient: recipientAddress,
+    recipientAddress,
     tokenAddress,
     amount: amountWithFees, // @NOTE: Only the contract sees this amount
   };
@@ -52,7 +52,7 @@ export const getSimplePaymentPayload = (
     title,
     amount,
     tokenAddress,
-    recipient: recipientAddress,
+    recipientAddress,
     payments,
   } = values;
   const fromDomainId = Number(from);
@@ -70,14 +70,18 @@ export const getSimplePaymentPayload = (
         tokenAddress,
         networkInverseFee,
       }),
-      ...payments.map(({ recipient, amount: paymentAmount }) =>
-        getPaymentPayload({
-          colony,
-          recipientAddress: recipient,
-          amount: paymentAmount.toString(),
-          tokenAddress,
-          networkInverseFee,
-        }),
+      ...payments.map(
+        ({
+          recipientAddress: paymentRecipientAddress,
+          amount: paymentAmount,
+        }) =>
+          getPaymentPayload({
+            colony,
+            recipientAddress: paymentRecipientAddress,
+            amount: paymentAmount.toString(),
+            tokenAddress,
+            networkInverseFee,
+          }),
       ),
     ],
     annotationMessage: annotationMessage
