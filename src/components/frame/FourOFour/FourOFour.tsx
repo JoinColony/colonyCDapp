@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { COLONY_DOCS } from '~constants/index.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
-import { useBridgeXyzMutationMutation } from '~gql';
+import { useBridgeXyzMutationMutation, useBridgeXyzQueryLazyQuery } from '~gql';
 import {
   // CREATE_COLONY_ROUTE_BASE,
   LANDING_PAGE_ROUTE,
@@ -50,7 +50,9 @@ const MSG = defineMessages({
 
 const FourOFour = () => {
   const [bridgeXYZMutation] = useBridgeXyzMutationMutation();
-  // const [bridgeXYZQuery] = useBridgeXyzQueryLazyQuery();
+  const [bridgeXYZQuery] = useBridgeXyzQueryLazyQuery();
+
+  const [fee, setFee] = useState<string | null>(null);
 
   const getKYCLinks = () => {
     const body: KYCLinksMutationBody = {
@@ -175,6 +177,16 @@ const FourOFour = () => {
         console.log('Error! ', err);
       });
   };
+  const getOfframpFees = async () => {
+    const feesResponse = await bridgeXYZQuery({
+      variables: { input: { path: 'v0/developer/fees', body: '' } },
+    });
+
+    const transactionFee =
+      feesResponse.data?.bridgeXYZQuery?.transactionFee || null;
+
+    setFee(transactionFee);
+  };
 
   return (
     <MainLayout>
@@ -183,6 +195,8 @@ const FourOFour = () => {
         <Button onClick={putCustomer}>Put customer</Button>
         <Button onClick={checkKYCStatus}>Check KYC status</Button>
         <Button onClick={createExternalAccount}>Create external account</Button>
+        <Button onClick={getOfframpFees}>Get the current fees</Button>
+        {fee !== null && <span>The fee is {fee}</span>}
       </div>
       <FourOFourMessage
         description={formatText(MSG.description)}
