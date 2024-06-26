@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, type FC, type PropsWithChildren } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
 import { type CountryData, getCountries } from '~utils/countries.ts';
-import Button from '~v5/shared/Button/Button.tsx';
+import { formatText } from '~utils/intl.ts';
 
 import { CountrySelect } from '../CountrySelect.tsx';
 import { FormInput } from '../FormInput.tsx';
+import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
+import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
 const FormRow: FC<PropsWithChildren> = ({ children }) => {
   return <div className="py-1">{children}</div>;
@@ -14,8 +17,63 @@ const FormRow: FC<PropsWithChildren> = ({ children }) => {
 
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
+  onClose: () => void;
 }
-export const BankDetailsForm: FC<BankDetailsFormProps> = ({ onSubmit }) => {
+
+const displayName = 'v5.pages.UserCryptoToFiatPage.partials.BankDetailsForm';
+
+const MSG = defineMessages({
+  title: {
+    id: `${displayName}.title`,
+    defaultMessage: 'Bank details',
+  },
+  subtitle: {
+    id: `${displayName}.subtitle`,
+    defaultMessage:
+      'Complete your bank, and currency information to receive USDC payments to your bank account.',
+  },
+  cancelButtonTitle: {
+    id: `${displayName}.cancelButtonTitle`,
+    defaultMessage: 'Cancel',
+  },
+  proceedButtonTitle: {
+    id: `${displayName}.proceedButtonTitle`,
+    defaultMessage: 'Submit details',
+  },
+  accountOwnerNameLabel: {
+    id: `${displayName}.accountOwnerNameLabel`,
+    defaultMessage: 'Account owner name',
+  },
+  accountOwnerNamePlaceholder: {
+    id: `${displayName}.accountOwnerNamePlaceholder`,
+    defaultMessage: 'Full name',
+  },
+  bankNameabel: {
+    id: `${displayName}.bankNameabel`,
+    defaultMessage: 'Bank name',
+  },
+  bankNamePlaceholder: {
+    id: `${displayName}.bankNamePlaceholder`,
+    defaultMessage: 'Bank name',
+  },
+  payoutCurrencyLabel: {
+    id: `${displayName}.payoutCurrencyLabel`,
+    defaultMessage: 'Payout currency',
+  },
+  payoutCurrencyPlaceholder: {
+    id: `${displayName}.payoutCurrencyPlaceholder`,
+    defaultMessage: 'Payout currency',
+  },
+  countryLabel: {
+    id: `${displayName}.countryLabel`,
+    defaultMessage: 'Country',
+  },
+});
+
+export const BankDetailsForm: FC<BankDetailsFormProps> = ({
+  onSubmit,
+  onClose,
+}) => {
   const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
     null,
   );
@@ -27,27 +85,27 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({ onSubmit }) => {
 
   return (
     <div>
-      Bank details
-      <Form onSubmit={onSubmit}>
+      <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
+      <Form onSubmit={onSubmit} className="flex flex-col gap-3">
         <FormRow>
           <FormInput
             name="account-owner"
-            label="Account owner name"
-            placeholder="Full name"
+            label={formatText(MSG.accountOwnerNameLabel)}
+            placeholder={formatText(MSG.accountOwnerNamePlaceholder)}
           />
         </FormRow>
         <FormRow>
           <FormInput
             name="bank-name"
-            label="Bank name"
-            placeholder="Bank name"
+            label={formatText(MSG.bankNameabel)}
+            placeholder={formatText(MSG.bankNamePlaceholder)}
           />
         </FormRow>
         <FormRow>
           <FormInput
             name="currency"
-            label="Payout currency"
-            placeholder="Payout currency"
+            label={formatText(MSG.payoutCurrencyLabel)}
+            placeholder={formatText(MSG.payoutCurrencyPlaceholder)}
           />
         </FormRow>
         <FormRow>
@@ -61,11 +119,15 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({ onSubmit }) => {
             name="country"
             options={countriesOptions as any}
             value={selectedCountry}
-            labelMessage="Country"
+            labelMessage={formatText(MSG.countryLabel)}
             onChange={(value) => setSelectedCountry(value as any)}
           />
         </FormRow>
-        <Button type="submit">Next</Button>
+        <ModalFormCTAButtons
+          cancelButton={{ title: MSG.cancelButtonTitle, onClick: onClose }}
+          proceedButton={{ title: MSG.proceedButtonTitle }}
+          className="mt-4"
+        />
       </Form>
     </div>
   );
