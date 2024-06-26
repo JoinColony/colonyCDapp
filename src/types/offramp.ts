@@ -1,4 +1,6 @@
+import { type BridgeXyzMutationBodyInput } from '~gql';
+
 export interface KYCLinksMutationBody {
-  full_name: string;
-  email: string;
+  email: BridgeXyzMutationBodyInput['email'];
+  full_name: BridgeXyzMutationBodyInput['full_name'];
 }

@@ -62,7 +62,7 @@ const FourOFour = () => {
           bridgeXYZMutation({
             variables: {
               input: {
-                body: JSON.stringify(body),
+                body,
                 path: 'v0/kyc_links',
                 pathParams: [],
               },
