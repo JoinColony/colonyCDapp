@@ -9,7 +9,7 @@ module.exports = {
       }
     }
   `,
-  getUserByAddress: /* GraphQL */ `
+  getUser: /* GraphQL */ `
     query GetUser($id: ID!) {
       getUser(id: $id) {
         bridgeCustomerId
