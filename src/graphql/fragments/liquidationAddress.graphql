@@ -1,0 +1,9 @@
+fragment LiquidationAddress on LiquidationAddress {
+  id
+  chainId
+  userAddress
+  user {
+    ...User
+  }
+  liquidationAddress
+}
