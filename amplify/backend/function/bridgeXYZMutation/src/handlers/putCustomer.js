@@ -5,7 +5,7 @@ const { graphqlRequest } = require('../utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getUserByAddress } = require('../graphql');
+const { getUser } = require('../graphql');
 
 const putCustomerHandler = async (
   event,
@@ -16,7 +16,7 @@ const putCustomerHandler = async (
 
   try {
     const { data: graphQlData } = await graphqlRequest(
-      getUserByAddress,
+      getUser,
       {
         id: checksummedWalletAddress,
       },

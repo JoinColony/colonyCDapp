@@ -9,7 +9,11 @@ import {
   FeatureFlagsContext,
 } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
-import { useBridgeXyzMutationMutation, useBridgeXyzQueryLazyQuery } from '~gql';
+import {
+  type BridgeXyzDrain,
+  useBridgeXyzMutationMutation,
+  useBridgeXyzQueryLazyQuery,
+} from '~gql';
 import {
   // CREATE_COLONY_ROUTE_BASE,
   LANDING_PAGE_ROUTE,
@@ -57,6 +61,7 @@ const FourOFour = () => {
   const featureFlags = useContext(FeatureFlagsContext);
 
   const [fee, setFee] = useState<string | null>(null);
+  const [liquidations, setLiquidations] = useState<any[]>([]);
 
   const getKYCLinks = () => {
     const body: KYCLinksMutationBody = {
@@ -151,13 +156,28 @@ const FourOFour = () => {
 
   const getOfframpFees = async () => {
     const feesResponse = await bridgeXYZQuery({
-      variables: { input: { path: 'v0/developer/fees', body: '' } },
+      variables: { input: { path: 'v0/developer/fees' } },
     });
 
     const transactionFee =
       feesResponse.data?.bridgeXYZQuery?.transactionFee || null;
 
     setFee(transactionFee);
+  };
+
+  const getLiquidations = async () => {
+    const liquidationsResponse = await bridgeXYZQuery({
+      variables: {
+        input: {
+          path: 'v0/customers/{customerID}/liquidation_addresses/{liquidationAddressID}/drains',
+        },
+      },
+    });
+
+    setLiquidations(
+      (liquidationsResponse.data?.bridgeXYZQuery?.drains as BridgeXyzDrain[]) ||
+        [],
+    );
   };
 
   return (
@@ -168,7 +188,13 @@ const FourOFour = () => {
           <Button onClick={putCustomer}>Put customer</Button>
           <Button onClick={checkKYCStatus}>Check KYC status</Button>
           <Button onClick={getOfframpFees}>Get the current fees</Button>
+          <Button onClick={getLiquidations}>
+            Get the liquidations history
+          </Button>
           {fee !== null && <span>The fee is {fee}</span>}
+          {liquidations.map((liquidation) => (
+            <span>{liquidation}</span>
+          ))}
         </div>
       )}
       <FourOFourMessage
