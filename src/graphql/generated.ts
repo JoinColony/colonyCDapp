@@ -54,6 +54,12 @@ export type BridgeXyzMutationInput = {
   pathParams: Array<Scalars['String']>;
 };
 
+export type BridgeXyzMutationReturn = {
+  __typename?: 'BridgeXYZMutationReturn';
+  kyc_link?: Maybe<Scalars['String']>;
+  tos_link?: Maybe<Scalars['String']>;
+};
+
 export type BridgeXyzQueryInput = {
   body: Scalars['String'];
   path: Scalars['String'];
@@ -4325,7 +4331,7 @@ export type MotionStateHistoryInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   /** Post to the Bridge XYZ API */
-  bridgeXYZMutation?: Maybe<Scalars['String']>;
+  bridgeXYZMutation?: Maybe<BridgeXyzMutationReturn>;
   createAnnotation?: Maybe<Annotation>;
   createColony?: Maybe<Colony>;
   createColonyAction?: Maybe<ColonyAction>;
@@ -8680,7 +8686,7 @@ export type BridgeXyzMutationMutationVariables = Exact<{
 }>;
 
 
-export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: string | null };
+export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', tos_link?: string | null, kyc_link?: string | null } | null };
 
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
@@ -8821,6 +8827,13 @@ export type UpdateUserProfileMutationVariables = Exact<{
 
 
 export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateProfile?: { __typename?: 'Profile', id: string, avatar?: string | null, bio?: string | null, displayName?: string | null, location?: string | null, website?: string | null, email?: string | null } | null };
+
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string } | null };
 
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -10188,7 +10201,10 @@ export type CreateAnnotationMutationResult = Apollo.MutationResult<CreateAnnotat
 export type CreateAnnotationMutationOptions = Apollo.BaseMutationOptions<CreateAnnotationMutation, CreateAnnotationMutationVariables>;
 export const BridgeXyzMutationDocument = gql`
     mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
-  bridgeXYZMutation(input: $input)
+  bridgeXYZMutation(input: $input) {
+    tos_link
+    kyc_link
+  }
 }
     `;
 export type BridgeXyzMutationMutationFn = Apollo.MutationFunction<BridgeXyzMutationMutation, BridgeXyzMutationMutationVariables>;
@@ -10881,6 +10897,39 @@ export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
 export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
 export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetColonyActionsDocument = gql`
     query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection, $filter: ModelColonyActionFilterInput) {
   getActionsByColony(
