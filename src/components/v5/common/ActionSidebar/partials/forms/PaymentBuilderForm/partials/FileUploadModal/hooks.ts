@@ -10,7 +10,7 @@ import { DropzoneErrors } from '~v5/common/AvatarUploader/utils.ts';
 import { type CSVFileItem } from './types.ts';
 
 const defaultValues = {
-  recipient: '0x0000000000000000000000000000000000000000',
+  address: '0x0000000000000000000000000000000000000000',
   tokenContractAddress: 'wrongToken',
   amount: '',
   claimDelay: '',
@@ -22,7 +22,7 @@ const isValueNumber = (value: string) =>
 const prepareStructure = (file: CSVFileItem[]) => {
   const hasRightHeaders = file.some(
     (header) =>
-      'recipient' in header ||
+      'address' in header ||
       'tokenContractAddress' in header ||
       'amount' in header ||
       'claimDelay' in header,
@@ -34,7 +34,7 @@ const prepareStructure = (file: CSVFileItem[]) => {
 
   const emptyRow = file.find(
     (item) =>
-      !item.recipient &&
+      !item.address &&
       !item.tokenContractAddress &&
       !item.amount &&
       !item.claimDelay,
@@ -53,7 +53,7 @@ const prepareStructure = (file: CSVFileItem[]) => {
   return file
     .filter((item) => item !== emptyRow)
     .map((item) => ({
-      recipientAddress: item.recipient || defaultValues.recipient,
+      recipientAddress: item.address || defaultValues.address,
       tokenAddress:
         item.tokenContractAddress || defaultValues.tokenContractAddress,
       amount:
@@ -99,12 +99,37 @@ export const useUploadCSVFile = (
 
       Papa.parse(uploadedFile.file, {
         complete: (result: ParseResult<CSVFileItem>) => {
-          if (result.data.length > 400) {
+          const dataDelimiterIndex = result.data.findIndex(
+            (line, index) =>
+              line[0] === 'Payment Details' && result.data[index - 1][0] === '',
+          );
+
+          const truncatedData = result.data.slice(dataDelimiterIndex + 2);
+
+          if (truncatedData.length > 400) {
             setError(DropzoneErrors.STRUCTURE);
             return;
           }
 
-          const validResults = prepareStructure(result.data);
+          let reconstructedFile = '';
+          truncatedData.map((line) => {
+            reconstructedFile += `${line.join(',')}\n`;
+            return reconstructedFile;
+          });
+
+          const parsedFile = Papa.parse(reconstructedFile, {
+            header: true,
+            skipEmptyLines: true,
+            transformHeader: (header: string) => {
+              return header
+                .toLowerCase()
+                .replace(/\([^)]*\)/g, '')
+                .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
+                .trim();
+            },
+          });
+
+          const validResults = prepareStructure(parsedFile.data);
 
           if (!validResults) {
             setError(DropzoneErrors.STRUCTURE);
@@ -113,14 +138,6 @@ export const useUploadCSVFile = (
 
           handleFileUpload(validResults);
           handleFileRemove();
-        },
-        header: true,
-        transformHeader: (header: string) => {
-          return header
-            .toLowerCase()
-            .replace(/\([^)]*\)/g, '')
-            .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
-            .trim();
         },
       });
     } catch (error) {
