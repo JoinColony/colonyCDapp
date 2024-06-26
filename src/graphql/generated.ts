@@ -8926,6 +8926,11 @@ export type UpdateBridgeCustomerMutationVariables = Exact<{
 
 export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null } | null };
 
+export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, success?: boolean | null } | null };
+
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
 }>;
@@ -10592,6 +10597,40 @@ export function useUpdateBridgeCustomerMutation(baseOptions?: Apollo.MutationHoo
 export type UpdateBridgeCustomerMutationHookResult = ReturnType<typeof useUpdateBridgeCustomerMutation>;
 export type UpdateBridgeCustomerMutationResult = Apollo.MutationResult<UpdateBridgeCustomerMutation>;
 export type UpdateBridgeCustomerMutationOptions = Apollo.BaseMutationOptions<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>;
+export const CheckKycStatusDocument = gql`
+    mutation CheckKYCStatus {
+  bridgeXYZMutation(input: {path: "v0/kyc_links/{kycLinkID}", body: {}}) {
+    kyc_status
+    kyc_link
+    success
+  }
+}
+    `;
+export type CheckKycStatusMutationFn = Apollo.MutationFunction<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
+
+/**
+ * __useCheckKycStatusMutation__
+ *
+ * To run a mutation, you first call `useCheckKycStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckKycStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkKycStatusMutation, { data, loading, error }] = useCheckKycStatusMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCheckKycStatusMutation(baseOptions?: Apollo.MutationHookOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CheckKycStatusMutation, CheckKycStatusMutationVariables>(CheckKycStatusDocument, options);
+      }
+export type CheckKycStatusMutationHookResult = ReturnType<typeof useCheckKycStatusMutation>;
+export type CheckKycStatusMutationResult = Apollo.MutationResult<CheckKycStatusMutation>;
+export type CheckKycStatusMutationOptions = Apollo.BaseMutationOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
 export const CreateColonyEtherealMetadataDocument = gql`
     mutation CreateColonyEtherealMetadata($input: CreateColonyEtherealMetadataInput!) {
   createColonyEtherealMetadata(input: $input) {

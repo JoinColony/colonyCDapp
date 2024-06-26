@@ -17,6 +17,7 @@ export interface RowItemBodyProps {
   description?: MessageDescriptor;
   descriptionComponent?: React.ReactNode;
   ctaTitle?: MessageDescriptor;
+  ctaDisabled?: boolean;
   ctaOnClick?: () => void;
   ctaComponent?: React.ReactNode;
 }
