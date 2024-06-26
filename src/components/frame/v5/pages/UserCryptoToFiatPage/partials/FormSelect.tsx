@@ -11,12 +11,14 @@ interface FormSelectProps {
   name: string;
   labelMessage?: Message;
   options: SelectOption[];
+  handleChange?: any;
 }
 
 export const FormSelect: FC<FormSelectProps> = ({
   name,
   options,
   labelMessage,
+  handleChange,
 }) => {
   const { control, getFieldState } = useFormContext();
   const { error } = getFieldState(name);
@@ -26,7 +28,6 @@ export const FormSelect: FC<FormSelectProps> = ({
     <Controller
       name={name}
       control={control}
-      rules={{ required: true }}
       render={({ field }) => (
         <>
           {labelMessage && (
@@ -40,7 +41,10 @@ export const FormSelect: FC<FormSelectProps> = ({
           <Select
             {...field}
             options={options}
-            onChange={(val) => field.onChange(val?.value)}
+            onChange={(val) => {
+              handleChange?.(val);
+              field.onChange(val?.value);
+            }}
           />
           <FormError isFullSize alignment="left">
             {customErrorMessage}
