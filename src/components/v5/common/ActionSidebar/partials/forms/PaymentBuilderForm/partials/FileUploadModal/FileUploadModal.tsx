@@ -2,8 +2,6 @@ import { FileCsv } from '@phosphor-icons/react';
 import { type ParseResult } from 'papaparse';
 import React, { useMemo, type FC } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import ExternalLink from '~shared/ExternalLink/ExternalLink.tsx';
 import { convertBytes } from '~utils/convertBytes.ts';
 import { formatText } from '~utils/intl.ts';
@@ -11,7 +9,7 @@ import FileUpload from '~v5/common/AvatarUploader/partials/FileUpload.tsx';
 import ProgressContent from '~v5/common/AvatarUploader/partials/ProgressContent.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
-import { useUploadCSVFile } from './hooks.ts';
+import { useUploadCSVFile, useCSVFileTemplate } from './hooks.ts';
 import { type FileUploadModalProps } from './types.ts';
 
 const FileUploadModal: FC<FileUploadModalProps> = ({
@@ -19,56 +17,14 @@ const FileUploadModal: FC<FileUploadModalProps> = ({
   onUpload,
   onClose,
 }) => {
-  const { totalContributors } = useMemberContext();
-  const { colony } = useColonyContext();
+  const csvTemplate = useCSVFileTemplate();
 
   const fileDownloadUrl = useMemo(() => {
-    const generatedCSVTemplate = [
-      `
-Instructions here: https://clny.io/csv
-
-Address Book
-
-Username (for reference),Address (for reference)`,
-    ];
-
-    totalContributors.map((contributor) => {
-      return generatedCSVTemplate.push(
-        `${contributor?.user?.profile?.displayName},${contributor?.contributorAddress}`,
-      );
-    });
-
-    generatedCSVTemplate.push(
-      `
-Token List
-
-Symbol (for reference),Token Contract Address (for reference)`,
-    );
-
-    colony?.tokens?.items?.map((token) => {
-      return generatedCSVTemplate.push(
-        `${token?.token?.symbol},${token?.token?.tokenAddress}`,
-      );
-    });
-
-    generatedCSVTemplate.push(
-      `
-Payment Details
-
-Username (for reference),Address,Token Symbol (for reference),Token Contract Address,Amount,Claim delay (hours)
-Alice,0x0000000000000000000000000000000000000000,SDC,0xaf88d065e77c8cC2239327C5EDb3A432268e5831,200000,24
-Bob,0x0000000000000000000000000000000000000000,USDT,0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9,100000,12
-Charles,0x0000000000000000000000000000000000000000,DAI,0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1,50000,6
-Dillon,0x0000000000000000000000000000000000000000,CLNY,0xD611b29dc327723269Bd1e53Fe987Ee71A24B234,5000,1
-Erlich,0x0000000000000000000000000000000000000000,ETH,0x0000000000000000000000000000000000000000,5000,1`,
-    );
-
-    // const blob = new Blob([batchPaymentTemplate], { type: 'text/csv' });
-    const blob = new Blob([generatedCSVTemplate.join('\n')], {
+    const blob = new Blob([csvTemplate], {
       type: 'text/csv',
     });
     return URL.createObjectURL(blob);
-  }, [totalContributors, colony]);
+  }, [csvTemplate]);
 
   const handleFileUpload = (file: ParseResult<unknown>) => {
     onUpload(file);
