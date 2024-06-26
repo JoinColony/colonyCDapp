@@ -36,12 +36,14 @@ export enum ActionTitleMessageKeys {
   SafeTransactionTitle = 'safeTransactionTitle',
   RecipientsNumber = 'recipientsNumber',
   TokensNumber = 'tokensNumber',
+  SplitAmount = 'splitAmount',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
-    case actionType.includes(ColonyActionType.Payment):
+    case actionType.includes(ColonyActionType.Payment) &&
+      !actionType.includes(ExtendedColonyActionType.SplitPayment):
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Amount,
@@ -128,6 +130,12 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
     case actionType.includes(ColonyActionType.RemoveVerifiedMembers):
       return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
+    case actionType.includes(ExtendedColonyActionType.SplitPayment):
+      return [
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.SplitAmount,
+        ActionTitleMessageKeys.TokenSymbol,
+      ];
     default:
       return [];
   }

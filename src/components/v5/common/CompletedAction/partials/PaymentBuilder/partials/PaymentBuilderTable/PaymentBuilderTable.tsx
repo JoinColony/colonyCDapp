@@ -7,7 +7,6 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
-import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
@@ -40,7 +39,6 @@ const useGetPaymentBuilderColumns = ({
   isLoading?: boolean;
 }) => {
   const isTablet = useTablet();
-  const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = data.length > 1;
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
@@ -80,7 +78,7 @@ const useGetPaymentBuilderColumns = ({
         footer: hasMoreThanOneToken
           ? () => (
               <PaymentBuilderPayoutsTotal
-                data={dataRef.current}
+                data={data}
                 itemClassName="justify-end md:justify-start"
                 buttonClassName="justify-end md:justify-start"
               />
@@ -148,8 +146,7 @@ const useGetPaymentBuilderColumns = ({
     ],
     [
       claimablePayouts,
-      data.length,
-      dataRef,
+      data,
       fetchCurrentBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,

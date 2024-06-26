@@ -2,7 +2,7 @@ import { type PaymentBuilderRecipientsFieldModel } from '../PaymentBuilderRecipi
 
 export interface PaymentBuilderPayoutsTotalProps {
   data: PaymentBuilderRecipientsFieldModel[];
-  moveDecimals?: boolean;
+  convertToWEI?: boolean;
   itemClassName?: string;
   buttonClassName?: string;
 }

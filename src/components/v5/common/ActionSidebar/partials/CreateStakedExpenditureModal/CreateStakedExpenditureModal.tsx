@@ -19,7 +19,6 @@ import CloseButton from '~v5/shared/Button/CloseButton.tsx';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
 import useReputationValidation from '../../hooks/useReputationValidation.ts';
-import { useValidationSchema } from '../forms/PaymentBuilderForm/hooks.ts';
 
 import {
   type CreateStakedExpenditureFormFields,
@@ -67,6 +66,7 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
   isOpen,
   onCloseClick,
   formValues,
+  actionType,
 }) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
@@ -81,7 +81,6 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
   } = useExpenditureStaking();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
   const navigate = useNavigate();
-  const paymentBuilderValidationSchema = useValidationSchema(networkInverseFee);
   const { noReputationError } = useReputationValidation();
 
   if (!formValues) {
@@ -98,14 +97,13 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
       stakedExpenditureAddress: string().defined().required(),
       hasEnoughTokens: bool().required(),
     })
-    .concat(paymentBuilderValidationSchema);
+    .required();
 
   return (
     <ModalBase isOpen={isOpen} isFullOnMobile>
       <ActionForm<CreateStakedExpenditureFormFields>
         validationSchema={validationSchema}
         defaultValues={{
-          ...formValues,
           stakeAmount,
           networkInverseFee,
           stakedExpenditureAddress,
@@ -114,12 +112,17 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
         mode="onSubmit"
         actionType={ActionTypes.STAKED_EXPENDITURE_CREATE}
         transform={pipe(
-          mapPayload((payload) =>
-            getCreateStakedExpenditurePayload(colony, payload, {
-              networkInverseFee,
-              stakeAmount: stakeAmount || '0',
-              stakedExpenditureAddress,
-              activeBalance: userActivatedTokens.toString(),
+          mapPayload(() =>
+            getCreateStakedExpenditurePayload({
+              actionType,
+              colony,
+              values: formValues,
+              options: {
+                networkInverseFee,
+                stakeAmount: stakeAmount || '0',
+                stakedExpenditureAddress,
+                activeBalance: userActivatedTokens.toString(),
+              },
             }),
           ),
           withMeta({
