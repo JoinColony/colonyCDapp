@@ -1,0 +1,3 @@
+query BridgeXYZ($input: BridgeXYZQueryInput!) {
+  bridgeXYZQuery(input: $input)
+}

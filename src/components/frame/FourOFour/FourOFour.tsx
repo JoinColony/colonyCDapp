@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { COLONY_DOCS } from '~constants/index.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
+// import { useBridgeXyzMutationMutation } from '~gql';
 import {
   // CREATE_COLONY_ROUTE_BASE,
   LANDING_PAGE_ROUTE,
@@ -12,6 +13,7 @@ import {
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
+// import Button from '~v5/shared/Button/Button.tsx';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 
 const displayName = 'frame.FourOFour';
@@ -40,27 +42,52 @@ const MSG = defineMessages({
   },
 });
 
-const FourOFour = () => (
-  <MainLayout>
-    <FourOFourMessage
-      description={formatText(MSG.description)}
-      links={
-        <>
-          <a
-            href={COLONY_DOCS}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="mb-2 text-sm text-blue-400 underline"
-          >
-            {formatText(MSG.docsLink)}
-          </a>
-          <Link
-            to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
-            className="mb-2 text-sm text-blue-400 underline"
-          >
-            {formatText(MSG.userAccountLink)}
-          </Link>
-          {/*
+const FourOFour = () => {
+  // const [bridgeXYZMutation, { data }] = useBridgeXyzMutationMutation();
+
+  // const body = {
+  //   full_name: 'My Apple Pie',
+  //   email: 'apple@pie.com',
+  // };
+
+  // console.log(data);
+
+  return (
+    <MainLayout>
+      {/* <Button
+        onClick={() =>
+          bridgeXYZMutation({
+            variables: {
+              input: {
+                body: JSON.stringify(body),
+                path: 'v0/kyc_links',
+                pathParams: [],
+              },
+            },
+          })
+        }
+      >
+        Send bridge data
+      </Button> */}
+      <FourOFourMessage
+        description={formatText(MSG.description)}
+        links={
+          <>
+            <a
+              href={COLONY_DOCS}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="mb-2 text-sm text-blue-400 underline"
+            >
+              {formatText(MSG.docsLink)}
+            </a>
+            <Link
+              to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
+              className="mb-2 text-sm text-blue-400 underline"
+            >
+              {formatText(MSG.userAccountLink)}
+            </Link>
+            {/*
           @BETA disabled for now
           <Link
             to={CREATE_COLONY_ROUTE_BASE}
@@ -69,20 +96,21 @@ const FourOFour = () => (
             {formatText(MSG.createColonyLink)}
           </Link>
           */}
-        </>
-      }
-      primaryLinkButton={
-        <ButtonLink
-          mode="primarySolid"
-          to={LANDING_PAGE_ROUTE}
-          className="flex-1"
-        >
-          {formatText(MSG.goHomeBtn)}
-        </ButtonLink>
-      }
-    />
-  </MainLayout>
-);
+          </>
+        }
+        primaryLinkButton={
+          <ButtonLink
+            mode="primarySolid"
+            to={LANDING_PAGE_ROUTE}
+            className="flex-1"
+          >
+            {formatText(MSG.goHomeBtn)}
+          </ButtonLink>
+        }
+      />
+    </MainLayout>
+  );
+};
 
 FourOFour.displayName = displayName;
 

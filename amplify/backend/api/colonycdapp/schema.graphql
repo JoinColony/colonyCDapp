@@ -252,11 +252,15 @@ input GetSafeTransactionStatusInput {
 }
 
 input BridgeXYZQueryInput {
-  test: String!
+  path: String!
+  pathParams: [String!]!
+  body: String!
 }
 
 input BridgeXYZMutationInput {
-  test: String!
+  path: String!
+  pathParams: [String!]!
+  body: String!
 }
 
 """
