@@ -15,6 +15,7 @@ import {
 import {
   type PutCustomerMutationBody,
   type KYCLinksMutationBody,
+  type CreateExternalAccountMutationBody,
 } from '~types/offramp.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
@@ -51,7 +52,7 @@ const FourOFour = () => {
   const [bridgeXYZMutation] = useBridgeXyzMutationMutation();
   // const [bridgeXYZQuery] = useBridgeXyzQueryLazyQuery();
 
-  const sendKYCLinksMutation = () => {
+  const getKYCLinks = () => {
     const body: KYCLinksMutationBody = {
       full_name: 'My Apple Pie',
       email: 'apple@pie.com',
@@ -75,7 +76,7 @@ const FourOFour = () => {
       });
   };
 
-  const putCustomerMutation = () => {
+  const putCustomer = () => {
     const body: PutCustomerMutationBody = {
       address: {
         city: 'United',
@@ -111,7 +112,7 @@ const FourOFour = () => {
       });
   };
 
-  const checkKYCStatusQuery = () => {
+  const checkKYCStatus = () => {
     bridgeXYZMutation({
       variables: {
         input: {
@@ -130,14 +131,58 @@ const FourOFour = () => {
       });
   };
 
+  const createExternalAccount = () => {
+    const body: CreateExternalAccountMutationBody = {
+      address: {
+        city: 'Chicago',
+        country: 'USA',
+        postal_code: '90210',
+        state: 'NY',
+        street_line_1: '123 Murica Street',
+        street_line_2: 'Georgetown',
+      },
+      first_name: 'Johnny',
+      last_name: 'Dapp',
+      account: {
+        account_number: '123',
+        routing_number: '123',
+      },
+      account_owner_name: 'Johnny Dapp',
+      bank_name: 'HSBC',
+      currency: 'usd',
+      iban: {
+        account_number: '1234',
+        bic: '1234',
+        country: 'USA',
+      },
+      account_type: 'us',
+    };
+
+    bridgeXYZMutation({
+      variables: {
+        input: {
+          body,
+          path: 'v0/customers/{customerID}/external_accounts',
+        },
+      },
+    })
+      .then((data) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log('Error! ', err);
+      });
+  };
+
   return (
     <MainLayout>
       <div className="mx-auto flex max-w-80 flex-col gap-4 py-20">
-        <Button onClick={sendKYCLinksMutation}>Send kyc_links mutation</Button>
-        <Button onClick={putCustomerMutation}>
-          Send put_customer mutation
-        </Button>
-        <Button onClick={checkKYCStatusQuery}>Check KYC status query</Button>
+        <Button onClick={getKYCLinks}>Get KYC links</Button>
+        <Button onClick={putCustomer}>Put customer</Button>
+        <Button onClick={checkKYCStatus}>Check KYC status</Button>
+        <Button onClick={createExternalAccount}>Create external account</Button>
       </div>
       <FourOFourMessage
         description={formatText(MSG.description)}

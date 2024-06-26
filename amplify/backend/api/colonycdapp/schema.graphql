@@ -265,6 +265,17 @@ input BridgeXYZMutationAddressInput {
   country: String
 }
 
+input BridgeXYZMutationIbanInput {
+  account_number: String
+  bic: String
+  country: String
+}
+
+input BridgeXYZMutationAccountInput {
+  account_number: String
+  routing_number: String
+}
+
 input BridgeXYZMutationBodyInput {
   #
   # KYC Links
@@ -282,6 +293,19 @@ input BridgeXYZMutationBodyInput {
   birth_date: String
   tax_identification_number: String
   signed_agreement_id: String
+
+  #
+  # Create external account
+  #
+  currency: String
+  bank_name: String
+  account_owner_name: String
+  account_type: String
+  iban: BridgeXYZMutationIbanInput
+  account: BridgeXYZMutationAccountInput
+  # first_name: String
+  # last_name: String
+  # address: BridgeXYZMutationAddressInput
 }
 
 input BridgeXYZMutationInput {

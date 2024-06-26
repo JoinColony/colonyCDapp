@@ -48,6 +48,11 @@ export type Annotation = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
+export type BridgeXyzMutationAccountInput = {
+  account_number?: InputMaybe<Scalars['String']>;
+  routing_number?: InputMaybe<Scalars['String']>;
+};
+
 export type BridgeXyzMutationAddressInput = {
   city?: InputMaybe<Scalars['String']>;
   country?: InputMaybe<Scalars['String']>;
@@ -58,14 +63,26 @@ export type BridgeXyzMutationAddressInput = {
 };
 
 export type BridgeXyzMutationBodyInput = {
+  account?: InputMaybe<BridgeXyzMutationAccountInput>;
+  account_owner_name?: InputMaybe<Scalars['String']>;
+  account_type?: InputMaybe<Scalars['String']>;
   address?: InputMaybe<BridgeXyzMutationAddressInput>;
+  bank_name?: InputMaybe<Scalars['String']>;
   birth_date?: InputMaybe<Scalars['String']>;
+  currency?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   first_name?: InputMaybe<Scalars['String']>;
   full_name?: InputMaybe<Scalars['String']>;
+  iban?: InputMaybe<BridgeXyzMutationIbanInput>;
   last_name?: InputMaybe<Scalars['String']>;
   signed_agreement_id?: InputMaybe<Scalars['String']>;
   tax_identification_number?: InputMaybe<Scalars['String']>;
+};
+
+export type BridgeXyzMutationIbanInput = {
+  account_number?: InputMaybe<Scalars['String']>;
+  bic?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
 };
 
 export type BridgeXyzMutationInput = {
