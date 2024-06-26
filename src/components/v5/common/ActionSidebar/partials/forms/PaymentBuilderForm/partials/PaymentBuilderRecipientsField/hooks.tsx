@@ -1,4 +1,5 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -35,6 +36,35 @@ export const useRecipientsFieldTableColumns = (
   const selectedTeam = watch('from');
   const hasMoreThanOneToken = data.length > 1;
 
+  const footerData = useMemo(
+    () => ({
+      amountFooter: hasMoreThanOneToken
+        ? () => (
+            <PaymentBuilderPayoutsTotal
+              data={dataRef.current || []}
+              convertToWEI
+              itemClassName="justify-end md:justify-start"
+              buttonClassName="justify-end md:justify-start"
+            />
+          )
+        : undefined,
+      recipientFooter: hasMoreThanOneToken
+        ? () => (
+            <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
+              {!!dataRef.current.length && dataRef.current.length <= 7
+                ? formatText({ id: 'table.footer.total' })
+                : formatText(
+                    { id: 'table.footer.totalPayments' },
+                    { payments: dataRef.current.length },
+                  )}
+            </span>
+          )
+        : undefined,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [hasMoreThanOneToken],
+  );
+
   const columns: ColumnDef<PaymentBuilderRecipientsTableModel, string>[] =
     useMemo(() => {
       const columnHelper =
@@ -47,18 +77,7 @@ export const useRecipientsFieldTableColumns = (
           cell: ({ row }) => (
             <UserSelectRow row={row} name={`${name}.${row.index}.recipient`} />
           ),
-          footer: hasMoreThanOneToken
-            ? () => (
-                <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
-                  {data.length <= 7
-                    ? formatText({ id: 'table.footer.total' })
-                    : formatText(
-                        { id: 'table.footer.totalPayments' },
-                        { payments: data.length },
-                      )}
-                </span>
-              )
-            : undefined,
+          footer: footerData.recipientFooter,
         }),
         columnHelper.display({
           id: 'amount',
@@ -72,16 +91,7 @@ export const useRecipientsFieldTableColumns = (
               placeholder={formatText({ id: 'actionSidebar.enterAmount' })}
             />
           ),
-          footer: hasMoreThanOneToken
-            ? () => (
-                <PaymentBuilderPayoutsTotal
-                  data={dataRef.current}
-                  moveDecimals
-                  itemClassName="justify-end md:justify-start"
-                  buttonClassName="justify-end md:justify-start"
-                />
-              )
-            : undefined,
+          footer: footerData.amountFooter,
         }),
         columnHelper.display({
           id: 'delay',
@@ -116,9 +126,11 @@ export const useRecipientsFieldTableColumns = (
                 id: 'totalDelay',
                 header: () => formatText({ id: 'table.column.totalDelay' }),
                 cell: ({ row }) => {
-                  const totalHours =
-                    expendituresGlobalClaimDelayHours +
-                    (dataRef.current[row.index]?.delay || 0);
+                  const totalHours = BigNumber.from(
+                    expendituresGlobalClaimDelayHours,
+                  )
+                    .add(BigNumber.from(dataRef.current[row.index]?.delay || 0))
+                    .toString();
 
                   return (
                     <span className="text-gray-300">
@@ -135,14 +147,8 @@ export const useRecipientsFieldTableColumns = (
             ]
           : []),
       ];
-    }, [
-      hasMoreThanOneToken,
-      expendituresGlobalClaimDelayHours,
-      name,
-      data.length,
-      selectedTeam,
-      dataRef,
-    ]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [expendituresGlobalClaimDelayHours, footerData, name, selectedTeam]);
 
   return columns;
 };

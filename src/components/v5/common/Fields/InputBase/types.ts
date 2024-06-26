@@ -15,11 +15,13 @@ export interface InputBaseProps
   autoWidth?: boolean;
   label?: React.ReactNode;
   shouldFocus?: boolean;
+  usePlaceholderAsFallback?: boolean;
 }
 
 export interface FormInputBaseProps
   extends Omit<InputBaseProps, 'onChange' | 'state' | 'value'> {
   name: string;
+  onChange?: () => void;
 }
 
 export interface FormattedInputProps extends Omit<InputBaseProps, 'prefix'> {
