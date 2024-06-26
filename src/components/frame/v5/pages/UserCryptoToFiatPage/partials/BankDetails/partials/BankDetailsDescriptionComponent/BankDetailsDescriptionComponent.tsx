@@ -33,26 +33,12 @@ const MSG = defineMessages({
   },
 });
 
-const DATA = [
-  {
-    key: 'bank-name',
-    value: null,
-  },
-  {
-    key: 'account-number',
-    value: null,
-  },
-  {
-    key: 'bic',
-    value: null,
-  },
-  {
-    key: 'payout-currency',
-    value: null,
-  },
-];
-
-const BankDetailsDescriptionComponent = () => {
+const BankDetailsDescriptionComponent: React.FC<{
+  currency: string;
+  bankName: string;
+  bic: string;
+  bicLast4: string;
+}> = ({ currency, bankName, bic, bicLast4 }) => {
   return (
     <div className="flex flex-col">
       <p className="mb-3 text-md">{formatMessage(MSG.componentTitle)}</p>
@@ -74,9 +60,13 @@ const BankDetailsDescriptionComponent = () => {
         </thead>
         <tbody>
           <tr>
-            {DATA.map(({ key, value }) => (
+            {/* {['', '', '', currency].map(({ key, value }) => (
               <td key={`${displayName}.table.${key}`}>{value ?? '-'}</td>
-            ))}
+            ))} */}
+            <td>{bankName ?? '-'}</td>
+            <td>{bicLast4 ? `•••••${bicLast4}` : '-'}</td>
+            <td>{bic ?? '-'}</td>
+            <td className="uppercase">{currency ?? '-'}</td>
           </tr>
         </tbody>
       </table>

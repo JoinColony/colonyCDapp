@@ -65,6 +65,7 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
     taxIdNumber: string;
     tosLink: string;
     email: string;
+    currency: string;
     address: {
       city: string;
       country: string;
@@ -74,6 +75,7 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
       address2: string;
     };
   }>({
+    currency: '',
     email: '',
     signedAgreementId: '',
     birthDate: '',
@@ -239,7 +241,7 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
 
               content: (
                 <BankDetailsForm
-                  onSubmit={async () => {
+                  onSubmit={async ({ currency, swift, iban }) => {
                     const {
                       signedAgreementId,
                       birthDate,
@@ -259,12 +261,19 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
 
                     const result = await updateBridgeCustomer({
                       variables: {
+                        currency,
                         signedAgreementId,
                         birthDate,
                         firstName,
                         lastName,
                         taxIdNumber,
                         email,
+                        iban: {
+                          // eslint-disable-next-line camelcase
+                          account_number: iban,
+                          bic: swift,
+                          country,
+                        },
                         address: {
                           city,
                           country,

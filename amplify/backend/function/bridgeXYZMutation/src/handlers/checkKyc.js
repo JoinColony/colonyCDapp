@@ -103,11 +103,13 @@ const checkKYCHandler = async (
 
     // TODO: Support multiple accounts
     const firstAccount = expectedResponseFormat[0];
+
+    console.log('ROMEO FIRST: "', firstAccount);
     const mappedAccount = firstAccount
       ? {
           id: firstAccount.id,
           currency: firstAccount.currency,
-          bankName: firstAccount.bank_name,
+          bankName: firstAccount.bank_name ?? 'Natwest',
           iban: firstAccount.iban
             ? {
                 // TODO: Remove fallbacks
@@ -121,7 +123,12 @@ const checkKYCHandler = async (
                   'NOT MOCKED',
                 country: firstAccount.iban.country ?? 'NOT MOCKED',
               }
-            : null,
+            : {
+                // TODO: Remove fallbacks
+                last4: '1234',
+                bic: 'HBUKGB4B',
+                country: 'Portugal',
+              },
           usAccount: firstAccount.account
             ? {
                 last4: firstAccount.account.last_4,

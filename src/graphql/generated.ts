@@ -8921,10 +8921,17 @@ export type UpdateBridgeCustomerMutationVariables = Exact<{
   taxIdNumber: Scalars['String'];
   signedAgreementId: Scalars['String'];
   email: Scalars['String'];
+  currency: Scalars['String'];
+  iban?: InputMaybe<BridgeXyzMutationIbanInput>;
 }>;
 
 
 export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null } | null };
+
+export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, success?: boolean | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
@@ -10552,9 +10559,9 @@ export type CreateKycLinksMutationHookResult = ReturnType<typeof useCreateKycLin
 export type CreateKycLinksMutationResult = Apollo.MutationResult<CreateKycLinksMutation>;
 export type CreateKycLinksMutationOptions = Apollo.BaseMutationOptions<CreateKycLinksMutation, CreateKycLinksMutationVariables>;
 export const UpdateBridgeCustomerDocument = gql`
-    mutation UpdateBridgeCustomer($firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $birthDate: String!, $taxIdNumber: String!, $signedAgreementId: String!, $email: String!) {
+    mutation UpdateBridgeCustomer($firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $birthDate: String!, $taxIdNumber: String!, $signedAgreementId: String!, $email: String!, $currency: String!, $iban: BridgeXYZMutationIbanInput) {
   bridgeXYZMutation(
-    input: {path: "v0/customers/{customerID}", body: {first_name: $firstName, last_name: $lastName, address: $address, birth_date: $birthDate, tax_identification_number: $taxIdNumber, signed_agreement_id: $signedAgreementId, email: $email}}
+    input: {path: "v0/customers/{customerID}", body: {first_name: $firstName, last_name: $lastName, address: $address, birth_date: $birthDate, tax_identification_number: $taxIdNumber, signed_agreement_id: $signedAgreementId, email: $email, currency: $currency, iban: $iban}}
   ) {
     success
   }
@@ -10582,6 +10589,8 @@ export type UpdateBridgeCustomerMutationFn = Apollo.MutationFunction<UpdateBridg
  *      taxIdNumber: // value for 'taxIdNumber'
  *      signedAgreementId: // value for 'signedAgreementId'
  *      email: // value for 'email'
+ *      currency: // value for 'currency'
+ *      iban: // value for 'iban'
  *   },
  * });
  */
@@ -10592,6 +10601,54 @@ export function useUpdateBridgeCustomerMutation(baseOptions?: Apollo.MutationHoo
 export type UpdateBridgeCustomerMutationHookResult = ReturnType<typeof useUpdateBridgeCustomerMutation>;
 export type UpdateBridgeCustomerMutationResult = Apollo.MutationResult<UpdateBridgeCustomerMutation>;
 export type UpdateBridgeCustomerMutationOptions = Apollo.BaseMutationOptions<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>;
+export const CheckKycStatusDocument = gql`
+    mutation CheckKYCStatus {
+  bridgeXYZMutation(input: {path: "v0/kyc_links/{kycLinkID}", body: {}}) {
+    kyc_status
+    kyc_link
+    success
+    country
+    bankAccount {
+      currency
+      bankName
+      iban {
+        bic
+        country
+        last4
+      }
+      usAccount {
+        last4
+        routingNumber
+      }
+    }
+  }
+}
+    `;
+export type CheckKycStatusMutationFn = Apollo.MutationFunction<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
+
+/**
+ * __useCheckKycStatusMutation__
+ *
+ * To run a mutation, you first call `useCheckKycStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckKycStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkKycStatusMutation, { data, loading, error }] = useCheckKycStatusMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCheckKycStatusMutation(baseOptions?: Apollo.MutationHookOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CheckKycStatusMutation, CheckKycStatusMutationVariables>(CheckKycStatusDocument, options);
+      }
+export type CheckKycStatusMutationHookResult = ReturnType<typeof useCheckKycStatusMutation>;
+export type CheckKycStatusMutationResult = Apollo.MutationResult<CheckKycStatusMutation>;
+export type CheckKycStatusMutationOptions = Apollo.BaseMutationOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
 export const CreateColonyEtherealMetadataDocument = gql`
     mutation CreateColonyEtherealMetadata($input: CreateColonyEtherealMetadataInput!) {
   createColonyEtherealMetadata(input: $input) {

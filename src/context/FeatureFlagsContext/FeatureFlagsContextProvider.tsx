@@ -8,7 +8,7 @@ const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const featureFlags = useMemo(
     () => ({
-      [FeatureFlag.CRYPTO_TO_FIAT]: cryptoToFiatFeature,
+      [FeatureFlag.CRYPTO_TO_FIAT]: true,
     }),
     [cryptoToFiatFeature],
   );
