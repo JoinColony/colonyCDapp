@@ -1,6 +1,9 @@
 const { kycLinksHandler } = require('./handlers/kycLinks');
 const { putCustomerHandler } = require('./handlers/putCustomer');
 const { checkKYCHandler } = require('./handlers/checkKyc');
+const {
+  createExternalAccountHandler,
+} = require('./handlers/createExternalAccount');
 
 let appSyncApiKey = 'da2-fakeApiId123456';
 let apiKey = 'da2-fakeApiId123456';
@@ -34,6 +37,7 @@ exports.handler = async (event) => {
     'v0/kyc_links': kycLinksHandler,
     'v0/customers/{customerID}': putCustomerHandler,
     'v0/kyc_links/{kycLinkID}': checkKYCHandler,
+    'v0/customers/{customerID}/external_accounts': createExternalAccountHandler,
     default: () => {
       console.log('Running default handler');
       return null;
